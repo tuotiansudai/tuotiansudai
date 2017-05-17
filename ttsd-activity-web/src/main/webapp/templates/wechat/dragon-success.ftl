@@ -5,7 +5,7 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="result-container">
         <h3 class="title-item">
-        <#if hasCoupon=='0'>
+        <#if hasCoupon == '0'>
             领取成功！
         <#else>
             今日已领取！

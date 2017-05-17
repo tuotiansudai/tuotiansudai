@@ -141,7 +141,7 @@ public class DragonBoatFestivalService {
         // shareUniqueKey存在，且couponFetchKey不存在，表示：shareUniqueCode是正确的，且未被此用户领取过。
         if (redisWrapperClient.exists(shareUniqueKey) && redisWrapperClient.setnx(couponFetchKey, "1")) {
             // 给新用户发10元红包优惠券
-            logger.info(MessageFormat.format("[Dragon Boat Register User {}] assign weiXin share ￥10 red enveloper ", loginName));
+            logger.info("[Dragon Boat Register User {}] assign weiXin share ￥10 red enveloper ", loginName);
             couponAssignmentService.assignUserCoupon(loginName, 421);
             redisWrapperClient.expire(couponFetchKey, TWO_MONTH_SECONDS);
             return true;
@@ -153,7 +153,7 @@ public class DragonBoatFestivalService {
     public void afterNewUserRegister(String registerUserMobile, String referrer) {
 
         // 给分享者增加邀请用户数量
-        logger.info(MessageFormat.format("[Dragon Boat Register User {}] add invite-new-user-count for {}", registerUserMobile, referrer));
+        logger.info("[Dragon Boat Register User {}] add invite-new-user-count for {}", registerUserMobile, referrer);
         addInviteNewUserCount(referrer);
 
         // 给分享者发放5000元体验金， 每天每人最多领取5次。
@@ -162,7 +162,7 @@ public class DragonBoatFestivalService {
             logger.info("[Dragon boat Register User {}] {} has won 5 exprience prize today, can't won anymore.", registerUserMobile, referrer);
             return;
         } else {
-            logger.info(MessageFormat.format("[Dragon Boat Register User {}] send ￥5000 experience to {} for inviting new user.", registerUserMobile, referrer));
+            logger.info("[Dragon Boat Register User {}] send ￥5000 experience to {} for inviting new user.", registerUserMobile, referrer);
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                     new ExperienceAssigningMessage(referrer, 500000, ExperienceBillOperationType.IN, ExperienceBillBusinessType.DRAGON_BOAT_INVITE_NEW_USER));
             // 记录邀请用户获取的体验金
@@ -180,14 +180,14 @@ public class DragonBoatFestivalService {
 
     public boolean joinPK(String loginName, String group) {
         if (getGroupByLoginName(loginName) != null) {
-            logger.info(MessageFormat.format("[Dragon boat] {} has joined PK, can't join again.", loginName));
+            logger.info("[Dragon boat] {} has joined PK, can't join again.", loginName);
             return false; // 用户已经选择过派别了，不能再次选择
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
         DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
         dragonBoatFestivalModel.setPkGroup(group);
 
-        logger.info(MessageFormat.format("[Dragon boat] {} is joining {} group.", loginName, group));
+        logger.info("[Dragon boat] {} is joining {} group.", loginName, group);
         dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
         return true;
     }

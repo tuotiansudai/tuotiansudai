@@ -5,19 +5,29 @@ let ValidatorObj= require('publicJs/validator');
 
 let $wechatInvite = $('#wechatInvite'),
 	registerForm = globalFun.$('#registerForm'),
+    $changecode=$('.captcha-img',$wechatInvite),
 	$registerSubmit=$('#registerSubmit'),
 	validator = new ValidatorObj.ValidatorForm();
 
+function refreshCapt() {
+    $('#captchaImg').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
+};
+refreshCapt();
 
+//换一张图形验证码
+$changecode.on('touchstart', function (event) {
+    event.preventDefault();
+    refreshCapt();
+});
 
 //验证码是否正确
-validator.newStrategy(registerForm.appCaptcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
+validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
 	var getResult='',
 		that=this,
 		_arguments=arguments;
 
 	var _phone = registerForm.mobile.value,
-		_captcha=registerForm.appCaptcha.value;
+		_captcha=registerForm.captcha.value;
 
 	//先判断手机号格式是否正确
 	if(!/(^1[0-9]{10}$)/.test(_phone)) {
@@ -57,7 +67,8 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         url: '/register/user/send-register-captcha',
         type: 'POST',
         dataType: 'json',
-        data: {mobile: registerForm.mobile.value}
+        data: {mobile: registerForm.mobile.value,
+			imageCaptcha: registerForm.imageCaptcha.value}
     },function(response) {
         var data = response.data;
         var countdown = 60,timer;
@@ -79,6 +90,7 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         if (!data.status && !data.isRestricted) {
             layer.msg('图形验证码错误');
         }
+        refreshCapt();
     });
 });
 
@@ -100,7 +112,11 @@ validator.add(registerForm.password, [{
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能全是数字'
 }],true);
-validator.add(registerForm.appCaptcha, [{
+validator.add(registerForm.imageCaptcha, [{
+    strategy: 'isNonEmpty',
+    errorMsg: '验证码不能为空'
+}],true);
+validator.add(registerForm.captcha, [{
 	strategy: 'isNonEmpty',
 	errorMsg: '验证码不能为空'
 },{
@@ -125,16 +141,19 @@ for (let el of reInputs) {
 function isDisabledRegister() {
     let mobile=registerForm.mobile,
         password=registerForm.password,
-        appCaptcha=registerForm.appCaptcha;
+        imageCaptcha=registerForm.imageCaptcha,
+        captcha=registerForm.captcha;
 
     
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
-    let captchaValid = !$(appCaptcha).hasClass('error') && appCaptcha.value;
-    let isDisabledCaptcha = isMobileValid && isPwdValid;
+    let imageCaptchaValid = !$(imageCaptcha).hasClass('error') && imageCaptcha.value;
+
+    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    let isDisabledCaptcha = isMobileValid && isPwdValid &&imageCaptchaValid;
     //获取验证码点亮
     isDisabledCaptcha && $('#getCaptchaBtn').prop('disabled',false);
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementRegister').val()=='true';
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid && imageCaptchaValid && $('#agreementRegister').val()=='true';
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 }
 

@@ -43,12 +43,12 @@ public class DragonBoatFestivalController {
         String resStr = dragonBoatFestivalService.getCouponExchangeCode(loginName);
 
         String exchangeCode = resStr == null ? null : resStr.split(":")[0];
-        String shareUniqueCode = resStr == null ? null : resStr.split(":")[1];
+        String unique = resStr == null ? null : resStr.split(":")[1];
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-share");
         mav.addObject("exchangeCode", exchangeCode); // null 表示活动未开始或已结束，或者用户未登录
         mav.addObject("loginName", loginName);
-        mav.addObject("shareUniqueCode", shareUniqueCode);
+        mav.addObject("unique", unique);
         return mav;
     }
 
@@ -56,13 +56,11 @@ public class DragonBoatFestivalController {
     @RequestMapping(value = "/shareLanding", method = RequestMethod.GET)
     public ModelAndView shareLanding(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        String sharer = request.getParameter("sharer");
-        String shareUniqueCode = request.getParameter("shareUniqueCode");
+        String sharerUnique = request.getParameter("sharerUnique");
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-invite");
         mav.addObject("loginName", loginName);
-        mav.addObject("sharer", sharer);
-        mav.addObject("shareUniqueCode", shareUniqueCode);
+        mav.addObject("sharerUnique", sharerUnique);
         return mav;
     }
 
@@ -70,13 +68,14 @@ public class DragonBoatFestivalController {
     @RequestMapping(value = "/toLogin", method = RequestMethod.GET)
     public ModelAndView toLogin(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        String sharer = request.getParameter("sharer");
-        String shareUniqueCode = request.getParameter("shareUniqueCode");
+        String sharerUnique = request.getParameter("sharerUnique");
+        String sharer = sharerUnique.split("-")[0];
+        String unique = sharerUnique.split("-")[1];
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-login");
         mav.addObject("loginName", loginName);
         mav.addObject("sharer", sharer);
-        mav.addObject("shareUniqueCode", shareUniqueCode);
+        mav.addObject("unique", unique);
         return mav;
     }
 
@@ -84,54 +83,54 @@ public class DragonBoatFestivalController {
     @RequestMapping(value = "/toRegister", method = RequestMethod.GET)
     public ModelAndView toRegister(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        String sharer = request.getParameter("sharer");
-        String shareUniqueCode = request.getParameter("shareUniqueCode");
+        String sharerUnique = request.getParameter("sharerUnique");
+        String sharer = sharerUnique.split("-")[0];
+        String unique = sharerUnique.split("-")[1];
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-register");
         mav.addObject("loginName", loginName);
         mav.addObject("sharer", sharer);
-        mav.addObject("shareUniqueCode", shareUniqueCode);
+        mav.addObject("unique", unique);
         return mav;
     }
 
     // 新用户注册
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ResponseBody
-    public boolean userRegister(@RequestParam(value = "referrer", required = false) String referrer,
-                                @RequestParam(value = "captcha", required = false) String captcha,
-                                @RequestParam(value = "password", required = false) String password,
-                                @RequestParam(value = "mobile", required = false) String mobile,
-                                @RequestParam(value = "channel", required = false) String channel,
-                                @RequestParam(value = "shareUniqueCode", required = false) String shareUniqueCode) {
+    public ModelAndView userRegister(@RequestParam(value = "referrer", required = false) String referrer,
+                                     @RequestParam(value = "captcha", required = false) String captcha,
+                                     @RequestParam(value = "password", required = false) String password,
+                                     @RequestParam(value = "mobile", required = false) String mobile,
+                                     @RequestParam(value = "unique", required = false) String unique) {
 
         boolean isRegisterSuccess;
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setMobile(mobile);
-        registerUserDto.setChannel(channel);
+        registerUserDto.setChannel("wechat");
         registerUserDto.setReferrer(referrer);
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword(password);
-        logger.info(MessageFormat.format("[Dragon Boat Register User {}] controller starting...", registerUserDto.getMobile()));
+        logger.info("[Dragon Boat Register User {}] controller starting...", registerUserDto.getMobile());
         isRegisterSuccess = this.userService.registerUser(registerUserDto);
-        logger.info(MessageFormat.format("[Dragon Boat Register User {}] controller invoked service ({})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
+        logger.info("[Dragon Boat Register User {}] controller invoked service ({})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess));
 
         if (isRegisterSuccess) {
-            logger.info(MessageFormat.format("[Dragon Boat Register User {}] authenticate starting...", registerUserDto.getMobile()));
+            logger.info("[Dragon Boat Register User {}] authenticate starting...", registerUserDto.getMobile());
             myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
 
             dragonBoatFestivalService.afterNewUserRegister(registerUserDto.getMobile(), referrer);
         }
-        return isRegisterSuccess;
+
+        return new ModelAndView("redirect:/activity/wechat/dragon/fetchCoupon?unique=" + unique);
     }
 
     // 登录或注册后，领取红包
     @RequestMapping(value = "/fetchCoupon", method = RequestMethod.GET)
     public ModelAndView fetchCoupon(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        String shareUniqueCode = request.getParameter("shareUniqueCode");
+        String unique = request.getParameter("unique");
         ModelAndView mav = new ModelAndView("/wechat/dragon-success");
 
-        if (dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, shareUniqueCode)) {
+        if (dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique)) {
             mav.addObject("hasCoupon", "0");
         } else {
             mav.addObject("hasCoupon", "1");

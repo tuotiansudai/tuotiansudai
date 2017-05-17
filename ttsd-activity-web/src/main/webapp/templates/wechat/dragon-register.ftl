@@ -15,19 +15,25 @@
             </div>
 
             <div class="model-item">
-                <input type="text" name="appCaptcha" id="appCaptcha" value="" tabindex="3"  class="int-item" maxlength="6" placeholder="请输入短信验证码" validate/>
+                <img id="captchaImg" src="" class="captcha-img"/>
+                <input type="text" name="imageCaptcha" id="imageCaptcha" value="" tabindex="3"  maxlength="5" class="int-item" placeholder="请输入图形验证码" validate/>
+            </div>
+
+            <div class="model-item">
+                <input type="text" name="captcha" id="captcha" value="" tabindex="4"  class="int-item" maxlength="6" placeholder="请输入短信验证码" validate/>
                 <input type="button" class="ignore get-code" value="获取验证码" id="getCaptchaBtn" disabled>
             </div>
             
             <div class="model-item text-model">
-                <a  href="/activity/wechat/dragon/toLogin?sharerUnique=${sharerUnique}" class="fr login-link ">登录</a>
+                <a  href="/activity/wechat/dragon/toLogin?sharerUnique=${sharerUnique!}" class="fr login-link ">登录</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="agreement" class="agree-check" value="true" validate id="agreementRegister"/>
                 <input type="hidden" name="source" value="WEB">
-                <input type="hidden" name="referrer" value="loginName">
+                <input type="hidden" name="referrer" value="${sharer!}">
+                <input type="hidden" name="unique" value="${unique!}">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/wechat/dragon/fetchCoupon?unique=${unique}">
             </div>
