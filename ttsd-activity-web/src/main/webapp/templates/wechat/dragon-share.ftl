@@ -24,37 +24,38 @@
     	</p>
     	<p>点击下方按钮分享给好友，将会送给好友一个现金红包，每邀请一个新用户注册领取，或老用户使用成功，即可获得<span>5000元体验金</span>奖励。每人每日最多可邀请5人领取，超出部分的邀请将不再发放体验金奖励。</p>
     </div>
+    <div class="share-box" id="shareBox"></div>
 </div>
 <script>
     wx.ready(function () {
-//        分享给朋友
+        //分享给朋友
         wx.onMenuShareAppMessage({
-            title: '是朋友就帮我一起把夏季燃爆', // 分享标题
-            desc: '领取投资红包50元，最低50元起投', // 分享描述
+            title: '送你10元现金红包！', // 分享标题
+            desc: '我在拓天速贷参加端午节活动，现在送你10元现金红包，快来拿！', // 分享描述
             link: '${webServer}/activity/mid-summer/invited-user?mobile=${mobile}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
-                $('#FloatingBox').hide();
+                $('#shareBox').hide();
             },
             cancel: function () {
                 // 用户取消分享后执行的回调函数
-                $('#FloatingBox').hide();
+                $('#shareBox').hide();
             }
         });
 
-//        分享到朋友圈
+        //分享到朋友圈
         wx.onMenuShareTimeline({
-            title: '是朋友就帮我一起把夏季燃爆', // 分享标题
+            title: '送你10元现金红包！', // 分享标题
             link: '${webServer}/activity/mid-summer/invited-user?mobile=${mobile}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
-                $('#FloatingBox').hide();
+                $('#shareBox').hide();
             },
             cancel: function () {
                 // 用户取消分享后执行的回调函数
-                $('#FloatingBox').hide();
+                $('#shareBox').hide();
             }
         });
     });

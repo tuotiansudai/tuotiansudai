@@ -299,12 +299,98 @@
           font-size:14px;
           color:#53100b;
           background:url('../images/dragon-boat/rule-bg.png') no-repeat center left;
+          @media (max-width:700px) {
+            background:url('../images/dragon-boat/rule-bg.png') no-repeat;
+            background-position: 5px 10px;
+          }
         }
       }
       .floor-item{
         float:left;
         width:100%;
-        margin-bottom: 30px;
+        margin: 30px 0;
+        li{
+          float:left;
+          width:100%;
+          margin-top:-10px;
+          position: relative;
+          p{
+            margin-bottom: 0;
+            position: relative;
+            &.floor-five{
+              display:inline-block;
+              width:130px;
+              height:168px;
+              background:url('../images/dragon-boat/floor-five.png') no-repeat center;
+              background-size:100%;
+              @media (max-width:700px) {
+                width:65px;
+                height:84px;
+              }
+            }
+            &.floor-four{
+              display:inline-block;
+              width:248px;
+              height:164px;
+              background:url('../images/dragon-boat/floor-four.png') no-repeat center;
+              background-size:100%;
+              @media (max-width:700px) {
+                width:124px;
+                height:82px;
+              }
+            }
+            &.floor-three{
+              display:inline-block;
+              width:290px;
+              height:114px;
+              background:url('../images/dragon-boat/floor-three.png') no-repeat center;
+              background-size:100%;
+              @media (max-width:700px) {
+                width:145px;
+                height:57px;
+              }
+            }
+            &.floor-two{
+              display:inline-block;
+              width:394px;
+              height:116px;
+              background:url('../images/dragon-boat/floor-two.png') no-repeat center;
+              background-size:100%;
+              @media (max-width:700px) {
+                width:197px;
+                height:58px;
+              }
+            }
+            &.floor-one{
+              display:inline-block;
+              width:496px;
+              height:116px;
+              background:url('../images/dragon-boat/floor-one.png') no-repeat center;
+              background-size:100%;
+              @media (max-width:700px) {
+                width:248px;
+                height:58px;
+              }
+            }
+            .floor-loan{
+              position: absolute;
+              top:40%;
+              left:-125px;
+              font-size:14px;
+              color:#53100b;
+              @media (max-width:700px) {
+                font-size:12px;
+                width: 60px;
+                line-height: 18px;
+                left: -60px;
+                top: 15%;
+              }
+              strong{
+                color:#fff;
+              }
+            }
+          }
+        }
       }
     }
     .rule-item{

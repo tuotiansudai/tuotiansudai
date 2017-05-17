@@ -9,10 +9,10 @@ let $dragonBoatContainer=$('#dragonBoatContainer'),
 $dragonBoatContainer.find('.top-item .media-pc').attr('src',topImg).siblings('.media-phone').attr('src',topImgphone);
 
 // 香槟塔
-let floorImg=require('../images/dragon-boat/floor-img.png'),
-	floorImgPhone=require('../images/dragon-boat/floor-img-phone.png');
+// let floorImg=require('../images/dragon-boat/floor-img.png'),
+// 	floorImgPhone=require('../images/dragon-boat/floor-img-phone.png');
 
-$dragonBoatContainer.find('.floor-item .media-pc').attr('src',floorImg).siblings('.media-phone').attr('src',floorImgPhone);
+// $dragonBoatContainer.find('.floor-item .media-pc').attr('src',floorImg).siblings('.media-phone').attr('src',floorImgPhone);
 
 let $typeBtn=$('.type-btn',$dragonBoatContainer);
 
@@ -29,6 +29,6 @@ $typeBtn.on('click', function(event) {
 			$self.removeClass('active');
 		},3000);
 	}else{
-		layer.msg('您已选择阵营，仅能选择一次！');
+		layer.msg('您已经支持甜粽子了哦');
 	}
 });

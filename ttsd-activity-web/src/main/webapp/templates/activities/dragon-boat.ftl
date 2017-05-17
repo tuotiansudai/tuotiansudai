@@ -67,10 +67,33 @@
 				<li>不同层香槟塔中的红包和加息券可累计获得，实物奖品不可累计获得；</li>
 				<li>活动期间累计投资100万元，可获5层香槟塔中所有奖励。</li>
 			</ul>
-			<div class="floor-item tc">
-				<img src="" class="media-pc">
-				<img src="" width="100%" class="media-phone">
-			</div>
+			<ul class="floor-item tc">
+				<li>
+					<p class="floor-img floor-five">
+						<span class="floor-loan">累计投资<strong>600000元</strong></span>
+					</p>
+				</li>
+				<li>
+					<p class="floor-img floor-four">
+						<span class="floor-loan">累计投资<strong>300000元</strong></span>
+					</p>
+				</li>
+				<li>
+					<p class="floor-img floor-three">
+						<span class="floor-loan">累计投资<strong>120000元</strong></span>
+					</p>
+				</li>
+				<li>
+					<p class="floor-img floor-two">
+						<span class="floor-loan">累计投资<strong>60000元</strong></span>
+					</p>
+				</li>
+				<li>
+					<p class="floor-img floor-one">
+						<span class="floor-loan">累计投资<strong>5000元</strong></span>
+					</p>
+				</li>
+			</ul>
 		</div>
 		<dl class="rule-item">
 			<dt>温馨提示：</dt>
