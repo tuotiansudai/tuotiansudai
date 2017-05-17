@@ -3,7 +3,6 @@ package com.tuotiansudai.mq.consumer.user;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.WeChatClient;
 import com.tuotiansudai.enums.WeChatMessageType;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -13,6 +12,7 @@ import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.WeChatClient;
 import com.tuotiansudai.util.MobileEncoder;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -29,17 +29,16 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(WeChatBoundMessageConsumer.class);
 
+    private final WeChatClient weChatClient = WeChatClient.getClient();
+
     private final UserMapper userMapper;
 
     private final WeChatUserMapper weChatUserMapper;
 
-    private final WeChatClient weChatClient;
-
     @Autowired
-    public WeChatBoundMessageConsumer(UserMapper userMapper, WeChatUserMapper weChatUserMapper, WeChatClient weChatClient) {
+    public WeChatBoundMessageConsumer(UserMapper userMapper, WeChatUserMapper weChatUserMapper) {
         this.userMapper = userMapper;
         this.weChatUserMapper = weChatUserMapper;
-        this.weChatClient = weChatClient;
     }
 
 

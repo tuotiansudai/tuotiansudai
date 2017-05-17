@@ -1,0 +1,113 @@
+
+body {
+  background: #e53c1d;
+}
+
+.header-download {
+  display: block;
+  background: #333;
+  color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 94%;
+  padding: 3%;
+  bottom: 0;
+  z-index: 60;
+}
+.app-marketing-container {
+
+  &.app-success {
+    text-align: center;
+    .novice-spree {
+      margin: 20px 20px 40px 20px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .item-submit {
+      display: inline-block;
+      background: #fff55b;
+      color: #550014;
+      font-size: 17px;
+      box-shadow: 0px 5px 0px #f5b00e;
+      border-radius: 6px;
+      font-weight: bold;
+      height: 30px;
+      width: 60%;
+      text-align: center;
+      margin: 0 auto;
+      border: 0;
+      line-height: 30px;
+      letter-spacing: 0;
+    }
+  }
+}
+
+.marketing-header {
+  height:400px;
+  width:100%;
+  background: url('../../images/app-marketing/bg-register-top.png') left top no-repeat;
+  background-size: 100%;
+  position: relative;
+  text-align: center;
+  .contact {
+    display: inline-block;
+    color: #fff;
+    padding-top:10px;
+    font-size:12px;
+  }
+  .red-bag {
+    position: absolute;
+    width:100%;
+    text-align: center;
+    left:0;
+    top:155px;
+    color: #550014;
+    font-size: 15px;
+    line-height: 25px;
+
+    i {
+      color: #fff55b;
+      font-size:30px;
+    }
+  }
+  .red-success {
+    position: absolute;
+    width:100%;
+    text-align: center;
+    left:0;
+    bottom:0px;
+    font-size: 17px;
+    line-height: 35px;
+    color: #fff55b;
+    i {
+      font-size:30px;
+      display: block;
+    }
+
+  }
+  &.bg-success {
+    background: url('../../images/app-marketing/bg-register-bag.png') left top no-repeat;
+    background-size: 100%;
+  }
+
+}
+.our-advantage {
+  padding-bottom: 60px;
+}
+
+.novice-spree {
+  padding-top:30px;
+  background: #fff7e9;
+  dt {
+    background: url('../../images/app-marketing/title-newer.png') center center no-repeat;
+    background-size: 85%;
+    height:50px;
+    margin-bottom: 30px;
+  }
+  dd {
+    background: url('../../images/app-marketing/rewards-group.png') center center no-repeat;
+    background-size: 90%;
+    height:80px;
+  }
+}

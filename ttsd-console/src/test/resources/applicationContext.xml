@@ -272,8 +272,6 @@
         <property name="basePackage" value="com.tuotiansudai.log.repository.mapper"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 

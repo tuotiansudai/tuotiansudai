@@ -1,4 +1,5 @@
 let commonFun=require('publicJs/commonFun');
+
 function createElement(element,errorMsg) {
     let children = element.parentElement.children,
         childLen = children.length,
@@ -8,6 +9,9 @@ function createElement(element,errorMsg) {
 
     if( element && childLen>1 && lastTag.tagName.toUpperCase() == 'SPAN' && /error/.test(lastTag.className)) {
         lastTag.innerHTML=errorMsg;
+        if(lastTag.style.visibility) {
+            lastTag.style.visibility = 'visible';
+        }
         return;
     }
 
@@ -23,23 +27,15 @@ function removeElement(element) {
         lastTag = children[childLen-1];
 
     if( element && childLen>1 && lastTag.tagName.toUpperCase() == 'SPAN' && /error/.test(lastTag.className)) {
-        element.parentElement.removeChild(lastTag);
+        //判断是否有span并且是否包含属性visibility
+        if(lastTag.style.visibility) {
+            lastTag.style.visibility = 'hidden';
+        } else {
+            element.parentElement.removeChild(lastTag);
+        }
     }
 }
 
-// function createElement(element,errorMsg) {
-//     if(element && element.nextElementSibling) {
-//         element.nextElementSibling.innerHTML=errorMsg;
-//         return;
-//     }
-//     var span=document.createElement("span");
-//     span.className="error";
-//     span.innerHTML=errorMsg;
-//     element && element.parentElement.appendChild(span);
-// }
-// function removeElement(element) {
-//     (element && element.nextElementSibling && globalFun.hasClass(element.nextElementSibling,'error')) && element.parentElement.removeChild(element.nextElementSibling);
-// }
 /*******策略对象********/
 
 var isHaveError ={

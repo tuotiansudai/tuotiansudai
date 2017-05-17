@@ -5,12 +5,10 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -22,15 +20,14 @@ public class HTrackingClient {
 
     private static final String HTracking_Recharge = "http://api5.btmedia.cn/astore/chr.php?uid={0}&appname=tuotiansudai";
 
-    private OkHttpClient okHttpClient = buildOkHttpClient();
+    private OkHttpClient okHttpClient;
 
-    private OkHttpClient buildOkHttpClient() {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+    public HTrackingClient() {
+        this.okHttpClient = new OkHttpClient();
+        this.okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
         OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
-        okHttpClient.interceptors().add(loggingInterceptor);
-        return okHttpClient;
+        this.okHttpClient.interceptors().add(loggingInterceptor);
     }
 
     public String hTrackingRegister(String mobile, String deviceId){
@@ -51,7 +48,7 @@ public class HTrackingClient {
         }
     }
 
-    protected ResponseBody newCall(String hTrackingUrl, Object... param){
+    private ResponseBody newCall(String hTrackingUrl, Object... param){
         String url = MessageFormat.format(hTrackingUrl, param);
 
         Request request = new Request.Builder()

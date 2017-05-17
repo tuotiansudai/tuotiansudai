@@ -43,6 +43,9 @@ public class ActivityServiceTest {
     @Autowired
     ActivityService activityService;
 
+    @Autowired
+    private MidSummerService midSummerService;
+
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);

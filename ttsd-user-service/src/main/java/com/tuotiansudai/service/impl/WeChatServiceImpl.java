@@ -1,13 +1,13 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.WeChatClient;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.service.LoginNameGenerator;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.UUIDGenerator;
+import com.tuotiansudai.util.WeChatClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WeChatServiceImpl implements WeChatService {
@@ -23,34 +24,30 @@ public class WeChatServiceImpl implements WeChatService {
 
     private final static String AUTHORIZE_URL_TEMPLATE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect";
 
-    @Value(value = "${wechat.appId}")
-    private String appId;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Value(value = "${wechat.authorize.callbck}")
+    private final WeChatClient weChatClient = WeChatClient.getClient();
+
+    @Value(value = "${wechat.authorize.callback}")
     private String authorizeCallback;
 
     private final WeChatUserMapper weChatUserMapper;
 
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
     private final LoginNameGenerator loginNameGenerator;
 
-    private final WeChatClient weChatClient;
-
     @Autowired
-    public WeChatServiceImpl(WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator, WeChatClient weChatClient) {
+    public WeChatServiceImpl(WeChatUserMapper weChatUserMapper, LoginNameGenerator loginNameGenerator) {
         this.loginNameGenerator = loginNameGenerator;
-        this.weChatClient = weChatClient;
         this.weChatUserMapper = weChatUserMapper;
     }
 
     @Override
     public String generateAuthorizeURL(String sessionId, String redirect) {
         String state = UUIDGenerator.generate();
-        redisWrapperClient.setex(sessionId, 10, state);
+        redisWrapperClient.setex(MessageFormat.format("{0}:wechat:state", sessionId), 60, state);
 
         return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
-                appId,
+                weChatClient.getAppid(),
                 Strings.isNullOrEmpty(redirect) ? this.authorizeCallback : MessageFormat.format("{0}?redirect={1}", this.authorizeCallback, redirect),
                 state);
     }
@@ -72,5 +69,11 @@ public class WeChatServiceImpl implements WeChatService {
             weChatUserMapper.update(weChatUserModel);
         }
         return weChatUserModel;
+    }
+
+    @Override
+    public boolean isBound(String loginName) {
+        List<WeChatUserModel> weChatUserModels = weChatUserMapper.findByLoginName(loginName);
+        return weChatUserModels.stream().filter(WeChatUserModel::isBound).count() > 0;
     }
 }
