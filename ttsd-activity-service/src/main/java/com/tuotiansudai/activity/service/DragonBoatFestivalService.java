@@ -13,6 +13,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +49,9 @@ public class DragonBoatFestivalService {
 
     private static final String DRAGON_BOAT_SHARE_EXPERIENCE_PRIZE = "dragon_boat_share_experience_prize:{0}:{1}";
 
-    public static final String DRAGON_BOAT_SHARE_COUPON_FETCH = "dragon_boat_share_coupon_fetch:{0}:{1}";
+    private static final String DRAGON_BOAT_SHARE_COUPON_FETCH = "dragon_boat_share_coupon_fetch:{0}:{1}";
 
-    public static final String DRAGON_BOAT_SHARE_UNIQUE_CODE = "dragon_boat_share_unique_code:{0}";
+    private static final String DRAGON_BOAT_SHARE_UNIQUE_CODE = "dragon_boat_share_unique_code:{0}";
 
     private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("MM-dd"));
 
@@ -63,6 +64,11 @@ public class DragonBoatFestivalService {
 
     public String getCouponExchangeCode(String loginName) {
         logger.info("[Dragon boat festival] {} is fetching the prize.", loginName);
+
+        if (StringUtils.isEmpty(loginName)) {
+            logger.info("[Dragon boat festival] user is not login.");
+            return null;
+        }
 
         Date now = new Date();
         if (now.before(startTime)) {
@@ -79,7 +85,9 @@ public class DragonBoatFestivalService {
 
         if (redisWrapperClient.exists(key)) {
             logger.info("[Dragon boat festival] {} has fetched the prize today, can't fetch anymore.", loginName);
-            return redisWrapperClient.get(key);
+            String exchangeCode = redisWrapperClient.get(key);
+            String shareUniqueCode = exchangeCode.substring(4, 10);
+            return exchangeCode + ":" + shareUniqueCode;
         }
 
         int random = (int) (Math.random() * 100000);
@@ -102,6 +110,10 @@ public class DragonBoatFestivalService {
         }
 
         String exchangeCode = redisWrapperClient.lpop(ExchangeCodeServiceImpl.EXCHANGE_CODE_LIST_KEY + prize.getCouponId());
+        if (exchangeCode == null) {
+            logger.error("[Dragon boat festival] exchange code is used done, coupon id:{}", prize.getCouponId());
+            return null;
+        }
         redisWrapperClient.setex(key, TWO_MONTH_SECONDS, exchangeCode);
 
         // 设置分享标识码，后续领券时最安全判断，防止恶意刷券
