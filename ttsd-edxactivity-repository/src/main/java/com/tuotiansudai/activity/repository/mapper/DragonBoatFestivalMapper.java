@@ -2,12 +2,9 @@ package com.tuotiansudai.activity.repository.mapper;
 
 
 import com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel;
-import com.tuotiansudai.activity.repository.model.InvestNewmanTyrantModel;
-import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.spring.MyUser;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,13 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private static final String DRAGON_BOAT_SHARE_COUPON_FETCH = "dragon_boat_share_coupon_fetch:{0}:{1}";
+
+    private static final int TWO_MONTH_SECONDS = 60 * 60 * 24 * 60;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         MyUser myUser = (MyUser) authentication.getPrincipal();
@@ -47,7 +55,16 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
         if (request.getHeader("Referer").indexOf("/dragon/shareLanding") > 0) {
             logger.info(MessageFormat.format("[Dragon Boat] {} invite an old user {}.", request.getParameter("referrer"), loginDto.getLoginName()));
-            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, request.getParameter("referrer") + ":" + loginDto.getLoginName());
+
+            String referrer = request.getParameter("referrer");
+            String shareUniqueCode = request.getParameter("shareUniqueCode");
+            String key = MessageFormat.format(DRAGON_BOAT_SHARE_COUPON_FETCH, shareUniqueCode, loginDto.getLoginName());
+
+            if (redisWrapperClient.setnx(key, "1")) { // 如果没领取过
+                logger.info(MessageFormat.format("[Dragon Boat] send share login transfer message, referrer:{}, loginMobile:{}.", referrer, loginDto.getLoginName()));
+                mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, referrer + ":" + loginDto.getLoginName());
+                redisWrapperClient.expire(key, TWO_MONTH_SECONDS);
+            }
         }
 
         clearAuthenticationAttributes(request);

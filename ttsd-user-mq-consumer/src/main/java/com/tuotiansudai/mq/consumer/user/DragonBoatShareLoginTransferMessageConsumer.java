@@ -37,11 +37,11 @@ public class DragonBoatShareLoginTransferMessageConsumer implements MessageConsu
 
             String[] args = message.split(":");
             String referrer = args[0];
-            String loginName = args[1];
+//            String loginName = args[1];
 
-            // 给登录用户发送10元现金红包
-            logger.info(MessageFormat.format("[MQ][Dragon boat: invite old user login] send ￥10 red enveloper to {}.", loginName));
-            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + 421);
+//            // 给登录用户发送10元现金红包
+//            logger.info(MessageFormat.format("[MQ][Dragon boat: invite old user login] send ￥10 red enveloper to {}.", loginName));
+//            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + 421);
 
             UserModel userModel = userMapper.findByLoginName(referrer);
             mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLogin,
