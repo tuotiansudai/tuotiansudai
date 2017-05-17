@@ -1,7 +1,7 @@
 package com.tuotiansudai.mq.consumer.activity;
 
+import com.tuotiansudai.activity.repository.mapper.DragonBoatFestivalMapper;
 import com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel;
-import com.tuotiansudai.activity.service.DragonBoatFestivalService;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -18,7 +18,7 @@ public class DragonBoatChampageEndingSendPrizeMessageConsumer implements Message
     private static final Logger logger = LoggerFactory.getLogger(DragonBoatChampageEndingSendPrizeMessageConsumer.class);
 
     @Autowired
-    private DragonBoatFestivalService dragonBoatFestivalService;
+    private DragonBoatFestivalMapper dragonBoatFestivalMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -32,7 +32,7 @@ public class DragonBoatChampageEndingSendPrizeMessageConsumer implements Message
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
-        List<DragonBoatFestivalModel> recordList = dragonBoatFestivalService.getDragonBoatFestivalChampagneList();
+        List<DragonBoatFestivalModel> recordList = dragonBoatFestivalMapper.getDragonBoatFestivalChampagneList();
         for (DragonBoatFestivalModel model : recordList) {
             if (model.getTotalInvestAmount() >= 500000) {
                 sendPrize5Coupon(model.getLoginName());

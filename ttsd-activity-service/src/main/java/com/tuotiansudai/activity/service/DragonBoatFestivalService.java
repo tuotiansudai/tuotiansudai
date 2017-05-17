@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class DragonBoatFestivalService {
@@ -45,6 +44,8 @@ public class DragonBoatFestivalService {
     private static final String DRAGON_BOAT_EXCHANGE_FETCH = "dragon_boat_exchange_fetch:{0}:{1}";
 
     public static final int ONE_MONTH_SECONDS = 60 * 60 * 24 * 30;
+
+    public static final String DRAGON_BOAT_SHARE_EXPERIENCE_PRIZE = "dragon_boat_share_experience_prize:{}:{}";
 
     private static final ThreadLocal<SimpleDateFormat> SDF_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat("MM-dd"));
 
@@ -98,7 +99,6 @@ public class DragonBoatFestivalService {
         dragonBoatFestivalMapper.addInviteNewUserCount(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
     }
 
-    public static final String DRAGON_BOAT_SHARE_EXPERIENCE_PRIZE = "dragon_boat_share_experience_prize:{}:{}";
 
     public void afterNewUserRegister(String regiseterUserMobile, String referrer) {
 
@@ -163,24 +163,5 @@ public class DragonBoatFestivalService {
         dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
     }
 
-    public void addPKInvestAmount(String loginName, long investAmount) {
-        logger.info("[Dragon boat festival] add PK invest amount for user {}, invest amount:{}", loginName, investAmount);
-        dragonBoatFestivalMapper.addPKInvestAmount(loginName, investAmount);
-    }
-
-    public List<DragonBoatFestivalModel> getDragonBoatFestivalPKUserList() {
-        logger.info("[Dragon boat festival] get dragon boat festival PK user list.");
-        return dragonBoatFestivalMapper.getDragonBoatFestivalPKUserList();
-    }
-
-    public void setPKExperienceAmount(String loginName, long experienceAmount){
-        logger.info("[Dragon boat festival] set pk_experience_amount, loginName:{}, experienceAmount:{}", loginName, experienceAmount);
-        dragonBoatFestivalMapper.setPKExperienceAmount(loginName, experienceAmount);
-    }
-
-    public List<DragonBoatFestivalModel> getDragonBoatFestivalChampagneList() {
-        logger.info("[Dragon boat festival] get dragon boat festival champagne invest list.");
-        return dragonBoatFestivalMapper.getDragonBoatFestivalChampagneList();
-    }
 
 }

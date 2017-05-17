@@ -12,8 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(scanBasePackages = {
         "com.tuotiansudai.mq.consumer.activity",
-        "com.tuotiansudai.scheduler.activity",
-        "com.tuotiansudai.activity.service"
+        "com.tuotiansudai.scheduler.activity"
 },
         exclude = {FreeMarkerAutoConfiguration.class})
 @EnableScheduling

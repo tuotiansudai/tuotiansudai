@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.spring.MyUser;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -48,7 +47,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
         if (request.getHeader("Referer").indexOf("/dragon/shareLanding") > 0) {
             logger.info(MessageFormat.format("[Dragon Boat] {} invite an old user {}.", request.getParameter("referrer"), loginDto.getLoginName()));
-            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLogin, request.getParameter("referrer") + ":" + loginDto.getLoginName());
+            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, request.getParameter("referrer") + ":" + loginDto.getLoginName());
         }
 
         clearAuthenticationAttributes(request);
