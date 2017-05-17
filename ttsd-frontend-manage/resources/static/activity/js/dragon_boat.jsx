@@ -29,6 +29,6 @@ $typeBtn.on('click', function(event) {
 			$self.removeClass('active');
 		},3000);
 	}else{
-		layer.msg('您已经支持甜粽子了哦');
+		layer.msg('您已支持甜粽子了哦');
 	}
 });
