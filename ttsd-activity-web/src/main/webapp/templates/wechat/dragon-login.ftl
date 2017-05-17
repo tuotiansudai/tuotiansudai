@@ -5,7 +5,7 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="login-form-container">
         <h3 class="title-item">登录完成后现金红包会直接放到您的账户中哦~</h3>
-        <form action="#" method="post" class="login-item" id="loginForm">
+        <form action="/login" method="post" class="login-item" id="loginForm">
             <div class="model-item">
                 <input type="text" name="mobile"  value="" tabindex="1"  class="int-item" maxlength="11" placeholder="请输入您的手机号" validate/>
             </div>
@@ -20,7 +20,7 @@
             </div>
             
             <div class="model-item text-model">
-                <a href="/wechat/dragon-register.ftl" class="fr login-link">注册</a>
+                <a href="/activity/wechat/dragon/toRegister?sharer=${sharer}" class="fr login-link">注册</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>

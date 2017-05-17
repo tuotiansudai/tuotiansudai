@@ -81,6 +81,21 @@ body{
 			}
 		}
 	}
+	.share-btn{
+		float:left;
+		width:100%;
+		text-align:center;
+		span{
+			display:inline-block;
+			width:210px;
+			height:45px;
+			line-height:45px;
+			border-radius:5px;
+			color:#6f191d;
+			font-size:16px;
+			background:#fcc000;
+		}
+	}
 	.share-box{
 		position: fixed;
 		top:0;
