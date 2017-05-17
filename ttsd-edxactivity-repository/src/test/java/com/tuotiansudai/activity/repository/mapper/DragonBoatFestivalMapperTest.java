@@ -36,16 +36,14 @@ public class DragonBoatFestivalMapperTest {
 
     @Test
     public void shouldInsertOrAddTotalInvestAmount() {
-        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel("aa", "aa", "19877778888");
-        dragonBoatFestivalModel.setTotalInvestAmount(10000L);
-        dragonBoatFestivalMapper.addTotalInvestAmount(dragonBoatFestivalModel);
+        dragonBoatFestivalMapper.addTotalInvestAmount("aa", "aa", "19877778888", 10000L);
 
         List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
         assertNotNull(list);
         DragonBoatFestivalModel model = list.get(0);
         assertEquals(10000, model.getTotalInvestAmount());
 
-        dragonBoatFestivalMapper.addTotalInvestAmount(dragonBoatFestivalModel);
+        dragonBoatFestivalMapper.addTotalInvestAmount("aa", "aa", "19877778888", 10000L);
         List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
         assertEquals(20000, list2.get(0).getTotalInvestAmount());
     }

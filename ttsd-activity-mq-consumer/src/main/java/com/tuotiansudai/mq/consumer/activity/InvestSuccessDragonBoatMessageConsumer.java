@@ -1,11 +1,13 @@
 package com.tuotiansudai.mq.consumer.activity;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.service.DragonBoatFestivalService;
+import com.tuotiansudai.activity.repository.mapper.DragonBoatFestivalMapper;
+import com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.JsonConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class InvestSuccessDragonBoatMessageConsumer implements MessageConsumer {
     private final static Logger logger = LoggerFactory.getLogger(InvestSuccessDragonBoatMessageConsumer.class);
 
     @Autowired
-    private DragonBoatFestivalService dragonBoatFestivalService;
+    private DragonBoatFestivalMapper dragonBoatFestivalMapper;
 
     @Override
     public MessageQueue queue() {
@@ -51,16 +53,18 @@ public class InvestSuccessDragonBoatMessageConsumer implements MessageConsumer {
             return;
         }
 
-        if (isInActivityPeriod()) {
-            String loginName = investSuccessMessage.getInvestInfo().getLoginName();
+        if (isInActivityPeriod() && investSuccessMessage.getLoanDetailInfo().getLoanId() != 1) {
+            String loginName = investSuccessMessage.getUserInfo().getLoginName();
+            String userName = investSuccessMessage.getUserInfo().getUserName();
+            String mobile = investSuccessMessage.getUserInfo().getMobile();
             long investAmount = investSuccessMessage.getInvestInfo().getAmount();
 
-            dragonBoatFestivalService.addTotalInvestAmount(loginName, investAmount);
+            dragonBoatFestivalMapper.addTotalInvestAmount(loginName, userName, mobile, investAmount);
 
-            String group = dragonBoatFestivalService.getGroupByLoginName(loginName);
-            if (group != null) {
-                logger.info("[MQ] dragon PK, add money for group {}, investor:{}, money:{}", group, loginName, investAmount);
-                dragonBoatFestivalService.addPKInvestAmount(loginName, investAmount);
+            DragonBoatFestivalModel dbfModel = dragonBoatFestivalMapper.findByLoginName(loginName);
+            if (dbfModel != null && StringUtils.isNotEmpty(dbfModel.getPkGroup())) {
+                logger.info("[MQ] dragon PK, add money for group {}, investor:{}, money:{}", dbfModel.getPkGroup(), loginName, investAmount);
+                dragonBoatFestivalMapper.addPKInvestAmount(loginName, investAmount);
             }
         }
         logger.info("[MQ] receive message: {}: {} done.", this.queue(), message);

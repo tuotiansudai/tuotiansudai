@@ -124,6 +124,14 @@ public class DragonBoatFestivalService {
         }
     }
 
+    private void addInviteExperienceAmount(String loginName, long experience) {
+        logger.info("[Dragon boat festival] add invite experience amount for user {}, experience amount:{}", loginName, experience);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
+        dragonBoatFestivalModel.setInviteExperienceAmount(experience);
+        dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
+    }
+
     public boolean joinPK(String loginName, String group) {
         if (getGroupByLoginName(loginName) != null) {
             logger.info(MessageFormat.format("[Dragon boat] {} has joined PK, can't join again.", loginName));
@@ -147,21 +155,6 @@ public class DragonBoatFestivalService {
         return dragonBoatFestivalMapper.getGroupInvestAmount(group);
     }
 
-    public void addTotalInvestAmount(String loginName, long investAmount) {
-        logger.info("[Dragon boat festival] add total invest amount for user {}, invest amount:{}", loginName, investAmount);
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
-        dragonBoatFestivalModel.setTotalInvestAmount(investAmount);
-        dragonBoatFestivalMapper.addTotalInvestAmount(dragonBoatFestivalModel);
-    }
-
-    public void addInviteExperienceAmount(String loginName, long experience) {
-        logger.info("[Dragon boat festival] add invite experience amount for user {}, experience amount:{}", loginName, experience);
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
-        dragonBoatFestivalModel.setInviteExperienceAmount(experience);
-        dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
-    }
 
 
 }

@@ -26,10 +26,10 @@
         on duplicate key update pk_group = #{pkGroup};
     </insert>
 
-    <insert id="addTotalInvestAmount" parameterType="dragonBoatFestivalModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addTotalInvestAmount" parameterType="map" useGeneratedKeys="true">
         INSERT INTO `edxactivity`.`dragon_boat_festival` (`login_name`,`user_name`,`mobile`,`total_invest_amount`,`created_time`)
-        VALUES(#{loginName},#{userName},#{mobile},#{totalInvestAmount},#{createdTime})
-        on duplicate key update total_invest_amount=total_invest_amount + #{totalInvestAmount};
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},now())
+        on duplicate key update total_invest_amount=total_invest_amount + #{investAmount};
     </insert>
 
     <update id="addPKInvestAmount" parameterType="map">

@@ -15,7 +15,10 @@ public interface DragonBoatFestivalMapper {
 
     void setPKGroup(DragonBoatFestivalModel dragonBoatFestivalModel);
 
-    void addTotalInvestAmount(DragonBoatFestivalModel dragonBoatFestivalModel);
+    void addTotalInvestAmount(@Param(value = "loginName") String loginName,
+                              @Param(value = "userName") String userName,
+                              @Param(value = "mobile") String mobile,
+                              @Param(value = "investAmount") long investAmount);
 
     void addPKInvestAmount(@Param(value = "loginName") String loginName,
                            @Param(value = "pkInvestAmount") long pkInvestAmount);
