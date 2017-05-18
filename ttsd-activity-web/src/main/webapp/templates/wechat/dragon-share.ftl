@@ -29,7 +29,7 @@
         wx.onMenuShareAppMessage({
             title: '送你10元现金红包！', // 分享标题
             desc: '我在拓天速贷参加端午节活动，现在送你10元现金红包，快来拿！', // 分享描述
-            link: '${webServer}/we-chat/authorize?redirect=/activity/wechat/dragon/shareLanding?sharerUnique=${loginName}-${unique}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/authorize?redirect=/activity/dragon/wechat/shareLanding?sharerUnique=${loginName}-${unique}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
@@ -44,7 +44,7 @@
         //分享到朋友圈
         wx.onMenuShareTimeline({
             title: '送你10元现金红包！', // 分享标题
-            link: '${webServer}/we-chat/authorize?redirect=/activity/wechat/dragon/shareLanding?sharerUnique=${loginName}-${unique}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/authorize?redirect=/activity/dragon/wechat/shareLanding?sharerUnique=${loginName}-${unique}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
