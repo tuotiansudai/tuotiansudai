@@ -65,6 +65,9 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
             crypt.update(string1.getBytes("UTF-8"));
 
             String signature = byteToHex(crypt.digest());
+
+            logger.info(MessageFormat.format("[WeChat JS API Sign] string1: {0}, signature: {1}", string1, signature));
+            
             ret.put("signature", signature);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
