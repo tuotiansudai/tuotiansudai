@@ -18,8 +18,10 @@ function setProgress(){
 		$leftPro=$progress.find('.left-pro'),
 		$rightPro=$progress.find('.right-pro'),
 		amonut=parseFloat($leftPro.attr('data-amout'))+parseFloat($rightPro.attr('data-amout'));
-	$leftPro.css('width', (parseFloat($leftPro.attr('data-amout'))/amonut)*100+'%');
-	$rightPro.css('width', (parseFloat($rightPro.attr('data-amout'))/amonut)*100+'%');
+	if(parseFloat($leftPro.attr('data-amout'))!=0 && parseFloat($rightPro.attr('data-amout'))!=0){
+		$leftPro.css('width', (parseFloat($leftPro.attr('data-amout'))/amonut)*100+'%');
+		$rightPro.css('width', (parseFloat($rightPro.attr('data-amout'))/amonut)*100+'%');
+	}
 }
 setProgress();
 $typeBtn.on('click', function(event) {
@@ -44,7 +46,7 @@ $typeBtn.on('click', function(event) {
 						$self.removeClass('active');
 					},3000);
 	        	}else{
-	        		layer.msg('您已支持'+data=='SWEET'?'甜':'咸'+'粽子了哦');
+	        		layer.msg('您已支持'+(data=='SWEET'?'甜':'咸')+'粽子了哦');
 	        	}
 	        }
 	    );
