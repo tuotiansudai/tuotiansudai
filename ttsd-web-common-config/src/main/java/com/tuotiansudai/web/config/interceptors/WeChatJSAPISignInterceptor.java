@@ -41,6 +41,10 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
 
         String url = Strings.isNullOrEmpty(queryString) ? requestURL : MessageFormat.format("{0}?{1}", requestURL, queryString);
 
+        if (Environment.PRODUCTION == environment) {
+            url = url.replaceFirst("http", "https");
+        }
+
         modelAndView.addObject("wxConfig", this.sign(url));
     }
 
@@ -67,7 +71,7 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
             String signature = byteToHex(crypt.digest());
 
             logger.info(MessageFormat.format("[WeChat JS API Sign] string1: {0}, signature: {1}", string1, signature));
-            
+
             ret.put("signature", signature);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
