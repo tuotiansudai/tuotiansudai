@@ -62,6 +62,18 @@ public class DragonBoatFestivalService {
     private Date endTime;
 
 
+    private boolean inActivityPeriod() {
+        Date now = new Date();
+        if (now.before(startTime)) {
+            logger.info("[Dragon boat festival] dragon boat activity has not started yet.");
+            return false;
+        } else if (now.after(endTime)) {
+            logger.info("[Dragon boat festival] dragon boat activity is end.");
+            return false;
+        }
+        return true;
+    }
+
     public String getCouponExchangeCode(String loginName) {
         logger.info("[Dragon boat festival] {} is fetching the prize.", loginName);
 
@@ -70,12 +82,7 @@ public class DragonBoatFestivalService {
             return null;
         }
 
-        Date now = new Date();
-        if (now.before(startTime)) {
-            logger.info("[Dragon boat festival] dragon boat activity has not started yet.");
-            return null;
-        } else if (now.after(endTime)) {
-            logger.info("[Dragon boat festival] dragon boat activity is end.");
+        if (!inActivityPeriod()) {
             return null;
         }
 
@@ -125,15 +132,13 @@ public class DragonBoatFestivalService {
         return exchangeCode + ":" + shareUniqueCode;
     }
 
-
-    private void addInviteNewUserCount(String loginName) {
-        logger.info("[Dragon boat festival] add a new user count for user {}", loginName);
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        dragonBoatFestivalMapper.addInviteNewUserCount(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
-    }
-
-
     public boolean sendCouponAfterRegisterOrLogin(String loginName, String shareUniqueCode) {
+
+        if (!inActivityPeriod()) {
+            logger.info("[Dragon Boat Register or Login {}] not in activity period.", loginName);
+            return false;
+        }
+
         String shareUniqueKey = MessageFormat.format(DRAGON_BOAT_SHARE_UNIQUE_CODE, shareUniqueCode);
 
         String couponFetchKey = MessageFormat.format(DRAGON_BOAT_SHARE_COUPON_FETCH, shareUniqueCode, loginName);
@@ -151,6 +156,11 @@ public class DragonBoatFestivalService {
     }
 
     public void afterNewUserRegister(String registerUserMobile, String referrer) {
+
+        if (!inActivityPeriod()) {
+            logger.info("[Dragon Boat Register User {}] not in activity period.", registerUserMobile);
+            return;
+        }
 
         // 给分享者增加邀请用户数量
         logger.info("[Dragon Boat Register User {}] add invite-new-user-count for {}", registerUserMobile, referrer);
@@ -170,6 +180,13 @@ public class DragonBoatFestivalService {
         }
     }
 
+    private void addInviteNewUserCount(String loginName) {
+        logger.info("[Dragon boat festival] add a new user count for user {}", loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        dragonBoatFestivalMapper.addInviteNewUserCount(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
+    }
+
+
     private void addInviteExperienceAmount(String loginName, long experience) {
         logger.info("[Dragon boat festival] add invite experience amount for user {}, experience amount:{}", loginName, experience);
         UserModel userModel = userMapper.findByLoginName(loginName);
@@ -179,6 +196,12 @@ public class DragonBoatFestivalService {
     }
 
     public String joinPK(String loginName, String group) {
+
+        if (!inActivityPeriod()) {
+            logger.info("[Dragon Boat][Join PK] not in activity period. loginName: {}", loginName);
+            return "GAME_OVER";
+        }
+
         String joinedGroup = getGroupByLoginName(loginName);
         if (joinedGroup != null) {
             logger.info("[Dragon boat] {} has joined PK, can't join again.", loginName);
@@ -210,7 +233,7 @@ public class DragonBoatFestivalService {
     }
 
     public int getChampagnePrizeLevel(String loginName) {
-        if(StringUtils.isEmpty(loginName)) {
+        if (StringUtils.isEmpty(loginName)) {
             return 0; //若没有登录，则返回0
         }
         DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName(loginName);
