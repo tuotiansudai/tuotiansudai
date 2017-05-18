@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,9 +27,8 @@ public class DragonBoatFestivalMapperTest {
         dragonBoatFestivalModel.setPkGroup("SWEET");
         dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals("SWEET", model.getPkGroup());
     }
 
@@ -38,14 +36,13 @@ public class DragonBoatFestivalMapperTest {
     public void shouldInsertOrAddTotalInvestAmount() {
         dragonBoatFestivalMapper.addTotalInvestAmount("aa", "aa", "19877778888", 10000L);
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals(10000, model.getTotalInvestAmount());
 
         dragonBoatFestivalMapper.addTotalInvestAmount("aa", "aa", "19877778888", 10000L);
-        List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertEquals(20000, list2.get(0).getTotalInvestAmount());
+        DragonBoatFestivalModel model2 = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertEquals(20000, model2.getTotalInvestAmount());
     }
 
     @Test
@@ -56,9 +53,8 @@ public class DragonBoatFestivalMapperTest {
 
         dragonBoatFestivalMapper.addPKInvestAmount("aa", 10000L);
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals(10000, model.getPkInvestAmount());
     }
 
@@ -68,14 +64,13 @@ public class DragonBoatFestivalMapperTest {
         dragonBoatFestivalModel.setInviteExperienceAmount(10000L);
         dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals(10000, model.getInviteExperienceAmount());
 
         dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
-        List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertEquals(20000, list2.get(0).getInviteExperienceAmount());
+        DragonBoatFestivalModel model2 = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertEquals(20000, model2.getInviteExperienceAmount());
     }
 
     @Test
@@ -86,9 +81,8 @@ public class DragonBoatFestivalMapperTest {
 
         dragonBoatFestivalMapper.setPKExperienceAmount("aa", 10000L);
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals(10000, model.getPkExperienceAmount());
     }
 
@@ -96,28 +90,26 @@ public class DragonBoatFestivalMapperTest {
     public void shouldInsertOrAddInviteNewUserCount() {
         dragonBoatFestivalMapper.addInviteNewUserCount("aa", "aa", "18611110000");
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals(1, model.getInviteNewUserCount());
 
         dragonBoatFestivalMapper.addInviteNewUserCount("aa", "aa", "18611110000");
-        List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertEquals(2, list2.get(0).getInviteNewUserCount());
+        DragonBoatFestivalModel model2 = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertEquals(2, model2.getInviteNewUserCount());
     }
 
     @Test
     public void shouldInsertOrAddInviteOldUserCount() {
         dragonBoatFestivalMapper.addInviteOldUserCount("aa", "aa", "18611110000");
 
-        List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertNotNull(list);
-        DragonBoatFestivalModel model = list.get(0);
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertNotNull(model);
         assertEquals(1, model.getInviteOldUserCount());
 
         dragonBoatFestivalMapper.addInviteOldUserCount("aa", "aa", "18611110000");
-        List<DragonBoatFestivalModel> list2 = dragonBoatFestivalMapper.getDragonBoatFestivalList(0, 10);
-        assertEquals(2, list2.get(0).getInviteOldUserCount());
+        DragonBoatFestivalModel model2 = dragonBoatFestivalMapper.findByLoginName("aa");
+        assertEquals(2, model2.getInviteOldUserCount());
     }
 
 }
