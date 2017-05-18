@@ -1,9 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
-
-<#assign jsName = 'dragon_boat' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
+<#import "../macro/global.ftl" as global>
 
 <@global.main pageCss="${css.dragon_boat}" pageJavascript="${js.dragon_boat}" activeNav="" activeLeftNav="" title="端午节活动_活动中心_拓天速贷" keywords="拓天速贷,端午节活动,粽子节活动,体验金奖励,加息券奖励" description="拓天速贷粽子节活动,使用微信打卡,邀请好友可获得5000元体验金奖励，投资端午专享标可获得投资额等额体验金奖励和香槟塔中红包,加息券,实物大奖.">
 <div class="dragon-boat-container" id="dragonBoatContainer">
@@ -36,18 +31,18 @@
 					<span class="fr right-pro"></span>
 				</div>
 				<div class="loan-item">
-					<span class="fl">0.00元</span>
-					<span class="fr">0.00元</span>
+					<span class="fl">${sweetAmount}元</span>
+					<span class="fr">${saltyAmount}元</span>
 				</div>
 				<div class="type-item">
-					<div class="fl type-btn type-left">
+					<div class="fl type-btn type-left" data-group="SWEET">
 						<span class="type-name">支持甜粽子</span>
-						<span>(<strong class="person-num">0</strong>人)</span>
+						<span>(<strong class="person-num">${sweetSupportCount}</strong>人)</span>
 						<i class="add-icon">+1</i>
 					</div>
-					<div class="fr type-btn type-right">
+					<div class="fr type-btn type-right" data-group="SALTY">
 						<span class="type-name">支持咸粽子</span>
-						<span>(<strong class="person-num">0</strong>人)</span>
+						<span>(<strong class="person-num">${saltySupportCount}</strong>人)</span>
 						<i class="add-icon">+1</i>
 					</div>
 				</div>
@@ -70,27 +65,27 @@
 			<ul class="floor-item tc">
 				<li>
 					<p class="floor-img floor-five">
-						<span class="floor-loan"><strong>60万</strong></span>
+						<span class="floor-loan <#if champagnePrizeLevel==5>active</#if>"><strong>60万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-four">
-						<span class="floor-loan"><strong>30万</strong></span>
+						<span class="floor-loan <#if champagnePrizeLevel==4>active</#if>"><strong>30万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-three">
-						<span class="floor-loan"><strong>12万</strong></span>
+						<span class="floor-loan <#if champagnePrizeLevel==3>active</#if>"><strong>12万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-two">
-						<span class="floor-loan"><strong>6万</strong></span>
+						<span class="floor-loan <#if champagnePrizeLevel==2>active</#if>"><strong>6万</strong></span>
 					</p>
 				</li>
 				<li>
 					<p class="floor-img floor-one">
-						<span class="floor-loan active"><strong>5千</strong></span>
+						<span class="floor-loan <#if champagnePrizeLevel==1>active</#if>"><strong>5千</strong></span>
 					</p>
 				</li>
 			</ul>
@@ -108,4 +103,5 @@
 		</dl>
 	</div>
 </div>
+<#include "../module/login-tip.ftl" />
 </@global.main>
