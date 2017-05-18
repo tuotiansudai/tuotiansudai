@@ -10,8 +10,18 @@ let $dragonBoatContainer=$('#dragonBoatContainer'),
 $dragonBoatContainer.find('.top-item .media-pc').attr('src',topImg).siblings('.media-phone').attr('src',topImgphone);
 
 
+
 let $typeBtn=$('.type-btn',$dragonBoatContainer);
 
+function setProgress(){
+	let $progress=$('.progress-item',$dragonBoatContainer),
+		$leftPro=$progress.find('.left-pro'),
+		$rightPro=$progress.find('.right-pro'),
+		amonut=parseFloat($leftPro.attr('data-amout'))+parseFloat($rightPro.attr('data-amout'));
+	$leftPro.css('width', (parseFloat($leftPro.attr('data-amout'))/amonut)*100+'%');
+	$rightPro.css('width', (parseFloat($rightPro.attr('data-amout'))/amonut)*100+'%');
+}
+setProgress();
 $typeBtn.on('click', function(event) {
 	event.preventDefault();
 	let $self=$(this),

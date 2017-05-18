@@ -27,12 +27,12 @@
 			</h3>
 			<div class="compare-item">
 				<div class="progress-item">
-					<span class="fl left-pro"></span>
-					<span class="fr right-pro"></span>
+					<span class="fl left-pro" data-amout='${sweetAmount}'></span>
+					<span class="fr right-pro" data-amout='${saltyAmount}'></span>
 				</div>
 				<div class="loan-item">
-					<span class="fl">${sweetAmount}元</span>
-					<span class="fr">${saltyAmount}元</span>
+					<span class="fl">${(sweetAmount/100)?string('0.00')}元</span>
+					<span class="fr">${(saltyAmount/100)?string('0.00')}元</span>
 				</div>
 				<div class="type-item">
 					<div class="fl type-btn type-left" data-group="SWEET">
