@@ -178,10 +178,11 @@ public class DragonBoatFestivalService {
         dragonBoatFestivalMapper.addInviteExperienceAmount(dragonBoatFestivalModel);
     }
 
-    public boolean joinPK(String loginName, String group) {
-        if (getGroupByLoginName(loginName) != null) {
+    public String joinPK(String loginName, String group) {
+        String joinedGroup = getGroupByLoginName(loginName);
+        if (joinedGroup != null) {
             logger.info("[Dragon boat] {} has joined PK, can't join again.", loginName);
-            return false; // 用户已经选择过派别了，不能再次选择
+            return joinedGroup; // 用户已经选择过派别了，不能再次选择
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
         DragonBoatFestivalModel dragonBoatFestivalModel = new DragonBoatFestivalModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile());
@@ -189,10 +190,13 @@ public class DragonBoatFestivalService {
 
         logger.info("[Dragon boat] {} is joining {} group.", loginName, group);
         dragonBoatFestivalMapper.setPKGroup(dragonBoatFestivalModel);
-        return true;
+        return "SUCCESS";
     }
 
     public String getGroupByLoginName(String loginName) {
+        if (StringUtils.isEmpty(loginName)) {
+            return null; // 没有登录，返回null
+        }
         DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName(loginName);
         return model == null ? null : model.getPkGroup();
     }
@@ -206,6 +210,9 @@ public class DragonBoatFestivalService {
     }
 
     public int getChampagnePrizeLevel(String loginName) {
+        if(StringUtils.isEmpty(loginName)) {
+            return 0; //若没有登录，则返回0
+        }
         DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName(loginName);
         long investAmount = model.getTotalInvestAmount();
         int level = 0;

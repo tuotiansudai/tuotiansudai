@@ -151,7 +151,7 @@ public class DragonBoatFestivalController {
         int champagnePrizeLevel = dragonBoatFestivalService.getChampagnePrizeLevel(loginName);
 
         ModelAndView mav = new ModelAndView("/activities/dragon-boat");
-        mav.addObject("supportGroup", supportGroup);
+        mav.addObject("supportGroup", supportGroup); // 如果没有登录或者没有选择过阵营，则为null
         mav.addObject("sweetAmount", sweetAmount);
         mav.addObject("saltyAmount", saltyAmount);
         mav.addObject("sweetSupportCount", sweetSupportCount);
@@ -160,10 +160,10 @@ public class DragonBoatFestivalController {
         return mav;
     }
 
-    // 加入甜/咸粽派 PK
+    // 加入甜/咸粽派 PK，若已经选择过阵营，则返回已经加入的阵营名（"SWEET", "SALTY"），否则返回"SUCCESS"
     @RequestMapping(value = "/joinPK", method = RequestMethod.POST)
     @ResponseBody
-    public boolean joinPK(@RequestParam(value = "group") String group) {
+    public String joinPK(@RequestParam(value = "group") String group) {
         String loginName = LoginUserInfo.getLoginName();
         return dragonBoatFestivalService.joinPK(loginName, group);
     }
