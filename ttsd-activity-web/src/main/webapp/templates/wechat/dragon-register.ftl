@@ -5,7 +5,7 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="register-form-container">
         <h3 class="title-item">注册完成后现金红包会直接放到您的账户中哦~</h3>
-        <form action="/activity/wechat/dragon/register" method="post" class="register-item" id="registerForm">
+        <form action="/activity/dragon/wechat/register" method="post" class="register-item" id="registerForm">
             <div class="model-item">
                 <input type="text" name="mobile" value="" tabindex="1"  class="int-item" maxlength="11" placeholder="请输入您的手机号" validate/>
             </div>
@@ -25,7 +25,7 @@
             </div>
             
             <div class="model-item text-model">
-                <a  href="/activity/wechat/dragon/toLogin?sharerUnique=${sharerUnique!}" class="fr login-link ">登录</a>
+                <a  href="/activity/dragon/wechat/toLogin?sharerUnique=${sharerUnique!}" class="fr login-link ">登录</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>
@@ -35,7 +35,7 @@
                 <input type="hidden" name="referrer" value="${sharer!}">
                 <input type="hidden" name="unique" value="${unique!}">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/wechat/dragon/fetchCoupon?unique=${unique}">
+                <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/dragon/wechat/fetchCoupon?unique=${unique}">
             </div>
 
             <div class="model-item text-model tc">
