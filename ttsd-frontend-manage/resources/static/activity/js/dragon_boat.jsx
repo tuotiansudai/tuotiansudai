@@ -13,17 +13,28 @@ let $typeBtn=$('.type-btn',$dragonBoatContainer);
 
 $typeBtn.on('click', function(event) {
 	event.preventDefault();
-	let $self=$(this);
+	let $self=$(this),
+		group=$self.attr('data-group');
 
-	if(!$self.hasClass('disabled')){
-		$self.addClass('active disabled').siblings().addClass('disabled');
-		$self.find('.person-num').text(function(el,num){
-			return parseInt(num)+1
-		});
-		setTimeout(function(){
-			$self.removeClass('active');
-		},3000);
-	}else{
-		layer.msg('您已支持甜粽子了哦');
-	}
+
+	commonFun.useAjax({
+            url:"/activity/dragon/joinPK",
+            type:'POST',
+            data:{
+            	'group':group
+            }
+        },function(data) {
+        	if(data=='SUCCESS'){
+				$self.addClass('active').find('.person-num').text(function(el,num){
+					return parseInt(num)+1
+				});
+				setTimeout(function(){
+					$self.removeClass('active');
+				},3000);
+        	}else{
+        		layer.msg('您已支持'+data=='SWEET'?'甜':'咸'+'粽子了哦');
+        	}
+        }
+    );
+	
 });
