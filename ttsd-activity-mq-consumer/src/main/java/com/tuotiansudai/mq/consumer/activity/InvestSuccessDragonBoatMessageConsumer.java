@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.consumer.activity;
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.mapper.DragonBoatFestivalMapper;
 import com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -29,6 +30,9 @@ public class InvestSuccessDragonBoatMessageConsumer implements MessageConsumer {
     public MessageQueue queue() {
         return MessageQueue.InvestSuccess_DragonBoat;
     }
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.dragon.boat.startTime}\")}")
     private Date startTime;
@@ -59,9 +63,13 @@ public class InvestSuccessDragonBoatMessageConsumer implements MessageConsumer {
             String mobile = investSuccessMessage.getUserInfo().getMobile();
             long investAmount = investSuccessMessage.getInvestInfo().getAmount();
 
+            DragonBoatFestivalModel dbfModel = dragonBoatFestivalMapper.findByLoginName(loginName);
+
+            // 发放香槟塔优惠券
+            sendChampagnePrize(loginName, dbfModel.getTotalInvestAmount(), investAmount);
+
             dragonBoatFestivalMapper.addTotalInvestAmount(loginName, userName, mobile, investAmount);
 
-            DragonBoatFestivalModel dbfModel = dragonBoatFestivalMapper.findByLoginName(loginName);
             if (dbfModel != null && StringUtils.isNotEmpty(dbfModel.getPkGroup())) {
                 logger.info("[MQ] dragon PK, add money for group {}, investor:{}, money:{}", dbfModel.getPkGroup(), loginName, investAmount);
                 dragonBoatFestivalMapper.addPKInvestAmount(loginName, investAmount);
@@ -83,4 +91,45 @@ public class InvestSuccessDragonBoatMessageConsumer implements MessageConsumer {
             return true;
         }
     }
+
+    // 根据活动期间内已有投资额和本次投资额，即时发放香槟塔优惠券
+    private void sendChampagnePrize(String loginName, long amountBefore, long investAmount) {
+        long amountAfter = amountBefore + investAmount;
+
+        // 判断本次投资带来的奖励
+        if (amountBefore < 500000 && 500000 <= amountAfter) {
+            sendPrize5Coupon(loginName);
+        }
+        if (amountBefore < 6000000 && 6000000 <= amountAfter) {
+            sendPrize4Coupon(loginName);
+        }
+        if (amountBefore < 12000000 && 12000000 <= amountAfter) {
+            sendPrize3Coupon(loginName);
+        }
+    }
+
+
+    private void sendPrize5Coupon(String loginName) {
+        // 422~426
+        logger.info("[MQ][dragon boat end] send champagne prize level 5 for {}.", loginName);
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":422");
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":423");
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":424");
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":425");
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":426");
+    }
+
+    private void sendPrize4Coupon(String loginName) {
+        // 427~428
+        logger.info("[MQ][dragon boat end] send champagne prize level 4 for {}.", loginName);
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":427");
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":428");
+    }
+
+    private void sendPrize3Coupon(String loginName) {
+        // 429
+        logger.info("[MQ][dragon boat end] send champagne prize level 3 for {}.", loginName);
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":429");
+    }
+
 }

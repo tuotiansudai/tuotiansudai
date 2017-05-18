@@ -43,9 +43,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.DragonBoatSendPKPrize.name().equalsIgnoreCase(schedulerName)) {
             createDragonBoatSendPKPrizeJob();
         }
-        if (JobType.DragonBoatSendChampagnePrize.name().equalsIgnoreCase(schedulerName)) {
-            createDragonBoatSendChampagnePrizeJob();
-        }
     }
 
     @Override
@@ -58,22 +55,12 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
                     .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
                     .replaceExistingJob(true)
-                    .runOnceAt(DragonBoatPKSendExperienceJob.getJobExecuteTime()).submit();
+                    .runOnceAt(DragonBoatPKSendExperienceJob.endTime).submit();
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
 
-    private void createDragonBoatSendChampagnePrizeJob() {
-        try {
-            jobManager.newJob(JobType.DragonBoatSendChampagnePrize, DragonBoatChampagneSendCouponJob.class)
-                    .withIdentity(JobType.DragonBoatSendChampagnePrize.name(), JobType.DragonBoatSendChampagnePrize.name())
-                    .replaceExistingJob(true)
-                    .runOnceAt(DragonBoatChampagneSendCouponJob.getJobExecuteTime()).submit();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-    }
 
     private void createFirstRedEnvelopSplitJob() {
         try {

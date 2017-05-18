@@ -3,7 +3,7 @@
 <@global.main pageCss="${css.dragon_share}" pageJavascript="${js.dragon_share}"  title="助力好友抢红包" >
 
 <div class="share-coupon-container" id="shareCoupon">
-    <h3 class="title-item"><#if exchangeCode!=null>恭喜您获得了一个优惠券兑换码<#else>活动暂未开始</#if></h3>
+    <h3 class="title-item"><#if exchangeCode??>恭喜您获得了一个优惠券兑换码<#else>活动暂未开始</#if></h3>
     <div class="copy-item">
     	<input type="text" class="copy-int" value="${exchangeCode!}" readonly id="clipboardText">
     	<span class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#clipboardText">复制兑换码</span>
