@@ -214,7 +214,7 @@ public class DragonBoatFestivalService {
             return 0; //若没有登录，则返回0
         }
         DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName(loginName);
-        long investAmount = model.getTotalInvestAmount();
+        long investAmount = model == null ? 0 : model.getTotalInvestAmount();
         int level = 0;
         if (investAmount >= 60000000) {
             level = 5;

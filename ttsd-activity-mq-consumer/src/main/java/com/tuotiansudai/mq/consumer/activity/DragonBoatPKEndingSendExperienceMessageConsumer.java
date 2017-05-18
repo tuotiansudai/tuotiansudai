@@ -37,10 +37,10 @@ public class DragonBoatPKEndingSendExperienceMessageConsumer implements MessageC
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
         // 获取甜粽和咸粽累计投资金额，判断谁赢了
-        long sweetInvestAmount = dragonBoatFestivalMapper.getGroupInvestAmount("SWEET");
+        long sweetInvestAmount = dragonBoatFestivalMapper.getGroupPKInvestAmount("SWEET");
         logger.info("[MQ] dragon boat activity ended. sweet invest amount:{}", sweetInvestAmount);
 
-        long saltyInvestAmount = dragonBoatFestivalMapper.getGroupInvestAmount("SALTY");
+        long saltyInvestAmount = dragonBoatFestivalMapper.getGroupPKInvestAmount("SALTY");
         logger.info("[MQ] dragon boat activity ended. salty invest amount:{}", saltyInvestAmount);
 
         boolean sweetWin = sweetInvestAmount > saltyInvestAmount;

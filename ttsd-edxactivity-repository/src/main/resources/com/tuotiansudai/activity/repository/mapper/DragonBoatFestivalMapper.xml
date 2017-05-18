@@ -82,11 +82,11 @@
     </select>
 
     <select id="getGroupPKInvestAmount" parameterType="map" resultType="long">
-        SELECT sum(pk_invest_amount) FROM dragon_boat_festival where `group` = #{group}
+        SELECT IFNULL(sum(pk_invest_amount),0) FROM dragon_boat_festival where `pk_group` = #{group}
     </select>
 
     <select id="getGroupSupportCount" parameterType="map" resultType="long">
-        SELECT count(1) FROM dragon_boat_festival where `group` = #{group}
+        SELECT count(1) FROM dragon_boat_festival where `pk_group` = #{group}
     </select>
 
 </mapper>
