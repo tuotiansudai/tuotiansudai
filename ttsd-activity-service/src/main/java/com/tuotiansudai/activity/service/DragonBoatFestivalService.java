@@ -62,7 +62,7 @@ public class DragonBoatFestivalService {
     private Date endTime;
 
 
-    private boolean inActivityPeriod() {
+    public boolean inActivityPeriod() {
         Date now = new Date();
         if (now.before(startTime)) {
             logger.info("[Dragon boat festival] dragon boat activity has not started yet.");

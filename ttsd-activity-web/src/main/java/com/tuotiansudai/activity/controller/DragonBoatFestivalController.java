@@ -45,6 +45,7 @@ public class DragonBoatFestivalController {
         String unique = resStr == null ? null : resStr.split(":")[1];
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-share");
+        mav.addObject("activityEnd", !dragonBoatFestivalService.inActivityPeriod());
         mav.addObject("exchangeCode", exchangeCode); // null 表示活动未开始或已结束，或者用户未登录
         mav.addObject("loginName", loginName);
         mav.addObject("unique", unique);
@@ -60,6 +61,7 @@ public class DragonBoatFestivalController {
         ModelAndView mav = new ModelAndView("/wechat/dragon-invite");
         mav.addObject("loginName", loginName);
         mav.addObject("sharerUnique", sharerUnique);
+        mav.addObject("activityEnd", !dragonBoatFestivalService.inActivityPeriod());
         return mav;
     }
 

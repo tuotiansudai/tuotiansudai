@@ -37,18 +37,24 @@ $typeBtn.on('click', function(event) {
 	            data:{
 	            	'group':group
 	            }
-	        },function(data) {
-	        	if(data=='SUCCESS'){
-					$self.addClass('active').find('.person-num').text(function(el,num){
-						return parseInt(num)+1
-					});
-					setTimeout(function(){
-						$self.removeClass('active');
-					},3000);
-	        	}else{
-	        		layer.msg('您已支持'+(data=='SWEET'?'甜':'咸')+'粽子了哦');
-	        	}
-	        }
+	        }, function (data) {
+                if (data == 'SUCCESS') {
+                    $self.addClass('active').find('.person-num').text(function (el, num) {
+                        return parseInt(num) + 1
+                    });
+                    setTimeout(function () {
+                        $self.removeClass('active');
+                    }, 3000);
+                } else if (data == 'SWEET') {
+                    layer.msg('您已支持甜粽子了哦');
+                } else if (data == 'SALTY') {
+                    layer.msg('您已支持咸粽子了哦');
+                } else if (data == 'GAME_OVER') {
+                    layer.msg('活动已结束');
+                } else {
+                    console.log(data);
+                }
+            }
 	    );
     })
     .fail(function() {

@@ -9,8 +9,16 @@ $redBag.attr('src',redBag);
 
 
 
+
 $('#takeRed',$wechatInvite).on('click', function(event) {
 	event.preventDefault();
-	$('.container-item',$wechatInvite).removeClass('active');
-	$('.red-detail-container',$wechatInvite).addClass('active');
+	let actorTime=$(this).attr('data-time');
+	if(actorTime=='true'){
+		layer.msg('活动已结束！');
+	}else{
+        $('.container-item',$wechatInvite).removeClass('active');
+        $('.red-detail-container',$wechatInvite).addClass('active');
+	}
 });
+
+

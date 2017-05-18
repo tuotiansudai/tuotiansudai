@@ -5,9 +5,9 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="take-red-container container-item active">
         <div class="take-item">
-            <h3 class="title-item">我送你一个现金红包，抓紧领取吧！</h3>
+            <h3 class="title-item"><#if activityEnd>活动已结束！<#else>我送你一个现金红包，抓紧领取吧！</#if></h3>
             <div class="take-red">
-                <span id="takeRed"></span>
+                <span id="takeRed" data-time="${activityEnd?c}"></span>
             </div>
         </div>
         <dl class="intro-item">
