@@ -81,8 +81,12 @@
         SELECT * FROM dragon_boat_festival where login_name = #{loginName}
     </select>
 
-    <select id="getGroupInvestAmount" parameterType="map" resultType="long">
+    <select id="getGroupPKInvestAmount" parameterType="map" resultType="long">
         SELECT sum(pk_invest_amount) FROM dragon_boat_festival where `group` = #{group}
+    </select>
+
+    <select id="getGroupSupportCount" parameterType="map" resultType="long">
+        SELECT count(1) FROM dragon_boat_festival where `group` = #{group}
     </select>
 
 </mapper>

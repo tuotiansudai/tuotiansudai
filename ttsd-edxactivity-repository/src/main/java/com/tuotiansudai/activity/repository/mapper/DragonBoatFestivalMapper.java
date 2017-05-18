@@ -35,7 +35,9 @@ public interface DragonBoatFestivalMapper {
 
     DragonBoatFestivalModel findByLoginName(@Param(value = "loginName") String loginName);
 
-    long getGroupInvestAmount(@Param(value = "group") String group);
+    long getGroupPKInvestAmount(@Param(value = "group") String group);
+
+    long getGroupSupportCount(@Param(value = "group") String group);
 
     long countDragonBoatFestival();
 
@@ -45,4 +47,5 @@ public interface DragonBoatFestivalMapper {
     List<DragonBoatFestivalModel> getDragonBoatFestivalPKUserList();
 
     List<DragonBoatFestivalModel> getDragonBoatFestivalChampagneList();
+
 }

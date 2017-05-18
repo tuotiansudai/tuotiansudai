@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 
 @Component
-@RequestMapping(value = "/activity/wechat/dragon")
+@RequestMapping(value = "/activity/dragon")
 public class DragonBoatFestivalController {
 
     public static final Logger logger = LoggerFactory.getLogger(DragonBoatFestivalController.class);
@@ -36,7 +35,7 @@ public class DragonBoatFestivalController {
 
 
     // 微信公众号回复打卡页面
-    @RequestMapping(value = "/punchCard", method = RequestMethod.GET)
+    @RequestMapping(value = "/wechat/punchCard", method = RequestMethod.GET)
     public ModelAndView wechatFirstPage() {
         String loginName = LoginUserInfo.getLoginName();
 
@@ -53,7 +52,7 @@ public class DragonBoatFestivalController {
     }
 
     // 分享落地页
-    @RequestMapping(value = "/shareLanding", method = RequestMethod.GET)
+    @RequestMapping(value = "/wechat/shareLanding", method = RequestMethod.GET)
     public ModelAndView shareLanding(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String sharerUnique = request.getParameter("sharerUnique");
@@ -65,7 +64,7 @@ public class DragonBoatFestivalController {
     }
 
     // 登录页面
-    @RequestMapping(value = "/toLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "/wechat/toLogin", method = RequestMethod.GET)
     public ModelAndView toLogin(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String sharerUnique = request.getParameter("sharerUnique");
@@ -80,7 +79,7 @@ public class DragonBoatFestivalController {
     }
 
     // 注册页面
-    @RequestMapping(value = "/toRegister", method = RequestMethod.GET)
+    @RequestMapping(value = "/wechat/toRegister", method = RequestMethod.GET)
     public ModelAndView toRegister(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String sharerUnique = request.getParameter("sharerUnique");
@@ -95,7 +94,7 @@ public class DragonBoatFestivalController {
     }
 
     // 新用户注册
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/wechat/register", method = RequestMethod.POST)
     public ModelAndView userRegister(@RequestParam(value = "referrer", required = false) String referrer,
                                      @RequestParam(value = "captcha", required = false) String captcha,
                                      @RequestParam(value = "password", required = false) String password,
@@ -124,7 +123,7 @@ public class DragonBoatFestivalController {
     }
 
     // 登录或注册后，领取红包
-    @RequestMapping(value = "/fetchCoupon", method = RequestMethod.GET)
+    @RequestMapping(value = "/wechat/fetchCoupon", method = RequestMethod.GET)
     public ModelAndView fetchCoupon(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String unique = request.getParameter("unique");
@@ -143,13 +142,21 @@ public class DragonBoatFestivalController {
     public ModelAndView pcLandingPage() {
         String loginName = LoginUserInfo.getLoginName();
         String supportGroup = dragonBoatFestivalService.getGroupByLoginName(loginName);
-        long sweetAmount = dragonBoatFestivalService.getGroupInvestAmount("SWEET");
-        long saltyAmount = dragonBoatFestivalService.getGroupInvestAmount("SALTY");
+        long sweetAmount = dragonBoatFestivalService.getGroupPKInvestAmount("SWEET");
+        long saltyAmount = dragonBoatFestivalService.getGroupPKInvestAmount("SALTY");
 
-        ModelAndView mav = new ModelAndView("/pc-landing");
+        long sweetSupportCount = dragonBoatFestivalService.getGroupSupportCount("SWEET");
+        long saltySupportCount = dragonBoatFestivalService.getGroupSupportCount("SALTY");
+
+        int champagnePrizeLevel = dragonBoatFestivalService.getChampagnePrizeLevel(loginName);
+
+        ModelAndView mav = new ModelAndView("/activities/dragon-boat");
         mav.addObject("supportGroup", supportGroup);
         mav.addObject("sweetAmount", sweetAmount);
         mav.addObject("saltyAmount", saltyAmount);
+        mav.addObject("sweetSupportCount", sweetSupportCount);
+        mav.addObject("saltySupportCount", saltySupportCount);
+        mav.addObject("champagnePrizeLevel", champagnePrizeLevel);
         return mav;
     }
 

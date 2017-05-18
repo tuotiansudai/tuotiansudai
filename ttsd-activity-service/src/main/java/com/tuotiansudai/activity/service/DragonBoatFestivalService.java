@@ -197,8 +197,30 @@ public class DragonBoatFestivalService {
         return model == null ? null : model.getPkGroup();
     }
 
-    public long getGroupInvestAmount(String group) {
-        return dragonBoatFestivalMapper.getGroupInvestAmount(group);
+    public long getGroupPKInvestAmount(String group) {
+        return dragonBoatFestivalMapper.getGroupPKInvestAmount(group);
+    }
+
+    public long getGroupSupportCount(String group) {
+        return dragonBoatFestivalMapper.getGroupSupportCount(group);
+    }
+
+    public int getChampagnePrizeLevel(String loginName) {
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName(loginName);
+        long investAmount = model.getTotalInvestAmount();
+        int level = 0;
+        if (investAmount >= 60000000) {
+            level = 5;
+        } else if (investAmount >= 30000000) {
+            level = 4;
+        } else if (investAmount >= 12000000) {
+            level = 3;
+        } else if (investAmount >= 6000000) {
+            level = 2;
+        } else if (investAmount >= 500000) {
+            level = 1;
+        }
+        return level;
     }
 
 
