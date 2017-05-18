@@ -25,7 +25,7 @@
             </div>
             
             <div class="model-item text-model">
-                <a  href="/activity/dragon/wechat/toLogin?sharerUnique=${sharerUnique!}" class="fr login-link ">登录</a>
+                <a  href="/activity/dragon/wechat/toLogin?sharerUnique=${sharer!}-${unique!}" class="fr login-link ">登录</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>
