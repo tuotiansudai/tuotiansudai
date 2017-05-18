@@ -103,4 +103,5 @@
 		</dl>
 	</div>
 </div>
+<#include "../module/login-tip.ftl" />
 </@global.main>
