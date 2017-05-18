@@ -5,13 +5,11 @@ import com.tuotiansudai.paywrapper.ghb.message.asyncresponse.AsyncResponseMessag
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-/**
- * 银行发起，只有当成功时候才有返回
- */
 public class ResponseOGW00043 extends ResponseBaseOGW {
 
     @JacksonXmlProperty(localName = "OLDREQSEQNO")
     @Length(max = 56)
+    @NotBlank
     private String oldreqseqno; //原开户交易流水号
 
     @JacksonXmlProperty(localName = "RETURN_STATUS")
@@ -22,6 +20,10 @@ public class ResponseOGW00043 extends ResponseBaseOGW {
     @JacksonXmlProperty(localName = "ERRORMSG")
     @Length(max = 64)
     private String errormsg; //失败才返回
+
+    @JacksonXmlProperty(localName = "RESJNLNO")
+    @Length(max = 64)
+    private String resjnlno; //失败才返回
 
     @JacksonXmlProperty(localName = "TRANSDT")
     @Length(max = 16)

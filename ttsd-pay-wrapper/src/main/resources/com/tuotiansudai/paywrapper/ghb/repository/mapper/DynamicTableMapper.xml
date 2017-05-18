@@ -39,7 +39,7 @@
     </insert>
     
     <select id="findProcessingRequest" resultType="hashmap">
-        select id, channelFlow, created_time, LATEST_RETURN_STATUS, LATEST_RETURN_STATUS_TIME
+        select id, header_channelFlow, created_time, LATEST_RETURN_STATUS, LATEST_RETURN_STATUS_TIME
         from ${tableName}
         where LATEST_RETURN_STATUS is null or LATEST_RETURN_STATUS not in ('S', 'F')
     </select>

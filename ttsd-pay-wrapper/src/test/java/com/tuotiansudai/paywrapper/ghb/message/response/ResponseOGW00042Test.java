@@ -1,6 +1,11 @@
 package com.tuotiansudai.paywrapper.ghb.message.response;
 
+import com.tuotiansudai.util.RedissonManager;
 import org.junit.Test;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -25,5 +30,22 @@ public class ResponseOGW00042Test {
 
         System.out.println(response.getAsyncResponse().generateXML());
         assertThat(response, is(0));
+    }
+
+    @Test()
+    public void name1() throws Exception {
+        RedissonClient redission = RedissonManager.getRedission();
+
+        Thread thread = new Thread(() -> {
+            RLock fairLock = redission.getFairLock("fairLock");
+            try {
+                boolean lock = fairLock.tryLock(2, 5, TimeUnit.SECONDS);
+                System.out.println(lock);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
     }
 }

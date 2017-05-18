@@ -121,14 +121,14 @@ public class GHBMessageRecordService {
     // Request Message Table DDL
 
     private void fillRequestCommonFieldDDLs(List<String> ddls) {
-        ddls.add(generateFieldDDL("channelCode", 12, true));
-        ddls.add(generateFieldDDL("channelFlow", 56, true));
-        ddls.add(generateFieldDDL("channelDate", 16, true));
-        ddls.add(generateFieldDDL("channelTime", 12, true));
-        ddls.add(generateFieldDDL("encryptData", 400, true));
-        ddls.add(generateFieldDDL("TRANSCODE", 16, true));
-        ddls.add(generateFieldDDL("MERCHANTID", 40, true));
-        ddls.add(generateFieldDDL("APPID", 6, true));
+        ddls.add(generateFieldDDL("header_channelCode", 12, true));
+        ddls.add(generateFieldDDL("header_channelFlow", 56, true));
+        ddls.add(generateFieldDDL("header_channelDate", 16, true));
+        ddls.add(generateFieldDDL("header_channelTime", 12, true));
+        ddls.add(generateFieldDDL("header_encryptData", 400, true));
+        ddls.add(generateFieldDDL("BODY_TRANSCODE", 16, true));
+        ddls.add(generateFieldDDL("BODY_MERCHANTID", 40, true));
+        ddls.add(generateFieldDDL("BODY_APPID", 6, true));
     }
 
     // Request Message Insert
@@ -137,31 +137,31 @@ public class GHBMessageRecordService {
         RequestMessageHeader header = data.getHeader();
         RequestMessageBody<T> body = data.getBody();
         T xmlPara = body.getXmlpara();
-        fieldValueCollection.addFieldValue("channelCode", header.getChannelCode());
-        fieldValueCollection.addFieldValue("channelFlow", header.getChannelFlow());
-        fieldValueCollection.addFieldValue("channelDate", header.getChannelDate());
-        fieldValueCollection.addFieldValue("channelTime", header.getChannelTime());
-        fieldValueCollection.addFieldValue("encryptData", header.getEncryptData());
-        fieldValueCollection.addFieldValue("TRANSCODE", body.getTranscode());
-        fieldValueCollection.addFieldValue("MERCHANTID", xmlPara.getMerchantid());
-        fieldValueCollection.addFieldValue("APPID", xmlPara.getAppid());
+        fieldValueCollection.addFieldValue("header_channelCode", header.getChannelCode());
+        fieldValueCollection.addFieldValue("header_channelFlow", header.getChannelFlow());
+        fieldValueCollection.addFieldValue("header_channelDate", header.getChannelDate());
+        fieldValueCollection.addFieldValue("header_channelTime", header.getChannelTime());
+        fieldValueCollection.addFieldValue("header_encryptData", header.getEncryptData());
+        fieldValueCollection.addFieldValue("BODY_TRANSCODE", body.getTranscode());
+        fieldValueCollection.addFieldValue("BODY_MERCHANTID", xmlPara.getMerchantid());
+        fieldValueCollection.addFieldValue("BODY_APPID", xmlPara.getAppid());
     }
 
     // Response Message Table DDL
 
     private void fillResponseCommonFieldDDLs(List<String> ddls) {
-        ddls.add(generateFieldDDL("channelCode", 12, true));
-        ddls.add(generateFieldDDL("transCode", 16, true));
-        ddls.add(generateFieldDDL("channelFlow", 40, true));
-        ddls.add(generateFieldDDL("serverFlow", 40, true));
-        ddls.add(generateFieldDDL("serverDate", 16, true));
-        ddls.add(generateFieldDDL("serverTime", 12, true));
-        ddls.add(generateFieldDDL("encryptData", 400, true));
-        ddls.add(generateFieldDDL("status", 2, true));
-        ddls.add(generateFieldDDL("errorCode", 24, true));
-        ddls.add(generateFieldDDL("errorMsg", 600, true));
-        ddls.add(generateFieldDDL("MERCHANTID", 64, true));
-        ddls.add(generateFieldDDL("BANKID", 12, true));
+        ddls.add(generateFieldDDL("header_channelCode", 12, true));
+        ddls.add(generateFieldDDL("header_transCode", 16, true));
+        ddls.add(generateFieldDDL("header_channelFlow", 40, true));
+        ddls.add(generateFieldDDL("header_serverFlow", 40, true));
+        ddls.add(generateFieldDDL("header_serverDate", 16, true));
+        ddls.add(generateFieldDDL("header_serverTime", 12, true));
+        ddls.add(generateFieldDDL("header_encryptData", 400, true));
+        ddls.add(generateFieldDDL("header_status", 2, true));
+        ddls.add(generateFieldDDL("header_errorCode", 24, true));
+        ddls.add(generateFieldDDL("header_errorMsg", 600, true));
+        ddls.add(generateFieldDDL("BODY_MERCHANTID", 64, true));
+        ddls.add(generateFieldDDL("BODY_BANKID", 12, true));
     }
 
     // Response Message Insert
@@ -169,18 +169,18 @@ public class GHBMessageRecordService {
     private <T extends ResponseBaseOGW> void fillResponseCommonFieldValues(FieldValueCollection fieldValueCollection, ResponseMessageContent<T> data) {
         ResponseMessageHeader header = data.getHeader();
         ResponseMessageBody<T> body = data.getBody();
-        fieldValueCollection.addFieldValue("channelCode", header.getChannelCode());
-        fieldValueCollection.addFieldValue("transCode", header.getTransCode());
-        fieldValueCollection.addFieldValue("channelFlow", header.getChannelFlow());
-        fieldValueCollection.addFieldValue("serverFlow", header.getServerFlow());
-        fieldValueCollection.addFieldValue("serverDate", header.getServerDate());
-        fieldValueCollection.addFieldValue("serverTime", header.getServerTime());
-        fieldValueCollection.addFieldValue("encryptData", header.getEncryptData());
-        fieldValueCollection.addFieldValue("status", header.getStatus());
-        fieldValueCollection.addFieldValue("errorCode", header.getErrorCode());
-        fieldValueCollection.addFieldValue("errorMsg", header.getErrorMsg());
-        fieldValueCollection.addFieldValue("MERCHANTID", body.getMerchantid());
-        fieldValueCollection.addFieldValue("BANKID", body.getBankid());
+        fieldValueCollection.addFieldValue("header_channelCode", header.getChannelCode());
+        fieldValueCollection.addFieldValue("header_transCode", header.getTransCode());
+        fieldValueCollection.addFieldValue("header_channelFlow", header.getChannelFlow());
+        fieldValueCollection.addFieldValue("header_serverFlow", header.getServerFlow());
+        fieldValueCollection.addFieldValue("header_serverDate", header.getServerDate());
+        fieldValueCollection.addFieldValue("header_serverTime", header.getServerTime());
+        fieldValueCollection.addFieldValue("header_encryptData", header.getEncryptData());
+        fieldValueCollection.addFieldValue("header_status", header.getStatus());
+        fieldValueCollection.addFieldValue("header_errorCode", header.getErrorCode());
+        fieldValueCollection.addFieldValue("header_errorMsg", header.getErrorMsg());
+        fieldValueCollection.addFieldValue("BODY_MERCHANTID", body.getMerchantid());
+        fieldValueCollection.addFieldValue("BODY_BANKID", body.getBankid());
     }
 
     // Common Message Table DDL
@@ -216,7 +216,7 @@ public class GHBMessageRecordService {
         if (lengthProperty.max() > FIELD_MAX_LENGTH) {
             throw new AnnotationConfigurationException(String.format("[Length] annotation max value could not be more than %d on field [%s]", FIELD_MAX_LENGTH, field.getName()));
         }
-        return generateFieldDDL(columnName, lengthProperty.max(), field.getAnnotation(NotBlank.class) != null);
+        return generateFieldDDL("BODY_" + columnName, lengthProperty.max(), field.getAnnotation(NotBlank.class) != null);
     }
 
     private String generateFieldDDL(String columnName, int maxLength, boolean notNull) {
@@ -239,7 +239,7 @@ public class GHBMessageRecordService {
                 JacksonXmlProperty xmlProperty = field.getAnnotation(JacksonXmlProperty.class);
                 if (xmlProperty != null && StringUtils.isNotEmpty(xmlProperty.localName())) {
                     field.setAccessible(true);
-                    fieldValueCollection.addFieldValue(xmlProperty.localName(), String.valueOf(field.get(xmlPara)));
+                    fieldValueCollection.addFieldValue("BODY_" + xmlProperty.localName(), String.valueOf(field.get(xmlPara)));
                 }
             }
         } catch (IllegalAccessException | DuplicateKeyException e) {
