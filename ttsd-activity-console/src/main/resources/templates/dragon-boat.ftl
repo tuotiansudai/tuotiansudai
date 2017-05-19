@@ -18,6 +18,9 @@
                     活动期内累计投资金额
                 </th>
                 <th>
+                    PK阵营
+                </th>
+                <th>
                     参与PK金额
                 </th>
                 <th>
@@ -44,16 +47,19 @@
                     ${item.mobile!}
                     </td>
                     <td>
-                    ${item.totalInvestAmount!}
+                    ${(item.totalInvestAmount/100)?string('0.00')}元
                     </td>
                     <td>
-                    ${item.pkInvestAmount!}
+                    <#if item.pkGroup??><#if item.pkGroup=='SWEET'>甜粽派<#elseif item.pkGroup=='SALTY'>咸粽派</#if><#else>-</#if>
                     </td>
                     <td>
-                    ${item.inviteExperienceAmount!}
+                    ${(item.pkInvestAmount/100)?string('0.00')}元
                     </td>
                     <td>
-                    ${item.pkExperienceAmount!}
+                    ${(item.inviteExperienceAmount/100)?string('0.00')}元
+                    </td>
+                    <td>
+                    ${(item.pkExperienceAmount/100)?string('0.00')}元
                     </td>
                     <td>
                     ${item.inviteOldUserCount!}

@@ -45,7 +45,7 @@ public class DragonBoatShareLoginTransferMessageConsumer implements MessageConsu
 
             UserModel userModel = userMapper.findByLoginName(referrer);
             mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLogin,
-                    MessageFormat.format("{}:{}:{}", userModel.getLoginName(), userModel.getUserName(), userModel.getMobile()));
+                    MessageFormat.format("{0}:{1}:{2}", userModel.getLoginName(), userModel.getUserName(), userModel.getMobile()));
         }
         logger.info("[MQ] receive message: {}: {}. done.", this.queue(), message);
     }

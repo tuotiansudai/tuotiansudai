@@ -58,7 +58,7 @@
 				<span>仲夏啤酒节，梦幻香槟塔</span>
 			</h3>
 			<div class="loan-money">
-				<span>我的累积投资金额：<strong>0.00</strong>元</span>
+				<span>我的累积投资金额：<strong>${(investAmount/100)?string('0.00')}</strong>元</span>
 			</div>
 			<ul class="actor-intro">
 				<li>活动期间累计投资额达到5000元，即可参与香槟塔挑战活动，并获得该层香槟塔中所含的全部奖励；</li>

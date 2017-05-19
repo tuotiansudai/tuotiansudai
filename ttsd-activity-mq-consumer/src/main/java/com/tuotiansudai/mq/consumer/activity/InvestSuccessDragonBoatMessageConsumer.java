@@ -66,7 +66,7 @@ public class InvestSuccessDragonBoatMessageConsumer implements MessageConsumer {
             DragonBoatFestivalModel dbfModel = dragonBoatFestivalMapper.findByLoginName(loginName);
 
             // 发放香槟塔优惠券
-            sendChampagnePrize(loginName, dbfModel.getTotalInvestAmount(), investAmount);
+            sendChampagnePrize(loginName, dbfModel == null ? 0 : dbfModel.getTotalInvestAmount(), investAmount);
 
             dragonBoatFestivalMapper.addTotalInvestAmount(loginName, userName, mobile, investAmount);
 

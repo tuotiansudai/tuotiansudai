@@ -232,6 +232,16 @@ public class DragonBoatFestivalService {
         return dragonBoatFestivalMapper.getGroupSupportCount(group);
     }
 
+    public long getActivityInvestAmount(String loginName){
+
+        if (StringUtils.isEmpty(loginName)) {
+            return 0; //若没有登录，则返回0
+        }
+        DragonBoatFestivalModel model = dragonBoatFestivalMapper.findByLoginName(loginName);
+        long investAmount = model == null ? 0 : model.getTotalInvestAmount();
+        return investAmount;
+    }
+
     public int getChampagnePrizeLevel(String loginName) {
         if (StringUtils.isEmpty(loginName)) {
             return 0; //若没有登录，则返回0
