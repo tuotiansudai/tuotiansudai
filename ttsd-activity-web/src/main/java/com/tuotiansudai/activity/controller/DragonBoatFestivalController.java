@@ -152,7 +152,7 @@ public class DragonBoatFestivalController {
 
         int champagnePrizeLevel = dragonBoatFestivalService.getChampagnePrizeLevel(loginName);
 
-        ModelAndView mav = new ModelAndView("/activities/dragon-boat");
+        ModelAndView mav = new ModelAndView("/activities/dragon-boat", "responsive", true);
         mav.addObject("supportGroup", supportGroup); // 如果没有登录或者没有选择过阵营，则为null
         mav.addObject("sweetAmount", sweetAmount);
         mav.addObject("saltyAmount", saltyAmount);
