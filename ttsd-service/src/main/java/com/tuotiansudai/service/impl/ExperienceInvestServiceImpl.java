@@ -70,9 +70,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return dto;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(investDto.getLoginName(), Long.parseLong(investDto.getAmount()), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN));
-
         experienceBillService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()),
                 investDto.getLoginName(),
                 ExperienceBillOperationType.OUT,
