@@ -84,10 +84,8 @@ require.ensure([],function() {
         }]);
 
         let reInputs=$(countForm).find('input:text');
-        reInputs=Array.from(reInputs);
-
-        for (var el of reInputs) {
-            el.addEventListener("blur", function() {
+        for(let i=0,len=reInputs.length; i<len;i++) {
+            reInputs[i].addEventListener("blur", function() {
                 let errorMsg = countValidator.start(this);
                 if(errorMsg) {
                     errorCountDom.text(errorMsg);

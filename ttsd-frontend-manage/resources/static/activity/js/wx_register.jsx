@@ -187,13 +187,14 @@ validator.add(registerForm.captcha, [{
 
 
 let reInputs=$(registerForm).find('input[validate]');
-reInputs=Array.from(reInputs);
-for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup", "focusout", function() {
+
+for(let i=0,len=reInputs.length; i<len;i++) {
+    globalFun.addEventHandler(reInputs[i],"keyup", "focusout", function() {
         let errorMsg=validator.start(this);
         isDisabledButton();
     })
 }
+
 //用来判断获取验证码和立即注册按钮 是否可点击
 //表单验证通过会
 function isDisabledButton() {

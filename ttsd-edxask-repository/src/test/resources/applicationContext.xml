@@ -98,8 +98,6 @@
         <property name="basePackage" value="com.tuotiansudai.ask.repository.mapper"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 </beans>

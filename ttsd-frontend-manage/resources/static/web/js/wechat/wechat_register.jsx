@@ -117,10 +117,8 @@ validator.add(formRegister.captcha, [{
 }]);
 
 let reInputs = $(formRegister).find('input[validate]');
-
-reInputs = Array.from(reInputs);
-for (var el of reInputs) {
-    globalFun.addEventHandler(el,"keyup",function () {
+for(let i=0,len=reInputs.length; i<len;i++) {
+    globalFun.addEventHandler(reInputs[i],"keyup",function () {
         let errorMsg = validator.start(this);
         if (errorMsg) {
             $errorBox.text(errorMsg);

@@ -64,6 +64,4 @@
         <property name="basePackage" value="com.tuotiansudai.log.repository.mapper"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
 </beans>

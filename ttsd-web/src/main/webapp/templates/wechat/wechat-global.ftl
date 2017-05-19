@@ -15,13 +15,25 @@
 </head>
 <body>
     <#nested>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script>
     window.commonStaticServer = '${commonStaticServer}';
+    wx.config({
+        debug: ${(wxConfig.debug)!},
+        appId: '${(wxConfig.appId)!}',
+        timestamp: '${(wxConfig.timestamp)!}',
+        nonceStr: '${(wxConfig.nonceStr)!}',
+        signature: '${(wxConfig.signature)!}',
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline'
+        ]
+    });
 </script>
 
-<script src="${js.jquerydll}" type="text/javascript" defer></script>
-<script src="${js.globalFun_page!}" type="text/javascript" defer></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
+<script src="${js.jquerydll}" type="text/javascript" ></script>
+<script src="${js.globalFun_page!}" type="text/javascript" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
 </body>
 </html>
 </#macro>
