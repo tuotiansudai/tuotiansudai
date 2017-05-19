@@ -17,10 +17,12 @@ function setProgress(){
 	let $progress=$('.progress-item',$dragonBoatContainer),
 		$leftPro=$progress.find('.left-pro'),
 		$rightPro=$progress.find('.right-pro'),
-		amonut=parseFloat($leftPro.attr('data-amout'))+parseFloat($rightPro.attr('data-amout'));
-	if(parseFloat($leftPro.attr('data-amout'))!=0 && parseFloat($rightPro.attr('data-amout'))!=0){
-		$leftPro.css('width', (parseFloat($leftPro.attr('data-amout'))/amonut)*100+'%');
-		$rightPro.css('width', (parseFloat($rightPro.attr('data-amout'))/amonut)*100+'%');
+        leftAmount=$leftPro.attr('data-amout').replace(/,/g,''),
+        rightAmount=$rightPro.attr('data-amout').replace(/,/g,''),
+		amonut=parseFloat(leftAmount)+parseFloat(rightAmount);
+	if(parseFloat(leftAmount)!=0 && parseFloat(rightAmount)!=0){
+		$leftPro.css('width', (parseFloat(leftAmount)/amonut)*100+'%');
+		$rightPro.css('width', (parseFloat(rightAmount)/amonut)*100+'%');
 	}
 }
 setProgress();

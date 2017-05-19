@@ -28,6 +28,10 @@ $shareBtn.on('click', function(event) {
 	$('#shareBox').show();
 });
 
+$('.share-close').on('click',function(event) {
+    event.preventDefault();
+    $('#shareBox').hide();
+});
 
 
 

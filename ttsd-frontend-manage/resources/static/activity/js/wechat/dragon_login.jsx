@@ -10,8 +10,6 @@ let $wechatInvite = $('#wechatInvite'),
 	validator = new ValidatorObj.ValidatorForm(),
     unique=$('#unique').val();
 
-
-
 function refreshCapt() {
     $('#captchaImg').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
 };

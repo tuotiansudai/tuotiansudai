@@ -71,6 +71,23 @@
           }
         }
       }
+      .loan-money{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin-top:20px;
+        span{
+          display: inline-block;
+          padding:5px 10px;
+          border-radius:5px;
+          fonts-zie:16px;
+          color:#d766fc;
+          background:#663077;
+          strong{
+            color:#fcc000;
+          }
+        }
+      }
       .des-item{
         float:left;
         width:100%;
@@ -394,13 +411,15 @@
                 margin-top: -25px;
                 left: -70px;
                 width:55px;
-                height:51px;
-                text-indent:-99999px;
-                background:url('../images/dragon-boat/finish-icon.png') no-repeat center;
+                height:60px;
+                background:url('../images/dragon-boat/floor-finish.png') no-repeat center;
                 background-size:100%;
+                padding-top: 25px;
+                box-sizing: border-box;
                 @media (max-width:700px) {
-                  width:28px;
-                  left:-30px;
+                  width:35px;
+                  left:-35px;
+                  padding-top: 28px;
                 }
               }
               strong{

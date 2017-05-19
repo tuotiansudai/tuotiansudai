@@ -14,14 +14,16 @@
     <div class="intro-container">
     	<p>在此页面复制兑换码后，可在拓天速贷APP<span>“我的-优惠券-兑换码兑换”</span>中粘贴此兑换码进行兑换；</p>
     	<p class="red-item tc">
-    		<img src="" id="redBag" width="60%">
+    		<img src="" id="redBag" width="80%">
     	</p>
     	<p>点击下方按钮分享给好友，将会送给好友一个现金红包，每邀请一个新用户注册领取，或老用户使用成功，即可获得<span>5000元体验金</span>奖励。每人每日最多可邀请5人领取，超出部分的邀请将不再发放体验金奖励。</p>
     </div>
     <div class="share-btn">
         <span id="shareBtn">分享红包给好友</span>
     </div>
-    <div class="share-box" id="shareBox"></div>
+    <div class="share-box" id="shareBox">
+        <span class="share-close">我知道了</span>
+    </div>
 </div>
 <script>
     wx.ready(function () {
