@@ -405,11 +405,14 @@
               padding-top: 25px;
               background:url('../images/dragon-boat/floor-bg.png') no-repeat center;
               background-size:100%;
+              box-sizing: border-box;
               @media (max-width:700px) {
                 font-size:12px;
-                width: 60px;
                 line-height: 18px;
                 top: 15%;
+                width:35px;
+                left:-35px;
+                padding-top: 20px;
               }
               &.active{
                 top: 50%;
@@ -417,7 +420,6 @@
                 left: -70px;
                 background:url('../images/dragon-boat/floor-finish.png') no-repeat center;
                 background-size:100%;
-                box-sizing: border-box;
                 @media (max-width:700px) {
                   width:35px;
                   left:-35px;
