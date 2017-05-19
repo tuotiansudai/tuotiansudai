@@ -59,7 +59,7 @@ public class ExperienceInvestServiceTest {
         assertThat(investRepayModels.get(0).getExpectedFee(), is(0L));
         assertThat(investRepayModels.get(0).getRepayDate().getTime(), is(new DateTime().withTimeAtStartOfDay().plusDays(3).minusSeconds(1).getMillis()));
         UserModel userModel = userMapper.findByLoginName(investor.getLoginName());
-        assertThat(userModel.getExperienceBalance(), is(20000L));
+        assertThat(userModel.getExperienceBalance(), is(10000L));
     }
 
     private InvestDto getFakeInvestDto(UserModel investor, LoanModel experienceLoanModel) {
