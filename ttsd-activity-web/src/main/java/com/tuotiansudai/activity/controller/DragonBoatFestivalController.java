@@ -121,7 +121,7 @@ public class DragonBoatFestivalController {
             dragonBoatFestivalService.afterNewUserRegister(registerUserDto.getMobile(), referrer);
         }
 
-        return new ModelAndView("redirect:/activity/wechat/dragon/fetchCoupon?unique=" + unique);
+        return new ModelAndView("redirect:/activity/dragon/wechat/fetchCoupon?unique=" + unique);
     }
 
     // 登录或注册后，领取红包
