@@ -62,7 +62,7 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         return;
     }
     $('#getCaptchaBtn').prop('disabled', true);
-
+    refreshCapt();
     commonFun.useAjax({
         url: '/register/user/send-register-captcha',
         type: 'POST',
@@ -90,7 +90,7 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         if (!data.status && !data.isRestricted) {
             layer.msg('图形验证码错误');
         }
-        refreshCapt();
+
     });
 });
 

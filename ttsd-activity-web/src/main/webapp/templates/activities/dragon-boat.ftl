@@ -88,7 +88,7 @@
 				</li>
 				<li>
 					<p class="floor-img floor-one">
-						<span class="floor-loan active<#if champagnePrizeLevel==1>active</#if>"><strong>5千</strong></span>
+						<span class="floor-loan <#if champagnePrizeLevel==1>active</#if>"><strong>5千</strong></span>
 					</p>
 				</li>
 			</ul>

@@ -395,11 +395,16 @@
               }
             }
             .floor-loan{
+              width:55px;
+              height:60px;
               position: absolute;
-              top:40%;
-              left:-50px;
+              top:15%;
+              left:-70px;
               font-size:14px;
               color:#53100b;
+              padding-top: 25px;
+              background:url('../images/dragon-boat/floor-bg.png') no-repeat center;
+              background-size:100%;
               @media (max-width:700px) {
                 font-size:12px;
                 width: 60px;
@@ -410,11 +415,8 @@
                 top: 50%;
                 margin-top: -25px;
                 left: -70px;
-                width:55px;
-                height:60px;
                 background:url('../images/dragon-boat/floor-finish.png') no-repeat center;
                 background-size:100%;
-                padding-top: 25px;
                 box-sizing: border-box;
                 @media (max-width:700px) {
                   width:35px;

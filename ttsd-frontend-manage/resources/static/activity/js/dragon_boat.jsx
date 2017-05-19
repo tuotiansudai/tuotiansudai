@@ -1,6 +1,7 @@
 require("activityStyle/dragon_boat.scss");
 let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
+let sourceKind = globalFun.parseURL(location.href);
 
 let $dragonBoatContainer=$('#dragonBoatContainer'),
 	topImg=require('../images/dragon-boat/top-img.jpg'),
@@ -19,11 +20,16 @@ function setProgress(){
 		$rightPro=$progress.find('.right-pro'),
         leftAmount=$leftPro.attr('data-amout').replace(/,/g,''),
         rightAmount=$rightPro.attr('data-amout').replace(/,/g,''),
-		amonut=parseFloat(leftAmount)+parseFloat(rightAmount);
-	if(parseFloat(leftAmount)!=0 && parseFloat(rightAmount)!=0){
-		$leftPro.css('width', (parseFloat(leftAmount)/amonut)*100+'%');
-		$rightPro.css('width', (parseFloat(rightAmount)/amonut)*100+'%');
-	}
+		amonut=parseInt(leftAmount)+parseInt(rightAmount);
+
+	if(parseInt(leftAmount)==0 && parseInt(rightAmount)==0){
+		$leftPro.css('width', '50%');
+		$rightPro.css('width', '50%');
+
+	}else{
+        $leftPro.css('width', (parseInt(leftAmount)/amonut)*100+'%');
+        $rightPro.css('width', (parseInt(rightAmount)/amonut)*100+'%');
+    }
 }
 setProgress();
 $typeBtn.on('click', function(event) {
@@ -60,13 +66,17 @@ $typeBtn.on('click', function(event) {
 	    );
     })
     .fail(function() {
-        //判断是否需要弹框登陆
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: ['auto', 'auto'],
-            content: $('#loginTip')
-        });
+        if (sourceKind.params.source == 'app') {
+            location.href = "app/tuotian/login";
+        }else{
+            //判断是否需要弹框登陆
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
+        }
     });
 });
