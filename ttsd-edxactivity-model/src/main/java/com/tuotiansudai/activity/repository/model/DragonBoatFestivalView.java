@@ -1,52 +1,38 @@
 package com.tuotiansudai.activity.repository.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
+public class DragonBoatFestivalView implements Serializable {
 
-public class DragonBoatFestivalModel implements Serializable {
-    private long id;
-    private String loginName;
     private String userName;
+
     private String mobile;
+
     private long totalInvestAmount;
-    private long pkInvestAmount;
+
     private String pkGroup;
+
+    private long pkInvestAmount;
+
     private long inviteExperienceAmount;
+
     private long pkExperienceAmount;
-    private long inviteNewUserCount;
+
     private long inviteOldUserCount;
-    private Date createdTime;
 
-    public DragonBoatFestivalModel() {
-    }
+    private long inviteNewUserCount;
 
-    public DragonBoatFestivalModel(String loginName, String userName, String mobile) {
-        this.loginName = loginName;
+    public DragonBoatFestivalView(String userName, String mobile, long totalInvestAmount, String pkGroup, long pkInvestAmount,
+                                  long inviteExperienceAmount, long pkExperienceAmount, long inviteOldUserCount, long inviteNewUserCount) {
         this.userName = userName;
         this.mobile = mobile;
-        this.createdTime = new Date();
-    }
-
-    public DragonBoatFestivalView convertToView(){
-        return new DragonBoatFestivalView(userName, mobile, totalInvestAmount, pkGroup, pkInvestAmount,
-                inviteExperienceAmount, pkExperienceAmount, inviteOldUserCount, inviteNewUserCount);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+        this.totalInvestAmount = totalInvestAmount;
+        this.pkGroup = pkGroup;
+        this.pkInvestAmount = pkInvestAmount;
+        this.inviteExperienceAmount = inviteExperienceAmount;
+        this.pkExperienceAmount = pkExperienceAmount;
+        this.inviteOldUserCount = inviteOldUserCount;
+        this.inviteNewUserCount = inviteNewUserCount;
     }
 
     public String getUserName() {
@@ -73,20 +59,20 @@ public class DragonBoatFestivalModel implements Serializable {
         this.totalInvestAmount = totalInvestAmount;
     }
 
-    public long getPkInvestAmount() {
-        return pkInvestAmount;
-    }
-
-    public void setPkInvestAmount(long pkInvestAmount) {
-        this.pkInvestAmount = pkInvestAmount;
-    }
-
     public String getPkGroup() {
         return pkGroup;
     }
 
     public void setPkGroup(String pkGroup) {
         this.pkGroup = pkGroup;
+    }
+
+    public long getPkInvestAmount() {
+        return pkInvestAmount;
+    }
+
+    public void setPkInvestAmount(long pkInvestAmount) {
+        this.pkInvestAmount = pkInvestAmount;
     }
 
     public long getInviteExperienceAmount() {
@@ -105,14 +91,6 @@ public class DragonBoatFestivalModel implements Serializable {
         this.pkExperienceAmount = pkExperienceAmount;
     }
 
-    public long getInviteNewUserCount() {
-        return inviteNewUserCount;
-    }
-
-    public void setInviteNewUserCount(long inviteNewUserCount) {
-        this.inviteNewUserCount = inviteNewUserCount;
-    }
-
     public long getInviteOldUserCount() {
         return inviteOldUserCount;
     }
@@ -121,11 +99,11 @@ public class DragonBoatFestivalModel implements Serializable {
         this.inviteOldUserCount = inviteOldUserCount;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
+    public long getInviteNewUserCount() {
+        return inviteNewUserCount;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public void setInviteNewUserCount(long inviteNewUserCount) {
+        this.inviteNewUserCount = inviteNewUserCount;
     }
 }

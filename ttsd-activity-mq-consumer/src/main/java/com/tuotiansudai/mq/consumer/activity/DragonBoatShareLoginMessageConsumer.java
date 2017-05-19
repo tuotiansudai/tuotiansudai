@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.text.MessageFormat;
-
 
 @Component
 public class DragonBoatShareLoginMessageConsumer implements MessageConsumer {
@@ -38,7 +36,7 @@ public class DragonBoatShareLoginMessageConsumer implements MessageConsumer {
             String mobile = args[2];
 
             // 给分享者增加邀请老用户数量
-            logger.info(MessageFormat.format("[MQ][Dragon boat: invite old user login] add invite old user count for {}.", loginName));
+            logger.info("[MQ][Dragon boat: invite old user login] add invite old user count for {}.", loginName);
             dragonBoatFestivalMapper.addInviteOldUserCount(loginName, userName, mobile);
         }
         logger.info("[MQ] receive message: {}: {}. done.", this.queue(), message);

@@ -19,4 +19,5 @@ public class ActivityConsoleDragonBoatService {
         List<DragonBoatFestivalModel> list = dragonBoatFestivalMapper.getDragonBoatFestivalList((index - 1) * pageSize, pageSize);
         return new BasePaginationDataDto<>(index, pageSize, count, list);
     }
+
 }
