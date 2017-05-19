@@ -75,6 +75,7 @@ isDisabledLogin();
 loginForm.onsubmit = function(event) {
     event.preventDefault();
     $loginSubmit.prop('disabled',true);
+    refreshCapt();
     commonFun.useAjax({
             url:"/login",
             type:'POST',

@@ -74,11 +74,11 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         var countdown = 60,timer;
         if (data.status && !data.isRestricted) {
             timer = setInterval(function () {
-                $('#getCaptchaBtn').prop('disabled', true).text(countdown + '秒后重发');
+                $('#getCaptchaBtn').prop('disabled', true).val(countdown + '秒后重发');
                 countdown--;
                 if (countdown == 0) {
                     clearInterval(timer);
-                    $('#getCaptchaBtn').prop('disabled', false).text('重新发送');
+                    $('#getCaptchaBtn').prop('disabled', false).val('重新发送');
                 }
             }, 1000);
             return;
