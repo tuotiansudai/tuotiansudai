@@ -73,7 +73,7 @@
         </table>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default" style="width: 160px;padding-left: 10px;">
         <a href="/activity-console/activity-manage/export-dragon-boat">请点击此处导出EXCEl</a>
     </div>
 

@@ -1,5 +1,7 @@
 package com.tuotiansudai.activity.repository.model;
 
+import com.tuotiansudai.util.AmountConverter;
+
 import java.io.Serializable;
 
 public class DragonBoatFestivalView implements Serializable {
@@ -8,15 +10,15 @@ public class DragonBoatFestivalView implements Serializable {
 
     private String mobile;
 
-    private long totalInvestAmount;
+    private String totalInvestAmount;
 
     private String pkGroup;
 
-    private long pkInvestAmount;
+    private String pkInvestAmount;
 
-    private long inviteExperienceAmount;
+    private String inviteExperienceAmount;
 
-    private long pkExperienceAmount;
+    private String pkExperienceAmount;
 
     private long inviteOldUserCount;
 
@@ -26,11 +28,11 @@ public class DragonBoatFestivalView implements Serializable {
                                   long inviteExperienceAmount, long pkExperienceAmount, long inviteOldUserCount, long inviteNewUserCount) {
         this.userName = userName;
         this.mobile = mobile;
-        this.totalInvestAmount = totalInvestAmount;
+        this.totalInvestAmount = AmountConverter.convertCentToString(totalInvestAmount);
         this.pkGroup = pkGroup;
-        this.pkInvestAmount = pkInvestAmount;
-        this.inviteExperienceAmount = inviteExperienceAmount;
-        this.pkExperienceAmount = pkExperienceAmount;
+        this.pkInvestAmount = AmountConverter.convertCentToString(pkInvestAmount);
+        this.inviteExperienceAmount = AmountConverter.convertCentToString(inviteExperienceAmount);
+        this.pkExperienceAmount = AmountConverter.convertCentToString(pkExperienceAmount);
         this.inviteOldUserCount = inviteOldUserCount;
         this.inviteNewUserCount = inviteNewUserCount;
     }
@@ -51,11 +53,11 @@ public class DragonBoatFestivalView implements Serializable {
         this.mobile = mobile;
     }
 
-    public long getTotalInvestAmount() {
+    public String getTotalInvestAmount() {
         return totalInvestAmount;
     }
 
-    public void setTotalInvestAmount(long totalInvestAmount) {
+    public void setTotalInvestAmount(String totalInvestAmount) {
         this.totalInvestAmount = totalInvestAmount;
     }
 
@@ -67,27 +69,27 @@ public class DragonBoatFestivalView implements Serializable {
         this.pkGroup = pkGroup;
     }
 
-    public long getPkInvestAmount() {
+    public String getPkInvestAmount() {
         return pkInvestAmount;
     }
 
-    public void setPkInvestAmount(long pkInvestAmount) {
+    public void setPkInvestAmount(String pkInvestAmount) {
         this.pkInvestAmount = pkInvestAmount;
     }
 
-    public long getInviteExperienceAmount() {
+    public String getInviteExperienceAmount() {
         return inviteExperienceAmount;
     }
 
-    public void setInviteExperienceAmount(long inviteExperienceAmount) {
+    public void setInviteExperienceAmount(String inviteExperienceAmount) {
         this.inviteExperienceAmount = inviteExperienceAmount;
     }
 
-    public long getPkExperienceAmount() {
+    public String getPkExperienceAmount() {
         return pkExperienceAmount;
     }
 
-    public void setPkExperienceAmount(long pkExperienceAmount) {
+    public void setPkExperienceAmount(String pkExperienceAmount) {
         this.pkExperienceAmount = pkExperienceAmount;
     }
 
