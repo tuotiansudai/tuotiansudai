@@ -14,7 +14,9 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +50,9 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private ExperienceBillService experienceBillService;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -64,6 +69,12 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         if (!isEnoughExperienceBalance(investDto)) {
             return dto;
         }
+
+        experienceBillService.updateUserExperienceBalanceByLoginName(Long.parseLong(investDto.getAmount()),
+                investDto.getLoginName(),
+                ExperienceBillOperationType.OUT,
+                ExperienceBillBusinessType.INVEST_LOAN,
+                MessageFormat.format(ExperienceBillBusinessType.INVEST_LOAN.getContentTemplate(), investDto.getAmount(), DateTime.now().toDate()));
 
         this.generateInvest(investDto);
         dataDto.setStatus(true);
@@ -84,8 +95,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 1, 0, expectedInterest, 0, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
 
-        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(investDto.getLoginName(), Long.parseLong(investDto.getAmount()), ExperienceBillOperationType.OUT, ExperienceBillBusinessType.INVEST_LOAN));
         return investModel;
     }
 
