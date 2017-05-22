@@ -26,10 +26,10 @@ public class DragonBoatFestivalView implements Serializable {
 
     public DragonBoatFestivalView(String userName, String mobile, long totalInvestAmount, String pkGroup, long pkInvestAmount,
                                   long inviteExperienceAmount, long pkExperienceAmount, long inviteOldUserCount, long inviteNewUserCount) {
-        this.userName = userName;
+        this.userName = userName == null ? "-" : userName;
         this.mobile = mobile;
         this.totalInvestAmount = AmountConverter.convertCentToString(totalInvestAmount);
-        this.pkGroup = pkGroup;
+        this.pkGroup = pkGroup == null ? "-" : pkGroup;
         this.pkInvestAmount = AmountConverter.convertCentToString(pkInvestAmount);
         this.inviteExperienceAmount = AmountConverter.convertCentToString(inviteExperienceAmount);
         this.pkExperienceAmount = AmountConverter.convertCentToString(pkExperienceAmount);
