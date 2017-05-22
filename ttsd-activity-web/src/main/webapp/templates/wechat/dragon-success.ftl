@@ -8,7 +8,7 @@
         <#if hasCoupon == '0'>
             领取成功！
         <#else>
-            今日已领取！
+            您已经领取过这个红包了哦~
         </#if>
         </h3>
         <div class="take-red">
