@@ -53,7 +53,7 @@ public class MQProducerAliyunMNS implements MQProducer {
             } else if (e instanceof ClientException) {
                 e = new AliyunClientException((ClientException) e);
             }
-            logger.error(String.format("[MQ] send message fail, topic: %s, message: '%s'", queue.getQueueName(), message), e);
+            logger.error(String.format("[MQ] send message fail, queue: %s, message: '%s'", queue.getQueueName(), message), e);
         }
     }
 
