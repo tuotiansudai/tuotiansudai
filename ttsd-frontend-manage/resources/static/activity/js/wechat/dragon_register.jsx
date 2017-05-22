@@ -61,7 +61,7 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
     if($this.prop('disabled')) {
         return;
     }
-    $('#getCaptchaBtn').prop('disabled', true);
+    $('#getCaptchaBtn').addClass('hasCount').prop('disabled', true);
 
     commonFun.useAjax({
         url: '/register/user/send-register-captcha',
@@ -75,11 +75,11 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         var countdown = 60,timer;
         if (data.status && !data.isRestricted) {
             timer = setInterval(function () {
-                $('#getCaptchaBtn').prop('disabled', true).val(countdown + '秒后重发');
+                $('#getCaptchaBtn').val(countdown + '秒后重发');
                 countdown--;
                 if (countdown == 0) {
                     clearInterval(timer);
-                    $('#getCaptchaBtn').prop('disabled', false).val('重新发送');
+                    $('#getCaptchaBtn').removeClass('hasCount').prop('disabled', false).val('重新发送');
                 }
             }, 1000);
             return;
@@ -153,7 +153,12 @@ function isDisabledRegister() {
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
     let isDisabledCaptcha = isMobileValid && isPwdValid &&imageCaptchaValid;
     //获取验证码点亮
-    isDisabledCaptcha && $('#getCaptchaBtn').prop('disabled',false);
+	if(!$('#getCaptchaBtn').hasClass('hasCount')){
+        isDisabledCaptcha && $('#getCaptchaBtn').prop('disabled',false);
+	}else{
+        $('#getCaptchaBtn').prop('disabled',true);
+	}
+
     let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid && imageCaptchaValid && $('#agreementRegister').val()=='true';
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 }
