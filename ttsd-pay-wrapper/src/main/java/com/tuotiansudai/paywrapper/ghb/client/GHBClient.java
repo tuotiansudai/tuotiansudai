@@ -36,7 +36,12 @@ public class GHBClient {
     }
 
     public <T extends RequestBaseOGW> BaseDto<PayFormDataDto> generateFormData(RequestMessageContent<T> message) throws PayException {
-        this.ghbMessageRecordService.saveRequestMessage(message);
+        try {
+            this.ghbMessageRecordService.saveRequestMessage(message);
+        } catch (IllegalAccessException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return new BaseDto<>(new PayFormDataDto());
+        }
         PayFormDataDto payFormDataDto = new PayFormDataDto("url",
                 Maps.newHashMap(ImmutableMap.<String, String>builder()
                         .put("transCode", message.getBody().getTranscode())
@@ -47,7 +52,12 @@ public class GHBClient {
     }
 
     public <U extends RequestBaseOGW, V extends ResponseBaseOGW> ResponseMessageContent<V> invoke(RequestMessageContent<U> message) {
-        ghbMessageRecordService.saveRequestMessage(message);
+        try {
+            ghbMessageRecordService.saveRequestMessage(message);
+        } catch (IllegalAccessException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return null;
+        }
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/xml; charset=utf-8"), message.getFullMessage());
         Request request = new Request.Builder()
@@ -63,7 +73,7 @@ public class GHBClient {
                 ghbMessageRecordService.saveResponseMessage(messageResponse);
                 return messageResponse;
             }
-        } catch (IOException e) {
+        } catch (IOException | IllegalAccessException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 

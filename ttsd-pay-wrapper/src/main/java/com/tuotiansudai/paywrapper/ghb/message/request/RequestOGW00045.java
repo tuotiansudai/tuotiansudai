@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.ghb.message.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.ghb.message.response.ResponseBaseOGW;
 import com.tuotiansudai.paywrapper.ghb.message.response.ResponseOGW00045;
 import com.tuotiansudai.paywrapper.ghb.security.enums.RequestType;
@@ -14,7 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * 单笔专属账户充值
  * 由第三方公司发起，跳转到银行官网完成进行该操作。交易提交我行5分钟后，可通过该接口查询银行处理结果。客户在页面流程操作共不可超过20分钟，否则请求超时。
  */
-public class RequestOGW00045 extends RequestBaseOGW implements AsyncRequestBaseOGW  {
+public class RequestOGW00045 extends RequestBaseOGW implements AsyncRequestBaseOGW {
 
     @JsonIgnore
     protected String pcTranscode = "OGW00045";
@@ -49,7 +50,7 @@ public class RequestOGW00045 extends RequestBaseOGW implements AsyncRequestBaseO
     private String acname = ""; //账号户名
 
     @JacksonXmlProperty(localName = "AMOUNT")
-    @Length(max = 30)
+    @Length(max = 32)
     private String amount; //交易金额
 
     @JacksonXmlProperty(localName = "remark")
@@ -61,7 +62,7 @@ public class RequestOGW00045 extends RequestBaseOGW implements AsyncRequestBaseO
     private String returnurl = ""; //返回商户URL 可为空
 
     public RequestOGW00045(Source source, long businessId, String userName, String ghbAccount, long amount) {
-        super(source, businessId);
+        super(source, Lists.newArrayList(Source.ANDROID, Source.IOS, Source.MOBILE).contains(source) ? "OGW00092" : "OGW00045", businessId);
         this.acname = userName;
         this.acno = ghbAccount;
         this.amount = AmountConverter.convertCentToString(amount);

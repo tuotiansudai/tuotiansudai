@@ -16,12 +16,6 @@ public class RequestBaseOGW {
     protected Class<? extends ResponseBaseOGW> responseClass = ResponseBaseOGW.class;
 
     @JsonIgnore
-    protected String pcTranscode;
-
-    @JsonIgnore
-    protected String appTranscode;
-
-    @JsonIgnore
     protected String transcode;
 
     @JsonIgnore
@@ -36,8 +30,8 @@ public class RequestBaseOGW {
     @JacksonXmlProperty(localName = "APPID")
     private String appid = "PC"; //应用标识 PC APP WX
 
-    public RequestBaseOGW(Source source, long businessId) {
-        this.transcode = Lists.newArrayList(Source.ANDROID, Source.IOS, Source.MOBILE).contains(source) ? this.appTranscode : this.pcTranscode;
+    public RequestBaseOGW(Source source, String transcode, long businessId) {
+        this.transcode = transcode;
         this.appid = Lists.newArrayList(Source.ANDROID, Source.IOS, Source.MOBILE).contains(source) ? "APP" : "PC";
         this.businessId = businessId;
     }

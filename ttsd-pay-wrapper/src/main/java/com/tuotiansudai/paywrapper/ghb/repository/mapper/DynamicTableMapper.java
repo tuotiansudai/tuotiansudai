@@ -15,19 +15,17 @@ public interface DynamicTableMapper {
 
     int createTable(
             @Param("tableName") String tableName,
+            @Param("foreignTableName") String foreignTableName,
             @Param("columns") List<String> columns,
-            @Param("indexColumns") List<String> indexColumns
+            @Param("indexColumns") List<String> indexColumns,
+            @Param("foreignKey") boolean foreignKey
     );
 
     int dropTable(
             @Param("tableName") String tableName
     );
 
-    int insert(
-            @Param("tableName") String tableName,
-            @Param("columns") List<String> columns,
-            @Param("values") List<Object> values
-    );
+    int insert(Map<String, Object> map);
 
     List<Map<String, Object>> findProcessingRequest(@Param("tableName") String tableName);
 

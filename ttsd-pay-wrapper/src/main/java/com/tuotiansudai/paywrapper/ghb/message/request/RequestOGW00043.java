@@ -24,7 +24,7 @@ public class RequestOGW00043 extends RequestBaseOGW {
     private String oldreqseqno = ""; //原账户开立开立报文头的"渠道流水号"
 
     public RequestOGW00043(String oldreqseqno) {
-        super(Source.WEB, IdGenerator.generate());
+        super(Source.WEB, "OGW00043", IdGenerator.generate());
         this.oldreqseqno = oldreqseqno;
     }
 }

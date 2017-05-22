@@ -15,6 +15,9 @@
     <update id="createTable" parameterType="map">
         CREATE TABLE ${tableName} (
         `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+        <if test="foreignKey">
+            `parent_id` BIGINT(20) UNSIGNED NOT NULL,
+        </if>
         <foreach collection="columns" item="column" open="" separator="" close="">
             ${column},
         </foreach>
@@ -22,12 +25,15 @@
         <foreach collection="indexColumns" item="indexColumn" open="" separator="" close="">
             , INDEX ( ${indexColumn} )
         </foreach>
+        <if test="foreignKey">
+            , CONSTRAINT FK_${foreignTableName}_PARENT_ID FOREIGN KEY (`parent_id`) REFERENCES ${foreignTableName} (`id`)
+        </if>
         )
         ENGINE = InnoDB
         DEFAULT CHARSET = utf8;
     </update>
 
-    <insert id="insert" parameterType="map">
+    <insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="id">
         insert into ${tableName}
         <foreach collection="columns" item="column" open="(" separator="," close=")">
             ${column}
@@ -37,7 +43,7 @@
             #{value}
         </foreach>
     </insert>
-    
+
     <select id="findProcessingRequest" resultType="hashmap">
         select id, header_channelFlow, created_time, LATEST_RETURN_STATUS, LATEST_RETURN_STATUS_TIME
         from ${tableName}

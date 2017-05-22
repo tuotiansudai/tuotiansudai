@@ -15,15 +15,15 @@ public class ResponseOGW00049 extends ResponseBaseOGW {
     private String acname; //银行户名
 
     @JacksonXmlProperty(localName = "ACCTBAL")
-    @Length(max = 30)
+    @Length(max = 32)
     private String acctbal; //账号余额
 
     @JacksonXmlProperty(localName = "AVAILABLEBAL")
-    @Length(max = 30)
+    @Length(max = 32)
     private String availablebal; //可用余额
 
     @JacksonXmlProperty(localName = "FROZBL")
-    @Length(max = 30)
+    @Length(max = 32)
     private String frozbl; //冻结金额
 
     @JacksonXmlProperty(localName = "EXT_FILED1")
