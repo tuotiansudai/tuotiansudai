@@ -207,11 +207,11 @@ function isDisabledButton() {
     let isDisabledCaptcha = isMobileValid && isPwdValid && isAppCaptchaValid;
 
     //通过获取验证码按钮来判断
-    !isDisabledCaptcha && $('#getCaptchaBtn').prop('disabled',true);
+    $('#getCaptchaBtn').prop('disabled',!isDisabledCaptcha);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
 
-    let isDisabledSubmit= isDisabledCaptcha && captchaValid  && $('#agreementInput').prop('checked');
+    let isDisabledSubmit= isDisabledCaptcha && captchaValid  && $('#agreementInput').val()=='true';
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
