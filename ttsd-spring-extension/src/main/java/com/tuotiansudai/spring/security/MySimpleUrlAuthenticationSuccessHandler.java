@@ -1,12 +1,7 @@
 package com.tuotiansudai.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.spring.MyUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -20,13 +15,7 @@ import java.io.PrintWriter;
 @Component
 public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
-
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -44,14 +33,6 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
             if (writer != null) {
                 writer.close();
             }
-        }
-
-        if (request.getHeader("Referer").indexOf("/dragon/wechat/toLogin") > 0) {
-            logger.info("[Dragon Boat] {} invite an old user {}.", request.getParameter("referrer"), loginDto.getMobile());
-            String referrer = request.getParameter("referrer");
-
-            logger.info("[Dragon Boat] send share login transfer message, referrer:{}, loginName:{}.", referrer, loginDto.getLoginName());
-            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, referrer + ":" + loginDto.getLoginName());
         }
 
         clearAuthenticationAttributes(request);

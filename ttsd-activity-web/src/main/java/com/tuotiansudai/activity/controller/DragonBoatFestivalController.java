@@ -1,7 +1,9 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.service.DragonBoatFestivalService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -32,6 +34,9 @@ public class DragonBoatFestivalController {
 
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
 
     // 微信公众号回复打卡页面
@@ -70,13 +75,10 @@ public class DragonBoatFestivalController {
     public ModelAndView toLogin(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String sharerUnique = request.getParameter("sharerUnique");
-        String sharer = sharerUnique.split("-")[0];
-        String unique = sharerUnique.split("-")[1];
 
         ModelAndView mav = new ModelAndView("/wechat/dragon-login");
         mav.addObject("loginName", loginName);
-        mav.addObject("sharer", sharer);
-        mav.addObject("unique", unique);
+        mav.addObject("sharerUnique", sharerUnique);
         return mav;
     }
 
@@ -121,18 +123,38 @@ public class DragonBoatFestivalController {
             dragonBoatFestivalService.afterNewUserRegister(registerUserDto.getMobile(), referrer);
         }
 
-        return new ModelAndView("redirect:/activity/dragon/wechat/fetchCoupon?unique=" + unique);
+        return new ModelAndView("redirect:/activity/dragon/wechat/fetchCouponAfterRegister?unique=" + unique);
     }
 
-    // 登录或注册后，领取红包
-    @RequestMapping(value = "/wechat/fetchCoupon", method = RequestMethod.GET)
-    public ModelAndView fetchCoupon(HttpServletRequest request) {
+    // 注册后，领取红包
+    @RequestMapping(value = "/wechat/fetchCouponAfterRegister", method = RequestMethod.GET)
+    public ModelAndView fetchCouponAfterRegister(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String unique = request.getParameter("unique");
         ModelAndView mav = new ModelAndView("/wechat/dragon-success");
 
         if (dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique)) {
             mav.addObject("hasCoupon", "0");
+        } else {
+            mav.addObject("hasCoupon", "1");
+        }
+        return mav;
+    }
+
+    // 登录后，领取红包
+    @RequestMapping(value = "/wechat/fetchCouponAfterLogin", method = RequestMethod.GET)
+    public ModelAndView fetchCouponAfterLogin(HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
+        String sharerUnique = request.getParameter("sharerUnique");
+        String sharer = sharerUnique.split("-")[0];
+        String unique = sharerUnique.split("-")[1];
+        ModelAndView mav = new ModelAndView("/wechat/dragon-success");
+
+        if (dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique)) {
+            mav.addObject("hasCoupon", "0");
+            // 领取成功后，给分享者记录邀请老用户领取的数量
+            logger.info("[Dragon Boat] send share login transfer message, referrer:{}, loginName:{}.", sharer, loginName);
+            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, sharer);
         } else {
             mav.addObject("hasCoupon", "1");
         }

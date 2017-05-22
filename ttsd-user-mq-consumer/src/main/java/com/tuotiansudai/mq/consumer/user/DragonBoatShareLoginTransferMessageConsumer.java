@@ -35,8 +35,7 @@ public class DragonBoatShareLoginTransferMessageConsumer implements MessageConsu
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
 
-            String[] args = message.split(":");
-            String referrer = args[0];
+            String referrer = message;
 
             UserModel userModel = userMapper.findByLoginName(referrer);
             mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLogin,

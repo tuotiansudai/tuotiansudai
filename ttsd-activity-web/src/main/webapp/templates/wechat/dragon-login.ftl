@@ -4,7 +4,7 @@
 
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="login-form-container">
-        <input type="hidden" id="unique" value="${unique!}">
+        <input type="hidden" id="sharerUnique" value="${sharerUnique!}">
         <h3 class="title-item">登录完成后现金红包会直接放到您的账户中哦~</h3>
         <form action="/login" method="post" class="login-item" id="loginForm">
             <div class="model-item">
@@ -21,14 +21,13 @@
             </div>
             
             <div class="model-item text-model">
-                <a href="/activity/dragon/wechat/toRegister?sharerUnique=${sharer!}-${unique!}" class="fr login-link">注册</a>
+                <a href="/activity/dragon/wechat/toRegister?sharerUnique=${sharerUnique!}" class="fr login-link">注册</a>
             </div>
             <div class="model-item text-model">
                 <i class="icon-check active"></i>
                 <span class="agree-item">同意拓天速贷<strong class="agree-text">《服务协议》</strong></span>
                 <input type="hidden" name="agreement" class="agree-check" value="true" id="agreementLogin"/>
                 <input type="hidden" name="source" value="WE_CHAT"/>
-                <input type="hidden" name="referrer" value="${sharer!}"/>
             </div>
 
             <div class="model-item text-model tc">

@@ -8,7 +8,7 @@ let $wechatInvite = $('#wechatInvite'),
 	$loginSubmit=$('#loginSubmit'),
 	$changecode=$('.captcha-img',$wechatInvite),
 	validator = new ValidatorObj.ValidatorForm(),
-    unique=$('#unique').val();
+    sharerUnique=$('#sharerUnique').val();
 
 function refreshCapt() {
     $('#captchaImg').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
@@ -84,7 +84,7 @@ loginForm.onsubmit = function(event) {
         refreshCapt();
             $loginSubmit.prop('disabled',false);
             if (data.status) {
-                location.href = "/activity/dragon/wechat/fetchCoupon?unique="+unique;
+                location.href = "/activity/dragon/wechat/fetchCouponAfterLogin?sharerUnique="+sharerUnique;
             } else {
             	layer.msg(data.message);
             }
