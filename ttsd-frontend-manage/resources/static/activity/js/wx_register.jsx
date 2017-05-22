@@ -20,10 +20,6 @@ var $registerForm = $('.register-user-form',$registerFrame),
 
 
 
-var mobileValid=false,
-    passwordValid=false,
-    captchaValid=false;
-
 require.ensure(['publicJs/placeholder'], function(require){
     require('publicJs/placeholder');
     $('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
@@ -76,7 +72,7 @@ $appCaptcha.on('keyup',function(event) {
         $fetchCaptcha.prop('disabled', true);
     }
 });
-
+let captchaValid=false;
 // 获取手机验证码
 $fetchCaptcha.on('touchstart', function (event) {
     var $this=$(this);
@@ -200,20 +196,22 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 function isDisabledButton() {
     let mobile=registerForm.mobile,
         password=registerForm.password,
-        captcha=registerForm.captcha;
+        captcha=registerForm.captcha,
+        imgcaptcha=registerForm.appCaptcha;
 
     //获取验证码点亮
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+    let isAppCaptchaValid=!globalFun.hasClass(imgcaptcha,'error') && imgcaptcha.value;
 
-    let isDisabledCaptcha = isMobileValid && isPwdValid;
+    let isDisabledCaptcha = isMobileValid && isPwdValid && isAppCaptchaValid;
 
     //通过获取验证码按钮来判断
-    !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
+    $('#getCaptchaBtn').prop('disabled',!isDisabledCaptcha);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
 
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementInput').prop('checked');
+    let isDisabledSubmit= isDisabledCaptcha && captchaValid  && $('#agreementInput').val()=='true';
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
