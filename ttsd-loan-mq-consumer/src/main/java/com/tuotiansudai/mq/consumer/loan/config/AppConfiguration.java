@@ -1,13 +1,11 @@
 package com.tuotiansudai.mq.consumer.loan.config;
 
-import com.squareup.okhttp.OkHttpClient;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.quartz.JobStoreBuilder;
 import com.tuotiansudai.quartz.SchedulerBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import redis.clients.jedis.JedisPoolConfig;
 
 import javax.sql.DataSource;
 
@@ -28,11 +26,6 @@ public class AppConfiguration {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
-    public OkHttpClient httpClient() {
-        return new OkHttpClient();
     }
 
     @Bean

@@ -56,8 +56,9 @@ public class WeChatClient {
     }
 
     private WeChatClient() {
-        this.client.setReadTimeout(5, TimeUnit.SECONDS);
         this.client.setConnectTimeout(5, TimeUnit.SECONDS);
+        this.client.setReadTimeout(5, TimeUnit.SECONDS);
+        this.client.setWriteTimeout(5, TimeUnit.SECONDS);
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 

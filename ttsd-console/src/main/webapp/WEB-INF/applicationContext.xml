@@ -287,8 +287,6 @@
         <property name="basePackage" value="com.tuotiansudai.log.repository.mapper"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
