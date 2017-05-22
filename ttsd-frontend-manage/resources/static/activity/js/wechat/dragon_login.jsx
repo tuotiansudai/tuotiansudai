@@ -75,12 +75,13 @@ isDisabledLogin();
 loginForm.onsubmit = function(event) {
     event.preventDefault();
     $loginSubmit.prop('disabled',true);
-    refreshCapt();
+
     commonFun.useAjax({
             url:"/login",
             type:'POST',
             data:$(loginForm).serialize()
         },function(data) {
+        refreshCapt();
             $loginSubmit.prop('disabled',false);
             if (data.status) {
                 location.href = "/activity/dragon/wechat/fetchCoupon?unique="+unique;
