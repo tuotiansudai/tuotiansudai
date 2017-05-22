@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map;
 
 public class SchedulerBuilder {
-    static Logger logger = Logger.getLogger(SchedulerBuilder.class);
+    private final static Logger logger = Logger.getLogger(SchedulerBuilder.class);
 
     private final JobStoreBuilder jobStoreBuilder;
 

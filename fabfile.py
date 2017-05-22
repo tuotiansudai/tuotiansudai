@@ -49,8 +49,6 @@ def mk_war():
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=repay distZip')
     local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
 
