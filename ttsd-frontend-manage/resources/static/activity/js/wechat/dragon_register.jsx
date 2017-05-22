@@ -62,7 +62,7 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         return;
     }
     $('#getCaptchaBtn').prop('disabled', true);
-    refreshCapt();
+
     commonFun.useAjax({
         url: '/register/user/send-register-captcha',
         type: 'POST',
@@ -70,6 +70,7 @@ $('#getCaptchaBtn').on('touchstart', function (event) {
         data: {mobile: registerForm.mobile.value,
 			imageCaptcha: registerForm.imageCaptcha.value}
     },function(response) {
+        refreshCapt();
         var data = response.data;
         var countdown = 60,timer;
         if (data.status && !data.isRestricted) {
