@@ -36,7 +36,7 @@ public class MQProducerAliyunMNS implements MQProducer {
             } else if (e instanceof ClientException) {
                 e = new AliyunClientException((ClientException) e);
             }
-            logger.error("[MQ] publish message fail", e);
+            logger.error(String.format("[MQ] publish message fail, topic: %s, message: '%s'", topic.getTopicName(), message), e);
         }
     }
 
@@ -53,7 +53,7 @@ public class MQProducerAliyunMNS implements MQProducer {
             } else if (e instanceof ClientException) {
                 e = new AliyunClientException((ClientException) e);
             }
-            logger.error("[MQ] send message fail", e);
+            logger.error(String.format("[MQ] send message fail, queue: %s, message: '%s'", queue.getQueueName(), message), e);
         }
     }
 
