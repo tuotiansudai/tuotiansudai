@@ -72,7 +72,7 @@ $appCaptcha.on('keyup',function(event) {
         $fetchCaptcha.prop('disabled', true);
     }
 });
-
+let captchaValid=false;
 // 获取手机验证码
 $fetchCaptcha.on('touchstart', function (event) {
     var $this=$(this);
