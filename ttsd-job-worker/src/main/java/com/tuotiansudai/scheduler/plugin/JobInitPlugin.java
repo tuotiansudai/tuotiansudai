@@ -4,6 +4,8 @@ import com.tuotiansudai.job.*;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.spi.ClassLoadHelper;
@@ -44,7 +46,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
                     .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
                     .replaceExistingJob(true)
-                    .runOnceAt(DragonBoatPKSendExperienceJob.endTime).submit();
+                    .runOnceAt(DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
