@@ -16,7 +16,7 @@ public class DragonBoatPKSendExperienceJob implements Job {
 
     private static final Logger logger = LoggerFactory.getLogger(DragonBoatPKSendExperienceJob.class);
 
-    public static String endTime = "2017-05-23 19:20:00";
+    public static String endTime = "2017-05-24 12:00:00";
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
