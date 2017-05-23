@@ -42,19 +42,28 @@ public class Worker {
 
     public void start() {
         logger.info("starting jobs");
+
         String[] schedulerNames = JobConfig.schedulerNames.trim().split("\\s*,\\s*");
+
         ThreadPool threadPool = ThreadPoolBuilder.buildThreadPool(JobConfig.threadCount, JobConfig.threadPriority);
+
         for (String schedulerName : schedulerNames) {
             logger.info("prepare scheduler for " + schedulerName);
+
             String fullSchedulerName = "Scheduler-" + schedulerName;
+
             JobStore jobStore = jobStoreBuilder.buildJdbcJobStore(
                     fullSchedulerName,
                     JobConfig.misfireThreshold, JobConfig.maxMisfiresToHandleAtATime,
                     JobConfig.isClustered, JobConfig.clusterCheckinInterval);
+
             logger.info("starting scheduler " + schedulerName);
+
             startScheduler(fullSchedulerName, threadPool, jobStore);
+
             logger.info("start scheduler " + schedulerName + " success");
         }
+
         logger.info("all schedulers has been started");
     }
 

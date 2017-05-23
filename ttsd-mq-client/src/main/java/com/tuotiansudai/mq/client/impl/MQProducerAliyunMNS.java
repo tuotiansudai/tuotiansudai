@@ -3,10 +3,14 @@ package com.tuotiansudai.mq.client.impl;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.CloudTopic;
 import com.aliyun.mns.client.MNSClient;
+import com.aliyun.mns.common.ClientException;
+import com.aliyun.mns.common.ServiceException;
 import com.tuotiansudai.mq.client.MQProducer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.client.utils.AliyunMNSUtils;
+import com.tuotiansudai.mq.exception.AliyunClientException;
+import com.tuotiansudai.mq.exception.AliyunServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +31,12 @@ public class MQProducerAliyunMNS implements MQProducer {
             cloudTopic.publishMessage(AliyunMNSUtils.buildTopicMessage(message));
             logger.info("[MQ] publish message success, topic: {}, message: '{}'", topic.getTopicName(), message);
         } catch (Exception e) {
-            logger.error("[MQ] publish message fail", e);
+            if (e instanceof ServiceException) {
+                e = new AliyunServiceException((ServiceException) e);
+            } else if (e instanceof ClientException) {
+                e = new AliyunClientException((ClientException) e);
+            }
+            logger.error(String.format("[MQ] publish message fail, topic: %s, message: '%s'", topic.getTopicName(), message), e);
         }
     }
 
@@ -39,7 +48,12 @@ public class MQProducerAliyunMNS implements MQProducer {
             cloudQueue.putMessage(AliyunMNSUtils.buildQueueMessage(message));
             logger.info("[MQ] send message success, queue: {}, message: '{}'", queue.getQueueName(), message);
         } catch (Exception e) {
-            logger.error("[MQ] send message fail", e);
+            if (e instanceof ServiceException) {
+                e = new AliyunServiceException((ServiceException) e);
+            } else if (e instanceof ClientException) {
+                e = new AliyunClientException((ClientException) e);
+            }
+            logger.error(String.format("[MQ] send message fail, queue: %s, message: '%s'", queue.getQueueName(), message), e);
         }
     }
 

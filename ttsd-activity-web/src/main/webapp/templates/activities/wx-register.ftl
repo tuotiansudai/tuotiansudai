@@ -43,7 +43,7 @@
 						                    <li>
 						                        <label for="captcha" class="reg-title">手机验证码:</label>
 						                            <span class="captcha-tag" id="pcCaptcha">
-						                                <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
+						                                <button type="button" class="fetch-captcha btn" disabled="disabled" id="getCaptchaBtn">获取验证码</button>
 						                                <input validate type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
 						                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
 						                            </span>
