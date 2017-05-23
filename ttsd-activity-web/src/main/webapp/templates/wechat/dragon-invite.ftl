@@ -44,7 +44,7 @@
             </p>
         </div>
         <dl class="join-item">
-            <dt>登录/注册成功后现金红包会直接发放倒您的账户</dt>
+            <dt>登录/注册成功后现金红包会直接发放到您的账户</dt>
             <dd>
                 <a href="/activity/dragon/wechat/toRegister?sharerUnique=${sharerUnique!}" class="register-link">注册领取</a>
             </dd>

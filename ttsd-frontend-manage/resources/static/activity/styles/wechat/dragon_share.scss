@@ -27,11 +27,11 @@ body{
 		color:#fff;
 		line-height:65px;
 		text-align:center;
-		margin:10px 0;
+		margin:20px 0;
 		background: url('../../images/dragon-boat/title-bg.png') no-repeat center;
 		background-size: 100%;
 		@media (min-width:321px) and (max-width:700px) {
-			margin:10px 0;
+			margin:20px 0;
 		}
 	}
 	.copy-item{
@@ -77,7 +77,7 @@ body{
 			color:#fff;
 			line-height: 25px;
 			&.red-item{
-				margin:10px 0;
+				margin:15px 0;
 			}
 			span{
 				font-size:16px;
