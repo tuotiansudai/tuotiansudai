@@ -132,11 +132,11 @@ public class DragonBoatFestivalService {
         return exchangeCode + ":" + shareUniqueCode;
     }
 
-    public boolean sendCouponAfterRegisterOrLogin(String loginName, String shareUniqueCode) {
+    public int sendCouponAfterRegisterOrLogin(String loginName, String shareUniqueCode) {
 
         if (!inActivityPeriod()) {
             logger.info("[Dragon Boat Register or Login {}] not in activity period.", loginName);
-            return false;
+            return -1;
         }
 
         String shareUniqueKey = MessageFormat.format(DRAGON_BOAT_SHARE_UNIQUE_CODE, shareUniqueCode);
@@ -149,9 +149,9 @@ public class DragonBoatFestivalService {
             logger.info("[Dragon Boat Register User {}] assign weiXin share ￥10 red enveloper ", loginName);
             couponAssignmentService.assignUserCoupon(loginName, 421);
             redisWrapperClient.expire(couponFetchKey, TWO_MONTH_SECONDS);
-            return true;
+            return 1;
         } else {
-            return false;
+            return 0;
         }
     }
 

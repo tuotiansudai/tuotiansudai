@@ -5,11 +5,13 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="result-container">
         <h3 class="title-item">
-        <#if hasCoupon == '0'>
-            领取成功！
-        <#else>
-            您已经领取过这个红包了哦~
-        </#if>
+            <#if fetchResult == 1>
+                领取成功！
+            <#elseif fetchResult == 0>
+                您已经领取过这个红包了哦~
+            <#elseif fetchResult == -1>
+                活动已结束。
+            </#if>
         </h3>
         <div class="take-red">
             <p class="red-bag">

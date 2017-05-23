@@ -133,11 +133,7 @@ public class DragonBoatFestivalController {
         String unique = request.getParameter("unique");
         ModelAndView mav = new ModelAndView("/wechat/dragon-success");
 
-        if (dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique)) {
-            mav.addObject("hasCoupon", "0");
-        } else {
-            mav.addObject("hasCoupon", "1");
-        }
+        mav.addObject("fetchResult", dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique));
         return mav;
     }
 
@@ -150,13 +146,12 @@ public class DragonBoatFestivalController {
         String unique = sharerUnique.split("-")[1];
         ModelAndView mav = new ModelAndView("/wechat/dragon-success");
 
-        if (dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique)) {
-            mav.addObject("hasCoupon", "0");
+        int ret = dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique);
+        mav.addObject("fetchResult", ret);
+        if (ret == 1) {
             // 领取成功后，给分享者记录邀请老用户领取的数量
             logger.info("[Dragon Boat] send share login transfer message, referrer:{}, loginName:{}.", sharer, loginName);
             mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, sharer);
-        } else {
-            mav.addObject("hasCoupon", "1");
         }
         return mav;
     }
