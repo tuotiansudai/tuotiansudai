@@ -50,7 +50,13 @@ public class DragonBoatPKEndingSendExperienceMessageConsumer implements MessageC
         List<DragonBoatFestivalModel> recordList = dragonBoatFestivalMapper.getDragonBoatFestivalPKUserList();
         for (DragonBoatFestivalModel model : recordList) {
             // 算出用户的体验金奖励金额
-            long experienceAmount = model.getPkInvestAmount() / (sweetWin ^ model.getPkGroup().equals("SALTY") ? 1 : 2);
+            long experienceAmount;
+
+            if (sweetInvestAmount == saltyInvestAmount) {
+                experienceAmount = model.getPkInvestAmount();
+            } else {
+                experienceAmount = model.getPkInvestAmount() / (sweetWin ^ model.getPkGroup().equals("SALTY") ? 1 : 2);
+            }
 
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                     new ExperienceAssigningMessage(model.getLoginName(), experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.DRAGON_BOAT_ZONGZI_PK));
