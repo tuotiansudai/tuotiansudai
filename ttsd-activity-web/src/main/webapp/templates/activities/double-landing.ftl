@@ -205,29 +205,5 @@
         </div>
     </form>
 </div>
-<script>
-    $(function(){
-        var ref = encodeURIComponent(document.referrer);
-        var cururl = encodeURIComponent(document.URL);
-        $.ajax({
-            url: "https://ssl.btmedia.cn/track_lp_https/ttsd_mobile_click.php",
-            type: 'GET',
-            data: 'cururl='+cururl+'&ref='+ref,
-            dataType: 'JSONP',
-            success: function (data) {
-                console.log(data);
-            }
-        });
-    })
-</script>
-<script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?055a331f2f9db735b541a52d7ef097b4";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>
 <#include '../module/register-agreement.ftl' />
 </@global.main>
