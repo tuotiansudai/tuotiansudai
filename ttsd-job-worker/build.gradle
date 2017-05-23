@@ -4,7 +4,8 @@ apply plugin: 'java'
 dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-job'),
-            project(':ttsd-util')
+            project(':ttsd-util'),
+            project(':ttsd-service')
 }
 
 processResources.outputs.upToDateWhen { false }
