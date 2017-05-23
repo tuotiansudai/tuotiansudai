@@ -40,6 +40,7 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void createDragonBoatSendPKPrizeJob() {
         try {
+            logger.info("[Dragon Boat] DragonBoatPKSendExperienceJob.endTime:" + DragonBoatPKSendExperienceJob.endTime);
             jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
                     .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
                     .replaceExistingJob(true)
