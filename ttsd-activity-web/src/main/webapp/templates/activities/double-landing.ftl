@@ -93,26 +93,9 @@
             </dl>
 
         </div>
-
-        <div class="newbie-step-six">
-            <div class="newbie-step-six-box">
-                <p>温馨提示</p>
-                <p>1. 平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户"
-                    中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
-                <p>2. 30天 "新手专享" 债权每次限投50-10000元，每人仅限投1次；</p>
-                <p>3. 用户所获红包及加息券可在 "我的账户-我的宝藏" 查看；</p>
-                <p>4. 每笔投资仅限使用一张优惠券，用户可在投资时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选；</p>
-                <p>5. 使用红包金额将于所投债权放款后返至您的账户；</p>
-                <p>6. 使用加息券所得收益，将体现在该笔投资项目收益中，用户可在 "我的账户" 中查询；</p>
-                <p>7. 每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>
-                <p>8. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
-            </div>
-
-        </div>
-
         <#if !isAppSource>
             <div class="newbie-step-register">
-                <div class="register-box">
+                <div class="register-box" style="padding:25px 0 0">
                     <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                     <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off"
                           novalidate="novalidate">
@@ -124,19 +107,19 @@
                                        placeholder="手机号"
                                        maxlength="11" value="">
                             </li>
-                        
+
                             <li class="reg-row-container">
                             <#--密码:-->
                                 <i class="newbie-register-ic-password reg-icon"></i>
                                 <input validate type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                        class="password input-width" value="">
                             </li>
-                        
+
 
                             <li class="code reg-row-container">
                             <#--验证码:-->
                                 <i class="newbie-register-ic-img-captcha reg-icon"></i>
-                                
+
                                 <em class="image-captcha">
                                     <img src="" alt=""/>
                                 </em>
@@ -144,7 +127,7 @@
                                 <input validate type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
                                        class="appCaptcha fl" value="">
                             </li>
-                        
+
                             <li class="reg-row-container">
                             <#--手机验证码:-->
                                 <i class="newbie-register-ic-captcha reg-icon"></i>
@@ -154,7 +137,7 @@
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                             </span>
                             </li>
-                    
+
                             <li class="agree-register-protocol">
                                 <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
                                        checked>
@@ -182,6 +165,23 @@
                 </div>
             </div>
         </#if>
+        <div class="newbie-step-six">
+            <div class="newbie-step-six-box">
+                <p>温馨提示</p>
+                <p>1. 平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户"
+                    中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
+                <p>2. 30天 "新手专享" 债权每次限投50-10000元，每人仅限投1次；</p>
+                <p>3. 用户所获红包及加息券可在 "我的账户-我的宝藏" 查看；</p>
+                <p>4. 每笔投资仅限使用一张优惠券，用户可在投资时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选；</p>
+                <p>5. 使用红包金额将于所投债权放款后返至您的账户；</p>
+                <p>6. 使用加息券所得收益，将体现在该笔投资项目收益中，用户可在 "我的账户" 中查询；</p>
+                <p>7. 每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>
+                <p>8. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
+            </div>
+
+        </div>
+
+
         <div class="header-download">
             <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
             <div class="img-logo-tip" ></div>
