@@ -28,7 +28,7 @@ $btnCoupon.on('click', function (event) {
         window.location.href = "/register/user";
     } else {
         if (browser=='mobile') {
-            $('body,html').animate({scrollTop: $('.landingContainerBox').height()}, 'fast');
+            $('body,html').animate({scrollTop: $('.newbie-step-register').offset().top}, 'fast');
         } else {
             $('body,html').animate({scrollTop: 0}, 'fast');
         }
