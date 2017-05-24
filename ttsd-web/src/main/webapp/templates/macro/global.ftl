@@ -40,7 +40,7 @@
         {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"拓天问答", "url":"${askServer}/?group=HOT&index=1","category":"22顶部导航","navigation":"true"},
+    {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
     {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
         {"title":"公司介绍", "url":"/about/company"},
         {"title":"团队介绍", "url":"/about/team"},

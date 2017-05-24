@@ -23,10 +23,10 @@ public class HomeController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) String group,
+    public ModelAndView index(@RequestParam(value = "group", defaultValue = "HOT", required = false) String group,
                               @RequestParam(value = "index", defaultValue = "1", required = false) String index) {
 
-        QuestionGroup questionGroup = QuestionGroup.ALL;
+        QuestionGroup questionGroup = QuestionGroup.HOT;
         try {
             questionGroup = QuestionGroup.valueOf(group.toUpperCase());
         } catch (IllegalArgumentException ignore) {
@@ -39,16 +39,18 @@ public class HomeController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/home");
-        BaseDto<BasePaginationDataDto<QuestionModel>> data = questionService.findAllQuestions(page);
         if (questionGroup == QuestionGroup.UNRESOLVED) {
-            data = questionService.findAllUnresolvedQuestions(page);
+            modelAndView.addObject("questions", questionService.findAllUnresolvedQuestions(page));
         }
 
         if (questionGroup == QuestionGroup.HOT) {
-            data = questionService.findAllHotQuestions(page);
+            modelAndView.addObject("questions", questionService.findAllHotQuestions(page));
         }
 
-        modelAndView.addObject("questions", data);
+        if (questionGroup == QuestionGroup.ALL) {
+            modelAndView.addObject("questions", questionService.findAllQuestions(page));
+        }
+
         modelAndView.addObject("group", group);
 
         return modelAndView;
