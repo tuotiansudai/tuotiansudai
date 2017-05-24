@@ -36,8 +36,7 @@ public class MobileAppRetrievePasswordServiceImpl implements MobileAppRetrievePa
         if(verified){
             UserModel userModel = userMapper.findByMobile(mobile);
             if(userModel != null){
-                userModel.setPassword(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
-                userMapper.updateUser(userModel);
+                userMapper.updatePassword(userModel.getLoginName(), myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
                 BaseResponseDto baseResponseDto = new BaseResponseDto();
                 baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseResponseDto.setMessage("");

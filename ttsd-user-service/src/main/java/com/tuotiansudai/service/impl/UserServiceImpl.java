@@ -142,8 +142,7 @@ public class UserServiceImpl implements UserService {
             UserModel userModel = userMapper.findByLoginName(loginName);
             String mobile = userModel.getMobile();
 
-            userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
-            userMapper.updateUser(userModel);
+            userMapper.updatePassword(loginName, myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
             smsWrapperClient.sendPasswordChangedNotify(mobile);
 
             returnValue = true;
