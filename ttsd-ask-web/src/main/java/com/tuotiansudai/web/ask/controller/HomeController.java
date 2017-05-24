@@ -15,20 +15,37 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(path = "/")
 public class HomeController {
 
+    private final QuestionService questionService;
+
     @Autowired
-    private QuestionService questionService;
+    public HomeController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,
-                              @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        ModelAndView modelAndView = new ModelAndView("/home");
-        BaseDto<BasePaginationDataDto<QuestionModel>> data = questionService.findAllQuestions(index);
-        if (group == QuestionGroup.UNRESOLVED) {
-            data = questionService.findAllUnresolvedQuestions(index);
+    public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) String group,
+                              @RequestParam(value = "index", defaultValue = "1", required = false) String index) {
+
+        QuestionGroup questionGroup = QuestionGroup.ALL;
+        try {
+            questionGroup = QuestionGroup.valueOf(group.toUpperCase());
+        } catch (IllegalArgumentException ignore) {
         }
 
-        if (group == QuestionGroup.HOT) {
-            data = questionService.findAllHotQuestions(index);
+        int page = 1;
+        try {
+            page = Integer.parseInt(index);
+        } catch (NumberFormatException ignored) {
+        }
+
+        ModelAndView modelAndView = new ModelAndView("/home");
+        BaseDto<BasePaginationDataDto<QuestionModel>> data = questionService.findAllQuestions(page);
+        if (questionGroup == QuestionGroup.UNRESOLVED) {
+            data = questionService.findAllUnresolvedQuestions(page);
+        }
+
+        if (questionGroup == QuestionGroup.HOT) {
+            data = questionService.findAllHotQuestions(page);
         }
 
         modelAndView.addObject("questions", data);
