@@ -5,8 +5,8 @@
 <div class="share-coupon-container" id="shareCoupon">
     <h3 class="title-item"><#if activityEnd>活动已结束<#elseif exchangeCode??>恭喜您获得了一个优惠券兑换码<#else>您尚未登录</#if></h3>
     <div class="copy-item">
-    	<input type="text" class="copy-int" value="${exchangeCode!}" readonly id="clipboardText">
-    	<span class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#clipboardText">复制兑换码</span>
+    	<input type="text" class="copy-int" value="<#if activityEnd>活动已结束<#elseif exchangeCode??>${exchangeCode!}<#else>您尚未登录</#if>" readonly id="clipboardText">
+    	<span class="copy-btn <#if activityEnd>actor-over</#if>" data-clipboard-action="copy" data-clipboard-target="#clipboardText">复制兑换码</span>
     </div>
     <div class="intro-title">
     	优惠券兑换说明：

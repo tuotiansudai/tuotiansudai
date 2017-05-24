@@ -40,3 +40,17 @@ if($shareAppContainer.length) {
 globalFun.addEventHandler($('#downloadApp')[0],'click',toExperienceNow);
 globalFun.addEventHandler($('#btnExperienceNow')[0],'click',toExperienceNow);
 
+
+//统计代码
+$(function(){
+    $.ajax({
+        url: "https://ssl.btmedia.cn/track_lp_https/ttsd_mobile_conver.php",
+        type: 'GET',
+        data: 'ok',
+        dataType: 'JSONP',
+        success: function (data) {
+            console.log(data);
+        }
+    });
+})
+

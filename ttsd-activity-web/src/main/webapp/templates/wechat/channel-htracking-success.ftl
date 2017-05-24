@@ -23,17 +23,4 @@
     </div>
 
 </div>
-<script>
-    $(function(){
-        $.ajax({
-            url: "https://ssl.btmedia.cn/track_lp_https/ttsd_mobile_conver.php",
-            type: 'GET',
-            data: 'ok',
-            dataType: 'JSONP',
-            success: function (data) {
-                console.log(data);
-            }
-        });
-    })
-</script>
 </@global.main>
