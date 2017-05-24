@@ -16,17 +16,18 @@ let equipment = globalFun.equipment(),
 
 if(isIos) {
     $('.copy-btn',$shareCoupon).text('优惠券兑换码');
-
+}
+if(!$('.copy-btn',$shareCoupon).hasClass('actor-over')){
+    let clipboard = new Clipboard('.copy-btn');
+    clipboard.on('success', function(e) {
+        layer.msg("复制成功");
+        e.clearSelection();
+    });
+    clipboard.on('error', function(e) {
+        layer.msg("复制失败");
+    });
 }
 
-let clipboard = new Clipboard('.copy-btn');
-clipboard.on('success', function(e) {
-	layer.msg("复制成功");
-	e.clearSelection();
-});
-clipboard.on('error', function(e) {
-	layer.msg("复制失败");
-});
 
 
 // 分享红包给好友
