@@ -19,6 +19,7 @@ import java.util.List;
 @Component
 public class RefreshUserLocationScheduler {
     private static Logger logger = LoggerFactory.getLogger(RefreshUserLocationScheduler.class);
+
     @Autowired
     private UserMapper userMapper;
 
@@ -54,12 +55,12 @@ public class RefreshUserLocationScheduler {
                 }
                 userModel.setProvince(provinceAndCity[0]);
                 userModel.setCity(provinceAndCity[1]);
+                userMapper.updateProvinceAndCity(userModel.getLoginName(), provinceAndCity[0], provinceAndCity[1]);
             } else {
                 userModel.setProvince("未知");
                 userModel.setCity("未知");
+                userMapper.updateProvinceAndCity(userModel.getLoginName(), "未知", "未知");
             }
-            userModel.setLastModifiedTime(new Date());
-            userMapper.updateUser(userModel);
         }
     }
 }

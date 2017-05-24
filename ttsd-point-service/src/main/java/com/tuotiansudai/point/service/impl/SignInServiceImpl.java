@@ -101,9 +101,7 @@ public class SignInServiceImpl implements SignInService {
 
         if (!signInPointDto.isSignIn()) {
             signInPointDto.setStatus(true);
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            userModel.setSignInCount(signInPointDto.getSignInCount());
-            userMapper.updateUser(userModel);
+            userMapper.updateSignInCount(loginName, signInPointDto.getSignInCount());
             pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
             sendSignInCoupon(loginName, signInPointDto.getSignInCount());
             logger.info(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));

@@ -73,6 +73,44 @@
         where id = #{id}
     </update>
 
+    <update id="updateExperienceBalance" parameterType="map">
+        update user set
+        experience_balance = #{experienceBalance}
+        where login_name = #{loginName}
+    </update>
+
+    <update id="updateProvinceAndCity" parameterType="map">
+        update user set
+        province = #{province},
+        city = #{city}
+        where login_name = #{loginName}
+    </update>
+
+    <update id="updatePassword" parameterType="map">
+        update user set
+        password = #{password}
+        where login_name = #{loginName}
+    </update>
+
+    <update id="updateUserNameAndIdentityNumber" parameterType="map">
+        update user set
+        user_name = #{userName},
+        identity_number = #{identityNumber}
+        where login_name = #{loginName}
+    </update>
+
+    <update id="updateSignInCount" parameterType="map">
+        update user set
+        sign_in_count = #{signInCount}
+        where login_name = #{loginName}
+    </update>
+
+    <update id="updateEmail" parameterType="map">
+        update user set
+        email = #{email}
+        where login_name = #{loginName}
+    </update>
+
     <select id="findByLoginName" parameterType="string" resultMap="userResultMap">
         select * from user where login_name = #{loginName}
     </select>

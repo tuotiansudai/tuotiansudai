@@ -97,9 +97,7 @@ public class BindEmailServiceImpl implements BindEmailService {
             logger.error(MessageFormat.format("绑定邮箱失败，{0} 已被绑定!", email));
             return null;
         }
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        userModel.setEmail(email);
-        userMapper.updateUser(userModel);
+        userMapper.updateEmail(loginName, email);
         redisWrapperClient.del(bindEmailKey);
 
         //发送用户行为日志 MQ
