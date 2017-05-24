@@ -11,15 +11,8 @@ package com.tuotiansudai.job;
  */
 public enum JobType {
     Default("默认类别"),
-    DelayMessageDelivery("延迟消息投递"),
-
-    //unused job
-    AutoJPushNoInvestAlert(""),
-    AutoJPushAlertBirthDay(""),
-    OverInvestPayBack(""),
-    NormalRepayCallBack("正常还款回调处理"),
-    AdvanceRepayCallBack("提前还款回调处理");
-
+    DragonBoatSendPKPrize("端午节活动结束后发PK体验金"),
+    DelayMessageDelivery("延迟消息投递");
 
     private final String description;
 

@@ -1,12 +1,17 @@
 package com.tuotiansudai.scheduler.plugin;
 
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.job.JobType;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
+
+import java.util.Date;
 
 public class JobInitPlugin implements SchedulerPlugin {
 
@@ -27,7 +32,9 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        this.removeUnusedJobs();
+        if (JobType.DragonBoatSendPKPrize.name().equalsIgnoreCase(schedulerName)) {
+            createDragonBoatSendPKPrizeJob();
+        }
     }
 
     @Override
@@ -35,11 +42,19 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     }
 
-    private void removeUnusedJobs() {
-        jobManager.deleteJob(JobType.NormalRepayCallBack, "umpay", "normal_repay_call_back");
-        jobManager.deleteJob(JobType.AdvanceRepayCallBack, "umpay", "advance_repay_call_back");
-        jobManager.deleteJob(JobType.OverInvestPayBack, "umpay", "invest_call_back");
-        jobManager.deleteJob(JobType.AutoJPushNoInvestAlert, "AutoJPushNoInvestAlert", "AutoJPushNoInvestAlert");
-        jobManager.deleteJob(JobType.AutoJPushAlertBirthDay, "AutoJPushAlertBirthDay", "AutoJPushAlertBirthDay");
+    private void createDragonBoatSendPKPrizeJob() {
+        try {
+            logger.info("[Dragon Boat] DragonBoatPKSendExperienceJob.endTime:" + DragonBoatPKSendExperienceJob.endTime);
+            Date endTime = DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            if (endTime.after(new Date())) { // 如果还没到结束时间，则创建job，如果已经到结束时间了，则不创建job
+                jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
+                        .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
+                        .replaceExistingJob(true)
+                        .runOnceAt(DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
+
 }

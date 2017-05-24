@@ -9,7 +9,6 @@
     <title>${title}</title>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="http://localhost:3008/public/globalFun_page.css" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
@@ -19,7 +18,7 @@
 <body>
     <#nested>
 <script>
-    window.commonStaticServer = '${commonStaticServer}';
+    window.commonStaticServer = 'http://localhost:3008';
 </script>
 
 <script src="http://localhost:3008/public/dllplugins/jquery.dll.js" ></script>

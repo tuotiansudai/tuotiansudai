@@ -122,7 +122,7 @@ validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,sh
         that=this,
         _arguments=arguments;
 
-    var _phone = $phoneDom.val(),
+    var _phone = registerForm.mobile.value,
         _captcha=registerForm.captcha.value;
 
     //先判断手机号格式是否正确
