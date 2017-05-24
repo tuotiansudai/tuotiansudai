@@ -2,7 +2,6 @@ package com.tuotiansudai.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.spring.MyUser;
-import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -15,8 +14,6 @@ import java.io.PrintWriter;
 
 @Component
 public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-
-    private static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -37,6 +34,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
                 writer.close();
             }
         }
+
         clearAuthenticationAttributes(request);
     }
 }

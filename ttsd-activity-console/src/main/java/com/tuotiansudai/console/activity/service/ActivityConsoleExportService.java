@@ -8,10 +8,7 @@ import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -59,6 +56,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private ActivityConsoleMothersService activityConsoleMothersService;
+
+    @Autowired
+    private ActivityConsoleDragonBoatService activityConsoleDragonBoatService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -261,5 +261,11 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildMothersDayCsvList() {
         return activityConsoleMothersService.list(1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildDragonBoatCsvList() {
+        List<DragonBoatFestivalModel> list = activityConsoleDragonBoatService.getList(1, Integer.MAX_VALUE).getRecords();
+
+        return list.stream().map(a -> a.convertToView()).map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

@@ -169,4 +169,19 @@ public class ExportController {
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.MothersDayHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/export-dragon-boat", method = RequestMethod.GET)
+    public void dragonBoatExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.DragonBoatHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+
+        List<List<String>> csvData = activityConsoleExportService.buildDragonBoatCsvList();
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.DragonBoatHeader, csvData, response.getOutputStream());
+    }
 }

@@ -49,6 +49,10 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         return execute(jedis -> jedis.exists(key));
     }
 
+    public void expire(final String key, final int seconds) {
+        execute(jedis -> jedis.expire(key, seconds));
+    }
+
     public String setex(final String key, final int seconds, final String value) {
         return execute(jedis -> jedis.setex(key, seconds, value));
     }
@@ -76,6 +80,10 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
 
     public Long lpush(final String key, final String... values) {
         return execute(jedis -> jedis.lpush(key, values));
+    }
+
+    public String lpop(final String key) {
+        return execute(jedis -> jedis.lpop(key));
     }
 
     public Long rpush(final String key, final String... values) {
