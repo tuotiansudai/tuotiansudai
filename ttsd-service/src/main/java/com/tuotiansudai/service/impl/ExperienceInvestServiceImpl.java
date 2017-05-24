@@ -48,9 +48,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Autowired
     private ExperienceBillService experienceBillService;
 
     @Value(value = "${pay.interest.fee}")

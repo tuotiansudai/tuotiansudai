@@ -336,9 +336,30 @@ task flywayLog(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/edxlog"]
     extension.schemas = ["edxlog"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxlog?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxlog?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("log.jdbc.username")
     extension.password = properties.getProperty("log.jdbc.password")
+}
+
+task flywayGHB(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/ghb_operations"]
+    extension.schemas = ["ghb_operations"]
+
+    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/ghb_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("ghb.jdbc.username")
+    extension.password = properties.getProperty("ghb.jdbc.password")
 }
 
 def getEnvProperties() {

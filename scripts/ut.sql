@@ -1,10 +1,13 @@
 -- 测试环境的密码，需要在后面追加环境ip 如 tuotiansd153, sdactivity153 ...
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'localhost' identified by 'tuotiansd';
+
 grant select,insert,update,delete,create,drop,alter,index on job_worker.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on job_worker.* to tuotiansd@'localhost' identified by 'tuotiansd';
+
 grant select,insert,update,delete,create,drop,alter,index on sms_operations.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on sms_operations.* to tuotiansd@'localhost' identified by 'tuotiansd';
+
 grant select,insert,update,delete,create,drop,alter,index on ump_operations.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on ump_operations.* to tuotiansd@'localhost' identified by 'tuotiansd';
 
@@ -25,6 +28,9 @@ grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'
 
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'%' identified by 'sdmessage';
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'localhost' identified by 'sdmessage';
+
+grant select,insert,update,delete,create,drop,alter,index on ghb_operations.* to sdghb@'%' identified by 'sdghb';
+grant select,insert,update,delete,create,drop,alter,index on ghb_operations.* to sdghb@'localhost' identified by 'sdghb';
 
 update mysql.user set password=password('root') where user='root';
 

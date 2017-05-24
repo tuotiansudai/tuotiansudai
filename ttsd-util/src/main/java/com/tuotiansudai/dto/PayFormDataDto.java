@@ -10,6 +10,15 @@ public class PayFormDataDto extends BaseDataDto {
 
     private Map<String, String> fields = Maps.newHashMap();
 
+    public PayFormDataDto() {
+    }
+
+    public PayFormDataDto(String url, Map<String, String> fields) {
+        super(true);
+        this.url = url;
+        this.fields = fields;
+    }
+
     public String getMessage() {
         return message;
     }

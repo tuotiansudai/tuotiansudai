@@ -21,6 +21,8 @@ dependencies {
             "org.mybatis:mybatis:$mybatisVersion",
             "org.mybatis:mybatis-spring:$mybatisSpringVersion",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion",
+            "org.codehaus.woodstox:woodstox-core-asl:4.4.1",
             "org.slf4j:slf4j-log4j12:$slf4jVersion",
             "org.slf4j:slf4j-api:$slf4jVersion",
             'com.google.guava:guava:21.0',
