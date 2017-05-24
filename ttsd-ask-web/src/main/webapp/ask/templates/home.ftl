@@ -2,9 +2,9 @@
 <@global.main pageCss="${(css.mainSite)!}" pageJavascript="${(js.mainSite)!}" title="拓天问答_投资问答_拓天速贷" keywords="投资问答,网贷问答,投资知识,金融问答" description="拓天速贷投资问答系统,为您解答金融行业最新最快的投资知识,让您放心投资、安全投资,拓天速贷为投资人答疑解惑.">
 <div class="article-content fl" id="homeTagContainer">
     <ul class="switch-menu clearfix">
-        <li><a href="/">全部问题</a></li>
-        <li><a href="/?group=UNRESOLVED&index=1">待解决问题</a></li>
-        <li><a href="/?group=HOT&index=1">热门问题</a></li>
+        <li><a href="/?group=ALL">全部问题</a></li>
+        <li><a href="/?group=UNRESOLVED">待解决问题</a></li>
+        <li><a href="/">热门问题</a></li>
     </ul>
     <div class="border-ask-box clearfix">
         <div class="answers-box">
