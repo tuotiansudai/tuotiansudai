@@ -28,7 +28,7 @@ $btnCoupon.on('click', function (event) {
         window.location.href = "/register/user";
     } else {
         if (browser=='mobile') {
-            $('body,html').animate({scrollTop: $('.landingContainerBox').height()}, 'fast');
+            $('body,html').animate({scrollTop: $('.newbie-step-register').offset().top}, 'fast');
         } else {
             $('body,html').animate({scrollTop: 0}, 'fast');
         }
@@ -251,6 +251,28 @@ function toExperienceNow() {
 
 }
 globalFun.addEventHandler($('#btnExperienceNow')[0],'click',toExperienceNow);
+
+//统计代码
+$(function(){
+    var ref = encodeURIComponent(document.referrer);
+    var cururl = encodeURIComponent(document.URL);
+    $.ajax({
+        url: "https://ssl.btmedia.cn/track_lp_https/ttsd_mobile_click.php",
+        type: 'GET',
+        data: 'cururl='+cururl+'&ref='+ref,
+        dataType: 'JSONP',
+        success: function (data) {
+            console.log(data);
+        }
+    });
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?055a331f2f9db735b541a52d7ef097b4";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+})
 
 
 

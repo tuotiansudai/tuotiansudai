@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v3_0;
 
 
+import com.google.common.base.Strings;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -12,7 +13,6 @@ public class ItemDto implements Serializable {
 
     @ApiModelProperty(value = "值", example = "男")
     private String value;
-
 
     public String getLabel() {
         return label;
@@ -27,6 +27,6 @@ public class ItemDto implements Serializable {
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.value = Strings.isNullOrEmpty(value) ? "--" : value;
     }
 }
