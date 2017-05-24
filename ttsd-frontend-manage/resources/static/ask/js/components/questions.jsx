@@ -19,14 +19,14 @@ if($homeTagContainer.length) {
         group='';
     }
     switch (group) {
+        case 'ALL':
+            $switchMenu.eq(0).addClass('active');
+            break;
         case 'UNRESOLVED':
             $switchMenu.eq(1).addClass('active');
             break;
-        case 'HOT':
-            $switchMenu.eq(2).addClass('active');
-            break;
         default:
-            $switchMenu.eq(0).addClass('active');
+            $switchMenu.eq(2).addClass('active');
             break;
     }
 }
