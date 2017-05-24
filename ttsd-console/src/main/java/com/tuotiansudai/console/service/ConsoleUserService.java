@@ -75,7 +75,7 @@ public class ConsoleUserService {
         final String loginName = editUserDto.getLoginName();
 
         String mobile = editUserDto.getMobile();
-        UserModel userModel = userMapper.findByLoginName(loginName);
+        UserModel userModel = userMapper.lockByLoginName(loginName);
         String beforeUpdateUserMobile = userModel.getMobile();
 
         // update role

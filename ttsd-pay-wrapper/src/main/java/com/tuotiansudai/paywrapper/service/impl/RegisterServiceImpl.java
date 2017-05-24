@@ -57,12 +57,9 @@ public class RegisterServiceImpl implements RegisterService {
         PayDataDto dataDto = new PayDataDto();
 
         try {
-            UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
-            userModel.setUserName(dto.getUserName());
-            userModel.setIdentityNumber(dto.getIdentityNumber());
 
             MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(
-                    MessageFormat.format(REGISTER_ORDER_ID_TEMPLATE, String.valueOf(userModel.getId()), String.valueOf(new Date().getTime())),
+                    MessageFormat.format(REGISTER_ORDER_ID_TEMPLATE, String.valueOf(userMapper.findByLoginName(dto.getLoginName()).getId()), String.valueOf(new Date().getTime())),
                     dto.getLoginName(),
                     dto.getUserName(),
                     dto.getIdentityNumber(),
@@ -73,17 +70,17 @@ public class RegisterServiceImpl implements RegisterService {
                     MerRegisterPersonResponseModel.class);
 
             if (responseModel.isSuccess()) {
-                if (accountMapper.findByLoginName(userModel.getLoginName()) == null) {
-                    AccountModel accountModel = new AccountModel(userModel.getLoginName(), responseModel.getUserId(), responseModel.getAccountId(), new Date());
+                if (accountMapper.findByLoginName(dto.getLoginName()) == null) {
+                    AccountModel accountModel = new AccountModel(dto.getLoginName(), responseModel.getUserId(), responseModel.getAccountId(), new Date());
                     accountMapper.create(accountModel);
-                    userMapper.updateUser(userModel);
+                    userMapper.updateUserNameAndIdentityNumber(dto.getLoginName(), dto.getUserName(), dto.getIdentityNumber());
                 }
 
-                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(dto.getLoginName());
                 if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
                     userRoleMapper.create(Lists.newArrayList(new UserRoleModel(dto.getLoginName(), Role.INVESTOR)));
                 }
-                mqWrapperClient.sendMessage(MessageQueue.AccountRegistered_CompletePointTask, userModel.getLoginName());
+                mqWrapperClient.sendMessage(MessageQueue.AccountRegistered_CompletePointTask, dto.getLoginName());
             }
 
             dataDto.setStatus(responseModel.isSuccess());

@@ -15,6 +15,26 @@ public interface UserMapper {
 
     int updateUser(UserModel userModel);
 
+    int updateExperienceBalance(@Param(value = "loginName") String loginName,
+                                @Param(value = "experienceBalance") long experienceBalance);
+
+    int updateProvinceAndCity(@Param(value = "loginName") String loginName,
+                              @Param(value = "province") String province,
+                              @Param(value = "city") String city);
+
+    int updatePassword(@Param(value = "loginName") String loginName,
+                       @Param(value = "password") String password);
+
+    int updateUserNameAndIdentityNumber(@Param(value = "loginName") String loginName,
+                                        @Param(value = "userName") String userName,
+                                        @Param(value = "identityNumber") String identityNumber);
+
+    int updateSignInCount(@Param(value = "loginName") String loginName,
+                          @Param(value = "signInCount") long signInCount);
+
+    int updateEmail(@Param(value = "loginName") String loginName,
+                    @Param(value = "email") String email);
+
     UserModel findByLoginName(String loginName);
 
     UserModel lockByLoginName(String loginName);
@@ -62,5 +82,4 @@ public interface UserMapper {
     int findCountByMobile(@Param(value = "mobile") String mobile);
 
     Long findExperienceByLoginName(String loginName);
-
 }

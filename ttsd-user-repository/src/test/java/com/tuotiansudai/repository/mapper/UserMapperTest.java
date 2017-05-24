@@ -175,7 +175,5 @@ public class UserMapperTest {
 
         Long experience = userMapper.findExperienceByLoginName(userModel.getLoginName());
         assertTrue(experience == userModel.getExperienceBalance());
-
-
     }
 }
