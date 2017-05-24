@@ -11,6 +11,8 @@ import org.quartz.SchedulerException;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
+import java.util.Date;
+
 public class JobInitPlugin implements SchedulerPlugin {
 
     private static Logger logger = Logger.getLogger(JobInitPlugin.class);
@@ -43,10 +45,13 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createDragonBoatSendPKPrizeJob() {
         try {
             logger.info("[Dragon Boat] DragonBoatPKSendExperienceJob.endTime:" + DragonBoatPKSendExperienceJob.endTime);
-            jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
-                    .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
-                    .replaceExistingJob(true)
-                    .runOnceAt(DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+            Date endTime = DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            if (endTime.after(new Date())) { // 如果还没到结束时间，则创建job，如果已经到结束时间了，则不创建job
+                jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
+                        .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
+                        .replaceExistingJob(true)
+                        .runOnceAt(DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
+            }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
