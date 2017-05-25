@@ -26,7 +26,7 @@ public class ExperienceServiceImpl implements ExperienceBillService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         long experienceBalance = userModel.getExperienceBalance();
         experienceBalance = experienceBillOperationType == ExperienceBillOperationType.IN ? experienceBalance + experienceAmount : experienceBalance - experienceAmount;
-        userMapper.updateExperienceBalance(loginName, experienceBalance);
+        userMapper.updateExperienceBalance(loginName, experienceBillOperationType, experienceBalance);
 
         ExperienceBillModel experienceBillModel = new ExperienceBillModel(loginName,
                 experienceBillOperationType,

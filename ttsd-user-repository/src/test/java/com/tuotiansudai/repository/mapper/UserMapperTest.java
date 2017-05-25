@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
@@ -175,5 +176,19 @@ public class UserMapperTest {
 
         Long experience = userMapper.findExperienceByLoginName(userModel.getLoginName());
         assertTrue(experience == userModel.getExperienceBalance());
+    }
+
+    @Test
+    public void shouldUpdateExperienceBalance() throws Exception {
+        UserModel userModelTest = this.getUserModelTest();
+        userMapper.create(userModelTest);
+
+        userMapper.updateExperienceBalance(userModelTest.getLoginName(), ExperienceBillOperationType.IN, 2);
+
+        assertThat(userMapper.findByLoginName(userModelTest.getLoginName()).getExperienceBalance(), is(2L));
+
+        userMapper.updateExperienceBalance(userModelTest.getLoginName(), ExperienceBillOperationType.OUT, 1L);
+
+        assertThat(userMapper.findByLoginName(userModelTest.getLoginName()).getExperienceBalance(), is(1L));
     }
 }
