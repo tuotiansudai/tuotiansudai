@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,7 @@ public interface UserMapper {
     int updateUser(UserModel userModel);
 
     int updateExperienceBalance(@Param(value = "loginName") String loginName,
+                                @Param(value = "experienceBillOperationType") ExperienceBillOperationType experienceBillOperationType,
                                 @Param(value = "experienceBalance") long experienceBalance);
 
     int updateProvinceAndCity(@Param(value = "loginName") String loginName,
