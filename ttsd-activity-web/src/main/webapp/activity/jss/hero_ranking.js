@@ -172,14 +172,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 		}
 		heroRank('2016-07-31');
 		refeInvest('2016-07-31');
-
-		$getRank.on('click', function() {
-			cnzzPush.trackClick('153周年庆', '我要上榜', '英雄榜');
-		});
-
-		$getVip.on('click', function() {
-			cnzzPush.trackClick('152周年庆', '领取会员', '英雄榜');
-		});
+		
 		
 	});
 });

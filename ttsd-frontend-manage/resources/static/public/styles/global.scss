@@ -1,9 +1,16 @@
 @charset "utf-8";
-@import 'plugins/font_awesome';
 @import 'reset';
+@import 'plugins/font_awesome';
 
 //用来兼容ie8
+
 @import 'ie_hack_grid';
+
+body {
+  padding: 0;
+  margin: 0;
+  background: red;
+}
 .error-box {
   visibility: visible;
   height:20px;
