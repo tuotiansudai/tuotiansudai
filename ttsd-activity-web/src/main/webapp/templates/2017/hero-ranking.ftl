@@ -37,7 +37,16 @@
 
         <dl class="sort-box" id="sortBox">
             <dd class="fl">日期：<i class="date"> 2017.07.31</i></dd>
-            <dd class="ranking">我的排名：<i class="ranking-order">3</i></dd>
+            <dd class="ranking">
+                <span class="show-login">登录后查看</span>
+                <@global.isAnonymous>我的排名：<span class="show-login">登录后查看</span></@global.isAnonymous>
+                <@global.isNotAnonymous>
+                    <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
+                    我的排名:<i class="ranking-order">3</i>
+                </@global.isNotAnonymous>
+
+
+            </dd>
             <dd class="fr">今日投资总额：<i class="total">20999000</i>元</dd>
         </dl>
         <div class="nodata-invest tc" style="display: none;">活动已结束</div>

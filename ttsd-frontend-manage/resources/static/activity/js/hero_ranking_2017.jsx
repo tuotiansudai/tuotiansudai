@@ -1,6 +1,8 @@
 require("activityStyle/hero_ranking_2017.scss");
 let commonFun = require('publicJs/commonFun');
+require('publicJs/login_tip');
 
+let $activityPageFrame = $('#activityPageFrame');
 let $investRankingButton=$('#investRanking-button'),
     $heroNext=$('#heroNext'),
     $heroPre=$('#heroPre');
@@ -14,6 +16,24 @@ let $sortBox = $('#sortBox'),
 let ListTpl=$('#tplTable').html();
 let ListRender = _.template(ListTpl);
 
+//弹框登录
+(function() {
+    let $isLogin=$('.show-login',$activityPageFrame);
+    $isLogin.on('click', function(event) {
+        event.preventDefault();
+        $.when(commonFun.isUserLogin())
+            .fail(function() {
+                //判断是否需要弹框登陆
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['auto', 'auto'],
+                    content: $('#loginTip')
+                });
+            });
+    });
+})();
 //获取前一天或者后一天的日期
 function GetDateStr(date,AddDayCount) {
     var dd = new Date(date);
