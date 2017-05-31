@@ -14,6 +14,7 @@ require("publicStyle/error.scss");
 require("publicStyle/global.scss");
 
 require('publicJs/error');
+require('babel-polyfill');
 
 window.Middleware= require('publicJs/middleware');
 
