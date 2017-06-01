@@ -9,13 +9,13 @@
 <div class="banner-slide" id="bannerSlide"></div>
 <div class="activity-page-frame page-width" id="activityPageFrame">
 
-    <div class="rule-box">
+    <div class="rule-box clearfix">
         <dl class="title-rule">
             <dt>活动规则</dt>
             <dd>活动期间，每天24点计算当日新增投资排名，上榜者可获丰厚奖励。</dd>
         </dl>
 
-        <div class="reward-list">
+        <div class="reward-list ">
             <dl class="reward-one">
                 <dt><img src="${commonStaticServer}/images/sign/aboutus/company.jpg"  id="rewardOne"></dt>
                 <dd>第1名</dd>
@@ -70,7 +70,7 @@
                 <td>1</td>
                 <td>涨涨</td>
                 <td>900000</td>
-                <td>128G iphone7 plus</td>
+                <td>iphone7 </td>
             </tr>
             <tr>
                 <td>1</td>
