@@ -3,7 +3,7 @@
 
 <div class="banner-slide" id="bannerSlide"></div>
 <div class="activity-page-frame page-width" id="activityPageFrame">
-
+<#--${activityStartTime}-->
     <div class="rule-box clearfix">
         <dl class="title-rule">
             <dt>活动规则</dt>
@@ -26,15 +26,17 @@
             </dl>
         </div>
     </div>
-   
+
     <div class="heroes-list clearfix">
         <div class="title-head"></div>
 
         <dl class="sort-box" id="sortBox">
-            <dd class="fl">日期：<i class="date"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
+            <dd class="fl">日期：<i class="date" > ${currentTime?string('yyyy-MM-dd')}</i></dd>
             <dd class="ranking">
-                <span class="show-login">登录后查看</span>
-                <@global.isAnonymous>我的排名：<span class="show-login"><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></span></@global.isAnonymous>
+
+                <@global.isAnonymous>
+                    <span class="show-login">登录后查看</span>
+                </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
                     我的排名:<i class="ranking-order">3</i>
@@ -43,7 +45,7 @@
             </dd>
             <dd class="fr">今日投资总额：<i class="total">${(investAmount/100)?string('0.00')}</i>元</dd>
         </dl>
-        <div class="nodata-invest tc" style="display: none;">活动已结束</div>
+        <div class="nodata-invest tc" style="display: none;"></div>
         <table class="table-reward">
             <thead>
             <tr>
@@ -53,33 +55,9 @@
                 <th >奖励</th>
             </tr>
             </thead>
-            <tbody id="investRanking-tbody">å
-            <tr>
-                <td>1</td>
-                <td>涨涨</td>
-                <td>900000</td>
-                <td>128G iphone7 plus</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>涨涨</td>
-                <td>900000</td>
-                <td>iphone7 </td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>涨涨</td>
-                <td>900000</td>
-                <td>128G iphone7 plus</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>涨涨</td>
-                <td>900000</td>
-                <td>128G iphone7 plus</td>
-            </tr>
+            <tbody id="investRanking-tbody">
             </tbody>
-
+        </table>
 
         <script type="text/template" id="tplTable">
              for(var i = 0; i < records.length; i++) {
@@ -114,13 +92,12 @@
                 <td><%=reward%></td>
             </tr>
              }
-            </table>
         </script>
 
         <div class="date-button" id="investRanking-button">
             <span class="button-small" id="heroPre">查看前一天</span>
             <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
-            <span class="button-small" id="heroNext">查看后一天</span>
+            <span class="button-small" id="heroNext" style="display: none">查看后一天</span>
         </div>
 
     </div>
@@ -136,5 +113,5 @@
         7、拓天速贷在法律范围内保留对本活动的最终解释权。
     </div>
 </div>
-
+    <#include "../module/login-tip.ftl" />
 </@global.main>

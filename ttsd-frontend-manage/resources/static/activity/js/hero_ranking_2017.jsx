@@ -12,7 +12,13 @@ let $sortBox = $('#sortBox'),
     $totalAmount = $('.total',$sortBox),
     $rankingOrder =$('.ranking-order',$sortBox);
 
+let todayDay = $.trim($date.text());
+let startTime = 20170701,
+    endTime = 20170731,
+    todayDayStr=Number(todayDay.replace(/-/gi,''));
 
+var $nodataInvest=$('.nodata-invest'),
+    $tableReward = $('table.table-reward');
 let ListTpl=$('#tplTable').html();
 let ListRender = _.template(ListTpl);
 
@@ -83,52 +89,44 @@ $investRankingButton.find('.button-small').on('click',function(event) {
 
 });
 
-let getRankData = {
-    invest:function() {
-        commonFun.useAjax({
-            type:'GET',
-            url: '/activity/hero-ranking/invest/' + date
-        },function(data) {
-            console.log(data.records.length);
-            if(data.status) {
-                var $nodataInvest=$('.nodata-invest'),
-                    $contentRanking=$('#investRanking-tbody').parents('table');
-
-                if(_.isNull(data.records) || data.records.length==0) {
-                    $nodataInvest.show();
-                    $contentRanking.hide();
-                    return;
-                }
-                $contentRanking.show();
-                $nodataInvest.hide();
-                data.type='invest';
-                $('#investRanking-tbody').html(ListRender(data));
-            }
-        });
-    },
-    getOrder:function() {
-        commonFun.useAjax({
-            type:'GET',
-            url: '/activity/hero-ranking/invest/' + date
-        },function(data) {
-            var tst;
-        })
-    }
-}
 //英雄榜排名,今日投资排行
-// function heroRank(date) {
-//
-//
-// $.when(getRankData.invest(date),getRankData.getOrder(date))
-//     var data;
-// }
+function heroRank(date) {
+    commonFun.useAjax({
+        type:'GET',
+        url: '/activity/hero-ranking/invest/' + date
+    },function(data) {
+        if(data.status) {
 
-// heroRank('2017-05-09');
+           var $contentRanking=$('#investRanking-tbody').parents('table');
 
-var date="2017-05-08";
-commonFun.useAjax({
-    type:'GET',
-    url: '/activity/hero-ranking/ranking/' + date
-},function(data) {
-    var tst;
-})
+            if(_.isNull(data.records) || data.records.length==0) {
+                $contentRanking.hide();
+                return;
+            }
+            $contentRanking.show();
+            data.type='invest';
+            $('#investRanking-tbody').html(ListRender(data));
+        }
+    });
+
+    commonFun.useAjax({
+        type:'GET',
+        url: '/activity/hero-ranking/ranking/' + date
+    },function(data) {
+        var tst;
+    })
+}
+if(todayDayStr<startTime) {
+    //活动未开始
+    $nodataInvest.show().html('活动未开始');
+} else if(todayDayStr>endTime) {
+    //活动已经结束
+    $nodataInvest.show().html('活动已经结束');
+} else {
+    heroRank(todayDay);
+}
+
+
+
+
+
