@@ -78,9 +78,11 @@ public class CelebrationDrawCouponMessageConsumer implements MessageConsumer {
                 return;
             }
             celebrationDrawCouponMapper.create(new CelebrationDrawCouponModel(loginName));
-            logger.info(MessageFormat.format("{0} send message begin", loginName));
-            coupons.values().stream().forEach(couponId -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId));
-            logger.info(MessageFormat.format("{0} send message end", loginName));
+            coupons.values().stream().forEach(couponId -> {
+                logger.info(MessageFormat.format("loginName:{0},couponId:{1} send message begin", loginName, couponId));
+                mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+                logger.info(MessageFormat.format("loginName:{0},couponId:{1} send message end", loginName, couponId));
+            });
 
         } catch (IOException e) {
             logger.error("[MQ] parse message failed: {}: {}.", this.queue(), message);
