@@ -16,6 +16,18 @@ let $sortBox = $('#sortBox'),
 let ListTpl=$('#tplTable').html();
 let ListRender = _.template(ListTpl);
 
+(function() {
+    let $bannerSlide = $('#bannerSlide');
+    let redirect = globalFun.browserRedirect();
+    if(redirect=='mobile') {
+        let topSrc = require('../images/2017/hero-ranking/top-ranking-wap.png');
+        let topImage = new Image();
+        topImage.src = topSrc;
+        topImage.onload=function() {
+            $bannerSlide.append(topImage);
+        };
+    }
+})();
 //弹框登录
 (function() {
     let $isLogin=$('.show-login',$activityPageFrame);
