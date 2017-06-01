@@ -161,14 +161,91 @@ body {
   }
   .activity-page-frame {
     padding:15px;
-    .rule-box .title-rule {
-      dt {
-        background-size: 100%;
+    .rule-box {
+      .title-rule {
+        dt {
+          background-size: 100%;
+        }
+        dd {
+          text-align: left;
+        }
       }
-      dd {
-        text-align: left;
+      .reward-list {
+        font-size: 15px;
+        line-height: 45px;
+        .reward-one {
+          display: block;
+          dt {
+            width:100%;
+            height:auto;
+            img {
+              width:100%;
+            }
+          }
+
+        }
+        .coupon-one,.coupon-two{
+          width:45%;
+          dt {
+            width:100%;
+            height:90px;
+            background-size: 87%;
+            margin-top: 12px;
+          }
+
+        }
+      }
+
+    }
+
+    .heroes-list {
+      .title-head {
+        background-size: 70%;
+      }
+      .sort-box {
+        dd {
+          &.ranking {
+            float: right;
+          }
+          &:nth-last-child(1) {
+            float: none;
+            margin:10px auto;
+
+          }
+
+        }
+      }
+      .table-reward {
+        th {
+          font-size:14px;
+        }
+        td {
+          font-size:14px;
+          border-bottom: 10px solid #2b023c;
+          padding: 5px;
+        }
+      }
+    }
+  }
+
+  .date-button {
+    width:100%;
+    font-size:14px;
+    .button-small {
+      margin-top: 10px;
+      &:nth-child(1) {
+        float: left;
+      }
+      &:nth-child(3) {
+        float: right;
       }
     }
 
+
+    .btn-to-invest {
+      margin-left:0;
+      margin-right:0;
+      padding: 7px 20px;
+    }
   }
 }
