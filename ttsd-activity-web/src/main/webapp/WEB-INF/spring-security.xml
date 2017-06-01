@@ -99,8 +99,6 @@
         <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/dragon/wechat/punchCard" access="hasAnyAuthority('USER')"/>
-        <intercept-url pattern="/activity/dragon/wechat/fetchCouponAfterRegister" access="hasAnyAuthority('USER')"/>
-        <intercept-url pattern="/activity/dragon/wechat/fetchCouponAfterLogin" access="hasAnyAuthority('USER')"/>
 
 
         <intercept-url pattern="/**" access="permitAll()"/>
