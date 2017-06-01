@@ -39,6 +39,7 @@ public class CelebrationHeroRankingService {
             logger.info("tradingTime is null");
             return null;
         }
+
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<NewmanTyrantView> celebrationHeroRankingViews=investCelebrationHeroRankingMapper.findCelebrationHeroRankingByTradingTime(tradingTime, celebrationHeroRankingActivityPeriod.get(0), celebrationHeroRankingActivityPeriod.get(1));
         return CollectionUtils.isNotEmpty(celebrationHeroRankingViews) && celebrationHeroRankingViews.size() > 10 ? celebrationHeroRankingViews.subList(0, 10) : celebrationHeroRankingViews;
