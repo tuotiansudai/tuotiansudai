@@ -83,29 +83,52 @@ $investRankingButton.find('.button-small').on('click',function(event) {
 
 });
 
-//英雄榜排名,今日投资排行
-function heroRank(date) {
+let getRankData = {
+    invest:function() {
+        commonFun.useAjax({
+            type:'GET',
+            url: '/activity/hero-ranking/invest/' + date
+        },function(data) {
+            console.log(data.records.length);
+            if(data.status) {
+                var $nodataInvest=$('.nodata-invest'),
+                    $contentRanking=$('#investRanking-tbody').parents('table');
 
-    console.log('kklll');
-    // commonFun.useAjax({
-    //     type:'GET',
-    //     url: '/activity/hero-ranking/invest/' + date
-    // },function(data) {
-    //     if(data.status) {
-    //         var $nodataInvest=$('.nodata-invest'),
-    //             $contentRanking=$('#investRanking-tbody').parents('table');
-    //
-    //         if(_.isNull(data.records) || data.records.length==0) {
-    //             $nodataInvest.show();
-    //             $contentRanking.hide();
-    //             return;
-    //         }
-    //         $contentRanking.show();
-    //         $nodataInvest.hide();
-    //         data.type='invest';
-    //         $('#investRanking-tbody').html(ListRender(data));
-    //     }
-    // });
-
+                if(_.isNull(data.records) || data.records.length==0) {
+                    $nodataInvest.show();
+                    $contentRanking.hide();
+                    return;
+                }
+                $contentRanking.show();
+                $nodataInvest.hide();
+                data.type='invest';
+                $('#investRanking-tbody').html(ListRender(data));
+            }
+        });
+    },
+    getOrder:function() {
+        commonFun.useAjax({
+            type:'GET',
+            url: '/activity/hero-ranking/invest/' + date
+        },function(data) {
+            var tst;
+        })
+    }
 }
+//英雄榜排名,今日投资排行
+// function heroRank(date) {
+//
+//
+// $.when(getRankData.invest(date),getRankData.getOrder(date))
+//     var data;
+// }
 
+// heroRank('2017-05-09');
+
+var date="2017-05-08";
+commonFun.useAjax({
+    type:'GET',
+    url: '/activity/hero-ranking/ranking/' + date
+},function(data) {
+    var tst;
+})

@@ -1,9 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
-<#assign jsName = 'hero_ranking_2017' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
-
+<#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.hero_ranking_2017}" pageJavascript="${js.hero_ranking_2017}" activeNav="" activeLeftNav="" title="周年庆活动_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
 
 <div class="banner-slide" id="bannerSlide"></div>
@@ -17,7 +12,7 @@
 
         <div class="reward-list ">
             <dl class="reward-one">
-                <dt><img src="${commonStaticServer}/images/sign/aboutus/company.jpg"  id="rewardOne"></dt>
+                <dt><img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"  id="rewardOne"></dt>
                 <dd>第1名</dd>
             </dl>
 
@@ -31,23 +26,22 @@
             </dl>
         </div>
     </div>
-
+   
     <div class="heroes-list clearfix">
         <div class="title-head"></div>
 
         <dl class="sort-box" id="sortBox">
-            <dd class="fl">日期：<i class="date"> 2017.07.31</i></dd>
+            <dd class="fl">日期：<i class="date"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
             <dd class="ranking">
                 <span class="show-login">登录后查看</span>
-                <@global.isAnonymous>我的排名：<span class="show-login">登录后查看</span></@global.isAnonymous>
+                <@global.isAnonymous>我的排名：<span class="show-login"><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></span></@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
                     我的排名:<i class="ranking-order">3</i>
                 </@global.isNotAnonymous>
 
-
             </dd>
-            <dd class="fr">今日投资总额：<i class="total">20999000</i>元</dd>
+            <dd class="fr">今日投资总额：<i class="total">${(investAmount/100)?string('0.00')}</i>元</dd>
         </dl>
         <div class="nodata-invest tc" style="display: none;">活动已结束</div>
         <table class="table-reward">
@@ -59,7 +53,7 @@
                 <th >奖励</th>
             </tr>
             </thead>
-            <tbody id="investRanking-tbody">
+            <tbody id="investRanking-tbody">å
             <tr>
                 <td>1</td>
                 <td>涨涨</td>
@@ -85,11 +79,11 @@
                 <td>128G iphone7 plus</td>
             </tr>
             </tbody>
-        </table>
+
 
         <script type="text/template" id="tplTable">
-            <% for(var i = 0; i < records.length; i++) { %>
-            <% var item = records[i];
+             for(var i = 0; i < records.length; i++) {
+             var item = records[i];
             var reward;
             if(type=='invest') {
             if(i==0) {
@@ -113,16 +107,14 @@
             reward='30元红包';
             }
             }
-
-            %>
             <tr>
                 <td><%=i+1%></td>
                 <td><%=item.loginName%></td>
                 <td><%=item.centSumAmount%></td>
                 <td><%=reward%></td>
             </tr>
-            <% } %>
-
+             }
+            </table>
         </script>
 
         <div class="date-button" id="investRanking-button">
