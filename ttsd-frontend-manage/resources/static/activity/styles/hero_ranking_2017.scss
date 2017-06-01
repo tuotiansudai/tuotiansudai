@@ -1,0 +1,174 @@
+body {
+  background: #a048cf;
+  overflow-x: hidden;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.banner-slide  {
+  height: 349px;
+  background: #aa4edb url("../images/2017/hero-ranking/top-ranking.png") center top no-repeat;
+}
+
+.activity-page-frame {
+  color: #f8d000;
+  background: #8606b3;
+  box-sizing: border-box;
+  padding:20px 40px;
+
+  .rule-box {
+    .title-rule {
+      text-align: center;
+      font-size: 16px;
+      dt {
+        height:75px;
+        background: url('../images/2017/hero-ranking/bg-title.png') center top no-repeat;
+        color: #6f0050;
+        font-weight: bold;
+        font-size: 22px;
+        line-height: 45px;
+      }
+    }
+    .reward-list {
+      margin-top: 15px;
+      color: #fff;
+      text-align: center;
+      font-size: 20px;
+      line-height: 55px;
+      .reward-one {
+        display: inline-block;
+        dt {
+          width:367px;
+          height:200px;
+          background: red;
+          overflow: hidden;
+          img {
+            width:100%;
+          }
+        }
+
+      }
+      .coupon-one {
+        float: left;
+
+        dt {
+          width:250px;
+          height:134px;
+          background: #eeeeee url('../images/2017/hero-ranking/reward-l.png') center center no-repeat;
+          margin-top: 32px;
+        }
+      }
+      .coupon-two {
+        float: right;
+
+        dt {
+          width:250px;
+          height:134px;
+          background: #eeeeee url('../images/2017/hero-ranking/reward-r.png') center center no-repeat;
+          margin-top: 32px;
+        }
+
+      }
+    }
+  }
+
+  .heroes-list {
+    background: #2b023c;
+    padding:10px;
+    .title-head {
+      height:65px;
+      background: url('../images/2017/hero-ranking/title-hero.png') center center no-repeat;
+    }
+
+    .sort-box {
+      text-align: center;
+      margin-top:10px;
+      margin-bottom: 20px;
+      dd {
+        display: inline-block;
+        background: #3b0352;
+        color: #f8d306;
+        padding:4px 30px;
+
+        &.ranking {
+          margin:0 auto;
+        }
+      }
+    }
+
+    .table-reward {
+
+      th {
+        background: #2b023c;
+        font-size: 18px;
+      }
+      td {
+        color: #f8d000;
+        font-size: 16px;
+        background: #3b0352;
+        border-bottom:15px solid #2b023c;
+      }
+    }
+  }
+}
+
+.date-button {
+  width:60%;
+  margin: 30px auto;
+  font-size: 16px;
+  text-align: center;
+  .button-small {
+    display: inline-block;
+    height:30px;
+    border-bottom:1px solid #f8d000;
+    vertical-align: bottom;
+  }
+  .btn-to-invest {
+    background: #ffd323;
+    padding: 7px 50px;
+    color: #6f0050;
+    display: inline-block;
+    margin-left: 50px;
+    margin-right: 50px;
+    border-bottom: 5px solid #996b11;
+
+  }
+}
+
+.note-box {
+  margin-top:30px;
+  padding-bottom: 20px;
+  font-size:12px;
+  line-height: 25px;
+  b {
+    font-size: 18px;
+    display: block;
+    margin-bottom:15px;
+  }
+}
+
+@media screen and (max-width:700px) {
+
+  .banner-slide  {
+    background: none;
+    height:auto;
+    img {
+      width:100%;
+    }
+  }
+  .activity-page-frame {
+    padding:15px;
+    .rule-box .title-rule {
+      dt {
+        background-size: 100%;
+      }
+      dd {
+        text-align: left;
+      }
+    }
+
+  }
+}
