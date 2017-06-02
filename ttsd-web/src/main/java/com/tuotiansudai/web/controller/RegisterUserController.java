@@ -112,9 +112,10 @@ public class RegisterUserController {
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         boolean isRegisterSuccess;
-        if (request.getSession().getAttribute("channel") != null) {
-            registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
-        }
+//        if (request.getSession().getAttribute("channel") != null) {
+//            registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
+//        }
+
         logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
         isRegisterSuccess = this.userService.registerUser(registerUserDto);
         logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
