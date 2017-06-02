@@ -88,55 +88,54 @@ public class MoneyTreePrizeService {
     public int getLeftDrawPrizeTime(String mobile) {
         int lotteryTimes = 0;
         //为了兼容iso和android，在活动时间范围之外范围次数为0
-        if(isActivity() == 0){
+        if (this.isActivity() == 0) {
             return 0;
         }
-        else {
-            UserModel userModel = userMapper.findByMobile(mobile);
-            if (userModel == null) {
-                return 0;
-            }
 
-            //判断当天是否参与过摇奖，没有参与过给一次机会
-            int isLottery = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
-            if (isLottery == 0) {
-                lotteryTimes = 1;
-            }
-
-            List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
-
-            int referrerLotteryTimes = 0;
-            //根据注册时间分组
-            Map<String, Long> groupByEveryDayCounts = userModels
-                    .stream()
-                    .collect(Collectors.groupingBy(p -> String.format("%tF", p.getRegisterTime()), Collectors.counting()));
-
-            //单日邀请人数超过3人者，最多给3次摇奖机会
-            for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
-                if (entry.getValue() > 3) {
-                    referrerLotteryTimes += 3;
-                } else {
-                    referrerLotteryTimes += entry.getValue();
-                }
-            }
-            //查询所有已经摇奖的次数
-            int usedLotteryTimes = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
-
-            int usedEveryDayLotteryTimes = 0;
-            Date startTime = DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            Date endTime = new Date();
-
-            //查询活动开始后，每天的摇奖次数（如果每天都有摇将，则记录每天一次的总和）
-            long countDays = DateUtil.differenceDay(startTime, endTime);
-
-            for (int i = 0; i <= countDays; i++) {
-                int isEveryDayLottery = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(startTime).plusDays(i).withTimeAtStartOfDay().toDate(), new DateTime(startTime).plusDays(i).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
-                usedEveryDayLotteryTimes += isEveryDayLottery > 0 ? 1 : 0;
-            }
-
-            lotteryTimes = (lotteryTimes + referrerLotteryTimes) - (usedLotteryTimes - usedEveryDayLotteryTimes);
-            return lotteryTimes;
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if (userModel == null) {
+            return 0;
         }
+
+        //判断当天是否参与过摇奖，没有参与过给一次机会
+        int isLottery = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+        if (isLottery == 0) {
+            lotteryTimes = 1;
+        }
+
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
+
+        int referrerLotteryTimes = 0;
+        //根据注册时间分组
+        Map<String, Long> groupByEveryDayCounts = userModels
+                .stream()
+                .collect(Collectors.groupingBy(p -> String.format("%tF", p.getRegisterTime()), Collectors.counting()));
+
+        //单日邀请人数超过3人者，最多给3次摇奖机会
+        for (Map.Entry<String, Long> entry : groupByEveryDayCounts.entrySet()) {
+            if (entry.getValue() > 3) {
+                referrerLotteryTimes += 3;
+            } else {
+                referrerLotteryTimes += entry.getValue();
+            }
+        }
+        //查询所有已经摇奖的次数
+        int usedLotteryTimes = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, null, null);
+
+        int usedEveryDayLotteryTimes = 0;
+        Date startTime = DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = new Date();
+
+        //查询活动开始后，每天的摇奖次数（如果每天都有摇将，则记录每天一次的总和）
+        long countDays = DateUtil.differenceDay(startTime, endTime);
+
+        for (int i = 0; i <= countDays; i++) {
+            int isEveryDayLottery = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.MONEY_TREE, new DateTime(startTime).plusDays(i).withTimeAtStartOfDay().toDate(), new DateTime(startTime).plusDays(i).withTimeAtStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59).toDate());
+            usedEveryDayLotteryTimes += isEveryDayLottery > 0 ? 1 : 0;
+        }
+
+        lotteryTimes = (lotteryTimes + referrerLotteryTimes) - (usedLotteryTimes - usedEveryDayLotteryTimes);
+        return lotteryTimes;
     }
 
     @Transactional
