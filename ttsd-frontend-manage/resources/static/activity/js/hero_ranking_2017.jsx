@@ -13,13 +13,44 @@ let $sortBox = $('#sortBox'),
     $rankingOrder =$('.ranking-order',$sortBox);
 
 let todayDay = $.trim($date.text());
-let startTime = 20170601,
-    endTime = 20170731,
-    todayDayStr=Number(todayDay.replace(/-/gi,''));
+let startTime = 20170520,
+    endTime = 20170605;
+
 
 let $nodataInvest=$('.nodata-invest'),
-    $tableReward = $('table.table-reward');
+    $contentRanking=$('#investRanking-tbody');
 
+function activityStatus(nowDay) {
+    let nowDayStr=Number(nowDay.replace(/-/gi,'')),
+        todayDayStr = Number(todayDay.replace(/-/gi,''));
+     endTime = (todayDayStr<endTime)?todayDayStr:endTime;
+    $nodataInvest.hide();
+        if(nowDayStr==endTime) {
+            //今天
+            heroRank(nowDay);
+            $heroNext.hide();
+            $contentRanking.show();
+        }
+      else if(nowDayStr>endTime) {
+            //活动已经结束
+            $heroNext.hide();
+            $contentRanking.hide();
+            $nodataInvest.show().html('活动已经结束');
+        } else if(nowDayStr<startTime) {
+            //活动未开始
+            $heroPre.hide();
+            $heroNext.show();
+            $contentRanking.hide();
+
+        } else {
+            $heroNext.show();
+            $heroPre.show();
+            heroRank(nowDay);
+        }
+}
+
+//页面初始
+activityStatus(todayDay);
 
 (function() {
     let $bannerSlide = $('#bannerSlide');
@@ -55,29 +86,14 @@ let $nodataInvest=$('.nodata-invest'),
 $investRankingButton.find('.button-small').on('click',function(event) {
     var dateSpilt=$.trim($date.text()),
         currDate;
-    endTime = (todayDayStr<endTime)?todayDayStr:endTime;
-
     if(/heroPre/.test(event.target.id)) {
         currDate=commonFun.GetDateStr(dateSpilt,-1); //前一天
     }
     else if(/heroNext/.test(event.target.id)){
         currDate=commonFun.GetDateStr(dateSpilt,1); //后一天
     }
-    // $nodataInvest.hide();
-    if(currDate.replace(/-/gi,'')>=endTime) {
-        $heroNext.hide();
-    }
-    else {
-        $heroNext.show();
-    }
-    if(currDate.replace(/-/gi,'')<=startTime) {
-        $heroPre.hide();
-    }
-    else {
-        $heroPre.show();
-    }
     $date.text(currDate);
-    heroRank(currDate);
+    activityStatus(currDate);
 
 });
 
@@ -88,12 +104,10 @@ function heroRank(date) {
         url: '/activity/hero-ranking/invest/' + date
     },function(data) {
         if(data.status) {
-           var $contentRanking=$('#investRanking-tbody');
             if(_.isNull(data.records) || data.records.length==0) {
-                $contentRanking.hide();
+                $('#investRanking-tbody').html('');
                 return;
             }
-            $contentRanking.show();
             //获取模版内容
             let ListTpl=$('#tplTable').html();
             // 解析模板, 返回解析后的内容
@@ -113,20 +127,8 @@ function heroRank(date) {
     })
 }
 
-if(todayDayStr<startTime) {
-    //活动未开始
-    $heroPre.hide();
-} else if(todayDayStr>endTime) {
-    //活动已经结束
-    $nodataInvest.show().html('活动已经结束');
-    $tableReward.hide();
-
-} else {
-    heroRank(todayDay);
-}
 
 $('#toInvest').on('click',function() {
-
     window.location.href='/loan-list';
 });
 
