@@ -51,16 +51,6 @@ let $nodataInvest=$('.nodata-invest'),
             });
     });
 })();
-//获取前一天或者后一天的日期
-function GetDateStr(date,AddDayCount) {
-    var dd = new Date(date);
-    dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
-    var y = dd.getFullYear();
-    var m = dd.getMonth()+1;//获取当前月份的日期
-    var d = dd.getDate();
-
-    return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
-}
 
 $investRankingButton.find('.button-small').on('click',function(event) {
     var dateSpilt=$.trim($date.text()),
@@ -68,10 +58,10 @@ $investRankingButton.find('.button-small').on('click',function(event) {
     endTime = (todayDayStr<endTime)?todayDayStr:endTime;
 
     if(/heroPre/.test(event.target.id)) {
-        currDate=GetDateStr(dateSpilt,-1); //前一天
+        currDate=commonFun.GetDateStr(dateSpilt,-1); //前一天
     }
     else if(/heroNext/.test(event.target.id)){
-        currDate=GetDateStr(dateSpilt,1); //后一天
+        currDate=commonFun.GetDateStr(dateSpilt,1); //后一天
     }
     // $nodataInvest.hide();
     if(currDate.replace(/-/gi,'')>=endTime) {
