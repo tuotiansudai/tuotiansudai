@@ -28,7 +28,7 @@ import java.util.Map;
 @Component
 public class CelebrationDrawCouponMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(CelebrationDrawCouponMessageConsumer.class);
-
+    @Autowired
     public CelebrationDrawCouponMapper celebrationDrawCouponMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.drawCoupon.startTime}\")}")
@@ -68,8 +68,8 @@ public class CelebrationDrawCouponMessageConsumer implements MessageConsumer {
         }
 
         try {
-            String loginName = JsonConverter.readValue(message, String.class);
-            if (duringActivities()) {
+            String loginName = message;
+            if (!duringActivities()) {
                 logger.info("周年庆领取优惠券活动已经结束!");
                 return;
             }
@@ -84,10 +84,8 @@ public class CelebrationDrawCouponMessageConsumer implements MessageConsumer {
                 logger.info(MessageFormat.format("loginName:{0},couponId:{1} send message end", loginName, couponId));
             });
 
-        } catch (IOException e) {
-            logger.error("[MQ] parse message failed: {}: {}.", this.queue(), message);
         } catch (Exception e) {
-            logger.error("[MQ] 程序內部异常: {}: {}.", this.queue(), message);
+            logger.error("[MQ] 程序內部异常: {}: {}.{}", this.queue(), message, e.getMessage());
         }
     }
 
