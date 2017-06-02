@@ -9,10 +9,13 @@
             <dt>活动规则</dt>
             <dd>活动期间，每天24点计算当日新增投资排名，上榜者可获丰厚奖励。</dd>
         </dl>
-
         <div class="reward-list ">
-            <dl class="reward-one">
-                <dt><img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"  id="rewardOne"></dt>
+            <dl class="reward-one" >
+                <dt>
+                 <#if prizeDto??>
+                     <img data-reward="${prizeDto.goldPrizeName}" src="${commonStaticServer}${prizeDto.goldImageUrl}"  id="rewardOne">
+                </#if>
+                </dt>
                 <dd>第1名</dd>
             </dl>
 
@@ -59,41 +62,6 @@
             </tbody>
         </table>
 
-        <script type="text/template" id="tplTable">
-             for(var i = 0; i < records.length; i++) {
-             var item = records[i];
-            var reward;
-            if(type=='invest') {
-            if(i==0) {
-            reward='神秘大奖＋1%加息券';
-            }
-            else if(i>0 && i<5) {
-            reward='200元红包＋1%加息券';
-            }
-            else {
-            reward='100元红包＋1%加息券';
-            }
-            }
-            else if(type=='referrer') {
-            if(i==0) {
-            reward='100元红包';
-            }
-            else if(i==1) {
-            reward='50元红包';
-            }
-            else if(i==2) {
-            reward='30元红包';
-            }
-            }
-            <tr>
-                <td><%=i+1%></td>
-                <td><%=item.loginName%></td>
-                <td><%=item.centSumAmount%></td>
-                <td><%=reward%></td>
-            </tr>
-             }
-        </script>
-
         <div class="date-button" id="investRanking-button">
             <span class="button-small" id="heroPre">查看前一天</span>
             <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
@@ -113,5 +81,29 @@
         7、拓天速贷在法律范围内保留对本活动的最终解释权。
     </div>
 </div>
+
+<script type="text/template" id="tplTable">
+    <% for(var i = 0; i < records.length; i++) {
+    var item = records[i];
+    var reward;
+    if(i==0) {
+    reward=rewardOne;
+    }
+    else if(i>0 && i<4) {
+    reward='1%加息券';
+    }
+    else {
+    reward='0.8%加息券';
+    }
+    %>
+    <tr>
+        <td><%=i+1%></td>
+        <td><%=item.loginName%></td>
+        <td><%=item.centSumAmount%></td>
+        <td><%=reward%></td>
+    </tr>
+    <% } %>
+</script>
+
     <#include "../module/login-tip.ftl" />
 </@global.main>

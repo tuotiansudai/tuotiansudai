@@ -13,14 +13,14 @@ let $sortBox = $('#sortBox'),
     $rankingOrder =$('.ranking-order',$sortBox);
 
 let todayDay = $.trim($date.text());
-let startTime = 20170701,
+let startTime = 20170601,
     endTime = 20170731,
-    todayDayStr=Number(todayDay.replace(/-/gi,''));
+    todayDayStr=Number(todayDay.replace(/-/gi,'')),
+    rewardOne = $('#rewardOne').data('reward');
 
-var $nodataInvest=$('.nodata-invest'),
+let $nodataInvest=$('.nodata-invest'),
     $tableReward = $('table.table-reward');
-let ListTpl=$('#tplTable').html();
-let ListRender = _.template(ListTpl);
+
 
 (function() {
     let $bannerSlide = $('#bannerSlide');
@@ -66,19 +66,22 @@ function GetDateStr(date,AddDayCount) {
 $investRankingButton.find('.button-small').on('click',function(event) {
     var dateSpilt=$.trim($date.text()),
         currDate;
+    endTime = (todayDayStr<endTime)?todayDayStr:endTime;
+
     if(/heroPre/.test(event.target.id)) {
         currDate=GetDateStr(dateSpilt,-1); //前一天
     }
     else if(/heroNext/.test(event.target.id)){
         currDate=GetDateStr(dateSpilt,1); //后一天
     }
-    if(currDate.replace(/-/gi,'')>=20170731) {
+
+    if(currDate.replace(/-/gi,'')>=endTime) {
         $heroNext.hide();
     }
     else {
         $heroNext.show();
     }
-    if(currDate.replace(/-/gi,'')<=20170701) {
+    if(currDate.replace(/-/gi,'')<=startTime) {
         $heroPre.hide();
     }
     else {
@@ -97,15 +100,19 @@ function heroRank(date) {
     },function(data) {
         if(data.status) {
 
+            data.rewardOne = rewardOne;
            var $contentRanking=$('#investRanking-tbody').parents('table');
-
             if(_.isNull(data.records) || data.records.length==0) {
                 $contentRanking.hide();
                 return;
             }
             $contentRanking.show();
-            data.type='invest';
-            $('#investRanking-tbody').html(ListRender(data));
+            //获取模版内容
+            let ListTpl=$('#tplTable').html();
+            // 解析模板, 返回解析后的内容
+            let render = _.template(ListTpl);
+            let html = render(data);
+            $('#investRanking-tbody').html(html);
         }
     });
 
@@ -113,7 +120,9 @@ function heroRank(date) {
         type:'GET',
         url: '/activity/hero-ranking/ranking/' + date
     },function(data) {
-        var tst;
+        //今日投资总额 和 排名
+        $totalAmount.text(data.investAmount);
+        $rankingOrder.text(data.investRanking);
     })
 }
 if(todayDayStr<startTime) {
