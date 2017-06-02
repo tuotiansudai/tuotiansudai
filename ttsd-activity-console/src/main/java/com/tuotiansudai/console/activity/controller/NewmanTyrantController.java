@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-console/activity-manage/newman-tyrant-buyongl")
+@RequestMapping(value = "/activity-console/activity-manage/newman-tyrant")
 public class NewmanTyrantController {
     @Autowired
     private ActivityConsoleNewmanTyrantService activityConsoleNewmanTyrantService;
@@ -25,7 +25,7 @@ public class NewmanTyrantController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView newmanTyrant(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
 
-        ModelAndView modelAndView = new ModelAndView("/newman-tyrant-buyongl");
+        ModelAndView modelAndView = new ModelAndView("/newman-tyrant");
 
         if (tradingTime == null) {
             tradingTime = new Date();
