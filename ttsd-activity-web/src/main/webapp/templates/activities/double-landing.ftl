@@ -148,7 +148,6 @@
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="referrer" value="">
                                 <input type="hidden" name="source" value="WEB">
-                                <input type="hidden" name="channel" value="htracking">
                                 <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/channel/htracking/success">
                                 <#if success?? && success == false>
                                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>

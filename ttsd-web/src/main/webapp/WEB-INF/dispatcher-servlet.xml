@@ -99,7 +99,6 @@
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="requestContextAttribute" value="requestContext"/>
         <property name="exposeSessionAttributes" value="true"/>
-        <property name="allowSessionOverride" value="true"/>
     </bean>
 
     <bean class="com.tuotiansudai.web.config.handler.HandlerExceptionLoggingResolver"/>
