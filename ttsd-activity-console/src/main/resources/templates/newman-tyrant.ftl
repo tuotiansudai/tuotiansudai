@@ -174,7 +174,6 @@
 
         </form>
     </div>
-
 </div>
-
+adsadasdasdad${commonStaticServer}${todayDto.goldImageUrl!}${todayDto.goldPrizeName!}
 </@global.main>

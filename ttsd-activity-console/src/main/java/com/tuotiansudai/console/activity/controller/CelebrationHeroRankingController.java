@@ -3,7 +3,7 @@ package com.tuotiansudai.console.activity.controller;
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
-import com.tuotiansudai.console.activity.service.ActivityConsoleNewmanTyrantService;
+import com.tuotiansudai.console.activity.service.ActivityConsoleCelebrationHeroRankingService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,41 +13,41 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-console/activity-manage/hero-ranking")
+@RequestMapping(value = "/activity-console/activity-manage/newman-tyrant")
 public class CelebrationHeroRankingController {
     @Autowired
-    private ActivityConsoleNewmanTyrantService activityConsoleNewmanTyrantService;
+    private ActivityConsoleCelebrationHeroRankingService activityConsoleCelebrationHeroRankingService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView newmanTyrant(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
 
-        ModelAndView modelAndView = new ModelAndView("/hero-ranking");
+        ModelAndView modelAndView = new ModelAndView("/newman-tyrant");
 
         if (tradingTime == null) {
             tradingTime = new Date();
         }
 
-        List<NewmanTyrantView> newmanViews = activityConsoleNewmanTyrantService.obtainNewman(tradingTime);
+        List<NewmanTyrantView> heroRankingViews = activityConsoleCelebrationHeroRankingService.obtainHero(tradingTime);
 
-        List<NewmanTyrantView> tyrantViews = activityConsoleNewmanTyrantService.obtainTyrant(tradingTime);
+        List<NewmanTyrantHistoryView> heroRankingHistoryViews = activityConsoleCelebrationHeroRankingService.obtainNewmanTyrantHistoryRanking(tradingTime);
 
-        List<NewmanTyrantHistoryView> newmanTyrantHistoryViews = activityConsoleNewmanTyrantService.obtainNewmanTyrantHistoryRanking(tradingTime);
         modelAndView.addObject("tradingTime", tradingTime);
+        modelAndView.addObject("tyrantViews", heroRankingViews);
+        modelAndView.addObject("avgTyrantInvestAmount", heroRankingHistoryViews.size() > 0 ? heroRankingHistoryViews.get(0).getAvgTyrantInvestAmount() : 0);
+        modelAndView.addObject("todayDto", activityConsoleCelebrationHeroRankingService.obtainPrizeDto(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        modelAndView.addObject("tomorrowDto", activityConsoleCelebrationHeroRankingService.obtainPrizeDto(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
 
-        modelAndView.addObject("newmanViews", newmanViews);
+        List<NewmanTyrantView> newmanTyrantViews=new ArrayList<NewmanTyrantView>();
+        modelAndView.addObject("newmanViews", newmanTyrantViews);
+        modelAndView.addObject("avgNewmanInvestAmount",0);
 
-        modelAndView.addObject("tyrantViews", tyrantViews);
-
-        modelAndView.addObject("avgNewmanInvestAmount", newmanTyrantHistoryViews.size() > 0 ? newmanTyrantHistoryViews.get(0).getAvgNewmanInvestAmount() : 0);
-        modelAndView.addObject("avgTyrantInvestAmount", newmanTyrantHistoryViews.size() > 0 ? newmanTyrantHistoryViews.get(0).getAvgTyrantInvestAmount() : 0);
-
-        modelAndView.addObject("todayDto", activityConsoleNewmanTyrantService.obtainPrizeDto(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-        modelAndView.addObject("tomorrowDto", activityConsoleNewmanTyrantService.obtainPrizeDto(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         return modelAndView;
+
     }
 
     @RequestMapping(value = "/upload-image", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
@@ -58,7 +58,7 @@ public class CelebrationHeroRankingController {
         if (!today) {
             newmanTyrantPrizeDto.setPrizeDate(new DateTime().plusDays(1).toDate());
         }
-        activityConsoleNewmanTyrantService.savePrize(newmanTyrantPrizeDto);
+        activityConsoleCelebrationHeroRankingService.savePrize(newmanTyrantPrizeDto);
         return newmanTyrantPrizeDto;
     }
 

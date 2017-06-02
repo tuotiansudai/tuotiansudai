@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.collect.Iterators;
+import com.tuotiansudai.activity.repository.model.InvestNewmanTyrantModel;
 import com.tuotiansudai.activity.repository.model.MyHeroRanking;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.activity.service.CelebrationHeroRankingService;
@@ -49,7 +50,6 @@ public class CelebrationHeroRankingController {
         modelAndView.addObject("activityStartTime", activityTime.get(0));
         modelAndView.addObject("activityEndTime", activityTime.get(1));
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
-
         return modelAndView;
     }
 

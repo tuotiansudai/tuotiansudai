@@ -4,6 +4,7 @@ package com.tuotiansudai.activity.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.activity.repository.mapper.InvestCelebrationHeroRankingMapper;
+import com.tuotiansudai.activity.repository.model.InvestNewmanTyrantModel;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileEncryptor;
@@ -71,5 +72,6 @@ public class CelebrationHeroRankingService {
     public List<String> getActivityTime(){
         return Lists.newArrayList(celebrationHeroRankingActivityPeriod.get(0),celebrationHeroRankingActivityPeriod.get(1));
     }
+
 
 }

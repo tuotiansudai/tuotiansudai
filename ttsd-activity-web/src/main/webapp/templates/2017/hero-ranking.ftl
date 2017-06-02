@@ -36,7 +36,7 @@
         <div class="title-head"></div>
 
         <dl class="sort-box" id="sortBox">
-            <dd class="fl">日期：<i class="date" > ${currentTime?string('yyyy-MM-dd')}</i></dd>
+            <dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
             <dd class="ranking">
                 我的排名：
                 <@global.isAnonymous>

@@ -119,33 +119,33 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                 url = url + "?today=true";
             }
             // if (boolFlag) {
-                if (confirm("确认提交更新?")) {
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8',
-                        data: JSON.stringify({"goldPrizeName": $('.gold-prize-name').val(), "goldImageUrl": $('.gold-image-url').val(),
-                            "silverPrizeName":$('.silver-prize-name').val(),"silverImageUrl":$('.silver-image-url').val()})
-                    }).done(function (data) {
-                        boolFlag = false;
-                        $prizeForm[0].reset();
-                        $('.goldThumbImage').html('');
-                        $('.silverThumbImage').html('');
-                        if ($self.hasClass("tomorrow-prize-save")) {
+            if (confirm("确认提交更新?")) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                    data: JSON.stringify({"goldPrizeName": $('.gold-prize-name').val(), "goldImageUrl": $('.gold-image-url').val(),
+                        "silverPrizeName":$('.silver-prize-name').val(),"silverImageUrl":$('.silver-image-url').val()})
+                }).done(function (data) {
+                    boolFlag = false;
+                    $prizeForm[0].reset();
+                    $('.goldThumbImage').html('');
+                    $('.silverThumbImage').html('');
+                    if ($self.hasClass("tomorrow-prize-save")) {
 
-                            $('.tomorrowThumbImage').html('');
-                            $('.tomorrowThumbImage').append('<img src="' + data.goldImageUrl + '" alt="金奖缩略图">');
-                            $('.tomorrowThumbImage').append('<img src="' + data.silverImageUrl + '" alt="银奖缩略图">');
-                        }
-                        if ($self.hasClass("today-prize-save")) {
-                            $('.todayThumbImage').html('');
-                            $('.todayThumbImage').append('<img src="' + data.goldImageUrl + '" alt="金奖缩略图">');
-                            $('.todayThumbImage').append('<img src="' + data.silverImageUrl + '" alt="银奖大奖缩略图">');
-                        }
+                        $('.tomorrowThumbImage').html('');
+                        $('.tomorrowThumbImage').append('<img src="' + data.goldImageUrl + '" alt="金奖缩略图">');
+                        $('.tomorrowThumbImage').append('<img src="' + data.silverImageUrl + '" alt="银奖缩略图">');
+                    }
+                    if ($self.hasClass("today-prize-save")) {
+                        $('.todayThumbImage').html('');
+                        $('.todayThumbImage').append('<img src="' + data.goldImageUrl + '" alt="金奖缩略图">');
+                        $('.todayThumbImage').append('<img src="' + data.silverImageUrl + '" alt="银奖大奖缩略图">');
+                    }
 
-                    })
-                }
+                })
+            }
 
             // }
         });

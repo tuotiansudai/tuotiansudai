@@ -13,8 +13,8 @@ let $sortBox = $('#sortBox'),
     $rankingOrder =$('.ranking-order',$sortBox);
 
 let todayDay = $.trim($date.text());
-let startTime = 20170601,
-    endTime = 20170731,
+let startTime = Number($date.data('starttime').substring(0,10).replace(/-/gi,'')),
+    endTime = Number($date.data('endtime').substring(0,10).replace(/-/gi,'')),
     todayDayStr=Number(todayDay.replace(/-/gi,''));
 
 let $nodataInvest=$('.nodata-invest'),
@@ -134,13 +134,7 @@ if(todayDayStr<startTime) {
 } else {
     heroRank(todayDay);
 }
-
 $('#toInvest').on('click',function() {
-
     window.location.href='/loan-list';
 });
-
-
-
-
 

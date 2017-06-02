@@ -81,7 +81,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			}
 
 				$ReferRankingDate.find('em').text(currDate);
-				refeInvest(currDate);
+			    heroRank(currDate);
 		});
 
 		$getVip.on('click', function(event) {
