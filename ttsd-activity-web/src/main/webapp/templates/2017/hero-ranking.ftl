@@ -3,22 +3,24 @@
 
 <div class="banner-slide" id="bannerSlide"></div>
 <div class="activity-page-frame page-width" id="activityPageFrame">
-<#--${activityStartTime}-->
     <div class="rule-box clearfix">
         <dl class="title-rule">
             <dt>活动规则</dt>
             <dd>活动期间，每天24点计算当日新增投资排名，上榜者可获丰厚奖励。</dd>
         </dl>
         <div class="reward-list ">
+            <#if prizeDto??>
             <dl class="reward-one" >
                 <dt>
-                 <#if prizeDto??>
-                     <img data-reward="${prizeDto.goldPrizeName}" src="${commonStaticServer}${prizeDto.goldImageUrl}"  id="rewardOne">
-                </#if>
+                    <i class="icon-flag"></i>
+                     <img src="${commonStaticServer}${prizeDto.goldImageUrl}"  id="rewardOne">
                 </dt>
-                <dd>第1名</dd>
-            </dl>
+                <dd class="prize-one-name">
+                    第1名 ${prizeDto.goldPrizeName}
 
+                </dd>
+            </dl>
+            </#if>
             <dl class="coupon-one">
                 <dt></dt>
                 <dd>第2～4名</dd>
@@ -36,17 +38,25 @@
         <dl class="sort-box" id="sortBox">
             <dd class="fl">日期：<i class="date" > ${currentTime?string('yyyy-MM-dd')}</i></dd>
             <dd class="ranking">
-
+                我的排名：
                 <@global.isAnonymous>
                     <span class="show-login">登录后查看</span>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
-                    我的排名:<i class="ranking-order">3</i>
+                    <i class="ranking-order"></i>
                 </@global.isNotAnonymous>
 
             </dd>
-            <dd class="fr">今日投资总额：<i class="total">${(investAmount/100)?string('0.00')}</i>元</dd>
+            <dd class="fr">今日投资总额：
+                <@global.isAnonymous>
+                    <span class="show-login">登录后查看</span>
+                </@global.isAnonymous>
+            <@global.isNotAnonymous>
+                <i class="total">${(investAmount/100)?string('0.00')}</i>元
+            </@global.isNotAnonymous>
+
+            </dd>
         </dl>
         <div class="nodata-invest tc" style="display: none;"></div>
         <table class="table-reward">
@@ -54,7 +64,7 @@
             <tr>
                 <th width="20%">排名</th>
                 <th width="25%">用户</th>
-                <th width="25%">投资额</th>
+                <th width="25%">投资额(元)</th>
                 <th >奖励</th>
             </tr>
             </thead>
@@ -63,7 +73,7 @@
         </table>
 
         <div class="date-button" id="investRanking-button">
-            <span class="button-small" id="heroPre">查看前一天</span>
+            <span class="button-small" id="heroPre" >查看前一天</span>
             <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
             <span class="button-small" id="heroNext" style="display: none">查看后一天</span>
         </div>
@@ -87,7 +97,7 @@
     var item = records[i];
     var reward;
     if(i==0) {
-    reward=rewardOne;
+    reward='实物大奖';
     }
     else if(i>0 && i<4) {
     reward='1%加息券';

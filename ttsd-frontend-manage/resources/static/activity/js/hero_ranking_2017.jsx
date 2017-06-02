@@ -15,8 +15,7 @@ let $sortBox = $('#sortBox'),
 let todayDay = $.trim($date.text());
 let startTime = 20170601,
     endTime = 20170731,
-    todayDayStr=Number(todayDay.replace(/-/gi,'')),
-    rewardOne = $('#rewardOne').data('reward');
+    todayDayStr=Number(todayDay.replace(/-/gi,''));
 
 let $nodataInvest=$('.nodata-invest'),
     $tableReward = $('table.table-reward');
@@ -74,7 +73,7 @@ $investRankingButton.find('.button-small').on('click',function(event) {
     else if(/heroNext/.test(event.target.id)){
         currDate=GetDateStr(dateSpilt,1); //后一天
     }
-
+    // $nodataInvest.hide();
     if(currDate.replace(/-/gi,'')>=endTime) {
         $heroNext.hide();
     }
@@ -99,9 +98,7 @@ function heroRank(date) {
         url: '/activity/hero-ranking/invest/' + date
     },function(data) {
         if(data.status) {
-
-            data.rewardOne = rewardOne;
-           var $contentRanking=$('#investRanking-tbody').parents('table');
+           var $contentRanking=$('#investRanking-tbody');
             if(_.isNull(data.records) || data.records.length==0) {
                 $contentRanking.hide();
                 return;
@@ -121,19 +118,27 @@ function heroRank(date) {
         url: '/activity/hero-ranking/ranking/' + date
     },function(data) {
         //今日投资总额 和 排名
-        $totalAmount.text(data.investAmount);
+        $totalAmount.text(data.investAmount/100);
         $rankingOrder.text(data.investRanking);
     })
 }
+
 if(todayDayStr<startTime) {
     //活动未开始
-    $nodataInvest.show().html('活动未开始');
+    $heroPre.hide();
 } else if(todayDayStr>endTime) {
     //活动已经结束
     $nodataInvest.show().html('活动已经结束');
+    $tableReward.hide();
+
 } else {
     heroRank(todayDay);
 }
+
+$('#toInvest').on('click',function() {
+
+    window.location.href='/loan-list';
+});
 
 
 

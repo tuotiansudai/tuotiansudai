@@ -43,10 +43,28 @@ body {
       line-height: 55px;
       .reward-one {
         display: inline-block;
+        .prize-one-name {
+          line-height: 33px;
+          padding-top: 6px;
+
+        }
+        .prize-name {
+          display: block;
+        }
         dt {
           width:367px;
           height:200px;
           overflow: hidden;
+          background: #fff;
+          position: relative;
+          .icon-flag {
+            width:123px;
+            height:46px;
+            background: url('../images/2017/hero-ranking/ic-sign.png') left top no-repeat;
+            position: absolute;
+            left:0;
+            top:0;
+          }
           img {
             width:100%;
           }
@@ -128,6 +146,7 @@ body {
     vertical-align: bottom;
   }
   .btn-to-invest {
+    cursor: pointer;
     background: #ffd323;
     padding: 7px 50px;
     color: #6f0050;
