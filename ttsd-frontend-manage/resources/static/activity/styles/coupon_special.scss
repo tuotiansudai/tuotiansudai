@@ -1,3 +1,157 @@
+@charset "utf-8";
 body {
-  background: red;
+  background: #fef18c;
+  overflow-x: hidden;
 }
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.activity-slide  {
+  height: 521px;
+  background: url("../images/2017/coupon-special/head-coupon.png") center top no-repeat;
+}
+
+.activity-frame-box {
+  margin-top:-55px;
+  .red-box {
+    margin-bottom: 50px;
+    position: relative;
+    background: #ff002d;
+    border-radius:10px;
+    box-sizing: border-box;
+    padding:80px 70px 20px 70px;
+    .red-title {
+      height: 95px;
+      background: url('../images/2017/coupon-special/top-title.png') center top no-repeat;
+      position: absolute;
+      width: 100%;
+      top: -50px;
+    }
+    p {
+      font-size: 24px;
+      color: #fff;
+      border:1px solid #e3e300;
+      padding: 10px 30px;
+      border-radius: 10px;
+      em {
+        color: #e3e300;
+      }
+    }
+    .scan-code {
+      width:215px;
+      height:215px;
+      border:15px solid #fff;
+      background: url('../../public/images/scanCode/code-wechat.png') center center no-repeat;
+      background-size: 100%;
+      margin:30px auto 10px auto;
+    }
+    .icon-money {
+      width:47px;
+      height:59px;
+      background: url('../images/2017/coupon-special/icon-money.png') left top no-repeat;
+      position: absolute;
+      &.one {
+         left: 23%;
+         top: 44%;
+       }
+      &.two {
+        left: 11%;
+        top: 74%;
+      }
+      &.three {
+        right: 20%;
+        top: 56%;
+      }
+      &.four {
+        right: 11%;
+        top: 79%;
+      }
+    }
+  &.reward-box {
+    padding:0px;
+  }
+  }
+
+  .wechat-scan {
+    background: #fef5ab;
+    border-radius:10px;
+    box-sizing: border-box;
+    color: #fe4116;
+    h1 {
+      text-align: center;
+      font-size: 48px;
+      font-weight:bold;
+      padding: 30px 0;
+    }
+    .img-list {
+      height:380px;
+      width:78%;
+      margin:20px auto;
+      .one {
+        float: left;
+        width:50%;
+        height:100%;
+        background: url('../images/2017/coupon-special/code-scan.png') center center no-repeat;
+      }
+      .two {
+        float: left;
+        width:50%;
+        height:100%;
+
+        h2 {
+          font-size:28px;
+        }
+        .img-cat {
+          background: url('../images/2017/coupon-special/code-cat.png') center center no-repeat;
+          height:215px;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and(max-width: 700px){
+
+  .activity-slide {
+    height:auto;
+    background: none;
+    img {
+      width:100%;
+    }
+  }
+
+  .activity-frame-box {
+    margin-top:0;
+    padding-top:30px;
+    .red-box {
+      padding: 40px 15px 10px 15px;
+      p {
+        font-size:12px;
+        padding:10px;
+      }
+      .red-title {
+        width: 100%;
+        top: -23px;
+        background-size: 70%;
+      }
+      .scan-code {
+        width:140px;
+        height:140px;
+        background-size:100%;
+        border: 5px solid #fff;
+
+      }
+      .icon-money {
+        &.one {
+          background-size: 60%;
+        }
+      }
+    }
+  }
+
+}
+
