@@ -350,7 +350,9 @@ form label.error {
     width:1000px;
     height: 350px;
     text-align: right;
-
+    @media (max-width:700px){
+      margin-bottom: 50px;
+    }
     .register-box {
       position: absolute;
       padding: 25px 25px 25px 25px;

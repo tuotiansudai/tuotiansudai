@@ -6,7 +6,7 @@ let ValidatorObj= require('publicJs/validator');
 
 let $landingContainerBox = $('.landingContainerBox'),
     $landingContainer = $('.landing-container'),
-    $btnCoupon = $('#btn-get-coupon', $landingContainer),
+    $btnCoupon = $('.to-register', $landingContainer),
     browser = globalFun.browserRedirect();
 let urlObj = globalFun.parseURL(location.href);
 let $btnChangeImgCode=$('.img-change',$landingContainer);
@@ -237,7 +237,20 @@ registerForm.onsubmit = function(event) {
     event.preventDefault();
     registerForm.submit();
 }
+function toExperienceNow() {
 
+    globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
+    let equipment=globalFun.equipment();
+    if(equipment.wechat && equipment.kind=='android') {
+        // 微信,并且是安卓，跳到页面
+        window.location.href = "/app/download";
+        return;
+    } else {
+        window.location.href =globalFun.categoryCodeUrl[equipment.kind];
+    }
+
+}
+globalFun.addEventHandler($('#btnExperienceNow')[0],'click',toExperienceNow);
 
 
 
