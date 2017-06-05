@@ -49,14 +49,14 @@ public class ActivitiesController {
         return modelAndView;
     }
 
-    @RequestMapping(path="/channel/{channel:^htracking$}")
-    public ModelAndView channels(@PathVariable String channel){
-        return new ModelAndView("wechat/channel-"+channel);
+    @RequestMapping(path = "/channel/htracking")
+    public ModelAndView channels() {
+        return new ModelAndView("/wechat/channel-htracking");
     }
 
-    @RequestMapping(path="/channel/{channel:^htracking$}/success")
-    public ModelAndView channelsRegisterSuccess(@PathVariable String channel){
-        return new ModelAndView("wechat/channel-"+channel+"-success");
+    @RequestMapping(path = "/channel/htracking/success")
+    public ModelAndView channelsRegisterSuccess() {
+        return new ModelAndView("/wechat/channel-htracking-success");
     }
 
     @RequestMapping(path = "/{item:^landing-page-app|landing-tour|landing-bus|landing-game$}", method = RequestMethod.GET)
