@@ -31,10 +31,7 @@ function activityStatus(nowDay) {
        $heroPre.css({'visibility':'hidden'});
        $heroNext.css({'visibility':'hidden'});
        $contentRanking.hide();
-    } else if(nowDayStr==startTime) {
-       $heroPre.css({'visibility':'hidden'});
-       $heroNext.css({'visibility':'visible'});
-   }
+    }
     else if (nowDayStr > endTime) {
         //活动已经结束
         $heroNext.css({'visibility':'hidden'});
@@ -42,16 +39,19 @@ function activityStatus(nowDay) {
         $contentRanking.hide();
         $nodataInvest.show().html('活动已经结束');
 
-    } else if (nowDayStr == endTime) {
-       //活动中最后一天
-       $heroNext.css({'visibility':'hidden'});
-       $heroPre.css({'visibility':'visible'});
-       $contentRanking.show();
-   } else if(nowDayStr>startTime && nowDayStr<endTime){
+    }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
        $heroNext.css({'visibility':'visible'});
        $heroPre.css({'visibility':'visible'});
        $contentRanking.show();
+       if(nowDayStr==startTime) {
+            //活动第一天
+           $heroPre.css({'visibility':'hidden'});
+       } else if(nowDayStr==endTime) {
+           //活动最后一天
+           $heroNext.css({'visibility':'hidden'});
+       }
+       heroRank(nowDay);
    }
 
    if(isToday) {
@@ -60,8 +60,6 @@ function activityStatus(nowDay) {
    } else {
        $('.is-today',$activityPageFrame).text('当日');
    }
-
-    heroRank(nowDay);
 }
 
 //页面初始
