@@ -127,29 +127,6 @@ function heroRank(date) {
     })
 }
 
-<
-<
-<
-<
-<
-<< HEAD
-    if
-(todayDayStr
-<startTime
-) {
-    //活动未开始
-    $heroPre.hide();
-} else if(todayDayStr>endTime) {
-    //活动已经结束
-    $nodataInvest.show().html('活动已经结束');
-    $tableReward.hide();
-
-} else {
-    heroRank(todayDay);
-}
-=======
-
->>>>>>> 1fdb88ce9b3ab21d77ab95e08483a083199b24a2
 $('#toInvest').on('click',function() {
     window.location.href = '/loan-list';
 });
