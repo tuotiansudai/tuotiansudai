@@ -54,12 +54,9 @@ function activityStatus(nowDay) {
        heroRank(nowDay);
    }
 
-   if(isToday) {
-       //今天
-       $('.is-today',$activityPageFrame).text('今日');
-   } else {
-       $('.is-today',$activityPageFrame).text('当日');
-   }
+    $('.is-today',$activityPageFrame).text(function() {
+        return isToday ? '今日' : '当日'
+    });
 }
 
 //页面初始
