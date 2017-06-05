@@ -304,6 +304,10 @@ public interface InvestMapper {
                               @Param(value = "datePoint") Date datePoint);
 
     InvestModel findFirstInvestAmountByLoginName(@Param(value = "loginName") String loginName,
-                                @Param(value = "startTime") Date startTime,
-                                @Param(value = "endTime") Date endTime);
+                                                 @Param(value = "startTime") Date startTime,
+                                                 @Param(value = "endTime") Date endTime);
+
+    List<InvestAchievementView> findAmountOrderByLoanId(@Param(value = "loanId") long loanId,
+                                                        @Param(value = "activityStartTime") Date activityStartTime,
+                                                        @Param(value = "activityEndTime") Date activityEndTime);
 }

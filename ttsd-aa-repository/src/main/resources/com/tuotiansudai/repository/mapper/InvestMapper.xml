@@ -82,6 +82,12 @@
 
     </resultMap>
 
+    <resultMap id="investAchievementView" type="InvestAchievementView">
+        <result column="login_name" property="loginName"></result>
+        <result column="amount" property="amount"></result>
+        <result column="trading_time" property="tradingTime"></result>
+    </resultMap>
+
     <sql id="columns">
         id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
     </sql>
@@ -92,7 +98,8 @@
         )
         value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
         #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
-        #{achievements, typeHandler=com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate}, #{contractNo})
+        #{achievements, typeHandler=com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler},
+        #{investFeeRate}, #{contractNo})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -278,7 +285,8 @@
         </if>
         WHERE user_coupon.invest_id = invest.id limit 0, 1) AS coupon_id,
         (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
-        (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_actual_interest,
+        (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS
+        extra_actual_interest,
         invest.status AS invest_status
         FROM
         invest join loan on invest.loan_id = loan.id
@@ -306,7 +314,8 @@
                 AND invest.source = #{source}
             </if>
             <if test="role != null">
-                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role =
+                #{role})
             </if>
             <if test="startTime != null">
                 AND invest.invest_time &gt;= #{startTime}
@@ -315,14 +324,16 @@
                 AND invest.invest_time &lt;= #{endTime}
             </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and
+                user_coupon.coupon_id = coupon.id
                 WHERE user_coupon.invest_id = invest.id)
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
         </where>
-        ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC, invest.id ASC
+        ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC,
+        invest.id ASC
         limit #{index}, #{pageSize}
     </select>
 
@@ -340,7 +351,8 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
+                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where
+                ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -366,7 +378,8 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
+                OR (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where
+                ir.status=#{loanStatus} and ir.invest_id = invest.id and ir.period = 1)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -401,7 +414,8 @@
                 AND invest.source = #{source}
             </if>
             <if test="role != null">
-                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role =
+                #{role})
             </if>
             <if test="startTime != null">
                 AND invest.invest_time &gt;= #{startTime}
@@ -410,7 +424,8 @@
                 AND invest.invest_time &lt;= #{endTime}
             </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and
+                user_coupon.coupon_id = coupon.id
                 WHERE user_coupon.invest_id = invest.id)
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
@@ -479,7 +494,8 @@
                 AND invest.source = #{source}
             </if>
             <if test="role != null">
-                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role = #{role})
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name = invest.login_name AND user_role.role =
+                #{role})
             </if>
             <if test="startTime != null">
                 AND invest.created_time &gt;= #{startTime}
@@ -488,7 +504,8 @@
                 AND invest.created_time &lt;= #{endTime}
             </if>
             <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
-                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and user_coupon.coupon_id = coupon.id
+                AND EXISTS (SELECT 1 FROM user_coupon join coupon on coupon.coupon_type = #{preferenceType} and
+                user_coupon.coupon_id = coupon.id
                 WHERE user_coupon.invest_id = invest.id)
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
@@ -582,6 +599,37 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -593,6 +641,37 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1010,6 +1089,37 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         ]]>
     </select>
 
@@ -1020,12 +1130,14 @@
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
         <if test="loanStatus.name() == 'COMPLETE' ">
-            and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='COMPLETE' and ir.invest_id = invest.id and ir.period = 1)
+            and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='COMPLETE'
+            and ir.invest_id = invest.id and ir.period = 1)
             or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')
             or (loan.product_type != 'EXPERIENCE' and invest.transfer_status = 'SUCCESS'))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and (loan.product_type = 'EXPERIENCE' and  exists(select * from invest_repay ir where ir.status='REPAYING' and ir.invest_id = invest.id and ir.period = 1)
+            and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='REPAYING'
+            and ir.invest_id = invest.id and ir.period = 1)
             or (loan.product_type != 'EXPERIENCE' and loan.status in ('REPAYING','OVERDUE') and invest.transfer_status
             != 'SUCCESS'))
         </if>
@@ -1072,6 +1184,25 @@
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
         ORDER BY trading_time ASC
         LIMIT 1
+    </select>
+
+    <select id="findAmountOrderByLoanId" parameterType="map" resultMap="investAchievementView">
+        SELECT * FROM
+            (SELECT
+                login_name,
+                    SUM(amount) AS amount,
+                    MAX(trading_time) AS trading_time
+            FROM
+                invest i JOIN loan on i.loan_id = loan.id
+            WHERE
+                i.loan_id = #{loanId} and i.loan_id != 1
+                    AND loan.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
+                    AND i.status = 'SUCCESS'
+                    AND i.transfer_status != 'SUCCESS'
+            GROUP BY i.login_name) temp
+        ORDER BY amount,trading_time DESC
+        LIMIT 3
+
     </select>
 
 </mapper>
