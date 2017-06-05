@@ -37,8 +37,7 @@
 
         <dl class="sort-box" id="sortBox">
             <dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
-            <dd class="ranking">
-                我的排名：
+            <dd class="ranking">我的排名：
                 <@global.isAnonymous>
                     <span class="show-login">登录后查看</span>
                 </@global.isAnonymous>
@@ -48,7 +47,7 @@
                 </@global.isNotAnonymous>
 
             </dd>
-            <dd class="fr">今日投资总额：
+            <dd class="fr"><span class="is-today">今日</span>投资总额：
                 <@global.isAnonymous>
                     <span class="show-login">登录后查看</span>
                 </@global.isAnonymous>
@@ -73,9 +72,9 @@
         </table>
 
         <div class="date-button" id="investRanking-button">
-            <span class="button-small" id="heroPre" >查看前一天</span>
+            <span class="button-small" id="heroPre" style="visibility: hidden">查看前一天</span>
             <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
-            <span class="button-small" id="heroNext" style="display: none">查看后一天</span>
+            <span class="button-small" id="heroNext" style="visibility: hidden">查看后一天</span>
         </div>
 
     </div>
