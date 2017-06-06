@@ -1,7 +1,10 @@
 @charset "utf-8";
+
 body {
   background: #fef18c;
   overflow-x: hidden;
+  width:100vw;
+  height:100vh;
 }
 
 .main-frame {
@@ -132,6 +135,94 @@ body {
   }
 }
 
+.wechat-frame-box {
+  width:100%;
+  height:100%;
+  background: url('../images/2017/coupon-special/app-bg-body.png') left 0px no-repeat;
+  background-size: 100%;
+  position: relative;
+  text-align: center;
+
+  .btn-receive {
+    width:60%;
+    height:75px;
+    position: absolute;
+    background: url('../images/2017/coupon-special/btn-receive.png') left top no-repeat;
+    background-size: 100%;
+    bottom: 5vh;
+    margin: 0 auto;
+    border: 0;
+    cursor: pointer;
+    left: 14vw;
+    &:disabled {
+      background: url('../images/2017/coupon-special/btn-receive-disable.png') left top no-repeat;
+      background-size: 100%;
+    }
+  }
+
+  &.success-box {
+    background: #f03a28;
+    .border-title {
+      background: #d02430;
+      height:28vh;
+      position: relative;
+      padding: 20px 25px;
+      span {
+        display: block;
+        background: #fce4a8;
+        color: #ec401c;
+        font-size: 30px;
+        height: 100%;
+        font-weight: bold;
+        padding-top: 6vh;
+        box-sizing: border-box;
+      }
+      .bg-border {
+        position: absolute;
+        width:100%;
+        height:100%;
+        background: url("../images/2017/coupon-special/border-money.png") left bottom no-repeat;
+        background-size: 100%;
+        left: 0;
+        bottom: 0;
+      }
+    }
+    .red-bag-list {
+      dl {
+        margin-top: 20px;
+        width:33%;
+        height:140px;
+        float: left;
+        text-align: center;
+        background: url('../images/2017/coupon-special/flag-red.png') center top no-repeat;
+        background-size: 83%;
+        dt {
+          color: #e33b1f;
+          font-size: 11px;
+          padding-top: 26%;
+          line-height: 15px;
+          span {
+            font-size:21px;
+          }
+          em {
+            display: block;
+          }
+        }
+        dd {
+          padding-top: 40%;
+          color: #fff;
+          font-size: 11px;
+        }
+      }
+    }
+    .app-note {
+      font-size: 13px;
+      color: #fceecb;
+      padding: 0 20px;
+    }
+  }
+}
+
 @media screen and(max-width: 700px){
 
   .activity-slide {
@@ -234,7 +325,6 @@ body {
   }
 
 }
-
 
 @media screen and(max-width: 400px){
   .activity-frame-box .wechat-scan .img-list .one .word-mobile {

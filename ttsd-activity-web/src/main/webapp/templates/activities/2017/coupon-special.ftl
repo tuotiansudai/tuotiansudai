@@ -9,7 +9,7 @@
 
 <div class="activity-slide" id="topHeader"></div>
 
-<div class="activity-frame-box page-width">
+<div class="activity-frame-box page-width" id="pcCouponSpecial">
     <div class="red-box">
         <div class="red-title"></div>
         <p>活动期间，微信扫描二维码关注<em>“拓天速贷服务号”</em>，回复<em>“我要领券”</em>，
