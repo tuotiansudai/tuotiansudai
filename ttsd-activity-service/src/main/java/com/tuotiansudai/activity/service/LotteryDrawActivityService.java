@@ -8,6 +8,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.mapper.InvestCelebrationDrawChanceMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -79,6 +80,9 @@ public class LotteryDrawActivityService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private InvestCelebrationDrawChanceMapper investCelebrationDrawChanceMapper;
+
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> pointTime = Lists.newArrayList();
 
@@ -120,6 +124,12 @@ public class LotteryDrawActivityService {
 
     @Value(value = "${activity.mothers.day.endTime}")
     private String activityMothersEndTime;
+
+    @Value(value = "${activity.celebration.single.startTime}")
+    private String activitySingleStartTime;
+
+    @Value(value = "${activity.celebration.single.endTime}")
+    private String activitySingleEndTime;
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -238,6 +248,52 @@ public class LotteryDrawActivityService {
 
         return new DrawLotteryResultDto(0, lotteryPrize.name(), lotteryPrize.getPrizeType().name(), lotteryPrize.getDescription(), String.valueOf(accountModel.getPoint()));
     }
+
+
+    @Transactional
+    public synchronized DrawLotteryResultDto drawPrizeByChance(String mobile, ActivityCategory activityCategory) {
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if (userModel == null) {
+            return new DrawLotteryResultDto(2);//"该用户不存在！"
+        }
+
+        Date nowDate = DateTime.now().toDate();
+        List<String> activityTime = getActivityTime(activityCategory);
+        Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        if (!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)) {
+            return new DrawLotteryResultDto(3);//不在活动时间范围内！
+        }
+
+        if (Strings.isNullOrEmpty(mobile)) {
+            return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
+        }
+
+        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
+
+        if (accountModel == null) {
+            return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
+        }
+
+        int drawChance=investCelebrationDrawChanceMapper.findChanceAmountByLoginName(userModel.getLoginName());
+        if(drawChance==0){
+            return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
+        }
+
+        LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
+
+        grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
+
+        try {
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));
+        }
+
+        return new DrawLotteryResultDto(0, lotteryPrize.name(), lotteryPrize.getPrizeType().name(), lotteryPrize.getDescription(), String.valueOf(accountModel.getPoint()));
+    }
+
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile, ActivityCategory activityCategory) {
         return Strings.isNullOrEmpty(mobile) ? Lists.newArrayList() : findDrawLotteryPrizeRecord(mobile, activityCategory);
@@ -368,7 +424,7 @@ public class LotteryDrawActivityService {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             accountModel.setPoint(accountModel.getPoint() + 3000);
             accountMapper.update(accountModel);
-        }
+        }else if(lotteryPrize.equals(LotteryPrize.))
         return prizeType;
     }
 
@@ -530,6 +586,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
+                .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
                 .build()).get(activityCategory);
     }
 

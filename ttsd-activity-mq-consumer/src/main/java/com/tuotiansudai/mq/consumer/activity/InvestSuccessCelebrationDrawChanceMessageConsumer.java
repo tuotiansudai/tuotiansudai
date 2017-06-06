@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.activity;
 
 import com.tuotiansudai.activity.repository.mapper.InvestCelebrationDrawChanceMapper;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.InvestDrawChanceModel;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessCelebrationOnePenMessage;
@@ -17,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 
 @Component
-public class InvestSuccessDrawChanceMessageConsumer implements MessageConsumer {
+public class InvestSuccessCelebrationDrawChanceMessageConsumer implements MessageConsumer {
 
-    private static Logger logger = LoggerFactory.getLogger(InvestSuccessActivityRewardMessageConsumer.class);
+    private static Logger logger = LoggerFactory.getLogger(InvestSuccessCelebrationDrawChanceMessageConsumer.class);
 
     @Autowired
     private InvestCelebrationDrawChanceMapper investCelebrationDrawChanceMapper;
@@ -42,15 +41,14 @@ public class InvestSuccessDrawChanceMessageConsumer implements MessageConsumer {
         InvestInfo investInfo = investSuccessCelebrationOnePenMessage.getInvestInfo();
         if (!investInfo.getTransferStatus().equals("SUCCESS")
                 && investInfo.getStatus().equals("SUCCESS")) {
-            System.out.println("=======cfsdvds="+investCelebrationDrawChanceMapper.findByLoginName(investInfo.getLoginName()) != null);
             if (investCelebrationDrawChanceMapper.findByLoginName(investInfo.getLoginName()) != null) {
+
                 investCelebrationDrawChanceMapper.updateChance(investInfo.getLoginName(),
-                        investInfo.getAmount() < 1000000 ? 0 : Integer.parseInt(String.valueOf(investInfo.getAmount()).substring(0, 1)));
+                        investInfo.getAmount() < 1000000 ? 0 : Integer.parseInt(String.valueOf(investInfo.getAmount()/1000000)));
             } else {
                 InvestDrawChanceModel investDrawChanceModel = new InvestDrawChanceModel(investInfo.getLoginName(),
-                        investInfo.getAmount() < 1000000 ? 0 : Integer.parseInt(String.valueOf(investInfo.getAmount()).substring(0, 1)),
-                        ActivityCategory.CELEBRATION_ONEPEN_ACTIVITY.getDescription());
-                System.out.println("-------------"+ActivityCategory.CELEBRATION_ONEPEN_ACTIVITY.getDescription());
+                        investInfo.getAmount() < 1000000 ? 0 : Integer.parseInt(String.valueOf(investInfo.getAmount()/1000000)),
+                        "CELEBRATION_SINGLE_ACTIVITY");
                 investCelebrationDrawChanceMapper.create(investDrawChanceModel);
             }
         }

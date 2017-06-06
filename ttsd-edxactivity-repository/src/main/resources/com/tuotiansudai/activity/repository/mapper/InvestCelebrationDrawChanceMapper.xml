@@ -9,7 +9,7 @@
         <result column="login_name" property="loginName"></result>
         <result column="chance_amount" property="chanceAmount"></result>
         <result column="activity_category" property="activityCategory"></result>
-        <result column="created_time" property="createdTime"></result>
+        <result column="create_time" property="createTime"></result>
 
     </resultMap>
 
@@ -19,8 +19,8 @@
         (`login_name`,
         `chance_amount`,
         `activity_category`,
-        `created_time`)
-        VALUES(#{loginName},#{chanceAmount},#{activityCategory},#{createdTime})
+        `create_time`)
+        VALUES(#{loginName},#{chanceAmount},#{activityCategory},#{createTime})
     </insert>
 
     <select id="findChanceAmountByLoginName" parameterType="int" resultType="java.lang.String">
