@@ -35,8 +35,6 @@ public class CelebrationCouponController {
     public ModelAndView celebrationDrawCouponHome() {
         ModelAndView mv = new ModelAndView();
         String loginName = LoginUserInfo.getLoginName();
-        //test
-        loginName = "shenjiaojiao";
 
         if (Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("/wechat/celebration-draw-coupon-unbound");
