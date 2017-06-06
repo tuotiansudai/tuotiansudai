@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.InvestCelebrationDrawChanceMapper">
+
+    <resultMap id="investDrawChanceMap" type="com.tuotiansudai.activity.repository.model.InvestDrawChanceModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="chance_amount" property="chanceAmount"></result>
+        <result column="activity_category" property="activityCategory"></result>
+        <result column="created_time" property="createdTime"></result>
+
+    </resultMap>
+
+
+    <insert id="create" parameterType="investDrawChanceModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO  `user_draw_chance`
+        (`login_name`,
+        `chance_amount`,
+        `activity_category`,
+        `created_time`)
+        VALUES(#{loginName},#{chanceAmount},#{activityCategory},#{createdTime})
+    </insert>
+
+    <select id="findChanceAmountByLoginName" parameterType="int" resultType="java.lang.String">
+        SELECT
+            dc.chance_amount
+        FROM
+        user_draw_chance dc
+        where dc.login_name=#{loginName}
+    </select>
+
+    <update id="updateChance" parameterType="map">
+        update user_draw_chance set chance_amount=chance_amount+#{amount}
+        where login_name=#{loginName}
+    </update>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="investDrawChanceMap">
+        select * from user_draw_chance where login_name=#{loginName}
+    </select>
+
+
+</mapper>

@@ -31,6 +31,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
     private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
 
+
     private final int lifeSecond = 10378000;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -111,4 +112,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
                             "yyyy-MM-dd"), e.getLocalizedMessage());
         }
     }
+
+
+
 }
