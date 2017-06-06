@@ -37,6 +37,7 @@ body {
       position: absolute;
       width: 100%;
       top: -50px;
+      margin-left:-70px;
     }
     p {
       font-size: 24px;
@@ -143,21 +144,32 @@ body {
   position: relative;
   text-align: center;
 
-  .btn-receive {
-    width:60%;
-    height:75px;
+  .text-box {
     position: absolute;
-    background: url('../images/2017/coupon-special/btn-receive.png') left top no-repeat;
-    background-size: 100%;
-    bottom: 5vh;
-    margin: 0 auto;
-    border: 0;
-    cursor: pointer;
-    left: 14vw;
-    &:disabled {
+    bottom: 80px;
+    width:100%;
+    text-align: center;
+    span {
+      color: #ffbd52;
+      font-size:25px;
+      display: block;
+     line-height: 80px;
+    }
+
+    .btn-receive,.btn-receive-disabled {
+      display: inline-block;
+      width:60%;
+      height: 86px;
+      background: url('../images/2017/coupon-special/btn-receive.png') left top no-repeat;
+      background-size: 100%;
+      border: 0;
+      cursor: pointer;
+    }
+    .btn-receive-disabled {
       background: url('../images/2017/coupon-special/btn-receive-disable.png') left top no-repeat;
       background-size: 100%;
     }
+
   }
 
   &.success-box {

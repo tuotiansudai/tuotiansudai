@@ -1,8 +1,9 @@
-require("activityStyle/coupon_special.scss");
+require("activityStyle/coupon_special_2017.scss");
 let browser = globalFun.browserRedirect();
 let commonFun= require('publicJs/commonFun');
 
-let $wechatCoupon = $('#wechatCouponSpecial')
+let $wechatCoupon = $('#wechatCouponSpecial');
+
 //PC页面
 if($('#pcCouponSpecial').length) {
 
@@ -17,19 +18,5 @@ if($('#pcCouponSpecial').length) {
             $('#topHeader').append(topImg);
         }
     }
-} else if($wechatCoupon.length) {
-    //微信端
-    $wechatCoupon.find('.btn-receive').on('click',function() {
-        commonFun.useAjax({
-            url:'',
-            type:''
-        },function(data) {
-            //领取成功
-            location.href='success'
-            layer.msg('每个用户只能领取一次哦');
-        });
-
-    });
-
 }
 
