@@ -5,7 +5,7 @@
 <#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
 
-<@global.main pageCss="${css.coupon_special}" pageJavascript="${js.coupon_special}" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
+<@global.main pageCss="${css.coupon_special}" pageJavascript="${js.coupon_special}" activeNav="" activeLeftNav="" title="领券专场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,红包奖励,加息券" description="拓天周年庆-领券专场活动,微信扫描二维码关注拓天速贷服务号,回复我要领券即可领取1000红包奖励+0.8%加息券.">
 
 <div class="activity-slide" id="topHeader"></div>
 
