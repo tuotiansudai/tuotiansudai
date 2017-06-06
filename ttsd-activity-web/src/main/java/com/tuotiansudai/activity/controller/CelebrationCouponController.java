@@ -20,16 +20,23 @@ public class CelebrationCouponController {
     @Autowired
     private CelebrationCouponService celebrationCouponService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView celebrationCouponHome() {
+    @RequestMapping(path = "/wechat", method = RequestMethod.GET)
+    public ModelAndView celebrationCouponWechatHome() {
 
         boolean duringActivities = celebrationCouponService.duringActivities();
-        ModelAndView modelAndView = new ModelAndView("/wechat/celebration-draw-coupon");
+        ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
 
         modelAndView.addObject("duringActivities", duringActivities);
 
         return modelAndView;
     }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView celebrationCouponHome() {
+
+        return new ModelAndView("/activities/2017/coupon-special");
+    }
+
 
     @RequestMapping(path = "/draw", method = RequestMethod.GET)
     public ModelAndView celebrationDrawCouponHome() {

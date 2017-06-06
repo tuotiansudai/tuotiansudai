@@ -4,8 +4,6 @@ let commonFun= require('publicJs/commonFun');
 
 let $wechatCoupon = $('#wechatCouponSpecial')
 //PC页面
-// layer.msg('每个用户只能领取一次哦');
-layer.msg('邮箱绑定失败，请重试！', {time: 200000});
 if($('#pcCouponSpecial').length) {
 
     let redBagUrl = require('../images/2017/coupon-special/red-all.png');

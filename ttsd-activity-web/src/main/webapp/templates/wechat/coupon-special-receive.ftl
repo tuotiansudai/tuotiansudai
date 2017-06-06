@@ -3,7 +3,7 @@
 
 <div class="wechat-frame-box" id="wechatCouponSpecial">
 
-    <button type="button" class="btn-receive" disabled></button>
+    <button type="button" class="btn-receive" <#if !duringActivities>disabled</#if>></button>
 </div>
 
 </@global.main>

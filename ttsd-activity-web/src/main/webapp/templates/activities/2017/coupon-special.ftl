@@ -1,9 +1,4 @@
-<#import "../../macro/global-dev.ftl" as global>
-
-<#assign jsName = 'coupon_special' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
+<#import "../../macro/global.ftl" as global>
 
 <@global.main pageCss="${css.coupon_special}" pageJavascript="${js.coupon_special}" activeNav="" activeLeftNav="" title="领券专场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,红包奖励,加息券" description="拓天周年庆-领券专场活动,微信扫描二维码关注拓天速贷服务号,回复我要领券即可领取1000红包奖励+0.8%加息券.">
 
