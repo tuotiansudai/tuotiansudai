@@ -145,6 +145,7 @@ body {
     height:30px;
     border-bottom:1px solid #f8d000;
     vertical-align: bottom;
+    cursor: pointer;
   }
   .btn-to-invest {
     cursor: pointer;
@@ -225,6 +226,7 @@ body {
       }
       .sort-box {
         dd {
+          padding: 4px 10px;
           &.ranking {
             float: right;
           }
@@ -238,12 +240,15 @@ body {
       }
       .table-reward {
         th {
-          font-size:14px;
+          font-size:12px;
+          padding: 4px 0;
+          text-align: center;
         }
         td {
-          font-size:14px;
+          font-size:12px;
           border-bottom: 10px solid #2b023c;
-          padding: 5px;
+          padding: 4px 0;
+          text-align: center;
         }
       }
     }
@@ -253,6 +258,7 @@ body {
     width:100%;
     font-size:14px;
     .button-small {
+      font-size:11px;
       margin-top: 10px;
       &:nth-child(1) {
         float: left;
@@ -266,7 +272,8 @@ body {
     .btn-to-invest {
       margin-left:0;
       margin-right:0;
-      padding: 7px 20px;
+      padding: 7px 7px;
+      font-size: 12px;
     }
   }
 }
