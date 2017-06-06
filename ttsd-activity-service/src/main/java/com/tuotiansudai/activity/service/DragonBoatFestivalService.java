@@ -139,6 +139,11 @@ public class DragonBoatFestivalService {
             return -1;
         }
 
+        if (StringUtils.isEmpty(loginName)) {
+            logger.info("[Dragon Boat][Send Coupon After Register or Login] user not login.", loginName);
+            return 0;
+        }
+
         String shareUniqueKey = MessageFormat.format(DRAGON_BOAT_SHARE_UNIQUE_CODE, shareUniqueCode);
 
         String couponFetchKey = MessageFormat.format(DRAGON_BOAT_SHARE_COUPON_FETCH, shareUniqueCode, loginName);
