@@ -42,9 +42,10 @@ public class CelebrationCouponController {
     public ModelAndView celebrationDrawCouponHome() {
         ModelAndView mv = new ModelAndView();
         String loginName = LoginUserInfo.getLoginName();
+        boolean duringActivities = celebrationCouponService.duringActivities();
 
         if (Strings.isNullOrEmpty(loginName)) {
-            return new ModelAndView("/wechat/celebration-draw-coupon-unbound");
+            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/celebration-coupon/draw");
         }
 
         if (!weChatService.isBound(loginName)) {
@@ -53,11 +54,12 @@ public class CelebrationCouponController {
         boolean drewCoupon = celebrationCouponService.drewCoupon(loginName);
         if (drewCoupon) {
             mv.addObject("drewCoupon", drewCoupon);
-            mv.setViewName("/wechat/celebration-draw-coupon");
+            mv.setViewName("/wechat/coupon-special-receive");
         } else {
             celebrationCouponService.sendDrawCouponMessage(loginName);
-            mv.setViewName("/celebration-draw-coupon-success");
+            mv.setViewName("/wechat/coupon-special-success");
         }
+        mv.addObject("duringActivities", duringActivities);
 
         return mv;
     }

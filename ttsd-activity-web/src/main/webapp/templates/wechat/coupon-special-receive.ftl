@@ -6,7 +6,7 @@
     <div class="text-box">
         <span>周年庆专享</span>
         <#if duringActivities>
-            <a href="#" class="btn-receive"></a>
+            <a href="/activity/celebration-coupon/draw" class="btn-receive"></a>
         <#else>
             <a href="javascript:void(0)" class="btn-receive-disabled"></a>
         </#if>
