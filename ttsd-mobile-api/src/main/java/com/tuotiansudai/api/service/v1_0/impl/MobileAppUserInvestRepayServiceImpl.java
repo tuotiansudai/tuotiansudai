@@ -79,7 +79,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 totalExpectedInterest = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount());
             }
             UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
-            if(investModel.getTransferInvestId() != null){
+            if (investModel.getTransferInvestId() != null) {
                 TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
             }
@@ -152,7 +152,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         } catch (Exception e) {
             responseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             responseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
         }
         return responseDto;
     }

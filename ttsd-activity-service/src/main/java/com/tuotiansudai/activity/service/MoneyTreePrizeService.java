@@ -86,8 +86,12 @@ public class MoneyTreePrizeService {
     }
 
     public int getLeftDrawPrizeTime(String mobile) {
-
         int lotteryTimes = 0;
+        //为了兼容iso和android，在活动时间范围之外范围次数为0
+        if (this.isActivity() == 0) {
+            return 0;
+        }
+
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
             return 0;
