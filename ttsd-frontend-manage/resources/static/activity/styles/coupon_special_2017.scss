@@ -153,7 +153,7 @@ body {
       color: #ffbd52;
       font-size:25px;
       display: block;
-     line-height: 80px;
+      line-height: 80px;
     }
 
     .btn-receive,.btn-receive-disabled {
@@ -342,6 +342,8 @@ body {
   .activity-frame-box .wechat-scan .img-list .one .word-mobile {
     top:59%;
   }
+
+  .wechat-frame-box .text-box { bottom:32px;}
 }
 
 @media screen and(max-width: 350px){
@@ -351,5 +353,14 @@ body {
   .activity-frame-box .wechat-scan .img-list .one .word-mobile {
     top:63%;
   }
+  .wechat-frame-box .text-box {
+    bottom: auto;
+    top: 73%;
+  }
+  .wechat-frame-box .text-box span {
+    line-height: 46px;
+  }
 }
+
+
 
