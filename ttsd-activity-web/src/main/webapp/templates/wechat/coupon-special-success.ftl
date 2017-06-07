@@ -1,5 +1,4 @@
 <#import "wechat-global.ftl" as global>
-
 <@global.main pageCss="${css.coupon_special_2017}" pageJavascript="${js.coupon_special_2017}"  title="领券专场_拓天周年庆_活动中心_拓天速贷" >
 <style type="text/css">
     body {
@@ -13,7 +12,7 @@
         <span class="bg-border"></span>
     </div>
 
-    <div class="red-bag-list">
+    <div class="red-bag-list clearfix">
         <dl>
             <dt><span>0.8</span><i>%</i><em>加息券</em></dt>
             <dd>50元起投</dd>
@@ -54,6 +53,8 @@
 
     <p class="app-note">优惠券已发放到您的账户，可以去APP、微信、PC网站
         我的优惠券页面进行查看</p>
+
+    <p class="remark">活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有</p>
 
 </div>
 

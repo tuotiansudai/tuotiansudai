@@ -234,6 +234,12 @@ body {
       font-size: 13px;
       color: #fceecb;
       padding: 0 20px;
+      margin-top:30px;
+    }
+    .remark {
+      font-size:10px;
+      color: #fceecb;
+      margin-top:30px;
     }
   }
 }
@@ -363,6 +369,10 @@ body {
   }
   .wechat-frame-box .text-box span {
     line-height: 46px;
+  }
+
+  .wechat-frame-box.success-box .red-bag-list dl {
+    height: 120px;
   }
 }
 
