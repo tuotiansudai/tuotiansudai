@@ -18,5 +18,10 @@ if($('#pcCouponSpecial').length) {
             $('#topHeader').append(topImg);
         }
     }
+} else if($wechatCoupon.length) {
+    let drew = $wechatCoupon.data('drew');
+    if(drew) {
+        layer.msg('每个用户只能领取一次哦！');
+    }
 }
 
