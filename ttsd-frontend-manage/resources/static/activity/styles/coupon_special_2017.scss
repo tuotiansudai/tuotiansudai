@@ -7,6 +7,9 @@ body {
   height:100vh;
 }
 
+.layui-layer-msg {
+  width:70%;
+}
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -249,7 +252,7 @@ body {
     margin-top:0;
     padding: 30px 10px 10px 10px;
     .red-box {
-      padding: 40px 15px 10px 15px;
+      padding: 40px 15px 20px 15px;
       margin-bottom:20px;
       p {
         font-size:12px;
@@ -259,6 +262,7 @@ body {
         width: 100%;
         top: -23px;
         background-size: 70%;
+        margin-left: -19px;
       }
       .scan-code {
         width:140px;
@@ -346,7 +350,7 @@ body {
   .wechat-frame-box .text-box { bottom:32px;}
 }
 
-@media screen and(max-width: 350px){
+@media screen and(max-width: 360px){
   .activity-frame-box .wechat-scan .img-list {
     height:292px;
   }

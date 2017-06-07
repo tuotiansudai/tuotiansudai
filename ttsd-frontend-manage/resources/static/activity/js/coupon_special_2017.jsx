@@ -19,9 +19,17 @@ if($('#pcCouponSpecial').length) {
         }
     }
 } else if($wechatCoupon.length) {
-    let drew = $wechatCoupon.data('drew');
-    if(drew) {
-        layer.msg('每个用户只能领取一次哦！');
+    $('btn-receive',$wechatCoupon).on('click',function() {
+        $(this).prop('disabled',true);
+        location.href='/activity/celebration-coupon/draw';
+    });
+    window.onload = function() {
+        layer.msg('每个用户只能领取一次哦！',{type: 1, time: 200000000});
+        let drew = $wechatCoupon.data('drew');
+        if(drew) {
+            layer.msg('每个用户只能领取一次哦！');
+        }
     }
+
 }
 
