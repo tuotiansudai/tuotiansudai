@@ -23,15 +23,16 @@
 
     <div class="wechat-scan">
         <h1>微信扫一扫，以上福利全归您</h1>
+        <div id="mobileImg"></div>
         <dl class="img-list">
             <dd class="one">
                 <span class="word-pc"></span>
-                <span class="word-mobile">
-                    立即关注<br/>
-                    <em>“拓天速贷服务号”</em><br/>
-                    回复<em>“我要领券”</em><br/>
-                    领取大红包
-                </span>
+                <#--<span class="word-mobile">-->
+                    <#--立即关注<br/>-->
+                    <#--<em>“拓天速贷服务号”</em><br/>-->
+                    <#--回复<em>“我要领券”</em><br/>-->
+                    <#--领取大红包-->
+                <#--</span>-->
 
             </dd>
             <dd class="two">

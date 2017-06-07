@@ -8,6 +8,7 @@ let $wechatCoupon = $('#wechatCouponSpecial');
 if($('#pcCouponSpecial').length) {
 
     let redBagUrl = require('../images/2017/coupon-special/red-all.png');
+    let redBagBottomUrl = require('../images/2017/coupon-special/bg-red.png');
     let topHeaderUrl = require('../images/2017/coupon-special/head-coupon-wap.png');
     document.getElementById('redBag').src = redBagUrl;
 
@@ -17,16 +18,30 @@ if($('#pcCouponSpecial').length) {
         topImg.onload = function() {
             $('#topHeader').append(topImg);
         }
+        let locationUrl = location.href;
+        let parseURL = globalFun.parseURL(locationUrl);
+        let IsShare = parseURL.params.from;
+        if(IsShare=='wechat') {
+            $('.header-container,.nav-container,.nav-container,.footer-responsive').hide();
+        }
+
+        let  bottomImg= new Image();
+        bottomImg.src = redBagBottomUrl;
+        bottomImg.onload = function() {
+            $('#mobileImg').append(bottomImg);
+        }
+
     }
 } else if($wechatCoupon.length) {
     $('.btn-receive',$wechatCoupon).on('click',function() {
-        $(this).prop('disabled',true);
         let drew = $wechatCoupon.data('drew');
         if(drew) {
             layer.msg('每个用户只能领取一次哦！');
         } else {
             location.href='/activity/celebration-coupon/draw';
         }
+        $(this).prop('disabled',true);
+
     });
 
 }
