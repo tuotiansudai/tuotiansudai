@@ -18,8 +18,8 @@
     wx.ready(function () {
 //        分享给朋友
         wx.onMenuShareAppMessage({
-            title: '是朋友就帮我一起把夏季燃爆', // 分享标题
-            desc: '领取投资红包50元，最低50元起投', // 分享描述
+            title: '@所有人 关注公众号就能领红包，速来！', // 分享标题
+            desc: '我已在拓天速贷抢到1000元红包，你也来抢吧', // 分享描述
             link: '${webServer}/activity/celebration-coupon', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
@@ -30,7 +30,7 @@
 
 //        分享到朋友圈
         wx.onMenuShareTimeline({
-            title: '是朋友就帮我一起把夏季燃爆', // 分享标题
+            title: '@所有人 关注公众号就能领红包，速来！', // 分享标题
             link: '${webServer}/activity/celebration-coupon', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
