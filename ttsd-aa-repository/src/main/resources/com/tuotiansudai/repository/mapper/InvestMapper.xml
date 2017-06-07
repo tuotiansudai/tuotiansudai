@@ -597,39 +597,6 @@
     <select id="getInvestDetail" resultMap="investDataView">
         <![CDATA[
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -641,39 +608,6 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         ]]>
     </select>
@@ -1086,40 +1020,6 @@
         and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
          <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ]]>
     </select>
 
