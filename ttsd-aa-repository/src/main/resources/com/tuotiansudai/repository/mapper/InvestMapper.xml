@@ -85,6 +85,7 @@
     <resultMap id="investAchievementView" type="InvestAchievementView">
         <result column="login_name" property="loginName"></result>
         <result column="amount" property="amount"></result>
+        <result column="mobile" property="mobile"></result>
         <result column="trading_time" property="tradingTime"></result>
     </resultMap>
 
@@ -1087,7 +1088,7 @@
     </select>
 
     <select id="findAmountOrderByLoanId" parameterType="map" resultMap="investAchievementView">
-        SELECT * FROM
+        SELECT temp.login_name,temp.amount,temp.trading_time,user.mobile FROM
             (SELECT
                 login_name,
                     SUM(amount) AS amount,
@@ -1099,8 +1100,8 @@
                     AND loan.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
                     AND i.status = 'SUCCESS'
                     AND i.transfer_status != 'SUCCESS'
-            GROUP BY i.login_name) temp
-        ORDER BY amount,trading_time DESC
+            GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
+        ORDER BY amount desc,trading_time
         LIMIT 3
 
     </select>

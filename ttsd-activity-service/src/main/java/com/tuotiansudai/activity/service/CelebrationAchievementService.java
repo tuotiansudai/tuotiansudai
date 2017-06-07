@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,5 +50,12 @@ public class CelebrationAchievementService {
     public List<InvestAchievementView> obtainCelebrationAchievement(long loanId) {
         return investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
 
+    }
+
+    public String encryptMobileForWeb(String loginName,String encryptLoginName, String encryptMobile) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return encryptMobile;
+        }
+        return MobileEncryptor.encryptMiddleMobile(encryptMobile);
     }
 }

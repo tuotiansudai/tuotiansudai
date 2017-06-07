@@ -1,6 +1,7 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
@@ -19,8 +20,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class LoanOutSuccessAssignCelebrationAchievementMessageConsumer implements MessageConsumer {
@@ -30,8 +34,8 @@ public class LoanOutSuccessAssignCelebrationAchievementMessageConsumer implement
     private SmsWrapperClient smsWrapperClient;
     @Autowired
     private InvestMapper investMapper;
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.achievement.startTime}\")}")
     private Date startTime;
