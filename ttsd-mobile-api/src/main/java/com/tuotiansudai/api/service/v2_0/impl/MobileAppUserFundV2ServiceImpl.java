@@ -61,7 +61,8 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
         long experienceBalance = userService.getExperienceBalanceByLoginName(loginName);
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
-        int showMoneyTree = moneyTreePrizeService.isActivity();
+        //为了兼容ios和android，这里改为始终显示
+        int showMoneyTree = 1;//moneyTreePrizeService.isActivity();
         Date membershipExpiredDate = userMembershipModel != null && (userMembershipModel.getType().name().equals("GIVEN") || userMembershipModel.getType().name().equals("PURCHASED")) ? userMembershipModel.getExpiredTime() : null;
         MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
         Date membershipPrivilegeExpiredDate = membershipPrivilegeModel != null ? membershipPrivilegeModel.getEndTime() : null;
