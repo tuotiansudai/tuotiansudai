@@ -34,9 +34,9 @@
     p {
       color: #fff;
       &.success-text {
-          height: 220px;
-          padding-top: 0;
-          margin: -140px 0 30px;
+        height: 220px;
+        padding-top: 0;
+        margin: -140px 0 20px;
         background: url('../images/single-rank/success-title.png') no-repeat center;
         background-size: 100%;
         @media (max-width:700px) {
@@ -45,17 +45,11 @@
         }
       }
       &.reward-text {
-        font-size:30px;
+        font-size:34px;
+        color:#ffe973;
         @media (max-width:700px) {
-            font-size: 14px;
+            font-size: 16px;
             line-height: 30px;
-        }
-        em{
-          font-size:34px;
-          color:#ffe973;
-          @media (max-width:700px) {
-              font-size: 16px;
-          }
         }
       }
       &.login-text {
@@ -92,8 +86,8 @@
     a {
       background: #ffea77;
       color: #e34758;
-      padding: 10px 70px;
-      font-size: 20px;
+      padding: 20px 70px;
+      font-size: 30px;
       border-radius: 5px;
       margin: 10px 0;
       @media (max-width:700px) {

@@ -70,8 +70,9 @@
             <div class="text-tip">
                 <p class="success-text"></p>
                 <p class="reward-text">恭喜您获得<em class="prizeValue"></em>！</p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">知道了</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
         </div>
 
     	<!--虚拟奖品的提示-->
@@ -80,8 +81,9 @@
             <div class="text-tip">
                 <p class="success-text"></p>
                 <p class="reward-text">恭喜您获得<em class="prizeValue"></em></p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">知道了</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
         </div>
 
     	<!--没有抽奖机会-->
@@ -91,7 +93,7 @@
                 <p class="login-text">您暂无抽奖机会啦～</p>
                 <p class="des-text">明天再来吧~</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
         </div>
 
     	<!--不在活动时间范围内-->
@@ -100,7 +102,7 @@
             <div class="text-tip">
                 <p class="login-text">不在活动时间内~</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
         </div>
 
     	<!--实名认证-->
@@ -110,7 +112,7 @@
                 <p class="login-text">您还未实名认证~</p>
                 <p class="des-text">请实名认证后再来抽奖吧！</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
         </div>
     </div>
 </div>
