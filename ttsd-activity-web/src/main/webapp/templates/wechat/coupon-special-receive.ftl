@@ -6,7 +6,7 @@
     <div class="text-box">
         <span>周年庆专享</span>
         <#if duringActivities>
-            <button type="button"  class="btn-receive" disabled>立即领取</button>
+            <button type="button"  class="btn-receive">立即领取</button>
         <#else>
             <button type="button"  class="btn-receive" disabled>活动已结束</button>
         </#if>
