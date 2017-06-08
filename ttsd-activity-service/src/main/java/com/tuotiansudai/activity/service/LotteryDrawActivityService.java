@@ -327,10 +327,10 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_ENVELOP_20, Lists.newArrayList(411L))
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(412L))
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_1, Lists.newArrayList(413L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5,Lists.newArrayList(450L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10,Lists.newArrayList(451L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30,Lists.newArrayList(452L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5,Lists.newArrayList(453L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5,Lists.newArrayList(441L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10,Lists.newArrayList(442L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30,Lists.newArrayList(443L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5,Lists.newArrayList(444L))
                 .build()).get(lotteryPrize);
     }
 
