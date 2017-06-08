@@ -117,7 +117,7 @@ VALUES (438, 0, 0.008, 0, NULL, 0, '2017-06-30 00:00:00', '2017-07-30 23:59:59',
                                                                                                      '1', '0',
                                                                                                      'sidneygao', now(),
                                                                                                      'sidneygao', now(),
-                                                                                                     NULL, NULL, '0',
+                                                                                                     NULL, NULL, '5000',
         '_90,_180,_360', 'INTEREST_COUPON',
         'WINNER', 0, '周年庆_领券专场', '');
 
