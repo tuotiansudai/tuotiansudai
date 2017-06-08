@@ -7,6 +7,9 @@ body {
   height:100vh;
 }
 
+.layui-layer-msg {
+  width:70%;
+}
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -124,7 +127,7 @@ body {
         height:100%;
 
         h2 {
-          font-size:28px;
+          font-size:25px;
         }
         .img-cat {
           background: url('../images/2017/coupon-special/code-cat.png') center center no-repeat;
@@ -156,20 +159,23 @@ body {
       line-height: 80px;
     }
 
-    .btn-receive,.btn-receive-disabled {
+    .btn-receive {
       display: inline-block;
       width:60%;
-      height: 86px;
-      background: url('../images/2017/coupon-special/btn-receive.png') left top no-repeat;
-      background-size: 100%;
+      height: 74px;
+      background: url('../images/2017/coupon-special/btn-receive.png') center center no-repeat;
+      background-size: contain;
       border: 0;
       cursor: pointer;
-    }
-    .btn-receive-disabled {
-      background: url('../images/2017/coupon-special/btn-receive-disable.png') left top no-repeat;
-      background-size: 100%;
-    }
+      font-size: 23px;
+      color: #f34326;
 
+      &:disabled {
+        background: url('../images/2017/coupon-special/btn-receive-disable.png') center center no-repeat;
+        background-size: contain;
+        color: #f3d2cd;
+      }
+    }
   }
 
   &.success-box {
@@ -231,6 +237,12 @@ body {
       font-size: 13px;
       color: #fceecb;
       padding: 0 20px;
+      margin-top:30px;
+    }
+    .remark {
+      font-size:10px;
+      color: #fceecb;
+      margin-top:30px;
     }
   }
 }
@@ -249,7 +261,7 @@ body {
     margin-top:0;
     padding: 30px 10px 10px 10px;
     .red-box {
-      padding: 40px 15px 10px 15px;
+      padding: 40px 15px 20px 15px;
       margin-bottom:20px;
       p {
         font-size:12px;
@@ -259,6 +271,7 @@ body {
         width: 100%;
         top: -23px;
         background-size: 70%;
+        margin-left: -19px;
       }
       .scan-code {
         width:140px;
@@ -291,42 +304,19 @@ body {
       }
     }
     .wechat-scan {
+      text-align: center;
+      img {
+        width:70%;
+        margin-top:20px;
+        margin-bottom:20px;
+      }
       h1 {
         font-size:20px;
         padding: 20px 0 0 0;
       }
       .img-list {
-        width:100%;
-        height: 380px;
-        margin:0 auto;
-        .one {
-          width:100%;
-          background-size: 100%;
-          float: none;
-          margin: 0 auto;
-          .word-pc {
-            display: none;
-          }
-          .word-mobile {
-            display: block;
-            font-size:12px;
-            color: #fff;
-            text-align: center;
-            position: absolute;
-            left:0;
-            top: 65%;
-            width: 100%;
-            height: 48px;
-            line-height: 20px;
+        display: none;
 
-            em {
-              font-size:14px;
-              color: #fffe54;
-            }
-
-          }
-
-        }
       }
 
       .two {
@@ -339,28 +329,27 @@ body {
 }
 
 @media screen and(max-width: 400px){
-  .activity-frame-box .wechat-scan .img-list .one .word-mobile {
-    top:59%;
-  }
 
   .wechat-frame-box .text-box { bottom:32px;}
 }
 
-@media screen and(max-width: 350px){
-  .activity-frame-box .wechat-scan .img-list {
-    height:292px;
-  }
-  .activity-frame-box .wechat-scan .img-list .one .word-mobile {
-    top:63%;
-  }
-  .wechat-frame-box .text-box {
-    bottom: auto;
-    top: 73%;
-  }
+@media screen and(max-width: 360px){
+
   .wechat-frame-box .text-box span {
     line-height: 46px;
   }
+
+  .wechat-frame-box.success-box .red-bag-list dl {
+    height: 120px;
+  }
 }
+
+@media screen and(max-width: 320px){
+  .wechat-frame-box .text-box {
+    bottom: 8px;
+  }
+}
+
 
 
 
