@@ -31,9 +31,9 @@
 					</div>
 					<div class="bd">
 						<ul>
-							<li><img src="http://iph.href.lu/1000x400" /></li>
-							<li><img src="http://iph.href.lu/1000x400" /></li>
-							<li><img src="http://iph.href.lu/1000x400" /></li>
+							<li><img src="http://iph.href.lu/1000x400" width="100%"/></li>
+							<li><img src="http://iph.href.lu/1000x400" width="100%"/></li>
+							<li><img src="http://iph.href.lu/1000x400" width="100%"/></li>
 						</ul>
 					</div>
 					<a class="btn-item prev" href="javascript:void(0)"></a>
@@ -48,6 +48,26 @@
 					<i class="right-line"></i>
 					</span>
 				</h3>
+				<ul class="list-item">
+					<li>
+						<p class="icon-one"></p>
+						<p>
+							用户在存管银行设有专门的独立存管子帐户，由存管银行对资金进行管理与监督，平台无法触碰用户资金。
+						</p>
+					</li>
+					<li>
+						<p class="icon-two"></p>
+						<p>
+							用户需要单独设立交易密码保障账户安全，账户信息由存管银行管理，资金交易均由用户授权银行操作执行。
+						</p>
+					</li>
+					<li>
+						<p class="icon-three"></p>
+						<p>
+							银行根据合同约定及用户发出的交易指令，对交易流程进行管理并记录用户资金流水，交易真实可查。
+						</p>
+					</li>
+				</ul>
 			</div>
 		</div>
 		<div class="intro-container">

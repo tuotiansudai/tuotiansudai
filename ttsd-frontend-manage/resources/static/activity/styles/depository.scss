@@ -30,14 +30,6 @@
 	.top-item{
 		float:left;
 		width:100%;
-		height:350px;
-		background:url('../images/depository/top-img.jpg') no-repeat center;
-		background-size:100%;
-		@media (max-width:700px) {
-			height:150px;
-			background:url('../images/depository/top-img-phone.jpg') no-repeat center;
-			background-size:100%;
-		}
 	}
 	.content-item {
 		float: left;
@@ -64,6 +56,9 @@
 				box-sizing:border-box;
 				margin-top:-100px;
 			    box-shadow: 0 0 10px #ccc;
+			    @media (max-width:700px) {
+			    	margin-top: -50px;
+			    }
 				p{
 					font-size:16px;
 					color:#333;
@@ -164,26 +159,75 @@
 					}
 				}
 			}
+			.list-item{
+				float:left;
+				margin: 0 -10% 50px;
+				li{
+					float:left;
+					width:33.333333%;
+					text-align:left;
+					box-sizing:border-box;
+					padding:0 100px;
+					p{
+						font-size:16px;
+						color:#333;
+						&.icon-one{
+							height:100px;
+							background:url('../images/depository/icon-one.png') no-repeat center;
+						}
+						&.icon-two{
+							height:100px;
+							background:url('../images/depository/icon-two.png') no-repeat center;
+						}
+						&.icon-three{
+							height:100px;
+							background:url('../images/depository/icon-three.png') no-repeat center;
+						}
+					}
+				}
+			}
 		}
 		.intro-container{
 			float:left;
 			width:100%;
 			background: url('../images/depository/model-bg.jpg') no-repeat center;
-			background-size:100%;
+			background-size:cover;
 			.intro-item{
 				float:left;
 				width:100%;
+				margin-top: 30px;
 				li{
 					width:380px;
-					height:410px;
+					min-height:400px;
 					background:#fff;
-					padding:40px 30px;
+					padding:70px 30px 30px;
 					margin:0 0 60px;
+					font-size:16px;
 					box-sizing:border-box;
+					position: relative;
 					h3{
 						font-size:28px;
 						color:#333333;
 						text-align:center;
+					}
+					i{
+						position: absolute;
+						width:100px;
+						height:100px;
+						top:-50px;
+						left:50%;
+						margin-left:-50px;
+						border-radius:50%;
+					    box-shadow: 0 2px 3px 0px #ddd;
+						box-sizing:border-box;
+						&.intro-one{
+							background:#fff url('../images/depository/intro-one.png') no-repeat center;
+							background-size: 50%;
+						}
+						&.intro-two{
+							background:#fff url('../images/depository/intro-two.png') no-repeat center;
+							background-size: 50%;
+						}
 					}
 				}
 			}
