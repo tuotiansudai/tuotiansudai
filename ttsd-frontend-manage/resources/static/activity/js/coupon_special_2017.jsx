@@ -33,7 +33,7 @@ if($('#pcCouponSpecial').length) {
     if(IsShare=='wechat') {
         $('.header-container,.nav-container,.nav-container,.footer-responsive').hide();
     }
-    
+
 } else if($wechatCoupon.length) {
     $('.btn-receive',$wechatCoupon).on('click',function() {
             location.href='/activity/celebration-coupon/draw';
