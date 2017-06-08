@@ -29,9 +29,9 @@ if($('#pcCouponSpecial').length) {
 
     let locationUrl = location.href;
     let parseURL = globalFun.parseURL(locationUrl);
-    let IsShare = parseURL.params.from;
+    let IsShare = parseURL.params.come;
     if(IsShare=='wechat') {
-        $('.header-container,.nav-container,.nav-container,.footer-responsive').hide();
+        $('.header-container,.nav-container,.footer-responsive').hide();
     }
 
 } else if($wechatCoupon.length) {
