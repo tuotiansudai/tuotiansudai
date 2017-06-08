@@ -58,35 +58,45 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
                 var angleNum=0;
                 $leftDrawCount.text(data.myPoint);
                 switch (data.data.wechatLotteryPrize) {
-                    case 'WECHAT_LOTTERY_BEDCLOTHES': //欧式奢华贡缎床品四件套
+                    case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
+                        angleNum=72*8-20;
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金')
+                        .parent().siblings('.des-text').text('您可以在 “APP个人中心－我的体验金” 中进行查看');
+                        break;
+                    case 'CELEBRATION_SINGLE_ACTIVITY_LUGGAGE': //迷彩旅行箱
+                        angleNum=72*7-20;
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('迷彩旅行箱')
+                        .parent().siblings('.des-text').text('奖品将于活动结束后发放');
+                        break;
+                    case 'CELEBRATION_SINGLE_ACTIVITY_DOLL': //树袋熊玩偶
+                        angleNum=72*6-20;
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('树袋熊玩偶')
+                        .parent().siblings('.des-text').text('奖品将于活动结束后发放');
+                        break;
+                    case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30': //30元红包
                         angleNum=72*5-20;
-                        $(tipGroupObj['concrete']).find('.prizeValue').text('一等奖')
-                        .parent().siblings('.des-text').text('欧式奢华贡缎床品四件套')
-                        .siblings('.reward-text').attr('class','reward-text gift-one');
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('30元红包')
+                        .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
-                    case 'WECHAT_LOTTERY_BAG': //时尚百搭真皮子母包
+                    case 'CELEBRATION_SINGLE_ACTIVITY_COUPON_5': //0.5%加息券
                         angleNum=72*4-20;
-                        $(tipGroupObj['concrete']).find('.prizeValue').text('二等奖')
-                        .parent().siblings('.des-text').text('时尚百搭真皮子母包')
-                        .siblings('.reward-text').attr('class','reward-text gift-two');
+                        $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券')
+                        .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
-                    case 'WECHAT_LOTTERY_HEADGEAR':  //简约吊坠百搭锁骨链
+                    case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10':  //10元红包
                         angleNum=72*3-20;
-                         $(tipGroupObj['concrete']).find('.prizeValue').text('三等奖')
-                         .parent().siblings('.des-text').text('简约吊坠百搭锁骨链')
-                        .siblings('.reward-text').attr('class','reward-text gift-three');
+                         $(tipGroupObj['concrete']).find('.prizeValue').text('10元红包')
+                         .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
-                    case 'WECHAT_LOTTERY_TOWEL':  //精品定制毛巾礼盒
+                    case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5':  //5元红包
                         angleNum=72*2-20;
-                         $(tipGroupObj['concrete']).find('.prizeValue').text('四等奖')
-                         .parent().siblings('.des-text').text('精品定制毛巾礼盒')
-                        .siblings('.reward-text').attr('class','reward-text gift-four');
+                         $(tipGroupObj['concrete']).find('.prizeValue').text('5元红包')
+                         .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
-                    case 'WECHAT_LOTTERY_RED_ENVELOP_20': //20元红包
+                    case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //2888元体验金
                         angleNum=72*1-20;
-                         $(tipGroupObj['concrete']).find('.prizeValue').text('五等奖')
-                         .parent().siblings('.des-text').text('20元红包')
-                        .siblings('.reward-text').attr('class','reward-text gift-five');
+                         $(tipGroupObj['concrete']).find('.prizeValue').text('2888元体验金')
+                         .parent().siblings('.des-text').text('您可以在 “APP个人中心－我的体验金” 中进行查看');
                         break;
                 }
                 drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
