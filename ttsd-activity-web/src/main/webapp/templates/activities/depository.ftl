@@ -50,6 +50,31 @@
 				</h3>
 			</div>
 		</div>
+		<div class="intro-container">
+			<div class="wp">
+				<div class="model-item">
+					<h3>
+						<span class="active">
+						<i class="left-line"></i>
+						为什么选择华兴银行？
+						<i class="right-line"></i>
+						</span>
+					</h3>
+				</div>
+				<ul class="intro-item">
+					<li class="fl">
+						<i class="intro-one"></i>
+						<h3>银行实力雄厚</h3>
+						<p>华兴银行是经中国银行业监督管理委员会正式批复同意，依法创新组建的股份制商业银行，注册资本50亿元。股东实力雄厚、股权主体多元、股本结构合理，股东行业性质涵盖了民营企业、股份制银行、大型国有企业，行业类型包括金融和财政、房地产、投资、制造、医药以及商贸服务等行业。</p>
+					</li>
+					<li class="fr">
+						<i class="intro-two"></i>
+						<h3>合规的银行存管</h3>
+						<p>华兴银行存管符合《网络借贷信息中介机构业务活动管理暂行办法》和《网络借贷资金存管业务指引（征求意见稿）》中的政策规定，是完全合规的银行存管模式。</p>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </div>
 </@global.main>

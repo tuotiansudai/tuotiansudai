@@ -42,7 +42,6 @@
 	.content-item {
 		float: left;
 		width: 100%;
-		height:1200px;
 		background: #f1f1f2 url('../images/depository/bg.png') no-repeat center bottom;
 		background-size:80%;
 
@@ -74,83 +73,117 @@
 					}
 				}
 			}
-			.model-item{
+		}
+		.model-item{
+			float:left;
+			width:100%;
+			h3{
 				float:left;
 				width:100%;
-				h3{
-					float:left;
-					width:100%;
-					margin: 50px 0;
-					text-align:center;
-					i{
-						width:180px;
-						height:20px;
-						position: absolute;
-						top:50%;
-						margin-top:-10px;
-						&.left-line{
-							left:-180px;
-							background:url('../images/depository/left-line.png') no-repeat center;
-							background-size:100%;
-						}
-						&.right-line{
-							right:-180px;
-							background:url('../images/depository/right-line.png') no-repeat center;
-							background-size:100%;
-						}
+				margin: 50px 0;
+				text-align:center;
+				i{
+					width:180px;
+					height:20px;
+					position: absolute;
+					top:50%;
+					margin-top:-10px;
+					&.left-line{
+						left:-180px;
+						background:url('../images/depository/left-line.png') no-repeat center;
+						background-size:100%;
 					}
-					span{
-						display:inline-block;
-						padding:0 40px;
-						font-size:32px;
-						color:#333333;
-						position: relative;
+					&.right-line{
+						right:-180px;
+						background:url('../images/depository/right-line.png') no-repeat center;
+						background-size:100%;
 					}
 				}
-				.slide-box{
-					float:left;
-					width:100%;
+				span{
+					display:inline-block;
+					padding:0 40px;
+					font-size:32px;
+					color:#333333;
 					position: relative;
-					.hd{
+					&.active{
+						color:#fff;
+						.left-line{
+							background:url('../images/depository/left-line-white.png') no-repeat center;
+							background-size:100%;
+						}
+						.right-line{
+							background:url('../images/depository/right-line-white.png') no-repeat center;
+							background-size:100%;
+						}
+					}
+				}
+			}
+			.slide-box{
+				float:left;
+				width:100%;
+				position: relative;
+				.hd{
+					width:100%;
+					position: absolute;
+					bottom:30px;
+					left:0;
+				    z-index: 99;
+					.nav-item{
+						float:left;
 						width:100%;
-						position: absolute;
-						bottom:30px;
-						left:0;
-					    z-index: 99;
-						.nav-item{
-							float:left;
-							width:100%;
-							text-align:center;
-							li{
-								display:inline-block;
-								width:15px;
-								height:15px;
-								border-radius:50%;
-								background:#bfbfbe;
-								margin:0 5px;
-								text-indent:-999em;
-								&.on{
-									background:#f1f1f1;
-								}
+						text-align:center;
+						li{
+							display:inline-block;
+							width:15px;
+							height:15px;
+							border-radius:50%;
+							background:#bfbfbe;
+							margin:0 5px;
+							text-indent:-999em;
+							&.on{
+								background:#f1f1f1;
 							}
 						}
 					}
-					.btn-item{
-						width:35px;
-						height:70px;
-						position: absolute;
-						top:50%;
-						margin-top:-35px;
-						&.prev{
-							left:20px;
-							background:url('../images/depository/pre-btn.png') no-repeat center;
-							background-size: 100%;
-						}
-						&.next{
-							right:20px;
-							background:url('../images/depository/next-btn.png') no-repeat center;
-							background-size: 100%;
-						}
+				}
+				.btn-item{
+					width:35px;
+					height:70px;
+					position: absolute;
+					top:50%;
+					margin-top:-35px;
+					&.prev{
+						left:20px;
+						background:url('../images/depository/pre-btn.png') no-repeat center;
+						background-size: 100%;
+					}
+					&.next{
+						right:20px;
+						background:url('../images/depository/next-btn.png') no-repeat center;
+						background-size: 100%;
+					}
+				}
+			}
+		}
+		.intro-container{
+			float:left;
+			width:100%;
+			background: url('../images/depository/model-bg.jpg') no-repeat center;
+			background-size:100%;
+			.intro-item{
+				float:left;
+				width:100%;
+				li{
+					width:380px;
+					height:410px;
+					background:#fff;
+					padding:40px 30px;
+					margin:0 0 60px;
+					box-sizing:border-box;
+					h3{
+						font-size:28px;
+						color:#333333;
+						text-align:center;
 					}
 				}
 			}
