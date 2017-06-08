@@ -40,7 +40,7 @@ public class CelebrationSingleActivityService {
             time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
         }
         time= time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.CELEBRATION_SINGLE_ACTIVITY, activitySingleStartTime, activitySingleEndTime) : time;
-        return time+"";
+        return String.valueOf(time);
 
     }
 
