@@ -66,7 +66,7 @@ public class LotteryDrawActivityController {
         if(drawLotteryResultDto.isDrawLotterySuccess()){
             drawLotteryResultDto.setMyPoint(celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         }
-        return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+        return drawLotteryResultDto;
     }
     
     @ResponseBody

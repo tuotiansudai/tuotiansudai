@@ -57,7 +57,7 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
             if (data.returnCode == 0) {
                 var angleNum=0;
                 $leftDrawCount.text(data.myPoint);
-                switch (data.data.wechatLotteryPrize) {
+                switch (data.prize) {
                     case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
                         angleNum=72*8-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金')
