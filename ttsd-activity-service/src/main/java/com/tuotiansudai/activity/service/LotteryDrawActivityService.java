@@ -183,9 +183,6 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
-        if(activityCategory==ActivityCategory.CELEBRATION_SINGLE_ACTIVITY)){
-
-        }
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {

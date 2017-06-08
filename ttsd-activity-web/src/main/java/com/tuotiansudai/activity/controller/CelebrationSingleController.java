@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping(value = "/activity/single")
+@RequestMapping(value = "/activity/single-ranking")
 public class CelebrationSingleController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class CelebrationSingleController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
-        ModelAndView modelAndView = new ModelAndView("/activities/single", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/single-ranking", "responsive", true);
         modelAndView.addObject("drawCount", celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         return modelAndView;
     }
