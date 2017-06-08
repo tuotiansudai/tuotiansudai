@@ -52,51 +52,51 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
     //开始抽奖
 
     $pointerBtn.on('click', function(event) {
-        
+
         drawCircleOne.beginLuckDraw(function(data) {
-            console.log(data)
+            console.log(data);
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
                 var angleNum=0;
                 $leftDrawCount.text(data.myPoint);
                 switch (data.prize) {
                     case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
-                        angleNum=72*8-20;
+                        angleNum=45*1-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金')
                         .parent().siblings('.des-text').text('您可以在 “APP个人中心－我的体验金” 中进行查看');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_LUGGAGE': //迷彩旅行箱
-                        angleNum=72*7-20;
+                        angleNum=45*2-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('迷彩旅行箱')
                         .parent().siblings('.des-text').text('奖品将于活动结束后发放');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_DOLL': //树袋熊玩偶
-                        angleNum=72*6-20;
+                        angleNum=45*3-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('树袋熊玩偶')
                         .parent().siblings('.des-text').text('奖品将于活动结束后发放');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30': //30元红包
-                        angleNum=72*5-20;
+                        angleNum=45*4-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('30元红包')
                         .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_COUPON_5': //0.5%加息券
-                        angleNum=72*4-20;
+                        angleNum=45*5-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券')
                         .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10':  //10元红包
-                        angleNum=72*3-20;
+                        angleNum=45*6-20;
                          $(tipGroupObj['concrete']).find('.prizeValue').text('10元红包')
                          .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5':  //5元红包
-                        angleNum=72*2-20;
+                        angleNum=45*7-20;
                          $(tipGroupObj['concrete']).find('.prizeValue').text('5元红包')
                          .parent().siblings('.des-text').text('您可以在 “个人中心” 中进行查看');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //2888元体验金
-                        angleNum=72*1-20;
+                        angleNum=45*8-20;
                          $(tipGroupObj['concrete']).find('.prizeValue').text('2888元体验金')
                          .parent().siblings('.des-text').text('您可以在 “APP个人中心－我的体验金” 中进行查看');
                         break;
