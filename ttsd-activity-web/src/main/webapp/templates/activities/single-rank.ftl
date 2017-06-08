@@ -64,7 +64,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="success-text"></p>
-                <p class="reward-text">恭喜您获得<em class="prizeValue"></em>！</p>
+                <p class="reward-text"><em class="prizeValue"></em>！</p>
                 <p class="des-text">请实名认证后再来抽奖吧！</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
@@ -75,7 +75,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="success-text"></p>
-                <p class="reward-text">恭喜您获得<em class="prizeValue"></em></p>
+                <p class="reward-text"><em class="prizeValue"></em></p>
                 <p class="des-text">请实名认证后再来抽奖吧！</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
@@ -86,7 +86,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="login-text">您暂无抽奖机会啦～</p>
-                <p class="des-text">明天再来吧~</p>
+                <p class="des-text">快去投资赢取抽奖机会吧</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
         </div>

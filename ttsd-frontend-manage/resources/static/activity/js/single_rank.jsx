@@ -23,7 +23,9 @@ var pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
     pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
     drawURL='/activity/point-draw/single-draw';    //抽奖的接口链接
 
-var oneData='',
+var oneData={
+    'activityCategory':'CELEBRATION_SINGLE_ACTIVITY'
+},
 $leftDrawCount=$('#leftDrawCount');
 
 $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
