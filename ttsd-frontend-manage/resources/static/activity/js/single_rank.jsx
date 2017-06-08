@@ -3,6 +3,7 @@ let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
 let tpl = require('art-template/dist/template');
+let sourceKind = globalFun.parseURL(location.href);
 
 
 let topimg=require('../images/single-rank/top-image.jpg');
@@ -19,7 +20,7 @@ let $singleRank = $('#singleRank'),
 var $pointerBtn = $('.pointer-img',$singleRank);
 var $oneThousandPoints=$('.gift-circle-frame',$singleRank);
 var pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
-    pointUserList='/activity/point-draw//user-list',   //我的奖品接口地址
+    pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
     drawURL='/activity/point-draw/single-draw';    //抽奖的接口链接
 
 var oneData='',
@@ -49,15 +50,13 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
     //开始抽奖
 
     $pointerBtn.on('click', function(event) {
-        // $(tipGroupObj['concrete']).find('.prizeValue').text('一等奖')
-        //                 .parent().siblings('.des-text').text('欧式奢华贡缎床品四件套')
-        //                 .siblings('.reward-text').attr('class','reward-text gift-one');
-        // drawCircleOne.rotateFn(72*5-20,tipGroupObj['concrete']);
+        
         drawCircleOne.beginLuckDraw(function(data) {
+            console.log(data)
             //抽奖接口成功后奖品指向位置
-            if (data.data.returnCode == 0) {
+            if (data.returnCode == 0) {
                 var angleNum=0;
-                $leftDrawCount.text(data.data.leftDrawCount);
+                $leftDrawCount.text(data.myPoint);
                 switch (data.data.wechatLotteryPrize) {
                     case 'WECHAT_LOTTERY_BEDCLOTHES': //欧式奢华贡缎床品四件套
                         angleNum=72*5-20;
@@ -98,8 +97,17 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
             }
             else if (data.returnCode == 2) {
                 //未登录
-
-                $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
+                if (sourceKind.params.source == 'app') {
+                    location.href = "app/tuotian/login";
+                }else{
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
+                }
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
