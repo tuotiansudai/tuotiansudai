@@ -134,6 +134,12 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Override
     public void assignUserCoupon(String loginNameOrMobile, long couponId) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+
+        if (userModel == null) {
+            logger.error(MessageFormat.format("[Coupon Assignment] user ({0}) is not exist", loginNameOrMobile));
+            return;
+        }
+
         final String loginName = userModel.getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
