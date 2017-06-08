@@ -1,9 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
-
-<#assign jsName = 'single_rank' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
+<#import "../macro/global.ftl" as global>
 
 <@global.main pageCss="${css.single_rank}" pageJavascript="${js.single_rank}" activeNav="" activeLeftNav="" title="'单笔'狂欢场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,抽奖,体验金,红包奖励" description="拓天周年庆-'单笔'狂欢场活动,活动期间每单笔投资满1万元以上,即可获得体验金奖励及一次抽奖机会,最高可获68888元体验金奖励及现金红包,100%中奖,实物大奖送不停.">
 <div class="single-rank-container" id="singleRank">
@@ -38,7 +33,7 @@
 					    </div>
 					    <div class="gift-circle-detail">
 						    <div class="lottery-times">
-						    	我的抽奖机会：<span id="leftDrawCount">1</span>次
+						    	我的抽奖机会：<span id="leftDrawCount">${drawCount}</span>次
 						    </div>
 					        <div class="gift-info-box">
 					            <ul class="gift-record">

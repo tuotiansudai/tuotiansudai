@@ -411,6 +411,7 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case CELEBRATION_SINGLE_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+
         }
         return lotteryTime;
     }

@@ -5,11 +5,13 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.service.CelebrationSingleActivityService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,9 @@ public class LotteryDrawActivityController {
     @Autowired
     private PointBillService pointBillService;
 
+    @Autowired
+    private CelebrationSingleActivityService celebrationSingleActivityService;
+
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
         return new ModelAndView("redirect:/error/404");
@@ -51,6 +56,16 @@ public class LotteryDrawActivityController {
     @ResponseBody
     @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto taskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CARNIVAL_ACTIVITY", required = false) ActivityCategory activityCategory) {
+        return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/single-draw", method = RequestMethod.POST)
+    public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CELEBRATION_SINGLE_ACTIVITY", required = false) ActivityCategory activityCategory) {
+        DrawLotteryResultDto drawLotteryResultDto =lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+        if(drawLotteryResultDto.isDrawLotterySuccess()){
+            drawLotteryResultDto.setMyPoint(celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
+        }
         return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
     }
     

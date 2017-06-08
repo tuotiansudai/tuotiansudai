@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping(value = "/activity/single-ranking")
+@RequestMapping(value = "/activity/single-rank")
 public class CelebrationSingleController {
 
     @Autowired
@@ -19,16 +18,11 @@ public class CelebrationSingleController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
-        ModelAndView modelAndView = new ModelAndView("/activities/single-ranking", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/single-rank", "responsive", true);
         modelAndView.addObject("drawCount", celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/single-draw-count")
-    @ResponseBody
-    public String DrawCount(){
-        return celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName());
-    }
 
 
 }

@@ -34,14 +34,13 @@ public class CelebrationSingleActivityService {
         if(Strings.isNullOrEmpty(loginName)){
             return "0";
         }
-        int userCount=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.CELEBRATION_SINGLE_ACTIVITY, null, null);
-        int sumDraw=0;
+        int time=0;
         List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,activitySingleStartTime,activitySingleEndTime);
         for (InvestModel investModel:investModels) {
-            sumDraw+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
+            time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
         }
-        String drawCount=(sumDraw-userCount)+"";
-        return drawCount;
+        time= time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.CELEBRATION_SINGLE_ACTIVITY, activitySingleStartTime, activitySingleEndTime) : time;
+        return time+"";
 
     }
 
