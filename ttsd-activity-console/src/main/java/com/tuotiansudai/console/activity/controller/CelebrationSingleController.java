@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.service.ActivityConsoleMothersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +9,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/activity-console/activity-manage")
-public class MothersDayController {
+public class CelebrationSingleController {
 
-    @Autowired
-    private ActivityConsoleMothersService activityConsoleMothersService;
+   // @Autowired
+  //  private ActivityConsoleSingleService activityConsoleSingleService;
 
-    @RequestMapping(value = "/mothers-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/single-list", method = RequestMethod.GET)
     public ModelAndView list(@RequestParam(value = "index", defaultValue = "1") int index) {
-        ModelAndView modelAndView = new ModelAndView("/mothers-day-list");
+        ModelAndView modelAndView = new ModelAndView("/celebration-single-list");
         final int pageSize = 10;
-        modelAndView.addObject("data", activityConsoleMothersService.list(index, pageSize));
+      //  modelAndView.addObject("data", activityConsoleSingleService.investList(index, pageSize));
         return modelAndView;
     }
 }

@@ -10,7 +10,8 @@ public enum ExperienceBillBusinessType {
     DIVIDE_MONEY("瓜分体验金活动奖励", "恭喜您在瓜分体验金活动中获得体验金：{0}元体验金，获奖时间：{1}"),
     DRAGON_BOAT_INVITE_NEW_USER("端午节活动邀请好友", "恭喜您在端午节活动中邀请新用户，得到了{0}元体验金奖励，获奖时间：{1}"),
     DRAGON_BOAT_ZONGZI_PK("端午节活动粽子PK", "恭喜您在端午节粽子PK活动中，得到了{0}元体验金奖励，获奖时间：{1}"),
-    CELEBRATION_ONEPEN("周年庆幸运大抽奖", "恭喜您在周年庆单笔狂欢场活动中抽中了：{0}元体验金奖励，获奖时间：{1}");
+    CELEBRATION_LUCK_DRAW("周年庆幸运大抽奖", "恭喜您在周年庆幸运大抽奖活动中抽中了：{0}元体验金奖励，获奖时间：{1}"),
+    CELEBRATION_SINGLE_ECONOMICAL("周年庆单笔聚划算", "恭喜您在周年庆单笔聚划算活动中获得了{0}元体验金奖励，获奖时间：{1}");
 
     private final String description;
     private final String contentTemplate;

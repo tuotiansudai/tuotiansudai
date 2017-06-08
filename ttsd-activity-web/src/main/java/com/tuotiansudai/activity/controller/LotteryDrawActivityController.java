@@ -53,17 +53,7 @@ public class LotteryDrawActivityController {
     public DrawLotteryResultDto taskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CARNIVAL_ACTIVITY", required = false) ActivityCategory activityCategory) {
         return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/chance-draw", method = RequestMethod.POST)
-    public DrawLotteryResultDto chanceDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CELEBRATION_SINGLE_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByChance(LoginUserInfo.getMobile(), activityCategory);
-        if (drawLotteryResultDto.isDrawLotterySuccess()) {
-            pointBillService.createPointBill(LoginUserInfo.getLoginName(), null, activityCategory.equals(ActivityCategory.POINT_SHOP_DRAW_1000) ? PointBusinessType.POINT_LOTTERY : PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", drawLotteryResultDto.getPrizeValue()));
-        }
-        return drawLotteryResultDto;
-    }
-
+    
     @ResponseBody
     @RequestMapping(value = "/user-list", method = RequestMethod.GET)
     public List<UserLotteryPrizeView> getPrizeRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile,

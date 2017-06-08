@@ -19,7 +19,6 @@ import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
@@ -639,7 +638,6 @@ public class InvestServiceImpl implements InvestService {
             }
 
             if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)){
-                mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestDrawChance,new InvestSuccessCelebrationOnePenMessage(investInfo));
                 celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
             }
 
@@ -733,7 +731,7 @@ public class InvestServiceImpl implements InvestService {
         Optional<ExperienceReward> reward = SingleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
         if (reward.isPresent()) {
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_ONEPEN));
+                   new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
 
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS,
                     Lists.newArrayList(loginName),

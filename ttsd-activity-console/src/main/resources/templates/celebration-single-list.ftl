@@ -1,8 +1,6 @@
-<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="mothersDay" title="母亲节活动">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="single" title="周年庆单笔活动">
 
-<!-- content area begin -->
 <div class="col-md-10">
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
@@ -22,9 +20,6 @@
                 </th>
                 <th>
                     获得体验金
-                </th>
-                <th>
-                    获得奖励
                 </th>
             </tr>
             </thead>
@@ -46,17 +41,16 @@
                     <td>
                     ${item.experience!}
                     </td>
-                    <td>
-                    ${item.reward!}
-                    </td>
                 </tr>
                 </#list>
             </tbody>
         </table>
     </div>
 
+
+
     <div class="panel panel-default">
-        <a href="/activity-console/activity-manage/mothers-day">请点击此处导出EXCEl</a>
+        <a href="#">请点击此处导出EXCEl</a>
     </div>
 
     <!-- pagination  -->
@@ -90,7 +84,5 @@
             </ul>
         </#if>
     </nav>
-    <!-- pagination -->
 </div>
-<!-- content area end -->
 </@global.main>

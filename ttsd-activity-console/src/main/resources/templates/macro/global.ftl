@@ -117,7 +117,8 @@
                     {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"mothersDay","text":"母亲节活动","link":"/activity-console/activity-manage/mothers-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"dragonBoat","text":"端午节活动","link":"/activity-console/activity-manage/dragon-boat","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"dragonBoat","text":"端午节活动","link":"/activity-console/activity-manage/dragon-boat","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"dragonBoat","text":"周年庆单笔活动","link":"/activity-console/activity-manage/single-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
             ]
         },
         {

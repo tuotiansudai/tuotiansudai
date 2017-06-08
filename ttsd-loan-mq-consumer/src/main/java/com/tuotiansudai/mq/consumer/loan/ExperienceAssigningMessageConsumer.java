@@ -68,6 +68,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             return;
         }
 
+
         logger.info("[发放体验金MQ] ready to consume message: tyrant assign experience.");
         try {
             experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
@@ -79,6 +80,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
                     e.getLocalizedMessage()), e);
         }
     }
+
 
     private void newmanTyrantAssignExperience(ExperienceAssigningMessage experienceAssigningMessage) {
         logger.info("[新贵富豪争霸活动发放体验金MQ] ready to consume message: newman tyrant assign experience.");
