@@ -14,3 +14,8 @@ $('#slideBox').slide({
 	effect:"leftLoop",
 	autoPlay:true
 });
+
+$('.detail-btn span',$depositoryContainer).on('click', function(event) {
+	event.preventDefault();
+	$(this).hasClass('active')?$(this).removeClass('active').text('展开内容').parent().siblings('.detail-media').hide():$(this).addClass('active').text('收起内容').parent().siblings('.detail-media').show();
+});
