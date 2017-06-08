@@ -32,9 +32,9 @@
 					</div>
 					<div class="bd">
 						<ul>
-							<li><img src="http://iph.href.lu/1000x400"/></li>
-							<li><img src="http://iph.href.lu/1000x400"/></li>
-							<li><img src="http://iph.href.lu/1000x400"/></li>
+							<li><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2918157489,1980790844&fm=11&gp=0.jpg" width="100%"/></li>
+							<li><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=165153981,3421643863&fm=11&gp=0.jpg" width="100%"/></li>
+							<li><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=659103431,2628812006&fm=26&gp=0.jpg" width="100%"/></li>
 						</ul>
 					</div>
 					<a class="btn-item prev" href="javascript:void(0)"></a>
