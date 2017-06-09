@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(path = "/activity/celebration-coupon")
 public class CelebrationCouponController {
@@ -20,8 +22,15 @@ public class CelebrationCouponController {
     @Autowired
     private CelebrationCouponService celebrationCouponService;
 
+    private final static String WECHAT_BROWSER = "MICROMESSENGER";
+
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)
-    public ModelAndView celebrationCouponWechatHome() {
+    public ModelAndView celebrationCouponWechatHome(HttpServletRequest request) {
+        String userAgent = request.getHeader("user-agent");
+
+        if (userAgent != null && userAgent.toUpperCase().indexOf(WECHAT_BROWSER) < 0) {
+            return new ModelAndView("redirect:/activities/2017/coupon-special");
+        }
 
         boolean duringActivities = celebrationCouponService.duringActivities();
         ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
