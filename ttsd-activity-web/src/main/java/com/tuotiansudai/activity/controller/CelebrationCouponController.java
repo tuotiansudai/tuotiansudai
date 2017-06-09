@@ -48,7 +48,12 @@ public class CelebrationCouponController {
 
 
     @RequestMapping(path = "/draw", method = RequestMethod.GET)
-    public ModelAndView celebrationDrawCouponHome() {
+    public ModelAndView celebrationDrawCouponHome(HttpServletRequest request) {
+        String userAgent = request.getHeader("user-agent");
+        if (userAgent != null && userAgent.toUpperCase().indexOf(WECHAT_BROWSER) < 0) {
+            return new ModelAndView("redirect:/activity/celebration-coupon");
+        }
+
         ModelAndView mv = new ModelAndView();
         String loginName = LoginUserInfo.getLoginName();
         boolean duringActivities = celebrationCouponService.duringActivities();
