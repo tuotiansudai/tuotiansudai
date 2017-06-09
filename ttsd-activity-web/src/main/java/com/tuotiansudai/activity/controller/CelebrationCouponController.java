@@ -29,7 +29,7 @@ public class CelebrationCouponController {
         String userAgent = request.getHeader("user-agent");
 
         if (userAgent != null && userAgent.toUpperCase().indexOf(WECHAT_BROWSER) < 0) {
-            return new ModelAndView("redirect:/activities/2017/coupon-special");
+            return new ModelAndView("redirect:/activity/celebration-coupon");
         }
 
         boolean duringActivities = celebrationCouponService.duringActivities();
