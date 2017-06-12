@@ -38,7 +38,7 @@
                                        </@global.isNotAnonymous>
                                 </span>
                                 </div>
-                                <div class="nodata-invest tc" style="display: none;">活动已结束</div>
+                                <div class="nodata-invest tc" style="display: none;">活动未结束</div>
                                 <table class="table-sort-border" style="display: none;">
                                     <caption><span id="HistoryAwards"><em>2016-07-31</em></span>投资排行</caption>
                                     <thead>
@@ -51,6 +51,13 @@
                                     </thead>
                                     <tbody id="investRanking-tbody">
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+
+                                        </td>
+                                    </tr>
+                                    </tfoot>
                                 </table>
 
                                 <script type="text/template" id="tplTable">

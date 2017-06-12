@@ -98,7 +98,7 @@
                     <input type="file" name="prizeImage"/>
                 </div>
                 <div class="col-sm-4 text-danger">
-                    (图片最大为:202px * 202px)
+                    (图片最大为:370px * 200px)
                 </div>
             </div>
 
@@ -174,7 +174,5 @@
 
         </form>
     </div>
-
 </div>
-
 </@global.main>

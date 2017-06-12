@@ -1,17 +1,17 @@
 package com.tuotiansudai.message;
 
 
-public class InvestSuccessNewmanTyrantMessage {
+public class InvestSuccessCelebrationHeroRankingMessage {
 
     private InvestInfo investInfo;
 
     private UserInfoActivity userInfoActivity;
 
-    public InvestSuccessNewmanTyrantMessage(){
+    public InvestSuccessCelebrationHeroRankingMessage(){
 
     }
 
-    public InvestSuccessNewmanTyrantMessage(InvestInfo investInfo, UserInfoActivity userInfoActivity) {
+    public InvestSuccessCelebrationHeroRankingMessage(InvestInfo investInfo, UserInfoActivity userInfoActivity) {
         this.investInfo = investInfo;
         this.userInfoActivity = userInfoActivity;
     }
