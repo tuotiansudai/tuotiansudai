@@ -330,7 +330,7 @@
 						width:100%;
 						min-height: auto;
 						background: none;
-						padding:0 0 0 60px;
+						padding:100px 0 0 0;
 						border-bottom: 1px dashed #fff;
 						margin:0;
 						&:last-child{
@@ -345,7 +345,6 @@
 						@media (max-width:700px) {
 							color:#fff;
 							font-size:14px;
-							text-align:left;
 						}
 					}
 					i{
@@ -359,12 +358,12 @@
 					    box-shadow: 0 2px 3px 0px #ddd;
 						box-sizing:border-box;
 						@media (max-width: 700px) {
-							width:50px;
-							height:50px;
-							top:50%;
-							left:0;
-							margin-left: 0;
-							margin-top: -25px;
+							width:90px;
+							height:90px;
+							top:0;
+							left:50%;
+							margin-left: -45px;
+							margin-top: 0;
 							background-size: 100%;
 						}
 						&.intro-one{
