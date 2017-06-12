@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.activity.service.CelebrationCouponService;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,10 @@ public class CelebrationCouponController {
 
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)
     public ModelAndView celebrationCouponWechatHome(HttpServletRequest request) {
-        String userAgent = request.getHeader("user-agent");
-
-        if (userAgent != null && userAgent.toUpperCase().indexOf(WECHAT_BROWSER) < 0) {
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/celebration-coupon");
         }
-
         boolean duringActivities = celebrationCouponService.duringActivities();
         ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
 
@@ -49,8 +48,8 @@ public class CelebrationCouponController {
 
     @RequestMapping(path = "/draw", method = RequestMethod.GET)
     public ModelAndView celebrationDrawCouponHome(HttpServletRequest request) {
-        String userAgent = request.getHeader("user-agent");
-        if (userAgent != null && userAgent.toUpperCase().indexOf(WECHAT_BROWSER) < 0) {
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/celebration-coupon");
         }
 
