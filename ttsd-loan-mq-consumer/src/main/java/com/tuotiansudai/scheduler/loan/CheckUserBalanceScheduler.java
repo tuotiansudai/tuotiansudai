@@ -53,7 +53,7 @@ public class CheckUserBalanceScheduler {
 
     private static final int LEFT_SECOND = 60 * 60 * 24 * 90;
 
-    private static final int RETRY_TIMES = 3;
+    private static final int RETRY_TIMES = 6;
 
     @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
     public void checkUserBalance() {
