@@ -23,8 +23,6 @@ public class CelebrationCouponController {
     @Autowired
     private CelebrationCouponService celebrationCouponService;
 
-    private final static String WECHAT_BROWSER = "MICROMESSENGER";
-
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)
     public ModelAndView celebrationCouponWechatHome(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
@@ -52,11 +50,12 @@ public class CelebrationCouponController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/celebration-coupon");
         }
-
+        boolean duringActivities = celebrationCouponService.duringActivities();
+        if (!duringActivities) {
+            return new ModelAndView("redirect:/activity/celebration-coupon/wechat");
+        }
         ModelAndView mv = new ModelAndView();
         String loginName = LoginUserInfo.getLoginName();
-        boolean duringActivities = celebrationCouponService.duringActivities();
-
         if (Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/celebration-coupon/draw");
         }
@@ -72,7 +71,6 @@ public class CelebrationCouponController {
             celebrationCouponService.sendDrawCouponMessage(loginName);
             mv.setViewName("/wechat/coupon-special-success");
         }
-        mv.addObject("duringActivities", duringActivities);
 
         return mv;
     }
