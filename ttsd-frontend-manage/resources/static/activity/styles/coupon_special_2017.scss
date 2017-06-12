@@ -170,7 +170,7 @@ body {
       font-size: 23px;
       color: #f34326;
 
-      &:disabled {
+      &:disabled,&[disabled='disabled'] {
         background: url('../images/2017/coupon-special/btn-receive-disable.png') center center no-repeat;
         background-size: contain;
         color: #f3d2cd;
