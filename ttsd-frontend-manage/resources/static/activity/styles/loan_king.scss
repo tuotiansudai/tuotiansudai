@@ -75,6 +75,13 @@
       @media (max-width:700px) {
         padding:10px;
       }
+      .empty-item{
+        float:left;
+        width:100%;
+        text-align:center;
+        font-size:18px;
+        color:#646464;
+      }
       h3{
         text-align:left;
         font-size:18px;
@@ -91,21 +98,99 @@
             width:100%;
             font-size:14px;
             color:#9c9c9c;
+            &.info-text{
+              color:#ff4d4d;
+              font-size:20px;
+              line-height:40px;
+              strong{
+                font-size:40px;
+              }
+            }
           }
         }
       }
       .progress-line{
         float:left;
         width:100%;
+        .line-model{
+          float:left;
+          width:760px;
+          height:5px;
+          background:#f1f1f1;
+          margin:18px 0;
+          strong{
+            float:left;
+            width:20%;
+            height:5px;
+            background:#ff4d4d;
+          }
+        }
+        .line-number{
+          float:left;
+          width:100px;
+          text-align:right;
+          font-size:18px;
+          color:#4392ff;
+          line-height: 40px;
+        }
       }
       .loan-table{
         float:left;
         width:100%;
+        tr{
+          &:nth-child(even) > td {
+            background: #4392ff;
+          }
+          td{
+            color:#fff;
+            background: #3589ff;
+            &.icon-king{
+              background:#3589ff url('../images/loan-king/icon-king.png') no-repeat;
+              background-position: 75px 40%;
+              background-size: 8%;
+            }
+          }
+        }
       }
       .loan-btn{
         float:left;
         width:100%;
         text-align:center;
+        margin-top:45px;
+        a{
+          display:inline-block;
+          width:330px;
+          height:50px;
+          font-size:20px;
+          color:#fe7173;
+          line-height:50px;
+          background:#ffee24;
+          border-radius:10px;
+          box-shadow: 0 4px 0 #f5c908;
+        }
+      }
+    }
+    .rule-item{
+      float:left;
+      width:100%;
+      background:#3589ff;
+      padding:70px 70px 30px;
+      box-sizing:border-box;
+      position: relative;
+      dt{
+        width:100%;
+        position: absolute;
+        top:0;
+        left:0;
+        font-size:20px;
+        color:#fe7173;
+        line-height: 40px;
+        text-align:center;
+        background:url('../images/loan-king/rule-bg.png') no-repeat center;
+      }
+      dd{
+        font-size:14px;
+        color:#fff;
       }
     }
   }
