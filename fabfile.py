@@ -96,6 +96,10 @@ def check_worker_status():
     local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
 
 
+def clear_worker_status():
+    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:clearWorkerMonitorStatus')
+
+
 @roles('static')
 def deploy_static():
     upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_all.zip', remote_dir='/workspace')
@@ -260,6 +264,7 @@ def deploy_all():
     execute(deploy_console)
     execute(deploy_pay)
     execute(deploy_worker)
+    execute(clear_worker_status)
     execute(deploy_api)
     execute(deploy_web)
     execute(deploy_activity)
@@ -317,6 +322,7 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
+    execute(clear_worker_status)
 
 
 def pay():
@@ -384,6 +390,7 @@ def remove_sign_in_logs():
 def remove_ask_rest_logs():
     remove_logs_before_7days('/var/log/tuotian/ask-rest')
     remove_nginx_logs()
+
 
 @roles('anxin')
 @parallel
@@ -520,9 +527,11 @@ def restart_logstash(service):
     """
     Usage: fab restart_logstash:web
     """
+
     def get_password():
         with open('/workspace/ci/def', 'rb') as f:
             return f.readline().strip()
+
     env.password = get_password()
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
