@@ -26,6 +26,7 @@ public class MidSummerController {
     @RequestMapping(path = "/shared-user", method = RequestMethod.GET)
     public ModelAndView sharedUserHome() {
         String loginName = LoginUserInfo.getLoginName();
+        
 
         if (Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("/wechat/mid-summer-unbound");

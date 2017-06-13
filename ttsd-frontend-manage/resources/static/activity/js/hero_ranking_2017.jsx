@@ -14,39 +14,49 @@ let $sortBox = $('#sortBox'),
 
 let todayDay = $.trim($date.text());
 let startTime = Number($date.data('starttime').substring(0, 10).replace(/-/gi, '')),
-    endTime = Number($date.data('endtime').substring(0, 10).replace(/-/gi, '')),
-    todayDayStr = Number(todayDay.replace(/-/gi, ''));
+    endTime = Number($date.data('endtime').substring(0, 10).replace(/-/gi, ''));
 
 let $nodataInvest = $('.nodata-invest'),
     $contentRanking = $('#investRanking-tbody');
 
 function activityStatus(nowDay) {
     let nowDayStr = Number(nowDay.replace(/-/gi, '')),
-        todayDayStr = Number(todayDay.replace(/-/gi, ''));
+        todayDayStr = Number(todayDay.replace(/-/gi, '')),
+        isToday = nowDayStr==todayDayStr;
     endTime = (todayDayStr < endTime) ? todayDayStr : endTime;
     $nodataInvest.hide();
-    if (nowDayStr == endTime) {
-        //今天
-        heroRank(nowDay);
-        $heroNext.hide();
-        $contentRanking.show();
+
+   if (nowDayStr < startTime) {
+        //活动未开始
+       $heroPre.css({'visibility':'hidden'});
+       $heroNext.css({'visibility':'hidden'});
+       $contentRanking.hide();
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
-        $heroNext.hide();
+        $heroNext.css({'visibility':'hidden'});
+        $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
         $nodataInvest.show().html('活动已经结束');
-    } else if (nowDayStr < startTime) {
-        //活动未开始
-        $heroPre.hide();
-        $heroNext.show();
-        $contentRanking.hide();
 
-    } else {
-        $heroNext.show();
-        $heroPre.show();
-        heroRank(nowDay);
-    }
+    }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
+        //活动中
+       $heroNext.css({'visibility':'visible'});
+       $heroPre.css({'visibility':'visible'});
+       $contentRanking.show();
+       if(nowDayStr==startTime) {
+            //活动第一天
+           $heroPre.css({'visibility':'hidden'});
+       } else if(nowDayStr==endTime) {
+           //活动最后一天
+           $heroNext.css({'visibility':'hidden'});
+       }
+       heroRank(nowDay);
+   }
+
+    $('.is-today',$activityPageFrame).text(function() {
+        return isToday ? '今日' : '当日'
+    });
 }
 
 //页面初始
@@ -122,8 +132,14 @@ function heroRank(date) {
         url: '/activity/hero-ranking/ranking/' + date
     }, function (data) {
         //今日投资总额 和 排名
+        let investRanking = data.investRanking;
         $totalAmount.text(data.investAmount / 100);
-        $rankingOrder.text(data.investRanking);
+        if(investRanking==0) {
+            $rankingOrder.text('未上榜');
+        } else {
+            $rankingOrder.text(data.investRanking);
+        }
+
     })
 }
 

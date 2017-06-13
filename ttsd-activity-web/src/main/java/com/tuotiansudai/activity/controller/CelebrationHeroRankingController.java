@@ -44,6 +44,9 @@ public class CelebrationHeroRankingController {
                 Iterators.indexOf(celebrationHeroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? celebrationHeroRankingViews.get(investRanking - 1).getSumAmount() : 0;
 
+        if (investRanking>10){
+            investRanking=0;
+        }
         modelAndView.addObject("prizeDto", celebrationHeroRankingService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
@@ -59,6 +62,8 @@ public class CelebrationHeroRankingController {
         final String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> celebrationHeroRankingViews = celebrationHeroRankingService.obtainHero(tradingTime);
+
+        celebrationHeroRankingViews=CollectionUtils.isNotEmpty(celebrationHeroRankingViews) && celebrationHeroRankingViews.size() > 10 ? celebrationHeroRankingViews.subList(0, 10) : celebrationHeroRankingViews;
 
         celebrationHeroRankingViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(celebrationHeroRankingService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(), newmanTyrantView.getMobile())));
         baseListDataDto.setRecords(celebrationHeroRankingViews);
@@ -78,6 +83,9 @@ public class CelebrationHeroRankingController {
                 Iterators.indexOf(celebrationHeroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? celebrationHeroRankingViews.get(investRanking - 1).getSumAmount() : 0;
 
+        if (investRanking>10){
+            investRanking=0;
+        }
         myHeroRanking.setInvestAmount(investAmount);
         myHeroRanking.setInvestRanking(investRanking);
 

@@ -84,13 +84,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                 img = new Image();
             img.src = _URL.createObjectURL(file);
             img.onload = function () {
-                if (this.width > 202) {
-                    defer.reject('图片宽应为202px!');
+                if (this.width > 370) {
+                    defer.reject('图片宽应为370px!');
                     return;
 
                 }
-                if (this.height > 202) {
-                    defer.reject('图片高应为202px!');
+                if (this.height > 200) {
+                    defer.reject('图片高应为200px!');
                     return;
                 }
                 defer.resolve(file);
