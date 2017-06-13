@@ -46,15 +46,13 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
     //渲染我的奖品
     drawCircleOne.MyGift();
 
-    drawCircleOne.hoverScrollList($singleRank.find('.user-record'),6);
-    drawCircleOne.hoverScrollList($singleRank.find('.own-record'),6);
+    drawCircleOne.hoverScrollList($singleRank.find('.user-record'),10);
+    drawCircleOne.hoverScrollList($singleRank.find('.own-record'),10);
 
     //开始抽奖
 
     $pointerBtn.on('click', function(event) {
-
         drawCircleOne.beginLuckDraw(function(data) {
-            console.log(data);
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
                 var angleNum=0;

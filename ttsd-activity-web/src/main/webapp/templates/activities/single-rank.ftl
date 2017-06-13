@@ -8,11 +8,12 @@
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item">
+			<i class="icon-hot"></i>
 			<h3>
 				<span><i class="icon-title"></i>单笔聚划算，奖励更加码</span>
 			</h3>
 			<div class="tip-item">
-				活动期间单笔投资满1万元以上，即可获得体验金奖励，最高可获68888元体验金奖励！
+				活动期间单笔投资满1万元以上，即可获得体验金奖励，最高可获<span>68888</span>元体验金奖励！
 			</div>
 			<div class="intro-item tc" id="introImg">
 				<img src="" width="90%" class="media-pc">
@@ -51,10 +52,11 @@
 		<dl class="rule-item">
 			<dt>温馨提示：</dt>
 			<dd>1.本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
-			<dd>2.“单笔聚划算，奖励更加码”活动中所获体验金将于用户投资的债权放款后即时发放；</dd>
+			<dd>2.“单笔聚划算，奖励更加码”活动中所获体验金将于用户投资成功后即时发放；</dd>
 			<dd>3.抽奖活动中所获的红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
 			<dd>4.实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
 			<dd>5.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
+			<dd>6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
 		</dl>
 	</div>
 	<#include "../module/login-tip.ftl" />
@@ -88,7 +90,7 @@
                 <p class="login-text">您暂无抽奖机会啦～</p>
                 <p class="des-text">快去投资赢取抽奖机会吧</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close canble-btn">取消</a><a href="/loan-list" class="go-close">去投资</a></div>
         </div>
 
     	<!--不在活动时间范围内-->

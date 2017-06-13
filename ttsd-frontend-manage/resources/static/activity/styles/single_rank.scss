@@ -55,9 +55,10 @@
       &.login-text {
         font-size: 20px;
         padding-top: 70px;
+        color:#ffe973;
         @media (max-width:700px) {
           padding-top: 90px;
-            font-size: 14px;
+          font-size: 14px;
         }
       }
       &.des-text {
@@ -86,13 +87,21 @@
     a {
       background: #ffea77;
       color: #e34758;
-      padding: 20px 70px;
-      font-size: 30px;
+      padding: 10px 30px;
+      font-size: 18px;
       border-radius: 5px;
-      margin: 10px 0;
+      margin: 10px 20px;
+      min-width: 120px;
+      box-sizing: border-box;
+      &.canble-btn{
+        color:#c0b67c;
+        border:1px solid #c0b67c;
+        background:none;
+      }
       @media (max-width:700px) {
-          padding: 5px 35px;
-          font-size: 16px;
+        padding: 5px 25px;
+        font-size: 16px;
+        min-width:100px;
       }
     }
   }
@@ -140,8 +149,21 @@
       border-radius: 10px;
       box-sizing: border-box;
       margin: 20px 0;
+      position: relative;
       @media (max-width:700px) {
         padding:10px;
+      }
+      .icon-hot{
+        width: 180px;
+        height: 180px;
+        position: absolute;
+        top:0;
+        right:0;
+        background:url('../images/single-rank/icon-hot.png') no-repeat center;
+        background-size: 100%;
+        @media (max-width:700px) {
+          display:none;
+        }
       }
       h3 {
         float: left;
@@ -184,6 +206,10 @@
         color: #333333;
         margin: 20px 0 60px;
         text-align: center;
+        span{
+          color:#df3235;
+          font-weight:bold;
+        }
         @media (max-width:700px) {
           font-size:12px;
           margin:10px 0 30px;
@@ -220,6 +246,7 @@
           @media (max-width:700px) {
             width:100%;
             height:300px;
+            margin-bottom: 20px;
           }
           .pointer-img {
             width: 120px;
@@ -335,7 +362,7 @@
               padding:0 20px;
               box-sizing: border-box;
               @media (max-width:700px) {
-                height:200px;
+                height:210px;
                 font-size:12px;
               }
               .record-model {
@@ -361,6 +388,9 @@
                   overflow:hidden;
                   white-space:nowrap;
                   box-sizing: border-box;
+                  @media (max-width:700px) {
+                    line-height:21px;
+                  }
                 }
               }
             }
