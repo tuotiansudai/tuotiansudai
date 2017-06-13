@@ -36,7 +36,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -121,6 +120,13 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.mothers.day.endTime}")
     private String activityMothersEndTime;
 
+    @Value(value = "${activity.celebration.single.startTime}")
+    private String activitySingleStartTime;
+
+    @Value(value = "${activity.celebration.single.endTime}")
+    private String activitySingleEndTime;
+
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -146,6 +152,8 @@ public class LotteryDrawActivityService {
     private final long EACH_INVEST_AMOUNT_50000 = 500000L;
 
     private final long EACH_INVEST_AMOUNT_20000 = 200000L;
+
+    private final long EACH_INVEST_AMOUNT_100000 = 1000000L;
 
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory) {
@@ -319,6 +327,10 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_ENVELOP_20, Lists.newArrayList(411L))
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(412L))
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_1, Lists.newArrayList(413L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5,Lists.newArrayList(441L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10,Lists.newArrayList(442L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30,Lists.newArrayList(443L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5,Lists.newArrayList(444L))
                 .build()).get(lotteryPrize);
     }
 
@@ -368,6 +380,8 @@ public class LotteryDrawActivityService {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             accountModel.setPoint(accountModel.getPoint() + 3000);
             accountMapper.update(accountModel);
+        } else if(lotteryPrize.equals(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_DOLL)){
+
         }
         return prizeType;
     }
@@ -395,6 +409,9 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, womanDayTasks);
             case MOTHERS_DAY_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case CELEBRATION_SINGLE_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+
         }
         return lotteryTime;
     }
@@ -488,6 +505,12 @@ public class LotteryDrawActivityService {
                     time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     return time;
+                case EACH_INVEST_10000:
+                    List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime,endTime);
+                    for (InvestModel investModel:investModels) {
+                        time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
+                    }
+                    break;
             }
         }
 
@@ -530,6 +553,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
+                .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -565,20 +589,20 @@ public class LotteryDrawActivityService {
 
     private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
         long experienceAmount = 0l;
-        if (LotteryPrize.MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
+        if (LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
             experienceAmount = 88800l;
         }
 
-        if (LotteryPrize.MOTHERS_DAY_ACTIVITY_EXPERIENCE_GOLD_8888.equals(lotteryPrize)) {
-            experienceAmount = 888800l;
+        if (LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888.equals(lotteryPrize)) {
+            experienceAmount = 288800l;
         }
 
         if (experienceAmount == 0) {
             return;
         }
-
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.MOTHERS_DAY));
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
     }
+
 
 }

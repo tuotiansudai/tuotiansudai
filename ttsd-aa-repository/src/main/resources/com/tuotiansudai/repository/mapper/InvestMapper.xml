@@ -1074,4 +1074,16 @@
         LIMIT 1
     </select>
 
+    <select id="findSuccessByLoginNameExceptTransferAndTime" parameterType="map" resultMap="investResultMap">
+        SELECT invest.*
+        FROM invest
+        JOIN loan ON invest.loan_id = loan.id
+        WHERE invest.login_name = #{loginName}
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
+        ORDER BY trading_time ASC
+
+    </select>
+
 </mapper>
