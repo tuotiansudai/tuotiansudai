@@ -264,7 +264,6 @@ def deploy_all():
     execute(deploy_console)
     execute(deploy_pay)
     execute(deploy_worker)
-    execute(clear_worker_status)
     execute(deploy_api)
     execute(deploy_web)
     execute(deploy_activity)
@@ -322,7 +321,6 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
-    execute(clear_worker_status)
 
 
 def pay():
