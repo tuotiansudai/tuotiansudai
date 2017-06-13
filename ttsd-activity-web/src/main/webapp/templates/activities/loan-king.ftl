@@ -23,15 +23,15 @@
 		<div class="current-loan">
 			<h3>房产抵押借款17081</h3>
 			<ul class="loan-info">
-				<li>
+				<li class="tl">
 					<span>预期年化收益</span>
 					<span><strong>10</strong>%</span>
 				</li>
-				<li>
+				<li class="tc">
 					<span>项目期限</span>
 					<span><strong>3</strong>天</span>
 				</li>
-				<li>
+				<li class="tr">
 					<span>招募金额</span>
 					<span><strong>30</strong>万</span>
 				</li>
