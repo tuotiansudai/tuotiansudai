@@ -1,0 +1,256 @@
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.loan-king-container{
+  background:#4f99fc;
+  .media-pc{
+    display:inline-block;
+    @media (max-width:700px) {
+      display:none;
+    }
+  }
+  .media-phone{
+    display:none;
+    @media (max-width:700px) {
+      display:inline-block;
+    }
+  }
+  .top-item{
+    width:100%;
+  }
+  .wp {
+    width:1200px;
+    margin: 0 auto;
+    padding:0 100px;
+    position: relative;
+    background: #4392ff;
+    box-sizing:border-box;
+    @media (max-width:700px) {
+      width:100%;
+      background:none;
+      padding:20px 10px;
+    }
+    .content-item {
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      border:10px solid #f5c908;
+      background:#ffee24;
+      padding:30px 60px;
+      @media (max-width:700px) {
+        padding:10px;
+      }
+      h3{
+        font-size:16px;
+        color:#c92224;
+        text-align:center;
+        @media (max-width:700px) {
+          font-size:13px;
+          text-align:left;
+        }
+      }
+      .loan-list{
+        margin:20px 0 0;
+        text-align:center;
+        @media (max-width:700px) {
+          margin:10px 0 0;
+        }
+      }
+    }
+    .loan-title{
+      float:left;
+      width:100%;
+      height:110px;
+      background:url('../images/loan-king/title-img.png') no-repeat center left;
+    }
+    .current-loan{
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      border:10px solid #aaceff;
+      background:#ffffff;
+      padding:30px 60px;
+      margin-bottom: 30px;
+      @media (max-width:700px) {
+        padding:10px;
+      }
+      .empty-item{
+        float:left;
+        width:100%;
+        text-align:center;
+        font-size:18px;
+        color:#646464;
+        @media (max-width:700px) {
+          font-size:14px;
+        }
+      }
+      h3{
+        text-align:left;
+        font-size:18px;
+        color:#646464;
+        @media (max-width:700px) {
+          font-size:16px;
+        }
+      }
+      .loan-info{
+        float:left;
+        width:100%;
+        li{
+          float:left;
+          width:33.333333%;
+          span{
+            display:inline-block;
+            width:100%;
+            font-size:14px;
+            color:#9c9c9c;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+            &.info-text{
+              color:#ff4d4d;
+              font-size:20px;
+              line-height:40px;
+              @media (max-width:700px) {
+                font-size:14px;
+              }
+              strong{
+                font-size:40px;
+                @media (max-width:700px) {
+                  font-size:20px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .progress-line{
+        float:left;
+        width:100%;
+        .line-model{
+          float:left;
+          width:85%;
+          height:5px;
+          background:#f1f1f1;
+          margin:18px 0;
+          @media (max-width:700px) {
+            width:80%;
+            height:3px;
+            margin:20px 0;
+          }
+          strong{
+            float:left;
+            width:20%;
+            height:5px;
+            background:#ff4d4d;
+            @media (max-width:700px) {
+              height:3px;
+            }
+          }
+        }
+        .line-number{
+          float:left;
+          width:15%;
+          text-align:right;
+          font-size:18px;
+          color:#4392ff;
+          line-height: 40px;
+          @media (max-width:700px) {
+            width:20%;
+            font-size:12px;
+          }
+        }
+      }
+      .loan-table{
+        float:left;
+        width:100%;
+        tr{
+          &:nth-child(even) > td {
+            background: #4392ff;
+          }
+          td{
+            color:#fff;
+            font-size:15px;
+            background: #3589ff;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+            &.icon-king{
+              background:#3589ff url('../images/loan-king/icon-king.png') no-repeat;
+              background-position: 75px 40%;
+              background-size: 8%;
+              @media (max-width:700px) {
+                background-position: 5px 50%;
+                background-size: 15%;
+              }
+            }
+          }
+        }
+      }
+      .loan-btn{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin-top:45px;
+        @media (max-width:700px) {
+          margin:15px 0 10px;
+        }
+        a{
+          display:inline-block;
+          width:330px;
+          height:50px;
+          font-size:20px;
+          color:#fe7173;
+          line-height:50px;
+          background:#ffee24;
+          border-radius:10px;
+          box-shadow: 0 4px 0 #f5c908;
+          @media (max-width:700px) {
+            width:100%;
+            height:40px;
+            font-size:16px;
+            line-height: 40px;
+            border-radius:5px;
+          }
+        }
+      }
+    }
+    .rule-item{
+      float:left;
+      width:100%;
+      background:#3589ff;
+      padding:70px 70px 30px;
+      box-sizing:border-box;
+      position: relative;
+      @media (max-width:700px) {
+        padding: 40px 10px 15px;
+      }
+      dt{
+        width:200px;
+        position: absolute;
+        top:0;
+        left:50%;
+        margin-left: -100px;
+        font-size:20px;
+        color:#fe7173;
+        line-height: 42px;
+        text-align:center;
+        background:url('../images/loan-king/rule-bg.png') no-repeat center;
+        background-size: 100%;
+        @media (max-width:700px) {
+          width:150px;
+          margin-left: -75px;
+          font-size:16px;
+          line-height: 32px;
+        }
+      }
+      dd{
+        font-size:14px;
+        color:#fff;
+        @media (max-width:700px) {
+          font-size:12px;
+        }
+      }
+    }
+  }
+}
