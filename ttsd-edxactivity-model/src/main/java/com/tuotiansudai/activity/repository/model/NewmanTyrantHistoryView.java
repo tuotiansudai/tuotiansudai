@@ -23,6 +23,11 @@ public class NewmanTyrantHistoryView implements Serializable {
         this.avgTyrantInvestAmount = avgTyrantInvestAmount;
     }
 
+    public NewmanTyrantHistoryView(Date currentDate, long avgTyrantInvestAmount) {
+        this.currentDate = currentDate;
+        this.avgTyrantInvestAmount = avgTyrantInvestAmount;
+    }
+
     public Date getCurrentDate() {
         return currentDate;
     }
