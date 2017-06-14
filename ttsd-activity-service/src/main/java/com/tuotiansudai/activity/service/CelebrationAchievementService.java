@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.CelebrationLoanItemDto;
 import com.tuotiansudai.dto.LoanItemDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
@@ -49,8 +50,8 @@ public class CelebrationAchievementService {
     private LoanDetailsMapper loanDetailsMapper;
 
 
-    public List<LoanItemDto> celebrationAchievementList() {
-        List<LoanItemDto> loanItemList = this.findLoanItems(null, null, 0, 0, 0, 0, 1);
+    public List<CelebrationLoanItemDto> celebrationAchievementList() {
+        List<CelebrationLoanItemDto> loanItemList = this.findLoanItems(null, null, 0, 0, 0, 0, 1);
         loanItemList = loanItemList.size() > 4 ? loanItemList.subList(1, 4) : loanItemList;
 
         return loanItemList.stream()
@@ -61,14 +62,12 @@ public class CelebrationAchievementService {
 
     }
 
-    public List<InvestAchievementView> obtainCelebrationAchievement(long loanId, String loginName) {
-        List<InvestAchievementView> investAchievementViews = investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
-        investAchievementViews.forEach(i -> {
-            i.setLoginName(this.encryptMobileForWeb(loginName, i.getLoginName(), i.getMobile()));
-            i.setMobile(null);
-        });
-        return investAchievementViews;
-
+    public List<InvestAchievementView> obtainCelebrationAchievement(long loanId) {
+        return investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
+//        investAchievementViews.forEach(i -> {
+//            i.setLoginName(this.encryptMobileForWeb(loginName, i.getLoginName(), i.getMobile()));
+//            i.setMobile(null);
+//        });
     }
 
     public String encryptMobileForWeb(String loginName, String encryptLoginName, String encryptMobile) {
@@ -78,13 +77,13 @@ public class CelebrationAchievementService {
         return MobileEncryptor.encryptMiddleMobile(encryptMobile);
     }
 
-    public List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd, int index) {
+    public List<CelebrationLoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd, int index) {
         index = (index - 1) * 10;
 
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd, durationStart, durationEnd, index);
 
         return Lists.transform(loanModels, loanModel -> {
-            LoanItemDto loanItemDto = new LoanItemDto();
+            CelebrationLoanItemDto loanItemDto = new CelebrationLoanItemDto();
             loanItemDto.setId(loanModel.getId());
             loanItemDto.setName(loanModel.getName());
             loanItemDto.setProductType(loanModel.getProductType());
@@ -129,6 +128,7 @@ public class CelebrationAchievementService {
             }
             loanItemDto.setActivity(activity);
             loanItemDto.setActivityDesc(activityDesc);
+            loanItemDto.setAchievementViews(obtainCelebrationAchievement(loanItemDto.getId()));
             return loanItemDto;
         });
     }
