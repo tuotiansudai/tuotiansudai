@@ -637,7 +637,10 @@ public class InvestServiceImpl implements InvestService {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
 
-            if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)){
+            if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
+                    && !"1".equals(String.valueOf(investModel.getLoanId()))
+                    && !investModel.getTransferStatus().equals("SUCCESS")
+                    && investModel.getStatus().name().equals("SUCCESS")){
                 celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
             }
 
