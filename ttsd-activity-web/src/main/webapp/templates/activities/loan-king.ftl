@@ -31,7 +31,7 @@
                         <li class="tl">
                             <span>预期年化收益</span>
                             <span class="info-text">
-                                <em><@percentInteger>${loan.baseRate}</@percentInteger></em>
+                                <em><strong><@percentInteger>${loan.baseRate}</@percentInteger></strong></em>
                                         <i><@percentFraction>${loan.baseRate}</@percentFraction>
                                             <#if (loan.extraRate > 0)>
                                                 ~ <@percentInteger>${loan.baseRate + loan.extraRate}</@percentInteger><@percentFraction>${loan.extraRate}</@percentFraction>
@@ -85,7 +85,7 @@
                     </table>
 
                     <div class="loan-btn">
-                        <a href="/loan-list">速抢标王</a>
+                        <a href="<#if !isAppSource>/loan/${loan.id?c}<#else>app/tuotian/invest-list</#if>">速抢标王</a>
                     </div>
                 </div>
 
