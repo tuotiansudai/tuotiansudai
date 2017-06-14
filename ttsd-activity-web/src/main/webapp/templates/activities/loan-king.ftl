@@ -20,7 +20,7 @@
                 <div class="current-loan">
                     <h3>${loan.name}
                         <#if loan.activity?string("true","false") == "true">
-                            <span class="arrow-tag-normal">
+                            <span class="arrow-tag-normal" style="margin-top:0;float:none;">
                                     <i class="ic-left"></i>
                                     <em>${loan.activityDesc!}</em>
                                     <i class="ic-right"></i>
