@@ -29,22 +29,18 @@ public class CelebrationSingleActivityService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.endTime}\")}")
     private Date activitySingleEndTime;
 
-    public String drawTimeByLoginNameAndActivityCategory(String mobile,String loginName){
+    public int drawTimeByLoginNameAndActivityCategory(String mobile,String loginName){
 
         if(Strings.isNullOrEmpty(loginName)){
-            return "0";
+            return 0;
         }
         int time=0;
         List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,activitySingleStartTime,activitySingleEndTime);
         for (InvestModel investModel:investModels) {
             time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
         }
-        time= time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.CELEBRATION_SINGLE_ACTIVITY, activitySingleStartTime, activitySingleEndTime) : time;
-        return String.valueOf(time);
+        return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.CELEBRATION_SINGLE_ACTIVITY, activitySingleStartTime, activitySingleEndTime) : time;
 
     }
-
-
-
 
 }

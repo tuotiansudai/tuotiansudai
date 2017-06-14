@@ -60,16 +60,6 @@ public class LotteryDrawActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/single-draw", method = RequestMethod.POST)
-    public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CELEBRATION_SINGLE_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        DrawLotteryResultDto drawLotteryResultDto =lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
-        if(drawLotteryResultDto.isDrawLotterySuccess()){
-            drawLotteryResultDto.setMyPoint(celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
-        }
-        return drawLotteryResultDto;
-    }
-    
-    @ResponseBody
     @RequestMapping(value = "/user-list", method = RequestMethod.GET)
     public List<UserLotteryPrizeView> getPrizeRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile,
                                                                 @RequestParam(value = "activityCategory", required = false) ActivityCategory activityCategory) {

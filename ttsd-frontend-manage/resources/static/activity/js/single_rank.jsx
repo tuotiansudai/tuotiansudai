@@ -21,7 +21,7 @@ var $pointerBtn = $('.pointer-img',$singleRank);
 var $oneThousandPoints=$('.gift-circle-frame',$singleRank);
 var pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
     pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-    drawURL='/activity/point-draw/single-draw';    //抽奖的接口链接
+    drawURL='/activity/single-rank/single-draw';    //抽奖的接口链接
 
 
 var oneData={

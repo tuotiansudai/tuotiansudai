@@ -380,8 +380,6 @@ public class LotteryDrawActivityService {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             accountModel.setPoint(accountModel.getPoint() + 3000);
             accountMapper.update(accountModel);
-        } else if(lotteryPrize.equals(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_DOLL)){
-
         }
         return prizeType;
     }
