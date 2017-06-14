@@ -158,7 +158,7 @@ public class InvestServiceImpl implements InvestService {
             new ExperienceReward(8888800l, 10000000l, 20000000l),
             new ExperienceReward(18888800l, 20000000l, Long.MAX_VALUE));
 
-    private final List<ExperienceReward> SingleRewards = Lists.newArrayList(
+    private final List<ExperienceReward> singleRewards = Lists.newArrayList(
             new ExperienceReward(122200l, 1000000l, 5000000l),
             new ExperienceReward(1222200l, 5000000l, 10000000l),
             new ExperienceReward(3222200l, 10000000l, 20000000l),
@@ -637,8 +637,9 @@ public class InvestServiceImpl implements InvestService {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
 
+
             if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
-                    && !"1".equals(String.valueOf(investModel.getLoanId()))
+                    && loanMapper.findById(investModel.getLoanId())==null
                     && !investModel.getTransferStatus().equals("SUCCESS")
                     && investModel.getStatus().name().equals("SUCCESS")){
                 celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
@@ -731,7 +732,7 @@ public class InvestServiceImpl implements InvestService {
     private void celebrationOnePenAssignExperience(String loginName, long investAmount) {
         logger.info(MessageFormat.format("[celebration onePen] assign experience loginName: {0}, investAmount: {1}", loginName, investAmount));
 
-        Optional<ExperienceReward> reward = SingleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
+        Optional<ExperienceReward> reward = singleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
         if (reward.isPresent()) {
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));

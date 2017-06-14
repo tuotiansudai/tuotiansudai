@@ -25,7 +25,7 @@ public class CelebrationSingleController {
     private LotteryDrawActivityService lotteryDrawActivityService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView travelPrize() {
+    public ModelAndView getDrawPrizeTime() {
         ModelAndView modelAndView = new ModelAndView("/activities/single-rank", "responsive", true);
         modelAndView.addObject("drawCount", celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         return modelAndView;

@@ -1081,7 +1081,7 @@
         WHERE invest.login_name = #{loginName}
         AND invest.status = 'SUCCESS'
         AND invest.transfer_invest_id IS NULL
-        AND invest.loan_id !='1'
+        AND loan.activity_type!='NEWBIE'
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
         ORDER BY trading_time ASC
 
