@@ -66,6 +66,7 @@
         font-size: 14px;
         @media (max-width:700px) {
             font-size: 12px;
+            line-height: 24px;
         }
       }
     }
@@ -102,6 +103,7 @@
         padding: 5px 25px;
         font-size: 16px;
         min-width:100px;
+        margin: 15px 20px 10px;
       }
     }
   }
@@ -209,6 +211,9 @@
         span{
           color:#df3235;
           font-weight:bold;
+        }
+        p{
+          margin-bottom: 0;
         }
         @media (max-width:700px) {
           font-size:12px;

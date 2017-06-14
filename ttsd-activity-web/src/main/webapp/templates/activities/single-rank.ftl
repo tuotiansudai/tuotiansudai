@@ -12,8 +12,13 @@
 			<h3>
 				<span><i class="icon-title"></i>单笔聚划算，奖励更加码</span>
 			</h3>
-			<div class="tip-item">
+			<div class="tip-item media-pc">
 				活动期间单笔投资满1万元以上，即可获得体验金奖励，最高可获<span>68888</span>元体验金奖励！
+			</div>
+			<div class="tip-item media-phone">
+				<p>活动期间单笔投资满1万元以上，</p>
+				<p>即可获得体验金奖励，</p>
+				<p>最高可获<span>68888</span>元体验金奖励！</p>
 			</div>
 			<div class="intro-item tc" id="introImg">
 				<img src="" width="90%" class="media-pc">
