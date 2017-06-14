@@ -54,19 +54,24 @@ public class CelebrationAchievementService {
         loanItemList = loanItemList.size() > 3 ? loanItemList.subList(0, 3) : loanItemList;
 
         return loanItemList.stream()
-                .filter(loanItemDto -> loanItemDto.getFundraisingStartTime().after(startTime)
+                .filter(loanItemDto -> loanItemDto.getFundraisingStartTime() != null && loanItemDto.getFundraisingStartTime().after(startTime)
                         && loanItemDto.getFundraisingStartTime().before(endTime)
                         && (loanItemDto.getStatus() == LoanStatus.RAISING || loanItemDto.getStatus() == LoanStatus.PREHEAT))
                 .collect(Collectors.toList());
 
     }
 
-    public List<InvestAchievementView> obtainCelebrationAchievement(long loanId) {
-        return investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
+    public List<InvestAchievementView> obtainCelebrationAchievement(long loanId, String loginName) {
+        List<InvestAchievementView> investAchievementViews = investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
+        investAchievementViews.forEach(i -> {
+            i.setLoginName(this.encryptMobileForWeb(loginName, i.getLoginName(), i.getMobile()));
+            i.setMobile(null);
+        });
+        return investAchievementViews;
 
     }
 
-    public String encryptMobileForWeb(String loginName,String encryptLoginName, String encryptMobile) {
+    public String encryptMobileForWeb(String loginName, String encryptLoginName, String encryptMobile) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return encryptMobile;
         }
@@ -102,7 +107,7 @@ public class CelebrationAchievementService {
             }
             if (LoanStatus.RAISING == loanModel.getStatus()) {
                 loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                if(loanModel.getProductType() != ProductType.EXPERIENCE){
+                if (loanModel.getProductType() != ProductType.EXPERIENCE) {
                     loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
                 }
             }

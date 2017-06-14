@@ -1,9 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
-
-<#assign jsName = 'loan_king' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
+<#import "../macro/global.ftl" as global>
 
 <@global.main pageCss="${css.loan_king}" pageJavascript="${js.loan_king}" activeNav="" activeLeftNav="" title="标王争霸场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,京东E卡,红包奖励" description="拓天周年庆-标王争霸场活动,活动期间,每个债权针对用户在的累计投资额进行排名,前三名相应可获得100元京东E卡和红包奖励.">
 <div class="loan-king-container" id="loanKingContainer">

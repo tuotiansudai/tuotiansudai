@@ -22,24 +22,14 @@ public class CelebrationAchievementController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView celebrationAchievementList() {
-        ModelAndView modelAndView = new ModelAndView("/activities/celebration_achievement", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/loan-king", "responsive", true);
+        final String loginName = LoginUserInfo.getLoginName();
         List<LoanItemDto> loanDtos = celebrationAchievementService.celebrationAchievementList();
         modelAndView.addObject("loanDtos", loanDtos);
+
+        loanDtos.forEach(loanItemDto -> modelAndView.addObject(String.valueOf(loanItemDto.getId()), celebrationAchievementService.obtainCelebrationAchievement(loanItemDto.getId(), loginName)));
         return modelAndView;
     }
 
-    @RequestMapping(path = "/{loanId:^\\d+$}", method = RequestMethod.GET)
-    @ResponseBody
-    public List<InvestAchievementView> celebrationAchievementList(@PathVariable long loanId) {
-        final String loginName = LoginUserInfo.getLoginName();
-        List<InvestAchievementView> investAchievementViews = celebrationAchievementService.obtainCelebrationAchievement(loanId);
-
-        investAchievementViews.forEach(i -> {
-            i.setLoginName(celebrationAchievementService.encryptMobileForWeb(loginName, i.getLoginName(), i.getMobile()));
-            i.setMobile(null);
-        });
-        
-        return investAchievementViews;
-    }
 
 }
