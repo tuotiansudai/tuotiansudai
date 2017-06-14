@@ -25,7 +25,7 @@ public class CelebrationAchievementController {
         ModelAndView modelAndView = new ModelAndView("/activities/loan-king", "responsive", true);
         final String loginName = LoginUserInfo.getLoginName();
         List<LoanItemDto> loanDtos = celebrationAchievementService.celebrationAchievementList();
-        modelAndView.addObject("loanDtos", loanDtos);
+        modelAndView.addObject("loans", loanDtos);
 
         loanDtos.forEach(loanItemDto -> modelAndView.addObject(String.valueOf(loanItemDto.getId()), celebrationAchievementService.obtainCelebrationAchievement(loanItemDto.getId(), loginName)));
         return modelAndView;

@@ -51,7 +51,7 @@ public class CelebrationAchievementService {
 
     public List<LoanItemDto> celebrationAchievementList() {
         List<LoanItemDto> loanItemList = this.findLoanItems(null, null, 0, 0, 0, 0, 1);
-        loanItemList = loanItemList.size() > 3 ? loanItemList.subList(0, 3) : loanItemList;
+        loanItemList = loanItemList.size() > 4 ? loanItemList.subList(1, 4) : loanItemList;
 
         return loanItemList.stream()
                 .filter(loanItemDto -> loanItemDto.getFundraisingStartTime() != null && loanItemDto.getFundraisingStartTime().after(startTime)
@@ -102,7 +102,6 @@ public class CelebrationAchievementService {
 
                 loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
                 loanItemDto.setProgress(0.0);
-                loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
                 loanItemDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
             }
             if (LoanStatus.RAISING == loanModel.getStatus()) {
@@ -111,6 +110,7 @@ public class CelebrationAchievementService {
                     loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
                 }
             }
+            loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
 
             loanItemDto.setDuration(loanModel.getDuration());
             double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
