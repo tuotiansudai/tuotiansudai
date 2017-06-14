@@ -63,7 +63,7 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
                     case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
                         angleNum=45*1-20;
                         $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金')
-                        .parent().siblings('.des-text').text('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
+                        .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
                         break;
                     case 'CELEBRATION_SINGLE_ACTIVITY_LUGGAGE': //迷彩旅行箱
                         angleNum=45*2-20;
