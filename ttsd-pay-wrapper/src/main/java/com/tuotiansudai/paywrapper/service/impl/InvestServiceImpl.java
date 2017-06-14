@@ -639,7 +639,7 @@ public class InvestServiceImpl implements InvestService {
 
 
             if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
-                    && loanMapper.findById(investModel.getLoanId())==null
+                    && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")
                     && !investModel.getTransferStatus().equals("SUCCESS")
                     && investModel.getStatus().name().equals("SUCCESS")){
                 celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
