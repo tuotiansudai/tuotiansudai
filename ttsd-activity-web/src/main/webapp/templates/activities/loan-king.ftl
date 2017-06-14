@@ -38,9 +38,9 @@
 			</ul>
 			<div class="progress-line">
 				<span class="line-model">
-					<strong></strong>
+					<strong style="width:${loan.progress}%"></strong>
 				</span>
-				<span class="line-number">100.00%</span>
+				<span class="line-number">${loan.progress?string("0.00")}%</span>
 			</div>
 			<table class="loan-table">
 				<tbody>
@@ -83,9 +83,9 @@
 			</ul>
 			<div class="progress-line">
 				<span class="line-model">
-					<strong></strong>
+					<strong style="width:${loan.progress}%"></strong>
 				</span>
-				<span class="line-number">100.00%</span>
+				<span class="line-number">${loan.progress?string("0.00")}%</span>
 			</div>
 			<table class="loan-table">
 				<tbody>
@@ -128,9 +128,9 @@
 			</ul>
 			<div class="progress-line">
 				<span class="line-model">
-					<strong></strong>
+					<strong style="width:${loan.progress}%"></strong>
 				</span>
-				<span class="line-number">100.00%</span>
+				<span class="line-number">${loan.progress?string("0.00")}%</span>
 			</div>
 			<table class="loan-table">
 				<tbody>
