@@ -82,6 +82,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.woman.day.endTime}\")}")
     private Date activityWomanDayEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.startTime}\")}")
+    private Date activitySingleStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.endTime}\")}")
+    private Date activitySingleEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -109,6 +115,8 @@ public class ActivityCountDrawLotteryService {
 
     private final long EACH_INVEST_AMOUNT_20000 = 200000L;
 
+    private final long EACH_INVEST_AMOUNT_100000 = 1000000L;
+
 
     public int countDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
         int lotteryTime = 0;
@@ -132,6 +140,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, moneyTreeActivityTasks);
             case WOMAN_DAY_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN));
+            case CELEBRATION_SINGLE_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
         }
         return lotteryTime;
     }
@@ -227,7 +237,12 @@ public class ActivityCountDrawLotteryService {
                 case EACH_INVEST_1000:
                     time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
                     break;
-
+                case EACH_INVEST_10000:
+                    List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime,endTime);
+                    for (InvestModel investModel:investModels) {
+                        time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
+                    }
+                    break;
             }
         }
         return time;
@@ -265,6 +280,8 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case WOMAN_DAY_ACTIVITY:
                 return Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime);
+            case CELEBRATION_SINGLE_ACTIVITY:
+                return Lists.newArrayList(activitySingleStartTime, activitySingleEndTime);
         }
         return null;
     }

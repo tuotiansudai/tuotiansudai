@@ -31,6 +31,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
 
     private static final String NEWMAN_TYRANT_GRANTED_LIST = "NEWMAN_TYRANT_GRANTED_LIST";
 
+
     private final int lifeSecond = 10378000;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -67,6 +68,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
             return;
         }
 
+
         logger.info("[发放体验金MQ] ready to consume message: tyrant assign experience.");
         try {
             experienceBillService.updateUserExperienceBalanceByLoginName(experienceAssigningMessage.getExperienceAmount(), experienceAssigningMessage.getLoginName(),
@@ -78,6 +80,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
                     e.getLocalizedMessage()), e);
         }
     }
+
 
     private void newmanTyrantAssignExperience(ExperienceAssigningMessage experienceAssigningMessage) {
         logger.info("[新贵富豪争霸活动发放体验金MQ] ready to consume message: newman tyrant assign experience.");
@@ -111,4 +114,7 @@ public class ExperienceAssigningMessageConsumer implements MessageConsumer {
                             "yyyy-MM-dd"), e.getLocalizedMessage());
         }
     }
+
+
+
 }

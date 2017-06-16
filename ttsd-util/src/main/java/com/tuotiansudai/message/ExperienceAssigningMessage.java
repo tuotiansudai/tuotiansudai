@@ -41,6 +41,8 @@ public class ExperienceAssigningMessage implements Serializable {
                 MessageFormat.format(experienceBillBusinessType.getContentTemplate(), AmountConverter.convertCentToString(experienceAmount), DateTime.now().toDate()));
     }
 
+
+
     public Date getCurrentDate() {
         return currentDate;
     }
