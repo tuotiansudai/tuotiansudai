@@ -146,11 +146,23 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mothers.day.endTime}\")}")
     private Date activityEndTimeStr;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.startTime}\")}")
+    private Date activitySingleStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.endTime}\")}")
+    private Date activitySingleEndTime;
+
     private final List<ExperienceReward> mothersRewards = Lists.newArrayList(
             new ExperienceReward(688800l, 1000000l, 5000000l),
             new ExperienceReward(3888800l, 5000000l, 10000000l),
             new ExperienceReward(8888800l, 10000000l, 20000000l),
             new ExperienceReward(18888800l, 20000000l, Long.MAX_VALUE));
+
+    private final List<ExperienceReward> singleRewards = Lists.newArrayList(
+            new ExperienceReward(122200l, 1000000l, 5000000l),
+            new ExperienceReward(1222200l, 5000000l, 10000000l),
+            new ExperienceReward(3222200l, 10000000l, 20000000l),
+            new ExperienceReward(6888800l, 20000000l, Long.MAX_VALUE));
 
     @Override
     @Transactional
@@ -620,11 +632,19 @@ public class InvestServiceImpl implements InvestService {
         try {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
             UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo, userModel.getRegisterTime());
-            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestNewmanTyrant, new InvestSuccessNewmanTyrantMessage(investInfo, userInfoActivity));
+            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestHeroRanking, new InvestSuccessCelebrationHeroRankingMessage(investInfo, userInfoActivity));
             if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
-            mothersDayAssignExperience(investModel.getLoginName(), investModel.getAmount());
+
+
+            if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
+                    && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")
+                    && !investModel.getTransferStatus().equals("SUCCESS")
+                    && investModel.getStatus().name().equals("SUCCESS")){
+                celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
+            }
+
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investInfo.getInvestId()), investInfo.getAmount(), investInfo.getLoginName(), investModel.getLoanId(), e);
@@ -708,15 +728,14 @@ public class InvestServiceImpl implements InvestService {
         smsWrapperClient.sendFatalNotify(dto);
     }
 
-    private void mothersDayAssignExperience(String loginName, long investAmount) {
-        if(DateTime.now().toDate().after(activityEndTimeStr) || DateTime.now().toDate().before(activityStartTimeStr)){
-            return;
-        }
-        logger.info(MessageFormat.format("[mothers day] assign experience loginName: {0}, investAmount: {1}", loginName, investAmount));
-        Optional<ExperienceReward> reward = mothersRewards.stream().filter(mothersReward -> mothersReward.getStartAmount() <= investAmount && investAmount < mothersReward.getEndAmount()).findAny();
+
+    private void celebrationOnePenAssignExperience(String loginName, long investAmount) {
+        logger.info(MessageFormat.format("[celebration onePen] assign experience loginName: {0}, investAmount: {1}", loginName, investAmount));
+
+        Optional<ExperienceReward> reward = singleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
         if (reward.isPresent()) {
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.MOTHERS_DAY));
+                   new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
 
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS,
                     Lists.newArrayList(loginName),

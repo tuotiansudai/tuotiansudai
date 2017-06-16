@@ -16,6 +16,7 @@ public enum ActivityDrawLotteryTask {
     EACH_INVEST_1000("每投资1000", 1),
     EACH_INVEST_2000("每投资2000", 1),
     EACH_INVEST_5000("每投资5000", 1),
+    EACH_INVEST_10000("每投资10000", 1),
     EACH_EVERY_DAY("每天一次", 1);
 
     ActivityDrawLotteryTask(String description, int time) {

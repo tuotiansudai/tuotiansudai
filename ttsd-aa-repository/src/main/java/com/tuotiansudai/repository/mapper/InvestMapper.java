@@ -306,4 +306,8 @@ public interface InvestMapper {
     InvestModel findFirstInvestAmountByLoginName(@Param(value = "loginName") String loginName,
                                 @Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);
+
+    List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value="loginName") String loginName,
+                                                                  @Param(value="startTime") Date startTime,
+                                                                  @Param(value="endTime") Date endTime);
 }
