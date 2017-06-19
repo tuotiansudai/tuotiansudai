@@ -52,12 +52,13 @@ public class CelebrationAchievementService {
 
     public List<CelebrationLoanItemDto> celebrationAchievementList() {
         List<CelebrationLoanItemDto> loanItemList = this.findLoanItems(null, null, 0, 0, 0, 0, 1);
-        loanItemList = loanItemList.size() > 4 ? loanItemList.subList(1, 4) : loanItemList;
+        loanItemList = loanItemList.size() > 6 ? loanItemList.subList(1, 6) : loanItemList;
 
         return loanItemList.stream()
                 .filter(loanItemDto -> loanItemDto.getFundraisingStartTime() != null && loanItemDto.getFundraisingStartTime().after(startTime)
                         && loanItemDto.getFundraisingStartTime().before(endTime)
-                        && (loanItemDto.getStatus() == LoanStatus.RAISING || loanItemDto.getStatus() == LoanStatus.PREHEAT))
+                        && (loanItemDto.getStatus() == LoanStatus.RAISING || loanItemDto.getStatus() == LoanStatus.PREHEAT)
+                        && !ActivityType.NEWBIE.equals(loanItemDto.getActivityType()))
                 .collect(Collectors.toList());
 
     }

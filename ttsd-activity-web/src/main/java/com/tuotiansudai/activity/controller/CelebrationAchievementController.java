@@ -22,8 +22,9 @@ public class CelebrationAchievementController {
         ModelAndView modelAndView = new ModelAndView("/activities/loan-king", "responsive", true);
         final String loginName = LoginUserInfo.getLoginName();
         List<CelebrationLoanItemDto> loanDtos = celebrationAchievementService.celebrationAchievementList();
+        loanDtos = loanDtos.size() > 3 ? loanDtos.subList(0, 3) : loanDtos;
         for (CelebrationLoanItemDto itemDto : loanDtos) {
-            itemDto.getAchievementViews().forEach(i ->{
+            itemDto.getAchievementViews().forEach(i -> {
                 i.setLoginName(celebrationAchievementService.encryptMobileForWeb(loginName, i.getLoginName(), i.getMobile()));
                 i.setMobile(null);
             });
