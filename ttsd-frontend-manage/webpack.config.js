@@ -20,7 +20,8 @@ var basePath = path.join(__dirname, 'resources'),
 	webPath=path.join(staticPath, 'web'),
 	pointPath=path.join(staticPath, 'point'),
 	activityPath=path.join(staticPath, 'activity'),
-	mobilePath=path.join(staticPath, 'mobile');
+	mobilePath=path.join(staticPath, 'mobile'),
+	wapSitePath=path.join(staticPath, 'wapSite');;
 
 var publicPathJS=path.join(publicPath, 'js');
 
@@ -229,7 +230,12 @@ var myObject = objectAssign(commonOptions, {
 			mobileJs:path.join(mobilePath, 'js'),
 			mobileJsModule:path.join(mobilePath, 'js/components'),
 			mobileStyle:path.join(mobilePath, 'styles'),
-			mobileImages:path.join(mobilePath, 'images')
+			mobileImages:path.join(mobilePath, 'images'),
+
+			wapSiteJs:path.join(wapSitePath, 'js'),
+			wapSiteJsModule:path.join(wapSitePath, 'js/module'),
+			wapSiteStyle:path.join(wapSitePath, 'styles'),
+			wapSiteImages:path.join(wapSitePath, 'images')
 		}
 	},
 	postcss: function() {

@@ -99,4 +99,8 @@ getJsonPointList.init();
 var getJsonMobileList=new getJsonFileList('mobile','json-mobile.json');
 getJsonMobileList.init();
 
+//m站打包生成的json文件名
+var getJsonWapSiteList=new getJsonFileList('wapSite','json-wapSite.json');
+getJsonWapSiteList.init();
+
 
