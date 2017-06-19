@@ -1,4 +1,4 @@
-<#import "../macro/global.ftl" as global>
+<#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.hero_ranking_2017}" pageJavascript="${js.hero_ranking_2017}" activeNav="" activeLeftNav="" title="英雄排位场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,实物大奖,加息券" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
 
 <div class="banner-slide" id="bannerSlide"></div>
@@ -114,5 +114,5 @@
     <% } %>
 </script>
 
-    <#include "../module/login-tip.ftl" />
+    <#include "../../module/login-tip.ftl" />
 </@global.main>
