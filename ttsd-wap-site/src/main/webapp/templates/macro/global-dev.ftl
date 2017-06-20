@@ -56,7 +56,18 @@
 </div>
 
 <div class="footer-wap-container">
-    ssssssdsd
+    <a  class="menu-home current">
+        <i></i>
+        <span>首页</span>
+    </a>
+    <a class="menu-invest">
+        <i ></i>
+        <span>投资</span>
+    </a>
+    <a class="menu-my">
+        <i ></i>
+        <span>我的</span>
+    </a>
 </div>
 
 <script>

@@ -7,7 +7,7 @@
 
 <@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 
-<div class="home-page-container" id="homePageContainer" >
+<div class="home-page-container" id="homePageContainer" style="height:1500px;">
     <div id="bannerBox" class="banner-box-inner">
         <ul class="banner-img-list">
             <li style="z-index: 2; opacity: 0;" class="">
