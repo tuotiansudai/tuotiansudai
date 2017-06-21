@@ -5,6 +5,7 @@ body{
   -webkit-flex-direction: column;
   flex-direction: column;
   background: #fff;
+  box-sizing: border-box;
 }
 
 .nav-wap-container {
@@ -77,12 +78,30 @@ body{
 
 .btn-normal {
   font-size: 12px;
-  padding: 8px 0px;
-  width: 85px;
+  padding: 8px 20px;
   border: 1px solid #FF6C63;
   background: #FF6C63;
   color: #fff;
   letter-spacing: 0;
+}
+
+.btn-wap-normal {
+  border: 1px solid #FF6C63;
+  background: #FF6C63;
+  border-radius:25px;
+  color: #fff;
+  display: block;
+  padding:10px;
+  font-size:20px;
+  width:80%;
+  margin:0 auto;
+  &:active {
+    background: rgba(255,99,90,0.7);
+  }
+  &:disabled {
+    background: #C9C9C9;
+    border: 1px solid #C9C9C9;
+  }
 }
 
 .main-column-title {
@@ -162,7 +181,7 @@ body{
 
 .footer-wap-container {
   height:50px;
-  display: flex;
+  display: none;
   justify-content: space-between;
   border-top:1px solid #E8E8E8;
 
