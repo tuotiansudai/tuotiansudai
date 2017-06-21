@@ -77,7 +77,7 @@
                                         <#break >
                                 </#switch>
                                 <td>${view.loginName}</td>
-                                <td>${view.amount/100?string.computer}元</td>
+                                <td>${view.amount/100}元</td>
                             </tr>
                             </#list>
 
