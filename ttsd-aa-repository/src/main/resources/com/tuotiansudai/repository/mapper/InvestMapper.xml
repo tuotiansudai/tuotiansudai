@@ -1099,7 +1099,7 @@
             FROM
                 invest i JOIN loan on i.loan_id = loan.id
             WHERE
-                i.loan_id = #{loanId} and i.loan_id != 1
+                i.loan_id = #{loanId} and i.loan_id != 1 and loan.activity_type != 'NEWBIE'
                     AND loan.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
                     AND i.status = 'SUCCESS'
                     AND i.transfer_status != 'SUCCESS'
