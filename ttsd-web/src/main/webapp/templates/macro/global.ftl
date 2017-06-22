@@ -24,7 +24,8 @@
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
         {"title":"直投项目", "url":"/loan-list"},
-        {"title":"转让项目", "url":"/transfer-list"}
+        {"title":"转让项目", "url":"/transfer-list"},
+        {"title":"日息宝", "url":"/day-list"}
     ]},
     {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
 
