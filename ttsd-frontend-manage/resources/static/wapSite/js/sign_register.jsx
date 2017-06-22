@@ -1,25 +1,41 @@
 let commonFun = require('publicJs/commonFun');
 let ValidatorObj = require('publicJs/validator');
 
-let weChatRegister = globalFun.$('#weChatRegister');
 let formRegister = globalFun.$('#formRegister');
 
 let validator = new ValidatorObj.ValidatorForm();
 let $errorBox = $('.error-box', $(formRegister));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let captchaSrc = '/register/user/image-captcha';
+let $getCaptcha = $(formRegister).find('.get-captcha');
+let $registerSubmit=$('button[type="submit"]',$(formRegister));
+let referrerValidBool=true;
+let $referrer=$('input.referrer', $(formRegister));
 
+//刷新验证码
 $('#imageCaptcha').on('click', function () {
     commonFun.refreshCaptcha(this, captchaSrc);
     formRegister.captcha.value = '';
 });
+
+//填写邀请人
 $(formRegister).find('.invite-mobile').on('click',function() {
     let $thisTitle = $(this),
         $inputInvite = $thisTitle.next('.referrer');
     $thisTitle.toggleClass('closed');
     $inputInvite.toggleClass('closed');
+
+    if($referrer.is(':hidden')) {
+        referrerValidBool=true;
+    }
+    else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
+        referrerValidBool=false;
+    }
+    isDisabledButton();
+
 });
 
+//弹出拓天速贷服务协议
 $(formRegister).find('.show-agreement').on('touchstart', function (event) {
     event.preventDefault();
     layer.open({
@@ -38,8 +54,6 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
 //获取验证码
 (function () {
     let formCaptcha = globalFun.$('#formCaptcha');
-    let $getCaptcha = $(formRegister).find('.get-captcha');
-
     function sendCaptcha() {
         let ajaxOption = {
             url: '/register/user/send-register-captcha',
@@ -140,13 +154,47 @@ let reInputs = $(formRegister).find('input[validate]');
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i],"keyup",function () {
         let errorMsg = validator.start(this);
-        if (errorMsg) {
-            $errorBox.text(errorMsg);
-        }
-        else {
-            $errorBox.text('');
-        }
+
+        referrerValidBool = !(this.name == 'referrer' && errorMsg);
+        isDisabledButton();
     })
+}
+
+//用来判断获取验证码和立即注册按钮 是否可点击
+//表单验证通过会
+function isDisabledButton() {
+    let mobile=formRegister.mobile,
+        password=formRegister.password,
+        captcha=formRegister.captcha,
+        referrer=formRegister.referrer;
+
+    //获取验证码点亮
+    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+
+    let isDisabledCaptcha = isMobileValid && isPwdValid;
+
+    //按钮上有样式名count-downing，说明正在倒计时
+    if ($getCaptcha.hasClass('count-downing')) {
+        $getCaptcha.prop('disabled',true);
+    }
+    else {
+        $getCaptcha.prop('disabled',!isDisabledCaptcha);
+    }
+    //给验证码弹框中的mobile隐藏域赋值
+    isDisabledCaptcha && (globalFun.$('#formCaptcha').mobile.value = mobile.value);
+    //通过获取验证码按钮来判断
+    !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
+
+    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+
+    if($(referrer).is(':hidden')) {
+        referrerValidBool=true;
+    }
+
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && referrerValidBool;
+    $registerSubmit.prop('disabled',!isDisabledSubmit);
+
 }
 
 //点击立即注册按钮
@@ -156,9 +204,8 @@ formRegister.onsubmit = function (event) {
     for (let i = 0, len = reInputs.length; i < len; i++) {
         let errorMsg = validator.start(reInputs[i]);
         if (errorMsg) {
-            $errorBox.text(errorMsg);
+            layer.msg(errorMsg);
             return;
-            // break;
         }
     }
 
