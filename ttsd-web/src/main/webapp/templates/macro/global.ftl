@@ -35,6 +35,7 @@
         {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"日息宝收益", "url":"/day-profit", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"},

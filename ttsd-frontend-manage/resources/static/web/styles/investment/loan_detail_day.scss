@@ -6,7 +6,7 @@ $grayLight: #b2b2b2;
 $gray2: #999;
 $orange: #ee7b2f;
 $orange2: #f1a03f;
-$red: #eb4a3e;
+$red: #ea3622;
 
 .layer-tip-loanDetail{
   .layui-layer-btn {
@@ -74,6 +74,18 @@ $red: #eb4a3e;
         .title {
           font-size: 20px;
           color: #333;
+          margin-right: 20px;
+        }
+        .label-item{
+          font-size:12px;
+          color:#ee7c36;
+          border:1px solid #e8a649;
+          border-radius:10px;
+          padding:0 5px;
+          line-height: 20px;
+          vertical-align: middle;
+          display: inline-block;
+          margin: 0 5px;
         }
       }
       .boilerplate {
@@ -119,15 +131,18 @@ $red: #eb4a3e;
           }
         }
         .loan-number-detail {
-          border-bottom: 1px dashed $gray;
           @media (max-width: 700px) {
             text-align: center;
           }
           .title {
             font-size: 18px;
+            color:#ff770f;
+            &.last{
+              color:#808080;
+            }
           }
           .number {
-            font-size: 28px;
+            font-size: 40px;
           }
           .data-extra-rate {
             font-size: 14px;
@@ -140,18 +155,11 @@ $red: #eb4a3e;
           .title {
             color: $gray2;
           }
-          > div {
-            margin-top: 20px;
-            line-height: 1;
-          }
-          .short-detail {
-            line-height: 24px;
-          }
         }
         .progress-bar {
-          display: inline-block;
-          width: 140px;
-          background: $gray;
+          float:left;
+          width: 100%;
+          border:1px solid $gray;
           height: 10px;
           border-radius: 5px;
           overflow: hidden;
@@ -162,328 +170,60 @@ $red: #eb4a3e;
             border-radius: 5px;
           }
         }
-      }
-    }
-  }
-  .chart-info-responsive {
-    float: left;
-    width: 96%;
-    padding: 0 2%;
-    color: #a4a4a4;
-    line-height: 30px;
-    display: none;
-  }
-  .loan-detail{
-    float:left;
-    width:100%;
-  }
-  .loan-designation{
-    float:left;
-    width:880px;
-    padding:30px 60px;
-    h3{
-      float:left;
-      width:100%;
-      margin-bottom:25px;
-      text-align:center;
-      font-size:20px;
-      color:#4c4c4c;
-      a{
-        font-size:14px;
-        color:#4c4c4c;
-        margin-left:5px;
-      }
-    }
-    .design-table{
-      border:1px solid #ccc;
-      thead{
-        tr{
-          th{
-            border:1px solid #ccc;
-            background:#fff;
-            color:#666;
-            font-weight:normal;
-            &.title{
-              background:#ddd;
-            }
+        .surplus-item{
+          float:left;
+          width:100%;
+          margin-bottom: 40px;
+          span{
+            font-size:14px;
+            color:#333333;
           }
         }
-      }
-      tbody{
-        tr{
-          td{
-            border:1px solid #ccc;
-            background:#fff;
-            &.title{
-              background:#ddd;
-            }
-          }
+        .tip-item{
+          float:left;
+          padding: 0 10px;
+          font-size: 16px;
+          color: #ff752a;
+          line-height: 40px;
+          background: #fffefc;
+          border: 1px dashed #ff752a;
         }
-      }
-    }
-    .first-icon {
-      display: inline-block;
-      position: relative;
-      margin-right: 5px;
-      top: 5px;
-      width: 20px;
-      height: 20px;
-      background: url('../../images/sign/icon_result.png') no-repeat center;
-      background-position: 2px -98px;
-    }
-    .max-icon {
-      display: inline-block;
-      position: relative;
-      margin-right: 5px;
-      top: 5px;
-      width: 20px;
-      height: 20px;
-      background: url('../../images/sign/icon_result.png') no-repeat center;
-      background-position: 0px -126px;
-    }
-    .last-icon {
-      display: inline-block;
-      position: relative;
-      margin-right: 5px;
-      top: 5px;
-      width: 20px;
-      height: 20px;
-      background: url('../../images/sign/icon_result.png') no-repeat center;
-      background-position: 0px -151px;
-    }
-    span{
-      &.text-lighter{
-        color:#ff6400;
-      }
-      &.text-reward{
-        color:#ff9d1a;
-      }
-    }
-  }
-  .loan-nav {
-    border-bottom: 1px solid #ccc;
-    li {
-      float: left;
-      padding: 8px 30px;
-      border-right: 1px solid #ccc;
-      position: relative;
-      cursor: pointer;
-      background: #fff;
-      i {
-        display: none;
-        position: absolute;
-        bottom: -6px;
-        left: 45%;
-        font-size: 18px;
-        color: #ed9c30;
-      }
-      &.active {
-        border-top: 2px solid #ff752a;
-        color: #ff752a;
-        font-weight: bold;
-        margin-top: -1px;
-        margin-bottom: -1px;
-        i {
-          display: block;
+        .turn-out{
+          width:80px;
+          height:40px;
+          line-height:40px;
+          font-size:18px;
+          color:#ee7b2f;
+          text-align:center;
+          border:1px solid #ee7b2f;
+          background:#fff;
+        }
+        .turn-in{
+          width:220px;
+          height:40px;
+          line-height:40px;
+          font-size:18px;
+          color:#fff;
+          text-align:center;
+          border:1px solid #ff752a;
+          background:#ff752a;
+          margin-left:40px;
+        }
+        .turn-disabled{
+          width:220px;
+          height:40px;
+          line-height:40px;
+          font-size:18px;
+          color:#fff;
+          text-align:center;
+          border:1px solid #ccc;
+          background:#cccccc;
+          margin-left:40px;
         }
       }
     }
   }
-  .loan-list {
-    .borderBox {
-      padding: 10px;
-    }
-    .loan-list-con {
-      display: none;
-      .content {
-        padding: 30px;
-        @media (max-width: 700px) {
-          padding: 0;
-        }
-        &.detail {
-          .subtitle {
-            padding-left: 20px;
-            position: relative;
-            &:before {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: 0;
-              height: 100%;
-              width: 5px;
-              background: #ff752a;
-              border-radius: 5px;
-            }
-            h3 {
-              background: #f5f5f5;
-              font-size: 16px;
-              text-indent: .5em;
-            }
-          }
-          .list-block {
-            padding: 15px 0 15px 25px;
-            color: #808080;
-            .row > div {
-              height: auto;
-              line-height: 35px;
-            }
-          }
-          .danger-control {
-            padding-bottom: 20px;
-            .table {
-              padding: 0 30px;
-              text-align: center;
-              margin-top: 20px;
-              font-size: 14px;
-              .fa {
-                font-size: 16px;
-                color: $orange;
-                margin-right: .5em;
-              }
-              .bg {
-                background: #f2f6fa;
-                font-weight: 900;
-              }
-              .br-b {
-                border-bottom: 1px solid $gray;
-              }
-              .br-r {
-                border-right: 1px solid $gray;
-              }
-              .col-xs-6 {
-                text-align: center;
-                line-height: 40px;
-                border-top: 1px solid $gray;
-                border-left: 1px solid $gray;
-              }
-            }
-          }
-        }
-        &.record {
-          .title-list {
-            margin-bottom: 20px;
-            .br {
-              padding-right: 10px;
-            }
-            .item {
-              border: 1px solid #e6e6e6;
-              text-align: center;
-              padding: 10px 5px;
-              min-height:110px;
 
-              h4 {
-                font-size: 24px;
-                color: #808080;
-                span {
-                  padding: 15px 0 15px 50px;
-                  a {
-                    color: #808080;
-                    &:hover {
-                      color: #ff752a;
-                    }
-                  }
-                }
-                &.hammer {
-                  span {
-                    background: url("../../images/icons/hammer.png") no-repeat left 50%;
-                  }
-                }
-                &.king {
-                  span {
-                    background: url("../../images/icons/king.png") no-repeat left 50%;
-                  }
-                }
-                &.first {
-                  span {
-                    background: url("../../images/icons/first.png") no-repeat left 50%;
-                  }
-                }
-              }
-              p {
-                font-size: 12px;
-                margin-bottom: 0px;
-                margin-top: 10px;
-              }
-            }
-          }
-        }
-      }
-      .scroll-wrap {
-        padding: 0 39px;
-        position: relative;
-        .left-button {
-          width: 20px;
-          height: 100%;
-          background: #fafafa url("../../images/icons/left-arrow.png") no-repeat 50% 50%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          &.disabled {
-            background: #fafafa url("../../images/icons/left-arrow-disabled.png") no-repeat 50% 50%;
-          }
-        }
-        .right-button {
-          width: 20px;
-          height: 100%;
-          background: #fafafa url("../../images/icons/right-arrow.png") no-repeat 50% 50%;
-          position: absolute;
-          top: 0;
-          right: 0;
-          &.disabled {
-            background: #fafafa url("../../images/icons/right-arrow-disabled.png") no-repeat 50% 50%;
-          }
-        }
-        .scroll-content {
-          overflow: hidden;
-          > .row {
-            width: 1000%;
-          }
-          .col {
-            width: 200px;
-            float: left;
-            margin-right: 10px;
-            display: block;
-          }
-          .img {
-            display: block;
-            margin: 0 auto;
-            width: 198px;
-            height: 118px;
-            border: 1px solid #fafafa;
-          }
-        }
-      }
-      .apply-data {
-        padding-left: 20px;
-        h5 {
-          font-size: 14px;
-          color: #808080;
-          padding: 20px 0;
-        }
-      }
-    }
-    .invest-WEB {
-      display: inline-block;
-      vertical-align: middle;
-      width: 18px;
-      height: 18px;
-      background: url("../../images/icons/ico_loan.png") 0 0 no-repeat;
-    }
-    .invest-ANDROID {
-      display: inline-block;
-      vertical-align: middle;
-      width: 18px;
-      height: 22px;
-      background: url("../../images/icons/ico_loan.png") 0px -32px no-repeat;
-    }
-    .invest-IOS {
-      display: inline-block;
-      vertical-align: middle;
-      width: 18px;
-      height: 20px;
-      background: url("../../images/icons/ico_loan.png") 0px -65px no-repeat;
-    }
-  }
   .project-model {
     float: left;
     width: 100%;
@@ -506,11 +246,52 @@ $red: #eb4a3e;
     .model-content {
       float: left;
       width: 100%;
-      .info-list {
-        margin: 20px 30px;
-        li {
-          color: #999;
-          font-size: 14px;
+      .intro-list{
+        float: left;
+        width:100%;
+        padding:0 20px;
+        box-sizing:border-box;
+        margin:10px 0;
+        &.active{
+          dt{
+            i{
+              background:url('../../images/day-interest/icon-down.png') no-repeat center;
+            }
+          }
+          dd{
+            display:block;
+          }
+        }
+        dt{
+          float: left;
+          width:100%;
+          background:#fafafa;
+          padding:0 20px;
+          font-size:14px;
+          color:#333;
+          line-height: 30px;
+          box-sizing:border-box;
+          position: relative;
+          cursor:pointer;
+          i{
+            position: absolute;
+            top:50%;
+            margin-top:-8px;
+            right:0;
+            width:16px;
+            height:16px;
+            background:url('../../images/day-interest/icon-up.png') no-repeat center;
+          }
+        }
+        dd{
+          float:left;
+          width:100%;
+          padding:0 20px;
+          font-size:14px;
+          color:#808080;
+          margin-top: 10px;
+          box-sizing:border-box;
+          display: none;
         }
       }
       .text-list {
@@ -560,80 +341,4 @@ $red: #eb4a3e;
   }
 }
 
-.extra-rate-popup {
-  background: #fff;
-  position: absolute;
-  z-index: 100;
-  border: 1px solid #ffd4b2;
-  width: 290px;
-  text-align: center;
-  > div {
-    border-top: 1px solid #ffd4b2;
-    &:first-child {
-      border-top: none;
-      border-right: none;
-    }
-  }
-  .header {
-    color: #ff9d1a;
-  }
-  .td {
-    border-left: 1px solid #ffd4b2;
-    line-height: 28px;
-    text-align: center;
-    width: 60px;
-    &:first-child {
-      border-left: none;
-      width: 220px;
-    }
-  }
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: -7px;
-    right: 80px;
-    color: #ffd4b2;
-    background: #fff;
-    width: 12px;
-    height: 7px;
-    background: url("../../images/sign/chevron-up.png") no-repeat;
-  }
-}
-
-@media screen and (max-width:700px) {
-  .invest-list-content .col-md-4 { width: 100%;}
-  .loan-detail-content {
-    .loan-model {
-      display: block;
-      .blank-middle {
-        display: none;
-      }
-      .news-share,.account-info {
-        display: block;
-      }
-      .news-share {
-        border-left-width: 0;
-        border-bottom-width: 0;
-        height:auto;
-        overflow: auto;
-        padding-bottom: 20px;
-      }
-      .account-info {
-        width: 100%;
-        border-left-width: 0;
-        border-right-width: 0;
-        margin-bottom: 10px;
-        padding-bottom:15px;
-        .l-title {
-          display: none;
-        }
-        .account-list {
-          margin-left: 0 !important;
-        }
-      }
-    }
-
-  }
-}
 
