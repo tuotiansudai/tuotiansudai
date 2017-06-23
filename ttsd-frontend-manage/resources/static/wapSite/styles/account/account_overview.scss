@@ -1,0 +1,16 @@
+.my-account-content {
+  .account-summary {
+    height:340px;
+    background:#FF473C;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .collection {
+      flex: 2;
+    }
+    .amount-balance {
+      flex: 1;
+    }
+  }
+
+}

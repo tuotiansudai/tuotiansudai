@@ -4,7 +4,7 @@
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/${jsName}.js"} >
 <#assign css = {"${cssName}":"http://localhost:3008/wapSite/js/${cssName}.css"}>
 
-<@global.main pageCss="${css.sign_enter_point}" pageJavascript="${js.sign_register}" title="完善用户信息">
+<@global.main pageCss="${css.sign_enter_point}" pageJavascript="${js.sign_register}" title="注册">
 
 <div class="sign-container sign-login" id="weChatRegister">
  <span class="show-mobile">
