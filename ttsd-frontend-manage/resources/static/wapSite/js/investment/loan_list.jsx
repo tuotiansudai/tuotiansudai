@@ -1,0 +1,1 @@
+require('wapSiteStyle/investment/loan_list.scss');

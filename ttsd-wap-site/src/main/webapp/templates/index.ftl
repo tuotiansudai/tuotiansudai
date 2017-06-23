@@ -62,22 +62,20 @@
             <a href="#" class="btn-look">查看详情</a>
         </div>
     </div>
-
-        <div class="newer-exclusive-box">
+    <#--拓天体验金项目-->
             <div class="main-column-title">
                <span>新手专享</span>
             </div>
 
-            <div class="newer-experience" data-url="/loan/1">
-                    <b class="newer-title">拓天体验金项目 <span>体验金投资</span></b>
+            <div class="target-category-box newer-experience" data-url="/loan/1">
+                    <b class="newer-title">拓天体验金项目 <i class="icon-sign">体验金投资</i></b>
                     <ul class="loan-info clearfix">
                         <li><span class="percent-number"> <i>13</i>%</span><em class="note">预期年化收益</em></li>
                         <li><em class="duration-day">3</em> 天 <em class="note">项目期限</em></li>
-                        <li><a href="/loan/1" class="btn-invest btn-normal">立即购买</a></li>
+                        <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
                     </ul>
 
                 </div>
-        </div>
 
         <#--优选债权-->
         <div class="main-column-title">
@@ -90,7 +88,7 @@
             <ul class="loan-info clearfix">
                 <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
                 <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
-                <li><a href="/loan/1" class="btn-invest btn-normal">立即购买</a></li>
+                <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
             </ul>
             <div class="table-row progress-column">
                 <div class="progress-bar">
@@ -108,13 +106,13 @@
             <a href="/transfer-list" class="hot-more">更多</a>
         </div>
 
-        <div class="target-category-box">
+        <div class="target-category-box sold-out-box">
             <b class="newer-title">房产抵押借款17070</b>
-            <ul class="loan-info clearfix">
+            <ul class="loan-info  clearfix">
                 <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
                 <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
                 <li>
-                    <i class="product-status"></i>
+                    <i class="loan-status icon-sellout"></i>
                 </li>
             </ul>
             <div class="transfer-price">转让价格：10,085.00元/12,000.00元(原)</div>

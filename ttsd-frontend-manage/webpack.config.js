@@ -40,8 +40,9 @@ var NODE_ENV=process.env.NODE_ENV;
 var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
 
 var Accountfiles = glob.sync(path.join(staticPath, '*/js/account/*.jsx'));
+var Investmentfiles = glob.sync(path.join(staticPath, '*/js/investment/*.jsx'));
 var wechatfiles = glob.sync(path.join(staticPath, '*/js/wechat/*.jsx'));
-files=files.concat(Accountfiles).concat(wechatfiles);
+files=files.concat(Accountfiles).concat(wechatfiles).concat(Investmentfiles);
 var newEntries = {};
 
 files.forEach(function(file){

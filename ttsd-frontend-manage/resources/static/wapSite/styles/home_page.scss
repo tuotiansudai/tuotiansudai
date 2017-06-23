@@ -78,6 +78,7 @@
     justify-content: space-between;
     padding: 15px;
     text-align: right;
+    background: #fff;
     .gift-img {
       background: url('../images/home-gift.png') left center no-repeat;
       background-size: 100%;
@@ -97,113 +98,6 @@
     }
   }
 
-  .loan-info {
-    display: flex;
-    justify-content: space-between;
-
-    li {
-      flex:1;
-      line-height: 25px;
-      color: #A2A2A2;
-      padding: 20px 0;
-      font-size: 14px;
-      font-weight: lighter;
-      em.note {
-        font-size: 10px;
-        display: block;
-      }
-      .percent-number {
-        color: #FF473C;
-        display: block;
-        text-align: left;
-
-        .sign-plus {
-          margin: 0px 3px;
-        }
-        i {
-          font-size: 32px;
-        }
-      }
-      .duration-day {
-        font-size: 24px;
-      }
-
-      &:nth-last-child(1) {
-        text-align: right;
-      }
-      &:nth-last-child(2) {
-        text-align: center;
-      }
-    }
-  }
-
-  .newer-exclusive-box {
-    .newer-experience {
-      padding:10px;
-      .newer-title {
-        color: #FF473C;
-        font-size:12px;
-        font-weight: normal;
-        border-bottom: 1px solid #E5E5E5;
-        display: block;
-        height: 30px;
-
-        span {
-          font-size:11px;
-          display: inline-block;
-          border:1px solid #FF473C;
-          border-radius: 17px;
-          padding: 2px 5px;
-          line-height: 15px;
-        }
-      }
-    }
-
-  }
-
-  .target-category-box {
-    padding:10px;
-    position: relative;
-    .newer-title {
-      font-weight: lighter;
-      color: #525252;
-    }
-    .progress-column {
-      padding: 0 5px;
-      border-bottom-width: 0px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      .progress-bar {
-        flex: 2;
-      }
-      span {
-        flex: 1;
-        text-align: right;
-        font-size: 11px;
-        color: #A2A2A2;
-      }
-
-    }
-    .product-status {
-      display: inline-block;
-      width:54px;
-      height:58px;
-      background: url('../images/status/sian-sellout.png') left 0px no-repeat;
-      margin-right: 20px;
-      background-size:100%;
-      margin-top: -2px;
-    }
-    .transfer-price {
-      text-align: right;
-      font-size: 11px;
-      color: #A2A2A2;
-      letter-spacing: -0.27px;
-      margin-top: -22px;
-      margin-right: 10px;
-    }
-  }
-
   .company-info {
     font-size: 12px;
     color: #A2A2A2;
@@ -214,16 +108,3 @@
   }
 }
 
-@media screen and (max-width: 350px) {
-  .home-page-container .loan-info {
-    li {
-      font-size:12px;
-      .percent-number i {
-        font-size:16px;
-      }
-      .duration-day {
-        font-size:16px;
-      }
-    }
-  }
-}
