@@ -1,0 +1,282 @@
+@charset "utf-8";
+@import "top_sub_menu";
+
+$gray: #e6e6e6;
+$grayLight: #b2b2b2;
+$gray2: #999;
+$orange: #ee7b2f;
+$orange2: #f1a03f;
+$red: #ea3622;
+
+
+//隐藏顶部菜单
+.swiper-container {
+  display: none;
+}
+.level-layer-tips {
+  .layui-layer-content {
+    width:275px!important;
+    left: 43px;
+  }
+  i.layui-layer-TipsT {
+    left: 180px!important;
+  }
+}
+
+/* loan detail */
+.loan-detail-content {
+  color: #8c8c8c;
+  .borderBox {
+    padding: 0;
+    &.no-border{
+      border:none;
+    }
+  }
+  .loan-model{
+    width:100%;
+    display:table;
+    .news-share {
+      width: 616px;
+      display: table-cell;
+      vertical-align: top;
+      @media (max-width: 700px) {
+        width: 100%;
+      }
+      margin-right: 10px;
+      position: relative;
+      border: 1px solid #ccc;
+      .title-block {
+        border-bottom: 1px solid #ccc;
+        color: #808080;
+        padding: 0 20px;
+        line-height: 50px;
+        .title {
+          font-size: 20px;
+          color: #333;
+          margin-right: 20px;
+        }
+        .label-item{
+          font-size:12px;
+          color:#ee7c36;
+          border:1px solid #e8a649;
+          border-radius:10px;
+          padding:0 5px;
+          line-height: 20px;
+          vertical-align: middle;
+          display: inline-block;
+          margin: 0 5px;
+        }
+      }
+      .boilerplate {
+        font-size: 14px;
+      }
+      .extra-rate {
+        @media (max-width: 700px) {
+          display: none;
+        }
+        color: $orange;
+        font-size: 14px;
+        padding-left: 1em;
+        .fa {
+          font-size: 16px;
+          &.fa-mobile{
+            font-size:20px;
+          }
+        }
+      }
+      .loan-info {
+        color: #808080;
+        .title-block {
+          padding: 0 20px;
+          line-height: 50px;
+          .title {
+            font-size: 20px;
+          }
+        }
+        .boilerplate {
+          font-size: 14px;
+        }
+        .extra-rate {
+          font-size: 14px;
+          padding-left: 1em;
+          .fa {
+            font-size: 16px;
+          }
+        }
+        .content {
+          padding: 30px 40px;
+          @media (max-width: 700px) {
+            padding: 30px 10px;
+          }
+        }
+        .loan-number-detail {
+          @media (max-width: 700px) {
+            text-align: center;
+          }
+          .title {
+            font-size: 18px;
+            color:#ff770f;
+            &.last{
+              color:#808080;
+            }
+          }
+          .number {
+            font-size: 40px;
+          }
+          .data-extra-rate {
+            font-size: 14px;
+          }
+          .red {
+            color: $red;
+          }
+        }
+        .loan-active-detail {
+          .title {
+            color: $gray2;
+          }
+        }
+        .progress-bar {
+          float:left;
+          width: 100%;
+          border:1px solid $gray;
+          height: 10px;
+          border-radius: 5px;
+          overflow: hidden;
+          .progress-inner {
+            background: $orange2;
+            width: 40%;
+            height: 10px;
+            border-radius: 5px;
+          }
+        }
+        .surplus-item{
+          float:left;
+          width:100%;
+          margin-bottom: 40px;
+          span{
+            font-size:14px;
+            color:#333333;
+          }
+        }
+        .tip-item{
+          float:left;
+          padding: 0 10px;
+          font-size: 16px;
+          color: #ff752a;
+          line-height: 40px;
+          background: #fffefc;
+          border: 1px dashed #ff752a;
+        }
+        .turn-out{
+          width:80px;
+          height:40px;
+          line-height:40px;
+          font-size:18px;
+          color:#ee7b2f;
+          text-align:center;
+          border:1px solid #ee7b2f;
+          background:#fff;
+        }
+        .turn-in{
+          width:220px;
+          height:40px;
+          line-height:40px;
+          font-size:18px;
+          color:#fff;
+          text-align:center;
+          border:1px solid #ff752a;
+          background:#ff752a;
+          margin-left:40px;
+        }
+        .turn-disabled{
+          width:220px;
+          height:40px;
+          line-height:40px;
+          font-size:18px;
+          color:#fff;
+          text-align:center;
+          border:1px solid #ccc;
+          background:#cccccc;
+          margin-left:40px;
+        }
+      }
+    }
+  }
+
+  .project-model {
+    float: left;
+    width: 100%;
+    &.mt-20 {
+      margin-top: 20px;
+    }
+    .model-nav {
+      float: left;
+      width: 100%;
+      border-bottom: 1px solid #e6e6e6;
+      h3 {
+        float: left;
+        margin-left: 20px;
+        font-size: 16px;
+        color: #ff7200;
+        line-height: 50px;
+        border-bottom: 4px solid #ff7200;
+      }
+    }
+    .model-content {
+      float: left;
+      width: 100%;
+      .info-list {
+        margin: 20px 30px;
+        li {
+          color: #999;
+          font-size: 12px;
+        }
+      }
+      .text-list {
+        float: left;
+        width: 100%;
+        li {
+          float: left;
+          width: 33.333333%;
+          p {
+            float: left;
+            width: 100%;
+            margin-bottom: 0;
+            &.intro-title {
+              margin-top: 40px;
+              font-size: 20px;
+              color: #1a1a1a;
+              text-align: center;
+            }
+            &.intro-icon {
+              height: 180px;
+              border-right: 1px solid #e6e6e6;
+              &.icon-one {
+                background: url("../../images/sign/actor/icon-one.png") no-repeat center;
+              }
+              &.icon-two {
+                background: url("../../images/sign/actor/icon-two.png") no-repeat center;
+              }
+              &.icon-three {
+                background: url("../../images/sign/actor/icon-three.png") no-repeat center;
+              }
+            }
+            &.intro-text {
+              text-align: left;
+              font-size: 14px;
+              color: #999;
+              border-right: 1px solid #e6e6e6;
+              margin-bottom: 30px;
+              span {
+                float: left;
+                padding: 0 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
