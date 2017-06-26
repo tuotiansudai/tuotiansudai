@@ -11,56 +11,32 @@
         <div class="loan-model">
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block clearfix">
-                    <div class="fl title">日息宝</div>
-                    <span class="label-item">3天锁定期</span>
-                    <span class="label-item">本息复投</span>
-                    <span class="label-item">本息复投</span>
+                    <div class="fl title"><a href="/day-turn-in.ftl">日息宝转入</a></div>
+                    <div class="fl title active"><a href="/day-turn-out.ftl">日息宝转出</a></div>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <div class="row loan-number-detail clearfix">
-                            <div class="col-md-3 tl">
-                                <div class="title">昨日收益（元)</div>
-                                <div class="number red">
-                                    6.88
-                                </div>
+                        <form action="#" method="post">
+                            <div class="fotm-item">
+                                <p>
+                                    今日还可以赎回（元）：<span>1000</span>
+                                </p>
                             </div>
-                            <div class="col-md-3 tc">
-                                <div class="title">累计收益（元）</div>
-                                <div class="number">6.88</div>
+                            
+                            <div class="fotm-item">
+                                <input type="text" name="" class="int-item" placeholder="请输入金额">
                             </div>
-                            <div class="col-md-3 tc">
-                                <div class="title">总资产（元）</div>
-                                <div class="number">
-                                    <span>1212</span>
-                                </div>
+                        
+                            <div class="fotm-item">
+                                <input type="submit" class="submit-item" value="确认转出" />
                             </div>
-                            <div class="col-md-3 tr">
-                                <div class="title last">预期年化收益</div>
-                                <div class="number">
-                                    <em>6.88</em><span>%</span>
-                                </div>
+                            <div class="fotm-item">
+                                <p class="tip-info">1.转出后资金将返回账户余额，下一个工作日到账，节假日顺延；</p>
+                                <p class="tip-info">2.最终到账时间以实际到账时间为准。</p>
                             </div>
-                        </div>
-                        <div class="row loan-active-detail clearfix">
-                            <div class="col-md-12">
-                                <div class="progress-bar">
-                                    <div class="progress-inner" style="width: 49.00%"></div>
-                                </div>
-                                <div class="surplus-item">
-                                    <span class="fl">今日剩余（万元）</span>
-                                    <span class="fr">55.54</span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <span class="tip-item">持有越多，收益越高</span>
-                                <button class="turn-disabled fr" disabled="">计算收益中</button>
-                                <a href="" class="turn-in fr">转入</a>
-                                <a href="" class="turn-out fr">转出</a>
-                            </div>
-                        </div>
-                    </div> <#-- .content end tag -->
-                </div> <#-- .container-block end tag -->
+                        </form>
+                    </div> 
+                </div>
             </div>
         </div>
 
@@ -107,27 +83,6 @@
                         <p class="intro-text"><span>采用银行级别的数据传输加密技术，保障用户的信息安全。在同城和异地均建立灾备设备，避免因自然灾害导致用户信息的损失。</span></p>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div id="freeSuccess" data-account="${isAccount}" style="display: none">
-        <div class="success-info-tip">
-            <i class="icon-tip"></i>
-            <#--没有实名认证-->
-            <div class="detail-word">
-                <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元 <br/>
-                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即立即认证>></a>
-                <div class="pad-m-tb" style="padding-left:50px;">
-                    <button type="button" class="btn-normal close-free">确认</button>
-                </div>
-            </div>
-
-            <#--已经实名认证-->
-            <div class="detail-word" style="display: none;">
-                <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元
-                <div class="pad-m-tb" style="padding-left:50px;">
-                    <button type="button" class="btn-normal close-free">确认</button>
-                </div>
             </div>
         </div>
     </div>
