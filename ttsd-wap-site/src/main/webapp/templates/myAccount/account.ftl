@@ -1,9 +1,9 @@
 <#import "../macro/global-dev.ftl" as global>
-<#assign jsName = 'account_overview' >
+<#assign jsName = 'my_account' >
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.css"}>
 
-<@global.main pageCss="${css.account_overview}" pageJavascript="${js.account_overview}" title="账户总览">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.my_account}" title="我的账户">
 
 <div class="my-account-content account-overview">
     <div class="account-summary">
@@ -32,7 +32,7 @@
     </div>
 
     <ul class="menu-list">
-        <li><a href="#">我的体验金<em class="experience-amount">6800</em> <i class="fa fa-angle-right"></i></a> </li>
+        <li><a href="#">我的体验金<em class="experience-amount" <i class="fa fa-angle-right"></i></a> </li>
         <li><a href="#">我的投资<i class="fa fa-angle-right"></i></a> </li>
         <li><a href="#">优惠券<i class="fa fa-angle-right"></i></a> </li>
         <li><a href="#">回款日历<i class="fa fa-angle-right"></i></a> </li>
