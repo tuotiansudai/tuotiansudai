@@ -37,7 +37,7 @@
 
     <div class="overview-content accumulate-income" >
         <div class="amount-report">
-            <div class="income-report"></div>
+            <div class="income-report" id="dataRecord"></div>
             <dl>
                 <dt>累计收益(元)</dt>
                 <dd class="total">59.40</dd>

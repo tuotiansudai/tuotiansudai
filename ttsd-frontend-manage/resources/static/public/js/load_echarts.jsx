@@ -56,8 +56,9 @@ var MyChartsObject={
             }
         },
         // 饼状图选项
-        PieOption:function(data,name) {
+        PieOption:function(data,option) {
             var report_data = MyChartsObject.ChartDataFormate(data);
+            var option = option || {};
             var thisOption = {
                 legend:{
                     orient: 'vertical',
@@ -73,10 +74,10 @@ var MyChartsObject={
                 },
                 series: [
                     {
-                        name: name || "",
+                        name: option.name || "",
                         type: 'pie',
-                        radius : ['50%', '80%'],
-                        center: ['70%', '48%'],
+                        // radius : ['50%', '80%'],
+                        // center: ['70%', '48%'],
                         itemStyle : {
                             normal : {
                                 label : {
@@ -102,7 +103,8 @@ var MyChartsObject={
                 ],
                 color: ['rgb(255,117,42)','rgb(119,205,249)','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
             };
-            var PieOpt=$.extend({}, this.CommonOption, thisOption);
+            var initOption=$.extend({}, this.CommonOption, thisOption);
+            var PieOpt = $.extend({},initOption,option);
             return PieOpt;
         },
         // 柱状图选项
