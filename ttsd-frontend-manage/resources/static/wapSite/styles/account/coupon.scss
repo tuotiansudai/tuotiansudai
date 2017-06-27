@@ -15,9 +15,8 @@
     background: #FF635A;
     margin-bottom: 10px;
     border-radius: 5px;
-    overflow: hidden;
     .left-item{
-      flex:0.65;
+      flex:0.7;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -26,6 +25,8 @@
       padding: 5px 10px;
       box-sizing: border-box;
       position: relative;
+      border-top-left-radius:5px;
+      border-bottom-left-radius:5px;
       .circle-line{
         position: absolute;
         top:-5px;
@@ -92,7 +93,7 @@
       }
     }
     .right-item{
-      flex:0.35;
+      flex:0.3;
       display: flex;
       flex-direction: column;
       justify-content: center;
