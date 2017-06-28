@@ -5,6 +5,7 @@ window.layer.config({
 });
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
+window.IScroll = window.jquery_library(4);
 
 require("publicStyle/reset.scss");
 require("publicStyle/btn.scss");

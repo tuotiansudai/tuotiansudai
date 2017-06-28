@@ -1,15 +1,18 @@
 require('wapSiteStyle/account/overview.scss');
-
-
+let menuClick = require('wapSiteJsModule/menuClick');
 let $accountOverview = $('#accountOverview');
 
-$accountOverview.find('.menu-category span').on('click',function() {
-    let $this = $(this),
-        index = $this.index();
-    $this.addClass('current').siblings('span').removeClass('current');
-
-    $('.overview-content').eq(index).show().siblings('.overview-content').hide();
+menuClick({
+    pageDom:$accountOverview
 });
+
+// $accountOverview.find('.menu-category span').on('click',function() {
+//     let $this = $(this),
+//         index = $this.index();
+//     $this.addClass('current').siblings('span').removeClass('current');
+//
+//     $('.overview-content').eq(index).show().siblings('.overview-content').hide();
+// });
 
 //累计收益
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
@@ -28,16 +31,9 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         opt = loadEcharts.ChartConfig('dataRecord', option);
     loadEcharts.RenderChart(opt);
 
-    //     option = loadEcharts.ChartOptionTemplates.PieOption(dataJson);
-    // var  opt = loadEcharts.ChartConfig('dataRecord', option);
-    // loadEcharts.RenderChart(opt);
+    let ReceivedOpt = loadEcharts.ChartConfig('receivedRecord', option);
+    loadEcharts.RenderChart(ReceivedOpt);
 
-    // commonFun.useAjax({
-    //     url: '/about/operation-data/chart',
-    //     type: 'GET'
-    // },function(data) {
-    //
-    // });
+},'accumulateIncome');
 
-},'overviewEcharts');
 

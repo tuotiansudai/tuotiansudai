@@ -5,7 +5,6 @@
 
 <@global.main pageCss="${css.overview}" pageJavascript="${js.overview}" title="账户总览">
 
-
 <div class="my-account-content amount-overview" id="accountOverview">
 
     <div class="menu-category">
@@ -14,7 +13,7 @@
         <span><a href="#">待收回款</a></span>
     </div>
 
-    <div class="overview-content balance-box" style="display: none">
+    <div class="overview-content balance-box" >
         <dl class="balance-one">
             <dd>
                 <i class="one"></i> <em>59.40</em>
@@ -35,7 +34,7 @@
         </dl>
     </div>
 
-    <div class="overview-content accumulate-income" >
+    <div class="overview-content accumulate-income" style="display: none">
         <div class="amount-report">
             <div class="income-report" id="dataRecord"></div>
             <dl>
@@ -76,8 +75,41 @@
         </div>
 
     </div>
-    <div class="overview-content " style="display: none">
-        eee
+    <div class="overview-content payment-received" style="display: none">
+        <div class="amount-report">
+            <div class="income-report" id="receivedRecord"></div>
+            <dl>
+                <dt>待收回款(元)</dt>
+                <dd class="total">59.40</dd>
+            </dl>
+        </div>
+        <div class="amount-detail-show">
+            <div class="column">
+                <span>
+                    待收投资本金(元) <i></i>
+                    <em class="money">59.40</em>
+                </span>
+
+                <span>
+                    待收投资奖励(元)<i></i>
+                    <em class="money">59.40</em>
+                </span>
+            </div>
+            <div class="column">
+
+                 <span>
+                     <i></i>待收预期收益(元)
+                    <em class="money">59.40</em>
+                </span>
+
+                <span>
+                   <i></i> 待收体验金收益(元)
+                    <em class="money">59.40</em>
+                </span>
+
+            </div>
+        </div>
+
     </div>
 </div>
 </@global.main>

@@ -1,70 +1,8 @@
-body {
-  background: #F7F7F7;
-}
 .footer-wap-container {
   display: flex;
 }
 .account-overview {
   font-weight: lighter;
-
-  .account-summary {
-    height:170px;
-    background:#FF473C;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    line-height: 33px;
-    font-size:12px;
-    .fa {
-      font-size: 17px;
-      line-height: 15px;
-      color: rgba(255,255,255,0.5);
-    }
-    .summary-box {
-      text-align: center;
-      b {
-        font-size: 16px;
-        display: block;
-        font-weight: lighter;
-      }
-    }
-    .collection {
-      flex: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      b {
-        font-size: 36px;
-      }
-    }
-    .amount-balance {
-      background: #FB3D31;
-      flex: 1;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-direction: row;
-      width: 100%;
-      line-height: 20px;
-      font-weight: lighter;
-      .summary-box {
-        flex: 1;
-        &:nth-child(1) {
-          position: relative;
-          &:after {
-            display: inline-block;
-            content: '|';
-            color: #fff;
-            position: absolute;
-            right: 0;
-            top: 10px;
-          }
-        }
-      }
-    }
-  }
 
   .menu-quick {
     display: flex;

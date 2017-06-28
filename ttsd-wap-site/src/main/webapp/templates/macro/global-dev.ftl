@@ -1,5 +1,5 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
-    <#assign commonStaticServer = "http://localhost:3008/">
+    <#assign commonStaticServer = "http://localhost:3008">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +15,9 @@
     <meta name="360-site-verification" content="a3066008a453e5dfcd9f3e288862c9ef" />
     <meta name="sogou_site_verification" content="lXIPItRbXy"/>
     <meta name="baidu-site-verification" content="XVFtcOmhlc" />
-    <link rel="stylesheet" type="text/css" href="http://localhost:3008/public/globalFun_page.css" charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="http://localhost:3008/wapSite/js/wap_global.css" charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="${commonStaticServer}/public/globalFun_page.css" charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="${commonStaticServer}/wapSite/js/wap_global.css" charset="utf-8"/>
+
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
@@ -51,7 +52,7 @@
         <li><a href="/register">下载APP</a> </li>
     </ul>
 </div>
-<div class="main-frame-wap">
+<div class="main-frame-wap" id="mainFrameWap">
     <#nested>
 </div>
 
@@ -75,9 +76,9 @@
 </script>
 
 
-<script src="http://localhost:3008/public/dllplugins/jquery.dll.js" defer></script>
-<script src="http://localhost:3008/public/globalFun_page.js" defer></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" defer></script>
+<script src="${commonStaticServer}/public/dllplugins/jquery.dll.js" ></script>
+<script src="${commonStaticServer}/public/globalFun_page.js" ></script>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
 
 </body>
 </html>

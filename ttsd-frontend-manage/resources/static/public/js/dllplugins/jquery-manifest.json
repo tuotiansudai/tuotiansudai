@@ -3,6 +3,7 @@
   "content": {
     "./node_modules/jquery/dist/jquery.js": 1,
     "./node_modules/layer/src/layer.js": 2,
-    "./node_modules/underscore/underscore.js": 3
+    "./node_modules/underscore/underscore.js": 3,
+    "./node_modules/iscroll/build/iscroll.js": 4
   }
 }

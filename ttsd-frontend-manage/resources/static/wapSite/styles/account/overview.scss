@@ -88,7 +88,7 @@
   }
 }
 
-.accumulate-income {
+.accumulate-income,.payment-received {
 
   font-size: 14px;
   color: #525252;
@@ -101,7 +101,6 @@
     .income-report {
       width:80px;
       height:80px;
-      background: red;
       border-radius: 50%;
       margin:20px auto 10px auto;
     }
@@ -227,6 +226,17 @@
         }
 
     }
+  }
+}
+.payment-received .amount-detail-show {
+  .column:nth-child(1) span:nth-child(2) i {
+    background: #FFB761;
+  }
+  .column:nth-child(2) span:nth-child(1) i {
+    background: #727ACB;
+  }
+  .column:nth-child(2) span:nth-child(2) i {
+    background: #FFD761;
   }
 }
 
