@@ -10,7 +10,7 @@ body{
 }
 
 .nav-wap-container {
-  background: #F7F7F7;
+  background: #fff;
   position: relative;
   border-bottom:1px solid #E5E5E5;
   .img-top {
@@ -183,7 +183,7 @@ body{
   -ms-flex: 1;
   -webkit-flex: 1;
   flex: 1;
-  overflow-y:hidden;
+  overflow-y:auto;
   -webkit-overflow-scrolling:touch;
 }
 
