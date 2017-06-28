@@ -7,6 +7,9 @@
         <img src="" width="100%" class="media-phone">
     </div>
     <div class="wp clearfix">
+        <div class="reg-tag-current" style="display: none">
+            <#include '../module/register-app.ftl' />
+        </div>
         <div class="content-item">
             <h3>活动期间，每个债权根据用户在该债权的累计投资额进行排名，前三名可获丰厚奖励。</h3>
             <div class="loan-list">

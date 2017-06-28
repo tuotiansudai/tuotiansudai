@@ -1,4 +1,5 @@
 require("activityStyle/single_rank.scss");
+require('activityJsModule/fast_register');
 let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
