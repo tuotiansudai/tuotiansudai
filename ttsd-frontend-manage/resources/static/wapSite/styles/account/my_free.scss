@@ -1,0 +1,24 @@
+.free-container{
+  padding:10px;
+  box-sizing:border-box;
+  dt{
+    font-size: 16px;
+    color: #525252;
+    letter-spacing: -0.1px;
+    margin-bottom: 20px;
+  }
+  dd{
+    font-size: 14px;
+    color: #808080;
+    line-height: 22px;
+    &:last-child{
+      margin-top: 20px;
+    }
+  }
+}
+
+
+
+
+
+
