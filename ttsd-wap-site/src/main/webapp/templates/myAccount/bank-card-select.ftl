@@ -11,17 +11,8 @@
     <ul class="bank-list">
         <li>
             <i class="icon-bank"></i>
-            <span>
+            <span class="bank-show">
                 <em>中国农业银行 </em>
-                单笔限额5万元，单日限额20万元
-            </span>
-            <i class="icon-radio"></i>
-        </li>
-
-        <li class="checked">
-            <i class="icon-bank"></i>
-            <span>
-                中国农业银行 <br/>
                 单笔限额5万元，单日限额20万元
             </span>
             <i class="icon-radio"></i>
@@ -29,8 +20,17 @@
 
         <li>
             <i class="icon-bank"></i>
-            <span>
-                中国农业银行 <br/>
+            <span class="bank-show">
+                <em>中国农业银行 </em>
+                单笔限额5万元，单日限额20万元
+            </span>
+            <i class="icon-radio"></i>
+        </li>
+
+        <li>
+            <i class="icon-bank"></i>
+            <span class="bank-show">
+               <em>中国农业银行 </em>
                 单笔限额5万元，单日限额20万元
             </span>
             <i class="icon-radio"></i>
