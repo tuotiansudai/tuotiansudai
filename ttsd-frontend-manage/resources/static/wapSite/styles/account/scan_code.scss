@@ -1,0 +1,38 @@
+.my-account-content{
+  .code-item{
+    margin-top:60px;
+    p{
+      text-align:center;
+      font-size: 15px;
+      color: #525252;
+      letter-spacing: -0.36px;
+      margin-bottom: 0;
+      span{
+        display:inline-block;
+        width:200px;
+        height:200px;
+        background:url('../../images/account/scan-code.png') no-repeat center;
+        background-size:100%;
+      }
+    }
+  }
+  .info-item{
+    padding:0 20px;
+    margin-top: 50px;
+    box-sizing:border-box;
+    dt{
+      font-size: 13px;
+      color: #525252;
+    }
+    dd{
+      font-size: 12px;
+      color: #525252;
+    }
+  }
+}
+
+
+
+
+
+
