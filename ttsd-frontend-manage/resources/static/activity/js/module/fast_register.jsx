@@ -20,8 +20,17 @@ let browser = globalFun.browserRedirect();
 if (browser == 'mobile') {
     let urlObj=globalFun.parseURL(location.href);
     if(urlObj.params.tag=='yes') {
-        $('.reg-tag-current').show();
+        //判断是否登录
+        $.when(commonFun.isUserLogin())
+        .done(function () {
+            $('.reg-tag-current').hide();
+        })
+        .fail(function () {
+            //未登录
+            $('.reg-tag-current').show();
+        });
     }
+
 }
 
 $('#agreeRule').on('click', function(event) {
