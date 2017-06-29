@@ -8,7 +8,7 @@
 	</div>
 	<div class="wp clearfix">
 		<div class="reg-tag-current" style="display: none">
-			<#include '../module/register-app.ftl' />
+			<#include '../module/fast-register.ftl' />
         </div>
 		<div class="content-item">
 			<i class="icon-hot"></i>
