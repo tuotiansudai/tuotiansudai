@@ -277,3 +277,10 @@ body {
     }
   }
 }
+
+@media screen and(max-width: 320px) {
+  .activity-page-frame .heroes-list .sort-box dd {
+    padding: 4px 2px;
+  }
+
+}

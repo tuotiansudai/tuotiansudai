@@ -37,13 +37,13 @@
 
         <dl class="sort-box" id="sortBox">
             <dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
-            <dd class="ranking">我的排名：
+            <dd class="ranking">
                 <@global.isAnonymous>
-                    <span class="show-login">登录后查看</span>
+                    我的排名： <span class="show-login">登录后查看</span>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
-                    <i class="ranking-order"></i>
+                    我的排名：<i class="ranking-order"></i>
                 </@global.isNotAnonymous>
 
             </dd>
