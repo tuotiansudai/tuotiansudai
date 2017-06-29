@@ -1,5 +1,5 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
-    <#assign commonStaticServer = "http://localhost:3008">
+    <#assign commonStaticServer = "http://192.168.60.34:3008">
 <!DOCTYPE html>
 <html lang="en">
 <head>

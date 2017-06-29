@@ -1,0 +1,1 @@
+require('wapSiteStyle/account/personal_profile.scss');

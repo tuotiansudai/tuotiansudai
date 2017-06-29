@@ -86,3 +86,40 @@
     }
   }
 }
+
+//form input list
+.input-list {
+  li {
+    height:55px;
+    line-height: 55px;
+    background: #fff;
+    margin-bottom:1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #64646D;
+    font-weight: lighter;
+    input {
+      width: 64%;
+      text-align: right;
+      border:0;
+      font-size: 13px;
+      color: #A2A2A2;
+    }
+    span {
+      width:66%;
+      text-align: right;
+      input {
+        width:80%;
+      }
+    }
+    i {
+      font-size: 25px;
+      vertical-align: middle;
+      color: #A2A2A2;
+    }
+  }
+}

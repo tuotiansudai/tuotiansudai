@@ -3,7 +3,11 @@
 }
 
 .sign-container {
-  padding:10px;
+  padding-top: 30px;
+  text-align: center;
+  height: 92vh;
+  background: #fff;
+  box-sizing: border-box;
   input {
     width:100%;
     box-sizing: border-box;
@@ -46,7 +50,7 @@
   }
 
   &.sign-login {
-    margin-top:30px;
+
     text-align: center;
     .show-mobile {
       background: transparent;
@@ -112,7 +116,7 @@
           background: url('../images/icon-up.png') right center no-repeat;
           background-size: 100%;
           position: absolute;
-          right:0;
+          right: 15px;
           top:0;
         }
 
