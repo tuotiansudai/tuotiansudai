@@ -1,10 +1,10 @@
 require("activityStyle/module/fast_register.scss");
 let commonFun= require('publicJs/commonFun');
-let ValidatorObj= require('publicJs/validator');
+let ValidatorFast= require('publicJs/validator');
 
 let registerForm = globalFun.$('#registerForm'),
     $fetchCaptcha = $('#getCaptchaBtn'),
-    imageCaptchaDom = globalFun.$('#imageCaptcha'),
+    imageCaptchaDom = globalFun.$('#imageUpdate'),
     $captchaText= $(registerForm).find('.image-captcha-text');
 
 let captchaSrc = '/register/user/image-captcha';
@@ -103,10 +103,10 @@ let getConfig = {
     });
 })();
 
-let validator = new ValidatorObj.ValidatorForm();
+let validatorFast = new ValidatorFast.ValidatorForm();
 
 //验证码是否正确
-validator.newStrategy(registerForm.captcha, 'isCaptchaValid', function (errorMsg, showErrorAfter) {
+validatorFast.newStrategy(registerForm.captcha, 'isCaptchaValid', function (errorMsg, showErrorAfter) {
     var getResult = '',
         that = this,
         _arguments = arguments;
@@ -126,17 +126,17 @@ validator.newStrategy(registerForm.captcha, 'isCaptchaValid', function (errorMsg
         if (response.data.status) {
             // 如果为true说明验证码正确
             getResult = '';
-            ValidatorObj.isHaveError.no.apply(that, _arguments);
+            ValidatorFast.isHaveError.no.apply(that, _arguments);
         }
         else {
             getResult = errorMsg;
-            ValidatorObj.isHaveError.yes.apply(that, _arguments);
+            ValidatorFast.isHaveError.yes.apply(that, _arguments);
         }
     });
     return getResult;
 });
 
-validator.add(registerForm.mobile, [{
+validatorFast.add(registerForm.mobile, [{
     strategy: 'isNonEmpty',
     errorMsg: '手机号不能为空',
 }, {
@@ -147,7 +147,7 @@ validator.add(registerForm.mobile, [{
     errorMsg: '手机号已经存在'
 }],getConfig.bool);
 
-validator.add(registerForm.password, [{
+validatorFast.add(registerForm.password, [{
     strategy: 'isNonEmpty',
     errorMsg: '密码不能为空'
 }, {
@@ -155,7 +155,7 @@ validator.add(registerForm.password, [{
     errorMsg: '密码为6位至20位，不能全是数字'
 }],getConfig.bool);
 
-validator.add(registerForm.captcha, [{
+validatorFast.add(registerForm.captcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
 },{
@@ -169,7 +169,7 @@ validator.add(registerForm.captcha, [{
 let reInputs=$(registerForm).find('input[validate]');
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i],"keyup", function() {
-        validator.start(this);
+        validatorFast.start(this);
     });
 }
 
@@ -178,7 +178,7 @@ registerForm.onsubmit = function(event) {
     event.preventDefault();
     let errorMsg;
     for(let i=0,len=reInputs.length;i<len;i++) {
-        errorMsg=validator.start(reInputs[i]);
+        errorMsg=validatorFast.start(reInputs[i]);
         if(errorMsg) {
             break;
         }

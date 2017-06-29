@@ -6,7 +6,7 @@
         </dd>
         <dd>
             <input class="image-captcha-text" type="text" placeholder="图形验证码" maxlength="5"/>
-            <img src="" class="image-captcha" id="imageCaptcha"/>
+            <img src="" class="image-captcha" id="imageUpdate"/>
             <span class="error" style="visibility: visible"></span>
         </dd>
         <dd>
