@@ -65,6 +65,7 @@ public class CelebrationCouponController {
         }
         boolean drewCoupon = celebrationCouponService.drewCoupon(loginName);
         if (drewCoupon) {
+            mv.addObject("duringActivities", duringActivities);
             mv.addObject("drewCoupon", drewCoupon);
             mv.setViewName("/wechat/coupon-special-receive");
         } else {
