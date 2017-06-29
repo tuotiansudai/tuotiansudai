@@ -10,7 +10,7 @@
             <span class="error" style="visibility: visible"></span>
         </dd>
         <dd>
-            <input type="text" validate  name="captcha" placeholder="请输入短信验证码" id="captcha">
+            <input type="text" validate  name="captcha" placeholder="请输入短信验证码" id="captcha maxlength="6">
             <button type="button" class="get-captcha"  id="getCaptchaBtn">获取验证码</button>
             <span class="error" style="visibility: visible"></span>
         </dd>
