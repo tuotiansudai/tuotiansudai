@@ -41,6 +41,7 @@
                 <@global.isAnonymous>
                     我的排名： <span class="show-login">登录后查看</span>
                 </@global.isAnonymous>
+
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
                     我的排名：<i class="ranking-order"></i>
