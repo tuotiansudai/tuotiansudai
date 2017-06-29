@@ -6,14 +6,6 @@ menuClick({
     pageDom:$accountOverview
 });
 
-// $accountOverview.find('.menu-category span').on('click',function() {
-//     let $this = $(this),
-//         index = $this.index();
-//     $this.addClass('current').siblings('span').removeClass('current');
-//
-//     $('.overview-content').eq(index).show().siblings('.overview-content').hide();
-// });
-
 //累计收益
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     let loadEcharts = require('publicJs/load_echarts');

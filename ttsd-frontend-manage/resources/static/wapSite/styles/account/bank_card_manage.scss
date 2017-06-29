@@ -1,0 +1,17 @@
+body {
+  //background: red;
+}
+
+.input-list {
+  &.align-flex-start {
+    span.bank-info {
+      text-align: left;
+      width: auto;
+      flex: 3;
+
+      &.key {
+        color: #FF635A;
+      }
+    }
+  }
+}

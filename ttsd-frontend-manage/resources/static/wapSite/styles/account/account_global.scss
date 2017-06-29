@@ -122,4 +122,19 @@
       color: #A2A2A2;
     }
   }
+
+  &.align-flex-start {
+    li {
+      justify-content: flex-start;
+      input {
+        text-align: left;
+        flex: 3;
+        font-size: 16px;
+      }
+      label {
+        flex:1;
+      }
+
+    }
+  }
 }
