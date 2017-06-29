@@ -24,10 +24,6 @@
     height:18px;
     background: url('../../images/form/icon-radio.png') left top no-repeat;
     background-size: contain;
-    &.checked {
-      background: url('../../images/form/icon-radio-checked.png') left top no-repeat;
-      background-size: contain;
-    }
   }
 
   li {
@@ -41,6 +37,26 @@
     span {
       width: 77%;
       line-height: 20px;
+      font-size: 12px;
+      color: #808080;
+
+      em {
+        font-size: 14px;
+        color: #525252;
+      }
+
+    }
+    &.checked {
+      .icon-radio {
+        background: url('../../images/form/icon-radio-checked.png') left top no-repeat;
+        background-size: contain;
+      }
+      span {
+        color: #FF635A;
+        em {
+          color: #FF635A;
+        }
+      }
     }
   }
 }
