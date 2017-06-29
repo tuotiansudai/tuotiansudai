@@ -1,0 +1,1 @@
+require('wapSiteStyle/account/scan_code.scss');
