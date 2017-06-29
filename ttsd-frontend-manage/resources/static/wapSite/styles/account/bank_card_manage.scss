@@ -1,0 +1,46 @@
+.input-list {
+  &.align-flex-start {
+    span.bank-info {
+      text-align: left;
+      width: auto;
+      flex: 3;
+
+      &.key {
+        color: #FF635A;
+      }
+    }
+  }
+}
+
+.bank-list {
+  .icon-bank {
+    width:30px;
+    height:30px;
+    background: url('../../images/bank/bankdefault.png') left top no-repeat;
+    background-size: 100%;
+  }
+  .icon-radio {
+    width:18px;
+    height:18px;
+    background: url('../../images/form/icon-radio.png') left top no-repeat;
+    background-size: contain;
+    &.checked {
+      background: url('../../images/form/icon-radio-checked.png') left top no-repeat;
+      background-size: contain;
+    }
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 10px;
+    &:nth-child(2n+1) {
+      background: #fff;
+    }
+    span {
+      width: 77%;
+      line-height: 20px;
+    }
+  }
+}
