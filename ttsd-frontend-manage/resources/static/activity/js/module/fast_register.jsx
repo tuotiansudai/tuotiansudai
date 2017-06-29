@@ -2,9 +2,9 @@ require("activityStyle/module/fast_register.scss");
 let commonFun= require('publicJs/commonFun');
 let ValidatorFast= require('publicJs/validator');
 
-let registerForm = globalFun.$('#registerForm'),
+let registerForm = $('#registerForm'),
     $fetchCaptcha = $('#getCaptchaBtn'),
-    imageCaptchaDom = globalFun.$('#imageUpdate'),
+    imageCaptchaDom = $('#imageUpdate'),
     $captchaText= $(registerForm).find('.image-captcha-text');
 
 let captchaSrc = '/register/user/image-captcha';
