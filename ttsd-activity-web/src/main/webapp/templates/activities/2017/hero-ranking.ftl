@@ -39,7 +39,7 @@
             <dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
             <dd class="ranking">
                 <@global.isAnonymous>
-                    我的排名： <span class="show-login">登录后查看</span>
+                    我的排名： <a href="/login" target="_blank" class="get-rank">登录</a>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
@@ -49,7 +49,7 @@
             </dd>
             <dd class="fr"><span class="is-today">今日</span>投资总额：
                 <@global.isAnonymous>
-                    <span class="show-login">登录后查看</span>
+                    <a href="/login" target="_blank" class="get-rank">登录</a>
                 </@global.isAnonymous>
             <@global.isNotAnonymous>
                 <i class="total">${(investAmount/100)?string('0.00')}</i>元
@@ -114,5 +114,4 @@
     <% } %>
 </script>
 
-    <#include "../../module/login-tip.ftl" />
 </@global.main>
