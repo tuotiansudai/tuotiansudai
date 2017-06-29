@@ -6,7 +6,7 @@
 		<img src="" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
-		<h3>拓天速贷正式获得由<span>北京市通信管理局核发的ICP经营许可证</span>，标志着平台在合规化发展道路上又迈进了关键的一步。</h3>
+		<h3>拓天伟业（北京）金融信息服务有限公司正式获得由<span>北京市通信管理局核发的ICP经营许可证</span>，标志着平台在合规化发展道路上又迈进了关键的一步。</h3>
 		<div class="content-item">
 			<div class="title-item">
 				<span>何为“ICP经营许可证”？</span>
