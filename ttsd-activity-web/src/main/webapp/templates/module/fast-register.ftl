@@ -1,7 +1,7 @@
 <form id="registerForm" class="register-form" action="/register/user" method="post">
     <dl class="register-list">
         <dd>
-            <input type="text" validate  name="mobile" placeholder="请输入手机号" id="mobile">
+            <input type="text" validate  name="mobile" placeholder="请输入手机号" id="mobile" maxlength="11">
             <span class="error" style="visibility: visible"></span>
         </dd>
         <dd>
