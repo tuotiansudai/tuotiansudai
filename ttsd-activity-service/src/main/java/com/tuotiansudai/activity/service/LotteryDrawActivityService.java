@@ -622,5 +622,15 @@ public class LotteryDrawActivityService {
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
     }
 
+    private int getEachEveryDayDrawCountByMobile(String mobile,ActivityCategory activityCategory){
+        int count=0;
+        List<String> activityTime = getActivityTime(activityCategory);
+        Date startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        
+
+        return 0;
+    }
+
 
 }
