@@ -11,11 +11,10 @@ let captchaSrc = '/register/user/image-captcha';
 
 // 刷新图形验证码
 $(imageCaptchaDom).on('click', function () {
-    commonFun.refreshCaptcha(this, captchaSrc);
+    commonFun.refreshCaptcha(imageCaptchaDom, captchaSrc);
     $captchaText.val('');
 }).trigger('click');
 
-commonFun.refreshCaptcha(imageCaptchaDom, captchaSrc);
 
 let browser = globalFun.browserRedirect();
 
