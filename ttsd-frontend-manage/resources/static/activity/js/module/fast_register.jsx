@@ -7,13 +7,12 @@ let registerForm = globalFun.$('#registerForm'),
     imageCaptchaDom = globalFun.$('#imageUpdate'),
     $captchaText= $(registerForm).find('.image-captcha-text');
 
-let captchaSrc = '/register/user/image-captcha';
 
 // 刷新图形验证码
 $(imageCaptchaDom).on('click', function () {
     $(this).attr('src','/register/user/image-captcha' +'?'+ new Date().getTime().toString());
     $captchaText.val('');
-}).trigger('click');
+});
 
 
 let browser = globalFun.browserRedirect();
@@ -29,6 +28,7 @@ if (browser == 'mobile') {
         .fail(function () {
             //未登录
             $('.reg-tag-current').show();
+            $(imageCaptchaDom).trigger('click');
         });
     }
 
