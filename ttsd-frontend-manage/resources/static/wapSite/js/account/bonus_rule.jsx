@@ -1,0 +1,1 @@
+require('wapSiteStyle/account/bonus_rule.scss');
