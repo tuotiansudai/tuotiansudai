@@ -1,4 +1,5 @@
 require("activityStyle/hero_ranking_2017.scss");
+require('activityJsModule/fast_register');
 let commonFun = require('publicJs/commonFun');
 
 let $activityPageFrame = $('#activityPageFrame');
