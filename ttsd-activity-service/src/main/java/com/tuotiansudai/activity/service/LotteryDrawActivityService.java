@@ -126,6 +126,11 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.celebration.single.endTime}")
     private String activitySingleEndTime;
 
+    @Value(value = "${activity.exercise.work.startTime}")
+    private String acticityExerciseWorkStartTime;
+
+    @Value(value = "${activity.exercise.work.endTime}")
+    private String acticityExerciseWorkEndTime;
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -331,6 +336,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10,Lists.newArrayList(442L))
                 .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30,Lists.newArrayList(443L))
                 .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5,Lists.newArrayList(444L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_5,Lists.newArrayList(445L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_10,Lists.newArrayList(446L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_20,Lists.newArrayList(447L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_30,Lists.newArrayList(448L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_5,Lists.newArrayList(449L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_8,Lists.newArrayList(450L))
                 .build()).get(lotteryPrize);
     }
 
@@ -408,6 +419,8 @@ public class LotteryDrawActivityService {
             case MOTHERS_DAY_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case CELEBRATION_SINGLE_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+            case EXERCISE_WORK_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
 
         }
@@ -552,6 +565,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
                 .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
+                .put(ActivityCategory.EXERCISE_WORK_ACTIVITY,Lists.newArrayList(acticityExerciseWorkStartTime,acticityExerciseWorkEndTime))
                 .build()).get(activityCategory);
     }
 
