@@ -68,7 +68,8 @@ public class FeedbackController {
     public void feedbackCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
+        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
+                this.captchaHelper.getCaptcha(request.getSession().getId()));
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
         this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);

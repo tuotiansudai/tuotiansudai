@@ -30,6 +30,14 @@ public class CaptchaHelper {
     @Value("${mobile.login.interval.seconds}")
     private int ipLeftSecond;
 
+    public String getCaptcha(String sessionIdOrDeviceId) {
+        if (Strings.isNullOrEmpty(sessionIdOrDeviceId)) {
+            return null;
+        }
+        String captchaRedisKey = this.getCaptchaRedisKey(sessionIdOrDeviceId);
+        return redisWrapperClient.get(captchaRedisKey);
+    }
+
     public void storeCaptcha(String captcha, String sessionIdOrDeviceId) {
         if (Strings.isNullOrEmpty(sessionIdOrDeviceId)) {
             return;
