@@ -4,7 +4,7 @@
 <div class="banner-slide" id="bannerSlide"></div>
 <div class="activity-page-frame page-width" id="activityPageFrame">
     <div class="reg-tag-current" style="display: none">
-        <#include '../module/fast-register.ftl' />
+        <#include '../../module/fast-register.ftl' />
     </div>
     <div class="rule-box clearfix">
         <dl class="title-rule">
