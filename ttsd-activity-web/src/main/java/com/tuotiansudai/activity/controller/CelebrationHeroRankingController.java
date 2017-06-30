@@ -34,7 +34,7 @@ public class CelebrationHeroRankingController {
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView celebrationHeroRanking(){
-        ModelAndView modelAndView=new ModelAndView("/2017/hero-ranking","responsive", true);
+        ModelAndView modelAndView=new ModelAndView("/activities/2017/hero-ranking","responsive", true);
         String loginName = LoginUserInfo.getLoginName();
         List<String> activityTime=celebrationHeroRankingService.getActivityTime();
 

@@ -9,7 +9,7 @@ require.ensure([],function() {
     $('#imageCaptcha').on('click',function() {
         commonFun.refreshCaptcha(this,'/login/captcha');
         loginInForm.captcha.value='';
-    });
+    }).trigger('click');
     $('.close-btn',$loginTipBox).on('click',function(event) {
         event.preventDefault();
         layer.closeAll();
