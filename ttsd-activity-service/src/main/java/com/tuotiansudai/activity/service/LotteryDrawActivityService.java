@@ -184,6 +184,12 @@ public class LotteryDrawActivityService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
+
+        if(activityCategory.equals(ActivityCategory.EXERCISE_WORK_ACTIVITY)) {
+            drawTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                    DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? drawTime : drawTime+1;
+        }
+
         if (drawTime <= 0) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
