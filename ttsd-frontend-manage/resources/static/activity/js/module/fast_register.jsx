@@ -15,6 +15,8 @@ $(imageCaptchaDom).on('click', function () {
     $captchaText.val('');
 }).trigger('click');
 
+commonFun.refreshCaptcha(imageCaptchaDom, captchaSrc);
+
 let browser = globalFun.browserRedirect();
 
 if (browser == 'mobile') {
