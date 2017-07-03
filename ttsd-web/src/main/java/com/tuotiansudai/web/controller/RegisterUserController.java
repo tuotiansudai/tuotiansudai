@@ -218,7 +218,8 @@ public class RegisterUserController {
     public void registerImageCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 38;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
+        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
+                this.captchaHelper.getCaptcha(request.getSession().getId()));
         CaptchaServletUtil.writeImage(response, captcha.getImage());
         captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
     }

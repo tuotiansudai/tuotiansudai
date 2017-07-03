@@ -1,0 +1,432 @@
+.main-frame {
+  width: 100%;
+  margin: 0;
+  background: #fbf0da;
+}
+.tip-list-frame {
+  display: none;
+}
+.shade-body-mask {
+  z-index: 99;
+}
+.tip-list {
+  width: 470px !important;
+  height: 310px !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin-left: -235px !important;
+  margin-top: -155px !important;
+  border-radius:0px;
+  background:url('../images/single-rank/tip-bg.png') no-repeat center;
+  background-size:100%;
+  z-index: 999;
+  @media (max-width:700px) {
+    width: 300px !important;
+    height: 310px !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -150px !important;
+    margin-top: -155px !important;
+  }
+  .text-tip {
+    height: auto;
+
+    p {
+      color: #fff;
+      &.success-text {
+        height: 220px;
+        padding-top: 0;
+        margin: -140px 0 20px;
+        background: url('../images/single-rank/success-title.png') no-repeat center;
+        background-size: 100%;
+        @media (max-width:700px) {
+          height:150px;
+          margin:-40px 0 0;
+        }
+      }
+      &.reward-text {
+        font-size:34px;
+        color:#ffe973;
+        @media (max-width:700px) {
+            font-size: 16px;
+            line-height: 30px;
+        }
+      }
+      &.login-text {
+        font-size: 20px;
+        padding-top: 70px;
+        color:#ffe973;
+        @media (max-width:700px) {
+          padding-top: 90px;
+          font-size: 14px;
+        }
+      }
+      &.des-text {
+        color: #fff;
+        font-size: 14px;
+        @media (max-width:700px) {
+            font-size: 12px;
+            line-height: 24px;
+        }
+      }
+    }
+  }
+  .close-btn {
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+    margin-left: -14px;
+    background: url('../images/single-rank/close-tip.png') no-repeat center;
+    background-size: 100%;
+    @media (max-width:700px) {
+        top: 70px;
+        right: 10px;
+    }
+  }
+  .btn-list {
+    a {
+      background: #ffea77;
+      color: #e34758;
+      padding: 10px 30px;
+      font-size: 18px;
+      border-radius: 5px;
+      margin: 10px 20px;
+      min-width: 120px;
+      box-sizing: border-box;
+      &.canble-btn{
+        color:#c0b67c;
+        border:1px solid #c0b67c;
+        background:none;
+      }
+      @media (max-width:700px) {
+        padding: 5px 25px;
+        font-size: 16px;
+        min-width:100px;
+        margin: 15px 20px 10px;
+      }
+    }
+  }
+}
+.single-rank-container {
+  float: left;
+  width: 100%;
+  .media-pc{
+    display:inline-block;
+    @media (max-width:700px) {
+      display:none;
+    }
+  }
+  .media-phone{
+    display:none;
+    @media (max-width:700px) {
+      display:inline-block;
+    }
+  }
+  .top-item {
+    width: 100%;
+  }
+  .wp {
+    width: 1040px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+    background: #fef6eb;
+    box-sizing: border-box;
+    @media (max-width:700px) {
+      width:100%;
+      padding:0 10px;
+      margin: 0 auto 30px;
+    }
+    &:after {
+      clear: both;
+      display: block;
+    }
+    .content-item {
+      float: left;
+      width: 100%;
+      background: #fbf0da;
+      padding: 20px;
+      box-shadow: 0px 5px 0px #fce1ac;
+      border-radius: 10px;
+      box-sizing: border-box;
+      margin: 20px 0;
+      position: relative;
+      @media (max-width:700px) {
+        padding:10px;
+      }
+      .icon-hot{
+        width: 180px;
+        height: 180px;
+        position: absolute;
+        top:0;
+        right:0;
+        background:url('../images/single-rank/icon-hot.png') no-repeat center;
+        background-size: 100%;
+        @media (max-width:700px) {
+          display:none;
+        }
+      }
+      h3 {
+        float: left;
+        width: 100%;
+        text-align: center;
+
+        span {
+          display: inline-block;
+          width: 720px;
+          font-size: 34px;
+          color: #df3235;
+          border-bottom: 4px solid #de3a3b;
+          @media (max-width:700px) {
+            width:90%;
+            font-size:16px;
+            border-bottom: 2px solid #de3a3b;
+          }
+          .icon-title {
+            display: inline-block;
+            width: 55px;
+            height: 55px;
+            background: url('../images/single-rank/icon-title.png') no-repeat center;
+            background-size: 100%;
+            vertical-align: middle;
+            margin-top: -25px;
+            margin-right: 25px;
+            @media (max-width:700px) {
+              width:24px;
+              height:24px;
+              margin-right:10px;
+              margin-top:-13px;
+            }
+          }
+        }
+      }
+      .tip-item {
+        float: left;
+        width: 100%;
+        font-size: 16px;
+        color: #333333;
+        margin: 20px 0 60px;
+        text-align: center;
+        span{
+          color:#df3235;
+          font-weight:bold;
+        }
+        p{
+          margin-bottom: 0;
+        }
+        @media (max-width:700px) {
+          font-size:12px;
+          margin:10px 0 30px;
+        }
+      }
+      .intro-item {
+        float: left;
+        width: 100%;
+      }
+      .gift-circle-frame {
+        float: left;
+        width: 100%;
+        position: relative;
+        text-align: center;
+        @media (max-width:320px) {
+          width:280px;
+          left:50%;
+          margin-left: -140px;
+        }
+        @media (min-width:321px) and (max-width:700px) {
+          width:300px;
+          left:50%;
+          margin-left: -150px;
+        }
+        .gift-circle-out {
+          float:left;
+          width: 480px;
+          height: 480px;
+          background: url('../images/single-rank/lottery-bg.png') no-repeat center;
+          background-size: 100%;
+          position: relative;
+          padding: 30px;
+          box-sizing: border-box;
+          @media (max-width:700px) {
+            width:100%;
+            height:300px;
+            margin-bottom: 20px;
+          }
+          .pointer-img {
+            width: 120px;
+            height: 182px;
+            background: url('../images/single-rank/pointer.png') no-repeat center;
+            background-size: 100%;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -75px;
+            bottom: 0;
+            z-index: 8;
+            margin: auto;
+            @media (max-width:700px) {
+              width:60px;
+              height:91px;
+              top:-33px;
+            }
+          }
+          .rotate-btn {
+            float: left;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: url('../images/single-rank/gift-circle.png') no-repeat center;
+            background-size: 100%;
+          }
+        }
+        .gift-circle-detail {
+          float:right;
+          width: 430px;
+          position: relative;
+          box-sizing: border-box;
+          padding: 50px 20px 30px;
+          margin-top: 30px;
+          background: url('../images/single-rank/record-bg.png') no-repeat center;
+          background-size: 100%;
+          @media (max-width:700px) {
+            width:100%;
+            height:300px;
+            padding: 0px 20px 30px;
+            margin-top: 15px;
+          }
+          .lottery-times {
+            float:left;
+            width: 100%;
+            text-align: center;
+            font-size: 20px;
+            line-height:45px;
+            color: #fff;
+            padding-bottom: 10px;
+            position: relative;
+            background: url('../images/single-rank/times-bg.png') no-repeat center top;
+            background-size: 70%;
+            margin-top: -70px;
+            @media (max-width:700px) {
+              font-size:12px;
+              line-height: 30px;
+              margin-top:-10px;
+            }
+            span {
+              font-size: 30px;
+              color: #fef43d;
+              @media (max-width:700px) {
+                font-size:14px;
+              }
+            }
+          }
+          .gift-info-box {
+            float: left;
+            width: 100%;
+            border:1px solid #ff484c;
+            box-sizing: border-box;
+            margin-top:20px;
+            @media (max-width:700px) {
+              margin-top:10px;
+            }
+            .gift-record {
+              float: left;
+              width: 100%;
+              background: #ff8b84;
+              position: relative;
+
+              li {
+                float: left;
+                width: 50%;
+                font-size: 18px;
+                color: #ffa5a7;
+                line-height: 40px;
+                box-sizing: border-box;
+                background:#ff7174;
+                cursor:pointer;
+                @media (max-width:700px) {
+                  font-size:14px;
+                  line-height: 30px;
+                }
+                &.active {
+                  color: #fff;
+                  background: #ff484c;
+                }
+              }
+            }
+            .record-list {
+              float: left;
+              width: 100%;
+              height: 320px;
+              background: #fff;
+              overflow: hidden;
+              font-size: 16px;
+              color: #525252;
+              text-align:left;
+              padding:0 20px;
+              box-sizing: border-box;
+              @media (max-width:700px) {
+                height:210px;
+                font-size:12px;
+              }
+              .record-model {
+                float: left;
+                width: 100%;
+
+                &.own-record {
+                  li {
+                    float: left;
+                    width: 100%;
+                    text-align: left;
+                    box-sizing: border-box;
+
+                    time {
+                      float: right;
+                    }
+                  }
+                }
+                li {
+                  float: left;
+                  width: 100%;
+                  text-overflow:ellipsis;
+                  overflow:hidden;
+                  white-space:nowrap;
+                  box-sizing: border-box;
+                  @media (max-width:700px) {
+                    line-height:21px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .rule-item {
+      float: left;
+      width: 100%;
+      margin-bottom: 50px;
+      color: #ff484c;
+      @media (max-width:700px) {
+        margin-bottom: 25px;
+      }
+      dt {
+        float: left;
+        width: 100%;
+        font-size: 18px;
+        font-weight: bold;
+        @media (max-width:700px) {
+          font-size:14px;
+        }
+      }
+      dd {
+        float: left;
+        width: 100%;
+        font-size: 18px;
+        @media (max-width:700px) {
+          font-size:12px;
+        }
+      }
+    }
+  }
+}

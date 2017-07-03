@@ -22,7 +22,7 @@ public class CaptchaController {
     public void generateCaptcha(HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
+        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight, null);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
         this.captchaHelper.storeCaptcha(captcha.getAnswer());
