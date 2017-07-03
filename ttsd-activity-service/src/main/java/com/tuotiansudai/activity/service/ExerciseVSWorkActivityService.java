@@ -122,9 +122,10 @@ public class ExerciseVSWorkActivityService {
         List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
         try {
             if (userExchangePrizeModels.size()==0){
-                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),userModel.getUserName(),exchangePrize,DateTime.now().toDate(),activityCategory));
+                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),userModel.getUserName(),amount,exchangePrize,DateTime.now().toDate(),activityCategory));
             }else{
                 UserExchangePrizeModel userExchangePrizeModel=userExchangePrizeModels.get(0);
+                userExchangePrizeModel.setInvestAmount(amount);
                 userExchangePrizeModel.setPrize(exchangePrize);
                 userExchangePrizeModel.setExchangeTime(DateTime.now().toDate());
                 userexchangePrizeMapper.updatePrize(userExchangePrizeModel);

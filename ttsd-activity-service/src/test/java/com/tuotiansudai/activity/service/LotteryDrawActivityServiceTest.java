@@ -95,4 +95,9 @@ public class LotteryDrawActivityServiceTest {
         assertEquals(time, 21);
     }
 
+    @Test
+    public void testDraw(){
+
+        int i=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(null,null,null,null,null);
+    }
 }

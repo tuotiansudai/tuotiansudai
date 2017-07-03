@@ -3,9 +3,7 @@ package com.tuotiansudai.activity.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserExchangePrizeModel implements Serializable {
-
-    private long id;
+public class UserExchangePrizeView implements Serializable {
 
     private String mobile;
 
@@ -13,33 +11,11 @@ public class UserExchangePrizeModel implements Serializable {
 
     private String userName;
 
-    private long investAmount;
+    private String investAmount;
 
-    private ExchangePrize prize;
+    private String prize;
 
     private Date exchangeTime;
-
-    private ActivityCategory activityCategory;
-
-    public UserExchangePrizeModel() {}
-
-    public UserExchangePrizeModel(String mobile, String loginName, String userName, long investAmount,ExchangePrize prize, Date exchangeTime, ActivityCategory activityCategory) {
-        this.mobile = mobile;
-        this.loginName = loginName;
-        this.userName = userName;
-        this.investAmount = investAmount;
-        this.prize = prize;
-        this.exchangeTime = exchangeTime;
-        this.activityCategory = activityCategory;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getMobile() {
         return mobile;
@@ -65,19 +41,19 @@ public class UserExchangePrizeModel implements Serializable {
         this.userName = userName;
     }
 
-    public long getInvestAmount() {
+    public String getInvestAmount() {
         return investAmount;
     }
 
-    public void setInvestAmount(long investAmount) {
+    public void setInvestAmount(String investAmount) {
         this.investAmount = investAmount;
     }
 
-    public ExchangePrize getPrize() {
+    public String getPrize() {
         return prize;
     }
 
-    public void setPrize(ExchangePrize prize) {
+    public void setPrize(String prize) {
         this.prize = prize;
     }
 
@@ -89,11 +65,20 @@ public class UserExchangePrizeModel implements Serializable {
         this.exchangeTime = exchangeTime;
     }
 
-    public ActivityCategory getActivityCategory() {
+    public String getActivityCategory() {
         return activityCategory;
     }
 
-    public void setActivityCategory(ActivityCategory activityCategory) {
+    public void setActivityCategory(String activityCategory) {
         this.activityCategory = activityCategory;
     }
+
+    private String activityCategory;
+
+    public UserExchangePrizeView() {}
+
+
+
+
+
 }

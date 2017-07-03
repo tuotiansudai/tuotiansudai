@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.UserExchangePrizeMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
@@ -11,6 +11,7 @@
         <result column="mobile" property="mobile"></result>
         <result column="login_name" property="loginName"></result>
         <result column="user_name" property="userName"></result>
+        <result column="invest_amount" property="investAmount"></result>
         <result column="prize" property="prize"></result>
         <result column="exchange_time" property="exchangeTime"></result>
         <result column="activity_category" property="activityCategory"></result>
@@ -19,14 +20,15 @@
     <resultMap id="userExchangePrizeView" type="com.tuotiansudai.activity.repository.model.UserExchangePrizeModel">
         <result column="mobile" property="mobile"></result>
         <result column="user_name" property="userName"></result>
+        <result column="invest_amount" property="investAmount"></result>
         <result column="prize" property="prize"></result>
         <result column="exchange_time" property="exchangeTime"></result>
         <result column="login_name" property="loginName"></result>
     </resultMap>
 
     <insert id="create" parameterType="userExchangePrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`user_exchange_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`exchange_time`,`activity_category`)
-        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{exchangeTime},#{activityCategory});
+        INSERT INTO `edxactivity`.`user_exchange_prize`(`id`,`mobile`,`login_name`,`user_name`,`invest_amount`,`prize`,`exchange_time`,`activity_category`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{investAmount},#{prize},#{exchangeTime},#{activityCategory});
 
     </insert>
 
@@ -35,8 +37,9 @@
         SET
         `id` = #{id},
         `mobile` = #{mobile},
-        `login_name` = #{login_name},
-        `user_name` = #{user_name},
+        `login_name` = #{loginName},
+        `user_name` = #{userName},
+        `invest_amount` = #{investAmount},
         `prize` = #{prize},
         `exchange_time` = #{exchangeTime},
         `activity_category` = #{activityCategory}
