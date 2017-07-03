@@ -186,8 +186,8 @@ public class LotteryDrawActivityService {
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
 
         if(activityCategory.equals(ActivityCategory.EXERCISE_WORK_ACTIVITY)) {
-            drawTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
-                    DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? drawTime : drawTime+1;
+            int sumEveryDayDrawTime=getEachEveryDayDrawCountByMobile(mobile,activityCategory);
+            drawTime=drawTime+sumEveryDayDrawTime;
         }
 
         if (drawTime <= 0) {
@@ -625,11 +625,13 @@ public class LotteryDrawActivityService {
     private int getEachEveryDayDrawCountByMobile(String mobile,ActivityCategory activityCategory){
         int count=0;
         List<String> activityTime = getActivityTime(activityCategory);
-        Date startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        
+        DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).withTimeAtStartOfDay();
 
-        return 0;
+        for(startTime.toDate();startTime.toDate().before(DateTime.now().withTimeAtStartOfDay().plusDays(1).toDate());startTime.plusDays(1).toDate()){
+            count+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
+                    startTime.toDate() , startTime.plusDays(1).plusMillis(-1).toDate()) == 0 ? 0 : 1;
+        }
+        return count;
     }
 
 
