@@ -17,8 +17,8 @@ var sliderObj = {
             rtl:false,
             ttb:false,
             btt:false,
-            horizontal:false, //代表水平没有任何滑动
-            vertical:false   //代表垂直没有任何滑动
+            horizontal:true, //代表水平滑动
+            vertical:false   //代表垂直滑动
         }
     },
     handleEvent:function(event) {
@@ -28,6 +28,7 @@ var sliderObj = {
             case "touchstart":
                 var touch = event.targetTouches[0];
                 sliderObj.options.startPos = {x:touch.pageX,y:touch.pageY,time:+new Date};
+                sliderObj.AxisMoveing();
                 break;
             case "touchend":
                 sliderObj.finish();
@@ -56,29 +57,37 @@ var sliderObj = {
             horizontal:false,
             vertical:false
         };
+        let oldObj = boolObj;
+        boolObj = oldObj;
         if(x_start + duration < x_end) {
             //从左往右的方向
+            boolObj.horizontal = true;
             boolObj.ltr = true;
 
         } else if(x_start -duration > x_end) {
             //从右往左的方向
+            boolObj.horizontal = true;
             boolObj.rtl = true;
         } else if(Math.abs(x_end - x_start)< duration || Math.abs(x_end - x_start) == duration) {
             //水平方向没有任何移动
-            boolObj.horizontal = true;
+            boolObj.horizontal = false;
+            boolObj.vertical = false;
         }
 
         if(y_start + duration < y_end) {
             //从上往下的方向
             boolObj.ttb = true;
+            boolObj.vertical = true;
 
         } else if(y_start -duration > y_end) {
             //从下往上的方向
             boolObj.btt = true;
+            boolObj.vertical = true;
 
         } else if(Math.abs(y_end-y_start) < duration || Math.abs(y_end-y_start) == duration ) {
             //上下方向没有任何移动
-            boolObj.vertical = true;
+            boolObj.vertical = false;
+            boolObj.horizontal = false;
         }
 
         this.options.moveDirection = $.extend({},this.options.moveDirection,{

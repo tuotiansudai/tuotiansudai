@@ -89,7 +89,7 @@
     </table>
 
     <table>
-        <caption>好友投资五万元</caption>
+        <caption>好友的好友投资五万元</caption>
         <tr>
             <th>项目期限</th>
             <th>30天</th>

@@ -78,6 +78,7 @@
 
 <script src="${commonStaticServer}/public/dllplugins/jquery.dll.js" ></script>
 <script src="${commonStaticServer}/public/globalFun_page.js" ></script>
+<script src="${commonStaticServer}/wapSite/js/wap_global.js" ></script>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
 
 </body>

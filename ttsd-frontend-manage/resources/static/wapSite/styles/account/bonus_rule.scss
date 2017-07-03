@@ -1,3 +1,20 @@
+.period {
+  position: relative;
+  top: -11px;
+  &:after {
+    display: inline-block;
+    content: '365';
+    border-top:1px solid #FF473C;
+    font-size: 12px;
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+  }
+}
+
 .bonus-rule {
   padding: 0 10px 20px 10px;
   background: #fff;
@@ -89,22 +106,7 @@
       text-align: center;
       font-size:14px;
     }
-    .period {
-      position: relative;
-      top: -11px;
-      &:after {
-        display: inline-block;
-        content: '365';
-        border-top:1px solid #FF473C;
-        font-size: 12px;
-        position: absolute;
-        left: 0;
-        top: 15px;
-        width: 100%;
-        text-align: center;
-        line-height: 20px;
-      }
-    }
+
   }
 
   table {
@@ -128,5 +130,145 @@
         color: #525252;
       }
     }
+  }
+}
+
+.recommend-rule {
+
+  .recommend-note {
+    line-height: 30px;
+    color: #525252;
+    border: 1px solid #F7F7F7;
+    border-radius: 50px;
+    padding: 10px 25px;
+    border-top-left-radius: 0;
+  }
+  .learn-more {
+    text-align: right;
+    padding: 10px 20px;
+    a {
+      text-decoration: underline;
+      color: #FF473C;
+    }
+  }
+  .rule-award-how {
+    margin-top: 30px;
+    background: #F2F2F2;
+    border-radius: 1px;
+    font-size: 13px;
+    color: #525252;
+    line-height: 20px;
+    padding:20px;
+    position: relative;
+    .icon-kaola {
+      width:80px;
+      height:80px;
+      display: inline-block;
+      background: url('../../images/account/kaola.png') left top no-repeat;
+      background-size: 100%;
+      position: absolute;
+      left:50%;
+      top: -35px;
+      transform: translate(-50%);
+    }
+    b {
+      display: block;
+      font-size: 14px;
+      color: #FF473C;
+      text-align: center;
+      padding:10px;
+    }
+  }
+
+  .share-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h2 {
+      font-size: 14px;
+      color: #525252;
+      padding: 20px;
+    }
+    .share-box-inner {
+      height:80px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .share-list {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+
+      span {
+        font-size: 11px;
+        color: #525252;
+        height:80px;
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        i {
+          width:50px;
+          height:50px;
+          display: inline-block;
+          background-position: left top;
+          background-repeat: no-repeat;
+        }
+        &.share-face {
+          i {
+            background-image: url('../../images/share/face.png');
+            background-size: 100%;
+          }
+        }
+
+        &.share-wechat {
+          i {
+            background-image: url('../../images/share/wechat.png');
+            background-size: 100%;
+          }
+        }
+
+        &.share-quan {
+          i {
+            background-image: url('../../images/share/quan.png');
+            background-size: 100%;
+          }
+        }
+
+        &.share-qq {
+          i {
+            background-image: url('../../images/share/qq.png');
+            background-size: 100%;
+          }
+        }
+
+      }
+    }
+
+  }
+}
+
+.layer-share {
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  position: absolute;
+  left:0;
+  top:0;
+  z-index: 10;
+  height:100%;
+  width:100%;
+}
+
+@media screen and (max-width:320px) {
+  .recommend-rule .recommend-note {
+    border-radius: 0;
+    padding: 0px;
+    border-width: 0;
   }
 }

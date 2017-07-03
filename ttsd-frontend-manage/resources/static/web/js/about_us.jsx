@@ -46,7 +46,7 @@ let leftMenuBox = globalFun.$('#leftMenuBox');
             let direction = touchSlide.options.moveDirection,
                 moveDistance;
             //如果没有任何滑动迹象，不左处理
-            if(this.options.moveDirection.horizontal) {
+            if(!this.options.moveDirection.horizontal) {
                 return;
             }
             if(direction.rtl && num<menuLen-showMenuNum) {
