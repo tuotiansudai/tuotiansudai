@@ -1,5 +1,4 @@
 require("activityStyle/depository.scss");
-require('publicJs/plugins/jquery.SuperSlide.min');
 
 let $depositoryContainer=$('#depositoryContainer'),
 	topImg=require('../images/depository/top-img.jpg'),
@@ -9,11 +8,6 @@ let $depositoryContainer=$('#depositoryContainer'),
 $depositoryContainer.find('.top-item .media-pc').attr('src',topImg).siblings('.media-phone').attr('src',topImgphone);
 
 
-$('#slideBox').slide({
-	mainCell:".bd ul",
-	effect:"leftLoop",
-	autoPlay:true
-});
 
 $('.detail-btn span',$depositoryContainer).on('click', function(event) {
 	event.preventDefault();
