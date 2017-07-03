@@ -1,5 +1,4 @@
 <#import "../macro/global.ftl" as global>
-
 <@global.main pageCss="${css.depository}" pageJavascript="${js.depository}" activeNav="" activeLeftNav="" title="华兴银行_银行资金存管_拓天速贷" keywords="华兴银行,银行资金存管,资金保障,拓天速贷" description="拓天速贷为推进互联网金融合规,保障投资人权益,正式与广东华兴银行达成资金存管战略合作,拓天速贷将拥抱监管,合规发展的道路上迈出的重要一步.">
 <div class="depository-container clearfix" id="depositoryContainer">
 	<div class="top-item">
