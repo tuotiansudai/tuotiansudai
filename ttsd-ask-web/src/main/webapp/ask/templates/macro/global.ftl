@@ -135,7 +135,7 @@
             <#include "../user.ftl"/>
             <#include "../tags.ftl"/>
 
-            <a href="https://tuotiansudai.com/activity/app-download" target="_blank" class="margin-top-10 ad-welfare" ></a>
+            <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
         </#if>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.CelebrationDrawCouponMapper">
+
+    <resultMap id="celebrationDrawCouponResultMap"
+               type="com.tuotiansudai.activity.repository.model.CelebrationDrawCouponModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="created_time" property="createdTime"></result>
+
+    </resultMap>
+
+    <insert id="create" parameterType="investNewmanTyrantModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`celebration_draw_coupon`
+        (`login_name`,`created_time`) VALUES(#{loginName},#{createdTime})
+    </insert>
+
+    <select id="findByLoginName" parameterType="string" resultMap="celebrationDrawCouponResultMap">
+        select * from `edxactivity`.`celebration_draw_coupon` where login_name = #{loginName}
+    </select>
+
+
+</mapper>

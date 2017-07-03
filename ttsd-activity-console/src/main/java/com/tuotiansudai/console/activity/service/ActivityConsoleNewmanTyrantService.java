@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,20 +38,30 @@ public class ActivityConsoleNewmanTyrantService {
     @Value("#{'${activity.newmanTyrant.activity.period}'.split('\\~')}")
     private List<String> newmanTyrantActivityPeriod = Lists.newArrayList();
 
+    @Value("#{'${activity.celebrationHeroRanking.activity.period}'.split('\\~')}")
+    private List<String> celebrationHeroRankingActivityPeriod = Lists.newArrayList();
+
+
     private int lifeSecond = 5184000;
 
     private static final String NEWMAN_TYRANT_PRIZE_KEY = "console:Newman_Tyrant_Prize";
 
-    public List<NewmanTyrantView> obtainTyrant(Date tradingTime) {
+    public List<NewmanTyrantView> obtainTyrant(Date tradingTime)  {
         if (tradingTime == null) {
             logger.info("tradingTime is null");
             return null;
         }
-        tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
 
-        List<NewmanTyrantView> tyrantViews = investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, newmanTyrantActivityPeriod.get(0), newmanTyrantActivityPeriod.get(1), false);
-
+        List<NewmanTyrantView> tyrantViews=new ArrayList<>();
+        if(this.JudgeTime(tradingTime)){
+            tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            tyrantViews= investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, newmanTyrantActivityPeriod.get(0), newmanTyrantActivityPeriod.get(1), false);
+        }else{
+            tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            tyrantViews = investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, celebrationHeroRankingActivityPeriod.get(0), celebrationHeroRankingActivityPeriod.get(1), false);
+        }
         return CollectionUtils.isNotEmpty(tyrantViews) && tyrantViews.size() > 10 ? tyrantViews.subList(0, 10) : tyrantViews;
+
     }
 
     public List<NewmanTyrantView> obtainNewman(Date tradingTime) {
@@ -76,10 +89,17 @@ public class ActivityConsoleNewmanTyrantService {
     }
 
     private List<Date> obtainActivityDays(Date tradingTime) {
-        tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().toDate();
         List<Date> dates = Lists.newArrayList();
-        Date activityBeginTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date activityEndTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date activityBeginTime=new Date();
+        Date activityEndTime=new Date();
+        if(this.JudgeTime(tradingTime)){
+            activityBeginTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            activityEndTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        }else{
+            activityBeginTime = DateTime.parse(celebrationHeroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            activityEndTime = DateTime.parse(celebrationHeroRankingActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        }
+        tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().toDate();
         while (tradingTime.compareTo(activityBeginTime) > -1 && tradingTime.compareTo(activityEndTime) <= 0) {
             dates.add(tradingTime);
             tradingTime = new DateTime(tradingTime).minusDays(1).withTimeAtStartOfDay().toDate();
@@ -137,6 +157,21 @@ public class ActivityConsoleNewmanTyrantService {
             }
         }
         return null;
+    }
+
+    public boolean JudgeTime(Date tradingTime){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date newmanTyrantEndTime =new Date();
+        try {
+            newmanTyrantEndTime=simpleDateFormat.parse(newmanTyrantActivityPeriod.get(1));
+            newmanTyrantEndTime=new DateTime(newmanTyrantEndTime).toDate();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(tradingTime.before(newmanTyrantEndTime)){
+            return true;
+        }
+        return false;
     }
 
 }

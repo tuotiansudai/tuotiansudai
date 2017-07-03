@@ -31,6 +31,7 @@
       border: #dadada 1px solid;
       box-sizing:border-box;
       position: relative;
+      padding-left:30px;
       &.error{
         position: absolute;
         bottom:-23px;
@@ -41,21 +42,25 @@
       }
       input {
         float:left;
-        width: 240px;
+        width: 100%;
         border:none;
+        height:40px;
         line-height:30px;
+        box-sizing:border-box;
         &.captcha {
           width: 120px;
         }
       }
       .image-captcha {
-        width: 120px;
+        width: 138px;
         overflow: hidden;
-        height: 43px;
+        height: 40px;
         cursor: pointer;
       }
       .name {
-        float:left;
+        position: absolute;
+        top:0;
+        left:0;
         width: 30px;
         height:30px;
         text-align:left;

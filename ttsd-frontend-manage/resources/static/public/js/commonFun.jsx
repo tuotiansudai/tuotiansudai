@@ -240,6 +240,16 @@ let decrypt={
         return getNum.join('');
     },
 };
+//获取前一天或者后一天的日期
+let GetDateStr = function(date,AddDayCount) {
+    var dd = new Date(date);
+    dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+    var y = dd.getFullYear();
+    var m = dd.getMonth()+1;//获取当前月份的日期
+    var d = dd.getDate();
+
+    return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
+}
 
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
@@ -251,4 +261,6 @@ exports.useAjax = useAjax;
 exports.countDownLoan = countDownLoan;
 exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;
+exports.GetDateStr = GetDateStr;
+
 

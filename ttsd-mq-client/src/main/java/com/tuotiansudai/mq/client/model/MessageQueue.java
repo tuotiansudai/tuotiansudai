@@ -21,13 +21,12 @@ public enum MessageQueue {
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
     InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
-    InvestSuccess_InvestNewmanTyrant("InvestSuccess-InvestNewmanTyrant"),
     InvestSuccess_MidSummer("InvestSuccess-MidSummer"),
     InvestSuccess_WechatLottery("InvestSuccess-WechatLottery"),
-    InvestNewmanTyrant_AssignExperience("InvestNewmanTyrant-AssignExperience"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
     InvestSuccess_DragonBoat("InvestSuccess-DragonBoat"),
+    Celebration_Coupon("Celebration-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
@@ -36,6 +35,7 @@ public enum MessageQueue {
     LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
     LoanOutSuccess_RewardReferrer("LoanOutSuccess-RewardReferrer"),
     LoanOutSuccess_AssignCoupon("LoanOutSuccess-AssignCoupon"),
+    LoanOutSuccess_AssignAchievementCelebration("LoanOutSuccess-AssignAchievementCelebration"),
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
@@ -66,7 +66,8 @@ public enum MessageQueue {
     DragonBoatShareLoginTransfer("DragonBoatShareLoginTransfer"), // 端午节活动分享落地页老用户登录后，消息中转（为了获取用户信息）
     DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
     DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
-    DragonBoatChampagneEndSendCoupon("DragonBoatChampagneEndSendCoupon"); // 端午节香槟塔活动结束后，给投资用户发优惠券
+    DragonBoatChampagneEndSendCoupon("DragonBoatChampagneEndSendCoupon"), // 端午节香槟塔活动结束后，给投资用户发优惠券
+    InvestSuccess_InvestHeroRanking("InvestSuccess-InvestHeroRanking"); //周年庆 英雄排行榜，用户投资，消息中转（为了获取用户信息）
 
     private final String queueName;
 
