@@ -6,7 +6,7 @@
 <#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
 
 
-<@global.main pageCss="${css.sport_play_2017}" pageJavascript="${js.sport_play_2017}" activeNav="" activeLeftNav="" title="领券专场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,红包奖励,加息券" description="拓天周年庆-领券专场活动,微信扫描二维码关注拓天速贷服务号,回复我要领券即可领取1000红包奖励+0.8%加息券.">
+<@global.main pageCss="${css.sport_play_2017}" pageJavascript="${js.sport_play_2017}" activeNav="" activeLeftNav="" title="运动达人VS职场骄子_活动中心_拓天速贷" keywords="运动达人,职场骄子,活动中心,抽奖,拓天速贷" description="拓天速贷活动期间用户每日登陆即有一次免费抽签机会,累计投资还可兑换不同实物奖品,运动奖VS职场奖,总有一款适合你.">
 <div class="sport-play-container" id="sportPlayContainer">
     <div class="top-img">
         <img src="" width="100%" class="media-pc">
@@ -14,17 +14,33 @@
     </div>
     <div class="shaking-item">
         <div class="wp clearfix">
-            第三方士大夫
-        </div>
-    </div>
-    <div class="select-item">
-        <div class="wp">
-            sdasd
+            <h3 class="title-one"></h3>
+            <ul class="info-item">
+                <li>1.活动期间用户每日登陆即有一次免费抽签机会；</li>
+                <li>2. 活动期间单笔投资每满1万元，即可增加1次抽签机会，如单笔投资5万元，则可增加5次抽签机会，以此类推；</li>
+                <li>3. 当日所获免费抽签机会，仅限当日使用，如当日未使用，则机会失效。</li>
+            </ul>
+            <div class="lottery-times">
+                剩余抽签机会：<span>XX次</span>
+            </div>
+            <div class="draw-item">
+                <div class="draw-model">
+                    <img src="" class="draw-btn">
+                </div>
+            </div>
         </div>
     </div>
     <div class="wp clearfix">
         <div class="content-item">
-            sdfsd
+            <h3 class="title-two"></h3>
+            <div class="user-info">
+                <p>我的累计投资金额：<span>223434元</span></p>
+                <p>当前选择奖品：<span>暂未选择奖品</span></p>
+                <p class="tip-text">活动期间，根据累计投资金额，可兑换不同档奖品， 每档奖品默认可2选1兑换，不同档的奖品不可同时获得。</p>
+            </div>
+            <div class="gift-list">
+                
+            </div>
         </div>
         <dl class="rule-item">
             <dt>温馨提示：</dt>

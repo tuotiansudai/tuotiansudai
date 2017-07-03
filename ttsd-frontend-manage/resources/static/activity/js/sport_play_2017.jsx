@@ -7,3 +7,5 @@ let topimg=require('../images/2017/sport-play/top-img.jpg'),
 
 $sportPlayContainer.find('.top-img .media-pc').attr('src',topimg).siblings('.media-phone').attr('src',topimgPhone);
 
+let drawBtn=require('../images/2017/sport-play/draw-btn.png');
+$sportPlayContainer.find('.draw-model img').attr('src',drawBtn);
