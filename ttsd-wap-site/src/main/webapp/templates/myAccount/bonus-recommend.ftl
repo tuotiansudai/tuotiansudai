@@ -80,7 +80,10 @@ QQ好友
     </div>
 
     <div class="layer-share" style="display: none">
+        <div class="img-pointer"></div>
+    </div>
 
+    <div class="wechat-android " id="wechatAndroid" style="display: none">
     </div>
 </div>
 </@global.main>

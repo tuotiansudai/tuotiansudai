@@ -263,7 +263,32 @@
   z-index: 10;
   height:100%;
   width:100%;
+
+
+  .img-pointer {
+    position: absolute;
+    width:155px;
+    height:97px;
+    background: url('../../images/share/bg-share-brower.png') left top no-repeat;
+    background-size: 100%;
+    left:50%;
+    transform: translate(-50%);
+    bottom:0;
+  }
 }
+
+.wechat-android {
+  position: fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  text-align: right;
+  background: rgba(0, 0, 0, 0.8) url("../../images/share/bg-share-wechat.png") center top no-repeat;
+
+  background-size: contain;
+}
+
 
 @media screen and (max-width:320px) {
   .recommend-rule .recommend-note {
