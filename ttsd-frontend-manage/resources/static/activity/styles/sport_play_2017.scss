@@ -333,7 +333,8 @@
           position: relative;
           @media (max-width: 700px) {
             background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat center;
-            background-size:100%;
+            background-size:cover;
+            border-radius: 10px;
           }
           h3{
             position: absolute;
@@ -397,44 +398,81 @@
                 color:#f14227;
                 border-radius:10px;
                 margin-top: 150px;
+                cursor:pointer;
               }
               &.gift-img{
                 height:180px;
                 &.one-1{
                   background:url('../images/2017/sport-play/one-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.one-2{
                   background:url('../images/2017/sport-play/one-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.two-1{
                   background:url('../images/2017/sport-play/two-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.two-2{
                   background:url('../images/2017/sport-play/two-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.three-1{
                   background:url('../images/2017/sport-play/three-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.three-2{
                   background:url('../images/2017/sport-play/three-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.four-1{
                   background:url('../images/2017/sport-play/four-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.four-2{
                   background:url('../images/2017/sport-play/four-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.five-1{
                   background:url('../images/2017/sport-play/five-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.five-2{
                   background:url('../images/2017/sport-play/five-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.six-1{
                   background:url('../images/2017/sport-play/six-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
                 &.six-2{
                   background:url('../images/2017/sport-play/six-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
                 }
               }
             }
