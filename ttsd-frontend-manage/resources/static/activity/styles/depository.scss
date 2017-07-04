@@ -45,7 +45,7 @@
 
 			@media (max-width:700px) {
 				width: 100%;
-				padding: 0 20px;
+				padding: 0 10px;
 				margin: 0 auto;
 			}
 			.detail-item{
@@ -163,7 +163,7 @@
 				float:left;
 				margin: 0 -10% 50px;
 				@media (max-width:700px) {
-					margin:0;
+					margin:0 0 20px;
 				}
 				li{
 					float:left;
@@ -175,7 +175,7 @@
 						width:100%;
 						padding:0;
 						position: relative;
-						padding-left: 60px;
+						padding-left: 80px;
 						margin-bottom:10px;
 					}
 					p{
@@ -184,7 +184,7 @@
 						@media (max-width:700px) {
 							width:100%;
 							float:left;
-							font-size:12px;
+							font-size:13px;
 							box-sizing:border-box;
 							margin-bottom: 0;
 							padding-bottom: 10px;
@@ -197,9 +197,9 @@
 								position: absolute;
 								top:50%;
 								left:0;
-								margin-top:-25px;
-								width:50px;
-								height:50px;
+								margin-top:-30px;
+								width:60px;
+								height:60px;
 								padding:0;
 								background-size:80%;
 								border-bottom:none;
@@ -212,9 +212,9 @@
 								position: absolute;
 								top:50%;
 								left:0;
-								margin-top:-25px;
-								width:50px;
-								height:50px;
+								margin-top:-30px;
+								width:60px;
+								height:60px;
 								padding:0;
 								background-size:80%;
 								border-bottom:none;
@@ -227,9 +227,9 @@
 								position: absolute;
 								top:50%;
 								left:0;
-								margin-top:-25px;
-								width:50px;
-								height:50px;
+								margin-top:-30px;
+								width:60px;
+								height:60px;
 								padding:0;
 								background-size:80%;
 								border-bottom:none;
@@ -253,7 +253,7 @@
 				}
 				li{
 					width:380px;
-					min-height:400px;
+					height:400px;
 					background:#fff;
 					padding:70px 30px 30px;
 					margin:0 0 60px;
@@ -262,14 +262,12 @@
 					position: relative;
 					@media (max-width:700px) {
 						width:100%;
-						min-height: auto;
+						height: auto;
 						background: none;
 						padding:100px 0 0 0;
-						border-bottom: 1px dashed #fff;
 						margin:0;
 						&:last-child{
 							margin-top: 10px;
-							border-bottom:none;
 						}
 					}
 					h3{
@@ -289,7 +287,6 @@
 						left:50%;
 						margin-left:-50px;
 						border-radius:50%;
-					    box-shadow: 0 2px 3px 0px #ddd;
 						box-sizing:border-box;
 						@media (max-width: 700px) {
 							width:90px;
