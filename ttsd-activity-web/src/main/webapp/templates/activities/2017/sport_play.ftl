@@ -21,7 +21,7 @@
                 <li>3. 当日所获免费抽签机会，仅限当日使用，如当日未使用，则机会失效。</li>
             </ul>
             <div class="lottery-times">
-                剩余抽签机会：<span>XX次</span>
+                剩余抽签机会：<span class="draw-time">XX次</span>
             </div>
             <div class="draw-item">
                 <div class="draw-model">
@@ -41,7 +41,7 @@
             <div class="gift-list">
                 <div class="gift-item">
                     <h3>累计投资5万</h3>
-                    <div class="row-item" data-name="HOUSEHOLE_DUMBBELL">
+                    <div class="row-item select-item" data-name="HOUSEHOLE_DUMBBELL">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img one-1"></p>
                         <p>家用哑铃一对</p>
@@ -49,7 +49,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item" data-name="USB_LIGHTER">
+                    <div class="row-item select-item" data-name="USB_LIGHTER">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img one-2"></p>
                         <p>USB充电打火机</p>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资10万</h3>
-                    <div class="row-item" data-name="CAR_REFRIGRRATOR">
+                    <div class="row-item select-item" data-name="CAR_REFRIGRRATOR">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img two-1"></p>
                         <p>科敏车载冰箱</p>
@@ -65,7 +65,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item" data-name="MOBILE_HDD_1TB">
+                    <div class="row-item select-item" data-name="MOBILE_HDD_1TB">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img two-2"></p>
                         <p>东芝移动硬盘 500G</p>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资12万</h3>
-                    <div class="row-item" data-name="ARCTIC_WOLF_TENT">
+                    <div class="row-item select-item" data-name="ARCTIC_WOLF_TENT">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img three-1"></p>
                         <p>北极狼自动帐篷</p>
@@ -81,7 +81,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item" data-name="GOLF_MAN_BRIEFCASE">
+                    <div class="row-item select-item" data-name="GOLF_MAN_BRIEFCASE">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img three-2"></p>
                         <p>GOLF男士商务公文包</p>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资28万</h3>
-                    <div class="row-item" data-name="MUTE_SPINNING">
+                    <div class="row-item select-item" data-name="MUTE_SPINNING">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img four-1"></p>
                         <p>伊吉康室内静音动感单车</p>
@@ -97,7 +97,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item" data-name="WEIGHTING_DRAW_BAR_BOX">
+                    <div class="row-item select-item" data-name="WEIGHTING_DRAW_BAR_BOX">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img four-2"></p>
                         <p>美而美智能称重拉杆箱</p>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资38万</h3>
-                    <div class="row-item" data-name="MANGO_TOURISM_CARD_2000">
+                    <div class="row-item select-item" data-name="MANGO_TOURISM_CARD_2000">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img five-1"></p>
                         <p>2000元芒果旅游卡</p>
@@ -113,7 +113,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item" data-name="SMARTISAN_NUTS_PRO">
+                    <div class="row-item select-item" data-name="SMARTISAN_NUTS_PRO">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img five-2"></p>
                         <p>锤子坚果pro</p>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资60万</h3>
-                    <div class="row-item" data-name="APPLE_WATCH_SERIES_2 ">
+                    <div class="row-item select-item" data-name="APPLE_WATCH_SERIES_2 ">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img six-1"></p>
                         <p>Apple Watch Series 2</p>
@@ -129,7 +129,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item" data-name="APPLE_IPAD_128G">
+                    <div class="row-item select-item" data-name="APPLE_IPAD_128G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img six-2"></p>
                         <p>Apple iPad 128G</p>
@@ -139,11 +139,64 @@
         </div>
     </div>
     <dl class="rule-item clearfix">
-            <dt>温馨提示</dt>
-            <dd>1.本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
-            <dd>2.活动二中不同档的奖品不可同时获得，拓天速贷将根据用户累计投资额所能获得的最大奖励组合为准进行发放；</dd>
-            <dd>3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
-        </dl>
+        <dt>温馨提示</dt>
+        <dd>1.本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
+        <dd>2.活动二中不同档的奖品不可同时获得，拓天速贷将根据用户累计投资额所能获得的最大奖励组合为准进行发放；</dd>
+        <dd>3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
+    </dl>
+    <#include "../../module/login-tip.ftl" />
+    <div class="tip-list-frame">
+    <#--真实奖品的提示-->
+        <div class="tip-list" data-return="concrete">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text">恭喜您！</p>
+                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+                <p class="des-text">拓天客服将在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+        </div>
+
+    <#--虚拟奖品的提示-->
+        <div class="tip-list" data-return="virtual">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text">恭喜您！</p>
+                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
+                <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
+        </div>
+
+    <#--没有抽奖机会-->
+        <div class="tip-list" data-return="nochance">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您暂无抽奖机会啦～</p>
+                <p class="des-text">赢取机会后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+        </div>
+
+    <#--不在活动时间范围内-->
+        <div class="tip-list" data-return="expired">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">不在活动时间内~</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+        </div>
+
+    <#--实名认证-->
+        <div class="tip-list" data-return="authentication">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您还未实名认证~</p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
+        </div>
+    </div>
 </div>
 
 </@global.main>
