@@ -24,7 +24,7 @@ public class ExerciseVSWorkActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getDrawPrizeTime(){
-        ModelAndView modelAndView = new ModelAndView("/activities/exercise_work", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/sport-play", "responsive", true);
         modelAndView.addObject("drawCount", exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         modelAndView.addObject("investAmount",exerciseVSWorkActivityService.sumInvestByLoginNameExceptTransferAndTime(LoginUserInfo.getLoginName()));
         modelAndView.addObject("exchangePrize",exerciseVSWorkActivityService.getExchangePrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
