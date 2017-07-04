@@ -186,7 +186,7 @@ public class LotteryDrawActivityService {
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
 
         if(activityCategory.equals(ActivityCategory.EXERCISE_WORK_ACTIVITY)) {
-            int sumEveryDayDrawTime=getEachEveryDayDrawCountByMobile(mobile,activityCategory);
+            int sumEveryDayDrawTime=getEachEveryDayDrawCountByMobile(userModel,activityCategory);
             drawTime=drawTime+sumEveryDayDrawTime;
         }
 
@@ -527,6 +527,7 @@ public class LotteryDrawActivityService {
                     for (InvestModel investModel:investModels) {
                         time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
                     }
+                    time=10;
                     break;
             }
         }
@@ -622,16 +623,30 @@ public class LotteryDrawActivityService {
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
     }
 
-    private int getEachEveryDayDrawCountByMobile(String mobile,ActivityCategory activityCategory){
-        int count=0;
+    public int getEachEveryDayDrawCountByMobile(UserModel userModel,ActivityCategory activityCategory){
         List<String> activityTime = getActivityTime(activityCategory);
-        DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).withTimeAtStartOfDay();
+        DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+        DateTime endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
 
-        for(startTime.toDate();startTime.toDate().before(DateTime.now().withTimeAtStartOfDay().plusDays(1).toDate());startTime.plusDays(1).toDate()){
-            count+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
-                    startTime.toDate() , startTime.plusDays(1).plusMillis(-1).toDate()) == 0 ? 0 : 1;
+        int time=0;
+        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime.toDate(),endTime.toDate());
+        for (InvestModel investModel:investModels) {
+            time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
         }
-        return count;
+        if (time==0){
+            return toDayIsDrawByMobile(userModel.getMobile(),activityCategory)==0?1:0;
+        }
+
+        int count=0;
+        Date nowDate=DateTime.now().withTimeAtStartOfDay().plusDays(1).toDate();
+        startTime=startTime.withTimeAtStartOfDay();
+        while (startTime.toDate().before(nowDate)){
+            count+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                    startTime.toDate() , startTime.plusDays(1).plusMillis(-1).toDate()) == 0 ? 0 : 1;
+            startTime=startTime.plusDays(1);
+        }
+
+        return count+ (toDayIsDrawByMobile(userModel.getMobile(),activityCategory)==0?1:0);
     }
 
 

@@ -7,8 +7,10 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -18,12 +20,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class ExerciseVSWorkActivityService {
 
     static Logger logger = Logger.getLogger(ExerciseVSWorkActivityService.class);
@@ -48,26 +51,26 @@ public class ExerciseVSWorkActivityService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
     public int drawTimeByLoginNameAndActivityCategory(String mobile,String loginName){
         if(Strings.isNullOrEmpty(loginName)){
             return 0;
         }
         int time=0;
-        int sumEveryDayDraw=0;
-
-        DateTime startTime=DateTime.parse(new SimpleDateFormat().format(ActivityStartTime),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
-        for(startTime.toDate();startTime.toDate().before(DateTime.now().withTimeAtStartOfDay().plusDays(1).toDate());startTime.plusDays(1).toDate()){
-            sumEveryDayDraw+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.EXERCISE_WORK_ACTIVITY,
-                    startTime.toDate() , startTime.plusDays(1).plusMillis(-1).toDate()) == 0 ? 0 : 1;
-        }
-
         List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,ActivityStartTime,ActivityEndTime);
         for (InvestModel investModel:investModels) {
             time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
         }
 
-        return time+sumEveryDayDraw > 0 ? time+sumEveryDayDraw - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.EXERCISE_WORK_ACTIVITY,ActivityStartTime,ActivityEndTime) : time+sumEveryDayDraw;
+        UserModel userModel=userMapper.findByMobile(mobile);
+        int sumEveryDayDraw=lotteryDrawActivityService.getEachEveryDayDrawCountByMobile(userModel,ActivityCategory.EXERCISE_WORK_ACTIVITY);
 
+        return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.EXERCISE_WORK_ACTIVITY, null, null)+sumEveryDayDraw : time+sumEveryDayDraw;
     }
 
     public String sumInvestByLoginNameExceptTransferAndTime(String loginName){
@@ -89,7 +92,7 @@ public class ExerciseVSWorkActivityService {
         }
         List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY);
         if (userExchangePrizeModels.size()==0){
-            return "0";
+            return "1";     //没有兑换奖品
         }
         return userExchangePrizeModels.get(0).getPrize().getPrizeName();
     }
@@ -105,24 +108,24 @@ public class ExerciseVSWorkActivityService {
         }
 
         Date nowDate=DateTime.now().toDate();
-        if (!nowDate.before(ActivityStartTime) || !nowDate.after(ActivityEndTime)) {
+        if (nowDate.before(ActivityStartTime) || nowDate.after(ActivityEndTime)) {
             return new ExchangePrizeDto(3);//不在活动时间范围内！
         }
 
-        long exchangeMoney=exchangePrize.getExchangeMoney();
-        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(mobile,ActivityStartTime,ActivityEndTime);
         long amount=0;
+        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(mobile,ActivityStartTime,ActivityEndTime);
         for (InvestModel investModel:investModels) {
             amount+=investModel.getAmount();
         }
-        if (exchangeMoney<amount){
-            return new ExchangePrizeDto(1,null,null,amount-exchangeMoney);//钱不够
+        if (exchangePrize.getExchangeMoney()>amount){
+            return new ExchangePrizeDto(1,null,null,AmountConverter.convertCentToString(exchangePrize.getExchangeMoney()-amount));//钱不够
         }
 
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
         try {
             if (userExchangePrizeModels.size()==0){
-                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),userModel.getUserName(),amount,exchangePrize,DateTime.now().toDate(),activityCategory));
+                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),accountModel != null ? userModel.getUserName() : "",amount,exchangePrize,DateTime.now().toDate(),activityCategory));
             }else{
                 UserExchangePrizeModel userExchangePrizeModel=userExchangePrizeModels.get(0);
                 userExchangePrizeModel.setInvestAmount(amount);

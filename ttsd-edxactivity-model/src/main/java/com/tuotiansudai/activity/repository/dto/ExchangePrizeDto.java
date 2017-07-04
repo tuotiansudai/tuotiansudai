@@ -1,7 +1,5 @@
 package com.tuotiansudai.activity.repository.dto;
 
-import com.tuotiansudai.activity.repository.model.ExchangePrize;
-
 public class ExchangePrizeDto extends BannerDto{
 
     private int returnCode;
@@ -10,9 +8,9 @@ public class ExchangePrizeDto extends BannerDto{
 
     private String prizeValue;
 
-    private long amount;
+    private String amount;
 
-    public ExchangePrizeDto(int returnCode, String prize, String prizeValue, long amount) {
+    public ExchangePrizeDto(int returnCode, String prize, String prizeValue, String amount) {
         this.returnCode = returnCode;
         this.prize = prize;
         this.prizeValue = prizeValue;
@@ -53,11 +51,11 @@ public class ExchangePrizeDto extends BannerDto{
         this.prizeValue = prizeValue;
     }
 
-    public long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

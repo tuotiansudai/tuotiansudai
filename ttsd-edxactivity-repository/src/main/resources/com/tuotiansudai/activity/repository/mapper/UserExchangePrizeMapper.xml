@@ -24,6 +24,7 @@
         <result column="prize" property="prize"></result>
         <result column="exchange_time" property="exchangeTime"></result>
         <result column="login_name" property="loginName"></result>
+        <result column="activity_category" property="activityCategory"></result>
     </resultMap>
 
     <insert id="create" parameterType="userExchangePrizeModel" useGeneratedKeys="true" keyProperty="id">
@@ -32,10 +33,9 @@
 
     </insert>
 
-    <update id="update" parameterType="userExchangePrizeModel">
+    <update id="updatePrize" parameterType="userExchangePrizeModel">
         UPDATE `edxactivity`.`user_exchange_prize`
         SET
-        `id` = #{id},
         `mobile` = #{mobile},
         `login_name` = #{loginName},
         `user_name` = #{userName},
@@ -71,8 +71,8 @@
         </if>
     </select>
 
-    <select id="findUserExchangePrizeByMobile" parameterType="map" resultMap="userExchangePrizeView">
-        select exchange_time,mobile,prize from `edxactivity`.`user_exchange_prize`
+    <select id="findUserExchangePrizeByMobile" parameterType="map" resultMap="userExchangePrizeModel">
+        select `id`,`mobile`,`login_name`,`user_name`,`invest_amount`,`prize`,`exchange_time`,`activity_category` from `edxactivity`.`user_exchange_prize`
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and mobile = '${mobile}'
