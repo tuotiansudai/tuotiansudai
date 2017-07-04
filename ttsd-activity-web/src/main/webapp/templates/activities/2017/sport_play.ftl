@@ -41,7 +41,7 @@
             <div class="gift-list">
                 <div class="gift-item">
                     <h3>累计投资5万</h3>
-                    <div class="row-item">
+                    <div class="row-item" data-name="HOUSEHOLE_DUMBBELL">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img one-1"></p>
                         <p>家用哑铃一对</p>
@@ -49,7 +49,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item" data-name="USB_LIGHTER">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img one-2"></p>
                         <p>USB充电打火机</p>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资10万</h3>
-                    <div class="row-item">
+                    <div class="row-item" data-name="CAR_REFRIGRRATOR">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img two-1"></p>
                         <p>科敏车载冰箱</p>
@@ -65,7 +65,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item" data-name="MOBILE_HDD_1TB">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img two-2"></p>
                         <p>东芝移动硬盘 500G</p>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资12万</h3>
-                    <div class="row-item">
+                    <div class="row-item" data-name="ARCTIC_WOLF_TENT">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img three-1"></p>
                         <p>北极狼自动帐篷</p>
@@ -81,7 +81,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item" data-name="GOLF_MAN_BRIEFCASE">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img three-2"></p>
                         <p>GOLF男士商务公文包</p>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资28万</h3>
-                    <div class="row-item">
+                    <div class="row-item" data-name="MUTE_SPINNING">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img four-1"></p>
                         <p>伊吉康室内静音动感单车</p>
@@ -97,7 +97,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item" data-name="WEIGHTING_DRAW_BAR_BOX">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img four-2"></p>
                         <p>美而美智能称重拉杆箱</p>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资38万</h3>
-                    <div class="row-item">
+                    <div class="row-item" data-name="MANGO_TOURISM_CARD_2000">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img five-1"></p>
                         <p>2000元芒果旅游卡</p>
@@ -113,7 +113,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item" data-name="SMARTISAN_NUTS_PRO">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img five-2"></p>
                         <p>锤子坚果pro</p>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资60万</h3>
-                    <div class="row-item">
+                    <div class="row-item" data-name="APPLE_WATCH_SERIES_2 ">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img six-1"></p>
                         <p>Apple Watch Series 2</p>
@@ -129,7 +129,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item">
+                    <div class="row-item" data-name="APPLE_IPAD_128G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img six-2"></p>
                         <p>Apple iPad 128G</p>
