@@ -1,0 +1,508 @@
+@charset "utf-8";
+
+@-webkit-keyframes win-effect {
+  0% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  20% {
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  40% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  60% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  80% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+}
+
+@keyframes win-effect {
+  0% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  20% {
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  40% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  60% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  80% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+}
+.tip-list {
+  width: 470px;
+  background: #db291b url('../images/lantern-festival/circle-bg.png') no-repeat left top;
+  background-size: 103%;
+  border: 2px solid #532a09;
+  @media (max-width: 700px) {
+    width: 300px !important;
+    height: 240px !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -150px !important;
+    margin-top: -120px !important;
+    .text-tip {
+      height: auto;
+      p {
+        &.success-text {
+          font-size: 20px;
+          line-height: 35px;
+        }
+        &.reward-text {
+          font-size: 20px;
+          line-height: 35px;
+        }
+        &.login-text {
+          font-size: 20px;
+          padding-top: 30px;
+        }
+        &.des-text {
+          font-size: 14px;
+        }
+      }
+    }
+    .btn-list {
+      a {
+        padding: 8px 30px;
+        font-size: 16px;
+      }
+    }
+  }
+  .close-btn {
+    width: 40px;
+    height: 40px;
+    top: -20px;
+    right: -20px;
+    background: url('../images/lantern-festival/close-btn.png') no-repeat center;
+    background-size: 100%;
+    @media (max-width: 700px) {
+      width: 28px;
+      height: 28px;
+      top: -15px;
+      right: -5px;
+    }
+  }
+  .btn-list {
+    a {
+      background: #f7bf0d;
+      color: #970000;
+      box-shadow: 0 4px 0 #ff9600;
+    }
+  }
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.sport-play-container{
+  float:left;
+  width:100%;
+  background:#1740ab;
+  .media-pc{
+    display: block;
+    @media (max-width:700px) {
+      display:none;
+    }
+  }
+  .media-phone{
+    display: none;
+    @media (max-width:700px) {
+      display:block;
+    }
+  }
+  .top-img{
+    width:100%;
+  }
+  .shaking-item{
+    width:100%;
+    background:#ff4955 url('../images/2017/sport-play/shaking-bg.png') no-repeat center;
+    background-size: 90%;
+    background-position-y: 100px;
+    .wp{
+      box-sizing:border-box;
+      padding:0 45px;
+      @media (max-width:700px) {
+        padding:0 10px;
+      }
+    }
+    .title-one{
+      float:left;
+      width:100%;
+      height:80px;
+      background:#ff4955 url('../images/2017/sport-play/title-one.png') no-repeat center;
+      @media (max-width:700px) {
+        background:#ff4955 url('../images/2017/sport-play/title-one-phone.png') no-repeat center;
+        background-size: 50%;
+      }
+    }
+    .info-item{
+      float:left;
+      width:100%;
+      box-sizing:border-box;
+      padding:40px 60px;
+      background:#ff4955 url('../images/2017/sport-play/info-bg.png') no-repeat center;
+      @media (max-width:320px) {
+        padding:20px 15px;
+        background:#ff4955 url('../images/2017/sport-play/info-bg-phone.png') no-repeat center;
+        background-size: 100%;
+      }
+      @media (min-width:321px) and (max-width:375px) {
+        padding:40px 30px;
+        background:#ff4955 url('../images/2017/sport-play/info-bg-phone.png') no-repeat center;
+        background-size: 100%;
+      }
+      @media (min-width:376px) and (max-width:414px) {
+        padding:40px 30px;
+        background:#ff4955 url('../images/2017/sport-play/info-bg-phone.png') no-repeat center;
+        background-size: 100%;
+      }
+      li{
+        float:left;
+        width:100%;
+        font-size:18px;
+        color:#fff;
+        @media (max-width:320px){
+          font-size:12px;
+        }
+        @media (min-width:321px) and (max-width:375px) {
+          font-size:13px;
+        }
+        @media (min-width:376px) and (max-width:414px) {
+          font-size:14px;
+        }
+      }
+    }
+    .lottery-times{
+      float:left;
+      width:100%;
+      font-size:28px;
+      color:#fff;
+      text-align:center;
+      margin-bottom: 50px;
+      @media (max-width:700px) {
+        font-size:18px;
+      }
+      span{
+        color:#fff100;
+      }
+    }
+    .draw-item{
+      float:left;
+      width:100%;
+      text-align:center;
+      .draw-model{
+        display:inline-block;
+        width:660px;
+        padding-bottom: 35px;
+        background:url('../images/2017/sport-play/draw-bg.png') no-repeat center bottom;
+        @media (max-width:700px) {
+          width: 100%;
+          background-size: 100%;
+        }
+        .draw-btn{
+          cursor:pointer;
+          &.lottering {
+            -webkit-animation-duration: 0.25s;
+            animation-duration: 0.25s;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: win-effect;
+            animation-name: win-effect;
+            -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+          }
+          @media (max-width:700px) {
+            width:50%;
+          }
+        }
+      }
+    }
+  }
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    @media (max-width:700px) {
+      width:100%;
+      padding:0 10px;
+      box-sizing:border-box;
+    }
+    .content-item{
+      float:left;
+      width:100%;
+      .title-two{
+        float:left;
+        width:100%;
+        height:110px;
+        margin: 40px 0;
+        background:url('../images/2017/sport-play/title-two.png') no-repeat center;
+        @media (max-width:700px) {
+          height:60px;
+          background-size:90%;
+          margin:20px 0;
+        }
+      }
+      .user-info{
+        float:left;
+        width:100%;
+        border:4px solid #ff5a5d;
+        border-radius:10px;
+        box-sizing: border-box;
+        margin-bottom: 60px;
+        p{
+          font-size:24px;
+          color:#fff;
+          text-align:center;
+          margin-bottom: 0;
+          line-height: 70px;
+          @media (max-width:700px) {
+            font-size:13px;
+            line-height: 30px;
+          }
+          &.tip-text{
+            font-size:18px;
+            color:#fff;
+            background:#ff5a5d;
+            @media (max-width:700px) {
+              font-size:12px;
+              line-height: 26px;
+            }
+          }
+          span{
+            color:#fff836;
+          }
+        }
+      }
+      .gift-list{
+        float:left;
+        width:100%;
+        .gift-item{
+          float:left;
+          width:100%;
+          height:250px;
+          background:url('../images/2017/sport-play/gift-bg.png') no-repeat center;
+          background-size:100%;
+          margin-bottom: 60px;
+          position: relative;
+          @media (max-width: 700px) {
+            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat center;
+            background-size:cover;
+            border-radius: 10px;
+          }
+          h3{
+            position: absolute;
+            top:-24px;
+            left:50%;
+            margin-left:-110px;
+            width:220px;
+            height:48px;
+            line-height: 48px;
+            text-align: center;
+            font-size:24px;
+            color:#fff;
+            background: url('../images/2017/sport-play/gift-title.png') no-repeat center;
+          }
+          .row-item{
+            float:left;
+            width:33.333333%;
+            height: 100%;
+            padding:20px 0;
+            position: relative;
+            text-align:center;
+            box-sizing:border-box;
+            &.active{
+              .select-icon{
+                &.left-item{
+                  background:url('../images/2017/sport-play/left-icon-select.png') no-repeat center;
+                }
+                &.right-item{
+                  background:url('../images/2017/sport-play/right-icon-select.png') no-repeat center;
+                }
+              }
+            }
+            &.select-item{
+              cursor:pointer;
+            }
+            .select-icon{
+              position: absolute;
+              top:0;
+              width:64px;
+              height:63px;
+              &.left-item{
+                left:0;
+                background:url('../images/2017/sport-play/left-icon.png') no-repeat center;
+              }
+              &.right-item{
+                right:0;
+                background:url('../images/2017/sport-play/right-icon.png') no-repeat center;
+              }
+            }
+            p{
+              font-size:18px;
+              color:#fff;
+              margin-bottom: 0;
+              &.text-item{
+                display: inline-block;
+                width:115px;
+                height:50px;
+                line-height: 50px;
+                background:#fde54d;
+                font-size:26px;
+                color:#f14227;
+                border-radius:10px;
+                margin-top: 150px;
+                cursor:pointer;
+              }
+              &.gift-img{
+                height:180px;
+                &.one-1{
+                  background:url('../images/2017/sport-play/one-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.one-2{
+                  background:url('../images/2017/sport-play/one-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.two-1{
+                  background:url('../images/2017/sport-play/two-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.two-2{
+                  background:url('../images/2017/sport-play/two-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.three-1{
+                  background:url('../images/2017/sport-play/three-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.three-2{
+                  background:url('../images/2017/sport-play/three-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.four-1{
+                  background:url('../images/2017/sport-play/four-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.four-2{
+                  background:url('../images/2017/sport-play/four-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.five-1{
+                  background:url('../images/2017/sport-play/five-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.five-2{
+                  background:url('../images/2017/sport-play/five-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.six-1{
+                  background:url('../images/2017/sport-play/six-1.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+                &.six-2{
+                  background:url('../images/2017/sport-play/six-2.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size:100%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .rule-item{
+    width:1100px;
+    margin:0 auto 40px;
+    color:#fff;
+    box-sizing:border-box;
+    padding:80px 80px 30px;
+    background:url('../images/2017/sport-play/rule-bg.png') no-repeat center;
+    position: relative;
+    dt{
+      position: absolute;
+      top:14px;
+      left:50%;
+      margin-left:0;
+      font-size:16px;
+      line-height: 50px;
+      text-align:center;
+    }
+    dd{
+      font-size:14px;
+    }
+  }
+}
+
+
+

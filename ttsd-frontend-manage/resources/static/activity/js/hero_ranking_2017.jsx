@@ -1,6 +1,6 @@
 require("activityStyle/hero_ranking_2017.scss");
+require('activityJsModule/fast_register');
 let commonFun = require('publicJs/commonFun');
-require('publicJs/login_tip');
 
 let $activityPageFrame = $('#activityPageFrame');
 let $investRankingButton = $('#investRanking-button'),
