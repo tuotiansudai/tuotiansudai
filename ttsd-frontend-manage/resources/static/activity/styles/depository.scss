@@ -55,7 +55,6 @@
 				padding:30px 20px;
 				box-sizing:border-box;
 				margin-top:-100px;
-			    box-shadow: 0 0 10px #ccc;
 			    @media (max-width:700px) {
 			    	margin-top: -50px;
 			    	padding:15px 10px;
@@ -287,6 +286,7 @@
 						left:50%;
 						margin-left:-50px;
 						border-radius:50%;
+						box-shadow: 0 2px 3px 0px #ddd;
 						box-sizing:border-box;
 						@media (max-width: 700px) {
 							width:90px;
@@ -296,6 +296,7 @@
 							margin-left: -45px;
 							margin-top: 0;
 							background-size: 100%;
+							box-shadow: none;
 						}
 						&.intro-one{
 							background:#fff url('../images/depository/intro-one.png') no-repeat center;
