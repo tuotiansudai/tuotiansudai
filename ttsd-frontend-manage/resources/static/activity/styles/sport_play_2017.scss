@@ -77,67 +77,7 @@
     transform-origin: 50% 50%
   }
 }
-.tip-list {
-  width: 470px;
-  background: #db291b url('../images/lantern-festival/circle-bg.png') no-repeat left top;
-  background-size: 103%;
-  border: 2px solid #532a09;
-  @media (max-width: 700px) {
-    width: 300px !important;
-    height: 240px !important;
-    top: 50% !important;
-    left: 50% !important;
-    margin-left: -150px !important;
-    margin-top: -120px !important;
-    .text-tip {
-      height: auto;
-      p {
-        &.success-text {
-          font-size: 20px;
-          line-height: 35px;
-        }
-        &.reward-text {
-          font-size: 20px;
-          line-height: 35px;
-        }
-        &.login-text {
-          font-size: 20px;
-          padding-top: 30px;
-        }
-        &.des-text {
-          font-size: 14px;
-        }
-      }
-    }
-    .btn-list {
-      a {
-        padding: 8px 30px;
-        font-size: 16px;
-      }
-    }
-  }
-  .close-btn {
-    width: 40px;
-    height: 40px;
-    top: -20px;
-    right: -20px;
-    background: url('../images/lantern-festival/close-btn.png') no-repeat center;
-    background-size: 100%;
-    @media (max-width: 700px) {
-      width: 28px;
-      height: 28px;
-      top: -15px;
-      right: -5px;
-    }
-  }
-  .btn-list {
-    a {
-      background: #f7bf0d;
-      color: #970000;
-      box-shadow: 0 4px 0 #ff9600;
-    }
-  }
-}
+
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -232,6 +172,9 @@
       }
       span{
         color:#fff100;
+        strong{
+          font-weight:normal;
+        }
       }
     }
     .draw-item{

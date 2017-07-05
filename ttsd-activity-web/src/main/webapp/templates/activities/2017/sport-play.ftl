@@ -15,7 +15,7 @@
                 <li>3. 当日所获免费抽签机会，仅限当日使用，如当日未使用，则机会失效。</li>
             </ul>
             <div class="lottery-times">
-                剩余抽签机会：<span class="draw-time">${drawCount}</span>
+                剩余抽签机会：<span class="draw-time"><strong>${drawCount}</strong>次</span>
             </div>
             <div class="draw-item">
                 <div class="draw-model">
@@ -139,57 +139,8 @@
         <dd>3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
     </dl>
     <#include "../../module/login-tip.ftl" />
-    <div class="tip-list-frame">
-    <#--真实奖品的提示-->
-        <div class="tip-list" data-return="concrete">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
-                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
-                <p class="des-text">拓天客服将在7个工作日内联系您发放奖品</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
-        </div>
-
-    <#--虚拟奖品的提示-->
-        <div class="tip-list" data-return="virtual">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="success-text">恭喜您！</p>
-                <p class="reward-text">抽中了<em class="prizeValue"></em>！</p>
-                <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a></div>
-        </div>
-
-    <#--没有抽奖机会-->
-        <div class="tip-list" data-return="nochance">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="login-text">您暂无抽奖机会啦～</p>
-                <p class="des-text">赢取机会后再来抽奖吧！</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-        </div>
-
-    <#--不在活动时间范围内-->
-        <div class="tip-list" data-return="expired">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="login-text">不在活动时间内~</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-        </div>
-
-    <#--实名认证-->
-        <div class="tip-list" data-return="authentication">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="login-text">您还未实名认证~</p>
-                <p class="des-text">请实名认证后再来抽奖吧！</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-        </div>
+    <div class="lottery-tip">
+        
     </div>
 </div>
 
