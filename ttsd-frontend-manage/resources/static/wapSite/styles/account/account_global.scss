@@ -102,8 +102,10 @@
     font-size: 16px;
     color: #64646D;
     font-weight: lighter;
+    overflow: hidden;
     input {
       width: 64%;
+      height:100%;
       text-align: right;
       border:0;
       font-size: 13px;

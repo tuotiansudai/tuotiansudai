@@ -4,7 +4,7 @@
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.css"}>
 
-<@global.main pageCss="${css.bonus_rule}" pageJavascript="${js.bonus_rule}" title="我的体验金">
+<@global.main pageCss="${css.bonus_rule}" pageJavascript="${js.bonus_rule}" title="推荐送奖金">
 
 <div class="my-account-content bonus-rule recommend-rule" id="recommendRule">
     <div class="box-column">

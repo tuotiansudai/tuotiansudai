@@ -9,6 +9,14 @@ body{
   font-weight: lighter;
 }
 
+a {
+  font-size: 13px;
+  color: #FF473C;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 input::-moz-placeholder,textarea::-moz-placeholder {
   color: #C9C9C9;
 }
@@ -469,7 +477,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 @media screen and (max-width: 350px) {
   .btn-wap-normal {
     font-size: 15px;
-    width:100%;
+    width:90%;
     box-sizing: border-box;
   }
 
