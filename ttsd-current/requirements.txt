@@ -1,0 +1,5 @@
+Django==1.11.3
+django-filter==1.0.4
+djangorestframework==3.6.3
+pytz==2017.2
+PyMySQL==0.7.11
