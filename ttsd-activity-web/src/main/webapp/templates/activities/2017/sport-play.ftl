@@ -139,7 +139,21 @@
         <dd>3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
     </dl>
     <#include "../../module/login-tip.ftl" />
-    <div class="lottery-tip">
+    <div class="lottery-tip" id="lotteryTip">
+        <i class="lottery-close close-tip"></i>
+        <div class="lottery-content">
+            <!-- <p class="info-text">恭喜您抽中了</p>
+            <p class="gift-name">5元红包</p> -->
+            <p class="tip-text">目前没有抽奖机会！</p>
+            <p class="tip-text">单笔投资满1万元</p>
+            <p class="tip-text">即可获得抽签机会哦~</p>
+        </div>
+        <div class="lottery-link">
+            <a href="/loan-list">去投资</a>
+            <a href="javascript:void(0)" class="close-tip">知道了</a>
+        </div>
+    </div>
+    <div class="exchange-tip" id="exchangeTip">
         
     </div>
 </div>
