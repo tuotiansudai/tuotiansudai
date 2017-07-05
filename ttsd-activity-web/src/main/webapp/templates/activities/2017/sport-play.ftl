@@ -156,7 +156,7 @@
             <p class="tip-text">单笔投资满1万元</p>
             <p class="tip-text">即可获得抽签机会哦~</p>
         {{else if returnCode==3}}
-            <p class="tip-text">不在活动时间范围内</p>
+            <p class="no-chance">不在活动时间范围内</p>
         {{/if}}
     </script>
     <div class="exchange-tip" id="exchangeTip"></div>

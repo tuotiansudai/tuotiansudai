@@ -124,6 +124,9 @@
       height:140px;
       padding-top: 20px;
       box-sizing: border-box;
+      @media (max-width:700px) {
+        height:95px;
+      }
       p{
         text-align:center;
         margin-bottom: 0;
@@ -132,16 +135,35 @@
           color:#b5332a;
           line-height: 28px;
           margin-top:15px;
+          @media (max-width:700px) {
+            font-size:14px;
+          }
         }
         &.gift-name{
           font-size:36px;
           color:#b5332a;
           line-height: 36px;
+          @media (max-width:700px) {
+            font-size:18px;
+          }
         }
         &.tip-text{
           font-size:28px;
           color:#b5332a;
           line-height: 36px;
+          @media (max-width:700px) {
+            font-size:14px;
+            line-height: 20px;
+          }
+        }
+        &.no-chance{
+          font-size:28px;
+          color:#b5332a;
+          line-height: 110px;
+          @media (max-width:700px) {
+            font-size:14px;
+            line-height: 55px;
+          }
         }
       }
     }
@@ -152,6 +174,10 @@
       line-height: 80px;
       margin-top: 10px;
       text-align:center;
+      @media (max-width:700px) {
+        height:48px;
+        line-height: 48px;
+      }
       a{
         display:inline-block;
         width:110px;
@@ -163,6 +189,13 @@
         background: #e85e57;
         border-radius:10px;
         margin:0 30px;
+        @media (max-width:700px) {
+          width:60px;
+          height:30px;
+          line-height: 30px;
+          font-size:12px;
+          border-radius:5px;
+        }
       }
     }
   }
@@ -190,6 +223,9 @@
       height:180px;
       box-sizing:border-box;
       padding-top:30px;
+      @media (max-width:700px) {
+        height:125px;
+      }
       p{
         font-size:28px;
         color:#ffe973;
@@ -198,6 +234,10 @@
         &.tip-info{
           font-size:34px;
           margin-top: 40px;
+          @media (max-width:700px) {
+            font-size:16px;
+            margin-top:20px;
+          }
         }
         &.title-item{
           font-size:34px;
@@ -206,6 +246,11 @@
           background-size: 90%;
           box-sizing: border-box;
           padding-top: 40px;
+          @media (max-width:700px) {
+            font-size:16px;
+            padding-top: 20px;
+            background-size: 70%;
+          }
         }
       }
     }
@@ -214,6 +259,10 @@
       width:100%;
       line-height: 120px;
       text-align:center;
+      @media (max-width:700px) {
+        height:60px;
+        line-height: 60px;
+      }
       a{
         display:inline-block;
         width:160px;
@@ -225,6 +274,13 @@
         background: #ffea77;
         border-radius:10px;
         margin:0 30px;
+        @media (max-width:700px) {
+          width:80px;
+          height:30px;
+          line-height: 30px;
+          font-size:14px;
+          border-radius:5px;
+        }
         &.close-item{
           color:#c0b67c;
           background:none;
@@ -232,6 +288,9 @@
         }
         &.exchange-btn{
           width:200px;
+          @media (max-width:700px) {
+            width:100px;
+          }
         }
       }
     }
@@ -407,7 +466,6 @@
         .gift-item{
           float:left;
           width:100%;
-          height:250px;
           background:url('../images/2017/sport-play/gift-bg.png') no-repeat center;
           background-size:100%;
           margin-bottom: 60px;
@@ -416,10 +474,11 @@
             background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat center;
             background-size:cover;
             border-radius: 10px;
+            margin-bottom: 30px;
           }
           h3{
             position: absolute;
-            top:-24px;
+            top:-20px;
             left:50%;
             margin-left:-110px;
             width:220px;
@@ -429,6 +488,15 @@
             font-size:24px;
             color:#fff;
             background: url('../images/2017/sport-play/gift-title.png') no-repeat center;
+            @media (max-width:700px) {
+              width:110px;
+              height:24px;
+              line-height: 24px;
+              top:-10px;
+              margin-left: -55px;
+              font-size:12px;
+              background-size:100%;
+            }
           }
           .row-item{
             float:left;
@@ -442,9 +510,15 @@
               .select-icon{
                 &.left-item{
                   background:url('../images/2017/sport-play/left-icon-select.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size: 100%;
+                  }
                 }
                 &.right-item{
                   background:url('../images/2017/sport-play/right-icon-select.png') no-repeat center;
+                  @media (max-width:700px) {
+                    background-size: 100%;
+                  }
                 }
               }
             }
@@ -456,19 +530,32 @@
               top:0;
               width:64px;
               height:63px;
+              @media (max-width:700px) {
+                width:32px;
+                height:31px;
+              }
               &.left-item{
                 left:0;
                 background:url('../images/2017/sport-play/left-icon.png') no-repeat center;
+                @media (max-width:700px) {
+                  background-size: 100%;
+                }
               }
               &.right-item{
                 right:0;
                 background:url('../images/2017/sport-play/right-icon.png') no-repeat center;
+                @media (max-width:700px) {
+                  background-size: 100%;
+                }
               }
             }
             p{
               font-size:18px;
               color:#fff;
               margin-bottom: 0;
+              @media (max-width:700px) {
+                font-size:12px;
+              }
               &.text-item{
                 display: inline-block;
                 width:115px;
@@ -480,79 +567,90 @@
                 border-radius:10px;
                 margin-top: 150px;
                 cursor:pointer;
+                @media (max-width:700px) {
+                  width:60px;
+                  height:30px;
+                  line-height: 30px;
+                  font-size:13px;
+                  border-radius:5px;
+                  margin-top: 75px;
+                }
               }
               &.gift-img{
                 height:180px;
+                @media (max-width:700px) {
+                  height:90px;
+                }
                 &.one-1{
                   background:url('../images/2017/sport-play/one-1.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.one-2{
                   background:url('../images/2017/sport-play/one-2.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.two-1{
                   background:url('../images/2017/sport-play/two-1.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.two-2{
                   background:url('../images/2017/sport-play/two-2.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.three-1{
                   background:url('../images/2017/sport-play/three-1.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.three-2{
                   background:url('../images/2017/sport-play/three-2.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.four-1{
                   background:url('../images/2017/sport-play/four-1.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.four-2{
                   background:url('../images/2017/sport-play/four-2.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.five-1{
                   background:url('../images/2017/sport-play/five-1.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.five-2{
                   background:url('../images/2017/sport-play/five-2.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.six-1{
                   background:url('../images/2017/sport-play/six-1.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
                 &.six-2{
                   background:url('../images/2017/sport-play/six-2.png') no-repeat center;
                   @media (max-width:700px) {
-                    background-size:100%;
+                    background-size:50%;
                   }
                 }
               }
@@ -570,6 +668,31 @@
     padding:80px 80px 30px;
     background:url('../images/2017/sport-play/rule-bg.png') no-repeat center;
     position: relative;
+    
+    @media (max-width:320px){
+      width:100%;
+      background:url('../images/2017/sport-play/rule-bg-phone.png') no-repeat center;
+      background-size:100%;
+      padding:10px 10px;
+      height:200px;
+      margin:0 auto 20px;
+    }
+    @media (min-width:321px) and (max-width:375px) {
+      width:100%;
+      background:url('../images/2017/sport-play/rule-bg-phone.png') no-repeat center;
+      background-size:100%;
+      padding:10px 10px;
+      height:200px;
+      margin:0 auto 20px;
+    }
+    @media (min-width:376px) and (max-width:414px) {
+      width:100%;
+      background:url('../images/2017/sport-play/rule-bg-phone.png') no-repeat center;
+      background-size:100%;
+      padding:10px 10px;
+      height:200px;
+      margin:0 auto 20px;
+    }
     dt{
       position: absolute;
       top:14px;
@@ -578,9 +701,15 @@
       font-size:16px;
       line-height: 50px;
       text-align:center;
+      @media (max-width:700px) {
+        display: none;
+      }
     }
     dd{
       font-size:14px;
+      @media (max-width:700px) {
+        display: none;
+      }
     }
   }
 }

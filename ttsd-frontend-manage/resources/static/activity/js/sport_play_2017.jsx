@@ -70,7 +70,7 @@ function getGift() {
                   type: 1,
                   title: false,
                   closeBtn: 0,
-                  area: ['450px', '230px'],
+                  area: $(window).width()>700?['450px', '230px']:['300px','155px'],
                   content: $('#lotteryTip') 
                 });
             }
@@ -121,7 +121,7 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
                   type: 1,
                   title: false,
                   closeBtn: 0,
-                  area: ['470px', '300px'],
+                  area: $(window).width()>700?['470px', '300px']:['300px','195px'],
                   content: $('#exchangeTip') 
                 });
             }
@@ -132,7 +132,7 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
           type: 1,
           title: false,
           closeBtn: 0,
-          area: ['470px', '300px'],
+          area: $(window).width()>700?['470px', '300px']:['300px','195px'],
           content: $('#exchangeTip') 
         });
     }
