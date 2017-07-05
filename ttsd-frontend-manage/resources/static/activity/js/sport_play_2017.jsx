@@ -123,10 +123,10 @@ $('body').on('click', '.close-tip', function(event) {
     event.preventDefault();
     layer.closeAll();
 });
-layer.open({
-  type: 1,
-  title: false,
-  closeBtn: 0,
-  area: ['450px', '230px'],
-  content: $('#lotteryTip') 
-});
+// layer.open({
+//   type: 1,
+//   title: false,
+//   closeBtn: 0,
+//   area: ['450px', '230px'],
+//   content: $('#lotteryTip') 
+// });
