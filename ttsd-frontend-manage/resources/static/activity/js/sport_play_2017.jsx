@@ -50,12 +50,12 @@ function getGift() {
     //延迟1秒抽奖
     setTimeout(function () {
         $.ajax({
-            url: '/activity/exercise-work/exercise-work-draw',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                'activityCategory': 'EXERCISE_WORK_ACTIVITY'
-            }
+            url: '/activity/exercise-work/exercise-work-draw?activityCategory=EXERCISE_WORK_ACTIVITY',
+            type: 'GET',
+            // dataType: 'json',
+            // data: {
+            //     'activityCategory':'EXERCISE_WORK_ACTIVITY'
+            // }
         })
         .done(function(data) {
             console.log(data);
