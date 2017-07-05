@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class RestConfig(AppConfig):
-    name = 'current-rest'
+    name = 'current_rest'
