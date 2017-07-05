@@ -50,7 +50,7 @@ function getGift() {
     //延迟1秒抽奖
     setTimeout(function () {
         $.ajax({
-            url: '/activity/exercise-work-draw',
+            url: '/activity/exercise-work/exercise-work-draw',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -58,33 +58,34 @@ function getGift() {
             }
         })
         .done(function(data) {
+            console.log(data);
             $pointerImg.removeClass('lottering');
-            if (data.returnCode == 0) {
-                var prizeType = data.prizeType.toLowerCase();
-                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
-                drawCircle.noRotateFn(tipGroupObj[prizeType]);
+            // if (data.returnCode == 0) {
+            //     var prizeType = data.prizeType.toLowerCase();
+            //     $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+            //     drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
-            } else if (data.returnCode == 1) {
-                //没有抽奖机会
-                drawCircle.tipWindowPop(tipGroupObj['nochance']);
-            }
-            else if (data.returnCode == 2) {
-                //判断是否需要弹框登陆
-                layer.open({
-                    type: 1,
-                    title: false,
-                    closeBtn: 0,
-                    area: ['auto', 'auto'],
-                    content: $('#loginTip')
-                });  //弹框登录
-            } else if (data.returnCode == 3) {
-                //不在活动时间范围内！
-                drawCircle.tipWindowPop(tipGroupObj['expired']);
+            // } else if (data.returnCode == 1) {
+            //     //没有抽奖机会
+            //     drawCircle.tipWindowPop(tipGroupObj['nochance']);
+            // }
+            // else if (data.returnCode == 2) {
+            //     //判断是否需要弹框登陆
+            //     layer.open({
+            //         type: 1,
+            //         title: false,
+            //         closeBtn: 0,
+            //         area: ['auto', 'auto'],
+            //         content: $('#loginTip')
+            //     });  //弹框登录
+            // } else if (data.returnCode == 3) {
+            //     //不在活动时间范围内！
+            //     drawCircle.tipWindowPop(tipGroupObj['expired']);
 
-            } else if (data.returnCode == 4) {
-                //实名认证
-                drawCircle.tipWindowPop(tipGroupObj['authentication']);
-            }
+            // } else if (data.returnCode == 4) {
+            //     //实名认证
+            //     drawCircle.tipWindowPop(tipGroupObj['authentication']);
+            // }
         })
         .fail(function() {
             $pointerImg.removeClass('lottering');
@@ -101,5 +102,31 @@ $sportPlayContainer.find('.gift-list .select-item').on('click',  function(event)
     if(!$self.hasClass('active')){
         $self.addClass('active').siblings('.select-item').removeClass('active')
         .closest('.gift-item').siblings().find('.select-item').removeClass('active');
+    }
+});
+
+// 兑换商品
+$sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
+    event.preventDefault();
+    let $self=$(this),
+        isSelect=$self.closest('.gift-item').find('.select-item').hasClass('active');
+    
+    if(isSelect){
+        $.ajax({
+            url: '/activity/exercise-work/exchange-prize',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'exchangePrize': 'value1'
+            }
+        })
+        .done(function(data) {
+            console.log(data);
+        })
+        .fail(function() {
+            layer.msg('请求失败，请重试！');
+        });
+    }else{
+        layer.msg('请选择要兑换的物品！');
     }
 });
