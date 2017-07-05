@@ -15,7 +15,7 @@
                 <li>3. 当日所获免费抽签机会，仅限当日使用，如当日未使用，则机会失效。</li>
             </ul>
             <div class="lottery-times">
-                剩余抽签机会：<span class="draw-time">XX次</span>
+                剩余抽签机会：<span class="draw-time">${drawCount}</span>
             </div>
             <div class="draw-item">
                 <div class="draw-model">
@@ -59,7 +59,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="MOBILE_HDD_1TB">
+                    <div class="row-item select-item" data-name="MOBILE_HDD_500G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img two-2"></p>
                         <p>东芝移动硬盘 500G</p>

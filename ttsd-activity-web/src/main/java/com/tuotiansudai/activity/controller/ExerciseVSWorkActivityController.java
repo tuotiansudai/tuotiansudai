@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/activity/exercise_work")
+@RequestMapping(value = "/activity/exercise-work")
 public class ExerciseVSWorkActivityController {
 
     @Autowired

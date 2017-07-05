@@ -40,14 +40,14 @@ $sportPlayContainer.find('.tip-list-frame .tip-list').each(function (key, option
     let $MobileNumber = $('#MobileNumber'),
         pointAllList = '/activity/lantern-festival/all-prize-list',  //中奖记录接口地址
         pointUserList = '/activity/lantern-festival/user-prize-list',   //我的奖品接口地址
-        drawURL = '/activity/lantern-festival/prize',    //抽奖的接口链接
+        drawURL = '/activity/exercise-work/exercise-work-draw',    //抽奖的接口链接
         drawTime = '/activity/lantern-festival/drawTime', //抽奖次数
         $pointerImg = $('.draw-btn', $rewardGiftBox),
         myMobileNumber = $MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
     let paramData = {
         "mobile": myMobileNumber,
-        "activityCategory": "LANTERN_FESTIVAL_ACTIVITY"
+        "activityCategory": "EXERCISE_WORK_ACTIVITY"
     };
 
     drawCircle.prototype.showDrawTime = function () {
