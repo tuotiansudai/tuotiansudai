@@ -54,7 +54,6 @@ function getGift() {
                 'activityCategory': 'EXERCISE_WORK_ACTIVITY'
             }
         },function(data) {
-            console.log(data);
             $pointerImg.removeClass('lottering');
             if (data.returnCode == 2) {
                 //判断是否需要弹框登陆
@@ -95,7 +94,8 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
     event.preventDefault();
     let $self=$(this),
         isSelect=$self.closest('.gift-item').find('.select-item').hasClass('active'),
-        selectGift=$self.closest('.gift-item').find('.select-item.active').attr('data-name');
+        selectGift=$self.closest('.gift-item').find('.select-item.active').attr('data-name'),
+        selectText=$self.closest('.gift-item').find('.select-item.active').attr('data-text');
     
     if(isSelect){
         commonFun.useAjax({
@@ -105,7 +105,6 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
                 'exchangePrize': selectGift
             }
         },function(data) {
-            console.log(data);
             if (data.returnCode == 4) {
                 //判断是否需要弹框登陆
                 layer.open({
@@ -116,20 +115,27 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
                     content: $('#loginTip')
                 }); 
             }else {
+                $('#selectGift').text(selectText);
                 $('#exchangeTip').html(tpl('exchangeTipTpl', data));
-                
+                layer.open({
+                  type: 1,
+                  title: false,
+                  closeBtn: 0,
+                  area: ['470px', '300px'],
+                  content: $('#exchangeTip') 
+                });
             }
         });
     }else{
         $('#exchangeTip').html(tpl('exchangeTipTpl', {'returnCode':5}));
+        layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          area: ['470px', '300px'],
+          content: $('#exchangeTip') 
+        });
     }
-    layer.open({
-      type: 1,
-      title: false,
-      closeBtn: 0,
-      area: ['470px', '300px'],
-      content: $('#exchangeTip') 
-    });
 });
 $('body').on('click', '.close-tip', function(event) {
     event.preventDefault();
