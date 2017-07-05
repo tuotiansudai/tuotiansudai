@@ -56,14 +56,7 @@ function getGift() {
         },function(data) {
             console.log(data);
             $pointerImg.removeClass('lottering');
-            if (data.returnCode == 0) {
-                layer.msg('兑换成功');
-
-            } else if (data.returnCode == 1) {
-                //没有抽奖机会
-                layer.msg('没有抽奖机会');
-            }
-            else if (data.returnCode == 2) {
+            if (data.returnCode == 2) {
                 //判断是否需要弹框登陆
                 layer.open({
                     type: 1,
@@ -71,14 +64,18 @@ function getGift() {
                     closeBtn: 0,
                     area: ['auto', 'auto'],
                     content: $('#loginTip')
-                });  //弹框登录
-            } else if (data.returnCode == 3) {
-                //不在活动时间范围内！
-                layer.msg('不在活动时间范围内');
-
+                });
+            } else {
+                $('#lotteryTip .lottery-content').html(tpl('lotteryTipTpl', data));
+                layer.open({
+                  type: 1,
+                  title: false,
+                  closeBtn: 0,
+                  area: ['450px', '230px'],
+                  content: $('#lotteryTip') 
+                });
             }
         });
-        
     }, 1000);
 }
 
@@ -109,18 +106,7 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
             }
         },function(data) {
             console.log(data);
-            if (data.returnCode == 0) {
-                layer.msg('兑换成功');
-
-            } else if (data.returnCode == 1) {
-                //投资金额不足
-                layer.msg('投资金额不足,剩余'+data.amount);
-            }else if(data.returnCode == 2){
-                layer.msg('用户不存在');
-            }else if (data.returnCode == 3) {
-                //不在活动时间范围内！
-                layer.msg('不在活动时间范围内');
-            }else if (data.returnCode == 4) {
+            if (data.returnCode == 4) {
                 //判断是否需要弹框登陆
                 layer.open({
                     type: 1,
@@ -129,27 +115,25 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
                     area: ['auto', 'auto'],
                     content: $('#loginTip')
                 }); 
+            }else {
+                $('#exchangeTip').html(tpl('exchangeTipTpl', data));
+                
             }
         });
     }else{
-        layer.msg('请选择要兑换的物品！');
+        $('#exchangeTip').html(tpl('exchangeTipTpl', {'returnCode':5}));
     }
+    layer.open({
+      type: 1,
+      title: false,
+      closeBtn: 0,
+      area: ['470px', '300px'],
+      content: $('#exchangeTip') 
+    });
 });
 $('body').on('click', '.close-tip', function(event) {
     event.preventDefault();
     layer.closeAll();
 });
-// layer.open({
-//   type: 1,
-//   title: false,
-//   closeBtn: 0,
-//   area: ['450px', '230px'],
-//   content: $('#lotteryTip') 
-// });
-// layer.open({
-//   type: 1,
-//   title: false,
-//   closeBtn: 0,
-//   area: ['470px', '300px'],
-//   content: $('#exchangeTip') 
-// });
+
+

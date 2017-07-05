@@ -141,33 +141,51 @@
     <#include "../../module/login-tip.ftl" />
     <div class="lottery-tip" id="lotteryTip">
         <i class="lottery-close close-tip"></i>
-        <div class="lottery-content">
-            <!-- <p class="info-text">恭喜您抽中了</p>
-            <p class="gift-name">5元红包</p> -->
-            <p class="tip-text">目前没有抽奖机会！</p>
-            <p class="tip-text">单笔投资满1万元</p>
-            <p class="tip-text">即可获得抽签机会哦~</p>
-        </div>
+        <div class="lottery-content"></div>
         <div class="lottery-link">
             <a href="/loan-list">去投资</a>
             <a href="javascript:void(0)" class="close-tip">知道了</a>
         </div>
     </div>
-    <div class="exchange-tip" id="exchangeTip">
+    <script type="text/html" id="lotteryTipTpl">
+        {{if returnCode==0}}
+            <p class="info-text">恭喜您抽中了</p>
+            <p class="gift-name">{{prizeValue}}</p>
+        {{else if returnCode==1}}
+            <p class="tip-text">目前没有抽奖机会！</p>
+            <p class="tip-text">单笔投资满1万元</p>
+            <p class="tip-text">即可获得抽签机会哦~</p>
+        {{else if returnCode==3}}
+            <p class="tip-text">不在活动时间范围内</p>
+        {{/if}}
+    </script>
+    <div class="exchange-tip" id="exchangeTip"></div>
+    <script type="text/html" id="exchangeTipTpl">
         <i class="exchange-close close-tip"></i>
         <div class="exchange-content">
-            <!-- <p>亲，您还差XXXXXXX.XX元</p>
-            <p>才能兑换该档次奖励哦~</p> -->
-            <!-- <p class="tip-info">不在活动时间范围内</p> -->
-            <!-- <p class="tip-info">您还没有选择奖品哦~</p> -->
-            <p class="title-item">恭喜您，兑换成功</p>
+            {{if returnCode==0}}
+                <p class="title-item">恭喜您，兑换成功</p>
+            {{else if returnCode==1}}
+                <p>亲，您还差{{amount}}元</p>
+                <p>才能兑换该档次奖励哦~</p>
+            {{else if returnCode==2}}
+                <p class="tip-info">用户不存在</p>
+            {{else if returnCode==3}}
+                <p class="tip-info">不在活动时间范围内</p>
+            {{else if returnCode==5}}
+                <p class="tip-info">您还没有选择奖品哦~</p>
+            {{/if}}
         </div>
         <div class="exchange-link">
-            <!-- <a href="javascript:void(0)" class="close-item close-tip">知道了</a>
-            <a href="/loan-list">去投资</a> -->
-            <a href="javascript:void(0)" class="exchange-btn close-tip">确定</a>
+            {{if returnCode==1}}
+                <a href="javascript:void(0)" class="close-item close-tip">知道了</a>
+                <a href="/loan-list">去投资</a>
+            {{else}}
+                <a href="javascript:void(0)" class="exchange-btn close-tip">确定</a>
+            {{/if}}
         </div>
-    </div>
+    </script>
+    
 </div>
 
 </@global.main>
