@@ -152,6 +152,5 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
-    'DEFAULT_PAGINATION_CLASS': 'current_rest.pagination.ExPageNumberPagination',
     'PAGE_SIZE': 10
 }
