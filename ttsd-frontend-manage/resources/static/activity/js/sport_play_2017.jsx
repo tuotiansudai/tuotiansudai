@@ -56,32 +56,27 @@ function getGift() {
         },function(data) {
             console.log(data);
             $pointerImg.removeClass('lottering');
-            // if (data.returnCode == 0) {
-            //     var prizeType = data.prizeType.toLowerCase();
-            //     $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
-            //     drawCircle.noRotateFn(tipGroupObj[prizeType]);
+            if (data.returnCode == 0) {
+                layer.msg('兑换成功');
 
-            // } else if (data.returnCode == 1) {
-            //     //没有抽奖机会
-            //     drawCircle.tipWindowPop(tipGroupObj['nochance']);
-            // }
-            // else if (data.returnCode == 2) {
-            //     //判断是否需要弹框登陆
-            //     layer.open({
-            //         type: 1,
-            //         title: false,
-            //         closeBtn: 0,
-            //         area: ['auto', 'auto'],
-            //         content: $('#loginTip')
-            //     });  //弹框登录
-            // } else if (data.returnCode == 3) {
-            //     //不在活动时间范围内！
-            //     drawCircle.tipWindowPop(tipGroupObj['expired']);
+            } else if (data.returnCode == 1) {
+                //没有抽奖机会
+                layer.msg('没有抽奖机会');
+            }
+            else if (data.returnCode == 2) {
+                //判断是否需要弹框登陆
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['auto', 'auto'],
+                    content: $('#loginTip')
+                });  //弹框登录
+            } else if (data.returnCode == 3) {
+                //不在活动时间范围内！
+                layer.msg('不在活动时间范围内');
 
-            // } else if (data.returnCode == 4) {
-            //     //实名认证
-            //     drawCircle.tipWindowPop(tipGroupObj['authentication']);
-            // }
+            }
         });
         
     }, 1000);
@@ -114,6 +109,27 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
             }
         },function(data) {
             console.log(data);
+            if (data.returnCode == 0) {
+                layer.msg('兑换成功');
+
+            } else if (data.returnCode == 1) {
+                //投资金额不足
+                layer.msg('投资金额不足,剩余'+data.amount);
+            }else if(data.returnCode == 2){
+                layer.msg('用户不存在');
+            }else if (data.returnCode == 3) {
+                //不在活动时间范围内！
+                layer.msg('不在活动时间范围内');
+            }else if (data.returnCode == 4) {
+                //判断是否需要弹框登陆
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['auto', 'auto'],
+                    content: $('#loginTip')
+                }); 
+            }
         });
     }else{
         layer.msg('请选择要兑换的物品！');

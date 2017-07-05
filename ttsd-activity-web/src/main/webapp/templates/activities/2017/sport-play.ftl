@@ -158,7 +158,7 @@
         <div class="exchange-content">
             <!-- <p>亲，您还差XXXXXXX.XX元</p>
             <p>才能兑换该档次奖励哦~</p> -->
-            <!-- <p class="tip-info">不在活动时间范围</p> -->
+            <!-- <p class="tip-info">不在活动时间范围内</p> -->
             <!-- <p class="tip-info">您还没有选择奖品哦~</p> -->
             <p class="title-item">恭喜您，兑换成功</p>
         </div>
