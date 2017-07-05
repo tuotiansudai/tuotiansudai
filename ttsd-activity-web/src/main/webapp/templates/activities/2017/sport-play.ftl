@@ -154,7 +154,19 @@
         </div>
     </div>
     <div class="exchange-tip" id="exchangeTip">
-        
+        <i class="exchange-close close-tip"></i>
+        <div class="exchange-content">
+            <!-- <p>亲，您还差XXXXXXX.XX元</p>
+            <p>才能兑换该档次奖励哦~</p> -->
+            <!-- <p class="tip-info">不在活动时间范围</p> -->
+            <!-- <p class="tip-info">您还没有选择奖品哦~</p> -->
+            <p class="title-item">恭喜您，兑换成功</p>
+        </div>
+        <div class="exchange-link">
+            <!-- <a href="javascript:void(0)" class="close-item close-tip">知道了</a>
+            <a href="/loan-list">去投资</a> -->
+            <a href="javascript:void(0)" class="exchange-btn close-tip">确定</a>
+        </div>
     </div>
 </div>
 
