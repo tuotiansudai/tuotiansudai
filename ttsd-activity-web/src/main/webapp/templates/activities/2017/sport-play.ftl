@@ -28,8 +28,8 @@
         <div class="content-item">
             <h3 class="title-two"></h3>
             <div class="user-info">
-                <p>我的累计投资金额：<span>223434元</span></p>
-                <p>当前选择奖品：<span id="selectGift">暂未选择奖品</span></p>
+                <p>我的累计投资金额：<span>${investAmount}元</span></p>
+                <p>当前选择奖品：<span id="selectGift">${exchangePrize}</span></p>
                 <p class="tip-text">活动期间，根据累计投资金额，可兑换不同档奖品， 每档奖品默认可2选1兑换，不同档的奖品不可同时获得。</p>
             </div>
             <div class="gift-list">
