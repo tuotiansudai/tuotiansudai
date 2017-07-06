@@ -22,7 +22,10 @@
       &+a {
         border-right:1px solid #E5E5E5;
       }
-      &:nth-last-child(1) {
+      &.layui-layer-btn0 {
+        color: #FF473C;
+      }
+      &.layui-layer-btn1 {
         color: #525252;
       }
     }
