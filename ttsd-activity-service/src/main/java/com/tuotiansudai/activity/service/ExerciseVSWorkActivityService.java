@@ -113,7 +113,7 @@ public class ExerciseVSWorkActivityService {
         }
 
         long amount=0;
-        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(mobile,ActivityStartTime,ActivityEndTime);
+        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),ActivityStartTime,ActivityEndTime);
         for (InvestModel investModel:investModels) {
             amount+=investModel.getAmount();
         }

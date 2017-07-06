@@ -29,7 +29,8 @@
         <beans:constructor-arg ref="webExpressionVoter"/>
     </beans:bean>
 
-    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.security.MyLoginUrlAuthenticationEntryPoint">
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint"
+                class="com.tuotiansudai.spring.security.MyLoginUrlAuthenticationEntryPoint">
         <beans:constructor-arg name="loginFormUrl" value="${web.server}/login"/>
     </beans:bean>
 
@@ -37,7 +38,8 @@
         <authentication-provider ref="myAuthenticationProvider"/>
     </authentication-manager>
 
-    <http auto-config="true" use-expressions="true" create-session="always" access-decision-manager-ref="affirmativeBased" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+    <http auto-config="true" use-expressions="true" create-session="always"
+          access-decision-manager-ref="affirmativeBased" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
         <headers>
             <frame-options policy="ALLOW-FROM" strategy="whitelist" value="https://www.growingio.com"/>
         </headers>
@@ -59,7 +61,8 @@
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
         <intercept-url pattern="/logout" access="not isAnonymous()"/>
 
-        <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/register/account/**"
+                       access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <!--menus-->
         <intercept-url pattern="/loan-list/**" access="permitAll()"/>
@@ -71,7 +74,8 @@
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/auto-invest" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')" method="GET"/>
-        <intercept-url pattern="/auto-invest/agreement" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')" method="GET"/>
+        <intercept-url pattern="/auto-invest/agreement" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"
+                       method="GET"/>
         <intercept-url pattern="/auto-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/referrer/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>

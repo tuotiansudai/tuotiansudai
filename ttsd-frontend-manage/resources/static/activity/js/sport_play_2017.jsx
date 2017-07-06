@@ -47,6 +47,7 @@ function getGift() {
     $pointerImg.addClass('lottering');
     //延迟1秒抽奖
     setTimeout(function () {
+
         commonFun.useAjax({
             dataType: 'json',
             url:'/activity/exercise-work/exercise-work-draw',
