@@ -1,5 +1,5 @@
 require('wapSiteStyle/layout.scss');
-
+require('wapSiteStyle/layer_diy.scss');
 require('wapSiteStyle/account/account_global.scss');
 
 
