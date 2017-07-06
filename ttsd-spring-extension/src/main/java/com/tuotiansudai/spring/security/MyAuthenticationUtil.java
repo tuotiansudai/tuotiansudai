@@ -8,14 +8,14 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Component
@@ -48,5 +48,7 @@ public class MyAuthenticationUtil {
 
     public void removeAuthentication() {
         SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+        AnonymousAuthenticationToken authenticationToken = new AnonymousAuthenticationToken("anonymousUser", "anonymousUser", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 }

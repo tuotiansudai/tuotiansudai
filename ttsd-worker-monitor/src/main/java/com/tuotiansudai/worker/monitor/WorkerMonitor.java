@@ -73,38 +73,37 @@ public class WorkerMonitor {
             return;
         }
 
+        // 查找所有掉线的worker
         long oldestLivingClock = Clock.systemUTC().millis() - monitorConfig.getMaxSilenceSeconds() * 1000;
-        Set<String> newMessingWorkers = workerMap.entrySet().stream()
-                .filter(entry -> isNewMissingWorker(entry.getKey(), entry.getValue(), oldestLivingClock))
+        Set<String> missingWorkersNow = workerMap.entrySet().stream()
+                .filter(entry -> parseClock(entry.getValue()) < oldestLivingClock)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
-        if (!newMessingWorkers.isEmpty()) {
-            notifyError(newMessingWorkers);
+
+        // 没有掉线的worker则报告所有worker已恢复
+        if (missingWorkersNow.isEmpty()) {
+            if (!missingWorkers.isEmpty()) {
+                missingWorkers.clear();
+                logger.info("[monitor] all workers back to normal");
+                notifyOK();
+            }
+        // 有掉线的worker，则报告哪些worker是刚刚掉线的
+        } else {
+            Set<String> newMissingWorkers = new HashSet<>(missingWorkersNow);
+            newMissingWorkers.removeAll(missingWorkers);
+            missingWorkers.clear();
+            missingWorkers.addAll(missingWorkersNow);
+            if (!newMissingWorkers.isEmpty()) {
+                notifyError(newMissingWorkers);
+            }
         }
     }
 
-    private boolean isNewMissingWorker(String workerName, String lastReportTimeStr, long oldestLivingClock) {
-        long lastReportTime = 0;
+    private long parseClock(String millisecondStr) {
         try {
-            lastReportTime = Long.parseLong(lastReportTimeStr);
+            return Long.parseLong(millisecondStr);
         } catch (NumberFormatException e) {
-            logger.warn("[monitor] can not parse last report time '{}' of worker {}", lastReportTimeStr, workerName);
-        }
-        if (lastReportTime > oldestLivingClock) {
-            if (missingWorkers.remove(workerName)) {
-                logger.info("[monitor] {} come back", workerName);
-                if (missingWorkers.isEmpty()) {
-                    logger.info("[monitor] all workers back to normal");
-                    notifyOK();
-                }
-            }
-            return false;
-        } else {
-            boolean isNewItem = missingWorkers.add(workerName);
-            if (isNewItem) {
-                logger.error("[monitor] {} lost", workerName);
-            }
-            return isNewItem;
+            return -1;
         }
     }
 
@@ -116,6 +115,7 @@ public class WorkerMonitor {
     private void notifyError(Set<String> missingWorkers) {
         String allMissingWorkers = String.join(",", missingWorkers);
         String alertMessage = String.format("Worker[%s] 掉线", allMissingWorkers);
+        logger.error("[monitor] {} lost", allMissingWorkers);
         sendNotification(alertMessage);
     }
 

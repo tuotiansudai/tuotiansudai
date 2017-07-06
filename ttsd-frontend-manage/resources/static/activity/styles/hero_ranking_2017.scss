@@ -111,9 +111,13 @@ body {
         background: #3b0352;
         color: #f8d306;
         padding:4px 30px;
-
+        a {
+          color: #f8d306;
+          text-decoration: underline;
+        }
         &.ranking {
           margin:0 auto;
+
         }
       }
     }
@@ -274,4 +278,11 @@ body {
       font-size: 12px;
     }
   }
+}
+
+@media screen and(max-width: 320px) {
+  .activity-page-frame .heroes-list .sort-box dd {
+    padding: 4px 2px;
+  }
+
 }
