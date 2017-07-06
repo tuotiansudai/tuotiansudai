@@ -4,7 +4,7 @@ package com.tuotiansudai.activity.repository.model;
 public enum ExchangePrize {
 
     //运动奖&职业奖 兑换
-    HOUSEHOLE_DUMBBELL("家用哑铃",ActivityCategory.EXERCISE_WORK_ACTIVITY,5000000),
+    HOUSEHOLE_DUMBBELL("家用哑铃一对",ActivityCategory.EXERCISE_WORK_ACTIVITY,5000000),
     USB_LIGHTER("USB充电打火机",ActivityCategory.EXERCISE_WORK_ACTIVITY,5000000),
     CAR_REFRIGRRATOR("科敏车载冰箱",ActivityCategory.EXERCISE_WORK_ACTIVITY,10000000),
     MOBILE_HDD_500G("东芝移动硬盘500G",ActivityCategory.EXERCISE_WORK_ACTIVITY,10000000),

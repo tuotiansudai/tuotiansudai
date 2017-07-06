@@ -124,9 +124,10 @@ public class ExerciseVSWorkActivityService {
         }
 
         List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
-        if(userExchangePrizeModels.get(0).getPrize().getExchangeMoney()==exchangePrize.getExchangeMoney()){
+
+        if(userExchangePrizeModels.size()>0 && userExchangePrizeModels.get(0).getPrize().getExchangeMoney()==exchangePrize.getExchangeMoney()){
             return new ExchangePrizeDto(5);//已选择同档奖品，不可更改
-        }else if(userExchangePrizeModels.get(0).getPrize().getExchangeMoney()>exchangePrize.getExchangeMoney()){
+        }else if(userExchangePrizeModels.size()>0 && userExchangePrizeModels.get(0).getPrize().getExchangeMoney()>exchangePrize.getExchangeMoney()){
             return new ExchangePrizeDto(6);//已选择奖品
         }
 

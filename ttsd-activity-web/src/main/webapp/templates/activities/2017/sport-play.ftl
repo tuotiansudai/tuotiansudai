@@ -15,7 +15,7 @@
                 <li>3. 当日所获免费抽签机会，仅限当日使用，如当日未使用，则机会失效。</li>
             </ul>
             <div class="lottery-times">
-                剩余抽签机会：<span class="draw-time"><strong>${drawCount}</strong>次</span>
+                剩余抽签机会：<span><strong class="draw-time">${drawCount}</strong>次</span>
             </div>
             <div class="draw-item">
                 <div class="draw-model">
@@ -43,7 +43,7 @@
                 <div class="gift-item">
                     <h3>累计投资5万</h3>
 
-                    <div class="row-item select-item <#if prize=="HOUSEHOLE_DUMBBELL">active</#if>" data-name="HOUSEHOLE_DUMBBELL" data-text="家用哑铃一对" data-name="HOUSEHOLE_DUMBBELL">
+                    <div class="row-item select-item <#if prize=="HOUSEHOLE_DUMBBELL">active</#if>" data-name="HOUSEHOLE_DUMBBELL">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img one-1"></p>
                         <p>家用哑铃一对</p>
@@ -52,7 +52,7 @@
                         <p class="text-item">兑换</p>
                     </div>
 
-                    <div class="row-item select-item <#if prize=="USB_LIGHTER">active</#if>" data-name="USB_LIGHTER" data-text="USB充电打火机">
+                    <div class="row-item select-item <#if prize=="USB_LIGHTER">active</#if>" data-name="USB_LIGHTER" >
                         <i class="select-icon right-item"></i>
                         <p class="gift-img one-2"></p>
                         <p>USB充电打火机</p>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资10万</h3>
-                    <div class="row-item select-item <#if prize=="CAR_REFRIGRRATOR">active</#if>" data-name="CAR_REFRIGRRATOR" data-text="科敏车载冰箱">
+                    <div class="row-item select-item <#if prize=="CAR_REFRIGRRATOR">active</#if>" data-name="CAR_REFRIGRRATOR" >
                         <i class="select-icon left-item"></i>
                         <p class="gift-img two-1"></p>
                         <p>科敏车载冰箱</p>
@@ -68,7 +68,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item <#if prize=="MOBILE_HDD_500G">active</#if>" data-name="MOBILE_HDD_500G" data-text="东芝移动硬盘 500G">
+                    <div class="row-item select-item <#if prize=="MOBILE_HDD_500G">active</#if>" data-name="MOBILE_HDD_500G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img two-2"></p>
                         <p>东芝移动硬盘 500G</p>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资12万</h3>
-                    <div class="row-item select-item <#if prize=="ARCTIC_WOLF_TENT">active</#if>" data-name="ARCTIC_WOLF_TENT" data-text="北极狼自动帐篷">
+                    <div class="row-item select-item <#if prize=="ARCTIC_WOLF_TENT">active</#if>" data-name="ARCTIC_WOLF_TENT">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img three-1"></p>
                         <p>北极狼自动帐篷</p>
@@ -84,7 +84,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item <#if prize=="GOLF_MAN_BRIEFCASE">active</#if>" data-name="GOLF_MAN_BRIEFCASE" data-text="GOLF男士商务公文包">
+                    <div class="row-item select-item <#if prize=="GOLF_MAN_BRIEFCASE">active</#if>" data-name="GOLF_MAN_BRIEFCASE">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img three-2"></p>
                         <p>GOLF男士商务公文包</p>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资28万</h3>
-                    <div class="row-item select-item <#if prize=="MUTE_SPINNING">active</#if>" data-name="MUTE_SPINNING" data-text="伊吉康室内静音动感单车">
+                    <div class="row-item select-item <#if prize=="MUTE_SPINNING">active</#if>" data-name="MUTE_SPINNING">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img four-1"></p>
                         <p>伊吉康室内静音动感单车</p>
@@ -100,7 +100,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item <#if prize=="WEIGHTING_DRAW_BAR_BOX">active</#if>" data-name="WEIGHTING_DRAW_BAR_BOX" data-text="美而美智能称重拉杆箱">
+                    <div class="row-item select-item <#if prize=="WEIGHTING_DRAW_BAR_BOX">active</#if>" data-name="WEIGHTING_DRAW_BAR_BOX">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img four-2"></p>
                         <p>美而美智能称重拉杆箱</p>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资38万</h3>
-                    <div class="row-item select-item <#if prize=="MANGO_TOURISM_CARD_2000">active</#if>" data-name="MANGO_TOURISM_CARD_2000" data-text="2000元芒果旅游卡">
+                    <div class="row-item select-item <#if prize=="MANGO_TOURISM_CARD_2000">active</#if>" data-name="MANGO_TOURISM_CARD_2000">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img five-1"></p>
                         <p>2000元芒果旅游卡</p>
@@ -116,7 +116,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item <#if prize=="SMARTISAN_NUTS_PRO">active</#if>" data-name="SMARTISAN_NUTS_PRO" data-text="锤子坚果pro">
+                    <div class="row-item select-item <#if prize=="SMARTISAN_NUTS_PRO">active</#if>" data-name="SMARTISAN_NUTS_PRO">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img five-2"></p>
                         <p>锤子坚果pro</p>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资60万</h3>
-                    <div class="row-item select-item <#if prize=="APPLE_WATCH_SERIES_2">active</#if>" data-name="APPLE_WATCH_SERIES_2" data-text="Apple Watch Series 2">
+                    <div class="row-item select-item <#if prize=="APPLE_WATCH_SERIES_2">active</#if>" data-name="APPLE_WATCH_SERIES_2">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img six-1"></p>
                         <p>Apple Watch Series 2</p>
@@ -132,7 +132,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item <#if prize=="APPLE_IPAD_128G">active</#if>" data-name="APPLE_IPAD_128G" data-text="Apple iPad 128G">
+                    <div class="row-item select-item <#if prize=="APPLE_IPAD_128G">active</#if>" data-name="APPLE_IPAD_128G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img six-2"></p>
                         <p>Apple iPad 128G</p>

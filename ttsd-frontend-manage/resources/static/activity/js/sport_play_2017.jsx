@@ -66,6 +66,7 @@ function getGift() {
                     content: $('#loginTip')
                 });
             } else {
+                $sportPlayContainer.find('.draw-time').text(function(index,num){return parseInt(num)>1?parseInt(num)-1:0});
                 $('#lotteryTip .lottery-content').html(tpl('lotteryTipTpl', data));
                 layer.open({
                   type: 1,
@@ -107,8 +108,7 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
     event.preventDefault();
     let $self=$(this),
         isSelect=$self.closest('.gift-item').find('.select-item').hasClass('active'),
-        selectGift=$self.closest('.gift-item').find('.select-item.active').attr('data-name'),
-        selectText=$self.closest('.gift-item').find('.select-item.active').attr('data-text');
+        selectGift=$self.closest('.gift-item').find('.select-item.active').attr('data-name');
     $.when(commonFun.isUserLogin())
     .done(function () {
         if(isSelect){
@@ -133,7 +133,9 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
                 }else if(data.returnCode == 6){
                     layer.msg('已选择更高档次奖品');
                 }else {
-                    $('#selectGift').text(selectText);
+                    if(data.returnCode==0){
+                        $('#selectGift').text(data.prizeValue);
+                    }
                     $('#exchangeTip').html(tpl('exchangeTipTpl', data));
                     layer.open({
                       type: 1,
