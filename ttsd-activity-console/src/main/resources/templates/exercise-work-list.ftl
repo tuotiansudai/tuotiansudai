@@ -29,7 +29,7 @@
                 <#list data.records as item>
                 <tr>
                     <td>
-                    ${item.name!}
+                    ${item.userName!}
                     </td>
                     <td>
                     ${item.loginName!}
