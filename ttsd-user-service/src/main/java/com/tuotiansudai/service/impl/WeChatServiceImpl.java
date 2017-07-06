@@ -44,7 +44,9 @@ public class WeChatServiceImpl implements WeChatService {
     @Override
     public String generateAuthorizeURL(String sessionId, String redirect) {
         String state = UUIDGenerator.generate();
-        redisWrapperClient.setex(MessageFormat.format("{0}:wechat:state", sessionId), 60, state);
+        redisWrapperClient.setex(MessageFormat.format("{0}:wechat:state", sessionId), 15, state);
+
+        logger.info(MessageFormat.format("Generate state {0} for session {1}", state, sessionId));
 
         return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
                 weChatClient.getAppid(),
@@ -55,6 +57,8 @@ public class WeChatServiceImpl implements WeChatService {
     @Override
     public WeChatUserModel parseWeChatUserStatus(String sessionId, String state, String code) {
         String openid = weChatClient.fetchOpenid(sessionId, state, code);
+
+        logger.info(MessageFormat.format("fetch openid {0} by sessionId {1}, state {2}, code {3}", openid, sessionId, state, code));
 
         if (Strings.isNullOrEmpty(openid)) {
             return null;
