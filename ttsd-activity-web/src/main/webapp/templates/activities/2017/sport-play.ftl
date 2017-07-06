@@ -42,7 +42,7 @@
             <div class="gift-list">
                 <div class="gift-item">
                     <h3>累计投资5万</h3>
-                    <div class="row-item select-item" data-name="HOUSEHOLE_DUMBBELL">
+                    <div class="row-item select-item" data-name="HOUSEHOLE_DUMBBELL" data-text="家用哑铃一对">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img one-1"></p>
                         <p>家用哑铃一对</p>
@@ -50,7 +50,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="USB_LIGHTER">
+                    <div class="row-item select-item" data-name="USB_LIGHTER" data-text="USB充电打火机">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img one-2"></p>
                         <p>USB充电打火机</p>
