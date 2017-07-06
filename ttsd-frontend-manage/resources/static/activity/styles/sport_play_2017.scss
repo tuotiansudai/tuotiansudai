@@ -457,6 +457,9 @@
           }
           span{
             color:#fff836;
+            &.to-login{
+              cursor:pointer;
+            }
           }
         }
       }
@@ -502,7 +505,7 @@
             float:left;
             width:33.333333%;
             height: 100%;
-            padding:20px 0;
+            padding:18px 0;
             position: relative;
             text-align:center;
             box-sizing:border-box;
