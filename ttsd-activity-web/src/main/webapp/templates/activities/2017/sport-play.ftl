@@ -28,8 +28,8 @@
         <div class="content-item">
             <h3 class="title-two"></h3>
             <div class="user-info">
-                <p>我的累计投资金额：<span>223434元</span></p>
-                <p>当前选择奖品：<span>暂未选择奖品</span></p>
+                <p>我的累计投资金额：<span>${investAmount}元</span></p>
+                <p>当前选择奖品：<span id="selectGift">${exchangePrize}</span></p>
                 <p class="tip-text">活动期间，根据累计投资金额，可兑换不同档奖品， 每档奖品默认可2选1兑换，不同档的奖品不可同时获得。</p>
             </div>
             <div class="gift-list">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资10万</h3>
-                    <div class="row-item select-item" data-name="CAR_REFRIGRRATOR">
+                    <div class="row-item select-item" data-name="CAR_REFRIGRRATOR" data-text="科敏车载冰箱">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img two-1"></p>
                         <p>科敏车载冰箱</p>
@@ -59,7 +59,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="MOBILE_HDD_500G">
+                    <div class="row-item select-item" data-name="MOBILE_HDD_500G" data-text="东芝移动硬盘 500G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img two-2"></p>
                         <p>东芝移动硬盘 500G</p>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资12万</h3>
-                    <div class="row-item select-item" data-name="ARCTIC_WOLF_TENT">
+                    <div class="row-item select-item" data-name="ARCTIC_WOLF_TENT" data-text="北极狼自动帐篷">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img three-1"></p>
                         <p>北极狼自动帐篷</p>
@@ -75,7 +75,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="GOLF_MAN_BRIEFCASE">
+                    <div class="row-item select-item" data-name="GOLF_MAN_BRIEFCASE" data-text="GOLF男士商务公文包">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img three-2"></p>
                         <p>GOLF男士商务公文包</p>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资28万</h3>
-                    <div class="row-item select-item" data-name="MUTE_SPINNING">
+                    <div class="row-item select-item" data-name="MUTE_SPINNING" data-text="伊吉康室内静音动感单车">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img four-1"></p>
                         <p>伊吉康室内静音动感单车</p>
@@ -91,7 +91,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="WEIGHTING_DRAW_BAR_BOX">
+                    <div class="row-item select-item" data-name="WEIGHTING_DRAW_BAR_BOX" data-text="美而美智能称重拉杆箱">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img four-2"></p>
                         <p>美而美智能称重拉杆箱</p>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资38万</h3>
-                    <div class="row-item select-item" data-name="MANGO_TOURISM_CARD_2000">
+                    <div class="row-item select-item" data-name="MANGO_TOURISM_CARD_2000" data-text="2000元芒果旅游卡">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img five-1"></p>
                         <p>2000元芒果旅游卡</p>
@@ -107,7 +107,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="SMARTISAN_NUTS_PRO">
+                    <div class="row-item select-item" data-name="SMARTISAN_NUTS_PRO" data-text="锤子坚果pro">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img five-2"></p>
                         <p>锤子坚果pro</p>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="gift-item">
                     <h3>累计投资60万</h3>
-                    <div class="row-item select-item" data-name="APPLE_WATCH_SERIES_2 ">
+                    <div class="row-item select-item" data-name="APPLE_WATCH_SERIES_2" data-text="Apple Watch Series 2">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img six-1"></p>
                         <p>Apple Watch Series 2</p>
@@ -123,7 +123,7 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item" data-name="APPLE_IPAD_128G">
+                    <div class="row-item select-item" data-name="APPLE_IPAD_128G" data-text="Apple iPad 128G">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img six-2"></p>
                         <p>Apple iPad 128G</p>
@@ -141,33 +141,51 @@
     <#include "../../module/login-tip.ftl" />
     <div class="lottery-tip" id="lotteryTip">
         <i class="lottery-close close-tip"></i>
-        <div class="lottery-content">
-            <!-- <p class="info-text">恭喜您抽中了</p>
-            <p class="gift-name">5元红包</p> -->
-            <p class="tip-text">目前没有抽奖机会！</p>
-            <p class="tip-text">单笔投资满1万元</p>
-            <p class="tip-text">即可获得抽签机会哦~</p>
-        </div>
+        <div class="lottery-content"></div>
         <div class="lottery-link">
             <a href="/loan-list">去投资</a>
             <a href="javascript:void(0)" class="close-tip">知道了</a>
         </div>
     </div>
-    <div class="exchange-tip" id="exchangeTip">
+    <script type="text/html" id="lotteryTipTpl">
+        {{if returnCode==0}}
+            <p class="info-text">恭喜您抽中了</p>
+            <p class="gift-name">{{prizeValue}}</p>
+        {{else if returnCode==1}}
+            <p class="tip-text">目前没有抽奖机会！</p>
+            <p class="tip-text">单笔投资满1万元</p>
+            <p class="tip-text">即可获得抽签机会哦~</p>
+        {{else if returnCode==3}}
+            <p class="no-chance">不在活动时间范围内</p>
+        {{/if}}
+    </script>
+    <div class="exchange-tip" id="exchangeTip"></div>
+    <script type="text/html" id="exchangeTipTpl">
         <i class="exchange-close close-tip"></i>
         <div class="exchange-content">
-            <!-- <p>亲，您还差XXXXXXX.XX元</p>
-            <p>才能兑换该档次奖励哦~</p> -->
-            <!-- <p class="tip-info">不在活动时间范围内</p> -->
-            <!-- <p class="tip-info">您还没有选择奖品哦~</p> -->
-            <p class="title-item">恭喜您，兑换成功</p>
+            {{if returnCode==0}}
+                <p class="title-item">恭喜您，兑换成功</p>
+            {{else if returnCode==1}}
+                <p>亲，您还差{{amount}}元</p>
+                <p>才能兑换该档次奖励哦~</p>
+            {{else if returnCode==2}}
+                <p class="tip-info">用户不存在</p>
+            {{else if returnCode==3}}
+                <p class="tip-info">不在活动时间范围内</p>
+            {{else if returnCode==5}}
+                <p class="tip-info">您还没有选择奖品哦~</p>
+            {{/if}}
         </div>
         <div class="exchange-link">
-            <!-- <a href="javascript:void(0)" class="close-item close-tip">知道了</a>
-            <a href="/loan-list">去投资</a> -->
-            <a href="javascript:void(0)" class="exchange-btn close-tip">确定</a>
+            {{if returnCode==1}}
+                <a href="javascript:void(0)" class="close-item close-tip">知道了</a>
+                <a href="/loan-list">去投资</a>
+            {{else}}
+                <a href="javascript:void(0)" class="exchange-btn close-tip">确定</a>
+            {{/if}}
         </div>
-    </div>
+    </script>
+    
 </div>
 
 </@global.main>
