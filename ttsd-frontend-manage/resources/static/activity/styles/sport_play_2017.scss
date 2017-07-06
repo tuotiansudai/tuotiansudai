@@ -77,7 +77,6 @@
     transform-origin: 50% 50%
   }
 }
-
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -96,6 +95,145 @@
     display: none;
     @media (max-width:700px) {
       display:block;
+    }
+  }
+  .layui-layer{
+    background:none;
+  }
+  .lottery-tip{
+    float:left;
+    width:100%;
+    height:100%;
+    background:url('../images/2017/sport-play/tip-bg.png') no-repeat center;
+    background-size:100%;
+    position: relative;
+    display:none;
+    .lottery-close{
+      position: absolute;
+      top:10px;
+      right:10px;
+      width:20px;
+      height:20px;
+      cursor:pointer;
+      background:url('../images/2017/sport-play/lottery-close.png') no-repeat center;
+      background-size:100%;
+    }
+    .lottery-content{
+      float:left;
+      width:100%;
+      height:140px;
+      padding-top: 20px;
+      box-sizing: border-box;
+      p{
+        text-align:center;
+        margin-bottom: 0;
+        &.info-text{
+          font-size:28px;
+          color:#b5332a;
+          line-height: 28px;
+          margin-top:15px;
+        }
+        &.gift-name{
+          font-size:36px;
+          color:#b5332a;
+          line-height: 36px;
+        }
+        &.tip-text{
+          font-size:28px;
+          color:#b5332a;
+          line-height: 36px;
+        }
+      }
+    }
+    .lottery-link{
+      float:left;
+      width:100%;
+      height:80px;
+      line-height: 80px;
+      margin-top: 10px;
+      text-align:center;
+      a{
+        display:inline-block;
+        width:110px;
+        height:45px;
+        line-height: 45px;
+        text-align:center;
+        font-size:24px;
+        color:#fff;
+        background: #e85e57;
+        border-radius:10px;
+        margin:0 30px;
+      }
+    }
+  }
+  .exchange-tip{
+    float:left;
+    width:100%;
+    height:100%;
+    background:url('../images/2017/sport-play/exchange-bg.png') no-repeat center;
+    background-size:100%;
+    position: relative;
+    display:none;
+    .exchange-close{
+      position: absolute;
+      top:10px;
+      right:10px;
+      width:20px;
+      height:20px;
+      cursor:pointer;
+      background:url('../images/2017/sport-play/exchange-close.png') no-repeat center;
+      background-size:100%;
+    }
+    .exchange-content{
+      float:left;
+      width:100%;
+      height:180px;
+      box-sizing:border-box;
+      padding-top:30px;
+      p{
+        font-size:28px;
+        color:#ffe973;
+        text-align:center;
+        margin-bottom: 0;
+        &.tip-info{
+          font-size:34px;
+          margin-top: 40px;
+        }
+        &.title-item{
+          font-size:34px;
+          margin-top: 10px;
+          background:url('../images/2017/sport-play/tip-title.png') no-repeat center;
+          background-size: 90%;
+          box-sizing: border-box;
+          padding-top: 40px;
+        }
+      }
+    }
+    .exchange-link{
+      float:left;
+      width:100%;
+      line-height: 120px;
+      text-align:center;
+      a{
+        display:inline-block;
+        width:160px;
+        height:60px;
+        line-height: 60px;
+        text-align:center;
+        font-size:30px;
+        color:#e34758;
+        background: #ffea77;
+        border-radius:10px;
+        margin:0 30px;
+        &.close-item{
+          color:#c0b67c;
+          background:none;
+          border:2px solid #c0b67c;
+        }
+        &.exchange-btn{
+          width:200px;
+        }
+      }
     }
   }
   .top-img{

@@ -7,7 +7,6 @@ let tpl = require('art-template/dist/template');
 
 
 let $sportPlayContainer = $('#sportPlayContainer'),
-    tipGroupObj = {},
     sourceKind = globalFun.parseURL(location.href);
 let topimg=require('../images/2017/sport-play/top-img.jpg'),
     topimgPhone=require('../images/2017/sport-play/top-img-phone.jpg');
@@ -18,27 +17,26 @@ let drawBtn=require('../images/2017/sport-play/draw-btn.png');
 $sportPlayContainer.find('.draw-model img').attr('src',drawBtn);
 
 
-$sportPlayContainer.find('.tip-list-frame .tip-list').each(function (key, option) {
-    let kind = $(option).data('return');
-    tipGroupObj[kind] = option;
-});
-
 let $pointerImg = $('.draw-btn', $sportPlayContainer);
-
-
 $pointerImg.on('click', function () {
     //未登录
-    if (sourceKind.params.source == 'app') {
-        $.when(commonFun.isUserLogin())
-            .done(function () {
-                getGift();
-            })
-            .fail(function () {
-                location.href = "/login";
-            });
-    } else {
+    $.when(commonFun.isUserLogin())
+    .done(function () {
         getGift();
-    }
+    })
+    .fail(function () {
+        if (sourceKind.params.source == 'app') {
+            location.href = "/login";
+        } else {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
+        }
+    });
 });
 
 function getGift() {
@@ -49,48 +47,39 @@ function getGift() {
     $pointerImg.addClass('lottering');
     //延迟1秒抽奖
     setTimeout(function () {
-        $.ajax({
-            url: '/activity/exercise-work/exercise-work-draw?activityCategory=EXERCISE_WORK_ACTIVITY',
-            type: 'GET',
-            // dataType: 'json',
-            // data: {
-            //     'activityCategory':'EXERCISE_WORK_ACTIVITY'
-            // }
-        })
-        .done(function(data) {
+
+        commonFun.useAjax({
+            dataType: 'json',
+            url:'/activity/exercise-work/exercise-work-draw',
+            data: {
+                'activityCategory': 'EXERCISE_WORK_ACTIVITY'
+            }
+        },function(data) {
             console.log(data);
             $pointerImg.removeClass('lottering');
-            // if (data.returnCode == 0) {
-            //     var prizeType = data.prizeType.toLowerCase();
-            //     $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
-            //     drawCircle.noRotateFn(tipGroupObj[prizeType]);
+            if (data.returnCode == 0) {
+                layer.msg('兑换成功');
 
-            // } else if (data.returnCode == 1) {
-            //     //没有抽奖机会
-            //     drawCircle.tipWindowPop(tipGroupObj['nochance']);
-            // }
-            // else if (data.returnCode == 2) {
-            //     //判断是否需要弹框登陆
-            //     layer.open({
-            //         type: 1,
-            //         title: false,
-            //         closeBtn: 0,
-            //         area: ['auto', 'auto'],
-            //         content: $('#loginTip')
-            //     });  //弹框登录
-            // } else if (data.returnCode == 3) {
-            //     //不在活动时间范围内！
-            //     drawCircle.tipWindowPop(tipGroupObj['expired']);
+            } else if (data.returnCode == 1) {
+                //没有抽奖机会
+                layer.msg('没有抽奖机会');
+            }
+            else if (data.returnCode == 2) {
+                //判断是否需要弹框登陆
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['auto', 'auto'],
+                    content: $('#loginTip')
+                });  //弹框登录
+            } else if (data.returnCode == 3) {
+                //不在活动时间范围内！
+                layer.msg('不在活动时间范围内');
 
-            // } else if (data.returnCode == 4) {
-            //     //实名认证
-            //     drawCircle.tipWindowPop(tipGroupObj['authentication']);
-            // }
-        })
-        .fail(function() {
-            $pointerImg.removeClass('lottering');
-            layer.msg('请求失败，请重试！');
+            }
         });
+        
     }, 1000);
 }
 
@@ -109,24 +98,59 @@ $sportPlayContainer.find('.gift-list .select-item').on('click',  function(event)
 $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
     event.preventDefault();
     let $self=$(this),
-        isSelect=$self.closest('.gift-item').find('.select-item').hasClass('active');
+        isSelect=$self.closest('.gift-item').find('.select-item').hasClass('active'),
+        selectGift=$self.closest('.gift-item').find('.select-item.active').attr('data-name');
     
     if(isSelect){
-        $.ajax({
-            url: '/activity/exercise-work/exchange-prize',
-            type: 'POST',
+        commonFun.useAjax({
             dataType: 'json',
+            url:'/activity/exercise-work/exchange-prize',
             data: {
-                'exchangePrize': 'value1'
+                'exchangePrize': selectGift
             }
-        })
-        .done(function(data) {
+        },function(data) {
             console.log(data);
-        })
-        .fail(function() {
-            layer.msg('请求失败，请重试！');
+            if (data.returnCode == 0) {
+                layer.msg('兑换成功');
+
+            } else if (data.returnCode == 1) {
+                //投资金额不足
+                layer.msg('投资金额不足,剩余'+data.amount);
+            }else if(data.returnCode == 2){
+                layer.msg('用户不存在');
+            }else if (data.returnCode == 3) {
+                //不在活动时间范围内！
+                layer.msg('不在活动时间范围内');
+            }else if (data.returnCode == 4) {
+                //判断是否需要弹框登陆
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['auto', 'auto'],
+                    content: $('#loginTip')
+                }); 
+            }
         });
     }else{
         layer.msg('请选择要兑换的物品！');
     }
 });
+$('body').on('click', '.close-tip', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+});
+// layer.open({
+//   type: 1,
+//   title: false,
+//   closeBtn: 0,
+//   area: ['450px', '230px'],
+//   content: $('#lotteryTip') 
+// });
+// layer.open({
+//   type: 1,
+//   title: false,
+//   closeBtn: 0,
+//   area: ['470px', '300px'],
+//   content: $('#exchangeTip') 
+// });

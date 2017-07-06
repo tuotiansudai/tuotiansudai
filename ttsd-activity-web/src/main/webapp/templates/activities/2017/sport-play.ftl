@@ -139,8 +139,34 @@
         <dd>3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
     </dl>
     <#include "../../module/login-tip.ftl" />
-    <div class="lottery-tip">
-        
+    <div class="lottery-tip" id="lotteryTip">
+        <i class="lottery-close close-tip"></i>
+        <div class="lottery-content">
+            <!-- <p class="info-text">恭喜您抽中了</p>
+            <p class="gift-name">5元红包</p> -->
+            <p class="tip-text">目前没有抽奖机会！</p>
+            <p class="tip-text">单笔投资满1万元</p>
+            <p class="tip-text">即可获得抽签机会哦~</p>
+        </div>
+        <div class="lottery-link">
+            <a href="/loan-list">去投资</a>
+            <a href="javascript:void(0)" class="close-tip">知道了</a>
+        </div>
+    </div>
+    <div class="exchange-tip" id="exchangeTip">
+        <i class="exchange-close close-tip"></i>
+        <div class="exchange-content">
+            <!-- <p>亲，您还差XXXXXXX.XX元</p>
+            <p>才能兑换该档次奖励哦~</p> -->
+            <!-- <p class="tip-info">不在活动时间范围内</p> -->
+            <!-- <p class="tip-info">您还没有选择奖品哦~</p> -->
+            <p class="title-item">恭喜您，兑换成功</p>
+        </div>
+        <div class="exchange-link">
+            <!-- <a href="javascript:void(0)" class="close-item close-tip">知道了</a>
+            <a href="/loan-list">去投资</a> -->
+            <a href="javascript:void(0)" class="exchange-btn close-tip">确定</a>
+        </div>
     </div>
 </div>
 
