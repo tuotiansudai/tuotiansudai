@@ -90,11 +90,22 @@ public class ExerciseVSWorkActivityService {
         if(Strings.isNullOrEmpty(loginName)){
             return "0";
         }
+        ExchangePrize exchangePrize=getPrizeByMobile(mobile,loginName);
+        if(exchangePrize==null){
+            return "您还未兑换奖品";//没有兑换过
+        }
+        return exchangePrize.getPrizeName();
+    }
+
+    public ExchangePrize getPrizeByMobile(String mobile,String loginName){
+        if(Strings.isNullOrEmpty(loginName)){
+            return null;
+        }
         List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY);
         if (userExchangePrizeModels.size()==0){
-            return "1";     //没有兑换奖品
+            return null;     //没有兑换奖品
         }
-        return userExchangePrizeModels.get(0).getPrize().getPrizeName();
+        return userExchangePrizeModels.get(0).getPrize();
     }
 
     public ExchangePrizeDto exchangePrize(ExchangePrize exchangePrize, String mobile, ActivityCategory activityCategory){
@@ -112,6 +123,13 @@ public class ExerciseVSWorkActivityService {
             return new ExchangePrizeDto(3);//不在活动时间范围内！
         }
 
+        List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
+        if(userExchangePrizeModels.get(0).getPrize().getExchangeMoney()==exchangePrize.getExchangeMoney()){
+            return new ExchangePrizeDto(5);//已选择同档奖品，不可更改
+        }else if(userExchangePrizeModels.get(0).getPrize().getExchangeMoney()>exchangePrize.getExchangeMoney()){
+            return new ExchangePrizeDto(6);//已选择奖品
+        }
+
         long amount=0;
         List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),ActivityStartTime,ActivityEndTime);
         for (InvestModel investModel:investModels) {
@@ -121,8 +139,8 @@ public class ExerciseVSWorkActivityService {
             return new ExchangePrizeDto(1,null,null,AmountConverter.convertCentToString(exchangePrize.getExchangeMoney()-amount));//钱不够
         }
 
+
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
         try {
             if (userExchangePrizeModels.size()==0){
                 userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),accountModel != null ? userModel.getUserName() : "",amount,exchangePrize,DateTime.now().toDate(),activityCategory));

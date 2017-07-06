@@ -28,6 +28,7 @@ public class ExerciseVSWorkActivityController {
         modelAndView.addObject("drawCount", exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         modelAndView.addObject("investAmount",exerciseVSWorkActivityService.sumInvestByLoginNameExceptTransferAndTime(LoginUserInfo.getLoginName()));
         modelAndView.addObject("exchangePrize",exerciseVSWorkActivityService.getExchangePrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
+        modelAndView.addObject("prize",exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName())==null?"":exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()).name());
         return modelAndView;
     }
 
