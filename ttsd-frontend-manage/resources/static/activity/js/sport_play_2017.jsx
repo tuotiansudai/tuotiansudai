@@ -90,6 +90,18 @@ $sportPlayContainer.find('.gift-list .select-item').on('click',  function(event)
     }
 });
 
+// 登录弹框
+$sportPlayContainer.find('.to-login').on('click', function(event) {
+    event.preventDefault();
+    layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        area: ['auto', 'auto'],
+        content: $('#loginTip')
+    });
+});
+
 // 兑换商品
 $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
     event.preventDefault();
@@ -97,46 +109,66 @@ $sportPlayContainer.find('.gift-item .text-item').on('click',  function(event) {
         isSelect=$self.closest('.gift-item').find('.select-item').hasClass('active'),
         selectGift=$self.closest('.gift-item').find('.select-item.active').attr('data-name'),
         selectText=$self.closest('.gift-item').find('.select-item.active').attr('data-text');
+    $.when(commonFun.isUserLogin())
+    .done(function () {
+        if(isSelect){
+            commonFun.useAjax({
+                dataType: 'json',
+                url:'/activity/exercise-work/exchange-prize',
+                data: {
+                    'exchangePrize': selectGift
+                }
+            },function(data) {
+                if (data.returnCode == 4) {
+                    //判断是否需要弹框登陆
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    }); 
+                }else if(data.returnCode == 5){
+                    layer.msg('同档次奖品只可二选一，选后不可更改');
+                }else if(data.returnCode == 6){
+                    layer.msg('已选择更高档次奖品');
+                }else {
+                    $('#selectGift').text(selectText);
+                    $('#exchangeTip').html(tpl('exchangeTipTpl', data));
+                    layer.open({
+                      type: 1,
+                      title: false,
+                      closeBtn: 0,
+                      area: $(window).width()>700?['470px', '300px']:['300px','195px'],
+                      content: $('#exchangeTip') 
+                    });
+                }
+            });
+        }else{
+            $('#exchangeTip').html(tpl('exchangeTipTpl', {'returnCode':5}));
+            layer.open({
+              type: 1,
+              title: false,
+              closeBtn: 0,
+              area: $(window).width()>700?['470px', '300px']:['300px','195px'],
+              content: $('#exchangeTip') 
+            });
+        }
+    })
+    .fail(function () {
+        if (sourceKind.params.source == 'app') {
+            location.href = "/login";
+        } else {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
+        }
+    });
     
-    if(isSelect){
-        commonFun.useAjax({
-            dataType: 'json',
-            url:'/activity/exercise-work/exchange-prize',
-            data: {
-                'exchangePrize': selectGift
-            }
-        },function(data) {
-            if (data.returnCode == 4) {
-                //判断是否需要弹框登陆
-                layer.open({
-                    type: 1,
-                    title: false,
-                    closeBtn: 0,
-                    area: ['auto', 'auto'],
-                    content: $('#loginTip')
-                }); 
-            }else {
-                $('#selectGift').text(selectText);
-                $('#exchangeTip').html(tpl('exchangeTipTpl', data));
-                layer.open({
-                  type: 1,
-                  title: false,
-                  closeBtn: 0,
-                  area: $(window).width()>700?['470px', '300px']:['300px','195px'],
-                  content: $('#exchangeTip') 
-                });
-            }
-        });
-    }else{
-        $('#exchangeTip').html(tpl('exchangeTipTpl', {'returnCode':5}));
-        layer.open({
-          type: 1,
-          title: false,
-          closeBtn: 0,
-          area: $(window).width()>700?['470px', '300px']:['300px','195px'],
-          content: $('#exchangeTip') 
-        });
-    }
 });
 $('body').on('click', '.close-tip', function(event) {
     event.preventDefault();

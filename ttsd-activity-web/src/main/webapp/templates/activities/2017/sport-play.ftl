@@ -28,15 +28,22 @@
         <div class="content-item">
             <h3 class="title-two"></h3>
             <div class="user-info">
-                <p>我的累计投资金额：<span>${investAmount}元</span></p>
-                <p>当前选择奖品：<span id="selectGift">${exchangePrize}</span></p>
+                <@global.isAnonymous>
+                    <p>我的累计投资金额：<span class="to-login">登录查看</span></p>
+                    <p>当前选择奖品：<span class="to-login">登录查看</span></p>
+                </@global.isAnonymous>
+                <@global.isNotAnonymous>
+                    <p>我的累计投资金额：<span>${investAmount}元</span></p>
+                    <p>当前选择奖品：<span id="selectGift">${exchangePrize}</span></p>
+                </@global.isNotAnonymous>
+                
                 <p class="tip-text">活动期间，根据累计投资金额，可兑换不同档奖品， 每档奖品默认可2选1兑换，不同档的奖品不可同时获得。</p>
             </div>
             <div class="gift-list">
                 <div class="gift-item">
                     <h3>累计投资5万</h3>
-                    <div class="row-item select-item <#if prize=="HOUSEHOLE_DUMBBELL">active</#if>" data-name="HOUSEHOLE_DUMBBELL">
 
+                    <div class="row-item select-item <#if prize=="HOUSEHOLE_DUMBBELL">active</#if>" data-name="HOUSEHOLE_DUMBBELL" data-text="家用哑铃一对" data-name="HOUSEHOLE_DUMBBELL">
                         <i class="select-icon left-item"></i>
                         <p class="gift-img one-1"></p>
                         <p>家用哑铃一对</p>
@@ -44,7 +51,8 @@
                     <div class="row-item">
                         <p class="text-item">兑换</p>
                     </div>
-                    <div class="row-item select-item <#if prize=="USB_LIGHTER">active</#if>" data-name="USB_LIGHTER">
+
+                    <div class="row-item select-item <#if prize=="USB_LIGHTER">active</#if>" data-name="USB_LIGHTER" data-text="USB充电打火机">
                         <i class="select-icon right-item"></i>
                         <p class="gift-img one-2"></p>
                         <p>USB充电打火机</p>
