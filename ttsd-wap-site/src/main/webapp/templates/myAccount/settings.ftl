@@ -22,7 +22,7 @@
         </li>
         <li>
             <label for="perCard">免密支付</label>
-            <span class="update-payment-nopwd opened" data-firstopen="true">
+            <span class="update-payment-nopwd opened" data-firstopen="false">
                 <i></i>
             </span>
         </li>
@@ -41,9 +41,9 @@
 
 
 <#--开启免密投资 如果是第一次，需要有联动优势授权-->
-<div id="turnOnNoPassword" class="pad" style="display: none;">
+<div id="turnOnNoPassword" class="pad " style="display: none;">
     <form name="turnOnNoPasswordInvestForm" >
-        <b>开通免密支付</b>
+        <b class="pop-title">开通免密支付</b>
         <span>理财快人一步，专享快速购买标的的便捷体验</span>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -51,7 +51,7 @@
     </form>
 </div>
 
-<div id="noPasswordInvestDOM" class="pad-m" style="display: none;">
+<div id="noPasswordInvestDOM" class="pad open-success-result" style="display: none;">
     <p>请在新打开的联动优势页面充值完成后选择：</p>
     <p><a href="/personal-info" class="btn-success" data-category="确认成功" >继续</a>(授权后视情况可能会有一秒或更长的延迟)</p>
     <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
@@ -69,12 +69,21 @@
         </span>
 
 </div>
-<div id="turnOnSendCaptcha" class="pad" style="display: none;">
-    <b>开通免密支付</b>
-    <span>向185****4386发送验证码</span>
-    <form name="">
-    <input type="hidden" value="123" name="mobile">
-    <input type="text" name="Captcha"> <button type="button">取消</button>
+<div id="turnOnSendCaptcha" class="tip-to-close send-captcha pad" style="display: none;">
+    <b class="pop-title">关闭免密支付</b>
+    <p>推荐您开通免密投资功能，简化投资过程，投资快人一步，确认关闭吗？</p>
+    <form id="imageCaptchaForm" name="imageCaptchaForm" class="form-captcha" method="post">
+        <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+        <img src="/no-password-invest/image-captcha" class="image-captcha" id="imageCaptcha"/>
+        <input type="hidden" name="mobile" value="${mobile}"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+    <span class="code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</span>
+    <form name="turnOffNoPasswordInvestForm" class="form-captcha" id="turnOffNoPasswordInvestForm">
+
+        <input type="hidden" name="mobile" value="${mobile}"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <input type="text" name="captcha"> <button type="button" class="get-captcha">获取验证码</button>
     </form>
 </div>
 

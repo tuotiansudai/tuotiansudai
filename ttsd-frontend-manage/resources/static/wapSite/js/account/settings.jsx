@@ -1,3 +1,4 @@
+let ValidatorObj= require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
 require('wapSiteStyle/account/settings.scss');
 
@@ -26,7 +27,7 @@ $btnOpenNopwd.on('click',function() {
     if(isOpen) {
         //之前是开启的状态，现在做的是要去关闭
         $btnOpenNopwd.removeClass('opened');
-
+        turnOffNoPassword();
 
     } else {
         //之前是开闭的状态，现在做的是要去开启
@@ -52,9 +53,9 @@ function OpenNoPasswordInvest(firstopen) {
                 //授权成功
                 CommonLayerTip({
                     btn: ['我知道了'],
+                    area:['380px', '260px'],
                     content: $('#noPasswordInvestDOM')
                 });
-
             });
         });
     } else {
@@ -66,7 +67,7 @@ function OpenNoPasswordInvest(firstopen) {
         },function() {
             CommonLayerTip({
                 btn: ['我知道了'],
-                content: '<div class="tip-result-success pad"> <em class="icon-success"></em><span>免密支付已开启</span></div>',
+                content: '<div class="tip-result-success"> <em class="icon-success"></em><span>免密支付已开启</span></div>',
             },function() {
                 location.reload();
                 layer.closeAll();
@@ -86,9 +87,15 @@ function turnOffNoPassword() {
 
         CommonLayerTip({
             btn: ['确定', '取消'],
+            area:['380px', '300px'],
             content: $('#turnOnSendCaptcha')
         },function() {
-            //确认， 这里没做
+            //确认,第一步获取手机验证码
+            sendMsgCaptcha();
+
+            // 第二步正式关闭免密投资
+            closeNoPasswordCheck();
+
         });
 
     });
@@ -107,7 +114,7 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
         type: 1,
         title: false,
         closeBtn: 0,
-        area: btn.area,
+        area: optionOk.area,
         shadeClose: false,
         skin: 'tip-square-box',
         btn: optionOk.btn,
@@ -120,6 +127,128 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
         }
     });
 }
+
+//发送短信验证码
+function sendMsgCaptcha() {
+    let $turnOnSendCaptcha = $('#turnOnSendCaptcha');
+    let imageCaptchaForm = globalFun.$('#imageCaptchaForm'),
+        turnOffNoPasswordInvestForm = globalFun.$('#turnOffNoPasswordInvestForm'),
+        captchaFormData = $(imageCaptchaForm).serialize();
+
+   let $getCaptchaElement = $('.get-captcha',$(turnOffNoPasswordInvestForm)),
+       $codeNumber = $('.code-number-hidden',$turnOnSendCaptcha);
+
+    $getCaptchaElement.prop('disabled',true);
+
+    $getCaptchaElement.on('click',function(event){
+
+        commonFun.useAjax({
+            url:UrlOption['sendCaptcha'],
+            type:'POST',
+            data:captchaFormData
+        },function(response) {
+            $getCaptchaElement.prop('disabled',false);
+            var data =response.data;
+            if (data.status && !data.isRestricted) {
+                $codeNumber.css({'visibility':'hidden'});
+                commonFun.countDownLoan({
+                    btnDom:$getCaptchaElement,
+                    textCounting:'秒',
+                });
+            }
+
+            if (!data.status && data.isRestricted) {
+                $codeNumber.css({'visibility':'visible'});
+                layer.msg('短信发送频繁，请稍后再试');
+            }
+
+            if (!data.status && !data.isRestricted) {
+                $codeNumber.css({'visibility':'visible'});
+                layer.msg('图形验证码不正确');
+            }
+            commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),UrlOption['imageCaptcha']);
+
+        });
+    });
+
+
+}
+
+
+//发起关闭免密投资流程
+function closeNoPasswordCheck() {
+
+    let imageCaptchaForm = globalFun.$('#imageCaptchaForm'),
+        turnOffNoPasswordInvestForm = globalFun.$('#turnOffNoPasswordInvestForm');
+
+    let turnOffPassValidator = new ValidatorObj.ValidatorForm();
+    //免密投资验证图形码
+    turnOffPassValidator.newStrategy(turnOffNoPasswordInvestForm.captcha,'isNoPasswordCaptchaVerify',function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this,
+            _arguments=arguments;
+        var _phone = turnOffNoPasswordInvestForm.mobile.value,
+            _captcha=turnOffNoPasswordInvestForm.captcha.value;
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:`/no-password-invest/mobile/${_phone}/captcha/${_captcha}/verify`
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明手机已存在
+                getResult='';
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
+
+            }
+            else {
+                getResult=errorMsg;
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
+            }
+        });
+        return getResult;
+    });
+
+    turnOffPassValidator.add(turnOffNoPasswordInvestForm.captcha, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入验证码'
+    },{
+        strategy: 'equalLength:6',
+        errorMsg: '验证码格式不正确'
+    },{
+        strategy: 'isNoPasswordCaptchaVerify',
+        errorMsg: '验证码不正确'
+    }]);
+
+    $(turnOffNoPasswordInvestForm.captcha).on('blur',function(event) {
+        let errorMsg = turnOffPassValidator.start(this);
+        layer.msg(errorMsg);
+
+    });
+
+    turnOffNoPasswordInvestForm.onsubmit=function(event) {
+        event.preventDefault();
+        let thisForm = this;
+        let errorMsg = turnOffPassValidator.start(thisForm.captcha);
+        layer.msg(errorMsg);
+        if (!errorMsg) {
+            $(thisForm).find(':submit').prop('disabled', true);
+            commonFun.useAjax({
+                url: UrlOption['disabled'],
+                type: 'POST',
+                data: $(thisForm).serialize()
+            }, function (response) {
+                $(thisForm).find(':submit').prop('disabled', false);
+                var data = response.data;
+                if (data.status) {
+                    location.reload();
+                }
+
+            });
+        }
+    }
+
+}
+
 
 // 下面的代码是安心签的
 

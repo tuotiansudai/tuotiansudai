@@ -183,7 +183,7 @@
             <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>
                 <span>短信验证码：</span>
-                <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
+                <input type="text" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <button type="button" class="btn-normal get-captcha" disabled="disabled" data-url="/no-password-invest/send-captcha">获取验证码</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
