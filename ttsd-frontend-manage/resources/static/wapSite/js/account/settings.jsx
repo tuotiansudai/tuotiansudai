@@ -3,6 +3,11 @@ let commonFun = require('publicJs/commonFun');
 require('wapSiteStyle/account/settings.scss');
 
 let $settingBox = $('#settingBox');
+let $turnOnSendCaptcha = $('#turnOnSendCaptcha'),
+    $getCaptchaElement = $turnOnSendCaptcha.find('.get-captcha');
+
+let imageCaptchaForm = globalFun.$('#imageCaptchaForm'),
+    turnOffNoPasswordInvestForm = globalFun.$('#turnOffNoPasswordInvestForm');
 
 let UrlOption = {
     //关闭免密投资
@@ -35,6 +40,11 @@ $btnOpenNopwd.on('click',function() {
         OpenNoPasswordInvest(firstopen);
 
     }
+});
+
+//确认,第一步获取手机验证码
+$getCaptchaElement.on('click',function(event){
+    sendMsgCaptcha();
 });
 
 //去开启免密投资业务，第一次开启免密投资，需要去联动优势授权，之后不需要
@@ -83,18 +93,36 @@ function turnOffNoPassword() {
         btn: ['确定', '取消'],
         content: $('#turnOffNoPassword')
     },function() {
-        //确定关闭免密支付，然后会弹出需要输入验证码的框
+
+        // 第二步正式关闭免密投资
+        closeNoPasswordCheck();
 
         CommonLayerTip({
             btn: ['确定', '取消'],
             area:['380px', '300px'],
             content: $('#turnOnSendCaptcha')
         },function() {
-            //确认,第一步获取手机验证码
-            sendMsgCaptcha();
+            let captachElClass  =  turnOffNoPasswordInvestForm.captcha.className;
+            if(/error/.test(captachElClass)) {
+                return;
+            }
+            commonFun.useAjax({
+                url: UrlOption['disabled'],
+                type: 'POST',
+                data: $(turnOffNoPasswordInvestForm).serialize()
+            }, function (response) {
+                var data = response.data;
+                if (data.status) {
+                    CommonLayerTip({
+                        btn: ['我知道了'],
+                        content: '<div class="tip-result-success"> <em class="icon-success"></em><span>免密支付已关闭</span></div>',
+                    },function() {
+                        location.reload();
+                        layer.closeAll();
+                    });
+                }
 
-            // 第二步正式关闭免密投资
-            closeNoPasswordCheck();
+            });
 
         });
 
@@ -130,17 +158,14 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
 
 //发送短信验证码
 function sendMsgCaptcha() {
-    let $turnOnSendCaptcha = $('#turnOnSendCaptcha');
+
     let imageCaptchaForm = globalFun.$('#imageCaptchaForm'),
         turnOffNoPasswordInvestForm = globalFun.$('#turnOffNoPasswordInvestForm'),
         captchaFormData = $(imageCaptchaForm).serialize();
 
-   let $getCaptchaElement = $('.get-captcha',$(turnOffNoPasswordInvestForm)),
-       $codeNumber = $('.code-number-hidden',$turnOnSendCaptcha);
+   let $codeNumber = $('.code-number-hidden',$turnOnSendCaptcha);
 
     $getCaptchaElement.prop('disabled',true);
-
-    $getCaptchaElement.on('click',function(event){
 
         commonFun.useAjax({
             url:UrlOption['sendCaptcha'],
@@ -169,17 +194,11 @@ function sendMsgCaptcha() {
             commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),UrlOption['imageCaptcha']);
 
         });
-    });
-
 
 }
 
-
 //发起关闭免密投资流程
 function closeNoPasswordCheck() {
-
-    let imageCaptchaForm = globalFun.$('#imageCaptchaForm'),
-        turnOffNoPasswordInvestForm = globalFun.$('#turnOffNoPasswordInvestForm');
 
     let turnOffPassValidator = new ValidatorObj.ValidatorForm();
     //免密投资验证图形码
@@ -224,28 +243,6 @@ function closeNoPasswordCheck() {
         layer.msg(errorMsg);
 
     });
-
-    turnOffNoPasswordInvestForm.onsubmit=function(event) {
-        event.preventDefault();
-        let thisForm = this;
-        let errorMsg = turnOffPassValidator.start(thisForm.captcha);
-        layer.msg(errorMsg);
-        if (!errorMsg) {
-            $(thisForm).find(':submit').prop('disabled', true);
-            commonFun.useAjax({
-                url: UrlOption['disabled'],
-                type: 'POST',
-                data: $(thisForm).serialize()
-            }, function (response) {
-                $(thisForm).find(':submit').prop('disabled', false);
-                var data = response.data;
-                if (data.status) {
-                    location.reload();
-                }
-
-            });
-        }
-    }
 
 }
 
