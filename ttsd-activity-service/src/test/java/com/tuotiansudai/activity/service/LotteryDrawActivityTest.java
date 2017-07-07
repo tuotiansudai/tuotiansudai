@@ -18,20 +18,7 @@ public class LotteryDrawActivityTest {
 
     @Autowired
     private ExerciseVSWorkActivityService exerciseVSWorkActivityService;
-
-    @Test
-    public void testExerciseDraw(){
-        String mobile="13800000001";
-        DrawLotteryResultDto drawLotteryResultDto=lotteryDrawActivityService.drawPrizeByCompleteTask(mobile, ActivityCategory.EXERCISE_WORK_ACTIVITY);
-    }
-
-    @Test
-    public void testExchangePrize(){
-        String mobile="13800000001";
-       // exerciseVSWorkActivityService.exchangePrize(ExchangePrize.CAR_REFRIGRRATOR,mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY);
-        int i=exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(mobile,"zhukun");
-
-    }
+    
 
 
 }
