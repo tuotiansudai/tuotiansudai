@@ -15,7 +15,6 @@
                 <em>中国农业银行 </em>
                 单笔限额5万元，单日限额20万元
             </span>
-            <i class="icon-radio"></i>
         </li>
 
         <li>
@@ -24,7 +23,6 @@
                 <em>中国农业银行 </em>
                 单笔限额5万元，单日限额20万元
             </span>
-            <i class="icon-radio"></i>
         </li>
 
         <li>
@@ -33,9 +31,10 @@
                <em>中国农业银行 </em>
                 单笔限额5万元，单日限额20万元
             </span>
-            <i class="icon-radio"></i>
         </li>
-
     </ul>
+    <div class="info-item">
+        更多银行努力接入中…
+    </div>
 </div>
 </@global.main>

@@ -10,29 +10,31 @@
 <div class="my-account-content bank-card-manage" id="bankCardManage">
     <div class="info-note">请绑定持卡人本人的银行储蓄卡</div>
     <form  method="post" id="bankForm">
-    <ul class="input-list align-flex-start">
-        <li>
-            <label for="perName">持卡人</label>
-            <input type="text"  name="userName" id="perName" value="陈一" disabled>
-            <i class="icon-notice"></i>
-        </li>
-        <li class="bank-column">
-            <label for="perNum">银行</label>
-            <span class="bank-info bank-show key">
-                请选择银行
-            </span>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <label for="cardNumber">银行卡号</label>
-            <input type="text" name="cardNumber" id="cardNumber" placeholder="请输入银行卡号">
-            <i ></i>
-        </li>
-    </ul>
+        <ul class="input-list align-flex-start">
+            <li>
+                <label for="perName">持卡人</label>
+                <input type="text"  name="userName" id="perName" value="陈一" disabled>
+                <i class="icon-notice"></i>
+            </li>
+            <li class="bank-column">
+                <label for="perNum">银行</label>
+                <span class="bank-info bank-show key">
+                    请选择银行
+                </span>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <label for="cardNumber">银行卡号</label>
+                <input type="text" name="cardNumber" id="cardNumber" placeholder="请输入银行卡号">
+                <i ></i>
+            </li>
+        </ul>
         <input type="hidden" name="bankName" value="">
         <button type="submit" class="btn-wap-normal next-step"  disabled>确认提交</button>
-        </form>
-
+    </form>
+    <div class="contact-text">
+        客服电话：400-169-1188（服务时间：9:00-20:00）
+    </div>
     <div class="tip-user-info" style="display: none">
         <em>温馨提示</em>
         为了您的账户资金安全

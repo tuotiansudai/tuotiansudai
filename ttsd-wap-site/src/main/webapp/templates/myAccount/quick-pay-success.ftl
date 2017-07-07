@@ -10,7 +10,7 @@
 
     <div class="info">
         <i class="icon-success"></i>
-        <em>银行卡绑定成功</em>
+        <em>快捷支付开通成功</em>
 
         <ul class="input-list">
             <li>
