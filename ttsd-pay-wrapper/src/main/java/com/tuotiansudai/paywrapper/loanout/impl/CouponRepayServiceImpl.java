@@ -9,7 +9,9 @@ import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -26,7 +28,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -82,9 +83,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -228,7 +226,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        if(loanModel == null){
+        if (loanModel == null) {
             logger.error(MessageFormat.format("[Generate_Coupon_Repay:] loanId:{0} 优惠券回款计划生成失败，标的不存在", String.valueOf(loanId)));
             return false;
         }
@@ -411,16 +409,19 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             if (!couponRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
 
                 this.updateCouponRepayAfterCallback(investModel.getId(), couponRepayModel, isAdvanced);
-
-                amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
+                AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualInterest(),
                         couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-                amountTransfer.transferOutBalance(couponRepayModel.getLoginName(),
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
+
+                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualFee(),
                         UserBillBusinessType.INVEST_FEE, null, null);
+
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
 
                 String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                         couponModel.getCouponType().getName(),

@@ -4,8 +4,10 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -23,7 +25,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,9 +61,6 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private SystemBillService systemBillService;
 
     @Autowired
-    private AmountTransfer amountTransfer;
-
-    @Autowired
     private PaySyncClient paySyncClient;
 
     @Autowired
@@ -79,7 +77,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
             logger.error("[Experience Repay] {} investId  is not exist ", investId);
             return false;
         }
-        if(investModel.getLoanId() != 1){
+        if (investModel.getLoanId() != 1) {
             logger.error("[Experience Repay] {} investId  is not NEWBIE ", investId);
             return false;
         }
@@ -126,7 +124,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
         String requestStatus = redisWrapperClient.hget(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId));
         if (SyncRequestStatus.READY.name().equalsIgnoreCase(requestStatus) || SyncRequestStatus.FAILURE.name().equalsIgnoreCase(requestStatus)) {
-            if(repayAmount > 0){
+            if (repayAmount > 0) {
                 try {
                     redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investId), SyncRequestStatus.SENT.name());
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
@@ -173,7 +171,9 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         investRepayModel.setStatus(RepayStatus.COMPLETE);
         investRepayMapper.update(investRepayModel);
 
-        amountTransfer.transferInBalance(investModel.getLoginName(), investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
+                investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                 investModel.getLoginName(), String.valueOf(investRepayModel.getRepayAmount()));

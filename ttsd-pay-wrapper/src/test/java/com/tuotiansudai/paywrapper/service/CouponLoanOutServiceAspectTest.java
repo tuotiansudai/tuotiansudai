@@ -3,22 +3,13 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -52,9 +43,6 @@ public class CouponLoanOutServiceAspectTest {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -93,7 +81,7 @@ public class CouponLoanOutServiceAspectTest {
                 "</html>");
         mockResponse.setResponseCode(200);
 
-        for(int i=0;i<8;i++)
+        for (int i = 0; i < 8; i++)
             mockWebServer.enqueue(mockResponse);
 
         return mockWebServer;
@@ -209,8 +197,8 @@ public class CouponLoanOutServiceAspectTest {
 
     private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
         AccountModel am = new AccountModel(loginName, loginName, loginName, new Date());
+        am.setBalance(initAmount);
         accountMapper.create(am);
-        amountTransfer.transferInBalance(loginName, IdGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }
 
     private void mockLoan(long loanId, String loanerLoginName) {
@@ -244,7 +232,10 @@ public class CouponLoanOutServiceAspectTest {
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 
-        amountTransfer.freeze(loginName, im.getId(), amount, UserBillBusinessType.INVEST_SUCCESS, null, null);
+        AccountModel account = accountMapper.findByLoginName(loginName);
+        account.setBalance(account.getBalance() - amount);
+        account.setFreeze(account.getFreeze() + amount);
+        accountMapper.update(account);
         return im.getId();
     }
 }

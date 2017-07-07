@@ -10,10 +10,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
-import com.tuotiansudai.message.RepaySuccessMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -38,7 +35,6 @@ import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,9 +77,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private SystemBillMapper systemBillMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -252,7 +245,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // update agent user bill
         UserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY;
-        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), businessType, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), businessType, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         logger.info(MessageFormat.format("[Normal Repay {0}] loan repay callback transfer out agent({1}) amount({2}) ",
                 String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(currentLoanRepay.getRepayAmount())));
 
@@ -307,7 +301,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.READY.name());
         logger.info(MessageFormat.format("[Normal Repay {0}] put loan repay id into redis READY", String.valueOf(loanRepayId)));
 
-        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, false));
+        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess, new RepaySuccessMessage(loanRepayId, false));
         logger.info(MessageFormat.format("[[Normal Repay {0}]: 正常还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
@@ -436,8 +430,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             return null;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(),false));
-        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放投资人收益回调消息发送成功,notifyRequestId:{0}",String.valueOf(callbackRequest.getId())));
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(), false));
+        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放投资人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
@@ -563,20 +557,22 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // interest user bill
         long paybackAmount = currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest();
-        amountTransfer.transferInBalance(investModel.getLoginName(),
+        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
                 investRepayId,
                 paybackAmount,
                 currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
                 null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
         logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update user bill payback amount({2})",
                 String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount)));
 
         // fee user bill
-        amountTransfer.transferOutBalance(investModel.getLoginName(),
+        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
                 investRepayId,
                 currentInvestRepay.getActualFee(),
                 UserBillBusinessType.INVEST_FEE, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
 
         logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update user bill fee amount({2})",
                 String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(currentInvestRepay.getActualFee())));
