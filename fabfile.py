@@ -96,6 +96,10 @@ def check_worker_status():
     local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
 
 
+def clear_worker_status():
+    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:clearWorkerMonitorStatus')
+
+
 @roles('static')
 def deploy_static():
     upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_all.zip', remote_dir='/workspace')
@@ -385,6 +389,7 @@ def remove_ask_rest_logs():
     remove_logs_before_7days('/var/log/tuotian/ask-rest')
     remove_nginx_logs()
 
+
 @roles('anxin')
 @parallel
 def remove_anxin_logs():
@@ -520,9 +525,11 @@ def restart_logstash(service):
     """
     Usage: fab restart_logstash:web
     """
+
     def get_password():
         with open('/workspace/ci/def', 'rb') as f:
             return f.readline().strip()
+
     env.password = get_password()
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,

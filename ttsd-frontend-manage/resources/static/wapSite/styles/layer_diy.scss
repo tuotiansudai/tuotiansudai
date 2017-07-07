@@ -7,6 +7,15 @@
     padding:20px;
   }
 
+  .pop-title {
+    display: block;
+    text-align: center;
+    //padding-bottom: 20px;
+    padding-top: 10px;
+    font-size: 18px;
+    color: #A2A2A2;
+  }
+
   .layui-layer-btn {
     border-top:1px solid #E5E5E5;
     text-align: center;
@@ -22,7 +31,10 @@
       &+a {
         border-right:1px solid #E5E5E5;
       }
-      &:nth-last-child(1) {
+      &.layui-layer-btn0 {
+        color: #FF473C;
+      }
+      &.layui-layer-btn1 {
         color: #525252;
       }
     }

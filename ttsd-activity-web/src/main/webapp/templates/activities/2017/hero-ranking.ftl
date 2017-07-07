@@ -1,8 +1,11 @@
-<#import "../macro/global.ftl" as global>
+<#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.hero_ranking_2017}" pageJavascript="${js.hero_ranking_2017}" activeNav="" activeLeftNav="" title="英雄排位场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,实物大奖,加息券" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
 
 <div class="banner-slide" id="bannerSlide"></div>
 <div class="activity-page-frame page-width" id="activityPageFrame">
+    <div class="reg-tag-current" style="display: none">
+        <#include '../../module/fast-register.ftl' />
+    </div>
     <div class="rule-box clearfix">
         <dl class="title-rule">
             <dt>活动规则</dt>
@@ -37,19 +40,20 @@
 
         <dl class="sort-box" id="sortBox">
             <dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
-            <dd class="ranking">我的排名：
+            <dd class="ranking">
                 <@global.isAnonymous>
-                    <span class="show-login">登录后查看</span>
+                    我的排名： <a href="/login" target="_blank" class="get-rank">登录</a>
                 </@global.isAnonymous>
+
                 <@global.isNotAnonymous>
                     <#--<#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if>-->
-                    <i class="ranking-order"></i>
+                    我的排名：<i class="ranking-order"></i>
                 </@global.isNotAnonymous>
 
             </dd>
             <dd class="fr"><span class="is-today">今日</span>投资总额：
                 <@global.isAnonymous>
-                    <span class="show-login">登录后查看</span>
+                    <a href="/login" target="_blank" class="get-rank">登录</a>
                 </@global.isAnonymous>
             <@global.isNotAnonymous>
                 <i class="total">${(investAmount/100)?string('0.00')}</i>元
@@ -87,7 +91,8 @@
         4、每日投资排行榜排名将在活动页面实时更新。加息券奖励在中奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
         5、拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；<br/>
         6、为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；<br/>
-        7、拓天速贷在法律范围内保留对本活动的最终解释权。
+        7、拓天速贷在法律范围内保留对本活动的最终解释权；<br/>
+        8、理财有风险，投资需谨慎。
     </div>
 </div>
 
@@ -114,5 +119,4 @@
     <% } %>
 </script>
 
-    <#include "../module/login-tip.ftl" />
 </@global.main>

@@ -4,6 +4,7 @@ require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
 let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
+require('activityJsModule/fast_register');
 
 
 let topimg=require('../images/single-rank/top-image.jpg');

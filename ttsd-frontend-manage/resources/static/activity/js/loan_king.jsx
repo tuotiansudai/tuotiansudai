@@ -1,4 +1,5 @@
 require("activityStyle/loan_king.scss");
+require('activityJsModule/fast_register');
 
 let topimg=require('../images/loan-king/top-img.jpg'),
 	topimgphone=require('../images/loan-king/top-img-phone.jpg'),
