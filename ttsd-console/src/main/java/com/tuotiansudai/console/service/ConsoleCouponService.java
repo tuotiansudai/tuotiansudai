@@ -316,4 +316,27 @@ public class ConsoleCouponService {
         couponMapper.updateCoupon(couponModel);
         return true;
     }
+
+    public int findCouponsCountByTypeRedAndMoney(String couponType,int amount,String couponSource){return couponMapper.findCouponsCountByTypeRedAndMoney(couponType,couponSource,amount*100);}
+
+    public List<CouponDto> findCouponsByTypeRedAndMoney(int index, int pageSize,String couponType,int amount,String couponSource) {
+        List<CouponModel> couponModels=couponMapper.findCouponsByTypeRedAndMoney(couponType,couponSource,amount*100,(index - 1) * pageSize,pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+            if ((CouponType.RED_ENVELOPE.getName().equals(couponType) || CouponType.INTEREST_COUPON.getName().equals(couponType)) && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
+                    couponModel.setImportIsRight(false);
+                } else {
+                    couponModel.setImportIsRight(true);
+                }
+            }
+        }
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
+
+    }
 }

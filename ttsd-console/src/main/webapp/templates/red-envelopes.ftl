@@ -5,37 +5,37 @@
 <!-- content area begin -->
 <div class="col-md-10">
 
-    <form action="" class="form-inline query-build">
-        <div class="form-group">
-            <label for="control-label">优惠券类型</label>
-            <select class="selectpicker operationType" data-style="btn-default" name="operationType" id="operationType">
-                <option value="">全部</option>
-                <option value="interest">加息券</option>
-                <option value="现金红包">现金红包</option>
-                <option value="生日月">生日月</option>
-                <option value="体验券">体验券</option>
-            </select>
-        </div>
+    <#--<form action="" class="form-inline query-build">-->
+        <#--<div class="form-group">-->
+            <#--<label>优惠券类型</label>-->
+            <#--<select  name="couponType" id="operationType">-->
+                <#--<option value="">全部</option>-->
+                <#--<option value="INTEREST_COUPON">加息券</option>-->
+                <#--<option value="RED_ENVELOPE">现金红包</option>-->
+                <#--<option value="BIRTHDAY_COUPON">生日月</option>-->
+                <#--<option value="EXPERIENCE">体验券</option>-->
+            <#--</select>-->
+        <#--</div>-->
 
-        <div class="form-group">
-            <label for="control-label">来源描述</label>
-            <input type="text" id="couponSource" name="couponSource" class="form-control jq-loginName" value="${couponSource!}">
-        </div>
+        <#--<div class="form-group">-->
+            <#--<label for="control-label">来源描述</label>-->
+            <#--<input type="text" id="couponSource" name="couponSource" class="form-control jq-loginName" value="${couponSource!}">-->
+        <#--</div>-->
 
-        <div class="form-group">
-            <label for="control-label">金额</label>
-            <input type="text" id="amount" name="amount" class="form-control jq-loginName" value="${amount!}">
-        </div>
+        <#--<div class="form-group">-->
+            <#--<label for="control-label">金额</label>-->
+            <#--<input type="text" id="amount" name="amount" class="form-control jq-loginName" value="${amount!}">-->
+        <#--</div>-->
 
-        <button class="btn btn-primary search" type="submit">查询</button>
+        <#--<button class="btn btn-primary search" type="submit">查询</button>-->
 
-    </form>
-    <#--<div class="col-md-12" style="margin-bottom: 40px">-->
-        <#--<a href="/activity-manage/coupons" class="btn btn-default" style="margin-right: 60px">体验券</a>-->
-        <#--<a href="/activity-manage/interest-coupons" class="btn btn-default" style="margin-right: 60px">加息券</a>-->
-        <#--<a href="/activity-manage/red-envelopes" class="btn btn-default btn-warning" style="margin-right: 60px">现金红包</a>-->
-        <#--<a href="/activity-manage/birthday-coupons" class="btn btn-default">生日月</a>-->
-    <#--</div>-->
+    <#--</form>-->
+    <div class="col-md-12" style="margin-bottom: 40px">
+        <a href="/activity-manage/coupons" class="btn btn-default" style="margin-right: 60px">体验券</a>
+        <a href="/activity-manage/interest-coupons" class="btn btn-default" style="margin-right: 60px">加息券</a>
+        <a href="/activity-manage/red-envelopes" class="btn btn-default btn-warning" style="margin-right: 60px">现金红包</a>
+        <a href="/activity-manage/birthday-coupons" class="btn btn-default">生日月</a>
+    </div>
 
 
 

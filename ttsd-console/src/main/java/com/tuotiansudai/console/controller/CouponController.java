@@ -496,4 +496,24 @@ public class CouponController {
         modelAndView.addObject("pointPrizeWinnerGroupDetails", userPointPrizeMapper.findByPointPrizeId(pointPrizeId));
         return modelAndView;
     }
+
+    @RequestMapping(value = "/coupons-list",method=RequestMethod.GET)
+    public ModelAndView CouponsList(@RequestParam(value = "couponType",required = false) String couponType,
+                                    @RequestParam(value = "couponSource",required = false) String couponSource,
+                                    @RequestParam(value = "amount",required = false, defaultValue = "0") int amount,
+                                    @RequestParam(value = "index", required = false, defaultValue = "1") int index){
+        int pageSize=10;
+        ModelAndView modelAndView=new ModelAndView("/coupons");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize,couponType,amount,couponSource));
+        int couponsCount = consoleCouponService.findCouponsCountByTypeRedAndMoney(couponType,amount,couponSource);
+        modelAndView.addObject("couponsCount", couponsCount);
+        long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
 }
