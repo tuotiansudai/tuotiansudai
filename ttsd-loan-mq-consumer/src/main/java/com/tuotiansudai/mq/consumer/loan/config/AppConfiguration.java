@@ -15,6 +15,8 @@ import javax.sql.DataSource;
         "com.tuotiansudai.transfer",
         "com.tuotiansudai.util",
         "com.tuotiansudai.client",
+        "com.tuotiansudai.coupon",
+        "com.tuotiansudai.membership",
         "com.tuotiansudai.log"
         })
 @PropertySource(ignoreResourceNotFound = true, value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
