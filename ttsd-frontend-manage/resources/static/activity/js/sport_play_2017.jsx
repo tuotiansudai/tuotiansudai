@@ -177,4 +177,3 @@ $('body').on('click', '.close-tip', function(event) {
     layer.closeAll();
 });
 
-
