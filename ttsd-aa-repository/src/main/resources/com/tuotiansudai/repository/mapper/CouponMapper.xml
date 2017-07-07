@@ -250,13 +250,13 @@
         ON c.id = temp.coupon_id
         where c.user_group != 'EXCHANGER'
         <if test="couponType != null and couponType=='EXPERIENCE'">
-            and c.c.coupon_type IN ('NEWBIE_COUPON','INVEST_COUPON')
+            and c.coupon_type IN ('NEWBIE_COUPON','INVEST_COUPON')
         </if>
         <if test="couponType != null and couponType != '' and couponType !='EXPERIENCE' ">
-            and c.c.coupon_type=#{couponType}
+            and c.coupon_type=#{couponType}
         </if>
-        <if test="couponSource != null and couponSource!=''">
-            and c.coupon_source like '%#{couponSource}%'
+        <if test="couponSource != null and couponSource.trim() !=''">
+            and c.coupon_source like concat(concat('%',#{couponSource}),'%')
         </if>
         <if test="amount!=0">
             and c.amount=#{amount}
@@ -266,15 +266,16 @@
     </select>
 
     <select id="findCouponsCountByTypeRedAndMoney" parameterType="map" resultType="int">
-        select count(*) from coupon where user_group != 'EXCHANGER'
+        select count(*) from coupon c
+        where c.user_group != 'EXCHANGER'
           <if test="couponType != null and couponType=='EXPERIENCE'">
-              and c.c.coupon_type IN ('NEWBIE_COUPON','INVEST_COUPON')
+              and c.coupon_type IN ('NEWBIE_COUPON','INVEST_COUPON')
           </if>
           <if test="couponType != null and couponType != '' and couponType !='EXPERIENCE' ">
-              and c.c.coupon_type=#{couponType}
+              and c.coupon_type=#{couponType}
           </if>
-          <if test="couponSource !=null and couponSource!=''">
-              and c.coupon_source like '%#{couponSource}%'
+          <if test="couponSource !=null and couponSource.trim() !='' ">
+              and c.coupon_source like concat(concat('%',#{couponSource}),'%')
           </if>
           <if test="amount!=0">
               and c.amount=#{amount}

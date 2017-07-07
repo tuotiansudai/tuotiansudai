@@ -503,7 +503,7 @@ public class CouponController {
                                     @RequestParam(value = "amount",required = false, defaultValue = "0") int amount,
                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index){
         int pageSize=10;
-        ModelAndView modelAndView=new ModelAndView("/coupons");
+        ModelAndView modelAndView=new ModelAndView("/coupons-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize,couponType,amount,couponSource));
@@ -514,6 +514,9 @@ public class CouponController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("couponType", couponType);
+        modelAndView.addObject("couponSource", couponSource);
+        modelAndView.addObject("amount", amount==0?"":amount);
         return modelAndView;
     }
 }
