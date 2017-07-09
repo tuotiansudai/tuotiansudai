@@ -7,16 +7,14 @@
 
     <form action="/activity-manage/coupons-list" class="form-inline query-build" id="couponList">
 
-        <input type="hidden" name="couponTypeName" value="${couponType!}" id="couponTypeName">
-
         <div class="form-group">
             <label>优惠券类型</label>
             <select  name="couponType" id="operationType">
-                <option value="">全部</option>
-                <option value="INTEREST_COUPON">加息券</option>
-                <option value="RED_ENVELOPE">现金红包</option>
-                <option value="BIRTHDAY_COUPON">生日月</option>
-                <option value="EXPERIENCE">体验券</option>
+                <option value="" <#if couponType =="" >selected</#if> >全部</option>
+                <option value="INTEREST_COUPON" <#if couponType=="INTEREST_COUPON">selected</#if> >加息券</option>
+                <option value="RED_ENVELOPE" <#if couponType=="RED_ENVELOPE">selected</#if> >现金红包</option>
+                <option value="BIRTHDAY_COUPON" <#if couponType=="BIRTHDAY_COUPON">selected</#if> >生日月</option>
+                <option value="EXPERIENCE" <#if couponType=="EXPERIENCE">selected</#if> >体验券</option>
             </select>
         </div>
 
@@ -239,7 +237,7 @@
         <ul class="pagination">
             <li>
             <#if hasPreviousPage>
-                <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
+                <a href="?couponType=${couponType!}&couponSource=${couponSource!}&amount=${amount!}&index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
                 <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -249,7 +247,7 @@
             <li><a>${index}</a></li>
             <li>
             <#if hasNextPage>
-                <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
+                <a href="?couponType=${couponType!}&couponSource=${couponSource!}&amount=${amount!}&index=${index+1}&pageSize=${pageSize}" aria-label="Next">
                 <#else>
                     <a href="#" aria-label="Next">
                     </#if>

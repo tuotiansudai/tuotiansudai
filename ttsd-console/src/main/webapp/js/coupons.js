@@ -142,11 +142,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker','bootstrapSelect','Val
 
         $('.export-coupons-list').click(function () {
              var couponType=$('#operationType').val();
-             var couponTypeName=$('#couponTypeName').val();
-             if(couponTypeName!=''){
+             if(couponType!=''){
                  location.href = "/export/coupons-list?"+$('#couponList').serialize();
              }else{
-                layer.msg('至少要根据优惠券类型查询后才能导出');
+                layer.msg('优惠券类型不能为空');
              }
         });
 

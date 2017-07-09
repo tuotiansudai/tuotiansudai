@@ -514,8 +514,8 @@ public class CouponController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
-        modelAndView.addObject("couponType", couponType);
-        modelAndView.addObject("couponSource", couponSource);
+        modelAndView.addObject("couponType", couponType==null?"":couponType);
+        modelAndView.addObject("couponSource", couponSource==null?"":couponSource);
         modelAndView.addObject("amount", amount==0?"":amount);
         return modelAndView;
     }
