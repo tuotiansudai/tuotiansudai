@@ -2,7 +2,6 @@ package com.tuotiansudai.activity.service;
 
 import com.tuotiansudai.activity.repository.dto.ExchangePrizeDto;
 import com.tuotiansudai.activity.repository.mapper.UserExchangePrizeMapper;
-import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
@@ -41,9 +40,6 @@ public class ExerciseVSWorkActivityService {
     private InvestMapper investMapper;
 
     @Autowired
-    private UserLotteryPrizeMapper userLotteryPrizeMapper;
-
-    @Autowired
     private UserExchangePrizeMapper userexchangePrizeMapper;
 
     @Autowired
@@ -56,6 +52,9 @@ public class ExerciseVSWorkActivityService {
     private LotteryDrawActivityService lotteryDrawActivityService;
 
     public int drawTimeByLoginNameAndActivityCategory(String mobile){
+        if(new Date().before(ActivityStartTime) || new Date().after(ActivityEndTime)){
+            return 0;
+        }
         UserModel userModel=userMapper.findByMobile(mobile);
         return lotteryDrawActivityService.getExerciseVSWorkDrawTime(userModel,ActivityCategory.EXERCISE_WORK_ACTIVITY)<=0?0:lotteryDrawActivityService.getExerciseVSWorkDrawTime(userModel,ActivityCategory.EXERCISE_WORK_ACTIVITY);
 
