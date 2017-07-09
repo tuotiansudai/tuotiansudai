@@ -11,7 +11,6 @@
         <result column="mobile" property="mobile"></result>
         <result column="login_name" property="loginName"></result>
         <result column="user_name" property="userName"></result>
-        <result column="invest_amount" property="investAmount"></result>
         <result column="prize" property="prize"></result>
         <result column="exchange_time" property="exchangeTime"></result>
         <result column="activity_category" property="activityCategory"></result>
@@ -20,7 +19,6 @@
     <resultMap id="userExchangePrizeView" type="com.tuotiansudai.activity.repository.model.UserExchangePrizeModel">
         <result column="mobile" property="mobile"></result>
         <result column="user_name" property="userName"></result>
-        <result column="invest_amount" property="investAmount"></result>
         <result column="prize" property="prize"></result>
         <result column="exchange_time" property="exchangeTime"></result>
         <result column="login_name" property="loginName"></result>
@@ -28,8 +26,8 @@
     </resultMap>
 
     <insert id="create" parameterType="userExchangePrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`user_exchange_prize`(`id`,`mobile`,`login_name`,`user_name`,`invest_amount`,`prize`,`exchange_time`,`activity_category`)
-        VALUES(#{id},#{mobile},#{loginName},#{userName},#{investAmount},#{prize},#{exchangeTime},#{activityCategory});
+        INSERT INTO `edxactivity`.`user_exchange_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`exchange_time`,`activity_category`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{exchangeTime},#{activityCategory});
 
     </insert>
 
@@ -39,7 +37,6 @@
         `mobile` = #{mobile},
         `login_name` = #{loginName},
         `user_name` = #{userName},
-        `invest_amount` = #{investAmount},
         `prize` = #{prize},
         `exchange_time` = #{exchangeTime},
         `activity_category` = #{activityCategory}
@@ -47,7 +44,7 @@
     </update>
 
     <select id="findUserExchangePrizeViews" parameterType="map" resultMap="userExchangePrizeView">
-        select p.exchange_time,p.mobile,p.user_name,p.prize,p.login_name,p.invest_amount from `edxactivity`.`user_exchange_prize` p
+        select p.exchange_time,p.mobile,p.user_name,p.prize,p.login_name from `edxactivity`.`user_exchange_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
@@ -72,7 +69,7 @@
     </select>
 
     <select id="findUserExchangePrizeByMobile" parameterType="map" resultMap="userExchangePrizeModel">
-        select `id`,`mobile`,`login_name`,`user_name`,`invest_amount`,`prize`,`exchange_time`,`activity_category` from `edxactivity`.`user_exchange_prize`
+        select `id`,`mobile`,`login_name`,`user_name`,`prize`,`exchange_time`,`activity_category` from `edxactivity`.`user_exchange_prize`
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and mobile = '${mobile}'

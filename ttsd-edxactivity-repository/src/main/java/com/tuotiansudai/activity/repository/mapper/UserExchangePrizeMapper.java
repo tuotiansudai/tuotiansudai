@@ -25,7 +25,7 @@ public interface UserExchangePrizeMapper {
                                                              @Param(value = "index") Integer index,
                                                              @Param(value = "pageSize") Integer pageSize);
 
-    List<UserExchangePrizeModel> findUserExchangePrizeByMobile(@Param(value = "mobile") String mobile,
+    UserExchangePrizeModel findUserExchangePrizeByMobile(@Param(value = "mobile") String mobile,
                                                       @Param(value = "activityCategory") ActivityCategory activityCategory);
 
 

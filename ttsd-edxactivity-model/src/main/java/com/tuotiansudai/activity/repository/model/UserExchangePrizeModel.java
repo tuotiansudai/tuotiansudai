@@ -13,8 +13,6 @@ public class UserExchangePrizeModel implements Serializable {
 
     private String userName;
 
-    private long investAmount;
-
     private ExchangePrize prize;
 
     private Date exchangeTime;
@@ -23,11 +21,10 @@ public class UserExchangePrizeModel implements Serializable {
 
     public UserExchangePrizeModel() {}
 
-    public UserExchangePrizeModel(String mobile, String loginName, String userName, long investAmount,ExchangePrize prize, Date exchangeTime, ActivityCategory activityCategory) {
+    public UserExchangePrizeModel(String mobile, String loginName, String userName, ExchangePrize prize, Date exchangeTime, ActivityCategory activityCategory) {
         this.mobile = mobile;
         this.loginName = loginName;
         this.userName = userName;
-        this.investAmount = investAmount;
         this.prize = prize;
         this.exchangeTime = exchangeTime;
         this.activityCategory = activityCategory;
@@ -63,14 +60,6 @@ public class UserExchangePrizeModel implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public long getInvestAmount() {
-        return investAmount;
-    }
-
-    public void setInvestAmount(long investAmount) {
-        this.investAmount = investAmount;
     }
 
     public ExchangePrize getPrize() {

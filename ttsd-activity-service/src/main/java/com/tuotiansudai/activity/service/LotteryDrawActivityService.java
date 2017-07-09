@@ -184,12 +184,6 @@ public class LotteryDrawActivityService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         int drawTime = countDrawLotteryTime(mobile, activityCategory);
-
-        if(activityCategory.equals(ActivityCategory.EXERCISE_WORK_ACTIVITY)) {
-            int sumEveryDayDrawTime=getEachEveryDayDrawCountByMobile(userModel,activityCategory);
-            drawTime=drawTime+sumEveryDayDrawTime;
-        }
-
         if (drawTime <= 0) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
@@ -427,7 +421,7 @@ public class LotteryDrawActivityService {
             case CELEBRATION_SINGLE_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case EXERCISE_WORK_ACTIVITY:
-                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+                return getExerciseVSWorkDrawTime(userModel, activityCategory);
 
         }
         return lotteryTime;
@@ -527,7 +521,6 @@ public class LotteryDrawActivityService {
                     for (InvestModel investModel:investModels) {
                         time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
                     }
-                    time=10;
                     break;
             }
         }
@@ -623,30 +616,29 @@ public class LotteryDrawActivityService {
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
     }
 
-    public int getEachEveryDayDrawCountByMobile(UserModel userModel,ActivityCategory activityCategory){
+    public int getExerciseVSWorkDrawTime(UserModel userModel,ActivityCategory activityCategory){
+        int investDrawTime=0;
+        int sumToDayIsDraw=1;
         List<String> activityTime = getActivityTime(activityCategory);
         DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
         DateTime endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
 
-        int time=0;
         List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime.toDate(),endTime.toDate());
         for (InvestModel investModel:investModels) {
-            time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
+            investDrawTime+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
         }
-        if (time==0){
+        if (investDrawTime==0){
             return toDayIsDrawByMobile(userModel.getMobile(),activityCategory)==0?1:0;
         }
 
-        int count=0;
-        Date nowDate=DateTime.now().withTimeAtStartOfDay().plusDays(1).toDate();
+        Date yesterdayDate=DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
         startTime=startTime.withTimeAtStartOfDay();
-        while (startTime.toDate().before(nowDate)){
-            count+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
-                    startTime.toDate() , startTime.plusDays(1).plusMillis(-1).toDate()) == 0 ? 0 : 1;
+        while (startTime.toDate().before(yesterdayDate)){
+            sumToDayIsDraw+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                    startTime.toDate() , startTime.plusDays(1).minusMillis(1).toDate()) == 0 ? 0 : 1;
             startTime=startTime.plusDays(1);
         }
-
-        return count+ (toDayIsDrawByMobile(userModel.getMobile(),activityCategory)==0?1:0);
+        return sumToDayIsDraw + investDrawTime - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory, null, null);
     }
 
 

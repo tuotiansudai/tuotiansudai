@@ -34,7 +34,7 @@
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <p>我的累计投资金额：<span>${investAmount}元</span></p>
-                    <p>当前选择奖品：<span id="selectGift">${exchangePrize}</span></p>
+                    <p>当前选择奖品：<span id="selectGift"><#if exchangePrize?? >${exchangePrize}</#if><#if !exchangePrize?? >您还未兑换奖品</#if></span></p>
                 </@global.isNotAnonymous>
                 
                 <p class="tip-text">活动期间，根据累计投资金额，可兑换不同档奖品， 每档奖品默认可2选1兑换，不同档的奖品不可同时获得。</p>

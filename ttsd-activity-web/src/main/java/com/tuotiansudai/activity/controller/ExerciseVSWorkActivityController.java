@@ -7,6 +7,7 @@ import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.service.ExerciseVSWorkActivityService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,13 @@ public class ExerciseVSWorkActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getDrawPrizeTime(){
         ModelAndView modelAndView = new ModelAndView("/activities/2017/sport-play", "responsive", true);
-        modelAndView.addObject("drawCount", exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
-        modelAndView.addObject("investAmount",exerciseVSWorkActivityService.sumInvestByLoginNameExceptTransferAndTime(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("exchangePrize",exerciseVSWorkActivityService.getExchangePrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
-        modelAndView.addObject("prize",exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName())==null?"":exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()).name());
+        String loginName=LoginUserInfo.getLoginName();
+        modelAndView.addObject("drawCount", loginName==null?0:exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile()));
+        modelAndView.addObject("investAmount",loginName==null?null: AmountConverter.convertCentToString(exerciseVSWorkActivityService.sumInvestByLoginNameExceptTransferAndTime(loginName)));
+        modelAndView.addObject("exchangePrize", loginName==null ?null :
+                exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile())==null?null:exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile()).getPrizeName());
+        modelAndView.addObject("prize",loginName==null ?"" :
+                exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile())==null?"":exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile()).name());
         return modelAndView;
     }
 

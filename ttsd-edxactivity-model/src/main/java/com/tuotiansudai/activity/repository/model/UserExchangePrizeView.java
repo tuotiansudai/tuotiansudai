@@ -17,6 +17,16 @@ public class UserExchangePrizeView implements Serializable {
 
     private Date exchangeTime;
 
+    public UserExchangePrizeView() {}
+
+    public UserExchangePrizeView(UserExchangePrizeModel userExchangePrizeModel,String amount){
+        this.mobile=userExchangePrizeModel.getMobile();
+        this.loginName=userExchangePrizeModel.getLoginName();
+        this.userName=userExchangePrizeModel.getUserName();
+        this.prize=userExchangePrizeModel.getPrize().getPrizeName();
+        this.investAmount=amount;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -74,11 +84,5 @@ public class UserExchangePrizeView implements Serializable {
     }
 
     private String activityCategory;
-
-    public UserExchangePrizeView() {}
-
-
-
-
 
 }

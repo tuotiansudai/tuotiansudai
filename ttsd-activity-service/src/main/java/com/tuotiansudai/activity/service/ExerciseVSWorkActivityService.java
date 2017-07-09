@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.service;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.ExchangePrizeDto;
 import com.tuotiansudai.activity.repository.mapper.UserExchangePrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
@@ -17,13 +16,12 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -57,65 +55,25 @@ public class ExerciseVSWorkActivityService {
     @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
-    public int drawTimeByLoginNameAndActivityCategory(String mobile,String loginName){
-        if(Strings.isNullOrEmpty(loginName)){
-            return 0;
-        }
-        int time=0;
-        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,ActivityStartTime,ActivityEndTime);
-        for (InvestModel investModel:investModels) {
-            time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
-        }
-
+    public int drawTimeByLoginNameAndActivityCategory(String mobile){
         UserModel userModel=userMapper.findByMobile(mobile);
-        int sumEveryDayDraw=lotteryDrawActivityService.getEachEveryDayDrawCountByMobile(userModel,ActivityCategory.EXERCISE_WORK_ACTIVITY);
+        return lotteryDrawActivityService.getExerciseVSWorkDrawTime(userModel,ActivityCategory.EXERCISE_WORK_ACTIVITY)<=0?0:lotteryDrawActivityService.getExerciseVSWorkDrawTime(userModel,ActivityCategory.EXERCISE_WORK_ACTIVITY);
 
-        return time > 0 ? time - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, ActivityCategory.EXERCISE_WORK_ACTIVITY, null, null)+sumEveryDayDraw : time+sumEveryDayDraw;
     }
 
-    public String sumInvestByLoginNameExceptTransferAndTime(String loginName){
-        if(Strings.isNullOrEmpty(loginName)){
-            return "0";
-        }
-
-        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,ActivityStartTime,ActivityEndTime);
-        long amount=0;
-        for (InvestModel investModel:investModels) {
-            amount+=investModel.getAmount();
-        }
-        return AmountConverter.convertCentToString(amount);
+    public long sumInvestByLoginNameExceptTransferAndTime(String loginName){
+        return investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,ActivityStartTime,ActivityEndTime).stream().mapToLong(i->i.getAmount()).sum();
     }
 
-    public String getExchangePrizeByMobile(String mobile,String loginName){
-        if(Strings.isNullOrEmpty(loginName)){
-            return "0";
-        }
-        ExchangePrize exchangePrize=getPrizeByMobile(mobile,loginName);
-        if(exchangePrize==null){
-            return "您还未兑换奖品";//没有兑换过
-        }
-        return exchangePrize.getPrizeName();
+    public ExchangePrize getPrizeByMobile(String mobile){
+        return userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY)==null?null:
+                userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY)==null?null:userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY).getPrize();
     }
 
-    public ExchangePrize getPrizeByMobile(String mobile,String loginName){
-        if(Strings.isNullOrEmpty(loginName)){
-            return null;
-        }
-        List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,ActivityCategory.EXERCISE_WORK_ACTIVITY);
-        if (userExchangePrizeModels.size()==0){
-            return null;     //没有兑换奖品
-        }
-        return userExchangePrizeModels.get(0).getPrize();
-    }
-
+    @Transactional
     public ExchangePrizeDto exchangePrize(ExchangePrize exchangePrize, String mobile, ActivityCategory activityCategory){
-       if (StringUtils.isEmpty(mobile)){
+        if (StringUtils.isEmpty(mobile)){
            return new ExchangePrizeDto(4); //还未登录
-       }
-
-        UserModel userModel= userMapper.findByMobile(mobile);
-        if (userModel==null){
-            return new ExchangePrizeDto(2);//用户不存在
         }
 
         Date nowDate=DateTime.now().toDate();
@@ -123,11 +81,14 @@ public class ExerciseVSWorkActivityService {
             return new ExchangePrizeDto(3);//不在活动时间范围内！
         }
 
-        List<UserExchangePrizeModel> userExchangePrizeModels=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
+        UserModel userModel= userMapper.findByMobile(mobile);
+        userMapper.lockByLoginName(userModel.getLoginName());
 
-        if(userExchangePrizeModels.size()>0 && userExchangePrizeModels.get(0).getPrize().getExchangeMoney()==exchangePrize.getExchangeMoney()){
+        UserExchangePrizeModel userExchangePrizeModel=userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile,activityCategory);
+
+        if(userExchangePrizeModel!=null && userExchangePrizeModel.getPrize().getExchangeMoney()==exchangePrize.getExchangeMoney()){
             return new ExchangePrizeDto(5);//已选择同档奖品，不可更改
-        }else if(userExchangePrizeModels.size()>0 && userExchangePrizeModels.get(0).getPrize().getExchangeMoney()>exchangePrize.getExchangeMoney()){
+        }else if(userExchangePrizeModel!=null && userExchangePrizeModel.getPrize().getExchangeMoney()>exchangePrize.getExchangeMoney()){
             return new ExchangePrizeDto(6);//已选择奖品
         }
 
@@ -143,11 +104,9 @@ public class ExerciseVSWorkActivityService {
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         try {
-            if (userExchangePrizeModels.size()==0){
-                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),accountModel != null ? userModel.getUserName() : "",amount,exchangePrize,DateTime.now().toDate(),activityCategory));
+            if (userExchangePrizeModel==null){
+                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile,userModel.getLoginName(),accountModel != null ? userModel.getUserName() : "",exchangePrize,DateTime.now().toDate(),activityCategory));
             }else{
-                UserExchangePrizeModel userExchangePrizeModel=userExchangePrizeModels.get(0);
-                userExchangePrizeModel.setInvestAmount(amount);
                 userExchangePrizeModel.setPrize(exchangePrize);
                 userExchangePrizeModel.setExchangeTime(DateTime.now().toDate());
                 userexchangePrizeMapper.updatePrize(userExchangePrizeModel);

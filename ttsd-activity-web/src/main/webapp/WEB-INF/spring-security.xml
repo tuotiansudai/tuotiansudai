@@ -101,6 +101,7 @@
         <intercept-url pattern="/bind-email/**" access="not isAnonymous()"/>
 
         <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/exercise-work/exchange-prize" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/dragon/wechat/punchCard" access="hasAnyAuthority('USER')"/>
 

@@ -6,6 +6,7 @@ import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,21 +29,19 @@ public class ActivityConsoleExerciseVSWorkService {
     @Autowired
     private UserExchangePrizeMapper userExchangePrizeMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+
     public BasePaginationDataDto<UserExchangePrizeModel> exchangePrizeList(int index, int pageSize){
 
-        List<UserExchangePrizeModel> list=userExchangePrizeMapper.findUserExchangePrizeViews(null,null,ActivityCategory.EXERCISE_WORK_ACTIVITY,startTime,endTime,null,null);
-        List<UserExchangePrizeView> userExchangePrizeViews=new ArrayList<>();
+        List<UserExchangePrizeModel> userExchangePrizeModels=userExchangePrizeMapper.findUserExchangePrizeViews(null,null,ActivityCategory.EXERCISE_WORK_ACTIVITY,startTime,endTime,null,null);
 
-        for (UserExchangePrizeModel userExchangePrizeModel:list) {
-            UserExchangePrizeView userExchangePrizeView=new UserExchangePrizeView();
-            userExchangePrizeView.setMobile(userExchangePrizeModel.getMobile());
-            userExchangePrizeView.setInvestAmount(AmountConverter.convertCentToString(userExchangePrizeModel.getInvestAmount()));
-            userExchangePrizeView.setLoginName(userExchangePrizeModel.getLoginName());
-            userExchangePrizeView.setUserName(userExchangePrizeModel.getUserName());
-            userExchangePrizeView.setPrize(userExchangePrizeModel.getPrize().getPrizeName());
-            userExchangePrizeViews.add(userExchangePrizeView);
+        List<UserExchangePrizeView> list=new ArrayList<>();
+        for (UserExchangePrizeModel userExchangePrizeModel:userExchangePrizeModels) {
+            list.add(new UserExchangePrizeView(userExchangePrizeModel,AmountConverter.convertCentToString(investMapper.findSuccessByLoginNameExceptTransferAndTime(userExchangePrizeModel.getLoginName(),startTime,endTime).stream().mapToLong(i->i.getAmount()).sum())));
         }
-        int count=userExchangePrizeViews.size();
+
+        int count=list.size();
         int endIndex = pageSize * index;
         int startIndex = (index - 1) * 10;
         if (count <= endIndex) {
@@ -51,7 +50,7 @@ public class ActivityConsoleExerciseVSWorkService {
         if (count < startIndex) {
             startIndex = count;
         }
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, userExchangePrizeViews.subList(startIndex, endIndex));
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, list.subList(startIndex, endIndex));
         return basePaginationDataDto;
 
     }

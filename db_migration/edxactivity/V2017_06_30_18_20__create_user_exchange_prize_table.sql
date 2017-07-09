@@ -3,7 +3,6 @@ CREATE TABLE `user_exchange_prize` (
   `mobile`       VARCHAR(11)         NOT NULL,
   `login_name`   VARCHAR(50)         NOT NULL,
   `user_name`    VARCHAR(50)                 ,
-  `invest_amount` BIGINT(20)      DEFAULT '0',
   `prize`        VARCHAR(50)         NOT NULL,
   `activity_category` VARCHAR(50)    NOT NULL,
   `exchange_time` DATETIME,
