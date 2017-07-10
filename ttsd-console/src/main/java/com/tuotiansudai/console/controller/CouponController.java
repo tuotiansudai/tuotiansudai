@@ -157,9 +157,9 @@ public class CouponController {
                 consoleCouponService.createCoupon(loginName, exchangeCouponDto);
             }
             if (exchangeCouponDto.getCouponType() == CouponType.INTEREST_COUPON) {
-                modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
+                modelAndView.setViewName("redirect:/activity-manage/coupons-list?couponType=INTEREST_COUPON");
             } else if (exchangeCouponDto.getCouponType() == CouponType.RED_ENVELOPE) {
-                modelAndView.setViewName("redirect:/activity-manage/red-envelopes");
+                modelAndView.setViewName("redirect:/activity-manage/coupons-list?couponType=RED_ENVELOPE");
             }
             return modelAndView;
         } catch (CreateCouponException e) {
