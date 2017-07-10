@@ -7,16 +7,35 @@
 <@global.main pageCss="${css.anxin_electro_sign}" pageJavascript="${js.anxin_electro_sign}" title="安心签电子签章服务">
 
 
-<div class="my-account-content anxin-electro-sign" id="couponList">
-    <dl class="free-container">
-        <dt>什么是体验金？</dt>
-        <dd>1、体验金是由拓天速贷提供给平台客户用来投资拓天体验金项目的本金，有效期为3天，50元起投。</dd>
-        <dd>2、拓天体验金项目仅限用户使用体验金投资，项目到期后，平台回收体验金，收益归用户所有。</dd>
-        <dd>3、体验金不能转出，但体验金投资产生的收益可以提现。</dd>
-        <dd>4、用户首次提现体验金投资所产生的收益时，需要投资其他定期项目（债权转让项目除外）累计满1000元才可以提现。</dd>
-        <dd>5、新注册用户可以获得6888元体验金。</dd>
-        <dd>6、关注并参与平台活动可获取更多体验金。</dd>
-        <dd>本活动规则解释权归拓天速贷所有，如有疑问请联系在线客服或拨打400-169-1188</dd>
-    </dl>
+<div class="my-account-content anxin-electro-sign" id="anxinElectroSign">
+    <div class="cfca-logo">
+
+    </div>
+    <div class="cfca-info">
+        安心签是由中国金融认证中心（CFCA）为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。它形成的电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。
+    </div>
+
+    <div class="cfca-advantage">
+        <span>
+            保密性
+        </span>
+        <span>
+            不可篡改性
+        </span>
+        <span>
+            可校验性
+        </span>
+    </div>
+
+    <button type="button" class="btn-wap-normal next-step" >立即开启</button>
+
+    <div class="agreement-box">
+        <span class="init-checkbox-style on">
+             <input type="checkbox" id="readOk" class="default-checkbox" checked>
+         </span>
+
+        <lable for="agreement">我已阅读并同意《安心签服务协议》、《隐私条款》和《CFCA数字证书服务协议》</lable>
+
+    </div>
 </div>
 </@global.main>

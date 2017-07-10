@@ -306,6 +306,28 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 
 }
 
+
+.init-checkbox-style {
+  width:14px;
+  height:14px;
+  margin-right:5px;
+  margin-top: 5px;
+  background: url("../images/form/icon-checkbox-checked.png") center center no-repeat;
+  background-size: 100%;
+  vertical-align: middle;
+  display: inline-block;
+  &.on {
+    background: url("../images/form/icon-checkbox.png") center center no-repeat;
+    background-size: 100%;
+  }
+  .default-checkbox {
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+}
+
 //菜单切换
 .menu-category {
   display: flex;

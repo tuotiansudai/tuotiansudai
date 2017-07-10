@@ -339,6 +339,24 @@ window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
 
 
+//模拟真实的checkbox
+$.fn.initCheckbox=function(callback) {
+    return $(this).each(function() {
+        $(this).bind('click',function() {
+            var $this=$(this);
+            var checked=$this.find('input:checkbox').prop('checked');
+            if(checked) {
+                $this.addClass("on");
+            }
+            else {
+                $this.removeClass("on");
+            }
+            callback && callback(this);
+        })
+    });
+};
+
+
 
 
 
