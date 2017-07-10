@@ -17,12 +17,15 @@
 
     <div class="cfca-advantage">
         <span>
+            <i></i>
             保密性
         </span>
         <span>
+            <i></i>
             不可篡改性
         </span>
         <span>
+            <i></i>
             可校验性
         </span>
     </div>
@@ -34,8 +37,10 @@
              <input type="checkbox" id="readOk" class="default-checkbox" checked>
          </span>
 
-        <lable for="agreement">我已阅读并同意《安心签服务协议》、《隐私条款》和《CFCA数字证书服务协议》</lable>
+        <lable for="agreement">我已阅读并同意<a href="javascript:void(0)" class="link-agree-service">《安心签服务协议》</a>、<a href="javascript:void(0)" class="link-agree-privacy">《隐私条款》</a> 和<a href="javascript:void(0)" class="link-agree-number"> 《CFCA数字证书服务协议》</a></lable>
 
     </div>
 </div>
+
+<#include '../module/anxin-agreement.ftl'>
 </@global.main>

@@ -37,17 +37,27 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      i {
+        height:75px;
+        background-size: contain;
+      }
       &:nth-child(1) {
-        background: url('../../images/anxin/good-01.png') center top no-repeat;
-        background-size: 60%;
+        i {
+          background: url('../../images/anxin/good-01.png') center top no-repeat;
+          background-size: contain;
+        }
       }
       &:nth-child(2) {
-        background: url('../../images/anxin/good-02.png') center top no-repeat;
-        background-size: 60%;
+        i {
+          background: url('../../images/anxin/good-02.png') center top no-repeat;
+          background-size: contain;
+        }
       }
       &:nth-child(3) {
-        background: url('../../images/anxin/good-03.png') center top no-repeat;
-        background-size: 60%;
+        i {
+          background: url('../../images/anxin/good-03.png') center top no-repeat;
+          background-size: contain;
+        }
       }
     }
   }
