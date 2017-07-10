@@ -22,7 +22,7 @@
     </insert>
 
     <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
-        select * from loan_title_relation  where loan_id = #{loanId} order by title_id
+        select * from loan_title_relation  where loan_id = #{loanId}
     </select>
 
     <delete id="delete" parameterType="long">
