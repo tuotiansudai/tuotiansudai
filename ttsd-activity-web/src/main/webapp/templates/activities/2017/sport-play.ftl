@@ -29,7 +29,7 @@
             <h3 class="title-two"></h3>
             <div class="user-info">
                 <@global.isAnonymous>
-                    <p>我的累计投资金额：<span class="to-login">登录查看</span></p>
+                    <p>活动期间内累计投资金额：<span class="to-login">登录查看</span></p>
                     <p>当前选择奖品：<span class="to-login">登录查看</span></p>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
