@@ -151,11 +151,6 @@
     <div class="lottery-tip" id="lotteryTip">
         <i class="lottery-close close-tip"></i>
         <div class="lottery-content"></div>
-        <div class="lottery-link">
-            <a href="/loan-list">去投资</a>
-            <a href="javascript:void(0)" class="close-tip">知道了</a>
-        </div>
-    </div>
     <script type="text/html" id="lotteryTipTpl">
         {{if returnCode==0}}
             <p class="info-text">恭喜您抽中了</p>
@@ -167,7 +162,16 @@
         {{else if returnCode==3}}
             <p class="no-chance">不在活动时间范围内</p>
         {{/if}}
+        <div class="lottery-link">
+        {{if returnCode==3}}
+            <a href="javascript:void(0)" class="close-tip">知道了</a>
+        {{else}}
+            <a href="/loan-list">去投资</a>
+            <a href="javascript:void(0)" class="close-tip">知道了</a>
+        {{/if}}
+        </div>
     </script>
+    </div>
     <div class="exchange-tip" id="exchangeTip"></div>
     <script type="text/html" id="exchangeTipTpl">
         <i class="exchange-close close-tip"></i>
