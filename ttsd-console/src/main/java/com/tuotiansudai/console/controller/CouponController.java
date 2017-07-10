@@ -265,75 +265,6 @@ public class CouponController {
         return consoleCouponService.findEstimatedCount(userGroup);
     }
 
-    @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
-    public ModelAndView interestCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        int pageSize = 10;
-        ModelAndView modelAndView = new ModelAndView("/interest-coupons");
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", consoleCouponService.findInterestCoupons(index, pageSize));
-        int couponsCount = consoleCouponService.findInterestCouponsCount();
-        modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = PaginationUtil.calculateMaxPage(couponsCount ,pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
-    public ModelAndView redEnvelopes(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        int pageSize = 10;
-        ModelAndView modelAndView = new ModelAndView("/red-envelopes");
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", consoleCouponService.findRedEnvelopeCoupons(index, pageSize));
-        int couponsCount = consoleCouponService.findRedEnvelopeCouponsCount();
-        modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
-    public ModelAndView birthdayCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        int pageSize = 10;
-        ModelAndView modelAndView = new ModelAndView("/birthday-coupons");
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", consoleCouponService.findBirthdayCoupons(index, pageSize));
-        int couponsCount = consoleCouponService.findBirthdayCouponsCount();
-        modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = PaginationUtil.calculateMaxPage(couponsCount ,pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        return modelAndView;
-    }
-
-
-    @RequestMapping(value = "/coupons", method = RequestMethod.GET)
-    public ModelAndView coupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        int pageSize = 10;
-        ModelAndView modelAndView = new ModelAndView("/coupons");
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", consoleCouponService.findNewbieAndInvestCoupons(index, pageSize));
-        int couponsCount = consoleCouponService.findNewbieAndInvestCouponsCount();
-        modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        return modelAndView;
-    }
-
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
                                      @RequestParam(value = "usedStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date usedStartTime,
@@ -498,12 +429,21 @@ public class CouponController {
     }
 
     @RequestMapping(value = "/coupons-list",method=RequestMethod.GET)
-    public ModelAndView CouponsList(@RequestParam(value = "couponType",required = false) String couponType,
+    public ModelAndView CouponsList(@RequestParam(value = "couponType",required = false,defaultValue = "RED_ENVELOPE") String couponType,
                                     @RequestParam(value = "couponSource",required = false) String couponSource,
                                     @RequestParam(value = "amount",required = false, defaultValue = "0") int amount,
                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index){
         int pageSize=10;
-        ModelAndView modelAndView=new ModelAndView("/coupons-list");
+        ModelAndView modelAndView;
+        if (couponType.startsWith("RED_ENVELOPE")){
+            modelAndView=new ModelAndView("/red-envelopes");
+        }else if(couponType.startsWith("INTEREST_COUPON")){
+            modelAndView=new ModelAndView("/interest-coupons");
+        }else if(couponType.startsWith("BIRTHDAY_COUPON")){
+            modelAndView=new ModelAndView("/birthday-coupons");
+        }else{
+            modelAndView=new ModelAndView("/coupons");
+        }
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize,couponType,amount,couponSource));

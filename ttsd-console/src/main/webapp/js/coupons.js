@@ -129,24 +129,15 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker','bootstrapSelect','Val
         });
 
         $('.down-load').click(function () {
-            location.href = "/export/coupons";
+            location.href = "/export/coupons?"+$('#couponList').serialize();
         });
 
         $('.export-red-envelopes').click(function () {
-            location.href = "/export/red-envelopes";
+            location.href = "/export/red-envelopes?"+$('#couponList').serialize();
         });
 
         $('.export-birthday-coupons').click(function () {
-            location.href = "/export/birthday-coupons";
-        });
-
-        $('.export-coupons-list').click(function () {
-             var couponType=$('#operationType').val();
-             if(couponType!=''){
-                 location.href = "/export/coupons-list?"+$('#couponList').serialize();
-             }else{
-                layer.msg('优惠券类型不能为空');
-             }
+            location.href = "/export/birthday-coupons?"+$('#couponList').serialize();
         });
 
         $('#amount').blur(function () {

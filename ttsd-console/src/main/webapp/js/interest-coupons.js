@@ -1,14 +1,15 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker','bootstrapSelect','Validform','Validform_Datatype','layer', 'layer-extend', 'layerWrapper', 'csrf'], function ($) {
     $(function () {
         var $body = $('body'),
             $confirmBtn = $('.confirm-btn'),//conirm button
             $inactiveBtn = $('.inactive-btn'),
             $tooltip = $('.add-tooltip'),
             $couponDelete = $('.coupon-delete'),
-            $tipCom = $('.tip-container');
+            $tipCom = $('.tip-container'),
+            $selectDom=$('#operationType');
 
         $tooltip.length ? $tooltip.tooltip() : false;
-
+        $selectDom.selectpicker();
         $couponDelete.on('click', function () {
             var $self = $(this),
                 thisLink = $self.attr('data-link');
@@ -130,8 +131,17 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         $(this).parents('.see-detail').hide();
     });
 
-    $('.down-load').click(function () {
-        location.href = "/export/interest-coupons";
+    $('.interest-coupons').click(function () {
+        location.href = "/export/interest-coupons?"+$('#couponList').serialize();
+    });
+
+    $('#amount').blur(function () {
+        var _this = $(this),
+            text = _this.val(),
+            isNumber = /^\d+(\.\d+)?$/;
+        if (!isNumber.test(text)) {
+            _this.val('');
+        }
     });
 
 });
