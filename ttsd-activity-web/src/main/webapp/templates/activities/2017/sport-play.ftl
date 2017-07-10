@@ -162,7 +162,7 @@
             <p class="gift-name">{{prizeValue}}</p>
         {{else if returnCode==1}}
             <p class="tip-text">目前没有抽奖机会！</p>
-            <p class="tip-text">单笔投资满1万元</p>
+            <p class="tip-text">单笔投资每满1万元</p>
             <p class="tip-text">即可获得抽签机会哦~</p>
         {{else if returnCode==3}}
             <p class="no-chance">不在活动时间范围内</p>
