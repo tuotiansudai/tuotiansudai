@@ -67,7 +67,7 @@ function getGift() {
                 });
             } else {
                 $sportPlayContainer.find('.draw-time').text(function(index,num){return parseInt(num)>1?parseInt(num)-1:0});
-                $('#lotteryTip .lottery-content').html(tpl('lotteryTipTpl', data));
+                $('#lotteryTip').html(tpl('lotteryTipTpl', data));
                 layer.open({
                   type: 1,
                   title: false,
@@ -177,3 +177,10 @@ $('body').on('click', '.close-tip', function(event) {
     layer.closeAll();
 });
 
+layer.open({
+    type: 1,
+    title: false,
+    closeBtn: 0,
+    area: $(window).width()>700?['450px', '230px']:['300px','155px'],
+    content: $('#lotteryTip')
+});
