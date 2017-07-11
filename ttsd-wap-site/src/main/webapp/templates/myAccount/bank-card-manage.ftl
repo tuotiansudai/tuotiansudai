@@ -4,7 +4,7 @@
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.css"}>
 
-<@global.main pageCss="${css.bank_card_manage}" pageJavascript="${js.bank_card_manage}" title="银行卡管理">
+<@global.main pageCss="${css.bank_card_manage}" pageJavascript="${js.bank_card_manage}" title="开通快捷支付">
 
 
 <div class="my-account-content bank-card-manage" id="bankCardManage">
