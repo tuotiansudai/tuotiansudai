@@ -27,10 +27,13 @@ PRODUCT = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 REST_ENABLED = True
 REST_PATH = 'rest/'
+
+CONSOLE_ENABLED = True
+CONSOLE_PATH = 'console/'
 
 # database config
 
@@ -39,6 +42,12 @@ DB_MYSQL_HOST = '192.168.33.10'
 DB_MYSQL_PORT = '3306'
 DB_MYSQL_USER = 'root'
 DB_MYSQL_PASSWORD = 'root'
+
+# ===signIn module start===
+SIGN_IN_HOST = 'http://127.0.0.1'
+SIGN_IN_PORT = '5000'
+REDIRECT_URL = 'http://localhost:9080/login'
+# ===signIn module end===
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/settings_local.py'
@@ -51,24 +60,27 @@ if os.path.isfile(setting_local_file):
 
 INSTALLED_APPS = [
     # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
     # 'django.contrib.messages',
     'django.contrib.staticfiles',
+    'current_console',
 ]
 
 if REST_ENABLED:
     INSTALLED_APPS += ['rest_framework', 'current_rest']
 
+
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'current_console.middleware.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -76,7 +88,7 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':  [os.path.join(BASE_DIR, "current_console/templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

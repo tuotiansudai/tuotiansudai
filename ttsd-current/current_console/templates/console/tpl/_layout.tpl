@@ -30,12 +30,7 @@
     <div class="row">
         <!-- menu sidebar -->
         <div class="col-md-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">首页</div>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="{% url 'console_index' %}">待办任务</a></li>
-                </ul>
-            </div>
+
 
         </div>
         <!-- menu sidebar end -->
