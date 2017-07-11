@@ -65,17 +65,6 @@ public class ConsoleCouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
     }
-//
-//    @Test
-//    public void shouldCreateInterestCouponSuccess() throws CreateCouponException {
-//        UserModel userModel = fakeUserModel();
-//        userMapper.create(userModel);
-//        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER);
-//        exchangeCouponDto.setCouponType(CouponType.INTEREST_COUPON);
-//        consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
-//        List<CouponDto> couponDtos = consoleCouponService.findInterestCoupons(1, 1);
-//        assertThat(couponDtos.get(0).getCouponType(), is(CouponType.INTEREST_COUPON));
-//    }
 
     @Test
     public void shouldCreateCouponAmountIsInvalid() {
