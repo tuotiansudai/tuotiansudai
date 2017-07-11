@@ -178,3 +178,24 @@
 
   }
 }
+
+// 提现记录
+.amount-detail-list{
+  margin-top: 10px;
+}
+.amount-detail-list .box-item dl dt{
+  font-size:18px;
+  color:#525252;
+}
+.amount-detail-list .box-item dl dd{
+  font-size:12px;
+  color:#a2a2a2;
+}
+.amount-detail-list .box-item dl .tip-text{
+  font-size: 12px;
+  color: #F6AA16;
+}
+.amount-detail-list .box-item dl .info-text{
+  font-size: 12px;
+  color: #525252;
+}
