@@ -206,6 +206,14 @@
                         {"name":"experienceBill","text":"体验金流水明细","link":"/experience-manage/experience-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
                         {"name":"experienceRecord","text":"体验金投资记录","link":"/experience-manage/experience-record","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
                 ]
+            },
+            {
+                "name":"current-manage",
+                "header":{"text":"日息宝管理"},
+                "sidebar":[
+                    {"name":"","class":"sub-title-1","text":"日息宝管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"},
+                    {"name":"currentHome","text":"日息宝管理","link":"/current","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE','DATA'"}
+                ]
             }
         ]
 >
