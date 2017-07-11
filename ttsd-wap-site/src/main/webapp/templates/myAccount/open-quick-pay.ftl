@@ -16,9 +16,9 @@
             </span>
         </li>
     </ul>
-    <p>单笔限额5万元，单日限额5万元</p>
-    <p>手机端仅支持快捷支付，请开通快捷支付进行充值</p>
-    <a href="quick-pay-manage.ftl" class="btn-wap-normal">开通快捷支付</a>
+    <p class="tip-text">单笔限额5万元，单日限额5万元</p>
+    <p class="tip-info">手机端仅支持快捷支付，请开通快捷支付进行充值</p>
+    <a href="quick-pay-manage.ftl" class="btn-wap-normal to-open">开通快捷支付</a>
     
 </div>
 </@global.main>
