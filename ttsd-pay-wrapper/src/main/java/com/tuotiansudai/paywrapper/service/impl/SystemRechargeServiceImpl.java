@@ -1,10 +1,13 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper;
@@ -18,7 +21,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +42,13 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
     @Autowired
     private SystemRechargeMapper systemRechargeMapper;
     @Autowired
-    private AmountTransfer amountTransfer;
-    @Autowired
     private SystemBillService systemBillService;
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -57,7 +60,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         AccountModel accountModel = accountMapper.findByLoginName(systemRechargeModel.getLoginName());
 
         TransferAsynRequestModel requestModel = TransferAsynRequestModel.createSystemRechargeRequestModel(String.valueOf(systemRechargeModel.getId()),
-                accountModel.getPayUserId(),accountModel.getPayAccountId(), String.valueOf(systemRechargeModel.getAmount()));
+                accountModel.getPayUserId(), accountModel.getPayAccountId(), String.valueOf(systemRechargeModel.getAmount()));
         String remark = MessageFormat.format("{0} 从 {1} 账户为平台账户充值 {2} 元", dto.getOperatorLoginName(),
                 dto.getMobile(), dto.getAmount());
         systemRechargeModel.setRemark(remark);
@@ -109,13 +112,12 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
                 systemRechargeModel.setSuccessTime(new Date());
                 systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
                 systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
-                try {
-                    amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
-                    systemBillService.transferIn(orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,
-                            MessageFormat.format("{0}充值到平台账户{1}", loginName, amount));
-                } catch (AmountTransferException e) {
-                    logger.error(MessageFormat.format("system recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
-                }
+
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
+                systemBillService.transferIn(orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,
+                        MessageFormat.format("{0}充值到平台账户{1}", loginName, amount));
 
             } else {
                 systemRechargeModel.setStatus(RechargeStatus.FAIL);

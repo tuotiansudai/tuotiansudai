@@ -1,10 +1,13 @@
 package com.tuotiansudai.paywrapper.loanout.impl;
 
+import com.aliyun.mns.model.MessageAttributes;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -23,7 +26,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +58,6 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
     @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -160,10 +159,10 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                     String.valueOf(transferAmount));
             systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON_RED_ENVELOPE, detail);
 
-            amountTransfer.transferInBalance(userCouponModel.getLoginName(),
-                    userCouponModel.getId(),
-                    transferAmount,
-                    couponModel.getCouponType().getUserBillBusinessType(), null, null);
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userCouponModel.getLoginName(),
+                    userCouponModel.getId(), transferAmount, couponModel.getCouponType().getUserBillBusinessType(), null, null);
+
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
             userCouponModel.setActualInterest(transferAmount);
             userCouponMapper.update(userCouponModel);

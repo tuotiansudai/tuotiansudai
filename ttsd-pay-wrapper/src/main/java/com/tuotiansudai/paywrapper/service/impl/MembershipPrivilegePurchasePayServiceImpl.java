@@ -5,12 +5,12 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.dto.MembershipPrivilegePurchaseDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegePurchaseMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -26,7 +26,6 @@ import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -48,9 +47,6 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
     @Autowired
     private PayAsyncClient payAsyncClient;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -127,14 +123,10 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
             String loginName = membershipPrivilegePurchaseModel.getLoginName();
             long amount = membershipPrivilegePurchaseModel.getAmount();
             membershipPrivilegePurchaseModel.setStatus(MembershipPrivilegePurchaseStatus.SUCCESS);
-            try {
-                amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE, null, null);
-                systemBillService.transferIn(orderId, amount, SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE,
-                        MessageFormat.format("{0}购买增值特权{1}天", membershipPrivilegePurchaseModel.getMobile(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration()));
-            } catch (AmountTransferException e) {
-                logger.error(MessageFormat.format("[membership privilege purchase] transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
-            }
-
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE, null, null);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+            systemBillService.transferIn(orderId, amount, SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE,
+                    MessageFormat.format("{0}购买增值特权{1}天", membershipPrivilegePurchaseModel.getMobile(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration()));
         }
         membershipPrivilegePurchaseMapper.update(membershipPrivilegePurchaseModel);
         Date endTime = new DateTime().plusDays(membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();

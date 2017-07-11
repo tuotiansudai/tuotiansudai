@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
@@ -19,7 +18,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -75,9 +73,6 @@ public class InvestControllerTest {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -564,8 +559,8 @@ public class InvestControllerTest {
 
     private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
         AccountModel am = new AccountModel(loginName, loginName, loginName, new Date());
+        am.setBalance(initAmount);
         accountMapper.create(am);
-        amountTransfer.transferInBalance(loginName, IdGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }
 
     private void mockLoan(long loanAmount, long loanId, String loanerLoginName) {
