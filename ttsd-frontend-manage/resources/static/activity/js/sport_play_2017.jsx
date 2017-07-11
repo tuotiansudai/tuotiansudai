@@ -67,7 +67,7 @@ function getGift() {
                 });
             } else {
                 $sportPlayContainer.find('.draw-time').text(function(index,num){return parseInt(num)>1?parseInt(num)-1:0});
-                $('#lotteryTip .lottery-content').html(tpl('lotteryTipTpl', data));
+                $('#lotteryTip').html(tpl('lotteryTipTpl', data));
                 layer.open({
                   type: 1,
                   title: false,
@@ -176,4 +176,3 @@ $('body').on('click', '.close-tip', function(event) {
     event.preventDefault();
     layer.closeAll();
 });
-
