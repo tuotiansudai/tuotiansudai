@@ -4,9 +4,12 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -15,12 +18,14 @@ import com.tuotiansudai.paywrapper.repository.mapper.TransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRequestModel;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.paywrapper.service.SystemRechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.SystemRechargeModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +46,6 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
     private PayAsyncClient payAsyncClient;
     @Autowired
     private SystemRechargeMapper systemRechargeMapper;
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private UserMapper userMapper;
@@ -116,8 +119,10 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
-                systemBillService.transferIn(orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                        orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,
                         MessageFormat.format("{0}充值到平台账户{1}", loginName, amount));
+                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
             } else {
                 systemRechargeModel.setStatus(RechargeStatus.FAIL);

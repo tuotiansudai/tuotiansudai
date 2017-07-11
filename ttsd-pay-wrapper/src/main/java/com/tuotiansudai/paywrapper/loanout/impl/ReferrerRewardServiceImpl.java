@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.TransferReferrerRewardCallbackMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -19,7 +16,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -49,9 +45,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -245,7 +238,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
                 String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(investReferrerRewardModel.getInvestId()));
                 logger.info(MessageFormat.format("[标的放款]:记录系统奖励,投资ID:{0},推荐人奖励:{1},奖励类型:{2}", orderId, amount, SystemBillBusinessType.REFERRER_REWARD));
-                systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
+
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
+                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(investReferrerRewardModel.getInvestId())));

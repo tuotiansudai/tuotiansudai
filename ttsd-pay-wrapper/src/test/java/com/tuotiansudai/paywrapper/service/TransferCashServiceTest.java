@@ -6,6 +6,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;

@@ -8,10 +8,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -25,7 +24,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNo
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
@@ -83,9 +81,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
@@ -429,7 +424,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         String.valueOf(couponRepayModel.getId()),
                         String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
 
-                systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
                 redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
 

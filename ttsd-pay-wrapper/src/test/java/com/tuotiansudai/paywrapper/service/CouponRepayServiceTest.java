@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -79,9 +80,6 @@ public class CouponRepayServiceTest {
 
     @Mock
     private PaySyncClient paySyncClient;
-
-    @Mock
-    private SystemBillService systemBillService;
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
@@ -331,7 +329,6 @@ public class CouponRepayServiceTest {
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
-        doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(currentLoanRepay.getId(), true);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
@@ -382,7 +379,6 @@ public class CouponRepayServiceTest {
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
-        doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(currentLoanRepay.getId(), true);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);

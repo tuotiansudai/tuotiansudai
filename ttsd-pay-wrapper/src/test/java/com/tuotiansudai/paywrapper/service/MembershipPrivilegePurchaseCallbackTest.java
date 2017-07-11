@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.enums.MembershipPrivilegePurchaseStatus;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegePurchaseMapper;
@@ -13,11 +14,8 @@ import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.DateConvertUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +24,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 

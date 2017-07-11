@@ -31,7 +31,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStat
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -77,9 +76,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private SystemBillMapper systemBillMapper;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -531,10 +527,14 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         //平台利息管理费总和
         long feeAmount = currentLoanRepay.getActualInterest() - interestWithoutFee;
-        systemBillService.transferIn(loanRepayId,
+
+        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                loanRepayId,
                 feeAmount,
                 SystemBillBusinessType.INVEST_FEE,
                 MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(currentLoanRepay.getLoanId()), String.valueOf(loanRepayId)));
+        mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SUCCESS.name());
 
