@@ -44,29 +44,4 @@ $('body').on('click','a',function(event) {
 
     agreeDom && showAgreement(agreeDom.title,agreeDom.content);
 
-
-
-    // switch(target.className) {
-    //     case 'link-agree-service':
-    //         contentDom=$('.service-box',$safetyAgreement);
-    //         showAgreement('安心平台签服务协议',contentDom);
-    //         break;
-    //     case 'link-agree-privacy':
-    //         contentDom=$('.privacy-box',$safetyAgreement);
-    //         showAgreement('隐私条款',contentDom);
-    //         break;
-    //     case 'link-agree-number':
-    //         contentDom=$('.number-box',$safetyAgreement);
-    //         showAgreement('CFCA数字证书服务协议',contentDom);
-    //         break;
-    //     case 'link-agree-number-authorize':
-    //         contentDom=$('.number-authorize-box',$safetyAgreement);
-    //         showAgreement('CFCA数字证书服务协议',contentDom);
-    //         break;
-    //     case 'link-agree-free-SMS':
-    //         contentDom=$('.free-SMS-box',$safetyAgreement);
-    //         showAgreement('短信免责申明',contentDom);
-    //         break;
-    // }
-
 });

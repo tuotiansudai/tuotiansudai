@@ -1,66 +1,7 @@
-
+body {
+  background: #fff;
+}
 .anxin-electro-sign {
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 10px 20px 10px;
-  .cfca-logo {
-    width:120px;
-    height:100px;
-    background: url('../../images/anxin/cfca.png') center center no-repeat;
-    background-size: 100%;
-    margin: 30px auto 10px auto;
-
-
-  }
-  .cfca-info {
-    font-size: 14px;
-    color: #525252;
-    line-height: 26px;
-    align-self: flex-start;
-  }
-  .cfca-advantage {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width:100%;
-    height:90px;
-    margin-top: 20px;
-    margin-bottom:10px;
-    span {
-      flex: 1;
-      height: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      i {
-        height:75px;
-        background-size: contain;
-      }
-      &:nth-child(1) {
-        i {
-          background: url('../../images/anxin/good-01.png') center top no-repeat;
-          background-size: contain;
-        }
-      }
-      &:nth-child(2) {
-        i {
-          background: url('../../images/anxin/good-02.png') center top no-repeat;
-          background-size: contain;
-        }
-      }
-      &:nth-child(3) {
-        i {
-          background: url('../../images/anxin/good-03.png') center top no-repeat;
-          background-size: contain;
-        }
-      }
-    }
-  }
 
   .agreement-box {
     font-size: 12px;
@@ -69,5 +10,67 @@
     flex-direction: row;
     margin-top:15px;
     line-height: 20px;
+    a {
+      color: #A2A2A2;
+    }
+  }
+}
+
+
+.identifying-code {
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f2f2f2;
+  width: 100%;
+  height: 36px;
+  input {
+    flex: 1;
+    width:auto;
+    border:0;
+    padding-left: 15px;
+    font-size:14px;
+  }
+  span {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    &:before {
+      display: inline-block;
+      border-right: 1px solid #f2f2f2;
+      content: '';
+      height: 20px;
+      vertical-align: bottom;
+      margin-top: 4px;
+    }
+    button {
+      background: #fff;
+      border:0;
+      font-size: 14px;
+      color: #FF635A;
+      height: 100%;
+    }
+    .get-skip-code {
+      width:70%;
+      &.count-downing {
+        color: #ddd;
+      }
+
+    }
+    .microphone {
+      width:30%;
+      background: url('../../images/anxin/voice.png') center center no-repeat;
+      background-size: 40%;
+
+      &:before {
+        display: inline-block;
+        border-right: 1px solid #f2f2f2;
+        content: '';
+        height: 20px;
+        vertical-align: bottom;
+        margin-top: 4px;
+      }
+    }
   }
 }

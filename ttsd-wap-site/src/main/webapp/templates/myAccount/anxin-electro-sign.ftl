@@ -30,7 +30,7 @@
         </span>
     </div>
 
-    <button type="button" class="btn-wap-normal next-step" >立即开启</button>
+    <button type="button" class="btn-wap-normal next-step" id="openSafetySigned">立即开启</button>
 
     <div class="agreement-box">
         <span class="init-checkbox-style on">
