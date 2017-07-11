@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.UserExchangePrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="userExchangePrizeModel" type="com.tuotiansudai.activity.repository.model.UserExchangePrizeModel">
+        <id column="id" property="id"></id>
+        <result column="mobile" property="mobile"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="exchange_time" property="exchangeTime"></result>
+        <result column="activity_category" property="activityCategory"></result>
+    </resultMap>
+
+    <resultMap id="userExchangePrizeView" type="com.tuotiansudai.activity.repository.model.UserExchangePrizeModel">
+        <result column="mobile" property="mobile"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="exchange_time" property="exchangeTime"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="activity_category" property="activityCategory"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="userExchangePrizeModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`user_exchange_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`exchange_time`,`activity_category`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{exchangeTime},#{activityCategory});
+
+    </insert>
+
+    <update id="updatePrize" parameterType="userExchangePrizeModel">
+        UPDATE `edxactivity`.`user_exchange_prize`
+        SET
+        `mobile` = #{mobile},
+        `login_name` = #{loginName},
+        `user_name` = #{userName},
+        `prize` = #{prize},
+        `exchange_time` = #{exchangeTime},
+        `activity_category` = #{activityCategory}
+        WHERE `id` = #{id}
+    </update>
+
+    <select id="findUserExchangePrizeViews" parameterType="map" resultMap="userExchangePrizeView">
+        select p.exchange_time,p.mobile,p.user_name,p.prize,p.login_name from `edxactivity`.`user_exchange_prize` p
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and p.mobile like '${mobile}%'
+            </if>
+            <if test="exchangePrize !=null ">
+                and p.prize = '${exchangePrize}'
+            </if>
+            <if test="startTime != null">
+                and p.exchange_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and p.exchange_time <= #{endTime} ]]>
+            </if>
+            <if test="activityCategory != null">
+                and activity_category like '${activityCategory}%'
+            </if>
+        </where>
+        order by p.exchange_time DESC
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findUserExchangePrizeByMobile" parameterType="map" resultMap="userExchangePrizeModel">
+        select `id`,`mobile`,`login_name`,`user_name`,`prize`,`exchange_time`,`activity_category` from `edxactivity`.`user_exchange_prize`
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile = '${mobile}'
+            </if>
+            <if test="activityCategory != null">
+                and activity_category like '${activityCategory}%'
+            </if>
+        </where>
+        order by exchange_time DESC
+    </select>
+
+</mapper>
