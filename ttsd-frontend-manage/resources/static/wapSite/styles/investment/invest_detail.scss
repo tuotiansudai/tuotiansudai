@@ -39,6 +39,9 @@
   width: 100%;
   overflow: hidden;
   height: calc( 100% - 52px - 55px);
+  &.experience-detail {
+    height: calc( 100% - 52px);
+  }
 }
 .payment-plan {
   background: #fff;
@@ -49,17 +52,37 @@
       font-size: 16px;
       color: #525252;
       height:40px;
-
     }
-  dd {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #808080;
-    border-top:1px solid #F7F7F7;
-    line-height: 40px;
-    .status {
-      color: #FF473C;
+    dd {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #808080;
+      border-top:1px solid #F7F7F7;
+      line-height: 40px;
+      .status {
+        color: #FF473C;
+      }
+    }
+
+  &.experience {
+    padding: 10px 0px 0px 0px;
+    dt {
+      padding-left:10px;
+    }
+
+    dd {
+      display: block;
+      font-size: 12px;
+      color: #A2A2A2;
+      line-height: 20px;
+      background: #F7F7F7;
+      padding: 10px 15px;
+      b {
+        font-size: 13px;
+        color: #525252;
+        font-weight: lighter;
+      }
     }
   }
 }

@@ -279,6 +279,13 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
     });
 }
 
+function repeatBgSquare(number=10){
+
+    // let num = number || 10;
+    let cloneSquare = '<i></i>'.repeat(number);
+    return cloneSquare;
+}
+
 
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
@@ -292,5 +299,6 @@ exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;
 exports.GetDateStr = GetDateStr;
 exports.CommonLayerTip = CommonLayerTip;
+exports.repeatBgSquare=repeatBgSquare;
 
 
