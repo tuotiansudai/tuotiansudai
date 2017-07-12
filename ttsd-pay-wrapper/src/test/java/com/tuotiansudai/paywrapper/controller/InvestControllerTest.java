@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
@@ -19,6 +23,9 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
+import org.hamcrest.CoreMatchers;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -76,6 +83,8 @@ public class InvestControllerTest {
 
     @Autowired
     private PayAsyncClient payAsyncClient;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     InvestNotifyRequestMapper investNotifyRequestMapper;
@@ -136,15 +145,29 @@ public class InvestControllerTest {
 
         mockUserMembership(mockInvestLoginName);
 
-        long orderId = investOneDeal(mockLoanId, mockInvestAmount, mockInvestLoginName);
+        investOneDeal(mockLoanId, mockInvestAmount, mockInvestLoginName);
 
         this.jobAsyncInvestNotify(1);
 
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount, mockInvestLoginName);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount, mockInvestLoginName);
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
         assert sumSuccessInvestAmount == mockInvestAmount;
     }
+
+    private void verifyInvestSuccessAmountTransferMessage(long mockInvestAmount, String mockInvestLoginName) {
+        try {
+            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+            assertThat(message.getLoginName(), CoreMatchers.is(mockInvestLoginName));
+            assertThat(message.getAmount(), CoreMatchers.is(mockInvestAmount));
+            assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_SUCCESS));
+            assertThat(message.getTransferType(), CoreMatchers.is(TransferType.FREEZE));
+        } catch (IOException e) {
+            assert false;
+        }
+    }
+
 
     // case2: 满标
     @Test
@@ -175,9 +198,9 @@ public class InvestControllerTest {
 
         this.jobAsyncInvestNotify(3);
 
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
 
         //check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
@@ -224,9 +247,10 @@ public class InvestControllerTest {
         this.generateMockResponse_success(1); // 返款成功
         this.jobAsyncInvestNotify(4);
 
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
+
         verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
 
         // check loan status
@@ -287,9 +311,14 @@ public class InvestControllerTest {
         this.generateMockResponse_success(2); // 返款成功
         this.jobAsyncInvestNotify(5);
 
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
+
         verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
         verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount5, mockInvestLoginName5);
 
@@ -356,11 +385,18 @@ public class InvestControllerTest {
         this.generateMockResponse_success(1); // 返款成功
         this.jobAsyncInvestNotify(5);
 
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
-        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount5, mockInvestLoginName5);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount5, mockInvestLoginName5);
+//        verifyInvestSuccessAmountTransferMessage(mockInvestAmount4, mockInvestLoginName4);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
+
+//        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount5, mockInvestLoginName5);
 
         // check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
@@ -429,9 +465,14 @@ public class InvestControllerTest {
         InvestModel investModel4_b = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
         assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
 
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
+//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
+        verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
+
         verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
 
         // check loan status
@@ -487,11 +528,11 @@ public class InvestControllerTest {
     }
 
 
-    private void verifyInvestorAmount_success(long mockInitAmount, long mockInvestAmount1, String mockInvestLoginName1) {
-        AccountModel am = accountMapper.findByLoginName(mockInvestLoginName1);
-        assert am.getBalance() == mockInitAmount - mockInvestAmount1;
-        assert am.getFreeze() == mockInvestAmount1;
-    }
+//    private void verifyInvestorAmount_success(long mockInitAmount, long mockInvestAmount1, String mockInvestLoginName1) {
+//        AccountModel am = accountMapper.findByLoginName(mockInvestLoginName1);
+//        assert am.getBalance() == mockInitAmount - mockInvestAmount1;
+//        assert am.getFreeze() == mockInvestAmount1;
+//    }
 
     private void verifyInvestorAmount_fail(long mockInitAmount, long mockInvestAmount1, String mockInvestLoginName1) {
         AccountModel am = accountMapper.findByLoginName(mockInvestLoginName1);

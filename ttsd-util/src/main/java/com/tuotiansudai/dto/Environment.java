@@ -4,6 +4,7 @@ public enum Environment {
     DEV,
     SMOKE,
     QA,
+    UT,
     PRODUCTION;
 
     public static boolean isProduction(Environment environment){
