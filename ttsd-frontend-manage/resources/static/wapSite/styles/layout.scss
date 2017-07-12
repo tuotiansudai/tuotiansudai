@@ -358,6 +358,16 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 }
 
 //直投项目 转让项目
+.icon-sign {
+  font-size:11px;
+  display: inline-block;
+  border:1px solid #FF473C;
+  border-radius: 5px;
+  padding: 2px 5px;
+  line-height: 15px;
+  color: #FF473C;
+  transform: scale(0.8);
+}
 .target-category-box {
   padding: 10px 10px 5px 10px;
   background: #fff;
@@ -367,16 +377,6 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
     font-weight: lighter;
     color: #525252;
   }
-  .icon-sign {
-    font-size:11px;
-    display: inline-block;
-    border:1px solid #FF473C;
-    border-radius: 5px;
-    padding: 2px 5px;
-    line-height: 15px;
-    color: #FF473C;
-  }
-
   .loan-info {
     display: flex;
     justify-content: space-between;

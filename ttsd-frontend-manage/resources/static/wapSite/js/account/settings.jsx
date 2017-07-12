@@ -51,7 +51,7 @@ $getCaptchaElement.on('click',function(event){
 function OpenNoPasswordInvest(firstopen) {
 
     if(firstopen) {
-        CommonLayerTip({
+        commonFun.CommonLayerTip({
             btn: ['确定','取消'],
             content: $('#turnOnNoPassword')
         },function() {
@@ -61,7 +61,7 @@ function OpenNoPasswordInvest(firstopen) {
                 url:UrlOption['agreement']
             },function() {
                 //授权成功
-                CommonLayerTip({
+                commonFun.CommonLayerTip({
                     btn: ['我知道了'],
                     area:['380px', '260px'],
                     content: $('#noPasswordInvestDOM')
@@ -75,7 +75,7 @@ function OpenNoPasswordInvest(firstopen) {
             type: 'POST',
             url:UrlOption['enabled']
         },function() {
-            CommonLayerTip({
+            commonFun.CommonLayerTip({
                 btn: ['我知道了'],
                 content: '<div class="tip-result-success"> <em class="icon-success"></em><span>免密支付已开启</span></div>',
             },function() {
@@ -89,7 +89,7 @@ function OpenNoPasswordInvest(firstopen) {
 
 //去关闭免密投资业务
 function turnOffNoPassword() {
-    CommonLayerTip({
+    commonFun.CommonLayerTip({
         btn: ['确定', '取消'],
         content: $('#turnOffNoPassword')
     },function() {
@@ -97,7 +97,7 @@ function turnOffNoPassword() {
         // 第二步正式关闭免密投资
         closeNoPasswordCheck();
 
-        CommonLayerTip({
+        commonFun.CommonLayerTip({
             btn: ['确定', '取消'],
             area:['380px', '300px'],
             content: $('#turnOnSendCaptcha')
@@ -113,7 +113,7 @@ function turnOffNoPassword() {
             }, function (response) {
                 var data = response.data;
                 if (data.status) {
-                    CommonLayerTip({
+                    commonFun.CommonLayerTip({
                         btn: ['我知道了'],
                         content: '<div class="tip-result-success"> <em class="icon-success"></em><span>免密支付已关闭</span></div>',
                     },function() {
@@ -126,33 +126,6 @@ function turnOffNoPassword() {
 
         });
 
-    });
-}
-
-function CommonLayerTip(option,firstCallback,secondCallback) {
-    layer.closeAll();
-    let defaultOption = {
-        btn:['确定', '取消'],
-        content:$('#turnOnSendCaptcha'),
-        area:['280px', '230px']
-    };
-
-    let optionOk = $.extend({},defaultOption,option);
-    layer.open({
-        type: 1,
-        title: false,
-        closeBtn: 0,
-        area: optionOk.area,
-        shadeClose: false,
-        skin: 'tip-square-box',
-        btn: optionOk.btn,
-        content: optionOk.content,
-        btn1: function () {
-            firstCallback && firstCallback();
-        },
-        btn2: function () {
-            secondCallback && secondCallback();
-        }
     });
 }
 
