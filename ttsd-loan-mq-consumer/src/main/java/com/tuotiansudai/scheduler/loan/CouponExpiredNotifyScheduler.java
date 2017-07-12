@@ -12,14 +12,13 @@ import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Component
@@ -56,13 +55,13 @@ public class CouponExpiredNotifyScheduler {
                 SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
                 notifyDto.setMobile(userModel.getMobile());
                 notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-                notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
+                notifyDto.setRate(String.valueOf(couponModel.getRate() * 100));
                 notifyDto.setCouponType(couponModel.getCouponType());
-                notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
+                notifyDto.setExpiredDate(new SimpleDateFormat("yyyy年MM月dd日").format(userCouponModel.getEndTime()));
 
                 mqWrapperClient.sendMessage(MessageQueue.CouponSmsExpiredNotify, notifyDto);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("[CouponExpiredNotifyScheduler:] job execution is failed.", e);
         }
 
