@@ -15,19 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from console.views import contract, applicant, system
-from console.views import home
-from console.views import merchant
-from console.views import pay_log
-from console.views import repay_manage
-from console.views import staff, car
-from console.views import upload
-from console.views import user
+from current_console.views import home
 
-home_urls = [
-    url(r'^$', home.index, name='console_index'),
-    url(r'^message/(?P<pk>\d+)$', home.message, name='console_message'),
+urlpatterns = [
+    url('^index$', home.index, name='index')
 ]
-
-
-urlpatterns = home_urls
