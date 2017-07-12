@@ -28,12 +28,10 @@
         </li>
         <li>
             <label for="perName">安心签</label>
-            <span>
+            <a href="anxin-electro-sign.ftl">
                 <i class="fa fa-angle-right"></i>
-            </span>
+            </a>
         </li>
-
-
     </ul>
 
     <button type="button" class="btn-wap-normal next-step" >退出登录</button>

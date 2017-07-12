@@ -80,16 +80,16 @@
 
             <li>
                 <label>产品详情</label>
-                <span>
-               <i class="fa fa-angle-right"></i>
-            </span>
+                <a>
+                    <i class="fa fa-angle-right"></i>
+                </a>
             </li>
 
             <li>
                 <label>转让须知</label>
-                <span>
-               <i class="fa fa-angle-right"></i>
-            </span>
+                <a href="notice-transfer.ftl">
+                    <i class="fa fa-angle-right"></i>
+                </a>
             </li>
         </ul>
     </div>
@@ -97,8 +97,13 @@
 
 
 <div class="apply-transfer" id="applyTransfer">
-    <a href="#" data-status="apply">申请转让</a>
-    <a href="#" data-status="cancel">取消转让</a>
+    <#--<a href="#" data-status="apply">申请转让</a>-->
+    <a href="#" data-status="cancel" data-transfer-application-id="<%=item.transferApplicationId%>">取消转让</a>
 
+</div>
+
+<div  id="closeTransfer" class="close-transfer" style="display: none">
+    <b class="pop-title">温馨提示</b>
+    <p>您确认取消该笔债权的转让？</p>
 </div>
 </@global.main>
