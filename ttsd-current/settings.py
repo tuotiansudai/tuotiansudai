@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["*"]
 REST_ENABLED = True
 REST_PATH = 'rest/'
 
-CONSOLE_ENABLED = True
+CONSOLE_ENABLED = False
 CONSOLE_PATH = 'console/'
 
 # database config
@@ -59,13 +59,11 @@ if os.path.isfile(setting_local_file):
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
-    # 'django.contrib.staticfiles',
-    # 'current_console',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 if REST_ENABLED:
@@ -79,7 +77,6 @@ if CONSOLE_ENABLED:
         'django.contrib.staticfiles',
         'current_console']
 
-
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -88,7 +85,7 @@ MIDDLEWARE = [
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'current_console.middleware.TTSDSessionManager',
+    # 'current_console.middleware.TTSDSessionManager',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -96,7 +93,7 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':  [],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
