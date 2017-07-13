@@ -11,7 +11,6 @@ $applyTransfer.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
 $amountInputElement.autoNumeric('init');
 
-
 $('.init-checkbox-style',$applyTransfer).initCheckbox(function(element) {
     var $parentBox=$(element).parents('.safety-status-box');
     //点击我已阅读并同意是否disable按钮
@@ -40,7 +39,7 @@ function tipNotice() {
 }
 
 $amountInputElement
-    .on('keyup',function(event) {
+    .on('keyup',function() {
 
         let value = getInvestAmount();
         if(/^(\d){4,}$/.test(value)) {

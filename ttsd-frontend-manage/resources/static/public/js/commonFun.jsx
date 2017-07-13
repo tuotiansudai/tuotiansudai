@@ -279,26 +279,23 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
     });
 }
 
-function repeatBgSquare(number=10){
+//为了添加重复的圆圈背景
+var repeatBgSquare=(number=20) => '<i></i>'.repeat(number);
 
-    // let num = number || 10;
-    let cloneSquare = '<i></i>'.repeat(number);
-    return cloneSquare;
+module.exports =  {
+    refreshCaptcha,
+    initRadio,
+    IdentityCodeValid,
+    checkedAge,
+    popWindow,
+    isUserLogin,
+    useAjax,
+    countDownLoan,
+    MathDecimal,
+    decrypt,
+    GetDateStr,
+    CommonLayerTip,
+    repeatBgSquare
 }
-
-
-exports.refreshCaptcha = refreshCaptcha;
-exports.initRadio = initRadio;
-exports.IdentityCodeValid = IdentityCodeValid;
-exports.checkedAge = checkedAge;
-exports.popWindow = popWindow;
-exports.isUserLogin = isUserLogin;
-exports.useAjax = useAjax;
-exports.countDownLoan = countDownLoan;
-exports.MathDecimal = MathDecimal;
-exports.decrypt = decrypt;
-exports.GetDateStr = GetDateStr;
-exports.CommonLayerTip = CommonLayerTip;
-exports.repeatBgSquare=repeatBgSquare;
 
 
