@@ -22,3 +22,9 @@ if settings.REST_ENABLED:
     urlpatterns += [
         url(r'^' + settings.REST_PATH, include('current_rest.urls'))
     ]
+
+
+if settings.CONSOLE_ENABLED:
+    urlpatterns += [
+        url(r'^' + settings.CONSOLE_PATH, include('current_console.urls'))
+    ]
