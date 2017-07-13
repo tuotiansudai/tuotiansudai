@@ -27,7 +27,6 @@ class MessageBroker(object):
             self.callback_func(msg)
 
     def aliyun(self):
-        # my_account = Account(settings.ENDPOINT, settings.KEY, settings.SECRET, debug=settings.DEBUG, logger=logger)
         queue = aliyun_account.get_queue(self.queue_name)
         while True:
             try:

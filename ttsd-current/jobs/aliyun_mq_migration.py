@@ -81,13 +81,16 @@ class AliyunMQMigration(object):
             self.create_subscribe(my_topic, queue_name)
 
         for queue_name in need_to_delete:
-            my_sub = my_topic.get_subscription(queue_name)
-            try:
-                print "Going to unsubscribe {} from topic {}".format(queue_name, my_topic.topic_name)
-                my_sub.unsubscribe()
-                print "Successfully unsubscribe {} from topic {}".format(queue_name, my_topic.topic_name)
-            except MNSExceptionBase, e:
-                print "Unsubscription Fail! Exception:%s\n" % e
+            self.delete_subscribe(my_topic, queue_name)
+
+    def delete_subscribe(self, my_topic, queue_name):
+        my_sub = my_topic.get_subscription(queue_name)
+        try:
+            print "Going to unsubscribe {} from topic {}".format(queue_name, my_topic.topic_name)
+            my_sub.unsubscribe()
+            print "Successfully unsubscribe {} from topic {}".format(queue_name, my_topic.topic_name)
+        except MNSExceptionBase, e:
+            print "Unsubscription Fail! Exception:%s\n" % e
 
     def create_subscribe(self, my_topic, queue_name):
         queue_endpoint = TopicHelper.generate_queue_endpoint(settings.ALIYUN_REGION, settings.ALIYUN_ACCOUNT_ID, queue_name)
