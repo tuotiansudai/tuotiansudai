@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class WebConfig(AppConfig):
-    name = 'ttsd_console'
+    name = 'current_console'

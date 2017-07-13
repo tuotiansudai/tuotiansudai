@@ -126,6 +126,11 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.celebration.single.endTime}")
     private String activitySingleEndTime;
 
+    @Value(value = "${activity.exercise.work.startTime}")
+    private String acticityExerciseWorkStartTime;
+
+    @Value(value = "${activity.exercise.work.endTime}")
+    private String acticityExerciseWorkEndTime;
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -331,6 +336,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10,Lists.newArrayList(442L))
                 .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30,Lists.newArrayList(443L))
                 .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5,Lists.newArrayList(444L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_5,Lists.newArrayList(445L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_10,Lists.newArrayList(446L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_20,Lists.newArrayList(447L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_30,Lists.newArrayList(448L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_5,Lists.newArrayList(449L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_8,Lists.newArrayList(450L))
                 .build()).get(lotteryPrize);
     }
 
@@ -409,6 +420,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case CELEBRATION_SINGLE_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+            case EXERCISE_WORK_ACTIVITY:
+                return getExerciseVSWorkDrawTime(userModel, activityCategory);
 
         }
         return lotteryTime;
@@ -552,6 +565,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
                 .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
+                .put(ActivityCategory.EXERCISE_WORK_ACTIVITY,Lists.newArrayList(acticityExerciseWorkStartTime,acticityExerciseWorkEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -600,6 +614,31 @@ public class LotteryDrawActivityService {
         }
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
+    }
+
+    public int getExerciseVSWorkDrawTime(UserModel userModel,ActivityCategory activityCategory){
+        int investDrawTime=0;
+        int sumToDayIsDraw=1;
+        List<String> activityTime = getActivityTime(activityCategory);
+        DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+        DateTime endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+
+        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime.toDate(),endTime.toDate());
+        for (InvestModel investModel:investModels) {
+            investDrawTime+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
+        }
+        if (investDrawTime==0){
+            return toDayIsDrawByMobile(userModel.getMobile(),activityCategory)==0?1:0;
+        }
+
+        Date yesterdayDate=DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
+        startTime=startTime.withTimeAtStartOfDay();
+        while (startTime.toDate().before(yesterdayDate)){
+            sumToDayIsDraw+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                    startTime.toDate() , startTime.plusDays(1).minusMillis(1).toDate()) == 0 ? 0 : 1;
+            startTime=startTime.plusDays(1);
+        }
+        return sumToDayIsDraw + investDrawTime - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory, null, null);
     }
 
 
