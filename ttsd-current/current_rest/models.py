@@ -26,8 +26,11 @@ class CurrentDeposit(models.Model):
                                         blank=False)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.PositiveIntegerField(null=False, blank=False)
-    status = models.CharField(choices=constants.DEPOSIT_STATUS, max_length=20, null=False, blank=False,
+    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=20, null=False, blank=False,
                               default=constants.DEPOSIT_WAITING_PAY)
+    source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
+                              max_length=10, null=False, blank=False)
+    no_password = models.BooleanField(default=False, null=False, blank=False)
     created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
@@ -44,7 +47,7 @@ class CurrentBill(models.Model):
                                         blank=False)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     bill_date = models.DateTimeField(null=False, blank=False)
-    bill_type = models.CharField(choices=constants.BILL_TYPE, max_length=10, null=False, blank=False)
+    bill_type = models.CharField(choices=constants.BILL_TYPE_CHOICE, max_length=10, null=False, blank=False)
     amount = models.PositiveIntegerField(null=False, blank=False)
     balance = models.PositiveIntegerField(null=False, blank=False)
     order_id = models.IntegerField(null=False, blank=False)

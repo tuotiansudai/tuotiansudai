@@ -13,10 +13,20 @@ logger = logging.getLogger(__name__)
 @api_view(['POST'])
 def deposit_with_password(request, login_name):
     data = request.data
-    data[u'login_name'] = login_name
-
+    data.update({'login_name': login_name, 'no_password': False})
     try:
-        pay_response = Deposit().deposit_with_password(data=data)
+        pay_response = Deposit().deposit(data=data)
+        return Response(pay_response, status=status.HTTP_200_OK)
+    except ValueError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def deposit_with_no_password(request, login_name):
+    data = request.data
+    data.update({'login_name': login_name, 'no_password': True})
+    try:
+        pay_response = Deposit().deposit(data=data)
         return Response(pay_response, status=status.HTTP_200_OK)
     except ValueError:
         return Response(status=status.HTTP_400_BAD_REQUEST)
