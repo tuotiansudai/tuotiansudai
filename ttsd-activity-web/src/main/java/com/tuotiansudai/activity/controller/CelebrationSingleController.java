@@ -38,6 +38,12 @@ public class CelebrationSingleController {
         return drawLotteryResultDto;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/draw-time", method = RequestMethod.POST)
+    public String singleTaskDrawPrize() {
+        return  String.valueOf(celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
+    }
+
 
 
 
