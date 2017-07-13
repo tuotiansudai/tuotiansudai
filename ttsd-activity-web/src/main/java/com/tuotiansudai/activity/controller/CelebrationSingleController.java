@@ -43,7 +43,7 @@ public class CelebrationSingleController {
 
     @ResponseBody
     @RequestMapping(value = "/draw-time", method = RequestMethod.POST)
-    public Map<String,String> singleTaskDrawPrize() {
+    public Map<String,String> singleDrawTime() {
         Map<String,String> map=new HashMap<>();
         map.put("drawTime",String.valueOf(celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName())));
         return map;
