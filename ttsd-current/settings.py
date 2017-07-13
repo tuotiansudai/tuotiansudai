@@ -29,10 +29,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-REST_ENABLED = True
+REST_ENABLED = False
 REST_PATH = 'rest/'
 
-CONSOLE_ENABLED = False
+CONSOLE_ENABLED = True
 CONSOLE_PATH = 'console/'
 
 # database config
@@ -71,10 +71,6 @@ if REST_ENABLED:
 
 if CONSOLE_ENABLED:
     INSTALLED_APPS += [
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.staticfiles',
         'current_console']
 
 MIDDLEWARE = [

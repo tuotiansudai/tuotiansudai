@@ -1,0 +1,68 @@
+{% extends "console/tpl/_layout.tpl" %}
+{% block content %}
+    <form class="form-horizontal" action="{% url 'create_loan' %}" method="post" style="padding-top: 20px">
+        <div class="form-group">
+            <label for="volume" class="col-sm-3 control-label">资产类型:</label>
+            <div class="col-sm-6">
+                <select class="form-group" name="type">
+                    <option value="">请选择</option>
+                    {% for key,value in types %}
+                        <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="volume" class="col-sm-3 control-label">代理人:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="agent" required
+                       placeholder="代理人">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="volume" class="col-sm-3 control-label">资产价值（万元）:</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" name="amount" maxlength="5" required
+                       placeholder="资产价值（万元）">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="volume" class="col-sm-3 control-label">计息起始时间:</label>
+            <div class="col-sm-3">
+                <input id="effective_date" name="start_time" class="form-control form-control-datetimepicker"
+                       data-date-format="yyyy-mm-dd"
+                       required
+                />
+
+            </div>
+            <div class="col-sm-3">
+                <input id="expiration_date" name="end_time" class="form-control form-control-datetimepicker"
+                       data-date-format="yyyy-mm-dd"
+                       required
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="volume" class="col-sm-3 control-label">借款人:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="debtor" maxlength="24" required
+                       placeholder="借款人">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="volume" class="col-sm-3 control-label">借款人身份证号:</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" name="debtor_identity_card"
+                       required
+                       maxlength="18"
+                       placeholder="请输入18位身份证号">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-9">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
