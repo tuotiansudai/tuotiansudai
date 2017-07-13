@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -152,7 +153,7 @@ public class InvestControllerTest {
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount, mockInvestLoginName);
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount == mockInvestAmount;
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount);
     }
 
     private void verifyInvestSuccessAmountTransferMessage(long mockInvestAmount, String mockInvestLoginName) {
@@ -207,7 +208,7 @@ public class InvestControllerTest {
         assertThat(lm.getStatus(), is(LoanStatus.RECHECK));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3;
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
     }
 
     // case3: 超投，返款成功
@@ -251,14 +252,12 @@ public class InvestControllerTest {
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
 
-        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
-
         // check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
         assertThat(lm.getStatus(), is(LoanStatus.RAISING));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3;
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
 
         // 超投返款
         overInvestPaybackNotify(orderId4, "0000");
@@ -311,23 +310,16 @@ public class InvestControllerTest {
         this.generateMockResponse_success(2); // 返款成功
         this.jobAsyncInvestNotify(5);
 
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
-
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
-
-        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
-        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount5, mockInvestLoginName5);
 
         // check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
         assertThat(lm.getStatus(), is(LoanStatus.RAISING));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3;
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
 
         // 第4，5笔投资超投，返款回调
         this.overInvestPaybackNotify(orderId4, "0000");
@@ -385,25 +377,17 @@ public class InvestControllerTest {
         this.generateMockResponse_success(1); // 返款成功
         this.jobAsyncInvestNotify(5);
 
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
-
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount5, mockInvestLoginName5);
-//        verifyInvestSuccessAmountTransferMessage(mockInvestAmount4, mockInvestLoginName4);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
-
-//        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount5, mockInvestLoginName5);
 
         // check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
         assertThat(lm.getStatus(), is(LoanStatus.RECHECK));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount5;
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount5);
 
         // 第4笔投资超投，返款回调
         this.overInvestPaybackNotify(orderId4, "0000");
@@ -465,22 +449,16 @@ public class InvestControllerTest {
         InvestModel investModel4_b = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
         assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
 
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
-//        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
-
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
-
-        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
 
         // check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
         assertThat(lm.getStatus(), is(LoanStatus.RAISING));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3;
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
 
         // 超投返款回调－失败，order4当作投资成功处理
         this.overInvestPaybackNotify(orderId4, "0001");
@@ -493,7 +471,7 @@ public class InvestControllerTest {
         assertThat(lm_after.getStatus(), is(LoanStatus.RECHECK));
 
         long sumSuccessInvestAmount_after = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assert sumSuccessInvestAmount_after == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount4;
+        assertEquals(sumSuccessInvestAmount_after, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount4);
     }
 
 
@@ -525,19 +503,6 @@ public class InvestControllerTest {
                 "sign=uCQvu1tGvZuJAl%2FGoQHgZYjceelWgQ71ubOOtjqgw%2BOMOsh6VfZcukgtuAk1Pjh00HnfXeRi%2BXfT50bcaesv1NKjJ%2FgFp6oMPZh0rqL32FqugCBZFDrz4HNPjJGljUuhatUmJJvvZMUMMJmlnU7j61ByZ77mvukZ%2Fk4v0AEsi5s%3D&" +
                 "sign_type=RSA", orderId + "X" + System.currentTimeMillis(), retCode))
                 .andExpect(status().isOk());
-    }
-
-
-//    private void verifyInvestorAmount_success(long mockInitAmount, long mockInvestAmount1, String mockInvestLoginName1) {
-//        AccountModel am = accountMapper.findByLoginName(mockInvestLoginName1);
-//        assert am.getBalance() == mockInitAmount - mockInvestAmount1;
-//        assert am.getFreeze() == mockInvestAmount1;
-//    }
-
-    private void verifyInvestorAmount_fail(long mockInitAmount, long mockInvestAmount1, String mockInvestLoginName1) {
-        AccountModel am = accountMapper.findByLoginName(mockInvestLoginName1);
-        assert am.getBalance() == mockInitAmount;
-        assert am.getFreeze() == 0;
     }
 
     private long investOneDeal(long mockLoanId, long mockInvestAmount, String mockInvestLoginName) throws Exception {
