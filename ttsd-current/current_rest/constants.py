@@ -1,0 +1,16 @@
+# coding=utf-8
+
+STATUS_WAITING = 'WAITING'
+STATUS_APPROVED = 'APPROVED'
+STATUS_DENIED = 'DENIED'
+
+
+STATUS_CHOICES = (
+    (STATUS_WAITING, u'待审核'),
+    (STATUS_APPROVED, u'已审核'),
+    (STATUS_DENIED, u'已驳回'),
+)
+
+
+STATUS_MAP = dict(STATUS_CHOICES)
+
