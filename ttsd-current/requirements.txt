@@ -3,3 +3,6 @@ django-filter==1.0.4
 djangorestframework==3.6.3
 pytz==2017.2
 PyMySQL==0.7.11
+requests==2.18.1
+mock==2.0.0
+PyMySQL==0.7.11
