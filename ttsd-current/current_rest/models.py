@@ -15,5 +15,5 @@ class CurrentWithdraw(models.Model):
     approve_time = models.DateTimeField(null=True, blank=True)
     approver = models.CharField(null=True, blank=True, max_length=30)
 
-    def __unicode__(self):
-        return self.approver
+    class Meta:
+        db_table = 'current_withdraw'
