@@ -35,17 +35,18 @@ class CurrentDeposit(models.Model):
         db_table = 'current_deposit'
 
 
-class CurrentBILL(models.Model):
+class CurrentBill(models.Model):
     current_account = models.ForeignKey(to=CurrentAccount,
                                         on_delete=models.CASCADE,
                                         related_name='current_bills',
                                         related_query_name='current_bill',
                                         null=False,
                                         blank=False)
+    login_name = models.CharField(max_length=25, null=False, blank=False)
     bill_date = models.DateTimeField(null=False, blank=False)
     bill_type = models.CharField(choices=constants.BILL_TYPE, max_length=10, null=False, blank=False)
     amount = models.PositiveIntegerField(null=False, blank=False)
-    balance = models.IntegerField(null=False, blank=False)
+    balance = models.PositiveIntegerField(null=False, blank=False)
     order_id = models.IntegerField(null=False, blank=False)
     created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)

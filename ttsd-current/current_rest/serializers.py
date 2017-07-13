@@ -12,5 +12,4 @@ class DepositSerializer(serializers.ModelSerializer):
 
 class DepositSuccessSerializer(serializers.Serializer):
     order_id = serializers.IntegerField(min_value=0, required=True)
-    status = serializers.CharField(choices=constants.DEPOSIT_STATUS, required=True)
-    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    status = serializers.ChoiceField(choices=constants.DEPOSIT_STATUS, required=True)
