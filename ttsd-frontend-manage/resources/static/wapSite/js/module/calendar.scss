@@ -135,11 +135,13 @@
     color: #eee;
 }
 
-.calendar-display .m,
-.calendar-views .week,
-.calendar-display:hover,
-.calendar-arrow span:hover {
-    color: #888;
+
+.calendar-display {
+    font-size: 20px;
+    color: #FF473C;
+    .m {
+        font-size: 20px;
+    }
 }
 
 .calendar-views .days .old,

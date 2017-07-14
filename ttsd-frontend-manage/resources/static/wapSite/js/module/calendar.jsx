@@ -83,6 +83,11 @@
         onSelected: function (view, date, value) {
             // body...
         },
+        onClickYear:function (arr,callback) {
+            console.log(arr);
+            callback && callback(arr);
+
+        },
 
         // 参数同上
         onMouseenter: $.noop,
@@ -116,7 +121,7 @@
         TODAY_CLASS = 'now',
         SELECT_CLASS = 'selected',
         MARK_DAY_HTML = '<i class="dot"></i>',
-        DATE_DIS_TPL = '{year}/<span class="m">{month}</span>',
+        DATE_DIS_TPL = '{year}年/<span class="m">{month}月</span>',
 
         ITEM_STYLE = 'style="width:{w}px;height:{h}px;"',
         WEEK_ITEM_TPL = '<li ' + ITEM_STYLE + '>{wk}</li>',
@@ -130,7 +135,7 @@
             '<div class="calendar-hd">',
             '<span class="prev" data-calendar-arrow-date></span>',
             '<a href="javascript:;" data-calendar-display-date class="calendar-display">',
-            '{yyyy}/<span class="m">{mm}</span>',
+            '{yyyy}<span class="m">{mm}</span>',
             '</a>',
 
             '<span class="next" data-calendar-arrow-date></span>',
@@ -434,7 +439,7 @@
             return month.join('');
         },
         setMonthAction: function (y) {
-            var m = this.date.getMonth() + 1;
+            var m = this.date.getMonth() ;
 
             this.$monthItems.children().removeClass(TODAY_CLASS);
             if (y === this.date.getFullYear()) {
@@ -602,9 +607,9 @@
             this.setView('month');
         },
         getDisDateValue: function () {
-            var arr = this.$disDate.html().split('/'),
-                y = Number(arr[0]),
-                m = Number(arr[1].match(/\d{1,2}/)[0]);
+            var arr = this.$disDate.text().match(/\d+/g),
+                y = arr[0],
+                m = arr[1];
 
             return [y, m];
         },
@@ -667,9 +672,10 @@
             // view change
             _this.$element.on('click', DISPLAY_VD, function () {
                 var arr = _this.getDisDateValue();
-                _this.updateMonthView(arr[0], arr[1]);
 
-                vc('month', arr[0], arr[1]);
+                _this.options.onClickYear(arr);
+                // _this.updateMonthView(arr[0], arr[1]);
+                // vc('month', arr[0], arr[1]);
 
             }).on('click', DISPLAY_VM, function () {
                 var y = this.innerHTML;
@@ -701,7 +707,7 @@
 
             // selected
             _this.$element.on('click', '[' + ITEM_DAY + ']', function () {
-                var d = parseInt(this.innerHTML),
+                var d = parseInt(this.textContent),
                     cls = getClass(this),
                     type = /new|old/.test(cls) ? cls.match(/new|old/)[0] : '';
 

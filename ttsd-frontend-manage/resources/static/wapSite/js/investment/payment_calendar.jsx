@@ -3,12 +3,18 @@ require('wapSiteStyle/investment/payment_calendar.scss');
 require('wapSiteJsModule/calendar.scss');
 require('wapSiteJsModule/calendar');
 
+let $paymentCalendar = $('#paymentCalendar');
+let $paymentTpl = $('#paymentTpl'),
+    tplTemplate = $paymentTpl.html();
+
+
+   let renderPayment = _.template(tplTemplate);
+
 
 var data = [{
     date: '2016-10-31',
     value: 'ppp'
 }];
-
 
 let screenWid = document.body.clientWidth;
 $('#calendarTree').calendar({
@@ -32,11 +38,35 @@ $('#calendarTree').calendar({
 
         updatePayment(y,m);
 
+    },
+    onClickYear:function(date) {
+        location.href='payment-annual.ftl?year='+date[0];
     }
 });
 
 function updatePayment(year, month) {
     //通过接口 获取 当月 或者当日的 回款情况
 
+    var dataTest  = {
+        fund:"840,031.28 ",
+        year:'2009',
+        month:'9',
+        day:'9',
+        finish:'840,031.28',
+        total:'12,300.00',
+        count:1,
+        list:[{
+            name:'车辆抵押借款',
+            amount:'2323',
+            status:'待回款1'
+        }]
+    }
+
+    var html = renderPayment(dataTest);
+
+    $('.payment-section-info',$paymentCalendar).html(html);
+
 }
+
+updatePayment();
 
