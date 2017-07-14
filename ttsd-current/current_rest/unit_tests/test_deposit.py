@@ -96,7 +96,7 @@ class DepositTestCase(TestCase):
 
         response = self.client.post(path=reverse('deposit_with_password_callback'),
                                     data={'order_id': fake_deposit.pk,
-                                          'status': constants.DEPOSIT_SUCCESS},
+                                          'success': 'true'},
                                     format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
