@@ -18,7 +18,6 @@ import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.SystemBillModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
@@ -102,7 +101,7 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
             SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
             assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
-            assertThat(message.getBusinessType(), is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
+            assertThat(message.getBusinessType(), is(SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
         } catch (IOException e) {
             assert false;
         }

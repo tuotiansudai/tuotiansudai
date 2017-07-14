@@ -1,8 +1,8 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillMessageType;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -114,7 +114,7 @@ public class NormalRepayInvestFeeCallbackTest extends RepayBaseTest {
             SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
             assertThat(message.getAmount(), CoreMatchers.is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
             assertThat(message.getOrderId(), CoreMatchers.is(loanRepay1.getId()));
-            assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
+            assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.INVEST_FEE));
             assertThat(message.getMessageType(), CoreMatchers.is(SystemBillMessageType.TRANSFER_IN));
         } catch (IOException e) {
             assert false;

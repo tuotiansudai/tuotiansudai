@@ -5,6 +5,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -411,7 +412,7 @@ public class InvestTransferPurchaseServiceTest {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
             SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
             assertThat(message.getAmount(), CoreMatchers.is(actualTransferApplication.getTransferFee()));
-            assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
+            assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.TRANSFER_FEE));
         } catch (IOException e) {
             assert false;
         }

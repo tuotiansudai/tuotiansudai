@@ -1,7 +1,6 @@
 package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.mq.client.MQProducer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -13,8 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import javax.annotation.Resource;
 
 @Component
 public class MQWrapperClient {
@@ -33,8 +30,6 @@ public class MQWrapperClient {
     }
 
     public void sendMessage(final MessageQueue queue, final String message) {
-        logger.info("env:" + env);
-        System.out.println("env:" + env);
         if (env == Environment.UT || env == Environment.DEV) {
             mqProducer.sendMessage(queue, message);
         } else {
@@ -43,8 +38,6 @@ public class MQWrapperClient {
     }
 
     public void sendMessage(final MessageQueue queue, final Object message) {
-        logger.info("env:" + env);
-        System.out.println("env:" + env);
         if (env == Environment.UT || env == Environment.DEV) {
             try {
                 mqProducer.sendMessage(queue, JsonConverter.writeValueAsString(message));
