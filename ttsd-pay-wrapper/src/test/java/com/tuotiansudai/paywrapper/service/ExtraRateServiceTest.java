@@ -154,7 +154,7 @@ public class ExtraRateServiceTest {
     }
 
     @Test
-    public void shouldNormalRepayOk() throws PayException {
+    public void shouldNormalRepayOk() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
@@ -242,7 +242,7 @@ public class ExtraRateServiceTest {
     }
 
     @Test
-    public void shouldAdvanceRepayOk() {
+    public void shouldAdvanceRepayOk() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
@@ -275,17 +275,13 @@ public class ExtraRateServiceTest {
         verifyAmountTransferMessage(userModel, actualInterest, actualFee);
     }
 
-    private void verifyAmountTransferMessage(UserModel userModel, long actualInterest, long actualFee) {
-        try {
-            String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
-            assertThat(feeMessage.getLoginName(), CoreMatchers.is(userModel.getLoginName()));
-            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInterest - actualFee));
-            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.EXTRA_RATE));
-            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifyAmountTransferMessage(UserModel userModel, long actualInterest, long actualFee) throws IOException {
+        String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
+        assertThat(feeMessage.getLoginName(), CoreMatchers.is(userModel.getLoginName()));
+        assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInterest - actualFee));
+        assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.EXTRA_RATE));
+        assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
     }
 
     @Test

@@ -196,31 +196,27 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
     }
 
-    private void verifyAmountTransferMessage(UserModel transferrer, UserModel transferee, TransferApplicationModel fakeTransferApplication) {
-        try {
-            String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage transferFeeMessage = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMessage.class);
-            assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
-            assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
-            assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
-            assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+    private void verifyAmountTransferMessage(UserModel transferrer, UserModel transferee, TransferApplicationModel fakeTransferApplication) throws IOException {
+        String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transferFeeMessage = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMessage.class);
+        assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
+        assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
+        assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
 
-            String transferMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage transferMessage = JsonConverter.readValue(transferMessageBody, AmountTransferMessage.class);
-            assertThat(transferMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
-            assertThat(transferMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
-            assertThat(transferMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-            assertThat(transferMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+        String transferMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transferMessage = JsonConverter.readValue(transferMessageBody, AmountTransferMessage.class);
+        assertThat(transferMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transferMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_OUT));
+        assertThat(transferMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
 
-            String transfereeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage transfereeMessage = JsonConverter.readValue(transfereeMessageBody, AmountTransferMessage.class);
-            assertThat(transfereeMessage.getLoginName(), CoreMatchers.is(transferee.getLoginName()));
-            assertThat(transfereeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
-            assertThat(transfereeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_IN));
-            assertThat(transfereeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-        } catch (IOException e) {
-            assert false;
-        }
+        String transfereeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transfereeMessage = JsonConverter.readValue(transfereeMessageBody, AmountTransferMessage.class);
+        assertThat(transfereeMessage.getLoginName(), CoreMatchers.is(transferee.getLoginName()));
+        assertThat(transfereeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transfereeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_IN));
+        assertThat(transfereeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
     }
 
     @Test

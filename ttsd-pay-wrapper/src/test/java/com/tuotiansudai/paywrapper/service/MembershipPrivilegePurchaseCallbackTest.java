@@ -55,7 +55,7 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Test
-    public void shouldPurchaseCallbackIsSuccess() {
+    public void shouldPurchaseCallbackIsSuccess() throws Exception {
         UserModel userModel = getFakeUser("loginNameTester");
         userModel.setUserName("UserName");
         userModel.setIdentityNumber("11XXX11XXX11XXX123");
@@ -96,17 +96,13 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
 
     }
 
-    private void verifyAmountTransferMessage(UserModel userModel, MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) {
-        try {
-            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
-            assertThat(message.getLoginName(), is(userModel.getLoginName()));
-            assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
-            assertThat(message.getBusinessType(), is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
-            assertThat(message.getTransferType(), is(TransferType.TRANSFER_OUT_BALANCE));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifyAmountTransferMessage(UserModel userModel, MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+        assertThat(message.getLoginName(), is(userModel.getLoginName()));
+        assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
+        assertThat(message.getBusinessType(), is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
+        assertThat(message.getTransferType(), is(TransferType.TRANSFER_OUT_BALANCE));
     }
 
 }
