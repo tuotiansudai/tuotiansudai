@@ -19,6 +19,8 @@ import org.hamcrest.CoreMatchers;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,6 +35,8 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(AdvanceRepayInvestFeeCallbackTest.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -110,6 +114,8 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
     private void verifySystemBillMessage(LoanRepayModel loanRepay1, InvestRepayModel investRepay1) {
         try {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+            System.out.println("messageBody:" + messageBody);
+            logger.info("messageBody:" + messageBody);
             SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
             assertThat(message.getAmount(), CoreMatchers.is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
             assertThat(message.getOrderId(), CoreMatchers.is(loanRepay1.getId()));
