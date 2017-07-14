@@ -75,6 +75,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+if not PRODUCT:
+    INSTALLED_APPS += ['django_extensions']
+
 if REST_ENABLED:
     INSTALLED_APPS += ['rest_framework', 'current_rest']
 
