@@ -113,10 +113,10 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
 
     }
 
-    private void verifySystemBillMessage(LoanRepayModel loanRepay1, InvestRepayModel investRepay1) {
+    private void verifySystemBillMessage(LoanRepayModel loanRepay1, InvestRepayModel investRepay1) throws IOException {
         try {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
-            assertThat(messageBody, is("1"));
+//            assertThat(messageBody, is("1"));
 //            System.out.println("messageBody:" + messageBody);
 //            logger.info("messageBody:" + messageBody);
             SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
@@ -125,7 +125,7 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
             assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
             assertThat(message.getMessageType(), CoreMatchers.is(SystemBillMessageType.TRANSFER_IN));
         } catch (IOException e) {
-            assert false;
+            throw e;
         }
     }
 }
