@@ -100,13 +100,17 @@ $sportPlayContainer.find('.gift-list .select-item').on('click',  function(event)
 // 登录弹框
 $sportPlayContainer.find('.to-login').on('click', function(event) {
     event.preventDefault();
-    layer.open({
-        type: 1,
-        title: false,
-        closeBtn: 0,
-        area: ['auto', 'auto'],
-        content: $('#loginTip')
-    });
+    if (sourceKind.params.source == 'app') {
+        location.href = "/login";
+    } else {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $('#loginTip')
+        });
+    }
 });
 
 // 兑换商品
