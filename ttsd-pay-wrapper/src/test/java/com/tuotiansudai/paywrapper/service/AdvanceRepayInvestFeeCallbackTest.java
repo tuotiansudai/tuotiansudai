@@ -29,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.Date;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -114,8 +116,9 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
     private void verifySystemBillMessage(LoanRepayModel loanRepay1, InvestRepayModel investRepay1) {
         try {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
-            System.out.println("messageBody:" + messageBody);
-            logger.info("messageBody:" + messageBody);
+            assertThat(messageBody, is("1"));
+//            System.out.println("messageBody:" + messageBody);
+//            logger.info("messageBody:" + messageBody);
             SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
             assertThat(message.getAmount(), CoreMatchers.is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
             assertThat(message.getOrderId(), CoreMatchers.is(loanRepay1.getId()));
