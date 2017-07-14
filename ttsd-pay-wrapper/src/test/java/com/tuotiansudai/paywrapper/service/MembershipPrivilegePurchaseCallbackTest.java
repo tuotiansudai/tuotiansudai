@@ -11,6 +11,7 @@ import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
@@ -82,11 +83,7 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
 
         verifyAmountTransferMessage(userModel, membershipPrivilegePurchaseModel);
 
-        SystemBillModel systemBillModels = systemBillMapper.findByOrderId(membershipPrivilegePurchaseModel.getId(), SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE);
-
-        assertNotNull(systemBillModels);
-        assertThat(systemBillModels.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
-        assertThat(systemBillModels.getBusinessType(), is(SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
+        verifySystemBillMessage(membershipPrivilegePurchaseModel);
 
         MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModelReturn = membershipPrivilegePurchaseMapper.findById(membershipPrivilegePurchaseModel.getId());
         assertNotNull(membershipPrivilegePurchaseModelReturn);
@@ -98,6 +95,17 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
         assertThat(membershipPrivilegeModel.getLoginName(), is(userModel.getLoginName()));
         assertThat(membershipPrivilegeModel.getPrivilege(), is(membershipPrivilegePurchaseModel.getPrivilege()));
 
+    }
+
+    private void verifySystemBillMessage(MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) {
+        try {
+            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+            SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+            assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
+            assertThat(message.getBusinessType(), is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
+        } catch (IOException e) {
+            assert false;
+        }
     }
 
     private void verifyAmountTransferMessage(UserModel userModel, MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) {

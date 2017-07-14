@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -134,8 +135,17 @@ public class TransferCashServiceTest {
 
         verifyAmountTransferMessage(orderId);
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(orderId, SystemBillBusinessType.LOTTERY_CASH);
-        assertThat(systemBillModel.getAmount(), is(1L));
+        verifySystemBillMessage();
+    }
+
+    private void verifySystemBillMessage() {
+        try {
+            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+            SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+            assertThat(message.getAmount(), CoreMatchers.is(1L));
+        } catch (IOException e) {
+            assert false;
+        }
     }
 
     private void verifyAmountTransferMessage(long orderId) {
