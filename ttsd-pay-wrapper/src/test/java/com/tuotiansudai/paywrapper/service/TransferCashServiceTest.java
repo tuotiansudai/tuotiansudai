@@ -6,7 +6,6 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -19,7 +18,6 @@ import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.SystemBillModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
@@ -124,7 +122,7 @@ public class TransferCashServiceTest {
     }
 
     @Test
-    public void shouldTransferCash() {
+    public void shouldTransferCash() throws Exception {
         this.createUserByUserId("testTransferCash");
         this.createAccountByUserId("testTransferCash");
         long orderId = IdGenerator.generate();
@@ -138,14 +136,10 @@ public class TransferCashServiceTest {
         verifySystemBillMessage();
     }
 
-    private void verifySystemBillMessage() {
-        try {
-            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
-            SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
-            assertThat(message.getAmount(), CoreMatchers.is(1L));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifySystemBillMessage() throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(1L));
     }
 
     private void verifyAmountTransferMessage(long orderId) {

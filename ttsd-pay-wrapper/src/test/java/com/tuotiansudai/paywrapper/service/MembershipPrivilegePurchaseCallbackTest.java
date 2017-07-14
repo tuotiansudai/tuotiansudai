@@ -14,7 +14,6 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
@@ -52,14 +51,12 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
     @Autowired
     private MembershipPrivilegePurchaseMapper membershipPrivilegePurchaseMapper;
     @Autowired
-    private SystemBillMapper systemBillMapper;
-    @Autowired
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Test
-    public void shouldPurchaseCallbackIsSuccess() {
+    public void shouldPurchaseCallbackIsSuccess() throws Exception {
         UserModel userModel = getFakeUser("loginNameTester");
         userModel.setUserName("UserName");
         userModel.setIdentityNumber("11XXX11XXX11XXX123");
@@ -96,15 +93,11 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
 
     }
 
-    private void verifySystemBillMessage(MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) {
-        try {
-            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
-            SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
-            assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
-            assertThat(message.getBusinessType(), is(SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifySystemBillMessage(MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
+        assertThat(message.getBusinessType(), is(SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));
     }
 
     private void verifyAmountTransferMessage(UserModel userModel, MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) {

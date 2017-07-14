@@ -108,15 +108,11 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
     }
 
     private void verifySystemBillMessage(LoanRepayModel loanRepay1, InvestRepayModel investRepay1) throws IOException {
-        try {
-            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
-            SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
-            assertThat(message.getAmount(), CoreMatchers.is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
-            assertThat(message.getOrderId(), CoreMatchers.is(loanRepay1.getId()));
-            assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.INVEST_FEE));
-            assertThat(message.getMessageType(), CoreMatchers.is(SystemBillMessageType.TRANSFER_IN));
-        } catch (IOException e) {
-            throw e;
-        }
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
+        assertThat(message.getOrderId(), CoreMatchers.is(loanRepay1.getId()));
+        assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.INVEST_FEE));
+        assertThat(message.getMessageType(), CoreMatchers.is(SystemBillMessageType.TRANSFER_IN));
     }
 }

@@ -81,12 +81,6 @@ public class InvestTransferPurchaseServiceTest {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private UserBillMapper userBillMapper;
-
-    @Autowired
-    private SystemBillMapper systemBillMapper;
-
-    @Autowired
     private MembershipMapper membershipMapper;
 
     @Autowired
@@ -407,15 +401,11 @@ public class InvestTransferPurchaseServiceTest {
         }
     }
 
-    private void verifySystemBillMessage(TransferApplicationModel actualTransferApplication) {
-        try {
-            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
-            SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
-            assertThat(message.getAmount(), CoreMatchers.is(actualTransferApplication.getTransferFee()));
-            assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.TRANSFER_FEE));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifySystemBillMessage(TransferApplicationModel actualTransferApplication) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(actualTransferApplication.getTransferFee()));
+        assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.TRANSFER_FEE));
     }
 
     @Test
