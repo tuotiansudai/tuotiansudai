@@ -4,13 +4,20 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
+import org.hamcrest.CoreMatchers;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -57,6 +66,8 @@ public class CouponLoanOutServiceAspectTest {
     private CouponLoanOutService couponLoanOutService;
 
     private MockWebServer mockServer;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Before
     public void setup() throws Exception {
@@ -100,7 +111,10 @@ public class CouponLoanOutServiceAspectTest {
         long investAmount = 2000L;
 
         String couponCreater = "couponCreater";
-        String[] mockInvestUserNames = new String[]{couponCreater, "mock_invest1", "mock_invest2", "mock_invest3"};
+        String loginName1 = "mock_invest1";
+        String loginName2 = "mock_invest2";
+        String loginName3 = "mock_invest3";
+        String[] mockInvestUserNames = new String[]{couponCreater, loginName1, loginName2, loginName3};
 
         mockUsers(mockInvestUserNames);
         mockAccounts(mockInvestUserNames, mockInitAmount);
@@ -121,17 +135,23 @@ public class CouponLoanOutServiceAspectTest {
         // 测试幂等性，多次调用，结果一致
         couponLoanOutService.sendRedEnvelope(mockLoanId);
 
-        AccountModel am1 = accountMapper.findByLoginName(mockInvestUserNames[0]);
-        AccountModel am2 = accountMapper.findByLoginName(mockInvestUserNames[1]);
-        AccountModel am3 = accountMapper.findByLoginName(mockInvestUserNames[2]);
+        verifySendRedEnveloperSuccessAmountTransferMessage(mockCouponAmount, loginName3);
+        verifySendRedEnveloperSuccessAmountTransferMessage(mockCouponAmount, loginName2);
+        verifySendRedEnveloperSuccessAmountTransferMessage(mockCouponAmount, loginName1);
+    }
 
-        long amount1 = am1.getBalance();
-        long amount2 = am2.getBalance();
-        long amount3 = am3.getBalance();
 
-        assert amount1 == mockInitAmount - investAmount + mockCouponAmount;
-        assert amount2 == mockInitAmount - investAmount + mockCouponAmount;
-        assert amount3 == mockInitAmount - investAmount + mockCouponAmount;
+    private void verifySendRedEnveloperSuccessAmountTransferMessage(long mockCouponAmount, String loginName) {
+        try {
+            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+            assertThat(message.getLoginName(), CoreMatchers.is(loginName));
+            assertThat(message.getAmount(), CoreMatchers.is(mockCouponAmount));
+            assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.RED_ENVELOPE));
+            assertThat(message.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+        } catch (IOException e) {
+            assert false;
+        }
     }
 
     private long mockCoupon(String loginName, long amount) {
