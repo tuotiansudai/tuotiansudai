@@ -46,6 +46,7 @@ DB_MYSQL_PASSWORD = 'root'
 # rest service url
 REST_SERVICE_HOST = '127.0.0.1'
 REST_SERVICE_PORT = '8000'
+REST_TIME_OUT = 500
 
 # ===signIn module start===
 SIGN_IN_HOST = 'http://127.0.0.1'
@@ -169,5 +170,8 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
     'PAGE_SIZE': 10
 }

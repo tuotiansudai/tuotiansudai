@@ -24,3 +24,20 @@ LOAN_TYPE_CHOICES = (
     (LOAN_TYPE_SHUIYI, u'税易经营性借款'),
     (LOAN_TYPE_HUIZU, u'汽车融资租赁')
 )
+
+
+class OperationTarget(object):
+    LOAN = 'loan'
+
+    OPERATION_TARGET_TYPE = (
+        (LOAN, u'债权'),
+    )
+
+
+class OperationType(object):
+    LOAN_ADD = 'LOAN_ADD'
+    LOAN_AUDIT = 'LOAN_AUDIT'
+    OPERATION_TYPE_MAP = (
+        (LOAN_ADD, u'增加债权信息'),
+        (LOAN_AUDIT, u'审核债权信息'),
+    )

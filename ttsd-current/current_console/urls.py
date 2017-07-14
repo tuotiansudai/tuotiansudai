@@ -20,5 +20,6 @@ from current_console.views import loan
 
 urlpatterns = [
     url('^index$', home.index, name='index'),
-    url('^loan$', loan.create_loan, name='create_loan')
+    url('^create-loan$', loan.create_loan, name='create_loan'),
+    url('^audit-loan$', loan.audit_loan, name='audit_loan')
 ]

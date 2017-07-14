@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from current_rest import constants
+from current_rest.biz.services import operation_log_service
 from current_rest.models import Loan
 from current_rest.serializers import LoanSerializer
 
@@ -19,25 +21,25 @@ def hello(request):
 
 class LoanList(APIView):
     def get(self, request):
-        loans = Loan.objects.all()
-        serializer = LoanSerializer(loans, many=True)
-        return Response(serializer.data)
+        pk = request.GET.get('pk', None)
+        if pk is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        loan = self.get_loan(pk)
+        serializer = LoanSerializer(loan)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = LoanSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            operation_log_service.log_contract_operation(serializer.data['id'],
+                                                         'operation',
+                                                         constants.OperationType.LOAN_ADD,
+                                                         '提交创建债权申请'
+                                                         )
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LoanDetail(APIView):
-    def get_loan(self, pk):
-        try:
-            return Loan.objects.get(pk)
-        except Loan.DoesNotExist:
-            raise Http404
 
     def put(self, request, pk):
         loan = self.get_loan(pk)
@@ -46,3 +48,9 @@ class LoanDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_loan(self, pk):
+        try:
+            return Loan.objects.get(id=pk)
+        except Loan.DoesNotExist:
+            raise Http404

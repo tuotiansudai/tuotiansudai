@@ -27,7 +27,21 @@ class Loan(models.Model):
     debtor_identity_card = models.CharField(null=False, max_length=30)
     effective_date = models.DateTimeField(null=False)
     expiration_date = models.DateTimeField(null=False)
+    create_time = models.DateTimeField(auto_now=True,blank=False, null=False)
+    update_time = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=constants.LOAN_STATUS_CHOICES, null=False, max_length=20)
 
     class Meta:
         db_table = 'loan'
+
+
+class OperationLog(models.Model):
+    refer_type = models.CharField(choices=constants.OperationTarget.OPERATION_TARGET_TYPE, max_length=50)
+    refer_pk = models.IntegerField()
+    operator = models.CharField(null=False, max_length=50)
+    operation_type = models.CharField(choices=constants.OperationType.OPERATION_TYPE_MAP, max_length=100, null=True)
+    timestamp = models.DateTimeField()
+    content = models.TextField()
+
+    class Meta:
+        db_table = 'operation_log'
