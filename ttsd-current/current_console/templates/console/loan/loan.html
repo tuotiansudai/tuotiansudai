@@ -15,29 +15,29 @@
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">代理人:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="agent" required
+                <input type="text" class="form-control" name="agent" required value="1"
                        placeholder="代理人">
             </div>
         </div>
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">资产价值（万元）:</label>
             <div class="col-sm-6">
-                <input type="number" class="form-control" name="amount" maxlength="5" required
+                <input type="number" class="form-control" name="amount" maxlength="5" required value="500"
                        placeholder="资产价值（万元）">
             </div>
         </div>
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">计息起始时间:</label>
             <div class="col-sm-3">
-                <input id="effective_date" name="start_time" class="form-control form-control-datetimepicker"
-                       data-date-format="yyyy-mm-dd"
+                <input id="effective_date" name="effective_date" class="form-control form-control-datetimepicker"
+                       value="2015-01-01 00:00:00"
                        required
                 />
 
             </div>
             <div class="col-sm-3">
-                <input id="expiration_date" name="end_time" class="form-control form-control-datetimepicker"
-                       data-date-format="yyyy-mm-dd"
+                <input id="expiration_date" name="expiration_date" class="form-control form-control-datetimepicker"
+                       value="2015-05-01 23:59:59"
                        required
                 />
             </div>
@@ -45,14 +45,14 @@
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">借款人:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="debtor" maxlength="24" required
+                <input type="text" class="form-control" name="debtor" maxlength="24" required value="debtor"
                        placeholder="借款人">
             </div>
         </div>
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">借款人身份证号:</label>
             <div class="col-sm-6">
-                <input type="number" class="form-control" name="debtor_identity_card"
+                <input type="number" class="form-control" name="debtor_identity_card" value="421022194401056675"
                        required
                        maxlength="18"
                        placeholder="请输入18位身份证号">

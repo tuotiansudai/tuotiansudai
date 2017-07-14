@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-REST_ENABLED = False
+REST_ENABLED = True
 REST_PATH = 'rest/'
 
 CONSOLE_ENABLED = True
@@ -42,6 +42,10 @@ DB_MYSQL_HOST = '192.168.33.10'
 DB_MYSQL_PORT = '3306'
 DB_MYSQL_USER = 'root'
 DB_MYSQL_PASSWORD = 'root'
+
+# rest service url
+REST_SERVICE_HOST = '127.0.0.1'
+REST_SERVICE_PORT = '8000'
 
 # ===signIn module start===
 SIGN_IN_HOST = 'http://127.0.0.1'
