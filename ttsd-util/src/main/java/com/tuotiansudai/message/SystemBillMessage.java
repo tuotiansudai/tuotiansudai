@@ -15,6 +15,9 @@ public class SystemBillMessage {
 
     private String detail;
 
+    public SystemBillMessage() {
+    }
+
     public SystemBillMessage(SystemBillMessageType messageType, long orderId, long amount, SystemBillBusinessType businessType, String detail) {
         this.messageType = messageType;
         this.orderId = orderId;
