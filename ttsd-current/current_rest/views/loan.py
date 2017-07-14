@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-# Create your views here.
 from django.http import Http404
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -12,11 +8,6 @@ from current_rest import constants
 from current_rest.biz.services import operation_log_service
 from current_rest.models import Loan
 from current_rest.serializers import LoanSerializer
-
-
-@api_view(['GET'])
-def hello(request):
-    return Response('hello')
 
 
 class LoanList(APIView):

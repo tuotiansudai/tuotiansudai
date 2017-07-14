@@ -41,3 +41,32 @@ class OperationType(object):
         (LOAN_ADD, u'增加债权信息'),
         (LOAN_AUDIT, u'审核债权信息'),
     )
+
+SOURCE_WEB = 'WEB'
+SOURCE_WE_CHAT = 'WE_CHAT'
+SOURCE_IOS = 'IOS'
+SOURCE_ANDROID = 'ANDROID'
+SOURCE_CHOICE = (
+    (SOURCE_WEB, u'网站'),
+    (SOURCE_WE_CHAT, u'微信'),
+    (SOURCE_IOS, u'iOS'),
+    (SOURCE_ANDROID, u'Android')
+)
+
+DEPOSIT_WAITING_PAY = 'WAITING_PAY'
+DEPOSIT_SUCCESS = 'SUCCESS'
+DEPOSIT_FAIL = 'FAIL'
+DEPOSIT_STATUS_CHOICE = (
+    (DEPOSIT_WAITING_PAY, u'待支付'),
+    (DEPOSIT_SUCCESS, u'买入成功'),
+    (DEPOSIT_FAIL, u'买入失败'),
+)
+
+BILL_TYPE_DEPOSIT = 'DEPOSIT'
+BILL_TYPE_WITHDRAW = 'WITHDRAW'
+BILL_TYPE_INTEREST = 'INTEREST'
+BILL_TYPE_CHOICE = (
+    (BILL_TYPE_DEPOSIT, u'买入'),
+    (BILL_TYPE_WITHDRAW, u'赎回'),
+    (BILL_TYPE_INTEREST, u'结息'),
+)
