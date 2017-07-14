@@ -48,6 +48,7 @@ public class WeChatController {
         httpServletRequest.getSession().removeAttribute("weChatUserOpenid");
 
         WeChatUserModel weChatUserModel = weChatService.parseWeChatUserStatus(httpServletRequest.getSession().getId(), state, code);
+
         if (weChatUserModel == null) {
             myAuthenticationUtil.removeAuthentication();
             return new ModelAndView("/error/404");

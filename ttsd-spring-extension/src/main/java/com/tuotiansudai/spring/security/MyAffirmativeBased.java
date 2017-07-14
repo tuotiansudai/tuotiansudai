@@ -1,8 +1,6 @@
 package com.tuotiansudai.spring.security;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.spring.UserRoleAccessDeniedException;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
@@ -31,15 +29,9 @@ public class MyAffirmativeBased extends AffirmativeBased {
             Object principal = authentication.getPrincipal();
             if (principal instanceof User) {
                 Collection<GrantedAuthority> authorities = ((User) principal).getAuthorities();
-                final List<String> roles = Lists.newArrayList("USER", "STAFF", "CUSTOMER_SERVICE", "ADMIN");
-                boolean noAccount = Iterators.all(authorities.iterator(), new Predicate<GrantedAuthority>() {
-                    @Override
-                    public boolean apply(GrantedAuthority grantedAuthority) {
-                        return roles.contains(grantedAuthority.getAuthority());
-                    }
-                });
+                boolean hasAccount = authorities.stream().anyMatch(grantedAuthority -> Role.INVESTOR.name().equals(grantedAuthority.getAuthority()));
 
-                if (noAccount) {
+                if (!hasAccount) {
                     throw new UserRoleAccessDeniedException(messages.getMessage(
                             "AbstractAccessDecisionManager.accessDenied", "Access is denied"));
                 }

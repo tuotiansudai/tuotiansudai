@@ -68,7 +68,8 @@ public class WeChatClient {
 
     public String fetchOpenid(String sessionId, String state, String code) {
         String originalState = redisWrapperClient.get(MessageFormat.format("{0}:wechat:state", sessionId));
-        redisWrapperClient.del(MessageFormat.format("{0}:wechat:state", sessionId));
+
+        logger.info(MessageFormat.format("originalState {0}, state {1}", originalState, state));
 
         if (Strings.isNullOrEmpty(state) || !state.equals(originalState)) {
             return null;

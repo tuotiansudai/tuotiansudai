@@ -1,8 +1,14 @@
+amqp==2.1.4
+billiard==3.5.0.2
+celery==4.0.2
 Django==1.11.3
 django-filter==1.0.4
 djangorestframework==3.6.3
+kombu==4.0.2
+mns==1.1.4
+PyMySQL==0.7.11
 pytz==2017.2
 PyMySQL==0.7.11
 requests==2.18.1
 mock==2.0.0
-PyMySQL==0.7.11
+vine==1.1.3
