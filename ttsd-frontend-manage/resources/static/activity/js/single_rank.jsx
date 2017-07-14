@@ -63,7 +63,7 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
                     dataType: 'json',
                     url:'/activity/single-rank/draw-time'
                 },function(data) {
-                    $leftDrawCount.text(data.drawTime);
+                    $leftDrawCount.text(data);
                 });
                 switch (data.prize) {
                     case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
