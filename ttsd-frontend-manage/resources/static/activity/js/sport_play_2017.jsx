@@ -68,7 +68,7 @@ function getGift() {
             } else {
                 commonFun.useAjax({
                     dataType: 'json',
-                    url:'/activity/single-rank/draw-time'
+                    url:'/activity/exercise-work/draw-time'
                 },function(data) {
                     $sportPlayContainer.find('.draw-time').text(data);
                 });
