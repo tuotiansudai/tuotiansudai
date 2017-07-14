@@ -375,12 +375,8 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualInvest = investMapper.findById(fakeInvest.getId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(1));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transfereeUserBills.get(0).getLoginName(), is(transferee.getLoginName()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_IN));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        verifyAmountTransferMessage(transferrer, transferee, fakeTransferApplication);
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
@@ -412,15 +408,6 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
-
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(actualTransferApplication.getTransferAmount()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(actualTransferApplication.getTransferFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
         SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
         assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
