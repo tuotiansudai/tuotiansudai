@@ -75,7 +75,7 @@ public class FeignClientConfig {
                 feignRequestOptions, okHttpClient, retryer,
                 jacksonDecoder, jacksonEncoder,
                 restErrorDecoder, requestHeaderInterceptor, jaxrsContract);
-        configurer.setBasePackages("com.tuotiansudai.rest.client");
+        configurer.setBasePackages("com.tuotiansudai");
         return configurer;
     }
 }
