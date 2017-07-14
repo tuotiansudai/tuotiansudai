@@ -43,7 +43,7 @@ DB_MYSQL_PASSWORD = 'root'
 
 LOGGING_DIR = '/var/log/current_rest'
 
-PAY_WRAPPER_HOST = 'http://localhost:8080'
+PAY_WRAPPER_HOST = 'http://localhost:8080/current'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/settings_local.py'
