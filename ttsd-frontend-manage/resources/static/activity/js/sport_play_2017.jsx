@@ -66,7 +66,13 @@ function getGift() {
                     content: $('#loginTip')
                 });
             } else {
-                $sportPlayContainer.find('.draw-time').text(function(index,num){return parseInt(num)>1?parseInt(num)-1:0});
+                commonFun.useAjax({
+                    dataType: 'json',
+                    url:'/activity/single-rank/draw-time'
+                },function(data) {
+                    $sportPlayContainer.find('.draw-time').text(data);
+                });
+
                 $('#lotteryTip').html(tpl('lotteryTipTpl', data));
                 layer.open({
                   type: 1,
