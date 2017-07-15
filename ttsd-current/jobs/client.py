@@ -28,7 +28,8 @@ class RedisMessageClient(object):
         [self.send(queue_name, message) for queue_name in subscribes]
 
     def send(self, queue_name, message):
-        redis_conn.lpush(queue_name, message)
+        local_queue_name = "MQ:LOCAL:{}".format(queue_name)
+        redis_conn.lpush(local_queue_name, message)
 
 
 class AliyunMessageClient(object):
