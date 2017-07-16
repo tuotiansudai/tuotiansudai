@@ -17,3 +17,54 @@ class CurrentWithdraw(models.Model):
 
     class Meta:
         db_table = 'current_withdraw'
+
+
+class CurrentAccount(models.Model):
+    login_name = models.CharField(max_length=25, unique=True, null=False, blank=False)
+    balance = models.PositiveIntegerField(default=0, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+
+    class Meta:
+        db_table = 'current_account'
+
+
+class CurrentDeposit(models.Model):
+    current_account = models.ForeignKey(to=CurrentAccount,
+                                        on_delete=models.CASCADE,
+                                        related_name='current_deposits',
+                                        related_query_name='current_deposit',
+                                        null=True,
+                                        blank=False)
+    login_name = models.CharField(max_length=25, null=False, blank=False)
+    amount = models.PositiveIntegerField(null=False, blank=False)
+    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=20, null=False, blank=False,
+                              default=constants.DEPOSIT_WAITING_PAY)
+    source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
+                              max_length=10, null=False, blank=False)
+    no_password = models.BooleanField(default=False, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+
+    class Meta:
+        db_table = 'current_deposit'
+
+
+class CurrentBill(models.Model):
+    current_account = models.ForeignKey(to=CurrentAccount,
+                                        on_delete=models.CASCADE,
+                                        related_name='current_bills',
+                                        related_query_name='current_bill',
+                                        null=False,
+                                        blank=False)
+    login_name = models.CharField(max_length=25, null=False, blank=False)
+    bill_date = models.DateTimeField(null=False, blank=False)
+    bill_type = models.CharField(choices=constants.BILL_TYPE_CHOICE, max_length=10, null=False, blank=False)
+    amount = models.PositiveIntegerField(null=False, blank=False)
+    balance = models.PositiveIntegerField(null=False, blank=False)
+    order_id = models.IntegerField(null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+
+    class Meta:
+        db_table = 'current_bill'

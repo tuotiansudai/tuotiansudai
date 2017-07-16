@@ -15,7 +15,8 @@ public class CurrentWithdrawServiceImpl implements CurrentWithdrawService {
 
 
     @Override
-    public BaseDto currentWithdraw(CurrentWithdrawDto currentWithdrawDto) {
-        return null;
+    public void currentWithdraw(CurrentWithdrawDto currentWithdrawDto) {
+        //调用封装好的CurrentWrapperClient
+
     }
 }
