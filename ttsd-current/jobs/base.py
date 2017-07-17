@@ -20,22 +20,20 @@ class MessageBrokerMixin(object):
         redis_message_client = RedisMessageClient()
         local_queue_name = "MQ:LOCAL:{}".format(self.name)
         while True:
-            sleep(2)
-            msg = ''
             try:
                 row_msg = redis_conn.brpop(local_queue_name, timeout=settings.POP_MESSAGE_WAIT_SECONDS)
+                logger.error('Receive Message Succeed! Message Body: {}'.format(row_msg))
                 if row_msg:
                     _, msg = row_msg
-                logger.error('Receive Message Succeed! Message Body: {}'.format(msg))
+                    if msg:
+                        try:
+                            if not self.do(msg):
+                                redis_message_client.send(self.name, msg)
+                        except Exception, e:
+                            logger.error('Message exception:{}'.format(e))
+                            redis_message_client.send(self.name, msg)
             except Exception, e:
                 logger.error('Pop message exception:{}'.format(e))
-
-            try:
-                if not self.do(msg):
-                    redis_message_client.send(self.name, msg)
-            except Exception, e:
-                logger.error('Message exception:{}'.format(e))
-                redis_message_client.send(self.name, msg)
 
     def aliyun(self):
         queue = aliyun_account.get_queue(self.name)

@@ -42,7 +42,7 @@ class CurrentAccountManager(object):
     def update_current_account_for_interest(self, login_name, amount, order_id):
         account = CurrentAccount.objects.select_for_update().get(login_name=login_name)
 
-        account.balance -= amount
+        account.balance += amount
         account.save()
         self.__add_current_bill(account=account,
                                 amount=amount,
