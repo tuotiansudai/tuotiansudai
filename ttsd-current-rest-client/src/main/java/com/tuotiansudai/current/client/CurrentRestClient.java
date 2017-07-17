@@ -21,13 +21,4 @@ public interface CurrentRestClient {
     @POST
     @Path("/deposit-with-no-password")
     BaseDto<PayDataDto> noPasswordInvest(DepositRequestDto requestDto) throws RestException;
-
-//    @GET
-//    @Path("/question/{questionId}")
-//    QuestionModel getQuestion(@PathParam("questionId") long questionId) throws RestException;
-
-//    @GET
-//    @Path("/question/all")
-//    BaseDto<BasePaginationDataDto<QuestionModel>> findAllQuestions(@QueryParam("index") int index) throws RestException;
-
 }
