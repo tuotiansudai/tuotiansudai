@@ -2,6 +2,7 @@ package com.tuotiansudai.current.client;
 
 import com.tuotiansudai.current.dto.DepositRequestDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
@@ -14,8 +15,12 @@ import javax.ws.rs.PathParam;
 public interface CurrentRestClient {
 
     @POST
-    @Path("/user/{loginName}/deposit-with-password")
-    BaseDto<PayFormDataDto> invest(DepositRequestDto requestDto, @PathParam("loginName") String loginName) throws RestException;
+    @Path("/deposit-with-password")
+    BaseDto<PayFormDataDto> invest(DepositRequestDto requestDto) throws RestException;
+
+    @POST
+    @Path("/deposit-with-no-password")
+    BaseDto<PayDataDto> noPasswordInvest(DepositRequestDto requestDto) throws RestException;
 
 //    @GET
 //    @Path("/question/{questionId}")

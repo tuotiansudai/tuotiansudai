@@ -28,7 +28,7 @@ public class MobileAppCurrentInvestController extends MobileAppBaseController {
         return mobileAppCurrentInvestService.invest(investRequestDto, loginName);
     }
 
-    @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
+    @RequestMapping(value = "/rxb/no-password-invest", method = RequestMethod.POST)
     @ApiOperation("免密转入")
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(@RequestBody CurrentInvestRequestDto investRequestDto) {
         String loginName = getLoginName();
