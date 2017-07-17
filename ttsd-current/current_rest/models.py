@@ -11,7 +11,7 @@ class CurrentAccount(models.Model):
     login_name = models.CharField(max_length=25, unique=True, null=False, blank=False)
     balance = models.PositiveIntegerField(default=0, null=False, blank=False)
     created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
-    updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now=True, null=False, blank=False)
 
     class Meta:
         db_table = 'current_account'
@@ -32,7 +32,7 @@ class CurrentDeposit(models.Model):
                               max_length=10, null=False, blank=False)
     no_password = models.BooleanField(default=False, null=False, blank=False)
     created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
-    updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now=True, null=False, blank=False)
 
     class Meta:
         db_table = 'current_deposit'
@@ -52,7 +52,7 @@ class CurrentBill(models.Model):
     balance = models.PositiveIntegerField(null=False, blank=False)
     order_id = models.IntegerField(null=False, blank=False)
     created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
-    updated_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now=True, null=False, blank=False)
 
     class Meta:
         db_table = 'current_bill'
