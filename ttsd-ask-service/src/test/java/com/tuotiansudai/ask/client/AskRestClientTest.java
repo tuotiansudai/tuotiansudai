@@ -24,7 +24,6 @@ import java.net.URL;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"}, ignoreResourceNotFound = true)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class AskRestClientTest {
     @Value("${ask.rest.server}")
