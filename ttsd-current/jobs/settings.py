@@ -4,6 +4,7 @@ ENV = 'test'
 broker_url = 'redis://192.168.1.30/1'
 task_serializer = 'json'
 accept_content = ['json']
+STOP_QUEUE_NAME = 'MQ:STOP'
 #--------------------
 
 ALIYUN_ACCOUNT_ID = '1645778055702082'
