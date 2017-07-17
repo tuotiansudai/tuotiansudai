@@ -86,7 +86,7 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     }
 
     private DepositRequestDto convertInvestDto(CurrentInvestRequestDto investRequestDto, String loginName) {
-        Source source = Source.valueOf(investRequestDto.getBaseParam().getPlatform());
+        Source source = Source.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase());
         long amount = AmountConverter.convertStringToCent(investRequestDto.getAmount());
         return new DepositRequestDto(loginName, amount, source);
     }
