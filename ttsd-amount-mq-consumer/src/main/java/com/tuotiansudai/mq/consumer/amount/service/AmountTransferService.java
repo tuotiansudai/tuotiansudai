@@ -67,7 +67,7 @@ public class AmountTransferService {
 
     @Transactional
     private void freeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start freeze, loginName:{}, orderId:{}, amount:{}", loginName, orderId, amount);
+        logger.info("start freeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
 
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
@@ -94,7 +94,7 @@ public class AmountTransferService {
 
     @Transactional
     private void unfreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start unfreeze, loginName:{}, orderId:{}, amount:{}", loginName, orderId, amount);
+        logger.info("start unfreeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
 
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
@@ -121,7 +121,7 @@ public class AmountTransferService {
 
     @Transactional
     private void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start transferInBalance, loginName:{}, orderId:{}, amount:{}", loginName, orderId, amount);
+        logger.info("start transferInBalance, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
 
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
@@ -143,7 +143,7 @@ public class AmountTransferService {
 
     @Transactional
     private void transferOutBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start transferOutBalance, loginName:{}, orderId:{}, amount:{}", loginName, orderId, amount);
+        logger.info("start transferOutBalance, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
 
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
@@ -170,7 +170,7 @@ public class AmountTransferService {
 
     @Transactional
     private void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start transferOutFreeze, loginName:{}, orderId:{}, amount:{}", loginName, orderId, amount);
+        logger.info("start transferOutFreeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
 
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {

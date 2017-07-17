@@ -15,7 +15,6 @@ import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -60,9 +59,6 @@ public class TransferCashServiceTest {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private UserBillMapper userBillMapper;
 
     @Autowired
     private SystemBillMapper systemBillMapper;
@@ -142,18 +138,14 @@ public class TransferCashServiceTest {
         assertThat(message.getAmount(), CoreMatchers.is(1L));
     }
 
-    private void verifyAmountTransferMessage(long orderId) {
-        try {
-            String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
-            assertThat(feeMessage.getLoginName(), CoreMatchers.is("testTransferCash"));
-            assertThat(feeMessage.getAmount(), CoreMatchers.is(1L));
-            assertThat(feeMessage.getOrderId(), is(orderId));
-            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_CASH_BACK));
-            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifyAmountTransferMessage(long orderId) throws IOException {
+        String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
+        assertThat(feeMessage.getLoginName(), CoreMatchers.is("testTransferCash"));
+        assertThat(feeMessage.getAmount(), CoreMatchers.is(1L));
+        assertThat(feeMessage.getOrderId(), is(orderId));
+        assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_CASH_BACK));
+        assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
     }
 
 }

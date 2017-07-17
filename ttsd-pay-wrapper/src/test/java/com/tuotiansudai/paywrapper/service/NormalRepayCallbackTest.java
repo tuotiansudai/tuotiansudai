@@ -586,17 +586,13 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepayTransferee2.getStatus(), is(RepayStatus.COMPLETE));
     }
 
-    private void verifyAmountTransferMessage(LoanModel loan, long amount, UserBillBusinessType businessType) {
-        try {
-            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
-            assertThat(message.getLoginName(), CoreMatchers.is(loan.getAgentLoginName()));
-            assertThat(message.getAmount(), CoreMatchers.is(amount));
-            assertThat(message.getBusinessType(), CoreMatchers.is(businessType));
-            assertThat(message.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-        } catch (IOException e) {
-            assert false;
-        }
+    private void verifyAmountTransferMessage(LoanModel loan, long amount, UserBillBusinessType businessType) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+        assertThat(message.getLoginName(), CoreMatchers.is(loan.getAgentLoginName()));
+        assertThat(message.getAmount(), CoreMatchers.is(amount));
+        assertThat(message.getBusinessType(), CoreMatchers.is(businessType));
+        assertThat(message.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
     }
 
 }
