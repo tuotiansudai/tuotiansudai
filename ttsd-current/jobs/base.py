@@ -11,64 +11,69 @@ from jobs.client import RedisMessageClient
 logger = get_task_logger(__name__)
 
 
-class MessageBroker(object):
-    def __init__(self, queue_name, callback_func):
-        self.callback_func = callback_func
-        self.queue_name = queue_name
-
+class MessageBrokerMixin(object):
     def receive_message(self):
         func = {'test': self.redis}.get(settings.ENV, self.aliyun)
-        return func()
+        func()
 
     def redis(self):
         redis_message_client = RedisMessageClient()
-        redis_queue_name = 'MQ:LOCAL:{}'.format(self.queue_name)
+        local_queue_name = "MQ:LOCAL:{}".format(self.name)
         while True:
             sleep(2)
+            msg = ''
             try:
-                _, msg = redis_conn.brpop(redis_queue_name)
-                logger.debug('Receive Message Succeed! Message Body: {}'.format(msg))
+                row_msg = redis_conn.brpop(local_queue_name, timeout=settings.POP_MESSAGE_WAIT_SECONDS)
+                if row_msg:
+                    _, msg = row_msg
+                logger.error('Receive Message Succeed! Message Body: {}'.format(msg))
             except Exception, e:
                 logger.error('Pop message exception:{}'.format(e))
 
             try:
-                if not self.callback_func(msg):
-                    redis_message_client.send(self.queue_name, msg)
+                if not self.do(msg):
+                    redis_message_client.send(self.name, msg)
             except Exception, e:
                 logger.error('Message exception:{}'.format(e))
-                redis_message_client.send(self.queue_name, msg)
+                redis_message_client.send(self.name, msg)
 
     def aliyun(self):
-        queue = aliyun_account.get_queue(self.queue_name)
-        while True:
-            try:
-                msg = queue.receive_message(settings.POP_MESSAGE_WAIT_SECONDS)
-                logger.debug("Receive Message Succeed! ReceiptHandle:%s MessageBody:%s MessageID:%s" % (
-                    msg.receipt_handle, msg.message_body, msg.message_id))
-                ret = self.callback_func(msg.message_body)
-                if ret:
-                    queue.delete_message(msg.receipt_handle)
-                    logger.debug('message {} has been deleted'.format(msg.message_id))
-                else:
-                    logger.error('message {} executed failure, body: {}'.format(msg.message_id, msg.message_body))
-            except MNSExceptionBase, e:
-                if e.type == "QueueNotExist":
-                    logger.error("Queue not exist, please create queue before receive message.")
-                elif e.type == "MessageNotExist":
-                    logger.warning("Queue is empty!")
-                logger.error("Aliyun Message Fail! Exception:%s\n" % e)
-                sleep(settings.POP_MESSAGE_WAIT_SECONDS)
-            except Exception, e:
-                logger.error('Message exception:{}'.format(e))
+        queue = aliyun_account.get_queue(self.name)
+        try:
+            msg = queue.receive_message(settings.POP_MESSAGE_WAIT_SECONDS)
+            logger.debug("Receive Message Succeed! ReceiptHandle:%s MessageBody:%s MessageID:%s" % (
+                msg.receipt_handle, msg.message_body, msg.message_id))
+            ret = self.do(msg.message_body)
+            if ret:
+                queue.delete_message(msg.receipt_handle)
+                logger.debug('message {} has been deleted'.format(msg.message_id))
+            else:
+                logger.error('message {} executed failure, body: {}'.format(msg.message_id, msg.message_body))
+        except MNSExceptionBase, e:
+            if e.type == "QueueNotExist":
+                logger.error("Queue not exist, please create queue before receive message.")
+            elif e.type == "MessageNotExist":
+                logger.warning("Queue is empty!")
+            logger.error("Aliyun Message Fail! Exception:%s\n" % e)
+            sleep(settings.POP_MESSAGE_WAIT_SECONDS)
+        except Exception, e:
+            logger.error('Message exception:{}'.format(e))
 
 
-class BaseTask(Task):
+class BaseTask(Task, MessageBrokerMixin):
     ignore_result = True
     name = "currentBase"  # this is real business queue name.
     queue = "celery.base"  # this one used by celery to distinguish different messages
 
     def run(self, *args, **kwargs):
-        MessageBroker(self.name, self.do).receive_message()
+        while True:
+            if self.is_quit():
+                logger.info('Task {} has been terminated'.format(self.name))
+                return
+            self.receive_message()
+
+    def is_quit(self):
+        return redis_conn.srem(settings.STOP_QUEUE_NAME, self.name)
 
     def do(self, message):
         raise NotImplementedError('Tasks must define the do method.')

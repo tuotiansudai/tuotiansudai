@@ -39,7 +39,7 @@ class Deposit(object):
 
         if not CurrentDeposit.objects.filter(pk=order_id).exists():
             logger.error('order id {} does not exist', order_id)
-            raise ValueError
+            return
 
         deposit = CurrentDeposit.objects.get(pk=order_id)
 

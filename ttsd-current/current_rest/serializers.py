@@ -25,7 +25,8 @@ def json_validation_required(serializer):
 
 
 class DepositSerializer(serializers.Serializer):
-    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=True)
+    id = serializers.IntegerField(required=False)
+    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'), required=True)
     amount = serializers.IntegerField(min_value=0, required=True)
     source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE, required=True)
 
