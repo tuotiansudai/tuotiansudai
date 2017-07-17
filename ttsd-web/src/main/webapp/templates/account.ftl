@@ -37,44 +37,46 @@
             </ul>
         </h3>
     </div>
-
-    <div class="column-box bg-w clearfix amount-sum ">
-        <h3><b>可用余额：</b><span>${((balance/100)?string('0.00'))!}元</span> <i class="icon-has-con"></i> </h3>
-
-        <ul class="detail-list">
-            <li>提现冻结中：<span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
-            <li>投资冻结中：<span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
-        </ul>
-    </div>
-
-    <div class="column-box bg-w clearfix amount-sum ">
-        <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元  <i class="icon-has-con"></i></h3>
-        <ul class="detail-list">
-            <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
-            <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
-            <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
-            <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
-            <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
-        </ul>
-    </div>
-
     <div class="column-box bg-w clearfix amount-sum ">
         <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
         <ul class="detail-list">
-            <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
-            <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
+            <li>持有定期本金(元)：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span></li>
+            <li>持有日息宝(元)：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span></li>
+            <li>待收体验金收益(元)：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span></li>
+            <li>待收定期预期收益(元)：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span></li>
+            <li>待收投资奖励(元)：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span></li>
+            <li>待收优惠券奖励(元)：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span></li>
             </ul>
     </div>
+    <div class="column-box bg-w clearfix amount-sum ">
+        <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元  <i class="icon-has-con"></i></h3>
+        <ul class="detail-list">
+            <li>已收定期投资收益(元)：<span>${((actualTotalInterest)/100)?string('0.00')!}</span></li>
+            <li>已收日息宝收益(元)：<span>${((actualTotalInterest)/100)?string('0.00')!}</span></li>
+            <li>已收投资奖励(元)：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span></li>
+            <li>已收推荐奖励(元)：<span>${((referRewardAmount/100)?string('0.00'))!}</span></li>
+            <li>已收优惠券奖励(元)：<span>${((actualCouponInterest/100)?string('0.00'))!}</span></li>
+            <li>已收体验金收益(元)：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span></li>
+        </ul>
+    </div>
+    <div class="column-box bg-w clearfix amount-sum ">
+        <h3><b>账户余额：</b><span>${(((balance+withdrawFrozeAmount+investFrozeAmount)/100)?string('0.00'))!}元</span> <i class="icon-has-con"></i> </h3>
 
+        <ul class="detail-list">
+            <li>可用余额(元)：<span>${((balance/100)?string('0.00'))!}</span></li>
+            <li>提现冻结中(元)：<span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span></li>
+            <li>投资冻结中(元)：<span>${((investFrozeAmount/100)?string('0.00'))!}</span></li>
+        </ul>
+    </div>
     <div class="column-box bg-w clearfix amount-sum">
-        <h3><b>可用体验金余额：</b><span>${((experienceBalance/100)?string('0.00'))!}</span>元</span>
+        <h3><b>可用体验金余额：</b><span>${((experienceBalance/100)?string('0.00'))!}</span>元</span><i class="icon-has-con"></i> 
         </h3>
+        <ul class="detail-list">
+            <li>体验金明细请前往APP中查看</li>
+        </ul>
     </div>
     <#if expectedRepayAmountOfMonth??>
-        <div class="last-month  bg-w">
+        <div class="last-month clear-blank bg-w">
             <div class="payment-switch">
                 <em class="current">本月未还款</em>
                 <span class="total current fr">本月未还款总额：￥${((expectedRepayAmountOfMonth/100)?string('0.00'))!}元</span>
