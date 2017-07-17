@@ -431,7 +431,7 @@ public class CouponController {
     @RequestMapping(value = "/coupons-list",method=RequestMethod.GET)
     public ModelAndView CouponsList(@RequestParam(value = "couponType",required = false,defaultValue = "RED_ENVELOPE") String couponType,
                                     @RequestParam(value = "couponSource",required = false) String couponSource,
-                                    @RequestParam(value = "amount",required = false, defaultValue = "0") int amount,
+                                    @RequestParam(value = "amount",required = false, defaultValue = "0") float amount,
                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index){
         int pageSize=10;
         ModelAndView modelAndView;

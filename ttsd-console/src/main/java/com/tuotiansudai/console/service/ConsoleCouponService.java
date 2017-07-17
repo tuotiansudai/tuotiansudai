@@ -235,10 +235,10 @@ public class ConsoleCouponService {
         return true;
     }
 
-    public int findCouponsCountByTypeRedAndMoney(String couponType,int amount,String couponSource){return couponMapper.findCouponsCountByTypeRedAndMoney(couponType,couponSource,amount*100);}
+    public int findCouponsCountByTypeRedAndMoney(String couponType,float amount,String couponSource){return couponMapper.findCouponsCountByTypeRedAndMoney(couponType,couponSource,(int)(amount*100));}
 
-    public List<CouponDto> findCouponsByTypeRedAndMoney(int index, int pageSize,String couponType,int amount,String couponSource) {
-        List<CouponModel> couponModels=couponMapper.findCouponsByTypeRedAndMoney(couponType,couponSource,amount*100,(index - 1) * pageSize,pageSize);
+    public List<CouponDto> findCouponsByTypeRedAndMoney(int index, int pageSize,String couponType,float amount,String couponSource) {
+        List<CouponModel> couponModels=couponMapper.findCouponsByTypeRedAndMoney(couponType,couponSource,(int)(amount*100),(index - 1) * pageSize,pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
             if ((CouponType.RED_ENVELOPE.getName().equals(couponType) || CouponType.INTEREST_COUPON.getName().equals(couponType)) && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
