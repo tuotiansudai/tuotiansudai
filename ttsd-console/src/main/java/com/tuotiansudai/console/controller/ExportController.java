@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.ask.client.AskRestClient;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.console.bi.dto.RoleStage;
@@ -18,7 +19,6 @@ import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.CsvHeaderType;

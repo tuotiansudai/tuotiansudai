@@ -8,6 +8,7 @@ public class MobileAppCurrentWithdrawServiceImpl implements MobileAppCurrentWith
 
     @Override
     public BaseResponseDto<CurrentWithdrawResponseDataDto> withdraw(CurrentWithdrawRequestDto withdrawRequestDto, String loginName) {
+        //调用封装好的rest api，金额转换成分
         return null;
     }
 }

@@ -15,7 +15,7 @@ public class CurrentWithdrawServiceImpl implements CurrentWithdrawService {
 
 
     @Override
-    public void currentWithdraw(CurrentWithdrawDto currentWithdrawDto) {
+    public void currentWithdraw(CurrentWithdrawDto currentWithdrawDto, String loginName) {
         //调用封装好的CurrentWrapperClient
 
     }

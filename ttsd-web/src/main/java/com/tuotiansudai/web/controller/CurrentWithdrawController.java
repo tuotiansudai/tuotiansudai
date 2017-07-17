@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/current-withdraw")
+@RequestMapping(value = "/current")
 public class CurrentWithdrawController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class CurrentWithdrawController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        ModelAndView modelAndView = new ModelAndView("/current-withdraw");
+        ModelAndView modelAndView = new ModelAndView("/withdraw");
         return modelAndView;
     }
 
@@ -31,8 +31,6 @@ public class CurrentWithdrawController {
     @RequestMapping(method = RequestMethod.POST)
     public void withdraw(@ModelAttribute CurrentWithdrawDto currentWithdrawDto) {
         String loginName = LoginUserInfo.getLoginName();
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        currentWithdrawDto.setAccountId(accountModel.getId());
-        currentWithdrawService.currentWithdraw(currentWithdrawDto);
+        currentWithdrawService.currentWithdraw(currentWithdrawDto, loginName);
     }
 }

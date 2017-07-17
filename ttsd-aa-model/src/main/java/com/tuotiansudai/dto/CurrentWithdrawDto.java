@@ -8,20 +8,9 @@ import java.io.Serializable;
 
 public class CurrentWithdrawDto implements Serializable {
 
-    @NotNull
-    private long accountId;
-
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
-
-    public long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(long accountId) {
-        this.accountId = accountId;
-    }
 
     public String getAmount() {
         return amount;
