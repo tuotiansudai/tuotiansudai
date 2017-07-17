@@ -35,8 +35,9 @@ public class MQWrapperClient {
     public void sendMessage(final MessageQueue queue, final String message) {
         if (env == Environment.UT || env == Environment.DEV) {
             mqProducer.sendMessage(queue, message);
+        } else {
+            runAfterCommit(() -> mqProducer.sendMessage(queue, message));
         }
-        runAfterCommit(() -> mqProducer.sendMessage(queue, message));
     }
 
     public void sendMessage(final MessageQueue queue, final Object message) {
@@ -46,15 +47,15 @@ public class MQWrapperClient {
             } catch (JsonProcessingException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
+        } else {
+            runAfterCommit(() -> {
+                try {
+                    mqProducer.sendMessage(queue, JsonConverter.writeValueAsString(message));
+                } catch (JsonProcessingException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
+            });
         }
-
-        runAfterCommit(() -> {
-            try {
-                mqProducer.sendMessage(queue, JsonConverter.writeValueAsString(message));
-            } catch (JsonProcessingException e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        });
     }
 
     private void runAfterCommit(Runnable runnable) {
