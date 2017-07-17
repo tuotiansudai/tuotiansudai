@@ -1,8 +1,7 @@
 import logging
-from mns.account import Account
+
 from mns.queue import Message
 from mns.topic import TopicMessage, MNSExceptionBase
-from redis import Redis
 
 import settings
 from jobs import redis_conn, aliyun_account
@@ -28,8 +27,7 @@ class RedisMessageClient(object):
         [self.send(queue_name, message) for queue_name in subscribes]
 
     def send(self, queue_name, message):
-        local_queue_name = "MQ:LOCAL:{}".format(queue_name)
-        redis_conn.lpush(local_queue_name, message)
+        redis_conn.lpush('MQ:LOCAL:{}'.format(queue_name), message)
 
 
 class AliyunMessageClient(object):

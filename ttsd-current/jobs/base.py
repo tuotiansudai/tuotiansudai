@@ -6,6 +6,7 @@ from mns.mns_exception import MNSExceptionBase
 
 import settings
 from jobs import aliyun_account, redis_conn
+from jobs.client import RedisMessageClient
 
 logger = get_task_logger(__name__)
 
@@ -16,11 +17,22 @@ class MessageBrokerMixin(object):
         func()
 
     def redis(self):
+        redis_message_client = RedisMessageClient()
         local_queue_name = "MQ:LOCAL:{}".format(self.name)
-        msg = redis_conn.brpop(local_queue_name, timeout=settings.POP_MESSAGE_WAIT_SECONDS)
-        if msg:
-            logger.debug('Receive Message Succeed! Message Body:{}'.format(msg))
-            self.do(msg)
+        while True:
+            try:
+                row_msg = redis_conn.brpop(local_queue_name, timeout=settings.POP_MESSAGE_WAIT_SECONDS)
+                logger.error('Receive Message Succeed! Message Body: {}'.format(row_msg))
+                if row_msg:
+                    _, msg = row_msg
+                    try:
+                        if not self.do(msg):
+                            redis_message_client.send(self.name, msg)
+                    except Exception, e:
+                        logger.error('Message exception:{}'.format(e))
+                        redis_message_client.send(self.name, msg)
+            except Exception, e:
+                logger.error('Pop message exception:{}'.format(e))
 
     def aliyun(self):
         queue = aliyun_account.get_queue(self.name)
