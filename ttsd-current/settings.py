@@ -84,7 +84,6 @@ if CONSOLE_ENABLED:
         'django.contrib.staticfiles',
         'current_console']
 
-
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -101,7 +100,7 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':  [],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -166,7 +165,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -179,8 +178,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
     'PAGE_SIZE': 10
 }
-
-
 
 LOGGING = {
     'version': 1,

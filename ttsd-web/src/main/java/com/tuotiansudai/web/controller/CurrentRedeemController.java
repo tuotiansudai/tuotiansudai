@@ -1,9 +1,7 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.CurrentWithdrawDto;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.CurrentWithdrawService;
+import com.tuotiansudai.dto.CurrentRedeemDto;
+import com.tuotiansudai.service.CurrentRedeemService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/current")
-public class CurrentWithdrawController {
+public class CurrentRedeemController {
 
     @Autowired
-    private AccountService accountService;
-    @Autowired
-    CurrentWithdrawService currentWithdrawService;
+    private CurrentRedeemService currentRedeemService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
@@ -27,10 +23,9 @@ public class CurrentWithdrawController {
         return modelAndView;
     }
 
-
     @RequestMapping(method = RequestMethod.POST)
-    public void withdraw(@ModelAttribute CurrentWithdrawDto currentWithdrawDto) {
+    public void redeem(@ModelAttribute CurrentRedeemDto currentRedeemDto) {
         String loginName = LoginUserInfo.getLoginName();
-        currentWithdrawService.currentWithdraw(currentWithdrawDto, loginName);
+        currentRedeemService.redeem(currentRedeemDto, loginName);
     }
 }

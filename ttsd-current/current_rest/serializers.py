@@ -13,6 +13,7 @@ class DepositSerializer(serializers.ModelSerializer):
 
 class DepositSuccessSerializer(serializers.Serializer):
     order_id = serializers.IntegerField(min_value=0, required=True)
+    success = serializers.BooleanField(required=True)
     status = serializers.ChoiceField(choices=constants.DEPOSIT_STATUS_CHOICE, required=True)
 
 

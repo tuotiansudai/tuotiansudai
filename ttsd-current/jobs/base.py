@@ -2,11 +2,11 @@ from time import sleep
 
 from celery import Task
 from celery.utils.log import get_task_logger
-from mns.account import Account
 from mns.mns_exception import MNSExceptionBase
 
 import settings
 from jobs import aliyun_account, redis_conn
+from jobs.client import RedisMessageClient
 
 logger = get_task_logger(__name__)
 
@@ -21,10 +21,22 @@ class MessageBroker(object):
         return func()
 
     def redis(self):
+        redis_message_client = RedisMessageClient()
+        redis_queue_name = 'MQ:LOCAL:{}'.format(self.queue_name)
         while True:
-            msg = redis_conn.brpop(self.queue_name)
-            logger.debug('Receive Message Succeed! Message Body:{}'.format(msg))
-            self.callback_func(msg)
+            sleep(2)
+            try:
+                _, msg = redis_conn.brpop(redis_queue_name)
+                logger.debug('Receive Message Succeed! Message Body: {}'.format(msg))
+            except Exception, e:
+                logger.error('Pop message exception:{}'.format(e))
+
+            try:
+                if not self.callback_func(msg):
+                    redis_message_client.send(self.queue_name, msg)
+            except Exception, e:
+                logger.error('Message exception:{}'.format(e))
+                redis_message_client.send(self.queue_name, msg)
 
     def aliyun(self):
         queue = aliyun_account.get_queue(self.queue_name)

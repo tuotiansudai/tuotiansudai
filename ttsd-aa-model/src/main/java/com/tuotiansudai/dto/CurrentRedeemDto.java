@@ -2,11 +2,10 @@ package com.tuotiansudai.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-public class CurrentWithdrawDto implements Serializable {
+public class CurrentRedeemDto implements Serializable {
 
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")

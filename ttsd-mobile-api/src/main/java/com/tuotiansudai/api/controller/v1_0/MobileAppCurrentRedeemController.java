@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.CurrentWithdrawRequestDto;
-import com.tuotiansudai.api.dto.v1_0.CurrentWithdrawResponseDataDto;
-import com.tuotiansudai.api.service.v1_0.MobileAppCurrentWithdrawService;
+import com.tuotiansudai.api.dto.v1_0.CurrentRedeemRequestDto;
+import com.tuotiansudai.api.dto.v1_0.CurrentRedeemResponseDataDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppCurrentRedeemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Api(description = "活期提现申请")
-public class MobileAppCurrentWithdrawController extends MobileAppBaseController {
+public class MobileAppCurrentRedeemController extends MobileAppBaseController {
 
     @Autowired
-    private MobileAppCurrentWithdrawService mobileAppCurrentWithdrawService;
+    private MobileAppCurrentRedeemService mobileAppCurrentRedeemService;
 
     @RequestMapping(value = "/get/rxb/redeem", method = RequestMethod.POST)
     @ApiOperation("提现申请")
-    public BaseResponseDto<CurrentWithdrawResponseDataDto> withdraw(@RequestBody CurrentWithdrawRequestDto withdrawRequestDto) {
+    public BaseResponseDto<CurrentRedeemResponseDataDto> withdraw(@RequestBody CurrentRedeemRequestDto redeemRequestDto) {
         String loginName = getLoginName();
-        withdrawRequestDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppCurrentWithdrawService.withdraw(withdrawRequestDto, loginName);
+        redeemRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppCurrentRedeemService.redeem(redeemRequestDto, loginName);
     }
 
 }

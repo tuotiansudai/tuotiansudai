@@ -37,7 +37,7 @@ def deposit_with_password_callback(request):
     data = request.data
 
     try:
-        pay_response = Deposit().deposit_with_password_callback(data=data)
-        return Response(pay_response, status=status.HTTP_200_OK)
-    except ValueError:
+        Deposit().deposit_with_password_callback(data=data)
+        return Response(status=status.HTTP_200_OK)
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -1,6 +1,8 @@
 package com.tuotiansudai.current.client;
 
 import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.RedeemRequestDto;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
@@ -17,9 +19,9 @@ public interface CurrentRestClient {
     @Path("/user/{loginName}/deposit-with-password")
     BaseDto<PayFormDataDto> invest(DepositRequestDto requestDto, @PathParam("loginName") String loginName) throws RestException;
 
-//    @GET
-//    @Path("/question/{questionId}")
-//    QuestionModel getQuestion(@PathParam("questionId") long questionId) throws RestException;
+    @POST
+    @Path("/user/{loginName}/redeem")
+    BaseDto<BaseDataDto> redeem(RedeemRequestDto requestDto, @PathParam("loginName") long loginName) throws RestException;
 
 //    @GET
 //    @Path("/question/all")
