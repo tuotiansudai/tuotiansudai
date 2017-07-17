@@ -23,7 +23,7 @@ def api_exception_handler(ex, context):
             'message': 'current rest service error',
             'exception': ex.detail,
             'detail': ex.detail,
-            'path': '',
+            'path': context['request'].path,
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
     return response
