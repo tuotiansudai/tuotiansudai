@@ -5,3 +5,13 @@
 .target-category-box {
   margin-bottom:10px;
 }
+
+.loan-list-frame {
+  position: absolute;
+  top: 100px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 100px);
+
+}

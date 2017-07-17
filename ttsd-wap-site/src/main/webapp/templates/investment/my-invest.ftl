@@ -3,7 +3,7 @@
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.css"}>
 
-<@global.main pageCss="${css.my_invest}" pageJavascript="${js.my_invest}" title="我的投资">
+<@global.main pageCss="" pageJavascript="${js.my_invest}" title="我的投资">
 
 <div class="my-account-content invest-detail" id="myInvest">
 
