@@ -7,7 +7,7 @@
 
 <div class="my-account-content experience-amount" id="experienceAmount">
     <div class="account-summary">
-        <i class="icon-help"></i>
+        <a href="my-free.ftl"><i class="icon-help"></i></a>
         <div class="collection">
             <span class="summary-box">
                 <b>238.00</b>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="amount-balance">
-            已获的体验金收益：12.63元
+            累计体验金收益：12.63元
         </div>
     </div>
 
@@ -30,7 +30,7 @@
         <div class="wrapper-inner">
             <div class="box-item">
                 <dl>
-                    <dt><a href="http://www.baidu.com">参与元宵活动111</a> </dt>
+                    <dt><a href="#">参与元宵活动111</a> </dt>
                     <dd>2016-11-23  23:19:36</dd>
                 </dl>
                 <em class="amount plus">+6.64元</em>
