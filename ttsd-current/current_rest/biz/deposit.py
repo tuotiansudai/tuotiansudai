@@ -51,19 +51,24 @@ class Deposit(object):
             raise ValueError
 
         order_id = serializer.validated_data.get(u'order_id')
-        status = serializer.validated_data.get(u'status')
+        success = serializer.validated_data.get(u'success')
 
         if not CurrentDeposit.objects.filter(pk=order_id).exists():
             logger.error('order id {} does not exist', order_id)
             raise ValueError
 
         deposit = CurrentDeposit.objects.get(pk=order_id)
-        deposit.status = status
+
+        if deposit.status != constants.DEPOSIT_WAITING_PAY:
+            logger.error('order id {} had already updated', order_id)
+            return
+
+        deposit.status = constants.DEPOSIT_SUCCESS if success else constants.DEPOSIT_FAIL
         deposit.updated_time = datetime.datetime.now()
 
         deposit.save()
 
-        if constants.DEPOSIT_SUCCESS == status:
+        if success:
             self.current_account_manager.update_current_account(login_name=deposit.login_name,
                                                                 amount=deposit.amount,
                                                                 bill_type=constants.BILL_TYPE_DEPOSIT,

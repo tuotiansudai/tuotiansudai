@@ -1,9 +1,14 @@
 package com.tuotiansudai.paywrapper.current;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CurrentDepositDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -20,7 +25,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -36,6 +40,8 @@ public class CurrentDepositService {
 
     private final static String ORDER_ID_TEMPLATE = "{0}" + ORDER_ID_SEPARATOR + "{1}";
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     private AccountMapper accountMapper;
 
@@ -47,9 +53,6 @@ public class CurrentDepositService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    @Value("${common.environment}")
-    private Environment environment;
 
     public BaseDto<PayFormDataDto> deposit(CurrentDepositDto currentDepositDto) {
         PayFormDataDto payFormDataDto = new PayFormDataDto();
@@ -125,7 +128,18 @@ public class CurrentDepositService {
             return null;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.TransferInvestCallback, String.valueOf(callbackRequest.getId()));
+
+        try {
+            long orderId = Long.parseLong(callbackRequest.getOrderId().split(ORDER_ID_SEPARATOR)[0]);
+            String json = objectMapper.writeValueAsString(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    .put("order_id", orderId)
+                    .put("success", false)
+                    .build()));
+            mqWrapperClient.sendMessage(MessageQueue.CurrentDepositCallback, json);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("send deposit callback message error, order id {0}", callbackRequest.getOrderId()), e);
+        }
+
         return callbackRequest.getResponseData();
     }
 }
