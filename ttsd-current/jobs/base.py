@@ -25,13 +25,12 @@ class MessageBrokerMixin(object):
                 logger.error('Receive Message Succeed! Message Body: {}'.format(row_msg))
                 if row_msg:
                     _, msg = row_msg
-                    if msg:
-                        try:
-                            if not self.do(msg):
-                                redis_message_client.send(self.name, msg)
-                        except Exception, e:
-                            logger.error('Message exception:{}'.format(e))
+                    try:
+                        if not self.do(msg):
                             redis_message_client.send(self.name, msg)
+                    except Exception, e:
+                        logger.error('Message exception:{}'.format(e))
+                        redis_message_client.send(self.name, msg)
             except Exception, e:
                 logger.error('Pop message exception:{}'.format(e))
 
