@@ -23,7 +23,7 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Configuration
-@PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"}, ignoreResourceNotFound = true)
+@PropertySource(value = {"classpath:ttsd-env.properties"}, ignoreResourceNotFound = true)
 public class FeignClientConfig {
 
     @Bean

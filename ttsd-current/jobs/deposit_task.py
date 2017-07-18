@@ -17,7 +17,6 @@ class DepositCallback(BaseTask):
         try:
             response = requests.post(url=self.rest_url,
                                      data=message,
-                                     timeout=10,
                                      headers={'content-type': 'application/json'})
             return response.status_code == requests.codes.ok
         except Exception, e:

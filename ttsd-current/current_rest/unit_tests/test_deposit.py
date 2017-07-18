@@ -21,8 +21,8 @@ class DepositTestCase(TestCase):
         pay_response = 'pay response'
         fake_requests.return_value.status_code = 200
         fake_requests.return_value.json = mock.Mock(return_value=pay_response)
-        response = self.client.post(path=reverse('deposit_with_password', kwargs={'login_name': self.login_name}),
-                                    data={'amount': 1, 'source': 'IOS'},
+        response = self.client.post(path=reverse('deposit_with_password'),
+                                    data={'login_name': self.login_name, 'amount': 1, 'source': 'IOS'},
                                     format='json')
 
         deposit = CurrentDeposit.objects.get(login_name=self.login_name)
@@ -44,8 +44,8 @@ class DepositTestCase(TestCase):
         pay_response = 'pay response'
         fake_requests.return_value.status_code = 200
         fake_requests.return_value.json = mock.Mock(return_value=pay_response)
-        response = self.client.post(path=reverse('deposit_with_no_password', kwargs={'login_name': self.login_name}),
-                                    data={'amount': 1, 'source': 'IOS'},
+        response = self.client.post(path=reverse('deposit_with_no_password'),
+                                    data={'login_name': self.login_name, 'amount': 1, 'source': 'IOS'},
                                     format='json')
 
         deposit = CurrentDeposit.objects.get(login_name=self.login_name)
@@ -63,27 +63,27 @@ class DepositTestCase(TestCase):
         self.assertTrue(deposit.no_password)
 
     def test_should_return_400_when_deposit_amount_is_not_int(self):
-        response = self.client.post(path=reverse('deposit_with_password', kwargs={'login_name': self.login_name}),
+        response = self.client.post(path=reverse('deposit_with_password'),
                                     data={'amount': 'amount'},
                                     format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        response = self.client.post(path=reverse('deposit_with_no_password', kwargs={'login_name': self.login_name}),
+        response = self.client.post(path=reverse('deposit_with_no_password'),
                                     data={'amount': 'amount'},
                                     format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_should_return_400_when_deposit_callback_data_is_illegal(self):
-        response = self.client.post(path=reverse('deposit_with_password_callback'),
+        response = self.client.post(path=reverse('deposit_callback'),
                                     data={'order_id': 'order_id',
                                           'status': constants.DEPOSIT_SUCCESS},
                                     format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        response = self.client.post(path=reverse('deposit_with_password_callback'),
+        response = self.client.post(path=reverse('deposit_callback'),
                                     data={'order_id': 0,
                                           'status': 'status'},
                                     format='json')
@@ -94,7 +94,7 @@ class DepositTestCase(TestCase):
         fake_account = CurrentAccountManager().fetch_account(self.login_name)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
 
-        response = self.client.post(path=reverse('deposit_with_password_callback'),
+        response = self.client.post(path=reverse('deposit_callback'),
                                     data={'order_id': fake_deposit.pk,
                                           'success': 'true'},
                                     format='json')
@@ -107,8 +107,6 @@ class DepositTestCase(TestCase):
 
         self.assertEqual(updated_deposit.status, constants.DEPOSIT_SUCCESS)
         self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
-        self.assertEqual(updated_account.updated_time, updated_deposit.updated_time)
         self.assertEqual(current_bill.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.amount,  fake_deposit.amount)
         self.assertEqual(current_bill.bill_type,  constants.BILL_TYPE_DEPOSIT)
-        self.assertEqual(current_bill.bill_date,  updated_deposit.updated_time)
