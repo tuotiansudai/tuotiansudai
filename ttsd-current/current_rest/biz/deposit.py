@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-import datetime
 import logging
+from datetime import datetime, timedelta
 
 import requests
 from django.db import transaction
+from django.db.models import Sum
 
 from current_rest import serializers, constants
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.models import CurrentDeposit
+from current_rest.biz.current_daily_manager import CurrentDailyManager
+from current_rest.models import CurrentDeposit, CurrentAccount
 from settings import PAY_WRAPPER_HOST
 
 logger = logging.getLogger(__name__)
@@ -16,9 +18,19 @@ logger = logging.getLogger(__name__)
 class Deposit(object):
     pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_HOST)
     pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_HOST)
+    personal_max_deposit = 50000000
 
     def __init__(self):
         self.current_account_manager = CurrentAccountManager()
+        self.current_daily_manager = CurrentDailyManager()
+
+    def calculate_max_deposit(self, login_name):
+        current_account_filter = CurrentAccount.objects.filter(login_name=login_name)
+        balance = current_account_filter.first().balance if current_account_filter.exists() else 0
+        user_max_deposit = self.personal_max_deposit - balance if self.personal_max_deposit - balance > 0 else 0
+        today_sum_deposit = self.__calculate_success_deposit_today()
+        current_daily_amount = self.current_daily_manager.get_current_daily_amount()
+        return min(user_max_deposit, current_daily_amount - today_sum_deposit)
 
     @transaction.atomic
     def deposit(self, no_password, validated_data):
@@ -68,3 +80,13 @@ class Deposit(object):
         logger.error('response code {} is not ok, request data is {}'.format(response.status_code, data))
 
         raise requests.exceptions.HTTPError
+
+    @staticmethod
+    def __calculate_success_deposit_today():
+        today = datetime.now().date()
+        tomorrow = today + timedelta(1)
+        amount_sum = CurrentDeposit.objects.filter(status=constants.DEPOSIT_SUCCESS,
+                                                   updated_time__range=(today, tomorrow))\
+            .all().aggregate(Sum('amount'))\
+            .get('amount__sum', 0)
+        return amount_sum if amount_sum else 0

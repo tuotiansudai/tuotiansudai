@@ -108,5 +108,41 @@ class DepositTestCase(TestCase):
         self.assertEqual(updated_deposit.status, constants.DEPOSIT_SUCCESS)
         self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.balance, fake_account.balance + fake_deposit.amount)
-        self.assertEqual(current_bill.amount,  fake_deposit.amount)
-        self.assertEqual(current_bill.bill_type,  constants.BILL_TYPE_DEPOSIT)
+        self.assertEqual(current_bill.amount, fake_deposit.amount)
+        self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
+
+    @mock.patch('current_rest.biz.deposit.CurrentDailyManager')
+    def test_should_return_200_when_today_is_no_deposit(self, fake_manager):
+        current_daily_amount = 1
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = current_daily_amount
+
+        response = self.client.get(path=reverse('personal_max_deposit', kwargs={'login_name': self.login_name}))
+
+        self.assertEqual(response.data, {'amount': current_daily_amount})
+
+    @mock.patch('current_rest.biz.deposit.CurrentDailyManager')
+    def test_should_return_200_when_today_is_no_deposit_and_user_has_deposited_1(self, fake_manager):
+        current_daily_amount = 100000000
+
+        CurrentAccount.objects.create(login_name=self.login_name, balance=1)
+
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = current_daily_amount
+
+        response = self.client.get(path=reverse('personal_max_deposit', kwargs={'login_name': self.login_name}))
+
+        self.assertEqual(response.data, {'amount': Deposit.personal_max_deposit - 1})
+
+    @mock.patch('current_rest.biz.deposit.CurrentDailyManager')
+    def test_should_return_200_when_today_current_limit_is_100_and_user_has_deposited_1(self, fake_manager):
+        current_daily_amount = 100
+
+        CurrentAccount.objects.create(login_name=self.login_name, balance=1)
+
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = current_daily_amount
+
+        response = self.client.get(path=reverse('personal_max_deposit', kwargs={'login_name': self.login_name}))
+
+        self.assertEqual(response.data, {'amount': current_daily_amount})

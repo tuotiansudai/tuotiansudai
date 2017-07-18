@@ -12,6 +12,15 @@ from current_rest.serializers import json_validation_required
 logger = logging.getLogger(__name__)
 
 
+@api_view(['GET'])
+def personal_max_deposit(request, login_name):
+    try:
+        amount = Deposit().calculate_max_deposit(login_name=login_name)
+        return Response({'amount': amount}, status=status.HTTP_200_OK)
+    except ValueError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 @json_validation_required(serializers.DepositSerializer)
 def deposit_with_password(request, validated_data):
