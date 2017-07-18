@@ -1,7 +1,7 @@
 **/*.db
 **/.sass-cache
 **/*.log
-spike.py
+**/spike.py
 **/*.pyc
 **/.idea/
 **/out/

@@ -1,6 +1,7 @@
 package com.tuotiansudai.ask.service;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.ask.client.AskRestClient;
 import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
@@ -9,7 +10,6 @@ import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import com.tuotiansudai.util.MobileEncoder;
 import org.apache.log4j.Logger;

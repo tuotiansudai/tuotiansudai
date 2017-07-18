@@ -1,0 +1,11 @@
+.DS_Store
+db.sqlite3
+**/*.pyc
+**/*.DS_Store
+.idea
+node_modules
+*.log
+.python-version
+settings_local.py
+
+
