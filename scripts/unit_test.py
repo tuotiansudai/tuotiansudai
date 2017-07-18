@@ -17,6 +17,7 @@ class UTRunner(object):
         self.init_docker()
         self.run_test()
         self.clean_env()
+        self.current_ut()
 
     def config_file(self):
         print "Generate config file..."
@@ -41,4 +42,8 @@ class UTRunner(object):
 
     def clean_env(self):
         self._remove_old_container()
+
+    def current_ut(self):
+        sh('cd ttsd-current && ./current_ut.sh')
+
 
