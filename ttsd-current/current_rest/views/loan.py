@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from current_rest import serializers
-from current_rest.biz.loan_service import LoanService
+from current_rest.biz.services.loan_service import LoanService
 from current_rest.serializers import json_validation_required, LoanSerializer
 
 

@@ -17,9 +17,10 @@ def create_loan(request):
         form['creator'] = 'creator'
         response = RestClient('post-loan').execute(data=form, method='POST')
         if response is None:
-            return render(request, 'console/loan/loan.html', status=status.HTTP_400_BAD_REQUEST)
+            return render(request, 'console/loan/loan.html', {'types': constants.LOAN_TYPE_CHOICES},
+                          status=status.HTTP_400_BAD_REQUEST)
 
-        return render(request, 'console/loan/loan-list.html')
+        return render(request, 'console/loan/list.html')
 
     return render(request, 'console/loan/loan.html', {'types': constants.LOAN_TYPE_CHOICES})
 
