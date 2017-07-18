@@ -20,12 +20,11 @@ class LoanService(object):
 
     @transaction.atomic
     def post_loan(self, validated_data):
-        agent = Agent.objects.get(pk=validated_data.get('agent'))
         loan = Loan.objects.create(
             serial_number=validated_data.get('serial_number'),
             amount=validated_data.get('amount'),
             type=validated_data.get('type'),
-            agent=agent,
+            agent=validated_data.get('agent'),
             debtor=validated_data.get('debtor'),
             debtor_identity_card=validated_data.get('debtor_identity_card'),
             effective_date=validated_data.get('effective_date'),
