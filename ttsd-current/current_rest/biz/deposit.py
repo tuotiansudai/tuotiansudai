@@ -7,6 +7,7 @@ from django.db import transaction
 
 from current_rest import serializers, constants
 from current_rest.biz.current_account_manager import CurrentAccountManager
+from current_rest.exceptions import PayWrapperException
 from current_rest.models import CurrentDeposit
 from settings import PAY_WRAPPER_HOST
 
@@ -57,14 +58,14 @@ class Deposit(object):
 
     def __invoke_pay(self, current_deposit):
         data = serializers.DepositSerializer(instance=current_deposit).data
-        response = requests.post(
-            url=self.pay_with_no_password_url if current_deposit.no_password else self.pay_with_password_url,
-            json=data,
-            timeout=5)
+        url = self.pay_with_no_password_url if current_deposit.no_password else self.pay_with_password_url
+        try:
+            response = requests.post(url=url, json=data, timeout=5)
+            if response.status_code == requests.codes.ok:
+                return response.json()
 
-        if response.status_code == requests.codes.ok:
-            return response.json()
-
-        logger.error('response code {} is not ok, request data is {}'.format(response.status_code, data))
-
-        raise requests.exceptions.HTTPError
+            logger.error('response code {} is not ok, request url is {}, request data is {}'.format(
+                response.status_code, url, data))
+        except Exception:
+            logger.exception('call pay wrapper fail, request url is {}, request data is {}'.format(url, data))
+            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')

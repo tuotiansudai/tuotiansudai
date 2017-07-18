@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.client;
+package com.tuotiansudai.ask.client;
 
 import com.tuotiansudai.ask.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
