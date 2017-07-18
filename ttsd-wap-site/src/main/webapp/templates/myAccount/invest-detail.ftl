@@ -1,7 +1,7 @@
 <#import "../macro/global-dev.ftl" as global>
 <#assign jsName = 'invest_detail' >
-<#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.css"}>
+<#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.js"} >
+<#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.css"}>
 
 <@global.main pageCss="${css.invest_detail}" pageJavascript="${js.invest_detail}" title="投资详情">
 

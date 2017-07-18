@@ -1,67 +1,59 @@
 <#import "../macro/global-dev.ftl" as global>
-<#assign jsName = 'invest_detail' >
+<#assign jsName = 'experience_detail' >
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.css"}>
 
-<@global.main pageCss="${css.invest_detail}" pageJavascript="${js.invest_detail}" title="体验金项目">
+<@global.main pageCss="${css.experience_detail}" pageJavascript="" title="我的体验金">
 
-<div class="my-account-content amount-detail experience-detail" id="wrapperOut" >
+<div class="my-account-content experience-amount" id="experienceAmount">
+    <div class="account-summary">
+        <div class="collection">
+            <span class="title">拓天体验金项目</span>
+            <span class="summary-box">
+                <b>15<i>%</i></b>
+                <em>预期年化收益</em>
+            </span>
+        </div>
 
-    <div class="amount-detail-inner" >
-        <ul class="input-list">
-            <li>
-                <label>投资金额</label>
-                <em>50元(体验金)</em>
-            </li>
-
-            <li>
-                <label>预期总收益</label>
-                <em>0.05元</em>
-            </li>
-            <li>
-                <label>已收回款</label>
-                <em>0.00元</em>
-            </li>
-            <li>
-                <label>待收回款</label>
-                <em>0.05元</em>
-            </li>
-            <li>
-                <label>起息日</label>
-                <em>2016/09/19</em>
-            </li>
-            <li>
-                <label>到期日</label>
-                <em>2016/12/30</em>
-            </li>
-        </ul>
-
-        <dl class="payment-plan experience">
-            <dt>回款计划</dt>
-            <dd>
-                <b>温馨提示:</b><br/>
-                投资体验项目的收益，用户需投资直投项目累计满1000元即可提现（投资债权转让项目除外）；
-
-            </dd>
-
-        </dl>
-        <ul class="input-list">
-            <li>
-                <label>预期年化收益</label>
-                <em>13.00%</em>
-            </li>
-
-            <li>
-                <label>项目期限</label>
-                <em>3天</em>
-            </li>
-
-            <li>
-                <label>购买日期</label>
-                <em>2017/03/12 11:50:19</em>
-            </li>
-        </ul>
+        <div class="amount-balance">
+            仅限体验金投资  不支持债权转让
+        </div>
     </div>
+
+    <div class="experience-total">
+        <span>
+            <b>50元</b>
+            <i>起投金额</i>
+        </span>
+        <span>
+            <b>3天</b>
+            <i>项目期限</i>
+        </span>
+        <span>
+            <b>244.11元</b>
+            <i>万元收益</i>
+        </span>
+    </div>
+
+    <ul class="detail-list">
+        <li>
+            <label>计息方式</label>
+            <span >按天计息，即投即生息</span>
+
+        </li>
+        <li>
+            <label>还款方式</label>
+            <span >
+               体验金收回，收益归您
+            </span>
+        </li>
+        <li>
+            <label>发布日期</label>
+            <span>2016-11-21  11:30:00</span>
+        </li>
+    </ul>
+
+    <button class="to-invest-project" type="button">立即投资</button>
 </div>
 
 </@global.main>
