@@ -37,7 +37,6 @@ CONSOLE_ENABLED = False
 CONSOLE_PATH = 'console/'
 
 # database config
-
 DB_MYSQL_DATABASE = 'edxcurrent'
 DB_MYSQL_HOST = '192.168.33.10'
 DB_MYSQL_PORT = '3306'
