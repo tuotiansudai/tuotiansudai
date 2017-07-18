@@ -16,7 +16,7 @@ class RestClient(object):
             .replace('{applicationContext}', settings.REST_PATH) \
             .replace('{uri}', uri)
 
-    def execute(self, data=None, retries=3, method=None, params=None):
+    def execute(self, data=None, retries=0, method=None, params=None):
         response = None
         try:
 
@@ -27,7 +27,7 @@ class RestClient(object):
             else:
                 response = requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
             response.raise_for_status()
-            return ast.literal_eval(response.content)
+            return response.json()
 
         except requests.HTTPError as he:
             print he

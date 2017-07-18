@@ -28,6 +28,8 @@ class Loan(models.Model):
     effective_date = models.DateTimeField(null=False)
     expiration_date = models.DateTimeField(null=False)
     create_time = models.DateTimeField(auto_now=True, blank=False, null=False)
+    creator = models.CharField(max_length=25, null=False)
+    auditor = models.CharField(max_length=25, null=False,blank=False)
     update_time = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=constants.LOAN_STATUS_CHOICES, null=False, max_length=20)
 

@@ -1,47 +1,38 @@
 # -*- coding: utf-8 -*-
-from django.http import Http404
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from current_rest import constants
-from current_rest.biz.services import operation_log_service
-from current_rest.models import Loan
-from current_rest.serializers import LoanSerializer
+from current_rest import serializers
+from current_rest.biz.loan_service import LoanService
+from current_rest.serializers import json_validation_required, LoanSerializer
 
 
-class LoanList(APIView):
-    def get(self, request):
-        pk = request.GET.get('pk', None)
-        if pk is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        loan = self.get_loan(pk)
-        serializer = LoanSerializer(loan)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+@api_view(['POST'])
+@json_validation_required(serializers.LoanSerializer)
+def post_loan(request, validated_data):
+    try:
+        LoanService().post_loan(validated_data=validated_data)
+        return Response({}, status=status.HTTP_200_OK)
+    except ValueError as ve:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request):
-        serializer = LoanSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            operation_log_service.log_contract_operation(serializer.data['id'],
-                                                         'operation',
-                                                         constants.OperationType.LOAN_ADD,
-                                                         '提交创建债权申请'
-                                                         )
-            return Response(serializer.data, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['PUT'])
+@json_validation_required(serializers.LoanSerializer)
+def audit_loan(request, validated_data):
+    try:
+        LoanService().audit(validated_data=validated_data)
+        return Response({}, status=status.HTTP_200_OK)
+    except ValueError as ve:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, pk):
-        loan = self.get_loan(pk)
-        serializer = LoanSerializer(loan, data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_loan(self, pk):
-        try:
-            return Loan.objects.get(id=pk)
-        except Loan.DoesNotExist:
-            raise Http404
+@api_view(['GET'])
+def get_loan(request):
+    id = request.GET.get('id', None)
+    if id is None:
+        Response(status=status.HTTP_400_BAD_REQUEST)
+    loan = LoanService().get(id)
+    return Response(LoanSerializer(loan).data, status=status.HTTP_200_OK)
+
