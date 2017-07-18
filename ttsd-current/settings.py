@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for current project.
 
@@ -36,7 +37,6 @@ CONSOLE_ENABLED = True
 CONSOLE_PATH = 'console/'
 
 # database config
-
 DB_MYSQL_DATABASE = 'edxcurrent'
 DB_MYSQL_HOST = '192.168.33.10'
 DB_MYSQL_PORT = '3306'
@@ -48,6 +48,10 @@ SIGN_IN_HOST = 'http://127.0.0.1'
 SIGN_IN_PORT = '5000'
 REDIRECT_URL = 'http://localhost:9080/login'
 # ===signIn module end===
+
+LOGGING_DIR = '/var/log/current_rest'
+
+PAY_WRAPPER_HOST = 'http://localhost:8080/current'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/settings_local.py'
@@ -172,5 +176,67 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
+    'EXCEPTION_HANDLER': 'current_rest.exceptions.api_exception_handler',
     'PAGE_SIZE': 10
+}
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(name)s] [%(module)s:%(funcName)s:%(lineno)d] [%(levelname)s]- %(message)s'
+        }
+    },
+    'filters': {
+    },
+    'handlers': {
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOGGING_DIR + '/current_rest.log',
+            'when': 'midnight',
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'request_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOGGING_DIR + '/request.log',
+            'when': 'midnight',
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'db_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOGGING_DIR + '/db.log',
+            'when': 'midnight',
+            'backupCount': 5,
+            'formatter': 'standard',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'django.request': {
+            'handlers': ['default', 'request_handler'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['default', 'db_handler'],
+            'level': 'DEBUG',
+        },
+        'current_rest': {
+            'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+    }
 }

@@ -1,10 +1,12 @@
 package com.tuotiansudai.rest.support.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorResponse implements Serializable {
     private int code;
     private String message;
