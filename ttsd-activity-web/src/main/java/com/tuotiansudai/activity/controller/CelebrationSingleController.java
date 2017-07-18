@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Controller
 @RequestMapping(value = "/activity/single-rank")
@@ -38,7 +41,10 @@ public class CelebrationSingleController {
         return drawLotteryResultDto;
     }
 
-
-
+    @ResponseBody
+    @RequestMapping(value = "/draw-time", method = RequestMethod.POST)
+    public String singleTaskDrawPrize() {
+        return String.valueOf(celebrationSingleActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
+    }
 
 }

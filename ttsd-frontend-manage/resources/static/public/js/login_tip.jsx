@@ -5,11 +5,12 @@ require.ensure([],function() {
     let loginInForm = document.getElementById('loginInForm');
     let errorDom=$(loginInForm).find('.error-box');
     require("publicStyle/module/login_tip.scss");
-//刷新验证码
+    //刷新验证码
     $('#imageCaptcha').on('click',function() {
-        commonFun.refreshCaptcha(this,'/login/captcha');
+        $(this).attr('src','/login/captcha' +'?'+ new Date().getTime().toString());
         loginInForm.captcha.value='';
-    });
+    }).trigger('click');
+
     $('.close-btn',$loginTipBox).on('click',function(event) {
         event.preventDefault();
         layer.closeAll();

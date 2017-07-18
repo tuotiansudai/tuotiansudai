@@ -7,6 +7,9 @@
 		<img src="" width="100%" class="media-phone">
 	</div>
 	<div class="wp clearfix">
+		<div class="reg-tag-current" style="display: none">
+			<#include '../module/fast-register.ftl' />
+        </div>
 		<div class="content-item">
 			<i class="icon-hot"></i>
 			<h3>
@@ -61,7 +64,8 @@
 			<dd>3.抽奖活动中所获的红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
 			<dd>4.实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
 			<dd>5.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
-			<dd>6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
+			<dd>6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</dd>
+            <dd>7.理财有风险，投资需谨慎。</dd>
 		</dl>
 	</div>
 	<#include "../module/login-tip.ftl" />

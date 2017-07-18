@@ -30,11 +30,13 @@ public class LoginController {
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
     public void loginCaptcha(HttpServletRequest request, HttpServletResponse response) {
+        String sessionIdOrDeviceId = request.getSession(false) != null ? request.getSession(false).getId() : null;
         int captchaWidth = 80;
         int captchaHeight = 34;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
+        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
+                this.captchaHelper.getCaptcha(sessionIdOrDeviceId));
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
+        this.captchaHelper.storeCaptcha(captcha.getAnswer(), sessionIdOrDeviceId);
     }
 }

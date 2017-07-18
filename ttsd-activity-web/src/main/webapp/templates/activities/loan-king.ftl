@@ -7,6 +7,9 @@
         <img src="" width="100%" class="media-phone">
     </div>
     <div class="wp clearfix">
+        <div class="reg-tag-current" style="display: none">
+            <#include '../module/fast-register.ftl' />
+        </div>
         <div class="content-item">
             <h3>活动期间，每个债权根据用户在该债权的累计投资额进行排名，前三名可获丰厚奖励。</h3>
             <div class="loan-list">
@@ -103,7 +106,8 @@
             <dd>2.用户所获红包奖励将于债权放款后即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；</dd>
             <dd>3.京东E卡将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
             <dd>4.为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</dd>
-            <dd>5.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
+            <dd>5.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</dd>
+            <dd>6.理财有风险，投资需谨慎。</dd>
         </dl>
     </div>
 </div>
