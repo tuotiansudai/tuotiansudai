@@ -14,7 +14,7 @@
     <div id="wrapperOut" class="loan-list-frame">
         <div class="loan-list-content">
 
-            <div class="target-category-box newer-experience" data-url="/loan/1">
+            <div class="target-category-box newer-experience" data-url="experience-detail.ftl">
                 <b class="newer-title">拓天体验金项目 <i class="icon-sign">体验金投资</i></b>
                 <ul class="loan-info clearfix">
                     <li><span class="percent-number"> <i>13</i>%</span><em class="note">预期年化收益</em></li>
@@ -23,7 +23,7 @@
                 </ul>
             </div>
 
-            <div class="target-category-box">
+            <div class="target-category-box" data-url="loan-detail.ftl">
                 <b class="newer-title">房产抵押借款17070 <i class="icon-sign">新手专享</i> <i class="icon-sign">五一专享</i></b>
                 <ul class="loan-info clearfix">
                     <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="target-category-box">
+            <div class="target-category-box" data-url="loan-detail.ftl">
                 <b class="newer-title">房产抵押借款17070</b>
                 <ul class="loan-info clearfix">
                     <li><span class="percent-number"> <i>12.5~13.5</i>%</span><em class="note">预期年化收益</em></li>
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="target-category-box">
+            <div class="target-category-box" data-url="loan-detail.ftl">
                 <b class="newer-title">房产抵押借款17070</b>
                 <ul class="loan-info clearfix">
                     <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="target-category-box sold-out-box">
+            <div class="target-category-box sold-out-box" data-url="loan-detail.ftl">
                 <b class="newer-title">房产抵押借款17070  <i class="icon-sign">五一专享</i></b>
                 <ul class="loan-info  clearfix">
                     <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>

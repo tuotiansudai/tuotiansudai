@@ -1,4 +1,4 @@
-require('wapSiteStyle/account/experience_amount.scss');
+require('wapSiteStyle/investment/experience_amount.scss');
 
 let $experienceAmount = $('#experienceAmount');
 let menuClick = require('wapSiteJsModule/menuClick');

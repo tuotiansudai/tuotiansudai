@@ -1,0 +1,73 @@
+.account-summary {
+  height:200px;
+  .icon-help {
+    top: 61px;
+    right: 25%;
+  }
+}
+
+.experience-amount {
+  padding-bottom: 70px;
+}
+
+.invest-progress-box {
+  padding: 0 10px;
+  background: #fff;
+  height: 50px;
+  .project-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A2A2A2;
+    align-items: center;
+    height:100%;
+    i {
+      color: #222;
+    }
+  }
+}
+
+.detail-list {
+  span i {
+    font-size:20px;
+  }
+}
+.icon-sign {
+  font-size: 9px;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+}
+
+.invest-refer-box {
+  position: absolute;
+  top: 100px;
+  right: 19%;
+  i.fa {
+    position: absolute;
+    top: -13px;
+    right: 27px;
+    font-size: 25px;
+    color: #fff!important;
+  }
+  ul {
+    border-radius:10px;
+    background: #fff;
+    font-size: 10px;
+    color: #A2A2A2;
+    li {
+      display: flex;
+      justify-content: space-between;
+      line-height: 20px;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 0 6px;
+    }
+    .title {
+      font-size: 11px;
+      color: #525252;
+    }
+  }
+
+}

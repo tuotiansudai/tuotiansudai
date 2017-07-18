@@ -1,22 +1,13 @@
 .experience-amount {
   .account-summary {
-    position: relative;
+
     .summary-box {
       padding-top:25px;
     }
     .collection {
       flex: 3;
     }
-    .icon-help {
-      position: absolute;
-      right: 10px;
-      top: 20px;
-      width: 28px;
-      height: 28px;
-      display: inline-block;
-      background: url('../../images/icon-help.png') left top no-repeat;
-      background-size: 100%;
-    }
+
     .amount-balance {
       background: #FF473C;
     }

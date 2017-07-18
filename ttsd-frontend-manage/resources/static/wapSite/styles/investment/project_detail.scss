@@ -1,0 +1,81 @@
+
+.loan-list-frame {
+  position: absolute;
+  top: 100px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 100px);
+  background: #fff;
+  padding-top:20px;
+}
+
+.pledge-box {
+  display: none;
+
+  &:nth-child(5) {
+    display: block;
+  }
+
+  .section {
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 22px;
+    .title {
+      color: #525252;
+      line-height: 22px;
+      text-align: center;
+    }
+    dl {
+      color: #808080;
+
+      dd {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        line-height: 27px;
+        span {
+          flex: 1;
+          &:nth-child(1) {
+            text-align: right;
+          }
+          &:nth-child(2) {
+            text-align: left;
+          }
+        }
+      }
+
+    }
+
+  }
+}
+
+.material-box {
+  padding: 10px;
+  dt {
+    font-size: 14px;
+    color: #525252;
+    padding-bottom:10px;
+  }
+  dd {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    img {
+      width:48%;
+      height: 100%;
+    }
+  }
+}
+
+.look-apply-material {
+  text-align: center;
+  margin-top:20px;
+  .btn-look {
+    border: 1px solid #C9C9C9;
+    border-radius: 100px;
+    padding:6px 20px;
+    color: #808080;
+  }
+
+}

@@ -1,13 +1,13 @@
 <#import "../macro/global-dev.ftl" as global>
 <#assign jsName = 'experience_amount' >
-<#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.css"}>
+<#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.js"} >
+<#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.css"}>
 
 <@global.main pageCss="${css.experience_amount}" pageJavascript="${js.experience_amount}" title="我的体验金">
 
 <div class="my-account-content experience-amount" id="experienceAmount">
     <div class="account-summary">
-        <a href="my-free.ftl"><i class="icon-help"></i></a>
+        <a href="#"><i class="icon-help"></i></a>
         <div class="collection">
             <span class="summary-box">
                 <b>238.00</b>
