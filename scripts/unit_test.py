@@ -16,8 +16,8 @@ class UTRunner(object):
         self.config_file()
         self.init_docker()
         self.run_test()
-        self.clean_env()
         self.current_test()
+        self.clean_env()
 
     def config_file(self):
         print "Generate config file..."

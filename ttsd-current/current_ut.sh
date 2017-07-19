@@ -12,6 +12,7 @@ install(){
 }
 
 ut(){
+    cp /workspace/deploy-config/ttsd-current/settings_local.py .
     python manage.py test --noinput
 }
 

@@ -26,6 +26,9 @@ grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'%' identified by 'sdmessage';
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'localhost' identified by 'sdmessage';
 
+grant select,insert,update,delete,create,drop,alter,index on edxcurrent.* to sdcurrent@'%' identified by 'sdcurrent';
+grant select,insert,update,delete,create,drop,alter,index on edxcurrent.* to sdcurrent@'localhost' identified by 'sdcurrent';
+
 update mysql.user set password=password('root') where user='root';
 
 flush privileges;
