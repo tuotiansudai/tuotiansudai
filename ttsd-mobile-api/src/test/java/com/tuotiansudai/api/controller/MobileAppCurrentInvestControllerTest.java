@@ -28,7 +28,7 @@ public class MobileAppCurrentInvestControllerTest extends ControllerTestBase {
     @Test
     public void shouldInvest() throws Exception {
         when(service.invest(any(CurrentInvestRequestDto.class), anyString())).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/rxb/invest",
+        doRequestWithServiceMockedTest("/rxb/deposit",
                 new CurrentInvestRequestDto());
     }
 
@@ -36,7 +36,7 @@ public class MobileAppCurrentInvestControllerTest extends ControllerTestBase {
     @Test
     public void shouldNoPasswordInvest() throws Exception {
         when(service.noPasswordInvest(any(CurrentInvestRequestDto.class), anyString())).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/rxb/no-password-invest",
+        doRequestWithServiceMockedTest("/rxb/no-password-deposit",
                 new CurrentInvestRequestDto());
     }
 }

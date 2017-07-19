@@ -1,3 +1,5 @@
+import json
+
 import requests
 from celery.utils.log import get_task_logger
 
@@ -10,14 +12,16 @@ logger = get_task_logger(__name__)
 class DepositCallback(BaseTask):
     name = "current-deposit-callback"
     queue = "celery.current.deposit.callback"
-    rest_url = "{}/deposit/{}".format(settings.CURRENT_REST_SERVER)
+    rest_url = "{}/deposit/{}"
 
     def do(self, message):
         logger.info("queue: {}, message: {}".format(self.name, message))
         try:
-            response = requests.post(url=self.rest_url,
-                                     data=message,
-                                     headers={'content-type': 'application/json'})
+            json_message = json.load(message)
+            response = requests.put(url=self.rest_url.format(settings.CURRENT_REST_SERVER,
+                                                             json_message.get('id')),
+                                    data={'status': json_message.get('status')},
+                                    headers={'content-type': 'application/json'})
             return response.status_code == requests.codes.ok
         except Exception, e:
             logger.error("queue: {}, message: {}, exception: {}".format(self.name, message, e))

@@ -131,8 +131,8 @@ public class CurrentDepositService {
         try {
             long orderId = Long.parseLong(callbackRequest.getOrderId().split(ORDER_ID_SEPARATOR)[0]);
             String json = objectMapper.writeValueAsString(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                    .put("order_id", orderId)
-                    .put("success", callbackRequest.isSuccess())
+                    .put("id", orderId)
+                    .put("status", callbackRequest.isSuccess() ? "SUCCESS" : "FAIL")
                     .build()));
             mqWrapperClient.sendMessage(MessageQueue.CurrentDepositCallback, json);
         } catch (Exception e) {

@@ -51,7 +51,7 @@ public class CurrentDepositController {
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         long personalMaxDeposit = 0;
         try {
-            personalMaxDeposit = currentRestClient.personalMaxDeposit(LoginUserInfo.getLoginName()).getAmount();
+            personalMaxDeposit = currentRestClient.getAccount(LoginUserInfo.getLoginName()).getPersonalMaxDeposit();
         } catch (RestException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -67,18 +67,18 @@ public class CurrentDepositController {
         boolean isWeChatSource = StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"));
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        DepositRequestDto depositRequestDto = new DepositRequestDto(loginName, currentDepositRequestDto.getAmount(), isWeChatSource ? Source.WEB : Source.WE_CHAT);
+        DepositRequestDto depositRequestDto = new DepositRequestDto(loginName, currentDepositRequestDto.getAmount(), isWeChatSource ? Source.WEB : Source.WE_CHAT, accountModel.isNoPasswordInvest());
 
         try {
             if (accountModel.isNoPasswordInvest()) {
-                BaseDto<PayDataDto> payData = currentRestClient.noPasswordInvest(depositRequestDto);
+                BaseDto<PayDataDto> payData = currentRestClient.noPasswordDeposit(depositRequestDto);
                 if (payData.getData().getStatus()) {
                     return new ModelAndView(MessageFormat.format("redirect:/{0}?order_id={1}",
                             AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD.getWebRetCallbackPath(), payData.getData().getExtraValues().get("order_id")));
                 }
                 redirectAttributes.addFlashAttribute("errorMessage", payData.getData().getMessage());
             } else {
-                BaseDto<PayFormDataDto> payFormData = currentRestClient.invest(depositRequestDto);
+                BaseDto<PayFormDataDto> payFormData = currentRestClient.deposit(depositRequestDto);
                 return new ModelAndView("/pay", "pay", payFormData);
             }
         } catch (RestException e) {

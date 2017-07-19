@@ -9,14 +9,17 @@ public class DepositRequestDto {
     private String loginName;
     private long amount;
     private Source source;
+    @JsonProperty("no_password")
+    private boolean noPassword;
 
     public DepositRequestDto() {
     }
 
-    public DepositRequestDto(String loginName, long amount, Source source) {
+    public DepositRequestDto(String loginName, long amount, Source source, boolean noPassword) {
         this.loginName = loginName;
         this.amount = amount;
         this.source = source;
+        this.noPassword = noPassword;
     }
 
     public long getId() {
@@ -33,5 +36,9 @@ public class DepositRequestDto {
 
     public Source getSource() {
         return source;
+    }
+
+    public boolean getNoPassword() {
+        return noPassword;
     }
 }

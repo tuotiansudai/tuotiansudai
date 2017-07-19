@@ -6,10 +6,9 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from current_rest import constants, serializers
-from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.biz.deposit import Deposit
 from current_rest.models import CurrentAccount, CurrentDeposit, CurrentBill
+from current_rest.views.deposit import DepositViewSet
 
 
 class DepositTestCase(TestCase):
@@ -31,7 +30,7 @@ class DepositTestCase(TestCase):
 
         deposit = CurrentDeposit.objects.get(login_name=self.login_name)
 
-        fake_requests.assert_called_once_with(url=Deposit.pay_with_password_url,
+        fake_requests.assert_called_once_with(url=DepositViewSet.pay_with_password_url,
                                               json=serializers.DepositSerializer(instance=deposit).data,
                                               timeout=10)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -56,7 +55,7 @@ class DepositTestCase(TestCase):
                                     format='json')
 
         deposit = CurrentDeposit.objects.get(login_name=self.login_name)
-        fake_requests.assert_called_once_with(url=Deposit.pay_with_no_password_url,
+        fake_requests.assert_called_once_with(url=DepositViewSet.pay_with_no_password_url,
                                               json=serializers.DepositSerializer(instance=deposit).data,
                                               timeout=10)
 
@@ -135,42 +134,6 @@ class DepositTestCase(TestCase):
         self.assertEqual(current_bill.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.amount, fake_deposit.amount)
         self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
-
-    # @mock.patch('current_rest.biz.deposit.CurrentDailyManager')
-    # def test_should_return_200_when_today_is_no_deposit(self, fake_manager):
-    #     current_daily_amount = 1
-    #     instance = fake_manager.return_value
-    #     instance.get_current_daily_amount.return_value = current_daily_amount
-    #
-    #     response = self.client.get(path=reverse('personal_max_deposit', kwargs={'login_name': self.login_name}))
-    #
-    #     self.assertEqual(response.data, {'amount': current_daily_amount})
-    #
-    # @mock.patch('current_rest.biz.deposit.CurrentDailyManager')
-    # def test_should_return_200_when_today_is_no_deposit_and_user_has_deposited_1(self, fake_manager):
-    #     current_daily_amount = 100000000
-    #
-    #     CurrentAccount.objects.create(login_name=self.login_name, balance=1)
-    #
-    #     instance = fake_manager.return_value
-    #     instance.get_current_daily_amount.return_value = current_daily_amount
-    #
-    #     response = self.client.get(path=reverse('personal_max_deposit', kwargs={'login_name': self.login_name}))
-    #
-    #     self.assertEqual(response.data, {'amount': PERSONAL_MAX_DEPOSIT - 1})
-    #
-    # @mock.patch('current_rest.biz.deposit.CurrentDailyManager')
-    # def test_should_return_200_when_today_current_limit_is_100_and_user_has_deposited_1(self, fake_manager):
-    #     current_daily_amount = 100
-    #
-    #     CurrentAccount.objects.create(login_name=self.login_name, balance=1)
-    #
-    #     instance = fake_manager.return_value
-    #     instance.get_current_daily_amount.return_value = current_daily_amount
-    #
-    #     response = self.client.get(path=reverse('personal_max_deposit', kwargs={'login_name': self.login_name}))
-    #
-    #     self.assertEqual(response.data, {'amount': current_daily_amount})
 
     def test_should_return_404_when_deposit_does_not_exist(self):
         response = self.client.get(path=reverse('get_put_deposit', kwargs={'pk': 0}))

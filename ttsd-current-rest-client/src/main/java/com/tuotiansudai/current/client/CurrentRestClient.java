@@ -2,7 +2,7 @@ package com.tuotiansudai.current.client;
 
 import com.tuotiansudai.current.dto.DepositDetailResponseDto;
 import com.tuotiansudai.current.dto.DepositRequestDto;
-import com.tuotiansudai.current.dto.PersonalMaxDepositResponseDto;
+import com.tuotiansudai.current.dto.AccountResponseDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -22,14 +22,14 @@ public interface CurrentRestClient {
     DepositDetailResponseDto getDeposit(@PathParam("id") long id) throws RestException;
 
     @POST
-    @Path("/deposit-with-password")
-    BaseDto<PayFormDataDto> invest(DepositRequestDto requestDto) throws RestException;
+    @Path("/deposit")
+    BaseDto<PayFormDataDto> deposit(DepositRequestDto requestDto) throws RestException;
 
     @POST
-    @Path("/deposit-with-no-password")
-    BaseDto<PayDataDto> noPasswordInvest(DepositRequestDto requestDto) throws RestException;
+    @Path("/deposit")
+    BaseDto<PayDataDto> noPasswordDeposit(DepositRequestDto requestDto) throws RestException;
 
     @GET
-    @Path("/user/{loginName}/personal-max-deposit")
-    PersonalMaxDepositResponseDto personalMaxDeposit(@PathParam("loginName") String loginName) throws RestException;
+    @Path("/account/{loginName}")
+    AccountResponseDto getAccount(@PathParam("loginName") String loginName) throws RestException;
 }
