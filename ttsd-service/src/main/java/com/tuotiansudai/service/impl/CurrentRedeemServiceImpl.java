@@ -2,10 +2,11 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.current.client.CurrentRestClient;
 import com.tuotiansudai.current.dto.RedeemRequestDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CurrentRedeemDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.dto.RedeemDataDto;
+import com.tuotiansudai.dto.RedeemLimitsDataDto;
 import com.tuotiansudai.service.CurrentRedeemService;
-import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,17 @@ public class CurrentRedeemServiceImpl implements CurrentRedeemService {
     private CurrentRestClient currentRestClient;
 
     @Override
-    public String redeem(CurrentRedeemDto currentRedeemDto, String loginName) {
-        RedeemRequestDto redeemRequestDto = new RedeemRequestDto(loginName, AmountConverter.convertStringToCent(currentRedeemDto.getAmount()), Source.WEB);
-        return String.valueOf(currentRestClient.redeem(redeemRequestDto).getData().getAmount());
+    public BaseDto<RedeemDataDto> redeem(CurrentRedeemDto currentRedeemDto) {
+        return currentRestClient.redeem(convertToRedeemRequestDto(currentRedeemDto));
+    }
+
+    @Override
+    public BaseDto<RedeemLimitsDataDto> limits(String loginName) {
+        return currentRestClient.limits(loginName);
+
+    }
+
+    private RedeemRequestDto convertToRedeemRequestDto(CurrentRedeemDto currentRedeemDto){
+        return new RedeemRequestDto(currentRedeemDto.getLoginName(), currentRedeemDto.getAmount(),currentRedeemDto.getSource());
     }
 }

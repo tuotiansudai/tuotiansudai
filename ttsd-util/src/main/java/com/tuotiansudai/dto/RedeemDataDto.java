@@ -1,7 +1,5 @@
 package com.tuotiansudai.dto;
 
-import java.util.Map;
-
 public class RedeemDataDto extends BaseDataDto {
 
     private long amount;

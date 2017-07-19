@@ -1,21 +1,36 @@
 package com.tuotiansudai.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class CurrentRedeemDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
-    private String amount;
+    @JsonProperty(value = "login_name")
+    private String loginName;
 
-    public String getAmount() {
+    @NotEmpty
+    @JsonProperty(value = "amount")
+    private long amount;
+
+    @NotNull
+    @JsonProperty(value = "source")
+    private Source source;
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public Source getSource() {
+        return source;
     }
 }

@@ -66,7 +66,7 @@ public class HomeController {
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords()); //公告
 
         modelAndView.addObject("experienceLoan", new ExperienceLoanDto(loanMapper.findById(1), 0, 0)); //体验标
-        modelAndView.addObject("newbieLoan", homeService.getNewbieLoan()); //新手专享
+//        modelAndView.addObject("newbieLoan", homeService.getNewbieLoan()); //新手专享
         modelAndView.addObject("normalLoans", homeService.getNormalLoans()); //优选债权
 
         //债权转让列表显示前两项

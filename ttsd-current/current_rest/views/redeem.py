@@ -14,7 +14,7 @@ from current_rest.serializers import json_validation_required
 def redeem(request, validated_data):
     try:
         redeem_response = Redeem().redeem(validated_data=validated_data)
-        return Response(data={"amount": redeem_response}, status=status.HTTP_200_OK)
+        return Response({"data": redeem_response}, status=status.HTTP_200_OK)
     except ValueError:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -23,7 +23,7 @@ def redeem(request, validated_data):
 def limits(request, login_name):
     try:
         redeem_response = Redeem().limits(request, login_name)
-        return Response(data=redeem_response, status=status.HTTP_200_OK)
+        return Response({"data": redeem_response}, status=status.HTTP_200_OK)
     except ValueError:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 

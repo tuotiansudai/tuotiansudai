@@ -5,7 +5,6 @@ version = '1.0'
 dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
-            project(':ttsd-current-rest-client'),
             project(':ttsd-point-service'),
             project(':ttsd-message-service'),
             project(':ttsd-activity-service'),

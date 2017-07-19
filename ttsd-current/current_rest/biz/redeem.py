@@ -25,7 +25,7 @@ class Redeem(object):
         CurrentWithdraw.objects.create(current_account=current_account,
                                        amount=validated_data.get('amount'),
                                        source=validated_data.get('source'))
-        return validated_data.get('amount')
+        return {"amount": validated_data.get('amount')}
 
     def limits(self, request, login_name):
         current_account = self.current_account_manager.fetch_account(login_name=login_name)
@@ -39,8 +39,8 @@ class Redeem(object):
         for withdraw in withdraws:
             redeemed += withdraw.amount
 
-        data = {"redeemed": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - redeemed,
-                "limits": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT}
+        data = {"remainAmount": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - redeemed,
+                "totalAmount": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT}
         return data
 
     @transaction.atomic

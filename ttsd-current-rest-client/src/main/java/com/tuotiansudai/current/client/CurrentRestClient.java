@@ -9,10 +9,12 @@ import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 @RestClient(url = "${current.rest.server}")
 public interface CurrentRestClient {
 
+    @POST
     @Path("/deposit-with-password")
     BaseDto<PayFormDataDto> invest(DepositRequestDto requestDto) throws RestException;
 
@@ -26,6 +28,6 @@ public interface CurrentRestClient {
 
     @GET
     @Path("/redeem/{loginName}/limits")
-    BaseDto<RedeemLimitsDataDto> limits() throws RestException;
+    BaseDto<RedeemLimitsDataDto> limits(@PathParam("loginName") String loginName) throws RestException;
 
 }

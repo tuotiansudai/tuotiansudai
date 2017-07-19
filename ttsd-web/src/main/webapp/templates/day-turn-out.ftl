@@ -1,11 +1,11 @@
-<#import "macro/global-dev.ftl" as global>
+<#import "macro/global.ftl" as global>
 <#assign jsName = 'day_turn_out' >
 
-<#assign js = {"${jsName}":"http://localhost:3008/web/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/web/js/${jsName}.css"}>
+<#--<#assign js = {"${jsName}":"http://localhost:3008/web/js/${jsName}.js"} >-->
+<#--<#assign css = {"${jsName}":"http://localhost:3008/web/js/${jsName}.css"}>-->
 
 <@global.main pageCss="${css.day_turn_out}" pageJavascript="${js.day_turn_out}" activeNav="我要投资" activeLeftNav="" title="日息宝">
-<div class="loan-detail-content loan-detail-new" id="dayLoanDetailContent" data-loan-progress="${loan.progress?string.computer}">
+<div class="loan-detail-content loan-detail-new" id="dayLoanDetailContent" data-loan-progress="">
 
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
@@ -19,7 +19,7 @@
                         <form action="#" method="post">
                             <div class="fotm-item">
                                 <p>
-                                    今日还可以赎回（元）：<span>1000</span>
+                                    今日还可以赎回（元）：<span>${remainAmount!}</span>
                                 </p>
                             </div>
                             

@@ -32,8 +32,8 @@ public class MobileAppCurrentRedeemServiceImpl implements MobileAppCurrentRedeem
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         CurrentRedeemLimitResponseDataDto currentRedeemLimitResponseDataDto = new CurrentRedeemLimitResponseDataDto();
-        currentRedeemLimitResponseDataDto.setRemainAmount(currentRestClient.limits().getData().getRemainAmount());
-        currentRedeemLimitResponseDataDto.setTotalAmount(currentRestClient.limits().getData().getTotalAmount());
+        currentRedeemLimitResponseDataDto.setRemainAmount(currentRestClient.limits(loginName).getData().getRemainAmount());
+        currentRedeemLimitResponseDataDto.setTotalAmount(currentRestClient.limits(loginName).getData().getTotalAmount());
         baseResponseDto.setData(currentRedeemLimitResponseDataDto);
         return baseResponseDto;
     }
