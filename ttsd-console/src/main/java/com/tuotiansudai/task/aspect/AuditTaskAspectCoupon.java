@@ -80,13 +80,13 @@ public class AuditTaskAspectCoupon {
                 operateURL = "/point-manage/coupon-exchange-manage";
             } else {
                 if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
-                    operateURL = "/activity-manage/interest-coupons";
+                    operateURL = "/activity-manage/coupons-list?couponType=INTEREST_COUPON";
                 } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
-                    operateURL = "/activity-manage/red-envelopes";
+                    operateURL = "/activity-manage/coupons-list?couponType=RED_ENVELOPE";
                 } else if (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-                    operateURL = "/activity-manage/birthday-coupons";
+                    operateURL = "/activity-manage/coupons-list?couponType=BIRTHDAY_COUPON";
                 } else {
-                    operateURL = "/activity-manage/coupons";
+                    operateURL = "/activity-manage/coupons-list?couponType=EXPERIENCE";
                 }
             }
             task.setOperateURL(operateURL);

@@ -1,14 +1,15 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker','bootstrapSelect','Validform','Validform_Datatype','layer', 'layer-extend', 'layerWrapper', 'csrf'], function ($) {
     $(function () {
         var $body = $('body'),
             $confirmBtn = $('.confirm-btn'),//conirm button
             $inactiveBtn = $('.inactive-btn'),
             $tooltip = $('.add-tooltip'),
             $couponDelete = $('.coupon-delete'),
-            $tipCom = $('.tip-container');
+            $tipCom = $('.tip-container'),
+            $selectDom=$('#operationType');
 
         $tooltip.length ? $tooltip.tooltip() : false;
-
+        $selectDom.selectpicker();
         $couponDelete.on('click', function () {
             var $self = $(this),
                 thisLink = $self.attr('data-link');
@@ -128,15 +129,24 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         });
 
         $('.down-load').click(function () {
-            location.href = "/export/coupons";
+            location.href = "/export/coupons?"+$('#couponList').serialize();
         });
 
         $('.export-red-envelopes').click(function () {
-            location.href = "/export/red-envelopes";
+            location.href = "/export/red-envelopes?"+$('#couponList').serialize();
         });
 
         $('.export-birthday-coupons').click(function () {
-            location.href = "/export/birthday-coupons";
+            location.href = "/export/birthday-coupons?"+$('#couponList').serialize();
+        });
+
+        $('#amount').blur(function () {
+            var _this = $(this),
+                text = _this.val(),
+                isNumber = /^\d+(\.\d+)?$/;
+            if (!isNumber.test(text)) {
+                _this.val('');
+            }
         });
     });
 });
