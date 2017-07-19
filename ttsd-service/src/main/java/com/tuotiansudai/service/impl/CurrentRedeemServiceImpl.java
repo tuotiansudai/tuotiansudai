@@ -1,8 +1,11 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.client.CurrentWrapperClient;
+import com.tuotiansudai.current.client.CurrentRestClient;
+import com.tuotiansudai.current.dto.RedeemRequestDto;
 import com.tuotiansudai.dto.CurrentRedeemDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.CurrentRedeemService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class CurrentRedeemServiceImpl implements CurrentRedeemService {
 
     @Autowired
-    private CurrentWrapperClient currentWrapperClient;
+    private CurrentRestClient currentRestClient;
 
     @Override
-    public void redeem(CurrentRedeemDto currentWithdrawDto, String loginName) {
-        //调用封装好的CurrentWrapperClient
-
+    public String redeem(CurrentRedeemDto currentRedeemDto, String loginName) {
+        RedeemRequestDto redeemRequestDto = new RedeemRequestDto(loginName, AmountConverter.convertStringToCent(currentRedeemDto.getAmount()), Source.WEB);
+        return String.valueOf(currentRestClient.redeem(redeemRequestDto).getData().getAmount());
     }
 }

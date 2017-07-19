@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import json
 import logging
 
 import requests
@@ -18,31 +19,29 @@ class Redeem(object):
         self.current_account_manager = CurrentAccountManager()
 
     @transaction.atomic
-    def redeem(self, data):
-        current_account = self.current_account_manager.fetch_account(login_name=data['login_name'])
-        data.update({'current_account': current_account.__dict__['id']})
-        serializer = serializers.CurrentWithdrawSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return serializer.data
-        else:
-            return serializer.errors
+    def redeem(self, validated_data):
+        current_account = self.current_account_manager.fetch_account(login_name=validated_data.get('login_name'))
 
-    @staticmethod
-    def redeem_by_id(pk):
-        try:
-            withdraw = CurrentWithdraw.objects.get(pk=pk)
-        except CurrentWithdraw.DoesNotExist:
-            raise ValueError
+        CurrentWithdraw.objects.create(current_account=current_account,
+                                       amount=validated_data.get('amount'),
+                                       source=validated_data.get('source'))
+        return validated_data.get('amount')
 
-        serializer = serializers.CurrentWithdrawSerializer(withdraw)
-        return serializer.data
+    def limits(self, request, login_name):
+        current_account = self.current_account_manager.fetch_account(login_name=login_name)
+        redeemed = 0
+        withdraws = CurrentWithdraw.objects.filter(
+            created_time__startswith=datetime.date(int(datetime.datetime.today().strftime('%Y')),
+                                                   int(datetime.datetime.today().strftime('%m')),
+                                                   int(datetime.datetime.today().strftime('%d'))),
+            current_account=current_account)
 
-    @staticmethod
-    def redeem_all_list():
-        withdraws = CurrentWithdraw.objects.all()
-        serializer = serializers.CurrentWithdrawSerializer(withdraws, many=True)
-        return serializer.data
+        for withdraw in withdraws:
+            redeemed += withdraw.amount
+
+        data = {"redeemed": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - redeemed,
+                "limits": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT}
+        return data
 
     @transaction.atomic
     def redeem_audit(self, pk, st):
@@ -61,4 +60,3 @@ class Redeem(object):
 
         # 更新赎回状态
         CurrentWithdraw.objects.filter(id=pk).update(status=st, approve_time=datetime.datetime.now())
-

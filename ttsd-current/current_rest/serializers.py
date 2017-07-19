@@ -6,7 +6,6 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 
 from current_rest import constants
-from models import CurrentWithdraw
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,6 @@ class DepositSuccessSerializer(serializers.Serializer):
 
 
 class CurrentWithdrawSerializer(serializers.Serializer):
-
-    class Meta:
-        model = CurrentWithdraw
-        fields = '__all__'
+    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'), required=True)
+    amount = serializers.IntegerField(min_value=0, required=True)
+    source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE, required=True)

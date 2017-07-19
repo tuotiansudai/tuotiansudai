@@ -2,13 +2,11 @@ package com.tuotiansudai.current.client;
 
 import com.tuotiansudai.current.dto.DepositRequestDto;
 import com.tuotiansudai.current.dto.RedeemRequestDto;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
@@ -23,11 +21,11 @@ public interface CurrentRestClient {
     BaseDto<PayDataDto> noPasswordInvest(DepositRequestDto requestDto) throws RestException;
 
     @POST
-    @Path("/redeem")
-    BaseDto<BaseDataDto> redeem(RedeemRequestDto requestDto) throws RestException;
+    @Path("/redeem/create")
+    BaseDto<RedeemDataDto> redeem(RedeemRequestDto requestDto) throws RestException;
 
-//    @GET
-//    @Path("/question/all")
-//    BaseDto<BasePaginationDataDto<QuestionModel>> findAllQuestions(@QueryParam("index") int index) throws RestException;
+    @GET
+    @Path("/redeem/{loginName}/limits")
+    BaseDto<RedeemLimitsDataDto> limits() throws RestException;
 
 }

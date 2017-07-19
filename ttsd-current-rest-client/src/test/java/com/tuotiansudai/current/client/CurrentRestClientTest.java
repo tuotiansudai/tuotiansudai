@@ -22,7 +22,7 @@ public class CurrentRestClientTest {
     @Test
     public void shouldCallRestRequest() throws Exception {
         try {
-            BaseDto<PayFormDataDto> investForm = currentRestClient.invest(new DepositRequestDto(10000, Source.IOS), "YG2xj1Es");
+            BaseDto<PayFormDataDto> investForm = currentRestClient.invest(new DepositRequestDto("YG2xj1Es",10000, Source.IOS));
             System.out.println(investForm);
         } catch (RestException e) {
             e.printStackTrace();

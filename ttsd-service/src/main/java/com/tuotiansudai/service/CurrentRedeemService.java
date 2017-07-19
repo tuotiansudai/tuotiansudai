@@ -1,9 +1,10 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CurrentRedeemDto;
 
 public interface CurrentRedeemService {
 
-    void redeem(CurrentRedeemDto currentRedeemDto, String loginName);
+    BaseDto<CurrentRedeemDto> redeem(CurrentRedeemDto currentRedeemDto, String loginName);
 
 }

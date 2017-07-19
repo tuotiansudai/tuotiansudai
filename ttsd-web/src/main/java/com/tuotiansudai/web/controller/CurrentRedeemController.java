@@ -19,13 +19,13 @@ public class CurrentRedeemController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        ModelAndView modelAndView = new ModelAndView("/withdraw");
+        ModelAndView modelAndView = new ModelAndView("/redeem");
         return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void redeem(@ModelAttribute CurrentRedeemDto currentRedeemDto) {
+    public String redeem(@ModelAttribute CurrentRedeemDto currentRedeemDto) {
         String loginName = LoginUserInfo.getLoginName();
-        currentRedeemService.redeem(currentRedeemDto, loginName);
+        return currentRedeemService.redeem(currentRedeemDto, loginName);
     }
 }

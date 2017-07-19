@@ -6,4 +6,6 @@ public interface MobileAppCurrentRedeemService {
 
     BaseResponseDto<CurrentRedeemResponseDataDto> redeem(CurrentRedeemRequestDto redeemRequestDto, String loginName);
 
+    BaseResponseDto<CurrentRedeemLimitResponseDataDto> limitRedeem(String loginName);
+
 }

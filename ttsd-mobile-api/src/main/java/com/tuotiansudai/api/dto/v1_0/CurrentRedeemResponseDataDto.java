@@ -5,9 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class CurrentRedeemResponseDataDto extends BaseResponseDataDto {
 
 
-    @ApiModelProperty(value = "提现金额", example = "100000")
+    @ApiModelProperty(value = "转出金额", example = "100000")
     private long amount;
-
 
     public long getAmount() {
         return amount;
