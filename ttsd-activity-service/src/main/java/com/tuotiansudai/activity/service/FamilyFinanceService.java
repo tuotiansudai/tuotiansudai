@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.service;
 
-import com.tuotiansudai.activity.repository.dto.ExchangePrizeDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,10 @@ public class FamilyFinanceService {
         if (nowDate.before(startTime) || nowDate.after(endTime)) {
             return 0;
         }
-        return investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()).stream().mapToLong(i->i.getAmount()).sum();
+        return investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().minusMillis(1).toDate()).stream().mapToLong(i->i.getAmount()).sum();
+    }
+
+    public long investAmount(String loginName){
+        return investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName,startTime,endTime).stream().mapToLong(i->i.getAmount()).sum();
     }
 }
