@@ -26,23 +26,65 @@
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- menu sidebar -->
-        <div class="col-md-2">
-
-
+<header class="navbar" id="top" role="banner">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="" class="navbar-brand">
+                <img src="/static/images/logo.png" alt="" />
+            </a>
         </div>
-        <!-- menu sidebar end -->
-        <div class="col-md-10">
-            <!-- content area begin -->
-            <div id="app">
-                {% block content %}{% endblock %}
+        <div class="collapse navbar-collapse">
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【沙漏考拉】</p>
+            <form id="logout-form" action="/logout" method="post">
+            </form>
+        </div>
+    </div>
+    <nav id="bs-navbar" class="collapse navbar-collapse top-menu">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    {% for menu in menus %}
+                        {% for item in menu.sidebar|slice:":1" %}
+                            <li class="active">
+                                <a href="{{item.link}}">{{menu.header.text}}</a>
+                            </li>
+                        {% endfor %}
+                    {% endfor %}
+
+                </ul>
             </div>
+     </nav>
+</header>
+<!-- main begin -->
+<div class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- menu sidebar -->
+            <div class="col-md-2">
+                <ul class="nav sidenav">
+                    {% for menu in menus %}
+                        {% for item in menu.sidebar%}
+                            <li class="{{item.class}}} >
+                                {% if item.link != '' %}
+                                    <a href="{{item.link}}">{{item.text}}</a>
+                                {% else %}
+                                    {{item.link}}
+                                {% endif%}
+                            </li>
+                        {% endfor %}
+                    {% endfor%}
+                </ul>
+            </div>
+            <!-- menu sidebar end -->
+
+            <!-- content area begin -->
+            {% block content %}{% endblock %}
+            <!-- content area end -->
         </div>
-        <!-- content area end -->
     </div>
 </div>
+<!-- main end -->
+
+
 
 {% block script_content %}
 {% endblock %}
