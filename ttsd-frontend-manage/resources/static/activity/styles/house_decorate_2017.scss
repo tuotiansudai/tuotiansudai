@@ -104,7 +104,7 @@
     width:100%;
   }
   .wp{
-    width:1000px;
+    width:1200px;
     margin:0 auto;
     @media (max-width:700px) {
       width:100%;
@@ -124,20 +124,191 @@
       width:100%;
       background:url('../images/2017/house-decorate/day-bg.png') no-repeat center;
       background-size:100%;
-      min-height:360px;
       box-sizing:border-box;
       padding:60px 80px 30px;
+      position: relative;
+      h3{
+        position: absolute;
+        top:0;
+        left:50%;
+        margin-left:-155px;
+        width:310px;
+        height:60px;
+        background:url('../images/2017/house-decorate/title-one.png') no-repeat center;
+      }
       p{
         color:#fff;
-        font-size:16px;
+        font-size:18px;
         margin-bottom: 0;
+        .bag-item{
+          display:inline-block;
+          width:530px;
+          height:290px;
+          padding:0 170px;
+          background:url('../images/2017/house-decorate/bag-bg.png') no-repeat center;
+          background-size: 100%;
+          cursor:pointer;
+          box-sizing:border-box;
+          strong{
+            float:left;
+            width:100%;
+            height:100%;
+            background:url('../images/2017/house-decorate/icon-bag.png') no-repeat center;
+            background-size: 100%;
+          }
+        }
+      }
+    }
+    .free-money-item{
+      float:left;
+      width:100%;
+      background:url('../images/2017/house-decorate/free-bg.png') no-repeat center;
+      background-size:100%;
+      box-sizing:border-box;
+      padding:60px 80px 30px;
+      position: relative;
+      h3{
+        position: absolute;
+        top:-20px;
+        left:50%;
+        margin-left:-205px;
+        width:410px;
+        height:60px;
+        background:url('../images/2017/house-decorate/title-two.png') no-repeat center;
+      }
+      .info-item{
+        float:left;
+        width:100%;
+        font-size:18px;
+        color:#cc321a;
+        margin-bottom: 40px;
+        span{
+          font-size: 20px;
+          color:#9c00ff;
+        }
+      }
+      .list-item{
+        float:left;
+        width:100%;
+        .loan-number{
+          font-size:18px;
+          color:#cc321a;
+        }
+        .table{
+          margin:15px 0;
+          th{
+            font-size:14px;
+            color:#323232;
+            background:#fff;
+            border:1px solid #ffe15f;
+          }
+          td{
+            font-size:14px;
+            color:#323232;
+            background:#fff;
+            border:1px solid #ffe15f;
+            strong{
+              font-size:18px;
+              color:#9c00ff;
+            }
+          }
+        }
+        .tip-item{
+          font-size:16px;
+          color:#cc321a;
+        }
+      }
+    }
+    .gift-list-item{
+      float:left;
+      width:100%;
+      background:url('../images/2017/house-decorate/gift-bg.png') no-repeat center;
+      background-size:100%;
+      box-sizing:border-box;
+      padding:60px 80px 30px;
+      position: relative;
+      h3{
+        position: absolute;
+        top:0;
+        left:50%;
+        margin-left:-205px;
+        width:410px;
+        height:60px;
+        background:url('../images/2017/house-decorate/title-three.png') no-repeat center;
+      }
+      .info-text{
+        color:#fff;
+        font-size:18px;
+        margin-bottom: 0;
+      }
+      .gift-list{
+        float:left;
+        width:100%;
+        dt{
+          float:left;
+          width:100%;
+          font-size:18px;
+          color:#ffe15f;
+        }
+        dd{
+          float:left;
+          width:50%;
+          margin:20px 0;
+          &.row-item{
+            width:33.333333%;
+            p{
+              &.img-item{
+                height:150px;
+              }
+            }
+          }
+          p{
+            text-align:center;
+            font-size:16px;
+            color:#fff;
+            margin-bottom: 0;
+            &.img-item{
+              height:300px;
+              &.gift-one{
+                background:url('../images/2017/house-decorate/gift-one.png') no-repeat center;
+                background-size: 50%;
+              }
+              &.gift-two{
+                background:url('../images/2017/house-decorate/gift-two.png') no-repeat center;
+                background-size: 50%;
+              }
+              &.gift-three{
+                background:url('../images/2017/house-decorate/gift-three.png') no-repeat center;
+                background-size: 50%;
+              }
+              &.gift-four{
+                background:url('../images/2017/house-decorate/gift-four.png') no-repeat center;
+                background-size: 68%;
+              }
+              &.gift-five{
+                background:url('../images/2017/house-decorate/gift-five.png') no-repeat center;
+                background-size: 68%;
+              }
+              &.gift-six{
+                background:url('../images/2017/house-decorate/gift-six.png') no-repeat center;
+                background-size: 68%;
+              }
+              &.gift-seven{
+                background:url('../images/2017/house-decorate/gift-seven.png') no-repeat center;
+                background-size: 68%;
+              }
+            }
+            &.name{
+              font-size:18px;
+            }
+          }
+        }
       }
     }
   }
   .rule-item{
     float:left;
     width:100%;
-    margin:30px 0 40px;
     color:#fff;
     padding:0 60px;
     box-sizing:border-box;
