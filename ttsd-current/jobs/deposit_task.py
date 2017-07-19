@@ -10,7 +10,7 @@ logger = get_task_logger(__name__)
 class DepositCallback(BaseTask):
     name = "current-deposit-callback"
     queue = "celery.current.deposit.callback"
-    rest_url = "{}/deposit-callback".format(settings.CURRENT_REST_SERVER)
+    rest_url = "{}/deposit/{}".format(settings.CURRENT_REST_SERVER)
 
     def do(self, message):
         logger.info("queue: {}, message: {}".format(self.name, message))
