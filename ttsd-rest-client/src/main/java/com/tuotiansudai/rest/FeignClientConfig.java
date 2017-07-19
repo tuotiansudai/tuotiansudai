@@ -2,6 +2,7 @@ package com.tuotiansudai.rest;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.rest.databind.date.deserializer.DateDeserializer;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.factory.RestClientScannerConfigurer;
@@ -23,7 +24,7 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Configuration
-@PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"}, ignoreResourceNotFound = true)
+@PropertySource(value = {"classpath:ttsd-env.properties"}, ignoreResourceNotFound = true)
 public class FeignClientConfig {
 
     @Bean
@@ -43,7 +44,7 @@ public class FeignClientConfig {
 
     @Bean
     public JacksonDecoder jacksonDecoder() {
-        List<Module> moduleList = new ArrayList();
+        List<Module> moduleList = Lists.newArrayList();
         SimpleModule sm = new SimpleModule();
         sm.addDeserializer(Date.class, new DateDeserializer());
         moduleList.add(sm);
@@ -75,7 +76,7 @@ public class FeignClientConfig {
                 feignRequestOptions, okHttpClient, retryer,
                 jacksonDecoder, jacksonEncoder,
                 restErrorDecoder, requestHeaderInterceptor, jaxrsContract);
-        configurer.setBasePackages("com.tuotiansudai.rest.client");
+        configurer.setBasePackages("com.tuotiansudai");
         return configurer;
     }
 }
