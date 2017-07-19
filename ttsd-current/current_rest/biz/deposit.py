@@ -12,6 +12,7 @@ from current_rest.biz.current_daily_manager import CurrentDailyManager
 from current_rest.exceptions import PayWrapperException
 from current_rest.models import CurrentAccount
 from current_rest.models import CurrentDeposit
+from current_rest.serializers import DepositDetailSerializer
 from settings import PAY_WRAPPER_HOST
 
 logger = logging.getLogger(__name__)
@@ -25,6 +26,10 @@ class Deposit(object):
     def __init__(self):
         self.current_account_manager = CurrentAccountManager()
         self.current_daily_manager = CurrentDailyManager()
+
+    @staticmethod
+    def get_deposit(pk):
+        return DepositDetailSerializer(instance=CurrentDeposit.objects.get(pk=pk)).data
 
     def calculate_max_deposit(self, login_name):
         current_account_filter = CurrentAccount.objects.filter(login_name=login_name)
@@ -74,7 +79,7 @@ class Deposit(object):
 
         try:
             url = self.pay_with_no_password_url if current_deposit.no_password else self.pay_with_password_url
-            response = requests.post(url=url, json=data, timeout=5)
+            response = requests.post(url=url, json=data, timeout=10)
 
             if response.status_code == requests.codes.ok:
                 return response.json()
@@ -87,7 +92,7 @@ class Deposit(object):
         today = datetime.now().date()
         tomorrow = today + timedelta(1)
         amount_sum = CurrentDeposit.objects.filter(status=constants.DEPOSIT_SUCCESS,
-                                                   updated_time__range=(today, tomorrow))\
-            .all().aggregate(Sum('amount'))\
+                                                   updated_time__range=(today, tomorrow)) \
+            .all().aggregate(Sum('amount')) \
             .get('amount__sum', 0)
         return amount_sum if amount_sum else 0

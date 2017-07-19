@@ -1,10 +1,10 @@
-require('webStyle/investment/day_turn_in.scss');
+require('webStyle/investment/current_deposit.scss');
 require('webJs/plugins/autoNumeric');
 
 let currentDepositContent = $('#currentDepositContent');
 
-let amountInputElement = $('input[name="amount"]', currentDepositContent);
-let depositAgreementElement = $('.input[name="agreement"]', currentDepositContent);
+let amountInputElement = $('.amount-input', currentDepositContent);
+let amountElement = $('input[name="amount"]', currentDepositContent);
 let depositSubmitElement = $('.deposit-submit', currentDepositContent);
 let depositForm = $('form', currentDepositContent);
 
@@ -69,7 +69,7 @@ depositSubmitElement.click(function (event) {
         return false;
     }
 
-
+    amountElement.val(getDepositAmount());
 
     layer.open({
         type: 1,
@@ -90,28 +90,3 @@ depositSubmitElement.click(function (event) {
     });
 
 });
-
-function sendSubmitRequest() {
-
-    commonFun.useAjax({
-        url: '/no-password-invest',
-        data: $investForm.serialize(),
-        type: 'POST',
-        beforeSubmit: function () {
-            $investSubmit.addClass("loading");
-        },
-    }, function (response) {
-        layer.closeAll();
-        $investSubmit.removeClass("loading");
-        let data = response.data;
-        if (data.status) {
-            location.href = "/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
-        } else if (data.message == '新手标投资已超上限') {
-            showLayer();
-        } else {
-            showInputErrorTips(data.message);
-        }
-    });
-}
-
-

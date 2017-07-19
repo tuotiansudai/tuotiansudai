@@ -1,12 +1,11 @@
 package com.tuotiansudai.paywrapper.current;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.current.dto.DepositRequestDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.CurrentDepositDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -54,11 +53,11 @@ public class CurrentDepositService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    public BaseDto<PayFormDataDto> deposit(CurrentDepositDto currentDepositDto) {
+    public BaseDto<PayFormDataDto> deposit(DepositRequestDto depositRequestDto) {
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         BaseDto<PayFormDataDto> dto = new BaseDto<>(payFormDataDto);
 
-        String loginName = currentDepositDto.getLoginName();
+        String loginName = depositRequestDto.getLoginName();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
             logger.error(MessageFormat.format("{0} does not exist", loginName));
@@ -67,27 +66,27 @@ public class CurrentDepositService {
 
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCurrentDepositRequest(
-                    MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(currentDepositDto.getId()), String.valueOf(new Date().getTime())),
+                    MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(depositRequestDto.getId()), String.valueOf(new Date().getTime())),
                     accountModel.getPayUserId(),
-                    String.valueOf(currentDepositDto.getAmount()),
-                    currentDepositDto.getSource());
+                    String.valueOf(depositRequestDto.getAmount()),
+                    depositRequestDto.getSource());
             return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(MessageFormat.format("deposit failed (id={0}, loginName={1}, amount={2}, source={3}",
-                    String.valueOf(currentDepositDto.getId()),
-                    currentDepositDto.getLoginName(),
-                    String.valueOf(currentDepositDto.getAmount()),
-                    currentDepositDto.getSource()), e);
+                    String.valueOf(depositRequestDto.getId()),
+                    depositRequestDto.getLoginName(),
+                    String.valueOf(depositRequestDto.getAmount()),
+                    depositRequestDto.getSource()), e);
         }
 
         return dto;
     }
 
-    public BaseDto<PayDataDto> noPasswordDeposit(CurrentDepositDto currentDepositDto) {
+    public BaseDto<PayDataDto> noPasswordDeposit(DepositRequestDto depositRequestDto) {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
-        String loginName = currentDepositDto.getLoginName();
+        String loginName = depositRequestDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             logger.error(MessageFormat.format("{0} does not exist", loginName));
@@ -95,9 +94,9 @@ public class CurrentDepositService {
         }
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCurrentDepositNopwdRequest(
-                MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(currentDepositDto.getId()), String.valueOf(new Date().getTime())),
+                MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(depositRequestDto.getId()), String.valueOf(new Date().getTime())),
                 accountModel.getPayUserId(),
-                String.valueOf(currentDepositDto.getAmount()));
+                String.valueOf(depositRequestDto.getAmount()));
 
         try {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(ProjectTransferNopwdMapper.class,
@@ -107,7 +106,7 @@ public class CurrentDepositService {
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("order_id", String.valueOf(currentDepositDto.getId()))
+                    .put("order_id", String.valueOf(depositRequestDto.getId()))
                     .build()));
         } catch (PayException e) {
             payDataDto.setStatus(false);

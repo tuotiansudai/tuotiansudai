@@ -1,5 +1,6 @@
 package com.tuotiansudai.current.client;
 
+import com.tuotiansudai.current.dto.DepositDetailResponseDto;
 import com.tuotiansudai.current.dto.DepositRequestDto;
 import com.tuotiansudai.current.dto.PersonalMaxDepositResponseDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -15,6 +16,10 @@ import javax.ws.rs.PathParam;
 
 @RestClient(url = "${current.rest.server}")
 public interface CurrentRestClient {
+
+    @GET
+    @Path("/deposit/{id}")
+    DepositDetailResponseDto getDeposit(@PathParam("id") long id) throws RestException;
 
     @POST
     @Path("/deposit-with-password")

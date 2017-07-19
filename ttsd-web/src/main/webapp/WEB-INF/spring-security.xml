@@ -119,7 +119,7 @@
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
 
-        <intercept-url pattern="/current/deposit" access="hasAnyAuthority('INVESTOR')" method="POST"/>
+        <intercept-url pattern="/current/deposit" access="hasAnyAuthority('INVESTOR')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
 

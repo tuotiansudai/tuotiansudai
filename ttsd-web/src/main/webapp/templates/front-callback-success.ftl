@@ -35,6 +35,12 @@
                     <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续购买</a>
                 </p>
             </#if>
+            <#if ['CURRENT_DEPOSIT_PROJECT_TRANSFER', 'CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
+                <p class="pay-tip">支付成功，您已成功投资日息宝 ${amount} 元。</p>
+                <p class="pay-text">
+                    <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续投资</a>
+                </p>
+            </#if>
         </#if>
 
         <p class="pay-problem">如有其他疑问请致电客服 400-169-1188（服务时间：9:00－20:00）</p>
@@ -71,6 +77,13 @@
 
         <#if ['INVEST_TRANSFER_PROJECT_TRANSFER', 'INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
             <p class="pay-tip">支付成功，您已成功购买该债权。</p>
+            <p class="pay-text">
+                <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续投资</a>
+            </p>
+        </#if>
+
+        <#if ['CURRENT_DEPOSIT_PROJECT_TRANSFER', 'CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
+            <p class="pay-tip">支付成功，您已成功投资日息宝 ${amount} 元。</p>
             <p class="pay-text">
                 <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续投资</a>
             </p>

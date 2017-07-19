@@ -160,10 +160,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
     'EXCEPTION_HANDLER': 'current_rest.exceptions.api_exception_handler',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
 }
-
-
 
 LOGGING = {
     'version': 1,

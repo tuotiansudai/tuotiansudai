@@ -16,17 +16,18 @@
                             </div>
 
                             <div class="fotm-item">
-                                <p>今日最多可购买（元）：<span>1000</span></p>
+                                <p>今日最多可购买（元）：<span>${(personalMaxDeposit / 100)?string("0.00")}</span></p>
                             </div>
 
                             <div class="fotm-item">
-                                <input type="text" name="amount" class="int-item" placeholder="请输入金额"
+                                <input type="text" class="int-item amount-input" placeholder="请输入金额"
                                        data-l-zero="deny"
                                        data-v-min="0.00"
                                        data-error-message="${errorMessage!}"
                                        data-deposit-amount="${depositAmount!(0)}"
                                        data-balance="${balance?c}"
                                        data-max-deposit-amount="100000">
+                                <input type="hidden" name="amount">
                             </div>
 
                             <div class="fotm-item">
