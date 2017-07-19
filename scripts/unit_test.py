@@ -39,7 +39,7 @@ class UTRunner(object):
         print "Starting test..."
         # sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} clean compileJava ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog test'.format(
         #         self.db_host, self.db_port, self.redis_host, self.redis_port))
-        sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} clean compileJava ttsd-config:flywayAnxin ttsd-anxin-wrapper:test'.format(
+        sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} clean compileJava ttsd-config:flywayAA ttsd-aa-repository:test'.format(
             self.db_host, self.db_port, self.redis_host, self.redis_port))
 
     def clean_env(self):
