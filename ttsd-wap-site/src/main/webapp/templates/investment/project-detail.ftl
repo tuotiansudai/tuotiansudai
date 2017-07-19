@@ -12,9 +12,18 @@
     </div>
 
     <div id="wrapperOut" class="loan-list-frame">
-        <div class="loan-list-content" >
-            <#include 'mortgage-kind.ftl'>
+        <div class="loan-list-content" style="display: none">
+
+            <div class="category-detail" style="display: none">
+                <#include 'mortgage-kind.ftl'>
+            </div>
+
+            <div class="category-detail">
+                ss
+            </div>
         </div>
+
+
 
     </div>
 

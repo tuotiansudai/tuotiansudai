@@ -10,10 +10,26 @@
   padding-top:20px;
 }
 
+.notice-toggle {
+  padding:10px;
+  height:150px;
+  .btn-detail-toggle {
+    border: 1px solid #C9C9C9;
+    color: #808080;
+    width:50%;
+    text-align: center;
+    margin:0 auto;
+    padding: 2px;
+  }
+  p {
+    color: #A2A2A2;
+  }
+}
+
 .pledge-box {
   display: none;
 
-  &:nth-child(5) {
+  &:nth-child(1) {
     display: block;
   }
 
@@ -47,6 +63,15 @@
 
     }
 
+  }
+
+  &.factoring {
+
+    .company-info {
+      dl dd span:nth-child(1) {
+        flex: 0.3;
+      }
+    }
   }
 }
 

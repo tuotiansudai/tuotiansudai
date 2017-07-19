@@ -75,6 +75,13 @@
             <img src="https://static.tuotiansudai.com/upload/20170704/65461499135491665.jpg">
         </dd>
     </dl>
+
+    <div class="notice-toggle">
+        <p>声明：提供的资料全部真实有效并实物代存放于本公司，为保证借款人隐私安全无法全部展示。如出借人有疑义可联系本公司进行查询。</p>
+
+        <div class="btn-detail-toggle">收起详情</div>
+    </div>
+
 </div>
 
 <#--VEHICLE，车辆-->
@@ -239,7 +246,7 @@
             <dd><span>借款用途：</span><span>购买机器设备</span></dd>
         </dl>
     </div>
-    <div class="section">
+    <div class="section company-info">
         <div class="title">保理公司介绍</div>
         <dl>
             <dd><span>公司名称：</span><span>天津拓天国际保理有限公司</span></dd>
