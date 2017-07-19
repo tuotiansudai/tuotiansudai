@@ -623,8 +623,8 @@
                             <h3>申请资料</h3>
                         </div>
                         <div class="apply-data clearfix">
-                            <#list loan.loanTitleDto as loanTitle>
-                                <#list loan.loanTitles as loanTitleRelation >
+                            <#list loan.loanTitles as loanTitleRelation >
+                                <#list loan.loanTitleDto as loanTitle>
                                     <#if loanTitle.id == loanTitleRelation.titleId>
                                         <h5>${loanTitle.title}</h5>
                                         <div class="scroll-wrap" scroll-carousel>
