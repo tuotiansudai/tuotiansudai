@@ -166,88 +166,6 @@ public class ConsoleCouponService {
         }
     }
 
-    public List<CouponDto> findBirthdayCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findBirthdayCoupons((index - 1) * pageSize, pageSize);
-        for (CouponModel couponModel : couponModels) {
-            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
-        }
-        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
-            @Override
-            public CouponDto apply(CouponModel input) {
-                return new CouponDto(input);
-            }
-        });
-    }
-
-    public int findBirthdayCouponsCount() {
-        return couponMapper.findBirthdayCouponsCount();
-    }
-
-    public List<CouponDto> findRedEnvelopeCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findRedEnvelopeCoupons((index - 1) * pageSize, pageSize);
-        for (CouponModel couponModel : couponModels) {
-            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
-            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
-                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
-                    couponModel.setImportIsRight(false);
-                } else {
-                    couponModel.setImportIsRight(true);
-                }
-            }
-        }
-        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
-            @Override
-            public CouponDto apply(CouponModel input) {
-                return new CouponDto(input);
-            }
-        });
-    }
-
-    public int findRedEnvelopeCouponsCount() {
-        return couponMapper.findRedEnvelopeCouponsCount();
-    }
-
-    public List<CouponDto> findInterestCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findInterestCoupons((index - 1) * pageSize, pageSize);
-        for (CouponModel couponModel : couponModels) {
-            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
-            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
-                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
-                    couponModel.setImportIsRight(false);
-                } else {
-                    couponModel.setImportIsRight(true);
-                }
-            }
-        }
-        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
-            @Override
-            public CouponDto apply(CouponModel input) {
-                return new CouponDto(input);
-            }
-        });
-    }
-
-    public int findInterestCouponsCount() {
-        return couponMapper.findInterestCouponsCount();
-    }
-
-    public List<CouponDto> findNewbieAndInvestCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findNewbieAndInvestCoupons((index - 1) * pageSize, pageSize);
-        for (CouponModel couponModel : couponModels) {
-            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
-        }
-        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
-            @Override
-            public CouponDto apply(CouponModel input) {
-                return new CouponDto(input);
-            }
-        });
-    }
-
-    public int findNewbieAndInvestCouponsCount() {
-        return couponMapper.findNewbieAndInvestCouponsCount();
-    }
-
     public long findEstimatedCount(UserGroup userGroup) {
         switch (userGroup) {
             case ALL_USER:
@@ -315,5 +233,28 @@ public class ConsoleCouponService {
         couponModel.setActive(false);
         couponMapper.updateCoupon(couponModel);
         return true;
+    }
+
+    public int findCouponsCountByTypeRedAndMoney(String couponType,float amount,String couponSource){return couponMapper.findCouponsCountByTypeRedAndMoney(couponType,couponSource,(int)(amount*100));}
+
+    public List<CouponDto> findCouponsByTypeRedAndMoney(int index, int pageSize,String couponType,float amount,String couponSource) {
+        List<CouponModel> couponModels=couponMapper.findCouponsByTypeRedAndMoney(couponType,couponSource,(int)(amount*100),(index - 1) * pageSize,pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+            if ((CouponType.RED_ENVELOPE.getName().equals(couponType) || CouponType.INTEREST_COUPON.getName().equals(couponType)) && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
+                    couponModel.setImportIsRight(false);
+                } else {
+                    couponModel.setImportIsRight(true);
+                }
+            }
+        }
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
+
     }
 }
