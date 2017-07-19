@@ -5,12 +5,31 @@
 <!-- content area begin -->
 <div class="col-md-10">
 
-    <div class="col-md-12" style="margin-bottom: 40px">
-        <a href="/activity-manage/coupons" class="btn btn-default" style="margin-right: 60px">体验券</a>
-        <a href="/activity-manage/interest-coupons" class="btn btn-default" style="margin-right: 60px">加息券</a>
-        <a href="/activity-manage/red-envelopes" class="btn btn-default" style="margin-right: 60px">现金红包</a>
-        <a href="/activity-manage/birthday-coupons" class="btn btn-default btn-warning">生日月</a>
-    </div>
+    <form action="/activity-manage/coupons-list" class="form-inline query-build" id="couponList">
+
+        <div class="form-group">
+            <label>优惠券类型</label>
+            <select  name="couponType" id="operationType">
+                <option value="INTEREST_COUPON" <#if couponType=="INTEREST_COUPON">selected</#if> >加息券</option>
+                <option value="RED_ENVELOPE" <#if couponType=="RED_ENVELOPE">selected</#if> >现金红包</option>
+                <option value="BIRTHDAY_COUPON" <#if couponType=="BIRTHDAY_COUPON">selected</#if> >生日月</option>
+                <option value="EXPERIENCE" <#if couponType=="EXPERIENCE">selected</#if> >体验券</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="control-label">来源描述</label>
+            <input type="text" id="couponSource" name="couponSource" class="form-control jq-loginName" value="${couponSource!}">
+        </div>
+
+        <div class="form-group">
+            <label for="control-label">金额</label>
+            <input type="text" id="amount" name="amount" class="form-control money" value="${amount!}">
+        </div>
+
+        <button class="btn btn-primary search" type="submit">查询</button>
+
+    </form>
 
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -150,27 +169,27 @@
         <div>
             <span class="bordern">总共${couponsCount}条,每页显示${pageSize}条</span>
         </div>
-    <#if coupons?has_content>
-        <ul class="pagination">
-            <li>
-            <#if hasPreviousPage>
-                <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
-                <#else>
+        <#if coupons?has_content>
+            <ul class="pagination">
+                <li>
+                    <#if hasPreviousPage>
+                    <a href="?couponType=${couponType!}&couponSource=${couponSource!}&amount=${amount!}&index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
+                    <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
-                        <span aria-hidden="true">&laquo; Prev</span>
-                    </a>
-            </li>
-            <li><a>${index}</a></li>
-            <li>
-            <#if hasNextPage>
-                <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
-                <#else>
+                    <span aria-hidden="true">&laquo; Prev</span>
+                </a>
+                </li>
+                <li><a>${index}</a></li>
+                <li>
+                    <#if hasNextPage>
+                    <a href="?couponType=${couponType!}&couponSource=${couponSource!}&amount=${amount!}&index=${index+1}&pageSize=${pageSize}" aria-label="Next">
+                    <#else>
                     <a href="#" aria-label="Next">
                     </#if>
-                        <span aria-hidden="true">Next &raquo;</span>
-                    </a>
-            </li>
+                    <span aria-hidden="true">Next &raquo;</span>
+                </a>
+                </li>
         <@security.authorize access="hasAnyAuthority('DATA')">
             <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
         </@security.authorize>

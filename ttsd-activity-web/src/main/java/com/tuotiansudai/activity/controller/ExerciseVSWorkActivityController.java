@@ -50,4 +50,10 @@ public class ExerciseVSWorkActivityController {
         return exchangePrizeDto;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/draw-time",method = RequestMethod.POST)
+    public String getDrawTime(){
+        return String.valueOf(exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile()));
+    }
+
 }
