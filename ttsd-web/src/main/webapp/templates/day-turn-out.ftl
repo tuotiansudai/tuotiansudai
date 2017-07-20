@@ -1,4 +1,8 @@
-<#import "macro/global.ftl" as global>
+<#import "macro/global-dev.ftl" as global>
+<#assign jsName = 'day_turn_out' >
+
+<#assign js = {"${jsName}":"http://localhost:3008/web/js/${jsName}.js"} >
+<#assign css = {"${jsName}":"http://localhost:3008/web/js/${jsName}.css"}>
 
 <@global.main pageCss="${css.day_turn_out}" pageJavascript="${js.day_turn_out}" activeNav="我要投资" activeLeftNav="" title="日息宝">
 <div class="loan-detail-content loan-detail-new">
