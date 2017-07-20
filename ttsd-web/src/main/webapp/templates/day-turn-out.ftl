@@ -1,11 +1,7 @@
 <#import "macro/global.ftl" as global>
-<#assign jsName = 'day_turn_out' >
-
-<#--<#assign js = {"${jsName}":"http://localhost:3008/web/js/${jsName}.js"} >-->
-<#--<#assign css = {"${jsName}":"http://localhost:3008/web/js/${jsName}.css"}>-->
 
 <@global.main pageCss="${css.day_turn_out}" pageJavascript="${js.day_turn_out}" activeNav="我要投资" activeLeftNav="" title="日息宝">
-<div class="loan-detail-content loan-detail-new" id="dayLoanDetailContent" data-loan-progress="">
+<div class="loan-detail-content loan-detail-new">
 
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
@@ -16,7 +12,7 @@
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <form action="#" method="post">
+                        <form action="#" method="post" id="formOut">
                             <div class="fotm-item">
                                 <p>
                                     今日还可以赎回（元）：<span>${remainAmount!}</span>
@@ -24,11 +20,14 @@
                             </div>
                             
                             <div class="fotm-item">
-                                <input type="text" name="" class="int-item" placeholder="请输入金额">
+                                <input type="text" name="Amount" class="int-item" placeholder="请输入金额" data-limit="${remainAmount!}" id="turnOut">
+                                <div class="info-item">
+                                   当日最多可转出${remainAmount!}元
+                                </div>
                             </div>
                         
                             <div class="fotm-item">
-                                <input type="submit" class="submit-item" value="确认转出" />
+                                <input type="submit" class="submit-item" value="确认转出" disabled />
                             </div>
                             <div class="fotm-item">
                                 <p class="tip-info">1.转出后资金将返回账户余额，下一个工作日到账，节假日顺延；</p>
