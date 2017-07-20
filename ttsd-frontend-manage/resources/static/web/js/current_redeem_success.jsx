@@ -1,4 +1,4 @@
-require('webStyle/investment/turn_out_success.scss');
+require('webStyle/investment/current_redeem_success.scss');
 let commonFun= require('publicJs/commonFun');
 
 let $successBox= $('#successBox');
@@ -8,6 +8,6 @@ commonFun.countDownLoan({
     btnDom:$countTime,
     time:5
 },function() {
-    window.location.href = '/personal-info';
+    window.location.href = '/account';
 });
 

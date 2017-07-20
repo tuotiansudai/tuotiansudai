@@ -10,27 +10,15 @@ import java.io.Serializable;
 
 public class CurrentRedeemDto implements Serializable {
 
-    @NotEmpty
-    @JsonProperty(value = "login_name")
-    private String loginName;
-
-    @NotEmpty
+    @NotNull    
     @JsonProperty(value = "amount")
-    private long amount;
+    private String amount;
 
-    @NotNull
-    @JsonProperty(value = "source")
-    private Source source;
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public Source getSource() {
-        return source;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

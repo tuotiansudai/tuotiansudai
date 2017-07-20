@@ -1,4 +1,4 @@
-require('webStyle/investment/day_turn_out.scss');
+require('webStyle/investment/current_redeem.scss');
 let commonFun= require('publicJs/commonFun');
 
 
@@ -31,12 +31,6 @@ $turnOut.on('focusout', function(event) {
 $submitBtn.on('click', function(event) {
 	event.preventDefault();
 	$submitBtn.prop('disabled',true);
-	commonFun.useAjax({
-            url:"/login",
-            type:'POST',
-            data:$formOut.serialize()
-        },function(data) {
-            $submitBtn.prop('disabled',false);
-        }
-    );
+	console.log($turnOut.val())
+    $formOut[0].submit();
 });
