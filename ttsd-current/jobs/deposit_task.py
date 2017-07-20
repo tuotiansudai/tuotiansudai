@@ -17,7 +17,7 @@ class DepositCallback(BaseTask):
     def do(self, message):
         logger.info("queue: {}, message: {}".format(self.name, message))
         try:
-            json_message = json.load(message)
+            json_message = json.loads(message)
             response = requests.put(url=self.rest_url.format(settings.CURRENT_REST_SERVER,
                                                              json_message.get('id')),
                                     data={'status': json_message.get('status')},

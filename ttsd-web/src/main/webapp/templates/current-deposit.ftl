@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.day_turn_in}" pageJavascript="${js.day_turn_in}" activeNav="我要投资" activeLeftNav="" title="日息宝">
+<@global.main pageCss="${css.current_deposit}" pageJavascript="${js.current_deposit}" activeNav="我要投资" activeLeftNav="" title="日息宝">
 <div class="loan-detail-content loan-detail-new" id="currentDepositContent">
     <div class="borderBox clearfix no-border">
         <div class="loan-model">

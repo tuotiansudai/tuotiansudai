@@ -64,15 +64,7 @@ if os.path.isfile(setting_local_file):
 
 # Application definition
 
-INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
-    # 'django.contrib.staticfiles',
-    # 'current_console',
-]
+INSTALLED_APPS = []
 
 if REST_ENABLED:
     INSTALLED_APPS += ['rest_framework', 'current_rest']
@@ -87,14 +79,8 @@ if CONSOLE_ENABLED:
 
 
 MIDDLEWARE = [
-    # 'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'current_console.middleware.TTSDSessionManager',
+    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'current_console.middleware.TTSDSessionManager',
 ]
 
 ROOT_URLCONF = 'urls'
