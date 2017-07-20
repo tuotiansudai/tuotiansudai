@@ -10,7 +10,7 @@ get_loan = LoanViewSet.as_view({'get': 'retrieve'})
 audit_loan = LoanViewSet.as_view({'put': 'update'})
 
 urlpatterns = [
-    url(r'^loan$', post_loan, name='post_deposit'),
+    url(r'^loan$', post_loan, name='post_loan'),
     url(r'^audit-loan/(?P<pk>[0-9]+)$', audit_loan, name='audit_loan', kwargs={'partial': True, 'audit': True}),
     url(r'^loan/(?P<pk>[0-9]+)$', get_loan, name="get_loan"),
     url('^deposit-with-password$', deposit.deposit_with_password, name='deposit_with_password'),
