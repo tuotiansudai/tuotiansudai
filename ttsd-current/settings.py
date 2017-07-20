@@ -51,7 +51,9 @@ REDIRECT_URL = 'http://localhost:9080/login'
 
 LOGGING_DIR = '/var/log/current_rest'
 
-PAY_WRAPPER_HOST = 'http://localhost:8080/current'
+PAY_WRAPPER_HOST = 'http://localhost:8080/ttsd-pay-wrapper/current'
+
+REDIS_URL = 'redis://192.168.33.10/2'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/settings_local.py'
@@ -62,15 +64,7 @@ if os.path.isfile(setting_local_file):
 
 # Application definition
 
-INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
-    # 'django.contrib.staticfiles',
-    # 'current_console',
-]
+INSTALLED_APPS = []
 
 if REST_ENABLED:
     INSTALLED_APPS += ['rest_framework', 'current_rest']
@@ -85,14 +79,8 @@ if CONSOLE_ENABLED:
 
 
 MIDDLEWARE = [
-    # 'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'current_console.middleware.TTSDSessionManager',
+    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'current_console.middleware.TTSDSessionManager',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -165,7 +153,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -177,10 +165,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
     'EXCEPTION_HANDLER': 'current_rest.exceptions.api_exception_handler',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
 }
-
-
 
 LOGGING = {
     'version': 1,

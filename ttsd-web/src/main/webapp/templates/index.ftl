@@ -145,7 +145,44 @@
             </#if>
             <a href="/activity/landing-page" target="_blank" class="hot-bag"></a>
         </div>
+        <#--日息宝-->
+        <div class="main-column-title">
+            <i class="icon-title"></i>日息宝<span class="title-text">当日计息</span><span class="title-text">本息复投</span>
+        </div>
 
+        <div class="target-category-box day-interest-item" data-url="/loan">
+            <div class="tip-item">
+                <span>持有越多，收益越高</span><!-- 年化收益率已达到最高 --><!-- 再转入1000元，收益可达5.20% -->
+            </div>
+            <div class="target-column-con">
+                <div class="table-row" style="width:43%;">
+                    <em class="percent-number">
+                        <s class="app">预期年化收益</s>
+                    <i>5.00</i>% ~ <i>7.50</i>%
+                    </em>
+                    <span class="name-text">预期年化收益</span>
+                </div>
+                <div class="table-row"><i class="duration-day">3</i>天<span class="name-text">锁定期</span></div>
+                <div class="table-row progress-column">
+
+                    <div class="progress-bar">
+                        <span class="p-title">剩余金额：<i>877878元</i></span>
+
+                        <div class="process-percent">
+                            <div class="percent" style="width:20%">
+                            </div>
+                        </div>
+                        <span class="point fr">20%</span>
+                    </div>
+
+                </div>
+                <div class="table-row btn-col">
+                    <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
+                    <!-- <button class="btn-normal" disabled="">计算收益中</button>
+                    <button class="btn-normal" disabled="">今日已售罄</button> -->
+                </div>
+            </div>
+        </div>
         <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权

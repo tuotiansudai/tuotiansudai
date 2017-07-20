@@ -53,10 +53,10 @@ public class CurrentRestClientTest {
         String currentUserId = "yyyyyy";
         MDC.put("requestId", "xxxxxxx");
         MDC.put("userId", currentUserId);
-        DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID);
+        DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID, false);
 
         this.mockServer.enqueue(buildCreatePayFormResponse());
-        BaseDto<PayFormDataDto> data = currentRestClient.invest(requestDto);
+        BaseDto<PayFormDataDto> data = currentRestClient.deposit(requestDto);
         assertTrue(data.isSuccess());
         PayFormDataDto formDataDto = data.getData();
         assertEquals("url", formDataDto.getUrl());
@@ -69,10 +69,10 @@ public class CurrentRestClientTest {
         String currentUserId = "yyyyyy";
         MDC.put("requestId", "xxxxxxx");
         MDC.put("userId", currentUserId);
-        DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID);
+        DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID, false);
 
         this.mockServer.enqueue(buildCreatePayDataResponse());
-        BaseDto<PayDataDto> data = currentRestClient.noPasswordInvest(requestDto);
+        BaseDto<PayDataDto> data = currentRestClient.noPasswordDeposit(requestDto);
         assertTrue(data.isSuccess());
         PayDataDto payData = data.getData();
         assertEquals("0000", payData.getCode());
