@@ -42,7 +42,7 @@ class LoanSerializer(serializers.Serializer):
     serial_number = serializers.IntegerField(required=True)
     agent = serializers.PrimaryKeyRelatedField(queryset=Agent.objects.all(), required=True)
     amount = serializers.IntegerField(min_value=0, max_value=99999, required=True)
-    type = serializers.ChoiceField(choices=constants.LOAN_TYPE_CHOICES, required=True)
+    loan_type = serializers.ChoiceField(choices=constants.LOAN_TYPE_CHOICES, required=True)
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=True)
     debtor_identity_card = serializers.CharField(required=True, max_length=18)
     effective_date = serializers.DateTimeField(required=True)

@@ -23,7 +23,7 @@ class LoanService(object):
         loan = Loan.objects.create(
             serial_number=validated_data.get('serial_number'),
             amount=validated_data.get('amount'),
-            type=validated_data.get('type'),
+            loan_type=validated_data.get('loan_type'),
             agent=validated_data.get('agent'),
             debtor=validated_data.get('debtor'),
             debtor_identity_card=validated_data.get('debtor_identity_card'),
@@ -47,7 +47,7 @@ class LoanService(object):
     def put_loan(self, validated_data):
         loan = Loan.objects.filter(id=validated_data.get('id')).update(
             amount=validated_data.get('amount'),
-            type=validated_data.get('type'),
+            loan_type=validated_data.get('loan_type'),
             agent=validated_data.get('agent'),
             debtor=validated_data.get('debtor'),
             debtor_identity_card=validated_data.get('debtor_identity_card'),

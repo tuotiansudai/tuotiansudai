@@ -26,7 +26,7 @@ class LoanListViewTests(TestCase):
         data = {
             "serial_number": 1234,
             "amount": 600.0,
-            "type": "HOUSE",
+            "loan_type": "HOUSE",
             "debtor": "debtor111",
             "debtor_identity_card": "44421022198601056653",
             "effective_date": "2017-09-09T00:00:00Z",
@@ -40,7 +40,7 @@ class LoanListViewTests(TestCase):
         self.assertIsNotNone(response.data['id'])
         self.assertEqual(response.data['serial_number'], data['serial_number'])
         self.assertEqual(response.data['amount'], data['amount'])
-        self.assertEqual(response.data['type'], data['type'])
+        self.assertEqual(response.data['loan_type'], data['loan_type'])
         self.assertEqual(response.data['debtor'], data['debtor'])
         self.assertEqual(response.data['debtor_identity_card'], data['debtor_identity_card'])
         self.assertEqual(response.data['effective_date'], data['effective_date'])

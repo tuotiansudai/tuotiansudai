@@ -21,7 +21,7 @@ class Agent(models.Model):
 class Loan(models.Model):
     serial_number = models.IntegerField()
     amount = models.FloatField(null=True)
-    type = models.CharField(choices=constants.LOAN_TYPE_CHOICES, null=False, max_length=40)
+    loan_type = models.CharField(choices=constants.LOAN_TYPE_CHOICES, null=False, max_length=40)
     agent = models.ForeignKey(Agent, on_delete=models.PROTECT, null=True, related_name='+')
     debtor = models.CharField(null=False, max_length=60, )
     debtor_identity_card = models.CharField(null=False, max_length=30)
