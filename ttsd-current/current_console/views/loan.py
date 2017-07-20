@@ -31,8 +31,7 @@ def create_loan(request):
 
 @require_http_methods(["PUT"])
 def audit_loan(request):
-    params = {'id': request.GET.get('id')}
-    loan = RestClient('get-loan').get(params=params)
+    loan = RestClient('loan/{}'.format(request.GET.get('id'))).get()
 
     if loan is None:
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -41,7 +40,7 @@ def audit_loan(request):
     loan['update_time'] = datetime.now()
     loan['auditor'] = 'auditor'
 
-    response = RestClient('loan').put(data=loan)
+    response = RestClient('audit-loan/{}'.format(request.GET.get('id'))).put(data=loan)
 
     if response:
         return Response(status=status.HTTP_200_OK)
