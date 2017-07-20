@@ -65,6 +65,8 @@ function OpenNoPasswordInvest(firstopen) {
                     btn: ['我知道了'],
                     area:['380px', '260px'],
                     content: $('#noPasswordInvestDOM')
+                },function() {
+                    layer.closeAll();
                 });
             });
         });

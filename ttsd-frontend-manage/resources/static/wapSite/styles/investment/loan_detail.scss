@@ -1,5 +1,12 @@
 .account-summary {
   height:200px;
+  .collection {
+    padding-top: 5px;
+  }
+  .transfer-hack {
+    color: rgba(255, 255, 255, 1);
+    flex: 1.5;
+  }
   .icon-help {
     top: 61px;
     right: 25%;
@@ -70,4 +77,30 @@
     }
   }
 
+}
+
+.leave-time {
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  color: #808080;
+  text-align: center;
+}
+.repay-plan {
+  margin-top:5px;
+  label {
+    font-size: 14px;
+    color: #525252;
+  }
+}
+.history-record {
+  font-size: 14px;
+
+  padding: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    color: #A2A2A2;
+  }
 }

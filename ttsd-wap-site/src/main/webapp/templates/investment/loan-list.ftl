@@ -23,7 +23,7 @@
                 </ul>
             </div>
 
-            <div class="target-category-box" data-url="loan-detail.ftl">
+            <div class="target-category-box" data-url="loan-transfer-detail.ftl">
                 <b class="newer-title">房产抵押借款17070 <i class="icon-sign">新手专享</i> <i class="icon-sign">五一专享</i></b>
                 <ul class="loan-info clearfix">
                     <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
