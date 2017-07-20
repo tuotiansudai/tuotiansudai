@@ -51,7 +51,7 @@ REDIRECT_URL = 'http://localhost:9080/login'
 
 LOGGING_DIR = '/var/log/current_rest'
 
-PAY_WRAPPER_HOST = 'http://localhost:8080/current'
+PAY_WRAPPER_HOST = 'http://localhost:8080/ttsd-pay-wrapper/current'
 
 REDIS_URL = 'redis://192.168.33.10/2'
 

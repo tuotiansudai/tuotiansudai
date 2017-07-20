@@ -20,7 +20,7 @@ class DepositCallback(BaseTask):
             json_message = json.loads(message)
             response = requests.put(url=self.rest_url.format(settings.CURRENT_REST_SERVER,
                                                              json_message.get('id')),
-                                    data={'status': json_message.get('status')},
+                                    json={'status': json_message.get('status')},
                                     headers={'content-type': 'application/json'})
             return response.status_code == requests.codes.ok
         except Exception, e:

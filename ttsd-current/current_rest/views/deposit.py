@@ -30,42 +30,32 @@ class DepositViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(self.__invoke_pay(serializer), status=status.HTTP_201_CREATED, headers=headers)
+        response = super(DepositViewSet, self).create(request, *args, **kwargs)
+        return Response(self.__invoke_pay(response.data), status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
         instance = self.get_object()
         if instance.status != constants.DEPOSIT_WAITING_PAY:
             logger.error('order id {} had already updated', instance.pk)
             return
 
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        response = super(DepositViewSet, self).update(request, *args, **kwargs)
+
         self.current_account_manager.update_current_account_for_deposit(login_name=instance.login_name,
                                                                         amount=instance.amount,
                                                                         order_id=instance.pk)
+        return response
 
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return Response(serializer.data)
-
-    def __invoke_pay(self, serializer):
-        no_password = serializer.validated_data.get('no_password')
+    def __invoke_pay(self, data):
+        no_password = data.get('no_password')
         url = self.pay_with_no_password_url if no_password else self.pay_with_password_url
         try:
-            response = requests.post(url=url, json=serializer.data, timeout=10)
+            response = requests.post(url=url, json=data, timeout=10)
 
             if response.status_code == requests.codes.ok:
                 return response.json()
-            logger.error('response code {} is not ok, request data is {}'.format(response.status_code, serializer.data))
+            logger.error('response code {} is not ok, request data is {}'.format(response.status_code, data))
+            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')
         except Exception:
             raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')

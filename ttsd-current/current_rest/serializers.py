@@ -30,10 +30,8 @@ def json_validation_required(serializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'), read_only=True)
-    balance = serializers.IntegerField(min_value=0, required=True)
-    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
-    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     personal_max_deposit = serializers.SerializerMethodField()
 
     def get_personal_max_deposit(self, instance):
@@ -55,15 +53,14 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CurrentAccount
         fields = ('id', 'login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit')
+        read_only_fields = ('login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit')
 
 
 class DepositSerializer(serializers.ModelSerializer):
-    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'), required=True)
-    amount = serializers.IntegerField(min_value=0, required=True)
-    source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE, required=True)
-    no_password = serializers.BooleanField(required=True)
-    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
-    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
+    amount = serializers.IntegerField(min_value=0)
+    source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE)
+    no_password = serializers.BooleanField()
 
     def create(self, validated_data):
         current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))
@@ -72,4 +69,4 @@ class DepositSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentDeposit
-        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status', 'created_time', 'updated_time')
+        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
