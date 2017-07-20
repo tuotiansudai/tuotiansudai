@@ -42,21 +42,3 @@ class Redeem(object):
         data = {"remainAmount": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - redeemed,
                 "totalAmount": constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT}
         return data
-
-    @transaction.atomic
-    def redeem_audit(self, pk, st):
-        try:
-            withdraw = CurrentWithdraw.objects.get(pk=pk)
-        except CurrentWithdraw.DoesNotExist:
-            raise ValueError
-
-        if st == constants.STATUS_APPROVED:
-            login_name = withdraw.current_account.login_name
-            amount = withdraw.amount
-            order_id = withdraw.id
-            CurrentAccountManager().update_current_account(login_name, amount, constants.BILL_TYPE_WITHDRAW, order_id,
-                                                           datetime.datetime.now())
-        # 调用mq，更新用户的的正常账号
-
-        # 更新赎回状态
-        CurrentWithdraw.objects.filter(id=pk).update(status=st, approve_time=datetime.datetime.now())

@@ -26,13 +26,3 @@ def limits(request, login_name):
         return Response({"data": redeem_response}, status=status.HTTP_200_OK)
     except ValueError:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-def redeem_audit(request, pk, st):
-    if request.method == 'GET':
-        try:
-            Redeem().redeem_audit(pk, st)
-            return Response(data={"message": "success"}, status=status.HTTP_200_OK)
-        except ValueError:
-            return Response(data={"message": "fail"}, status=status.HTTP_400_BAD_REQUEST)
