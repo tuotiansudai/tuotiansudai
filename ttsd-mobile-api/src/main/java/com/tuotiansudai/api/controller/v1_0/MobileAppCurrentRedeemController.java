@@ -24,12 +24,11 @@ public class MobileAppCurrentRedeemController extends MobileAppBaseController {
     @ApiOperation("转出申请")
     public BaseResponseDto<CurrentRedeemResponseDataDto> redeem(@RequestBody CurrentRedeemRequestDto redeemRequestDto) {
         String loginName = getLoginName();
-        redeemRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppCurrentRedeemService.redeem(redeemRequestDto,loginName);
     }
 
-    @RequestMapping(value = "/get/rxb/redeem/limits", method = RequestMethod.POST)
-    @ApiOperation("当人可转出金额和最大转出金额")
+    @RequestMapping(value = "/get/rxb/redeem/limits", method = RequestMethod.GET)
+    @ApiOperation("当日可转出金额和最大转出金额")
     public BaseResponseDto<CurrentRedeemLimitResponseDataDto> limitRedeem() {
         String loginName = getLoginName();
         return mobileAppCurrentRedeemService.limitRedeem(loginName);
