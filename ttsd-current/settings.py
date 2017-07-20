@@ -98,6 +98,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'urls'
 
+TEMPLATES_CONTEXT_PROCESSORS_EXT = []
+
+if CONSOLE_ENABLED:
+    TEMPLATES_CONTEXT_PROCESSORS_EXT += [
+        'current_console.context_processors.login_user_name',
+    ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -105,12 +112,11 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'current_console.context_processors.menu_settings',
-            ],
+                                      'django.template.context_processors.debug',
+                                      'django.template.context_processors.request',
+                                      'django.contrib.auth.context_processors.auth',
+                                      'django.contrib.messages.context_processors.messages',
+                                  ] + TEMPLATES_CONTEXT_PROCESSORS_EXT
         },
     },
 ]

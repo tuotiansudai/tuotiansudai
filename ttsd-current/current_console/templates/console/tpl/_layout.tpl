@@ -25,7 +25,8 @@
     {% endblock %}
 </head>
 <body>
-
+{% load head_lab_tags %}
+{% load side_lab_tags %}
 <header class="navbar" id="top" role="banner">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -34,46 +35,19 @@
             </a>
         </div>
         <div class="collapse navbar-collapse">
-            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【沙漏考拉】</p>
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【{{login_name}}】</p>
             <form id="logout-form" action="/logout" method="post">
             </form>
         </div>
     </div>
-    <nav id="bs-navbar" class="collapse navbar-collapse top-menu">
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    {% for menu in menus %}
-                            <li {% if menu.name == 'current-manage' %} class="active" {% endif %}>
-                                <a href="{{menu.header.link}}">{{menu.header.text}}</a>
-                            </li>
-                    {% endfor %}
-
-                </ul>
-            </div>
-     </nav>
+     {% head_lab request %}
 </header>
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
             <!-- menu sidebar -->
-            <div class="col-md-2">
-                <ul class="nav sidenav">
-                    {% for menu in menus %}
-                        {% if menu.name == 'current-manage' %}
-                            {% for item in menu.sidebar%}
-                                <li class="{{item.class}}" >
-                                    {% if item.link != '' %}
-                                        <a href="{{item.link}}">{{item.text}}</a>
-                                    {% else %}
-                                        {{item.text}}
-                                    {% endif%}
-                                </li>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor%}
-                </ul>
-            </div>
+            {% side_lab request %}
             <!-- menu sidebar end -->
 
             <!-- content area begin -->

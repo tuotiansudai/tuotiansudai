@@ -11,7 +11,9 @@ import settings
 class TTSDSessionManager(MiddlewareMixin):
     def process_request(self, request):
         if request.path != settings.REDIRECT_URL:
-            token = request.GET.get('token', None)
+
+            token = request.session['token'] if 'token' in request.session else request.GET.get('token', None)
+
             if token is None:
                 return HttpResponseRedirect(settings.REDIRECT_URL)
 
