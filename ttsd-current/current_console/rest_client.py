@@ -1,41 +1,59 @@
 # coding=utf-8
 import ast
 
+import logging
 import requests
 
 import settings
+
+logger = logging.getLogger(__name__)
 
 
 class RestClient(object):
     REST_URL_TEMPLATE = u'http://{host}:{port}/{applicationContext}{uri}'
 
     def __init__(self, uri):
-        self.url = self.REST_URL_TEMPLATE \
-            .replace('{host}', settings.REST_SERVICE_HOST) \
-            .replace('{port}', settings.REST_SERVICE_PORT) \
-            .replace('{applicationContext}', settings.REST_PATH) \
-            .replace('{uri}', uri)
+        self.retries = 1
+        self.url = self.REST_URL_TEMPLATE.format(host=settings.REST_SERVICE_HOST,
+                                                 port=settings.REST_SERVICE_PORT,
+                                                 applicationContext=settings.REST_PATH,
+                                                 uri=uri)
 
-    def execute(self, data=None, retries=0, method=None, params=None):
-        response = None
+    def get(self, params=None):
         try:
-
-            if method is not None and str(method).upper() == 'POST':
-                response = requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
-            elif method is not None and str(method).upper() == 'PUT':
-                response = requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
-            else:
-                response = requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
+            response = requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
             response.raise_for_status()
             return response.json()
+        except requests.Timeout as to:
+            logger.error('url:{} timeout retries:{}'.format(self.url, self.retries))
+            if self.retries + 1 <= 3:
+                return self.get(params)
+        except requests.RequestException as re:
+            logger.error('内部服务器错误,原因:{}'.format(re.message))
+            return None
 
-        except requests.HTTPError as he:
-            print he
-            if retries > 0:
-                return self.execute(data, retries - 1, method, params)
-        except requests.exceptions.ConnectionError as ce:
-            print ce
-            return response
-        except requests.exceptions.RequestException as re:
-            print re
-            return response
+    def post(self, data=None):
+        try:
+            response = requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
+            response.raise_for_status()
+            return response.json()
+        except requests.Timeout as to:
+            logger.error('url:{} timeout retries:{}'.format(self.url, self.retries))
+            if self.retries + 1 <= 3:
+                return self.post(data=data)
+        except requests.RequestException as re:
+            logger.error('内部服务器错误,原因:{}'.format(re.message))
+            return None
+
+    def put(self, data=None):
+        try:
+            response = requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
+            response.raise_for_status()
+            return response.json()
+        except requests.Timeout as to:
+            logger.error('url:{} timeout retries:{}'.format(self.url, self.retries))
+            if self.retries + 1 <= 3:
+                return self.put(data=data)
+        except requests.RequestException as re:
+            logger.error('内部服务器错误,原因:{}'.format(re.message))
+            return None

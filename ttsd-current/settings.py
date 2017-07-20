@@ -37,7 +37,6 @@ CONSOLE_ENABLED = True
 CONSOLE_PATH = 'console/'
 
 # database config
-
 DB_MYSQL_DATABASE = 'edxcurrent'
 DB_MYSQL_HOST = '192.168.33.10'
 DB_MYSQL_PORT = '3306'
@@ -54,6 +53,7 @@ SIGN_IN_HOST = 'http://127.0.0.1'
 SIGN_IN_PORT = '5000'
 REDIRECT_URL = 'http://localhost:8083/login'
 # ===signIn module end===
+
 LOGGING_DIR = '/var/log/current_rest'
 
 PAY_WRAPPER_HOST = 'http://localhost:8080/current'
@@ -181,6 +181,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
+    'EXCEPTION_HANDLER': 'current_rest.exceptions.api_exception_handler',
     'PAGE_SIZE': 10
 }
 

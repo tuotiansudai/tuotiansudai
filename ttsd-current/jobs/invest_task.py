@@ -16,4 +16,4 @@ class InvestCallback(BaseTask):
 
 # register task and initialize it
 current_app.tasks.register(InvestCallback())
-InvestCallback().delay()
+ret = InvestCallback().delay()

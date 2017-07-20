@@ -1,8 +1,7 @@
 import logging
-from mns.account import Account
+
 from mns.queue import Message
 from mns.topic import TopicMessage, MNSExceptionBase
-from redis import Redis
 
 import settings
 from jobs import redis_conn, aliyun_account
