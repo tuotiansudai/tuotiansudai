@@ -43,11 +43,9 @@
             <div class="container-fluid">
                 <ul class="nav navbar-nav">
                     {% for menu in menus %}
-                        {% for item in menu.sidebar|slice:":1" %}
-                            <li class="active">
-                                <a href="{{item.link}}">{{menu.header.text}}</a>
+                            <li {% if menu.name == 'current-manage' %} class="active" {% endif %}>
+                                <a href="{{menu.header.link}}">{{menu.header.text}}</a>
                             </li>
-                        {% endfor %}
                     {% endfor %}
 
                 </ul>
@@ -62,15 +60,17 @@
             <div class="col-md-2">
                 <ul class="nav sidenav">
                     {% for menu in menus %}
-                        {% for item in menu.sidebar%}
-                            <li class="{{item.class}}} >
-                                {% if item.link != '' %}
-                                    <a href="{{item.link}}">{{item.text}}</a>
-                                {% else %}
-                                    {{item.link}}
-                                {% endif%}
-                            </li>
-                        {% endfor %}
+                        {% if menu.name == 'current-manage' %}
+                            {% for item in menu.sidebar%}
+                                <li class="{{item.class}}" >
+                                    {% if item.link != '' %}
+                                        <a href="{{item.link}}">{{item.text}}</a>
+                                    {% else %}
+                                        {{item.text}}
+                                    {% endif%}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor%}
                 </ul>
             </div>

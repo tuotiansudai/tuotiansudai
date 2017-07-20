@@ -52,7 +52,7 @@ REST_TIME_OUT = 500
 # ===signIn module start===
 SIGN_IN_HOST = 'http://127.0.0.1'
 SIGN_IN_PORT = '5000'
-REDIRECT_URL = 'http://localhost:9080/login'
+REDIRECT_URL = 'http://localhost:8083/login'
 # ===signIn module end===
 LOGGING_DIR = '/var/log/current_rest'
 
@@ -93,7 +93,7 @@ MIDDLEWARE = [
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'current_console.middleware.TTSDSessionManager',
+    'current_console.middleware.TTSDSessionManager',
 ]
 
 ROOT_URLCONF = 'urls'
