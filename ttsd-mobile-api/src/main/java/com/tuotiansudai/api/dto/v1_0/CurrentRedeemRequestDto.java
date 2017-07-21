@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class CurrentRedeemRequestDto extends BaseParamDto {
 
-    @ApiModelProperty(value = "提现金额", example = "10000")
+    @ApiModelProperty(value = "转出金额", example = "10000")
     private String amount;
 
     public String getAmount() {

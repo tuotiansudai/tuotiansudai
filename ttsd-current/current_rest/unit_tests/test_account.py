@@ -13,7 +13,7 @@ class DepositTestCase(TestCase):
         self.client = APIClient()
         self.login_name = 'fakeuser'
 
-    @mock.patch('current_rest.serializers.CurrentWi')
+    @mock.patch('current_rest.serializers.CurrentDailyManager')
     def test_should_return_200_when_today_is_no_deposit(self, fake_manager):
         CurrentAccount.objects.create(login_name=self.login_name)
 

@@ -31,7 +31,6 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     @Value("${pay.callback.app.web.host}")
     private String domainName;
 
-
     @Override
     public BaseResponseDto<InvestResponseDataDto> invest(CurrentInvestRequestDto investRequestDto, String loginName) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
