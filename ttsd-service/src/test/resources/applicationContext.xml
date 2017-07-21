@@ -142,5 +142,4 @@
     </bean>
 
     <bean class="com.tuotiansudai.mq.config.MQProducerConfig"/>
-
 </beans>
