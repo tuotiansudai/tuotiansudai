@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class AccountResponseDto {
 
-    private long id;
+    private Long id;
 
     @JsonProperty(value = "login_name")
     private String loginName;
