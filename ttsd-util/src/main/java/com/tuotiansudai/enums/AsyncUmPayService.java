@@ -83,6 +83,10 @@ public enum AsyncUmPayService {
      * 日息宝买入
      */
     CURRENT_DEPOSIT_PROJECT_TRANSFER("project_transfer", "callback/current_deposit_project_transfer", "callback/current_deposit_project_transfer", "current_deposit_notify", "tuotian://current-deposit/{0}"),
+    /**
+     * 日息宝超投返款
+     */
+    CURRENT_OVER_DEPOSIT_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "over_current_deposit_payback_notify", ""),
 
 
 

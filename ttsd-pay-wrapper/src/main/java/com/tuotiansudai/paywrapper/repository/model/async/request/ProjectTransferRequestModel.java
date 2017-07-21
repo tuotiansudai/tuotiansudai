@@ -128,6 +128,14 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
+    public static ProjectTransferRequestModel newCurrentOverDepositPaybackRequest(String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel("0", orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CURRENT_OVER_DEPOSIT_PAYBACK_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
     private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType, Source source, AsyncUmPayService asyncUmPayService) {
         super(source, asyncUmPayService);
         this.service = asyncUmPayService.getServiceName();

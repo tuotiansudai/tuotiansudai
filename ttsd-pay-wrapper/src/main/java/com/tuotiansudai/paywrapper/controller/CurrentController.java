@@ -38,4 +38,10 @@ public class CurrentController {
         return currentDepositService.noPasswordDeposit(depositRequestDto);
     }
 
+    @RequestMapping(value = "/over-deposit", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> overDeposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
+        return currentDepositService.overDeposit(depositRequestDto);
+    }
+
 }

@@ -13,13 +13,13 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CurrentDepositNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CurrentDepositRequestMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CurrentOverDepositRequestMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.CurrentDepositNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
@@ -43,6 +43,8 @@ public class CurrentDepositService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    private CurrentOverDepositRequestMapper currentOverDepositRequestMapper;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -70,7 +72,7 @@ public class CurrentDepositService {
                     accountModel.getPayUserId(),
                     String.valueOf(depositRequestDto.getAmount()),
                     depositRequestDto.getSource());
-            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+            return payAsyncClient.generateFormData(CurrentDepositRequestMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(MessageFormat.format("deposit failed (id={0}, loginName={1}, amount={2}, source={3}",
                     String.valueOf(depositRequestDto.getId()),
@@ -99,12 +101,46 @@ public class CurrentDepositService {
                 String.valueOf(depositRequestDto.getAmount()));
 
         try {
-            ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(ProjectTransferNopwdMapper.class,
+            ProjectTransferResponseModel responseModel = paySyncClient.send(CurrentDepositRequestMapper.class,
                     requestModel,
-                    ProjectTransferNopwdResponseModel.class);
+                    ProjectTransferResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", String.valueOf(depositRequestDto.getId()))
+                    .build()));
+        } catch (PayException e) {
+            payDataDto.setStatus(false);
+            payDataDto.setMessage(e.getLocalizedMessage());
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return baseDto;
+    }
+
+    public BaseDto<PayDataDto> overDeposit(DepositRequestDto depositRequestDto) {
+        currentOverDepositRequestMapper.fi()
+
+        PayDataDto payDataDto = new PayDataDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
+
+        String loginName = depositRequestDto.getLoginName();
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if (accountModel == null) {
+            logger.error(MessageFormat.format("{0} does not exist", loginName));
+            return baseDto;
+        }
+
+        ProjectTransferRequestModel paybackRequestModel = ProjectTransferRequestModel.newCurrentOverDepositPaybackRequest(
+                MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(depositRequestDto.getId()), String.valueOf(new Date().getTime())),
+                accountModel.getPayUserId(),
+                String.valueOf(depositRequestDto.getAmount()));
+
+        try {
+            ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(CurrentOverDepositRequestMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
+            payDataDto.setStatus(paybackResponseModel.isSuccess());
+            payDataDto.setCode(paybackResponseModel.getRetCode());
+            payDataDto.setMessage(paybackResponseModel.getRetMsg());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("order_id", String.valueOf(depositRequestDto.getId()))
                     .build()));
@@ -121,7 +157,7 @@ public class CurrentDepositService {
                 paramsMap,
                 originalQueryString,
                 CurrentDepositNotifyRequestMapper.class,
-                CurrentDepositNotifyRequestModel.class);
+                ProjectTransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
