@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/activity/family-finance")
 public class FamilyFinanceActivityController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class FamilyFinanceActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView familyFinanceIndex(){
-        ModelAndView modelAndView = new ModelAndView("/","responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/house-decorate","responsive", true);
         modelAndView .addObject("toDayAmount", LoginUserInfo.getLoginName()==null?null: AmountConverter.convertCentToString(familyFinanceService.toDayInvestAmount(LoginUserInfo.getLoginName())));
         modelAndView .addObject("amount", LoginUserInfo.getLoginName()==null?null: AmountConverter.convertCentToString(familyFinanceService.investAmount(LoginUserInfo.getLoginName())));
         return modelAndView;
