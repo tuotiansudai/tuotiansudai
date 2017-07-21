@@ -42,9 +42,10 @@ class RedeemTestCase(APITestCase):
                  'status': constants.STATUS_WAITING}
         self.client.post(url, data2, format='json')
 
-        response = self.client.get('/rest/redeem/{}/limits'.format(self.login_name))
-        self.assertEqual(response.data['data']['totalAmount'], max_amoount)
-        self.assertEqual(response.data['data']['remainAmount'], 9700000)
+        response = self.client.get('/rest/account/{}'.format(self.login_name))
+
+        self.assertEqual(response.data['personal_max_redeem'], max_amoount)
+        self.assertEqual(response.data['personal_available_redeem'], 9700000)
 
     def test_get_limits_when_current_balance_is_not_enough(self):
         CurrentAccount.objects.create(login_name=self.login_name, balance=30000)
@@ -63,6 +64,8 @@ class RedeemTestCase(APITestCase):
                  'status': constants.STATUS_WAITING}
         self.client.post(url, data2, format='json')
 
-        response = self.client.get('/rest/redeem/{}/limits'.format(self.login_name))
-        self.assertEqual(response.data['data']['totalAmount'], max_amoount)
-        self.assertEqual(response.data['data']['remainAmount'], 30000)
+        response = self.client.get('/rest/account/{}'.format(self.login_name))
+
+        self.assertEqual(response.data['personal_max_redeem'], max_amoount)
+        self.assertEqual(response.data['personal_available_redeem'], 30000)
+

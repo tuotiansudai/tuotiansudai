@@ -48,7 +48,7 @@ class AccountSerializer(serializers.ModelSerializer):
                                                                  current_account=instance).exclude(
             status=constants.STATUS_DENIED).aggregate(
             Sum('amount')).get('amount__sum', 0)
-        return min(instance.balance, today_sum_redeem)
+        return min(instance.balance, constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - today_sum_redeem)
 
     def get_personal_max_redeem(self, instance):
         return constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
