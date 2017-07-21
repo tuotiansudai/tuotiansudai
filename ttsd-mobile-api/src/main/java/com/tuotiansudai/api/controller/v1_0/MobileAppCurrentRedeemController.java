@@ -5,8 +5,6 @@ import com.tuotiansudai.current.client.CurrentRestClient;
 import com.tuotiansudai.current.dto.AccountResponseDto;
 import com.tuotiansudai.current.dto.RedeemRequestDto;
 import com.tuotiansudai.current.dto.RedeemResponseDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.RedeemDataDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.Api;
