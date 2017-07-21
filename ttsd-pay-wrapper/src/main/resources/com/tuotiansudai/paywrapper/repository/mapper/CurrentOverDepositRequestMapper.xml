@@ -66,7 +66,7 @@
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update current_deposit_request set status = #{status} where id = #{id}
+        update current_over_deposit_request set status = #{status} where id = #{id}
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferResponseModel">

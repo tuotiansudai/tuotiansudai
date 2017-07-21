@@ -4,12 +4,18 @@ import logging
 import requests
 from django.db import transaction
 from rest_framework import status, viewsets, mixins
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
+import jobs
 from current_rest import serializers, constants, models
+from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
+from current_rest.biz.current_daily_manager import CurrentDailyManager
 from current_rest.exceptions import PayWrapperException
-from settings import PAY_WRAPPER_HOST
+from jobs.client import MessageClient
+from jobs.over_deposit_task import OverDepositTask
+from settings import PAY_WRAPPER_SERVER
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +27,14 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     serializer_class = serializers.DepositSerializer
     queryset = models.CurrentDeposit.objects.all()
 
-    pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_HOST)
-    pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_HOST)
+    pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_SERVER)
+    pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_SERVER)
 
     def __init__(self):
         super(DepositViewSet, self).__init__()
         self.current_account_manager = CurrentAccountManager()
+        self.current_daily_manager = CurrentDailyManager()
+        self.mq_client = MessageClient(OverDepositTask.name)
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
@@ -34,18 +42,33 @@ class DepositViewSet(mixins.RetrieveModelMixin,
         return Response(self.__invoke_pay(response.data), status=status.HTTP_201_CREATED)
 
     @transaction.atomic
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if instance.status != constants.DEPOSIT_WAITING_PAY:
-            logger.error('order id {} had already updated', instance.pk)
-            return
+    def perform_update(self, serializer):
+        updated_deposit = serializer.save()
 
-        response = super(DepositViewSet, self).update(request, *args, **kwargs)
+        update_strategy = getattr(self, 'deposit_update_{}'.format(updated_deposit.status.lower()), None)
+        if update_strategy:
+            update_strategy(updated_deposit)
 
-        self.current_account_manager.update_current_account_for_deposit(login_name=instance.login_name,
-                                                                        amount=instance.amount,
-                                                                        order_id=instance.pk)
-        return response
+    def deposit_update_success(self, updated_deposit):
+        self.current_account_manager.update_current_account_for_deposit(login_name=updated_deposit.login_name,
+                                                                        amount=updated_deposit.amount,
+                                                                        order_id=updated_deposit.pk)
+
+        if self.__is_over_deposit(updated_deposit):
+            updated_deposit.status = constants.DEPOSIT_OVER_PAY
+            updated_deposit.save()
+            self.mq_client.send(JSONRenderer().render(self.serializer_class(instance=updated_deposit).data))
+
+    def deposit_update_payback_success(self, updated_deposit):
+        self.current_account_manager.update_current_account_for_payback(login_name=updated_deposit.login_name,
+                                                                        amount=updated_deposit.amount,
+                                                                        order_id=updated_deposit.pk)
+
+    def __is_over_deposit(self, deposit):
+        account = self.current_account_manager.fetch_account(login_name=deposit.login_name)
+        total_deposit_today = self.current_daily_manager.calculate_success_deposit_today()
+        current_daily_amount = self.current_daily_manager.get_current_daily_amount()
+        return total_deposit_today > current_daily_amount or account.balance > PERSONAL_MAX_DEPOSIT
 
     def __invoke_pay(self, data):
         no_password = data.get('no_password')

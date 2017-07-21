@@ -28,6 +28,17 @@ class CurrentAccountManager(object):
                                 order_id=order_id)
 
     @transaction.atomic
+    def update_current_account_for_payback(self, login_name, amount, order_id):
+        account = CurrentAccount.objects.select_for_update().get(login_name=login_name)
+
+        account.balance -= amount
+        account.save()
+        self.__add_current_bill(account=account,
+                                amount=amount,
+                                bill_type=constants.BILL_TYPE_PAYBACK,
+                                order_id=order_id)
+
+    @transaction.atomic
     def update_current_account_for_withdraw(self, login_name, amount, order_id):
         account = CurrentAccount.objects.select_for_update().get(login_name=login_name)
 

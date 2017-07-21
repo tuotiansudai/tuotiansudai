@@ -26,7 +26,7 @@ class CurrentDeposit(models.Model):
                                         blank=False)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.PositiveIntegerField(null=False, blank=False)
-    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=20, null=False, blank=False,
+    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=50, null=False, blank=False,
                               default=constants.DEPOSIT_WAITING_PAY)
     source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
                               max_length=10, null=False, blank=False)

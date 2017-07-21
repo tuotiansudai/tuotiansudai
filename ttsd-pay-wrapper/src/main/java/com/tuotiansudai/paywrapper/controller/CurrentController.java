@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
-import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.current.CurrentDepositService;
 import org.apache.log4j.Logger;
@@ -28,20 +28,19 @@ public class CurrentController {
 
     @RequestMapping(path = "/deposit-with-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> deposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
+    public BaseDto<PayFormDataDto> deposit(@Valid @RequestBody DepositDto depositRequestDto) {
         return currentDepositService.deposit(depositRequestDto);
     }
 
     @RequestMapping(value = "/deposit-with-no-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
+    public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody DepositDto depositRequestDto) {
         return currentDepositService.noPasswordDeposit(depositRequestDto);
     }
 
     @RequestMapping(value = "/over-deposit", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> overDeposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
-        return currentDepositService.overDeposit(depositRequestDto);
+    public void overDeposit(@Valid @RequestBody DepositDto depositRequestDto) {
+        currentDepositService.overDeposit(depositRequestDto);
     }
 
 }

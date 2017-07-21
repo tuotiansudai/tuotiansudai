@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.DepositDto;
+import com.tuotiansudai.current.dto.DepositStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -53,7 +54,7 @@ public class CurrentRestClientTest {
         String currentUserId = "yyyyyy";
         MDC.put("requestId", "xxxxxxx");
         MDC.put("userId", currentUserId);
-        DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID, false);
+        DepositDto requestDto = new DepositDto(null, "loginName", 10000, Source.ANDROID, DepositStatus.WAITING_PAY, false);
 
         this.mockServer.enqueue(buildCreatePayFormResponse());
         BaseDto<PayFormDataDto> data = currentRestClient.deposit(requestDto);
@@ -69,7 +70,7 @@ public class CurrentRestClientTest {
         String currentUserId = "yyyyyy";
         MDC.put("requestId", "xxxxxxx");
         MDC.put("userId", currentUserId);
-        DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID, false);
+        DepositDto requestDto = new DepositDto(null, "loginName", 10000, Source.ANDROID, DepositStatus.WAITING_PAY, true);
 
         this.mockServer.enqueue(buildCreatePayDataResponse());
         BaseDto<PayDataDto> data = currentRestClient.noPasswordDeposit(requestDto);

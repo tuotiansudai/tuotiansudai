@@ -17,3 +17,4 @@ POP_MESSAGE_WAIT_SECONDS = 30
 TopicName2SubscribeQueueNames = {'invest': {'currentBase', 'currentInvestCallback'}}
 
 CURRENT_REST_SERVER = 'http://localhost:8000/rest'
+PAY_WRAPPER_SERVER = 'http://localhost:9080/current'

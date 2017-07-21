@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import re
-from datetime import datetime, timedelta
 
-from django.db.models import Sum
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
@@ -36,19 +34,9 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_personal_max_deposit(self, instance):
         user_max_deposit = PERSONAL_MAX_DEPOSIT - instance.balance if PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
-        today_sum_deposit = self.__calculate_success_deposit_today()
+        today_sum_deposit = CurrentDailyManager().calculate_success_deposit_today()
         current_daily_amount = CurrentDailyManager().get_current_daily_amount()
         return min(user_max_deposit, current_daily_amount - today_sum_deposit)
-
-    @staticmethod
-    def __calculate_success_deposit_today():
-        today = datetime.now().date()
-        tomorrow = today + timedelta(1)
-        amount_sum = models.CurrentDeposit.objects.filter(status=constants.DEPOSIT_SUCCESS,
-                                                          updated_time__range=(today, tomorrow)) \
-            .all().aggregate(Sum('amount')) \
-            .get('amount__sum', 0)
-        return amount_sum if amount_sum else 0
 
     class Meta:
         model = models.CurrentAccount
