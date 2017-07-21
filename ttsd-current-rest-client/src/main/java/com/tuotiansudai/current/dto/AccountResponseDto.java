@@ -25,6 +25,12 @@ public class AccountResponseDto {
     @JsonProperty(value = "personal_max_deposit")
     private long personalMaxDeposit;
 
+    @JsonProperty(value = "personal_max_redeem")
+    private long personalMaxRedeem;
+
+    @JsonProperty(value = "personal_available_redeem")
+    private long personalAvailableRedeem;
+
     public long getId() {
         return id;
     }
@@ -47,5 +53,13 @@ public class AccountResponseDto {
 
     public long getPersonalMaxDeposit() {
         return personalMaxDeposit;
+    }
+
+    public long getPersonalMaxRedeem() {
+        return personalMaxRedeem;
+    }
+
+    public long getPersonalAvailableRedeem() {
+        return personalAvailableRedeem;
     }
 }

@@ -6,6 +6,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.current.dto.DepositRequestDto;
 import com.tuotiansudai.current.dto.RedeemRequestDto;
+import com.tuotiansudai.current.dto.RedeemResponseDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -90,10 +91,9 @@ public class CurrentRestClientTest {
         RedeemRequestDto requestDto = new RedeemRequestDto("loginName", 10000, Source.ANDROID);
 
         this.mockServer.enqueue(buildCreateRedeemResponse());
-        BaseDto<RedeemDataDto> data = currentRestClient.redeem(requestDto);
-        assertTrue(data.isSuccess());
-        RedeemDataDto dataDto = data.getData();
+        RedeemResponseDto dataDto = currentRestClient.redeem(requestDto);
         assertEquals(10000, dataDto.getAmount());
+        assertEquals("ANDROID", dataDto.getSource());
     }
 
     private MockResponse buildCreatePayFormResponse() throws JsonProcessingException {
@@ -123,11 +123,9 @@ public class CurrentRestClientTest {
     }
 
     private MockResponse buildCreateRedeemResponse() throws JsonProcessingException {
-        RedeemDataDto redeemDataDto = new RedeemDataDto();
-        redeemDataDto.setStatus(true);
-        redeemDataDto.setMessage("OK");
-        redeemDataDto.setAmount(10000);
-        BaseDto<RedeemDataDto> responseDto = new BaseDto<>(true, redeemDataDto);
+        RedeemResponseDto responseDto = new RedeemResponseDto();
+        responseDto.setAmount(10000);
+        responseDto.setSource("ANDROID");
         MockResponse mockResponse = new MockResponse();
         mockResponse.setResponseCode(200);
         mockResponse.setBody(objectMapper.writeValueAsString(responseDto));

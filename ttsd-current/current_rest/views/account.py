@@ -13,3 +13,5 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     serializer_class = serializers.AccountSerializer
     queryset = models.CurrentAccount.objects.all()
     lookup_field = 'login_name'
+
+

@@ -15,14 +15,14 @@
                         <form action="/current/redeem" method="post" id="formOut">
                             <div class="fotm-item">
                                 <p>
-                                    今日还可以赎回（元）：<span>${redeemRemainAmount!}</span>
+                                    今日还可以赎回（元）：<span>${availableRedeemAmount!}</span>
                                 </p>
                             </div>
                             
                             <div class="fotm-item">
-                                <input type="text" name="amount" class="int-item" placeholder="请输入金额" data-limit="${redeemRemainAmount!}" id="turnOut">
+                                <input type="text" name="amount" class="int-item" placeholder="请输入金额" data-limit="${availableRedeemAmount!}" id="turnOut">
                                 <div class="info-item">
-                                   当日最多可转出${redeemMaxAmount!}元
+                                   当日最多可转出${maxRedeemAmount!}元
                                 </div>
                             </div>
 

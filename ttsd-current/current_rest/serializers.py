@@ -33,12 +33,25 @@ class AccountSerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     personal_max_deposit = serializers.SerializerMethodField()
+    personal_available_redeem = serializers.SerializerMethodField()
+    personal_max_redeem = serializers.SerializerMethodField()
 
     def get_personal_max_deposit(self, instance):
         user_max_deposit = PERSONAL_MAX_DEPOSIT - instance.balance if PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
         today_sum_deposit = self.__calculate_success_deposit_today()
         current_daily_amount = CurrentDailyManager().get_current_daily_amount()
         return min(user_max_deposit, current_daily_amount - today_sum_deposit)
+
+    def get_personal_available_redeem(self, instance):
+        today = datetime.now().date()
+        today_sum_redeem = models.CurrentWithdraw.objects.filter(created_time__startswith=today,
+                                                                 current_account=instance).exclude(
+            status=constants.STATUS_DENIED).aggregate(
+            Sum('amount')).get('amount__sum', 0)
+        return min(instance.balance, today_sum_redeem)
+
+    def get_personal_max_redeem(self, instance):
+        return constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
 
     @staticmethod
     def __calculate_success_deposit_today():
@@ -52,8 +65,12 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentAccount
-        fields = ('id', 'login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit')
-        read_only_fields = ('login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit')
+        fields = ('id', 'login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit',
+                  'personal_available_redeem', 'personal_max_redeem')
+        read_only_fields = (
+            'login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit',
+            'personal_available_redeem',
+            'personal_max_redeem')
 
 
 class DepositSerializer(serializers.ModelSerializer):
@@ -84,5 +101,5 @@ class CurrentWithdrawSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentWithdraw
-        fields = ('id', 'login_name', 'amount', 'source', 'status', 'approver')
+        fields = ('id', 'login_name', 'amount', 'source', 'status', 'created_time')
         read_only_fields = ('login_name', 'amount', 'source', 'status', 'created_time', 'approve_time', 'approver')
