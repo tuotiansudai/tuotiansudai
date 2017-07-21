@@ -1,4 +1,5 @@
 <#import "../../macro/global.ftl" as global>
+
 <@global.main pageCss="${css.house_decorate_2017}" pageJavascript="${js.house_decorate_2017}" activeNav="" activeLeftNav="" title="818居家理财节_活动中心_拓天速贷" keywords="拓天速贷,818理财节,现金红包,体验金,实物奖励" description="拓天速贷818居家理财节活动,每日登录抢夺现金红包及加息劵,天降红包雨,全家抢不停,当日累计投资可获得该日投资额的2.18倍体验金奖励,以及相应的居家实物奖励.">
 <div class="house-decorate-container" id="houseDecorateContainer">
     <div class="top-img">
@@ -27,7 +28,8 @@
                 </div>
                 <div class="list-item">
                     <div class="loan-number">
-                        今日累计投资额:<strong>10万元</strong>
+                        今日累计投资额:<@global.isAnonymous><strong>登录后查看</strong></@global.isAnonymous>
+                                     <@global.isNotAnonymous><strong><#if toDayAmount??>${toDayAmount}</#if></strong></@global.isNotAnonymous>
                     </div>
                     <table class="table">
                         <thead>
@@ -62,7 +64,8 @@
                 <h3></h3>
                 <div class="info-text">活动结束后，计算用户活动期间累计投资额，可领取相应的居家实物奖励，实物奖不可累计获得。</div>
                 <dl class="gift-list">
-                    <dt>活动期间总累计投资额:<strong>10万元</strong></dt>
+                    <dt>活动期间总累计投资额:<@global.isAnonymous><strong>登录后查看</strong></@global.isAnonymous>
+                                          <@global.isNotAnonymous><strong><#if amount??>${amount}</#if></strong></@global.isNotAnonymous></dt>
                     <dd class="row-item">
                         <p class="img-item gift-one"></p>
                         <p class="name-item">法国进口红酒</p>

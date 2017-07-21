@@ -21,8 +21,6 @@ import java.util.Date;
 public class InvestSuccessHouseDecorateMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(InvestSuccessHouseDecorateMessageConsumer.class);
 
-
-
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.house.decorate.startTime}\")}")
     private Date startTime;
 

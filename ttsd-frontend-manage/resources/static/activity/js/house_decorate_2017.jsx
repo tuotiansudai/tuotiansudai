@@ -49,9 +49,9 @@ function getGift() {
 
         commonFun.useAjax({
             dataType: 'json',
-            url:'/activity/exercise-work/exercise-work-draw',
+            url:'/activity/house-decorate/house-decorate-draw',
             data: {
-                'activityCategory': 'EXERCISE_WORK_ACTIVITY'
+                'activityCategory': 'HOUSE_DECORATE_ACTIVITY'
             }
         },function(data) {
             $pointerImg.removeClass('lottering');

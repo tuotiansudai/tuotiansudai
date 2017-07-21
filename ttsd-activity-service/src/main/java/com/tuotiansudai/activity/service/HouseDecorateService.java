@@ -14,10 +14,10 @@ public class HouseDecorateService {
     @Autowired
     private InvestMapper investMapper;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.family.finance.startTime}\")}")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.house.decorate.startTime}\")}")
     private Date startTime;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.family.finance.endTime}\")}")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.house.decorate.endTime}\")}")
     private Date endTime;
 
     public long toDayInvestAmount(String loginName){
