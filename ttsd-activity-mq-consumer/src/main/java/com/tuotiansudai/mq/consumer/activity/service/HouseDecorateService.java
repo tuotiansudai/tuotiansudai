@@ -27,14 +27,14 @@ public class HouseDecorateService {
     @Value(value = "${activity.house.decorate.startTime}")
     private String startTime;
 
-    @Value(value = "${activity.house.decorate.endTime}}")
+    @Value(value = "${activity.house.decorate.endTime}")
     private String endTime;
 
     private final List<ExperienceReward> familyFinanceRewards = Lists.newArrayList(
-            new ExperienceReward(1000000l, 10000000l, 0.5f),
-            new ExperienceReward(10000000l, 30000000l, 0.8f),
-            new ExperienceReward(30000000l, 60000000l, 1.8f),
-            new ExperienceReward(60000000l,  Long.MAX_VALUE,2.18f));
+            new ExperienceReward(1000000l, 10000000l, 0.5),
+            new ExperienceReward(10000000l, 30000000l, 0.8),
+            new ExperienceReward(30000000l, 60000000l, 1.8),
+            new ExperienceReward(60000000l,  Long.MAX_VALUE,2.18));
 
     public List<ExperienceAssigningMessage> yesterdayObtainExperience(){
         Date grantExperienceStartTime = DateTime.parse(startTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).plusDays(1).toDate();
@@ -51,8 +51,8 @@ public class HouseDecorateService {
         for (ActivityInvestView activityView:list) {
             Optional<ExperienceReward> reward = familyFinanceRewards.stream().filter(rewards -> rewards.getStartAmount() <= activityView.getSumAmount() && activityView.getSumAmount() < rewards.getEndAmount()).findAny();
             if (reward.isPresent()){
-                experienceAssigningMessages.add(new ExperienceAssigningMessage(activityView.getLoginName(),Long.parseLong(String.valueOf(activityView.getSumAmount()*reward.get().getMultiple())),
-                        ExperienceBillOperationType.IN, ExperienceBillBusinessType.FAMILY_FINANCE));
+                experienceAssigningMessages.add(new ExperienceAssigningMessage(activityView.getLoginName(),Math.round(Math.floor(activityView.getSumAmount()*reward.get().getMultiple()/100))*100,
+                        ExperienceBillOperationType.IN, ExperienceBillBusinessType.HOUSE_DECORATE));
             }
         }
         return experienceAssigningMessages;
@@ -62,9 +62,9 @@ public class HouseDecorateService {
     class ExperienceReward {
         private Long startAmount;
         private Long endAmount;
-        private Float multiple;
+        private Double multiple;
 
-        public ExperienceReward(Long startAmount, Long endAmount, Float multiple) {
+        public ExperienceReward(Long startAmount, Long endAmount, Double multiple) {
             this.startAmount = startAmount;
             this.endAmount = endAmount;
             this.multiple = multiple;
@@ -78,7 +78,7 @@ public class HouseDecorateService {
             return endAmount;
         }
 
-        public Float getMultiple() {
+        public Double getMultiple() {
             return multiple;
         }
     }

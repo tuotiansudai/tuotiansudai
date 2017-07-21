@@ -24,7 +24,7 @@
     </resultMap>
 
     <insert id="create" parameterType="activityInvestModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`Activity_Invest`
+        INSERT INTO `edxactivity`.`activity_invest`
         (`invest_id`,
         `login_name`,
         `user_name`,
@@ -42,7 +42,7 @@
         ai.user_name,
         ai.mobile
         FROM
-        Activity_Invest ai
+        activity_invest ai
         <where>
             ai.created_time BETWEEN #{startTime} AND #{endTime}
             and ai.activity_name=#{activityName}

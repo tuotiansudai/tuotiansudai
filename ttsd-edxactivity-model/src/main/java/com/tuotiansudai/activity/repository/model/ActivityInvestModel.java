@@ -15,7 +15,7 @@ public class ActivityInvestModel implements Serializable{
     private String mobile;
     private long investAmount;
     private String activityName;
-    private Date createTime;
+    private Date createdTime;
 
     public ActivityInvestModel() {
     }
@@ -27,7 +27,7 @@ public class ActivityInvestModel implements Serializable{
         this.mobile = mobile;
         this.investAmount = investAmount;
         this.activityName = activityName;
-        this.createTime = new Date();
+        this.createdTime = new Date();
     }
 
     public long getId() {
@@ -86,11 +86,11 @@ public class ActivityInvestModel implements Serializable{
         this.activityName = activityName;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }

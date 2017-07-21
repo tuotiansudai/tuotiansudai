@@ -30,10 +30,10 @@ public class HouseDecorateExperienceScheduler {
     @Value(value = "${activity.house.decorate.startTime}")
     private String startTime;
 
-    @Value(value = "${activity.house.decorate.endTime}}")
+    @Value(value = "${activity.house.decorate.endTime}")
     private String endTime;
 
-    @Scheduled(cron = "0 0 0 ＊ * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Shanghai")
     public void grantFamilyFinanceExperience() {
 
         Date grantDate = new DateTime(new Date()).withTimeAtStartOfDay().minusMillis(1).toDate();
@@ -46,7 +46,7 @@ public class HouseDecorateExperienceScheduler {
 
         logger.info(String.format("[FamilyFinanceExperienceScheduler %s] start...", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
         List<ExperienceAssigningMessage> experienceAssigningMessages = houseDecorateService.yesterdayObtainExperience();
-        if(experienceAssigningMessages == null){
+        if(experienceAssigningMessages.size()==0){
             return;
         }
         for (ExperienceAssigningMessage experienceAssigningMessage : experienceAssigningMessages) {
