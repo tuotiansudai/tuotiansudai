@@ -93,7 +93,7 @@ public class HomeController {
             List<byte[]> tasks = redisWrapperClient.hgetValuesSeri(TaskConstant.TASK_KEY + role);
 
             for (byte[] bs : tasks) {
-     //           taskList.add((OperationTask) SerializeUtil.deserialize(bs));
+                taskList.add((OperationTask) SerializeUtil.deserialize(bs));
             }
         }
 

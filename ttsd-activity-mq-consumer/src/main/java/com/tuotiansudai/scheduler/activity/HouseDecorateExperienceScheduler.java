@@ -3,7 +3,7 @@ package com.tuotiansudai.scheduler.activity;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.mq.consumer.activity.service.FamilyFinanceService;
+import com.tuotiansudai.mq.consumer.activity.service.HouseDecorateService;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -18,28 +18,22 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class FamilyFinanceExperienceScheduler {
-    static Logger logger = LoggerFactory.getLogger(FamilyFinanceExperienceScheduler.class);
+public class HouseDecorateExperienceScheduler {
+    static Logger logger = LoggerFactory.getLogger(HouseDecorateExperienceScheduler.class);
 
     @Autowired
-    private FamilyFinanceService familyFinanceService;
+    private HouseDecorateService houseDecorateService;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-//
-//    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.family.finance.startTime}\")}")
-//    private Date startTime;
-//
-//    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.family.finance.endTime}\")}")
-//    private Date endTime;
 
-    @Value(value = "${activity.family.finance.startTime}")
+    @Value(value = "${activity.house.decorate.startTime}")
     private String startTime;
 
-    @Value(value = "${activity.family.finance.endTime}}")
+    @Value(value = "${activity.house.decorate.endTime}}")
     private String endTime;
 
-    @Scheduled(cron = "0 30 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 0 ＊ * ?", zone = "Asia/Shanghai")
     public void grantFamilyFinanceExperience() {
 
         Date grantDate = new DateTime(new Date()).withTimeAtStartOfDay().minusMillis(1).toDate();
@@ -51,7 +45,7 @@ public class FamilyFinanceExperienceScheduler {
         }
 
         logger.info(String.format("[FamilyFinanceExperienceScheduler %s] start...", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
-        List<ExperienceAssigningMessage> experienceAssigningMessages = familyFinanceService.yesterdayObtainExperience();
+        List<ExperienceAssigningMessage> experienceAssigningMessages = houseDecorateService.yesterdayObtainExperience();
         if(experienceAssigningMessages == null){
             return;
         }

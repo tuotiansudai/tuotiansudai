@@ -19,15 +19,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FamilyFinanceService {
+public class HouseDecorateService {
 
     @Autowired
     private ActivityInvestMapper activityInvestMapper;
 
-    @Value(value = "${activity.family.finance.startTime}")
+    @Value(value = "${activity.house.decorate.startTime}")
     private String startTime;
 
-    @Value(value = "${activity.family.finance.endTime}}")
+    @Value(value = "${activity.house.decorate.endTime}}")
     private String endTime;
 
     private final List<ExperienceReward> familyFinanceRewards = Lists.newArrayList(
@@ -42,7 +42,7 @@ public class FamilyFinanceService {
         if(new Date().before(grantExperienceStartTime) || new Date().after(grantExperienceEndTime)){
             return null;
         }
-        List<ActivityInvestView> list=activityInvestMapper.findSumAmountByNameDateAndActivity(ActivityCategory.FAMILY_FINANCE_ACTIVITY.name(), DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate(), DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
+        List<ActivityInvestView> list=activityInvestMapper.findSumAmountByNameDateAndActivity(ActivityCategory.HOUSE_DECORATE_ACTIVITY.name(), DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate(), DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
         return experienceReward(list);
     }
 

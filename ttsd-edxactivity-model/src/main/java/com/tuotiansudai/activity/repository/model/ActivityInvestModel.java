@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.repository.model;
 
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,15 +20,14 @@ public class ActivityInvestModel implements Serializable{
     public ActivityInvestModel() {
     }
 
-    public ActivityInvestModel(long id, long investId, String loginName, String userName, String mobile, long investAmount, String activityName, Date createTime) {
-        this.id = id;
+    public ActivityInvestModel(long investId, String loginName, String userName, String mobile, long investAmount, String activityName) {
         this.investId = investId;
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.investAmount = investAmount;
         this.activityName = activityName;
-        this.createTime = createTime;
+        this.createTime = new Date();
     }
 
     public long getId() {

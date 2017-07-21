@@ -132,11 +132,11 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.exercise.work.endTime}")
     private String acticityExerciseWorkEndTime;
 
-    @Value(value = "${activity.family.finance.startTime}")
-    private String acticityFamilyFinanceStartTime;
+    @Value(value = "${activity.house.decorate.startTime}")
+    private String acticityHouseDecorateStartTime;
 
-    @Value(value = "${activity.family.finance.endTime}")
-    private String acticityFamilyFinanceEndTime;
+    @Value(value = "${activity.house.decorate.endTime}")
+    private String acticityHouseDecorateEndTime;
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -434,7 +434,7 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case EXERCISE_WORK_ACTIVITY:
                 return getExerciseVSWorkDrawTime(userModel, activityCategory);
-            case FAMILY_FINANCE_ACTIVITY:
+            case HOUSE_DECORATE_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
 
         }
@@ -580,7 +580,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
                 .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
                 .put(ActivityCategory.EXERCISE_WORK_ACTIVITY,Lists.newArrayList(acticityExerciseWorkStartTime,acticityExerciseWorkEndTime))
-                .put(ActivityCategory.FAMILY_FINANCE_ACTIVITY,Lists.newArrayList(acticityFamilyFinanceStartTime,acticityFamilyFinanceEndTime))
+                .put(ActivityCategory.HOUSE_DECORATE_ACTIVITY,Lists.newArrayList(acticityHouseDecorateStartTime,acticityHouseDecorateEndTime))
                 .build()).get(activityCategory);
     }
 
