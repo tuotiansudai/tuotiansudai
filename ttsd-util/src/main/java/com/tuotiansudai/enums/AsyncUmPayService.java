@@ -79,6 +79,11 @@ public enum AsyncUmPayService {
      * 债权购买手续费标的转账
      */
     REPAY_TRANSFER_FEE_PROJECT_TRANSFER("project_transfer", "", "", "repay_transfer_fee_notify", ""),
+    /**
+     * 日息宝买入
+     */
+    CURRENT_DEPOSIT_PROJECT_TRANSFER("project_transfer", "callback/current_deposit_project_transfer", "callback/current_deposit_project_transfer", "current_deposit_notify", "tuotian://current-deposit/{0}"),
+
 
 
     /**
@@ -93,6 +98,10 @@ public enum AsyncUmPayService {
      * 无密还款标的转入
      */
     NORMAL_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "normal_repay_notify", ""),
+    /**
+     * 无密日息宝买入
+     */
+    CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "current_deposit_notify", "tuotian://current-deposit/{0}"),
 
 
     /**
