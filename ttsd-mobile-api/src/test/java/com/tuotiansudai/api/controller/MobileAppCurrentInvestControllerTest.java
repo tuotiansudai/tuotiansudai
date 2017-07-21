@@ -1,13 +1,11 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppCurrentInvestController;
-import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.CurrentInvestRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppCurrentInvestService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -28,7 +26,7 @@ public class MobileAppCurrentInvestControllerTest extends ControllerTestBase {
     @Test
     public void shouldInvest() throws Exception {
         when(service.invest(any(CurrentInvestRequestDto.class), anyString())).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/rxb/invest",
+        doRequestWithServiceMockedTest("/rxb/deposit",
                 new CurrentInvestRequestDto());
     }
 
@@ -36,7 +34,7 @@ public class MobileAppCurrentInvestControllerTest extends ControllerTestBase {
     @Test
     public void shouldNoPasswordInvest() throws Exception {
         when(service.noPasswordInvest(any(CurrentInvestRequestDto.class), anyString())).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/rxb/no-password-invest",
+        doRequestWithServiceMockedTest("/rxb/no-password-deposit",
                 new CurrentInvestRequestDto());
     }
 }
