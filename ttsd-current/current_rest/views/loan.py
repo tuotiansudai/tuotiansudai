@@ -24,32 +24,26 @@ class LoanViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        response = super(LoanViewSet, self).create(request, *args, **kwargs)
 
-        operation_log_service.log_contract_operation(serializer.data['id'],
-                                                     serializer.data['creator'],
+        operation_log_service.log_contract_operation(response.data['id'],
+                                                     response.data['creator'],
                                                      constants.OperationType.LOAN_ADD,
-                                                     '提交创建债权申请'
+                                                     '创建通过债权申请'
                                                      )
-        headers = self.get_success_headers(serializer.data)
-        return Response(status=status.HTTP_201_CREATED, headers=headers)
+        headers = self.get_success_headers(response.data)
+        return Response(response.data, status=status.HTTP_201_CREATED, headers=headers)
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
         audit = kwargs.pop('audit', False)
 
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        response = super(LoanViewSet, self).update(request, *args, **kwargs)
 
         if audit:
-            operation_log_service.log_contract_operation(serializer.data['id'],
-                                                         serializer.data['auditor'],
+            operation_log_service.log_contract_operation(response.data['id'],
+                                                         response.data['auditor'],
                                                          constants.OperationType.LOAN_AUDIT,
                                                          '审核通过债权申请'
                                                          )
-        return Response(serializer.data)
+        return Response(response.data, status=status.HTTP_201_CREATED)

@@ -19,9 +19,14 @@ class RestClient(object):
                                                  applicationContext=settings.REST_PATH,
                                                  uri=uri)
 
-    def get(self, params=None):
+    def execute(self, method='GET', data=None, params=None):
+        response_action = {
+            "GET": self.get,
+            "POST": self.post,
+            "PUT": self.put,
+        }
         try:
-            response = requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
+            response = response_action[method](params, data)
             response.raise_for_status()
             return response.json()
         except requests.Timeout as to:
@@ -32,28 +37,11 @@ class RestClient(object):
             logger.error('内部服务器错误,原因:{}'.format(re.message))
             return None
 
-    def post(self, data=None):
-        try:
-            response = requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
-            response.raise_for_status()
-            return response.json()
-        except requests.Timeout as to:
-            logger.error('url:{} timeout retries:{}'.format(self.url, self.retries))
-            if self.retries + 1 <= 3:
-                return self.post(data=data)
-        except requests.RequestException as re:
-            logger.error('内部服务器错误,原因:{}'.format(re.message))
-            return None
+    def get(self, params, data):
+        requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
 
-    def put(self, data=None):
-        try:
-            response = requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
-            response.raise_for_status()
-            return response.json()
-        except requests.Timeout as to:
-            logger.error('url:{} timeout retries:{}'.format(self.url, self.retries))
-            if self.retries + 1 <= 3:
-                return self.put(data=data)
-        except requests.RequestException as re:
-            logger.error('内部服务器错误,原因:{}'.format(re.message))
-            return None
+    def put(self, params, data):
+        requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
+
+    def post(self, params, data):
+        requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
