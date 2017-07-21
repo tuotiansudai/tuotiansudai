@@ -41,5 +41,3 @@ class TTSDSessionManager(MiddlewareMixin):
                 return self.authenticate(token=token, num_retries=num_retries - 1)
             else:
                 logger.error('token authenticate fail, exception is {}'.format(e))
-
-        return None
