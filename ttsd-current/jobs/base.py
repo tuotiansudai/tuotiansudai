@@ -22,7 +22,7 @@ class MessageBrokerMixin(object):
         while True:
             try:
                 row_msg = redis_conn.brpop(local_queue_name, timeout=settings.POP_MESSAGE_WAIT_SECONDS)
-                logger.error('Receive Message Succeed! Message Body: {}'.format(row_msg))
+                logger.info('Receive Message Succeed! Message Body: {}'.format(row_msg))
                 if row_msg:
                     _, msg = row_msg
                     try:

@@ -1,48 +1,54 @@
-<#import "macro/global-dev.ftl" as global>
-<#assign jsName = 'day_turn_in' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/web/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/web/js/${jsName}.css"}>
-
-<@global.main pageCss="${css.day_turn_in}" pageJavascript="${js.day_turn_in}" activeNav="我要投资" activeLeftNav="" title="日息宝">
-<div class="loan-detail-content loan-detail-new" id="dayTurnInContent" data-loan-progress="${loan.progress?string.computer}">
-
+<#import "macro/global.ftl" as global>
+<@global.main pageCss="${css.current_deposit}" pageJavascript="${js.current_deposit}" activeNav="我要投资" activeLeftNav="" title="日息宝">
+<div class="loan-detail-content loan-detail-new" id="currentDepositContent">
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block clearfix">
-                    <div class="fl title active"><a href="/day-turn-in.ftl">日息宝转入</a></div>
+                    <div class="fl title active"><a href="/current/deposit">日息宝转入</a></div>
                     <div class="fl title"><a href="/day-turn-out.ftl">日息宝转出</a></div>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <form action="#" method="post">
+                        <form action="/current/deposit" method="post">
                             <div class="fotm-item">
-                                <p>
-                                    账户余额（元）：<span>1000</span>
-                                </p>
+                                <p>账户余额（元）：<span>${(balance / 100)?string("0.00")}</span></p>
                             </div>
 
                             <div class="fotm-item">
-                                <p>
-                                    今日最多可购买（元）：<span>1000</span>
-                                </p>
+                                <p>今日最多可购买（元）：<span>${(personalMaxDeposit / 100)?string("0.00")}</span></p>
                             </div>
-                            
+
                             <div class="fotm-item">
-                                <input type="text" name="" class="int-item" placeholder="请输入金额">
+                                <input type="text" class="int-item amount-input" placeholder="请输入金额"
+                                       data-l-zero="deny"
+                                       data-v-min="0.00"
+                                       data-error-message="${errorMessage!}"
+                                       data-deposit-amount="${depositAmount!(0)}"
+                                       data-balance="${balance?c}"
+                                       data-max-deposit-amount="100000">
+                                <input type="hidden" name="amount">
                             </div>
+
                             <div class="fotm-item">
                                 <p class="tip-info">当日计息，明日可查看收益</p>
                             </div>
-                        
+
                             <div class="fotm-item">
-                                <input type="submit" class="submit-item" value="确认转入" />
+                                <@global.isAnonymous>
+                                    <a href="/login?redirect=/current/deposit">确认转入</a>
+                                </@global.isAnonymous>
+
+                                <@global.isNotAnonymous>
+                                    <input type="submit" class="submit-item deposit-submit" value="确认转入"/>
+                                </@global.isNotAnonymous>
                             </div>
+
                             <div class="fotm-item">
-                                <input type="checkbox" name="checkbox" id="checkbox" />
-                                <label for="checkbox">我已阅读并同意《用户服务协议》、《产品服务协议》</label>
+                                <input type="checkbox" name="agreement" checked/>
+                                <label for="agreement" class="agreement-text">我已阅读并同意《用户服务协议》、《产品服务协议》</label>
                             </div class="fotm-item">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
                     </div>
                 </div>
@@ -97,8 +103,5 @@
             </div>
         </div>
     </div>
-    
-    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "component/red-envelope-float.ftl" />
 </@global.main>

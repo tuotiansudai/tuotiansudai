@@ -60,6 +60,7 @@ class CurrentBill(models.Model):
 
 class CurrentWithdraw(models.Model):
     current_account = models.ForeignKey(CurrentAccount)
+    login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.IntegerField()
     status = models.CharField(choices=constants.STATUS_CHOICES, default=constants.STATUS_WAITING, max_length=20)
     source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,

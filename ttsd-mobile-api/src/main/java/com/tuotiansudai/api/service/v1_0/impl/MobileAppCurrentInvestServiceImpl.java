@@ -35,12 +35,12 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     @Override
     public BaseResponseDto<InvestResponseDataDto> invest(CurrentInvestRequestDto investRequestDto, String loginName) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
-        DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName);
+        DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName, false);
         try {
-            BaseDto<PayFormDataDto> formDto = currentRestClient.invest(depositRequestDto);
+            BaseDto<PayFormDataDto> formDto = currentRestClient.deposit(depositRequestDto);
 
             if (!formDto.isSuccess()) {
-                logger.error(MessageFormat.format("[MobileAppCurrentInvestServiceImpl][invest] current invest failed!Maybe service cannot connect to payWrapper. " +
+                logger.error(MessageFormat.format("[MobileAppCurrentInvestServiceImpl][deposit] current deposit failed!Maybe service cannot connect to payWrapper. " +
                         "investDto:loginName:{0}, amount:{1}, source:{2}", loginName, depositRequestDto.getAmount(), depositRequestDto.getSource()));
                 responseDto.setCode(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
                 responseDto.setMessage(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getMsg());
@@ -62,7 +62,7 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
                 responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + formDto.getData().getMessage());
             }
         } catch (RestException | UnsupportedEncodingException e) {
-            logger.error("current invest failed", e);
+            logger.error("current deposit failed", e);
             responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
             responseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
         }
@@ -72,7 +72,7 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     @Override
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(CurrentInvestRequestDto investRequestDto, String loginName) {
         try {
-            DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName);
+            DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName, true);
             BaseDto<PayDataDto> baseDto = currentRestClient.noPasswordInvest(depositRequestDto);
 
             if (baseDto.getData().getStatus()) {
@@ -86,9 +86,9 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
         }
     }
 
-    private DepositRequestDto convertInvestDto(CurrentInvestRequestDto investRequestDto, String loginName) {
+    private DepositRequestDto convertInvestDto(CurrentInvestRequestDto investRequestDto, String loginName, boolean noPassword) {
         Source source = Source.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase());
         long amount = AmountConverter.convertStringToCent(investRequestDto.getAmount());
-        return new DepositRequestDto(loginName, amount, source);
+        return new DepositRequestDto(loginName, amount, source, noPassword);
     }
 }

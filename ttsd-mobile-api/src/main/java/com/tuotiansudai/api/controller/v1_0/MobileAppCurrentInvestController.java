@@ -20,7 +20,7 @@ public class MobileAppCurrentInvestController extends MobileAppBaseController {
     @Autowired
     private MobileAppCurrentInvestService mobileAppCurrentInvestService;
 
-    @RequestMapping(value = "/rxb/invest", method = RequestMethod.POST)
+    @RequestMapping(value = "/rxb/deposit", method = RequestMethod.POST)
     @ApiOperation("验密转入")
     public BaseResponseDto<InvestResponseDataDto> invest(@RequestBody CurrentInvestRequestDto investRequestDto) {
         String loginName = getLoginName();
@@ -28,7 +28,7 @@ public class MobileAppCurrentInvestController extends MobileAppBaseController {
         return mobileAppCurrentInvestService.invest(investRequestDto, loginName);
     }
 
-    @RequestMapping(value = "/rxb/no-password-invest", method = RequestMethod.POST)
+    @RequestMapping(value = "/rxb/no-password-deposit", method = RequestMethod.POST)
     @ApiOperation("免密转入")
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(@RequestBody CurrentInvestRequestDto investRequestDto) {
         String loginName = getLoginName();

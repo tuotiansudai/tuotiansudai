@@ -59,7 +59,12 @@ $singleRank.find('.tip-list-frame .tip-list').each(function (key, option) {
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
                 var angleNum=0;
-                $leftDrawCount.text(function(index,num){return parseInt(num)<1?0:parseInt(num)-1});
+                commonFun.useAjax({
+                    dataType: 'json',
+                    url:'/activity/single-rank/draw-time'
+                },function(data) {
+                    $leftDrawCount.text(data);
+                });
                 switch (data.prize) {
                     case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
                         angleNum=45*1-20;

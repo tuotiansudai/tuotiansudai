@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.http import Http404
 from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.views import exception_handler
@@ -17,7 +18,7 @@ class PayWrapperException(APIException):
 def api_exception_handler(ex, context):
     response = exception_handler(ex, context)
 
-    if response is not None:
+    if not isinstance(ex, Http404) and response is not None:
         response.data = {
             'code': -1,
             'message': 'current rest service error',
