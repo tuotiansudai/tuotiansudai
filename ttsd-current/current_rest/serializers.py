@@ -81,20 +81,13 @@ class DepositSuccessSerializer(serializers.Serializer):
 
 
 class LoanSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
-    serial_number = serializers.IntegerField()
-    agent = serializers.PrimaryKeyRelatedField(queryset=Agent.objects.all())
     amount = serializers.IntegerField(min_value=0, max_value=99999)
-    loan_type = serializers.ChoiceField(choices=constants.LOAN_TYPE_CHOICES)
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
-    debtor_identity_card = serializers.CharField(max_length=18)
     effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     expiration_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
-    status = serializers.ChoiceField(choices=constants.LOAN_STATUS_CHOICES)
     creator = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
     auditor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
 
     class Meta:
         model = models.Loan
-        fields = ('id', 'serial_number', 'agent', 'amount', 'loan_type', 'debtor', 'debtor_identity_card',
-                  'effective_date', 'expiration_date', 'status', 'create_time', 'update_time', 'creator', 'auditor')
+        fields = '__all__'

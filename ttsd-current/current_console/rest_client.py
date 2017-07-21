@@ -38,10 +38,10 @@ class RestClient(object):
             return None
 
     def get(self, params, data):
-        requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
+        return requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
 
     def put(self, params, data):
-        requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
+        return requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
 
     def post(self, params, data):
-        requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
+        return requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)

@@ -24,7 +24,7 @@ class Loan(models.Model):
     loan_type = models.CharField(choices=constants.LOAN_TYPE_CHOICES, null=False, max_length=40)
     agent = models.ForeignKey(Agent, on_delete=models.PROTECT, null=True, related_name='+')
     debtor = models.CharField(null=False, max_length=60, )
-    debtor_identity_card = models.CharField(null=False, max_length=30)
+    debtor_identity_card = models.CharField(null=False, max_length=18)
     effective_date = models.DateTimeField(null=False)
     expiration_date = models.DateTimeField(null=False)
     create_time = models.DateTimeField(auto_now=True, blank=False, null=False)

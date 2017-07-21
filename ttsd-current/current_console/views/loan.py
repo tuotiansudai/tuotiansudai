@@ -25,16 +25,16 @@ def create_loan(request):
         loan_dict['serial_number'] = 1
         loan_dict['status'] = constants.LOAN_STATUS_APPROVING
         loan_dict['creator'] = 'creator'
-        response = RestClient('loan').post(data=loan_dict)
+        response = RestClient('loan').execute('POST', data=loan_dict)
         if response:
-            render(request, 'console/loan/list.html')
+            return render(request, 'console/loan/list.html')
     else:
         return render(request, 'console/loan/loan.html', {'form': form, 'types': constants.LOAN_TYPE_CHOICES})
 
 
 @require_http_methods(["PUT"])
 def audit_loan(request):
-    loan = RestClient('loan/{}'.format(request.GET.get('id'))).get()
+    loan = RestClient('loan/{}'.format(request.GET.get('id'))).execute('GET')
 
     if loan is None:
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -43,7 +43,7 @@ def audit_loan(request):
     loan['update_time'] = datetime.now()
     loan['auditor'] = 'auditor'
 
-    response = RestClient('audit-loan/{}'.format(request.GET.get('id'))).put(data=loan)
+    response = RestClient('audit-loan/{}'.format(request.GET.get('id'))).execute('PUT', data=loan)
 
     if response:
         return Response(status=status.HTTP_200_OK)
