@@ -37,18 +37,17 @@ class LoanViewSet(mixins.RetrieveModelMixin,
         headers = self.get_success_headers(response.data)
         return Response(response.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        audit = kwargs.pop('audit', False)
 
-@transaction.atomic
-def update(self, request, *args, **kwargs):
-    audit = kwargs.pop('audit', False)
+        response = super(LoanViewSet, self).update(request, *args, **kwargs)
 
-    response = super(LoanViewSet, self).update(request, *args, **kwargs)
-
-    if audit:
-        OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
-                                    refer_pk=response.data['id'],
-                                    operator=response.data['auditor'],
-                                    operation_type=constants.OperationType.LOAN_AUDIT,
-                                    content='审核通过债权申请',
-                                    timestamp=datetime.now())
-    return Response(response.data, status=status.HTTP_201_CREATED)
+        if audit:
+            OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
+                                        refer_pk=response.data['id'],
+                                        operator=response.data['auditor'],
+                                        operation_type=constants.OperationType.LOAN_AUDIT,
+                                        content='审核通过债权申请',
+                                        timestamp=datetime.now())
+        return Response(response.data, status=status.HTTP_201_CREATED)
