@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper">
+
+    <resultMap id="activityInvestResultMap" type="com.tuotiansudai.activity.repository.model.ActivityInvestModel">
+        <id column="id" property="id"></id>
+        <result column="invest_id" property="investId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="activity_name" property="activityName"></result>
+        <result column="created_time" property="createdTime"></result>
+
+    </resultMap>
+
+    <resultMap id="activityInvestView" type="com.tuotiansudai.activity.repository.model.ActivityInvestView">
+        <result column="login_name" property="loginName"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
+
+    <insert id="create" parameterType="activityInvestModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`Activity_Invest`
+        (`invest_id`,
+        `login_name`,
+        `user_name`,
+        `mobile`,
+        `invest_amount`,
+        `activity_name`,
+        `created_time`)
+        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{activityName},#{createdTime})
+    </insert>
+
+    <select id="findSumAmountByNameDateAndActivity" parameterType="map" resultMap="activityInvestView">
+        SELECT
+        ai.login_name,
+        SUM(ai.invest_amount) sumAmount,
+        ai.user_name,
+        ai.mobile
+        FROM
+        Activity_Invest ai
+        <where>
+            ai.created_time BETWEEN #{startTime} AND #{endTime}
+            and ai.activity_name=#{activityName}
+        </where>
+        GROUP BY ai.login_name , ai.user_name , ai.mobile
+    </select>
+
+</mapper>
