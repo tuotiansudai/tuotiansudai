@@ -28,8 +28,8 @@ public interface CurrentRestClient {
     BaseDto<PayFormDataDto> deposit(DepositRequestDto requestDto) throws RestException;
 
     @POST
-    @Path("/deposit-with-no-password")
-    BaseDto<PayDataDto> noPasswordInvest(DepositRequestDto requestDto) throws RestException;
+    @Path("/deposit")
+    BaseDto<PayDataDto> noPasswordDeposit(DepositRequestDto requestDto) throws RestException;
 
     @POST
     @Path("/redeem/create")

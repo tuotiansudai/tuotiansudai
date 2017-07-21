@@ -73,7 +73,7 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(CurrentInvestRequestDto investRequestDto, String loginName) {
         try {
             DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName, true);
-            BaseDto<PayDataDto> baseDto = currentRestClient.noPasswordInvest(depositRequestDto);
+            BaseDto<PayDataDto> baseDto = currentRestClient.noPasswordDeposit(depositRequestDto);
 
             if (baseDto.getData().getStatus()) {
                 BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);

@@ -74,7 +74,7 @@ public class CurrentRestClientTest {
         DepositRequestDto requestDto = new DepositRequestDto("loginName", 10000, Source.ANDROID, false);
 
         this.mockServer.enqueue(buildCreatePayDataResponse());
-        BaseDto<PayDataDto> data = currentRestClient.noPasswordInvest(requestDto);
+        BaseDto<PayDataDto> data = currentRestClient.noPasswordDeposit(requestDto);
         assertTrue(data.isSuccess());
         PayDataDto payData = data.getData();
         assertEquals("0000", payData.getCode());

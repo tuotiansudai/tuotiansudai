@@ -71,7 +71,7 @@ public class CurrentDepositController {
 
         try {
             if (accountModel.isNoPasswordInvest()) {
-                BaseDto<PayDataDto> payData = currentRestClient.noPasswordInvest(depositRequestDto);
+                BaseDto<PayDataDto> payData = currentRestClient.noPasswordDeposit(depositRequestDto);
                 if (payData.getData().getStatus()) {
                     return new ModelAndView(MessageFormat.format("redirect:/{0}?order_id={1}",
                             AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD.getWebRetCallbackPath(), payData.getData().getExtraValues().get("order_id")));
