@@ -7,6 +7,14 @@ from django.db import models
 from current_rest import constants
 
 
+class BaseModel(models.Model):
+    created_time = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class Agent(models.Model):
     login_name = models.CharField(null=False, max_length=60, default=None)
     mobile = models.CharField(null=False, max_length=20, default=None)
@@ -18,7 +26,7 @@ class Agent(models.Model):
         db_table = 'agent'
 
 
-class Loan(models.Model):
+class Loan(BaseModel):
     serial_number = models.IntegerField()
     amount = models.FloatField(null=True)
     loan_type = models.CharField(choices=constants.LOAN_TYPE_CHOICES, null=False, max_length=40)
@@ -27,10 +35,8 @@ class Loan(models.Model):
     debtor_identity_card = models.CharField(null=False, max_length=18)
     effective_date = models.DateTimeField(null=False)
     expiration_date = models.DateTimeField(null=False)
-    create_time = models.DateTimeField(auto_now=True, blank=False, null=False)
     creator = models.CharField(max_length=25, null=False)
-    auditor = models.CharField(max_length=25, null=False,blank=False)
-    update_time = models.DateTimeField(auto_now=True)
+    auditor = models.CharField(max_length=25, null=False, blank=False)
     status = models.CharField(choices=constants.LOAN_STATUS_CHOICES, null=False, max_length=20)
 
     class Meta:
@@ -42,7 +48,7 @@ class OperationLog(models.Model):
     refer_pk = models.IntegerField()
     operator = models.CharField(null=False, max_length=50)
     operation_type = models.CharField(choices=constants.OperationType.OPERATION_TYPE_MAP, max_length=100, null=True)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     content = models.TextField()
 
     class Meta:

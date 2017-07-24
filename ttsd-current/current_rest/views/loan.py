@@ -31,11 +31,9 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                     refer_pk=response.data['id'],
                                     operator=response.data['creator'],
                                     operation_type=constants.OperationType.LOAN_ADD,
-                                    content='创建通过债权申请',
-                                    timestamp=datetime.now())
+                                    content='创建通过债权申请')
 
-        headers = self.get_success_headers(response.data)
-        return Response(response.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(response.data, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
@@ -48,6 +46,5 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                         refer_pk=response.data['id'],
                                         operator=response.data['auditor'],
                                         operation_type=constants.OperationType.LOAN_AUDIT,
-                                        content='审核通过债权申请',
-                                        timestamp=datetime.now())
+                                        content='审核通过债权申请')
         return Response(response.data, status=status.HTTP_201_CREATED)
