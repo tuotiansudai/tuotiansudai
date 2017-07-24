@@ -51,3 +51,8 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                         content='审核通过债权申请',
                                         timestamp=datetime.now())
         return Response(response.data, status=status.HTTP_201_CREATED)
+
+
+class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = serializers.LoanSerializer
+    queryset = models.Loan.objects.all()

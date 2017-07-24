@@ -49,3 +49,12 @@ def audit_loan(request):
         return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@require_http_methods(["GET"])
+def loan_list(request):
+    return render(request, 'console/loan/list.html',
+                  {'loans': RestClient('loan-list').execute('GET'),
+                   'statuses': constants.LOAN_STATUS_CHOICES,
+                   'types': constants.LOAN_TYPE_CHOICES,
+                   })

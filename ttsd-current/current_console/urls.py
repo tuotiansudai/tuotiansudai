@@ -22,5 +22,6 @@ urlpatterns = [
     url('^index$', home.index, name='index'),
     url('^show-loan$', loan.show_loan, name='show_loan'),
     url('^create-loan$', loan.create_loan, name='create_loan'),
-    url('^audit-loan$', loan.audit_loan, name='audit_loan')
+    url('^audit-loan$', loan.audit_loan, name='audit_loan'),
+    url('^loan-list$', loan.loan_list, name='loan_list')
 ]

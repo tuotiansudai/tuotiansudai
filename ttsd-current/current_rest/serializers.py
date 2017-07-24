@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+import json
 import logging
 import re
 from datetime import datetime, timedelta
 
 from django.db.models import Sum
+from django.utils import six
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
@@ -80,14 +82,25 @@ class DepositSuccessSerializer(serializers.Serializer):
         fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
 
 
+class AgentSerializer(serializers.ModelSerializer):
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+
+    class Meta:
+        model = Agent
+        fields = '__all__'
+
+
 class LoanSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField(min_value=0, max_value=99999)
+    agent = AgentSerializer()
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
     effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     expiration_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     creator = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
     auditor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
 
     class Meta:
-        model = models.Loan
+        model = Loan
         fields = '__all__'

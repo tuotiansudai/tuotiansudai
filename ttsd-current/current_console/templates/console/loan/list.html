@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-i am list
-</body>
-</html>
+{% extends "console/tpl/_layout.tpl" %}
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>资产编号</th>
+            <th>添加时间</th>
+            <th>资产类型</th>
+            <th>代理人</th>
+            <th>资产价值(万元)</th>
+            <th>计息周期</th>
+            <th>借款人</th>
+            <th>借款人身份证号</th>
+            <th>当前状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for loan in loans.results %}
+            <tr>
+                <td style="vertical-align:middle">{{ loan.serial_number }}</td>
+                <td style="vertical-align: middle">{{ loan.create_time }}</td>
+                <td style="vertical-align: middle">{{ types|get_item:loan.loan_type }}</td>
+                <td style="vertical-align: middle">{{ loan.agent.login_name }}</td>
+                <td style="vertical-align: middle">{{ loan.amount }}</td>
+                <td style="vertical-align: middle">{{ loan.effective_date }}-{{ loan.expiration_date }}</td>
+                <td style="vertical-align: middle">{{ loan.debtor }}</td>
+                <td style="vertical-align: middle">{{ loan.debtor_identity_card }}</td>
+                <td style="vertical-align: middle">
+                    {{ statuses|get_item:loan.status }}
+                </td>
+                {% if  loan.status == 'REJECT' %}
+                    <td style="vertical-align: middle">
+                        <a href="#">编辑</a>
+                    </td>
+                {% elif loan.status == 'APPROVING' %}
+                    <td style="vertical-align: middle">
+                        <a href="#">审核</a>
+                    </td>
+
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
