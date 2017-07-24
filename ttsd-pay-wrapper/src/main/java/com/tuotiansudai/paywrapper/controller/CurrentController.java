@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.tuotiansudai.current.dto.DepositRequestDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.current.CurrentDepositService;
 import org.apache.log4j.Logger;
@@ -27,14 +28,14 @@ public class CurrentController {
 
     @RequestMapping(path = "/deposit-with-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> deposit(@Valid @RequestBody CurrentDepositDto currentDepositDto) {
-        return currentDepositService.deposit(currentDepositDto);
+    public BaseDto<PayFormDataDto> deposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
+        return currentDepositService.deposit(depositRequestDto);
     }
 
     @RequestMapping(value = "/deposit-with-no-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody CurrentDepositDto currentDepositDto) {
-        return currentDepositService.noPasswordDeposit(currentDepositDto);
+    public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
+        return currentDepositService.noPasswordDeposit(depositRequestDto);
     }
 
 }

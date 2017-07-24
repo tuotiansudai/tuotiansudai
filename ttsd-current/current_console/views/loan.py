@@ -12,21 +12,24 @@ from current_console.views.home import handler404
 from current_rest import constants
 
 
-@require_http_methods(["POST", "GET"])
-def create_loan(request):
-    if request.method == 'POST':
-        form = LoanForm(request.POST)
-        if form.is_valid():
-            loan_dict = form.data.dict()
-            loan_dict['serial_number'] = 1
-            loan_dict['status'] = constants.LOAN_STATUS_APPROVING
-            loan_dict['creator'] = 'creator'
-            response = RestClient('loan').post(data=loan_dict)
-            if response:
-                render(request, 'console/loan/list.html')
-        else:
-            return render(request, 'console/loan/loan.html', {'form': form, 'types': constants.LOAN_TYPE_CHOICES})
+@require_http_methods(["GET"])
+def show_loan(request):
     return render(request, 'console/loan/loan.html', {'types': constants.LOAN_TYPE_CHOICES})
+
+
+@require_http_methods(["POST"])
+def create_loan(request):
+    form = LoanForm(request.POST)
+    if form.is_valid():
+        loan_dict = form.data.dict()
+        loan_dict['serial_number'] = 1
+        loan_dict['status'] = constants.LOAN_STATUS_APPROVING
+        loan_dict['creator'] = 'creator'
+        response = RestClient('loan').post(data=loan_dict)
+        if response:
+            return render(request, 'console/loan/list.html')
+    else:
+        return render(request, 'console/loan/loan.html', {'form': form, 'types': constants.LOAN_TYPE_CHOICES})
 
 
 @require_http_methods(["PUT"])

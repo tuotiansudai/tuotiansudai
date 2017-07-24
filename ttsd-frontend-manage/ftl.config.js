@@ -15,7 +15,7 @@ module.exports = {
     hot: true,
     //配置freemarker的解析
     ftl: {
-        base: activityTemplatePath,
+        base: webTemplatePath,
         // dataFiles: ['testdata.ftl'],
         global: { }
 

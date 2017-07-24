@@ -46,7 +46,7 @@ DB_MYSQL_PASSWORD = 'root'
 # rest service url
 REST_SERVICE_HOST = '127.0.0.1'
 REST_SERVICE_PORT = '8000'
-REST_TIME_OUT = 500
+REST_TIME_OUT = 300
 
 # ===signIn module start===
 SIGN_IN_HOST = 'http://127.0.0.1'
@@ -56,7 +56,9 @@ REDIRECT_URL = 'http://localhost:8083/login'
 
 LOGGING_DIR = '/var/log/current_rest'
 
-PAY_WRAPPER_HOST = 'http://localhost:8080/current'
+PAY_WRAPPER_HOST = 'http://localhost:9080/current'
+
+REDIS_URL = 'redis://192.168.33.10/2'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/settings_local.py'
@@ -67,13 +69,7 @@ if os.path.isfile(setting_local_file):
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
+INSTALLED_APPS = []
 
 if not PRODUCT:
     INSTALLED_APPS += ['django_extensions']
@@ -83,6 +79,11 @@ if REST_ENABLED:
 
 if CONSOLE_ENABLED:
     INSTALLED_APPS += [
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
         'current_console']
 
 MIDDLEWARE = [
@@ -173,7 +174,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -188,7 +189,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
     'EXCEPTION_HANDLER': 'current_rest.exceptions.api_exception_handler',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
 }
 
 LOGGING = {
