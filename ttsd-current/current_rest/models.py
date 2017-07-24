@@ -15,12 +15,10 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Agent(models.Model):
+class Agent(BaseModel):
     login_name = models.CharField(null=False, max_length=60, default=None)
     mobile = models.CharField(null=False, max_length=20, default=None)
     active = models.BooleanField(default=False, null=False)
-    create_time = models.DateTimeField()
-    update_time = models.DateTimeField()
 
     class Meta:
         db_table = 'agent'

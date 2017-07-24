@@ -20,14 +20,14 @@ class RestClient(object):
                                                  uri=uri)
 
     def get(self, params=None):
-        return self._execute(requests.get, params)
+        return self._execute(requests.get, data=None, params=params)
 
     def post(self, data=None):
-        return self._execute(requests.post, data)
+        return self._execute(requests.post, data=data, params=None)
 
     def put(self, data=None):
 
-        return self._execute(requests.put, data)
+        return self._execute(requests.put, data=data, params=None)
 
     def _execute(self, method, data=None, params=None):
         try:
