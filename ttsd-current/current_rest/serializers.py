@@ -7,6 +7,9 @@ from django.db.models import Sum
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
+from current_rest import constants
+from current_rest import models
+from current_rest.models import Loan, Agent
 from current_rest import constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
@@ -67,6 +70,15 @@ class DepositSerializer(serializers.ModelSerializer):
         validated_data['current_account'] = current_account
         return super(DepositSerializer, self).create(validated_data=validated_data)
 
+
+class LoanSerializer(serializers.ModelSerializer):
+    amount = serializers.IntegerField(min_value=0, max_value=99999)
+    debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
+    effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    expiration_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    creator = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
+    auditor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
+
     class Meta:
-        model = models.CurrentDeposit
-        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
+        model = models.Loan
+        fields = '__all__'

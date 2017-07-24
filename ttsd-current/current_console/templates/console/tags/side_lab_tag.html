@@ -1,0 +1,13 @@
+<div class="col-md-2">
+    <ul class="nav sidenav">
+        {% for menu in side_lab_menus %}
+            <li class="{{ menu.class }}">
+                {% if menu.link != '' %}
+                    <a href="{{ menu.link }}">{{ menu.text }}</a>
+                {% else %}
+                    {{ menu.text }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -43,10 +43,15 @@ DB_MYSQL_PORT = '3306'
 DB_MYSQL_USER = 'root'
 DB_MYSQL_PASSWORD = 'root'
 
+# rest service url
+REST_SERVICE_HOST = '127.0.0.1'
+REST_SERVICE_PORT = '8000'
+REST_TIME_OUT = 300
+
 # ===signIn module start===
 SIGN_IN_HOST = 'http://127.0.0.1'
 SIGN_IN_PORT = '5000'
-REDIRECT_URL = 'http://localhost:9080/login'
+REDIRECT_URL = 'http://localhost:8083/login'
 # ===signIn module end===
 
 LOGGING_DIR = '/var/log/current_rest'
@@ -66,6 +71,9 @@ if os.path.isfile(setting_local_file):
 
 INSTALLED_APPS = []
 
+if not PRODUCT:
+    INSTALLED_APPS += ['django_extensions']
+
 if REST_ENABLED:
     INSTALLED_APPS += ['rest_framework', 'current_rest']
 
@@ -74,29 +82,42 @@ if CONSOLE_ENABLED:
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
+        'django.contrib.messages',
         'django.contrib.staticfiles',
         'current_console']
 
-
 MIDDLEWARE = [
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'current_console.middleware.TTSDSessionManager',
+    # 'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'current_console.middleware.TTSDSessionManager',
 ]
 
 ROOT_URLCONF = 'urls'
 
+TEMPLATES_CONTEXT_PROCESSORS_EXT = []
+
+if CONSOLE_ENABLED:
+    TEMPLATES_CONTEXT_PROCESSORS_EXT += [
+        'current_console.context_processors.login_user_name',
+    ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':  [],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
+                                      'django.template.context_processors.debug',
+                                      'django.template.context_processors.request',
+                                      'django.contrib.auth.context_processors.auth',
+                                      'django.contrib.messages.context_processors.messages',
+                                  ] + TEMPLATES_CONTEXT_PROCESSORS_EXT
         },
     },
 ]
@@ -159,6 +180,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GOOGLE_ANALYTICS = "test1"
+GOOGLE_API_KEY = "test2"
 
 REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],

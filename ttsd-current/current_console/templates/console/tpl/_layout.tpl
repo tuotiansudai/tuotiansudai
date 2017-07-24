@@ -25,24 +25,40 @@
     {% endblock %}
 </head>
 <body>
-
-<div class="container-fluid">
-    <div class="row">
-        <!-- menu sidebar -->
-        <div class="col-md-2">
-
-
+{% load head_lab_tags %}
+{% load side_lab_tags %}
+<header class="navbar" id="top" role="banner">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="" class="navbar-brand">
+                <img src="/static/images/logo.png" alt="" />
+            </a>
         </div>
-        <!-- menu sidebar end -->
-        <div class="col-md-10">
+        <div class="collapse navbar-collapse">
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【{{login_name}}】</p>
+            <form id="logout-form" action="/logout" method="post">
+            </form>
+        </div>
+    </div>
+     {% head_lab request %}
+</header>
+<!-- main begin -->
+<div class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- menu sidebar -->
+            {% side_lab request %}
+            <!-- menu sidebar end -->
+
             <!-- content area begin -->
-            <div id="app">
-                {% block content %}{% endblock %}
-            </div>
+            {% block content %}{% endblock %}
+            <!-- content area end -->
         </div>
-        <!-- content area end -->
     </div>
 </div>
+<!-- main end -->
+
+
 
 {% block script_content %}
 {% endblock %}
