@@ -13,7 +13,7 @@ get_account = AccountViewSet.as_view({'get': 'retrieve'})
 post_loan = LoanViewSet.as_view({'post': 'create'})
 get_loan = LoanViewSet.as_view({'get': 'retrieve'})
 audit_loan = LoanViewSet.as_view({'put': 'update'})
-get_default_investable_amount = LoanViewSet.as_view({'get': 'get_default_investable_amount'})
+get_limits_today = LoanViewSet.as_view({'get': 'get_limits_today'})
 
 urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^loan/(?P<pk>[0-9]+)$', get_loan, name="get_loan"),
     url(r'^deposit$', post_deposit, name='post_deposit'),
     url(r'^deposit/(?P<pk>[0-9]+)$', get_put_deposit, name="get_put_deposit", kwargs={'partial': True}),
-    url(r'^account/investable-amount$', get_default_investable_amount, name="get_default_investable_amount"),
+    url(r'^loan/investable-amount$', get_limits_today, name="get_limits_today"),
 ]

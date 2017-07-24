@@ -50,11 +50,13 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                         content='审核通过债权申请')
         return Response(response.data, status=status.HTTP_201_CREATED)
 
-    def get_default_available_invest_amount_today(self, request):
+    @staticmethod
+    def get_limits_today(self, request, *args, **kwargs):
         yesterday = datetime.now().date() + datetime.timedelta(-1) + datetime.timedelta(hours=23) + datetime.timedelta(
             minutes=59) + timedelta(seconds=59)
 
-        loan_amount_sum = models.Loan.objects.filter(status='', effective_date__gte=datetime.datetime.now(),
+        loan_amount_sum = models.Loan.objects.filter(status=constants.LOAN_STATUS_APPROVED,
+                                                     effective_date__gte=datetime.datetime.now(),
                                                      expiration_date__lte=datetime.datetime.now()).aggregate(
             Sum('amount')).get('amount__sum', 0)
 
