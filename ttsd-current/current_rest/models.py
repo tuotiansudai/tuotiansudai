@@ -102,3 +102,16 @@ class CurrentBill(models.Model):
 
     class Meta:
         db_table = 'current_bill'
+
+
+class CurrentDailyFundInfo(BaseModel):
+    date = models.DateField(null=False, blank=False)
+    loan_remain_amount = models.PositiveIntegerField(default=0, null=False, blank=False)
+    quota_amount = models.PositiveIntegerField(default=0, null=False, blank=False)
+    config_quota_amount = models.PositiveIntegerField(null=True)
+    config_quota_status = models.CharField(choices=constants.DAILY_QUOTA_STATUS_CHOICES, max_length=20,
+                                           default=constants.DAILY_QUOTA_STATUS_UNSET, null=False, blank=False)
+    invest_amount = models.PositiveIntegerField(null=True)
+
+    class Meta:
+        db_table = 'current_daily_fund_info'

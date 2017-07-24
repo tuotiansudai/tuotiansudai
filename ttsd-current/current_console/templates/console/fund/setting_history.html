@@ -1,0 +1,120 @@
+{% extends "console/tpl/_layout.tpl" %}
+{% block script_content %}
+    <script src="/static/libs/highcharts/5.0.12/highcharts.js"></script>
+    <script>
+        (function ($) {
+            $(function () {
+                $('.datetimepicker').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                });
+                $('#weekly').click(resetWeekly);
+                $('#monthly').click(resetMonthly);
+                $('#searchBtn').click(loadFundHistory);
+            });
+
+            var resetDateRange = function (beginDate, endDate) {
+                endDate = endDate || new Date();
+                $('#begin_date').val(formatDate(beginDate));
+                $('#end_date').val(formatDate(endDate));
+            };
+
+            var formatDate = function (date) {
+                var month = date.getMonth() + 1;
+                var monthPrefix = month > 9 ? '' : '0';
+                return date.getFullYear() + '-' + monthPrefix + month + '-' + date.getDate();
+            };
+
+            var resetWeekly = function () {
+                resetDateRange(new Date(new Date() - 7 * 24 * 60 * 60 * 1000));
+            };
+
+            var resetMonthly = function () {
+                resetDateRange(new Date(new Date() - 30 * 24 * 60 * 60 * 1000));
+            };
+
+            var loadFundHistory = function () {
+                var url = '{% url 'fund_setting_history_query' %}';
+                var begin_date = $('#begin_date').val();
+                var end_date = $('#end_date').val();
+                $.get(url, {'begin_date': begin_date, 'end_date': end_date}, function (data, textStatus, jqXHR) {
+                    showFundHistoryChart(data);
+                }, 'json');
+            };
+
+            var showFundHistoryChart = function (histories_data) {
+                var charts_categories = histories_data.dates;
+                var charts_series = [
+                    {
+                        name: '配置额度',
+                        color: '#5e9cd3',
+                        data: histories_data.quota_amount_list
+                    },
+                    {
+                        name: '认购额度',
+                        color: '#eb7d3c',
+                        data: histories_data.invest_amount_list
+                    }];
+                showChart(charts_categories, charts_series);
+            };
+
+            var showChart = function (charts_categories, charts_series) {
+                Highcharts.chart('fund_history_container', {
+                    credits: {text: ''},
+                    title: {
+                        text: '历史资产额度配置'
+                    },
+                    xAxis: {
+                        categories: charts_categories,
+                        tickmarkPlacement: 'on',
+                        title: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: '万元'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        split: true,
+                        valueSuffix: ' 万元'
+                    },
+                    series: charts_series
+                });
+            };
+        })(jQuery);
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="begin_date">日期</label>
+                    <input id="begin_date" name="begin_date" type="text" class="datetimepicker"
+                           value="{{ begin_date |date:'Y-m-d' }}"/>
+                    ~ <input id="end_date" name="end_date" type="text" class="datetimepicker"
+                             value="{{ end_date |date:'Y-m-d' }}"/>
+                    <button id="weekly" type="button" class="btn btn-default">最近一周</button>
+                    <button id="monthly" type="button" class="btn btn-default">最近一个月</button>
+                    <button id="searchBtn" type="button" class="btn btn-primary">查询</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">历史资产额度配置</h3>
+        </div>
+        <div class="panel-body">
+            <div id="fund_history_container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        </div>
+    </div>
+{% endblock %}
