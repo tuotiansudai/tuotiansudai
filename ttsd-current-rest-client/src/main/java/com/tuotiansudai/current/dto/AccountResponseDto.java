@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class AccountResponseDto {
 
-    private long id;
+    private Long id;
 
     @JsonProperty(value = "login_name")
     private String loginName;
@@ -25,7 +25,7 @@ public class AccountResponseDto {
     @JsonProperty(value = "personal_max_deposit")
     private long personalMaxDeposit;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
