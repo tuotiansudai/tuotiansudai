@@ -1,10 +1,9 @@
 # coding=utf-8
-import ast
 
 import logging
-import requests
 
-import settings
+import requests
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +15,7 @@ class RestClient(object):
         self.retries = 3
         self.url = self.REST_URL_TEMPLATE.format(host=settings.REST_SERVICE_HOST,
                                                  port=settings.REST_SERVICE_PORT,
-                                                 applicationContext=settings.REST_PATH,
+                                                 applicationContext=settings.CONSOLE_PATH,
                                                  uri=uri)
 
     def get(self, params=None):
