@@ -42,4 +42,3 @@ class RestClient(object):
                 return self._execute(method, data=data, params=params)
         except requests.RequestException as re:
             logger.error('内部服务器错误,原因:{}'.format(re.message))
-            return None
