@@ -13,7 +13,7 @@ public interface ActivityInvestMapper {
 
     void create(ActivityInvestModel activityInvestModel);
 
-    List<ActivityInvestView> findSumAmountByNameDateAndActivity(@Param(value = "activityName") String activityName,
+    List<ActivityInvestView> sumAmountByNameDateAndActivity(@Param(value = "activityName") String activityName,
                                                                 @Param(value = "startTime") Date startTime,
                                                                 @Param(value = "endTime") Date endTime);
 }

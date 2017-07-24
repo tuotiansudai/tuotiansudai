@@ -40,11 +40,11 @@ public class HouseDecorateExperienceScheduler {
         Date grantExperienceStartTime = DateTime.parse(startTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).plusDays(1).toDate();
         Date grantExperienceEndTime = DateTime.parse(endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).plusDays(1).toDate();
         if(grantDate.compareTo(grantExperienceStartTime)== -1 || grantDate.compareTo(grantExperienceEndTime) == 1){
-            logger.info(String.format("[FamilyFinanceExperienceScheduler %s] activity grand experience is over", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
+            logger.info(String.format("[HouseDecorateExperienceScheduler %s] activity grand experience is over", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
             return;
         }
 
-        logger.info(String.format("[FamilyFinanceExperienceScheduler %s] start...", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
+        logger.info(String.format("[HouseDecorateExperienceScheduler %s] start...", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
         List<ExperienceAssigningMessage> experienceAssigningMessages = houseDecorateService.yesterdayObtainExperience();
         if(experienceAssigningMessages.size()==0){
             return;
@@ -53,18 +53,18 @@ public class HouseDecorateExperienceScheduler {
             grandExperience(experienceAssigningMessage,grantDate);
         }
 
-        logger.info(String.format("[FamilyFinanceExperienceScheduler %s] end...", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
+        logger.info(String.format("[HouseDecorateExperienceScheduler %s] end...", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
     }
 
 
     public void grandExperience(ExperienceAssigningMessage experienceAssigningMessage,Date grantDate){
-        logger.info(String.format("[FamilyFinanceExperienceScheduler %s] grant %s experience  begin ...",
+        logger.info(String.format("[HouseDecorateExperienceScheduler %s] grant %s experience  begin ...",
                 DateFormatUtils.format(grantDate, "yyyy-MM-dd"),
                 experienceAssigningMessage.getLoginName()));
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,experienceAssigningMessage);
 
-        logger.info(String.format("[FamilyFinanceExperienceScheduler %s] grant %s experience  success ...",
+        logger.info(String.format("[HouseDecorateExperienceScheduler %s] grant %s experience  success ...",
                 DateFormatUtils.format(grantDate, "yyyy-MM-dd"),
                 experienceAssigningMessage.getLoginName()));
     }

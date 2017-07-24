@@ -35,7 +35,7 @@
         VALUES(#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{activityName},#{createdTime})
     </insert>
 
-    <select id="findSumAmountByNameDateAndActivity" parameterType="map" resultMap="activityInvestView">
+    <select id="sumAmountByNameDateAndActivity" parameterType="map" resultMap="activityInvestView">
         SELECT
         ai.login_name,
         SUM(ai.invest_amount) sumAmount,

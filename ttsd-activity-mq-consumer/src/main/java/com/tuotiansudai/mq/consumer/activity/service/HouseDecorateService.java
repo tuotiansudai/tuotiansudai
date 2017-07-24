@@ -42,7 +42,7 @@ public class HouseDecorateService {
         if(new Date().before(grantExperienceStartTime) || new Date().after(grantExperienceEndTime)){
             return null;
         }
-        List<ActivityInvestView> list=activityInvestMapper.findSumAmountByNameDateAndActivity(ActivityCategory.HOUSE_DECORATE_ACTIVITY.name(), DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate(), DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
+        List<ActivityInvestView> list=activityInvestMapper.sumAmountByNameDateAndActivity(ActivityCategory.HOUSE_DECORATE_ACTIVITY.name(), DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate(), DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
         return experienceReward(list);
     }
 

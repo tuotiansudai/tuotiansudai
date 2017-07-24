@@ -118,7 +118,8 @@
                     {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"mothersDay","text":"母亲节活动","link":"/activity-console/activity-manage/mothers-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"dragonBoat","text":"端午节活动","link":"/activity-console/activity-manage/dragon-boat","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"exerciseVSWork","text":"运动达人VS职场骄子","link":"/activity-console/activity-manage/exercise-work-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"exerciseVSWork","text":"运动达人VS职场骄子","link":"/activity-console/activity-manage/exercise-work-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"houseDecorate","text":"家装节活动 ","link":"/activity-console/activity-manage/house-decorate-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
             ]
         },
         {
