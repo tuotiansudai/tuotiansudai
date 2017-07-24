@@ -46,7 +46,7 @@ DB_MYSQL_PASSWORD = 'root'
 # rest service url
 REST_SERVICE_HOST = '127.0.0.1'
 REST_SERVICE_PORT = '8000'
-REST_TIME_OUT = 500
+REST_TIME_OUT = 300
 
 # ===signIn module start===
 SIGN_IN_HOST = 'http://127.0.0.1'
