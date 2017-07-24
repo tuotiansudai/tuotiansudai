@@ -14,20 +14,9 @@ from current_rest import serializers
 from current_rest.biz.current_account_manager import CurrentAccountManager
 
 
-class RedeemViewSet(mixins.RetrieveModelMixin,
-                    mixins.CreateModelMixin,
-                    mixins.UpdateModelMixin,
+class RedeemViewSet(mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = serializers.CurrentWithdrawSerializer
-    queryset = models.CurrentWithdraw.objects.all()
 
-    def __init__(self):
-        super(RedeemViewSet, self).__init__()
-        self.current_account_manager = CurrentAccountManager()
-
-    @transaction.atomic
-    def create(self, request, *args, **kwargs):
-        response = super(RedeemViewSet, self).create(request, *args, **kwargs)
-        return Response(response.data, status=status.HTTP_201_CREATED)
 
 

@@ -17,13 +17,13 @@ class RedeemTestCase(APITestCase):
         url = reverse('post_redeem')
         data = {'login_name': self.login_name,
                 'amount': 1000,
-                'source': constants.SOURCE_IOS,
-                'status': constants.STATUS_WAITING}
+                'source': constants.SOURCE_IOS}
 
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(CurrentWithdraw.objects.count(), 1)
         self.assertEqual(CurrentWithdraw.objects.get().amount, 1000)
+        self.assertEqual(CurrentWithdraw.objects.get().status, constants.STATUS_WAITING)
 
     def test_get_limits_when_current_balance_is_enough(self):
         CurrentAccount.objects.create(login_name=self.login_name, balance=10000000)
@@ -32,14 +32,12 @@ class RedeemTestCase(APITestCase):
         url = reverse('post_redeem')
         data1 = {'login_name': self.login_name,
                  'amount': 100000,
-                 'source': constants.SOURCE_IOS,
-                 'status': constants.STATUS_WAITING}
+                 'source': constants.SOURCE_IOS}
         self.client.post(url, data1, format='json')
 
         data2 = {'login_name': self.login_name,
                  'amount': 200000,
-                 'source': constants.SOURCE_IOS,
-                 'status': constants.STATUS_WAITING}
+                 'source': constants.SOURCE_IOS}
         self.client.post(url, data2, format='json')
 
         response = self.client.get('/rest/account/{}'.format(self.login_name))
@@ -54,14 +52,12 @@ class RedeemTestCase(APITestCase):
         url = reverse('post_redeem')
         data1 = {'login_name': self.login_name,
                  'amount': 100000,
-                 'source': constants.SOURCE_IOS,
-                 'status': constants.STATUS_WAITING}
+                 'source': constants.SOURCE_IOS}
         self.client.post(url, data1, format='json')
 
         data2 = {'login_name': self.login_name,
                  'amount': 200000,
-                 'source': constants.SOURCE_IOS,
-                 'status': constants.STATUS_WAITING}
+                 'source': constants.SOURCE_IOS}
         self.client.post(url, data2, format='json')
 
         response = self.client.get('/rest/account/{}'.format(self.login_name))

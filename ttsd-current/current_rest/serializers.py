@@ -101,5 +101,5 @@ class CurrentWithdrawSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentWithdraw
-        fields = ('id', 'login_name', 'amount', 'source', 'status', 'created_time')
-        read_only_fields = ('login_name', 'amount', 'source', 'status', 'created_time', 'approve_time', 'approver')
+        fields = ('id', 'login_name', 'amount', 'source')
+        read_only_fields = ('created_time', 'approve_time', 'status')
