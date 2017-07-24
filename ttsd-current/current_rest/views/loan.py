@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db import transaction
+from django.db.models import Sum
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
@@ -48,3 +49,17 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                         operation_type=constants.OperationType.LOAN_AUDIT,
                                         content='审核通过债权申请')
         return Response(response.data, status=status.HTTP_201_CREATED)
+
+    def get_default_available_invest_amount_today(self, request):
+        yesterday = datetime.now().date() + datetime.timedelta(-1) + datetime.timedelta(hours=23) + datetime.timedelta(
+            minutes=59) + timedelta(seconds=59)
+
+        loan_amount_sum = models.Loan.objects.filter(status='', effective_date__gte=datetime.datetime.now(),
+                                                     expiration_date__lte=datetime.datetime.now()).aggregate(
+            Sum('amount')).get('amount__sum', 0)
+
+        account_balance_sum = models.CurrentAccount.objects.filter(updated_time__lte=yesterday).aggregate(
+            Sum('balance')) \
+            .get('balance__sum', 0)
+
+        return loan_amount_sum - account_balance_sum if loan_amount_sum - account_balance_sum >= 0 else 0
