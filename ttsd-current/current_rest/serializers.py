@@ -73,15 +73,6 @@ class DepositSerializer(serializers.ModelSerializer):
         return super(DepositSerializer, self).create(validated_data=validated_data)
 
 
-class DepositSuccessSerializer(serializers.Serializer):
-    order_id = serializers.IntegerField(min_value=0, required=True)
-    success = serializers.BooleanField(required=True)
-
-    class Meta:
-        model = models.CurrentDeposit
-        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
-
-
 class AgentSerializer(serializers.ModelSerializer):
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)

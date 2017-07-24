@@ -57,5 +57,5 @@ class DepositViewSet(mixins.RetrieveModelMixin,
                 return response.json()
             logger.error('response code {} is not ok, request data is {}'.format(response.status_code, data))
             raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')
-        except Exception:
-            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')
+        except Exception, e:
+            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information, {}'.format(e))
