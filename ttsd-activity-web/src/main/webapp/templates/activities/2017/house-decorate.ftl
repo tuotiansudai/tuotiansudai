@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="content-item even clearfix">
-        <div class="wp">
+        <div class="wp clearfix">
             <div class="free-money-item">
                 <h3></h3>
                 <div class="info-item">
@@ -28,10 +28,10 @@
                 </div>
                 <div class="list-item">
                     <div class="loan-number">
-                        今日累计投资额:<@global.isAnonymous><strong>登录后查看</strong></@global.isAnonymous>
+                        今日累计投资额:<@global.isAnonymous><strong class="to-login">登录后查看</strong></@global.isAnonymous>
                                      <@global.isNotAnonymous><strong><#if toDayAmount??>${toDayAmount}</#if></strong></@global.isNotAnonymous>
                     </div>
-                    <table class="table">
+                    <table class="table media-pc">
                         <thead>
                             <tr>
                                 <th>用户当日累计投资额（元）</th>
@@ -51,6 +51,32 @@
                             </tr>
                         </tbody>
                     </table>
+                    <table class="table media-phone">
+                        <thead>
+                            <tr>
+                                <th>用户当日累计投资额（元）</th>
+                                <th>体验金奖励</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1万≤当日累计投资额＜10万</td>
+                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                            </tr>
+                            <tr>
+                                <td>1万≤当日累计投资额＜10万</td>
+                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                            </tr>
+                            <tr>
+                                <td>1万≤当日累计投资额＜10万</td>
+                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                            </tr>
+                            <tr>
+                                <td>1万≤当日累计投资额＜10万</td>
+                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div class="tip-item">
                         例如，拓小天在8月18日当天累计投资30万元，则拓小天获得的体验金奖励为：300000*1.8=540000元
                     </div>
@@ -59,12 +85,12 @@
         </div>
     </div>
     <div class="content-item">
-        <div class="wp">
+        <div class="wp clearfix">
             <div class="gift-list-item">
                 <h3></h3>
                 <div class="info-text">活动结束后，计算用户活动期间累计投资额，可领取相应的居家实物奖励，实物奖不可累计获得。</div>
                 <dl class="gift-list">
-                    <dt>活动期间总累计投资额:<@global.isAnonymous><strong>登录后查看</strong></@global.isAnonymous>
+                    <dt>活动期间总累计投资额:<@global.isAnonymous><strong class="to-login">登录后查看</strong></@global.isAnonymous>
                                           <@global.isNotAnonymous><strong><#if amount??>${amount}</#if></strong></@global.isNotAnonymous></dt>
                     <dd class="row-item">
                         <p class="img-item gift-one"></p>
@@ -119,7 +145,32 @@
         </div>
     </div>
     <#include "../../module/login-tip.ftl" />
-    
+    <div class="lottery-tip" id="lotteryTip">
+        <div class="lottery-content">
+            <p class="info-text">恭喜您获得了</p>
+            <p class="gift-name">{{prizeValue}}</p>
+            <!-- <p class="tip-text">没有抽奖机会,明日再来！</p>
+            <p class="tip-text">不在活动时间范围内</p> -->
+        </div>
+        <div class="lottery-link">
+            <a href="javascript:void(0)" class="close-tip">知道了</a>
+        </div>
+    </div>
+    <script type="text/html" id="lotteryTipTpl">
+        <div class="lottery-content">
+        {{if returnCode==0}}
+            <p class="info-text">恭喜您获得了</p>
+            <p class="gift-name">{{prizeValue}}</p>
+        {{else if returnCode==1}}
+            <p class="tip-text">没有抽奖机会,明日再来！</p>
+        {{else if returnCode==3}}
+            <p class="no-chance">不在活动时间范围内</p>
+        {{/if}}
+        </div>
+        <div class="lottery-link">
+            <a href="javascript:void(0)" class="close-tip">知道了</a>
+        </div>
+    </script>
 </div>
 
 </@global.main>
