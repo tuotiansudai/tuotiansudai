@@ -348,12 +348,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_30,Lists.newArrayList(448L))
                 .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_5,Lists.newArrayList(449L))
                 .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_8,Lists.newArrayList(450L))
-                .put(LotteryPrize.FAMILY_FINANCE_ACTIVITY_ENVELOP_5,Lists.newArrayList(451L))
-                .put(LotteryPrize.FAMILY_FINANCE_ACTIVITY_ENVELOP_8,Lists.newArrayList(452L))
-                .put(LotteryPrize.FAMILY_FINANCE_ACTIVITY_ENVELOP_10,Lists.newArrayList(453L))
-                .put(LotteryPrize.FAMILY_FINANCE_ACTIVITY_ENVELOP_15,Lists.newArrayList(454L))
-                .put(LotteryPrize.FAMILY_FINANCE_ACTIVITY_COUPON_5,Lists.newArrayList(455L))
-                .put(LotteryPrize.FAMILY_FINANCE_ACTIVITY_COUPON_8,Lists.newArrayList(456L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_5,Lists.newArrayList(451L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_8,Lists.newArrayList(452L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_10,Lists.newArrayList(453L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_15,Lists.newArrayList(454L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_5,Lists.newArrayList(455L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_8,Lists.newArrayList(456L))
                 .build()).get(lotteryPrize);
     }
 
