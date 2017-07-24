@@ -50,7 +50,7 @@ USE_TZ = False
 
 REST_ENABLED = os.environ.get('REST_ENABLED', False)
 
-CONSOLE_ENABLED = os.environ.get('CONSOLE_ENABLED', False)
+CONSOLE_ENABLED = os.environ.get('CONSOLE_ENABLED', True)
 
 # reload setting for local
 if REST_ENABLED:

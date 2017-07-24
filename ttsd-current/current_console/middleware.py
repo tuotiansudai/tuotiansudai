@@ -22,7 +22,7 @@ class TTSDSessionManager(MiddlewareMixin):
 
         result = self.authenticate(token)
 
-        if result is None or result.get('result', False):
+        if result is None or not result.get('result', False):
             return HttpResponseRedirect(settings.LOGIN_URL)
 
         request.session['token'] = result['token']
