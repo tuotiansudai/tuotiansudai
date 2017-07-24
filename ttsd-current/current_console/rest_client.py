@@ -19,29 +19,30 @@ class RestClient(object):
                                                  applicationContext=settings.REST_PATH,
                                                  uri=uri)
 
-    def execute(self, method='GET', data=None, params=None):
-        response_action = {
-            "GET": self.get,
-            "POST": self.post,
-            "PUT": self.put,
-        }
+    def get(self, params=None):
+        return self._execute('GET', params)
+
+    def post(self, data=None):
+        return self._execute('POST', data)
+
+    def put(self, data=None):
+
+        return self._execute('PUT', data)
+
+    def _execute(self, method, data=None, params=None):
         try:
-            response = response_action[method](params, data)
+            if str(method).upper() == 'POST':
+                response = requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
+            elif str(method).upper() == 'PUT':
+                response = requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
+            else:
+                response = requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
             response.raise_for_status()
             return response.json()
-        except requests.Timeout as to:
+        except requests.Timeout:
             logger.error('url:{} timeout retries:{}'.format(self.url, self.retries))
             if self.retries + 1 <= 3:
-                return self.get(params)
+                return self._execute(data=data, params=params)
         except requests.RequestException as re:
             logger.error('内部服务器错误,原因:{}'.format(re.message))
             return None
-
-    def get(self, params, data):
-        return requests.get(self.url, params=params, timeout=settings.REST_TIME_OUT)
-
-    def put(self, params, data):
-        return requests.put(self.url, data=data, timeout=settings.REST_TIME_OUT)
-
-    def post(self, params, data):
-        return requests.post(self.url, data=data, timeout=settings.REST_TIME_OUT)
