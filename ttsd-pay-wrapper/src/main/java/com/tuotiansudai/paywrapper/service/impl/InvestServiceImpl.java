@@ -152,6 +152,12 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.endTime}\")}")
     private Date activitySingleEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.house.decorate.startTime}\")}")
+    private Date activityHouseDecorateStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.house.decorate.endTime}\")}")
+    private Date activityHouseDecorateEndTime;
+
     private final List<ExperienceReward> mothersRewards = Lists.newArrayList(
             new ExperienceReward(688800l, 1000000l, 5000000l),
             new ExperienceReward(3888800l, 5000000l, 10000000l),
@@ -637,7 +643,10 @@ public class InvestServiceImpl implements InvestService {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
 
-            if(!loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")) {
+            if(activityHouseDecorateStartTime.compareTo(new Date()) <= 0 && activityHouseDecorateEndTime.compareTo(new Date()) >=0
+                    && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")
+                    && !investModel.getTransferStatus().equals("SUCCESS")
+                    && investModel.getStatus().name().equals("SUCCESS")) {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_HouseDecorate, new InvestSuccessMessage(investInfo, null, userInfo));
             }
 
