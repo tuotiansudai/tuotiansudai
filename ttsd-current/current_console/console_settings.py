@@ -16,7 +16,7 @@ REST_SERVICE_HOST = '127.0.0.1'
 REST_SERVICE_PORT = '8000'
 REST_TIME_OUT = 300
 
-LOGGING_DIR = '/var/log/current_rest'
+LOGGING_DIR = '/var/log/current_console'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/console_settings.py'
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'current_console.middleware.TTSDSessionManager',
+
 ]
 
 TEMPLATES = [
@@ -107,3 +108,4 @@ LOGGING = {
         },
     }
 }
+
