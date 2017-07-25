@@ -31,7 +31,7 @@
                         今日累计投资额:<@global.isAnonymous><strong class="to-login">登录后查看</strong></@global.isAnonymous>
                                      <@global.isNotAnonymous><strong><#if toDayAmount??>${toDayAmount}</#if>元</strong></@global.isNotAnonymous>
                     </div>
-                    <table class="table media-pc">
+                    <table class="table table-pc">
                         <thead>
                             <tr>
                                 <th>用户当日累计投资额（元）</th>
@@ -51,7 +51,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table media-phone">
+                    <table class="table table-phone">
                         <thead>
                             <tr>
                                 <th>用户当日累计投资额（元）</th>
