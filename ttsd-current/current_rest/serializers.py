@@ -70,6 +70,10 @@ class DepositSerializer(serializers.ModelSerializer):
         validated_data['current_account'] = current_account
         return super(DepositSerializer, self).create(validated_data=validated_data)
 
+    class Meta:
+        model = models.CurrentDeposit
+        fields = '__all__'
+
 
 class LoanSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField(min_value=0, max_value=99999)
