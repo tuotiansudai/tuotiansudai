@@ -16,8 +16,7 @@ class RedeemTestCase(APITestCase):
 
         url = reverse('post_redeem')
         data = {'login_name': self.login_name,
-                'amount': 1000,
-                'source': constants.SOURCE_IOS}
+                'amount': 1000}
 
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -31,8 +30,7 @@ class RedeemTestCase(APITestCase):
 
         url = reverse('post_redeem')
         data1 = {'login_name': self.login_name,
-                 'amount': 100000,
-                 'source': constants.SOURCE_IOS}
+                 'amount': 100000}
         self.client.post(url, data1, format='json')
 
         data2 = {'login_name': self.login_name,
