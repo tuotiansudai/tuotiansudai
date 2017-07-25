@@ -84,6 +84,31 @@ class CurrentDeposit(models.Model):
         db_table = 'current_deposit'
 
 
+class CurrentRedeem(models.Model):
+    current_account = models.ForeignKey(to=CurrentAccount,
+                                        on_delete=models.CASCADE,
+                                        related_name='current_redeem',
+                                        related_query_name='current_redeem',
+                                        null=True,
+                                        blank=False)
+    login_name = models.CharField(max_length=25, null=False, blank=False)
+    amount = models.PositiveIntegerField(null=False, blank=False)
+
+    redeem_status = models.CharField(choices=constants.REDEEM_STATUS_CHOICE, max_length=20, null=False, blank=False,
+                                     default=constants.REDEEM_DOING)
+    status = models.CharField(choices=constants.STATUS_CHOICES, default=constants.STATUS_WAITING, max_length=20)
+    source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
+                              max_length=10, null=False, blank=False)
+
+    created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+    updated_time = models.DateTimeField(auto_now=True, null=False, blank=False)
+    approver = models.CharField(max_length=25, null=False, blank=False)
+    approved_time = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'current_redeem'
+
+
 class CurrentBill(models.Model):
     current_account = models.ForeignKey(to=CurrentAccount,
                                         on_delete=models.CASCADE,

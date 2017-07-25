@@ -7,9 +7,6 @@ from django.db.models import Sum
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
-from current_rest import constants
-from current_rest import models
-from current_rest.models import Loan, Agent
 from current_rest import constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
@@ -70,6 +67,10 @@ class DepositSerializer(serializers.ModelSerializer):
         validated_data['current_account'] = current_account
         return super(DepositSerializer, self).create(validated_data=validated_data)
 
+    class Meta:
+        model = models.CurrentDeposit
+        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
+
 
 class LoanSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField(min_value=0, max_value=99999)
@@ -82,3 +83,19 @@ class LoanSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Loan
         fields = '__all__'
+
+
+class RedeemSerializer(serializers.ModelSerializer):
+    login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
+    amount = serializers.IntegerField(min_value=0)
+    source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE)
+    no_password = serializers.BooleanField()
+
+    def create(self, validated_data):
+        current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))
+        validated_data['current_account'] = current_account
+        return super(DepositSerializer, self).create(validated_data=validated_data)
+
+    class Meta:
+        model = models.CurrentRedeem
+        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
