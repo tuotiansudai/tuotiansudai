@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 import json
 
 from django.test import TestCase
@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-from current_rest.models import Agent, Loan
+from current_rest.models import Agent, Loan, CurrentAccount
 from current_rest.serializers import LoanSerializer
 
 
@@ -55,7 +55,7 @@ class LoanListViewTests(TestCase):
         self.assertEqual(return_dict['status'], data['status'])
         self.assertEqual(return_dict['agent'], data['agent'])
 
-    def test_investable_amount_when(self):
+    def test_investable_amount_when_invest_greater_than_account(self):
         data = {
             "serial_number": 1234,
             "amount": 6000,
@@ -63,13 +63,14 @@ class LoanListViewTests(TestCase):
             "debtor": "debtor111",
             "debtor_identity_card": "444210221986010566",
             "effective_date": "2017-07-09 00:00:00",
-            "expiration_date":"2017-09-09 00:00:00",
+            "expiration_date": "2017-09-09 00:00:00",
             "status": "APPROVED",
             "agent": 9999999
         }
         self.client.post(reverse("post_loan"), json.dumps(data), content_type="application/json")
 
+        CurrentAccount.objects.create(login_name='login_name', balance=1000, created_time=datetime.now())
+
         response = self.client.get(reverse("get_limits_today"), data=None, content_type="application/json")
 
         self.assertEqual(response.data, 6000)
-
