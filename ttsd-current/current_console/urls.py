@@ -16,7 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 
 from current_console.views import home
+from current_console.views import loan
 
 urlpatterns = [
-    url('^index$', home.index, name='index')
+    url('^index$', home.index, name='index'),
+    url('^show-loan$', loan.show_loan, name='show_loan'),
+    url('^create-loan$', loan.create_loan, name='create_loan'),
+    url('^audit-loan$', loan.audit_loan, name='audit_loan')
 ]
