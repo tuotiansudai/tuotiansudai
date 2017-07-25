@@ -61,7 +61,7 @@ class OperationLog(models.Model):
         db_table = 'operation_log'
 
 
-class CurrentAccount(models.Model):
+class CurrentAccount(BaseModel):
     login_name = models.CharField(max_length=25, unique=True, null=False, blank=False)
     balance = models.PositiveIntegerField(default=0, null=False, blank=False)
 
@@ -106,7 +106,7 @@ class CurrentBill(BaseModel):
         db_table = 'current_bill'
 
 
-class CurrentWithdraw(AuditModel):
+class CurrentRedeem(AuditModel):
     current_account = models.ForeignKey(CurrentAccount)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.IntegerField()
@@ -115,4 +115,4 @@ class CurrentWithdraw(AuditModel):
                               max_length=10, null=False, blank=False)
 
     class Meta:
-        db_table = 'current_withdraw'
+        db_table = 'current_redeem'

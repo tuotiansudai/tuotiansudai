@@ -16,7 +16,7 @@ from current_rest.biz.current_account_manager import CurrentAccountManager
 
 class RedeemViewSet(mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
-    serializer_class = serializers.CurrentWithdrawSerializer
+    serializer_class = serializers.CurrentRedeemSerializer
 
 
 

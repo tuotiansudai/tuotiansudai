@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from current_rest import constants
-from current_rest.models import CurrentWithdraw, CurrentAccount
+from current_rest.models import CurrentRedeem, CurrentAccount
 
 
 class RedeemTestCase(APITestCase):
@@ -11,7 +11,7 @@ class RedeemTestCase(APITestCase):
         self.client = APIClient()
         self.login_name = 'fakeuser'
 
-    def test_create_withdraw_create(self):
+    def test_create_redeem_create(self):
         CurrentAccount.objects.create(login_name=self.login_name, balance=1000)
 
         url = reverse('post_redeem')
@@ -21,9 +21,9 @@ class RedeemTestCase(APITestCase):
 
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(CurrentWithdraw.objects.count(), 1)
-        self.assertEqual(CurrentWithdraw.objects.get().amount, 1000)
-        self.assertEqual(CurrentWithdraw.objects.get().status, constants.STATUS_WAITING)
+        self.assertEqual(CurrentRedeem.objects.count(), 1)
+        self.assertEqual(CurrentRedeem.objects.get().amount, 1000)
+        self.assertEqual(CurrentRedeem.objects.get().status, constants.STATUS_WAITING)
 
     def test_get_limits_when_current_balance_is_enough(self):
         CurrentAccount.objects.create(login_name=self.login_name, balance=10000000)

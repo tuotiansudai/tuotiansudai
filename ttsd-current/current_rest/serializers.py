@@ -7,9 +7,6 @@ from django.db.models import Sum
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
-from current_rest import constants
-from current_rest import models
-from current_rest.models import Loan, Agent
 from current_rest import constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
@@ -47,10 +44,11 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_personal_available_redeem(self, instance):
         today = datetime.now().date()
-        today_sum_redeem = models.CurrentWithdraw.objects.filter(created_time__startswith=today,
-                                                                 current_account=instance).exclude(
+        today_sum_redeem = models.CurrentRedeem.objects.filter(created_time__startswith=today,
+                                                               current_account=instance).exclude(
             status=constants.STATUS_DENIED).aggregate(
             Sum('amount')).get('amount__sum', 0)
+        today_sum_redeem = today_sum_redeem if today_sum_redeem is not None else 0
         return min(instance.balance, constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - today_sum_redeem)
 
     def get_personal_max_redeem(self, instance):
@@ -68,12 +66,9 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentAccount
-        fields = ('id', 'login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit',
+        fields = ('balance', 'updated_time', 'created_time', 'personal_max_deposit',
                   'personal_available_redeem', 'personal_max_redeem')
-        read_only_fields = (
-            'login_name', 'balance', 'created_time', 'updated_time', 'personal_max_deposit',
-            'personal_available_redeem',
-            'personal_max_redeem')
+        read_only_fields = ('id', 'login_name')
 
 
 class DepositSerializer(serializers.ModelSerializer):
@@ -105,7 +100,7 @@ class LoanSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CurrentWithdrawSerializer(serializers.ModelSerializer):
+class CurrentRedeemSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
     source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE)
@@ -113,9 +108,9 @@ class CurrentWithdrawSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))
         validated_data['current_account'] = current_account
-        return super(CurrentWithdrawSerializer, self).create(validated_data=validated_data)
+        return super(CurrentRedeemSerializer, self).create(validated_data=validated_data)
 
     class Meta:
-        model = models.CurrentWithdraw
+        model = models.CurrentRedeem
         fields = ('id', 'login_name', 'amount', 'source')
         read_only_fields = ('created_time', 'approve_time', 'status')
