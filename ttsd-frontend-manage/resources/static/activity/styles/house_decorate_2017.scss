@@ -86,7 +86,7 @@
   width:100%;
   background:#ffe15f;
   .media-pc{
-    display: inline-block;
+    display: block;
     @media (max-width:700px) {
       display:none;
     }
@@ -94,7 +94,7 @@
   .media-phone{
     display: none;
     @media (max-width:700px) {
-      display:inline-block;
+      display:block;
     }
   }
   .layui-layer{
@@ -330,6 +330,18 @@
         }
         .table{
           margin:15px 0;
+          &.table-pc{
+            display: inline-table;
+            @media (max-width:700px) {
+              display: none;
+            }
+          }
+          &.table-phone{
+            display: none;
+            @media (max-width:700px) {
+              display: inline-table;
+            }
+          }
           @media (max-width:700px) {
             margin:0;
           }
