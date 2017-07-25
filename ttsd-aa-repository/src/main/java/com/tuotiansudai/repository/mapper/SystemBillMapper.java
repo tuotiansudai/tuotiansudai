@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillModel;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.apache.ibatis.annotations.Param;
