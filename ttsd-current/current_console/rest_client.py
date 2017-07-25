@@ -1,10 +1,9 @@
 # coding=utf-8
-import ast
 
 import logging
-import requests
 
-import settings
+import requests
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -16,18 +15,18 @@ class RestClient(object):
         self.retries = 3
         self.url = self.REST_URL_TEMPLATE.format(host=settings.REST_SERVICE_HOST,
                                                  port=settings.REST_SERVICE_PORT,
-                                                 applicationContext=settings.REST_PATH,
+                                                 applicationContext=settings.CONSOLE_PATH,
                                                  uri=uri)
 
     def get(self, params=None):
-        return self._execute(requests.get, params)
+        return self._execute(requests.get, params=params)
 
     def post(self, data=None):
-        return self._execute(requests.post, data)
+        return self._execute(requests.post, data=data)
 
     def put(self, data=None):
 
-        return self._execute(requests.put, data)
+        return self._execute(requests.put, data=data)
 
     def _execute(self, method, data=None, params=None):
         try:
@@ -42,4 +41,3 @@ class RestClient(object):
                 return self._execute(method, data=data, params=params)
         except requests.RequestException as re:
             logger.error('内部服务器错误,原因:{}'.format(re.message))
-            return None

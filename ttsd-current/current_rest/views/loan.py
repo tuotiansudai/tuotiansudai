@@ -32,7 +32,7 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                     refer_pk=response.data['id'],
                                     operator=response.data['creator'],
                                     operation_type=constants.OperationType.LOAN_ADD,
-                                    content='创建通过债权申请')
+                                    content='test')
 
         return Response(response.data, status=status.HTTP_201_CREATED)
 
@@ -51,17 +51,19 @@ class LoanViewSet(mixins.RetrieveModelMixin,
         return Response(response.data, status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def get_limits_today(self, request, *args, **kwargs):
-        yesterday = datetime.now().date() + datetime.timedelta(-1) + datetime.timedelta(hours=23) + datetime.timedelta(
-            minutes=59) + timedelta(seconds=59)
-
+    def get_limits_today(request):
+        today = datetime.now().date()
         loan_amount_sum = models.Loan.objects.filter(status=constants.LOAN_STATUS_APPROVED,
-                                                     effective_date__gte=datetime.datetime.now(),
-                                                     expiration_date__lte=datetime.datetime.now()).aggregate(
-            Sum('amount')).get('amount__sum', 0)
+                                                     effective_date__lte=datetime.now(),
+                                                     expiration_date__gte=datetime.now()).aggregate(
+            Sum('amount')).get('amount__sum')
 
-        account_balance_sum = models.CurrentAccount.objects.filter(updated_time__lte=yesterday).aggregate(
+        account_balance_sum = models.CurrentAccount.objects.filter(created_time__lte=today).aggregate(
             Sum('balance')) \
-            .get('balance__sum', 0)
+            .get('balance__sum')
 
-        return loan_amount_sum - account_balance_sum if loan_amount_sum - account_balance_sum >= 0 else 0
+        loan_amount_sum = int(loan_amount_sum) if loan_amount_sum is not None else 0
+        account_balance_sum = int(account_balance_sum) if account_balance_sum is not None else 0
+        available_invest_amount = loan_amount_sum - account_balance_sum if loan_amount_sum - account_balance_sum >= 0 else 0
+
+        return Response(available_invest_amount, status=status.HTTP_200_OK)

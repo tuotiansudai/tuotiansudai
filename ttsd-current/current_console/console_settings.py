@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 
+from settings import BASE_DIR
+
 CONSOLE_PATH = 'console/'
 
 # ===signIn module start===
@@ -8,6 +10,11 @@ SIGN_IN_HOST = 'http://127.0.0.1'
 SIGN_IN_PORT = '5000'
 LOGIN_URL = 'http://localhost:9080/login'
 # ===signIn module end===
+
+# rest service url
+REST_SERVICE_HOST = '127.0.0.1'
+REST_SERVICE_PORT = '8000'
+REST_TIME_OUT = 300
 
 LOGGING_DIR = '/var/log/current_console'
 

@@ -32,9 +32,25 @@ ALLOWED_HOSTS = ["*"]
 
 ROOT_URLCONF = 'urls'
 
-REST_ENABLED = True #os.environ.get('REST_ENABLED', False)
+WSGI_APPLICATION = 'wsgi.application'
 
-CONSOLE_ENABLED = False#os.environ.get('CONSOLE_ENABLED', False)
+REDIS_URL = 'redis://192.168.33.10/2'
+
+# Internationalization
+# https://docs.djangoproject.com/en/1.11/topics/i18n/
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Asia/Shanghai'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = False
+
+REST_ENABLED = os.environ.get('REST_ENABLED', False)
+
+CONSOLE_ENABLED = os.environ.get('CONSOLE_ENABLED', False)
 
 # reload setting for local
 if REST_ENABLED:
