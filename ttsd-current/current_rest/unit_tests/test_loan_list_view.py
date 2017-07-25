@@ -62,15 +62,36 @@ class LoanListViewTests(TestCase):
             "loan_type": "HOUSE",
             "debtor": "debtor111",
             "debtor_identity_card": "444210221986010566",
-            "effective_date": "2017-07-09 00:00:00",
-            "expiration_date": "2017-09-09 00:00:00",
+            "effective_date": (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%m:%s'),
+            "expiration_date": (datetime.now().date() + timedelta(1)).strftime('%Y-%m-%d %H:%m:%s'),
             "status": "APPROVED",
             "agent": 9999999
         }
         self.client.post(reverse("post_loan"), json.dumps(data), content_type="application/json")
 
-        CurrentAccount.objects.create(login_name='login_name', balance=1000, created_time=datetime.now())
+        CurrentAccount.objects.create(login_name='login_name', balance=1000, created_time=datetime.now().date() + timedelta(days=-1))
 
         response = self.client.get(reverse("get_limits_today"), data=None, content_type="application/json")
 
-        self.assertEqual(response.data, 6000)
+        self.assertEqual(response.data, 5000)
+
+    def test_investable_amount_when_invest_less_than_account(self):
+        data = {
+            "serial_number": 1234,
+            "amount": 6000,
+            "loan_type": "HOUSE",
+            "debtor": "debtor111",
+            "debtor_identity_card": "444210221986010566",
+            "effective_date": (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%m:%s'),
+            "expiration_date": (datetime.now().date() + timedelta(1)).strftime('%Y-%m-%d %H:%m:%s'),
+            "status": "APPROVED",
+            "agent": 9999999
+        }
+        self.client.post(reverse("post_loan"), json.dumps(data), content_type="application/json")
+
+        CurrentAccount.objects.create(login_name='login_name', balance=7000,
+                                      created_time=datetime.now().date() + timedelta(days=-1))
+
+        response = self.client.get(reverse("get_limits_today"), data=None, content_type="application/json")
+
+        self.assertEqual(response.data, 0)

@@ -58,7 +58,7 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                                      expiration_date__gte=datetime.now()).aggregate(
             Sum('amount')).get('amount__sum')
 
-        account_balance_sum = models.CurrentAccount.objects.filter(created_time__lte=today).aggregate(
+        account_balance_sum = models.CurrentAccount.objects.all().aggregate(
             Sum('balance')) \
             .get('balance__sum')
 
