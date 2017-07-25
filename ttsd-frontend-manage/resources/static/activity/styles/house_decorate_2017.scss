@@ -86,7 +86,7 @@
   width:100%;
   background:#ffe15f;
   .media-pc{
-    display: block;
+    display: inline-block;
     @media (max-width:700px) {
       display:none;
     }
@@ -94,7 +94,7 @@
   .media-phone{
     display: none;
     @media (max-width:700px) {
-      display:block;
+      display:inline-block;
     }
   }
   .layui-layer{
