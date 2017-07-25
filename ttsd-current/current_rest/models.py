@@ -9,7 +9,7 @@ from current_rest import constants
 
 class BaseModel(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, blank=False, null=False)
-    update_time = models.DateTimeField(auto_now=True)
+    updated_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
