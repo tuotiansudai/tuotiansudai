@@ -12,16 +12,17 @@ class TTSDSessionManager(MiddlewareMixin):
     token_authentication_url = '{}:{}/session/'.format(settings.SIGN_IN_HOST, settings.SIGN_IN_PORT)
 
     def process_request(self, request):
+
         if request.path == settings.LOGIN_URL:
             return
 
-        token = request.GET.get('token', None)
+        token = request.session['token'] if 'token' in request.session else request.GET.get('token', None)
         if token is None:
             return HttpResponseRedirect(settings.LOGIN_URL)
 
         result = self.authenticate(token)
 
-        if result is None or result.get('result', False):
+        if result is None or not result.get('result', False):
             return HttpResponseRedirect(settings.LOGIN_URL)
 
         request.session['token'] = result['token']

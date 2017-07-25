@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 from rest_framework import status
 from rest_framework.response import Response
 
+from current_console.decorators import console_login_required, user_roles_check
 from current_console.forms import LoanForm
 from current_console.rest_client import RestClient
 from current_console.views.home import handler404
@@ -13,11 +14,14 @@ from current_rest import constants
 
 
 @require_http_methods(["GET"])
+@console_login_required
 def show_loan(request):
     return render(request, 'console/loan/loan.html', {'types': constants.LOAN_TYPE_CHOICES})
 
 
 @require_http_methods(["POST"])
+@console_login_required
+@user_roles_check(roles=['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN'])
 def create_loan(request):
     form = LoanForm(request.POST)
     if form.is_valid():
@@ -33,6 +37,7 @@ def create_loan(request):
 
 
 @require_http_methods(["PUT"])
+@console_login_required
 def audit_loan(request):
     loan = RestClient('loan/{}'.format(request.GET.get('id'))).get()
 
