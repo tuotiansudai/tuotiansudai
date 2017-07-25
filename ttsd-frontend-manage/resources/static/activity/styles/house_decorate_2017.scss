@@ -257,6 +257,16 @@
             height:100%;
             background:url('../images/2017/house-decorate/icon-bag.png') no-repeat center;
             background-size: 100%;
+            &.lottering {
+              -webkit-animation-duration: 0.25s;
+              animation-duration: 0.25s;
+              -webkit-animation-iteration-count: infinite;
+              animation-iteration-count: infinite;
+              -webkit-animation-name: win-effect;
+              animation-name: win-effect;
+              -webkit-animation-timing-function: ease-in-out;
+              animation-timing-function: ease-in-out;
+            }
           }
         }
       }
