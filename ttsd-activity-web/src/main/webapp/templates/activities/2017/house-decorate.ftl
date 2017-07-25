@@ -29,7 +29,7 @@
                 <div class="list-item">
                     <div class="loan-number">
                         今日累计投资额:<@global.isAnonymous><strong class="to-login">登录后查看</strong></@global.isAnonymous>
-                                     <@global.isNotAnonymous><strong><#if toDayAmount??>${toDayAmount}</#if></strong></@global.isNotAnonymous>
+                                     <@global.isNotAnonymous><strong><#if toDayAmount??>${toDayAmount}</#if>元</strong></@global.isNotAnonymous>
                     </div>
                     <table class="table media-pc">
                         <thead>
@@ -64,16 +64,16 @@
                                 <td>当日投资额*<strong>0.5倍</strong>体验金</td>
                             </tr>
                             <tr>
-                                <td>1万≤当日累计投资额＜10万</td>
-                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                                <td>10万≤当日累计投资额＜30万</td>
+                                <td>当日投资额*<strong>0.8倍</strong>体验金</td>
                             </tr>
                             <tr>
-                                <td>1万≤当日累计投资额＜10万</td>
-                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                                <td>30万≤当日累计投资额＜60万</td>
+                                <td>当日投资额*<strong>1.8倍</strong>体验金</td>
                             </tr>
                             <tr>
-                                <td>1万≤当日累计投资额＜10万</td>
-                                <td>当日投资额*<strong>0.5倍</strong>体验金</td>
+                                <td>当日累计投资额≥60万</td>
+                                <td>当日投资额*<strong>2.18倍</strong>体验金</td>
                             </tr>
                         </tbody>
                     </table>
@@ -91,7 +91,7 @@
                 <div class="info-text">活动结束后，计算用户活动期间累计投资额，可领取相应的居家实物奖励，实物奖不可累计获得。</div>
                 <dl class="gift-list">
                     <dt>活动期间总累计投资额:<@global.isAnonymous><strong class="to-login">登录后查看</strong></@global.isAnonymous>
-                                          <@global.isNotAnonymous><strong><#if amount??>${amount}</#if></strong></@global.isNotAnonymous></dt>
+                                          <@global.isNotAnonymous><strong><#if amount??>${amount}</#if>元</strong></@global.isNotAnonymous></dt>
                     <dd class="row-item">
                         <p class="img-item gift-one"></p>
                         <p class="name-item">法国进口红酒</p>
@@ -110,7 +110,7 @@
                     <dd>
                         <p class="img-item gift-four"></p>
                         <p class="name-item">艾美特遥控塔扇</p>
-                        <p>累计投资额：18.8万元</p>
+                        <p>累计投资额：18.18万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-five"></p>
