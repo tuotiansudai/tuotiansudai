@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 public class ActivityInvestRewardView implements Serializable {
     private String loginName;
-    private String sumAmount;
     private String userName;
     private String mobile;
+    private String sumAmount;
     private String reward;
     private String experience;
 
