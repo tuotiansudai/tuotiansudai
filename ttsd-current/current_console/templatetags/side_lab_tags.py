@@ -17,7 +17,7 @@ def side_lab(request):
             continue
         for item in menu['sidebar']:
             if item['role'] != '' and _has_role(set(item['role']), user_roles_set):
-                side_lab_menus.append({'name': item['name'], 'text': menu['header']['text'], 'link': item['link'],
+                side_lab_menus.append({'name': item['name'], 'text': item['text'], 'link': item['link'],
                                        'class': (item['class'] if item.has_key('class') else '')})
 
     return {'side_lab_menus': side_lab_menus}

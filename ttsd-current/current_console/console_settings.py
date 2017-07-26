@@ -15,6 +15,7 @@ LOGIN_URL = 'http://localhost:9080/login'
 REST_SERVICE_HOST = '127.0.0.1'
 REST_SERVICE_PORT = '8000'
 REST_TIME_OUT = 300
+REST_PATH = 'rest/'
 
 LOGGING_DIR = '/var/log/current_console'
 

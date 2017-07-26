@@ -2,7 +2,6 @@
 import re
 
 from django import forms
-from django.core.validators import RegexValidator
 
 from current_rest import constants
 

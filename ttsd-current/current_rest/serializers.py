@@ -71,7 +71,14 @@ class DepositSerializer(serializers.ModelSerializer):
         return super(DepositSerializer, self).create(validated_data=validated_data)
 
 
+class AgentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agent
+        fields = '__all__'
+
+
 class LoanSerializer(serializers.ModelSerializer):
+    agent = AgentSerializer()
     amount = serializers.IntegerField(min_value=0, max_value=99999)
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
     effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
