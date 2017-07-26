@@ -52,6 +52,11 @@ public class MobileAppFrontCallBackController {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public ModelAndView currentCallback(){
+        return new ModelAndView("front-callback-current");
+    }
+
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callback(@PathVariable String service, HttpServletRequest request) {
         logger.info(MessageFormat.format("mobile front callback url: {0}", request.getRequestURL()));
