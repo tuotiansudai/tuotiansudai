@@ -16,7 +16,8 @@ exit_code=0
 
 ut(){
     cp /workspace/deploy-config/ttsd-current/settings_local.py .
-    exit_code=python manage.py test --noinput
+    python manage.py test --noinput
+    exit_code=$?
     deactivate
 }
 
