@@ -164,7 +164,7 @@
         {{else if returnCode==1}}
             <p class="tip-text">没有抽奖机会,明日再来！</p>
         {{else if returnCode==3}}
-            <p class="no-chance">不在活动时间范围内</p>
+            <p class="tip-text">不在活动时间范围内</p>
         {{/if}}
         </div>
         <div class="lottery-link">
