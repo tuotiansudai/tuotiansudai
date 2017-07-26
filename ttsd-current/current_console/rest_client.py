@@ -15,7 +15,7 @@ class RestClient(object):
         self.retries = 3
         self.url = self.REST_URL_TEMPLATE.format(host=settings.REST_SERVICE_HOST,
                                                  port=settings.REST_SERVICE_PORT,
-                                                 applicationContext=settings.CONSOLE_PATH,
+                                                 applicationContext=settings.REST_PATH,
                                                  uri=uri)
 
     def get(self, params=None):

@@ -1,5 +1,6 @@
 from django.conf.urls import url
 
+from current_rest.views import fund
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanViewSet
@@ -22,4 +23,7 @@ urlpatterns = [
     url(r'^deposit/(?P<pk>[0-9]+)$', get_put_deposit, name="get_put_deposit", kwargs={'partial': True}),
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
     url(r'^redeem/create$', redeem, name='post_redeem'),
+    url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
+    url(r'^fund-info/history$', fund.history, name="fund_info_history"),
+    url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
 ]
