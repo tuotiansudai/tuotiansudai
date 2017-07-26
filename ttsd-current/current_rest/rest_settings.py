@@ -20,7 +20,7 @@ PAY_WRAPPER_HOST = 'http://localhost:8080/current'
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/rest_settings.py'
 if not os.path.isfile(setting_local_file):
-    setting_local_file = os.path.join(BASE_DIR, "current_rest/console_settings_local.py")
+    setting_local_file = os.path.join(BASE_DIR, "current_rest/rest_settings_local.py")
 
 if os.path.isfile(setting_local_file):
     exec (compile(open(setting_local_file).read(), setting_local_file, 'exec'))

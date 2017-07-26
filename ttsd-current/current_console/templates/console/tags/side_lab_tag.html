@@ -2,7 +2,7 @@
     <ul class="nav sidenav" style="background:#f1f1f1">
         {% for menu in side_lab_menus %}
             <li class="{{ menu.class }}">
-                {% if menu.link != '' %}
+                {% if menu.link %}
                     <a href="{{ menu.link }}">{{ menu.text }}</a>
                 {% else %}
                     {{ menu.text }}
