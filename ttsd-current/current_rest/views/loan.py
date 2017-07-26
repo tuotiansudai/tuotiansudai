@@ -32,7 +32,7 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                     refer_pk=response.data['id'],
                                     operator=response.data['creator'],
                                     operation_type=constants.OperationType.LOAN_ADD,
-                                    content='test')
+                                    content='创建通过债权申请')
 
         return Response(response.data, status=status.HTTP_201_CREATED)
 
