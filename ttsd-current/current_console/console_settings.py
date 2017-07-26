@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'current_console.middleware.TTSDSessionManager',
+
 ]
 
 TEMPLATES = [
@@ -52,6 +53,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'current_console.context_processors.login_user_name',
             ],
         },
     },
@@ -107,3 +109,4 @@ LOGGING = {
         },
     }
 }
+
