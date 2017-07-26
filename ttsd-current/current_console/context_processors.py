@@ -6,5 +6,4 @@ from current_console.menu import menus
 
 
 def login_user_name(request):
-    return {'login_name': request.session['login_name'] if 'login_name' in request.session else None,
-            'roles': request.session['roles'] if 'roles' in request.session else None}
+    return {'login_name': request.session.get('login_name', None), 'roles': request.session.get('roles', None)}
