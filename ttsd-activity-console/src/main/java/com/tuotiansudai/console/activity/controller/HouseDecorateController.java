@@ -17,9 +17,9 @@ public class HouseDecorateController {
     private ActivityConsoleHouseDecorateService activityConsoleHouseDecorateService;
 
     @RequestMapping(value = "/house-decorate-list", method = RequestMethod.GET)
-    public ModelAndView list(@RequestParam(value = "index", defaultValue = "1") int index) {
+    public ModelAndView list(@RequestParam(value = "index", defaultValue = "1") int index,
+                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/house-decorate-list");
-        final int pageSize = 10;
         modelAndView.addObject("data", activityConsoleHouseDecorateService.list(index, pageSize));
         return modelAndView;
     }

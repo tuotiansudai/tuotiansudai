@@ -50,12 +50,17 @@ public class InvestSuccessHouseDecorateMessageConsumer implements MessageConsume
 
             UserInfo userInfo = investSuccessMessage.getUserInfo();
             InvestInfo investInfo = investSuccessMessage.getInvestInfo();
-            activityInvestMapper.create(new ActivityInvestModel(investInfo.getInvestId(),
-                    userInfo.getLoginName(),
-                    userInfo.getUserName(),
-                    userInfo.getMobile(),
-                    investInfo.getAmount(),
-                    ActivityCategory.HOUSE_DECORATE_ACTIVITY.name()));
+            if (activityHouseDecorateStartTime.compareTo(new Date()) <= 0 && activityHouseDecorateEndTime.compareTo(new Date()) >=0
+                    && !investInfo.getTransferStatus().equals("SUCCESS")
+                    && investInfo.getStatus().equals("SUCCESS")) {
+
+                activityInvestMapper.create(new ActivityInvestModel(investInfo.getInvestId(),
+                        userInfo.getLoginName(),
+                        userInfo.getUserName(),
+                        userInfo.getMobile(),
+                        investInfo.getAmount(),
+                        ActivityCategory.HOUSE_DECORATE_ACTIVITY.name()));
+            }
 
         } catch (IOException e) {
             logger.error("[MQ] parse message failed: {}: {}.", this.queue(), message);
