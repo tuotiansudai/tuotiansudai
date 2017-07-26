@@ -18,7 +18,7 @@ class RedeemViewSet(mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
                     viewsets.GenericViewSet):
-    serializer_class = serializers.RedeemSerializer
+    serializer_class = serializers.CurrentRedeemSerializer
     queryset = models.CurrentRedeem.objects.all()
 
     pay_redeem_url = '{}/redeem/'.format(PAY_WRAPPER_HOST)

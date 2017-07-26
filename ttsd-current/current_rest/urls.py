@@ -15,6 +15,7 @@ audit_loan = LoanViewSet.as_view({'put': 'update'})
 post_redeem = RedeemViewSet.as_view({'post': 'create'})
 get_put_redeem = RedeemViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 
+redeem = RedeemViewSet.as_view({'post': 'create'})
 
 urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
@@ -25,5 +26,5 @@ urlpatterns = [
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
 
     url(r'^redeem$', post_redeem, name='post_redeem'),
-
+    url(r'^redeem/create$', redeem, name='post_redeem'),
 ]
