@@ -2,11 +2,12 @@
 import json
 from datetime import datetime, timedelta
 
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 
+from current_console.forms import FundSettingHistoryQueryForm
 from current_console.rest_client import RestClient
 
 
@@ -51,7 +52,7 @@ class FundSettingView(View):
 class FundSettingApproveView(FundSettingView):
     def get(self, request):
         view_data = self._load_view_data()
-        view_data['is_approve'] = True
+        view_data['is_approve_page'] = True
         return render(request, 'console/fund/setting.html', view_data)
 
     def post(self, request):
@@ -73,10 +74,11 @@ def fund_setting_history_page(request):
 
 
 def fund_setting_history_query(request):
-    begin_date = request.GET.get('begin_date', None)
-    end_date = request.GET.get('end_date', None)
-    histories = []
-    if begin_date and end_date:
-        url = 'fund-info/history?begin_date={}&end_date={}'.format(begin_date, end_date)
+    query_form = FundSettingHistoryQueryForm(request.GET)
+    if query_form.is_valid():
+        url = 'fund-info/history?begin_date={}&end_date={}'.format(query_form.data['begin_date'],
+                                                                   query_form.data['end_date'])
         histories = RestClient(url).get()
-    return JsonResponse(histories)
+        return JsonResponse(histories)
+    else:
+        return HttpResponseBadRequest(u'日期参数格式有误，请使用 Y-m-d 格式')

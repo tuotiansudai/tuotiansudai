@@ -38,6 +38,7 @@
                 var url = '{% url 'fund_setting_history_query' %}';
                 var begin_date = $('#begin_date').val();
                 var end_date = $('#end_date').val();
+                end_date='ssls-af';
                 $.get(url, {'begin_date': begin_date, 'end_date': end_date}, function (data, textStatus, jqXHR) {
                     showFundHistoryChart(data);
                 }, 'json');

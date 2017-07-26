@@ -21,14 +21,12 @@ def tendency(request):
 
 @api_view(['GET'])
 def history(request):
-    begin_date = request.GET.get('begin_date', None)
-    end_date = request.GET.get('end_date', None)
-    histories = []
-    if begin_date and end_date:
-        begin_date = datetime.strptime(begin_date, '%Y-%m-%d')
-        end_date = datetime.strptime(end_date, '%Y-%m-%d')
-        histories = list_fund_history(begin_date, end_date)
-    return Response(histories)
+    query_form = serializers.FundHistoryQueryForm(data=request.GET)
+    if query_form.is_valid():
+        histories = list_fund_history(query_form.validated_data['begin_date'], query_form.validated_data['end_date'])
+        return Response(histories)
+    else:
+        raise Http404()
 
 
 class TodayFundSettingViewSet(RetrieveAPIView, UpdateAPIView):
@@ -39,15 +37,3 @@ class TodayFundSettingViewSet(RetrieveAPIView, UpdateAPIView):
             return CurrentDailyFundInfo.objects.get(date__exact=datetime.now().today())
         except CurrentDailyFundInfo.DoesNotExist:
             raise Http404()
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)

@@ -115,8 +115,13 @@ class CurrentRedeemSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_time', 'approve_time', 'status')
 
 
+class FundHistoryQueryForm(serializers.Serializer):
+    begin_date = serializers.DateField(input_formats=['%Y-%m-%d'])
+    end_date = serializers.DateField(input_formats=['%Y-%m-%d'])
+
+
 class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
-    allow_change_quota = serializers.SerializerMethodField(read_only=True)
+    allow_change_quota = serializers.SerializerMethodField()
 
     def get_allow_change_quota(self, instance):
         return instance.config_quota_status in (

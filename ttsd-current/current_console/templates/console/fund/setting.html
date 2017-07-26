@@ -102,13 +102,13 @@
                         <div class="input-group">
                             <input type="text" class="form-control" name="config_quota_amount" placeholder="0"
                                    value="{{ quota_amount }}"
-                                   {% if is_approve or not allow_change_quota %}readonly{% endif %}>
+                                   {% if is_approve_page or not allow_change_quota %}readonly{% endif %}>
                             <div class="input-group-addon">万元</div>
                         </div>
                         <a href="{% url 'fund_setting_history_page' %}">历史资产额度配置</a>
                     </div>
                     <span id="helpBlock" class="help-block"> （今日尚未匹配债权 {{ loan_remain_amount }} 万元） </span>
-                    {% if is_approve %}
+                    {% if is_approve_page %}
                         {% if approving %}
                             <input type="hidden" id="config_quota_status" name="config_quota_status"/>
                             <button type="button" class="btn btn-success btn-approve" data-approve-status="APPROVED">
