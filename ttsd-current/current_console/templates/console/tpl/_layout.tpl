@@ -25,8 +25,7 @@
     {% endblock %}
 </head>
 <body>
-{% load head_lab_tags %}
-{% load side_lab_tags %}
+{% load lab_tags %}
 <header class="navbar" id="top" role="banner">
     <div class="container-fluid">
         <div class="navbar-header">

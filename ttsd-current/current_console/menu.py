@@ -317,10 +317,10 @@ menus = [
         "name": "current-manage",
         "header": {"text": "日息宝管理"},
         "sidebar": [
-            {"name": "", "class": "sub-title-1", "text": "日息宝管理", "link": "",
-             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN', 'CUSTOMER_SERVICE', 'DATA']},
-            {"name": "currentHome", "text": "日息宝管理", "link": "/console/create-loan",
-             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN', 'CUSTOMER_SERVICE', 'DATA']}
+            {"name": "", "class": "sub-title-1", "text": "资产管理", "link": "",
+             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
+            {"name": "currentHome", "text": "添加资产", "link": "/console/show-loan",
+             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']}
         ]
     }
 ]
