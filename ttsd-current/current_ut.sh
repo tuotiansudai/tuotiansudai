@@ -23,4 +23,4 @@ ut(){
 
 clear_cache && install && ut
 
-exit exit_code
+exit $exit_code
