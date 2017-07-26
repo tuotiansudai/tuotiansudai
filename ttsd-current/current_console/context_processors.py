@@ -6,4 +6,4 @@ from current_console.menu import menus
 
 
 def login_user_name(request):
-    return {'login_name': request.session.get('login_name', None), 'roles': request.session.get('roles', None)}
+    return {'login_name': request.session.get('login_name'), 'roles': request.session.get('roles')}
