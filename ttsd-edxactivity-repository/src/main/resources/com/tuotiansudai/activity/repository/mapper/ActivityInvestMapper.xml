@@ -44,8 +44,15 @@
         FROM
         activity_invest ai
         <where>
-            ai.created_time BETWEEN #{startTime} AND #{endTime}
-            and ai.activity_name=#{activityName}
+            <if test="startTime !=null">
+                AND ai.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null">
+                AND ai.created_time &lt;= #{endTime}
+            </if>
+            <if test="activityName !=null">
+                AND ai.activity_name=#{activityName}
+            </if>
         </where>
         GROUP BY ai.login_name , ai.user_name , ai.mobile
     </select>
