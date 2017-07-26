@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.RedeemRequestDto;
+import com.tuotiansudai.current.dto.RedeemResponseDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.RedeemDataDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.MDC;
 import org.junit.After;
@@ -80,6 +83,19 @@ public class CurrentRestClientTest {
         assertTrue(payData.getExtraValues().isEmpty());
     }
 
+    @Test
+    public void shouldRedeemCreate() throws JsonProcessingException {
+        String currentUserId = "yyyyyy";
+        MDC.put("requestId", "xxxxxxx");
+        MDC.put("userId", currentUserId);
+        RedeemRequestDto requestDto = new RedeemRequestDto("loginName", 10000, Source.ANDROID);
+
+        this.mockServer.enqueue(buildCreateRedeemResponse());
+        RedeemResponseDto dataDto = currentRestClient.redeem(requestDto);
+        assertEquals(10000, dataDto.getAmount());
+        assertEquals("ANDROID", dataDto.getSource());
+    }
+
     private MockResponse buildCreatePayFormResponse() throws JsonProcessingException {
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setStatus(true);
@@ -100,6 +116,16 @@ public class CurrentRestClientTest {
         payData.setCode("0000");
         payData.setExtraValues(Collections.emptyMap());
         BaseDto<PayDataDto> responseDto = new BaseDto<>(true, payData);
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setResponseCode(200);
+        mockResponse.setBody(objectMapper.writeValueAsString(responseDto));
+        return mockResponse;
+    }
+
+    private MockResponse buildCreateRedeemResponse() throws JsonProcessingException {
+        RedeemResponseDto responseDto = new RedeemResponseDto();
+        responseDto.setAmount(10000);
+        responseDto.setSource("ANDROID");
         MockResponse mockResponse = new MockResponse();
         mockResponse.setResponseCode(200);
         mockResponse.setBody(objectMapper.writeValueAsString(responseDto));
