@@ -12,10 +12,14 @@ install(){
     echo "install done"
 }
 
+exit_code=0
+
 ut(){
     cp /workspace/deploy-config/ttsd-current/settings_local.py .
-    python manage.py test --noinput
+    exit_code=python manage.py test --noinput
     deactivate
 }
 
 clear_cache && install && ut
+
+exit exit_code
