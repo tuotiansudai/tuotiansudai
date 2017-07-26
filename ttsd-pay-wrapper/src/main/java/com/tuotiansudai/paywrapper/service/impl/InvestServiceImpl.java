@@ -623,8 +623,10 @@ public class InvestServiceImpl implements InvestService {
         investInfo.setTransferStatus(investModel.getTransferStatus().name());
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         loanDetailInfo.setLoanId(investModel.getLoanId());
-        loanDetailInfo.setDuration(loanMapper.findById(investModel.getLoanId()).getProductType().getDuration());
+        loanDetailInfo.setDuration(loanModel.getProductType().getDuration());
+        loanDetailInfo.setActivityType(loanModel.getActivityType().name());
         if (loanDetailsModel != null) {
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());

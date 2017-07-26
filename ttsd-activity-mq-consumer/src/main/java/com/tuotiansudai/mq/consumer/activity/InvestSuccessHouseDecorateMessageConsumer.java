@@ -50,7 +50,9 @@ public class InvestSuccessHouseDecorateMessageConsumer implements MessageConsume
 
             UserInfo userInfo = investSuccessMessage.getUserInfo();
             InvestInfo investInfo = investSuccessMessage.getInvestInfo();
+            LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
             if (activityHouseDecorateStartTime.compareTo(new Date()) <= 0 && activityHouseDecorateEndTime.compareTo(new Date()) >=0
+                    && !loanDetailInfo.getActivityType().equals("NEWBIE")
                     && !investInfo.getTransferStatus().equals("SUCCESS")
                     && investInfo.getStatus().equals("SUCCESS")) {
 
