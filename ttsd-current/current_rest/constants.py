@@ -42,6 +42,15 @@ class OperationType(object):
         (LOAN_AUDIT, u'审核债权信息'),
     )
 
+STATUS_WAITING = 'WAITING'
+STATUS_APPROVED = 'APPROVED'
+STATUS_DENIED = 'DENIED'
+STATUS_CHOICES = (
+    (STATUS_WAITING, u'待审核'),
+    (STATUS_APPROVED, u'已审核'),
+    (STATUS_DENIED, u'已驳回'),
+)
+
 SOURCE_WEB = 'WEB'
 SOURCE_WE_CHAT = 'WE_CHAT'
 SOURCE_IOS = 'IOS'
@@ -70,3 +79,6 @@ BILL_TYPE_CHOICE = (
     (BILL_TYPE_WITHDRAW, u'赎回'),
     (BILL_TYPE_INTEREST, u'结息'),
 )
+
+#单位为分
+EVERY_DAY_OF_MAX_REDEEM_AMOUNT = 10000000
