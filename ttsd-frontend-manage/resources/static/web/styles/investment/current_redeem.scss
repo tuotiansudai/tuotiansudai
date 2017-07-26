@@ -103,6 +103,19 @@ $red: #ea3622;
               width:340px;
               height:40px;
               box-sizing: border-box;
+              &.error{
+                border:1px solid #ff0000;
+              }
+            }
+            .info-item{
+              display:none;
+              float:left;
+              padding-left: 20px;
+              line-height: 40px;
+              font-size:14px;
+              color:#ff0000;
+              margin-left: 20px;
+              background: url('../../images/day-interest/icon-tip.png') no-repeat center left;
             }
             .submit-item{
               float:left;
@@ -112,6 +125,9 @@ $red: #ea3622;
               color:#fff;
               background:#ff752a;
               border:none;
+              &:disabled{
+                background: #ccc;
+              }
             }
           }
         }

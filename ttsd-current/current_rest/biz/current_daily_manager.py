@@ -9,5 +9,5 @@ class CurrentDailyManager(object):
     daily_amount_limit_key = 'current:daily:amount'
 
     def get_current_daily_amount(self):
-        daily_amount = int(redis_client.get(self.daily_amount_limit_key))
+        daily_amount = int(redis_client.get(self.daily_amount_limit_key) is not None)
         return daily_amount if daily_amount else 0

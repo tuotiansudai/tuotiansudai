@@ -179,7 +179,12 @@ public enum ReturnMessage {
     RISK_ESTIMATE_FAILED("0203", "投资偏好测评失败，请检查您提交的答卷是否完整"),
 
     /******回款日历******/
-    REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦");
+    REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦"),
+
+    /******日息宝******/
+    REDEEM_LIMITS_FAILED("0310", "获取当日可赎回金额和最大赎回金额失败"),
+    REDEEM_NO_AMOUNT("0311", "赎回金额超出当日限额"),
+    REDEEM_FAILED("0312", "转出申请失败");
 
     private String code;
     private String msg;
