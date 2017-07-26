@@ -52,7 +52,7 @@ class LoanViewSet(mixins.RetrieveModelMixin,
 
     @staticmethod
     def get_limits_today(request):
-        today = datetime.now().date()
+        print(datetime.now())
         loan_amount_sum = models.Loan.objects.filter(status=constants.LOAN_STATUS_APPROVED,
                                                      effective_date__lte=datetime.now(),
                                                      expiration_date__gte=datetime.now()).aggregate(

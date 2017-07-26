@@ -62,8 +62,8 @@ class LoanListViewTests(TestCase):
             "loan_type": "HOUSE",
             "debtor": "debtor111",
             "debtor_identity_card": "444210221986010566",
-            "effective_date": (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%m:%s'),
-            "expiration_date": (datetime.now().date() + timedelta(1)).strftime('%Y-%m-%d %H:%m:%s'),
+            "effective_date": (datetime.now() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%M:%S'),
+            "expiration_date": (datetime.now() + timedelta(1)).strftime('%Y-%m-%d %H:%M:%S'),
             "status": "APPROVED",
             "agent": 9999999
         }
@@ -82,8 +82,8 @@ class LoanListViewTests(TestCase):
             "loan_type": "HOUSE",
             "debtor": "debtor111",
             "debtor_identity_card": "444210221986010566",
-            "effective_date": (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%m:%s'),
-            "expiration_date": (datetime.now().date() + timedelta(1)).strftime('%Y-%m-%d %H:%m:%s'),
+            "effective_date": (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%M:%S'),
+            "expiration_date": (datetime.now().date() + timedelta(1)).strftime('%Y-%m-%d %H:%M:%S'),
             "status": "APPROVED",
             "agent": 9999999
         }
