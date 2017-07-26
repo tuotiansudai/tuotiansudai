@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 
 from django.http import Http404
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
@@ -26,7 +27,7 @@ def history(request):
         histories = list_fund_history(query_form.validated_data['begin_date'], query_form.validated_data['end_date'])
         return Response(histories)
     else:
-        raise Http404()
+        return Response(data=query_form.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TodayFundSettingViewSet(RetrieveAPIView, UpdateAPIView):

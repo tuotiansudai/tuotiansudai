@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'current_console']
 
 MIDDLEWARE = [
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'current_console.middleware.TTSDSessionManager',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'current_console.middleware.TTSDSessionManager',
 ]
 
 TEMPLATES = [
