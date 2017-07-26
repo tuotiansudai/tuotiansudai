@@ -33,7 +33,7 @@ public class HouseDecorateExperienceScheduler {
     @Value(value = "${activity.house.decorate.endTime}")
     private String endTime;
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Shanghai")
     public void grantFamilyFinanceExperience() {
 
         Date grantDate = new DateTime(new Date()).withTimeAtStartOfDay().minusMillis(1).toDate();
