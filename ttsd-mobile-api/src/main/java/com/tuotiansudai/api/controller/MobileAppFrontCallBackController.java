@@ -146,6 +146,11 @@ public class MobileAppFrontCallBackController {
                 .put("message", "签约成功")
                 .build());
 
+        Function<Long, Map<String, String>> bindCurrentRedeemValuesGenerator = (Long amount) -> Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("message", "转出申请成功")
+                .put("amount", "")
+                .build());
+
         Map<AsyncUmPayService, Function<Long, Map<String, String>>> generatorMapper = Maps.newHashMap(ImmutableMap.<AsyncUmPayService, Function<Long, Map<String, String>>>builder()
                 .put(AsyncUmPayService.PTP_MER_BIND_CARD, bindCardValuesGenerator)
                 .put(AsyncUmPayService.PTP_MER_REPLACE_CARD, replaceCardValuesGenerator)
@@ -158,6 +163,7 @@ public class MobileAppFrontCallBackController {
                 .put(AsyncUmPayService.MEMBERSHIP_PRIVILEGE_PURCHASE_TRANSFER_ASYN, memberPrivilegePurchaseValuesGenerator)
                 .put(AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
+                .put(AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .build());
 

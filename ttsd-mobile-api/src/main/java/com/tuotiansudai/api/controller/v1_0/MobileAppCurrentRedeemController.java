@@ -5,6 +5,7 @@ import com.tuotiansudai.current.client.CurrentRestClient;
 import com.tuotiansudai.current.dto.AccountResponseDto;
 import com.tuotiansudai.current.dto.RedeemRequestDto;
 import com.tuotiansudai.current.dto.RedeemResponseDto;
+import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.Api;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.MessageFormat;
 
 @RestController
 @Api(description = "活期转出申请")
@@ -43,7 +46,7 @@ public class MobileAppCurrentRedeemController extends MobileAppBaseController {
         RedeemResponseDto baseDto = currentRestClient.redeem(redeemRequestDto);
         baseResponseDto.setCode("");
         baseResponseDto.setMessage("");
-        currentRedeemResponseDataDto.setAmount(baseDto.getAmount());
+        currentRedeemResponseDataDto.setUrl(MessageFormat.format("/callback/{0}", AsyncUmPayService.CURRENT_REDEEM_APPLY));
         baseResponseDto.setData(currentRedeemResponseDataDto);
 
         return baseResponseDto;

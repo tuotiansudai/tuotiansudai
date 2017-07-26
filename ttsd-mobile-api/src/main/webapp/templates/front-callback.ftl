@@ -80,6 +80,14 @@
     <#case 'membership_privilege_purchase_transfer_asyn'>
         <p>投资时将享受服务费7折优惠</p>
         <#break>
+    <#case 'current_redeem'>
+        <ul class="info-item">
+            <li>
+                <span class="info-title">fdfdfdsfs</span>
+                <span class="info-text">100000</span>
+            </li>
+        </ul>
+        <#break>
 </#switch>
     <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
 </div>

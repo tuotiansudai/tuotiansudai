@@ -155,7 +155,13 @@ public enum AsyncUmPayService {
     /**
      * 平台充值普通转账验密
      */
-    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
+    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", ""),
+
+
+    /**
+     * 日息宝赎回申请
+     */
+    CURRENT_REDEEM_APPLY("current_redeem", "", "", "", "tuotian://current/redeem/{0}");
 
 
     private final String serviceName;
