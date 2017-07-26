@@ -29,6 +29,6 @@
             </li>
         </ul>
     </div>
-    <a href="/" class="btn-disabled">确定</a>
+    <a href="/" class="btn-success">确定</a>
 </body>
 </html>
