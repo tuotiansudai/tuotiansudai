@@ -16,7 +16,7 @@ class TTSDSessionManager(MiddlewareMixin):
         if request.path == settings.LOGIN_URL:
             return
 
-        token = request.session['token'] if 'token' in request.session else request.GET.get('token', None)
+        token = request.session['token'] if 'token' in request.session else request.GET.get('token')
         if token is None:
             return HttpResponseRedirect(settings.LOGIN_URL)
 
