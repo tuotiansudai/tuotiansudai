@@ -6,6 +6,7 @@ dependencies {
             project(':ttsd-service'),
             project(':ttsd-point-service'),
             project(':ttsd-log-service'),
+            project(':ttsd-current-rest-client'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-membership')
 

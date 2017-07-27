@@ -20,7 +20,9 @@ $switchMenu.find('em').click(function() {
 
 if($('.amount-sum',$accountOverview).find('.icon-has-con').length) {
     $('.amount-sum h3',$accountOverview).on('click',function() {
-        $(this).parents().toggleClass('open');
+        if($(this).siblings('.detail-list').length>0){
+            $(this).closest('.amount-sum').toggleClass('open');
+        }
     });
 }
 

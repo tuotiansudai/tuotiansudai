@@ -101,6 +101,7 @@
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/invest/**" access="hasAnyAuthority('INVESTOR')"/>
+        <intercept-url pattern="/current/redeem" access="hasAnyAuthority('INVESTOR')"/>
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
@@ -118,6 +119,8 @@
         <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
+
+        <intercept-url pattern="/current/deposit" access="hasAnyAuthority('INVESTOR')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
 

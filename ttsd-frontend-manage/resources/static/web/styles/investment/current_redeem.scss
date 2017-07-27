@@ -1,0 +1,214 @@
+@charset "utf-8";
+@import "top_sub_menu";
+
+$gray: #e6e6e6;
+$grayLight: #b2b2b2;
+$gray2: #999;
+$orange: #ee7b2f;
+$orange2: #f1a03f;
+$red: #ea3622;
+
+
+//隐藏顶部菜单
+.swiper-container {
+  display: none;
+}
+.level-layer-tips {
+  .layui-layer-content {
+    width:275px!important;
+    left: 43px;
+  }
+  i.layui-layer-TipsT {
+    left: 180px!important;
+  }
+}
+
+/* loan detail */
+.loan-detail-content {
+  color: #8c8c8c;
+  .borderBox {
+    padding: 0;
+    &.no-border{
+      border:none;
+    }
+  }
+  .loan-model{
+    width:100%;
+    display:table;
+    .news-share {
+      width: 616px;
+      display: table-cell;
+      vertical-align: top;
+      @media (max-width: 700px) {
+        width: 100%;
+      }
+      margin-right: 10px;
+      position: relative;
+      border: 1px solid #ccc;
+      .title-block {
+        border-bottom: 1px solid #ccc;
+        color: #808080;
+        line-height: 50px;
+        .title {
+          width:150px;
+          text-align:center;
+          box-sizing:border-box;
+          a{
+            float:left;
+            width:100%;
+            font-size: 18px;
+            color: #666;
+          }
+          &.active{
+            border-top:2px solid #ff752a;
+            margin-top: -2px;
+            border-left:1px solid #ccc;
+            border-right:1px solid #ccc;
+            position: relative;
+            background: #fff;
+            top:1px;
+            a{
+              color:#ff752a;
+            }
+          }
+        }
+      }
+      .loan-info {
+        color: #808080;
+        .content {
+          padding: 30px 40px;
+          @media (max-width: 700px) {
+            padding: 30px 10px;
+          }
+          .fotm-item{
+            float:left;
+            width:100%;
+            margin-bottom: 10px;
+            p{
+              font-size:16px;
+              color:#4c4c4c;
+              margin-bottom: 0;
+              &.tip-info{
+                font-size:12px;
+                color:#999;
+              }
+              span{
+                font-size:18px;
+                color:#ff752a;
+                font-weight:bold;
+              }
+            }
+            .int-item{
+              float:left;
+              width:340px;
+              height:40px;
+              box-sizing: border-box;
+              &.error{
+                border:1px solid #ff0000;
+              }
+            }
+            .info-item{
+              display:none;
+              float:left;
+              padding-left: 20px;
+              line-height: 40px;
+              font-size:14px;
+              color:#ff0000;
+              margin-left: 20px;
+              background: url('../../images/day-interest/icon-tip.png') no-repeat center left;
+            }
+            .submit-item{
+              float:left;
+              width:340px;
+              height:40px;
+              font-size:18px;
+              color:#fff;
+              background:#ff752a;
+              border:none;
+              &:disabled{
+                background: #ccc;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .project-model {
+    float: left;
+    width: 100%;
+    &.mt-20 {
+      margin-top: 20px;
+    }
+    .model-nav {
+      float: left;
+      width: 100%;
+      border-bottom: 1px solid #e6e6e6;
+      h3 {
+        float: left;
+        margin-left: 20px;
+        font-size: 16px;
+        color: #ff7200;
+        line-height: 50px;
+        border-bottom: 4px solid #ff7200;
+      }
+    }
+    .model-content {
+      float: left;
+      width: 100%;
+      .info-list {
+        margin: 20px 30px;
+        li {
+          color: #999;
+          font-size: 12px;
+        }
+      }
+      .text-list {
+        float: left;
+        width: 100%;
+        li {
+          float: left;
+          width: 33.333333%;
+          p {
+            float: left;
+            width: 100%;
+            margin-bottom: 0;
+            &.intro-title {
+              margin-top: 40px;
+              font-size: 20px;
+              color: #1a1a1a;
+              text-align: center;
+            }
+            &.intro-icon {
+              height: 180px;
+              border-right: 1px solid #e6e6e6;
+              &.icon-one {
+                background: url("../../images/sign/actor/icon-one.png") no-repeat center;
+              }
+              &.icon-two {
+                background: url("../../images/sign/actor/icon-two.png") no-repeat center;
+              }
+              &.icon-three {
+                background: url("../../images/sign/actor/icon-three.png") no-repeat center;
+              }
+            }
+            &.intro-text {
+              text-align: left;
+              font-size: 14px;
+              color: #999;
+              border-right: 1px solid #e6e6e6;
+              margin-bottom: 30px;
+              span {
+                float: left;
+                padding: 0 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
