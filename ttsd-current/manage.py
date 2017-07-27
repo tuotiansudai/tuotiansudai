@@ -3,7 +3,17 @@ import os
 import sys
 
 if __name__ == "__main__":
+    if '--settings' not in sys.argv:
+        print """
+    Couldn't load settings. You must add --settings <settings_python_path> into command line.
+    Example:
+    \tpython manage.py --settings current_rest.settings <args>
+    \tpython manage.py --settings current_console.settings <args>
+    """
+        exit(1)
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
@@ -22,6 +32,7 @@ if __name__ == "__main__":
 
     try:
         import pymysql
+
         pymysql.install_as_MySQLdb()
     except ImportError:
         pass

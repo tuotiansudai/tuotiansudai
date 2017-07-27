@@ -1,5 +1,22 @@
+"""current URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/1.11/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.conf.urls import url, include
+    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+"""
+
 from django.conf.urls import url
 
+from current_rest.views import fund
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanViewSet
@@ -24,4 +41,7 @@ urlpatterns = [
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
     url(r'^redeem/create$', redeem, name='post_redeem'),
     url(r'^redeem/(?P<pk>[0-9]+)$', get_redeem, name='get_redeem'),
+    url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
+    url(r'^fund-info/history$', fund.history, name="fund_info_history"),
+    url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
 ]
