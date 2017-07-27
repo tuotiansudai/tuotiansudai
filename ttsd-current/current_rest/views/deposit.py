@@ -2,6 +2,7 @@
 import logging
 
 import requests
+from django.conf import settings
 from django.db import transaction
 from rest_framework import status, viewsets, mixins
 from rest_framework.response import Response
@@ -9,7 +10,6 @@ from rest_framework.response import Response
 from current_rest import serializers, constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.exceptions import PayWrapperException
-from settings import PAY_WRAPPER_HOST
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +21,8 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     serializer_class = serializers.DepositSerializer
     queryset = models.CurrentDeposit.objects.all()
 
-    pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_HOST)
-    pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_HOST)
+    pay_with_password_url = '{}/deposit-with-password/'.format(settings.PAY_WRAPPER_HOST)
+    pay_with_no_password_url = '{}/deposit-with-no-password/'.format(settings.PAY_WRAPPER_HOST)
 
     def __init__(self):
         super(DepositViewSet, self).__init__()
