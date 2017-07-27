@@ -146,7 +146,7 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
-        assertThat(userCouponModels.size(), is(1));
+        assertThat(userCouponModels.size(), is(2));
     }
 
     @Test
