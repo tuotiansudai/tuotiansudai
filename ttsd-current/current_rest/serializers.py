@@ -11,6 +11,7 @@ from current_rest import constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager
+from current_rest.models import Agent
 
 logger = logging.getLogger(__name__)
 

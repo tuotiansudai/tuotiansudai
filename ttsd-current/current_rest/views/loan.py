@@ -57,8 +57,11 @@ class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 @api_view(['PUT'])
 @transaction.atomic
 def audit_reject_loan(request, pk, category):
-    Loan.objects.filter(pk__in=pk).update(status=request.data['status'], auditor=request.data['auditor'],
-                                          updated_time=datetime.now())
+    loan = Loan.objects.filter(pk__in=pk)
+    if loan.exists():
+        loan.update(status=request.data['status'], auditor=request.data['auditor'], updated_time=datetime.now())
+    else:
+        return Response({'message', 'param is error'}, status=status.HTTP_201_CREATED)
 
     OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
                                 refer_pk=pk,
@@ -69,4 +72,4 @@ def audit_reject_loan(request, pk, category):
                                     request.data['auditor']) if category == 'audit' else u'{}驳回债权申请'.format(
                                     request.data['auditor']))
 
-    return Response(request.data, status=status.HTTP_201_CREATED)
+    return Response({'message', 'success'}, status=status.HTTP_201_CREATED)

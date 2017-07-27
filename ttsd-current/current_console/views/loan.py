@@ -48,7 +48,7 @@ def audit_reject_loan(request, category, pk):
     if response:
         return JsonResponse(response, status=status.HTTP_200_OK)
 
-    return JsonResponse(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return JsonResponse({'message', '內部服务器错误'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @require_http_methods(["GET"])
@@ -87,9 +87,7 @@ def edit_loan(request, pk):
         if response:
             return HttpResponseRedirect(reverse('loan_list'))
 
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    else:
-        return render(request, 'console/loan/edit.html', {'form': form, 'types': constants.LOAN_TYPE_CHOICES})
+    return render(request, 'console/loan/edit.html', {'form': form, 'types': constants.LOAN_TYPE_CHOICES})
 
 
 def _modify_loan(old_loan, form):

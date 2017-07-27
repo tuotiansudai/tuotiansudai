@@ -11,9 +11,13 @@
                 url: '/console/audit-reject-loan/reject/' + self.data('loan-id'),
                 type: 'PUT'
             })
-                .done(function () {
-                    layer.msg("成功驳回");
-                    location.reload();
+                .done(function (data) {
+                    if (data.message == 'success') {
+                        layer.msg("成功驳回");
+                        location.reload();
+                    } else {
+                        layer.msg("驳回失败");
+                    }
                 })
                 .fail(function () {
                     layer.msg("驳回失败");
@@ -25,11 +29,15 @@
                 type: 'PUT'
             })
                 .done(function () {
-                    layer.msg("审核通过");
-                    location.reload();
+                    if (data.message == 'success') {
+                        layer.msg("审核通过");
+                        location.reload();
+                    } else {
+                        layer.msg("审核失败");
+                    }
                 })
                 .fail(function () {
-                    layer.msg("error");
+                    layer.msg("审核失败");
                 });
         });
     })
