@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import datetime
 
 from django.db import transaction
 from rest_framework import mixins
