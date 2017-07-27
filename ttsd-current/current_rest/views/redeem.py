@@ -14,9 +14,14 @@ from current_rest import serializers
 from current_rest.biz.current_account_manager import CurrentAccountManager
 
 
-class RedeemViewSet(mixins.CreateModelMixin,
+class RedeemViewSet(mixins.RetrieveModelMixin,
+                    mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = serializers.CurrentRedeemSerializer
+    queryset = models.CurrentRedeem.objects.all()
+
+    def __init__(self):
+        super(RedeemViewSet, self).__init__()
 
 
 

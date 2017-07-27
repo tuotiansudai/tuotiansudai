@@ -46,7 +46,7 @@ public class MobileAppCurrentRedeemController extends MobileAppBaseController {
         RedeemResponseDto baseDto = currentRestClient.redeem(redeemRequestDto);
         baseResponseDto.setCode("");
         baseResponseDto.setMessage("");
-        currentRedeemResponseDataDto.setUrl(MessageFormat.format("/callback/{0}", AsyncUmPayService.CURRENT_REDEEM_APPLY));
+        currentRedeemResponseDataDto.setUrl(MessageFormat.format("/callback/{0}?order_id="+baseDto.getId(), AsyncUmPayService.CURRENT_REDEEM_APPLY.getMobileRetCallbackPath()));
         baseResponseDto.setData(currentRedeemResponseDataDto);
 
         return baseResponseDto;

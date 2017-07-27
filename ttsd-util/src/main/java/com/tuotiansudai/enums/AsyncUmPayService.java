@@ -161,7 +161,7 @@ public enum AsyncUmPayService {
     /**
      * 日息宝赎回申请
      */
-    CURRENT_REDEEM_APPLY("current_redeem", "", "", "", "tuotian://current/redeem/{0}");
+    CURRENT_REDEEM_APPLY("current_redeem_apply", "", "callback/current_redeem_apply", "", "tuotian://current/redeem/{0}");
 
 
     private final String serviceName;

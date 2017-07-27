@@ -80,11 +80,11 @@
     <#case 'membership_privilege_purchase_transfer_asyn'>
         <p>投资时将享受服务费7折优惠</p>
         <#break>
-    <#case 'current_redeem'>
+    <#case 'current_redeem_apply'>
         <ul class="info-item">
             <li>
-                <span class="info-title">fdfdfdsfs</span>
-                <span class="info-text">100000</span>
+                <span class="info-title">转出金额</span>
+                <span class="info-text">${values.amount!}</span>
             </li>
         </ul>
         <#break>
