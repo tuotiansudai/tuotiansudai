@@ -1,0 +1,16 @@
+# coding=utf-8
+LOAN_TYPE_HOUSE = 'HOUSE'
+LOAN_TYPE_VEHICLE = 'VEHICLE'
+LOAN_TYPE_FACTORING = 'FACTORING'
+LOAN_TYPE_BILL = 'BILL'
+LOAN_TYPE_HUIZU = 'HUIZU'
+LOAN_TYPE_SHUIYI = 'SHUIYI'
+
+LOAN_TYPE_CHOICES = (
+    (LOAN_TYPE_HOUSE, u'房产抵押借款'),
+    (LOAN_TYPE_VEHICLE, u'车辆抵押借款'),
+    (LOAN_TYPE_FACTORING, u'企业经营性借款-保理'),
+    (LOAN_TYPE_BILL, u'企业经营性借款-票据'),
+    (LOAN_TYPE_SHUIYI, u'税易经营性借款'),
+    (LOAN_TYPE_HUIZU, u'汽车融资租赁')
+)

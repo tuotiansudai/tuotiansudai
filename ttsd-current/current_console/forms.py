@@ -2,9 +2,8 @@
 import re
 
 from django import forms
-from django.core.validators import RegexValidator
 
-from current_rest import constants
+from current_console import constants
 
 
 class LoanForm(forms.Form):

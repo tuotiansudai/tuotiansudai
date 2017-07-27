@@ -88,6 +88,7 @@ DATABASES = {
                             'collation_connection=utf8_bin',
         }
     }
+
 }
 
 REST_FRAMEWORK = {
