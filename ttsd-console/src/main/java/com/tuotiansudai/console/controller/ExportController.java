@@ -103,41 +103,53 @@ public class ExportController {
     private AskRestClient askRestClient;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
-    public void exportCoupons(HttpServletResponse response) throws IOException {
+    public void exportCoupons(HttpServletResponse response,
+                              @RequestParam(value = "couponType",required = false) String couponType,
+                              @RequestParam(value = "couponSource",required = false) String couponSource,
+                              @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findNewbieAndInvestCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
         List<List<String>> coupons = exportService.buildCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponHeader, coupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
-    public void exportInterestCoupons(HttpServletResponse response) throws IOException {
+    public void exportInterestCoupons(HttpServletResponse response,
+                                      @RequestParam(value = "couponType",required = false) String couponType,
+                                      @RequestParam(value = "couponSource",required = false) String couponSource,
+                                      @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.InterestCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findInterestCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
         List<List<String>> interestCoupons = exportService.buildInterestCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InterestCouponsHeader, interestCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
-    public void exportRedEnvelopes(HttpServletResponse response) throws IOException {
+    public void exportRedEnvelopes(HttpServletResponse response,
+                                   @RequestParam(value = "couponType",required = false) String couponType,
+                                   @RequestParam(value = "couponSource",required = false) String couponSource,
+                                   @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.RedEnvelopesHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findRedEnvelopeCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
         List<List<String>> redEnvelopeCoupons = exportService.buildRedEnvelopeCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.RedEnvelopesHeader, redEnvelopeCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
-    public void exportBirthdayCoupons(HttpServletResponse response) throws IOException {
+    public void exportBirthdayCoupons(HttpServletResponse response,
+                                      @RequestParam(value = "couponType",required = false) String couponType,
+                                      @RequestParam(value = "couponSource",required = false) String couponSource,
+                                      @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findBirthdayCoupons(index, pageSize);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
         List<List<String>> birthdayCoupons = exportService.buildBirthdayCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader, birthdayCoupons, response.getOutputStream());
     }

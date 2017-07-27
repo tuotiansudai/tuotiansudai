@@ -615,8 +615,10 @@ public class InvestServiceImpl implements InvestService {
         investInfo.setTransferStatus(investModel.getTransferStatus().name());
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         loanDetailInfo.setLoanId(investModel.getLoanId());
-        loanDetailInfo.setDuration(loanMapper.findById(investModel.getLoanId()).getProductType().getDuration());
+        loanDetailInfo.setDuration(loanModel.getProductType().getDuration());
+        loanDetailInfo.setActivityType(loanModel.getActivityType().name());
         if (loanDetailsModel != null) {
             loanDetailInfo.setActivity(loanDetailsModel.isActivity());
             loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
@@ -628,7 +630,6 @@ public class InvestServiceImpl implements InvestService {
             if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
-
 
             if (DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
                     && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")

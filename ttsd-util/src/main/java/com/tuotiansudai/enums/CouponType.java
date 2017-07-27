@@ -1,5 +1,9 @@
 package com.tuotiansudai.enums;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public enum CouponType {
 
     RED_ENVELOPE("现金红包", "红包", 1),

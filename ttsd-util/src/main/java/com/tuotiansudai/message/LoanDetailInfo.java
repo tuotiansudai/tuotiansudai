@@ -10,6 +10,8 @@ public class LoanDetailInfo {
 
     private int duration;
 
+    private String activityType;
+
     public long getLoanId() {
         return loanId;
     }
@@ -40,5 +42,13 @@ public class LoanDetailInfo {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 }

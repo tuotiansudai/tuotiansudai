@@ -94,5 +94,4 @@ public class LotteryDrawActivityServiceTest {
         int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.ANNUAL_ACTIVITY);
         assertEquals(time, 21);
     }
-
 }

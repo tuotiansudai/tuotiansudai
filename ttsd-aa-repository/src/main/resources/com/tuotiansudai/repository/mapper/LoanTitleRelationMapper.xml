@@ -22,7 +22,7 @@
     </insert>
 
     <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
-        select * from loan_title_relation  where loan_id = #{loanId} order by title_id
+        select * from loan_title_relation  where loan_id = #{loanId}
     </select>
 
     <delete id="delete" parameterType="long">
@@ -30,7 +30,7 @@
     </delete>
 
     <select id="findLoanTitleRelationAndTitleByLoanId" parameterType="long" resultMap="loanTitleResultMap">
-        select ltr.*,lt.title from loan_title_relation ltr left join loan_title lt on ltr.title_id = lt.id where ltr.loan_id = #{loanId} order by ltr.title_id
+        select ltr.*,lt.title from loan_title_relation ltr left join loan_title lt on ltr.title_id = lt.id where ltr.loan_id = #{loanId}
     </select>
 
 </mapper>
