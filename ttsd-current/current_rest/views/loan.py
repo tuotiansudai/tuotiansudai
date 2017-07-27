@@ -63,10 +63,12 @@ def audit_reject_loan(request, pk, category):
     else:
         return Response({'message', 'param is error'}, status=status.HTTP_201_CREATED)
 
-    operation_type = constants.OperationType.LOAN_AUDIT if category == 'audit' else constants.OperationType.LOAN_REJECT
-    content = u'{}审核通过债权申请'.format(
-        request.data['auditor']) if category == 'audit' else u'{}驳回债权申请'.format(
-        request.data['auditor'])
+    if category == 'audit':
+        operation_type = constants.OperationType.LOAN_AUDIT
+        content = u'{}审核通过债权申请'.format(request.data['auditor'])
+    else:
+        operation_type = constants.OperationType.LOAN_REJECT
+        content = u'{}驳回债权申请'.format(request.data['auditor'])
 
     OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
                                 refer_pk=pk,

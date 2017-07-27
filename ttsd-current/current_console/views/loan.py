@@ -46,9 +46,9 @@ def audit_reject_loan(request, category, pk):
     response = RestClient('audit-reject-loan/{}/{}'.format(pk, category)).put(data=data)
 
     if response:
-        return JsonResponse(response, status=status.HTTP_200_OK)
+        return JsonResponse({'message': response[1]}, status=status.HTTP_200_OK)
 
-    return JsonResponse({'message', '內部服务器错误'}, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'message', '內部服务器错误'}, status=status.HTTP_200_OK)
 
 
 @require_http_methods(["GET"])
