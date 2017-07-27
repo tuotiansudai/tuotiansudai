@@ -13,14 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
+# -*-coding:utf-8 -*-
 from django.conf.urls import url
 
-from current_console.views import home
-from current_console.views import loan
+from current_console.views import home, loan, fund
 
 urlpatterns = [
     url('^index$', home.index, name='index'),
     url('^show-loan$', loan.show_loan, name='show_loan'),
     url('^create-loan$', loan.create_loan, name='create_loan'),
-    url('^audit-loan$', loan.audit_loan, name='audit_loan')
+    url('^audit-loan$', loan.audit_loan, name='audit_loan'),
+    url('^fund/setting$', fund.FundSettingView.as_view(), name='fund_setting'),
+    url('^fund/setting-approve$', fund.FundSettingApproveView.as_view(), name='fund_setting_approve'),
+    url('^fund/setting-history$', fund.fund_setting_history_page, name='fund_setting_history_page'),
+    url('^fund/setting-history-query$', fund.fund_setting_history_query, name='fund_setting_history_query'),
 ]

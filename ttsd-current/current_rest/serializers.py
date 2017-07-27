@@ -113,3 +113,22 @@ class CurrentRedeemSerializer(serializers.ModelSerializer):
         model = models.CurrentRedeem
         fields = ('id', 'login_name', 'amount', 'source')
         read_only_fields = ('created_time', 'approve_time', 'status')
+
+
+class FundHistoryQueryForm(serializers.Serializer):
+    begin_date = serializers.DateField(input_formats=['%Y-%m-%d'])
+    end_date = serializers.DateField(input_formats=['%Y-%m-%d'])
+
+
+class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
+    allow_change_quota = serializers.SerializerMethodField()
+
+    def get_allow_change_quota(self, instance):
+        return instance.config_quota_status in (
+            constants.DAILY_QUOTA_STATUS_UNSET, constants.DAILY_QUOTA_STATUS_REFUSED)
+
+    class Meta:
+        model = models.CurrentDailyFundInfo
+        fields = ('date', 'loan_remain_amount', 'quota_amount', 'config_quota_amount', 'config_quota_status',
+                  'invest_amount', 'allow_change_quota')
+        read_only_fields = ('date', 'loan_remain_amount', 'quota_amount', 'invest_amount', 'allow_change_quota')

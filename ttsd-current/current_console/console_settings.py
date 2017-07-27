@@ -14,6 +14,7 @@ LOGIN_URL = 'http://localhost:9080/login'
 # rest service url
 REST_SERVICE_HOST = '127.0.0.1'
 REST_SERVICE_PORT = '8000'
+REST_PATH = 'rest/'
 REST_TIME_OUT = 300
 
 LOGGING_DIR = '/var/log/current_console'
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'current_console.middleware.TTSDSessionManager',
+
 ]
 
 TEMPLATES = [
@@ -51,6 +53,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'current_console.context_processors.login_user_name',
             ],
         },
     },
@@ -106,3 +109,4 @@ LOGGING = {
         },
     }
 }
+
