@@ -129,3 +129,10 @@ class CurrentDailyFundInfo(BaseModel):
 
     class Meta:
         db_table = 'current_daily_fund_info'
+
+
+class FundAllocation(models.Model):
+    loan = models.ForeignKey(Loan, on_delete=models.PROTECT, null=True, related_name='+')
+    account = models.ForeignKey(CurrentAccount, on_delete=models.PROTECT, null=True, related_name='+')
+    amount = models.PositiveIntegerField(default=0, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True, blank=False, null=False)
