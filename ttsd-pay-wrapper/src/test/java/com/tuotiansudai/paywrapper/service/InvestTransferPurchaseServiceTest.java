@@ -5,6 +5,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -14,6 +15,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -77,12 +79,6 @@ public class InvestTransferPurchaseServiceTest {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private UserBillMapper userBillMapper;
-
-    @Autowired
-    private SystemBillMapper systemBillMapper;
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -192,31 +188,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
-    }
-
-    private void verifyAmountTransferMessage(UserModel transferrer, UserModel transferee, TransferApplicationModel fakeTransferApplication) throws IOException {
-        String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage transferFeeMessage = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMessage.class);
-        assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
-        assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
-        assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-
-        String transferMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage transferMessage = JsonConverter.readValue(transferMessageBody, AmountTransferMessage.class);
-        assertThat(transferMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
-        assertThat(transferMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transferMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-        assertThat(transferMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
-
-        String transfereeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage transfereeMessage = JsonConverter.readValue(transfereeMessageBody, AmountTransferMessage.class);
-        assertThat(transfereeMessage.getLoginName(), CoreMatchers.is(transferee.getLoginName()));
-        assertThat(transfereeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transfereeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_IN));
-        assertThat(transfereeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+        verifySystemBillMessage(actualTransferApplication);
     }
 
     @Test
@@ -281,9 +253,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(1).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
-
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+        verifySystemBillMessage(actualTransferApplication);
     }
 
     @Test
@@ -349,8 +319,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+        verifySystemBillMessage(actualTransferApplication);
     }
 
     @Test
@@ -403,9 +372,37 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
+        verifySystemBillMessage(actualTransferApplication);
+    }
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+    private void verifyAmountTransferMessage(UserModel transferrer, UserModel transferee, TransferApplicationModel fakeTransferApplication) throws IOException {
+        String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transferFeeMessage = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMessage.class);
+        assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
+        assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
+        assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+
+        String transferMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transferMessage = JsonConverter.readValue(transferMessageBody, AmountTransferMessage.class);
+        assertThat(transferMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transferMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_OUT));
+        assertThat(transferMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+
+        String transfereeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transfereeMessage = JsonConverter.readValue(transfereeMessageBody, AmountTransferMessage.class);
+        assertThat(transfereeMessage.getLoginName(), CoreMatchers.is(transferee.getLoginName()));
+        assertThat(transfereeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transfereeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_IN));
+        assertThat(transfereeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+    }
+
+    private void verifySystemBillMessage(TransferApplicationModel actualTransferApplication) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(actualTransferApplication.getTransferFee()));
+        assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.TRANSFER_FEE));
     }
 
     @Test

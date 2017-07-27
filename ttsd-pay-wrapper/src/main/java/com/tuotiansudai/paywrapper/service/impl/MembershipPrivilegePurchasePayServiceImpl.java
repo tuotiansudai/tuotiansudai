@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseM
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -22,10 +23,8 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRequestModel;
 import com.tuotiansudai.paywrapper.service.MembershipPrivilegePurchasePayService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -47,9 +46,6 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
     @Autowired
     private PayAsyncClient payAsyncClient;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -125,8 +121,11 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
             membershipPrivilegePurchaseModel.setStatus(MembershipPrivilegePurchaseStatus.SUCCESS);
             AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE, null, null);
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-            systemBillService.transferIn(orderId, amount, SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE,
+
+            SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                    orderId, amount, SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE,
                     MessageFormat.format("{0}购买增值特权{1}天", membershipPrivilegePurchaseModel.getMobile(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration()));
+            mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
         }
         membershipPrivilegePurchaseMapper.update(membershipPrivilegePurchaseModel);
         Date endTime = new DateTime().plusDays(membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();

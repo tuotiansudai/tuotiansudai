@@ -12,10 +12,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.AnxinContractMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -33,7 +30,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -84,9 +80,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -360,8 +353,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
             ProjectTransferResponseModel feeResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, feeRequestModel, ProjectTransferResponseModel.class);
             if (feeResponseModel.isSuccess()) {
-                systemBillService.transferIn(transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
+
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                        transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
+                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {

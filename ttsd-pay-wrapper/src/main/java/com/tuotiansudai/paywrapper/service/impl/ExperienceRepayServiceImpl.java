@@ -4,10 +4,13 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -19,7 +22,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.TransferReques
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ExperienceRepayService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -56,9 +58,6 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -178,7 +177,8 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                 investModel.getLoginName(), String.valueOf(investRepayModel.getRepayAmount()));
 
-        systemBillService.transferOut(investRepayModel.getId(), investRepayModel.getRepayAmount(), SystemBillBusinessType.EXPERIENCE_INTEREST, detail);
+        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, investRepayModel.getId(), investRepayModel.getRepayAmount(), SystemBillBusinessType.EXPERIENCE_INTEREST, detail);
+        mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
         PayDataDto baseDataDto = new PayDataDto();
         baseDataDto.setStatus(true);

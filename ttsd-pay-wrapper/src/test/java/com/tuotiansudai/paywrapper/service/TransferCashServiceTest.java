@@ -9,13 +9,16 @@ import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -126,8 +129,13 @@ public class TransferCashServiceTest {
 
         verifyAmountTransferMessage(orderId);
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(orderId, SystemBillBusinessType.LOTTERY_CASH);
-        assertThat(systemBillModel.getAmount(), is(1L));
+        verifySystemBillMessage();
+    }
+
+    private void verifySystemBillMessage() throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(1L));
     }
 
     private void verifyAmountTransferMessage(long orderId) throws IOException {
