@@ -48,7 +48,7 @@ USE_L10N = True
 
 USE_TZ = False
 
-REST_ENABLED = os.environ.get('REST_ENABLED', False)
+REST_ENABLED = os.environ.get('REST_ENABLED', True)
 
 CONSOLE_ENABLED = os.environ.get('CONSOLE_ENABLED', False)
 

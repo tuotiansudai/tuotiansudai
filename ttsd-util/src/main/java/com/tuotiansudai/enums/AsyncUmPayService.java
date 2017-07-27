@@ -103,6 +103,11 @@ public enum AsyncUmPayService {
      */
     CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "current_deposit_notify", "tuotian://current-deposit/{0}"),
 
+    /**
+     * 无密准备金账户转入标的账户
+     */
+    CURRENT_INTEREST_SETTLEMENT("project_transfer_nopwd", "", "", "current_interest_settlement_notify", ""),
+
 
     /**
      * 个人账户充值
