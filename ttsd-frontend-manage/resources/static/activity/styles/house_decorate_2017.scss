@@ -1,0 +1,556 @@
+@charset "utf-8";
+
+@-webkit-keyframes win-effect {
+  0% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  20% {
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  40% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  60% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  80% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 100%
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+}
+
+@keyframes win-effect {
+  0% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  20% {
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  40% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  60% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  80% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%
+  }
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.house-decorate-container{
+  float:left;
+  width:100%;
+  background:#ffe15f;
+  .media-pc{
+    display: block;
+    @media (max-width:700px) {
+      display:none;
+    }
+  }
+  .media-phone{
+    display: none;
+    @media (max-width:700px) {
+      display:block;
+    }
+  }
+  .layui-layer{
+    box-shadow: none;
+    background:none;
+  }
+  .lottery-tip{
+    float:left;
+    width:100%;
+    height:100%;
+    background:url('../images/2017/house-decorate/tip-bg.png') no-repeat center;
+    background-size:100%;
+    position: relative;
+    display:none;
+    box-sizing:border-box;
+    padding:0 50px;
+    .lottery-content{
+      float:left;
+      width:100%;
+      height:240px;
+      box-sizing: border-box;
+      @media (max-width:700px) {
+        height:190px;
+      }
+      p{
+        text-align:center;
+        margin-bottom: 0;
+        &.info-text{
+          font-size:26px;
+          color:#de494e;
+          line-height: 30px;
+          margin-top: 100px;
+          @media (max-width:700px) {
+            font-size:14px;
+            margin-top: 80px;
+          }
+        }
+        &.gift-name{
+          font-size:26px;
+          color:#de494e;
+          line-height: 30px;
+          @media (max-width:700px) {
+            font-size:18px;
+          }
+        }
+        &.tip-text{
+          font-size:26px;
+          color:#de494e;
+          line-height: 30px;
+          margin-top: 100px;
+          @media (max-width:700px) {
+            font-size:14px;
+            line-height: 20px;
+            margin-top: 90px;
+          }
+        }
+      }
+    }
+    .lottery-link{
+      float:left;
+      width:100%;
+      text-align:center;
+      a{
+        display:inline-block;
+        width:100%;
+        height:45px;
+        line-height: 45px;
+        text-align:center;
+        font-size:18px;
+        color:#fff;
+        background: #de494e;
+        border-radius:45px;
+        margin:30px 0;
+        @media (max-width:700px) {
+          width:100%;
+          height:30px;
+          line-height: 30px;
+          font-size:12px;
+          border-radius:30px;
+          margin:15px 0;
+        }
+      }
+    }
+  }
+  .top-img{
+    width:100%;
+  }
+  .wp{
+    width:1200px;
+    margin:0 auto;
+    @media (max-width:700px) {
+      width:300px;
+      box-sizing:border-box;
+    }
+  }
+  .content-item{
+    float:left;
+    width:100%;
+    padding:50px 0;
+    @media (max-width:700px) {
+      padding:25px 0;
+    }
+    &.even{
+      background:#ff6161;
+    }
+    .day-bag-item{
+      float:left;
+      width:100%;
+      background:url('../images/2017/house-decorate/day-bg.png') no-repeat center;
+      background-size:100%;
+      box-sizing:border-box;
+      padding:60px 80px 30px;
+      position: relative;
+      @media (max-width:700px) {
+        background:url('../images/2017/house-decorate/day-bg-phone.png') no-repeat center;
+        background-size:100%;
+        padding:20px;
+      }
+      h3{
+        position: absolute;
+        top:0;
+        left:50%;
+        margin-left:-155px;
+        width:310px;
+        height:60px;
+        background:url('../images/2017/house-decorate/title-one.png') no-repeat center;
+        @media (max-width:700px) {
+          width:160px;
+          margin-left: -80px;
+          background-size: 100%;
+          height: 30px;
+          top: -15px;
+        }
+      }
+      p{
+        color:#fff;
+        font-size:18px;
+        margin-bottom: 0;
+        @media (max-width: 700px) {
+          font-size:12px;
+        }
+        .bag-item{
+          display:inline-block;
+          width:530px;
+          height:290px;
+          padding:0 170px;
+          background:url('../images/2017/house-decorate/bag-bg.png') no-repeat center;
+          background-size: 100%;
+          cursor:pointer;
+          box-sizing:border-box;
+          @media (max-width:700px) {
+            width:100%;
+            padding:0 85px;
+            height:130px;
+            background-size: 80%;
+          }
+          strong{
+            float:left;
+            width:100%;
+            height:100%;
+            background:url('../images/2017/house-decorate/icon-bag.png') no-repeat center;
+            background-size: 100%;
+            &.lottering {
+              -webkit-animation-duration: 0.25s;
+              animation-duration: 0.25s;
+              -webkit-animation-iteration-count: infinite;
+              animation-iteration-count: infinite;
+              -webkit-animation-name: win-effect;
+              animation-name: win-effect;
+              -webkit-animation-timing-function: ease-in-out;
+              animation-timing-function: ease-in-out;
+            }
+          }
+        }
+      }
+    }
+    .free-money-item{
+      float:left;
+      width:100%;
+      background:url('../images/2017/house-decorate/free-bg.png') no-repeat center;
+      background-size:100%;
+      box-sizing:border-box;
+      padding:60px 80px 30px;
+      position: relative;
+      @media (max-width:700px) {
+        background:url('../images/2017/house-decorate/free-bg-phone.png') no-repeat center;
+        background-size:100%;
+        padding:20px;
+      }
+      h3{
+        position: absolute;
+        top:-20px;
+        left:50%;
+        margin-left:-205px;
+        width:410px;
+        height:60px;
+        background:url('../images/2017/house-decorate/title-two.png') no-repeat center;
+        @media (max-width:700px) {
+          width:210px;
+          margin-left: -105px;
+          background-size: 100%;
+          height: 30px;
+          top: -15px;
+        }
+      }
+      .info-item{
+        float:left;
+        width:100%;
+        font-size:18px;
+        color:#cc321a;
+        margin-bottom: 40px;
+        @media (max-width:700px) {
+          font-size:12px;
+          margin-bottom: 10px;
+        }
+        span{
+          font-size: 20px;
+          color:#9c00ff;
+          @media (max-width:700px) {
+            font-size:14px;
+          }
+        }
+      }
+      .list-item{
+        float:left;
+        width:100%;
+        .loan-number{
+          font-size:18px;
+          color:#cc321a;
+          @media (max-width:700px) {
+            font-size:14px;
+          }
+        }
+        .table{
+          margin:15px 0;
+          &.table-pc{
+            display: inline-table;
+            @media (max-width:700px) {
+              display: none;
+            }
+          }
+          &.table-phone{
+            display: none;
+            @media (max-width:700px) {
+              display: inline-table;
+            }
+          }
+          @media (max-width:700px) {
+            margin:0;
+          }
+          th{
+            font-size:14px;
+            color:#323232;
+            background:#fff;
+            border:1px solid #ffe15f;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+          }
+          td{
+            font-size:14px;
+            color:#323232;
+            background:#fff;
+            border:1px solid #ffe15f;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+            strong{
+              font-size:18px;
+              color:#9c00ff;
+              @media (max-width:700px) {
+                font-size:12px;
+              }
+            }
+          }
+        }
+        .tip-item{
+          font-size:16px;
+          color:#cc321a;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
+        }
+      }
+    }
+    .gift-list-item{
+      float:left;
+      width:100%;
+      background:url('../images/2017/house-decorate/gift-bg.png') no-repeat center;
+      background-size:100%;
+      box-sizing:border-box;
+      padding:60px 80px 30px;
+      position: relative;
+      @media (max-width:700px) {
+        background:url('../images/2017/house-decorate/gift-bg-phone.png') no-repeat center;
+        background-size:100%;
+        padding:20px 10px;
+      }
+      h3{
+        position: absolute;
+        top:0;
+        left:50%;
+        margin-left:-205px;
+        width:410px;
+        height:60px;
+        background:url('../images/2017/house-decorate/title-three.png') no-repeat center;
+        @media (max-width:700px) {
+          width:210px;
+          margin-left: -105px;
+          background-size: 100%;
+          height: 30px;
+          top: -15px;
+        }
+      }
+      .info-text{
+        color:#fff;
+        font-size:18px;
+        margin-bottom: 0;
+        @media (max-width:700px) {
+          font-size:12px;
+        }
+      }
+      .gift-list{
+        float:left;
+        width:100%;
+        dt{
+          float:left;
+          width:100%;
+          font-size:18px;
+          color:#ffe15f;
+          @media (max-width:700px) {
+            font-size:12px;
+            color:#fff;
+          }
+        }
+        dd{
+          float:left;
+          width:50%;
+          margin:20px 0;
+          @media (max-width:700px) {
+            margin:10px 0;
+            box-sizing:border-box;
+            padding:0 5px;
+          }
+          &.row-item{
+            width:33.333333%;
+            @media (max-width:700px) {
+              box-sizing:border-box;
+              padding:0 10px;
+            }
+            p{
+              &.img-item{
+                height:150px;
+                @media (max-width:700px) {
+                  height:75px;
+                }
+              }
+            }
+          }
+          p{
+            text-align:center;
+            font-size:16px;
+            color:#fff;
+            margin-bottom: 0;
+            @media (max-width:700px) {
+              font-size:12px;
+            }
+            &.img-item{
+              height:300px;
+              @media (max-width:700px) {
+                height:110px;
+              }
+              &.gift-one{
+                background:url('../images/2017/house-decorate/gift-one.png') no-repeat center;
+                background-size: 50%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+              &.gift-two{
+                background:url('../images/2017/house-decorate/gift-two.png') no-repeat center;
+                background-size: 50%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+              &.gift-three{
+                background:url('../images/2017/house-decorate/gift-three.png') no-repeat center;
+                background-size: 50%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+              &.gift-four{
+                background:url('../images/2017/house-decorate/gift-four.png') no-repeat center;
+                background-size: 68%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+              &.gift-five{
+                background:url('../images/2017/house-decorate/gift-five.png') no-repeat center;
+                background-size: 68%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+              &.gift-six{
+                background:url('../images/2017/house-decorate/gift-six.png') no-repeat center;
+                background-size: 68%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+              &.gift-seven{
+                background:url('../images/2017/house-decorate/gift-seven.png') no-repeat center;
+                background-size: 68%;
+                @media (max-width:700px) {
+                  background-size:100%;
+                }
+              }
+            }
+            &.name-item{
+              font-size:18px;
+              @media (max-width:700px) {
+                font-size:12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .rule-item{
+    float:left;
+    width:100%;
+    color:#fff;
+    padding:0 60px;
+    box-sizing:border-box;
+    @media (max-width:700px) {
+      padding:0 20px;
+    }
+    dt{
+      font-size:16px;
+      @media (max-width:700px) {
+        font-size:14px;
+      }
+    }
+    dd{
+      font-size:16px;
+      @media (max-width:700px) {
+        font-size:12px;
+      }
+    }
+  }
+}
+
+
+
