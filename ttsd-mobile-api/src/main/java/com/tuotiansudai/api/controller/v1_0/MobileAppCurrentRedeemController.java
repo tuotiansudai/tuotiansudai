@@ -62,7 +62,7 @@ public class MobileAppCurrentRedeemController extends MobileAppBaseController {
         AccountResponseDto baseDto = currentRestClient.getAccount(getLoginName());
         baseResponseDto.setCode("");
         baseResponseDto.setMessage("");
-        currentRedeemLimitResponseDataDto.setAvliableRedeemAmount(baseDto.getPersonalAvailableRedeem());
+        currentRedeemLimitResponseDataDto.setAvailableRedeemAmount(baseDto.getPersonalAvailableRedeem());
         currentRedeemLimitResponseDataDto.setMaxRedeemAmount(baseDto.getPersonalMaxRedeem());
         baseResponseDto.setData(currentRedeemLimitResponseDataDto);
         return baseResponseDto;
