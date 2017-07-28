@@ -21,12 +21,12 @@
     <script src="/static/libs/validate/1.16.0/jquery.validate.min.js"></script>
     <script src="/static/libs/validate/1.16.0/messages_zh.min.js"></script>
     <script src="/static/libs/validate/1.16.0/additional-methods.min.js"></script>
+    <script src="/static/libs/layer/layer.js"></script>
     {% block style_content %}
     {% endblock %}
 </head>
 <body>
-{% load head_lab_tags %}
-{% load side_lab_tags %}
+{% load lab_tags %}
 <header class="navbar" id="top" role="banner">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -43,17 +43,16 @@
      {% head_lab request %}
 </header>
 <!-- main begin -->
-<div class="main">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- menu sidebar -->
-            {% side_lab request %}
-            <!-- menu sidebar end -->
 
-            <!-- content area begin -->
-            {% block content %}{% endblock %}
-            <!-- content area end -->
-        </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- menu sidebar -->
+        {% side_lab request %}
+        <!-- menu sidebar end -->
+
+        <!-- content area begin -->
+        {% block content %}{% endblock %}
+        <!-- content area end -->
     </div>
 </div>
 <!-- main end -->
