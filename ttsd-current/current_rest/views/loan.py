@@ -49,7 +49,7 @@ class LoanViewSet(mixins.RetrieveModelMixin,
 
 
 class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    serializer_class = serializers.LoanSerializer
+    serializer_class = serializers.LoanListSerializer
     queryset = models.Loan.objects.all()
 
 

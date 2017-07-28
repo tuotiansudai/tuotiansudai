@@ -95,7 +95,6 @@ class AgentSerializer(serializers.ModelSerializer):
 
 
 class LoanSerializer(serializers.ModelSerializer):
-    agent = AgentSerializer()
     amount = serializers.IntegerField(min_value=0, max_value=99999)
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
     effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
@@ -106,6 +105,10 @@ class LoanSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Loan
         fields = '__all__'
+
+
+class LoanListSerializer(LoanSerializer):
+    agent = AgentSerializer()
 
 
 class CurrentRedeemSerializer(serializers.ModelSerializer):

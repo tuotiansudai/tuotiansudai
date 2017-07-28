@@ -319,9 +319,9 @@ menus = [
         "sidebar": [
             {"name": "", "class": "sub-title-1", "text": "资产管理", "link": "",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
-            {"name": "create-loan", "text": "添加资产", "link": "/console/show-loan",
+            {"name": "create-loan", "text": "添加资产", "link": "/show-loan",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
-            {"name": "loan-list", "text": "待审核资产列表", "link": "/console/loan-list",
+            {"name": "loan-list", "text": "待审核资产列表", "link": "/loan-list",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']}
         ]
     }
