@@ -7,10 +7,10 @@ from django.views.decorators.http import require_http_methods
 from rest_framework import status
 from rest_framework.response import Response
 
+from current_console import constants
 from current_console.decorators import user_roles_check
 from current_console.forms import LoanForm
 from current_console.rest_client import RestClient
-from current_rest import constants
 
 
 @require_http_methods(["GET"])

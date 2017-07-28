@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import datetime
 
 from django.db import transaction
 from rest_framework import mixins
@@ -33,7 +32,7 @@ class LoanViewSet(mixins.RetrieveModelMixin,
                                     refer_pk=response.data['id'],
                                     operator=response.data['creator'],
                                     operation_type=constants.OperationType.LOAN_ADD,
-                                    content='创建通过债权申请')
+                                    content=u'创建通过债权申请')
 
         return response
 

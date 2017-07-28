@@ -3,7 +3,7 @@ import re
 
 from django import forms
 
-from current_rest import constants
+from current_console import constants
 
 
 class LoanForm(forms.Form):
