@@ -40,8 +40,7 @@ public class CurrentRedeemService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private PayAsyncClient payAsyncClient;
