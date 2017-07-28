@@ -3,7 +3,7 @@
 from rest_framework import mixins
 from rest_framework import viewsets
 
-from current_console import models
+from current_rest import models
 from current_rest import serializers
 
 

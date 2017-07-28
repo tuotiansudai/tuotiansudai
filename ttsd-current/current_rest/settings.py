@@ -70,8 +70,6 @@ if os.path.isfile(setting_local_file):
 # Application definition
 INSTALLED_APPS = ['rest_framework', 'current_rest']
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -86,10 +84,16 @@ DATABASES = {
             'init_command': 'SET '
                             'character_set_connection=utf8,'
                             'collation_connection=utf8_bin',
-        }
+        },
+        'TEST': {
+            'CHARSET': 'UTF8',
+        },
+
     }
 
 }
+# Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],

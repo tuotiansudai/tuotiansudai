@@ -2,11 +2,14 @@
 LOAN_STATUS_APPROVING = 'APPROVING'
 LOAN_STATUS_APPROVED = 'APPROVED'
 LOAN_STATUS_EXPIRED = 'EXPIRED'
+LOAN_STATUS_REJECT = 'REJECT'
 
 LOAN_STATUS_CHOICES = (
     (LOAN_STATUS_APPROVING, u'待审核'),
     (LOAN_STATUS_APPROVED, u'已审核'),
-    (LOAN_STATUS_EXPIRED, u'已过期')
+    (LOAN_STATUS_EXPIRED, u'已过期'),
+    (LOAN_STATUS_REJECT, u'已驳回'),
+
 )
 
 LOAN_TYPE_HOUSE = 'HOUSE'
@@ -37,9 +40,13 @@ class OperationTarget(object):
 class OperationType(object):
     LOAN_ADD = 'LOAN_ADD'
     LOAN_AUDIT = 'LOAN_AUDIT'
+    LOAN_REJECT = 'LOAN_REJECT'
+    LOAN_EDIT = 'LOAN_EDIT'
     OPERATION_TYPE_MAP = (
         (LOAN_ADD, u'增加债权信息'),
         (LOAN_AUDIT, u'审核债权信息'),
+        (LOAN_REJECT, u'驳回债权信息'),
+        (LOAN_EDIT, u'编辑债权信息'),
     )
 
 

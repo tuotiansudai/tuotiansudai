@@ -85,6 +85,24 @@
             <li>
                 <span class="info-title">转出金额</span>
                 <span class="info-text">${values.amount!}</span>
+                <span class="info-text">${(values.orderId)!}</span>
+            </li>
+        </ul>
+        <#break>
+    <#case 'current_deposit_project_transfer'>
+    <#case 'current_deposit_project_transfer_nopwd'>
+        <ul class="info-item">
+            <li>
+                <span class="info-title">投资金额</span>
+                <span class="info-text">${(values.investAmount)!}元</span>
+            </li>
+            <li>
+                <span class="info-title">所投项目</span>
+                <span class="info-text">日息宝</span>
+            </li>
+            <li>
+                <span class="info-title">交易流水号</span>
+                <span class="info-text">${(values.orderId)!}</span>
             </li>
         </ul>
         <#break>
