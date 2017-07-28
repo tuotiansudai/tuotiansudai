@@ -38,7 +38,7 @@ class RedeemTestCase(APITestCase):
                  'source': constants.SOURCE_IOS}
         self.client.post(url, data2, format='json')
 
-        response = self.client.get('/rest/account/{}'.format(self.login_name))
+        response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
         self.assertEqual(response.data['personal_max_redeem'], max_amoount)
         self.assertEqual(response.data['personal_available_redeem'], 9700000)
@@ -58,7 +58,7 @@ class RedeemTestCase(APITestCase):
                  'source': constants.SOURCE_IOS}
         self.client.post(url, data2, format='json')
 
-        response = self.client.get('/rest/account/{}'.format(self.login_name))
+        response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
         self.assertEqual(response.data['personal_max_redeem'], max_amoount)
         self.assertEqual(response.data['personal_available_redeem'], 30000)
