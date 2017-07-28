@@ -22,8 +22,12 @@ from current_console.views import home, loan, fund
 urlpatterns = [
     url('^index$', home.index, name='index'),
     url('^show-loan$', loan.show_loan, name='show_loan'),
+    url('^show-edit-loan/(?P<pk>[0-9]+)$', loan.show_edit_loan, name='show_edit_loan'),
+    url('^edit-loan/(?P<pk>[0-9]+)$', loan.edit_loan, name='edit_loan'),
     url('^create-loan$', loan.create_loan, name='create_loan'),
-    url('^audit-loan$', loan.audit_loan, name='audit_loan'),
+    url('^audit-reject-loan/(?P<category>(audit|reject))/(?P<pk>[0-9]+)$', loan.audit_reject_loan,
+        name='audit_reject_loan'),
+    url('^loan-list$', loan.loan_list, name='loan_list'),
     url('^fund/setting$', fund.FundSettingView.as_view(), name='fund_setting'),
     url('^fund/setting-approve$', fund.FundSettingApproveView.as_view(), name='fund_setting_approve'),
     url('^fund/setting-history$', fund.fund_setting_history_page, name='fund_setting_history_page'),
