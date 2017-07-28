@@ -7,5 +7,8 @@ from current_rest import serializers
 
 
 class RedeemViewSet(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
                     viewsets.GenericViewSet):
+
     serializer_class = serializers.CurrentRedeemSerializer

@@ -30,7 +30,7 @@ post_loan = LoanViewSet.as_view({'post': 'create'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 loan_list = LoanListViewSet.as_view({'get': 'list'})
 
-redeem = RedeemViewSet.as_view({'post': 'create'})
+redeem = RedeemViewSet.as_view({'post': 'create', 'get': 'retrieve', 'put': 'update'})
 
 urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
