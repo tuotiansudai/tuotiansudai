@@ -44,23 +44,23 @@ public class MobileAppCurrentRedeemController extends MobileAppBaseController {
         }
 
         RedeemResponseDto baseDto = currentRestClient.redeem(redeemRequestDto);
-        baseResponseDto.setCode("");
+        baseResponseDto.setCode("0000");
         baseResponseDto.setMessage("");
-        currentRedeemResponseDataDto.setUrl(MessageFormat.format("/callback/{0}?order_id="+baseDto.getId(), AsyncUmPayService.CURRENT_REDEEM_APPLY.getMobileRetCallbackPath()));
+        currentRedeemResponseDataDto.setUrl(MessageFormat.format("http://192.168.60.144:9088/callback/{0}?order_id="+baseDto.getId(), AsyncUmPayService.CURRENT_REDEEM_APPLY.getMobileRetCallbackPath()));
         baseResponseDto.setData(currentRedeemResponseDataDto);
 
         return baseResponseDto;
 
     }
 
-    @RequestMapping(value = "/get/rxb/redeem/limits", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/rxb/redeem/limits", method = RequestMethod.POST)
     @ApiOperation("当日可转出金额和最大转出金额")
     public BaseResponseDto<CurrentRedeemLimitResponseDataDto> limitRedeem() {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         CurrentRedeemLimitResponseDataDto currentRedeemLimitResponseDataDto = new CurrentRedeemLimitResponseDataDto();
 
         AccountResponseDto baseDto = currentRestClient.getAccount(getLoginName());
-        baseResponseDto.setCode("");
+        baseResponseDto.setCode("0000");
         baseResponseDto.setMessage("");
         currentRedeemLimitResponseDataDto.setAvailableRedeemAmount(baseDto.getPersonalAvailableRedeem());
         currentRedeemLimitResponseDataDto.setMaxRedeemAmount(baseDto.getPersonalMaxRedeem());
