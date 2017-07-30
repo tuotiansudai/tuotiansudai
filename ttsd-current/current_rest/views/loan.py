@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+from datetime import datetime
 
 from django.db import transaction
 from rest_framework import mixins
@@ -76,3 +77,4 @@ def audit_reject_loan(request, pk, category):
                                 content=content)
 
     return Response({'message', 'success'}, status=status.HTTP_201_CREATED)
+
