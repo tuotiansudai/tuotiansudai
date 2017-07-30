@@ -5,16 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-10">
-        <form class="form-horizontal" action="{% url 'create_loan' %}" method="post" style="padding-top: 20px">
+    <form class="form-horizontal" action="{% url 'edit_loan' loan.id %}" method="post" style="padding-top: 20px">
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">资产类型:</label>
             <div class="col-sm-6">
-                <select class="form-group" name="loan_type" value="{{ form.loan_type.value }}">
+                <select class="form-group" name="loan_type" value="{{ loan.loan_type }}">
                     <option value="">请选择</option>
                     {% for key,value in types %}
                         <option value="{{ key }}"
-                                {% if form.type.value == key %}selected {% endif %}>{{ value }}</option>
+                                {% if loan.loan_type == key %}selected {% endif %}>{{ value }}</option>
                     {% endfor %}
                 </select>
                 <p>{{ form.loan_type.errors }}</p>
@@ -23,7 +22,7 @@
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">代理人:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="agent" required value="{{ form.agent.value }}"
+                <input type="text" class="form-control" name="agent" required value="{{ loan.agent.id }}"
                        placeholder="代理人">
                 <p>{{ form.agent.errors }}</p>
             </div>
@@ -32,7 +31,7 @@
             <label for="volume" class="col-sm-3 control-label">资产价值（万元）:</label>
             <div class="col-sm-6">
                 <input type="number" class="form-control" name="amount" maxlength="5" required
-                       value="{{ form.amount.value }}"
+                       value="{{ loan.amount }}"
                        placeholder="资产价值（万元）">
                 <p>{{ form.amount.errors }}</p>
             </div>
@@ -44,7 +43,7 @@
                        required
                        data-date-format="yyyy-mm-dd hh:ii:ss"
                        placeholder="计息开始时间"
-                       value="{{ form.effective_date.value }}"
+                       value="{{ loan.effective_date }}"
                 />
                 <p>{{ form.effective_date.errors }}</p>
 
@@ -54,7 +53,7 @@
                        required
                        data-date-format="yyyy-mm-dd hh:ii:ss"
                        placeholder="计息结束时间"
-                       value="{{ form.expiration_date.value }}"
+                       value="{{ loan.expiration_date }}"
                 />
                 <p>{{ form.expiration_date.errors }}</p>
             </div>
@@ -62,7 +61,7 @@
         <div class="form-group">
             <label for="volume" class="col-sm-3 control-label">借款人:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="debtor" maxlength="24" value="{{ form.debtor.value }}"
+                <input type="text" class="form-control" name="debtor" maxlength="24" value="{{ loan.debtor }}"
                        placeholder="借款人">
                 <p>{{ form.debtor.errors }}</p>
             </div>
@@ -74,7 +73,7 @@
                        required
                        maxlength="18"
                        placeholder="请输入18位身份证号"
-                       value="{{ form.debtor_identity_card.value }}"
+                       value="{{ loan.debtor_identity_card }}"
                 />
                 <p>{{ form.debtor_identity_card.errors }}</p>
             </div>
@@ -82,11 +81,9 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-9">
                 <p>{{ form.non_field_errors }}</p>
-                <button type="submit" class="btn btn-default">提交</button>
+                <button type="submit" class="btn btn-default">编 辑</button>
             </div>
         </div>
     </form>
-    </div>
-
 
 {% endblock %}
