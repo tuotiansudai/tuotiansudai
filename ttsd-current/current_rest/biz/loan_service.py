@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import decimal
 import logging
 
 import math
@@ -31,24 +32,20 @@ class LoanMatching(object):
         sum_balance = 0
         fund_allocation = []
         # 匹配债权
-        for unmatch_loan in unmatch_loan_cache:
+        for index, unmatch_loan in enumerate(unmatch_loan_cache):
             # todo:self.account.balance * loan['weight'] 保留正整数
-            sum_balance += self.account.balance * unmatch_loan['weight']
-            unmatch_loan['left_amount'] -= self.account.balance * unmatch_loan['weight']
+            # 每次拆分债权金额
+            each_loan_amount = self.account.balance - sum_balance if index == len(unmatch_loan_cache) - 1 else int(
+                self.account.balance * unmatch_loan['weight'])
+            sum_balance += each_loan_amount
+            unmatch_loan['left_amount'] -= each_loan_amount
             fund_allocation.append({"loan": unmatch_loan['loan'],
                                     "account_id": self.account.id,
-                                    "amount": self.account.balance * unmatch_loan['weight']
+                                    "amount": each_loan_amount
                                     })
 
-        calibration_balance = self.account.balance - sum_balance
         # 债权入库
         for index, fund in enumerate(fund_allocation):
-            # 校准金额计入最大债权
-            if index == 0:
-                fund['amount'] += calibration_balance
-                logger.info(
-                    "[loan matching:] loan_id:{}校验金额:{} 匹入 account_id:{}账户".format(fund['loan'].id, fund['amount'],
-                                                                                   fund['account_id']))
             # todo: 写入日志文件
             logger.info(
                 "[loan matching:] 用戶id:{}匹配债权loan_id{}金额{}".format(fund['account_id'], fund['loan'].id,
@@ -71,8 +68,7 @@ class LoanMatching(object):
         global LOAN_MATCHING_DATE
         if LOAN_MATCHING_DATE != (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"):
             unmatch_loan_cache = []
-        else:
-            LOAN_MATCHING_DATE = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        LOAN_MATCHING_DATE = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
         if len(unmatch_loan_cache) == 0:
             un_match_loans = valid_loan()
@@ -84,10 +80,10 @@ class LoanMatching(object):
                 })
         else:
             unmatch_loan_cache = [un_match for un_match in unmatch_loan_cache if un_match['left_amount'] > 0]
+        # 债权排序
+        unmatch_loan_cache.sort(key=lambda l: l['loan'].amount)
         # 计算债权权重
         self._calculate_loan_weight()
-        # 债权排序
-        unmatch_loan_cache.sort(key=lambda l: l['loan'].amount, reverse=True)
 
     def _calculate_loan_weight(self):
         global unmatch_loan_cache
@@ -95,11 +91,17 @@ class LoanMatching(object):
         sum_amount = self._calculate_sum_amount()
         sum_weight = 0
 
-        for i, unmatch_loan in enumerate(reversed(unmatch_loan_cache)):
-            # todo:self.account.balance * loan['weight'] 保留正整数
-            unmatch_loan['weight'] = 1 - sum_weight if i == len(unmatch_loan_cache) - 1 else unmatch_loan['loan'][
-                                                                                                 'amount'] / sum_amount
+        for i, unmatch_loan in enumerate(unmatch_loan_cache):
+            self._set_decimal_conf(2)
+            unmatch_loan['weight'] = 1 - sum_weight if i == len(unmatch_loan_cache) - 1 else (decimal.Decimal(
+                unmatch_loan[
+                    'loan'].amount) / decimal.Decimal(sum_amount)).__float__()
             sum_weight += unmatch_loan['weight']
+
+    def _set_decimal_conf(self, prec):
+        context = decimal.getcontext()
+        context.prec = prec
+        context.rounding = decimal.ROUND_DOWN
 
 
 def delete_history_data():
