@@ -11,7 +11,7 @@ from current_rest import constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager
-from current_rest.models import Agent
+from current_rest.models import Agent, CurrentAccount
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +111,12 @@ class LoanListSerializer(LoanSerializer):
     agent = AgentSerializer()
 
 
+class CurrentAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CurrentAccount
+        fields = '__all__'
+
+
 class CurrentRedeemSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
@@ -122,8 +128,13 @@ class CurrentRedeemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentRedeem
-        fields = ('id', 'login_name', 'amount', 'source')
+        fields = '__all__'
         read_only_fields = ('created_time', 'approve_time', 'status')
+
+
+class CurrentRedeemListSerializer(CurrentRedeemSerializer):
+    current_account = CurrentAccountSerializer()
+
 
 
 class FundHistoryQueryForm(serializers.Serializer):
