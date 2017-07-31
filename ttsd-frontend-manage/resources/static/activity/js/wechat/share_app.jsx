@@ -126,7 +126,7 @@ let shareAppFun = {
 			surl = '/register/user/shared-prepare'
 			paramObj.referrerMobile = referrerMobile;
 
-		} else if(isAndroid) {
+		} else  {
 			surl = '/register/user/shared';
 			paramObj.password = registerForm.password.value;
 			paramObj.referrer = referrerMobile;
@@ -166,7 +166,25 @@ let shareAppFun = {
 }
 
 $fetchCaptcha.on('click',function() {
-	shareAppFun.isRegister();
+	//判断手机号 和密码都正确
+	let mobileCls = registerForm.mobile.className;
+
+	if(isIos) {
+		if(/valid/.test(mobileCls)) {
+			//手机号和密码都有效
+			shareAppFun.isRegister();
+		}
+	}
+	else {
+		let passwordCls = registerForm.password.className;
+		if(/valid/.test(mobileCls) && /valid/.test(passwordCls)) {
+			//手机号和密码都有效
+			shareAppFun.isRegister();
+		}
+	}
+
+
+
 });
 
 //点击立即注册按钮
