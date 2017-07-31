@@ -100,8 +100,7 @@ class fetchCaptchaFun{
                     //获取手机验证码成功，关闭弹框，并开始倒计时
                     layer.closeAll();
                     commonFun.countDownLoan({
-                        btnDom:$fetchCaptcha,
-                        time:10
+                        btnDom:$fetchCaptcha
                     });
 
                 } else if (!data.status && data.isRestricted) {
