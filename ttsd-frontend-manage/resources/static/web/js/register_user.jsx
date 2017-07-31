@@ -247,5 +247,5 @@ registerForm.onsubmit = function(event) {
     else {
         registerForm.submit();
     }
-}
+};
 
