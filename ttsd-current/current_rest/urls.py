@@ -15,13 +15,12 @@ Including another URLconf
 """
 
 from django.conf.urls import url
-
 from current_rest.views import fund
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet, audit_reject_loan
 from current_rest.views.loan import LoanViewSet
-from current_rest.views.redeem import RedeemViewSet, RedeemListViewSet
+from current_rest.views.redeem import RedeemViewSet, audit_redeem, RedeemListViewSet
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
@@ -30,8 +29,9 @@ post_loan = LoanViewSet.as_view({'post': 'create'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 loan_list = LoanListViewSet.as_view({'get': 'list'})
 
-redeem = RedeemViewSet.as_view({'post': 'create'})
 redeem_list = RedeemListViewSet.as_view({'get': 'list'})
+get_put_redeem = RedeemViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+redeem = RedeemViewSet.as_view({'post': 'create', 'get': 'retrieve', 'put': 'update'})
 
 urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
     url(r'^redeem/create$', redeem, name='post_redeem'),
     url(r'^redeem-list', redeem_list, name='redeem_list'),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/(?P<result>(pass|reject))$', audit_redeem, name='audit_redeem'),
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),

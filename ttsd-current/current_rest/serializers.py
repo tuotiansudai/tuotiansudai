@@ -126,15 +126,21 @@ class CurrentRedeemSerializer(serializers.ModelSerializer):
         validated_data['current_account'] = current_account
         return super(CurrentRedeemSerializer, self).create(validated_data=validated_data)
 
+    def update(self, instance, validated_data):
+        instance = super(CurrentRedeemSerializer, self).update(instance, validated_data)
+        if validated_data['status'] == 'SUCCESS':  # TODO: replace by constants
+            CurrentAccountManager().update_current_account_for_withdraw(instance.login_name, instance.amount,
+                                                                        instance.id)
+        return instance
+
     class Meta:
         model = models.CurrentRedeem
         fields = '__all__'
-        read_only_fields = ('created_time', 'approve_time', 'status')
+        read_only_fields = ('created_time', 'approved_time')
 
 
 class CurrentRedeemListSerializer(CurrentRedeemSerializer):
     current_account = CurrentAccountSerializer()
-
 
 
 class FundHistoryQueryForm(serializers.Serializer):

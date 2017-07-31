@@ -26,6 +26,7 @@ public enum MessageQueue {
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
     InvestSuccess_DragonBoat("InvestSuccess-DragonBoat"),
+    InvestSuccess_HouseDecorate("InvestSuccess-HouseDecorate"),
     Celebration_Coupon("Celebration-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
@@ -70,7 +71,9 @@ public enum MessageQueue {
     InvestSuccess_InvestHeroRanking("InvestSuccess-InvestHeroRanking"), //周年庆 英雄排行榜，用户投资，消息中转（为了获取用户信息）
 
     // 以下是日息宝Queue
-    CurrentDepositCallback("current-deposit-callback"); //日息宝买入回调Queue
+    CurrentDepositCallback("current-deposit-callback"), //日息宝买入回调Queue
+    CurrentRedeemToLoanCallback("current-redeem-to-loan-callback"), //日息宝赎回toLoan-回调Queue
+    CurrentRedeemComplete("current-redeem-complete"); //日息宝买入回调Queue
 
     private final String queueName;
 

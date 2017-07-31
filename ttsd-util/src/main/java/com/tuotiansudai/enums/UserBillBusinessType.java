@@ -29,7 +29,9 @@ public enum UserBillBusinessType {
     EXTRA_RATE("投资奖励"),
     EXPERIENCE_INTEREST("体验金收益"),
     INVEST_CASH_BACK("现金补贴"),
-    MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买");
+    MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买"),
+    CURRENT_REDEEM_TO_LOAN("活期赎回-到标的"),
+    CURRENT_REDEEM_TO_USER("日息宝赎回到用户");
 
     private final String description;
 
