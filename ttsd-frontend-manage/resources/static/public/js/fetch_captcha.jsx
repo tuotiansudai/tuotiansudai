@@ -14,7 +14,7 @@ let $fetchCaptcha=$('#fetchCaptcha');
 $imageCaptcha.on('click',function() {
     commonFun.refreshCaptcha(this,'/register/user/image-captcha');
     $imageCaptchaForm[0].imageCaptcha.value='';
-}).trigger('click');
+});
 
 class fetchCaptchaFun{
     constructor(DomForm,kind) {
@@ -42,6 +42,7 @@ class fetchCaptchaFun{
         that.getCaptchaOrCancel();
         //点击获取验证码
         $fetchCaptcha.on('click',function() {
+            commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');
             $imageCaptchaForm[0].imageCaptcha.value='';

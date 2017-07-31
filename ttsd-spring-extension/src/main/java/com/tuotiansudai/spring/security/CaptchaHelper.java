@@ -53,6 +53,9 @@ public class CaptchaHelper {
 
         String captchaRedisKey = this.getCaptchaRedisKey(sessionIdOrDeviceId);
         String actualCaptcha = redisWrapperClient.get(captchaRedisKey);
+        logger.debug("captchaRedisKey = " + captchaRedisKey);
+        logger.debug("actualCaptcha = " + actualCaptcha);
+
         redisWrapperClient.del(captchaRedisKey);
 
         boolean result = !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
