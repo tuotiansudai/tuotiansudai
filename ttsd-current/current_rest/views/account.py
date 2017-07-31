@@ -43,7 +43,6 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     def update_balance(self, request):
         self.__invoke_pay({"login_name": "", "amount": self.calculate_yesterday_interest()})
         yesterday = request.data.get('yesterday')
-        # yesterday = (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d')
         interest_key = self.calculate_interest_key.format(yesterday)
         if redis_client.exists(interest_key):
             data = {"code": "0001", "message": "昨天利息已经计算完成，不能重复就按"}
@@ -58,8 +57,8 @@ class AccountViewSet(mixins.RetrieveModelMixin,
             models.CurrentBill.objects.create(current_account=account, login_name=account.login_name,
                                               bill_date=datetime.now(), bill_type=constants.BILL_TYPE_INTEREST,
                                               amount=interest, balance=account.balance,
-                                              order_id=int(datetime.now().strftime('%Y%m%d%H%M%S')))
-        redis_client.setex(interest_key, self.valid_time, yesterday)
+                                              order_id=account.id)
+        redis_client.setex(interest_key, yesterday, self.valid_time)
         data = {"code": "0000", "message": ""}
         return Response(data)
 

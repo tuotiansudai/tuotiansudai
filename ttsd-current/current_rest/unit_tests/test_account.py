@@ -6,6 +6,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from current_rest import redis_client
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.models import CurrentAccount
 
@@ -65,7 +66,7 @@ class DepositTestCase(TestCase):
         self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)
 
     @mock.patch('requests.post')
-    def test_should_return_200_when_(self, fake_requests):
+    def test_should_return_200_when_not_calculate_interest(self, fake_requests):
         pay_response = 'pay response'
         fake_requests.return_value.status_code = 200
         fake_requests.return_value.json = mock.Mock(return_value=pay_response)
@@ -74,6 +75,21 @@ class DepositTestCase(TestCase):
         response = self.client.post(path=reverse('update_balance'),
                                     data={"yesterday": yesterday},
                                     format='json')
-        print (response)
 
-        # self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)
+        self.assertEqual(response.data.get('code'), "0000")
+        redis_client.delete("interest:{0}".format(yesterday))
+
+    @mock.patch('requests.post')
+    def test_should_return_200_when_already_calculate_interest(self, fake_requests):
+        pay_response = 'pay response'
+        fake_requests.return_value.status_code = 200
+        fake_requests.return_value.json = mock.Mock(return_value=pay_response)
+        CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
+        yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        redis_client.setex("interest:{0}".format(yesterday), yesterday, 60)
+        response = self.client.post(path=reverse('update_balance'),
+                                    data={"yesterday": yesterday},
+                                    format='json')
+
+        self.assertEqual(response.data.get('code'), "0001")
+        redis_client.delete("interest:{0}".format(yesterday))
