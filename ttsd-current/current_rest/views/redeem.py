@@ -12,6 +12,3 @@ class RedeemViewSet(mixins.RetrieveModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = serializers.CurrentRedeemSerializer
     queryset = models.CurrentRedeem.objects.all()
-
-    def __init__(self):
-        super(RedeemViewSet, self).__init__()
