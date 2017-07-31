@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
+from datetime import datetime
 
-from datetime import datetime, timedelta
-
-from django.db.models import Sum
 from django.http import Http404
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response

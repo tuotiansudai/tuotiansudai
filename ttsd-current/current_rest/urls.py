@@ -19,7 +19,7 @@ from django.conf.urls import url
 from current_rest.views import fund
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
-from current_rest.views.loan import LoanListViewSet, audit_reject_loan
+from current_rest.views.loan import LoanListViewSet
 from current_rest.views.loan import LoanViewSet
 from current_rest.views.redeem import RedeemViewSet
 
@@ -29,6 +29,7 @@ get_account = AccountViewSet.as_view({'get': 'retrieve'})
 post_loan = LoanViewSet.as_view({'post': 'create'})
 get_loan = LoanViewSet.as_view({'get': 'retrieve'})
 audit_loan = LoanViewSet.as_view({'put': 'update'})
+audit_reject_loan = LoanListViewSet.as_view({'put', 'audit_reject_loan'})
 get_limits_today = LoanViewSet.as_view({'get': 'get_limits_today'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 loan_list = LoanListViewSet.as_view({'get': 'list'})

@@ -39,20 +39,15 @@ class LoanViewSet(mixins.RetrieveModelMixin,
 
     @staticmethod
     def get_limits_today(request):
-        print(datetime.now())
         loan_amount_sum = models.Loan.objects.filter(status=constants.LOAN_STATUS_APPROVED,
                                                      effective_date__lte=datetime.now(),
                                                      expiration_date__gte=datetime.now()).aggregate(
-            Sum('amount')).get('amount__sum')
+            Sum('amount')).get('amount__sum', 0)
 
         account_balance_sum = models.CurrentAccount.objects.all().aggregate(
-            Sum('balance')) \
-            .get('balance__sum')
+            Sum('balance')).get('balance__sum', 0)
 
-        loan_amount_sum = int(loan_amount_sum) if loan_amount_sum is not None else 0
-        account_balance_sum = int(account_balance_sum) if account_balance_sum is not None else 0
-        available_invest_amount = loan_amount_sum - account_balance_sum if loan_amount_sum - account_balance_sum >= 0 else 0
-
+        available_invest_amount = max(0, loan_amount_sum - account_balance_sum)
         return Response(available_invest_amount, status=status.HTTP_200_OK)
 
 
@@ -65,9 +60,9 @@ class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     def audit_reject_loan(request, pk, category):
         loan = Loan.objects.filter(pk__in=pk)
         if loan.exists():
-            loan.update(status=request.data['status'], auditor=request.data['auditor'], updated_time=datetime.now())
+            loan.update(status=request.data['status'], auditor=request.data['auditor'])
         else:
-            return Response({'message', 'param is error'}, status=status.HTTP_201_CREATED)
+            return Response({'message', 'param is error'}, status=status.HTTP_400_BAD_REQUEST)
 
         if category == 'audit':
             operation_type = constants.OperationType.LOAN_AUDIT
