@@ -34,7 +34,9 @@ ROOT_URLCONF = 'current_rest.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
-REDIS_URL = 'redis://192.168.33.10/2'
+REDIS_HOST = os.getenv('redis_host', '192.168.33.10')
+REDIS_PORT = os.getenv('redis_port', '6379')
+REDIS_URL = 'redis://{0}:{1}/2'.format(REDIS_HOST, REDIS_PORT)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

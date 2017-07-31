@@ -5,7 +5,7 @@ clear_cache(){
     find . -type d -name "__pycache__" -delete
 }
 
-install(){
+install_virtualenv(){
     echo "install..."
     source /root/.current/bin/activate
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
@@ -24,9 +24,12 @@ ut(){
     echo "console test result: $exit_code2"
 
     exit_code=$((exit_code1+exit_code2))
+}
+
+uninstall_virtualenv(){
     deactivate
 }
 
-clear_cache && install && ut
+clear_cache && install_virtualenv && ut && uninstall_virtualenv
 
 exit ${exit_code}
