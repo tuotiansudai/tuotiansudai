@@ -21,10 +21,10 @@ class fetchCaptchaFun{
         this.DomContainer=document.getElementById(DomForm);
         this.kind=kind;
     }
-    init() {
-        this.CaptchaTextCheck();
-        this.FetchCaptcha();
-    }
+    // init() {
+    //     this.CaptchaTextCheck();
+    //     this.FetchCaptcha();
+    // }
     CaptchaTextCheck() {
         $imageCaptchaText.on('keyup',function(event) {
             if(/\d{5}/.test(this.value)) {
@@ -39,24 +39,28 @@ class fetchCaptchaFun{
     }
     FetchCaptcha() {
         let that =this;
+        that.getCaptchaOrCancel();
         //点击获取验证码
         $fetchCaptcha.on('click',function() {
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');
-            $imageCaptchaForm[0].imageCaptcha.value=''
+            $imageCaptchaForm[0].imageCaptcha.value='';
             layer.open({
                 type:1,
                 area:['320px'],
                 shadeClose: true,
                 content:$imageCaptchaForm.parents('.image-captcha-dialog')
             });
-            that.getCaptchaOrCancel();
+
             $imageCaptchaForm.find('.mobile').val(mobile);
+            console.log('FetchCaptcha');
         });
     }
     getCaptchaOrCancel() {
         let that=this;
+        console.log('getCaptchaOrCancel');
         $captchaSubmit.on('click',function(event) {
+            console.log('captchaSubmit');
             event.preventDefault();
             var imageText=$imageCaptchaText.val();
             if(imageText=='') {
@@ -99,6 +103,7 @@ class fetchCaptchaFun{
                     layer.closeAll();
                     commonFun.countDownLoan({
                         btnDom:$fetchCaptcha,
+                        time:10
                     });
 
                 } else if (!data.status && data.isRestricted) {

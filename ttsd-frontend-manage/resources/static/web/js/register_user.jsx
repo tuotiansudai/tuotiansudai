@@ -21,7 +21,12 @@ require.ensure(['publicJs/placeholder'], function(require){
 require.ensure(['publicJs/fetch_captcha'], function(require){
     let fetchCaptchaFun=require('publicJs/fetch_captcha');
     let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
-    fetchCaptchaRegister.init();
+
+    // fetchCaptchaRegister.init();
+
+    fetchCaptchaRegister.CaptchaTextCheck();
+    fetchCaptchaRegister.FetchCaptcha();
+
 },'fetchCaptcha');
 
 //推荐人显示隐藏
