@@ -13,7 +13,7 @@ from current_rest import constants
 from current_rest import serializers, models, redis_cli
 from current_rest.biz import current_interest
 from current_rest.exceptions import PayWrapperException
-from current_rest.rest_settings import PAY_WRAPPER_HOST
+from current_rest.settings import PAY_WRAPPER_HOST
 
 logger = logging.getLogger(__name__)
 

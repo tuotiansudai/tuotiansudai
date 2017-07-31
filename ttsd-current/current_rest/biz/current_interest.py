@@ -34,7 +34,3 @@ def pickup_rate_by_balance(balance):
     else:
         step = 6
     return INTEREST_RATE_STEPS[step]
-
-
-if __name__ == "__main__":
-    print(calculate_interest(5153000))
