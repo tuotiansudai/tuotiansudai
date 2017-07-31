@@ -25,7 +25,7 @@ class LoanMatching(object):
         redis_client.psetex(ACCOUNT_LOAN_MATCHING_REDIS_KEY.format(
             date=(datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
             account_id=self.account.id),
-            60 * 60 * 24 * 3, 'matching')
+            60 * 60 * 24 * 10, 'matching')
         # 初始化债权缓存
         self._init_loan_cache()
         sum_balance = 0

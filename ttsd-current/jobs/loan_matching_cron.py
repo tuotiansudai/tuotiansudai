@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 
 import requests
@@ -16,7 +17,6 @@ def loan_matching():
     if not _notify_loan_matching():
         pass
         # todo:发送短信通知 债权匹配失败
-
     logger.info("[loan_matching:]date:{} loan matching  end ...".format(
         datetime.datetime.today().strftime("%Y-%m-%d")))
 
@@ -28,7 +28,6 @@ def _notify_loan_matching(retries=3):
     except Exception as e:
         logger.error("[loan_matching:] loan matching error exception: {},retries:{}".format(e, retries))
         retries -= 1
-
         if retries > 0:
             return _notify_loan_matching(retries)
         # todo:发送短信通知rest 挂掉了
