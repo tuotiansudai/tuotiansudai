@@ -10,7 +10,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_ActivityReward,
             MessageQueue.InvestSuccess_ExperienceAssignInterestCoupon,
             MessageQueue.InvestSuccess_DragonBoat,
-            MessageQueue.InvestSuccess_WechatLottery),
+            MessageQueue.InvestSuccess_WechatLottery,
+            MessageQueue.InvestSuccess_HouseDecorate),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,
