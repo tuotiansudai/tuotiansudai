@@ -17,7 +17,7 @@ Including another URLconf
 # -*-coding:utf-8 -*-
 from django.conf.urls import url
 
-from current_console.views import home, loan, fund
+from current_console.views import home, loan, fund, redeem
 
 urlpatterns = [
     url('^index$', home.index, name='index'),
@@ -25,6 +25,8 @@ urlpatterns = [
     url('^show-edit-loan/(?P<pk>[0-9]+)$', loan.show_edit_loan, name='show_edit_loan'),
     url('^edit-loan/(?P<pk>[0-9]+)$', loan.edit_loan, name='edit_loan'),
     url('^create-loan$', loan.create_loan, name='create_loan'),
+    url('^redeem-list$', redeem.redeem_list, name='redeem_list'),
+    url('^audit-redeem/(?P<result>(pass|reject))/(?P<pk>[0-9]+)$', redeem.audit_redeem, name='audit_redeem'),
     url('^audit-reject-loan/(?P<category>(audit|reject))/(?P<pk>[0-9]+)$', loan.audit_reject_loan,
         name='audit_reject_loan'),
     url('^loan-list$', loan.loan_list, name='loan_list'),
