@@ -40,12 +40,14 @@ class AccountViewSet(mixins.RetrieveModelMixin,
         return Response(serializer.data)
 
     @transaction.atomic
-    def update_balance(self, request):
-        self.__invoke_pay({"login_name": "", "amount": self.calculate_yesterday_interest()})
+    def calculate_interest_yesterday(self, request):
+        # self.__invoke_pay({"login_name": "", "amount": self.calculate_yesterday_interest()})
+        print(request.data)
         yesterday = request.data.get('yesterday')
         interest_key = self.calculate_interest_key.format(yesterday)
         if redis_client.exists(interest_key):
-            data = {"code": "0001", "message": "昨天利息已经计算完成，不能重复就按"}
+            logger.info("{} calculate interest done!".format(yesterday))
+            data = {"code": "0001", "message": "昨天利息已经计算完成，不能重复计算"}
             return Response(data)
 
         accounts = models.CurrentAccount.objects.all()

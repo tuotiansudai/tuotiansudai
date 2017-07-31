@@ -1,3 +1,5 @@
+from celery.schedules import crontab
+
 DEBUG = True
 ENV = 'test'
 # celery configuration
@@ -16,4 +18,14 @@ POP_MESSAGE_WAIT_SECONDS = 30
 
 TopicName2SubscribeQueueNames = {'invest': {'currentBase', 'currentInvestCallback'}}
 
-CURRENT_REST_SERVER = 'http://localhost:8000/rest'
+CURRENT_REST_SERVER = 'http://localhost:8000'
+
+timezone = 'Asia/Shanghai'
+
+beat_schedule = {
+        'calculate-interest-every-day-morning': {
+        'task': 'jobs.calculate_interest_corn.calculate_interest',
+        'schedule': crontab(minute='01', hour='20')
+    },
+}
+
