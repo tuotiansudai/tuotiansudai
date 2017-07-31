@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import datetime
+import datetime
 
 from django.http import Http404
 from rest_framework import viewsets, mixins
