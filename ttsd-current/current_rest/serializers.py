@@ -11,6 +11,7 @@ from current_rest import constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager
+from current_rest.models import Agent
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +88,12 @@ class DepositSerializer(serializers.ModelSerializer):
         fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
 
 
+class AgentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agent
+        fields = '__all__'
+
+
 class LoanSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField(min_value=0, max_value=99999)
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
@@ -100,6 +107,10 @@ class LoanSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LoanListSerializer(LoanSerializer):
+    agent = AgentSerializer()
+
+
 class CurrentRedeemSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
@@ -109,10 +120,17 @@ class CurrentRedeemSerializer(serializers.ModelSerializer):
         validated_data['current_account'] = current_account
         return super(CurrentRedeemSerializer, self).create(validated_data=validated_data)
 
+    def update(self, instance, validated_data):
+        instance = super(CurrentRedeemSerializer, self).update(instance, validated_data)
+        if validated_data['status'] == 'SUCCESS':  # TODO: replace by constants
+            CurrentAccountManager().update_current_account_for_withdraw(instance.login_name, instance.amount,
+                                                                        instance.id)
+        return instance
+
     class Meta:
         model = models.CurrentRedeem
-        fields = ('id', 'login_name', 'amount', 'source')
-        read_only_fields = ('created_time', 'approve_time', 'status')
+        fields = ('id', 'login_name', 'amount', 'source', 'status')
+        read_only_fields = ('created_time', 'approve_time')
 
 
 class FundHistoryQueryForm(serializers.Serializer):

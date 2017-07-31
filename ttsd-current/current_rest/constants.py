@@ -2,11 +2,14 @@
 LOAN_STATUS_APPROVING = 'APPROVING'
 LOAN_STATUS_APPROVED = 'APPROVED'
 LOAN_STATUS_EXPIRED = 'EXPIRED'
+LOAN_STATUS_REJECT = 'REJECT'
 
 LOAN_STATUS_CHOICES = (
     (LOAN_STATUS_APPROVING, u'待审核'),
     (LOAN_STATUS_APPROVED, u'已审核'),
-    (LOAN_STATUS_EXPIRED, u'已过期')
+    (LOAN_STATUS_EXPIRED, u'已过期'),
+    (LOAN_STATUS_REJECT, u'已驳回'),
+
 )
 
 LOAN_TYPE_HOUSE = 'HOUSE'
@@ -39,11 +42,15 @@ class OperationTarget(object):
 class OperationType(object):
     LOAN_ADD = 'LOAN_ADD'
     LOAN_AUDIT = 'LOAN_AUDIT'
+    LOAN_REJECT = 'LOAN_REJECT'
+    LOAN_EDIT = 'LOAN_EDIT'
     REDEEM_AUDIT_PASS = 'REDEEM_AUDIT_PASS'
     REDEEM_AUDIT_REJECT = 'REDEEM_AUDIT_REJECT'
     OPERATION_TYPE_MAP = (
         (LOAN_ADD, u'增加债权信息'),
         (LOAN_AUDIT, u'审核债权信息'),
+        (LOAN_REJECT, u'驳回债权信息'),
+        (LOAN_EDIT, u'编辑债权信息'),
         (REDEEM_AUDIT_PASS, u'审核通过赎回申请'),
         (REDEEM_AUDIT_REJECT, u'驳回赎回申请'),
     )
@@ -91,7 +98,7 @@ REDEEM_STATUS_CHOICE = (
     (REDEEM_FAIL, u'赎回失败'),
 )
 
-#单位为分
+# 单位为分
 EVERY_DAY_OF_MAX_REDEEM_AMOUNT = 10000000
 
 DAILY_QUOTA_STATUS_UNSET = 'UNSET'

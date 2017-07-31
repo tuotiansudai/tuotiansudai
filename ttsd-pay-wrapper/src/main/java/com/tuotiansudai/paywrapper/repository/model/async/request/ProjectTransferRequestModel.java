@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.paywrapper.repository.model.*;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayServType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
 import com.tuotiansudai.repository.model.Source;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -128,10 +130,10 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newCurrentRedeemRequest(String orderId, String userId, String amount, Source source) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel("0", orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source, AsyncUmPayService.CURRENT_REDEEM_TO_LOAN_PROJECT_TRANSFER);
-        model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
-        model.transAction = UmPayTransAction.IN.getCode();
+    public static ProjectTransferRequestModel newCurrentRedeemToUserRequest(String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel("0", orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CURRENT_REDEEM_TO_USER_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }
