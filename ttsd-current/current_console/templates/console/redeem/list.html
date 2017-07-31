@@ -1,0 +1,157 @@
+{% extends "console/tpl/_layout.tpl" %}
+
+{% block script_content %}
+    <script src="/static/js/redeem-list.js"></script>
+{% endblock %}
+
+{% block content %}
+     <form class="form-inline" action="{% url 'redeem_list' %}" method="GET">
+
+        <div class="form-group">
+            <label for="volume">投资人:</label>
+            <input type="text" class="form-control" name="login_name" value="{{request.GET.login_name }}" >
+        </div>
+
+        <div class="form-group">
+            <label for="volume">投资人手机号:</label>
+            <input type="text" class="form-control" name="current_account__mobile"  value="{{request.GET.current_account__mobile  }}" >
+        </div>
+
+         <div class="form-group">
+             <label>申请时间: </label>
+             <input id="startTime" name="start_time" class="form-control form-control-datetimepicker"
+                    data-date-format="yyyy-mm-dd" value="{{ request.GET.start_time }}" style="width: 120px">
+             - <input id="endTime" name="end_time" class="form-control form-control-datetimepicker"
+                      data-date-format="yyyy-mm-dd" value="{{ request.GET.end_time }}" style="width: 120px">
+         </div>
+        <br/>
+
+        <div class="form-group">
+            <label for="volume">赎回金额(分):</label>
+            <input type="text" name="start_amount" class="form-control"  value="{{request.GET.start_amount}}" style="width:120px"/>
+            - <input type="text" name="end_amount" class="form-control"  value="{{request.GET.end_amount}}" style="width:120px"/>
+        </div>
+
+        <div class="form-group">
+            <label for="volume">赎回状态:</label>
+                <select class="form-control" name="status" value="{{request.GET.status  }}">
+                    <option value="">全部</option>
+                    {% for key,value in types %}
+                        <option value="{{ key }}"
+                                {% if request.GET.status == key %}selected {% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+        <button type="submit" class="btn btn-primary">查询</button>
+    </form>
+    <br/>
+    <div class="col-md-10">
+        <label for="volume"><h4>合计赎回金额:{{ sumAmount }}元</h4></label>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>投资人</th>
+                <th>投资人姓名</th>
+                <th>投资人手机号</th>
+                <th>申请时间</th>
+                <th>审核时间</th>
+                <th>赎回审核人</th>
+                <th>赎回金额（元)</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for list in redeem_list.results %}
+                <tr>
+                    <td style="vertical-align: middle">{{ list.login_name }}</td>
+                    <td style="vertical-align: middle">{{ list.current_account.user_name }}</td>
+                    <td style="vertical-align: middle">{{ list.current_account.mobile }}</td>
+                    <td style="vertical-align: middle">{{ list.created_time}}</td>
+                    <td style="vertical-align: middle">{{ list.approved_time|default_if_none:'--'}}</td>
+                    <td style="vertical-align: middle">{{ list.approver|default_if_none:'--'}}</td>
+                    <td style="vertical-align: middle">{{ list.amount }}</td>
+                    <td style="vertical-align: middle">
+                        {% for key,value in types %}
+                            {% if key == list.status %}{{ value }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td style="vertical-align: middle">
+                        {% if list.status == 'WAITING' %}
+                            <button data-redeem-id="{{ list.id }}" class="redeem-pass btn btn-primary btn-sm">通过</button>
+                            <button data-redeem-id="{{ list.id }}" class="redeem-reject btn btn-danger btn-sm">驳回</button>
+                        {% else %}
+                            --
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <nav class="pagination-control">
+            <div>
+                <span class="bordern">总共{{ redeem_list.count }}条,每页显示10条</span>
+            </div>
+            <ul class="pagination pull-left">
+                <li>
+                    <a href="{{ redeem_list.previous|default_if_none:'' }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo; Prev</span>
+                    </a>
+                </li>
+                <li><a>{{ page|default_if_none:'1' }}</a></li>
+                <li>
+                    <a href="{{ redeem_list.next|default_if_none:'' }}" aria-label="Next">
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" id="pass" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">通过提现申请</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <h5>通过后将会将用户的赎回金额转至用户账户
+                            余额，请确认金额无误后再通过改申请！</h5>
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align:center">
+                    <button type="button" class="pass-true btn btn-primary btn-sm">确定</button>
+                    <button type="button" class="pass-no btn btn-danger btn-sm">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" id="reject" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">驳回提现申请</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <h5>驳回后该用户需重新提交赎回申请才可赎回
+                            确认驳回该用户的赎回申请?</h5>
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align:center">
+                    <button type="button" class="reject-true btn btn-primary btn-sm">确定</button>
+                    <button type="button" class="reject-no btn btn-danger btn-sm">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+{% endblock %}

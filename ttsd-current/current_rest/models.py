@@ -16,7 +16,7 @@ class BaseModel(models.Model):
 
 
 class AuditModel(BaseModel):
-    approver = models.CharField(max_length=25, null=False, blank=False)
+    approver = models.CharField(max_length=25, null=True, blank=False)
     approved_time = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -63,6 +63,8 @@ class OperationLog(models.Model):
 
 class CurrentAccount(BaseModel):
     login_name = models.CharField(max_length=25, unique=True, null=False, blank=False)
+    user_name = models.CharField(max_length=50, null=True)
+    mobile = models.CharField(max_length=18, null=True)
     balance = models.PositiveIntegerField(default=0, null=False, blank=False)
 
     class Meta:
