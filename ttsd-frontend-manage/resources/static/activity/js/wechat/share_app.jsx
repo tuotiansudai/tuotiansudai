@@ -153,7 +153,7 @@ let shareAppFun = {
 			type: 'get',
 			dataType: 'json'
 		},function(response) {
-
+			alert('2222');
 			let data = response.data;
 			if(data.status) {
 				let param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
@@ -179,6 +179,7 @@ $fetchCaptcha.on('click',function() {
 		let passwordCls = registerForm.password.className;
 		if(/valid/.test(mobileCls) && /valid/.test(passwordCls)) {
 			//手机号和密码都有效
+			alert('111111');
 			shareAppFun.isRegister();
 		}
 	}
