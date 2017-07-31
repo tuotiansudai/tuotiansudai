@@ -45,6 +45,6 @@ class UTRunner(object):
 
     def current_test(self):
         print "Starting current testing ..."
-        sh('cd ttsd-current && sh current_ut.sh')
+        sh('redis_host={0} redis_port={1} cd ttsd-current && sh current_ut.sh'.format(self.redis_host, self.redis_port))
 
 
