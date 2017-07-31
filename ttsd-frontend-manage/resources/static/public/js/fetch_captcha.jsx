@@ -21,10 +21,10 @@ class fetchCaptchaFun{
         this.DomContainer=document.getElementById(DomForm);
         this.kind=kind;
     }
-    // init() {
-    //     this.CaptchaTextCheck();
-    //     this.FetchCaptcha();
-    // }
+    init() {
+        this.CaptchaTextCheck();
+        this.FetchCaptcha();
+    }
     CaptchaTextCheck() {
         $imageCaptchaText.on('keyup',function(event) {
             if(/\d{5}/.test(this.value)) {
@@ -53,14 +53,11 @@ class fetchCaptchaFun{
             });
 
             $imageCaptchaForm.find('.mobile').val(mobile);
-            console.log('FetchCaptcha');
         });
     }
     getCaptchaOrCancel() {
         let that=this;
-        console.log('getCaptchaOrCancel');
         $captchaSubmit.on('click',function(event) {
-            console.log('captchaSubmit');
             event.preventDefault();
             var imageText=$imageCaptchaText.val();
             if(imageText=='') {

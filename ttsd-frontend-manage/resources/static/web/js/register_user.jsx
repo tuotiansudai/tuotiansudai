@@ -22,10 +22,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
     let fetchCaptchaFun=require('publicJs/fetch_captcha');
     let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
 
-    // fetchCaptchaRegister.init();
-
-    fetchCaptchaRegister.CaptchaTextCheck();
-    fetchCaptchaRegister.FetchCaptcha();
+    fetchCaptchaRegister.init();
 
 },'fetchCaptcha');
 
@@ -198,10 +195,6 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         isDisabledButton();
     })
 }
-
-// for (var el of reInputs) {
-//
-// }
 
 //用来判断获取验证码和立即注册按钮 是否可点击
 //表单验证通过会
