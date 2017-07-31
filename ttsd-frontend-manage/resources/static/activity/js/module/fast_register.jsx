@@ -28,7 +28,7 @@ if (browser == 'mobile') {
         .fail(function () {
             //未登录
             $('.reg-tag-current').show();
-            commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha', false);
+            commonFun.refreshCaptcha(imageCaptchaDom,'/register/user/image-captcha', false);
             $captchaText.val('');
         });
     }
@@ -85,16 +85,16 @@ let getConfig = {
                     textCounting: 's'
                 },function() {
                     //倒计时结束后刷新验证码
-                    commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha');
+                    commonFun.refreshCaptcha(imageCaptchaDom,'/register/user/image-captcha');
                     $captchaText.val('');
                 });
             } else if (!data.status && data.isRestricted) {
-                commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha');
+                commonFun.refreshCaptcha(imageCaptchaDom,'/register/user/image-captcha');
                 registerForm.captcha.value = '';
                 layer.msg('短信发送频繁，请稍后再试');
 
             } else if (!data.status && !data.isRestricted) {
-                commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha');
+                commonFun.refreshCaptcha(imageCaptchaDom,'/register/user/image-captcha');
                 registerForm.captcha.value = '';
                 layer.msg('图形验证码不正确');
             }

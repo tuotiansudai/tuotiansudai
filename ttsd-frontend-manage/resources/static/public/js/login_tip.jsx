@@ -11,7 +11,7 @@ require.ensure([],function() {
         loginInForm.captcha.value='';
     });
 
-    commonFun.refreshCaptcha(this, "/login/captcha", false);
+    commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'), "/login/captcha", false);
 
     $('.close-btn',$loginTipBox).on('click',function(event) {
         event.preventDefault();

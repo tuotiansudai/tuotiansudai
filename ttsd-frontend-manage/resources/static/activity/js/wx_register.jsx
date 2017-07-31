@@ -36,7 +36,7 @@ $btnExperience.on('click', function(event) {
 });
 
 let refreshCapt = function (flush) {
-    commonFun.refreshCaptcha($('#image-captcha-image'),'/register/user/image-captcha', flush);
+    commonFun.refreshCaptcha(globalFun.$('#image-captcha-image'),'/register/user/image-captcha', flush);
 };
 refreshCapt(false);
 
