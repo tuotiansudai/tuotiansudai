@@ -83,9 +83,9 @@ $btnChangeImgCode.on('click', function (event) {
 
 function refreshImgCaptcha() {
     $('.image-captcha img').each(function (index, el) {
-        $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+        commonFun.refreshCaptcha(this,'/register/user/image-captcha');
     });
-};
+}
 refreshImgCaptcha();
 
 //phone focusout

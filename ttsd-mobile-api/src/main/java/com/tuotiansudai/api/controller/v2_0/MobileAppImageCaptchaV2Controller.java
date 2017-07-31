@@ -28,17 +28,12 @@ public class MobileAppImageCaptchaV2Controller extends MobileAppBaseController {
     public BaseResponseDto<ImageCaptchaResponseDataDto> getImageCaptcha(@RequestBody BaseParamDto baseParamDto) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(baseParamDto.getBaseParam().getDeviceId()));
-
-        captchaHelper.storeCaptcha(captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
-
+        Captcha captcha = this.captchaHelper.getCaptcha(baseParamDto.getBaseParam().getDeviceId(), captchaHeight, captchaWidth, true);
         String imageCaptcha = captchaHelper.transferImageToBase64(captcha.getImage());
         BaseResponseDto<ImageCaptchaResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(new ImageCaptchaResponseDataDto(imageCaptcha));
         return baseResponseDto;
-
     }
 }

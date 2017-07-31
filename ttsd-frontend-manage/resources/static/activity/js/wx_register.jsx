@@ -35,15 +35,15 @@ $btnExperience.on('click', function(event) {
 	globalFun.toExperience(event);
 });
 
-var refreshCapt = function () {
-    $('#image-captcha-image').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
+let refreshCapt = function (flush) {
+    commonFun.refreshCaptcha($('#image-captcha-image'),'/register/user/image-captcha', flush);
 };
-refreshCapt();
+refreshCapt(false);
 
 //change images code
 $changecode.on('touchstart', function (event) {
     event.preventDefault();
-    refreshCapt();
+    refreshCapt(true);
 });
 //show protocol info
 $('.show-agreement').on('touchstart', function (event) {
@@ -110,7 +110,7 @@ $fetchCaptcha.on('touchstart', function (event) {
         if (!data.status && !data.isRestricted) {
             layer.msg('图形验证码错误');
         }
-        refreshCapt();
+        refreshCapt(true);
     });
 });
 

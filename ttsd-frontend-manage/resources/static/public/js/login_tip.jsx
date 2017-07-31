@@ -7,14 +7,16 @@ require.ensure([],function() {
     require("publicStyle/module/login_tip.scss");
     //刷新验证码
     $('#imageCaptcha').on('click',function() {
-        $(this).attr('src','/login/captcha' +'?'+ new Date().getTime().toString());
+        commonFun.refreshCaptcha(this, "/login/captcha");
         loginInForm.captcha.value='';
-    }).trigger('click');
+    });
+
+    commonFun.refreshCaptcha(this, "/login/captcha", false);
 
     $('.close-btn',$loginTipBox).on('click',function(event) {
         event.preventDefault();
         layer.closeAll();
-    })
+    });
 //验证表单
     let validator = new ValidatorObj.ValidatorForm();
     validator.add(loginInForm.username, [{
@@ -71,7 +73,7 @@ require.ensure([],function() {
                 if (data.status) {
                     window.location.reload();
                 } else {
-                    commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/login/captcha');
+                    commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'), "/login/captcha");
                     globalFun.removeClass(thisButton,'loading');
                     errorDom.text(data.message);
                 }

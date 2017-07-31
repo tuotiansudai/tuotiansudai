@@ -78,20 +78,20 @@ class fetchCaptchaFun{
                      url: '/register/user/send-register-captcha',
                      type:'POST',
                      data:$imageCaptchaForm.serialize()
-                 }
+                 };
                 captchaSrc='/register/user/image-captcha';
             }
             else if(that.kind=='retrieve'){
                 ajaxOption={
                     type:'GET',
                     url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
-                }
+                };
                 captchaSrc='/mobile-retrieve-password/image-captcha';
             }
         commonFun.useAjax(ajaxOption,function(responseData) {
                 $captchaSubmit.prop('disabled',false);
                 //刷新验证码
-                commonFun.refreshCaptcha($imageCaptcha[0],captchaSrc);
+                commonFun.refreshCaptcha($imageCaptcha[0], captchaSrc);
 
                 let data = responseData.data;
                 if (data.status && !data.isRestricted) {

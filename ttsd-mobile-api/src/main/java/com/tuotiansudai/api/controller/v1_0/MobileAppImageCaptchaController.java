@@ -6,6 +6,7 @@ import com.tuotiansudai.spring.security.CaptchaHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import nl.captcha.Captcha;
+import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,7 @@ public class MobileAppImageCaptchaController extends MobileAppBaseController {
     public BaseResponseDto<ImageCaptchaResponseDataDto> loginCaptcha(@RequestBody BaseParamDto baseParamDto) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(baseParamDto.getBaseParam().getDeviceId()));
-
-        captchaHelper.storeCaptcha(captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
-
+        Captcha captcha = this.captchaHelper.getCaptcha(baseParamDto.getBaseParam().getDeviceId(), captchaHeight, captchaWidth, true);
         String imageCaptcha = captchaHelper.transferImageToBase64(captcha.getImage());
 
         BaseResponseDto<ImageCaptchaResponseDataDto> baseResponseDto = new BaseResponseDto<>();

@@ -10,7 +10,7 @@ let registerForm = globalFun.$('#registerForm'),
 
 // 刷新图形验证码
 $(imageCaptchaDom).on('click', function () {
-    $(this).attr('src','/register/user/image-captcha' +'?'+ new Date().getTime().toString());
+    commonFun.refreshCaptcha(this, '/register/user/image-captcha');
     $captchaText.val('');
 });
 
@@ -28,7 +28,8 @@ if (browser == 'mobile') {
         .fail(function () {
             //未登录
             $('.reg-tag-current').show();
-            $(imageCaptchaDom).trigger('click');
+            commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha', false);
+            $captchaText.val('');
         });
     }
 
@@ -84,16 +85,16 @@ let getConfig = {
                     textCounting: 's'
                 },function() {
                     //倒计时结束后刷新验证码
-                    $(imageCaptchaDom).attr('src','/register/user/image-captcha' +'?'+ new Date().getTime().toString());
+                    commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha');
                     $captchaText.val('');
                 });
             } else if (!data.status && data.isRestricted) {
-                $(imageCaptchaDom).attr('src','/register/user/image-captcha' +'?'+ new Date().getTime().toString());
+                commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha');
                 registerForm.captcha.value = '';
                 layer.msg('短信发送频繁，请稍后再试');
 
             } else if (!data.status && !data.isRestricted) {
-                $(imageCaptchaDom).attr('src','/register/user/image-captcha' +'?'+ new Date().getTime().toString());
+                commonFun.refreshCaptcha($(imageCaptchaDom),'/register/user/image-captcha');
                 registerForm.captcha.value = '';
                 layer.msg('图形验证码不正确');
             }
