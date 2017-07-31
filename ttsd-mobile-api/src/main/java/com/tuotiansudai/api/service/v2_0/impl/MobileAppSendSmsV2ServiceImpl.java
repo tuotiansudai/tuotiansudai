@@ -33,10 +33,6 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
 
     @Override
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
-
-        logger.debug("mobile verify_code="+sendSmsCompositeRequestDto.getImageCaptcha());
-        logger.debug("mobile DeviceId="+sendSmsCompositeRequestDto.getBaseParam().getDeviceId());
-        logger.debug("mobile remoteIp="+remoteIp);
         if (!sendSmsCompositeRequestDto.getType().equals(CaptchaType.NO_PASSWORD_INVEST) && !sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST)
                 && !captchaHelper.captchaVerify(sendSmsCompositeRequestDto.getImageCaptcha(), sendSmsCompositeRequestDto.getBaseParam().getDeviceId(), remoteIp)) {
             return new BaseResponseDto(ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
