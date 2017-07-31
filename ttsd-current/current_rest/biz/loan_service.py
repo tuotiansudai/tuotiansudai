@@ -3,14 +3,13 @@ import datetime
 import decimal
 import logging
 
-import math
 from django.db import transaction
 
 from current_rest import constants
 from current_rest import redis_client
 from current_rest.models import FundAllocation, Loan
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('current_rest.biz.services.loan_service')
 
 unmatch_loan_cache = []
 ACCOUNT_LOAN_MATCHING_REDIS_KEY = 'loan:matching:{date}:{account_id}'
@@ -33,7 +32,6 @@ class LoanMatching(object):
         fund_allocation = []
         # 匹配债权
         for index, unmatch_loan in enumerate(unmatch_loan_cache):
-            # todo:self.account.balance * loan['weight'] 保留正整数
             # 每次拆分债权金额
             each_loan_amount = self.account.balance - sum_balance if index == len(unmatch_loan_cache) - 1 else int(
                 self.account.balance * unmatch_loan['weight'])
@@ -46,10 +44,12 @@ class LoanMatching(object):
 
         # 债权入库
         for index, fund in enumerate(fund_allocation):
-            # todo: 写入日志文件
             logger.info(
-                "[loan matching:] 用戶id:{}匹配债权loan_id{}金额{}".format(fund['account_id'], fund['loan'].id,
-                                                                   fund['amount']))
+                "[loan matching:{}] 用戶id:{},balance:{},匹配债权loan_id:{},金额:{}".format(
+                    (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), fund['account_id'],
+                    self.account.balance,
+                    fund['loan'].id,
+                    fund['amount']))
             FundAllocation.objects.create(account=self.account,
                                           loan=fund['loan'],
                                           amount=fund['amount'])
