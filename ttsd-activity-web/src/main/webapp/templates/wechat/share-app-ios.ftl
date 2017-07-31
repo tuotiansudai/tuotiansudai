@@ -1,7 +1,7 @@
 <#import "wechat-global.ftl" as global>
-<#include "../pageLayout/header.ftl" />
-<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}"  title="新手福利_拓天新手投资_拓天速贷" >
 
+<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}"  title="新手福利_拓天新手投资_拓天速贷" >
+<#include "../pageLayout/header.ftl" />
 <div class="share-app-container clearfix" id="shareAppContainer">
 	<div class="share-container">
 		<div class="share-item">

@@ -2,7 +2,6 @@ require('activityStyle/wechat/share_app.scss');
 require('activityStyle/module/app_register_reason.scss');
 let commonFun= require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
-
 let $shareAppContainer = $('#shareAppContainer'),
 	registerForm = globalFun.$('#registerForm'),
 	$fetchCaptcha = $('#getCaptchaBtn');
@@ -111,6 +110,7 @@ let shareAppFun = {
 
 			} else if (!data.status && data.isRestricted) {
 				layer.msg('短信发送频繁,请稍后再试');
+
 			}
 		});
 	},
