@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import mock
 from django.test import TestCase
 from django.urls import reverse
@@ -62,3 +63,17 @@ class DepositTestCase(TestCase):
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
         self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)
+
+    @mock.patch('requests.post')
+    def test_should_return_200_when_(self, fake_requests):
+        pay_response = 'pay response'
+        fake_requests.return_value.status_code = 200
+        fake_requests.return_value.json = mock.Mock(return_value=pay_response)
+        CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
+        yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        response = self.client.post(path=reverse('update_balance'),
+                                    data={"yesterday": yesterday},
+                                    format='json')
+        print (response)
+
+        # self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)

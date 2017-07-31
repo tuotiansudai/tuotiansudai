@@ -9,8 +9,8 @@ from django.http import Http404
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 
-from current_rest import constants
-from current_rest import serializers, models, redis_cli
+from current_rest import constants, redis_client
+from current_rest import serializers, models
 from current_rest.biz import current_interest
 from current_rest.exceptions import PayWrapperException
 from current_rest.settings import PAY_WRAPPER_HOST
@@ -30,9 +30,7 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
     def retrieve(self, request, *args, **kwargs):
         instance = models.CurrentAccount(login_name=kwargs.get(self.lookup_field),
-                                         balance=0,
-                                         created_time=datetime.datetime.now(),
-                                         updated_time=datetime.datetime.now())
+                                         balance=0)
         try:
             instance = self.get_object()
         except Http404:
@@ -43,11 +41,11 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def update_balance(self, request):
-        self.__invoke_pay(self, {"login_name": "", "amount": self.calculae_yesterday_interest(self)})
-
-        yesterday = (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d')
+        self.__invoke_pay({"login_name": "", "amount": self.calculate_yesterday_interest()})
+        yesterday = request.data.get('yesterday')
+        # yesterday = (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d')
         interest_key = self.calculate_interest_key.format(yesterday)
-        if redis_cli.exists(interest_key):
+        if redis_client.exists(interest_key):
             data = {"code": "0001", "message": "昨天利息已经计算完成，不能重复就按"}
             return Response(data)
 
@@ -59,12 +57,13 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
             models.CurrentBill.objects.create(current_account=account, login_name=account.login_name,
                                               bill_date=datetime.now(), bill_type=constants.BILL_TYPE_INTEREST,
-                                              amount=interest, balance=account.balance)
-        redis_cli.setex(interest_key, self.valid_time, yesterday)
+                                              amount=interest, balance=account.balance,
+                                              order_id=int(datetime.now().strftime('%Y%m%d%H%M%S')))
+        redis_client.setex(interest_key, self.valid_time, yesterday)
         data = {"code": "0000", "message": ""}
         return Response(data)
 
-    def calculate_yesterday_interest(self, request):
+    def calculate_yesterday_interest(self):
         accounts = models.CurrentAccount.objects.all()
         yesterday_total_interest = 0
         for account in accounts:

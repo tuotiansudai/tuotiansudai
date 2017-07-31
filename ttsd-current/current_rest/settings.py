@@ -55,12 +55,6 @@ DB_MYSQL_PORT = '3306'
 DB_MYSQL_USER = 'root'
 DB_MYSQL_PASSWORD = 'root'
 
-REDIS_CONFIG = {
-    'host': '192.168.33.10',
-    'port': '6379',
-    'db': '3'
-}
-
 LOGGING_DIR = '/var/log/current_rest'
 
 PAY_WRAPPER_HOST = 'http://localhost:8080/current'
