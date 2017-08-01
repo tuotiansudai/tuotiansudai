@@ -126,12 +126,10 @@ public class InvestController {
 
     @RequestMapping(value = "/no-password-invest/image-captcha", method = RequestMethod.GET)
     public void imageCaptcha(HttpServletRequest request, HttpServletResponse response) {
-        int captchaWidth = 70;
-        int captchaHeight = 38;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(request.getSession().getId()));
+        int captchaWidth = 80;
+        int captchaHeight = 33;
+        Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, true);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
     }
 
     @RequestMapping(path = "/no-password-invest/send-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
