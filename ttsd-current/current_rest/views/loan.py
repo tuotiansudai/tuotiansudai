@@ -4,6 +4,7 @@ from datetime import datetime
 
 from django.db import transaction
 from django.db.models import Sum
+from django.http import Http404
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
@@ -62,7 +63,7 @@ def audit_reject_loan(request, pk, category):
     if loan.exists():
         loan.update(status=request.data['status'], auditor=request.data['auditor'])
     else:
-        return Response({'message', 'param is error'}, status=status.HTTP_400_BAD_REQUEST)
+        return Http404
 
     if category == 'audit':
         operation_type = constants.OperationType.LOAN_AUDIT
