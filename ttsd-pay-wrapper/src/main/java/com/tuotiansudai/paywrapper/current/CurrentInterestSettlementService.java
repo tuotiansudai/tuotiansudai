@@ -90,8 +90,6 @@ public class CurrentInterestSettlementService {
                     .put("id", order_id)
                     .put("status", responseModel.isSuccess() ? "SUCCESS" : "FAIL")
                     .build()));
-            mqWrapperClient.sendMessage(MessageQueue.CurrentInterestSettlement, json);
-
         } catch (PayException | AmountTransferException e) {
             logger.error(MessageFormat.format("interest to loan failed, interest_to_loan_request_id: {0}", order_id), e);
             //sms notify
