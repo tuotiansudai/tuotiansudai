@@ -1,31 +1,32 @@
 package com.tuotiansudai.paywrapper.current;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.current.dto.InterestSettlementRequestDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.CurrentDepositNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.CurrentDepositNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.util.AmountTransfer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Map;
 
 @Service
 public class CurrentInterestSettlementService {
@@ -42,13 +43,16 @@ public class CurrentInterestSettlementService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private PayAsyncClient payAsyncClient;
-
-    @Autowired
     private PaySyncClient paySyncClient;
 
     @Autowired
+    private AmountTransfer amountTransfer;
+
+    @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     public BaseDto<PayDataDto> InterestSettlement(InterestSettlementRequestDto interestSettlementRequestDto) {
         PayDataDto payDataDto = new PayDataDto();
@@ -61,8 +65,9 @@ public class CurrentInterestSettlementService {
             return baseDto;
         }
 
+        String order_id = String.valueOf(new Date().getTime());
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCurrentInterestSettlementRequest(
-                MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(accountModel.getId()), String.valueOf(new Date().getTime())),
+                MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(accountModel.getId()), order_id),
                 accountModel.getPayUserId(),
                 String.valueOf(interestSettlementRequestDto.getAmount()));
 
@@ -74,39 +79,34 @@ public class CurrentInterestSettlementService {
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("order_id", String.valueOf(String.valueOf(new Date().getTime())))
+                    .put("order_id", order_id)
                     .build()));
-        } catch (PayException e) {
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+
+            if (responseModel.isSuccess()) {
+                amountTransfer.transferOutBalance(loginName, Long.parseLong(order_id), interestSettlementRequestDto.getAmount(), UserBillBusinessType.CURRENT_INTEREST_TO_LOAN, null, null);
+                logger.info(MessageFormat.format("interest to loan success, interest_to_loan_request_id: {0}", order_id));
+            }
+            String json = objectMapper.writeValueAsString(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    .put("id", order_id)
+                    .put("status", responseModel.isSuccess() ? "SUCCESS" : "FAIL")
+                    .build()));
+            mqWrapperClient.sendMessage(MessageQueue.CurrentInterestSettlement, json);
+
+        } catch (PayException | AmountTransferException e) {
+            logger.error(MessageFormat.format("interest to loan failed, interest_to_loan_request_id: {0}", order_id), e);
+            //sms notify
+            this.sendFatalNotify(MessageFormat.format("利息结算到标的账户失败,id: {0}", order_id));
+        } catch (JsonProcessingException e) {
+            logger.error(MessageFormat.format("interest to loan failed, cause by build complete mq message failed, interest_to_loan_request_id: {0}", order_id), e);
+            //sms notify
+            this.sendFatalNotify(MessageFormat.format("利息结算到标的账户成功, 发送mq通知失败, id: {0}", order_id));
         }
         return baseDto;
     }
 
-    public String InterestSettlementCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
-                paramsMap,
-                originalQueryString,
-                CurrentDepositNotifyRequestMapper.class,
-                CurrentDepositNotifyRequestModel.class);
-
-        if (callbackRequest == null) {
-            return null;
-        }
-
-
-        try {
-            long orderId = Long.parseLong(callbackRequest.getOrderId().split(ORDER_ID_SEPARATOR)[0]);
-            String json = objectMapper.writeValueAsString(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                    .put("id", orderId)
-                    .put("status", callbackRequest.isSuccess() ? "SUCCESS" : "FAIL")
-                    .build()));
-            mqWrapperClient.sendMessage(MessageQueue.CurrentInterestSettlementCallback, json);
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("send deposit callback message error, order id {0}", callbackRequest.getOrderId()), e);
-        }
-
-        return callbackRequest.getResponseData();
+    private void sendFatalNotify(String message) {
+        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
+        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
     }
+
 }

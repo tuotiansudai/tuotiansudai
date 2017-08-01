@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import requests
 from django.db import transaction
 from django.http import Http404
+from rest_framework import status
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 
@@ -26,11 +27,10 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     queryset = models.CurrentAccount.objects.all()
     lookup_field = 'login_name'
 
-    login_name = settings.LOGIN_NAME
-
     calculate_interest_key = "interest:{0}"
     pay_with_no_password_url = '{}/interest-settlement/'.format(PAY_WRAPPER_HOST)
     valid_time = 60 * 60 * 24
+    login_name = settings.LOGIN_NAME
 
     def retrieve(self, request, *args, **kwargs):
         instance = models.CurrentAccount(login_name=kwargs.get(self.lookup_field),
@@ -45,13 +45,13 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def calculate_interest_yesterday(self, request):
-        self.__invoke_pay({"login_name": self.login_name, "amount": self.calculate_yesterday_interest()})
+        # self.__invoke_pay({"login_name": self.login_name, "amount": self.calculate_yesterday_interest()})
         yesterday = request.data.get('yesterday')
         interest_key = self.calculate_interest_key.format(yesterday)
         if redis_client.exists(interest_key):
             logger.info("{} calculate interest done!".format(yesterday))
             data = {"code": "0001", "message": "昨天利息已经计算完成，不能重复计算"}
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
 
         accounts = models.CurrentAccount.objects.all()
         for account in accounts:
@@ -65,7 +65,7 @@ class AccountViewSet(mixins.RetrieveModelMixin,
                                               order_id=account.id)
         redis_client.setex(interest_key, yesterday, self.valid_time)
         data = {"code": "0000", "message": ""}
-        return Response(data)
+        return Response(data, status=status.HTTP_200_OK)
 
     def calculate_yesterday_interest(self):
         accounts = models.CurrentAccount.objects.all()

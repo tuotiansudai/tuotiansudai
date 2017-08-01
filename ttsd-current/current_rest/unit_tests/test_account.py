@@ -73,7 +73,7 @@ class DepositTestCase(TestCase):
         CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
         yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         response = self.client.post(path=reverse('calculate_interest_yesterday'),
-                                    data={"yesterday": yesterday},
+                                    data={'yesterday': yesterday},
                                     format='json')
 
         self.assertEqual(response.data.get('code'), "0000")
@@ -88,7 +88,7 @@ class DepositTestCase(TestCase):
         yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         redis_client.setex("interest:{0}".format(yesterday), yesterday, 60)
         response = self.client.post(path=reverse('calculate_interest_yesterday'),
-                                    data={"yesterday": yesterday},
+                                    data={'yesterday': yesterday},
                                     format='json')
 
         self.assertEqual(response.data.get('code'), "0001")
