@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 import logging
 import re
+from datetime import datetime, timedelta
 
+from django.db.models import Sum
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
 from current_rest import constants, models
-from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
-<<<<<<< HEAD
 from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
-=======
-from current_rest.biz.current_daily_manager import CurrentDailyManager
 from current_rest.models import Agent
->>>>>>> current
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +37,11 @@ class AccountSerializer(serializers.ModelSerializer):
     personal_max_redeem = serializers.SerializerMethodField()
 
     def get_personal_max_deposit(self, instance):
-        user_max_deposit = PERSONAL_MAX_DEPOSIT - instance.balance if PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
+        user_max_deposit = constants.PERSONAL_MAX_DEPOSIT - instance.balance if constants.PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
         today_sum_deposit = calculate_success_deposit_today()
         current_daily_amount = CurrentDailyManager().get_current_daily_amount()
         return min(user_max_deposit, current_daily_amount - today_sum_deposit)
 
-<<<<<<< HEAD
-=======
     def get_personal_available_redeem(self, instance):
         today = datetime.now().date()
         today_sum_redeem = models.CurrentRedeem.objects.filter(created_time__startswith=today,
@@ -69,7 +64,6 @@ class AccountSerializer(serializers.ModelSerializer):
             .get('amount__sum', 0)
         return amount_sum if amount_sum else 0
 
->>>>>>> current
     class Meta:
         model = models.CurrentAccount
         fields = ('balance', 'updated_time', 'created_time', 'personal_max_deposit',

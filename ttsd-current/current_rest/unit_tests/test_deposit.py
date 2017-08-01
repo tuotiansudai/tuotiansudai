@@ -6,7 +6,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from current_rest import constants, serializers
-from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.models import CurrentAccount, CurrentDeposit, CurrentBill
 from current_rest.views.deposit import DepositViewSet
@@ -154,7 +153,7 @@ class DepositTestCase(TestCase):
         self.assertFalse(CurrentBill.objects.filter(login_name=self.login_name).exists())
 
     def test_should_return_200_when_deposit_callback_success_and_over_personal_max_deposit(self):
-        fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=PERSONAL_MAX_DEPOSIT)
+        fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=constants.PERSONAL_MAX_DEPOSIT)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
@@ -176,7 +175,7 @@ class DepositTestCase(TestCase):
     @mock.patch('current_rest.views.deposit.CurrentDailyManager')
     def test_should_return_200_when_deposit_callback_success_and_over_current_daily_max_amount(self, fake_manager,
                                                                                                calculate_success_deposit_today):
-        fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=PERSONAL_MAX_DEPOSIT)
+        fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=constants.PERSONAL_MAX_DEPOSIT)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=2)
 
         instance = fake_manager.return_value
