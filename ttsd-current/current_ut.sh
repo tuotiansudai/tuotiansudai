@@ -15,11 +15,11 @@ install(){
 exit_code=0
 
 ut(){
-    python manage.py test --settings current_rest.settings current_rest
+    python manage.py test --noinput --settings current_rest.settings current_rest
     exit_code1=$?
     echo "rest test result: $exit_code1"
 
-    python manage.py test --settings current_console.settings current_console
+    python manage.py test --noinput --settings current_console.settings current_console
     exit_code2=$?
     echo "console test result: $exit_code2"
 
