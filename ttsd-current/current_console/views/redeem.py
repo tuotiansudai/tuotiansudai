@@ -17,14 +17,12 @@ def redeem_list(request):
     sumAmount = 0
     if redeem_list['results']:
         for redeem in redeem_list['results']:
-            if redeem['created_time']: redeem['created_time'] = redeem['created_time'].replace('T', ' ')[:19]
-            if redeem['approved_time']: redeem['approved_time'] = redeem['approved_time'].replace('T', ' ')[:19]
-            redeem['amount'] = redeem['amount']/100.00
             sumAmount += redeem['amount']
+            redeem['amount'] = '{0:.2f}'.format(redeem['amount']/100.0)
     return render(request, 'console/redeem/list.html',
                   {'redeem_list': redeem_list,
-                   'types':constants.REDEEM_STATUS_CHOICE,
-                   'sumAmount': sumAmount,
+                   'types': constants.REDEEM_STATUS_CHOICE,
+                   'sumAmount': '{0:.2f}'.format(sumAmount/100.0),
                    'page': request.GET.get('page')})
 
 

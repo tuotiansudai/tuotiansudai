@@ -120,6 +120,8 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
 class CurrentRedeemSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
+    created_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"))
+    approved_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"))
 
     def create(self, validated_data):
         current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))
