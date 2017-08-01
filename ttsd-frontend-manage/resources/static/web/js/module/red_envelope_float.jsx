@@ -140,14 +140,14 @@ require.ensure([],function() {
         //刷新验证码
         $(imageCaptchaFeed).on('click', function(event) {
             event.preventDefault();
-            commonFun.refreshCaptcha(this,'/feedback/captcha?');
+            commonFun.refreshCaptcha(this,'/feedback/captcha');
         });
 
         //弹出意见反馈层
         $('.fix-nav-list .show-feed',$redEnvelopFrame).on('click', function(event) {
             event.preventDefault();
             //刷新验证码
-            commonFun.refreshCaptcha(imageCaptchaFeed,'/feedback/captcha?');
+            commonFun.refreshCaptcha(imageCaptchaFeed,'/feedback/captcha');
             var $self=$(this);
             $self.addClass('active');
             $feedbackConatiner.show();
@@ -213,13 +213,8 @@ require.ensure([],function() {
 
         for (var el of feedInputs) {
             el.addEventListener("keyup", function() {
-                let errorMsg = feedbackValidator.start(this);
-                if(errorMsg) {
-                    errorFeedDom.text(errorMsg);
-                }
-                else {
-                    errorFeedDom.text('');
-                }
+                errorFeedDom.text('');
+                feedbackValidator.start(this);
             })
         }
 
@@ -230,7 +225,6 @@ require.ensure([],function() {
             for(let i=0,len=feedInputs.length;i<len;i++) {
                 errorMsg = feedbackValidator.start(feedInputs[i]);
                 if(errorMsg) {
-                    errorFeedDom.text(errorMsg);
                     break;
                 }
             }
@@ -247,15 +241,16 @@ require.ensure([],function() {
                         feedSubmit.prop('disabled',true);
                     }
                 },function(data) {
-                    commonFun.refreshCaptcha(imageCaptchaFeed,'/feedback/captcha?');
+                    commonFun.refreshCaptcha(imageCaptchaFeed,'/feedback/captcha');
                     feedSubmit.prop('disabled',false);
                     if(data.success) {
                         $feedbackConatiner.hide();
                         $(feedForm).find(':text,textarea,input[name="type"]').val('');
                         $('#feedbackModel').show();
+                        errorFeedDom.text('');
                     }
                     else {
-                        errorFeedDom.text('验证码错误！');
+                        errorFeedDom.text(data.data.message);
                     }
                 });
             }

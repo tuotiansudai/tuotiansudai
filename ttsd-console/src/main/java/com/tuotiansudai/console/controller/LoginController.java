@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.spring.security.CaptchaHelper;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,13 +30,9 @@ public class LoginController {
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
     public void loginCaptcha(HttpServletRequest request, HttpServletResponse response) {
-        String sessionIdOrDeviceId = request.getSession(false) != null ? request.getSession(false).getId() : null;
         int captchaWidth = 80;
-        int captchaHeight = 34;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(sessionIdOrDeviceId));
+        int captchaHeight = 30;
+        Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, true);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), sessionIdOrDeviceId);
     }
 }

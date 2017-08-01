@@ -177,6 +177,7 @@ public enum ReturnMessage {
 
     /******增值特权购买******/
     RISK_ESTIMATE_FAILED("0203", "投资偏好测评失败，请检查您提交的答卷是否完整"),
+    SMS_IP_RESTRICTED("0204", "短信发送频繁，请稍后再试"),
 
     /******回款日历******/
     REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦"),

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedbackController {
 
     static Logger logger = Logger.getLogger(FeedbackController.class);
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private FeedbackService feedbackService;
@@ -67,11 +65,8 @@ public class FeedbackController {
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
     public void feedbackCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
-        int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(request.getSession().getId()));
+        int captchaHeight = 33;
+        Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, true);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
     }
 }
