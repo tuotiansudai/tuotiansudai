@@ -55,26 +55,26 @@ class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.LoanListSerializer
     queryset = models.Loan.objects.all()
 
-    @api_view(['PUT'])
-    @transaction.atomic
-    def audit_reject_loan(request, pk, category):
-        loan = Loan.objects.filter(pk__in=pk)
-        if loan.exists():
-            loan.update(status=request.data['status'], auditor=request.data['auditor'])
-        else:
-            return Response({'message', 'param is error'}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['PUT'])
+@transaction.atomic
+def audit_reject_loan(request, pk, category):
+    loan = Loan.objects.filter(pk__in=pk)
+    if loan.exists():
+        loan.update(status=request.data['status'], auditor=request.data['auditor'])
+    else:
+        return Response({'message', 'param is error'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if category == 'audit':
-            operation_type = constants.OperationType.LOAN_AUDIT
-            content = u'{}审核通过债权申请'.format(request.data['auditor'])
-        else:
-            operation_type = constants.OperationType.LOAN_REJECT
-            content = u'{}驳回债权申请'.format(request.data['auditor'])
+    if category == 'audit':
+        operation_type = constants.OperationType.LOAN_AUDIT
+        content = u'{}审核通过债权申请'.format(request.data['auditor'])
+    else:
+        operation_type = constants.OperationType.LOAN_REJECT
+        content = u'{}驳回债权申请'.format(request.data['auditor'])
 
-        OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
-                                    refer_pk=pk,
-                                    operator=request.data['auditor'],
-                                    operation_type=operation_type,
-                                    content=content)
+    OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
+                                refer_pk=pk,
+                                operator=request.data['auditor'],
+                                operation_type=operation_type,
+                                content=content)
 
-        return Response({'message', 'success'}, status=status.HTTP_201_CREATED)
+    return Response({'message', 'success'}, status=status.HTTP_201_CREATED)
