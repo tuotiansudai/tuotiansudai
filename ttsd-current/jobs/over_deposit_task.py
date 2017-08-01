@@ -30,7 +30,8 @@ class OverDepositTask(BaseTask):
                 requests.post(url=self.pay_url, json=deposit, headers={'content-type': 'application/json'})
         except Exception, e:
             logger.error("queue: {}, message: {}, exception: {}".format(self.name, message, e))
-            return False
+
+        return False
 
 
 # register task and initialize it

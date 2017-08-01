@@ -28,7 +28,7 @@ class CurrentAccountManager(object):
                                 order_id=order_id)
 
     @transaction.atomic
-    def update_current_account_for_payback(self, login_name, amount, order_id):
+    def update_current_account_for_over_deposit(self, login_name, amount, order_id):
         account = CurrentAccount.objects.select_for_update().get(login_name=login_name)
 
         account.balance -= amount

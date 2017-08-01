@@ -58,9 +58,9 @@ class DepositViewSet(mixins.RetrieveModelMixin,
             self.mq_client.send(JSONRenderer().render(self.serializer_class(instance=updated_deposit).data))
 
     def deposit_update_payback_success(self, updated_deposit):
-        self.current_account_manager.update_current_account_for_payback(login_name=updated_deposit.login_name,
-                                                                        amount=updated_deposit.amount,
-                                                                        order_id=updated_deposit.pk)
+        self.current_account_manager.update_current_account_for_over_deposit(login_name=updated_deposit.login_name,
+                                                                             amount=updated_deposit.amount,
+                                                                             order_id=updated_deposit.pk)
 
     def __is_over_deposit(self, deposit):
         account = self.current_account_manager.fetch_account(login_name=deposit.login_name)
