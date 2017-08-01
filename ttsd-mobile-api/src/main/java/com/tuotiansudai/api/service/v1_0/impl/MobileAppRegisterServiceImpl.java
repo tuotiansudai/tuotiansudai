@@ -53,6 +53,11 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
                 log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
             }
+
+            if (!smsDto.getData().getStatus() && smsDto.getData().getIsRestricted()) {
+                returnCode = ReturnMessage.SMS_IP_RESTRICTED.getCode();
+                log.info(mobileNumber + ":" + ReturnMessage.SMS_IP_RESTRICTED.getMsg());
+            }
         }
         dto.setCode(returnCode);
         dto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));

@@ -1,7 +1,9 @@
 package com.tuotiansudai.spring.security;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
+import nl.captcha.Captcha;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,19 +32,22 @@ public class CaptchaHelper {
     @Value("${mobile.login.interval.seconds}")
     private int ipLeftSecond;
 
-    public String getCaptcha(String sessionIdOrDeviceId) {
+    public Captcha getCaptcha(String sessionIdOrDeviceId, int captchaHeight, int captchaWidth, boolean flush) {
         if (Strings.isNullOrEmpty(sessionIdOrDeviceId)) {
+            logger.error("session id or device id is null");
             return null;
         }
-        String captchaRedisKey = this.getCaptchaRedisKey(sessionIdOrDeviceId);
-        return redisWrapperClient.get(captchaRedisKey);
-    }
 
-    public void storeCaptcha(String captcha, String sessionIdOrDeviceId) {
-        if (Strings.isNullOrEmpty(sessionIdOrDeviceId)) {
-            return;
+        String captchaRedisKey = this.getCaptchaRedisKey(sessionIdOrDeviceId);
+        String existingCaptcha = redisWrapperClient.get(captchaRedisKey);
+
+        if (flush || Strings.isNullOrEmpty(existingCaptcha)) {
+            Captcha newCaptcha = CaptchaGenerator.generate(captchaWidth, captchaHeight, null);
+            redisWrapperClient.setex(this.getCaptchaRedisKey(sessionIdOrDeviceId), 180, newCaptcha.getAnswer());
+            return newCaptcha;
         }
-        redisWrapperClient.setex(this.getCaptchaRedisKey(sessionIdOrDeviceId), 180, captcha);
+
+        return CaptchaGenerator.generate(captchaWidth, captchaHeight, existingCaptcha);
     }
 
     public boolean captchaVerify(String captcha, String sessionIdOrDeviceId, String ip) {
