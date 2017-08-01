@@ -13,40 +13,45 @@ class DepositTestCase(TestCase):
         self.client = APIClient()
         self.login_name = 'fakeuser'
 
+    @mock.patch('current_rest.serializers.calculate_success_deposit_today')
     @mock.patch('current_rest.serializers.CurrentDailyManager')
-    def test_should_return_200_when_today_is_no_deposit(self, fake_manager):
+    def test_should_return_200_when_today_is_no_deposit(self, fake_manager, calculate_success_deposit_today):
         CurrentAccount.objects.create(login_name=self.login_name)
 
         current_daily_amount = 1
         instance = fake_manager.return_value
-        instance.calculate_success_deposit_today.return_value = 0
         instance.get_current_daily_amount.return_value = current_daily_amount
+        calculate_success_deposit_today.return_value = 0
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
         self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)
 
+    @mock.patch('current_rest.serializers.calculate_success_deposit_today')
     @mock.patch('current_rest.serializers.CurrentDailyManager')
-    def test_should_return_200_when_today_is_no_deposit_and_user_has_deposited_1(self, fake_manager):
+    def test_should_return_200_when_today_is_no_deposit_and_user_has_deposited_1(self, fake_manager,
+                                                                                 calculate_success_deposit_today):
         CurrentAccount.objects.create(login_name=self.login_name, balance=1)
         current_daily_amount = PERSONAL_MAX_DEPOSIT + 1
 
         instance = fake_manager.return_value
-        instance.calculate_success_deposit_today.return_value = 1
         instance.get_current_daily_amount.return_value = current_daily_amount
+        calculate_success_deposit_today.return_value = 1
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
         self.assertEqual(response.data.get('personal_max_deposit'), PERSONAL_MAX_DEPOSIT - 1)
 
+    @mock.patch('current_rest.serializers.calculate_success_deposit_today')
     @mock.patch('current_rest.serializers.CurrentDailyManager')
-    def test_should_return_200_when_today_current_limit_is_100_and_user_had_deposited_1_before_today(self, fake_manager):
+    def test_should_return_200_when_today_current_limit_is_100_and_user_had_deposited_1_before_today(self, fake_manager,
+                                                                                                     calculate_success_deposit_today):
         CurrentAccount.objects.create(login_name=self.login_name, balance=1)
         current_daily_amount = 100
 
         instance = fake_manager.return_value
-        instance.calculate_success_deposit_today.return_value = 0
         instance.get_current_daily_amount.return_value = current_daily_amount
+        calculate_success_deposit_today.return_value = 0
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 

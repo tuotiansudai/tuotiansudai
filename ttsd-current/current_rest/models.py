@@ -54,5 +54,11 @@ class CurrentBill(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_time = models.DateTimeField(auto_now=True, null=False, blank=False)
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        for key, value in {'login_name': 'login_name', 'balance': 'balance', 'bill_date': 'updated_time'}.iteritems():
+            setattr(self, key, getattr(self.current_account, value))
+
+        super(CurrentBill, self).save(force_insert, force_update, using, update_fields)
+
     class Meta:
         db_table = 'current_bill'

@@ -63,9 +63,6 @@ class CurrentAccountManager(object):
     @staticmethod
     def __add_current_bill(account, amount, bill_type, order_id):
         CurrentBill.objects.create(current_account=account,
-                                   login_name=account.login_name,
-                                   bill_date=account.updated_time,
                                    bill_type=bill_type,
                                    amount=amount,
-                                   balance=account.balance,
                                    order_id=order_id)

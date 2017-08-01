@@ -7,11 +7,10 @@ from rest_framework import status, viewsets, mixins
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
-import jobs
 from current_rest import serializers, constants, models
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.biz.current_daily_manager import CurrentDailyManager
+from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
 from current_rest.exceptions import PayWrapperException
 from jobs.client import MessageClient
 from jobs.over_deposit_task import OverDepositTask
@@ -66,7 +65,7 @@ class DepositViewSet(mixins.RetrieveModelMixin,
 
     def __is_over_deposit(self, deposit):
         account = self.current_account_manager.fetch_account(login_name=deposit.login_name)
-        total_deposit_today = self.current_daily_manager.calculate_success_deposit_today()
+        total_deposit_today = calculate_success_deposit_today()
         current_daily_amount = self.current_daily_manager.get_current_daily_amount()
         return total_deposit_today > current_daily_amount or account.balance > PERSONAL_MAX_DEPOSIT
 
