@@ -1,5 +1,8 @@
-function refreshCaptcha(dom,url) {
+function refreshCaptcha(dom, url, flush) {
     let captcha= url +'?'+ new Date().getTime().toString();
+    if (flush === false) {
+        captcha += '&flush=false'
+    }
     dom.setAttribute('src',captcha);
 }
 /* init radio style */

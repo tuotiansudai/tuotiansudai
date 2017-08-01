@@ -61,6 +61,9 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
         if (smsDto.isSuccess() && smsDto.getData().getStatus()) {
             dto.setCode(ReturnMessage.SUCCESS.getCode());
             dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        } else if (!smsDto.getData().getStatus() && smsDto.getData().getIsRestricted()) {
+            dto.setCode(ReturnMessage.SMS_IP_RESTRICTED.getCode());
+            dto.setMessage(ReturnMessage.SMS_IP_RESTRICTED.getMsg());
         } else {
             logger.error(MessageFormat.format("{0}send sms fail , error message{1} ", sendSmsCompositeRequestDto.getType().name(), smsDto.getData().getMessage()));
             dto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());

@@ -103,7 +103,7 @@
                 "sidebar":[
                     {"name":"","class":"sub-title-1","text":"优惠券管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"createCoupon","text":"创建优惠券","link":"/activity-manage/red-envelope","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"statisticsCoupon","text":"优惠券列表","link":"/activity-manage/red-envelopes","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"statisticsCoupon","text":"优惠券列表","link":"/activity-manage/coupons-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"活动列表","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"lottery","text":"抽奖数据统计","link":"/activity-console/activity-manage/user-time-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"heroRanking","text":"周年庆管理","link":"/activity-console/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
@@ -118,8 +118,9 @@
                         {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"mothersDay","text":"母亲节活动","link":"/activity-console/activity-manage/mothers-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"dragonBoat","text":"端午节活动","link":"/activity-console/activity-manage/dragon-boat","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
-
+                        {"name":"dragonBoat","text":"端午节活动","link":"/activity-console/activity-manage/dragon-boat","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"exerciseVSWork","text":"运动达人VS职场骄子","link":"/activity-console/activity-manage/exercise-work-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"houseDecorate","text":"家装节活动","link":"/activity-console/activity-manage/house-decorate-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {

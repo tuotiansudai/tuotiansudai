@@ -1,17 +1,48 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="coupons.js" headLab="activity-manage" sideLab="statisticsCoupon" title="体验券数据统计">
+<@global.main pageCss="" pageJavascript="coupons.js" headLab="activity-manage" sideLab="statisticsCoupon" title="现金红包管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
 
-    <div class="col-md-12" style="margin-bottom: 40px">
-        <a href="/activity-manage/coupons" class="btn btn-default btn-warning" style="margin-right: 60px">体验券</a>
-        <a href="/activity-manage/interest-coupons" class="btn btn-default" style="margin-right: 60px">加息券</a>
-        <a href="/activity-manage/red-envelopes" class="btn btn-default" style="margin-right: 60px">现金红包</a>
-        <a href="/activity-manage/birthday-coupons" class="btn btn-default">生日月</a>
-    </div>
+    <form action="/activity-manage/coupons-list" class="form-inline query-build" id="couponList">
 
+        <div class="form-group">
+            <label>优惠券类型</label>
+            <select  name="couponType" id="operationType">
+                <option value="INTEREST_COUPON" <#if couponType=="INTEREST_COUPON">selected</#if> >加息券</option>
+                <option value="RED_ENVELOPE" <#if couponType=="RED_ENVELOPE">selected</#if> >现金红包</option>
+                <option value="BIRTHDAY_COUPON" <#if couponType=="BIRTHDAY_COUPON">selected</#if> >生日月</option>
+                <option value="EXPERIENCE" <#if couponType=="EXPERIENCE">selected</#if> >体验券</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="control-label">来源描述</label>
+            <input type="text" id="couponSource" name="couponSource" class="form-control jq-loginName" value="${couponSource!}">
+        </div>
+
+        <div class="form-group">
+            <label for="control-label">金额</label>
+            <input type="text" id="amount" name="amount" class="form-control money" value="${amount!}">
+        </div>
+
+        <button class="btn btn-primary search" type="submit">查询</button>
+
+    </form>
+
+    <div class="see-detail">
+        <table border="1"></table>
+        <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
+    </div>
+    <div class="tip-container">
+        <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="txt"></span>
+        </div>
+    </div>
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -50,6 +81,9 @@
         </th>
         <th>
             使用条件
+        </th>
+        <th>
+            是否共用
         </th>
         <th>
             已发放(张)
@@ -96,7 +130,10 @@
         ${coupon.deadline?string('0')}天
         </td>
         <td>
-            <#if coupon.userGroup == "EXCHANGER_CODE">
+            <#if coupon.userGroup == 'IMPORT_USER'>
+                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis"
+                   class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+            <#elseif coupon.userGroup == "EXCHANGER_CODE">
                 <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
                    class="btn-link">${coupon.userGroup.getDescription()}</a>
             <#else>
@@ -104,7 +141,7 @@
             </#if>
         </td>
         <td>
-        ${coupon.totalCount?string('0')}
+        ${coupon.totalCount?c}
         </td>
     <td>
         <#list coupon.productTypes as productType>
@@ -112,7 +149,10 @@
 </#list>
 </td>
     <td>
-        投资满${coupon.investLowerLimit}元
+    ${coupon.investLowerLimit}
+    </td>
+    <td>
+    <#if coupon.shared>是<#else>否</#if>
     </td>
     <td>
     ${coupon.issuedCount?string('0')}
@@ -161,8 +201,7 @@
     <#if coupon.active>
         <label>
             <i class="check-btn add-check"></i>
-            <button class="loan_repay already-btn btn-link inactive-btn"
-                    <#if coupon.couponType != 'NEWBIE_COUPON'>disabled</#if> data-id="${coupon.id?string('0')}"
+            <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}"
                     data-type="${coupon.couponType}">已生效
             </button>
         </label>
@@ -186,6 +225,7 @@
 </#list>
 </tbody>
 </table>
+</div>
 
     <!-- pagination  -->
     <nav>
@@ -196,7 +236,7 @@
         <ul class="pagination">
             <li>
             <#if hasPreviousPage>
-                <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
+                <a href="?couponType=${couponType!}&couponSource=${couponSource!}&amount=${amount!}&index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
                 <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -206,7 +246,7 @@
             <li><a>${index}</a></li>
             <li>
             <#if hasNextPage>
-                <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
+                <a href="?couponType=${couponType!}&couponSource=${couponSource!}&amount=${amount!}&index=${index+1}&pageSize=${pageSize}" aria-label="Next">
                 <#else>
                     <a href="#" aria-label="Next">
                     </#if>

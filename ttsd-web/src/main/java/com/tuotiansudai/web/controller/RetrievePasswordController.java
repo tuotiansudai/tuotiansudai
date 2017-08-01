@@ -58,13 +58,12 @@ public class RetrievePasswordController {
     }
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
-    public void imageCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public void imageCaptcha(@RequestParam(value = "flush", defaultValue = "true", required = false) boolean flush,
+                             HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(request.getSession().getId()));
+        Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, flush);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
