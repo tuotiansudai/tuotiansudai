@@ -8,10 +8,10 @@ let $errorBox = $('.error-box', $(formLogin));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let loginSubmit = $('button[type="submit"]', $(formLogin));
 
-commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+commonFun.refreshCaptcha(imageCaptcha, "/login/captcha");
 //刷新验证码
 $('#imageCaptcha').on('click', function () {
-    commonFun.refreshCaptcha(this, '/login/captcha');
+    commonFun.refreshCaptcha(this, "/login/captcha");
     formLogin.captcha.value = '';
 });
 
@@ -68,7 +68,7 @@ let formSubmit = function () {
             if (data.status) {
                 location.href = '/we-chat/bind-success?redirect=' + $('#formLogin').data('redirect');
             } else {
-                commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                commonFun.refreshCaptcha(imageCaptcha, "/login/captcha");
                 $errorBox.text(data.message);
             }
         }

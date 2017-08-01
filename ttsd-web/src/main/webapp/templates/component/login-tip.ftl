@@ -16,7 +16,7 @@
                 <label>
                     <em class="name capt"></em>
                     <em class="image-captcha">
-                        <img src="/login/captcha" id="imageCaptcha" alt="" width="120" height="43"/>
+                        <img src="/login/captcha?flush=false" id="imageCaptcha" alt="" width="120" height="43"/>
                     </em>
                     <input class="captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码" maxlength="5"/>
 

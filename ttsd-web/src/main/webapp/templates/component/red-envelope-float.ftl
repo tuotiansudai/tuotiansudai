@@ -73,16 +73,15 @@
 		</div>
 		<div class="content-list">
 			<label class="name-text">联系方式：</label>
-			<input type="text" class="phone-text ignore int-text" name="contact" value="" id="phoneText" maxlength="20">
+			<input type="text" class="phone-text ignore int-text" name="contact" value="" id="phoneText" maxlength="11">
 		</div>
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
             <img src="" id="imageCaptchaFeed">
 			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
-
 		</div>
 		<div class="content-list tc">
-			<#--<div class="error-box tl"></div>-->
+			<div class="error-box"></div>
 			<input type="submit" class="btn submit-btn" value="提交意见">
 		</div>
 	</form>

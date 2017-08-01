@@ -1,8 +1,6 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.spring.security.CaptchaHelper;
-import com.tuotiansudai.util.CaptchaGenerator;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
@@ -38,14 +36,11 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
-    public void loginCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public void loginCaptcha(@RequestParam(value = "flush", defaultValue = "true", required = false) boolean flush,
+                             HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(request.getSession().getId()));
-
+        Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, flush);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession().getId());
     }
 }
