@@ -200,7 +200,6 @@
             {{/if}}
         </div>
     </script>
-    
 </div>
 
 </@global.main>
