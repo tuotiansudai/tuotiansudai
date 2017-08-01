@@ -28,7 +28,7 @@ public interface CurrentRestClient {
     BaseDto<PayDataDto> noPasswordDeposit(DepositRequestDto requestDto) throws RestException;
 
     @POST
-    @Path("/redeem/create")
+    @Path("/redeem")
     RedeemResponseDto redeem(RedeemRequestDto requestDto) throws RestException;
 
     @GET
