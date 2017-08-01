@@ -2,6 +2,7 @@
 import mock
 from django.test import TestCase
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APIClient
 
 from current_rest.biz import PERSONAL_MAX_DEPOSIT
@@ -15,7 +16,22 @@ class DepositTestCase(TestCase):
 
     @mock.patch('current_rest.serializers.calculate_success_deposit_today')
     @mock.patch('current_rest.serializers.CurrentDailyManager')
+<<<<<<< HEAD
     def test_should_return_200_when_today_is_no_deposit(self, fake_manager, calculate_success_deposit_today):
+=======
+    def test_should_return_200_when_when_user_is_not_exist(self, fake_manager):
+        current_daily_amount = 10
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = current_daily_amount
+
+        response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)
+
+    @mock.patch('current_rest.serializers.CurrentDailyManager')
+    def test_should_return_200_when_today_is_no_deposit(self, fake_manager):
+>>>>>>> current
         CurrentAccount.objects.create(login_name=self.login_name)
 
         current_daily_amount = 1

@@ -18,6 +18,6 @@ public class CurrentHomeController {
     public ModelAndView currentHome() {
 
         String token = LoginUserInfo.getToken();
-        return new ModelAndView("redirect:" + currentServer + "/console/index?token=" + token);
+        return new ModelAndView("redirect:" + currentServer + "/index?token=" + token);
     }
 }

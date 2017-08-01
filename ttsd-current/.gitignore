@@ -6,6 +6,6 @@ db.sqlite3
 node_modules
 *.log
 .python-version
-settings_local.py
+*settings_local.py
 
 

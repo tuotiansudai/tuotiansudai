@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.current.client.CurrentRestClient;
+import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.BankCardModel;
@@ -52,6 +54,9 @@ public class MobileAppFrontCallBackController {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private CurrentRestClient currentRestClient;
+
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callback(@PathVariable String service, HttpServletRequest request) {
         logger.info(MessageFormat.format("mobile front callback url: {0}", request.getRequestURL()));
@@ -63,7 +68,7 @@ public class MobileAppFrontCallBackController {
         PayDataDto data = new PayDataDto();
         data.setStatus(true);
 
-        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
             data = payWrapperClient.validateFrontCallback(params).getData();
         }
 
@@ -146,6 +151,15 @@ public class MobileAppFrontCallBackController {
                 .put("message", "签约成功")
                 .build());
 
+        Function<Long, Map<String, String>> bindCurrentDepositValuesGenerator = (Long depositId) -> {
+            DepositDto deposit = currentRestClient.getDeposit(depositId);
+            return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("message", "投资成功")
+                    .put("investAmount", AmountConverter.convertCentToString(deposit.getAmount()))
+                    .put("orderId", String.valueOf(depositId))
+                    .build());
+        };
+
         Map<AsyncUmPayService, Function<Long, Map<String, String>>> generatorMapper = Maps.newHashMap(ImmutableMap.<AsyncUmPayService, Function<Long, Map<String, String>>>builder()
                 .put(AsyncUmPayService.PTP_MER_BIND_CARD, bindCardValuesGenerator)
                 .put(AsyncUmPayService.PTP_MER_REPLACE_CARD, replaceCardValuesGenerator)
@@ -159,6 +173,8 @@ public class MobileAppFrontCallBackController {
                 .put(AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
+                .put(AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER, bindCurrentDepositValuesGenerator)
+                .put(AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD, bindCurrentDepositValuesGenerator)
                 .build());
 
         return generatorMapper.containsKey(service) ? generatorMapper.get(service).apply(orderId) : Maps.newHashMap();

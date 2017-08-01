@@ -1,0 +1,12 @@
+<nav id="bs-navbar" class="collapse navbar-collapse top-menu">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            {% for menu in head_lab_menus %}
+                <li {% if menu.name == 'current-manage' %} class="active" {% endif %}>
+                    <a href="{{ menu.link }}">{{ menu.text }}</a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+</nav>

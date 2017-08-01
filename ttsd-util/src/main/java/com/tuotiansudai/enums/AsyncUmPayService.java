@@ -87,7 +87,10 @@ public enum AsyncUmPayService {
      * 日息宝超投返款
      */
     CURRENT_OVER_DEPOSIT_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "current_over_deposit_payback_notify", ""),
-
+    /**
+     * 日息宝赎回到用户账户
+     */
+    CURRENT_REDEEM_PROJECT_TRANSFER("project_transfer", "", "", "current_redeem_notify", ""),
 
 
     /**

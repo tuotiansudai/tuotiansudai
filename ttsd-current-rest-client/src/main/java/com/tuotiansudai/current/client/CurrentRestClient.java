@@ -2,6 +2,7 @@ package com.tuotiansudai.current.client;
 
 import com.tuotiansudai.current.dto.AccountResponseDto;
 import com.tuotiansudai.current.dto.DepositDto;
+import com.tuotiansudai.current.dto.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -28,6 +29,10 @@ public interface CurrentRestClient {
     @POST
     @Path("/deposit")
     BaseDto<PayDataDto> noPasswordDeposit(DepositDto requestDto) throws RestException;
+
+    @POST
+    @Path("/redeem")
+    RedeemResponseDto redeem(RedeemRequestDto requestDto) throws RestException;
 
     @GET
     @Path("/account/{loginName}")

@@ -1,39 +1,46 @@
-<#import "macro/global-dev.ftl" as global>
-<#assign jsName = 'day_turn_out' >
+<#import "macro/global.ftl" as global>
 
-<#assign js = {"${jsName}":"http://localhost:3008/web/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/web/js/${jsName}.css"}>
-
-<@global.main pageCss="${css.day_turn_out}" pageJavascript="${js.day_turn_out}" activeNav="我要投资" activeLeftNav="" title="日息宝">
-<div class="loan-detail-content loan-detail-new" id="dayLoanDetailContent" data-loan-progress="${loan.progress?string.computer}">
+<@global.main pageCss="${css.current_redeem}" pageJavascript="${js.current_redeem}" activeNav="我要投资" activeLeftNav="" title="日息宝">
+<div class="loan-detail-content loan-detail-new">
 
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block clearfix">
                     <div class="fl title"><a href="/day-turn-in.ftl">日息宝转入</a></div>
-                    <div class="fl title active"><a href="/day-turn-out.ftl">日息宝转出</a></div>
+                    <div class="fl title active"><a href="/current/redeem">日息宝转出</a></div>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
-                        <form action="#" method="post">
+                        <form action="/current/redeem" method="post" id="formOut">
                             <div class="fotm-item">
                                 <p>
-                                    今日还可以赎回（元）：<span>1000</span>
+                                    今日还可以赎回（元）：<span>${availableRedeemAmount!}</span>
                                 </p>
                             </div>
                             
                             <div class="fotm-item">
-                                <input type="text" name="" class="int-item" placeholder="请输入金额">
+                                <input type="text" name="amount" class="int-item" placeholder="请输入金额" data-limit="${availableRedeemAmount!}" id="turnOut">
+                                <div class="info-item">
+                                   当日最多可转出${maxRedeemAmount!}元
+                                </div>
                             </div>
-                        
+
                             <div class="fotm-item">
-                                <input type="submit" class="submit-item" value="确认转出" />
+                                <@global.isAnonymous>
+                                    <a href="/login?redirect=/current/redeem">确认转出</a>
+                                </@global.isAnonymous>
+
+                                <@global.isNotAnonymous>
+                                    <input type="submit" class="submit-item" value="确认转出" disabled />
+                                </@global.isNotAnonymous>
+
                             </div>
                             <div class="fotm-item">
                                 <p class="tip-info">1.转出后资金将返回账户余额，下一个工作日到账，节假日顺延；</p>
                                 <p class="tip-info">2.最终到账时间以实际到账时间为准。</p>
                             </div>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
                     </div> 
                 </div>

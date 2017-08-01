@@ -2,6 +2,7 @@
 import logging
 
 import requests
+from django.conf import settings
 from django.db import transaction
 from rest_framework import status, viewsets, mixins
 from rest_framework.renderers import JSONRenderer
@@ -12,9 +13,12 @@ from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
 from current_rest.exceptions import PayWrapperException
+<<<<<<< HEAD
 from jobs.client import MessageClient
 from jobs.over_deposit_task import OverDepositTask
 from settings import PAY_WRAPPER_SERVER
+=======
+>>>>>>> current
 
 logger = logging.getLogger(__name__)
 
@@ -26,8 +30,13 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     serializer_class = serializers.DepositSerializer
     queryset = models.CurrentDeposit.objects.all()
 
+<<<<<<< HEAD
     pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_SERVER)
     pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_SERVER)
+=======
+    pay_with_password_url = '{}/deposit-with-password/'.format(settings.PAY_WRAPPER_HOST)
+    pay_with_no_password_url = '{}/deposit-with-no-password/'.format(settings.PAY_WRAPPER_HOST)
+>>>>>>> current
 
     def __init__(self):
         super(DepositViewSet, self).__init__()
@@ -79,5 +88,5 @@ class DepositViewSet(mixins.RetrieveModelMixin,
                 return response.json()
             logger.error('response code {} is not ok, request data is {}'.format(response.status_code, data))
             raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')
-        except Exception:
-            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')
+        except Exception, e:
+            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information, {}'.format(e))

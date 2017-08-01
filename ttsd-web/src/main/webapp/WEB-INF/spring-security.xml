@@ -101,6 +101,7 @@
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/invest/**" access="hasAnyAuthority('INVESTOR')"/>
+        <intercept-url pattern="/current/redeem" access="hasAnyAuthority('INVESTOR')"/>
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 

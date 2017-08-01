@@ -26,15 +26,27 @@ SECRET_KEY = 't@7h4!s_wi!zf*86!$)%xtu$_#7(rmd-)4d&(u20vdmjvu&_(('
 PRODUCT = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not PRODUCT
 
 ALLOWED_HOSTS = ["*"]
 
-REST_ENABLED = True
-REST_PATH = 'rest/'
+ROOT_URLCONF = 'current_rest.urls'
 
-CONSOLE_ENABLED = True
-CONSOLE_PATH = 'console/'
+WSGI_APPLICATION = 'wsgi.application'
+
+REDIS_URL = 'redis://192.168.33.10/2'
+
+# Internationalization
+# https://docs.djangoproject.com/en/1.11/topics/i18n/
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Asia/Shanghai'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = False
 
 # database config
 DB_MYSQL_DATABASE = 'edxcurrent'
@@ -43,68 +55,26 @@ DB_MYSQL_PORT = '3306'
 DB_MYSQL_USER = 'root'
 DB_MYSQL_PASSWORD = 'root'
 
-# ===signIn module start===
-SIGN_IN_HOST = 'http://127.0.0.1'
-SIGN_IN_PORT = '5000'
-REDIRECT_URL = 'http://localhost:9080/login'
-# ===signIn module end===
-
 LOGGING_DIR = '/var/log/current_rest'
 
+<<<<<<< HEAD:ttsd-current/settings.py
 PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
 
 REDIS_URL = 'redis://192.168.33.10/2'
+=======
+PAY_WRAPPER_HOST = 'http://localhost:8080/current'
+>>>>>>> current:ttsd-current/current_rest/settings.py
 
 # reload setting for local
-setting_local_file = '/workspace/deploy-config/ttsd-current/settings_local.py'
+setting_local_file = '/workspace/deploy-config/ttsd-current/rest_settings.py'
 if not os.path.isfile(setting_local_file):
     setting_local_file = os.path.join(BASE_DIR, "settings_local.py")
+
 if os.path.isfile(setting_local_file):
     exec (compile(open(setting_local_file).read(), setting_local_file, 'exec'))
 
 # Application definition
-
-INSTALLED_APPS = []
-
-if REST_ENABLED:
-    INSTALLED_APPS += ['rest_framework', 'current_rest']
-
-if CONSOLE_ENABLED:
-    INSTALLED_APPS += [
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.staticfiles',
-        'current_console']
-
-
-MIDDLEWARE = [
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'current_console.middleware.TTSDSessionManager',
-]
-
-ROOT_URLCONF = 'urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':  [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+INSTALLED_APPS = ['rest_framework', 'current_rest']
 
 DATABASES = {
     'default': {
@@ -120,52 +90,22 @@ DATABASES = {
             'init_command': 'SET '
                             'character_set_connection=utf8,'
                             'collation_connection=utf8_bin',
-        }
+        },
+        'TEST': {
+            'CHARSET': 'UTF8',
+        },
+
     }
+
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Asia/Shanghai'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = False
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-STATIC_URL = '/static/'
+# Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],
     'EXCEPTION_HANDLER': 'current_rest.exceptions.api_exception_handler',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 10
 }
 
 LOGGING = {

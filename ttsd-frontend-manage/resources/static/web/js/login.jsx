@@ -6,10 +6,10 @@ let loginForm=globalFun.$('#formLogin');
 let imageCaptcha=globalFun.$('#imageCaptcha');
 let loginSubmit=$(loginForm).find('.login-submit');
 
-commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
+commonFun.refreshCaptcha(imageCaptcha, "/login/captcha");
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
-    commonFun.refreshCaptcha(this,'/login/captcha?');
+    commonFun.refreshCaptcha(this, "/login/captcha");
     loginForm.captcha.value='';
 });
 
@@ -75,12 +75,12 @@ let formSubmit =function() {
                 location.href = hasUserRole ? redirectUrl : "/register/account";
             } else {
                 let imageCaptcha=globalFun.$('#imageCaptcha');
-                commonFun.refreshCaptcha(imageCaptcha,'/login/captcha?');
+                commonFun.refreshCaptcha(imageCaptcha, "/login/captcha");
                 errorDom.text(data.message).css('visibility','visible');
             }
         }
     );
-}
+};
 
 loginForm.onsubmit = function(event) {
     event.preventDefault();

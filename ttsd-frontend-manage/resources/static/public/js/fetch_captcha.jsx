@@ -14,7 +14,7 @@ let $fetchCaptcha=$('#fetchCaptcha');
 $imageCaptcha.on('click',function() {
     commonFun.refreshCaptcha(this,'/register/user/image-captcha');
     $imageCaptchaForm[0].imageCaptcha.value='';
-}).trigger('click');
+});
 
 class fetchCaptchaFun{
     constructor(DomForm,kind) {
@@ -39,18 +39,20 @@ class fetchCaptchaFun{
     }
     FetchCaptcha() {
         let that =this;
+        that.getCaptchaOrCancel();
         //点击获取验证码
         $fetchCaptcha.on('click',function() {
+            commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');
-            $imageCaptchaForm[0].imageCaptcha.value=''
+            $imageCaptchaForm[0].imageCaptcha.value='';
             layer.open({
                 type:1,
                 area:['320px'],
                 shadeClose: true,
                 content:$imageCaptchaForm.parents('.image-captcha-dialog')
             });
-            that.getCaptchaOrCancel();
+
             $imageCaptchaForm.find('.mobile').val(mobile);
         });
     }
@@ -78,27 +80,27 @@ class fetchCaptchaFun{
                      url: '/register/user/send-register-captcha',
                      type:'POST',
                      data:$imageCaptchaForm.serialize()
-                 }
+                 };
                 captchaSrc='/register/user/image-captcha';
             }
             else if(that.kind=='retrieve'){
                 ajaxOption={
                     type:'GET',
                     url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
-                }
+                };
                 captchaSrc='/mobile-retrieve-password/image-captcha';
             }
         commonFun.useAjax(ajaxOption,function(responseData) {
                 $captchaSubmit.prop('disabled',false);
                 //刷新验证码
-                commonFun.refreshCaptcha($imageCaptcha[0],captchaSrc);
+                commonFun.refreshCaptcha($imageCaptcha[0], captchaSrc);
 
                 let data = responseData.data;
                 if (data.status && !data.isRestricted) {
                     //获取手机验证码成功，关闭弹框，并开始倒计时
                     layer.closeAll();
                     commonFun.countDownLoan({
-                        btnDom:$fetchCaptcha,
+                        btnDom:$fetchCaptcha
                     });
 
                 } else if (!data.status && data.isRestricted) {

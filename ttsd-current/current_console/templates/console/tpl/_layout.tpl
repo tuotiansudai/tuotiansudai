@@ -21,28 +21,43 @@
     <script src="/static/libs/validate/1.16.0/jquery.validate.min.js"></script>
     <script src="/static/libs/validate/1.16.0/messages_zh.min.js"></script>
     <script src="/static/libs/validate/1.16.0/additional-methods.min.js"></script>
+    <script src="/static/libs/layer/layer.js"></script>
     {% block style_content %}
     {% endblock %}
 </head>
 <body>
+{% load lab_tags %}
+<header class="navbar" id="top" role="banner">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="" class="navbar-brand">
+                <img src="/static/images/logo.png" alt="" />
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【{{login_name}}】</p>
+            <form id="logout-form" action="/logout" method="post">
+            </form>
+        </div>
+    </div>
+     {% head_lab request %}
+</header>
+<!-- main begin -->
 
 <div class="container-fluid">
     <div class="row">
         <!-- menu sidebar -->
-        <div class="col-md-2">
-
-
-        </div>
+        {% side_lab request %}
         <!-- menu sidebar end -->
-        <div class="col-md-10">
-            <!-- content area begin -->
-            <div id="app">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
+
+        <!-- content area begin -->
+        {% block content %}{% endblock %}
         <!-- content area end -->
     </div>
 </div>
+<!-- main end -->
+
+
 
 {% block script_content %}
 {% endblock %}
