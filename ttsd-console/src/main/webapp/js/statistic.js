@@ -17,24 +17,23 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
             $sideNav.removeAttr('style');
         }
     });
+
+    var $topTitleColumn = $('.home-report .panel-title');
     $sideNav.find('li').on('click',function(index) {
         var num=$sideNav.find('li').index(this),heightHack;
         $(this).addClass('active').siblings('li').removeClass('active');
-        switch(num) {
-            case 1:
-                heightHack=20;
-                break;
-            case 2:
-                heightHack=40;
-                break;
-            case 3:
-                heightHack=60;
-                break;
-            default:
-                heightHack=0;
-                break;
-        }
-        $(window).scrollTop(headerHeight+panelHeight*num+heightHack);
+
+        //判断点击的 菜单 所对应的 报表距离屏幕的高度
+        var thisText = $.trim($(this).text());
+
+        var $thisReport = $topTitleColumn.filter(function(key,option) {
+            return option.innerText.indexOf(thisText)!=-1;
+        });
+
+        var toTopOffset = $thisReport.offset().top;
+
+        window.scrollTo(0,toTopOffset);
+
         return false;
     });
 

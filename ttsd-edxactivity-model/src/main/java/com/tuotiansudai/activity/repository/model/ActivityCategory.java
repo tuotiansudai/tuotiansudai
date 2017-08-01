@@ -37,7 +37,8 @@ public enum ActivityCategory {
     WECHAT_FIRST_INVEST_PRIZE("微信首投奖励",ConsumeCategory.TASK_COUNT),
     MOTHERS_DAY_ACTIVITY("母亲节活动",ConsumeCategory.TASK_COUNT),
     CELEBRATION_SINGLE_ACTIVITY("周年庆单笔狂欢场活动",ConsumeCategory.TASK_COUNT),
-    EXERCISE_WORK_ACTIVITY("运动达人VS职场骄子",ConsumeCategory.TASK_COUNT);
+    EXERCISE_WORK_ACTIVITY("运动达人VS职场骄子",ConsumeCategory.TASK_COUNT),
+    HOUSE_DECORATE_ACTIVITY("家装节奖励",ConsumeCategory.TASK_COUNT);
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;
