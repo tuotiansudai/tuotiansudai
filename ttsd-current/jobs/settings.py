@@ -1,3 +1,5 @@
+from celery.schedules import crontab
+
 DEBUG = True
 ENV = 'test'
 # celery configuration
@@ -16,4 +18,12 @@ POP_MESSAGE_WAIT_SECONDS = 30
 
 TopicName2SubscribeQueueNames = {'invest': {'currentBase', 'currentInvestCallback'}}
 
-CURRENT_REST_SERVER = 'http://localhost:8000/rest'
+CURRENT_REST_SERVER = 'http://127.0.0.1:8000'
+timezone = 'Asia/Shanghai'
+beat_schedule = {
+    'add-every-day-morning': {
+        'task': 'jobs.loan_matching_cron.loan_matching',
+        'schedule': crontab(hour='1,2,3,4')
+    },
+
+}

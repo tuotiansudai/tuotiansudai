@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf.urls import url
 
 from current_rest.views import fund
+from current_rest.views import loan_matching
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet, audit_reject_loan
@@ -47,4 +48,5 @@ urlpatterns = [
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
+    url(r'^loan-matching$', loan_matching.loan_matching, name="loan_matching"),
 ]

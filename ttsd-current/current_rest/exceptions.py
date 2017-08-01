@@ -28,3 +28,12 @@ def api_exception_handler(ex, context):
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
     return response
+
+
+class LoanMatchingException(APIException):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    default_detail = 'loan matching fail.'
+    default_code = 'error'
+
+    def __init__(self, detail=None, code=None):
+        APIException.__init__(self, detail, code)
