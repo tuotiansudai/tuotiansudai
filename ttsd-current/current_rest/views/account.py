@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import json
 import logging
-
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import requests
 from django.db import transaction
@@ -45,7 +43,8 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def calculate_interest_yesterday(self, request):
-        # self.__invoke_pay({"login_name": self.login_name, "amount": self.calculate_yesterday_interest()})
+        self.__invoke_pay({"login_name": self.login_name, "amount": self.calculate_yesterday_interest()})
+
         yesterday = request.data.get('yesterday')
         interest_key = self.calculate_interest_key.format(yesterday)
         if redis_client.exists(interest_key):
@@ -53,8 +52,7 @@ class AccountViewSet(mixins.RetrieveModelMixin,
             data = {"code": "0001", "message": "昨天利息已经计算完成，不能重复计算"}
             return Response(data, status=status.HTTP_200_OK)
 
-        accounts = models.CurrentAccount.objects.all()
-        for account in accounts:
+        for account in self.queryset:
             interest = int(current_interest.calculate_interest(account.balance))
             account.balance += interest
             account.save()

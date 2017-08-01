@@ -24,8 +24,8 @@ timezone = 'Asia/Shanghai'
 
 beat_schedule = {
         'calculate-interest-every-day-morning': {
-        'task': 'jobs.calculate_interest_corn.calculate_interest',
-        'schedule': crontab(minute='30', hour='15')
+        'task': 'jobs.calculate_interest_cron.calculate_interest',
+        'schedule': crontab(minute='10', hour='0')
     }
 }
 

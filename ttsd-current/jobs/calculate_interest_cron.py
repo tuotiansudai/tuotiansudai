@@ -18,7 +18,6 @@ def calculate_interest(self):
         response = requests.post(url=calculate_interest_rest_url.format(settings.CURRENT_REST_SERVER),
                                  data={'yesterday': yesterday})
         logger.info("{} interest is calculated".format(yesterday))
-        logger.info("status_code = {},requests.codes = {}".format(response, requests.codes.ok))
         return response.status_code == requests.codes.ok
     except Exception as e:
         logger.error("{} call calculate interest fail,exception: {}".format(yesterday, e))
