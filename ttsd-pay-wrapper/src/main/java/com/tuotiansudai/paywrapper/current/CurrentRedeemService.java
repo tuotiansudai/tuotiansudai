@@ -60,6 +60,7 @@ public class CurrentRedeemService {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
+        long redeemId = redeemRequestDto.getId();
         String loginName = redeemRequestDto.getLoginName();
 
 
@@ -80,9 +81,11 @@ public class CurrentRedeemService {
                     ProjectTransferNopwdResponseModel.class);
 
             if (responseModel.isSuccess()) {
+                // TODO: change to use message queue
                 logger.info("redeem to loan success, redeem_id:{}, login_name:{}, amount:{}", redeemRequestDto.getId(), loginName, String.valueOf(redeemRequestDto.getAmount()));
                 amountTransfer.transferOutBalance(loginName, redeemRequestDto.getId(), redeemRequestDto.getAmount(), UserBillBusinessType.CURRENT_REDEEM_TO_LOAN, null, null);
-                // TODO: call redeem_to_user method
+
+                redeemToUser(loginName, redeemId, redeemRequestDto.getAmount());
             }
 
             payDataDto.setStatus(responseModel.isSuccess());
@@ -91,14 +94,12 @@ public class CurrentRedeemService {
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("order_id", String.valueOf(redeemRequestDto.getId()))
                     .build()));
-        } catch (Exception e) {
+        } catch (PayException | AmountTransferException e) {
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(MessageFormat.format("redeem failed (id={0}, loginName={1}, amount={2}, source={3}",
-                    String.valueOf(redeemRequestDto.getId()),
-                    redeemRequestDto.getLoginName(),
-                    String.valueOf(redeemRequestDto.getAmount()),
-                    redeemRequestDto.getSource()), e);
+            logger.error(MessageFormat.format("redeem to loan failed, redeem_to_loan_request_id: {0}", String.valueOf(redeemId)), e);
+            //sms notify
+            this.sendFatalNotify(MessageFormat.format("日息宝赎回到标的失败,id: {0}", String.valueOf(redeemId)));
         }
 
         return baseDto;
@@ -107,7 +108,7 @@ public class CurrentRedeemService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    // TODO: need to be call from callback of redeem_to_loan
+
     private BaseDto<PayDataDto> redeemToUser(String loginName, long redeemId, long redeemAmount) {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);

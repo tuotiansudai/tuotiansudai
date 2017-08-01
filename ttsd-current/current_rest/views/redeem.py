@@ -3,13 +3,13 @@ import logging
 from datetime import datetime
 
 import requests
+from django.conf import settings
 from django.core.serializers import serialize
 from django.db import transaction
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
-from settings import PAY_WRAPPER_HOST
 
 from current_rest import constants, models
 from current_rest import serializers
@@ -46,7 +46,7 @@ class RedeemViewSet(mixins.RetrieveModelMixin,
         #     return response
 
 
-pay_redeem_url = '{}/redeem_to_loan/'.format(PAY_WRAPPER_HOST)
+pay_redeem_url = '{}/redeem_to_loan/'.format(settings.PAY_WRAPPER_HOST)
 
 
 def invoke_pay(data):
@@ -76,12 +76,14 @@ def audit_redeem(request, pk, result):
     if result == 'pass':
         invoke_pay(serialize('json', redeem))
 
-        redeem.update(status=constants.REDEEM_DOING, auditor=request.data['auditor'], updated_time=datetime.now())
+        redeem.update(status=constants.REDEEM_DOING, auditor=request.data['auditor'], approved_time=datetime.now(),
+                      updated_time=datetime.now())
 
         operation_type = constants.OperationType.REDEEM_AUDIT_PASS
         content = u'{}审核通过赎回申请'.format(request.data['auditor'])
     else:
-        redeem.update(status=constants.REDEEM_REJECT, auditor=request.data['auditor'], updated_time=datetime.now())
+        redeem.update(status=constants.REDEEM_REJECT, auditor=request.data['auditor'], approved_time=datetime.now(),
+                      updated_time=datetime.now())
 
         operation_type = constants.OperationType.REDEEM_AUDIT_REJECT
         content = u'{}驳回赎回申请'.format(request.data['auditor'])
