@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from datetime import datetime, date, time, timedelta
 import decimal
 import logging
 
@@ -7,6 +7,7 @@ from django.db import transaction
 
 from current_rest import constants
 from current_rest import redis_client
+from current_rest.constants import yesterday
 from current_rest.models import FundAllocation, Loan
 
 logger = logging.getLogger('current_rest.biz.services.loan_service')
@@ -22,10 +23,10 @@ class LoanMatching(object):
 
     @transaction.atomic
     def split_balance(self):
-        redis_client.psetex(ACCOUNT_LOAN_MATCHING_REDIS_KEY.format(
-            date=(datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
+        redis_client.setex(ACCOUNT_LOAN_MATCHING_REDIS_KEY.format(
+            date=yesterday,
             account_id=self.account.id),
-            60 * 60 * 24 * 10, 'matching')
+            'matching', 60 * 60 * 24 * 10)
         # 初始化债权缓存
         self._init_loan_cache()
         sum_balance = 0
@@ -46,7 +47,7 @@ class LoanMatching(object):
         for index, fund in enumerate(fund_allocation):
             logger.info(
                 "[loan matching:{}] 用戶id:{},balance:{},匹配债权loan_id:{},金额:{}".format(
-                    (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), fund['account_id'],
+                    yesterday, fund['account_id'],
                     self.account.balance,
                     fund['loan'].id,
                     fund['amount']))
@@ -54,10 +55,10 @@ class LoanMatching(object):
                                           loan=fund['loan'],
                                           amount=fund['amount'])
 
-        redis_client.psetex(ACCOUNT_LOAN_MATCHING_REDIS_KEY.format(
-            date=(datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
+        redis_client.setex(ACCOUNT_LOAN_MATCHING_REDIS_KEY.format(
+            date=yesterday,
             account_id=self.account.id),
-            60 * 60 * 24 * 3, 'success')
+            'success', 60 * 60 * 24 * 3)
 
     def _calculate_sum_amount(self):
         return sum(
@@ -66,9 +67,9 @@ class LoanMatching(object):
     def _init_loan_cache(self):
         global unmatch_loan_cache
         global LOAN_MATCHING_DATE
-        if LOAN_MATCHING_DATE != (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"):
+        if LOAN_MATCHING_DATE != yesterday:
             unmatch_loan_cache = []
-        LOAN_MATCHING_DATE = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        LOAN_MATCHING_DATE = yesterday
 
         if len(unmatch_loan_cache) == 0:
             un_match_loans = valid_loan()
@@ -106,13 +107,13 @@ class LoanMatching(object):
 
 def delete_history_data():
     query_set = FundAllocation.objects.filter(
-        created_time__lt=datetime.datetime.combine(datetime.date.today(), datetime.time.min))
+        created_time__lt=datetime.combine(date.today(), time.min))
     delete_count = query_set.count()
     query_set.delete()
     return delete_count
 
 
 def valid_loan():
-    return Loan.objects.filter(effective_date__lte=datetime.datetime.today(),
-                               expiration_date__gte=datetime.datetime.today(),
+    return Loan.objects.filter(effective_date__lte=datetime.combine((datetime.today() - timedelta(days=1)), time.min),
+                               expiration_date__gte=datetime.combine((datetime.today() - timedelta(days=1)), time.min),
                                status__exact=constants.LOAN_STATUS_APPROVED)
