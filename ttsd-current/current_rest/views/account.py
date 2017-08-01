@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import logging
 
 from datetime import datetime, timedelta
@@ -11,6 +12,7 @@ from rest_framework.response import Response
 
 from current_rest import constants, redis_client
 from current_rest import serializers, models
+from current_rest import settings
 from current_rest.biz import current_interest
 from current_rest.exceptions import PayWrapperException
 from current_rest.settings import PAY_WRAPPER_HOST
@@ -23,6 +25,8 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     serializer_class = serializers.AccountSerializer
     queryset = models.CurrentAccount.objects.all()
     lookup_field = 'login_name'
+
+    login_name = settings.LOGIN_NAME
 
     calculate_interest_key = "interest:{0}"
     pay_with_no_password_url = '{}/interest-settlement/'.format(PAY_WRAPPER_HOST)
@@ -41,8 +45,7 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def calculate_interest_yesterday(self, request):
-        # self.__invoke_pay({"login_name": "", "amount": self.calculate_yesterday_interest()})
-        print(request.data)
+        self.__invoke_pay({"login_name": self.login_name, "amount": self.calculate_yesterday_interest()})
         yesterday = request.data.get('yesterday')
         interest_key = self.calculate_interest_key.format(yesterday)
         if redis_client.exists(interest_key):

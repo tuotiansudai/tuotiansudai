@@ -72,7 +72,7 @@ class DepositTestCase(TestCase):
         fake_requests.return_value.json = mock.Mock(return_value=pay_response)
         CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
         yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
-        response = self.client.post(path=reverse('update_balance'),
+        response = self.client.post(path=reverse('calculate_interest_yesterday'),
                                     data={"yesterday": yesterday},
                                     format='json')
 
@@ -87,7 +87,7 @@ class DepositTestCase(TestCase):
         CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
         yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         redis_client.setex("interest:{0}".format(yesterday), yesterday, 60)
-        response = self.client.post(path=reverse('update_balance'),
+        response = self.client.post(path=reverse('calculate_interest_yesterday'),
                                     data={"yesterday": yesterday},
                                     format='json')
 
