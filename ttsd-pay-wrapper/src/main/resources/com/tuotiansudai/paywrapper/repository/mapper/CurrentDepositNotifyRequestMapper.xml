@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.CurrentDepositNotifyRequestMapper">
 
-    <resultMap id="resultMap" type="CurrentDepositNotifyRequestModel">
+    <resultMap id="resultMap" type="ProjectTransferNotifyRequestModel">
         <id property="id" column="id" />
         <result property="service" column="service"/>
         <result property="signType" column="sign_type"/>
@@ -24,7 +24,7 @@
         <result property="merCheckDate" column="mer_check_date"/>
     </resultMap>
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CurrentDepositNotifyRequestModel">
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferNotifyRequestModel">
         insert into current_deposit_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)
         values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})
     </insert>

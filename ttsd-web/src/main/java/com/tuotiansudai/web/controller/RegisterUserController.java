@@ -10,7 +10,6 @@ import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
-import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -215,12 +214,11 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/user/image-captcha", method = RequestMethod.GET)
-    public void registerImageCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public void registerImageCaptcha(@RequestParam(value = "flush", defaultValue = "true", required = false) boolean flush,
+                                     HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
-        int captchaHeight = 38;
-        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight,
-                this.captchaHelper.getCaptcha(request.getSession().getId()));
+        int captchaHeight = 30;
+        Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, flush);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
     }
 }

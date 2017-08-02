@@ -174,6 +174,13 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/current_over_deposit_payback_notify", method = RequestMethod.GET)
+    public ModelAndView currentOverDepositPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentDepositService.overDepositCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/normal_repay_notify", method = RequestMethod.GET)
     public ModelAndView repayNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

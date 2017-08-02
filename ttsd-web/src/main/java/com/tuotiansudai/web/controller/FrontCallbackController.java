@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.current.client.CurrentRestClient;
-import com.tuotiansudai.current.dto.DepositDetailResponseDto;
+import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.service.InvestService;
@@ -72,7 +72,7 @@ public class FrontCallbackController {
             }
             if (Lists.newArrayList(AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
                 long orderId = Long.valueOf(params.get("order_id"));
-                DepositDetailResponseDto deposit = currentRestClient.getDeposit(orderId);
+                DepositDto deposit = currentRestClient.getDeposit(orderId);
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(deposit.getAmount()));
             }
 

@@ -195,7 +195,7 @@ require.ensure([],function() {
         $('.captcha').val('');
         errorBox.html('');
         $codeNumber.addClass('code-number-hidden');
-    };
+    }
 
     $turnOnNoPasswordInvestLayer.on('click', function () {
         commonFun.useAjax({
@@ -292,7 +292,8 @@ require.ensure([],function() {
             data:$(imageCaptchaForm).serialize()
         },function(response) {
             $getCaptchaElement.prop('disabled',false);
-            var data =response.data;
+            let data =response.data;
+            errorBox.html('');
             if (data.status && !data.isRestricted) {
                 $codeNumber.removeClass('code-number-hidden');
                 var seconds = 60;
@@ -317,11 +318,8 @@ require.ensure([],function() {
                 $codeNumber.addClass('code-number-hidden');
                 errorBox.html('图形验证码不正确');
             }
-            errorBox.html('');
             commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
-
         });
-        return;
     });
 
     $imageCaptchaElement.click(function () {

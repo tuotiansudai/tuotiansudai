@@ -1,17 +1,14 @@
-
 import json
-
 import requests
 from celery.utils.log import get_task_logger
-
 from jobs.base import BaseTask
 from jobs import current_app, settings
 
 logger = get_task_logger(__name__)
 
 
-class RedeemCallback(BaseTask):
-    name = "current-redeem-complete"
+class RedeemCallbackTask(BaseTask):
+    name = settings.QueueName.REDEEM_CALLBACK_TASK_QUEUE
     queue = "celery.current.redeem.callback"
     rest_url = "{}/redeem/{}"
 
@@ -30,5 +27,5 @@ class RedeemCallback(BaseTask):
 
 
 # register task and initialize it
-current_app.tasks.register(RedeemCallback())
-RedeemCallback().delay()
+current_app.tasks.register(RedeemCallbackTask())
+RedeemCallbackTask().delay()

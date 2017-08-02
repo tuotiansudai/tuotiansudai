@@ -13,7 +13,7 @@ from current_rest import settings
 from current_rest.biz import current_interest
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.pay_manager import PayManager
-from current_rest.settings import PAY_WRAPPER_HOST
+from current_rest.settings import PAY_WRAPPER_SERVER
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     lookup_field = 'login_name'
 
     calculate_interest_key = "interest:{0}"
-    interest_pay_with_no_password_url = '{}/interest-settlement/'.format(PAY_WRAPPER_HOST)
+    interest_pay_with_no_password_url = '{}/interest-settlement/'.format(PAY_WRAPPER_SERVER)
     valid_time = 60 * 60 * 24
     login_name = settings.LOGIN_NAME
 
@@ -42,9 +42,6 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
     @transaction.atomic
     def calculate_interest_yesterday(self, request):
-        data = {"login_name": self.login_name, "amount": self.calculate_yesterday_interest()}
-        PayManager.invoke_pay(data, self.interest_pay_with_no_password_url)
-
         yesterday = request.data.get('yesterday')
         interest_key = self.calculate_interest_key.format(yesterday)
         if redis_client.exists(interest_key):

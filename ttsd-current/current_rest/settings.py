@@ -34,8 +34,6 @@ ROOT_URLCONF = 'current_rest.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
-REDIS_URL = 'redis://192.168.33.10/2'
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 LANGUAGE_CODE = 'en-us'
@@ -57,7 +55,9 @@ DB_MYSQL_PASSWORD = 'root'
 
 LOGGING_DIR = '/var/log/current_rest'
 
-PAY_WRAPPER_HOST = 'http://localhost:8080/current'
+PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
+
+REDIS_URL = 'redis://192.168.33.10/2'
 
 LOGIN_NAME = 'testName'
 

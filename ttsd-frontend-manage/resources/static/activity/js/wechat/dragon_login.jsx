@@ -11,14 +11,14 @@ let $wechatInvite = $('#wechatInvite'),
     sharerUnique=$('#sharerUnique').val();
 
 function refreshCapt() {
-    $('#captchaImg').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
-};
+    commonFun.refreshCaptcha($('#captchaImg'),'/register/user/image-captcha');
+}
 refreshCapt();
 
 //换一张图形验证码
 $changecode.on('touchstart', function (event) {
     event.preventDefault();
-    refreshCapt();
+    refreshCapt(true);
 });
 
 
@@ -81,7 +81,7 @@ loginForm.onsubmit = function(event) {
             type:'POST',
             data:$(loginForm).serialize()
         },function(data) {
-        refreshCapt();
+        	refreshCapt(true);
             $loginSubmit.prop('disabled',false);
             if (data.status) {
                 location.href = "/activity/dragon/wechat/fetchCouponAfterLogin?sharerUnique="+sharerUnique;
@@ -90,7 +90,7 @@ loginForm.onsubmit = function(event) {
             }
         }
     );
-}
+};
 
 //显示服务协议
 $('.agree-text',$wechatInvite).on('click', function(event) {

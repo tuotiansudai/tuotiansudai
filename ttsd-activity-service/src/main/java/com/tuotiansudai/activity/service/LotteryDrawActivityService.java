@@ -132,6 +132,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.exercise.work.endTime}")
     private String acticityExerciseWorkEndTime;
 
+    @Value(value = "${activity.house.decorate.startTime}")
+    private String acticityHouseDecorateStartTime;
+
+    @Value(value = "${activity.house.decorate.endTime}")
+    private String acticityHouseDecorateEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -342,6 +348,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_30,Lists.newArrayList(448L))
                 .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_5,Lists.newArrayList(449L))
                 .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_8,Lists.newArrayList(450L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_5,Lists.newArrayList(451L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_8,Lists.newArrayList(452L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_10,Lists.newArrayList(453L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_15,Lists.newArrayList(454L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_5,Lists.newArrayList(455L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_8,Lists.newArrayList(456L))
                 .build()).get(lotteryPrize);
     }
 
@@ -422,6 +434,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case EXERCISE_WORK_ACTIVITY:
                 return getExerciseVSWorkDrawTime(userModel, activityCategory);
+            case HOUSE_DECORATE_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
 
         }
         return lotteryTime;
@@ -566,6 +580,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
                 .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
                 .put(ActivityCategory.EXERCISE_WORK_ACTIVITY,Lists.newArrayList(acticityExerciseWorkStartTime,acticityExerciseWorkEndTime))
+                .put(ActivityCategory.HOUSE_DECORATE_ACTIVITY,Lists.newArrayList(acticityHouseDecorateStartTime,acticityHouseDecorateEndTime))
                 .build()).get(activityCategory);
     }
 
