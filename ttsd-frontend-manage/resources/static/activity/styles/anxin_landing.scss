@@ -243,3 +243,45 @@ a.anxin-button {
     }
   }
 }
+
+@media screen and (min-width: 700px) and(max-width:768px){
+  .tour-slide {
+    height: 250px;
+    background-size: cover;
+  }
+  .landing-safety-frame {
+
+    .column-box-box {
+      padding:0 10px;
+    }
+    .CFCA-box {
+      width:49%;
+      dd {
+        height:300px;
+      }
+    }
+
+    .CFCA-do-what  {
+
+      .icon-and {
+        display: none;
+      }
+      dl {
+        width:100%;
+        float:none;
+      }
+
+    }
+
+    .how-to-open  {
+      .advantage-list li {
+        display: block;
+        float:left;
+      }
+    }
+  }
+
+
+
+
+}

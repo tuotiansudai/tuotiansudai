@@ -848,4 +848,46 @@ form label.error {
 }
 
 
+@media screen and (min-width: 700px) and(max-width:768px){
+  .landing-container {
+    .landing-header-nav {
+      width: 96%;
+      box-sizing: border-box;
+    }
+    .landing-top-banner {
+      height:250px;
+      background-size: cover;
+    }
+    .newbie-step-register {
+      display: none;
+    }
+    .newbie-step-four .image-steps {
+      background-size: 100%;
+    }
+    .newbie-step-four,.newbie-step-six {
+      padding: 10px;
+    }
+
+
+    .newbie-step-six .newbie-step-six-box {
+      min-width:96%;
+    }
+    .newbie-step-four {
+      padding-bottom:30px;
+    }
+
+  }
+
+  .footer-container .copyright {
+    display: none;
+  }
+
+}
+
+@media screen and (min-width: 768px) and(max-width:1024px){
+  .landing-container .newbie-step-register {
+    display: none;
+  }
+}
+
 

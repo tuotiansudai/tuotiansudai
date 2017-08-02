@@ -612,3 +612,43 @@
     }
   }
 }
+
+@media screen and (min-width: 700px) and(max-width:768px){
+  .tour-slide {
+    height:250px;
+    background-size:cover;
+  }
+
+  .share-reward-container {
+    padding:10px;
+    .bg-column-normal,.titel-item,.tip-item,.info-item,.reward-item,.btn-item,.loan-item,.icon-item {
+      float: none;
+    }
+    .bg-column-normal {
+      padding: 15px;
+    }
+    .info-item.free-list {
+      padding: 30px 10px 20px 10px;
+    }
+    .info-item.free-list li.free-type {
+      margin:0;
+    }
+    .info-item li {
+      margin:0;
+      &.free-list,&.money-type,.free-type {
+        width: 30%;
+
+      }
+    }
+
+    .invite-box-friend .btn-copy-link {
+      width:150px;
+    }
+    .invite-box-friend.anonymous {
+      padding: 20px 0;
+      dl dd .input-invite {
+        width:275px;
+      }
+    }
+  }
+}

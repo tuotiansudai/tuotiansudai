@@ -5,10 +5,8 @@
 .invest-achievement-container{
   background:#e5f2ff;
   .container-model{
-    float:left;
-    width:100%;
     height:450px;
-    background:url("../images/achievement/top-picture.png") repeat center;
+    background:url("../images/achievement/top-picture.png") center top no-repeat;
     background-size:100%;
   }
   .content-list{
@@ -370,4 +368,36 @@
   }
 
 }
+
+@media screen and (min-width: 700px) and(max-width:768px){
+
+  .invest-achievement-container {
+
+    .container-model {
+      height:250px!important;
+    }
+
+    .content-list {
+      float: none;
+      .wp {
+        width:100%;
+        .actor-intro {
+          float: none;
+          width:auto;
+        }
+        .actor-model .actor-content .icon-list {
+         background-size: 96%;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (min-width: 768px) and(max-width:1024px){
+  .invest-achievement-container .container-model {
+    height:350px;
+  }
+}
+
 

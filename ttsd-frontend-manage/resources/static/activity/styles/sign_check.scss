@@ -93,7 +93,7 @@
 		    	width:100%;
 		    	height:432px;
 		    	text-align:center;
-		    	background: url("../images/sign-check/red-bag.png") no-repeat center;
+		    	background: url("../images/sign-check/red-bag.png")  center center no-repeat ;
 		    	background-size:40%;
 		    	@media (max-width:700px) {
 		    		height:180px;
@@ -386,5 +386,46 @@
 				}
 			}
 		}
+	}
+}
+
+@media screen and (min-width: 700px) and(max-width:768px){
+	.sign-check-container .top-item {
+		float: none;
+		height:300px;
+		background-size: cover;
+	}
+	.sign-check-container .wp {
+		width:100%;
+	}
+
+	.sign-check-container .wp .content-item {
+		padding:10px;
+	}
+
+	.sign-check-container .wp .content-item .left-item {
+		width: 50%;
+	}
+	.sign-check-container .wp .content-item .right-item {
+		width:48%;
+		float: right;
+		margin-left:0;
+	}
+
+	.sign-check-container .wp .content-item .gift-item {
+		height:350px;
+	}
+
+	.sign-check-container .wp .rule-item {
+		width: 98%;
+		margin-left: 1%;
+
+	}
+
+}
+
+@media screen and (min-width: 768px) and(max-width:1024px){
+	.sign-check-container .top-item {
+		height:380px;
 	}
 }

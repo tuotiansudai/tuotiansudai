@@ -222,7 +222,7 @@
             </p>
         </div>
     </div>
-    <div class="bg-column-normal">
+    <div class="bg-column-normal clearfix">
         <div class="titel-item">
             <div class="title-text">
                 <i class="left-icon"></i>

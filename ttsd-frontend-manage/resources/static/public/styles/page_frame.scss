@@ -696,3 +696,29 @@
 
   }
 }
+
+@media screen and (min-width: 700px) and(max-width:768px){
+
+  .header-container .header-top {
+    padding: 0 10px;
+  }
+  .nav-container {
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+
+  .nav-container .nav-menu li {
+    width:16%;
+  }
+
+  .footer-container .footer {
+    padding:10px 20px;
+    height:300px;
+    ul.last {
+      display: none;
+    }
+  }
+
+
+}
+
