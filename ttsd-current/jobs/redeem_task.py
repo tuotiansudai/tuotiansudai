@@ -10,7 +10,7 @@ logger = get_task_logger(__name__)
 
 
 class RedeemCallbackTask(BaseTask):
-    name = settings.REDEEM_CALLBACK_TASK_QUEUE
+    name = settings.QueueName.REDEEM_CALLBACK_TASK_QUEUE
     queue = "celery.current.redeem.callback"
     rest_url = "{}/redeem/{}"
 

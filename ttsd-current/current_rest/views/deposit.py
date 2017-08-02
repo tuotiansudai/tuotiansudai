@@ -32,7 +32,7 @@ class DepositViewSet(mixins.RetrieveModelMixin,
         super(DepositViewSet, self).__init__()
         self.current_account_manager = CurrentAccountManager()
         self.current_daily_manager = CurrentDailyManager()
-        self.mq_client = MessageClient(jobs.settings.OVER_DEPOSIT_TASK_QUEUE)
+        self.mq_client = MessageClient(jobs.settings.QueueName.OVER_DEPOSIT_TASK_QUEUE)
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):

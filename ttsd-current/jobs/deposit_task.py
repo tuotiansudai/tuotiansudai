@@ -10,7 +10,7 @@ logger = get_task_logger(__name__)
 
 
 class DepositCallbackTask(BaseTask):
-    name = settings.OVER_DEPOSIT_TASK_QUEUE
+    name = settings.QueueName.DEPOSIT_CALLBACK_TASK_QUEUE
     queue = "celery.current.deposit.callback"
     rest_url = "{}/deposit/{}"
 
