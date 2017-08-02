@@ -31,9 +31,11 @@ LOAN_TYPE_CHOICES = (
 
 class OperationTarget(object):
     LOAN = 'loan'
+    REDEEM = 'redeem'
 
     OPERATION_TARGET_TYPE = (
         (LOAN, u'债权'),
+        (REDEEM, u'赎回'),
     )
 
 
@@ -42,22 +44,17 @@ class OperationType(object):
     LOAN_AUDIT = 'LOAN_AUDIT'
     LOAN_REJECT = 'LOAN_REJECT'
     LOAN_EDIT = 'LOAN_EDIT'
+    REDEEM_AUDIT_PASS = 'REDEEM_AUDIT_PASS'
+    REDEEM_AUDIT_REJECT = 'REDEEM_AUDIT_REJECT'
     OPERATION_TYPE_MAP = (
         (LOAN_ADD, u'增加债权信息'),
         (LOAN_AUDIT, u'审核债权信息'),
         (LOAN_REJECT, u'驳回债权信息'),
         (LOAN_EDIT, u'编辑债权信息'),
+        (REDEEM_AUDIT_PASS, u'审核通过赎回申请'),
+        (REDEEM_AUDIT_REJECT, u'驳回赎回申请'),
     )
 
-
-STATUS_WAITING = 'WAITING'
-STATUS_APPROVED = 'APPROVED'
-STATUS_DENIED = 'DENIED'
-STATUS_CHOICES = (
-    (STATUS_WAITING, u'待审核'),
-    (STATUS_APPROVED, u'已审核'),
-    (STATUS_DENIED, u'已驳回'),
-)
 
 SOURCE_WEB = 'WEB'
 SOURCE_WE_CHAT = 'WE_CHAT'
@@ -86,6 +83,19 @@ BILL_TYPE_CHOICE = (
     (BILL_TYPE_DEPOSIT, u'买入'),
     (BILL_TYPE_WITHDRAW, u'赎回'),
     (BILL_TYPE_INTEREST, u'结息'),
+)
+
+REDEEM_WAITING = 'WAITING'
+REDEEM_DOING = 'DOING'
+REDEEM_REJECT = 'REJECT'
+REDEEM_SUCCESS = 'SUCCESS'
+REDEEM_FAIL = 'FAIL'
+REDEEM_STATUS_CHOICE = (
+    (REDEEM_WAITING, u'待审核'),
+    (REDEEM_DOING, u'赎回中'),
+    (REDEEM_REJECT, u'已驳回'),
+    (REDEEM_SUCCESS, u'赎回成功'),
+    (REDEEM_FAIL, u'赎回失败'),
 )
 
 # 单位为分

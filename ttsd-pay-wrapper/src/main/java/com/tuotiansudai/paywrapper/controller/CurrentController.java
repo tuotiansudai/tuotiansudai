@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.RedeemRequestDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.current.CurrentDepositService;
+import com.tuotiansudai.paywrapper.current.CurrentRedeemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,9 +23,12 @@ public class CurrentController {
 
     private final CurrentDepositService currentDepositService;
 
+    private final CurrentRedeemService currentRedeemService;
+
     @Autowired
-    public CurrentController(CurrentDepositService currentDepositService) {
+    public CurrentController(CurrentDepositService currentDepositService, CurrentRedeemService currentRedeemService) {
         this.currentDepositService = currentDepositService;
+        this.currentRedeemService = currentRedeemService;
     }
 
     @RequestMapping(path = "/deposit-with-password", method = RequestMethod.POST)
@@ -36,6 +41,12 @@ public class CurrentController {
     @ResponseBody
     public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody DepositRequestDto depositRequestDto) {
         return currentDepositService.noPasswordDeposit(depositRequestDto);
+    }
+
+    @RequestMapping(value = "/redeem-to-loan", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> redeemToLoan(@Valid @RequestBody RedeemRequestDto redeemRequestDto) {
+        return currentRedeemService.redeemToLoan(redeemRequestDto);
     }
 
 }

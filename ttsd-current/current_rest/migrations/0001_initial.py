@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_time', models.DateTimeField(auto_now_add=True)),
                 ('updated_time', models.DateTimeField(auto_now=True)),
-                ('approver', models.CharField(max_length=25)),
+                ('approver', models.CharField(max_length=25, null=True)),
                 ('approved_time', models.DateTimeField(blank=True, null=True)),
                 ('login_name', models.CharField(max_length=25)),
                 ('amount', models.IntegerField()),

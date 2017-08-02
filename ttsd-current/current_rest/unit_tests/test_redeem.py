@@ -77,3 +77,27 @@ class RedeemTestCase(APITestCase):
         self.assertEqual(response.data['personal_max_redeem'], max_amoount)
         self.assertEqual(response.data['personal_available_redeem'], 30000)
 
+    # 赎回审核通过
+    def test_audit_redeem_pass(self):
+        account = CurrentAccount.objects.create(login_name=self.login_name, balance=1000)
+
+        redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
+                                              status=constants.REDEEM_WAITING, source=constants.SOURCE_ANDROID)
+
+        response = self.client.get('/redeem-audit/{}/{}'.format(redeem.id, "pass"))
+
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_DOING)
+
+    # 赎回审核驳回
+    def test_audit_redeem_reject(self):
+        account = CurrentAccount.objects.create(login_name=self.login_name, balance=1000)
+
+        redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
+                                              status=constants.REDEEM_WAITING, source=constants.SOURCE_ANDROID)
+
+        response = self.client.get('/redeem-audit/{}/{}'.format(redeem.id, "reject"))
+
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_REJECT)
+

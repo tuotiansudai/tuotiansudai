@@ -72,6 +72,7 @@ public enum MessageQueue {
 
     // 以下是日息宝Queue
     CurrentDepositCallback("current-deposit-callback"), //日息宝买入回调Queue
+    CurrentRedeemToLoanCallback("current-redeem-to-loan-callback"), //日息宝赎回toLoan-回调Queue
     CurrentRedeemComplete("current-redeem-complete"); //日息宝买入回调Queue
 
     private final String queueName;
