@@ -9,8 +9,8 @@ from jobs import current_app, settings
 logger = get_task_logger(__name__)
 
 
-class DepositCallback(BaseTask):
-    name = "current-deposit-callback"
+class DepositCallbackTask(BaseTask):
+    name = settings.QueueName.DEPOSIT_CALLBACK_TASK_QUEUE
     queue = "celery.current.deposit.callback"
     rest_url = "{}/deposit/{}"
 
@@ -20,7 +20,7 @@ class DepositCallback(BaseTask):
             json_message = json.loads(message)
             response = requests.put(url=self.rest_url.format(settings.CURRENT_REST_SERVER,
                                                              json_message.get('id')),
-                                    json={'status': json_message.get('status')},
+                                    json=json_message,
                                     headers={'content-type': 'application/json'})
             return response.status_code == requests.codes.ok
         except Exception, e:
@@ -29,5 +29,5 @@ class DepositCallback(BaseTask):
 
 
 # register task and initialize it
-current_app.tasks.register(DepositCallback())
-DepositCallback().delay()
+current_app.tasks.register(DepositCallbackTask())
+DepositCallbackTask().delay()

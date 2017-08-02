@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Introspector;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

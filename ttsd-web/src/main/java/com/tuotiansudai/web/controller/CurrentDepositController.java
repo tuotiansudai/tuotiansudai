@@ -1,7 +1,8 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.current.client.CurrentRestClient;
-import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.DepositDto;
+import com.tuotiansudai.current.dto.DepositStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CurrentDepositRequestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -67,7 +68,7 @@ public class CurrentDepositController {
         boolean isWeChatSource = StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"));
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        DepositRequestDto depositRequestDto = new DepositRequestDto(loginName, currentDepositRequestDto.getAmount(), isWeChatSource ? Source.WEB : Source.WE_CHAT, accountModel.isNoPasswordInvest());
+        DepositDto depositRequestDto = new DepositDto(null, loginName, currentDepositRequestDto.getAmount(), isWeChatSource ? Source.WEB : Source.WE_CHAT, DepositStatus.WAITING_PAY, accountModel.isNoPasswordInvest());
 
         try {
             if (accountModel.isNoPasswordInvest()) {

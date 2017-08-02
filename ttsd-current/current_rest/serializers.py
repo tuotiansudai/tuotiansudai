@@ -8,9 +8,8 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 
 from current_rest import constants, models
-from current_rest.biz import PERSONAL_MAX_DEPOSIT
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.biz.current_daily_manager import CurrentDailyManager
+from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
 from current_rest.models import Agent
 
 logger = logging.getLogger(__name__)
@@ -38,8 +37,8 @@ class AccountSerializer(serializers.ModelSerializer):
     personal_max_redeem = serializers.SerializerMethodField()
 
     def get_personal_max_deposit(self, instance):
-        user_max_deposit = PERSONAL_MAX_DEPOSIT - instance.balance if PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
-        today_sum_deposit = self.__calculate_success_deposit_today()
+        user_max_deposit = constants.PERSONAL_MAX_DEPOSIT - instance.balance if constants.PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
+        today_sum_deposit = calculate_success_deposit_today()
         current_daily_amount = CurrentDailyManager().get_current_daily_amount()
         return min(user_max_deposit, current_daily_amount - today_sum_deposit)
 
