@@ -59,6 +59,7 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferNopwdRequestModel newCurrentRedeemToLoanRequest(String orderId, String userId, String amount) {
+        // TODO : use the formal current loan id
         return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_REDEEM_TO_LOAN_PROJECT_TRANSFER);
     }
 
