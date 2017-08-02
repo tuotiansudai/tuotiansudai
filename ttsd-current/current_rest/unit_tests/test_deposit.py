@@ -115,9 +115,13 @@ class DepositTestCase(TestCase):
                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_should_return_200_when_deposit_callback_success(self):
+    @mock.patch('current_rest.views.deposit.CurrentDailyManager')
+    def test_should_return_200_when_deposit_callback_success(self, fake_manager):
         fake_account = CurrentAccountManager().fetch_account(self.login_name)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
+
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = 2
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
                                    data={'status': constants.DEPOSIT_SUCCESS},
