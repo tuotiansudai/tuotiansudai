@@ -60,6 +60,9 @@ public class ActivityConsoleExportService {
     @Autowired
     private ActivityConsoleDragonBoatService activityConsoleDragonBoatService;
 
+    @Autowired
+    private ActivityConsoleHouseDecorateService activityConsoleHouseDecorateService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -267,5 +270,9 @@ public class ActivityConsoleExportService {
         List<DragonBoatFestivalModel> list = activityConsoleDragonBoatService.getList(1, Integer.MAX_VALUE).getRecords();
 
         return list.stream().map(a -> a.convertToView()).map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildHouseDecorateCsvList(){
+        return activityConsoleHouseDecorateService.list(1,Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

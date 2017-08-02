@@ -6,8 +6,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.current.client.CurrentRestClient;
-import com.tuotiansudai.current.dto.DepositDetailResponseDto;
 import com.tuotiansudai.current.dto.RedeemDetailResponseDto;
+import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.BankCardModel;
@@ -161,7 +161,7 @@ public class MobileAppFrontCallBackController {
         };
 
         Function<Long, Map<String, String>> bindCurrentDepositValuesGenerator = (Long depositId) -> {
-            DepositDetailResponseDto deposit = currentRestClient.getDeposit(depositId);
+            DepositDto deposit = currentRestClient.getDeposit(depositId);
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("message", "投资成功")
                     .put("investAmount", AmountConverter.convertCentToString(deposit.getAmount()))

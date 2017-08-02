@@ -10,8 +10,8 @@ let $wechatInvite = $('#wechatInvite'),
 	validator = new ValidatorObj.ValidatorForm();
 
 function refreshCapt() {
-    $('#captchaImg').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
-};
+    commonFun.refreshCaptcha($('#captchaImg'),'/register/user/image-captcha');
+}
 refreshCapt();
 
 //换一张图形验证码
