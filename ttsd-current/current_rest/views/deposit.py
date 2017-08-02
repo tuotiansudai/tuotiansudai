@@ -14,7 +14,6 @@ from current_rest.biz.current_daily_manager import CurrentDailyManager, calculat
 from current_rest.exceptions import PayWrapperException
 from current_rest.settings import PAY_WRAPPER_SERVER
 from jobs.client import MessageClient
-from jobs.over_deposit_task import OverDepositTask
 
 logger = logging.getLogger(__name__)
 

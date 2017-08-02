@@ -30,3 +30,6 @@ PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
 setting_local_file = '/workspace/deploy-config/ttsd-current/jobs_settings.py'
 if not os.path.isfile(setting_local_file):
     setting_local_file = os.path.join(BASE_DIR, "settings_local.py")
+
+if os.path.isfile(setting_local_file):
+    exec (compile(open(setting_local_file).read(), setting_local_file, 'exec'))
