@@ -15,6 +15,10 @@ class DepositTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.login_name = 'fakeuser'
+        self.yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+
+    def tearDown(self):
+        redis_client.delete("interest:{0}".format(self.yesterday))
 
     @mock.patch('current_rest.serializers.CurrentDailyManager')
     def test_should_return_200_when_when_user_is_not_exist(self, fake_manager):
@@ -71,13 +75,11 @@ class DepositTestCase(TestCase):
         fake_requests.return_value.status_code = 200
         fake_requests.return_value.json = mock.Mock(return_value=pay_response)
         CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
-        yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         response = self.client.post(path=reverse('calculate_interest_yesterday'),
-                                    data={'yesterday': yesterday},
+                                    data={'yesterday': self.yesterday},
                                     format='json')
 
-        self.assertEqual(response.data.get('code'), "0000")
-        redis_client.delete("interest:{0}".format(yesterday))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @mock.patch('requests.post')
     def test_should_return_200_when_already_calculate_interest(self, fake_requests):
@@ -85,11 +87,11 @@ class DepositTestCase(TestCase):
         fake_requests.return_value.status_code = 200
         fake_requests.return_value.json = mock.Mock(return_value=pay_response)
         CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
-        yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
-        redis_client.setex("interest:{0}".format(yesterday), yesterday, 60)
+
+        redis_client.setex("interest:{0}".format(self.yesterday), self.yesterday, 60)
         response = self.client.post(path=reverse('calculate_interest_yesterday'),
-                                    data={'yesterday': yesterday},
+                                    data={'yesterday': self.yesterday},
                                     format='json')
 
-        self.assertEqual(response.data.get('code'), "0001")
-        redis_client.delete("interest:{0}".format(yesterday))
+        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+

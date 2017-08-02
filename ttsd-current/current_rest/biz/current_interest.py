@@ -15,7 +15,7 @@ YEAR_OF_DAYS = 365
 
 def calculate_interest(balance):
     rate = pickup_rate_by_balance(balance)
-    return floor(balance * rate / YEAR_OF_DAYS)
+    return int(floor(balance * rate / YEAR_OF_DAYS))
 
 
 def pickup_rate_by_balance(balance):
