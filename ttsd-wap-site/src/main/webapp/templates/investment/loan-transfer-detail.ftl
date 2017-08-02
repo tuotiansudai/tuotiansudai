@@ -26,6 +26,7 @@
     </div>
 
     <div class="leave-time">距项目下架时间：4天  24小时  29分</div>
+    <!-- <div class="leave-time">已转让</div> -->
 
     <ul class="detail-list">
         <li>
@@ -47,6 +48,10 @@
             <label>回款计划</label>
             <span><i class="fa fa-angle-right"></i> </span>
         </li>
+        <!-- <li class="repay-plan">
+            <label>债权承接纪录</label>
+            <span><i class="fa fa-angle-right"></i> </span>
+        </li> -->
     </ul>
 
     <div class="history-record">

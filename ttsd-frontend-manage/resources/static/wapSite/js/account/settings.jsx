@@ -63,7 +63,7 @@ function OpenNoPasswordInvest(firstopen) {
                 //授权成功
                 commonFun.CommonLayerTip({
                     btn: ['我知道了'],
-                    area:['380px', '260px'],
+                    area:['300px', '260px'],
                     content: $('#noPasswordInvestDOM')
                 },function() {
                     layer.closeAll();
@@ -101,7 +101,7 @@ function turnOffNoPassword() {
 
         commonFun.CommonLayerTip({
             btn: ['确定', '取消'],
-            area:['380px', '300px'],
+            area:['300px', '300px'],
             content: $('#turnOnSendCaptcha')
         },function() {
             let captachElClass  =  turnOffNoPasswordInvestForm.captcha.className;
