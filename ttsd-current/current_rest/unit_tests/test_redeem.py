@@ -40,7 +40,7 @@ class RedeemTestCase(APITestCase):
 
     def test_get_limits_when_current_balance_is_enough(self):
         CurrentAccount.objects.create(login_name=self.login_name, balance=10000000)
-        max_amoount = constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
+        max_amount = constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
 
         url = reverse('post_redeem')
         data1 = {'login_name': self.login_name,
@@ -54,12 +54,12 @@ class RedeemTestCase(APITestCase):
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
-        self.assertEqual(response.data['personal_max_redeem'], max_amoount)
+        self.assertEqual(response.data['personal_max_redeem'], max_amount)
         self.assertEqual(response.data['personal_available_redeem'], 9700000)
 
     def test_get_limits_when_current_balance_is_not_enough(self):
         CurrentAccount.objects.create(login_name=self.login_name, balance=30000)
-        max_amoount = constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
+        max_amount = constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
 
         url = reverse('post_redeem')
         data1 = {'login_name': self.login_name,
@@ -74,6 +74,6 @@ class RedeemTestCase(APITestCase):
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
-        self.assertEqual(response.data['personal_max_redeem'], max_amoount)
+        self.assertEqual(response.data['personal_max_redeem'], max_amount)
         self.assertEqual(response.data['personal_available_redeem'], 30000)
 

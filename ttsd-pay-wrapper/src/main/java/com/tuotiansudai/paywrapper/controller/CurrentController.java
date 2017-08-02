@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.tuotiansudai.current.dto.InterestSettlementRequestDto;
 import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.current.CurrentDepositService;
+import com.tuotiansudai.paywrapper.current.CurrentInterestSettlementService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,12 @@ public class CurrentController {
     private final static Logger logger = Logger.getLogger(CurrentController.class);
 
     private final CurrentDepositService currentDepositService;
+    private final CurrentInterestSettlementService currentInterestSettlementService;
 
     @Autowired
-    public CurrentController(CurrentDepositService currentDepositService) {
+    public CurrentController(CurrentDepositService currentDepositService, CurrentInterestSettlementService currentInterestSettlementService) {
         this.currentDepositService = currentDepositService;
+        this.currentInterestSettlementService = currentInterestSettlementService;
     }
 
     @RequestMapping(path = "/deposit-with-password", method = RequestMethod.POST)
@@ -36,6 +40,12 @@ public class CurrentController {
     @ResponseBody
     public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody DepositDto depositRequestDto) {
         return currentDepositService.noPasswordDeposit(depositRequestDto);
+    }
+
+    @RequestMapping(value = "/interest-settlement", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> interestSettlement(@Valid @RequestBody InterestSettlementRequestDto interestSettlementRequestDto) {
+        return currentInterestSettlementService.InterestSettlement(interestSettlementRequestDto);
     }
 
     @RequestMapping(value = "/over-deposit", method = RequestMethod.POST)
