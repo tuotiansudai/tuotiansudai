@@ -12,7 +12,6 @@ from current_rest import serializers, models
 from current_rest import settings
 from current_rest.biz import current_interest
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.biz.pay_manager import PayManager
 from current_rest.settings import PAY_WRAPPER_SERVER
 
 logger = logging.getLogger(__name__)

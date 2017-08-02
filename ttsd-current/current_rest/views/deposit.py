@@ -10,7 +10,7 @@ import jobs
 from current_rest import serializers, constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
-from current_rest.biz.pay_manager import PayManager
+from current_rest.biz.pay_manager import invoke_pay
 from current_rest.settings import PAY_WRAPPER_SERVER
 from jobs.client import MessageClient
 
@@ -38,7 +38,7 @@ class DepositViewSet(mixins.RetrieveModelMixin,
         response = super(DepositViewSet, self).create(request, *args, **kwargs)
         no_password = response.data.get('no_password')
         url = self.pay_with_no_password_url if no_password else self.pay_with_password_url
-        return Response(PayManager.invoke_pay(response.data, url), status=status.HTTP_201_CREATED)
+        return Response(invoke_pay(response.data, url), status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def perform_update(self, serializer):
