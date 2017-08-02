@@ -5,6 +5,7 @@ from datetime import datetime
 from django.db import transaction
 from django.db.models import Sum
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
@@ -56,14 +57,11 @@ class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.LoanListSerializer
     queryset = models.Loan.objects.all()
 
+
 @api_view(['PUT'])
 @transaction.atomic
 def audit_reject_loan(request, pk, category):
-    loan = Loan.objects.filter(pk__in=pk)
-    if loan.exists():
-        loan.update(status=request.data['status'], auditor=request.data['auditor'])
-    else:
-        return Http404
+    get_object_or_404(Loan, pk__in=pk).update(status=request.data['status'], auditor=request.data['auditor'])
 
     if category == 'audit':
         operation_type = constants.OperationType.LOAN_AUDIT
