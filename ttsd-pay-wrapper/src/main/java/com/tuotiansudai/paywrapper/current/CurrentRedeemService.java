@@ -27,6 +27,7 @@ import com.tuotiansudai.util.AmountTransfer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -55,6 +56,8 @@ public class CurrentRedeemService {
     @Autowired
     private AmountTransfer amountTransfer;
 
+    @Value("${reserve.login.name}")
+    private String reserveLoginName;
 
     public BaseDto<PayDataDto> redeemToLoan(RedeemRequestDto redeemRequestDto) {
         PayDataDto payDataDto = new PayDataDto();
@@ -63,16 +66,15 @@ public class CurrentRedeemService {
         long redeemId = redeemRequestDto.getId();
         String loginName = redeemRequestDto.getLoginName();
 
-
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            logger.error(MessageFormat.format("{0} does not exist", loginName));
+        AccountModel reserveAccount = accountMapper.lockByLoginName(reserveLoginName);
+        if (reserveAccount == null) {
+            logger.error(MessageFormat.format("reserve account {0} does not exist", reserveLoginName));
             return baseDto;
         }
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCurrentRedeemToLoanRequest(
                 MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(redeemRequestDto.getId()), String.valueOf(new Date().getTime())),
-                accountModel.getPayUserId(),
+                reserveAccount.getPayUserId(),
                 String.valueOf(redeemRequestDto.getAmount()));
 
         try {
@@ -82,8 +84,8 @@ public class CurrentRedeemService {
 
             if (responseModel.isSuccess()) {
                 // TODO: change to use message queue
-                logger.info("redeem to loan success, redeem_id:{}, login_name:{}, amount:{}", redeemRequestDto.getId(), loginName, String.valueOf(redeemRequestDto.getAmount()));
-                amountTransfer.transferOutBalance(loginName, redeemRequestDto.getId(), redeemRequestDto.getAmount(), UserBillBusinessType.CURRENT_REDEEM_TO_LOAN, null, null);
+                logger.info("redeem to loan success, redeem_id:{}, reverse login name:{}, amount:{}", redeemRequestDto.getId(), reserveLoginName, String.valueOf(redeemRequestDto.getAmount()));
+                amountTransfer.transferOutBalance(reserveLoginName, redeemRequestDto.getId(), redeemRequestDto.getAmount(), UserBillBusinessType.CURRENT_REDEEM_TO_LOAN, null, null);
 
                 redeemToUser(loginName, redeemId, redeemRequestDto.getAmount());
             }
@@ -97,7 +99,7 @@ public class CurrentRedeemService {
         } catch (PayException | AmountTransferException e) {
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(MessageFormat.format("redeem to loan failed, redeem_to_loan_request_id: {0}", String.valueOf(redeemId)), e);
+            logger.error(MessageFormat.format("redeem to loan failed, redeem_to_loan_request_id: {0}, login_name:{1}", String.valueOf(redeemId), loginName), e);
             //sms notify
             this.sendFatalNotify(MessageFormat.format("日息宝赎回到标的失败,id: {0}", String.valueOf(redeemId)));
         }
@@ -112,7 +114,6 @@ public class CurrentRedeemService {
     private BaseDto<PayDataDto> redeemToUser(String loginName, long redeemId, long redeemAmount) {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
-
 
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {

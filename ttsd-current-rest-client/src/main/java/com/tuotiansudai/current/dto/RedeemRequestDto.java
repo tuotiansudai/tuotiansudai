@@ -11,6 +11,10 @@ public class RedeemRequestDto {
     private long amount;
     private Source source;
 
+    public RedeemRequestDto(){
+
+    }
+
     public RedeemRequestDto(String loginName, long amount, Source source) {
         this.loginName = loginName;
         this.amount = amount;
