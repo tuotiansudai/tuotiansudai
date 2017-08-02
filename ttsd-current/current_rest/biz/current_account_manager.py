@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from datetime import datetime, timedelta, time, date
 
 from django.db import transaction
 
@@ -22,10 +23,11 @@ class CurrentAccountManager(object):
 
         account.balance += amount
         account.save()
-        self.__add_current_bill(account=account,
-                                amount=amount,
-                                bill_type=constants.BILL_TYPE_DEPOSIT,
-                                order_id=order_id)
+
+        CurrentBill.objects.create(current_account=account,
+                                   bill_type=constants.BILL_TYPE_DEPOSIT,
+                                   amount=amount,
+                                   order_id=order_id)
 
     @transaction.atomic
     def update_current_account_for_over_deposit(self, login_name, amount, order_id):
@@ -33,10 +35,11 @@ class CurrentAccountManager(object):
 
         account.balance -= amount
         account.save()
-        self.__add_current_bill(account=account,
-                                amount=amount,
-                                bill_type=constants.BILL_TYPE_PAYBACK,
-                                order_id=order_id)
+
+        CurrentBill.objects.create(current_account=account,
+                                   bill_type=constants.BILL_TYPE_PAYBACK,
+                                   amount=amount,
+                                   order_id=order_id)
 
     @transaction.atomic
     def update_current_account_for_withdraw(self, login_name, amount, order_id):
@@ -44,10 +47,10 @@ class CurrentAccountManager(object):
 
         account.balance -= amount
         account.save()
-        self.__add_current_bill(account=account,
-                                amount=amount,
-                                bill_type=constants.BILL_TYPE_WITHDRAW,
-                                order_id=order_id)
+        CurrentBill.objects.create(current_account=account,
+                                   bill_type=constants.BILL_TYPE_WITHDRAW,
+                                   amount=amount,
+                                   order_id=order_id)
 
     @transaction.atomic
     def update_current_account_for_interest(self, login_name, amount, order_id):
@@ -55,14 +58,8 @@ class CurrentAccountManager(object):
 
         account.balance += amount
         account.save()
-        self.__add_current_bill(account=account,
-                                amount=amount,
-                                bill_type=constants.BILL_TYPE_INTEREST,
-                                order_id=order_id)
-
-    @staticmethod
-    def __add_current_bill(account, amount, bill_type, order_id):
         CurrentBill.objects.create(current_account=account,
-                                   bill_type=bill_type,
+                                   bill_type=constants.BILL_TYPE_INTEREST,
+                                   bill_date=datetime.combine(date.today() - timedelta(days=1), time.max),
                                    amount=amount,
                                    order_id=order_id)
