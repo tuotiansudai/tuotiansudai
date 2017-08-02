@@ -11,7 +11,7 @@ logger = get_task_logger(__name__)
 
 
 class OverDepositTask(BaseTask):
-    name = "current-over-deposit"
+    name = settings.OVER_DEPOSIT_TASK_QUEUE
     queue = "celery.current.over.deposit"
     pay_url = "{}/over-deposit".format(settings.PAY_WRAPPER_SERVER)
 

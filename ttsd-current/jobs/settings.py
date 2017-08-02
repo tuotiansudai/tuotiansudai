@@ -20,6 +20,10 @@ POP_MESSAGE_WAIT_SECONDS = 30
 
 TopicName2SubscribeQueueNames = {'invest': {'currentBase', 'currentInvestCallback'}}
 
+DEPOSIT_CALLBACK_TASK_QUEUE = 'current-deposit-callback'
+OVER_DEPOSIT_TASK_QUEUE = 'current-over-deposit'
+REDEEM_CALLBACK_TASK_QUEUE = 'current-redeem-callback'
+
 CURRENT_REST_SERVER = 'http://localhost:8000/rest'
 PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
 

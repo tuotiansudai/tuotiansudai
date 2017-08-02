@@ -7,6 +7,7 @@ from rest_framework import status, viewsets, mixins
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
+import jobs
 from current_rest import serializers, constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
@@ -32,7 +33,7 @@ class DepositViewSet(mixins.RetrieveModelMixin,
         super(DepositViewSet, self).__init__()
         self.current_account_manager = CurrentAccountManager()
         self.current_daily_manager = CurrentDailyManager()
-        self.mq_client = MessageClient(OverDepositTask.name)
+        self.mq_client = MessageClient(jobs.settings.OVER_DEPOSIT_TASK_QUEUE)
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
