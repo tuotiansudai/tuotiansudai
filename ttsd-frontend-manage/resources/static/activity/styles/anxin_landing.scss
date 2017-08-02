@@ -252,7 +252,7 @@ a.anxin-button {
   .landing-safety-frame {
 
     .column-box-box {
-      padding:0 10px;
+      padding:0 15px;
     }
     .CFCA-box {
       width:49%;
@@ -267,8 +267,8 @@ a.anxin-button {
         display: none;
       }
       dl {
-        width:100%;
-        float:none;
+        width:47%;
+        //float:none;
       }
 
     }
@@ -280,4 +280,11 @@ a.anxin-button {
       }
     }
   }
+}
+
+@media screen and (min-width: 768px) and (max-width:1366px){
+  .landing-container .landing-header-nav {
+    width:60%;
+  }
+
 }
