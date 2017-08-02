@@ -79,7 +79,7 @@ class CurrentDeposit(BaseModel):
                                         blank=False)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.PositiveIntegerField(null=False, blank=False)
-    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=20, null=False, blank=False,
+    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=50, null=False, blank=False,
                               default=constants.DEPOSIT_WAITING_PAY)
     source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
                               max_length=10, null=False, blank=False)
@@ -102,6 +102,12 @@ class CurrentBill(BaseModel):
     amount = models.PositiveIntegerField(null=False, blank=False)
     balance = models.PositiveIntegerField(null=False, blank=False)
     order_id = models.IntegerField(null=False, blank=False)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        for key, value in {'login_name': 'login_name', 'balance': 'balance', 'bill_date': 'updated_time'}.items():
+            setattr(self, key, getattr(self.current_account, value))
+
+        super(CurrentBill, self).save(force_insert, force_update, using, update_fields)
 
     class Meta:
         db_table = 'current_bill'
