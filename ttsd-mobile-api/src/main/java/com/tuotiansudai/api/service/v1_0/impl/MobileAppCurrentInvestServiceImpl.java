@@ -4,7 +4,8 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppCurrentInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.current.client.CurrentRestClient;
-import com.tuotiansudai.current.dto.DepositRequestDto;
+import com.tuotiansudai.current.dto.DepositDto;
+import com.tuotiansudai.current.dto.DepositStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -34,7 +35,7 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     @Override
     public BaseResponseDto<InvestResponseDataDto> invest(CurrentInvestRequestDto investRequestDto, String loginName) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
-        DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName, false);
+        DepositDto depositRequestDto = convertInvestDto(investRequestDto, loginName, false);
         try {
             BaseDto<PayFormDataDto> formDto = currentRestClient.deposit(depositRequestDto);
 
@@ -71,12 +72,12 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     @Override
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(CurrentInvestRequestDto investRequestDto, String loginName) {
         try {
-            DepositRequestDto depositRequestDto = convertInvestDto(investRequestDto, loginName, true);
+            DepositDto depositRequestDto = convertInvestDto(investRequestDto, loginName, true);
             BaseDto<PayDataDto> baseDto = currentRestClient.noPasswordDeposit(depositRequestDto);
 
             if (baseDto.getData().getStatus()) {
                 BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), baseDto.getData().getExtraValues().get("order_id"))));
+                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), baseDto.getData().getExtraValues().get("order_id"))));
                 return responseDto;
             }
             return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
@@ -85,9 +86,9 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
         }
     }
 
-    private DepositRequestDto convertInvestDto(CurrentInvestRequestDto investRequestDto, String loginName, boolean noPassword) {
+    private DepositDto convertInvestDto(CurrentInvestRequestDto investRequestDto, String loginName, boolean noPassword) {
         Source source = Source.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase());
         long amount = AmountConverter.convertStringToCent(investRequestDto.getAmount());
-        return new DepositRequestDto(loginName, amount, source, noPassword);
+        return new DepositDto(null, loginName, amount, source, DepositStatus.WAITING_PAY, noPassword);
     }
 }

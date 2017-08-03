@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.paywrapper.repository.model.*;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayServType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
 import com.tuotiansudai.repository.model.Source;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -124,6 +126,22 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel("0", orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
+    public static ProjectTransferRequestModel newCurrentOverDepositPaybackRequest(String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel("0", orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CURRENT_OVER_DEPOSIT_PAYBACK_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
+    public static ProjectTransferRequestModel newCurrentRedeemToUserRequest(String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel("0", orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CURRENT_REDEEM_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }

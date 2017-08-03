@@ -115,9 +115,13 @@ class DepositTestCase(TestCase):
                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_should_return_200_when_deposit_callback_data_is_legal(self):
+    @mock.patch('current_rest.views.deposit.CurrentDailyManager')
+    def test_should_return_200_when_deposit_callback_success(self, fake_manager):
         fake_account = CurrentAccountManager().fetch_account(self.login_name)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
+
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = 2
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
                                    data={'status': constants.DEPOSIT_SUCCESS},
@@ -132,6 +136,68 @@ class DepositTestCase(TestCase):
         self.assertEqual(updated_deposit.status, constants.DEPOSIT_SUCCESS)
         self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.balance, fake_account.balance + fake_deposit.amount)
+        self.assertEqual(current_bill.amount, fake_deposit.amount)
+        self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
+
+    def test_should_return_200_when_deposit_callback_fail(self):
+        fake_account = CurrentAccountManager().fetch_account(self.login_name)
+        fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
+
+        response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
+                                   data={'status': constants.DEPOSIT_FAIL},
+                                   format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        updated_deposit = CurrentDeposit.objects.get(login_name=self.login_name)
+        updated_account = CurrentAccount.objects.get(login_name=self.login_name)
+
+        self.assertEqual(updated_deposit.status, constants.DEPOSIT_FAIL)
+        self.assertEqual(updated_account.balance, fake_account.balance)
+        self.assertFalse(CurrentBill.objects.filter(login_name=self.login_name).exists())
+
+    def test_should_return_200_when_deposit_callback_success_and_over_personal_max_deposit(self):
+        fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=constants.PERSONAL_MAX_DEPOSIT)
+        fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
+
+        response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
+                                   data={'status': constants.DEPOSIT_SUCCESS},
+                                   format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        updated_deposit = CurrentDeposit.objects.get(login_name=self.login_name)
+        updated_account = CurrentAccount.objects.get(login_name=self.login_name)
+        current_bill = CurrentBill.objects.get(login_name=self.login_name)
+
+        self.assertEqual(updated_deposit.status, constants.DEPOSIT_OVER_PAY)
+        self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
+        self.assertEqual(current_bill.amount, fake_deposit.amount)
+        self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
+
+    @mock.patch('current_rest.views.deposit.calculate_success_deposit_today')
+    @mock.patch('current_rest.views.deposit.CurrentDailyManager')
+    def test_should_return_200_when_deposit_callback_success_and_over_current_daily_max_amount(self, fake_manager,
+                                                                                               calculate_success_deposit_today):
+        fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=constants.PERSONAL_MAX_DEPOSIT)
+        fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=2)
+
+        instance = fake_manager.return_value
+        instance.get_current_daily_amount.return_value = 1
+        calculate_success_deposit_today.return_value = fake_deposit.amount
+
+        response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
+                                   data={'status': constants.DEPOSIT_SUCCESS},
+                                   format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        updated_deposit = CurrentDeposit.objects.get(login_name=self.login_name)
+        updated_account = CurrentAccount.objects.get(login_name=self.login_name)
+        current_bill = CurrentBill.objects.get(login_name=self.login_name)
+
+        self.assertEqual(updated_deposit.status, constants.DEPOSIT_OVER_PAY)
+        self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.amount, fake_deposit.amount)
         self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
-
 import datetime
+
 from django.http import Http404
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
@@ -29,3 +29,4 @@ class AccountViewSet(mixins.RetrieveModelMixin,
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
+
