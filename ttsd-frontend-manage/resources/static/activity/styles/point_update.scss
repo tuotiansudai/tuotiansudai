@@ -445,20 +445,20 @@
 	}
 }
 
-@media screen and (min-width: 700px) and(max-width:768px){
+@media screen and (min-width: 768px) and (max-width:1024px){
 	.point-update-container .wp .content-item .point-item li.one {
 		background-size: 5%;
 	}
+
+	.main-frame {
+		overflow-x: hidden;
+	}
+
 
 	.point-update-container .wp .content-item .point-item li.two,
 	.point-update-container .wp .content-item .point-item li.three{
 		background-size: 6%;
 	}
-}
-
-
-
-@media screen and (min-width: 768px) and (max-width:1024px){
 
 	.point-update-container {
 		.top-item {
