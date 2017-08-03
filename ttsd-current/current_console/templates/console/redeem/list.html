@@ -46,7 +46,7 @@
     </form>
     <br/>
     <div class="col-md-10">
-        <label for="volume"><h4>合计赎回金额:{{ sumAmount }}元</h4></label>
+        <label for="volume"><h4>合计赎回金额:{% if sumAmount %}{{ sumAmount }}{% else %}0{% endif %}元</h4></label>
         <table class="table">
             <thead>
             <tr>
@@ -92,7 +92,7 @@
 
         <nav class="pagination-control">
             <div>
-                <span class="bordern">总共{{ redeem_list.count }}条,每页显示10条</span>
+                <span class="bordern">总共{% if redeem_list %}{{ redeem_list.count|default_if_none:'0' }}{% else %}0{% endif %}条,每页显示10条</span>
             </div>
             <ul class="pagination pull-left">
                 <li>
@@ -100,7 +100,7 @@
                         <span aria-hidden="true">&laquo; Prev</span>
                     </a>
                 </li>
-                <li><a>{{ page|default_if_none:'1' }}</a></li>
+                <li><a>{% if page %}{{ page|default_if_none:'1' }}{% else %}1{% endif %}</a></li>
                 <li>
                     <a href="{{ redeem_list.next|default_if_none:'' }}" aria-label="Next">
                         <span aria-hidden="true">Next &raquo;</span>
