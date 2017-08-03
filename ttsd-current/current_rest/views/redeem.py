@@ -60,7 +60,7 @@ def audit_redeem(request, pk, result):
     OperationLog.objects.create(refer_type=constants.OperationTarget.REDEEM, refer_pk=pk,
                                 operator=request.data['auditor'],
                                 operation_type=operation_type, content=content)
-    return Response({'message', 'success'}, status=status.HTTP_202_ACCEPTED)
+    return Response({'message', 'success'}, status=status.HTTP_200_OK)
 
 
 class RedeemListFilter(django_filters.FilterSet):
