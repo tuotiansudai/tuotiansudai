@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import requests
 from django.db import transaction
 from rest_framework import status, viewsets, mixins
 from rest_framework.renderers import JSONRenderer
@@ -11,7 +10,7 @@ import jobs
 from current_rest import serializers, constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
-from current_rest.exceptions import PayWrapperException
+from current_rest.biz.pay_manager import invoke_pay
 from current_rest.settings import PAY_WRAPPER_SERVER
 from jobs.client import MessageClient
 
@@ -37,7 +36,9 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         response = super(DepositViewSet, self).create(request, *args, **kwargs)
-        return Response(self.__invoke_pay(response.data), status=status.HTTP_201_CREATED)
+        no_password = response.data.get('no_password')
+        url = self.pay_with_no_password_url if no_password else self.pay_with_password_url
+        return Response(invoke_pay(response.data, url), status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def perform_update(self, serializer):
@@ -67,17 +68,3 @@ class DepositViewSet(mixins.RetrieveModelMixin,
         total_deposit_today = calculate_success_deposit_today()
         current_daily_amount = self.current_daily_manager.get_current_daily_amount()
         return total_deposit_today > current_daily_amount or account.balance > constants.PERSONAL_MAX_DEPOSIT
-
-    def __invoke_pay(self, data):
-        no_password = data.get('no_password')
-        url = self.pay_with_no_password_url if no_password else self.pay_with_password_url
-        try:
-            response = requests.post(url=url, json=data, timeout=10)
-
-            if response.status_code == requests.codes.ok:
-                return response.json()
-            logger.error('response code {} is not ok, request data is {}'.format(response.status_code, data))
-            raise PayWrapperException('call pay wrapper fail, check current-rest log for more information')
-        except Exception, e:
-            raise PayWrapperException(
-                'call pay wrapper fail, check current-rest log for more information, {}'.format(e))

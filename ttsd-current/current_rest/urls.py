@@ -26,6 +26,7 @@ from current_rest.views.redeem import RedeemViewSet
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 get_account = AccountViewSet.as_view({'get': 'retrieve'})
+calculate_interest_yesterday = AccountViewSet.as_view({'post': 'calculate_interest_yesterday'})
 post_loan = LoanViewSet.as_view({'post': 'create'})
 get_loan = LoanViewSet.as_view({'get': 'retrieve'})
 audit_loan = LoanViewSet.as_view({'put': 'update'})
@@ -48,6 +49,7 @@ urlpatterns = [
     url(r'^deposit$', post_deposit, name='post_deposit'),
     url(r'^deposit/(?P<pk>[0-9]+)$', get_put_deposit, name="get_put_deposit", kwargs={'partial': True}),
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
+    url(r'^account/calculate_interest_yesterday$', calculate_interest_yesterday, name="calculate_interest_yesterday"),
     url(r'^redeem$', post_redeem, name='post_redeem'),
     url(r'^redeem/(?P<pk>[0-9]+)$', get_put_redeem, name='get_put_redeem', kwargs={'partial': True}),
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
