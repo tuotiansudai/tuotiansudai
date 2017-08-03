@@ -114,6 +114,11 @@ public enum AsyncUmPayService {
      */
     CURRENT_REDEEM_TO_LOAN_PROJECT_TRANSFER("project_transfer_nopwd", "", "", "current_redeem_to_loan_notify", ""),
 
+    /**
+     * 无密准备金账户转入标的账户
+     */
+    CURRENT_INTEREST_SETTLEMENT("project_transfer_nopwd", "", "", "current_interest_settlement_notify", ""),
+
 
     /**
      * 个人账户充值

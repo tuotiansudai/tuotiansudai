@@ -30,8 +30,10 @@ public enum UserBillBusinessType {
     EXPERIENCE_INTEREST("体验金收益"),
     INVEST_CASH_BACK("现金补贴"),
     MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买"),
+
     CURRENT_REDEEM_TO_LOAN("活期赎回-到标的"),
-    CURRENT_REDEEM_TO_USER("日息宝赎回到用户");
+    CURRENT_REDEEM_TO_USER("日息宝赎回到用户"),
+    CURRENT_INTEREST_TO_LOAN("日息宝利息结算到标的账户");
 
     private final String description;
 

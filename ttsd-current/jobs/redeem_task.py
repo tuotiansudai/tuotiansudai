@@ -1,8 +1,6 @@
 import json
-
 import requests
 from celery.utils.log import get_task_logger
-
 from jobs.base import BaseTask
 from jobs import current_app, settings
 

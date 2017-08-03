@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+import datetime
+
 import mock
 from django.test import TestCase
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APIClient
 
 from current_rest import constants
+from current_rest import redis_client
 from current_rest.models import CurrentAccount
 
 
@@ -12,6 +16,10 @@ class DepositTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.login_name = 'fakeuser'
+        self.yesterday = (datetime.datetime.now().date() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+
+    def tearDown(self):
+        redis_client.delete("interest:{0}".format(self.yesterday))
 
     @mock.patch('current_rest.serializers.calculate_success_deposit_today')
     @mock.patch('current_rest.serializers.CurrentDailyManager')
@@ -56,3 +64,30 @@ class DepositTestCase(TestCase):
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
 
         self.assertEqual(response.data.get('personal_max_deposit'), current_daily_amount)
+
+    @mock.patch('requests.post')
+    def test_should_return_200_when_not_calculate_interest(self, fake_requests):
+        pay_response = 'pay response'
+        fake_requests.return_value.status_code = 200
+        fake_requests.return_value.json = mock.Mock(return_value=pay_response)
+        CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
+        response = self.client.post(path=reverse('calculate_interest_yesterday'),
+                                    data={'yesterday': self.yesterday},
+                                    format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    @mock.patch('requests.post')
+    def test_should_return_200_when_already_calculate_interest(self, fake_requests):
+        pay_response = 'pay response'
+        fake_requests.return_value.status_code = 200
+        fake_requests.return_value.json = mock.Mock(return_value=pay_response)
+        CurrentAccount.objects.create(login_name=self.login_name, balance=400000)
+
+        redis_client.setex("interest:{0}".format(self.yesterday), self.yesterday, 60)
+        response = self.client.post(path=reverse('calculate_interest_yesterday'),
+                                    data={'yesterday': self.yesterday},
+                                    format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+
