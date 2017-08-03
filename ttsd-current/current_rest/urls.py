@@ -51,12 +51,10 @@ urlpatterns = [
     url(r'^deposit/(?P<pk>[0-9]+)$', get_put_deposit, name="get_put_deposit", kwargs={'partial': True}),
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
 
-    url(r'^redeem/create$', redeem, name='post_redeem'),
-    url(r'^redeem-list', redeem_list, name='redeem_list'),
-    url(r'^redeem-audit/(?P<pk>[0-9]+)/(?P<result>(pass|reject))$', audit_redeem, name='audit_redeem'),
-
     url(r'^redeem$', redeem, name='post_redeem'),
     url(r'^redeem/(?P<pk>[0-9]+)$', redeem, name='get_put_redeem', kwargs={'partial': True}),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/(?P<result>(pass|reject))$', audit_redeem, name='audit_redeem'),
+    url(r'^redeem-list', redeem_list, name='redeem_list'),
 
     url(r'^account/calculate_interest_yesterday$', calculate_interest_yesterday, name="calculate_interest_yesterday"),
 
