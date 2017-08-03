@@ -56,7 +56,7 @@ public class CurrentRedeemService {
     @Autowired
     private AmountTransfer amountTransfer;
 
-    @Value("${reserve.login.name}")
+    @Value("${current.reserve.login.name}")
     private String reserveLoginName;
 
     public BaseDto<PayDataDto> redeemToLoan(RedeemRequestDto redeemRequestDto) {

@@ -6,6 +6,7 @@ import django_filters
 import requests
 from django.conf import settings
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from rest_framework import filters
 from rest_framework import mixins
 from rest_framework import status
@@ -15,7 +16,6 @@ from rest_framework.response import Response
 
 from current_rest import constants
 from current_rest import serializers, models
-from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.exceptions import PayWrapperException
 from current_rest.models import CurrentRedeem, OperationLog
 
@@ -31,14 +31,10 @@ class RedeemViewSet(mixins.RetrieveModelMixin,
 
     def __init__(self):
         super(RedeemViewSet, self).__init__()
-        self.current_account_manager = CurrentAccountManager()
-
-
-pay_redeem_url = '{}/redeem-to-loan/'.format(settings.PAY_WRAPPER_HOST)
 
 
 def invoke_pay(data):
-    url = pay_redeem_url
+    url = '{}/redeem-to-loan/'.format(settings.PAY_WRAPPER_SERVER)
     try:
         response = requests.post(url=url, json=data, timeout=10)
 
@@ -54,30 +50,25 @@ def invoke_pay(data):
 @api_view(['PUT'])
 @transaction.atomic
 def audit_redeem(request, pk, result):
-    redeem_qs = CurrentRedeem.objects.filter(pk__in=pk)
-
-    # 查找redeem记录，如果存在则更新状态
-    if not redeem_qs.exists():
-        # 如果不存在则返回错误信息
-        return Response({'message', 'param is error'}, status=status.HTTP_201_CREATED)
-
-    redeem = redeem_qs[0]
+    redeem = get_object_or_404(CurrentRedeem, pk=pk)
 
     # 记录操作日志
     if result == 'pass':
         invoke_pay(dict(login_name=redeem.login_name, amount=redeem.amount, source=redeem.source))
 
-        redeem_qs.update(status=constants.REDEEM_DOING, approver=request.data['auditor'], approved_time=datetime.now(),
-                         updated_time=datetime.now())
+        CurrentRedeem.objects.update(id=pk, status=constants.REDEEM_DOING, approver=request.data['auditor'],
+                                     approved_time=datetime.now())
 
         operation_type = constants.OperationType.REDEEM_AUDIT_PASS
         content = u'{}审核通过赎回申请'.format(request.data['auditor'])
-    else:
-        redeem_qs.update(status=constants.REDEEM_REJECT, approver=request.data['auditor'], approved_time=datetime.now(),
-                         updated_time=datetime.now())
+    elif result == 'reject':
+        CurrentRedeem.objects.update(id=pk, status=constants.REDEEM_REJECT, approver=request.data['auditor'],
+                                     approved_time=datetime.now())
 
         operation_type = constants.OperationType.REDEEM_AUDIT_REJECT
         content = u'{}驳回赎回申请'.format(request.data['auditor'])
+    else:
+        return Response({'message', 'param is error'}, status=status.HTTP_400_BAD_REQUEST)
 
     OperationLog.objects.create(refer_type=constants.OperationTarget.REDEEM, refer_pk=pk,
                                 operator=request.data['auditor'],
