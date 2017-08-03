@@ -29,7 +29,6 @@ get_account = AccountViewSet.as_view({'get': 'retrieve'})
 post_loan = LoanViewSet.as_view({'post': 'create'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 loan_list = LoanListViewSet.as_view({'get': 'list'})
-
 post_redeem = RedeemViewSet.as_view({'post': 'create'})
 get_put_redeem = RedeemViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 

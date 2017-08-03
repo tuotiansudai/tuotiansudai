@@ -35,6 +35,10 @@ public interface CurrentRestClient {
     RedeemResponseDto redeem(RedeemRequestDto requestDto) throws RestException;
 
     @GET
+    @Path("/redeem/{id}")
+    RedeemDetailResponseDto getRedeem(@PathParam("id") long id) throws RestException;
+
+    @GET
     @Path("/account/{loginName}")
     AccountResponseDto getAccount(@PathParam("loginName") String loginName) throws RestException;
 }
