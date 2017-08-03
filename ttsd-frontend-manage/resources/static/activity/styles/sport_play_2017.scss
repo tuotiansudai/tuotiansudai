@@ -670,7 +670,7 @@
     margin-bottom:30px;
     border:2px solid #00cef5;
     border-radius:10px;
-    padding:50px 30px 30px 30px;
+    padding:50px 50px 30px 30px;
     position: relative;
 
     i {
@@ -748,6 +748,11 @@
 
   .sport-play-container .rule-item {
     width: 94%;
+    i.zs01 {
+     left:-26px;
+      top:80px;
+      background-size:47%;
+    }
     i.zs02 {
       left:36%;
     }
