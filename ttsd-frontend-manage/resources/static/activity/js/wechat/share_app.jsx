@@ -6,10 +6,6 @@ let $shareAppContainer = $('#shareAppContainer'),
 	registerForm = globalFun.$('#registerForm'),
 	$fetchCaptcha = $('#getCaptchaBtn');
 
-//判断终端是ios 还是 android
-let equipment = globalFun.equipment(),
-	isIos = equipment.ios,
-	isAndroid = equipment.android;
 
 let validator = new ValidatorObj.ValidatorForm();
 
@@ -55,16 +51,13 @@ validator.add(registerForm.mobile, [{
 	errorMsg: '手机号已经存在'
 }],true);
 
-//Android注册的时候有密码
-if(isAndroid) {
-	validator.add(registerForm.password, [{
-		strategy: 'isNonEmpty',
-		errorMsg: '密码不能为空'
-	}, {
-		strategy: 'checkPassword',
-		errorMsg: '密码为6位至20位，不能全是数字'
-	}],true);
-}
+validator.add(registerForm.password, [{
+	strategy: 'isNonEmpty',
+	errorMsg: '密码不能为空'
+}, {
+	strategy: 'checkPassword',
+	errorMsg: '密码为6位至20位，不能全是数字'
+}],true);
 
 validator.add(registerForm.captcha, [{
 	strategy: 'isNonEmpty',
@@ -122,17 +115,12 @@ let shareAppFun = {
 		paramObj.mobile = registerForm.mobile.value;
 		paramObj.captcha = registerForm.captcha.value;
 
-		if(isIos) {
-			surl = '/register/user/shared-prepare'
-			paramObj.referrerMobile = referrerMobile;
 
-		} else  {
-			surl = '/register/user/shared';
-			paramObj.password = registerForm.password.value;
-			paramObj.referrer = referrerMobile;
-			paramObj.agreement = $('#agreement').prop('checked')
+		surl = '/register/user/shared';
+		paramObj.password = registerForm.password.value;
+		paramObj.referrer = referrerMobile;
+		paramObj.agreement = $('#agreement').prop('checked')
 
-		}
 		commonFun.useAjax({
 			url: surl,
 			type: 'POST',
@@ -166,19 +154,10 @@ let shareAppFun = {
 $fetchCaptcha.on('click',function() {
 	//判断手机号 和密码都正确
 	let mobileCls = registerForm.mobile.className;
-
-	if(isIos) {
-		if(/valid/.test(mobileCls)) {
-			//手机号和密码都有效
-			shareAppFun.isRegister();
-		}
-	}
-	else {
-		let passwordCls = registerForm.password.className;
-		if(/valid/.test(mobileCls) && /valid/.test(passwordCls)) {
-			//手机号和密码都有效
-			shareAppFun.isRegister();
-		}
+	let passwordCls = registerForm.password.className;
+	if(/valid/.test(mobileCls) && /valid/.test(passwordCls)) {
+		//手机号和密码都有效
+		shareAppFun.isRegister();
 	}
 
 });
