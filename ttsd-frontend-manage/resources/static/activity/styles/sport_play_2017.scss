@@ -727,6 +727,9 @@
 }
 @media screen and (min-width: 710px) and (max-width:1024px){
 
+  .main-frame {
+    overflow-x: hidden;
+  }
   .sport-play-container .shaking-item .wp {
     padding:0 15px;
   }
