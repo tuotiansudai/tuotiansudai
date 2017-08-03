@@ -47,7 +47,7 @@ class AccountSerializer(serializers.ModelSerializer):
         today = datetime.now().date()
         today_sum_redeem = models.CurrentRedeem.objects.filter(created_time__startswith=today,
                                                                current_account=instance).exclude(
-            status=constants.STATUS_DENIED).aggregate(
+            status=constants.REDEEM_REJECT).aggregate(
             Sum('amount')).get('amount__sum', 0)
         today_sum_redeem = today_sum_redeem if today_sum_redeem is not None else 0
         return min(instance.balance, constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT - today_sum_redeem)
@@ -120,8 +120,6 @@ class CurrentAccountSerializer(serializers.ModelSerializer):
 class CurrentRedeemSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
-    created_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"))
-    approved_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"))
 
     def create(self, validated_data):
         current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))
@@ -138,10 +136,12 @@ class CurrentRedeemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CurrentRedeem
         fields = '__all__'
-        read_only_fields = ('created_time', 'approved_time')
+        read_only_fields = ('created_time', 'approved_time', 'current_account')
 
 
 class CurrentRedeemListSerializer(CurrentRedeemSerializer):
+    created_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"))
+    approved_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"))
     current_account = CurrentAccountSerializer()
 
 

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.urls import reverse
-from mock import mock
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 
@@ -25,7 +24,7 @@ class RedeemTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(CurrentRedeem.objects.count(), 1)
         self.assertEqual(CurrentRedeem.objects.get().amount, 1000)
-        self.assertEqual(CurrentRedeem.objects.get().status, constants.STATUS_WAITING)
+        self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_WAITING)
 
     def test_should_return_404_when_redeem_does_not_exist(self):
         response = self.client.get(path=reverse('get_put_redeem', kwargs={'pk': 0}))
@@ -84,9 +83,9 @@ class RedeemTestCase(APITestCase):
         redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
                                               status=constants.REDEEM_WAITING, source=constants.SOURCE_ANDROID)
 
-        response = self.client.get('/redeem-audit/{}/{}'.format(redeem.id, "pass"))
+        response = self.client.put('/redeem-audit/{}/{}'.format(redeem.id, "pass"), dict(auditor="auditor"))
 
-        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_DOING)
 
     # 赎回审核驳回
@@ -96,8 +95,7 @@ class RedeemTestCase(APITestCase):
         redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
                                               status=constants.REDEEM_WAITING, source=constants.SOURCE_ANDROID)
 
-        response = self.client.get('/redeem-audit/{}/{}'.format(redeem.id, "reject"))
+        response = self.client.put('/redeem-audit/{}/{}'.format(redeem.id, "reject"), dict(auditor="auditor"))
 
-        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_REJECT)
-
