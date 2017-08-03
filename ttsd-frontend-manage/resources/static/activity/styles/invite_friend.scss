@@ -619,6 +619,13 @@
     background-size:cover;
   }
 
+  .weixin-code-out {
+    text-align: center;
+    clear: both;
+    height: 162px;
+    width: 50%;
+    margin-left: 25%;
+  }
   .share-reward-container {
     padding:10px;
     .bg-column-normal,.titel-item,.tip-item,.info-item,.reward-item,.btn-item,.loan-item,.icon-item {
@@ -650,5 +657,9 @@
         width:275px;
       }
     }
+  }
+
+  .share-reward-container .info-item li.money-type .info-intro {
+    background-size: contain;
   }
 }

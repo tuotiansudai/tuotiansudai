@@ -77,8 +77,6 @@
 					font-size:12px;
 				}
 				p{
-					float:left;
-					width:50%;
 					color:#640e2b;
 					font-size:16px;
 					margin-bottom:0;
@@ -427,5 +425,12 @@
 @media screen and (min-width: 768px) and (max-width:1024px){
 	.sign-check-container .top-item {
 		height:380px;
+	}
+
+	.sign-check-container .wp .content-item .intro-text p {
+		text-align: left;
+	}
+	.sign-check-container .wp .content-item {
+		margin-bottom:-10px;
 	}
 }

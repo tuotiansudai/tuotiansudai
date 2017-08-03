@@ -459,6 +459,7 @@
 
 
 @media screen and (min-width: 768px) and (max-width:1024px){
+
 	.point-update-container {
 		.top-item {
 			height: 320px;
@@ -469,6 +470,10 @@
 			padding: 0 15px;
 			box-sizing: border-box;
 			.content-item {
+				.task-info {
+					text-align: left;
+					padding: 0 20px;
+				}
 				.btn-item {
 					margin-top:10px;
 				}
