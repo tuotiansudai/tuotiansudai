@@ -256,15 +256,17 @@ a.anxin-button {
     background-size: cover;
   }
   .landing-safety-frame {
-
+    .CFCA-box dd {
+      a.anxin-button {
+        display: none;
+      }
+    }
     .column-box-box {
       padding:0 15px;
     }
     .CFCA-box {
       width:49%;
-      dd {
-        height:300px;
-      }
+
     }
 
     .CFCA-do-what  {
@@ -274,7 +276,6 @@ a.anxin-button {
       }
       dl {
         width:47%;
-        //float:none;
       }
 
     }
@@ -284,6 +285,10 @@ a.anxin-button {
         display: block;
         float:left;
       }
+    }
+
+    .column-box-box:nth-child(2n) {
+      margin-top: 20px;
     }
   }
 }
