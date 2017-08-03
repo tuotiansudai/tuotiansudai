@@ -1,4 +1,5 @@
 import os
+from celery.schedules import crontab
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,3 +37,12 @@ if not os.path.isfile(setting_local_file):
 
 if os.path.isfile(setting_local_file):
     exec (compile(open(setting_local_file).read(), setting_local_file, 'exec'))
+
+timezone = 'Asia/Shanghai'
+
+beat_schedule = {
+    'calculate-interest-every-day-morning': {
+        'task': 'jobs.calculate_interest_cron.calculate_interest',
+        'schedule': crontab(minute='10', hour='0')
+    }
+}

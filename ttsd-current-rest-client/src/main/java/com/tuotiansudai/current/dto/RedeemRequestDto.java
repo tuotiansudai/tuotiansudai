@@ -5,10 +5,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.tuotiansudai.repository.model.Source;
 
 public class RedeemRequestDto {
+
     private long id;
+
     @JsonProperty("login_name")
     private String loginName;
+
     private long amount;
+
     private Source source;
 
     public RedeemRequestDto(){
