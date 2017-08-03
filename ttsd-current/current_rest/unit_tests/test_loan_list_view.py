@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from datetime import datetime, timedelta
 import json
 
 from django.test import TestCase
@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-from current_rest.models import Agent, Loan
+from current_rest.models import Agent, Loan, CurrentAccount
 from current_rest.serializers import LoanSerializer
 
 
@@ -54,3 +54,44 @@ class LoanListViewTests(TestCase):
         self.assertEqual(return_dict['expiration_date'], data['expiration_date'])
         self.assertEqual(return_dict['status'], data['status'])
         self.assertEqual(return_dict['agent'], data['agent'])
+
+    def test_investable_amount_when_invest_greater_than_account(self):
+        data = {
+            "serial_number": 1234,
+            "amount": 6000,
+            "loan_type": "HOUSE",
+            "debtor": "debtor111",
+            "debtor_identity_card": "444210221986010566",
+            "effective_date": (datetime.now() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%M:%S'),
+            "expiration_date": (datetime.now() + timedelta(1)).strftime('%Y-%m-%d %H:%M:%S'),
+            "status": "APPROVED",
+            "agent": 9999999
+        }
+        self.client.post(reverse("post_loan"), json.dumps(data), content_type="application/json")
+
+        CurrentAccount.objects.create(login_name='login_name', balance=1000, created_time=datetime.now().date() + timedelta(days=-1))
+
+        response = self.client.get(reverse("get_limits_today"), data=None, content_type="application/json")
+
+        self.assertEqual(response.data, 5000)
+
+    def test_investable_amount_when_invest_less_than_account(self):
+        data = {
+            "serial_number": 1234,
+            "amount": 6000,
+            "loan_type": "HOUSE",
+            "debtor": "debtor111",
+            "debtor_identity_card": "444210221986010566",
+            "effective_date": (datetime.now().date() + timedelta(days=-1)).strftime('%Y-%m-%d %H:%M:%S'),
+            "expiration_date": (datetime.now().date() + timedelta(1)).strftime('%Y-%m-%d %H:%M:%S'),
+            "status": "APPROVED",
+            "agent": 9999999
+        }
+        self.client.post(reverse("post_loan"), json.dumps(data), content_type="application/json")
+
+        CurrentAccount.objects.create(login_name='login_name', balance=7000,
+                                      created_time=datetime.now().date() + timedelta(days=-1))
+
+        response = self.client.get(reverse("get_limits_today"), data=None, content_type="application/json")
+
+        self.assertEqual(response.data, 0)

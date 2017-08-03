@@ -9,7 +9,7 @@ public class CurrentRedeemLimitResponseDataDto extends BaseResponseDataDto {
     private long maxRedeemAmount;
 
     @ApiModelProperty(value = "当日剩余转出限额", example = "50000")
-    private long avliableRedeemAmount;
+    private long availableRedeemAmount;
 
     public long getMaxRedeemAmount() {
         return maxRedeemAmount;
@@ -19,11 +19,11 @@ public class CurrentRedeemLimitResponseDataDto extends BaseResponseDataDto {
         this.maxRedeemAmount = maxRedeemAmount;
     }
 
-    public long getAvliableRedeemAmount() {
-        return avliableRedeemAmount;
+    public long getAvailableRedeemAmount() {
+        return availableRedeemAmount;
     }
 
-    public void setAvliableRedeemAmount(long avliableRedeemAmount) {
-        this.avliableRedeemAmount = avliableRedeemAmount;
+    public void setAvailableRedeemAmount(long availableRedeemAmount) {
+        this.availableRedeemAmount = availableRedeemAmount;
     }
 }
