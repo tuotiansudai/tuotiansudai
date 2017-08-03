@@ -6,7 +6,7 @@
         <img src="" width="100%" class="media-pc">
         <img src="" width="100%" class="media-phone">
     </div>
-    <div class="content-item">
+    <div class="content-item column01">
         <div class="wp clearfix">
             <div class="day-bag-item">
                 <h3></h3>
@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="content-item even clearfix">
+    <div class="content-item even column02 clearfix">
         <div class="wp clearfix">
             <div class="free-money-item">
                 <h3></h3>
@@ -84,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="content-item">
+    <div class="content-item column3">
         <div class="wp clearfix">
             <div class="gift-list-item">
                 <h3></h3>
@@ -131,7 +131,7 @@
             </div>
         </div>
     </div>
-    <div class="content-item even clearfix">
+    <div class="content-item even column04 clearfix">
         <div class="wp clearfix">
             <dl class="rule-item clearfix">
                 <dt>温馨提示</dt>

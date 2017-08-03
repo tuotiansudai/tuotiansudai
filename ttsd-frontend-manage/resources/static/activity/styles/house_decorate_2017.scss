@@ -552,5 +552,66 @@
   }
 }
 
+@media screen and (min-width: 710px) and (max-width:1020px){
+
+  .house-decorate-container .wp {
+    padding: 10px;
+    transform: scale(0.56);
+    margin-left: -28%;
+    margin-top: -90px;
+  }
+
+  .house-decorate-container .content-item {
+    height:263px;
+    padding:50px 0 10px 0;
+    &.column02 {
+      height:230px;
+    }
+    &.column3 {
+      height: 700px;
+      .wp {
+        margin-top: -300px;
+      }
+    }
+    &.column04 {
+      height: 130px;
+    }
+  }
+  .main-frame {
+    overflow-x: hidden;
+  }
+
+}
+
+@media screen and (min-width: 1020px) and (max-width:1366px){
+
+  .house-decorate-container .wp {
+    padding: 10px;
+    transform: scale(0.8);
+    margin-left: -10%;
+    margin-top: -90px;
+  }
+
+  .house-decorate-container .content-item {
+    height:316px;
+    padding:50px 0 10px 0;
+    &.column02 {
+      height: 300px;
+    }
+    &.column3 {
+      height: 1100px;
+      .wp {
+      }
+    }
+    &.column04 {
+      height: 180px;
+      .wp {
+        margin-top: -60px;
+      }
+    }
+  }
+
+}
+
 
 

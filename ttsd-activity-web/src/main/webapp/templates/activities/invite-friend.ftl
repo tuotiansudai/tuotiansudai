@@ -6,8 +6,6 @@
 <div class="share-reward-container page-width" id="shareRewardContainer">
 
     <div class="bg-column-normal invite-line">
-        
-
      <@global.isAnonymous>
         <div class="invite-box-friend anonymous">
             <dl>
@@ -16,7 +14,7 @@
                     <input type="text" class="input-invite" disabled value="您需要登录才可以邀请好友">
                 </dd>
                 <dd>
-                    <a class="btn-copy-link show-login" href="javascript:void(0);">去登录</a>
+                    <a class="btn-copy-link show-login" href="/login?redirect=/activity/invite-friend">去登录</a>
                 </dd>
             </dl>
         </div>
@@ -51,17 +49,20 @@
                         <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>" class="invite-btn">马上邀请好友</a>
                     </p>
                 </div>
-                <div class="weixin-code">
-                    <em class="img-code">
-                        <!--[if gte IE 8]>
-                        <span style="font-size:12px">请使用更高版本浏览器查看</span>
-                        <![endif]-->
-                    </em>
-                    <span>将扫码后的页面分享给好友即可邀请</span>
+                <div class="weixin-code-out">
+                    <div class="weixin-code">
+                        <em class="img-code">
+                            <!--[if gte IE 8]>
+                            <span style="font-size:12px">请使用更高版本浏览器查看</span>
+                            <![endif]-->
+                        </em>
+                        <span>将扫码后的页面分享给好友即可邀请</span>
+                    </div>
+                    <div class="and-text">
+                        <span>或</span>
+                    </div>
                 </div>
-                <div class="and-text">
-                    <span>或</span>
-                </div>
+
                 <dl>
                     <dd>
                         <input type="text" class="input-invite" id="clipboard_text1"  readonly data-mobile="<@global.security.authentication property='principal.mobile' />" >
@@ -222,7 +223,7 @@
             </p>
         </div>
     </div>
-    <div class="bg-column-normal">
+    <div class="bg-column-normal clearfix">
         <div class="titel-item">
             <div class="title-text">
                 <i class="left-icon"></i>
@@ -285,5 +286,4 @@
     </dl>
 </div>
 
-<#include "../module/login-tip.ftl" />
 </@global.main>

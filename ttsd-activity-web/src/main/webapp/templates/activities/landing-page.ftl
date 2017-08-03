@@ -3,9 +3,6 @@
 
 <div class="landingContainerBox">
     <div class="landing-container">
-        <div class="landing-header-nav">
-            <a href="/">访问首页</a>
-        </div>
 
         <div class="landing-top-banner">
         </div>

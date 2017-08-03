@@ -19,7 +19,7 @@
 	}
 	.top-item{
 		height:460px;
-		background:url('../images/point-update/top-img.png');
+		background:url('../images/point-update/top-img.png') center top no-repeat;
 		background-size: 100%;
 		@media(max-width:700px){
 			height:170px;
@@ -443,4 +443,72 @@
 			}
 		}
 	}
+}
+
+@media screen and (min-width: 768px) and (max-width:1024px){
+	.point-update-container .wp .content-item .point-item li.one {
+		background-size: 5%;
+	}
+
+	.main-frame {
+		overflow-x: hidden;
+	}
+
+
+	.point-update-container .wp .content-item .point-item li.two,
+	.point-update-container .wp .content-item .point-item li.three{
+		background-size: 6%;
+	}
+
+	.point-update-container {
+		.top-item {
+			height: 320px;
+			background-size: cover;
+		}
+		.wp {
+			width: 100%;
+			padding: 0 15px;
+			box-sizing: border-box;
+			.content-item {
+				.task-info {
+					text-align: left;
+					padding: 0 20px;
+				}
+				.btn-item {
+					margin-top:10px;
+				}
+				.get-point-item li {
+					width: 70%;
+					margin-top: 20px;
+					margin-left: 15%;
+					height: auto;
+					padding-bottom: 25px;
+				}
+				.task-point-item {
+					float: none;
+					li {
+						margin:0;
+						width:49%;
+						&:nth-last-child(1) {
+							float: right;
+						}
+					}
+				}
+				&.left-item {
+					width:100%;
+				}
+				&.right-item {
+					width:100%;
+				}
+
+				.vip-item {
+					margin: 0 auto 20px 15%;
+					width:70%;
+				}
+			}
+		}
+	}
+
+
+
 }
