@@ -5,14 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 public class CurrentRedeemResponseDataDto extends BaseResponseDataDto {
 
 
-    @ApiModelProperty(value = "转出金额", example = "100000")
-    private long amount;
+    @ApiModelProperty(value = "url", example = "http://xxx.xx/success.html")
+    private String url;
 
-    public long getAmount() {
-        return amount;
+    public String getUrl() {
+        return url;
     }
 
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

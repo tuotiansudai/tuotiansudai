@@ -54,9 +54,4 @@ class AccountViewSet(mixins.RetrieveModelMixin,
         redis_client.setex(interest_key, yesterday, self.valid_time)
         return Response(status=status.HTTP_200_OK)
 
-    def calculate_yesterday_interest(self):
-        accounts = models.CurrentAccount.objects.all()
-        yesterday_total_interest = 0
-        for account in accounts:
-            yesterday_total_interest += current_interest.calculate_interest(account.balance)
-        return yesterday_total_interest
+
