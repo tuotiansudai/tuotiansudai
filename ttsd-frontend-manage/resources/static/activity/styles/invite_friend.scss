@@ -622,9 +622,7 @@
   .weixin-code-out {
     text-align: center;
     clear: both;
-    height: 162px;
-    width: 50%;
-    margin-left: 25%;
+
   }
   .share-reward-container {
     padding:10px;
@@ -648,13 +646,37 @@
       }
     }
 
-    .invite-box-friend .btn-copy-link {
-      width:150px;
-    }
-    .invite-box-friend.anonymous {
-      padding: 20px 0;
-      dl dd .input-invite {
-        width:275px;
+    .invite-box-friend {
+      .btn-copy-link {
+        margin:0 auto;
+        float: none;
+      }
+      &.non-anonymous {
+        .weixin-code {
+          float: none;
+          margin:0 auto;
+
+        }
+        .and-text {
+          float: none;
+          margin:0 auto;
+        }
+        dl {
+          float: none;
+          margin:0 auto;
+          text-align: center;
+          dt {
+            width:100%;
+            text-align: center;
+          }
+        }
+      }
+      &.anonymous {
+        padding: 20px 0;
+
+        dl dd .input-invite {
+          width:275px;
+        }
       }
     }
   }

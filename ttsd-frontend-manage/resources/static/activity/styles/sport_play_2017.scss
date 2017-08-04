@@ -1,5 +1,4 @@
 @charset "utf-8";
-
 @-webkit-keyframes win-effect {
   0% {
     -webkit-transform: rotate(2deg);
@@ -352,6 +351,7 @@
         }
         @media (min-width:321px) and (max-width:375px) {
           font-size:13px;
+          line-height:22px;
         }
         @media (min-width:376px) and (max-width:414px) {
           font-size:14px;
@@ -470,12 +470,12 @@
         .gift-item{
           float:left;
           width:100%;
-          background:url('../images/2017/sport-play/gift-bg.png') no-repeat center;
+          background:url('../images/2017/sport-play/gift-bg.png') no-repeat left top;
           background-size:100%;
           margin-bottom: 60px;
           position: relative;
           @media (max-width: 700px) {
-            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat center;
+            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat left top;
             background-size:cover;
             border-radius: 10px;
             margin-bottom: 30px;
@@ -506,7 +506,7 @@
             float:left;
             width:33.333333%;
             height: 100%;
-            padding:18px 0;
+            padding:22px 0;
             position: relative;
             text-align:center;
             box-sizing:border-box;
@@ -611,6 +611,7 @@
                 }
                 &.three-1{
                   background:url('../images/2017/sport-play/three-1.png') no-repeat center;
+                  background-size:contain;
                   @media (max-width:700px) {
                     background-size:90%;
                   }
@@ -635,6 +636,8 @@
                 }
                 &.five-1{
                   background:url('../images/2017/sport-play/five-1.png') no-repeat center;
+                  background-size: contain;
+                  margin-left: 25px;
                   @media (max-width:700px) {
                     background-size:80%;
                   }
@@ -703,8 +706,15 @@
         width:76px;
         height:114px;
         background:url('../images/2017/sport-play/zs03.png') left top no-repeat;
-        right: -29px;
+        right: -55px;
         top: 16px;
+      }
+      &.zs04 {
+        width:26px;
+        height:30px;
+        background: url('../images/2017/sport-play/zs04.png') left top no-repeat;
+        right: 13px;
+        top: 79px;
       }
     }
 
@@ -722,6 +732,9 @@
     padding: 40px 20px 20px 20px;
     i.zs02 {
       left:27%;
+    }
+    i.zs04 {
+      right: -15px;
     }
   }
 }
@@ -763,12 +776,31 @@
 
   .sport-play-container .shaking-item .info-item {
     background-size: 100%;
+    height: 200px;
+    background-position: center top;
+    padding: 20px 60px;
+    line-height: 25px;
     li {
       font-size:15px;
     }
   }
 
 }
+
+@media screen and (min-width: 1024px) and (max-width:1366px){
+
+  .sport-play-container .wp .content-item .gift-list .gift-item .row-item {
+    padding:30px 0;
+  }
+  .sport-play-container .shaking-item .info-item {
+
+    height: 220px;
+    line-height: 40px;
+    padding-top: 30px;
+
+  }
+}
+
 
 
 
