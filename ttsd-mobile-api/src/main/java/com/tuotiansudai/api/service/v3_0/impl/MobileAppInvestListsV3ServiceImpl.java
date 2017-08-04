@@ -18,6 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -166,21 +167,31 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
         return list;
     }
 
-    private static final String NEW_CONTRACT_LINK_TEMPLATE = "https://tuotiansudai.com/contract/invest/contractNo/{0}";
+    @Value("${web.server}")
+    private String webServerHost;
 
-    private static final String OLD_CONTRACT_LINK_TEMPLATE_INVEST = "https://tuotiansudai.com/contract/investor/loanId/{0}/investId/{1}";
+    private static final String NEW_CONTRACT_LINK_TEMPLATE = "{0}/contract/invest/contractNo/{1}";
 
-    private static final String OLD_CONTRACT_LINK_TEMPLATE_TRANSFER = "https://tuotiansudai.com/contract/transfer/transferApplicationId/{0}";
+    private static final String OLD_CONTRACT_LINK_TEMPLATE_INVEST = "{0}/contract/investor/loanId/{1}/investId/{2}";
+
+    private static final String OLD_CONTRACT_LINK_TEMPLATE_TRANSFER = "{0}/contract/transfer/transferApplicationId/{1}";
 
     private void createContractLink(UserInvestRecordResponseDataDto dto, InvestModel investModel) {
-        if (investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo()) && !investModel.getContractNo().equals("OLD")) {
-            dto.setContractLink(MessageFormat.format(NEW_CONTRACT_LINK_TEMPLATE, investModel.getContractNo()));
-        } else {
+        if (investModel == null || StringUtils.isEmpty(investModel.getContractNo())) {
+            dto.setContractLink("");
+            return;
+        }
+
+        String contractNo = investModel.getContractNo();
+
+        if ("OLD".equals(contractNo)) {
             if (dto.isTransferInvest() && !TransferStatus.CANCEL.name().equals(dto.getTransferStatus())) {
-                dto.setContractLink(MessageFormat.format(OLD_CONTRACT_LINK_TEMPLATE_TRANSFER, dto.getTransferApplicationId()));
+                dto.setContractLink(MessageFormat.format(OLD_CONTRACT_LINK_TEMPLATE_TRANSFER, webServerHost, dto.getTransferApplicationId()));
             } else {
-                dto.setContractLink(MessageFormat.format(OLD_CONTRACT_LINK_TEMPLATE_INVEST, dto.getLoanId(), dto.getInvestId()));
+                dto.setContractLink(MessageFormat.format(OLD_CONTRACT_LINK_TEMPLATE_INVEST, webServerHost, dto.getLoanId(), dto.getInvestId()));
             }
+        } else {
+            dto.setContractLink(MessageFormat.format(NEW_CONTRACT_LINK_TEMPLATE, webServerHost, contractNo));
         }
     }
 }
