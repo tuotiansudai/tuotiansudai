@@ -81,9 +81,11 @@
   width: 100%;
   margin: 0 auto;
 }
+.page-width {
+  width:1200px;
+}
+
 .house-decorate-container{
-  float:left;
-  width:100%;
   background:#ffe15f;
   .media-pc{
     display: block;
@@ -182,53 +184,93 @@
   .top-img{
     width:100%;
   }
-  .wp{
-    width:1200px;
-    margin:0 auto;
-    @media (max-width:700px) {
-      width:300px;
-      box-sizing:border-box;
-    }
+  .bg-fullscreen {
+    background: #ff6161;
+    padding: 15px 0 10px 0;
   }
   .content-item{
-    float:left;
-    width:100%;
-    padding:50px 0;
-    @media (max-width:700px) {
-      padding:25px 0;
-    }
-    &.even{
-      background:#ff6161;
-    }
-    .day-bag-item{
-      float:left;
-      width:100%;
-      background:url('../images/2017/house-decorate/day-bg.png') no-repeat center;
-      background-size:100%;
-      box-sizing:border-box;
-      padding:60px 80px 30px;
-      position: relative;
-      @media (max-width:700px) {
-        background:url('../images/2017/house-decorate/day-bg-phone.png') no-repeat center;
-        background-size:100%;
-        padding:20px;
-      }
-      h3{
+    padding: 50px 60px 30px 60px;
+    background: #c364ff;
+    border-radius: 80px;
+    border:6px solid #ab57e0;
+    margin-top:60px;
+    margin-bottom:50px;
+    position: relative;
+    i {
+      display: block;
+      &.bg-top {
+        height:124px;
+        width:101%;
+        background: url('../images/2017/house-decorate/bg-top.png') left top no-repeat;
         position: absolute;
-        top:0;
+        left: -6px;
+        top: -12px;
+        background-size: contain;
+      }
+      &.bg-bottom {
+        height:124px;
+        width:101%;
+        background: url('../images/2017/house-decorate/bg-top.png') left top no-repeat;
+        position: absolute;
+        left: -6px;
+        bottom: -12px;
+        background-size: contain;
+        transform: rotate(180deg);
+      }
+      &.column-title-page {
+        position: absolute;
+        top:-42px;
         left:50%;
-        margin-left:-155px;
-        width:310px;
-        height:60px;
-        background:url('../images/2017/house-decorate/title-one.png') no-repeat center;
-        @media (max-width:700px) {
-          width:160px;
-          margin-left: -80px;
-          background-size: 100%;
-          height: 30px;
-          top: -15px;
+
+        transform:translate(-50%);
+        &.one {
+          width:310px;
+          height:60px;
+          background:url('../images/2017/house-decorate/title-one.png') no-repeat center;
+          background-size: contain;
+        }
+        &.two {
+          width:410px;
+          height:60px;
+          background:url('../images/2017/house-decorate/title-two.png') no-repeat center;
+          background-size: contain;
+        }
+        &.three {
+          width:410px;
+          height:60px;
+          background:url('../images/2017/house-decorate/title-three.png') no-repeat center;
+          background-size: contain;
         }
       }
+    }
+
+    &.even{
+      background:#ffe15f;
+      border:6px solid #fbc450;
+      i {
+        &.bg-top {
+          background: url('../images/2017/house-decorate/bg-top-even.png') left top no-repeat;
+          background-size: contain;
+        }
+        &.bg-bottom {
+          background: url('../images/2017/house-decorate/bg-top-even.png') left top no-repeat;
+          background-size: contain;
+        }
+
+      }
+    }
+    &.none {
+      background: none;
+      border-width: 0;
+      padding: 30px 0 40px 0;
+      margin-top: 0px;
+      margin-bottom: 0;
+    }
+    .day-bag-item{
+      box-sizing:border-box;
+      position: relative;
+      text-align: center;
+
       p{
         color:#fff;
         font-size:18px;
@@ -239,12 +281,14 @@
         .bag-item{
           display:inline-block;
           width:530px;
-          height:290px;
+          height: 240px;
           padding:0 170px;
           background:url('../images/2017/house-decorate/bag-bg.png') no-repeat center;
-          background-size: 100%;
+          background-size: contain;
           cursor:pointer;
           box-sizing:border-box;
+          margin-top:30px;
+
           @media (max-width:700px) {
             width:100%;
             padding:0 85px;
@@ -272,37 +316,10 @@
       }
     }
     .free-money-item{
-      float:left;
-      width:100%;
-      background:url('../images/2017/house-decorate/free-bg.png') no-repeat center;
-      background-size:100%;
-      box-sizing:border-box;
-      padding:60px 80px 30px;
       position: relative;
-      @media (max-width:700px) {
-        background:url('../images/2017/house-decorate/free-bg-phone.png') no-repeat center;
-        background-size:100%;
-        padding:20px;
-      }
-      h3{
-        position: absolute;
-        top:-20px;
-        left:50%;
-        margin-left:-205px;
-        width:410px;
-        height:60px;
-        background:url('../images/2017/house-decorate/title-two.png') no-repeat center;
-        @media (max-width:700px) {
-          width:210px;
-          margin-left: -105px;
-          background-size: 100%;
-          height: 30px;
-          top: -15px;
-        }
-      }
+
       .info-item{
-        float:left;
-        width:100%;
+
         font-size:18px;
         color:#cc321a;
         margin-bottom: 40px;
@@ -319,8 +336,6 @@
         }
       }
       .list-item{
-        float:left;
-        width:100%;
         .loan-number{
           font-size:18px;
           color:#cc321a;
@@ -381,34 +396,9 @@
       }
     }
     .gift-list-item{
-      float:left;
-      width:100%;
-      background:url('../images/2017/house-decorate/gift-bg.png') no-repeat center;
-      background-size:100%;
-      box-sizing:border-box;
-      padding:60px 80px 30px;
+
       position: relative;
-      @media (max-width:700px) {
-        background:url('../images/2017/house-decorate/gift-bg-phone.png') no-repeat center;
-        background-size:100%;
-        padding:20px 10px;
-      }
-      h3{
-        position: absolute;
-        top:0;
-        left:50%;
-        margin-left:-205px;
-        width:410px;
-        height:60px;
-        background:url('../images/2017/house-decorate/title-three.png') no-repeat center;
-        @media (max-width:700px) {
-          width:210px;
-          margin-left: -105px;
-          background-size: 100%;
-          height: 30px;
-          top: -15px;
-        }
-      }
+
       .info-text{
         color:#fff;
         font-size:18px;
@@ -418,8 +408,6 @@
         }
       }
       .gift-list{
-        float:left;
-        width:100%;
         dt{
           float:left;
           width:100%;
@@ -443,7 +431,7 @@
             width:33.333333%;
             @media (max-width:700px) {
               box-sizing:border-box;
-              padding:0 10px;
+              padding:0 3px;
             }
             p{
               &.img-item{
@@ -464,64 +452,46 @@
             }
             &.img-item{
               height:300px;
-              @media (max-width:700px) {
-                height:110px;
-              }
+
               &.gift-one{
                 background:url('../images/2017/house-decorate/gift-one.png') no-repeat center;
-                background-size: 50%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
               &.gift-two{
                 background:url('../images/2017/house-decorate/gift-two.png') no-repeat center;
-                background-size: 50%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
               &.gift-three{
                 background:url('../images/2017/house-decorate/gift-three.png') no-repeat center;
-                background-size: 50%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
               &.gift-four{
                 background:url('../images/2017/house-decorate/gift-four.png') no-repeat center;
-                background-size: 68%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
               &.gift-five{
                 background:url('../images/2017/house-decorate/gift-five.png') no-repeat center;
-                background-size: 68%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
               &.gift-six{
                 background:url('../images/2017/house-decorate/gift-six.png') no-repeat center;
-                background-size: 68%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
               &.gift-seven{
                 background:url('../images/2017/house-decorate/gift-seven.png') no-repeat center;
-                background-size: 68%;
-                @media (max-width:700px) {
-                  background-size:100%;
-                }
+                background-size: contain;
+
               }
             }
             &.name-item{
               font-size:18px;
-              @media (max-width:700px) {
-                font-size:12px;
-              }
+
             }
           }
         }
@@ -529,14 +499,9 @@
     }
   }
   .rule-item{
-    float:left;
-    width:100%;
     color:#fff;
     padding:0 60px;
     box-sizing:border-box;
-    @media (max-width:700px) {
-      padding:0 20px;
-    }
     dt{
       font-size:16px;
       @media (max-width:700px) {
@@ -552,66 +517,87 @@
   }
 }
 
-@media screen and (min-width: 710px) and (max-width:1020px){
-
-  .house-decorate-container .wp {
-    padding: 10px;
-    transform: scale(0.56);
-    margin-left: -28%;
-    margin-top: -90px;
+@media (max-width:700px) {
+  .page-width {
+    width:96%;
   }
 
-  .house-decorate-container .content-item {
-    height:263px;
-    padding:50px 0 10px 0;
-    &.column02 {
-      height:230px;
-    }
-    &.column3 {
-      height: 700px;
-      .wp {
-        margin-top: -300px;
+  .house-decorate-container {
+    .content-item  {
+      border-radius: 40px;
+      padding: 20px 10px;
+      margin-top:40px;
+      margin-bottom:20px;
+      .day-bag-item {
+        text-align: left;
+      }
+      i.bg-top {
+        display: none;
+      }
+      i.bg-bottom {
+        display: none;
+      }
+      i.column-title-page {
+        &.one,&.two,&.three {
+          background-size:70%;
+        }
+
+      }
+      &.none {
+        padding: 10px 0 20px 0;
+      }
+
+      .gift-list-item .gift-list {
+        dd p.name-item {
+          font-size:12px;
+        }
+        dd p.img-item {
+          height:100px;
+        }
       }
     }
-    &.column04 {
-      height: 130px;
+
+    .rule-item {
+      padding:0 10px;
     }
+  }
+
+}
+
+
+@media screen and (min-width: 710px) and (max-width:1024px){
+  .page-width {
+    width:96%;
   }
   .main-frame {
     overflow-x: hidden;
   }
 
-}
-
-@media screen and (min-width: 1020px) and (max-width:1366px){
-
-  .house-decorate-container .wp {
-    padding: 10px;
-    transform: scale(0.8);
-    margin-left: -10%;
-    margin-top: -90px;
-  }
-
-  .house-decorate-container .content-item {
-    height:316px;
-    padding:50px 0 10px 0;
-    &.column02 {
-      height: 300px;
+  .house-decorate-container .content-item  {
+    border-width:4px;
+    padding: 40px 20px 20px 20px;
+    i.bg-top {
+      width: 100.9%;
+      left: -3px;
+      top: -12px;
     }
-    &.column3 {
-      height: 1100px;
-      .wp {
-      }
+    i.bg-bottom {
+      width: 100.9%;
+      left: -3px;
     }
-    &.column04 {
-      height: 180px;
-      .wp {
-        margin-top: -60px;
-      }
+    &.even {
+      border-width:4px;
+      padding: 40px 20px 20px 20px;
+    }
+
+    .gift-list-item .gift-list dd p.img-item {
+      height:200px;
     }
   }
 
 }
+
+
 
 
 

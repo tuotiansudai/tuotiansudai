@@ -611,6 +611,7 @@
                 }
                 &.three-1{
                   background:url('../images/2017/sport-play/three-1.png') no-repeat center;
+                  background-size:contain;
                   @media (max-width:700px) {
                     background-size:90%;
                   }
@@ -703,8 +704,15 @@
         width:76px;
         height:114px;
         background:url('../images/2017/sport-play/zs03.png') left top no-repeat;
-        right: -29px;
+        right: -55px;
         top: 16px;
+      }
+      &.zs04 {
+        width:26px;
+        height:30px;
+        background: url('../images/2017/sport-play/zs04.png') left top no-repeat;
+        right: 13px;
+        top: 79px;
       }
     }
 
@@ -722,6 +730,9 @@
     padding: 40px 20px 20px 20px;
     i.zs02 {
       left:27%;
+    }
+    i.zs04 {
+      right: -15px;
     }
   }
 }

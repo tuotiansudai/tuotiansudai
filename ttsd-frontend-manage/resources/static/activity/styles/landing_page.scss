@@ -338,7 +338,7 @@ form label.error {
     left: 0;
     right:0;
     margin:0 auto;
-    top: 90px;
+    top: 20px;
     padding-top: 12px;
     width:1000px;
     height: 350px;
@@ -841,8 +841,18 @@ form label.error {
 }
 
 
-@media screen and (min-width: 700px) and (max-width:768px){
+@media screen and (min-width: 710px) and (max-width:1024px){
+    .main-frame {
+      overflow-x: hidden;
+    }
   .landing-container {
+    .newbie-step-register {
+      display: none;
+    }
+    .landing-header-nav {
+      width:auto;
+      margin: 0 10px;
+    }
     .landing-header-nav {
       width: 96%;
       box-sizing: border-box;
@@ -875,17 +885,6 @@ form label.error {
     display: none;
   }
 
-}
-
-@media screen and (min-width: 768px) and (max-width:1024px){
-  .landing-container .newbie-step-register {
-    display: none;
-  }
-
-  .landing-container .landing-header-nav {
-    width:auto;
-    margin: 0 10px;
-  }
 }
 
 
