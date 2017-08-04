@@ -117,5 +117,4 @@ DAILY_QUOTA_STATUS_CHOICES = (
     (DAILY_QUOTA_STATUS_CANCELED, u'已取消')
 )
 
-
 yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
