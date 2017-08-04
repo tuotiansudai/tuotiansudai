@@ -26,9 +26,10 @@ class QueueName(object):
     DEPOSIT_CALLBACK_TASK_QUEUE = 'current-deposit-callback'
     OVER_DEPOSIT_TASK_QUEUE = 'current-over-deposit'
     REDEEM_CALLBACK_TASK_QUEUE = 'current-redeem-callback'
+    LOAN_OUT_CALLBACK_TASK_QUEUE = 'current-loan-out-callback'
 
 
-CURRENT_REST_SERVER = 'http://localhost:8000/rest'
+CURRENT_REST_SERVER = 'http://localhost:8000'
 PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
 
 setting_local_file = '/workspace/deploy-config/ttsd-current/jobs_settings.py'

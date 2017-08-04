@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
-from current_rest import constants
+from current_rest import constants, settings
 
 
 class BaseModel(models.Model):
@@ -104,7 +104,7 @@ class CurrentBill(BaseModel):
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         for key, value in {'login_name': 'login_name', 'balance': 'balance', 'bill_date': 'updated_time'}.items():
-            if getattr(self, key) is None:
+            if not getattr(self, key):
                 setattr(self, key, getattr(self.current_account, value))
 
         super(CurrentBill, self).save(force_insert, force_update, using, update_fields)
@@ -136,3 +136,18 @@ class CurrentDailyFundInfo(BaseModel):
 
     class Meta:
         db_table = 'current_daily_fund_info'
+
+
+class CurrentLoanOutHistory(BaseModel):
+    reserve_account = models.CharField(default=settings.RESERVE_ACCOUNT, max_length=25, null=False, blank=False)
+    agent_account = models.CharField(default=settings.AGENT_ACCOUNT, max_length=25, null=False, blank=False)
+    interest_amount = models.PositiveIntegerField(default=0, null=False, blank=False)
+    deposit_amount = models.PositiveIntegerField(default=0, null=False, blank=False)
+    bill_date = models.DateField(null=False, blank=False)
+    status = models.CharField(choices=constants.LOAN_OUT_STATUS_CHOICES,
+                              max_length=100,
+                              default=constants.LOAN_OUT_STATUS_RESERVE_TRANSFER_WAITING_PAY,
+                              null=False, blank=False)
+
+    class Meta:
+        db_table = 'current_loan_out_history'

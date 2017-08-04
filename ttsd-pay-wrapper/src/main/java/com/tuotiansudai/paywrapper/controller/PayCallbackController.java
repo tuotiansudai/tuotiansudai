@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.paywrapper.current.CurrentDepositService;
+import com.tuotiansudai.paywrapper.current.CurrentLoanOutService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
@@ -79,6 +80,9 @@ public class PayCallbackController {
 
     @Autowired
     private CurrentDepositService currentDepositService;
+
+    @Autowired
+    private CurrentLoanOutService currentLoanOutService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -178,6 +182,20 @@ public class PayCallbackController {
     public ModelAndView currentOverDepositPaybackNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.currentDepositService.overDepositCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/current_loan_out_transfer_reserve_notify", method = RequestMethod.GET)
+    public ModelAndView currentLoanOutTransferReserveNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentLoanOutService.reserveTransferCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/current_loan_out_transfer_agent_notify", method = RequestMethod.GET)
+    public ModelAndView currentLoanOutTransferAgentNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentLoanOutService.agentTransferCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

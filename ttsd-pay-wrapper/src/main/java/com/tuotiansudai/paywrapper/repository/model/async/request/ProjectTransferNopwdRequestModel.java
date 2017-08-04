@@ -58,8 +58,12 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD);
     }
 
-    public static ProjectTransferNopwdRequestModel newCurrentInterestSettlementRequest(String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD);
+    public static ProjectTransferNopwdRequestModel newCurrentLoanOutTransferReserveRequest(String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_LOAN_OUT_TRANSFER_RESERVE_PROJECT_TRANSFER_NOPWD);
+    }
+
+    public static ProjectTransferNopwdRequestModel newCurrentLoanOutTransferAgentRequest(String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_OUT_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_LOAN_OUT_TRANSFER_AGENT_PROJECT_TRANSFER_NOPWD);
     }
 
     public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {

@@ -19,20 +19,27 @@ from django.conf.urls import url
 from current_rest.views import fund
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
-from current_rest.views.loan import LoanListViewSet, audit_reject_loan
+from current_rest.views.loan import LoanListViewSet, audit_reject_loan, LoanOutViewSet
 from current_rest.views.loan import LoanViewSet
 from current_rest.views.redeem import RedeemViewSet
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+
 get_account = AccountViewSet.as_view({'get': 'retrieve'})
 calculate_interest_yesterday = AccountViewSet.as_view({'post': 'calculate_interest_yesterday'})
+
 post_loan = LoanViewSet.as_view({'post': 'create'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+
 loan_list = LoanListViewSet.as_view({'get': 'list'})
 
 post_redeem = RedeemViewSet.as_view({'post': 'create'})
 get_put_redeem = RedeemViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+
+post_loan_out = LoanOutViewSet.as_view({'post': 'create'})
+put_loan_out = LoanOutViewSet.as_view({'put': 'update'})
+
 
 urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
@@ -49,4 +56,6 @@ urlpatterns = [
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
+    url(r'^loan-out$', post_loan_out, name='post_loan_out'),
+    url(r'^loan-out/(?P<pk>[0-9]+)$', put_loan_out, name="put_loan_out", kwargs={'partial': True}),
 ]
