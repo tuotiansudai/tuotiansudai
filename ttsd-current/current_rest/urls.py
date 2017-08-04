@@ -19,7 +19,6 @@ from django.conf.urls import url
 from current_rest.views import fund
 from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
-from current_rest.views.fund import TodayFundSettingViewSet
 from current_rest.views.loan import LoanListViewSet
 from current_rest.views.loan import LoanViewSet
 from current_rest.views.redeem import RedeemViewSet
