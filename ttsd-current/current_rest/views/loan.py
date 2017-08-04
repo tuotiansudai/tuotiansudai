@@ -77,3 +77,4 @@ def audit_reject_loan(request, pk, category):
                                 content=content)
 
     return Response({'message', 'success'}, status=status.HTTP_201_CREATED)
+

@@ -1,3 +1,4 @@
+from celery.schedules import crontab
 import os
 from celery.schedules import crontab
 
@@ -30,6 +31,15 @@ class QueueName(object):
 
 CURRENT_REST_SERVER = 'http://localhost:8000/rest'
 PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
+
+timezone = 'Asia/Shanghai'
+beat_schedule = {
+    'add-every-day-morning': {
+        'task': 'jobs.loan_matching_cron.loan_matching',
+        'schedule': crontab(hour='1,2,3,4')
+    },
+
+}
 
 setting_local_file = '/workspace/deploy-config/ttsd-current/jobs_settings.py'
 if not os.path.isfile(setting_local_file):

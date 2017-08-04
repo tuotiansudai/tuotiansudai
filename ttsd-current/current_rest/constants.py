@@ -1,4 +1,6 @@
 # coding=utf-8
+from datetime import datetime, timedelta
+
 LOAN_STATUS_APPROVING = 'APPROVING'
 LOAN_STATUS_APPROVED = 'APPROVED'
 LOAN_STATUS_EXPIRED = 'EXPIRED'
@@ -114,3 +116,5 @@ DAILY_QUOTA_STATUS_CHOICES = (
     (DAILY_QUOTA_STATUS_REFUSED, u'已拒绝'),
     (DAILY_QUOTA_STATUS_CANCELED, u'已取消')
 )
+
+yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")

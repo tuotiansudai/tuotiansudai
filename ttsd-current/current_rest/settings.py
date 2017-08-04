@@ -138,6 +138,14 @@ LOGGING = {
             'when': 'midnight',
             'backupCount': 5,
             'formatter': 'standard',
+        },
+        'loan_match_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': LOGGING_DIR + '/loan_match.log',
+            'when': 'midnight',
+            'backupCount': 5,
+            'formatter': 'standard',
         }
     },
     'loggers': {
@@ -157,6 +165,11 @@ LOGGING = {
         },
         'current_rest': {
             'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'current_rest.biz.services.loan_service': {
+            'handlers': ['loan_match_handler'],
             'level': 'DEBUG',
             'propagate': False
         },
