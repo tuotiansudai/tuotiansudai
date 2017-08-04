@@ -47,6 +47,9 @@ public class SmsClient implements ApplicationContextAware {
     @Value("${sms.interval.seconds}")
     private int second;
 
+    @Value("#{'${sms.antiCooldown.ipList}'.split('\\|')}")
+    private List<String> antiCooldownIpList;
+
     @Value("${common.environment}")
     private String environment;
 
@@ -201,7 +204,7 @@ public class SmsClient implements ApplicationContextAware {
     }
 
     private void setIntoCooldown(String ip) {
-        if (!Strings.isNullOrEmpty(ip)) {
+        if (!Strings.isNullOrEmpty(ip) && !antiCooldownIpList.contains(ip)) {
             String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, ip);
             redisWrapperClient.setex(redisKey, second, "1");
         }
