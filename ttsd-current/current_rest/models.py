@@ -139,3 +139,13 @@ class FundAllocation(models.Model):
 
     class Meta:
         db_table = 'fund_allocation'
+
+
+class LoanRepay(AuditModel):
+    repay_amount = models.PositiveIntegerField(null=False, blank=False)
+    submit_name = models.CharField(max_length=25, null=False, blank=False)
+    status = models.CharField(choices=constants.REPAY_STATUS_CHOICES, null=False, max_length=20)
+    loan = models.ForeignKey(Loan, on_delete=models.PROTECT, null=True, related_name='+')
+
+    class Meta:
+        db_table = 'loan_repay'

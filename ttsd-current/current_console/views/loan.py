@@ -1,4 +1,5 @@
 # coding=utf-8
+import datetime
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -6,10 +7,10 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from rest_framework import status
 from rest_framework.response import Response
-
 from current_console import constants
 from current_console.decorators import user_roles_check
 from current_console.forms import LoanForm
+from current_console.forms import LoanForm, ApprovedLoanForm
 from current_console.rest_client import RestClient
 
 
@@ -100,3 +101,42 @@ def _modify_loan(old_loan, form):
     old_loan['status'] = constants.LOAN_STATUS_APPROVING
 
     return old_loan
+
+
+
+@require_http_methods(["GET"])
+@user_roles_check(['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN'])
+def approved_loan_list(request):
+    form = ApprovedLoanForm(request.GET)
+    if form.is_valid():
+        request_dict = form.data.dict() if form.data else {}
+        request_dict['status'] = constants.LOAN_STATUS_APPROVED
+        if request_dict.has_key('created_time') and request_dict['created_time']:
+            request_dict['start_time'] = request_dict['created_time']
+            request_dict['end_time'] = datetime.timedelta(days=1)+request_dict['created_time']
+        response = RestClient('approved-loan-list').get(params=request_dict)
+        if response['results']:
+            for list in response['results']:
+                if list['loan_matching_status'] == constants.LOAN_MATCHING_STATUS_DOING:
+                    list['balance'] = list['amount']-list['loan_matching_amount']['amount__sum']
+                elif list['loan_matching_status'] == constants.LOAN_MATCHING_STATUS_WAITING:
+                    list['balance'] = list['amount']
+                else:
+                    list['balance'] = 0
+
+        return render(request, 'console/loan/approved_loan_list.html',
+                      {'approved_loan_list': response,
+                       'types': constants.LOAN_TYPE_CHOICES,
+                       'matching_status': constants.LOAN_MATCHING_STATUS_CHOICES})
+    else:
+        return render(request, 'console/loan/approved_loan_list.html')
+
+
+@require_http_methods(["GET"])
+@user_roles_check(['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN'])
+def query_loan_by_id(request):
+    loan = RestClient('loan/{}'.format(request.GET['loan_id'])).get()
+    return render(request, 'console/repay/repay.html',
+                  {'loan': loan,
+                   'loan_type': constants.LOAN_TYPE_CHOICES,
+                   'repay_time': datetime.datetime.now()})

@@ -1,0 +1,53 @@
+{% extends "console/tpl/_layout.tpl" %}
+
+{% block content %}
+    <div class="col-md-10">
+        <h4>资产情况</h4>
+        <hr>
+        <div class="form-group">
+            <label for="volume">资产类型:</label>
+            <span>
+                {% for key,value in loan_type %}
+                    {% if key == loan.loan_type %}{{ value }}
+                    {% endif %}
+                {% endfor %}
+            </span>
+        </div>
+        <div class="form-group">
+            <label for="volume">代理人:</label>
+            <span>{{ loan.agent_name }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">资产价值（万元）:</label>
+            <span>{{ loan.amount }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">计息起始时间：:</label>
+            <span>{{ loan.effective_date }}</span>--<span>{{ loan.expiration_date }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">借款人:</label>
+            <span>{{ loan.debtor }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">借款人身份证号:</label>
+            <span>{{ loan.debtor_identity_card }}</span>
+        </div>
+        <br><br>
+        <h4>还款</h4>
+        <hr>
+         <form class="form-inline" action="" method="GET">
+            <div class="form-group">
+                <label for="volume" >还款本金:</label>
+                <span>{{ repay_amount }}万元</span>
+            </div>
+             <br>
+            <div class="form-group">
+                <label for="volume">还款时间:</label>
+                <span>{{ repay_time }}</span>
+            </div>
+             <br>
+            <button type="submit" class="btn btn-primary">提交</button>
+         </form>
+    </div>
+{% endblock %}

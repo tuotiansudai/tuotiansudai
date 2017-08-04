@@ -19,3 +19,14 @@ class LoanForm(forms.Form):
 class FundSettingHistoryQueryForm(forms.Form):
     begin_date = forms.DateField(input_formats=['%Y-%m-%d'])
     end_date = forms.DateField(input_formats=['%Y-%m-%d'])
+
+
+class ApprovedLoanForm(forms.Form):
+    loan_type = forms.ChoiceField(choices=constants.LOAN_TYPE_CHOICES, required=False)
+    agent__login_name = forms.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
+    created_time = forms.DateTimeField(required=False)
+    loan_matching_status = forms.ChoiceField(choices=constants.LOAN_MATCHING_STATUS_CHOICES, required=False)
+
+
+class LoanRepayForm(forms.Form):
+    repay_amount = forms.IntegerField(min_value=0, max_value=99999)

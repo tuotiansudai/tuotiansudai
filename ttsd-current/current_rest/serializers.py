@@ -95,10 +95,12 @@ class AgentSerializer(serializers.ModelSerializer):
 
 
 class LoanSerializer(serializers.ModelSerializer):
+    agent_name = serializers.ReadOnlyField(source='agent.login_name')
     amount = serializers.IntegerField(min_value=0, max_value=99999)
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
     effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     expiration_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    created_time = serializers.DateTimeField(format='%Y-%m-%d')
     creator = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
     auditor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
 
@@ -150,3 +152,36 @@ class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
         fields = ('date', 'loan_remain_amount', 'quota_amount', 'config_quota_amount', 'config_quota_status',
                   'invest_amount', 'allow_change_quota')
         read_only_fields = ('date', 'loan_remain_amount', 'quota_amount', 'invest_amount', 'allow_change_quota')
+
+
+class FundAllocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.FundAllocation
+        fields = '__all__'
+
+
+class ApprovedLoanListSerializer(LoanListSerializer):
+    effective_date = serializers.DateTimeField(format='%Y-%m-%d')
+    expiration_date = serializers.DateTimeField(format='%Y-%m-%d')
+    loan_matching_status = serializers.SerializerMethodField()
+    loan_matching_amount = serializers.SerializerMethodField()
+
+    def get_loan_matching_status(self, request):
+        fund_allocation_by_loan_id = models.FundAllocation.objects.filter(loan_id=request.id)
+        if fund_allocation_by_loan_id:
+            return constants.LOAN_MATCHING_STATUS_DOING
+        elif not fund_allocation_by_loan_id and request.effective_date > datetime.now():
+            return constants.LOAN_MATCHING_STATUS_WAITING
+        else:
+            return constants.LOAN_MATCHING_STATUS_EXPIRED
+
+    def get_loan_matching_amount(self, request):
+        return models.FundAllocation.objects.filter(loan_id=request.id).aggregate(Sum('amount'))
+
+
+class LoanRepaySerializer(serializers.ModelSerializer):
+    updated_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+
+    class Meta:
+        model = models.LoanRepay
+        fields = ('updated_date', 'repay_amount', 'submit_name', 'approver')

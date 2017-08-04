@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
 from datetime import datetime
-
 from django.db import transaction
-from rest_framework import mixins
+from rest_framework import mixins, filters
+import django_filters
+from django.db import transaction
+from django.http import Http404
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -77,4 +79,20 @@ def audit_reject_loan(request, pk, category):
                                 content=content)
 
     return Response({'message', 'success'}, status=status.HTTP_201_CREATED)
+
+
+class ApprovedLoanListFilter(django_filters.FilterSet):
+    start_time = django_filters.DateTimeFilter(name='created_time', lookup_expr='gte')
+    end_time = django_filters.DateTimeFilter(name='created_time', lookup_expr='lte')
+
+    class Meta:
+        model = models.Loan
+        fields = ['loan_type', 'start_time', 'end_time', 'status', 'agent__login_name']
+
+
+class ApprovedLoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = serializers.ApprovedLoanListSerializer
+    queryset = models.Loan.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = ApprovedLoanListFilter
 

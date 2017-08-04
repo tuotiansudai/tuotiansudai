@@ -17,10 +17,11 @@ Including another URLconf
 # -*-coding:utf-8 -*-
 from django.conf.urls import url
 
-from current_console.views import home, loan, fund
+from current_console.views import home, loan, fund, repay
 
 urlpatterns = [
     url('^index$', home.index, name='index'),
+    url('^loan$', loan.query_loan_by_id, name='loan'),
     url('^show-loan$', loan.show_loan, name='show_loan'),
     url('^show-edit-loan/(?P<pk>[0-9]+)$', loan.show_edit_loan, name='show_edit_loan'),
     url('^edit-loan/(?P<pk>[0-9]+)$', loan.edit_loan, name='edit_loan'),
@@ -28,8 +29,10 @@ urlpatterns = [
     url('^audit-reject-loan/(?P<category>(audit|reject))/(?P<pk>[0-9]+)$', loan.audit_reject_loan,
         name='audit_reject_loan'),
     url('^loan-list$', loan.loan_list, name='loan_list'),
+    url('^approved-loan-list$', loan.approved_loan_list, name='approved_loan_list'),
     url('^fund/setting$', fund.FundSettingView.as_view(), name='fund_setting'),
     url('^fund/setting-approve$', fund.FundSettingApproveView.as_view(), name='fund_setting_approve'),
     url('^fund/setting-history$', fund.fund_setting_history_page, name='fund_setting_history_page'),
     url('^fund/setting-history-query$', fund.fund_setting_history_query, name='fund_setting_history_query'),
+    url('^submit-repay$', repay.submit_repay, name='submit_repay'),
 ]
