@@ -3,8 +3,10 @@ package com.tuotiansudai.api.dto.v3_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestStatus;
-import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestAchievement;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.DateTime;
@@ -66,6 +68,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "是否债权转让", example = "true")
     private boolean isTransferInvest;
+
+    @ApiModelProperty(value = "合同Link", example = "https://tuotiansudai.com/contract/invest/contractNo/JK20170802000151531")
+    private String contractLink;
+
 
     public String getLoanId() {
         return loanId;
@@ -209,6 +215,14 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setTransferInvest(boolean transferInvest) {
         isTransferInvest = transferInvest;
+    }
+
+    public String getContractLink() {
+        return contractLink;
+    }
+
+    public void setContractLink(String contractLink) {
+        this.contractLink = contractLink;
     }
 
     public UserInvestRecordResponseDataDto() {
