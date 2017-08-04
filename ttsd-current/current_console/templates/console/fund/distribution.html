@@ -1,0 +1,107 @@
+{% extends "console/tpl/_layout.tpl" %}
+{% block script_content %}
+    <script src="/static/libs/highcharts/5.0.12/highcharts.js"></script>
+    <script>
+        (function ($) {
+            $(function () {
+
+                $('.datetimepicker').datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 2
+                });
+                loadFundDistribution();
+                $('#searchBtn').click(loadFundDistribution);
+            });
+
+
+            var loadFundDistribution = function () {
+                var url = '{% url 'fund_distribution_query' %}';
+                var granularity = $('#granularity').val();
+                var begin_date = $('#begin_date').val();
+                var end_date = $('#end_date').val();
+                $.get(url, {
+                    'granularity': granularity,
+                    'begin_date': begin_date,
+                    'end_date': end_date
+                }, function (data, textStatus, jqXHR) {
+                    showFundDistributionChart(data);
+                }, 'json');
+            };
+
+
+            var showFundDistributionChart = function (current_data) {
+                var charts_categories = current_data.dates;
+                var charts_series = [
+                    {
+                        name: '用户当前持有本金',
+                        color: '#eb7d3c',
+                        data: current_data.total_principal_list
+                    },
+                    {
+                        name: '用户当前总持有',
+                        color: '#5e9cd3',
+                        data: current_data.total_balance_list
+                    }];
+                showChart(charts_categories, charts_series);
+            };
+
+            var showChart = function (charts_categories, charts_series) {
+                Highcharts.chart('fund_distribution_container', {
+                    credits: {text: ''},
+                    chart: {
+                        type: 'area'
+                    },
+                    title: {
+                        text: '用户资金持有分布'
+                    },
+                    xAxis: {
+                        categories: charts_categories,
+                        tickmarkPlacement: 'on',
+                        title: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: '万元'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        split: true,
+                        valueSuffix: ' 万元'
+                    },
+                    series: charts_series
+                });
+            };
+        })(jQuery);
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <select id="granularity" name="granularity">
+                        <option value="daily">日</option>
+                        <option value="weekly">周</option>
+                        <option value="monthly">月</option>
+                    </select>
+                    <label for="begin_date">开始时间：</label>
+                    <input id="begin_date" name="begin_date" type="text" class="datetimepicker"
+                           value="{{ begin_date |date:'Y-m-d' }}"/>
+                   结束时间：<input id="end_date" name="end_date" type="text" class="datetimepicker"
+                             value="{{ end_date |date:'Y-m-d' }}"/>
+                    <button id="searchBtn" type="button" class="btn btn-primary">查询</button>
+                </div>
+            </form>
+            <div id="fund_distribution_container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

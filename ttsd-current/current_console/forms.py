@@ -19,3 +19,9 @@ class LoanForm(forms.Form):
 class FundSettingHistoryQueryForm(forms.Form):
     begin_date = forms.DateField(input_formats=['%Y-%m-%d'])
     end_date = forms.DateField(input_formats=['%Y-%m-%d'])
+
+
+class FundDistributionQueryForm(forms.Form):
+    granularity = forms.CharField(max_length=10)
+    begin_date = forms.DateField(input_formats=['%Y-%m-%d'])
+    end_date = forms.DateField(input_formats=['%Y-%m-%d'])

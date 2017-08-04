@@ -26,3 +26,5 @@ LOAN_STATUS_CHOICES = (
     (LOAN_STATUS_REJECT, u'已驳回'),
 
 )
+
+

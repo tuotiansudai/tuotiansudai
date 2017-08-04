@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 
-from current_console.forms import FundSettingHistoryQueryForm
+from current_console.forms import FundSettingHistoryQueryForm, FundDistributionQueryForm
 from current_console.rest_client import RestClient
 
 
@@ -80,5 +80,25 @@ def fund_setting_history_query(request):
                                                                    query_form.data['end_date'])
         histories = RestClient(url).get()
         return JsonResponse(histories)
+    else:
+        return HttpResponseBadRequest(u'日期参数格式有误，请使用 Y-m-d 格式')
+
+
+def fund_distribution_page(request):
+    granularity = 'Daily'
+    end_date = datetime.now().today()
+    begin_date = end_date - timedelta(days=7)
+    return render(request, 'console/fund/distribution.html',
+                  {'granularity': granularity, 'begin_date': begin_date, 'end_date': end_date})
+
+
+def fund_distribution_query(request):
+    query_form = FundDistributionQueryForm(request.GET)
+    if query_form.is_valid():
+        url = 'fund/distribution?granularity={}&begin_date={}&end_date={}'.format(
+            query_form.data['granularity'], query_form.data['begin_date'],
+            query_form.data['end_date'])
+        data_distribution = RestClient(url).get()
+        return JsonResponse(data_distribution)
     else:
         return HttpResponseBadRequest(u'日期参数格式有误，请使用 Y-m-d 格式')
