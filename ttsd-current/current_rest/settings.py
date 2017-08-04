@@ -34,6 +34,9 @@ ROOT_URLCONF = 'current_rest.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
+SMS_NETEASE_KEY = 'key'
+SMS_NETEASE_SECRET = 'secret'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 LANGUAGE_CODE = 'en-us'
@@ -60,6 +63,8 @@ PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
 REDIS_URL = 'redis://192.168.33.10/2'
 
 LOGIN_NAME = 'testName'
+
+CURRENT_NOTIFY_MOBILE_LIST = '135210233|1369283829|1359389289'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/rest_settings.py'
@@ -94,9 +99,17 @@ DATABASES = {
     }
 
 }
+
+# SMS config
+SMS_CONFIG = {
+    'url': 'https://api.netease.im/sms/sendtemplate.action',
+    'app_key': SMS_NETEASE_KEY,
+    'app_secret': SMS_NETEASE_SECRET,
+    'interval_seconds': 60
+}
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['current_rest.authentication.NoAuthentication'],

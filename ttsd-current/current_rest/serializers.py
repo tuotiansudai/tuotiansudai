@@ -149,3 +149,8 @@ class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
         fields = ('date', 'loan_remain_amount', 'quota_amount', 'config_quota_amount', 'config_quota_status',
                   'invest_amount', 'allow_change_quota')
         read_only_fields = ('date', 'loan_remain_amount', 'quota_amount', 'invest_amount', 'allow_change_quota')
+
+
+class SmsLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.SmsLog
