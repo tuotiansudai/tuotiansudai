@@ -34,5 +34,6 @@ urlpatterns = [
     url('^fund/setting-approve$', fund.FundSettingApproveView.as_view(), name='fund_setting_approve'),
     url('^fund/setting-history$', fund.fund_setting_history_page, name='fund_setting_history_page'),
     url('^fund/setting-history-query$', fund.fund_setting_history_query, name='fund_setting_history_query'),
-    url('^submit-repay$', repay.submit_repay, name='submit_repay'),
+    url('^submit-loan-repay$', repay.submit_loan_repay, name='submit_loan_repay'),
+    url('^audit-loan-repay/(?P<result>(pass|reject))/(?P<pk>[0-9]+)$', repay.audit_loan_repay, name='audit_loan_repay'),
 ]

@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import java.util.List;
 
 @RestClient(url = "${current.rest.server}")
 public interface CurrentRestClient {
@@ -34,4 +35,8 @@ public interface CurrentRestClient {
     @GET
     @Path("/account/{loginName}")
     AccountResponseDto getAccount(@PathParam("loginName") String loginName) throws RestException;
+
+    @GET
+    @Path("/task/{handlerRole}")
+    List<TaskResponseDto> task(@PathParam("handlerRole") String handlerRole) throws RestException;
 }

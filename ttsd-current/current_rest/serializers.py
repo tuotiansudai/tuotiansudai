@@ -180,8 +180,16 @@ class ApprovedLoanListSerializer(LoanListSerializer):
 
 
 class LoanRepaySerializer(serializers.ModelSerializer):
-    updated_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    repay_amount = serializers.IntegerField(min_value=0, max_value=99999)
+    submit_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
 
     class Meta:
         model = models.LoanRepay
-        fields = ('updated_date', 'repay_amount', 'submit_name', 'approver')
+        fields = ('id', 'status', 'repay_amount', 'loan', 'submit_name')
+
+
+class TaskSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Task
+        fields = '__all__'

@@ -36,8 +36,8 @@
         <br><br>
         <h4>还款</h4>
         <hr>
-         <form class="form-inline" action="{% url 'submit_repay' %}" method="post">
-             <input type="hidden" name="loan_id" value="{{ loan.id }}">
+         <form class="form-inline" action="{% url 'submit_loan_repay' %}" method="post">
+             <input type="hidden" name="loan" value="{{ loan.id }}">
             <div class="form-group">
                 <label for="volume" >还款本金:</label>
                 <input type="text" class="form-control" name="repay_amount" value="">

@@ -23,7 +23,7 @@ from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet, audit_reject_loan
 from current_rest.views.loan import LoanViewSet, ApprovedLoanListViewSet
 from current_rest.views.redeem import RedeemViewSet
-from current_rest.views.repay import LoanRepayViewSet
+from current_rest.views.repay import LoanRepayViewSet, audit_loan_repay
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
@@ -55,5 +55,6 @@ urlpatterns = [
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
     url(r'^loan-matching$', loan_matching.loan_matching, name="loan_matching"),
     url(r'^approved-loan-list$', approves_loan_list, name="approved_loan_list"),
-    url(r'^submit-repay$', post_repay, name='submit_repay'),
+    url(r'^submit-loan-repay$', post_repay, name='submit_loan_repay'),
+    url(r'^audit-loan-repay/(?P<pk>[0-9]+)/(?P<result>(pass|reject))$', audit_loan_repay, name='audit_loan_repay'),
 ]
