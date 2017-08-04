@@ -85,7 +85,6 @@ public class InterestCalculator {
 
     public static long getCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
         long expectedInterest = 0;
-        periodDuration = couponModel.getPeriod() == null ? periodDuration : couponModel.getPeriod() * DAYS_OF_MONTH;
         switch (couponModel.getCouponType()) {
             case NEWBIE_COUPON:
             case INVEST_COUPON:

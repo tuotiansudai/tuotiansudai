@@ -122,7 +122,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) repay is starting...", String.valueOf(loanRepayId), String.valueOf(userCouponModel.getId())));
 
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
-            if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && currentLoanRepayModel.getPeriod() > 1) {
+            if (couponModel.getPeriod() != null && currentLoanRepayModel.getPeriod() > couponModel.getPeriod()) {
                 continue;
             }
 
@@ -266,7 +266,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         logger.error(MessageFormat.format("(coupon is not exist (couponId = {0}))", userCouponModel.getCouponId()));
                         continue;
                     }
-                    if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1) {
+                    if (couponModel.getPeriod() != null && couponModel.getPeriod() < period) {
                         continue;
                     }
                     long expectedCouponInterest = InterestCalculator.estimateCouponRepayExpectedInterest(successInvestModel,
