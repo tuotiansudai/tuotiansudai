@@ -206,8 +206,14 @@
     width:100%;
     &.top-img{
       height:260px;
-      background:url("../images/achievement/top-picture-phone.png") no-repeat center bottom;
+      background:url("../images/achievement/top-picture-phone.png") no-repeat center top;
       background-size: 100%;
+      @media screen and (min-width:375px) {
+        height: 300px;
+      }
+      @media screen and (min-width:410px) {
+        height: 330px;
+      }
     }
     &.content-model{
       margin-top:-45px;

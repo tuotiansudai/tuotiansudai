@@ -470,12 +470,12 @@
         .gift-item{
           float:left;
           width:100%;
-          background:url('../images/2017/sport-play/gift-bg.png') no-repeat center;
+          background:url('../images/2017/sport-play/gift-bg.png') no-repeat left top;
           background-size:100%;
           margin-bottom: 60px;
           position: relative;
           @media (max-width: 700px) {
-            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat center;
+            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat left top;
             background-size:cover;
             border-radius: 10px;
             margin-bottom: 30px;
@@ -506,7 +506,7 @@
             float:left;
             width:33.333333%;
             height: 100%;
-            padding:18px 0;
+            padding:22px 0;
             position: relative;
             text-align:center;
             box-sizing:border-box;
@@ -636,6 +636,8 @@
                 }
                 &.five-1{
                   background:url('../images/2017/sport-play/five-1.png') no-repeat center;
+                  background-size: contain;
+                  margin-left: 25px;
                   @media (max-width:700px) {
                     background-size:80%;
                   }
@@ -780,6 +782,14 @@
   }
 
 }
+
+@media screen and (min-width: 1024px) and (max-width:1366px){
+
+  .sport-play-container .wp .content-item .gift-list .gift-item .row-item {
+    padding:30px 0;
+  }
+}
+
 
 
 
