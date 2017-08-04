@@ -10,32 +10,32 @@
         <div class="form-group">
             <label for="volume">投资人:</label>
             <input type="text" class="form-control" name="login_name" value="{{request.GET.login_name }}" >
-            <p>{{ form.login_name.errors }}</p>
+            <span class="form-group">{{ form.login_name.errors }}</span>
         </div>
 
         <div class="form-group">
             <label for="volume">投资人手机号:</label>
             <input type="text" class="form-control" name="current_account__mobile"  value="{{request.GET.current_account__mobile  }}" >
-            <p>{{ form.current_account__mobile.errors }}</p>
+            <span class="form-group">{{ form.current_account__mobile.errors }}</span>
         </div>
 
          <div class="form-group">
              <label>申请时间: </label>
              <input id="startTime" name="start_time" class="form-control form-control-datetimepicker"
                     data-date-format="yyyy-mm-dd" value="{{ request.GET.start_time }}" style="width: 120px">
-             <p>{{ form.start_time.errors }}</p>
+             <span class="form-group">{{ form.start_time.errors }}</span>
              - <input id="endTime" name="end_time" class="form-control form-control-datetimepicker"
                       data-date-format="yyyy-mm-dd" value="{{ request.GET.end_time }}" style="width: 120px">
-             <p>{{ form.end_time.errors }}</p>
+             <span class="form-group">{{ form.end_time.errors }}</span>
          </div>
         <br/>
 
         <div class="form-group">
             <label for="volume">赎回金额(分):</label>
             <input type="text" name="start_amount" class="form-control"  value="{{request.GET.start_amount}}" style="width:120px"/>
-            <p>{{ form.start_amount.errors }}</p>
+            <span class="form-group">{{ form.start_amount.errors }}</span>
             - <input type="text" name="end_amount" class="form-control"  value="{{request.GET.end_amount}}" style="width:120px"/>
-            <p>{{ form.end_amount.errors }}</p>
+            <span class="form-group">{{ form.end_amount.errors }}</span>
         </div>
 
         <div class="form-group">
@@ -47,7 +47,7 @@
                                 {% if request.GET.status == key %}selected {% endif %}>{{ value }}</option>
                     {% endfor %}
                 </select>
-                <p>{{ form.status.errors }}</p>
+            <span class="form-group">{{ form.status.errors }}</span>
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
     </form>
