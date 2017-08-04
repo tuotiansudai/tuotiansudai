@@ -21,12 +21,27 @@ from current_rest.models import CurrentRedeem, OperationLog
 logger = logging.getLogger(__name__)
 
 
+class RedeemListFilter(django_filters.FilterSet):
+    start_time = django_filters.DateTimeFilter(name='created_time', lookup_expr='gte')
+    end_time = django_filters.DateTimeFilter(name='created_time', lookup_expr='lte')
+    start_amount = django_filters.CharFilter(name='amount', lookup_expr='gte')
+    end_amount = django_filters.CharFilter(name='amount', lookup_expr='lte')
+
+    class Meta:
+        model = models.CurrentRedeem
+        fields = ['login_name', 'current_account__mobile', 'start_time', 'end_time', 'start_amount', 'end_amount',
+                  'status']
+
+
 class RedeemViewSet(mixins.RetrieveModelMixin,
                     mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
+                    mixins.ListModelMixin,
                     viewsets.GenericViewSet):
     serializer_class = serializers.CurrentRedeemSerializer
-    queryset = models.CurrentRedeem.objects.all()
+    queryset = models.CurrentRedeem.objects.all().order_by('-created_time')
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = RedeemListFilter
 
     def __init__(self):
         super(RedeemViewSet, self).__init__()
@@ -61,23 +76,3 @@ def audit_redeem(request, pk, result):
                                 operator=request.data['auditor'],
                                 operation_type=operation_type, content=content)
     return Response({'message', 'success'}, status=status.HTTP_200_OK)
-
-
-class RedeemListFilter(django_filters.FilterSet):
-    start_time = django_filters.DateTimeFilter(name='created_time', lookup_expr='gte')
-    end_time = django_filters.DateTimeFilter(name='created_time', lookup_expr='lte')
-    start_amount = django_filters.CharFilter(name='amount', lookup_expr='gte')
-    end_amount = django_filters.CharFilter(name='amount', lookup_expr='lte')
-
-    class Meta:
-        model = models.CurrentRedeem
-        fields = ['login_name', 'current_account__mobile', 'start_time', 'end_time', 'start_amount', 'end_amount',
-                  'status']
-
-
-class RedeemListViewSet(mixins.ListModelMixin,
-                        viewsets.GenericViewSet):
-    serializer_class = serializers.CurrentRedeemListSerializer
-    queryset = models.CurrentRedeem.objects.all().order_by('-created_time')
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_class = RedeemListFilter

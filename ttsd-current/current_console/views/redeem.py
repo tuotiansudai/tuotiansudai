@@ -15,7 +15,7 @@ from current_console.rest_client import RestClient
 def redeem_list(request):
     form = RedeemForm(request.GET)
     if form.is_valid():
-        redeem_list = RestClient('redeem-list').get(params=request.GET)
+        redeem_list = RestClient('redeem-list').get(params=form.cleaned_data)
         sumAmount = 0
         if redeem_list['results']:
             for redeem in redeem_list['results']:
@@ -27,7 +27,7 @@ def redeem_list(request):
                        'sumAmount': '{0:.2f}'.format(sumAmount/100.0),
                        'page': request.GET.get('page')})
     else:
-        return render(request, 'console/redeem/list.html')
+        return render(request, 'console/redeem/list.html', {'form': form})
 
 
 @require_http_methods(["PUT"])

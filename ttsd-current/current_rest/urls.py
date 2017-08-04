@@ -21,7 +21,7 @@ from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet
 from current_rest.views.loan import LoanViewSet
-from current_rest.views.redeem import RedeemViewSet, audit_redeem, RedeemListViewSet
+from current_rest.views.redeem import RedeemViewSet, audit_redeem
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
@@ -35,7 +35,7 @@ get_limits_today = LoanViewSet.as_view({'get': 'get_limits_today'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 loan_list = LoanListViewSet.as_view({'get': 'list'})
 
-redeem_list = RedeemListViewSet.as_view({'get': 'list'})
+redeem_list = RedeemViewSet.as_view({'get': 'list'})
 redeem = RedeemViewSet.as_view({'post': 'create', 'get': 'retrieve', 'put': 'update'})
 
 urlpatterns = [
