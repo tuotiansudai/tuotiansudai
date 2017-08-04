@@ -154,3 +154,4 @@ class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
 class SmsLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.SmsLog
+        fields = ('id', 'mobile', 'content', 'created_time', 'result')

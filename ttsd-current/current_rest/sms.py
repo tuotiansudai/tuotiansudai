@@ -18,6 +18,7 @@ _app_key = _config['app_key']
 _app_secret = _config['app_secret']
 _send_interval = _config['interval_seconds']
 
+
 SMS_TEMPLATES = {
     'calculateInterest': {
         'id': 1111111,
@@ -33,7 +34,7 @@ SMS_TEMPLATES = {
 def _send_template_sms(ip, template, mobile, params):
     redis_check_key = None
     if ip is not None:
-        redis_check_key = redis_client.get_sms_send_check_key(ip)
+        redis_check_key = redis_client.get('SmsSending:{}'.format(ip))
         if redis_client.exists(redis_check_key):
             return False
 
@@ -77,20 +78,19 @@ def _send_template_sms(ip, template, mobile, params):
 def _sms_send_log(mobile, content):
     serializer = SmsLogSerializer(data={
         'mobile': mobile,
-        'content': content,
-        'create_time': datetime.datetime.now()
+        'content': content
     })
     serializer.is_valid(raise_exception=True)
     return serializer.save()
 
 
-def send_calculate_Interest_info(mobile, verify_code, ip):
+def send_calculate_Interest_info(mobile, _date):
     template = SMS_TEMPLATES['calculateInterest']
-    params = [verify_code]
-    return _send_template_sms(ip, template, str(mobile), params)
+    params = [_date]
+    return _send_template_sms(None, template, str(mobile), params)
 
 
-def send_loan_match_info(mobile, init_password, ip):
+def send_loan_match_info(mobile, _date):
     template = SMS_TEMPLATES['loanMatch']
-    params = [init_password]
-    return _send_template_sms(ip, template, str(mobile), params)
+    params = [_date]
+    return _send_template_sms(None, template, str(mobile), params)

@@ -140,7 +140,7 @@ class CurrentDailyFundInfo(BaseModel):
 class SmsLog(models.Model):
     mobile = models.CharField(max_length=20)
     content = models.CharField(max_length=255)
-    created_time = models.DateTimeField()
+    created_time = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     result = models.CharField(max_length=512, null=True)
 
     class Meta:
