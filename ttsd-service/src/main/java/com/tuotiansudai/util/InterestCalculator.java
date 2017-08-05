@@ -118,8 +118,12 @@ public class InterestCalculator {
         switch (couponModel.getCouponType()) {
             case INTEREST_COUPON:
                 List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+                int period = 0;
                 for (Integer daysOfPeriod : daysOfPeriodList) {
-                    couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+                    period += 1;
+                    if (couponModel.getPeriod() == null || period <= couponModel.getPeriod()) {
+                        couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+                    }
                 }
                 break;
             case RED_ENVELOPE:
@@ -187,9 +191,13 @@ public class InterestCalculator {
     public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {
         long expectedFee = 0;
         List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+        int period = 0;
         for (Integer daysOfPeriod : daysOfPeriodList) {
+            period += 1;
             if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
-                expectedFee += new BigDecimal(getCouponExpectedInterest(loanModel, couponModel, amount, daysOfPeriod)).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                if (couponModel.getPeriod() == null || period <= couponModel.getPeriod()) {
+                    expectedFee += new BigDecimal(getCouponExpectedInterest(loanModel, couponModel, amount, daysOfPeriod)).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                }
             }
         }
         return expectedFee;
