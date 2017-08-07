@@ -13,7 +13,7 @@ class PayWrapperException(APIException):
 
     def __init__(self, detail=None, code=None, status_code=None):
         super(PayWrapperException, self).__init__(detail=detail, code=code)
-        if status_code is not None:
+        if status_code:
             self.status_code = status_code
 
 

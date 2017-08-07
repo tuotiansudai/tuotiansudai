@@ -91,9 +91,6 @@ class LoanOutViewSet(mixins.RetrieveModelMixin,
 
     loan_out_url = '{}/loan-out/'.format(PAY_WRAPPER_SERVER)
 
-    def __init__(self, **kwargs):
-        super(LoanOutViewSet, self).__init__(**kwargs)
-
     def create(self, request, *args, **kwargs):
         logger.info('loan out, request data:'.format(request.data))
         serializer = self.get_serializer(data=request.data)
