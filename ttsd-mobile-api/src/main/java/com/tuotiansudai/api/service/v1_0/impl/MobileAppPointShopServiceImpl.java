@@ -337,7 +337,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         }
 
         double discount = productService.discountRate(LoginUserInfo.getLoginName());
-        long points = Math.round(new BigDecimal(productModel.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(productDetailRequestDto.getNum())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        long points = productService.discountTotalPrice(productModel.getPoints(), discount, productDetailRequestDto.getNum());
 
         if (accountModel == null || accountModel.getPoint() < points) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), points));

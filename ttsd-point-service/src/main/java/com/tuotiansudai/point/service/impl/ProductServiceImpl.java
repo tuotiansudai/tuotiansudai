@@ -368,7 +368,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-        public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
+    public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
         ProductModel productModel = productMapper.lockById(id);
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 
@@ -539,6 +539,10 @@ public class ProductServiceImpl implements ProductService {
     public double discountRate(String loginName) {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         return MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
+    }
+
+    public long discountTotalPrice(long originalPoints, double discountRate, int count) {
+        return Math.round(new BigDecimal(originalPoints).multiply(new BigDecimal(discountRate)).multiply(new BigDecimal(count)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
     }
 
     public int getUserBuyCountInMonth(long productId, String loginName) {
