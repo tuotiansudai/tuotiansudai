@@ -21,7 +21,7 @@ from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet
 from current_rest.views.loan import LoanViewSet
-from current_rest.views.redeem import RedeemViewSet
+from current_rest.views.redeem import RedeemViewSet, audit_redeem_pass, audit_redeem_reject
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
@@ -33,8 +33,9 @@ audit_loan = LoanViewSet.as_view({'put': 'update'})
 audit_reject_loan = LoanListViewSet.as_view({'put', 'audit_reject_loan'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 loan_list = LoanListViewSet.as_view({'get': 'list'})
-post_redeem = RedeemViewSet.as_view({'post': 'create'})
-get_put_redeem = RedeemViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+
+redeem_list = RedeemViewSet.as_view({'get': 'list'})
+redeem = RedeemViewSet.as_view({'post': 'create', 'get': 'retrieve', 'put': 'update'})
 
 urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
@@ -47,9 +48,15 @@ urlpatterns = [
     url(r'^deposit$', post_deposit, name='post_deposit'),
     url(r'^deposit/(?P<pk>[0-9]+)$', get_put_deposit, name="get_put_deposit", kwargs={'partial': True}),
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
+
+    url(r'^redeem$', redeem, name='post_redeem'),
+    url(r'^redeem/(?P<pk>[0-9]+)$', redeem, name='get_put_redeem', kwargs={'partial': True}),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/pass$', audit_redeem_pass, name='audit_redeem_pass'),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/reject$', audit_redeem_reject, name='audit_redeem_reject'),
+    url(r'^redeem-list', redeem_list, name='redeem_list'),
+
     url(r'^account/calculate_interest_yesterday$', calculate_interest_yesterday, name="calculate_interest_yesterday"),
-    url(r'^redeem$', post_redeem, name='post_redeem'),
-    url(r'^redeem/(?P<pk>[0-9]+)$', get_put_redeem, name='get_put_redeem', kwargs={'partial': True}),
+
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),

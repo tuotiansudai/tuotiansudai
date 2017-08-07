@@ -323,6 +323,10 @@ menus = [
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
             {"name": "loan-list", "text": "待审核资产列表", "link": "/loan-list",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
+            {"name": "", "class": "sub-title-1", "text": "用户资金管理", "link": "",
+             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
+            {"name": "redeem-list", "text": "用户赎回管理", "link": "/redeem-list",
+             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
             {"name": "current-data", "text": "平台数据-活期数据", "link": "/fund/distribution",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']}
         ]
