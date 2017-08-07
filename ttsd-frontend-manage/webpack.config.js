@@ -105,14 +105,8 @@ if(NODE_ENV=='production') {
 }
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
-
-	commonOptions.postcss = [
-		require('autoprefixer')({
-			browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8']
-		})
-	];
-
-		//打包之前先删除打包文件里的图片文件方便重新打包
+	
+	//打包之前先删除打包文件里的图片文件方便重新打包
 	// plugins.push(new CleanWebpackPlugin(['develop'], {
 	// 	root: basePath,
 	// 	verbose: true,
