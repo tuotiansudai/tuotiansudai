@@ -6,6 +6,7 @@ var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
+var autoprefixer = require('autoprefixer');
 
 var node_modules = path.resolve(__dirname, 'node_modules');
  //通过多进程模型，来加速代码构建
@@ -192,13 +193,12 @@ var myObject = objectAssign(commonOptions, {
 			test: /\.(js|jsx)$/,
 			loaders: ['happypack/loader?id=jsx'],
 			exclude: /node_modules/
-		},{
-			test: /\.css$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css-loader?modules!postcss-loader")
-		},{
-			test: /\.scss$/,
-			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
-		},{
+		},
+		{
+			test: /\.(css|scss)$/,
+			loader: ExtractTextPlugin.extract('style-loader','css-loader!postcss-loader!sass-loader')
+		},
+		{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
 			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
 		}]
@@ -232,13 +232,7 @@ var myObject = objectAssign(commonOptions, {
 			mobileImages:path.join(mobilePath, 'images')
 		}
 	},
-	postcss: function() {
-		return [
-			require('autoprefixer')({
-				browsers: ['last 2 versions']
-			})
-		];
-	},
+	postcss: [autoprefixer()],
 	cache: true,
 	plugins: plugins,
 	devServer:webpackdevServer
