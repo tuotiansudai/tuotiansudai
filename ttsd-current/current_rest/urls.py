@@ -55,4 +55,5 @@ urlpatterns = [
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
+    url(r'^fund/distribution$', fund.distribution, name="fund_distribution"),
 ]

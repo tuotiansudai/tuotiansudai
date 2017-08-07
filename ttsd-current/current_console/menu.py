@@ -322,6 +322,8 @@ menus = [
             {"name": "create-loan", "text": "添加资产", "link": "/show-loan",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
             {"name": "loan-list", "text": "待审核资产列表", "link": "/loan-list",
+             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
+            {"name": "current-data", "text": "平台数据-活期数据", "link": "/fund/distribution",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']}
         ]
     }

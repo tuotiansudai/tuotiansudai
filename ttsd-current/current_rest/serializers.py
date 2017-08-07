@@ -137,6 +137,10 @@ class FundHistoryQueryForm(serializers.Serializer):
     end_date = serializers.DateField(input_formats=['%Y-%m-%d'])
 
 
+class FundDistributionQueryForm(FundHistoryQueryForm):
+    granularity = serializers.CharField(max_length=10)
+
+
 class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
     allow_change_quota = serializers.SerializerMethodField()
 
