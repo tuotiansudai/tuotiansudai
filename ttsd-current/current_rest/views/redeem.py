@@ -52,8 +52,11 @@ def audit_redeem_pass(request, pk):
     data = dict(login_name=redeem.login_name, amount=redeem.amount, source=redeem.source)
     url = '{}/redeem-to-loan/'.format(settings.PAY_WRAPPER_SERVER)
     invoke_pay(data, url)
-    CurrentRedeem.objects.update(id=pk, status=constants.REDEEM_DOING, approver=request.data['auditor'],
-                                 approved_time=datetime.now())
+
+    redeem.status = constants.REDEEM_DOING
+    redeem.approver = request.data['auditor']
+    redeem.approved_time = datetime.now()
+    redeem.save()
 
     operation_type = constants.OperationType.REDEEM_AUDIT_PASS
     content = u'{}审核通过赎回申请'.format(request.data['auditor'])
@@ -67,10 +70,12 @@ def audit_redeem_pass(request, pk):
 @api_view(['PUT'])
 @transaction.atomic
 def audit_redeem_reject(request, pk):
-    get_object_or_404(CurrentRedeem, pk=pk)
+    redeem = get_object_or_404(CurrentRedeem, pk=pk)
 
-    CurrentRedeem.objects.update(id=pk, status=constants.REDEEM_REJECT, approver=request.data['auditor'],
-                                 approved_time=datetime.now())
+    redeem.status = constants.REDEEM_REJECT
+    redeem.approver = request.data['auditor']
+    redeem.approved_time = datetime.now()
+    redeem.save()
 
     operation_type = constants.OperationType.REDEEM_AUDIT_REJECT
     content = u'{}驳回赎回申请'.format(request.data['auditor'])
