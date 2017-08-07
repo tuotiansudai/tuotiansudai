@@ -11,6 +11,9 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.membership.repository.model.MembershipDiscount;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.repository.mapper.*;
 import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.PointBillService;
@@ -79,6 +82,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PointBillService pointBillService;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
 
     @Override
@@ -337,7 +343,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto(ReturnMessage.REACH_MONTH_LIMIT_THIS_MONTH.getCode(), MessageFormat.format(ReturnMessage.REACH_MONTH_LIMIT_THIS_MONTH.getMsg(), productModel.getMonthLimit()));
         }
 
-        long points = productModel.getPoints() * productDetailRequestDto.getNum();
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(productDetailRequestDto.getBaseParam().getUserId());
+        double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());
+        long points = Math.round(new BigDecimal(productModel.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(productDetailRequestDto.getNum())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (accountModel == null || accountModel.getPoint() < points) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), points));
             return new BaseResponseDto(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
