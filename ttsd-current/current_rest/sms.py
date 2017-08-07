@@ -20,7 +20,7 @@ _send_interval = _config['interval_seconds']
 
 SMS_TEMPLATES = {
     'calculateInterest': {
-        'id': 1111111,
+        'id': 3064921,
         'text': u'【拓天速贷】警报:{0}日日息宝利息计算失败，失败原因：{1}'
     },
     'loanMatch': {
