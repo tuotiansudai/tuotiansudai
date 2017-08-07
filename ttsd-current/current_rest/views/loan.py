@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import logging
+from datetime import datetime
 
 from django.db import transaction
+from django.db.models import Sum
+from django.shortcuts import get_object_or_404
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from current_rest import constants
@@ -41,16 +43,18 @@ class LoanViewSet(mixins.RetrieveModelMixin,
 
         return response
 
-    @transaction.atomic
-    def update(self, request, *args, **kwargs):
-        response = super(LoanViewSet, self).update(request, *args, **kwargs)
+    @staticmethod
+    def get_limits_today(request):
+        loan_amount_sum = models.Loan.objects.filter(status=constants.LOAN_STATUS_APPROVED,
+                                                     effective_date__lte=datetime.now(),
+                                                     expiration_date__gte=datetime.now()).aggregate(
+            Sum('amount')).get('amount__sum', 0)
 
-        OperationLog.objects.create(refer_type=constants.OperationTarget.LOAN,
-                                    refer_pk=response.data['id'],
-                                    operator=response.data['auditor'],
-                                    operation_type=constants.OperationType.LOAN_EDIT,
-                                    content='编辑了债权申请')
-        return response
+        account_balance_sum = models.CurrentAccount.objects.all().aggregate(
+            Sum('balance')).get('balance__sum', 0)
+
+        available_invest_amount = max(0, loan_amount_sum - account_balance_sum)
+        return Response(available_invest_amount, status=status.HTTP_200_OK)
 
 
 class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -61,11 +65,7 @@ class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 @api_view(['PUT'])
 @transaction.atomic
 def audit_reject_loan(request, pk, category):
-    loan = Loan.objects.filter(pk__in=pk)
-    if loan.exists():
-        loan.update(status=request.data['status'], auditor=request.data['auditor'], updated_time=datetime.now())
-    else:
-        return Response({'message', 'param is error'}, status=status.HTTP_201_CREATED)
+    get_object_or_404(Loan, pk__in=pk).update(status=request.data['status'], auditor=request.data['auditor'])
 
     if category == 'audit':
         operation_type = constants.OperationType.LOAN_AUDIT

@@ -80,6 +80,15 @@
     <#case 'membership_privilege_purchase_transfer_asyn'>
         <p>投资时将享受服务费7折优惠</p>
         <#break>
+    <#case 'current_redeem_apply'>
+        <ul class="info-item">
+            <li>
+                <span class="info-title">转出金额</span>
+                <span class="info-text">${values.amount!}</span>
+                <span class="info-text">${(values.orderId)!}</span>
+            </li>
+        </ul>
+        <#break>
     <#case 'current_deposit_project_transfer'>
     <#case 'current_deposit_project_transfer_nopwd'>
         <ul class="info-item">
