@@ -21,12 +21,14 @@ public class SystemBillService {
     @Autowired
     private SystemBillMapper systemBillMapper;
 
+    @Transactional
     public void systemBillProcess(SystemBillMessage message) {
         logger.info("start system bill process, message");
 
         SystemBillMessageType messageType = message.getMessageType();
 
-        logger.info("system bill message type:{}", messageType);
+        logger.info("system bill message type:{}, orderId:{}, businessType:{}, amount:{}", messageType,
+                message.getOrderId(), message.getBusinessType(), String.valueOf(message.getAmount()));
 
         long orderId = message.getOrderId();
         long amount = message.getAmount();
@@ -46,13 +48,11 @@ public class SystemBillService {
         }
     }
 
-    @Transactional
     private void transferOut(long orderId, long amount, SystemBillBusinessType businessType, String detail) {
         SystemBillModel systemBillModel = new SystemBillModel(orderId, amount, SystemBillOperationType.OUT, businessType, detail);
         systemBillMapper.create(systemBillModel);
     }
 
-    @Transactional
     private void transferIn(long orderId, long amount, SystemBillBusinessType businessType, String detail) {
         SystemBillModel systemBillModel = new SystemBillModel(orderId, amount, SystemBillOperationType.IN, businessType, detail);
         systemBillMapper.create(systemBillModel);
