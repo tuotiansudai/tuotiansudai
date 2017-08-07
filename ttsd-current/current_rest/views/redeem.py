@@ -53,10 +53,7 @@ def audit_redeem_pass(request, pk):
     url = '{}/redeem-to-loan/'.format(settings.PAY_WRAPPER_SERVER)
     invoke_pay(data, url)
 
-    redeem.status = constants.REDEEM_DOING
-    redeem.approver = request.data['auditor']
-    redeem.approved_time = datetime.now()
-    redeem.save()
+    audit_redeem(redeem, request, constants.REDEEM_DOING)
 
     operation_type = constants.OperationType.REDEEM_AUDIT_PASS
     content = u'{}审核通过赎回申请'.format(request.data['auditor'])
@@ -72,10 +69,7 @@ def audit_redeem_pass(request, pk):
 def audit_redeem_reject(request, pk):
     redeem = get_object_or_404(CurrentRedeem, pk=pk)
 
-    redeem.status = constants.REDEEM_REJECT
-    redeem.approver = request.data['auditor']
-    redeem.approved_time = datetime.now()
-    redeem.save()
+    audit_redeem(redeem, request, constants.REDEEM_REJECT)
 
     operation_type = constants.OperationType.REDEEM_AUDIT_REJECT
     content = u'{}驳回赎回申请'.format(request.data['auditor'])
@@ -84,3 +78,10 @@ def audit_redeem_reject(request, pk):
                                 operator=request.data['auditor'],
                                 operation_type=operation_type, content=content)
     return Response({'message', 'success'}, status=status.HTTP_200_OK)
+
+
+def audit_redeem(redeem, request, redeem_status):
+    redeem.status = redeem_status
+    redeem.approver = request.data['auditor']
+    redeem.approved_time = datetime.now()
+    redeem.save()
