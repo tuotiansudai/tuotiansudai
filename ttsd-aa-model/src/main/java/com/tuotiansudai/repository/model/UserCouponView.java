@@ -20,6 +20,8 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     private double rate;
 
+    private Integer period;
+
     private List<ProductType> productTypeList;
 
     private long loanId;
@@ -88,6 +90,14 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
     }
 
     public List<ProductType> getProductTypeList() {
