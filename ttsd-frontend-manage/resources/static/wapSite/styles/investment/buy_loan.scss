@@ -22,6 +22,19 @@
   .newer-title{
     border-left:2px solid #FF473C;
     padding-left: 10px;
+    line-height: 18px;
+    display: flex;
+    justify-content: space-between;
+    span{
+      &.tip-text{
+        font-size: 12px;
+        color: #525252;
+        letter-spacing: -0.29px;
+        background: #F2F2F2;
+        border-radius: 4px;
+        padding: 2px 10px;
+      }
+    }
   }
   .loan-info{
     li{

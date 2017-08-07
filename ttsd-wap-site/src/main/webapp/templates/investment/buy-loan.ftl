@@ -1,15 +1,18 @@
 <#import "../macro/global-dev.ftl" as global>
-<#assign jsName = 'buy_free' >
+<#assign jsName = 'buy_loan' >
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/investment/${jsName}.css"}>
 
-<@global.main pageCss="${css.buy_free}" pageJavascript="${js.buy_free}" title="体验金购买详情">
+<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">
 
 <div class="my-account-content apply-transfer"  id="applyTransfer">
 
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
-            <b class="newer-title">房产抵押借款17070</b>
+            <div class="newer-title">
+                <span>房产抵押借款17070</span>
+                <span class="tip-text">剩余可投 : 5,000.00元</span>
+            </div>
             <ul class="loan-info clearfix">
                 <li>
                     <span>
@@ -38,25 +41,34 @@
         <ul class="input-list">
             <li>
                 <label>投资金额</label>
-                <input type="text" value="" name="price" class="input-amount" placeholder="请输入金额">
+                <input type="text" value="" name="price" class="input-amount" placeholder="50.00起投">
                 <em>元</em>
             </li>
             <li class="mt-10">
                 <label>预期收益</label>
                 <span class="number-text"><strong>0</strong>元</span>
             </li>
+            <li class="select-coupon" data-url="select-coupon.ftl">
+                <label>优惠券</label>
+                <input type="text" value="" name="price"  placeholder="无可用优惠券" readonly="readonly">
+                <em><i class="fa fa-angle-right"></i></em>
+            </li>
         </ul>
     </div>
 
-    <button type="submit" class="btn-wap-normal" disabled>确定购买</button>
+    <button type="submit" class="btn-wap-normal" disabled>立即投资</button>
 
     </form>
 
 
     <div class="transfer-notice">
-
-        <b>温馨提示:</b>
-        用户首次提现体验金投资所产生的收益时，需要投资其他定期项目（债权转让项目除外）累计满1000元才可以提现。
+        <div class="agreement-box">
+            <span class="init-checkbox-style on">
+                 <input type="checkbox" id="readOk" class="default-checkbox" checked>
+             </span>
+            <lable for="agreement">我已阅读并同意<a href="javascript:void(0)" class="link-agree-service">《安心签服务协议》</a>、<a href="javascript:void(0)" class="link-agree-privacy">《隐私条款》</a> 和<a href="javascript:void(0)" class="link-agree-number"> 《CFCA数字证书服务协议》</a></lable>
+        </div>
+        <a href="">查看《借款转让协议样本》</a>
     </div>
 
 
