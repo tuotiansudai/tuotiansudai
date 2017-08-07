@@ -68,7 +68,7 @@ class LoanOutTestCase(TestCase):
 
         serializer = LoanOutHistorySerializer(CurrentLoanOutHistory.objects.get(bill_date=self.now.date()))
         pay_manager.invoke_pay.assert_called_once_with(url='{}/loan-out/'.format(settings.PAY_WRAPPER_SERVER),
-                                                       data=JSONRenderer().render(serializer.data))
+                                                       data=serializer.data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data.get('reserve_account'), settings.RESERVE_ACCOUNT)
@@ -107,7 +107,7 @@ class LoanOutTestCase(TestCase):
 
         serializer = LoanOutHistorySerializer(CurrentLoanOutHistory.objects.get(bill_date=self.now.date()))
         pay_manager.invoke_pay.assert_called_once_with(url='{}/loan-out/'.format(settings.PAY_WRAPPER_SERVER),
-                                                       data=JSONRenderer().render(serializer.data))
+                                                       data=serializer.data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data.get('reserve_account'), settings.RESERVE_ACCOUNT)
@@ -138,7 +138,7 @@ class LoanOutTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_should_return_400_when_loan_out_history_not_found(self):
-        response = self.client.put(path=reverse('put_loan_out', kwargs={'bill_date': self.now.strftime('%Y-%m-%d')}),
+        response = self.client.put(path=reverse('put_loan_out', kwargs={'pk': 0}),
                                    data={'status': constants.LOAN_OUT_STATUS_RESERVE_TRANSFER_SUCCESS},
                                    format='json')
 
@@ -148,9 +148,9 @@ class LoanOutTestCase(TestCase):
     def test_should_return_200_when_reverse_transfer_is_success_and_sum_deposit_is_0(self, pay_manager):
         pay_manager.invoke_pay = mock.Mock(return_value={})
 
-        CurrentLoanOutHistory.objects.create(bill_date=self.now.date(), deposit_amount=0)
+        loan_out_history = CurrentLoanOutHistory.objects.create(bill_date=self.now.date(), deposit_amount=0)
 
-        response = self.client.put(path=reverse('put_loan_out', kwargs={'bill_date': self.now.strftime('%Y-%m-%d')}),
+        response = self.client.put(path=reverse('put_loan_out', kwargs={'pk': loan_out_history.id}),
                                    data={'status': constants.LOAN_OUT_STATUS_RESERVE_TRANSFER_SUCCESS},
                                    format='json')
 
@@ -163,15 +163,15 @@ class LoanOutTestCase(TestCase):
     def test_should_return_200_when_reverse_transfer_is_success_and_sum_deposit_is_not_0(self, pay_manager):
         pay_manager.invoke_pay = mock.Mock(return_value={})
 
-        CurrentLoanOutHistory.objects.create(bill_date=self.now.date(), deposit_amount=1)
+        loan_out_history = CurrentLoanOutHistory.objects.create(bill_date=self.now.date(), deposit_amount=1)
 
-        response = self.client.put(path=reverse('put_loan_out', kwargs={'bill_date': self.now.strftime('%Y-%m-%d')}),
+        response = self.client.put(path=reverse('put_loan_out', kwargs={'pk': loan_out_history.id}),
                                    data={'status': constants.LOAN_OUT_STATUS_RESERVE_TRANSFER_SUCCESS},
                                    format='json')
 
         serializer = LoanOutHistorySerializer(CurrentLoanOutHistory.objects.get(bill_date=self.now.date()))
         pay_manager.invoke_pay.assert_called_once_with(url='{}/loan-out/'.format(settings.PAY_WRAPPER_SERVER),
-                                                       data=JSONRenderer().render(serializer.data))
+                                                       data=serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data.get('bill_date'), self.now.strftime('%Y-%m-%d'))
         self.assertEqual(response.data.get('status'), constants.LOAN_OUT_STATUS_WAITING_PAY)
