@@ -86,7 +86,7 @@ def fund_setting_history_query(request):
 
 def fund_distribution_page(request):
     granularity = 'Daily'
-    end_date = datetime.now().today()
+    end_date = datetime.now().date()
     begin_date = end_date - timedelta(days=7)
     return render(request, 'console/fund/distribution.html',
                   {'granularity': granularity, 'begin_date': begin_date, 'end_date': end_date})
