@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import mock
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
@@ -77,7 +78,12 @@ class RedeemTestCase(APITestCase):
         self.assertEqual(response.data['personal_available_redeem'], 30000)
 
     # 赎回审核通过
-    def test_audit_redeem_pass(self):
+    @mock.patch('requests.post')
+    def test_audit_redeem_pass(self, fake_requests):
+        pay_response = 'pay response'
+        fake_requests.return_value.status_code = 200
+        fake_requests.return_value.json = mock.Mock(return_value=pay_response)
+
         account = CurrentAccount.objects.create(login_name=self.login_name, balance=1000)
 
         redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
