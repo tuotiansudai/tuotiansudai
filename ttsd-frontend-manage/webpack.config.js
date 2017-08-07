@@ -6,7 +6,6 @@ var objectAssign = require('object-assign');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
-var autoprefixer = require('autoprefixer');
 
 var node_modules = path.resolve(__dirname, 'node_modules');
  //通过多进程模型，来加速代码构建
@@ -32,6 +31,7 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 	plugins=[];
 var outFilename="[name].js";
 var NODE_ENV=process.env.NODE_ENV;
+
 
 /**
  * 动态查找所有入口文件
@@ -62,6 +62,11 @@ commonOptions.entry = newEntries;
 
 if(NODE_ENV=='production') {
 	//生产环境
+	commonOptions.postcss = [
+		require('autoprefixer')({
+			browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8']
+		})
+	];
 	var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'); //压缩js，提高压缩速度
 	outFilename="[name].[chunkhash].js";
 	outputPath=path.join(basePath, 'prod'); //打包文件路径
@@ -101,7 +106,13 @@ if(NODE_ENV=='production') {
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
 
-	//打包之前先删除打包文件里的图片文件方便重新打包
+	commonOptions.postcss = [
+		require('autoprefixer')({
+			browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8']
+		})
+	];
+
+		//打包之前先删除打包文件里的图片文件方便重新打包
 	// plugins.push(new CleanWebpackPlugin(['develop'], {
 	// 	root: basePath,
 	// 	verbose: true,
@@ -196,7 +207,7 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(css|scss)$/,
-			loader: ExtractTextPlugin.extract('style-loader','css-loader!postcss-loader!sass-loader')
+			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sass')
 		},
 		{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
@@ -232,7 +243,7 @@ var myObject = objectAssign(commonOptions, {
 			mobileImages:path.join(mobilePath, 'images')
 		}
 	},
-	postcss: [autoprefixer()],
+
 	cache: true,
 	plugins: plugins,
 	devServer:webpackdevServer
