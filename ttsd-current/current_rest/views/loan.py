@@ -16,7 +16,6 @@ from current_rest import models
 from current_rest import serializers
 from current_rest.biz import pay_manager
 from current_rest.biz.current_daily_manager import sum_interest_by_date, sum_success_deposit_by_date
-from current_rest.biz.loan_out import LoanOut
 from current_rest.exceptions import PayWrapperException
 from current_rest.models import OperationLog, Loan
 from current_rest.settings import PAY_WRAPPER_SERVER
@@ -94,7 +93,6 @@ class LoanOutViewSet(mixins.RetrieveModelMixin,
 
     def __init__(self, **kwargs):
         super(LoanOutViewSet, self).__init__(**kwargs)
-        self.loan_out = LoanOut()
 
     def create(self, request, *args, **kwargs):
         logger.info('loan out, request data:'.format(request.data))
