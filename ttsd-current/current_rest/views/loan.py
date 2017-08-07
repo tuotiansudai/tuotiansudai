@@ -42,19 +42,6 @@ class LoanViewSet(mixins.RetrieveModelMixin,
 
         return response
 
-    @staticmethod
-    def get_limits_today(request):
-        loan_amount_sum = models.Loan.objects.filter(status=constants.LOAN_STATUS_APPROVED,
-                                                     effective_date__lte=datetime.now(),
-                                                     expiration_date__gte=datetime.now()).aggregate(
-            Sum('amount')).get('amount__sum', 0)
-
-        account_balance_sum = models.CurrentAccount.objects.all().aggregate(
-            Sum('balance')).get('balance__sum', 0)
-
-        available_invest_amount = max(0, loan_amount_sum - account_balance_sum)
-        return Response(available_invest_amount, status=status.HTTP_200_OK)
-
 
 class LoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.LoanListSerializer
