@@ -28,6 +28,9 @@ public class BaseCouponResponseDataDto {
     @ApiModelProperty(value = "优惠券金额", example = "5000")
     protected String amount;
 
+    @ApiModelProperty(value = "优惠券加息期数", example = "1")
+    protected Integer period;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     @ApiModelProperty(value = "优惠券开始时间", example = "2016-01-01 00:00:00")
     protected Date startDate;
@@ -73,6 +76,7 @@ public class BaseCouponResponseDataDto {
         this.type = couponModel.getCouponType();
         this.name = couponModel.getCouponType().getName();
         this.amount = AmountConverter.convertCentToString(couponModel.getAmount()).replaceAll("\\.00","");
+        this.period = couponModel.getPeriod();
         this.startDate = userCouponModel.getStartTime();
         this.endDate = userCouponModel.getEndTime();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
@@ -123,6 +127,14 @@ public class BaseCouponResponseDataDto {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
     }
 
     public Date getStartDate() {
