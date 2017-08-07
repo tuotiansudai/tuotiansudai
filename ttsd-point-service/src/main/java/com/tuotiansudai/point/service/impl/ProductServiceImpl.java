@@ -395,8 +395,7 @@ public class ProductServiceImpl implements ProductService {
             return new BaseDto<>(new BaseDataDto(false, "该商品每人每月可以兑换" + productModel.getMonthLimit() + "个，已超出兑换上限。"));
         }
 
-        long totalPrice = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-
+        long totalPrice = this.discountTotalPrice(productShowItemDto.getPoints(), discount, amount);
         if (accountModel.getPoint() < totalPrice) {
             redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
