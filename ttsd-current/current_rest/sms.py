@@ -18,15 +18,14 @@ _app_key = _config['app_key']
 _app_secret = _config['app_secret']
 _send_interval = _config['interval_seconds']
 
-
 SMS_TEMPLATES = {
     'calculateInterest': {
         'id': 1111111,
-        'text': u'【拓天速贷】{0}日的利息计算失败，请及时处理'
+        'text': u'【拓天速贷】警报:{0}日日息宝利息计算失败，失败原因：{1}'
     },
     'loanMatch': {
-        'id': 2222222,
-        'text': u'【拓天速贷】{}日的债权匹配失败，请及时处理'
+        'id': 3063902,
+        'text': u'【拓天速贷】警报:{0}日日息宝债权匹配失败，失败原因：{1}'
     }
 }
 
@@ -84,13 +83,13 @@ def _sms_send_log(mobile, content):
     return serializer.save()
 
 
-def send_calculate_Interest_info(mobile, _date):
+def send_calculate_Interest_info(mobile, _date, info):
     template = SMS_TEMPLATES['calculateInterest']
-    params = [_date]
+    params = [_date, info]
     return _send_template_sms(None, template, str(mobile), params)
 
 
-def send_loan_match_info(mobile, _date):
+def send_loan_match_info(mobile, _date, info):
     template = SMS_TEMPLATES['loanMatch']
-    params = [_date]
+    params = [_date, info]
     return _send_template_sms(None, template, str(mobile), params)

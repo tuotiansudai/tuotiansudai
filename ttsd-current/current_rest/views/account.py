@@ -52,11 +52,11 @@ class AccountViewSet(mixins.RetrieveModelMixin,
 
             for account in self.queryset:
                 interest = current_interest.calculate_interest(account.balance)
-                CurrentAccountManager().update_current_account_for_interest(account.login_name, interest, 'ere')
+                CurrentAccountManager().update_current_account_for_interest(account.login_name, interest, account)
 
             redis_client.setex(interest_key, yesterday, self.valid_time)
             return Response(status=status.HTTP_200_OK)
         except Exception, e:
-            logger.error("{} calculate interest fail:{}".format(yesterday, e))
+            logger.error("{} calculate interest fail:{}".format(yesterday, e.message))
             for mobile in _mobile_list:
-                sms.send_calculate_Interest_info(mobile, yesterday)
+                sms.send_calculate_Interest_info(mobile, yesterday, '更新日息宝账户失败！详情请查看日志')
