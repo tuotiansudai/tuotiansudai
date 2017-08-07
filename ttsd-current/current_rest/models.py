@@ -63,6 +63,8 @@ class OperationLog(models.Model):
 
 class CurrentAccount(BaseModel):
     login_name = models.CharField(max_length=25, unique=True, null=False, blank=False)
+    username = models.CharField(max_length=50, null=False, blank=False)
+    mobile = models.CharField(max_length=11, unique=True, null=False, blank=False)
     balance = models.PositiveIntegerField(default=0, null=False, blank=False)
 
     class Meta:

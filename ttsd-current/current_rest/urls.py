@@ -25,8 +25,10 @@ from current_rest.views.redeem import RedeemViewSet
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+list_deposit = DepositViewSet.as_view({'get': 'list'})
 
 get_account = AccountViewSet.as_view({'get': 'retrieve'})
+post_account = AccountViewSet.as_view({'post': 'create'})
 calculate_interest_yesterday = AccountViewSet.as_view({'post': 'calculate_interest_yesterday'})
 
 post_loan = LoanViewSet.as_view({'post': 'create'})
@@ -55,6 +57,8 @@ urlpatterns = [
     url('^loan-list$', loan_list, name='loan_list'),
     url(r'^deposit$', post_deposit, name='post_deposit'),
     url(r'^deposit/(?P<pk>[0-9]+)$', get_put_deposit, name="get_put_deposit", kwargs={'partial': True}),
+    url(r'^deposit-list$', list_deposit, name="list_deposit"),
+    url(r'^account$', post_account, name='post_account'),
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
     url(r'^account/calculate_interest_yesterday$', calculate_interest_yesterday, name="calculate_interest_yesterday"),
     url(r'^redeem$', post_redeem, name='post_redeem'),

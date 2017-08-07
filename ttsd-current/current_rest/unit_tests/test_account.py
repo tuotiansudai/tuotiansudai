@@ -21,6 +21,17 @@ class DepositTestCase(TestCase):
     def tearDown(self):
         redis_client.delete("interest:{0}".format(self.yesterday))
 
+    def test_should_return_201_when_create_account(self):
+        request_data = {'login_name': 'login_name', 'username': 'username', 'mobile': 'mobile'}
+        response = self.client.post(path=reverse('post_account'),
+                                    data=request_data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data.get('login_name'), request_data.get('login_name'))
+        self.assertEqual(response.data.get('username'), request_data.get('username'))
+        self.assertEqual(response.data.get('mobile'), request_data.get('mobile'))
+        self.assertEqual(response.data.get('balance'), 0)
+
     @mock.patch('current_rest.serializers.sum_success_deposit_by_date')
     @mock.patch('current_rest.serializers.CurrentDailyManager')
     def test_should_return_200_when_today_is_no_deposit(self, fake_manager, sum_success_deposit_by_date):
@@ -90,4 +101,3 @@ class DepositTestCase(TestCase):
                                     format='json')
 
         self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
-

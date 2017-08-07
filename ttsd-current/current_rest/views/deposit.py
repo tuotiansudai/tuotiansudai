@@ -8,7 +8,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 import jobs
-from current_rest import serializers, constants, models
+from current_rest import serializers, constants, models, filters
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, sum_success_deposit_by_date
 from current_rest.biz.pay_manager import invoke_pay
@@ -19,11 +19,14 @@ logger = logging.getLogger(__name__)
 
 
 class DepositViewSet(mixins.RetrieveModelMixin,
+                     mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      mixins.UpdateModelMixin,
                      viewsets.GenericViewSet):
     serializer_class = serializers.DepositSerializer
     queryset = models.CurrentDeposit.objects.all()
+    filter_class = filters.DepositFilter
+    ordering = ('-updated_time', '-pk')
 
     pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_SERVER)
     pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_SERVER)

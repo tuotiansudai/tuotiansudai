@@ -1,9 +1,11 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppCurrentInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.current.client.CurrentRestClient;
+import com.tuotiansudai.current.dto.AccountRequestDto;
 import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.current.dto.DepositStatus;
 import com.tuotiansudai.dto.BaseDto;
@@ -11,7 +13,10 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
+import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +31,29 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
 
     static Logger logger = Logger.getLogger(MobileAppInvestServiceImpl.class);
 
-    @Autowired
-    private CurrentRestClient currentRestClient;
+    private final UserService userService;
+
+    private final CurrentRestClient currentRestClient;
 
     @Value("${pay.callback.app.web.host}")
     private String domainName;
+
+    @Autowired
+    public MobileAppCurrentInvestServiceImpl(UserService userService, CurrentRestClient currentRestClient) {
+        this.userService = userService;
+        this.currentRestClient = currentRestClient;
+    }
 
     @Override
     public BaseResponseDto<InvestResponseDataDto> invest(CurrentInvestRequestDto investRequestDto, String loginName) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
         DepositDto depositRequestDto = convertInvestDto(investRequestDto, loginName, false);
         try {
+            if (Strings.isNullOrEmpty(currentRestClient.getAccount(loginName).getUsername())) {
+                UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
+                currentRestClient.createAccount(new AccountRequestDto(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile()));
+            }
+
             BaseDto<PayFormDataDto> formDto = currentRestClient.deposit(depositRequestDto);
 
             if (!formDto.isSuccess()) {
@@ -72,6 +89,11 @@ public class MobileAppCurrentInvestServiceImpl implements MobileAppCurrentInvest
     @Override
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(CurrentInvestRequestDto investRequestDto, String loginName) {
         try {
+            if (Strings.isNullOrEmpty(currentRestClient.getAccount(loginName).getUsername())) {
+                UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
+                currentRestClient.createAccount(new AccountRequestDto(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile()));
+            }
+
             DepositDto depositRequestDto = convertInvestDto(investRequestDto, loginName, true);
             BaseDto<PayDataDto> baseDto = currentRestClient.noPasswordDeposit(depositRequestDto);
 

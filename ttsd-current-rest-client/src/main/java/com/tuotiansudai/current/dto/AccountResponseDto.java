@@ -12,15 +12,11 @@ public class AccountResponseDto {
     @JsonProperty(value = "login_name")
     private String loginName;
 
+    private String username;
+
+    private String mobile;
+
     private long balance;
-
-    @JsonProperty(value = "created_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createdTime;
-
-    @JsonProperty(value = "updated_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updatedTime;
 
     @JsonProperty(value = "personal_max_deposit")
     private long personalMaxDeposit;
@@ -39,16 +35,16 @@ public class AccountResponseDto {
         return loginName;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
     public long getBalance() {
         return balance;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
     }
 
     public long getPersonalMaxDeposit() {

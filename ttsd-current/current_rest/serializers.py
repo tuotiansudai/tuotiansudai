@@ -16,8 +16,6 @@ logger = logging.getLogger(__name__)
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
-    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     personal_max_deposit = serializers.SerializerMethodField()
     personal_available_redeem = serializers.SerializerMethodField()
     personal_max_redeem = serializers.SerializerMethodField()
@@ -42,9 +40,11 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentAccount
-        fields = ('balance', 'updated_time', 'created_time', 'personal_max_deposit',
-                  'personal_available_redeem', 'personal_max_redeem')
-        read_only_fields = ('id', 'login_name')
+        fields = ('login_name', 'username', 'mobile', 'balance',
+                  'personal_max_deposit', 'personal_available_redeem', 'personal_max_redeem')
+        read_only_fields = ('id', 'updated_time', 'created_time'
+                                                  'personal_max_deposit', 'personal_available_redeem',
+                            'personal_max_redeem')
 
 
 class DepositSerializer(serializers.ModelSerializer):
@@ -52,6 +52,7 @@ class DepositSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField(min_value=0)
     source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE)
     no_password = serializers.BooleanField()
+    current_account = AccountSerializer(required=False)
 
     def create(self, validated_data):
         current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))
@@ -60,7 +61,7 @@ class DepositSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentDeposit
-        fields = ('id', 'login_name', 'amount', 'source', 'no_password', 'status')
+        fields = ('id', 'current_account', 'login_name', 'amount', 'source', 'no_password', 'status')
 
 
 class AgentSerializer(serializers.ModelSerializer):

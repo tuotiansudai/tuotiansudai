@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class AccountViewSet(mixins.RetrieveModelMixin,
+                     mixins.CreateModelMixin,
                      viewsets.GenericViewSet):
     serializer_class = serializers.AccountSerializer
     queryset = models.CurrentAccount.objects.all()
@@ -27,8 +28,7 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     valid_time = 60 * 60 * 24
 
     def retrieve(self, request, *args, **kwargs):
-        instance = models.CurrentAccount(login_name=kwargs.get(self.lookup_field),
-                                         balance=0)
+        instance = models.CurrentAccount(login_name=kwargs.get(self.lookup_field))
         try:
             instance = self.get_object()
         except Http404:
