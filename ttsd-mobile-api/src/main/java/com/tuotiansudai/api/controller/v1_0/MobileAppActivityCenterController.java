@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterRequestDto;
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,5 +29,39 @@ public class MobileAppActivityCenterController extends MobileAppBaseController {
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;
+    }
+
+    @RequestMapping(value = "/get/activity/school-season-status", method = RequestMethod.POST)
+    @ApiOperation("获取开学季活动状态")
+    public BaseResponseDto<ActivitySchoolSeasonStatusResponseDto> getSchoolSeasonStatus(@Valid @RequestBody BaseParamDto requestDto) {
+        BaseResponseDto<ActivitySchoolSeasonStatusResponseDto> baseResponseDto = new BaseResponseDto<>();
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        baseResponseDto.setData(new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DISABLED, ""));
+        return baseResponseDto;
+    }
+
+    public enum ActivitySchoolSeasonStatus {
+        DISABLED,
+        PENDING,
+        DONE
+    }
+
+    public static class ActivitySchoolSeasonStatusResponseDto extends BaseResponseDataDto {
+        private final ActivitySchoolSeasonStatus status;
+        private final String url;
+
+        public ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus status, String url) {
+            this.status = status;
+            this.url = url;
+        }
+
+        public ActivitySchoolSeasonStatus getStatus() {
+            return status;
+        }
+
+        public String getUrl() {
+            return url;
+        }
     }
 }
