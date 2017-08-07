@@ -21,7 +21,7 @@ from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet
 from current_rest.views.loan import LoanViewSet
-from current_rest.views.redeem import RedeemViewSet, audit_redeem
+from current_rest.views.redeem import RedeemViewSet, audit_redeem_pass, audit_redeem_reject
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
@@ -53,11 +53,11 @@ urlpatterns = [
 
     url(r'^redeem$', redeem, name='post_redeem'),
     url(r'^redeem/(?P<pk>[0-9]+)$', redeem, name='get_put_redeem', kwargs={'partial': True}),
-    url(r'^redeem-audit/(?P<pk>[0-9]+)/(?P<result>(pass|reject))$', audit_redeem, name='audit_redeem'),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/pass$', audit_redeem_pass, name='audit_redeem_pass'),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/reject$', audit_redeem_reject, name='audit_redeem_reject'),
     url(r'^redeem-list', redeem_list, name='redeem_list'),
 
     url(r'^account/calculate_interest_yesterday$', calculate_interest_yesterday, name="calculate_interest_yesterday"),
-
 
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
