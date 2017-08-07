@@ -327,6 +327,8 @@ menus = [
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
             {"name": "redeem-list", "text": "用户赎回管理", "link": "/redeem-list",
              "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']},
+            {"name": "current-data", "text": "平台数据-活期数据", "link": "/fund/distribution",
+             "role": ['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN']}
         ]
     }
 ]

@@ -2,6 +2,7 @@
 import logging
 from datetime import datetime, timedelta
 
+from django.db import connection
 from django.db.models import Sum
 
 from current_rest import constants
@@ -28,6 +29,32 @@ def list_fund_history(begin_date, end_date):
     invest_amount_list = [x[1] for x in histories]
     date_list = [x[2] for x in histories]
     return dict(dates=date_list, quota_amount_list=quota_amount_list, invest_amount_list=invest_amount_list)
+
+
+def list_fund_distribution(granularity, begin_date, end_date):
+    cursor = connection.cursor()
+    params = []
+    sql = 'SELECT SUM(ca.balance) AS total_balance, SUM(ca.balance) - SUM(cb.amount) AS total_principal, '
+    if granularity == 'daily':
+        sql += 'Date(ca.created_time) AS date '
+    elif granularity == 'weekly':
+        sql += 'DATE_FORMAT(ca.created_time, %s) AS date '
+        params.append('%Y-W%u')
+    else:
+        sql += 'DATE_FORMAT(ca.created_time, %s) AS date '
+        params.append('%Y-%m')
+
+    sql += 'FROM current_account ca JOIN current_bill cb ON ca.id = cb.current_account_id WHERE ca.created_time >= %s AND ca.created_time <= %s AND cb.bill_type = %s GROUP BY date'
+    sub_param = [begin_date, end_date, constants.BILL_TYPE_INTEREST]
+    params.extend(sub_param)
+    cursor.execute(sql, params)
+    user_total_fund = list(cursor.fetchall())
+
+    date_list = [x[2] for x in user_total_fund]
+    total_principal_list = [x[1] / 1000000 for x in user_total_fund]
+    total_balance_list = [x[0] / 1000000 for x in user_total_fund]
+
+    return dict(dates=date_list, total_balance_list=total_balance_list, total_principal_list=total_principal_list)
 
 
 def _generate_date_list(days):

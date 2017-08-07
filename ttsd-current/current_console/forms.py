@@ -29,3 +29,9 @@ class RedeemForm(forms.Form):
     start_amount = forms.IntegerField(required=False)
     end_amount = forms.IntegerField(required=False)
     status = forms.ChoiceField(choices=constants.REDEEM_STATUS_CHOICE, required=False)
+
+
+class FundDistributionQueryForm(forms.Form):
+    granularity = forms.CharField(max_length=10)
+    begin_date = forms.DateField(input_formats=['%Y-%m-%d'])
+    end_date = forms.DateField(input_formats=['%Y-%m-%d'])

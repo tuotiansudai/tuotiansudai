@@ -34,5 +34,6 @@ urlpatterns = [
     url('^fund/setting-approve$', fund.FundSettingApproveView.as_view(), name='fund_setting_approve'),
     url('^fund/setting-history$', fund.fund_setting_history_page, name='fund_setting_history_page'),
     url('^fund/setting-history-query$', fund.fund_setting_history_query, name='fund_setting_history_query'),
-
+    url('^fund/distribution$', fund.fund_distribution_page, name='fund_distribution_page'),
+    url('^fund/distribution-query$', fund.fund_distribution_query, name='fund_distribution_query'),
 ]
