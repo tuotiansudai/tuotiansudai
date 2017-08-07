@@ -4,11 +4,15 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
+import com.tuotiansudai.client.HTrackingClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.repository.mapper.HTrackingUserMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -16,6 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
 
 @Service
 public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
@@ -33,6 +39,17 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
+
+    @Autowired
+    private HTrackingUserMapper hTrackingUserMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private HTrackingClient hTrackingClient;
+
+    private final static String HTRACKING_CHANNEL = "htracking";
 
     @Override
     public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
@@ -94,7 +111,10 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
-        userService.registerUser(dto);
+        boolean result = userService.registerUser(dto);
+        if (result && dto.getSource() == Source.IOS) {
+            this.hTrackingRegister(dto.getMobile(), registerRequestDto.getBaseParam().getDeviceId());
+        }
 
         BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
@@ -109,6 +129,16 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
         return mobileIsExist ? new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg()) :
                 new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
+    }
+
+    private void hTrackingRegister(String mobile, String deviceId) {
+        if (hTrackingUserMapper.findByMobileAndDeviceId(mobile, deviceId) != null) {
+            UserModel userModel = userMapper.findByLoginNameOrMobile(mobile);
+            userModel.setChannel(HTRACKING_CHANNEL);
+            userMapper.updateUser(userModel);
+            log.info(MessageFormat.format("[mobile register] send hTrackingRegister, loginName:{0}, deviceId:{1}", userModel.getLoginName(), deviceId));
+            hTrackingClient.hTrackingRegister(userModel.getMobile(), deviceId);
+        }
     }
 
 }
