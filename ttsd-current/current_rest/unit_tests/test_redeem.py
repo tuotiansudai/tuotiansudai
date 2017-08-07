@@ -92,7 +92,7 @@ class RedeemTestCase(APITestCase):
         response = self.client.put('/redeem-audit/{}/{}'.format(redeem.id, "pass"), dict(auditor="auditor"))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_DOING)
+        self.assertEqual(CurrentRedeem.objects.get().status, constants.REDEEM_APPROVED)
 
     # 赎回审核驳回
     def test_audit_redeem_reject(self):
