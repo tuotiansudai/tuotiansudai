@@ -21,7 +21,7 @@ from current_console.views import home, loan, fund, repay
 
 urlpatterns = [
     url('^index$', home.index, name='index'),
-    url('^loan$', loan.query_loan_by_id, name='loan'),
+    url('^loan-repay$', loan.query_loan_by_id, name='loan_repay'),
     url('^show-loan$', loan.show_loan, name='show_loan'),
     url('^show-edit-loan/(?P<pk>[0-9]+)$', loan.show_edit_loan, name='show_edit_loan'),
     url('^edit-loan/(?P<pk>[0-9]+)$', loan.edit_loan, name='edit_loan'),
@@ -35,5 +35,7 @@ urlpatterns = [
     url('^fund/setting-history$', fund.fund_setting_history_page, name='fund_setting_history_page'),
     url('^fund/setting-history-query$', fund.fund_setting_history_query, name='fund_setting_history_query'),
     url('^submit-loan-repay$', repay.submit_loan_repay, name='submit_loan_repay'),
+    url('^loan-repay-record$', repay.loan_repay_record, name='loan_repay_record'),
+    url('^loan-repay-retrieve$', repay.loan_repay_retrieve, name='loan_repay_retrieve'),
     url('^audit-loan-repay/(?P<result>(pass|reject))/(?P<pk>[0-9]+)$', repay.audit_loan_repay, name='audit_loan_repay'),
 ]

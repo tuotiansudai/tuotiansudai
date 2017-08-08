@@ -2,10 +2,14 @@ package com.tuotiansudai.current.client;
 
 import com.tuotiansudai.current.dto.*;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CurrentDataDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
+import feign.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,6 +41,6 @@ public interface CurrentRestClient {
     AccountResponseDto getAccount(@PathParam("loginName") String loginName) throws RestException;
 
     @GET
-    @Path("/task/{handlerRole}")
-    List<TaskResponseDto> task(@PathParam("handlerRole") String handlerRole) throws RestException;
+    @Path("/task?handler_role={handlerRole}")
+    CurrentDataDto<TaskResponseDto> task(@PathParam("handlerRole") List<Role> handlerRole) throws RestException;
 }

@@ -100,7 +100,7 @@ class LoanSerializer(serializers.ModelSerializer):
     debtor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'))
     effective_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     expiration_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
-    created_time = serializers.DateTimeField(format='%Y-%m-%d')
+    created_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
     creator = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
     auditor = serializers.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
 
@@ -167,29 +167,41 @@ class ApprovedLoanListSerializer(LoanListSerializer):
     loan_matching_amount = serializers.SerializerMethodField()
 
     def get_loan_matching_status(self, request):
-        fund_allocation_by_loan_id = models.FundAllocation.objects.filter(loan_id=request.id)
-        if fund_allocation_by_loan_id:
-            return constants.LOAN_MATCHING_STATUS_DOING
-        elif not fund_allocation_by_loan_id and request.effective_date > datetime.now():
+        loan = models.Loan.objects.get(id=request.id)
+        if loan.status == constants.LOAN_STATUS_EXPIRED:
+            return constants.LOAN_MATCHING_STATUS_EXPIRED
+        elif request.expiration_date < datetime.now():
+            return constants.LOAN_MATCHING_STATUS_EXPIRED
+        elif request.effective_date > datetime.now():
             return constants.LOAN_MATCHING_STATUS_WAITING
         else:
-            return constants.LOAN_MATCHING_STATUS_EXPIRED
+            return constants.LOAN_MATCHING_STATUS_DOING
 
     def get_loan_matching_amount(self, request):
         return models.FundAllocation.objects.filter(loan_id=request.id).aggregate(Sum('amount'))
 
 
 class LoanRepaySerializer(serializers.ModelSerializer):
+    created_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False)
     repay_amount = serializers.IntegerField(min_value=0, max_value=99999)
     submit_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
+    loan_id = serializers.IntegerField()
+
+    loan = LoanSerializer(required=False)
+
+    def create(self, validated_data):
+        loan = models.Loan.objects.get(id=validated_data.get('loan_id'))
+        validated_data['loan'] = loan
+        return super(LoanRepaySerializer, self).create(validated_data=validated_data)
 
     class Meta:
         model = models.LoanRepay
-        fields = ('id', 'status', 'repay_amount', 'loan', 'submit_name')
+        fields = '__all__'
 
 
 class TaskSerializer(serializers.ModelSerializer):
-
+    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     class Meta:
         model = models.Task
-        fields = '__all__'
+        fields = ('created_time', 'url', 'description', 'sender', 'id')

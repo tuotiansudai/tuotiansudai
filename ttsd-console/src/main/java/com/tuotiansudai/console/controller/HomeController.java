@@ -1,8 +1,12 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsoleHomeService;
+import com.tuotiansudai.current.client.CurrentRestClient;
+import com.tuotiansudai.current.dto.*;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CurrentDataDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.log.service.AuditLogService;
@@ -50,12 +54,21 @@ public class HomeController {
 
     private final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
 
+    private final CurrentRestClient currentRestClient;
+
+    @Autowired
+    public HomeController(CurrentRestClient currentRestClient){
+        this.currentRestClient=currentRestClient;
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
 
         ModelAndView mav = new ModelAndView("/index");
 
         mav.addObject("taskList", getTaskList(LoginUserInfo.getLoginName()));
+        mav.addObject("token", LoginUserInfo.getToken());
+
 
         mav.addObject("userToday", consoleHomeService.userToday());
         mav.addObject("user7Days", consoleHomeService.user7Days());
@@ -102,7 +115,27 @@ public class HomeController {
             taskList.add((OperationTask) SerializeUtil.deserialize(bs));
         }
 
+        taskList.addAll(getCurrentTask(roles));
+
         Collections.sort(taskList);
+
+        return taskList;
+    }
+
+    public List<OperationTask> getCurrentTask(List<Role> roles){
+        List<OperationTask> taskList = new ArrayList<>();
+        CurrentDataDto<TaskResponseDto> list=currentRestClient.task(roles);
+
+        for (TaskResponseDto taskResponseDto:list.getResults()) {
+            OperationTask operationTask = new OperationTask();
+            operationTask.setCreatedTime(taskResponseDto.getCreatedTime());
+            operationTask.setDescription(taskResponseDto.getDescription());
+            operationTask.setObjId(String.valueOf(taskResponseDto.getId()));
+            operationTask.setSender(taskResponseDto.getSender());
+            operationTask.setOperateURL(taskResponseDto.getUrl());
+            operationTask.setTaskType(TaskType.CURRENT_TASK);
+            taskList.add(operationTask);
+        }
         return taskList;
     }
 

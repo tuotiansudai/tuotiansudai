@@ -1,15 +1,16 @@
 package com.tuotiansudai.current.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class TaskResponseDto {
+public class TaskResponseDto{
 
     private long id;
-    private Source source;
 
     @JsonProperty(value = "description")
     private String description;
@@ -18,11 +19,11 @@ public class TaskResponseDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
-    @JsonProperty(value = "status")
-    private String status;
-
     @JsonProperty(value = "url")
     private String url;
+
+    @JsonProperty(value = "sender")
+    private String sender;
 
     public long getId() {
         return id;
@@ -48,27 +49,19 @@ public class TaskResponseDto {
         this.createdTime = createdTime;
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

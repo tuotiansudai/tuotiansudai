@@ -23,27 +23,31 @@
                     <option value="{{ key }}" {% if key == request.GET.loan_type %}selected{% endif %}>{{ value }}</option>
                 {% endfor %}
             </select>
+            <span>{{ form.loan_type.errors }}</span>
         </div>
 
         <div class="form-group">
             <label for="volume">代理人:</label>
             <input type="text" class="form-control" name="agent__login_name" value="{{request.GET.agent__login_name }}">
+            <span>{{ form.agent__login_name.errors }}</span>
         </div>
 
         <div class="form-group">
             <label for="volume">添加日期:</label>
             <input id="createdTime" name="created_time" class="form-control form-control-datetimepicker"
                    data-date-format="yyyy-mm-dd" value="{{ request.GET.created_time }}" style="width: 120px">
+            <span>{{ form.add_time.errors }}</span>
         </div>
 
         <div class="form-group">
             <label for="volume">资产状态:</label>
-            <select name="matching_status" class="form-control">
+            <select name="loan_matching_status" class="form-control">
                 <option value="">全部</option>
                 {% for key, value in matching_status %}
-                    <option value="{{ key }}" {% if key == request.GET.matching_status %}selected{% endif %}>{{ value }}</option>
+                    <option value="{{ key }}" {% if key == request.GET.loan_matching_status %}selected{% endif %}>{{ value }}</option>
                 {% endfor %}
             </select>
+            <span>{{ form.matching_status.errors }}</span>
         </div>
         <button type="submit" class="btn btn-primary">查询</button>
     </form>
@@ -92,21 +96,20 @@
                <td style="vertical-align: middle">{{ list.loan_matching_amount.amount__sum|default_if_none:'0' }}</td>
                <td style="vertical-align: middle">
                    {% if list.loan_matching_status == 'EXPIRED' %}
-                        <form class="form-inline" action="{% url 'loan' %}" method="GET">
+                        <form class="form-inline" action="{% url 'loan_repay_record' %}" method="GET">
                             <input type="hidden" name="loan_id" value="{{ list.id }}">
                             <button type="submit" class="btn btn-default">还款纪录</button>
                         </form>
                    {% else %}
-                       <form class="form-inline" action="{% url 'loan' %}" method="GET">
+                       <form class="form-inline" action="{% url 'loan_repay' %}" method="GET">
                             <input type="hidden" name="loan_id" value="{{ list.id }}">
                             <button type="submit" class="btn btn-default">还款</button>
                         </form>
-                       <form class="form-inline" action="{% url 'loan' %}" method="GET">
+                       <form class="form-inline" action="{% url 'loan_repay_record' %}" method="GET">
                             <input type="hidden" name="loan_id" value="{{ list.id }}">
                             <button type="submit" class="btn btn-default">还款纪录</button>
                         </form>
                    {% endif %}
-
                </td>
            </tr>
        {% endfor %}

@@ -59,6 +59,8 @@ LOGGING_DIR = '/var/log/current_rest'
 
 PAY_WRAPPER_HOST = 'http://localhost:8080/current'
 
+TASK_CONSOLE_HOST = 'http://127.0.0.1:8000/loan-repay-retrieve'
+
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/rest_settings.py'
 if not os.path.isfile(setting_local_file):
