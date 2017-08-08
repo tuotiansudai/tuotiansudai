@@ -6,6 +6,7 @@ from datetime import timedelta, datetime
 from django.db.models import Sum
 
 from current_rest import redis_client, models, constants
+from common import constants as common_constants
 from current_rest.models import CurrentDailyFundInfo
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ class CurrentDailyManager(object):
 
 def sum_success_deposit_by_date(date_for_sum):
     tomorrow = date_for_sum + timedelta(days=1)
-    amount_sum = models.CurrentDeposit.objects.filter(status=constants.DEPOSIT_SUCCESS,
+    amount_sum = models.CurrentDeposit.objects.filter(status=common_constants.DepositStatusType.DEPOSIT_SUCCESS,
                                                       updated_time__gte=date_for_sum,
                                                       updated_time__lt=tomorrow) \
         .all().aggregate(Sum('amount')) \

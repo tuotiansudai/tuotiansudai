@@ -8,6 +8,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 import jobs
+from common import constants as common_constants
 from current_rest import serializers, constants, models, filters
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, sum_success_deposit_by_date
@@ -58,7 +59,7 @@ class DepositViewSet(mixins.RetrieveModelMixin,
                                                                         order_id=updated_deposit.pk)
 
         if self.__is_over_deposit(updated_deposit):
-            updated_deposit.status = constants.DEPOSIT_OVER_PAY
+            updated_deposit.status = common_constants.DepositStatusType.DEPOSIT_OVER_PAY
             updated_deposit.save()
             self.mq_client.send(JSONRenderer().render(self.serializer_class(instance=updated_deposit).data))
 

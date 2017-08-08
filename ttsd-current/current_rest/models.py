@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
+from common import constants as common_constants
 from current_rest import constants, settings
 
 
@@ -80,9 +81,10 @@ class CurrentDeposit(BaseModel):
                                         blank=False)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.PositiveIntegerField(null=False, blank=False)
-    status = models.CharField(choices=constants.DEPOSIT_STATUS_CHOICE, max_length=50, null=False, blank=False,
-                              default=constants.DEPOSIT_WAITING_PAY)
-    source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
+    status = models.CharField(choices=common_constants.DepositStatusType.DEPOSIT_STATUS_CHOICE, max_length=50, null=False, blank=False,
+                              default=common_constants.DepositStatusType.DEPOSIT_WAITING_PAY)
+    source = models.CharField(choices=common_constants.SourceType.SOURCE_CHOICE,
+                              default=common_constants.SourceType.SOURCE_WEB,
                               max_length=10, null=False, blank=False)
     no_password = models.BooleanField(default=False, null=False, blank=False)
 
@@ -120,7 +122,8 @@ class CurrentRedeem(AuditModel):
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.IntegerField()
     status = models.CharField(choices=constants.REDEEM_STATUS_CHOICE, default=constants.REDEEM_WAITING, max_length=20)
-    source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
+    source = models.CharField(choices=common_constants.SourceType.SOURCE_CHOICE,
+                              default=common_constants.SourceType.SOURCE_WEB,
                               max_length=10, null=False, blank=False)
 
     class Meta:

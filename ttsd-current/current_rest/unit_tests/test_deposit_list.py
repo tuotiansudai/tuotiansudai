@@ -7,7 +7,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from current_rest import constants
+from common import constants as common_constants
 from current_rest.models import CurrentAccount, CurrentDeposit
 
 
@@ -26,14 +26,14 @@ class DepositTestCase(TestCase):
         deposit_1 = CurrentDeposit.objects.create(current_account=self.fake_account_1,
                                                   login_name=self.fake_account_1.login_name,
                                                   amount=0,
-                                                  source=constants.SOURCE_ANDROID,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  source=common_constants.SourceType.SOURCE_ANDROID,
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         deposit_2 = CurrentDeposit.objects.create(current_account=self.fake_account_2,
                                                   login_name=self.fake_account_2.login_name,
                                                   amount=0,
-                                                  source=constants.SOURCE_IOS,
-                                                  status=constants.DEPOSIT_FAIL)
+                                                  source=common_constants.SourceType.SOURCE_IOS,
+                                                  status=common_constants.DepositStatusType.DEPOSIT_FAIL)
 
         self.cursor.execute(
             'update current_deposit set updated_time=%s where id=%s',
@@ -52,20 +52,20 @@ class DepositTestCase(TestCase):
                          self.fake_account_1.mobile)
 
         response = self.client.get(path=reverse('list_deposit'),
-                                   data={'source': constants.SOURCE_IOS})
+                                   data={'source': common_constants.SourceType.SOURCE_IOS})
         response_data = response.data
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response_data.get('count'), 1)
         self.assertEqual(response_data.get('results')[0]['source'],
-                         constants.SOURCE_IOS)
+                         common_constants.SourceType.SOURCE_IOS)
 
         response = self.client.get(path=reverse('list_deposit'),
-                                   data={'status': constants.DEPOSIT_FAIL})
+                                   data={'status': common_constants.DepositStatusType.DEPOSIT_FAIL})
         response_data = response.data
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response_data.get('count'), 1)
         self.assertEqual(response_data.get('results')[0]['status'],
-                         constants.DEPOSIT_FAIL)
+                         common_constants.DepositStatusType.DEPOSIT_FAIL)
 
         response = self.client.get(path=reverse('list_deposit'),
                                    data={'updated_time_0': self.now.strftime('%Y-%m-%d'),
@@ -74,4 +74,4 @@ class DepositTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response_data.get('count'), 1)
         self.assertEqual(response_data.get('results')[0]['status'],
-                         constants.DEPOSIT_SUCCESS)
+                         common_constants.DepositStatusType.DEPOSIT_SUCCESS)

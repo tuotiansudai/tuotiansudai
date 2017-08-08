@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from current_rest import constants, settings
+from common import constants as common_constants
 from current_rest.models import CurrentAccount, CurrentBill, CurrentLoanOutHistory, CurrentDeposit
 from current_rest.serializers import LoanOutHistorySerializer
 
@@ -44,13 +45,13 @@ class LoanOutTestCase(TestCase):
                                    balance=6, amount=3, order_id=3)
 
         deposit_1 = CurrentDeposit.objects.create(current_account=account, login_name=self.login_name, amount=1,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         deposit_2 = CurrentDeposit.objects.create(current_account=account, login_name=self.login_name, amount=2,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         deposit_3 = CurrentDeposit.objects.create(current_account=account, login_name=self.login_name, amount=3,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         self.cursor.execute(
             'update current_deposit set updated_time=%s where id=%s',
@@ -83,13 +84,13 @@ class LoanOutTestCase(TestCase):
         account = CurrentAccount.objects.create(login_name=self.login_name)
 
         deposit_1 = CurrentDeposit.objects.create(current_account=account, login_name=self.login_name, amount=1,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         deposit_2 = CurrentDeposit.objects.create(current_account=account, login_name=self.login_name, amount=2,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         deposit_3 = CurrentDeposit.objects.create(current_account=account, login_name=self.login_name, amount=3,
-                                                  status=constants.DEPOSIT_SUCCESS)
+                                                  status=common_constants.DepositStatusType.DEPOSIT_SUCCESS)
 
         self.cursor.execute(
             'update current_deposit set updated_time=%s where id=%s',

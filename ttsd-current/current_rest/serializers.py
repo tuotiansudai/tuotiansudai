@@ -4,14 +4,13 @@ import re
 from datetime import datetime
 
 from django.db.models import Sum
-from rest_framework import serializers, status
-from rest_framework.response import Response
+from rest_framework import serializers
 
+from common import constants as common_constants
 from current_rest import constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import CurrentDailyManager, sum_success_deposit_by_date
 from current_rest.models import Agent
-from current_rest.models import CurrentAccount
 
 logger = logging.getLogger(__name__)
 
@@ -43,16 +42,16 @@ class AccountSerializer(serializers.ModelSerializer):
         model = models.CurrentAccount
         fields = ('login_name', 'username', 'mobile', 'balance',
                   'personal_max_deposit', 'personal_available_redeem', 'personal_max_redeem')
-        read_only_fields = ('id', 'updated_time', 'created_time'
-                                                  'personal_max_deposit', 'personal_available_redeem',
-                            'personal_max_redeem')
+        read_only_fields = ('id', 'updated_time', 'created_time',
+                            'personal_max_deposit', 'personal_available_redeem', 'personal_max_redeem')
 
 
 class DepositSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
-    source = serializers.ChoiceField(choices=constants.SOURCE_CHOICE)
+    source = serializers.ChoiceField(choices=common_constants.SourceType.SOURCE_CHOICE)
     no_password = serializers.BooleanField()
+    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False)
     current_account = AccountSerializer(required=False)
 
     def create(self, validated_data):
@@ -62,7 +61,7 @@ class DepositSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CurrentDeposit
-        fields = ('id', 'current_account', 'login_name', 'amount', 'source', 'no_password', 'status')
+        fields = ('id', 'current_account', 'login_name', 'amount', 'source', 'no_password', 'updated_time', 'status')
 
 
 class AgentSerializer(serializers.ModelSerializer):
@@ -88,18 +87,12 @@ class LoanListSerializer(LoanSerializer):
     agent = AgentSerializer()
 
 
-class CurrentAccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CurrentAccount
-        fields = '__all__'
-
-
 class CurrentRedeemSerializer(serializers.ModelSerializer):
     login_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     amount = serializers.IntegerField(min_value=0)
     created_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"), required=False)
     approved_time = serializers.DateTimeField(format("%Y-%m-%d %H:%M:%S"), required=False)
-    current_account = CurrentAccountSerializer(required=False)
+    current_account = AccountSerializer(required=False)
 
     def create(self, validated_data):
         current_account = CurrentAccountManager().fetch_account(login_name=validated_data.get('login_name'))

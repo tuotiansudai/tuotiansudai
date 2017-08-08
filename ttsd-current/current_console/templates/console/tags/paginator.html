@@ -1,0 +1,31 @@
+<ul class="pagination">
+    <li {% ifequal page 1 %}class="disabled"{% endifequal %}>
+        <a href="?page=1{{ params }}">
+            首页
+        </a>
+    </li>
+
+    <li {% if not has_previous %}class="disabled"{% endif %}>
+        <a {% if has_previous %}href="?page={{ previous_page }}{{ params }}"{% endif %}>
+            上一页
+        </a>
+    </li>
+
+    {% for page_num in page_range %}
+        <li {% ifequal page_num page %}class="active"{% endifequal %}>
+            <a href="?page={{ page_num }}{{ params }}">{{ page_num }}</a>
+        </li>
+    {% endfor %}
+
+    <li {% if not has_next %}class="disabled"{% endif %}>
+        <a {% if has_next %}href="?page={{ next_page }}{{ params }}"{% endif %}>
+            下一页
+        </a>
+    </li>
+
+    <li {% ifequal total_pages page %}class="disabled"{% endifequal %}>
+        <a href="?page={{ total_pages }}{{ params }}">
+            末页
+        </a>
+    </li>
+</ul>
