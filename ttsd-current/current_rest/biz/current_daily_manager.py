@@ -11,12 +11,9 @@ from current_rest.models import CurrentDailyFundInfo
 logger = logging.getLogger(__name__)
 
 
-class CurrentDailyManager(object):
+def get_current_daily_amount():
     daily_amount_limit_key = 'current:daily:amount'
-
-    def get_current_daily_amount(self):
-        daily_amount = int(redis_client.get(self.daily_amount_limit_key) or 0)
-        return daily_amount
+    return int(redis_client.get(daily_amount_limit_key) or 0)
 
 
 def sum_success_deposit_by_date(date_for_sum):

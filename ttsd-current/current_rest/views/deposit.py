@@ -10,7 +10,7 @@ from rest_framework.response import Response
 import jobs
 from current_rest import serializers, constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.biz.current_daily_manager import CurrentDailyManager, sum_success_deposit_by_date
+from current_rest.biz.current_daily_manager import sum_success_deposit_by_date, get_current_daily_amount
 from current_rest.biz.pay_manager import invoke_pay
 from current_rest.settings import PAY_WRAPPER_SERVER
 from jobs.client import MessageClient
@@ -31,7 +31,6 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     def __init__(self):
         super(DepositViewSet, self).__init__()
         self.current_account_manager = CurrentAccountManager()
-        self.current_daily_manager = CurrentDailyManager()
         self.mq_client = MessageClient(jobs.settings.QueueName.OVER_DEPOSIT_TASK_QUEUE)
 
     @transaction.atomic
@@ -67,5 +66,5 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     def __is_over_deposit(self, deposit):
         account = self.current_account_manager.fetch_account(login_name=deposit.login_name)
         total_deposit_today = sum_success_deposit_by_date(datetime.now().date())
-        current_daily_amount = self.current_daily_manager.get_current_daily_amount()
+        current_daily_amount = get_current_daily_amount()
         return total_deposit_today > current_daily_amount or account.balance > constants.PERSONAL_MAX_DEPOSIT
