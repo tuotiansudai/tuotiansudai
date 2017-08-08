@@ -184,7 +184,7 @@ class ApprovedLoanListSerializer(LoanListSerializer):
 class LoanRepaySerializer(serializers.ModelSerializer):
     created_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
     updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False)
-    repay_amount = serializers.IntegerField(min_value=0, max_value=99999)
+    repay_amount = serializers.IntegerField(min_value=0)
     submit_name = serializers.RegexField(regex=re.compile('[A-Za-z0-9_]{6,25}'))
     loan_id = serializers.IntegerField()
 

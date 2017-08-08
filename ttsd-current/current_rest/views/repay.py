@@ -29,8 +29,8 @@ class LoanRepayViewSet(mixins.RetrieveModelMixin,
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         loan = get_object_or_404(models.Loan, pk=request.data['loan_id'])
-        amount = models.LoanRepay.objects.filter(loan_id=request.data['loan_id'], status=constants.REPAY_STATUS_WAITING)
-        if amount:
+        loan_repay = models.LoanRepay.objects.filter(loan_id=request.data['loan_id'], status=constants.REPAY_STATUS_WAITING)
+        if loan_repay:
             return Response({'message': u'该资产正在还款'}, status=status.HTTP_201_CREATED)
         elif loan.amount != float(request.data['repay_amount']):
             return Response({'message': u'还款本金应等于资产价值'}, status=status.HTTP_201_CREATED)

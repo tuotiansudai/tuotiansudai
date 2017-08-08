@@ -22,6 +22,7 @@ def submit_loan_repay(request):
         request_dict = form.cleaned_data
         request_dict['submit_name'] = request.session['login_name']
         request_dict['status'] = constants.REPAY_STATUS_WAITING
+        request_dict['repay_amount'] = request_dict['repay_amount']*1000000
         response = RestClient('submit-loan-repay').post(data=request_dict)
         if response:
             return JsonResponse({'message': response['message']}, status=status.HTTP_200_OK)
@@ -32,6 +33,8 @@ def submit_loan_repay(request):
 @user_roles_check(['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN'])
 def loan_repay_retrieve(request):
     loan_repay = RestClient('loan-repay-retrieve/{}'.format(request.GET['id'])).get()
+    loan_repay['loan']['amount'] = '{0:.2f}'.format(loan_repay['loan']['amount']/1000000.0)
+    loan_repay['repay_amount'] = '{0:.2f}'.format(loan_repay['repay_amount']/1000000.0)
     if loan_repay:
         return render(request, 'console/repay/audit_repay.html',
                       {'loanRepay': loan_repay,

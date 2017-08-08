@@ -119,6 +119,10 @@ def approved_loan_list(request):
                 else:
                     list['balance'] = 0
 
+                list['amount'] = '{0:.2f}'.format(list['amount'] / 1000000.0)
+                list['balance'] = '{0:.2f}'.format(list['balance']/1000000.0)
+                list['loan_matching_amount']['amount__sum'] = '{0:.2f}'.format(list['loan_matching_amount']['amount__sum']/1000000.0)
+
         return render(request, 'console/loan/approved_loan_list.html',
                       {'approved_loan_list': response,
                        'types': constants.LOAN_TYPE_CHOICES,
@@ -134,6 +138,7 @@ def approved_loan_list(request):
 @user_roles_check(['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN'])
 def query_loan_by_id(request):
     loan = RestClient('loan/{}'.format(request.GET['loan_id'])).get()
+    loan['amount'] = '{0:.2f}'.format(loan['amount'] / 1000000.0)
     return render(request, 'console/repay/repay.html',
                   {'loan': loan,
                    'loan_type': constants.LOAN_TYPE_CHOICES,
