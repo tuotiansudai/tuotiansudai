@@ -23,7 +23,7 @@ class FundSettingHistoryQueryForm(forms.Form):
 
 class ApprovedLoanForm(forms.Form):
     loan_type = forms.ChoiceField(choices=constants.LOAN_TYPE_CHOICES, required=False)
-    agent__login_name = forms.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
+    agent_login_name = forms.RegexField(regex=re.compile('[A-Za-z0-9]{6,25}'), required=False)
     created_time = forms.DateTimeField(input_formats=['%Y-%m-%d'], required=False)
     loan_matching_status = forms.ChoiceField(choices=constants.LOAN_MATCHING_STATUS_CHOICES, required=False)
 

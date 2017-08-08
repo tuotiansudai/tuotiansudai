@@ -80,8 +80,8 @@ class ApprovedLoanListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if params:
             if params['loan_type']:
                 queryset = queryset.filter(loan_type=params['loan_type'])
-            if params['agent__login_name']:
-                queryset = queryset.filter(agent__login_name=params['agent__login_name'])
+            if params['agent_login_name']:
+                queryset = queryset.filter(agent__login_name=params['agent_login_name'])
             if params.has_key('created_time'):
                 end_time = datetime.datetime.strptime(str(params['created_time']), '%Y-%m-%d %H:%M:%S')+datetime.timedelta(days=1)
                 queryset = queryset.filter(created_time__gte=params['created_time'], created_time__lte=end_time)
