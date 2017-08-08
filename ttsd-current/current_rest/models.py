@@ -16,7 +16,7 @@ class BaseModel(models.Model):
 
 
 class AuditModel(BaseModel):
-    approver = models.CharField(max_length=25, null=False, blank=False)
+    approver = models.CharField(max_length=25, null=True, blank=False)
     approved_time = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -119,7 +119,7 @@ class CurrentRedeem(AuditModel):
     current_account = models.ForeignKey(CurrentAccount)
     login_name = models.CharField(max_length=25, null=False, blank=False)
     amount = models.IntegerField()
-    status = models.CharField(choices=constants.STATUS_CHOICES, default=constants.STATUS_WAITING, max_length=20)
+    status = models.CharField(choices=constants.REDEEM_STATUS_CHOICE, default=constants.REDEEM_WAITING, max_length=20)
     source = models.CharField(choices=constants.SOURCE_CHOICE, default=constants.SOURCE_WEB,
                               max_length=10, null=False, blank=False)
 

@@ -6,15 +6,31 @@ import com.tuotiansudai.repository.model.Source;
 
 public class RedeemRequestDto {
 
+    private long id;
+
     @JsonProperty("login_name")
     private String loginName;
+
     private long amount;
+
     private Source source;
+
+    public RedeemRequestDto(){
+
+    }
 
     public RedeemRequestDto(String loginName, long amount, Source source) {
         this.loginName = loginName;
         this.amount = amount;
         this.source = source;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLoginName() {

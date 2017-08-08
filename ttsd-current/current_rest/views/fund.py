@@ -9,7 +9,7 @@ from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 
 from current_rest import serializers
-from current_rest.biz.fund import generate_fund_tendency, list_fund_history
+from current_rest.biz.fund import generate_fund_tendency, list_fund_history, list_fund_distribution
 from current_rest.models import CurrentDailyFundInfo
 
 logger = logging.getLogger(__name__)
@@ -26,6 +26,18 @@ def history(request):
     if query_form.is_valid():
         histories = list_fund_history(query_form.validated_data['begin_date'], query_form.validated_data['end_date'])
         return Response(histories)
+    else:
+        return Response(data=query_form.error_messages, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def distribution(request):
+    query_form = serializers.FundDistributionQueryForm(data=request.GET)
+    if query_form.is_valid():
+        distributions = list_fund_distribution(query_form.validated_data['granularity'],
+                                               query_form.validated_data['begin_date'],
+                                               query_form.validated_data['end_date'])
+        return Response(distributions)
     else:
         return Response(data=query_form.error_messages, status=status.HTTP_400_BAD_REQUEST)
 

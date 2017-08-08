@@ -55,7 +55,7 @@ DB_MYSQL_PASSWORD = 'root'
 
 LOGGING_DIR = '/var/log/current_rest'
 
-PAY_WRAPPER_SERVER = 'http://localhost:9080/current'
+PAY_WRAPPER_SERVER = 'http://localhost:8080/current'
 
 REDIS_URL = 'redis://192.168.33.10/2'
 

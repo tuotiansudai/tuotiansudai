@@ -1,14 +1,13 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.current.dto.DepositDto;
-import com.tuotiansudai.current.dto.LoanOutHistoryDto;
-import com.tuotiansudai.current.dto.LoanOutHistoryStatus;
+import com.tuotiansudai.current.dto.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.current.CurrentDepositService;
 import com.tuotiansudai.paywrapper.current.CurrentLoanOutService;
+import com.tuotiansudai.paywrapper.current.CurrentRedeemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +28,14 @@ public class CurrentController {
 
     private final CurrentDepositService currentDepositService;
     private final CurrentLoanOutService currentLoanOutService;
+    private final CurrentRedeemService currentRedeemService;
+
 
     @Autowired
-    public CurrentController(CurrentDepositService currentDepositService, CurrentLoanOutService currentLoanOutService) {
+
+    public CurrentController(CurrentDepositService currentDepositService, CurrentRedeemService currentRedeemService, CurrentLoanOutService currentLoanOutService) {
         this.currentDepositService = currentDepositService;
+        this.currentRedeemService = currentRedeemService;
         this.currentLoanOutService = currentLoanOutService;
     }
 
@@ -46,6 +49,12 @@ public class CurrentController {
     @ResponseBody
     public BaseDto<PayDataDto> noPasswordDeposit(@Valid @RequestBody DepositDto depositRequestDto) {
         return currentDepositService.noPasswordDeposit(depositRequestDto);
+    }
+
+    @RequestMapping(value = "/redeem-to-loan", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> redeemToLoan(@Valid @RequestBody RedeemRequestDto redeemRequestDto) {
+        return currentRedeemService.redeemToLoan(redeemRequestDto);
     }
 
     @RequestMapping(value = "/over-deposit", method = RequestMethod.POST)

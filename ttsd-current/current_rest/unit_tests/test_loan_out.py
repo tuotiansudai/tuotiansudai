@@ -6,7 +6,6 @@ from django.test import TestCase
 from django.urls import reverse
 from mock import mock
 from rest_framework import status
-from rest_framework.renderers import JSONRenderer
 from rest_framework.test import APIClient
 
 from current_rest import constants, settings

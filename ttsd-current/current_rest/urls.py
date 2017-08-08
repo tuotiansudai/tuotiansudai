@@ -21,7 +21,7 @@ from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet, LoanOutViewSet
 from current_rest.views.loan import LoanViewSet
-from current_rest.views.redeem import RedeemViewSet
+from current_rest.views.redeem import RedeemViewSet, audit_redeem_pass, audit_redeem_reject
 
 post_deposit = DepositViewSet.as_view({'post': 'create'})
 get_put_deposit = DepositViewSet.as_view({'get': 'retrieve', 'put': 'update'})
@@ -35,12 +35,12 @@ post_loan = LoanViewSet.as_view({'post': 'create'})
 get_loan = LoanViewSet.as_view({'get': 'retrieve'})
 audit_loan = LoanViewSet.as_view({'put': 'update'})
 audit_reject_loan = LoanListViewSet.as_view({'put', 'audit_reject_loan'})
-get_limits_today = LoanViewSet.as_view({'get': 'get_limits_today'})
 get_edit_loan = LoanViewSet.as_view({'get': 'retrieve', 'put': 'update'})
 
 loan_list = LoanListViewSet.as_view({'get': 'list'})
-post_redeem = RedeemViewSet.as_view({'post': 'create'})
-get_put_redeem = RedeemViewSet.as_view({'get': 'retrieve', 'put': 'update'})
+
+redeem_list = RedeemViewSet.as_view({'get': 'list'})
+redeem = RedeemViewSet.as_view({'post': 'create', 'get': 'retrieve', 'put': 'update'})
 
 post_loan_out = LoanOutViewSet.as_view({'post': 'create'})
 put_loan_out = LoanOutViewSet.as_view({'put': 'update'})
@@ -50,7 +50,6 @@ urlpatterns = [
     url(r'^loan$', post_loan, name='post_loan'),
     url(r'^audit-loan/(?P<pk>[0-9]+)$', audit_loan, name='audit_loan', kwargs={'partial': True, 'audit': True}),
     url(r'^loan/(?P<pk>[0-9]+)$', get_loan, name="get_loan"),
-    url(r'^loan/investable-amount$', get_limits_today, name="get_limits_today"),
     url(r'^audit-reject-loan/(?P<pk>[0-9]+)/(?P<category>(audit|reject))$', audit_reject_loan,
         name='audit_reject_loan'),
     url(r'^loan/(?P<pk>[0-9]+)$', get_edit_loan, name="get_edit_loan", kwargs={'partial': True}),
@@ -60,12 +59,19 @@ urlpatterns = [
     url(r'^deposit-list$', list_deposit, name="list_deposit"),
     url(r'^account$', post_account, name='post_account'),
     url(r'^account/(?P<login_name>[A-Za-z0-9_]{6,25})$', get_account, name="get_account"),
+
+    url(r'^redeem$', redeem, name='post_redeem'),
+    url(r'^redeem/(?P<pk>[0-9]+)$', redeem, name='get_put_redeem', kwargs={'partial': True}),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/pass$', audit_redeem_pass, name='audit_redeem_pass'),
+    url(r'^redeem-audit/(?P<pk>[0-9]+)/reject$', audit_redeem_reject, name='audit_redeem_reject'),
+    url(r'^redeem-list', redeem_list, name='redeem_list'),
+
     url(r'^account/calculate_interest_yesterday$', calculate_interest_yesterday, name="calculate_interest_yesterday"),
-    url(r'^redeem$', post_redeem, name='post_redeem'),
-    url(r'^redeem/(?P<pk>[0-9]+)$', get_put_redeem, name='get_put_redeem', kwargs={'partial': True}),
+
     url(r'^fund-info/tendency$', fund.tendency, name="fund_info_tendency"),
     url(r'^fund-info/history$', fund.history, name="fund_info_history"),
     url(r'^fund-info/today$', fund.TodayFundSettingViewSet.as_view(), name="fund_info_today"),
     url(r'^loan-out$', post_loan_out, name='post_loan_out'),
     url(r'^loan-out/(?P<pk>[0-9]+)$', put_loan_out, name="put_loan_out", kwargs={'partial': True}),
+    url(r'^fund/distribution$', fund.distribution, name="fund_distribution"),
 ]

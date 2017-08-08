@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import mock
 from django.test import TestCase
 from django.urls import reverse
@@ -7,6 +8,7 @@ from rest_framework.test import APIClient
 
 from current_rest import constants, serializers
 from current_rest.biz.current_account_manager import CurrentAccountManager
+from current_rest.biz.current_daily_manager import sum_success_deposit_by_date
 from current_rest.models import CurrentAccount, CurrentDeposit, CurrentBill
 from current_rest.views.deposit import DepositViewSet
 
@@ -212,3 +214,8 @@ class DepositTestCase(TestCase):
         response = self.client.get(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_should_return_0_when_none_deposit(self):
+        deposit_by_date = sum_success_deposit_by_date(datetime.datetime.now())
+
+        self.assertEqual(deposit_by_date, 0)
