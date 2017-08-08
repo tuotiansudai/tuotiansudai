@@ -8,6 +8,7 @@ dependencies {
             project(':ttsd-ask-service'),
             project(':ttsd-activity-service'),
             project(':ttsd-log-service'),
+            project(':ttsd-current-rest-client'),
             project(':ttsd-util'),
             fileTree(dir: 'libs', include: '**/*.jar'),
             'org.apache.poi:poi:3.13'

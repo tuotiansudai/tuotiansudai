@@ -1,0 +1,38 @@
+{% extends "console/tpl/_layout.tpl" %}
+
+{% block content %}
+     <div class="col-md-10">
+     {% if repayResult.results %}
+        <table class="table">
+        <thead>
+        <tr>
+            <th>还款时间</th>
+            <th>还款本金(万元)</th>
+            <th>提交人</th>
+            <th>审核人</th>
+            <th>还款结果</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for list in repayResult.results %}
+            <tr>
+                <td style="vertical-align:middle">{{ list.created_time }}</td>
+                <td style="vertical-align: middle">{{ list.repay_amount }}</td>
+                <td style="vertical-align: middle">{{ list.submit_name }}</td>
+                <td style="vertical-align: middle">{{ list.approver|default_if_none:'' }}</td>
+                <td style="vertical-align: middle">
+                    {% for key,value in status %}
+                        {% if key == list.status %}{{ value }}
+                        {% endif %}
+                    {% endfor %}
+               </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+     {% else %}
+         <h4>无还款纪录</h4>
+     {% endif %}
+    </div>
+
+{% endblock %}

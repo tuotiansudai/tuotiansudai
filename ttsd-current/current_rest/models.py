@@ -136,3 +136,37 @@ class CurrentDailyFundInfo(BaseModel):
 
     class Meta:
         db_table = 'current_daily_fund_info'
+
+
+class FundAllocation(models.Model):
+    loan = models.ForeignKey(Loan, on_delete=models.PROTECT, null=True, related_name='+')
+    account = models.ForeignKey(CurrentAccount, on_delete=models.PROTECT, null=True, related_name='+')
+    amount = models.PositiveIntegerField(default=0, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+
+    class Meta:
+        db_table = 'fund_allocation'
+
+
+class LoanRepay(AuditModel):
+    repay_amount = models.PositiveIntegerField(null=False, blank=False)
+    submit_name = models.CharField(max_length=25, null=False, blank=False)
+    status = models.CharField(choices=constants.REPAY_STATUS_CHOICES, null=False, max_length=20)
+    loan = models.ForeignKey(Loan, on_delete=models.PROTECT, null=False, related_name='+')
+
+    class Meta:
+        db_table = 'loan_repay'
+
+
+class Task(models.Model):
+    status = models.CharField(choices=constants.TASK_STATUS_CHOIES, null=False, max_length=20)
+    description = models.CharField(max_length=50, null=False)
+    url = models.CharField(max_length=100, null=False)
+    sender = models.CharField(max_length=25, null=False)
+    created_time = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+    handler_role = models.CharField(max_length=50, null=False)
+    handler_name = models.CharField(max_length=25, null=True)
+    handler_time = models.DateTimeField(null=True)
+
+    class Meta:
+        db_table = 'task'

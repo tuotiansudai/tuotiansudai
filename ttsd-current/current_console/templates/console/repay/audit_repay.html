@@ -1,0 +1,98 @@
+{% extends "console/tpl/_layout.tpl" %}
+
+{% block script_content %}
+    <script src="/static/js/audit_loan_repay.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-10">
+        <h4>资产情况</h4>
+        <hr>
+        <div class="form-group">
+            <label for="volume">资产类型:</label>
+            <span>
+                {% for key,value in types %}
+                    {% if key == loanRepay.loan.loan_type %}{{ value }}
+                    {% endif %}
+                {% endfor %}
+            </span>
+        </div>
+        <div class="form-group">
+            <label for="volume">代理人:</label>
+            <span>{{ loanRepay.loan.agent_name }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">资产价值（万元）:</label>
+            <span>{{ loanRepay.loan.amount }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">计息起始时间：:</label>
+            <span>{{ loanRepay.loan.effective_date }}</span>--<span>{{ loanRepay.loan.expiration_date }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">借款人:</label>
+            <span>{{ loanRepay.loan.debtor }}</span>
+        </div>
+        <div class="form-group">
+            <label for="volume">借款人身份证号:</label>
+            <span>{{ loanRepay.loan.debtor_identity_card }}</span>
+        </div>
+        <br><br>
+        <h4>还款</h4>
+        <hr>
+            <div class="form-group">
+                <label for="volume" >还款本金:</label>
+                <span>{{ loanRepay.repay_amount }}万元</span>
+            </div>
+             <br>
+            <div class="form-group">
+                <label for="volume">还款时间:</label>
+                <span>{{ loanRepay.created_time }}</span>
+            </div>
+             <br>
+             <input type="hidden" id="loan_id" value="{{ loanRepay.loan.id }}">
+             <input type="hidden" id="task_id" value="{{ task_id }}">
+            <div id="audit-operation">
+                <button type="button" data-loan-repay-id="{{ loanRepay.id }}" class="loan-repay-pass btn btn-default btn-sm">审核通过</button>
+                <button type="button" data-loan-repay-id="{{ loanRepay.id }}" class="loan-repay-reject btn btn-default btn-sm">审核驳回</button>
+            </div>
+            <div id="resultApproved" style="display: none">
+                <span>已审核通过</span>
+            </div>
+            <div id="resultReject" style="display: none">
+                <span>已驳回</span>
+            </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" id="pass" tabindex="-1" role="dialog">
+         <div class="modal-dialog modal-sm" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                             aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title">确认审核通过?</h4>
+                 </div>
+                 <div class="modal-footer" style="text-align:center">
+                     <button type="button" class="pass-true btn btn-primary btn-sm">确定</button>
+                     <button type="button" class="pass-no btn btn-danger btn-sm">取消</button>
+                 </div>
+             </div><!-- /.modal-content -->
+         </div><!-- /.modal-dialog -->
+     </div>
+
+    <div class="modal fade bs-example-modal-sm" id="reject" tabindex="-1" role="dialog">
+         <div class="modal-dialog modal-sm" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                             aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title">确认审核驳回?</h4>
+                 </div>
+                 <div class="modal-footer" style="text-align:center">
+                     <button type="button" class="reject-true btn btn-primary btn-sm">确定</button>
+                     <button type="button" class="reject-no btn btn-danger btn-sm">取消</button>
+                 </div>
+             </div><!-- /.modal-content -->
+         </div><!-- /.modal-dialog -->
+     </div>
+{% endblock %}

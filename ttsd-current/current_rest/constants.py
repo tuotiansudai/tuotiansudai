@@ -1,4 +1,6 @@
 # coding=utf-8
+from datetime import datetime, timedelta
+
 LOAN_STATUS_APPROVING = 'APPROVING'
 LOAN_STATUS_APPROVED = 'APPROVED'
 LOAN_STATUS_EXPIRED = 'EXPIRED'
@@ -31,11 +33,13 @@ LOAN_TYPE_CHOICES = (
 
 class OperationTarget(object):
     LOAN = 'loan'
+    LOAN_REPAY = 'loan_repay'
     REDEEM = 'redeem'
 
     OPERATION_TARGET_TYPE = (
         (LOAN, u'债权'),
         (REDEEM, u'赎回'),
+        (LOAN_REPAY, u'还款'),
     )
 
 
@@ -44,6 +48,8 @@ class OperationType(object):
     LOAN_AUDIT = 'LOAN_AUDIT'
     LOAN_REJECT = 'LOAN_REJECT'
     LOAN_EDIT = 'LOAN_EDIT'
+    LOAN_REPAY_PASS = 'LOAN_REPAY_PASS'
+    LOAN_REPAY_REJECT = 'LOAN_REPAY_REJECT'
     REDEEM_AUDIT_PASS = 'REDEEM_AUDIT_PASS'
     REDEEM_AUDIT_REJECT = 'REDEEM_AUDIT_REJECT'
     OPERATION_TYPE_MAP = (
@@ -51,6 +57,8 @@ class OperationType(object):
         (LOAN_AUDIT, u'审核债权信息'),
         (LOAN_REJECT, u'驳回债权信息'),
         (LOAN_EDIT, u'编辑债权信息'),
+        (LOAN_REPAY_PASS, u'审核通过还款申请'),
+        (LOAN_REPAY_REJECT, u'驳回还款申请'),
         (REDEEM_AUDIT_PASS, u'审核通过赎回申请'),
         (REDEEM_AUDIT_REJECT, u'驳回赎回申请'),
     )
@@ -124,3 +132,35 @@ DAILY_QUOTA_STATUS_CHOICES = (
     (DAILY_QUOTA_STATUS_REFUSED, u'已拒绝'),
     (DAILY_QUOTA_STATUS_CANCELED, u'已取消')
 )
+
+
+yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+
+LOAN_MATCHING_STATUS_WAITING = 'WAITING'
+LOAN_MATCHING_STATUS_DOING = 'DOING'
+LOAN_MATCHING_STATUS_EXPIRED = 'EXPIRED'
+
+LOAN_MATCHING_STATUS_CHOICES = (
+    (LOAN_MATCHING_STATUS_WAITING, u'待匹配'),
+    (LOAN_MATCHING_STATUS_DOING, u'匹配中'),
+    (LOAN_MATCHING_STATUS_EXPIRED, u'已过期'),
+)
+
+REPAY_STATUS_WAITING = 'WAITING'
+REPAY_STATUS_APPROVED = 'APPROVED'
+REPAY_STATUS_DENIED = 'DENIED'
+
+REPAY_STATUS_CHOICES = (
+    (REPAY_STATUS_WAITING, u'待审核'),
+    (REPAY_STATUS_APPROVED, u'已审核'),
+    (REPAY_STATUS_DENIED, u'已驳回'),
+)
+
+TASK_DONE = 'DONE'
+TASK_PENDING = 'PENDING'
+TASK_STATUS_CHOIES = (
+    (TASK_DONE, u'已处理'),
+    (TASK_PENDING, u'未处理')
+)
+
+LOAN_REPAY_HANDLER_ROLE = 'OPERATOR_ADMIN'

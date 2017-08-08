@@ -1,3 +1,5 @@
+from celery.schedules import crontab
+
 import os
 from celery.schedules import crontab
 
@@ -44,5 +46,9 @@ beat_schedule = {
     'calculate-interest-every-day-morning': {
         'task': 'jobs.calculate_interest_cron.calculate_interest',
         'schedule': crontab(minute='10', hour='0')
-    }
+    },
+    'add-every-day-morning': {
+        'task': 'jobs.loan_matching_cron.loan_matching',
+        'schedule': crontab(hour='1,2,3,4')
+    },
 }
