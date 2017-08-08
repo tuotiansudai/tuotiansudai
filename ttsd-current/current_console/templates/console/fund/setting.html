@@ -1,0 +1,135 @@
+{% extends "console/tpl/_layout.tpl" %}
+{% block script_content %}
+    <script src="/static/libs/highcharts/5.0.12/highcharts.js"></script>
+    <script>
+        (function ($) {
+            $(function () {
+                loadFundTendency();
+                initApproveButton();
+            });
+
+            var initApproveButton = function () {
+                $('.btn-approve').click(function () {
+                    $('#config_quota_status').val($(this).data('approve-status'));
+                    $('#quota_setting_form').submit();
+                })
+            };
+
+            var loadFundTendency = function () {
+                var tendency_data = {{ tendency|safe }};
+                var charts_categories = tendency_data.dates;
+                var charts_series = [
+                    {
+                        name: '已匹配',
+                        color: '#72ab4d',
+                        data: tendency_data.user_balance_list
+                    },
+                    {
+                        name: '待匹配',
+                        color: '#fd8424',
+                        data: tendency_data.loan_remain_amount_list
+                    }];
+                showChart(charts_categories, charts_series);
+            };
+
+            var showChart = function (charts_categories, charts_series) {
+                Highcharts.chart('fund_tendency_container', {
+                    chart: {
+                        type: 'area'
+                    },
+                    credits: {text: ''},
+                    title: {
+                        text: '今天及未来七天资产情况'
+                    },
+                    xAxis: {
+                        categories: charts_categories,
+                        tickmarkPlacement: 'on',
+                        title: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: '万元'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        split: true,
+                        valueSuffix: ' 万元'
+                    },
+                    plotOptions: {
+                        area: {
+                            stacking: 'normal',
+                            lineColor: '#666666',
+                            lineWidth: 1,
+                            marker: {
+                                lineWidth: 1,
+                                lineColor: '#666666'
+                            }
+                        }
+                    },
+                    series: charts_series
+                });
+            };
+        })(jQuery);
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">今天及未来七天资产情况</h3>
+        </div>
+        <div class="panel-body">
+            <div id="fund_tendency_container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">今日可售额度资产设置</h3>
+        </div>
+        <div class="panel-body">
+            {% if has_error %}
+                <p>{{ error_message }}</p>
+            {% else %}
+                <form id="quota_setting_form" class="form-inline" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputAmount">已设置额度</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="config_quota_amount" placeholder="0"
+                                   value="{{ quota_amount }}"
+                                   {% if is_approve_page or not allow_change_quota %}readonly{% endif %}>
+                            <div class="input-group-addon">万元</div>
+                        </div>
+                        <a href="{% url 'fund_setting_history_page' %}">历史资产额度配置</a>
+                    </div>
+                    <span id="helpBlock" class="help-block"> （今日尚未匹配债权 {{ loan_remain_amount }} 万元） </span>
+                    {% if is_approve_page %}
+                        {% if approving %}
+                            <input type="hidden" id="config_quota_status" name="config_quota_status"/>
+                            <button type="button" class="btn btn-success btn-approve" data-approve-status="APPROVED">
+                                审核通过
+                            </button>
+                            <button type="button" class="btn btn-warning btn-approve" data-approve-status="REFUSED">审核驳回
+                            </button>
+                        {% endif %}
+                        {% if approved %}
+                            <button type="button" class="btn btn-success" disabled>审核通过</button>
+                        {% endif %}
+                    {% else %}
+                        {% if allow_change_quota %}
+                            <button type="submit" class="btn btn-primary">修改</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" disabled>{% if approved %}审核通过{% else %}
+                                正在审核{% endif %}</button>
+                        {% endif %}
+                    {% endif %}
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

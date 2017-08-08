@@ -1,0 +1,18 @@
+{% extends "console/tpl/_layout.tpl" %}
+{% block script_content %}
+    <script>
+        (function ($) {
+            $(function () {
+                $('#refresh_icon').fadeIn(500);
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            我是网站登录后跳转过来的页面
+        </div>
+        <div class="panel-footer text-right">当前时间: {{ now|date:"Y-m-d H:i:s" }}</div>
+    </div>
+{% endblock %}

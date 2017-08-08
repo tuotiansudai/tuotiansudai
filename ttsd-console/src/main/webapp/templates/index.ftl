@@ -23,6 +23,9 @@
                         <td><a href="${task.operateURL!}">${task.description}</a></td>
                         <td>${task.createdTime?string("yyyy-MM-dd HH:mm:ss")!}</td>
                         <td>
+                            <#if task.taskType == "CURRENT_TASK" >
+                                <a class="btn btn-primary btn-xs" href="${task.operateURL!}&task_id=${task.objId}&token=${token}">去审核</a>
+                            </#if>
                             <#if task.taskType == "TASK" >
                                 <a class="btn btn-primary btn-xs" href="${task.operateURL!}">去审核</a>
                                 <#if task.operationType != 'PUSH'>
