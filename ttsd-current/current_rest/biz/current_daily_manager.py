@@ -16,26 +16,23 @@ class CurrentDailyManager(object):
 
     def get_current_daily_amount(self):
         daily_amount = int(redis_client.get(self.daily_amount_limit_key) or 0)
-        return daily_amount if daily_amount else 0
+        return daily_amount
 
 
 def sum_success_deposit_by_date(date_for_sum):
     tomorrow = date_for_sum + timedelta(days=1)
-    amount_sum = models.CurrentDeposit.objects.filter(status=constants.DEPOSIT_SUCCESS,
-                                                      updated_time__gte=date_for_sum,
-                                                      updated_time__lt=tomorrow) \
-        .all().aggregate(Sum('amount')) \
-        .get('amount__sum', 0)
-    return amount_sum if amount_sum else 0
+    sum_deposit = models.CurrentDeposit.objects.filter(
+        status=constants.DEPOSIT_SUCCESS,
+        updated_time__gte=date_for_sum,
+        updated_time__lt=tomorrow).all().aggregate(Sum('amount')).get('amount__sum') or 0
+    return sum_deposit
 
 
 def sum_interest_by_date(date_for_sum):
     tomorrow = date_for_sum + timedelta(days=1)
-    amount_sum = models.CurrentBill.objects.filter(bill_type=constants.BILL_TYPE_INTEREST,
-                                                   bill_date__gte=date_for_sum,
-                                                   bill_date__lt=tomorrow) \
-        .all().aggregate(Sum('amount')) \
-        .get('amount__sum') or 0
+    amount_sum = models.CurrentBill.objects.filter(
+        bill_type=constants.BILL_TYPE_INTEREST, bill_date__gte=date_for_sum, bill_date__lt=tomorrow).all().aggregate(
+        Sum('amount')).get('amount__sum') or 0
     return amount_sum
 
 
