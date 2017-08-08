@@ -6,8 +6,10 @@ import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.apache.log4j.Logger;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class RestErrorDecoder implements ErrorDecoder {
     private static Logger logger = Logger.getLogger(RestErrorDecoder.class);
@@ -17,13 +19,19 @@ public class RestErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
         ErrorResponse errorResponse = null;
-        if (response.body() != null)
+        String responseBody = null;
+        if (response.body() != null) {
             try {
-                errorResponse = objectMapper.readValue(response.body().asInputStream(), ErrorResponse.class);
+                responseBody = StreamUtils.copyToString(response.body().asInputStream(), StandardCharsets.UTF_8);
             } catch (IOException e) {
-                logger.error("can not parse response body as ErrorResponse: " + response.body().toString());
+                logger.error("can not read response body");
             }
-
+            try {
+                errorResponse = objectMapper.readValue(responseBody, ErrorResponse.class);
+            } catch (IOException e) {
+                logger.error("can not parse response body as ErrorResponse: '" + responseBody + "'");
+            }
+        }
         return new RestException(response, errorResponse);
     }
 }
