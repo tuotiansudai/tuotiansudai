@@ -58,6 +58,15 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD);
     }
 
+    public static ProjectTransferNopwdRequestModel newCurrentRedeemToLoanRequest(String orderId, String userId, String amount) {
+        // TODO : use the formal current loan id
+        return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_REDEEM_TO_LOAN_PROJECT_TRANSFER);
+    }
+
+    public static ProjectTransferNopwdRequestModel newCurrentInterestSettlementRequest(String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel("0", orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD);
+    }
+
     public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
         return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.LOANER, AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER_NOPWD);
     }

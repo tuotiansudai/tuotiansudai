@@ -28,6 +28,17 @@ class CurrentAccountManager(object):
                                 order_id=order_id)
 
     @transaction.atomic
+    def update_current_account_for_over_deposit(self, login_name, amount, order_id):
+        account = CurrentAccount.objects.select_for_update().get(login_name=login_name)
+
+        account.balance -= amount
+        account.save()
+        self.__add_current_bill(account=account,
+                                amount=amount,
+                                bill_type=constants.BILL_TYPE_PAYBACK,
+                                order_id=order_id)
+
+    @transaction.atomic
     def update_current_account_for_withdraw(self, login_name, amount, order_id):
         account = CurrentAccount.objects.select_for_update().get(login_name=login_name)
 
@@ -52,9 +63,6 @@ class CurrentAccountManager(object):
     @staticmethod
     def __add_current_bill(account, amount, bill_type, order_id):
         CurrentBill.objects.create(current_account=account,
-                                   login_name=account.login_name,
-                                   bill_date=account.updated_time,
                                    bill_type=bill_type,
                                    amount=amount,
-                                   balance=account.balance,
                                    order_id=order_id)

@@ -17,7 +17,7 @@ Including another URLconf
 # -*-coding:utf-8 -*-
 from django.conf.urls import url
 
-from current_console.views import home, loan, fund, repay
+from current_console.views import home, loan, fund, redeem, repay
 
 urlpatterns = [
     url('^index$', home.index, name='index'),
@@ -26,6 +26,8 @@ urlpatterns = [
     url('^show-edit-loan/(?P<pk>[0-9]+)$', loan.show_edit_loan, name='show_edit_loan'),
     url('^edit-loan/(?P<pk>[0-9]+)$', loan.edit_loan, name='edit_loan'),
     url('^create-loan$', loan.create_loan, name='create_loan'),
+    url('^redeem-list$', redeem.redeem_list, name='redeem_list'),
+    url('^audit-redeem/(?P<result>(pass|reject))/(?P<pk>[0-9]+)$', redeem.audit_redeem, name='audit_redeem'),
     url('^audit-reject-loan/(?P<category>(audit|reject))/(?P<pk>[0-9]+)$', loan.audit_reject_loan,
         name='audit_reject_loan'),
     url('^loan-list$', loan.loan_list, name='loan_list'),
@@ -38,4 +40,6 @@ urlpatterns = [
     url('^loan-repay-record$', repay.loan_repay_record, name='loan_repay_record'),
     url('^loan-repay-retrieve$', repay.loan_repay_retrieve, name='loan_repay_retrieve'),
     url('^audit-loan-repay/(?P<result>(pass|reject))/(?P<pk>[0-9]+)$', repay.audit_loan_repay, name='audit_loan_repay'),
+    url('^fund/distribution$', fund.fund_distribution_page, name='fund_distribution_page'),
+    url('^fund/distribution-query$', fund.fund_distribution_query, name='fund_distribution_query'),
 ]

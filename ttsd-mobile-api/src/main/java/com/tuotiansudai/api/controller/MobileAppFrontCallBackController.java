@@ -6,7 +6,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.current.client.CurrentRestClient;
-import com.tuotiansudai.current.dto.DepositDetailResponseDto;
+import com.tuotiansudai.current.dto.RedeemDetailResponseDto;
+import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.BankCardModel;
@@ -68,7 +69,7 @@ public class MobileAppFrontCallBackController {
         PayDataDto data = new PayDataDto();
         data.setStatus(true);
 
-        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD,AsyncUmPayService.CURRENT_REDEEM_APPLY).contains(asyncUmPayService)) {
             data = payWrapperClient.validateFrontCallback(params).getData();
         }
 
@@ -151,8 +152,16 @@ public class MobileAppFrontCallBackController {
                 .put("message", "签约成功")
                 .build());
 
+        Function<Long, Map<String, String>> bindCurrentRedeemValuesGenerator = (Long redeemId) -> {
+            RedeemDetailResponseDto redeemDto = redeemId != null ? currentRestClient.getRedeem(redeemId) : null;
+            return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("amount", (redeemDto != null ? AmountConverter.convertCentToString(redeemDto.getAmount()) : ""))
+                    .put("message", "转出申请成功")
+                    .build());
+        };
+
         Function<Long, Map<String, String>> bindCurrentDepositValuesGenerator = (Long depositId) -> {
-            DepositDetailResponseDto deposit = currentRestClient.getDeposit(depositId);
+            DepositDto deposit = currentRestClient.getDeposit(depositId);
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("message", "投资成功")
                     .put("investAmount", AmountConverter.convertCentToString(deposit.getAmount()))
@@ -173,6 +182,7 @@ public class MobileAppFrontCallBackController {
                 .put(AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
+                .put(AsyncUmPayService.CURRENT_REDEEM_APPLY, bindCurrentRedeemValuesGenerator)
                 .put(AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER, bindCurrentDepositValuesGenerator)
                 .put(AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD, bindCurrentDepositValuesGenerator)
                 .build());

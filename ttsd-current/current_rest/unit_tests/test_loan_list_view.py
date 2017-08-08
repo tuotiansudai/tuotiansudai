@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from datetime import datetime, timedelta
 import json
 
 from django.test import TestCase
@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
-from current_rest.models import Agent, Loan
+from current_rest.models import Agent, Loan, CurrentAccount
 from current_rest.serializers import LoanSerializer
 
 
@@ -54,3 +54,4 @@ class LoanListViewTests(TestCase):
         self.assertEqual(return_dict['expiration_date'], data['expiration_date'])
         self.assertEqual(return_dict['status'], data['status'])
         self.assertEqual(return_dict['agent'], data['agent'])
+
