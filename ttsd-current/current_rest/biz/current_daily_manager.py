@@ -2,7 +2,7 @@
 
 import logging
 
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.db.models import Sum
 
 from current_rest import redis_client, models, constants
