@@ -23,23 +23,29 @@ def submit_loan_repay(request):
         request_dict['submit_name'] = request.session['login_name']
         request_dict['status'] = constants.REPAY_STATUS_WAITING
         request_dict['repay_amount'] = request_dict['repay_amount']*1000000
-        response = RestClient('submit-loan-repay').post(data=request_dict)
-        if response:
+        status_code, response = RestClient('submit-loan-repay').post_status_and_response(data=request_dict)
+
+        if status_code == 201:
             return JsonResponse({'message': response['message']}, status=status.HTTP_200_OK)
+        elif status_code == 400:
+            return JsonResponse({'message': response['message']}, status=status.HTTP_400_BAD_REQUEST)
+
         return JsonResponse({'message', '內部服务器错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return JsonResponse({'message': form.errors['repay_amount']}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @require_http_methods(["GET"])
 @user_roles_check(['ADMIN', 'OPERATOR', 'OPERATOR_ADMIN'])
-def loan_repay_retrieve(request):
-    loan_repay = RestClient('loan-repay-retrieve/{}'.format(request.GET['id'])).get()
+def loan_repay_retrieve(request, pk, task):
+    loan_repay = RestClient('loan-repay-retrieve/{}'.format(pk)).get()
     loan_repay['loan']['amount'] = '{0:.2f}'.format(loan_repay['loan']['amount']/1000000.0)
     loan_repay['repay_amount'] = '{0:.2f}'.format(loan_repay['repay_amount']/1000000.0)
     if loan_repay:
         return render(request, 'console/repay/audit_repay.html',
                       {'loanRepay': loan_repay,
                        'types': constants.LOAN_TYPE_CHOICES,
-                       'task_id': request.GET['task_id']})
+                       'task_id': task})
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -62,9 +68,11 @@ def audit_loan_repay(request, pk, result):
         'task_id': eval(request.body)['task_id'],
     }
 
-    response = RestClient('audit-loan-repay/{}/{}'.format(pk, result)).put(data=data)
+    status_code, response = RestClient('audit-loan-repay/{}/{}'.format(pk, result)).put_status_and_response(data=data)
 
-    if response:
-        return JsonResponse({'message': response[1]}, status=status.HTTP_200_OK)
-
-    return JsonResponse({'message', '內部服务器错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    if status_code == 201:
+        return JsonResponse({'message': response['message']}, status=status.HTTP_200_OK)
+    elif status_code == 400:
+        return JsonResponse({'message': response['message']}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JsonResponse({'message', '內部服务器错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

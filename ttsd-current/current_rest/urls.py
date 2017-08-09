@@ -22,7 +22,7 @@ from current_rest.views.account import AccountViewSet
 from current_rest.views.deposit import DepositViewSet
 from current_rest.views.loan import LoanListViewSet, audit_reject_loan
 from current_rest.views.loan import LoanViewSet, ApprovedLoanListViewSet
-from current_rest.views.repay import LoanRepayViewSet, audit_loan_repay
+from current_rest.views.repay import LoanRepayViewSet, audit_loan_repay_pass, audit_loan_repay_reject
 from current_rest.views.task import TaskViewSet
 from current_rest.views.redeem import RedeemViewSet, audit_redeem_pass, audit_redeem_reject
 
@@ -71,7 +71,8 @@ urlpatterns = [
     url(r'^submit-loan-repay$', post_loan_repay, name='submit_loan_repay'),
     url(r'^loan-repay-record', loan_repay_record, name='loan_repay_record'),
     url(r'^loan-repay-retrieve/(?P<pk>[0-9]+)$', get_put_loan_repay, name='loan_repay_retrieve', kwargs={'partial': True}),
-    url(r'^audit-loan-repay/(?P<pk>[0-9]+)/(?P<result>(pass|reject))$', audit_loan_repay, name='audit_loan_repay'),
+    url(r'^audit-loan-repay/(?P<pk>[0-9]+)/pass$', audit_loan_repay_pass, name='audit_loan_repay_pass'),
+    url(r'^audit-loan-repay/(?P<pk>[0-9]+)/reject$', audit_loan_repay_reject, name='audit_loan_repay_reject'),
     url(r'^task$', task_list, name='task_list'),
     url(r'^fund/distribution$', fund.distribution, name="fund_distribution"),
 ]

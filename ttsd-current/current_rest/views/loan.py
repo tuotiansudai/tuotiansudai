@@ -3,7 +3,6 @@ import logging
 import datetime
 from django.db import transaction
 from django.db.models import Q
-from datetime import datetime
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins
 from django.db import transaction

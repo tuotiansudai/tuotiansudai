@@ -17,11 +17,11 @@
                     if (data.message == 'success') {
                         layer.msg("提交成功");
                     } else {
-                        layer.msg(data.message);
+                        layer.msg("提交失败");
                     }
                 })
-                .fail(function () {
-                    layer.msg("提交失败,输入金额有误");
+                .fail(function (data) {
+                    layer.msg("提交失败,"+JSON.parse(data.responseText).message);
                 });
            });
     </script>

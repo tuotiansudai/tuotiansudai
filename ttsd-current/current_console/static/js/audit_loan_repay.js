@@ -24,12 +24,12 @@
                               $('#audit-operation').hide();
                               $('#resultApproved').show();
                           }else{
-                              layer.msg('审核失败'+data.message);
+                              layer.msg('审核失败');
                           }
 
                       })
                       .fail(function (data) {
-                          layer.msg('审核失败')
+                          layer.msg('审核失败,'+JSON.parse(data.responseText).message)
                       });
              });
      });
@@ -58,12 +58,12 @@
                               $('#audit-operation').hide();
                               $('#resultReject').show();
                           }else{
-                              layer.msg('驳回失败'+data.message)
+                              layer.msg('驳回失败')
                           }
 
                       })
                       .fail(function (data) {
-                          layer.msg('驳回失败')
+                          layer.msg('驳回失败,'+JSON.parse(data.responseText).message)
                       });
              });
      });
