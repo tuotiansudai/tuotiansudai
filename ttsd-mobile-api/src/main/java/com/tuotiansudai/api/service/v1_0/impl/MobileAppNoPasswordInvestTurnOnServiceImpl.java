@@ -51,7 +51,7 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
             }
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         accountModel.setNoPasswordInvest(true);
         accountMapper.update(accountModel);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
