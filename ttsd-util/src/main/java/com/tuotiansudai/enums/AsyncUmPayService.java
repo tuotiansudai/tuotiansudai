@@ -110,14 +110,17 @@ public enum AsyncUmPayService {
      */
     CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "current_deposit_notify", "tuotian://current-deposit/{0}"),
     /**
+     * 日息宝放款准备金垫付利息
+     */
+    CURRENT_LOAN_OUT_TRANSFER_RESERVE_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "current_loan_out_transfer_reserve_notify", ""),
+    /**
+     * 日息宝放款代理人收款
+     */
+    CURRENT_LOAN_OUT_TRANSFER_AGENT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "current_loan_out_transfer_agent_notify", ""),
+    /**
      * 日息宝赎回-到标的
      */
     CURRENT_REDEEM_TO_LOAN_PROJECT_TRANSFER("project_transfer_nopwd", "", "", "current_redeem_to_loan_notify", ""),
-
-    /**
-     * 无密准备金账户转入标的账户
-     */
-    CURRENT_INTEREST_SETTLEMENT("project_transfer_nopwd", "", "", "current_interest_settlement_notify", ""),
 
 
     /**

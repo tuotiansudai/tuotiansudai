@@ -1,33 +1,19 @@
 # -*- coding: utf-8 -*-
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.db.models import Sum
-from rest_framework import serializers, status
-from rest_framework.response import Response
+from rest_framework import serializers
 
 from current_rest import constants, models
 from current_rest.biz.current_account_manager import CurrentAccountManager
-from current_rest.biz.current_daily_manager import CurrentDailyManager, calculate_success_deposit_today
+from current_rest.biz.current_daily_manager import sum_success_deposit_by_date, \
+    get_current_daily_amount
 from current_rest.models import Agent
 from current_rest.models import CurrentAccount
 
 logger = logging.getLogger(__name__)
-
-
-def json_validation_required(serializer):
-    def decorator(func):
-        def wrapper(request, *args, **kwargs):
-            serializer_instance = serializer(data=request.data)
-            if serializer_instance.is_valid():
-                return func(request, serializer_instance.validated_data, *args, **kwargs)
-            logger.error('request data is illegal. data is {}'.format(request.data))
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        return wrapper
-
-    return decorator
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -39,8 +25,8 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_personal_max_deposit(self, instance):
         user_max_deposit = constants.PERSONAL_MAX_DEPOSIT - instance.balance if constants.PERSONAL_MAX_DEPOSIT - instance.balance > 0 else 0
-        today_sum_deposit = calculate_success_deposit_today()
-        current_daily_amount = CurrentDailyManager().get_current_daily_amount()
+        today_sum_deposit = sum_success_deposit_by_date(datetime.now().date())
+        current_daily_amount = get_current_daily_amount()
         return min(user_max_deposit, current_daily_amount - today_sum_deposit)
 
     def get_personal_available_redeem(self, instance):
@@ -54,16 +40,6 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_personal_max_redeem(self, instance):
         return constants.EVERY_DAY_OF_MAX_REDEEM_AMOUNT
-
-    @staticmethod
-    def __calculate_success_deposit_today():
-        today = datetime.now().date()
-        tomorrow = today + timedelta(1)
-        amount_sum = models.CurrentDeposit.objects.filter(status=constants.DEPOSIT_SUCCESS,
-                                                          updated_time__range=(today, tomorrow)) \
-            .all().aggregate(Sum('amount')) \
-            .get('amount__sum', 0)
-        return amount_sum if amount_sum else 0
 
     class Meta:
         model = models.CurrentAccount
@@ -163,3 +139,15 @@ class CurrentDailyFundInfoSerializer(serializers.ModelSerializer):
         fields = ('date', 'loan_remain_amount', 'quota_amount', 'config_quota_amount', 'config_quota_status',
                   'invest_amount', 'allow_change_quota')
         read_only_fields = ('date', 'loan_remain_amount', 'quota_amount', 'invest_amount', 'allow_change_quota')
+
+
+class LoanOutHistorySerializer(serializers.ModelSerializer):
+    bill_date = serializers.DateField(format='%Y-%m-%d')
+    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False)
+    updated_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False)
+
+    class Meta:
+        model = models.CurrentLoanOutHistory
+        fields = '__all__'
+        read_only_fields = ('reserve_account', 'agent_account', 'interest_amount',
+                            'deposit_amount', 'bill_date', 'created_time', 'updated_time')

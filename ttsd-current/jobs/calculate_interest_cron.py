@@ -7,7 +7,8 @@ from jobs import current_app, settings
 
 logger = get_task_logger(__name__)
 
-#run this commond:celery worker --app=jobs.XXX -l info --beat
+
+# run this commond:celery worker --app=jobs.XXX -l info --beat
 
 @current_app.task(bind=True, default_retry_delay=10, max_retries=3)
 def calculate_interest(self):

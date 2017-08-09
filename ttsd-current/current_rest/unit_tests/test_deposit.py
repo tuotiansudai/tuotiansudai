@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import mock
 from django.test import TestCase
 from django.urls import reverse
@@ -7,6 +8,7 @@ from rest_framework.test import APIClient
 
 from current_rest import constants, serializers
 from current_rest.biz.current_account_manager import CurrentAccountManager
+from current_rest.biz.current_daily_manager import sum_success_deposit_by_date
 from current_rest.models import CurrentAccount, CurrentDeposit, CurrentBill
 from current_rest.views.deposit import DepositViewSet
 
@@ -115,13 +117,12 @@ class DepositTestCase(TestCase):
                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    @mock.patch('current_rest.views.deposit.CurrentDailyManager')
-    def test_should_return_200_when_deposit_callback_success(self, fake_manager):
+    @mock.patch('current_rest.views.deposit.get_current_daily_amount')
+    def test_should_return_200_when_deposit_callback_success(self, get_current_daily_amount):
         fake_account = CurrentAccountManager().fetch_account(self.login_name)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
 
-        instance = fake_manager.return_value
-        instance.get_current_daily_amount.return_value = 2
+        get_current_daily_amount.return_value = 2
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
                                    data={'status': constants.DEPOSIT_SUCCESS},
@@ -175,16 +176,16 @@ class DepositTestCase(TestCase):
         self.assertEqual(current_bill.amount, fake_deposit.amount)
         self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
 
-    @mock.patch('current_rest.views.deposit.calculate_success_deposit_today')
-    @mock.patch('current_rest.views.deposit.CurrentDailyManager')
-    def test_should_return_200_when_deposit_callback_success_and_over_current_daily_max_amount(self, fake_manager,
-                                                                                               calculate_success_deposit_today):
+    @mock.patch('current_rest.views.deposit.sum_success_deposit_by_date')
+    @mock.patch('current_rest.views.deposit.get_current_daily_amount')
+    def test_should_return_200_when_deposit_callback_success_and_over_current_daily_max_amount(self,
+                                                                                               get_current_daily_amount,
+                                                                                               sum_success_deposit_by_date):
         fake_account = CurrentAccount.objects.create(login_name=self.login_name, balance=constants.PERSONAL_MAX_DEPOSIT)
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=2)
 
-        instance = fake_manager.return_value
-        instance.get_current_daily_amount.return_value = 1
-        calculate_success_deposit_today.return_value = fake_deposit.amount
+        get_current_daily_amount.return_value = 1
+        sum_success_deposit_by_date.return_value = fake_deposit.amount
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
                                    data={'status': constants.DEPOSIT_SUCCESS},
@@ -212,3 +213,8 @@ class DepositTestCase(TestCase):
         response = self.client.get(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_should_return_0_when_none_deposit(self):
+        deposit_by_date = sum_success_deposit_by_date(datetime.datetime.now())
+
+        self.assertEqual(deposit_by_date, 0)

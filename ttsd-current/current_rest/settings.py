@@ -59,7 +59,8 @@ PAY_WRAPPER_SERVER = 'http://localhost:8080/current'
 
 REDIS_URL = 'redis://192.168.33.10/2'
 
-LOGIN_NAME = 'testName'
+RESERVE_ACCOUNT = 'sidneygao'
+AGENT_ACCOUNT = 'sidneygao'
 
 # reload setting for local
 setting_local_file = '/workspace/deploy-config/ttsd-current/rest_settings.py'

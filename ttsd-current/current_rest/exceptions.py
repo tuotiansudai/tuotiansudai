@@ -11,8 +11,10 @@ class PayWrapperException(APIException):
     default_detail = 'call pay wrapper fail.'
     default_code = 'error'
 
-    def __init__(self, detail=None, code=None):
-        APIException.__init__(self, detail, code)
+    def __init__(self, detail=None, code=None, status_code=None):
+        super(PayWrapperException, self).__init__(detail=detail, code=code)
+        if status_code:
+            self.status_code = status_code
 
 
 def api_exception_handler(ex, context):
@@ -20,8 +22,8 @@ def api_exception_handler(ex, context):
 
     if not isinstance(ex, Http404) and response is not None:
         response.data = {
-            'code': -1,
             'message': 'current rest service error',
+            'status_code': ex.status_code,
             'exception': ex.detail,
             'detail': ex.detail,
             'path': context['request'].path,

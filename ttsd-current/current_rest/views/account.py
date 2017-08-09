@@ -9,7 +9,6 @@ from rest_framework.response import Response
 
 from current_rest import redis_client
 from current_rest import serializers, models
-from current_rest import settings
 from current_rest.biz import current_interest
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import setting_quota_amount, calculate_loan_remain_amount_today
@@ -28,7 +27,6 @@ class AccountViewSet(mixins.RetrieveModelMixin,
     calculate_interest_key = "interest:{0}"
     interest_pay_with_no_password_url = '{}/interest-settlement/'.format(PAY_WRAPPER_SERVER)
     valid_time = 60 * 60 * 24
-    login_name = settings.LOGIN_NAME
 
     def retrieve(self, request, *args, **kwargs):
         instance = models.CurrentAccount(login_name=kwargs.get(self.lookup_field),
