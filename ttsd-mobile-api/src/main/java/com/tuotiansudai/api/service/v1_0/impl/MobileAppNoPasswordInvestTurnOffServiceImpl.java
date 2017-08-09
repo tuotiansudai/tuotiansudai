@@ -17,6 +17,7 @@ import com.tuotiansudai.service.SmsCaptchaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoPasswordInvestTurnOffService {
@@ -37,6 +38,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoP
 
 
     @Override
+    @Transactional
     public BaseResponseDto noPasswordInvestTurnOff(NoPasswordInvestTurnOffRequestDto dto, String ip) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = dto.getBaseParam().getUserId();
