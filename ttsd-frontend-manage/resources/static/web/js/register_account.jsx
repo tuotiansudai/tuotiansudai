@@ -53,7 +53,7 @@ registerAccountForm.onsubmit = function(event) {
     $buttonLayer.find('.status').removeClass('error').html('请耐心等待');
     $btnSubmit.prop('disabled', true).val('认证中');
     $('.loading-effect',$buttonLayer).show();
-    
+
     commonFun.useAjax({
         url:"/register/account",
         type:'POST',
@@ -63,11 +63,11 @@ registerAccountForm.onsubmit = function(event) {
             $buttonLayer.find('.status').removeClass('error').html('认证成功');
             location.href = '/register/account/success';
         } else {
-            $buttonLayer.find('.status').addClass('error').html('实名认证超时，请重试');
+            let errorMsg = (response.data.code === '1002') ? '实名认证超时，请重试' : '认证失败，请检查您的信息';
+            $buttonLayer.find('.status').addClass('error').html(errorMsg);
             $btnSubmit.prop('disabled', false).val('认证');
             $('.loading-effect',$buttonLayer).hide();
 
-            // 认证失败，请检查您的信息
         }
     });
 };
