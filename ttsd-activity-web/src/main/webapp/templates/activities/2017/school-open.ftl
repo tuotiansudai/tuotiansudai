@@ -4,13 +4,13 @@
 
 <#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
-<@global.main pageCss="${css.school_open_2017}" pageJavascript="${js.school_open_2017}" activeNav="" activeLeftNav="" title="领券专场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,红包奖励,加息券" description="拓天周年庆-领券专场活动,微信扫描二维码关注拓天速贷服务号,回复我要领券即可领取1000红包奖励+0.8%加息券.">
+<@global.main pageCss="${css.school_open_2017}" pageJavascript="${js.school_open_2017}" activeNav="" activeLeftNav="" title="开学季活动_活动中心_拓天速贷" keywords="拓天速贷,拓天开学季,现金红包,京东E卡,实物大奖" description="拓天速贷谁是投资尖子生活动,每日登录可获一次免费抽取现金红包机会,活动期间,投资带有早鸟专享标签的项目前3名奖励100元京东E卡,累计投资前18名可获得实物大奖.">
 
 <div class="banner-slide" id="bannerSlide"></div>
 
 <div class="activity-frame-box page-width" id="activityPageFrame">
 
-    <div class="box-column bg-luck-draw">
+    <div class="box-column bg-luck-draw" id="luckDrawBox">
         <div class="column-title-col">
             <i class="word-num">01</i>
             <i class="word-title one"></i>
@@ -19,11 +19,11 @@
         <div class="reward-info">
             <b>每日登录可获一次免费抽签机会</b>
             <div class="reward-scroll">
-                <div class="scroll-inner">
-                    <span>155＊＊＊＊2223抽动了50元红包</span>
-                    <span>155＊＊＊＊2223抽动了50元红包</span>
-                    <span>155＊＊＊＊2223抽动了50元红包</span>
-                </div>
+                <ul class="scroll-inner user-record">
+                    <li>151＊＊＊＊2223抽动了50元红包</li>
+                    <li>152＊＊＊＊2223抽动了50元红包</li>
+                    <li>153＊＊＊＊2223抽动了50元红包</li>
+                </ul>
             </div>
             <div class="my-reward">
                 <b>您有<i class="my-number">1</i>次抽签机会</b>
@@ -77,51 +77,54 @@
             <i class="key">前18名</i>上榜的投资尖子生，<i class="key">可获实物大奖</i>。</p>
 
         <div class="winners-box">
-            <div class="top-column">
+            <div class="top-column clearfix">
                 <span class="fl">我的投资总额：20999000元</span>
                 <span class="fr">我的排名：3</span>
             </div>
-            <table class="table-list">
-                <thead>
-                <tr>
-                    <th>排名</th>
-                    <th>用户名</th>
-                    <th>投资总额</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>134＊＊＊＊2345</td>
-                    <td>900000</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>134＊＊＊＊2345</td>
-                    <td>900000</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>134＊＊＊＊2345</td>
-                    <td>900000</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>134＊＊＊＊2345</td>
-                    <td>900000</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>134＊＊＊＊2345</td>
-                    <td>900000</td>
-                </tr>
-                </tbody>
+            <div class="table-title clearfix">
+                <span>排名</span>
+                <span>用户名</span>
+                <span>投资总额</span>
+            </div>
+            <div class="table-list-box">
+                <ul class="table-list clearfix">
+                    <li>
+                        <span>1</span>
+                        <span>134＊＊＊＊2345</span>
+                        <span>900000</span>
+                    </li>
+                    <li>
+                        <span>1</span>
+                        <span>134＊＊＊＊2345</span>
+                        <span>900000</span>
+                    </li>
+                    <li>
+                        <span>1</span>
+                        <span>134＊＊＊＊2345</span>
+                        <span>900000</span>
+                    </li>
+                    <li>
+                        <span>1</span>
+                        <span>134＊＊＊＊2345</span>
+                        <span>900000</span>
+                    </li>
+                    <li>
+                        <span>1</span>
+                        <span>134＊＊＊＊2345</span>
+                        <span>900000</span>
+                    </li>
+                    <li>
+                        <span>1</span>
+                        <span>134＊＊＊＊2345</span>
+                        <span>900000</span>
+                    </li>
+                </ul>
 
-            </table>
+            </div>
 
             <div class="page-number">
                 <i class="icon-left"></i>
-                <span>1</span>
+                <span class="page-index">1</span>
                 <i class="icon-right"></i>
             </div>
         </div>
@@ -135,7 +138,7 @@
 
             <div class="reward-box-list ">
                 <div class="inner two">
-                    <i></i>
+                    <i class="icon-two"></i>
                     <span class="re-img"></span>
                 </div>
                 <span class="re-name">小米电视43英寸</span>
@@ -143,7 +146,7 @@
 
             <div class="reward-box-list ">
                 <div class="inner one">
-                    <i></i>
+                    <i class="icon-one"></i>
                     <span class="re-img"></span>
                 </div>
                 <span class="re-name">Apple iPad9.7英寸</span>
@@ -151,7 +154,7 @@
 
             <div class="reward-box-list ">
                 <div class="inner three">
-                    <i></i>
+                    <i class="icon-three"></i>
                     <span class="re-img"></span>
                 </div>
                 <span class="re-name">丹尼尔惠灵顿手表</span>
@@ -160,21 +163,22 @@
 
             <ul class="reward-other-list clearfix">
                 <li>
+                    <i>9</i>
                     <span>红米note4x</span>
                 </li>
                 <li>
+                    <i>10</i>
                     <span>红米note4x</span>
                 </li>
                 <li>
+                    <i>11</i>
                     <span>红米note4x</span>
                 </li>
                 <li>
+                    <i>12</i>
                     <span>红米note4x</span>
                 </li>
             </ul>
-
-
-
     </div>
 
     <div class="box-column box-notice">
@@ -188,6 +192,106 @@
         7.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
         8.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
     </div>
+
+
+    <div class="tip-list-frame">
+        <!-- 真实奖品的提示 -->
+        <div class="tip-list" data-return="concrete">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="reward-text">恭喜您抽中了<em class="prizeValue"></em>！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close"></a></div>
+        </div>
+
+        <!--虚拟奖品的提示-->
+        <div class="tip-list" data-return="virtual">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="reward-text">恭喜您抽中了<em class="prizeValue"></em></p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close"></a></div>
+        </div>
+
+        <!--没有抽奖机会-->
+        <div class="tip-list" data-return="nochance">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您暂无抽奖机会啦～</p>
+                <p class="des-text">明天再来吧~</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="no-reward go-close"></a></div>
+        </div>
+
+        <!--不在活动时间范围内-->
+        <div class="tip-list" data-return="expired">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">不在活动时间内~</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="no-reward go-close"></a></div>
+        </div>
+
+    </div>
+    <div class="layer-reward-list" style="display: none">
+        <div class="own-record-title">
+            <span>日期时间</span>
+            <span>奖品名称</span>
+        </div>
+        <div class="own-record-box">
+            <ul class="own-record">
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-13 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-15 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-15 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+                <li>
+                    <span>2017-09-15 15:30:23</span>
+                    <span>2.9元红包</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 </@global.main>

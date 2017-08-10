@@ -88,10 +88,6 @@ body {
           background: url('../images/2017/school-open/bg-word.png') -30px -173px no-repeat;
           //background-size:100%;
         }
-        &.four {
-          background: url('../images/2017/school-open/bg-word.png') -30px -243px no-repeat;
-          //background-size:100%;
-        }
       }
 
     }
@@ -116,13 +112,15 @@ body {
         line-height: 60px;
         color: #fff;
         .scroll-inner {
-          width:9999px;
+          //width:9999px;
+          position: absolute;
+          li {
+            float: left;
+            display: inline-block;
+            width:240px;
+          }
         }
-        span {
-          float: left;
-          display: inline-block;
-          width:240px;
-        }
+
       }
     }
     .my-reward {
@@ -138,6 +136,7 @@ body {
         text-decoration: underline;
         color: #7a34cc;
         float: right;
+        cursor: pointer;
       }
     }
     .luck-draw-box {
@@ -191,6 +190,8 @@ body {
       width: 100%;
       line-height: 76px;
       text-align: center;
+      box-sizing: border-box;
+      padding-left: 45px;
     }
     .info-tip-reward {
       background: url('../images/2017/school-open/bg-col03.jpg') center top no-repeat;
@@ -243,6 +244,7 @@ body {
     color: #fcf821;
     font-size:18px;
     .top-column {
+      margin-bottom:10px;
       span {
         display: inline-block;
         background: #955cd6;
@@ -252,30 +254,43 @@ body {
       }
     }
 
-    table  {
-      thead {
-        tr th {
-          background: transparent;
-          color: #fcf821;
-          font-size:18px;
-        }
+    .table-title {
+      color: #fcf821;
+      font-size:18px;
+      margin-top: 15px;
+      span {
+        display: block;
+        width:33%;
+        float: left;
+        text-align: center;
       }
-      tbody {
-        tr {
-          background: #955cd6;
-          margin-bottom:30px;
-          border-bottom:15px solid #7a33cc;
-          td {
-            color: #fcf821;
-            font-size:16px;
-            padding: 7px;
-
-          }
-          &:nth-last-child(1) {
-            border-bottom-width: 0;
-          }
+    }
+    .table-list-box {
+      height: 235px;
+      overflow: hidden;
+      position: relative;
+      margin-top: 10px;
+    }
+    .table-list {
+      position: absolute;
+      width:100%;
+      height:100%;
+      li {
+        background: #955cd6;
+        clear:both;
+        display: block;
+        border-radius: 15px;
+        height: 35px;
+        line-height: 35px;
+        overflow: auto;
+        margin-bottom: 15px;
+        span {
+          display: block;
+          width:33%;
+          float: left;
+          color: #fcf821;
+          font-size:16px;
         }
-
       }
     }
 
@@ -309,7 +324,7 @@ body {
     position: relative;
     width: 90%;
     margin: 20px auto;
-    min-height:100px;
+    min-height:50px;
     .align-line {
       position: absolute;
       width:100%;
@@ -357,6 +372,9 @@ body {
     width: 90%;
     margin: 20px auto;
   }
+  .reward-other-list {
+    margin: 20px auto 50px auto;
+  }
   .reward-box-list +  .reward-box-list {
     margin-left:20px;
   }
@@ -367,10 +385,41 @@ body {
       height:160px;
       background: #fff;
       box-shadow: 1px 1px 40px rgba(99, 96, 213, 0.35);
+      position: relative;
+
+      i {
+        display: inline-block;
+        width:37px;
+        height:43px;
+        position: absolute;
+        left:10px;
+        top:10px;
+
+        &.icon-one {
+          background: url('../images/2017/school-open/reward-one.png') left top no-repeat;
+        }
+        &.icon-two {
+          background: url('../images/2017/school-open/reward-two.png') left top no-repeat;
+        }
+        &.icon-three {
+          background: url('../images/2017/school-open/reward-three.png') left top no-repeat;
+        }
+      }
 
       &.one {
         width:355px;
         height:220px;
+        display: inline-block;
+        background: url('../images/2017/school-open/r1.png') center center no-repeat;
+      }
+      &.two {
+        display: inline-block;
+        background: url('../images/2017/school-open/r2.png') center center no-repeat;
+      }
+
+      &.three {
+        display: inline-block;
+        background: url('../images/2017/school-open/r3.png') center center no-repeat;
       }
 
     }
@@ -392,6 +441,19 @@ body {
       float: left;
       box-shadow: 1px 1px 40px rgba(99, 96, 213, 0.35);
       position: relative;
+      i {
+        display: inline-block;
+        width:26px;
+        height:31px;
+        position: absolute;
+        left:10px;
+        top:10px;
+        font-size:12px;
+        background: url('../images/2017/school-open/re-out.png') center top no-repeat;
+        background-size:100%;
+        text-align: center;
+        color: #9492d5;
+      }
       span {
         display: inline-block;
         position: absolute;
@@ -401,10 +463,215 @@ body {
         text-align: center;
         font-size:14px;
         color: #525252;
+      }
+    }
+  }
 
+  .box-notice {
+    .title-notice {
+      display: block;
+      width:275px;
+      height:52px;
+      vertical-align: middle;
+      margin:10px auto;
+      background: url('../images/2017/school-open/bg-word.png') -30px -243px no-repeat;
+    }
+  }
+}
+
+.layer-reward-box {
+  background-color: transparent!important;
+  box-shadow: none!important;
+  .layui-layer-ico {
+    background: url('../images/2017/school-open/icon-close.png') left bottom no-repeat;
+    background-size:100%;
+
+  }
+
+  .layui-layer-setwin .layui-layer-close2 {
+    right: -37px;
+    top: -39px;
+    background-position:0 0;
+    &:hover {
+      background-position:0 0;
+    }
+  }
+}
+.layer-reward-list {
+  width:537px;
+  height:529px;
+  background: url('../images/2017/school-open/bg-reward-list.png') left bottom no-repeat;
+  background-size:contain;
+  padding-top: 30px;
+  box-sizing: border-box;
+  text-align: center;
+  .own-record-box {
+    height:80%;
+    overflow: hidden;
+  }
+  .own-record-title {
+    color: #947f4a;
+    font-size:29px;
+  }
+  span {
+    display: inline-block;
+    width:48%;
+    text-align: center;
+    line-height:44px;
+  }
+  ul {
+    width:85%;
+    margin:0 auto;
+    li {
+      font-size:20px;
+      color: #bd5600;
+      border-bottom:1px dotted #dac9b7;
+    }
+  }
+
+}
+
+.win-result {
+  animation: win-effect 0.5s linear infinite;
+}
+
+@keyframes  win-effect{
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(30deg); }
+  50% { transform: rotate(0deg); }
+  70% { transform: rotate(-30deg); }
+  100% { transform: rotate(0deg); }
+}
+@-webkit-keyframes win-effect {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(30deg); }
+  50% { transform: rotate(0deg); }
+  70% { transform: rotate(-30deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.tip-list {
+  width:409px!important;
+  height:238px!important;
+  background: url('../images/2017/school-open/bg-success.png') left bottom no-repeat;
+
+  .close-btn {
+    background: url('../images/2017/school-open/icon-close.png') left bottom no-repeat;
+    top: -16px;
+    right: -17px;
+    background-size: 100%;
+  }
+
+  .text-tip {
+    height: 100px;
+    margin-top: 40px;
+    margin-left: 30px;
+    p.reward-text {
+      color: #461410;
+      font-size:22px;
+      font-weight: bold;
+      .prizeValue {
+        display: block;
+        padding-top:0px;
+        color: #b5332a;
+        font-size:30px;
+      }
+    }
+  }
+
+  .btn-list a {
+    background: url('../images/2017/school-open/btn-use.png') left bottom no-repeat;
+    padding:0;
+    width:180px;
+    height:54px;
+    background-size: 100%;
+    margin: 10px auto 10px 40px;
+
+    &.no-reward {
+      background: url('../images/2017/school-open/btn-ok.png') left bottom no-repeat;
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+
+  body {
+    background: #655ddc;
+  }
+  .page-width {
+    width:100%;
+  }
+  .banner-slide  {
+    height: 185px;
+    background: url("../images/2017/school-open/top-wap.jpg") center top no-repeat;
+    background-size: 100%;
+  }
+
+  .activity-frame-box  {
+    padding:0px 15px;
+
+    .box-column {
+      padding-top: 70px;
+      margin-bottom:10px;
+      &.bg-luck-draw {
+        margin-top: 0px;
       }
 
-
+      .column-title-col {
+        height:55px;
+        left: -6px;
+        .word-num {
+          zoom: 0.5;
+        }
+        .word-title {
+          zoom: 0.5;
+        }
+      }
+      .reward-info {
+        width:100%;
+      }
+      .line-column {
+        height: 2px;
+        width: 97%;
+        left: 15px;
+        top: 51px;
+      }
+      .reward-info {
+        b {
+          font-size:15px;
+        }
+        .reward-scroll {
+          height: 40px;
+          line-height: 40px;
+          background-size: 100%;
+          font-size: 13px;
+        }
+      }
+      .my-reward {
+        font-size:14px;
+        padding: 15px;
+        .my-record-link {
+          font-size:14px;
+        }
+      }
+      .luck-draw-box {
+        zoom:0.5;
+      }
+      .bardeen-left,.bardeen-right {
+        zoom: 0.5;
+        bottom: -39px;
+      }
+    }
+    .morning-bird-special  {
+      .info-tip {
+        zoom:0.6;
+      }
+      .special-img {
+        width:90%;
+        height:105px;
+        background: url('../images/2017/school-open/special-app.jpg') center center no-repeat;
+        
+      }
     }
   }
 }
