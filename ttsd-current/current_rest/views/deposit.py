@@ -27,7 +27,6 @@ class DepositViewSet(mixins.RetrieveModelMixin,
     serializer_class = serializers.DepositSerializer
     queryset = models.CurrentDeposit.objects.all()
     filter_class = filters.DepositFilter
-    ordering = ('-updated_time', '-pk')
 
     pay_with_password_url = '{}/deposit-with-password/'.format(PAY_WRAPPER_SERVER)
     pay_with_no_password_url = '{}/deposit-with-no-password/'.format(PAY_WRAPPER_SERVER)
