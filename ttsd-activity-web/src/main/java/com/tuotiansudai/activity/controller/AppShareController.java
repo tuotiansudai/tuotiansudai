@@ -66,8 +66,7 @@ public class AppShareController {
                 return modelAndView;
             }
         }
-        String userAgent = httpServletRequest.getHeader("user-agent");
-        ModelAndView modelAndView = new ModelAndView(obtainPageByMobileClient(userAgent));
+        ModelAndView modelAndView = new ModelAndView("/wechat/share-app-mobile");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
@@ -90,21 +89,6 @@ public class AppShareController {
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
-    }
-
-    private String obtainPageByMobileClient(final String userAgent){
-        List<String> applyDevice = Lists.newArrayList("MAC", "IPAD", "IPHONE");
-        Integer index = Iterators.indexOf(applyDevice.iterator(), new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return userAgent.toUpperCase().indexOf(input) > -1;
-            }
-        });
-        if(index >= 0){
-            return "/wechat/share-app-ios";
-        }
-
-        return "/wechat/share-app-android";
     }
 
     private String getReferrerInfo(UserModel referrer) {

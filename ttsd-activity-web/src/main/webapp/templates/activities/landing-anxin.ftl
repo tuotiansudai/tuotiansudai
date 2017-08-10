@@ -47,12 +47,12 @@
         <div class="page-width how-to-open">
             <div class="section-title title-three"></div>
             <p>为优化投资环境，提供全面安全保障，拓天速贷携手CFCA上线CFCA电子签章（安心签）功能，为每一位投资用户的投资合同安全加码。</p>
-            <ul class="advantage-list">
+            <ul class="advantage-list clearfix">
                 <li>保密性</li>
                 <li>不可篡改性</li>
                 <li>可校验性</li>
             </ul>
-            <p>安心签是由中国金融认证中心（CFCA）全资子公司安心签平台为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。具有保密性、不可篡改性、可校验性。所形成的数据电文或电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。</p>
+            <p class="clearfix">安心签是由中国金融认证中心（CFCA）全资子公司安心签平台为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。具有保密性、不可篡改性、可校验性。所形成的数据电文或电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。</p>
             <#if !isAppSource>
                 <a href="/anxinSign" class="anxin-button">开通安心签</a>
             </#if>

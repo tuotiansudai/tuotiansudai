@@ -63,6 +63,7 @@ a.anxin-button {
       background: #e6ecf4;
       &.jigou-img{
         background:#e6ecf4 url("../images/anxin_landing/jigou.jpg") no-repeat center ;
+        background-size: contain;
         @media(max-width:700px){
           height:120px;
         }
@@ -242,4 +243,59 @@ a.anxin-button {
       }
     }
   }
+}
+
+@media screen and (min-width: 710px) and (max-width:1024px){
+
+  .main-frame {
+    overflow-x: hidden;
+  }
+
+  .tour-slide {
+    height: 250px;
+    background-size: cover;
+  }
+  .landing-safety-frame {
+    .CFCA-box dd {
+      a.anxin-button {
+        display: none;
+      }
+    }
+    .column-box-box {
+      padding:0 15px;
+    }
+    .CFCA-box {
+      width:49%;
+
+    }
+
+    .CFCA-do-what  {
+
+      .icon-and {
+        display: none;
+      }
+      dl {
+        width:47%;
+      }
+
+    }
+
+    .how-to-open  {
+      .advantage-list li {
+        display: block;
+        float:left;
+      }
+    }
+
+    .column-box-box:nth-child(2n) {
+      margin-top: 20px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width:1366px){
+  .landing-container .landing-header-nav {
+    width:60%;
+  }
+
 }

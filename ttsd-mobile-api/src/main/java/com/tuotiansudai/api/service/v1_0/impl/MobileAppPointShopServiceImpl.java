@@ -80,7 +80,6 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Autowired
     private PointBillService pointBillService;
 
-
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
@@ -337,7 +336,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto(ReturnMessage.REACH_MONTH_LIMIT_THIS_MONTH.getCode(), MessageFormat.format(ReturnMessage.REACH_MONTH_LIMIT_THIS_MONTH.getMsg(), productModel.getMonthLimit()));
         }
 
-        long points = productModel.getPoints() * productDetailRequestDto.getNum();
+        double discount = productService.discountRate(LoginUserInfo.getLoginName());
+        long points = productService.discountTotalPrice(productModel.getPoints(), discount, productDetailRequestDto.getNum());
+
         if (accountModel == null || accountModel.getPoint() < points) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), points));
             return new BaseResponseDto(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());

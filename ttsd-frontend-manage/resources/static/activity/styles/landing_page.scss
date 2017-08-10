@@ -39,14 +39,6 @@ form label.error:before {
   border-radius: 25px;
 }
 
-.header-container {
-  display: none;
-}
-
-.nav-container {
-  display: none;
-}
-
 .footer-container {
   margin-top: 0;
 
@@ -229,6 +221,7 @@ form label.error {
     .image-title {
       background: url("../images/landingpage/newbie-step4-title.png") center top no-repeat;
       height: 40px;
+      margin-top:20px;
     }
 
     .subtitle {
@@ -260,7 +253,7 @@ form label.error {
       @media (max-width:700px) {
         height:300px;
         background: url("../images/landingpage/newbie-step4-phone.png") center no-repeat;
-        background-size:80%;
+        background-size:contain;
       }
     }
     .btn-normal {
@@ -345,7 +338,7 @@ form label.error {
     left: 0;
     right:0;
     margin:0 auto;
-    top: 90px;
+    top: 20px;
     padding-top: 12px;
     width:1000px;
     height: 350px;
@@ -847,5 +840,51 @@ form label.error {
   }
 }
 
+
+@media screen and (min-width: 710px) and (max-width:1024px){
+    .main-frame {
+      overflow-x: hidden;
+    }
+  .landing-container {
+    .newbie-step-register {
+      display: none;
+    }
+    .landing-header-nav {
+      width:auto;
+      margin: 0 10px;
+    }
+    .landing-header-nav {
+      width: 96%;
+      box-sizing: border-box;
+    }
+    .landing-top-banner {
+      height:250px;
+      background-size: cover;
+    }
+    .newbie-step-register {
+      display: none;
+    }
+    .newbie-step-four .image-steps {
+      background-size: 100%;
+    }
+    .newbie-step-four,.newbie-step-six {
+      padding: 10px;
+    }
+
+
+    .newbie-step-six .newbie-step-six-box {
+      min-width:96%;
+    }
+    .newbie-step-four {
+      padding-bottom:30px;
+    }
+
+  }
+
+  .footer-container .copyright {
+    display: none;
+  }
+
+}
 
 

@@ -85,12 +85,10 @@ public class InvestController {
         InvestModel investModel = investService.findById(investId);
 
         BaseDto<InvestRepayDataDto> investRepayDto = repayService.findInvestorInvestRepay(investModel.getLoginName(), investModel.getId());
-        List<InvestRepayDataItemDto> repayDataItems = investRepayDto.getData().getRecords();
-
-        repayDataItems = repayDataItems == null ? Lists.newArrayList() : repayDataItems;
+        InvestRepayDataDto data = investRepayDto.getData();
 
         ModelAndView mv = new ModelAndView("invest-repay-list");
-        mv.addObject("repayList", repayDataItems);
+        mv.addObject("data", data);
         mv.addObject("invest", investModel);
         mv.addObject("loan", loanService.findLoanById(investModel.getLoanId()));
         return mv;

@@ -18,28 +18,12 @@ public class InvestRepayDataDto extends BaseDataDto {
 
     private List<InvestRepayDataItemDto> records = Lists.newArrayList();
 
-    public List<InvestRepayDataItemDto> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<InvestRepayDataItemDto> records) {
-        this.records = records;
-    }
-
     public String getSumActualInterest() {
         return sumActualInterest;
     }
 
     public void setSumActualInterest(String sumActualInterest) {
         this.sumActualInterest = sumActualInterest;
-    }
-
-    public String getRedInterest() {
-        return redInterest;
-    }
-
-    public void setRedInterest(String redInterest) {
-        this.redInterest = redInterest;
     }
 
     public String getSumExpectedInterest() {
@@ -50,12 +34,12 @@ public class InvestRepayDataDto extends BaseDataDto {
         this.sumExpectedInterest = sumExpectedInterest;
     }
 
-    public String getCouponMessage() {
-        return couponMessage;
+    public String getRedInterest() {
+        return redInterest;
     }
 
-    public void setCouponMessage(String couponMessage) {
-        this.couponMessage = couponMessage;
+    public void setRedInterest(String redInterest) {
+        this.redInterest = redInterest;
     }
 
     public String getLevelMessage() {
@@ -64,5 +48,21 @@ public class InvestRepayDataDto extends BaseDataDto {
 
     public void setLevelMessage(String levelMessage) {
         this.levelMessage = levelMessage;
+    }
+
+    public String getCouponMessage() {
+        return couponMessage;
+    }
+
+    public void setCouponMessage(String couponMessage) {
+        this.couponMessage = couponMessage;
+    }
+
+    public List<InvestRepayDataItemDto> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<InvestRepayDataItemDto> records) {
+        this.records = records;
     }
 }

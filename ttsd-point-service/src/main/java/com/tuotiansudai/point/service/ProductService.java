@@ -62,5 +62,7 @@ public interface ProductService {
 
     double discountRate(String loginName);
 
+    long discountTotalPrice(long originalPoints, double discountRate, int count);
+
     int getUserBuyCountInMonth(long productId, String loginName);
 }
