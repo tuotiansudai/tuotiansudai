@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.squareup.okhttp.OkHttpClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -17,7 +18,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -50,6 +51,15 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    private OkHttpClient httpClient;
+
+    public RegisterServiceImpl() {
+        this.httpClient = new OkHttpClient();
+        this.httpClient.setConnectTimeout(20, TimeUnit.SECONDS);
+        this.httpClient.setReadTimeout(20, TimeUnit.SECONDS);
+        this.httpClient.setWriteTimeout(20, TimeUnit.SECONDS);
+    }
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
@@ -65,7 +75,7 @@ public class RegisterServiceImpl implements RegisterService {
                     dto.getIdentityNumber(),
                     dto.getMobile());
 
-            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
+            MerRegisterPersonResponseModel responseModel = paySyncClient.send(httpClient, MerRegisterPersonMapper.class,
                     requestModel,
                     MerRegisterPersonResponseModel.class);
 
@@ -87,6 +97,7 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setCode(responseModel.getRetCode());
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
+            dataDto.setCode(e.getCode().getValue());
             dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);

@@ -5,6 +5,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.exception.PayTimeoutException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
@@ -18,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Introspector;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -44,8 +45,12 @@ public class PaySyncClient implements ApplicationContextAware {
         this.httpClient.setWriteTimeout(10, TimeUnit.SECONDS);
     }
 
-    @SuppressWarnings(value = "unchecked")
     public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
+        return send(httpClient, baseMapperClass, requestModel, responseModelClass);
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    public <T extends BaseSyncResponseModel> T send(OkHttpClient okHttpClient, Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
         ReqData reqData;
         try {
             reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
@@ -72,9 +77,13 @@ public class PaySyncClient implements ApplicationContextAware {
         String responseBodyString;
         try {
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SENT);
-            Response response = httpClient.newCall(request).execute();
+            Response response = okHttpClient.newCall(request).execute();
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
             responseBodyString = response.body().string();
+        } catch (SocketTimeoutException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
+            throw new PayTimeoutException(e);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
@@ -91,13 +100,11 @@ public class PaySyncClient implements ApplicationContextAware {
         }
     }
 
-    @Transactional(value = "payTransactionManager")
     private void createRequest(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
         BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         mapper.createRequest(requestModel);
     }
 
-    @Transactional(value = "payTransactionManager")
     private void updateRequestStatus(Class<? extends BaseSyncMapper> baseMapperClass,
                                      Long id,
                                      SyncRequestStatus status) {
@@ -105,7 +112,6 @@ public class PaySyncClient implements ApplicationContextAware {
         mapper.updateRequestStatus(id, status);
     }
 
-    @Transactional(value = "payTransactionManager")
     private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseSyncMapper> baseMapperClass,
                                                                Map<String, String> resData,
                                                                Class<T> responseModelClass,
