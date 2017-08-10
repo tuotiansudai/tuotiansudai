@@ -90,6 +90,7 @@ class CurrentDeposit(BaseModel):
 
     class Meta:
         db_table = 'current_deposit'
+        ordering = ['-updated_time', '-pk']
 
 
 class CurrentBill(BaseModel):

@@ -1,4 +1,6 @@
 # coding=utf-8
+from urllib import urlencode
+
 from django.template.defaulttags import register
 
 
@@ -7,14 +9,14 @@ def paginator_widget(request, data):
     params = generate_params(request)
     page = int(request.GET.get('page', 1))
     count = data.get('count', 0)
-    total_pages = count / 1 if count % 1 == 0 else count / 1 + 1
+    total_pages = count / 10 if count % 10 == 0 else count / 10 + 1
     return {
         'params': params,
         'page': page,
         'previous_page': page - 1,
         'next_page': page + 1,
-        'has_previous': data.get('previous', None) is not None,
-        'has_next': data.get('next', None) is not None,
+        'has_previous': data.get('previous') is not None,
+        'has_next': data.get('next') is not None,
         'page_range': calculate_page_range(total_pages, page, 5),
         'total_pages': total_pages
     }
@@ -23,10 +25,7 @@ def paginator_widget(request, data):
 def generate_params(request):
     param_dict = request.GET.dict()
     param_dict.pop('page', None)
-    params = ""
-    for k, v in param_dict.items():
-        params += "&" + k + "=" + v
-    return params
+    return urlencode(param_dict)
 
 
 def calculate_page_range(max_page, current=1, max_show_page=5):
