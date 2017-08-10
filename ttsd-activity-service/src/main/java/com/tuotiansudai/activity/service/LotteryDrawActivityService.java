@@ -394,13 +394,13 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
             createPointBillModel(loginName, 500, lotteryPrize);
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
             accountModel.setPoint(accountModel.getPoint() + 500);
             accountMapper.update(accountModel);
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
             createPointBillModel(loginName, 3000, lotteryPrize);
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
             accountModel.setPoint(accountModel.getPoint() + 3000);
             accountMapper.update(accountModel);
         }

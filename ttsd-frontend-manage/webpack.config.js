@@ -32,6 +32,7 @@ var outputPath=path.join(basePath, 'develop'),//打包文件路径
 var outFilename="[name].js";
 var NODE_ENV=process.env.NODE_ENV;
 
+
 /**
  * 动态查找所有入口文件
  */
@@ -61,6 +62,11 @@ commonOptions.entry = newEntries;
 
 if(NODE_ENV=='production') {
 	//生产环境
+	commonOptions.postcss = [
+		require('autoprefixer')({
+			browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8']
+		})
+	];
 	var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'); //压缩js，提高压缩速度
 	outFilename="[name].[chunkhash].js";
 	outputPath=path.join(basePath, 'prod'); //打包文件路径
@@ -99,7 +105,7 @@ if(NODE_ENV=='production') {
 }
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
-
+	
 	//打包之前先删除打包文件里的图片文件方便重新打包
 	// plugins.push(new CleanWebpackPlugin(['develop'], {
 	// 	root: basePath,
@@ -192,13 +198,12 @@ var myObject = objectAssign(commonOptions, {
 			test: /\.(js|jsx)$/,
 			loaders: ['happypack/loader?id=jsx'],
 			exclude: /node_modules/
-		},{
-			test: /\.css$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css-loader?modules!postcss-loader")
-		},{
-			test: /\.scss$/,
-			loader: ExtractTextPlugin.extract("style", "happypack/loader?id=sass")
-		},{
+		},
+		{
+			test: /\.(css|scss)$/,
+			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sass')
+		},
+		{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
 			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
 		}]
@@ -232,13 +237,7 @@ var myObject = objectAssign(commonOptions, {
 			mobileImages:path.join(mobilePath, 'images')
 		}
 	},
-	postcss: function() {
-		return [
-			require('autoprefixer')({
-				browsers: ['last 2 versions']
-			})
-		];
-	},
+
 	cache: true,
 	plugins: plugins,
 	devServer:webpackdevServer

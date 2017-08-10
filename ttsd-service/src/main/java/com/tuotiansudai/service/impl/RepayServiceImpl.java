@@ -1,10 +1,11 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -26,6 +27,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class RepayServiceImpl implements RepayService {
@@ -71,14 +73,14 @@ public class RepayServiceImpl implements RepayService {
 
     private final static String BIRTHDAY_COUPON_MESSAGE = "您已享受生日福利";
 
-    private final static Map<String, String> membershipMessage = new HashMap() {{
-        put("0", "平台收取收益和奖励的10%作为服务费");
-        put("1", "平台收取收益和奖励的10%作为服务费");
-        put("2", "平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠");
-        put("3", "平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠");
-        put("4", "平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠");
-        put("5", "平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠");
-    }};
+    private final static Map<String, String> membershipMessage = Maps.newHashMap(ImmutableMap.<String, String>builder()
+            .put("0", "平台收取收益和奖励的10%作为服务费")
+            .put("1", "平台收取收益和奖励的10%作为服务费")
+            .put("2", "平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠")
+            .put("3", "平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠")
+            .put("4", "平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠")
+            .put("5", "平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠")
+            .build());
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -165,66 +167,66 @@ public class RepayServiceImpl implements RepayService {
 
     @Override
     public BaseDto<InvestRepayDataDto> findInvestorInvestRepay(String loginName, long investId) {
-        BaseDto<InvestRepayDataDto> baseDto = new BaseDto<>();
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
-        dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
-        baseDto.setData(dataDto);
+        BaseDto<InvestRepayDataDto> baseDto = new BaseDto<>(dataDto);
+
         final InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+
         final List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
+
         int lastPeriod = investRepayModels.size();
         List<InvestRepayDataItemDto> records = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
-            long sumActualInterest = 0L;
-            long sumExpectedInterest = 0L;
+            long sumActualInterest = 0L; //已收回款总额
+            long sumExpectedInterest = 0L; //待收回款总额
+
             for (InvestRepayModel investRepayModel : investRepayModels) {
-                long expectedAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                long expectedFee = investRepayModel.getExpectedFee();
-                long actualFee = investRepayModel.getActualFee();
-                long repayAmount = investRepayModel.getRepayAmount();
-                long couponExpectedInterest = 0L;
                 InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto(investRepayModel);
+
+                long expectedTotalAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee(); //当期应收回款
+                long expectedTotalFee = investRepayModel.getExpectedFee(); // 当期应缴服务费
+                long actualTotalAmount = investRepayModel.getRepayAmount(); // 当期实收回款
+                long actualTotalFee = investRepayModel.getActualFee(); // 当期实缴服务费
+                long couponExpectedInterest = 0L; // 当期应收奖励
+                long couponActualInterest = 0L; // 当期实收奖励
+
                 CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
+
                 if (couponRepayModel != null) {
-                    couponExpectedInterest = couponRepayModel.getExpectedInterest();
-                    expectedFee += couponRepayModel.getExpectedFee();
-                    expectedAmount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
-                    investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount));
-                    if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
-                        repayAmount += couponRepayModel.getRepayAmount();
-                        actualFee += couponRepayModel.getActualFee();
-                    }
+                    expectedTotalAmount += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+                    expectedTotalFee += couponRepayModel.getExpectedFee();
+                    actualTotalAmount += couponRepayModel.getRepayAmount();
+                    actualTotalFee += couponRepayModel.getActualFee();
+                    couponExpectedInterest += couponRepayModel.getExpectedInterest();
+                    couponActualInterest += couponRepayModel.getActualInterest();
                 }
 
                 if (investRepayModel.getPeriod() == lastPeriod) {
                     InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
                     if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
-                        repayAmount += investExtraRateModel.getRepayAmount();
-                        actualFee += investExtraRateModel.getActualFee();
-                        expectedFee += investExtraRateModel.getExpectedFee();
+                        expectedTotalAmount += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                        expectedTotalFee += investExtraRateModel.getExpectedFee();
+                        actualTotalAmount += investExtraRateModel.getRepayAmount();
+                        actualTotalFee += investExtraRateModel.getActualFee();
                         couponExpectedInterest += investExtraRateModel.getExpectedInterest();
-                        if (investExtraRateModel.getActualRepayDate() == null) {
-                            sumExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
-                        }
-
-                        if (investExtraRateModel.getExpectedInterest() > 0) {
-                            investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getAmount()) + investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee()));
-                        }
+                        couponActualInterest += investExtraRateModel.getActualInterest();
                     }
                 }
-
-                if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
-                    investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
-                    investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee));
-                }
-
-                investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee));
+                investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedTotalAmount));
+                investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedTotalFee));
                 investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
-                sumActualInterest += repayAmount;
-                if (!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
-                    sumExpectedInterest += expectedAmount;
+
+                if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                    sumActualInterest += actualTotalAmount;
+                    investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(actualTotalAmount));
+                    investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualTotalFee));
+                    investRepayDataItemDto.setCouponActualInterest(AmountConverter.convertCentToString(couponActualInterest));
+                } else {
+                    sumExpectedInterest += expectedTotalAmount;
                 }
+
                 if (loanModel.getProductType() == ProductType.EXPERIENCE) {
                     investRepayDataItemDto.setLoan(loanModel);
                     investRepayDataItemDto.setInvestExperienceAmount(AmountConverter.convertCentToString(investModel.getAmount()));
@@ -237,7 +239,8 @@ public class RepayServiceImpl implements RepayService {
         }
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.RED_ENVELOPE));
-        dataDto.setRedInterest(AmountConverter.convertCentToString(CollectionUtils.isNotEmpty(userCouponModels) ? userCouponModels.get(0).getExpectedInterest() : 0l));
+        dataDto.setRedInterest(AmountConverter.convertCentToString(CollectionUtils.isNotEmpty(userCouponModels) ?
+                userCouponModels.stream().mapToLong(UserCouponModel::getActualInterest).sum() : 0L));
 
         userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON, CouponType.INVEST_COUPON, CouponType.BIRTHDAY_COUPON));
         for (UserCouponModel userCouponModel : userCouponModels) {
@@ -255,15 +258,9 @@ public class RepayServiceImpl implements RepayService {
             }
         }
 
-
         List<MembershipModel> membershipModels = membershipMapper.findAllMembership();
-        Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), input -> input.getFee() == investModel.getInvestFeeRate());
-
-        if (membershipModelOptional.isPresent()) {
-            dataDto.setLevelMessage(membershipMessage.get(String.valueOf(membershipModelOptional.get().getLevel())));
-        } else {
-            dataDto.setLevelMessage(membershipMessage.get(String.valueOf(0)));
-        }
+        Optional<MembershipModel> Optional = membershipModels.stream().filter(item -> item.getFee() == investModel.getInvestFeeRate()).findAny();
+        dataDto.setLevelMessage(Optional.map(membershipModel -> membershipMessage.get(String.valueOf(membershipModel.getLevel()))).orElseGet(() -> membershipMessage.get(String.valueOf(0))));
         return baseDto;
     }
 

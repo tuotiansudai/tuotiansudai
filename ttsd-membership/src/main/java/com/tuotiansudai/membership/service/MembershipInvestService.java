@@ -60,7 +60,7 @@ public class MembershipInvestService {
                 return;
             }
 
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
             long investMembershipPoint = investAmount / 100;
             accountModel.setMembershipPoint(accountModel.getMembershipPoint() + investMembershipPoint);
             accountMapper.update(accountModel);
