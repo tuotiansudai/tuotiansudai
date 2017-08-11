@@ -30,6 +30,7 @@ let reInputs=$(registerAccountForm).find('input:text');
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i],"keyup", "blur", function() {
         validator.start(this);
+        $buttonLayer.find('.status').removeClass('error').html('');
         isDisabledButton();
     })
 }
@@ -46,6 +47,8 @@ function isDisabledButton() {
         $btnSubmit.prop('disabled',true);
     }
 }
+
+
 
 //点击立即注册按钮
 registerAccountForm.onsubmit = function(event) {
