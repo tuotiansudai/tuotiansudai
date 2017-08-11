@@ -42,7 +42,7 @@ public class PaySyncClient implements ApplicationContextAware {
 
     public PaySyncClient() {
         this.commonHttpClient = buildHttpClient(10, TimeUnit.SECONDS);
-        this.merRegisterPersonHttpClient = buildHttpClient(20, TimeUnit.SECONDS);
+        this.merRegisterPersonHttpClient = buildHttpClient(15, TimeUnit.SECONDS);
     }
 
     @SuppressWarnings(value = "unchecked")
