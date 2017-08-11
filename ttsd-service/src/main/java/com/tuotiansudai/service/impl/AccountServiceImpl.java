@@ -34,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
     /**
      * 第一次调用超时后，最多允许重试的次数。
      */
-    private static final int MAX_REGISTER_RETRY_TIMES = 1;
+    private static final int MAX_REGISTER_RETRY_TIMES = 2;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -109,6 +109,11 @@ public class AccountServiceImpl implements AccountService {
                 && PayReturnCode.ERROR_TIMEOUT.getValue().equalsIgnoreCase(payData.getCode())
                 && retry_times < MAX_REGISTER_RETRY_TIMES) {
             return registerAccountRetryOnTimeout(dto, retry_times + 1);
+        }
+        if (!payData.getStatus()
+                && PayReturnCode.ERROR_TIMEOUT.getValue().equalsIgnoreCase(payData.getCode())
+                && retry_times == MAX_REGISTER_RETRY_TIMES) {
+            logger.error(String.format("account register timeout %d times, mobile: %s", retry_times + 1, dto.getMobile()));
         }
         return baseDto;
     }

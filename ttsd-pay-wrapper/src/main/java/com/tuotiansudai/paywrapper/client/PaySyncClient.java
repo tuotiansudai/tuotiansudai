@@ -4,6 +4,7 @@ import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.tuotiansudai.enums.SyncUmPayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.exception.PayTimeoutException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
@@ -33,24 +34,19 @@ public class PaySyncClient implements ApplicationContextAware {
 
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
-    private OkHttpClient httpClient;
+    private OkHttpClient commonHttpClient;
+    private OkHttpClient merRegisterPersonHttpClient;
 
     @Autowired
     PayGateWrapper payGateWrapper;
 
     public PaySyncClient() {
-        this.httpClient = new OkHttpClient();
-        this.httpClient.setConnectTimeout(10, TimeUnit.SECONDS);
-        this.httpClient.setReadTimeout(10, TimeUnit.SECONDS);
-        this.httpClient.setWriteTimeout(10, TimeUnit.SECONDS);
-    }
-
-    public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
-        return send(httpClient, baseMapperClass, requestModel, responseModelClass);
+        this.commonHttpClient = buildHttpClient(10, TimeUnit.SECONDS);
+        this.merRegisterPersonHttpClient = buildHttpClient(20, TimeUnit.SECONDS);
     }
 
     @SuppressWarnings(value = "unchecked")
-    public <T extends BaseSyncResponseModel> T send(OkHttpClient okHttpClient, Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
+    public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
         ReqData reqData;
         try {
             reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
@@ -77,7 +73,7 @@ public class PaySyncClient implements ApplicationContextAware {
         String responseBodyString;
         try {
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SENT);
-            Response response = okHttpClient.newCall(request).execute();
+            Response response = selectHttpClient(requestModel.getService()).newCall(request).execute();
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
             responseBodyString = response.body().string();
         } catch (SocketTimeoutException e) {
@@ -136,5 +132,21 @@ public class PaySyncClient implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         PaySyncClient.applicationContext = applicationContext;
+    }
+
+    private OkHttpClient buildHttpClient(long timeout, TimeUnit unit) {
+        OkHttpClient httpClient = new OkHttpClient();
+        httpClient.setConnectTimeout(timeout, unit);
+        httpClient.setReadTimeout(timeout, unit);
+        httpClient.setWriteTimeout(timeout, unit);
+        return httpClient;
+    }
+
+    public OkHttpClient selectHttpClient(String service){
+        if (SyncUmPayService.MER_REGISTER_PERSON.getServiceName().equalsIgnoreCase(service)) {
+            return merRegisterPersonHttpClient;
+        } else {
+            return commonHttpClient;
+        }
     }
 }

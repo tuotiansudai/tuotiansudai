@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.OkHttpClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -51,15 +49,6 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    private OkHttpClient httpClient;
-
-    public RegisterServiceImpl() {
-        this.httpClient = new OkHttpClient();
-        this.httpClient.setConnectTimeout(20, TimeUnit.SECONDS);
-        this.httpClient.setReadTimeout(20, TimeUnit.SECONDS);
-        this.httpClient.setWriteTimeout(20, TimeUnit.SECONDS);
-    }
-
     @Override
     @Transactional
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
@@ -75,7 +64,7 @@ public class RegisterServiceImpl implements RegisterService {
                     dto.getIdentityNumber(),
                     dto.getMobile());
 
-            MerRegisterPersonResponseModel responseModel = paySyncClient.send(httpClient, MerRegisterPersonMapper.class,
+            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
                     requestModel,
                     MerRegisterPersonResponseModel.class);
 
