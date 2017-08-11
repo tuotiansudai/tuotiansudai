@@ -463,70 +463,80 @@ $pointColor:#ff5400;
     }
   }
 
-  .newer-exclusive-box {
-    .newer-experience {
-      width:340px;
-      background: #fff;
-      float: left;
-      margin-right:10px;
-      position: relative;
-      &:hover {
-        box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);
-      }
+
+  .newer-experience {
+    width:340px;
+    background: #fff;
+    float: left;
+    margin-right:10px;
+    position: relative;
+    &:hover {
+      box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);
+    }
+    .tag-icon {
+      width:56px;
+      height:75px;
+      display: inline-block;
+      position: absolute;
+      top:-5px;
+      right:0;
+
+    }
+    &.hack-newbie {
       .tag-icon {
-        width:56px;
-        height:75px;
-        display: inline-block;
-        position: absolute;
-        top:-5px;
-        right:0;
-
-      }
-      &.hack-newbie {
-        .tag-icon {
-          background: #fff url('../images/homepage/icon-newuse.png') right 0 no-repeat;
-        }
-      }
-      .con-inner {
-        padding:18px 28px;
-      }
-      .newer-title {
-        color: #333;
-        font-size: 20px;
-        font-weight: normal;
-        span {
-          color: #ff9c1b;
-          font-size:14px;
-        }
-      }
-
-      .loan-info {
-        color:$normalColor;
-        margin-top:28px;
-        margin-bottom:28px;
-        li {
-          line-height: 30px;
-          float: left;
-          &:nth-child(1) {
-            width:150px;
-            border-right:1px solid #e6e6e6;
-          }
-          &:nth-child(2) {
-            margin-left: 38px;
-          }
-        }
+        background: #fff url('../images/homepage/icon-newuse.png') right 0 no-repeat;
       }
     }
-    .hot-bag {
-      width:300px;
-      height:240px;
-      background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
-      display: inline-block;
-      float: left;
+    .con-inner {
+      padding:18px 28px;
+    }
+    .newer-title {
+      color: #333;
+      font-size: 20px;
+      font-weight: normal;
+      span {
+        color: #ff9c1b;
+        font-size:14px;
+      }
+    }
+
+    .loan-info {
+      color:$normalColor;
+      margin-top:28px;
+      margin-bottom:28px;
+      li {
+        line-height: 30px;
+        float: left;
+        &:nth-child(1) {
+          width:150px;
+          border-right:1px solid #e6e6e6;
+        }
+        &:nth-child(2) {
+          margin-left: 38px;
+        }
+      }
     }
   }
+  .hot-bag {
+    width:300px;
+    height:240px;
+    background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
+    display: inline-block;
+    float: left;
+  }
 
-
+  .bearing-treasure {
+    .newer-experience {
+      width:100%;
+    }
+    .newer-title-advantage {
+      border:1px dashed #f1a03f;
+      color: #ff752a;
+      font-size:16px;
+      padding: 4px 10px;
+      font-weight: 300;
+    }
+  }
   .media-coverage-box {
     margin-top:20px;
     padding:10px 30px;

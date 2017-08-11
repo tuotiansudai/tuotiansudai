@@ -146,6 +146,32 @@
             <a href="/activity/landing-page" target="_blank" class="hot-bag"></a>
         </div>
 
+        <#--日息宝-->
+        <div class="main-column-title">
+            <i class="icon-title"></i>日息宝
+            <span class="icon-new-tip">当日计息</span>
+            <span class="icon-new-tip">本息复投</span>
+        </div>
+
+        <div class="bearing-treasure clearfix">
+            <div class="newer-experience " data-url="/loan/1">
+                <div class="con-inner">
+                    <span class="newer-title-advantage">
+                        持有越多，收益越高
+                        <#--年化收益率已达到最高-->
+                        <#--再转入1000元，收益可达5.20%-->
+                    </span>
+                    <ul class="loan-info clearfix">
+                        <li><span class="percent-number"> <i>13</i>%</span>预期年化收益</li>
+                        <li><em class="duration-day">3</em>天<br>项目期限</li>
+                    </ul>
+                    <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
+                </div>
+
+            </div>
+        </div>
+
+
         <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
@@ -155,8 +181,8 @@
         <div class="normal-loan">
             <#include "component/loan-title.ftl">
             <#list normalLoans as loan>
-            <#include "component/loan-row.ftl">
-        </#list>
+                <#include "component/loan-row.ftl">
+            </#list>
         </div>
 
 

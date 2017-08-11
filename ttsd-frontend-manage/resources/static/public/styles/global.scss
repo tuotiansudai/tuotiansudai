@@ -584,6 +584,17 @@
   }
 }
 
+.icon-new-tip {
+  font-size: 12px;
+  color: #ff9c1b;
+  border: 1px solid #ff9c1b;
+  padding: 0px 9px;
+  border-radius: 20px;
+  margin-left: -4px;
+  display: inline-block;
+  transform: scale(0.8);
+}
+
 /********************** Responsive Page ****************************/
 
 @media screen and (max-width: 700px) {
