@@ -3,6 +3,7 @@ import re
 
 from django import forms
 
+from common import constants as common_constants
 from current_console import constants
 
 
@@ -29,6 +30,15 @@ class RedeemForm(forms.Form):
     start_amount = forms.IntegerField(required=False)
     end_amount = forms.IntegerField(required=False)
     status = forms.ChoiceField(choices=constants.REDEEM_STATUS_CHOICE, required=False)
+
+
+class DepositForm(forms.Form):
+    page = forms.IntegerField(required=False)
+    current_account__mobile = forms.RegexField(regex=re.compile('\d{11}'), required=False)
+    status = forms.ChoiceField(choices=common_constants.DepositStatusType.DEPOSIT_STATUS_CHOICE, required=False)
+    source = forms.ChoiceField(choices=common_constants.SourceType.SOURCE_CHOICE, required=False)
+    updated_time_0 = forms.DateField(input_formats=['%Y-%m-%d'], required=False)
+    updated_time_1 = forms.DateField(input_formats=['%Y-%m-%d'], required=False)
 
 
 class FundDistributionQueryForm(forms.Form):

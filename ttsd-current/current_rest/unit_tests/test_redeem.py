@@ -3,7 +3,7 @@ import mock
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-
+from common import constants as common_constants
 from current_rest import constants
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.models import CurrentRedeem, CurrentAccount
@@ -49,7 +49,7 @@ class RedeemTestCase(APITestCase):
 
         data2 = {'login_name': self.login_name,
                  'amount': 200000,
-                 'source': constants.SOURCE_IOS}
+                 'source': common_constants.SourceType.SOURCE_IOS}
         self.client.post(url, data2, format='json')
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
@@ -64,12 +64,12 @@ class RedeemTestCase(APITestCase):
         url = reverse('post_redeem')
         data1 = {'login_name': self.login_name,
                  'amount': 100000,
-                 'source': constants.SOURCE_IOS}
+                 'source': common_constants.SourceType.SOURCE_IOS}
         self.client.post(url, data1, format='json')
 
         data2 = {'login_name': self.login_name,
                  'amount': 200000,
-                 'source': constants.SOURCE_IOS}
+                 'source': common_constants.SourceType.SOURCE_IOS}
         self.client.post(url, data2, format='json')
 
         response = self.client.get(path=reverse('get_account', kwargs={'login_name': self.login_name}))
@@ -87,7 +87,8 @@ class RedeemTestCase(APITestCase):
         account = CurrentAccount.objects.create(login_name=self.login_name, balance=1000)
 
         redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
-                                              status=constants.REDEEM_WAITING, source=constants.SOURCE_ANDROID)
+                                              status=constants.REDEEM_WAITING,
+                                              source=common_constants.SourceType.SOURCE_ANDROID)
 
         response = self.client.put('/redeem-audit/{}/{}'.format(redeem.id, "pass"), dict(auditor="auditor"))
 
@@ -99,7 +100,8 @@ class RedeemTestCase(APITestCase):
         account = CurrentAccount.objects.create(login_name=self.login_name, balance=1000)
 
         redeem = CurrentRedeem.objects.create(current_account=account, login_name=self.login_name, amount=1000,
-                                              status=constants.REDEEM_WAITING, source=constants.SOURCE_ANDROID)
+                                              status=constants.REDEEM_WAITING,
+                                              source=common_constants.SourceType.SOURCE_ANDROID)
 
         response = self.client.put('/redeem-audit/{}/{}'.format(redeem.id, "reject"), dict(auditor="auditor"))
 

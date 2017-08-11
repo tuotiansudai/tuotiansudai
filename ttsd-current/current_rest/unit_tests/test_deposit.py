@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-
+from common import constants as common_constants
 from current_rest import constants, serializers
 from current_rest.biz.current_account_manager import CurrentAccountManager
 from current_rest.biz.current_daily_manager import sum_success_deposit_by_date
@@ -26,7 +26,7 @@ class DepositTestCase(TestCase):
         response = self.client.post(path=reverse('post_deposit'),
                                     data={'login_name': self.login_name,
                                           'amount': 1,
-                                          'source': constants.SOURCE_IOS,
+                                          'source': common_constants.SourceType.SOURCE_IOS,
                                           'no_password': False},
                                     format='json')
 
@@ -40,8 +40,8 @@ class DepositTestCase(TestCase):
 
         self.assertTrue(CurrentAccount.objects.filter(login_name=self.login_name).exists())
         self.assertEqual(deposit.amount, 1)
-        self.assertEqual(deposit.status, constants.DEPOSIT_WAITING_PAY)
-        self.assertEqual(deposit.source, constants.SOURCE_IOS)
+        self.assertEqual(deposit.status, common_constants.DepositStatusType.DEPOSIT_WAITING_PAY)
+        self.assertEqual(deposit.source, common_constants.SourceType.SOURCE_IOS)
         self.assertFalse(deposit.no_password)
 
     @mock.patch('requests.post')
@@ -52,7 +52,7 @@ class DepositTestCase(TestCase):
         response = self.client.post(path=reverse('post_deposit'),
                                     data={'login_name': self.login_name,
                                           'amount': 1,
-                                          'source': constants.SOURCE_IOS,
+                                          'source': common_constants.SourceType.SOURCE_IOS,
                                           'no_password': True},
                                     format='json')
 
@@ -66,15 +66,15 @@ class DepositTestCase(TestCase):
 
         self.assertTrue(CurrentAccount.objects.filter(login_name=self.login_name).exists())
         self.assertEqual(deposit.amount, 1)
-        self.assertEqual(deposit.status, constants.DEPOSIT_WAITING_PAY)
-        self.assertEqual(deposit.source, constants.SOURCE_IOS)
+        self.assertEqual(deposit.status, common_constants.DepositStatusType.DEPOSIT_WAITING_PAY)
+        self.assertEqual(deposit.source, common_constants.SourceType.SOURCE_IOS)
         self.assertTrue(deposit.no_password)
 
     def test_should_return_400_when_deposit_post_data_is_illegal(self):
         response = self.client.post(path=reverse('post_deposit'),
                                     data={'login_name': u'名字是汉字',
                                           'amount': 1,
-                                          'source': constants.SOURCE_IOS,
+                                          'source': common_constants.SourceType.SOURCE_IOS,
                                           'no_password': True},
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -82,7 +82,7 @@ class DepositTestCase(TestCase):
         response = self.client.post(path=reverse('post_deposit'),
                                     data={'login_name': self.login_name,
                                           'amount': u'不是数字',
-                                          'source': constants.SOURCE_IOS,
+                                          'source': common_constants.SourceType.SOURCE_IOS,
                                           'no_password': True},
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -98,7 +98,7 @@ class DepositTestCase(TestCase):
         response = self.client.post(path=reverse('post_deposit'),
                                     data={'login_name': self.login_name,
                                           'amount': 1,
-                                          'source': constants.SOURCE_IOS,
+                                          'source': common_constants.SourceType.SOURCE_IOS,
                                           'no_password': u'fake'},
                                     format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -108,7 +108,7 @@ class DepositTestCase(TestCase):
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': 0}),
-                                   data={'status': constants.DEPOSIT_SUCCESS},
+                                   data={'status': common_constants.DepositStatusType.DEPOSIT_SUCCESS},
                                    format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -125,7 +125,7 @@ class DepositTestCase(TestCase):
         get_current_daily_amount.return_value = 2
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
-                                   data={'status': constants.DEPOSIT_SUCCESS},
+                                   data={'status': common_constants.DepositStatusType.DEPOSIT_SUCCESS},
                                    format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -134,7 +134,7 @@ class DepositTestCase(TestCase):
         updated_account = CurrentAccount.objects.get(login_name=self.login_name)
         current_bill = CurrentBill.objects.get(login_name=self.login_name)
 
-        self.assertEqual(updated_deposit.status, constants.DEPOSIT_SUCCESS)
+        self.assertEqual(updated_deposit.status, common_constants.DepositStatusType.DEPOSIT_SUCCESS)
         self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.amount, fake_deposit.amount)
@@ -145,7 +145,7 @@ class DepositTestCase(TestCase):
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
-                                   data={'status': constants.DEPOSIT_FAIL},
+                                   data={'status': common_constants.DepositStatusType.DEPOSIT_FAIL},
                                    format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -153,7 +153,7 @@ class DepositTestCase(TestCase):
         updated_deposit = CurrentDeposit.objects.get(login_name=self.login_name)
         updated_account = CurrentAccount.objects.get(login_name=self.login_name)
 
-        self.assertEqual(updated_deposit.status, constants.DEPOSIT_FAIL)
+        self.assertEqual(updated_deposit.status, common_constants.DepositStatusType.DEPOSIT_FAIL)
         self.assertEqual(updated_account.balance, fake_account.balance)
         self.assertFalse(CurrentBill.objects.filter(login_name=self.login_name).exists())
 
@@ -162,7 +162,7 @@ class DepositTestCase(TestCase):
         fake_deposit = CurrentDeposit.objects.create(current_account=fake_account, login_name=self.login_name, amount=1)
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
-                                   data={'status': constants.DEPOSIT_SUCCESS},
+                                   data={'status': common_constants.DepositStatusType.DEPOSIT_SUCCESS},
                                    format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -171,7 +171,7 @@ class DepositTestCase(TestCase):
         updated_account = CurrentAccount.objects.get(login_name=self.login_name)
         current_bill = CurrentBill.objects.get(login_name=self.login_name)
 
-        self.assertEqual(updated_deposit.status, constants.DEPOSIT_OVER_PAY)
+        self.assertEqual(updated_deposit.status, common_constants.DepositStatusType.DEPOSIT_OVER_PAY)
         self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.amount, fake_deposit.amount)
         self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)
@@ -188,7 +188,7 @@ class DepositTestCase(TestCase):
         sum_success_deposit_by_date.return_value = fake_deposit.amount
 
         response = self.client.put(path=reverse('get_put_deposit', kwargs={'pk': fake_deposit.pk}),
-                                   data={'status': constants.DEPOSIT_SUCCESS},
+                                   data={'status': common_constants.DepositStatusType.DEPOSIT_SUCCESS},
                                    format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -197,7 +197,7 @@ class DepositTestCase(TestCase):
         updated_account = CurrentAccount.objects.get(login_name=self.login_name)
         current_bill = CurrentBill.objects.get(login_name=self.login_name)
 
-        self.assertEqual(updated_deposit.status, constants.DEPOSIT_OVER_PAY)
+        self.assertEqual(updated_deposit.status, common_constants.DepositStatusType.DEPOSIT_OVER_PAY)
         self.assertEqual(updated_account.balance, fake_account.balance + fake_deposit.amount)
         self.assertEqual(current_bill.amount, fake_deposit.amount)
         self.assertEqual(current_bill.bill_type, constants.BILL_TYPE_DEPOSIT)

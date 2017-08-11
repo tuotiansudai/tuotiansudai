@@ -1,3 +1,5 @@
+{% load template_filter %}
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -51,7 +53,9 @@
         <!-- menu sidebar end -->
 
         <!-- content area begin -->
+        <div class="col-md-10">
         {% block content %}{% endblock %}
+        </div>
         <!-- content area end -->
     </div>
 </div>
