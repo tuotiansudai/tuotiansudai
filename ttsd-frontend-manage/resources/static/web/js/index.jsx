@@ -68,6 +68,51 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 
 })();
 
+//拓天开学季
+(function() {
+
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+document.cookie='drawSignToday=1';
+    // function delCookie(name)
+    // {
+    //     var exp = new Date();
+    //         exp.setTime(exp.getTime() - 1);
+    //     var cval=getCookie(name);
+    //     if(cval!=null) {
+    //         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    //     }
+    // }
+
+    // delCookie('drawSignToday');
+
+    // 如果成功抽奖一次就设置 drawSignToday为1
+    // 在凌晨的时候重设drawSignToday为0
+
+    function showWhichSign() {
+        let $redEnvelopFloatFrame =$('#redEnvelopFloatFrame'),
+            $drawTodayOne = $('.draw-today-one',$redEnvelopFloatFrame),
+            $drawTodayTwo = $('.draw-today-two',$redEnvelopFloatFrame);
+        let is_sign_today = getCookie('drawSignToday');
+        if(is_sign_today=='1') {
+            $drawTodayOne.hide();
+            $drawTodayTwo.show();
+        } else {
+            $drawTodayOne.show();
+            $drawTodayTwo.hide();
+        }
+    }
+
+    showWhichSign();
+
+})();
+
 //预约投资,目前预约投资功能不需要，以后可能会需要
 
 // require.ensure(['webJs/plugins/autoNumeric','publicJs/validator','publicJs/commonFun'], function(){

@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <div class="box-column">
+    <div class="box-column" id="RankingBox">
         <div class="column-title-col">
             <i class="word-num">03</i>
             <i class="word-title three"></i>
@@ -198,7 +198,7 @@
     </div>
 
 
-    <div class="tip-list-frame">
+    <div class="tip-list-frame" style="display: none">
         <!-- 真实奖品的提示 -->
         <div class="tip-list" data-return="concrete">
             <div class="close-btn go-close"></div>

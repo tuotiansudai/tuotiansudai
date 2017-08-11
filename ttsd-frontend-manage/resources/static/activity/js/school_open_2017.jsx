@@ -94,6 +94,28 @@ let $ownRecord = $('.own-record',$activityPageFrame);
 drawCircle.scrollList($ownRecord,9);
 drawCircle.hoverScrollList($ownRecord,9);
 
+
+// 写cookies
+function setCookie(name,value)
+{
+    var exp = new Date(),
+        year = exp.getFullYear(),
+        month = exp.getMonth()+1,
+        day = exp.getDate();
+
+    let second = new Date(year,month,day,24,0,0);
+    let distanceTime = second.getTime() - exp.getTime();
+
+    exp.setTime(exp.getTime() + distanceTime);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+
+if(sourceKind.params.school =='yes') {
+    let rank_top = $('#RankingBox').offset().top;
+    $('body,html').animate({scrollTop:rank_top},'fast');
+
+}
+
 //**********************开始抽奖**********************//
 $pointerImg.on('click',function() {
 
@@ -110,6 +132,8 @@ $pointerImg.on('click',function() {
             $pointerImg.removeClass('win-result');
             if (data.returnCode == 0) {
                 var treasureUrl;
+
+                setCookie('drawSignToday','1');
                 if(sourceKind.params.source=='app') {
                     treasureUrl='app/tuotian/myfortune-unuse';
                 } else {
