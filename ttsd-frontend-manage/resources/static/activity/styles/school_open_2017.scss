@@ -609,10 +609,27 @@ body {
 
   .activity-frame-box  {
     padding:0px 15px;
-
+    .img-reward {
+      width:80%;
+      height:auto;
+    }
+    .btn-to-invest {
+      zoom:0.7;
+      margin:0 auto;
+    }
     .box-column {
       padding-top: 70px;
       margin-bottom:10px;
+      font-size:14px;
+      .hack {
+        width: 90%;
+        margin: 0 auto;
+        line-height: 25px;
+        text-align: left;
+        br {
+          display: none;
+        }
+      }
       &.bg-luck-draw {
         margin-top: 0px;
       }
@@ -661,17 +678,369 @@ body {
         zoom: 0.5;
         bottom: -39px;
       }
+
+      &.box-notice {
+        padding:20px 10px;
+        font-size:12px;
+        .title-notice {
+          zoom:0.5;
+          margin-top: -10px;
+          margin-left: 30%;
+        }
+      }
     }
     .morning-bird-special  {
+      .info-tip-reward {
+        background: none;
+        padding: 0;
+        em {
+          background: url('../images/2017/school-open/bg-col03-wap.jpg') center center no-repeat;
+          background-size:100%;
+          height: 55px;
+          font-size:14px;
+          line-height: 21px;
+          display: inline-block;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 5px 10%;
+        }
+        i.note {
+          color: #7500d4;
+          font-size:11px;
+          display: block;
+          padding-top: 10px;
+          line-height: 20px;
+          width: 90%;
+          margin: 0 auto;
+
+
+        }
+      }
       .info-tip {
         zoom:0.6;
       }
       .special-img {
         width:90%;
         height:105px;
-        background: url('../images/2017/school-open/special-app.jpg') center center no-repeat;
+        background: url('../images/2017/school-open/special-wap.jpg') center center no-repeat;
+        background-size:cover;
         
       }
     }
+    .winners-box {
+      background: none;
+      position: relative;
+      width: 96%;
+      padding: 0;
+      height: 465px;
+
+      .winner-top {
+        height:62px;
+        width: 100%;
+        background: url('../images/2017/school-open/bg-box-top.jpg') center top no-repeat;
+        background-size:100%;
+        position: absolute;
+        top:0;
+        left:0;
+        z-index:1;
+      }
+      .winner-bottom {
+        height:62px;
+        width: 100%;
+        background: url('../images/2017/school-open/bg-box-top.jpg') center bottom no-repeat;
+        background-size:100%;
+        transform:rotate(180deg);
+        position: absolute;
+        bottom:0;
+        left:0;
+        z-index:1;
+      }
+      .winner-center {
+        background: url('../images/2017/school-open/bg-box-center.jpg') center top repeat-y;
+        background-size:100%;
+        width: 100%;
+        position: absolute;
+        left:0;
+        top:30px;
+        z-index:10;
+
+      }
+      .table-title{
+        font-size: 14px;
+        width: 88%;
+        margin: 0px auto;
+        span {
+          &:nth-child(1) {
+            width:20%;
+          }
+          &:nth-child(2) {
+            width:50%;
+          }
+          &:nth-child(3) {
+            width:30%;
+          }
+        }
+      }
+      .top-column {
+        .fl,.fr {
+          float: none;
+          margin-top: 10px;
+          font-size: 14px;
+          padding: 7px 35px;
+
+        }
+      }
+      .table-list-box {
+        width: 88%;
+        margin: 5px auto;
+
+      }
+      .table-list li span {
+        font-size:11px;
+        &:nth-child(1) {
+          width:20%;
+        }
+        &:nth-child(2) {
+          width:50%;
+        }
+        &:nth-child(3) {
+          width:30%;
+        }
+      }
+    }
+    .reward-section {
+      width: 90%;
+      margin: 10px auto;
+      min-height: 30px;
+      .section-title {
+        padding: 3px 11px;
+        font-size: 16px;
+        top: -4px;
+        left: 35%;
+        line-height: 30px;
+      }
+    }
+
+    .reward-box-list-out {
+      .reward-box-list {
+        float: none;
+        .inner {
+          width:100%;
+          height: 90px;
+          i {
+            zoom:0.8;
+          }
+          &.one {
+            width:100%;
+            background-size: 40%;
+            height: 170px;
+          }
+          &.two {
+            background-size: 70%;
+          }
+          &.three {
+            background-size: 70%;
+          }
+        }
+      &:nth-child(2) {
+        float: left;
+        width:48%;
+        margin-left:0;
+
+      }
+        &:nth-child(3) {
+          float: right;
+          width:48%;
+          margin-left:0;
+        }
+        .re-name {
+          padding-top: 0px;
+          font-size: 12px;
+          padding-bottom: 10px;
+        }
+      }
+    }
+
+    .reward-other-list {
+      padding: 0 10px;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 10px auto 10px auto;
+      li {
+        width:48%;
+        height: 130px;
+        margin-bottom: 6px;
+        float: left;
+        background-size: 50%;
+        i {
+          zoom:0.8;
+        }
+      }
+    }
+
+
+  }
+}
+
+@media screen and (min-width: 710px) and (max-width:1024px){
+  .page-width {
+    width:100%;
+  }
+  .activity-frame-box {
+    box-sizing: border-box;
+    padding: 0 15px;
+    .morning-bird-special {
+      padding:0 10px;
+      .special-img {
+        width:100%;
+        background-size: 100%;
+      }
+      .info-tip-reward {
+        background-size: 100%;
+      }
+    }
+    .reward-box-list {
+      width:47%;
+      &:nth-child(1) {
+        float: none;
+        width:47%;
+        margin: 0 auto;
+
+      }
+      &:nth-child(2) {
+        float:left;
+        margin-left: 0;
+      }
+      &:nth-child(3) {
+        float:right;
+        margin-left: 0;
+      }
+      .re-name {
+        padding-top:0;
+        padding-bottom:10px;
+      }
+    }
+
+    .box-column {
+      padding:20px;
+      padding-top: 90px;
+      &.box-notice .title-notice {
+        zoom: 0.7;
+      }
+      .bardeen-left,.bardeen-right {
+        zoom:0.8;
+        bottom: -38px;
+      }
+
+      .column-title-col {
+        height:65px;
+        left: -6px;
+        .word-num {
+          zoom: 0.7;
+        }
+        .word-title {
+          zoom: 0.7;
+        }
+      }
+
+      .line-column {
+        height: 2px;
+        width: 99%;
+        left: 15px;
+        top: 62px;
+      }
+    }
+
+
+    .winners-box {
+      background: none;
+      position: relative;
+      width: 100%;
+      padding: 0;
+      height: 465px;
+      margin-top: 80px;
+
+      .winner-top {
+        height: 115px;
+        width: 100%;
+        background: url('../images/2017/school-open/bg-box-top.jpg') center top no-repeat;
+        background-size:100%;
+        position: absolute;
+        top:-46px;
+        left:0;
+        z-index:1;
+      }
+      .winner-bottom {
+        height: 115px;
+        width: 100%;
+        background: url('../images/2017/school-open/bg-box-top.jpg') center bottom no-repeat;
+        background-size:100%;
+        transform:rotate(180deg);
+        position: absolute;
+        bottom:41px;
+        left:0;
+        z-index:1;
+      }
+      .winner-center {
+        background: url('../images/2017/school-open/bg-box-center.jpg') center top repeat-y;
+        background-size:100%;
+        width: 100%;
+        position: absolute;
+        left:0;
+        top:30px;
+        z-index:10;
+
+      }
+      .table-title{
+        font-size: 14px;
+        width: 88%;
+        margin: 0px auto;
+        span {
+          &:nth-child(1) {
+            width:20%;
+          }
+          &:nth-child(2) {
+            width:50%;
+          }
+          &:nth-child(3) {
+            width:30%;
+          }
+        }
+      }
+      .top-column {
+        .fl,.fr {
+          float: none;
+          margin-top: 10px;
+          font-size: 14px;
+          padding: 7px 35px;
+
+        }
+      }
+      .table-list-box {
+        width: 88%;
+        margin: 5px auto;
+
+      }
+      .table-list li span {
+        font-size:11px;
+        &:nth-child(1) {
+          width:20%;
+        }
+        &:nth-child(2) {
+          width:50%;
+        }
+        &:nth-child(3) {
+          width:30%;
+        }
+      }
+    }
+
+  }
+  
+}
+
+@media screen and (min-width: 1024px) and (max-width:1366px){
+  .page-width {
+    width:1000px;
   }
 }

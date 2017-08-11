@@ -54,7 +54,7 @@
 
             <span class="info-tip-reward">
                 <em>根据投资先后，前3名投资该项目5万元以上的同学，奖励<i class="reward-name">100元京东E卡</i></em>
-                （用户可在电脑端或App端“早鸟专享”项目中的“出借记录”查询获奖情况）
+                <i class="note">（用户可在电脑端或App端“早鸟专享”项目中的“出借记录”查询获奖情况）</i>
             </span>
 
             <img src="" class="img-reward">
@@ -73,60 +73,64 @@
         <div class="bardeen-left"></div>
         <div class="bardeen-right"></div>
 
-        <p>活动期间，根据累计投资额进行实时排名，至9月15日24:00清算排名榜单，<br/>
+        <p class="hack">活动期间，根据累计投资额进行实时排名，至9月15日24:00清算排名榜单，<br/>
             <i class="key">前18名</i>上榜的投资尖子生，<i class="key">可获实物大奖</i>。</p>
 
         <div class="winners-box">
-            <div class="top-column clearfix">
-                <span class="fl">我的投资总额：20999000元</span>
-                <span class="fr">我的排名：3</span>
-            </div>
-            <div class="table-title clearfix">
-                <span>排名</span>
-                <span>用户名</span>
-                <span>投资总额</span>
-            </div>
-            <div class="table-list-box">
-                <ul class="table-list clearfix">
-                    <li>
-                        <span>1</span>
-                        <span>134＊＊＊＊2345</span>
-                        <span>900000</span>
-                    </li>
-                    <li>
-                        <span>1</span>
-                        <span>134＊＊＊＊2345</span>
-                        <span>900000</span>
-                    </li>
-                    <li>
-                        <span>1</span>
-                        <span>134＊＊＊＊2345</span>
-                        <span>900000</span>
-                    </li>
-                    <li>
-                        <span>1</span>
-                        <span>134＊＊＊＊2345</span>
-                        <span>900000</span>
-                    </li>
-                    <li>
-                        <span>1</span>
-                        <span>134＊＊＊＊2345</span>
-                        <span>900000</span>
-                    </li>
-                    <li>
-                        <span>1</span>
-                        <span>134＊＊＊＊2345</span>
-                        <span>900000</span>
-                    </li>
-                </ul>
+            <div class="winner-top"></div>
+            <div class="winner-center">
+                <div class="top-column clearfix">
+                    <span class="fl">我的投资总额：20999000元</span>
+                    <span class="fr">我的排名：3</span>
+                </div>
+                <div class="table-title clearfix">
+                    <span>排名</span>
+                    <span>用户名</span>
+                    <span>投资总额</span>
+                </div>
+                <div class="table-list-box">
+                    <ul class="table-list clearfix">
+                        <li>
+                            <span>1</span>
+                            <span>134＊＊＊＊2345</span>
+                            <span>900000</span>
+                        </li>
+                        <li>
+                            <span>1</span>
+                            <span>134＊＊＊＊2345</span>
+                            <span>900000</span>
+                        </li>
+                        <li>
+                            <span>1</span>
+                            <span>134＊＊＊＊2345</span>
+                            <span>900000</span>
+                        </li>
+                        <li>
+                            <span>1</span>
+                            <span>134＊＊＊＊2345</span>
+                            <span>900000</span>
+                        </li>
+                        <li>
+                            <span>1</span>
+                            <span>134＊＊＊＊2345</span>
+                            <span>900000</span>
+                        </li>
+                        <li>
+                            <span>1</span>
+                            <span>134＊＊＊＊2345</span>
+                            <span>900000</span>
+                        </li>
+                    </ul>
 
-            </div>
+                </div>
 
-            <div class="page-number">
-                <i class="icon-left"></i>
-                <span class="page-index">1</span>
-                <i class="icon-right"></i>
+                <div class="page-number">
+                    <i class="icon-left"></i>
+                    <span class="page-index">1</span>
+                    <i class="icon-right"></i>
+                </div>
             </div>
+            <div class="winner-bottom"></div>
         </div>
 
         <div class="reward-section">

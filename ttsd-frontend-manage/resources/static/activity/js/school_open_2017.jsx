@@ -1,7 +1,7 @@
 require("activityStyle/school_open_2017.scss");
 let drawCircleFun = require('activityJsModule/gift_circle_draw');
 let commonFun = require('publicJs/commonFun');
-
+let redirect = globalFun.browserRedirect();
 let $activityPageFrame = $('#activityPageFrame');
 let $myRecordLink = $('.my-record-link',$activityPageFrame),
     $luckDrawBox = $('#luckDrawBox'),
@@ -68,6 +68,14 @@ $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option)
         });
     });
 
+})();
+
+(function() {
+    let $RewardBoxOut= $('.reward-box-list-out',$activityPageFrame);
+    if(redirect=='mobile') {
+        let [bb,aa,cc] = Array.from($RewardBoxOut.find('.reward-box-list'));
+        $RewardBoxOut.empty().html(aa.outerHTML+bb.outerHTML+cc.outerHTML);
+    }
 })();
 
 //pointAllList:中奖记录接口地址
