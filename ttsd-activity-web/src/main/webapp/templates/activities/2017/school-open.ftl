@@ -222,7 +222,6 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="login-text">您暂无抽奖机会啦～</p>
-                <p class="des-text">明天再来吧~</p>
             </div>
             <div class="btn-list"><a href="javascript:void(0)" class="no-reward go-close"></a></div>
         </div>

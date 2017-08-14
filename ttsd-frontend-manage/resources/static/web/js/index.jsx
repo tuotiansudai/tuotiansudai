@@ -78,7 +78,7 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
         else
             return null;
     }
-    
+
 // document.cookie='drawSignToday=1';
 //     function delCookie(name)
 //     {

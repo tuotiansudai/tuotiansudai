@@ -577,6 +577,12 @@ body {
         font-size:30px;
       }
     }
+    p.login-text {
+      color: #461410;
+      font-size:22px;
+      font-weight: bold;
+      padding-top:30px;
+    }
   }
 
   .btn-list a {
@@ -593,10 +599,21 @@ body {
   }
 }
 
+
 @media screen and (max-width: 700px) {
 
   body {
     background: #655ddc;
+  }
+  .layer-reward-list {
+    zoom:0.65;
+  }
+  .tip-list {
+    zoom:0.8;
+    left: 20px!important;
+  }
+  .layer-reward-box .layui-layer-ico {
+    background-size:70%;
   }
   .page-width {
     width:100%;
@@ -882,10 +899,40 @@ body {
   }
 }
 
+@media screen and (max-width: 350px) {
+  .tip-list {
+    zoom:0.7;
+    left: 10px!important;
+  }
+  .layer-reward-list {
+    zoom: 0.54;
+  }
+  .layer-reward-box .layui-layer-ico {
+    background-size:70%;
+  }
+  .banner-slide {
+    height: 154px;
+  }
+}
+
+@media screen and (min-width: 376px) and (max-width: 415px) {
+  .tip-list {
+    zoom: 0.9;
+    left: 20px!important;
+  }
+}
 @media screen and (min-width: 710px) and (max-width:1024px){
   .page-width {
     width:100%;
   }
+
+  .layer-reward-list {
+    zoom:0.95;
+  }
+  .layer-reward-box .layui-layer-ico {
+    background-size:100%;
+  }
+
   .activity-frame-box {
     box-sizing: border-box;
     padding: 0 15px;
