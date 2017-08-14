@@ -103,7 +103,7 @@ function setCookie(name,value)
         month = exp.getMonth()+1,
         day = exp.getDate();
 
-    let second = new Date(year,month,day,24,0,0);
+    let second = new Date(year,month-1,day,24,0,0);
     let distanceTime = second.getTime() - exp.getTime();
 
     exp.setTime(exp.getTime() + distanceTime);

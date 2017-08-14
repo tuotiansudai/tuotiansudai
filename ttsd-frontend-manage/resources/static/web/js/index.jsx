@@ -71,26 +71,26 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 //拓天开学季
 (function() {
 
-    function getCookie(name)
-    {
+    function getCookie(name) {
         var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
         if(arr=document.cookie.match(reg))
             return unescape(arr[2]);
         else
             return null;
     }
-document.cookie='drawSignToday=1';
-    // function delCookie(name)
-    // {
-    //     var exp = new Date();
-    //         exp.setTime(exp.getTime() - 1);
-    //     var cval=getCookie(name);
-    //     if(cval!=null) {
-    //         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
-    //     }
-    // }
-
-    // delCookie('drawSignToday');
+    
+// document.cookie='drawSignToday=1';
+//     function delCookie(name)
+//     {
+//         var exp = new Date();
+//             exp.setTime(exp.getTime() - 1);
+//         var cval=getCookie(name);
+//         if(cval!=null) {
+//             document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+//         }
+//     }
+//
+//     delCookie('drawSignToday');
 
     // 如果成功抽奖一次就设置 drawSignToday为1
     // 在凌晨的时候重设drawSignToday为0
