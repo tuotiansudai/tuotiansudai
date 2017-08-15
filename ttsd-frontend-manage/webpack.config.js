@@ -97,7 +97,9 @@ if(NODE_ENV=='production') {
 				comments: false
 			},
 			compress: {
-				warnings: false
+				warnings: false,
+				drop_console: true,
+				drop_debugger: true
 			}
 		}
 	}));
