@@ -37,13 +37,13 @@ public class ActivityConsoleHouseDecorateService {
     private Date activityHouseDecorateEndTime;
 
     private final List<ActivityConsoleHouseDecorateService.ActivityRewards> activityRewards = Lists.newArrayList(
-            new ActivityConsoleHouseDecorateService.ActivityRewards("法国进口红酒", 3800000l, 6800000l),
-            new ActivityConsoleHouseDecorateService.ActivityRewards("按摩披肩", 6800000l, 8800000l),
-            new ActivityConsoleHouseDecorateService.ActivityRewards("足浴盆", 8800000l, 18180000l),
-            new ActivityConsoleHouseDecorateService.ActivityRewards("艾美特遥控塔扇", 18180000l, 28180000l),
-            new ActivityConsoleHouseDecorateService.ActivityRewards("格兰仕极光微波炉", 28180000l, 38180000l),
-            new ActivityConsoleHouseDecorateService.ActivityRewards("松下吸尘器", 38180000l, 58180000l),
-            new ActivityConsoleHouseDecorateService.ActivityRewards("小天鹅滚筒洗衣机", 58180000l, Long.MAX_VALUE));
+            new ActivityConsoleHouseDecorateService.ActivityRewards("法国进口红酒", 8000000l, 15000000l),
+            new ActivityConsoleHouseDecorateService.ActivityRewards("按摩披肩", 15000000l, 18000000l),
+            new ActivityConsoleHouseDecorateService.ActivityRewards("足浴盆", 18000000l, 38000000l),
+            new ActivityConsoleHouseDecorateService.ActivityRewards("艾美特遥控塔扇", 38000000l, 56000000l),
+            new ActivityConsoleHouseDecorateService.ActivityRewards("格兰仕极光微波炉", 56000000l, 80000000l),
+            new ActivityConsoleHouseDecorateService.ActivityRewards("松下吸尘器", 80000000l, 100000000l),
+            new ActivityConsoleHouseDecorateService.ActivityRewards("小天鹅滚筒洗衣机", 100000000l, Long.MAX_VALUE));
 
 
     public BasePaginationDataDto<ActivityInvestRewardView> list(int index, int pageSize) {

@@ -103,37 +103,37 @@
                     <dd class="row-item">
                         <p class="img-item gift-one"></p>
                         <p class="name-item">法国进口红酒</p>
-                        <p>累计投资额：3.8万元</p>
+                        <p>累计投资额：8万元</p>
                     </dd>
                     <dd class="row-item">
                         <p class="img-item gift-two"></p>
                         <p class="name-item">按摩披肩</p>
-                        <p>累计投资额：6.8万元</p>
+                        <p>累计投资额：15万元</p>
                     </dd>
                     <dd class="row-item">
                         <p class="img-item gift-three"></p>
                         <p class="name-item">足浴盆</p>
-                        <p>累计投资额：8.8万元</p>
+                        <p>累计投资额：18万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-four"></p>
                         <p class="name-item">艾美特遥控塔扇</p>
-                        <p>累计投资额：18.18万元</p>
+                        <p>累计投资额：38万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-five"></p>
                         <p class="name-item">格兰仕极光微波炉</p>
-                        <p>累计投资额：28.18万元</p>
+                        <p>累计投资额：56万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-six"></p>
                         <p class="name-item">松下吸尘器</p>
-                        <p>累计投资额：38.18万元</p>
+                        <p>累计投资额：80万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-seven"></p>
                         <p class="name-item">小天鹅滚筒洗衣机</p>
-                        <p>累计投资额：58.18万元</p>
+                        <p>累计投资额：100万元</p>
                     </dd>
                 </dl>
             </div>
