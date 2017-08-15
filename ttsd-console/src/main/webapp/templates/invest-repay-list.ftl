@@ -9,9 +9,9 @@
             项目状态：${loan.status.getDescription()}<br>
             投资金额：${(invest.amount/100)?string.computer}元 (${data.couponMessage!} ${data.levelMessage!})<br>
             投资状态：${invest.status.getDescription()} <br>
-            已收回款总额 : ${data.sumActualInterest}  元<br>
-            待收回款总额 : ${data.sumExpectedInterest} 元<br>
-            现金红包奖励 : ${data.redInterest}元<br>
+            已收回款总额 : ${data.sumActualInterest!"-"}  元<br>
+            待收回款总额 : ${data.sumExpectedInterest!"-"} 元<br>
+            现金红包奖励 : ${data.redInterest!"-"}元<br>
         </p>
     </div>
     <div class="table-responsive">
