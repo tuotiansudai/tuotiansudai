@@ -63,7 +63,7 @@ public class ActivityConsoleHouseDecorateService {
 
     private List<ActivityInvestRewardView> getInvestRecord() {
 
-        List<ActivityInvestView> activityInvestViews = activityInvestMapper.sumAmountByNameDateAndActivity(ActivityCategory.HOUSE_DECORATE_ACTIVITY.name(),null,null);
+        List<ActivityInvestView> activityInvestViews = activityInvestMapper.sumAmountByNameDateAndActivity(ActivityCategory.HOUSE_DECORATE_ACTIVITY.name(),activityHouseDecorateStartTime,activityHouseDecorateEndTime);
         List<ActivityInvestRewardView> list = Lists.newArrayList();
         for (ActivityInvestView activityInvestView:activityInvestViews) {
             list.add(new ActivityInvestRewardView(activityInvestView,
