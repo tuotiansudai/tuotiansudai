@@ -1,4 +1,3 @@
-@import "global_png";
 $linkColor:#666 #ff770f #ffac2a;
 $checkValid:#f71010 #6bc21e;
 $headings: (h1: 2em, h2: 1.5em, h3: 1.2em,h4:18px, h5:16px);
@@ -219,29 +218,38 @@ form {
 }
 
 .img-itrust_logo {
-  @extend .sprite-global-itrust_logo;
+  width: 127px;
+  height: 47px;
   display: inline-block;
+  background: url('../images/global/logo-itrust.png') left top no-repeat;
 }
 
 .img-chengxin_logo {
-  @extend .sprite-global-chengxin_logo;
+  width: 127px;
+  height: 47px;
   display: inline-block;
+  background: url('../images/global/logo-chengxin.png') left top no-repeat;
 }
 
 .img-knetSealLogo {
-  @extend .sprite-global-knetSealLogo;
+  width: 127px;
+  height: 47px;
   display: inline-block;
+  background: url('../images/global/logo-knetSeal.png') left top no-repeat;
 }
 
 .img-digicert {
-  @extend .sprite-global-digicert;
   display: inline-block;
+  width: 127px;
+  height: 47px;
+  background: url('../images/global/logo-digicert.png') left top no-repeat;
 }
 
-
 .img-logo-tip {
-  @extend .sprite-global-logo-tip;
+  width: 50px;
+  height: 50px;
   float: left;
+  background: url('../images/global/logo-tip.png') left top no-repeat;
 }
 
 .page-width {
