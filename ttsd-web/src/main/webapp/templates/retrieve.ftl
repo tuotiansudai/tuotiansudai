@@ -28,7 +28,6 @@
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" id="imageCaptchaForm" >
         <div class="image-captcha-inner">
-            <i class="sprite-register-ic-img-code"></i>
             <img src="" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
             <input type="hidden" name="mobile">
@@ -42,23 +41,5 @@
 
     </form>
 </div>
-
-
-    <#--<div class="verification-code-main" style="display: none;">-->
-        <#--<div class="pad-m">-->
-            <#--<form class="image-captcha-form" id="imageCaptchaForm" >-->
-            <#--<div class="image-code-check">-->
-                <#--<label for="">图形验证码：</label>-->
-                <#--<input type="text" class="verification-code-text input-control" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>-->
-                <#--<img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>-->
-
-            <#--</div>-->
-            <#--<b class="error">验证码输入错误</b>-->
-            <#--<div class="tc pad-m">-->
-                <#--<button class="image-captcha-confirm btn-success" >确认</button>-->
-            <#--</div>-->
-          <#--</form>-->
-        <#--</div>-->
-    <#--</div>-->
 
 </@global.main>

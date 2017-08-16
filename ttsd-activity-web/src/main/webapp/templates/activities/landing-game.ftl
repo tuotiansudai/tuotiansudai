@@ -28,7 +28,6 @@
                 </li>
                 <li id="appCaptchaErr" class="appCaptchaErr"></li>
                 <li class="bg-col-captcha">
-                    <i class="sprite-register-ic-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
                                 <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
                                        autocorrect="off" autocapitalize="off" placeholder="请输入短信验证码" maxlength="6">

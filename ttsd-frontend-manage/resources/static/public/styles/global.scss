@@ -250,6 +250,48 @@
   }
 }
 
+
+//注册图标
+
+.register-icon-list {
+  i {
+    display: inline-block;
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    z-index: 20;
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    &.icon-mobile {
+      background: url('../images/register/ic-mobile.png') left top no-repeat;
+    }
+
+    &.icon-password {
+      background: url('../images/register/ic-password.png') left top no-repeat;
+    }
+    &.icon-captcha {
+      background: url('../images/register/ic-captcha.png') left top no-repeat;
+    }
+    &.icon-referrer {
+
+      background: url('../images/register/ic-referrer.png') left top no-repeat;
+    }
+    &.icon-yes-checked {
+      background: url('../images/register/yes-checked.png') left top no-repeat;
+    }
+    &.icon-no-checked {
+      background: url('../images/register/no-checked.png') left top no-repeat;
+    }
+    &.icon-arrow-right {
+      background: url('../images/register/arrow-right.png') left top no-repeat;
+    }
+    &.icon-arrow-bottom {
+      background: url('../images/register/arrow-bottom.png') left top no-repeat;
+    }
+  }
+}
+
 /********************** Responsive Page ****************************/
 
 @media screen and (max-width: 700px) {
