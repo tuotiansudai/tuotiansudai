@@ -26,8 +26,8 @@
             <dd>可选择不同期限产品，预期年化收益最高可达<em>8%~11%</em></dd>
             <dd class="img-load">
                 <div class="arrow-rise"></div>
-                <img src="${commonStaticServer}/images/sign/assure/load.png">
-            </dd> d
+                <div class="report-load"></div>
+            </dd>
         </dl>
 
         <div class="line"></div>
@@ -67,8 +67,7 @@
         <dl class="box-03 fl">
             <dt><span>03</span>高效便捷＋门槛低</dt>
             <dd>手机APP随时随地便捷投资，只需50元。</dd>
-            <dd class="benefit-img">
-                <img src="${commonStaticServer}/images/sign/assure/benefit01.png">
+            <dd class="benefit-img ">
             </dd>
          </dl>
         <div class="line hack"></div>
@@ -76,8 +75,7 @@
             <dt><span>04</span>优质产品＋资金周转灵活</dt>
             <dd>抵押债权，相对安全的债权模式； <br/>
                 债权转让，急用即转，方便快捷。</dd>
-            <dd class="benefit-img">
-                <img src="${commonStaticServer}/images/sign/assure/benefit02.png">
+            <dd class="benefit-img ">
             </dd>
         </dl>
 
