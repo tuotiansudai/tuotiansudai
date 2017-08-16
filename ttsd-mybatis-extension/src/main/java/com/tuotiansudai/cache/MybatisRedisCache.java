@@ -41,14 +41,19 @@ public class MybatisRedisCache implements Cache {
     @Override
     public void putObject(Object key, Object value) {
         execute(jedis -> {
-            jedis.set(getKey(key).getBytes(StandardCharsets.UTF_8), SerializeUtil.serialize(value));
-            jedis.expire(getKey(key).getBytes(StandardCharsets.UTF_8), redisProvider.getExpireSeconds());
+            jedis.setex(getKey(key).getBytes(StandardCharsets.UTF_8), redisProvider.getExpireSeconds(), SerializeUtil.serialize(value));
+            logger.info(MessageFormat.format("[Mybatis Cache] put cache key: {0}, value: {1}",
+                    key, value));
         });
     }
 
     @Override
     public Object getObject(Object key) {
-        return executeGet(jedis -> SerializeUtil.deserialize(jedis.get(getKey(key).getBytes(StandardCharsets.UTF_8))));
+        Object o = executeGet(jedis -> SerializeUtil.deserialize(jedis.get(getKey(key).getBytes(StandardCharsets.UTF_8))));
+        if (o == null) {
+            logger.info(MessageFormat.format("[Mybatis Cache] no cache key: {0}", key));
+        }
+        return o;
     }
 
     @Override
@@ -58,10 +63,13 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public void clear() {
+        logger.info(MessageFormat.format("[Mybatis Cache] clean mybaits cache keys: {0}", getKeys()));
         execute(jedis -> {
             Set<byte[]> keys = jedis.keys(getKeys().getBytes(StandardCharsets.UTF_8));
             for (byte[] key : keys) {
-                jedis.expire(key, 0);
+                jedis.del(key);
+                logger.info(MessageFormat.format("[Mybatis Cache] clean mybaits cache key: {0}",
+                        new String(key, StandardCharsets.UTF_8)));
             }
         });
     }
@@ -92,21 +100,20 @@ public class MybatisRedisCache implements Cache {
     }
 
     private String md5Hash(String sourceStr) {
-        String resultStr = "";
+        StringBuilder resultStr = new StringBuilder();
+        char[] digit = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         try {
             byte[] temp = sourceStr.getBytes();
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             md5.update(temp);
             byte[] b = md5.digest();
-            for (int i = 0; i < b.length; i++) {
-                char[] digit = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
-                        '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+            for (byte aB : b) {
                 char[] ob = new char[2];
-                ob[0] = digit[(b[i] >>> 4) & 0X0F];
-                ob[1] = digit[b[i] & 0X0F];
-                resultStr += new String(ob);
+                ob[0] = digit[(aB >>> 4) & 0X0F];
+                ob[1] = digit[aB & 0X0F];
+                resultStr.append(new String(ob));
             }
-            return resultStr;
+            return resultStr.toString();
         } catch (NoSuchAlgorithmException ignored) {
             return null;
         }
