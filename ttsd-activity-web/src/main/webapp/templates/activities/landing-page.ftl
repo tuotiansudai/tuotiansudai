@@ -128,7 +128,6 @@
                                 <input validate type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                        class="password input-width" value="">
                             </li>
-                        
 
                             <li class="code reg-row-container">
                             <#--验证码:-->
