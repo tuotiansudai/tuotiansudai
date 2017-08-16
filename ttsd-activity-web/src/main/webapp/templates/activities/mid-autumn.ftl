@@ -245,7 +245,7 @@
 
                                 <li class="code">
                                     <label for="" class="reg-title">验证码:</label>
-                                    <i class="icon-img-code"></i>
+                                    <i class="icon-img-captcha"></i>
                                     <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
                                            class="appCaptcha" value="">
                                     <em class="image-captcha">
