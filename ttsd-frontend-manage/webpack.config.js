@@ -163,7 +163,7 @@ plugins.push(new AssetsPlugin({
 }));
 
 //happypack利用缓存使rebuild更快
-plugins.push(createHappyPlugin('jsx', ['babel']));
+plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 
 plugins.push(createHappyPlugin('sass', ['css!sass']));
 // plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
