@@ -50,7 +50,7 @@ $('body').on('click','a',function(event) {
     switch(target.className) {
         case 'link-agree-service':
             contentDom=$('.service-box',$safetyAgreement);
-            showAgreement('安心平台签服务协议',contentDom);
+            showAgreement('安心签平台服务协议',contentDom);
             break;
         case 'link-agree-privacy':
             contentDom=$('.privacy-box',$safetyAgreement);
