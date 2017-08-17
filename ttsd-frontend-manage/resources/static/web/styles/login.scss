@@ -9,9 +9,12 @@
       display: inline-block;
       border: #dadada 1px solid;
       border-right-width: 0;
-     background: url('../images/sign/login-app-new.png') left top no-repeat;
-     width:472px;
-     height:350px;
+      background: url('../images/sign/login-app-new.png') left top no-repeat;
+      width:472px;
+      height:350px;
+      @media (min-width:700px) and (max-width:768px) {
+        display:none;
+      }
     }
     .login-box {
       display: inline-block;

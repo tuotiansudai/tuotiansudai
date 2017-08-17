@@ -42,6 +42,12 @@
     margin-left: 322px;
     height: auto;
     overflow: auto;
+    @media (min-width:700px) and (max-width:768px) {
+      width: 500px;
+      position: relative;
+      left: 50%;
+      margin-left: -170px;
+    }
     .register-step-one {
       margin-top: 20px;
     }
@@ -101,7 +107,9 @@
             background: #ff9c1b;
             color: #fff;
             cursor: pointer;
-
+            @media (min-width:700px) and (max-width:768px) {
+              right:120px;
+            }
             &[disabled] {
               cursor: default;
               background: #b3b3b3;

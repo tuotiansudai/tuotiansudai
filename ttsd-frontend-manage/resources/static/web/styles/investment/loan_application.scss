@@ -28,6 +28,9 @@ $width: 700px;
     @media (max-width: $width) {
       width: 100%;
 		}
+    @media (min-width:700px) and (max-width: 768px) {
+      width: 100%;
+    }
     &:after {
       clear: both;
     }
@@ -71,6 +74,9 @@ $width: 700px;
         padding-left: 40px;
         margin: 15px 0;
       }
+      @media (min-width:700px) and (max-width: 768px) {
+        padding-left: 40px;
+      }
       .border-item {
 				position: absolute;
         top: 50%;
@@ -86,6 +92,9 @@ $width: 700px;
           width: 5px;
           height: 14px;
           margin-top: -7px;
+        }
+        @media (min-width:700px) and (max-width: 768px) {
+          left: 20px;
         }
 			}
 		}
@@ -230,6 +239,9 @@ $width: 700px;
           width: 100%;
           margin: 10px 0;
           padding: 15px 60px;
+        }
+        @media (min-width: 700px) and (max-width: 768px) {
+          margin:0;
         }
         &:hover {
 					box-shadow: 0 0 15px 2px #e6e6e6;
@@ -439,6 +451,9 @@ $width: 700px;
 
                 @media (max-width: $width) {
                   font-size: 14px;
+                }
+                @media (min-width:700px) and (max-width: 768px) {
+                  font-size: 18px;
                 }
               }
 						}
