@@ -1,5 +1,17 @@
 require('webStyle/app_download.scss');
 
+let columnImg = {
+    '1':require('../images/app-download/col1.jpg'),
+    '2':require('../images/app-download/col2.jpg'),
+    '3':require('../images/app-download/col3.jpg'),
+    '4':require('../images/app-download/col4.jpg'),
+    '5':require('../images/app-download/col5.jpg')
+};
+let $normalFrame = $('#normalFrame');
+$('img.img-column',$normalFrame).each(function(key,option) {
+    option.src = columnImg[key+1];
+});
+
 window.onload=function() {
 
     var equipment=globalFun.equipment();

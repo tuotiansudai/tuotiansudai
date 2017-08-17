@@ -2,10 +2,6 @@
 
 $CK1:#ffac2a #ff7a2a;
 
-////隐藏顶部菜单
-//.swiper-container {
-//  display: none;
-//}
 .layui-layer-btn {
   text-align: center !important;
   .layui-layer-btn1 {
@@ -25,8 +21,10 @@ $CK1:#ffac2a #ff7a2a;
     border-radius: 4px;
   }
 }
+
 /* loan detail */
 .transfer-detail-content {
+
   .detail-intro{
     float:left;
     width:998px;
@@ -113,6 +111,7 @@ $CK1:#ffac2a #ff7a2a;
       width:325px;
       padding-top:10px;
       margin: 10px 15px;
+      text-align: center;
       p{
         float:left;
         width:270px;
@@ -129,10 +128,7 @@ $CK1:#ffac2a #ff7a2a;
           color:#7f7f7f;
           font-size:14px;
         }
-        &.img-status{
-          padding: 20px 10px;
-          text-align: center;
-        }
+
         &.status-text{
           font-size:16px;
         }
