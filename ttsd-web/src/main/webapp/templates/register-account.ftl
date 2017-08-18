@@ -4,7 +4,6 @@
 <div class="register-container page-width register-account">
 
     <div class="step-account-head">
-        <#--<i class="sprite-register-ic-account"></i>-->
        <span class="info-note">
            为了保障您的账户及资金安全， <br/>
        根据相关法律法规，我们会对您进行实名认证。
