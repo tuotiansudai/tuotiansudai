@@ -3,8 +3,8 @@
 <@global.main pageCss="${css.sport_play_2017}" pageJavascript="${js.sport_play_2017}" activeNav="" activeLeftNav="" title="运动达人VS职场骄子_活动中心_拓天速贷" keywords="运动达人,职场骄子,活动中心,抽奖,拓天速贷" description="拓天速贷活动期间用户每日登陆即有一次免费抽签机会,累计投资还可兑换不同实物奖品,运动奖VS职场奖,总有一款适合你.">
 <div class="sport-play-container" id="sportPlayContainer">
     <div class="top-img">
-        <img src="" width="100%" class="media-pc">
-        <img src="" width="100%" class="media-phone">
+        <img width="100%" class="media-pc">
+        <img width="100%" class="media-phone">
     </div>
     <div class="shaking-item">
         <div class="wp clearfix">
@@ -19,7 +19,7 @@
             </div>
             <div class="draw-item">
                 <div class="draw-model">
-                    <img src="" class="draw-btn">
+                    <img class="draw-btn">
                 </div>
             </div>
         </div>

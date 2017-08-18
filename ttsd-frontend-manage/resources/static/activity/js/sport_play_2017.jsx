@@ -4,8 +4,6 @@ require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
 let tpl = require('art-template/dist/template');
 
-
-
 let $sportPlayContainer = $('#sportPlayContainer'),
     sourceKind = globalFun.parseURL(location.href);
 let topimg=require('../images/2017/sport-play/top-img.jpg'),
