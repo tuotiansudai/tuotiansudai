@@ -3,7 +3,7 @@
     <div class="about-us-container">
         <h2 class="column-title"><em>公司管理</em></h2>
         <div class="team-box com-list clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/user-one.jpg" width="180" height="220" alt="李显玉先生" class="com-img responsive-width">
+            <i class="sign-profile user-one"></i>
             <dl class="company-user">
                 <dt>李显玉先生 <span>董事长</span></dt>
                 <dd>拓天为海，拓天要做一片海；</dd>
@@ -14,7 +14,7 @@
             </dl>
         </div>
         <div class="team-box com-list clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/user-two.jpg" width="180" height="220" alt="杜峥先生" class="com-img responsive-width">
+            <i class="sign-profile user-two"></i>
             <dl class="company-user"> 
                 <dt>杜峥先生<span>总经理</span></dt>
                 <dd>我们要做有意义的冒险 我们要梦想</dd>
@@ -23,7 +23,7 @@
             </dl>
         </div>
         <div class="team-box com-list clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/user-three.jpg" width="180" height="220" alt="史磊先生" class="com-img responsive-width">
+            <i class="sign-profile user-three"></i>
             <dl class="company-user">
                 <dt>史磊先生<span>集团研发总监</span></dt>
                 <dd>时代蕴含机遇，创新成就伟业！</dd>
@@ -32,7 +32,7 @@
             </dl>
         </div>
         <div class="team-box com-list clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/user-four.jpg" width="180" height="220" alt="张东杰先生" class="com-img responsive-width">
+            <i class="sign-profile user-four"></i>
             <dl class="company-user">
                 <dt>张东杰先生<span>副总经理兼运营总监</span></dt>
                 <dd>世界会向那些有目标和远见的人让路。</dd>
@@ -41,7 +41,7 @@
         </div>
         <h2 class="column-title"><em>团队介绍</em></h2>
         <div class="team-box clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/team1.png" alt="行政团队" class="fl responsive-width">
+            <i class="sign-profile user-team1"></i>
             <dl>
                 <dt>行政团队</dt>
                 <dd>行政团队运用最先进、最科学的管理模式，引领拓天速贷平台更完美的服务大众。</dd>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="team-box clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/team2.png" alt="技术团队" class="fr responsive-width">
+            <i class="sign-profile user-team2"></i>
             <dl>
                 <dt>技术团队</dt>
                 <dd>技术团队是一批有创意、有激情的年轻人，具备丰富的开发经验、非凡的创造力和奉献精神。</dd>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="team-box clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/team3.png" alt="信审团队" class="fl responsive-width">
+            <i class="sign-profile user-team3"></i>
             <dl>
                 <dt>信审团队</dt>
                 <dd>信审团队是一群专业严谨的金融精英，严格把控信审流程，维护投资人利益。</dd>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="team-box clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/team4.png" alt="风控团队" class="fr responsive-width">
+            <i class="sign-profile user-team4"></i>
             <dl>
                 <dt>风控团队</dt>
                 <dd>风控团队有丰富金融风险把控经验，为平台用户提供完善的安全保障。</dd>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="team-box last clearfix">
-            <img src="${commonStaticServer}/images/sign/aboutus/team5_new.jpg" alt="客服团队" class="fl responsive-width">
+            <i class="sign-profile user-team5"></i>
             <dl>
                 <dt>客服团队</dt>
                 <dd>客服团队通过电话(400-169-1188)、QQ、微信和微博等信息化手段，一对一服务用户。</dd>
@@ -82,33 +82,23 @@
         <h2 class="column-title"><em>工作环境</em></h2>
         <ul class="com-place" id="companyPhoto">
             <li>
-                <a href="${commonStaticServer}/images/sign/aboutus/photo_big_01.jpg" title="办公大楼" rel="group">
-                    <img src="${commonStaticServer}/images/sign/aboutus/photo_01.jpg">
-                </a>
+                <a  title="办公大楼" rel="group"></a>
                 <span>办公大楼</span>
             </li>
             <li>
-                <a href="${commonStaticServer}/images/sign/aboutus/photo_big_02.jpg" title="公司前台" rel="group">
-                    <img src="${commonStaticServer}/images/sign/aboutus/photo_02.jpg">
-                </a>
+                <a  title="公司前台" rel="group"></a>
                 <span>公司前台</span>
             </li>
             <li>
-                <a href="${commonStaticServer}/images/sign/aboutus/photo_big_03.jpg" title="技术团队" rel="group">
-                    <img src="${commonStaticServer}/images/sign/aboutus/photo_03.jpg">
-                </a>
+                <a title="技术团队" rel="group"></a>
                 <span>技术团队</span>
             </li>
             <li>
-                <a href="${commonStaticServer}/images/sign/aboutus/photo_big_05.jpg" title="运营团队" rel="group">
-                    <img src="${commonStaticServer}/images/sign/aboutus/photo_05.jpg">
-                </a>
+                <a title="运营团队" rel="group"></a>
                 <span>运营团队</span>
             </li>
             <li>
-                <a href="${commonStaticServer}/images/sign/aboutus/photo_big_04_new.jpg" title="客服团队" rel="group">
-                    <img src="${commonStaticServer}/images/sign/aboutus/photo_04_new.jpg">
-                </a>
+                <a title="客服团队" rel="group"></a>
                 <span>客服团队</span>
             </li>
         </ul>

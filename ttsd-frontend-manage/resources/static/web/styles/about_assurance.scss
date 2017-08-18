@@ -602,6 +602,7 @@
 	}
   }
 
+
   .main-banner {
 	background:#e95b56;
 	img {
@@ -642,6 +643,17 @@
 		  padding-left:70px;
 		  padding-top:10px;
 		  position: relative;
+			height:350px;
+			.report-load {
+				width:667px;
+				height:322px;
+				background: url('../images/sign/assure/load.png') left top no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 69px;
+				top:30px;
+
+			}
 		  .arrow-rise {
 			position: absolute;
 			top: 33px;
@@ -782,14 +794,20 @@
 	  &.box-03 {
 		 dd {
 		   &.benefit-img {
-			 padding-top:53px;
+			 margin-top:53px;
+			   width:240px;
+			   height:130px;
+			   background: url('../images/sign/assure/benefit01.png') center top no-repeat;
 		   }
 		 }
 	   }
 	  &.box-04 {
 		dd {
 		  &.benefit-img {
-			padding-top:30px;
+			  margin-top:30px;
+			  width:240px;
+			  height:130px;
+			  background: url('../images/sign/assure/benefit02.png') center top no-repeat;
 		  }
 		}
 	  }
@@ -940,9 +958,7 @@
 }
 
 @media screen and (max-width: 700px) {
-  //* {
-	//box-sizing: border-box;
-  //}
+
   .btn-guide {
 	padding: 3px 25px;
 	font-size: 12px;
@@ -1000,9 +1016,13 @@
 		font-size:10px;
 		&.img-load {
 		  padding-left:0;
-		  img {
+			height: 240px;
+		.report-load {
 			width:100%;
-		  }
+			height:240px;
+			background-size: 100%;
+			left:5px;
+			}
 		  .arrow-rise {
 			position: absolute;
 			top: 15px;
@@ -1056,22 +1076,29 @@
 		&.fl {
 		  float: none;
 		}
-
+		  dd.benefit-img {
+			  padding-top: 20px!important;
+			  padding-left: 0;
+			  text-align: center;
+			  padding-bottom: 20px;
+			  width:100%;
+			  background-size: 80%;
+		  }
 	  }
 	  &.box-04 {
 		&.fr {
 		  float: none;
 		}
+		  dd.benefit-img {
+			  padding-top: 20px!important;
+			  padding-left: 0;
+			  text-align: center;
+			  padding-bottom: 20px;
+			  width:100%;
+			  background-size: 80%;
+		  }
 	  }
-	  dd.benefit-img {
-		padding-top: 20px!important;
-		padding-left: 0;
-		text-align: center;
-		padding-bottom: 20px;
-		img {
-		  width:60%;
-		}
-	  }
+
 	}
 
 	.section-box-three {

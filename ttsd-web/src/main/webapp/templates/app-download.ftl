@@ -13,12 +13,12 @@
 
 <div class="normal-frame-out" id="normalFrame" style="display: none">
     <div class="column-box download-header clearfix">
-        <img src="${commonStaticServer}/images/app-download/logo.jpg">
-    <a href="javascript:void(0)" class="btn-download" id="btnDownload">立即下载</a>
+        <span class="app-logo"></span>
+        <a href="javascript:void(0)" class="btn-download" id="btnDownload">立即下载</a>
     </div>
 
     <div class="column-box bond-box clearfix">
-        <img src="${commonStaticServer}/images/app-download/col1.jpg">
+        <img class="img-column">
         <div class="top-decorate"></div>
         <div class="column-text">
             <b>债权上线·早知道</b>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="column-box fund-box">
-        <img src="${commonStaticServer}/images/app-download/col2.jpg">
+        <img class="img-column">
         <div class="column-text">
             <b>资金流转·不站岗</b>
             <p>精心打磨回款日历<br/>
@@ -40,7 +40,7 @@
     </div>
 
     <div class="column-box hand-invest">
-        <img src="${commonStaticServer}/images/app-download/col3.jpg">
+        <img class="img-column">
         <div class="column-text">
             <b>随时随地·掌上投</b>
             <p>碎片时间做投资<br/>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="column-box safety-account-box clearfix">
-        <img src="${commonStaticServer}/images/app-download/col4.jpg">
+        <img class="img-column">
         <div class="column-text">
             <b>多重保障·更安全</b>
             <p>数据采用256位加密技术<br/>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="column-box point-box clearfix">
-        <img src="${commonStaticServer}/images/app-download/col5.jpg">
+        <img class="img-column">
         <div class="column-text">
             <b>一键签到·攒积分</b>
             <p>不再错过每次签到<br/>
