@@ -9,10 +9,17 @@ let $sportPlayContainer = $('#sportPlayContainer'),
 let topimg=require('../images/2017/sport-play/top-img.jpg'),
     topimgPhone=require('../images/2017/sport-play/top-img-phone.jpg');
 
-$sportPlayContainer.find('.top-img .media-pc').attr('src',topimg).siblings('.media-phone').attr('src',topimgPhone);
+// $sportPlayContainer.find('.top-img .media-pc').attr('src',topimg).siblings('.media-phone').attr('src',topimgPhone);
+
+let mediaPCHtml = '<img src="' + topimg + '" width="100%" class="media-pc">';
+let mediaPhoneHtml = '<img src="' + topimgPhone + '" width="100%" class="media-phone">';
+
+$sportPlayContainer.find('.top-img').html(mediaPCHtml + mediaPhoneHtml);
 
 let drawBtn=require('../images/2017/sport-play/draw-btn.png');
-$sportPlayContainer.find('.draw-model img').attr('src',drawBtn);
+
+let drawBtmHtml = '<img src="' + drawBtn + '"class="draw-btn">';
+$sportPlayContainer.find('.draw-model').html(drawBtmHtml);
 
 
 let $pointerImg = $('.draw-btn', $sportPlayContainer);
