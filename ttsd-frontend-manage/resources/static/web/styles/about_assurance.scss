@@ -190,9 +190,14 @@
 			dl {
 				width:265px;
 				float: left;
+				@media (min-width:700px) and (max-width:768px) {
+					width:33.333333%;
+				}
 				&:nth-child(2) {
-					margin-left:100px;
-					margin-right:100px;
+					margin:0 100px;
+					@media (min-width:700px) and (max-width:768px) {
+						margin:0;
+					}
 				}
 				dt {
 				  height: 123px;
@@ -217,6 +222,9 @@
 			}
 			  dd {
 				padding-top:20px;
+				@media (min-width:700px) and (max-width:768px) {
+					padding:20px 20px 0;
+				}
 			  }
 
 			}

@@ -8,11 +8,18 @@
       width:1000px;
       margin:0 auto;
       position: relative;
+      @media (max-width:999px) {
+        width:100%;
+      }
       .choi-beans-list {
         float:left;
         width: 900px;
         padding:30px 50px;
         background:#fff;
+        @media (min-width:700px) and (max-width:768px) {
+          width:100%;
+          box-sizing:border-box;
+        }
         .title-task {
           border-bottom: 1px solid #e7eaee;
           span {
@@ -52,6 +59,12 @@
             margin:10px 25px 0 0;
             position: relative;
             border:1px solid #e7eaee;
+            @media (min-width:700px) and (max-width:768px) {
+              width:48%;
+              margin:1%;
+              height:230px;
+              box-sizing:border-box;
+            }
             .serial-number {
               color: #cccccc;
               font-size: 50px;

@@ -54,8 +54,10 @@
           display: inline-block;
           line-height: 15px;
           border-right: 1px solid #666;
-          padding-right: 10px;
-          padding-left: 10px;
+          padding: 0 10px;
+          @media (min-width:700px) and (max-width:768px) {
+            padding:0 5px;
+          }
           &:nth-last-child(1) {
             padding-right: 0px;
             border-right-width: 0;
@@ -414,6 +416,9 @@
     height: 75px;
     position: relative;
     margin: 0 auto;
+    @media (max-width:999px) {
+      width:100%;
+    }
     .logo {
       background: url("../images/logo-index.png") left center no-repeat;
       width: 370px;
@@ -431,11 +436,18 @@
     ul {
       height: 100%;
       float: right;
+      @media (max-width:999px) {
+        width:100%;
+      }
       li {
         float: left;
         width: 90px;
         margin-left: 15px;
         position: relative;
+        @media (max-width:999px) {
+          width:16.666666%;
+          margin-left: 0;
+        }
         a {
           border-top: #fff 3px solid;
           display: block;
@@ -515,6 +527,9 @@
     width:1000px;
     margin:0 auto;
     position: relative;
+    @media (max-width:999px) {
+      width:100%;
+    }
   }
   .footer-list{
     padding:40px 0;
@@ -522,9 +537,19 @@
       float:left;
       &.list-normal{
         width:155px;
+        @media (min-width:700px) and (max-width:768px) {
+          width:33.333333%;
+          box-sizing:border-box;
+          padding-left: 40px;
+        }
       }
       &.list-contact{
         width:420px;
+        @media (min-width:700px) and (max-width:768px) {
+          width:72%;
+          box-sizing:border-box;
+          padding-left: 40px;
+        }
       }
       dt{
         float:left;
@@ -550,6 +575,9 @@
     .images-app{
       float:right;
       width:100px;
+      @media (min-width:700px) and (max-width:768px) {
+        float:left;
+      }
       .img-app-download{
         float:left;
         width:100px;
