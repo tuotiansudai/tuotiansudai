@@ -202,29 +202,29 @@ var myObject = objectAssign(commonOptions, {
 		extensions: ['', '.js', '.jsx'],
 		alias: {
 			publicJs:packageRoute.publicPathJS,
-			publicStyle:path.join(packageRoute.publicPath, 'styles'),
+			publicStyle:packageRoute.publicStyle,
 
-			askJs:path.join(packageRoute.askPath, 'js'),
-			askStyle:path.join(packageRoute.askPath, 'styles'),
+			askJs:packageRoute.askJs,
+			askStyle:packageRoute.askStyle,
 
-			webJs:path.join(packageRoute.webPath, 'js'),
-			webJsModule:path.join(packageRoute.webPath, 'js/module'),
-			webStyle:path.join(packageRoute.webPath, 'styles'),
-			webImages:path.join(packageRoute.webPath, 'images'),
+			webJs:packageRoute.webJs,
+			webJsModule:packageRoute.webJsModule,
+			webStyle:packageRoute.webStyle,
+			webImages:packageRoute.webImages,
 
-			activityJs:path.join(packageRoute.activityPath, 'js'),
-			activityJsModule:path.join(packageRoute.activityPath, 'js/module'),
-			activityStyle:path.join(packageRoute.activityPath, 'styles'),
+			activityJs:packageRoute.activityJs,
+			activityJsModule:packageRoute.activityJsModule,
+			activityStyle:packageRoute.activityStyle,
 
-			pointJs:path.join(packageRoute.pointPath, 'js'),
-            pointJsModule:path.join(packageRoute.pointPath, 'js/module'),
-			pointStyle:path.join(packageRoute.pointPath, 'styles'),
-            pointImages:path.join(packageRoute.pointPath, 'images'),
+			pointJs:packageRoute.pointJs,
+            pointJsModule:packageRoute.pointJsModule,
+			pointStyle:packageRoute.pointStyle,
+            pointImages:packageRoute.pointImages,
 
-			mobileJs:path.join(packageRoute.mobilePath, 'js'),
-			mobileJsModule:path.join(packageRoute.mobilePath, 'js/components'),
-			mobileStyle:path.join(packageRoute.mobilePath, 'styles'),
-			mobileImages:path.join(packageRoute.mobilePath, 'images')
+			mobileJs:packageRoute.mobileJs,
+			mobileJsModule:packageRoute.mobileJsModule,
+			mobileStyle:packageRoute.mobileStyle,
+			mobileImages:packageRoute.mobileImages
 		}
 	},
 
