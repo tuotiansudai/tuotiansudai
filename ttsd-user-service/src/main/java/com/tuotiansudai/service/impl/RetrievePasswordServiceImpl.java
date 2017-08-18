@@ -2,7 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -30,7 +30,7 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
         String captcha = retrievePasswordDto.getCaptcha();
         String password = retrievePasswordDto.getPassword();
         UserModel userModel = userMapper.findByMobile(mobile);
-        if (userModel != null && smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
+        if (userModel != null && smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
             userMapper.updatePassword(userModel.getLoginName(), myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
             return true;
         }

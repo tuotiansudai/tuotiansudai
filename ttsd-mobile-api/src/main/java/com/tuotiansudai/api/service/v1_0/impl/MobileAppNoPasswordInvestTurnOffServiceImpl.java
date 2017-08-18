@@ -6,12 +6,12 @@ import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOffRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOffService;
 import com.tuotiansudai.api.util.AppVersionUtil;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import org.apache.log4j.Logger;
@@ -46,7 +46,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoP
 
         if (AppVersionUtil.low == AppVersionUtil.compareVersion()) {
             UserModel userModel = userMapper.findByLoginName(loginName);
-            boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(userModel.getMobile(), dto.getCaptcha(), CaptchaType.NO_PASSWORD_INVEST);
+            boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(userModel.getMobile(), dto.getCaptcha(), SmsCaptchaType.NO_PASSWORD_INVEST);
             if (verifyCaptchaFailed) {
                 baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
                 baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());

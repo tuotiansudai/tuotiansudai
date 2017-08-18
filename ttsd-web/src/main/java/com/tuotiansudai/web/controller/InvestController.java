@@ -2,18 +2,17 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -149,7 +148,7 @@ public class InvestController {
     @ResponseBody
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.NO_PASSWORD_INVEST));
+        dataDto.setStatus(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.NO_PASSWORD_INVEST));
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
