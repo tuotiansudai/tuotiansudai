@@ -15,9 +15,7 @@
                 剩余抽签机会：<span><strong class="draw-time">${drawCount}</strong>次</span>
             </div>
             <div class="draw-item">
-                <div class="draw-model">
-                    <img class="draw-btn">
-                </div>
+                <div class="draw-model"></div>
             </div>
         </div>
     </div>
