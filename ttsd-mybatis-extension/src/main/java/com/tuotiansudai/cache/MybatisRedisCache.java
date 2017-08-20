@@ -42,7 +42,7 @@ public class MybatisRedisCache implements Cache {
     public void putObject(Object key, Object value) {
         execute(jedis -> {
             jedis.setex(getKey(key).getBytes(StandardCharsets.UTF_8), redisProvider.getExpireSeconds(), SerializeUtil.serialize(value));
-            logger.info(MessageFormat.format("[Mybatis Cache] put cache key: {0}, value: {1}",
+            logger.debug(MessageFormat.format("[Mybatis Cache] put cache key: {0}, value: {1}",
                     key, value));
         });
     }
@@ -51,7 +51,7 @@ public class MybatisRedisCache implements Cache {
     public Object getObject(Object key) {
         Object o = executeGet(jedis -> SerializeUtil.deserialize(jedis.get(getKey(key).getBytes(StandardCharsets.UTF_8))));
         if (o == null) {
-            logger.info(MessageFormat.format("[Mybatis Cache] no cache key: {0}", key));
+            logger.debug(MessageFormat.format("[Mybatis Cache] no cache key: {0}", key));
         }
         return o;
     }
@@ -68,7 +68,7 @@ public class MybatisRedisCache implements Cache {
             Set<byte[]> keys = jedis.keys(getKeys().getBytes(StandardCharsets.UTF_8));
             for (byte[] key : keys) {
                 jedis.del(key);
-                logger.info(MessageFormat.format("[Mybatis Cache] clean mybaits cache key: {0}",
+                logger.debug(MessageFormat.format("[Mybatis Cache] clean mybaits cache key: {0}",
                         new String(key, StandardCharsets.UTF_8)));
             }
         });
