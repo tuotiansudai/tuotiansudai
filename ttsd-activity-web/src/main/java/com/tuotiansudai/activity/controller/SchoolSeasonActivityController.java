@@ -45,7 +45,6 @@ public class SchoolSeasonActivityController {
 
         activityInvestViews.stream().forEach(activityInvestView -> activityInvestView.setLoginName(schoolSeasonService.encryptMobileForWeb(loginName, activityInvestView.getLoginName(), activityInvestView.getMobile())));
         modelAndView.addObject("drawCount", loginName==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(),ActivityCategory.SCHOOL_SEASON_ACTIVITY));
-        modelAndView.addObject("drawList", lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("rankList", activityInvestViews);
@@ -64,6 +63,12 @@ public class SchoolSeasonActivityController {
     public List<UserLotteryPrizeView> getPrizeRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile,
                                                                 @RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
         return lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), activityCategory);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/all-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getPrizeRecordByAll(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
+        return lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, activityCategory);
     }
 
     @ResponseBody
