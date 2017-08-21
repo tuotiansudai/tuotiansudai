@@ -1,4 +1,4 @@
-<#import "../../macro/global-dev.ftl" as global>
+<#import "../../macro/global.ftl" as global>
 
 <@global.main pageCss="${css.school_open_2017}" pageJavascript="${js.school_open_2017}" activeNav="" activeLeftNav="" title="开学季活动_活动中心_拓天速贷" keywords="拓天速贷,拓天开学季,现金红包,京东E卡,实物大奖" description="拓天速贷谁是投资尖子生活动,每日登录可获一次免费抽取现金红包机会,活动期间,投资带有早鸟专享标签的项目前3名奖励100元京东E卡,累计投资前18名可获得实物大奖.">
 
@@ -16,11 +16,11 @@
             <b>每日登录可获一次免费抽签机会</b>
             <div class="reward-scroll">
                 <ul class="scroll-inner user-record">
-                    <#if (drawList?size > 0)>
-                        <#list drawList as draw>
-                            <li>${draw.mobile}抽中了${draw.prizeValue}</li>
-                        </#list>
-                    </#if>
+                    <#--<#if (drawList?size > 0)>-->
+                        <#--<#list drawList as draw>-->
+                            <#--<li>${draw.mobile}抽中了${draw.prizeValue}</li>-->
+                        <#--</#list>-->
+                    <#--</#if>-->
                 </ul>
             </div>
             <div class="my-reward">
