@@ -35,19 +35,21 @@ public class SchoolSeasonActivityController {
         String loginName = LoginUserInfo.getLoginName();
 
         List<ActivityInvestView> activityInvestViews=schoolSeasonService.obtainRank();
-        int investRanking = CollectionUtils.isNotEmpty(activityInvestViews) ?
-                Iterators.indexOf(activityInvestViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
+        int investRanking = 0;
+        if (CollectionUtils.isNotEmpty(activityInvestViews)) {
+            investRanking = Iterators.indexOf(activityInvestViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1;
+            activityInvestViews.stream().forEach(activityInvestView -> activityInvestView.setLoginName(schoolSeasonService.encryptMobileForWeb(loginName, activityInvestView.getLoginName(), activityInvestView.getMobile())));
+        }
         long investAmount = investRanking > 0 ? activityInvestViews.get(investRanking - 1).getSumAmount() : 0;
 
         if (investRanking>18){
             investRanking=0;
         }
 
-        activityInvestViews.stream().forEach(activityInvestView -> activityInvestView.setLoginName(schoolSeasonService.encryptMobileForWeb(loginName, activityInvestView.getLoginName(), activityInvestView.getMobile())));
         modelAndView.addObject("drawCount", loginName==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(),ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
-        modelAndView.addObject("rankList", activityInvestViews);
+        modelAndView.addObject("rankList",activityInvestViews);
         return modelAndView;
     }
 

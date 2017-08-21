@@ -34,7 +34,7 @@ public class SchoolSeasonService {
 
     public int toDayIsDrawByMobile(String mobile, ActivityCategory activityCategory) {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
-                DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate())== 0 ? 1 : 0;
+                DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().minusMillis(1).toDate())== 0 ? 1 : 0;
     }
 
     public List<ActivityInvestView> obtainRank(){
