@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -37,10 +38,13 @@ import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -89,6 +93,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     private SystemBillService systemBillService;
 
     @Autowired
+    private InvestTransferService investTransferService;
+
+    @Autowired
     private PayAsyncClient payAsyncClient;
 
     @Autowired
@@ -99,6 +106,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private NormalRepayNotifyMapper normalRepayNotifyMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -607,7 +617,21 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+        TransferApplicationModel transferApplicationModel = investModel.getTransferInvestId() != null
+                ? transferApplicationMapper.findByInvestId(investModel.getId())
+                : transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING)).stream().findFirst().get();
+        Map<String, String> params = Maps.newLinkedHashMap();
+        params.put("investId", String.valueOf(investModel.getId()));
+        params.put("transferApplicationId", transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
+        params.put("transferStatus", investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage,
+                new PushMessage(Lists.newArrayList(investModel.getLoginName()),
+                        PushSource.ALL,
+                        PushType.REPAY_SUCCESS,
+                        title,
+                        AppUrl.INVEST_DETAIL,
+                        params
+                ));
     }
 
     private long calculateInvestRepayActualInterest(long investId, InvestRepayModel enabledInvestRepay) {

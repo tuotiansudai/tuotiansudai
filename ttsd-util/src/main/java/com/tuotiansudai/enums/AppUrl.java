@@ -23,6 +23,7 @@ public enum AppUrl {
     RECOMMEND_MY_REWARD("邀请好友>我的奖励", "app/tuotian/refer-reward-list"),
     SHARE("分享弹框", "app/tuotian/share?param=%s"),
     RISK_ESTIMATE("投资偏好测评", "app/tuotian/risk-estimate"),
+    INVEST_DETAIL("投资详情", "app/tuotian/invest-detail"),
     OTHER("其他", ""),
     NONE("无", null);
 

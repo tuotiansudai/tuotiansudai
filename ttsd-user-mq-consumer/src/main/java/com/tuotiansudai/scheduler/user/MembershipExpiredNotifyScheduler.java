@@ -1,5 +1,6 @@
 package com.tuotiansudai.scheduler.user;
 
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
@@ -41,6 +42,6 @@ public class MembershipExpiredNotifyScheduler {
         String title = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getTitleTemplate();
         String content = MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED.getContentTemplate();
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED, membershipPrivilegeExpiredUsers, title, content, null));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipPrivilegeExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_EXPIRED, title, AppUrl.MESSAGE_CENTER_LIST));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(membershipPrivilegeExpiredUsers, PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_EXPIRED, title, AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
     }
 }

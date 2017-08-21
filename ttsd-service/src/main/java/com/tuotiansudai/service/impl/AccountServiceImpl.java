@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.constants.PayReturnCode;
@@ -65,7 +66,8 @@ public class AccountServiceImpl implements AccountService {
                     PushSource.ALL,
                     PushType.REGISTER_ACCOUNT_SUCCESS,
                     MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
-                    AppUrl.MESSAGE_CENTER_LIST));
+                    AppUrl.MESSAGE_CENTER_LIST,
+                    Maps.newLinkedHashMap()));
         }
 
         return baseDto;

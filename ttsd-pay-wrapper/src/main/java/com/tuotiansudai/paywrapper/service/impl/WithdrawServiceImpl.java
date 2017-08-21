@@ -150,7 +150,7 @@ public class WithdrawServiceImpl implements WithdrawService {
                         PushSource.ALL,
                         PushType.WITHDRAW_APPLICATION_SUCCESS,
                         title,
-                        AppUrl.MESSAGE_CENTER_LIST));
+                        AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
@@ -200,7 +200,7 @@ public class WithdrawServiceImpl implements WithdrawService {
                         PushSource.ALL,
                         PushType.WITHDRAW_SUCCESS,
                         title,
-                        AppUrl.MESSAGE_CENTER_LIST));
+                        AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));

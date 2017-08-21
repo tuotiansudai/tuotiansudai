@@ -605,7 +605,7 @@ public class InvestServiceImpl implements InvestService {
                 PushSource.ALL,
                 PushType.INVEST_SUCCESS,
                 title,
-                AppUrl.MESSAGE_CENTER_LIST));
+                AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
 
 
         InvestInfo investInfo = new InvestInfo();

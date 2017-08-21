@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.loanout.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -312,7 +313,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         String content = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getContentTemplate(), userMapper.findByLoginName(loginName).getMobile(), AmountConverter.convertCentToString(reward));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_AWARD_SUCCESS,
                 Lists.newArrayList(referrerLoginName), title, content, businessId));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(referrerLoginName), PushSource.ALL, PushType.RECOMMEND_AWARD_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(referrerLoginName), PushSource.ALL, PushType.RECOMMEND_AWARD_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
     }
 
 }

@@ -6,6 +6,7 @@ import com.tuotiansudai.enums.PushType;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class PushMessage implements Serializable {
 
@@ -19,16 +20,21 @@ public class PushMessage implements Serializable {
 
     private AppUrl jumpTo;
 
+    private Map<String, String> params;
+
+
     public PushMessage() {
     }
 
-    public PushMessage(List<String> loginNames, PushSource pushSource, PushType pushType, String content, AppUrl jumpTo) {
+    public PushMessage(List<String> loginNames, PushSource pushSource, PushType pushType, String content, AppUrl jumpTo, Map<String, String> params) {
         this.loginNames = loginNames;
         this.pushSource = pushSource;
         this.pushType = pushType;
         this.content = content;
         this.jumpTo = jumpTo;
+        this.params = params;
     }
+
 
     public List<String> getLoginNames() {
         return loginNames;
@@ -68,5 +74,13 @@ public class PushMessage implements Serializable {
 
     public void setJumpTo(AppUrl jumpTo) {
         this.jumpTo = jumpTo;
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 }
