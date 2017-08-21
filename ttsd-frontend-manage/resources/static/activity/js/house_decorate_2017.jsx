@@ -10,7 +10,10 @@ let $houseDecorateContainer = $('#houseDecorateContainer'),
 let topimg=require('../images/2017/house-decorate/top-img.png'),
     topimgPhone=require('../images/2017/house-decorate/top-img-phone.png');
 
-$houseDecorateContainer.find('.top-img .media-pc').attr('src',topimg).siblings('.media-phone').attr('src',topimgPhone);
+let mediaPCHtml = '<img src="' + topimg + '" width="100%" class="media-pc">';
+let mediaPhoneHtml = '<img src="' + topimgPhone + '" width="100%" class="media-phone">';
+
+$houseDecorateContainer.find('.top-img').html(mediaPCHtml + mediaPhoneHtml);
 
 
 

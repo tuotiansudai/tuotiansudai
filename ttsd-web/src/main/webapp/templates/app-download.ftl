@@ -74,8 +74,16 @@
 <script>
     window.commonStaticServer='${commonStaticServer}';
 </script>
-<script src="${js.jquerydll}" ></script>
-<script src="${js.globalFun_page!}" ></script>
-<script type="text/javascript" src="${js.app_download}"></script>
+
+<#if (js.jquerydll)??>
+<script src="${js.jquerydll}" type="text/javascript" ></script>
+</#if>
+<#if (js.globalFun_page)??>
+<script src="${js.globalFun_page!}" type="text/javascript" ></script>
+</#if>
+<#if (js.app_download)??>
+<script src="${js.app_download}" type="text/javascript"></script>
+</#if>
+
 </body>
 </html>
