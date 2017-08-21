@@ -1,9 +1,5 @@
 <#import "../../macro/global-dev.ftl" as global>
 
-<#assign jsName = 'school_open_2017' >
-
-<#assign js = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/activity/js/${jsName}.css"}>
 <@global.main pageCss="${css.school_open_2017}" pageJavascript="${js.school_open_2017}" activeNav="" activeLeftNav="" title="开学季活动_活动中心_拓天速贷" keywords="拓天速贷,拓天开学季,现金红包,京东E卡,实物大奖" description="拓天速贷谁是投资尖子生活动,每日登录可获一次免费抽取现金红包机会,活动期间,投资带有早鸟专享标签的项目前3名奖励100元京东E卡,累计投资前18名可获得实物大奖.">
 
 <div class="banner-slide" id="bannerSlide"></div>
@@ -20,9 +16,11 @@
             <b>每日登录可获一次免费抽签机会</b>
             <div class="reward-scroll">
                 <ul class="scroll-inner user-record">
-                    <li>151＊＊＊＊2223抽动了50元红包</li>
-                    <li>152＊＊＊＊2223抽动了50元红包</li>
-                    <li>153＊＊＊＊2223抽动了50元红包</li>
+                    <#if (drawList?size > 0)>
+                        <#list drawList as draw>
+                            <li>${draw.mobile}抽中了${draw.prizeValue}</li>
+                        </#list>
+                    </#if>
                 </ul>
             </div>
             <div class="my-reward">
@@ -80,7 +78,7 @@
             <div class="winner-top"></div>
             <div class="winner-center">
                 <div class="top-column clearfix">
-                    <span class="fl">我的投资总额：${investAmount}元</span>
+                    <span class="fl">我的投资总额：${(investAmount/100)?string("0.00")}元</span>
                     <span class="fr">我的排名：${investRanking}</span>
                 </div>
                 <div class="table-title clearfix">
@@ -90,36 +88,45 @@
                 </div>
                 <div class="table-list-box">
                     <ul class="table-list clearfix">
-                        <li>
-                            <span>1</span>
-                            <span>134＊＊＊＊2345</span>
-                            <span>900000</span>
-                        </li>
-                        <li>
-                            <span>1</span>
-                            <span>134＊＊＊＊2345</span>
-                            <span>900000</span>
-                        </li>
-                        <li>
-                            <span>1</span>
-                            <span>134＊＊＊＊2345</span>
-                            <span>900000</span>
-                        </li>
-                        <li>
-                            <span>1</span>
-                            <span>134＊＊＊＊2345</span>
-                            <span>900000</span>
-                        </li>
-                        <li>
-                            <span>1</span>
-                            <span>134＊＊＊＊2345</span>
-                            <span>900000</span>
-                        </li>
-                        <li>
-                            <span>1</span>
-                            <span>134＊＊＊＊2345</span>
-                            <span>900000</span>
-                        </li>
+                        <#if (rankList?size > 0)>
+                            <#list rankList as rank>
+                                <li>
+                                    <span>1</span>
+                                    <span>${rank.loginName}</span>
+                                    <span>${(rank.sumAmount/100)?string("0.00")}</span>
+                                </li>
+                            </#list>
+                        </#if>
+                        <#--<li>-->
+                            <#--<span>1</span>-->
+                            <#--<span>134＊＊＊＊2345</span>-->
+                            <#--<span>900000</span>-->
+                        <#--</li>-->
+                        <#--<li>-->
+                            <#--<span>1</span>-->
+                            <#--<span>134＊＊＊＊2345</span>-->
+                            <#--<span>900000</span>-->
+                        <#--</li>-->
+                        <#--<li>-->
+                            <#--<span>1</span>-->
+                            <#--<span>134＊＊＊＊2345</span>-->
+                            <#--<span>900000</span>-->
+                        <#--</li>-->
+                        <#--<li>-->
+                            <#--<span>1</span>-->
+                            <#--<span>134＊＊＊＊2345</span>-->
+                            <#--<span>900000</span>-->
+                        <#--</li>-->
+                        <#--<li>-->
+                            <#--<span>1</span>-->
+                            <#--<span>134＊＊＊＊2345</span>-->
+                            <#--<span>900000</span>-->
+                        <#--</li>-->
+                        <#--<li>-->
+                            <#--<span>1</span>-->
+                            <#--<span>134＊＊＊＊2345</span>-->
+                            <#--<span>900000</span>-->
+                        <#--</li>-->
                     </ul>
 
                 </div>

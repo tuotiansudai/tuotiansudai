@@ -48,7 +48,7 @@ public class SchoolSeasonActivityController {
         modelAndView.addObject("drawList", lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
-        modelAndView.addObject("ranking", activityInvestViews);
+        modelAndView.addObject("rankList", activityInvestViews);
         return modelAndView;
     }
 
@@ -67,7 +67,7 @@ public class SchoolSeasonActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/draw-time", method = RequestMethod.POST)
+    @RequestMapping(value = "/draw-time", method = RequestMethod.GET)
     public int drawTime(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
         return LoginUserInfo.getLoginName()==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), activityCategory);
     }
