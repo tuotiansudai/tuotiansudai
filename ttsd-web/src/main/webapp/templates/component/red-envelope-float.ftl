@@ -30,10 +30,10 @@
 </div>
 <ul class="fix-nav-list">
 	<li class="draw-today-one">
-		<a href="http://localhost:3010/activities/2017/school-open.ftl" target="_blank" class="sign-school-open"></a>
+		<a href="activity/school-season" target="_blank" class="sign-school-open"></a>
 	</li>
 	<li class="draw-today-two">
-        <a href="http://localhost:3010/activities/2017/school-open.ftl?school=yes"  target="_blank" class="sign-school-rank"></a>
+        <a href="activity/school-season?school=yes"  target="_blank" class="sign-school-rank"></a>
 	</li>
 	<li class="cal-btn">
 		<i class="icon-calculator"></i>

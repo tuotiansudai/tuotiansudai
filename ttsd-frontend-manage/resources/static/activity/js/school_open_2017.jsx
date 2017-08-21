@@ -30,7 +30,7 @@ $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option)
     let htmlUl = $userRecord.html();
     let leftW=0;
     $userRecord.append(htmlUl);
-    $userRecord.width(lis.length * lis[0].offsetWidth);
+    lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
 
     let timer = setInterval(function() {
         leftW-=3;
