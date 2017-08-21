@@ -26,7 +26,7 @@
                 </ul>
             </div>
             <div class="my-reward">
-                <b>您有<i class="my-number">1</i>次抽签机会</b>
+                <b>您有<i class="my-number">${drawCount}</i>次抽签机会</b>
                 <span class="my-record-link">抽签记录></span>
             </div>
         </div>
@@ -80,8 +80,8 @@
             <div class="winner-top"></div>
             <div class="winner-center">
                 <div class="top-column clearfix">
-                    <span class="fl">我的投资总额：20999000元</span>
-                    <span class="fr">我的排名：3</span>
+                    <span class="fl">我的投资总额：${investAmount}元</span>
+                    <span class="fr">我的排名：${investRanking}</span>
                 </div>
                 <div class="table-title clearfix">
                     <span>排名</span>

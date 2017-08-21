@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/activity-console/school-season")
+@RequestMapping(value = "/activity-console/activity-manage")
 public class SchoolSeasonController {
 
     @Autowired

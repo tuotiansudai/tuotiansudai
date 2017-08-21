@@ -5,7 +5,6 @@ import com.tuotiansudai.activity.repository.mapper.SchoolExclusiveMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityInvestRewardView;
 import com.tuotiansudai.activity.repository.model.ActivityInvestView;
-import com.tuotiansudai.activity.repository.dto.SchoolExclusiveDto;
 import com.tuotiansudai.activity.repository.model.SchoolSeasonView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,19 +48,9 @@ public class ActivityConsoleSchoolSeasonService {
         List<SchoolSeasonView> list= new ArrayList<>();
         List<ActivityInvestView> activityInvestViews = activityInvestMapper.sumAmountByNameDateAndActivity(ActivityCategory.SCHOOL_SEASON_ACTIVITY.name(), activitySchoolSeasonStartTime, activitySchoolSeasonEndTime);
         for (ActivityInvestView activityInvestView: activityInvestViews) {
-            list.add(new SchoolSeasonView(activityInvestView, getJDECard(activityInvestView.getLoginName())));
+            list.add(new SchoolSeasonView(activityInvestView,
+                    schoolExclusiveMapper.sumJDECardByName(activityInvestView.getLoginName(),activitySchoolSeasonStartTime, activitySchoolSeasonEndTime)));
         }
         return list;
-    }
-
-    public int getJDECard(String loginName){
-        int JDECard = 0 ;
-        List<SchoolExclusiveDto> schoolExclusiveDtos = schoolExclusiveMapper.sumJDECardByName(activitySchoolSeasonStartTime, activitySchoolSeasonEndTime);
-        for (SchoolExclusiveDto schoolExclusiveDto : schoolExclusiveDtos) {
-            if (schoolExclusiveDto.getLoginName().equals(loginName))
-                JDECard = schoolExclusiveDto.getJDECard();
-                break;
-        }
-        return JDECard;
     }
 }

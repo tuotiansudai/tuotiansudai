@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.repository.model;
 public class SchoolSeasonView {
 
     private String loginName;
-    private String username;
+    private String userName;
     private String mobile;
     private long sumAmount;
     private int JDECard;
@@ -14,7 +14,7 @@ public class SchoolSeasonView {
 
     public SchoolSeasonView(ActivityInvestView activityInvestView, int JDECard) {
         this.loginName = activityInvestView.getLoginName();
-        this.username = activityInvestView.getUserName();
+        this.userName = activityInvestView.getUserName();
         this.mobile = activityInvestView.getMobile();
         this.sumAmount = activityInvestView.getSumAmount();
         this.JDECard = JDECard;
@@ -28,12 +28,12 @@ public class SchoolSeasonView {
         this.loginName = loginName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String username) {
+        this.userName = username;
     }
 
     public String getMobile() {

@@ -10,11 +10,11 @@ let $myRecordLink = $('.my-record-link',$activityPageFrame),
 
 
 let $pointerImg = $('.draw-bucket',$luckDrawBox),
-    pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
-    pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-    drawURL='/activity/point-draw/task-draw',   //抽奖的接口链接
+    pointAllList='/activity/school-season/all-list',  //中奖记录接口地址
+    pointUserList='/activity/school-season/user-list',   //我的奖品接口地址
+    drawURL='/activity/school-season/task-draw',   //抽奖的接口链接
     paramData={
-        'activityCategory':'MOTHERS_DAY_ACTIVITY'
+        'activityCategory':'SCHOOL_SEASON_ACTIVITY'
         };
 
 $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option) {

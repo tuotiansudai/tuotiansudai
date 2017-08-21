@@ -8,31 +8,26 @@
 
     <resultMap id="schoolExclusiveResultMap" type="com.tuotiansudai.activity.repository.model.SchoolExclusiveModel">
         <id column="id" property="id"></id>
-        <result column="invest_id" property="investId"></result>
-        <result column="login_name" property="loginName"></result>
-        <result column="sum_amount" property="sumAmount"></result>
-        <result column="created_time" property="createdTime"></result>
-
-    </resultMap>
-
-    <resultMap id="schoolExclusiveDto" type="com.tuotiansudai.activity.repository.dto.SchoolExclusiveDto">
+        <result column="loan_id" property="loanId"/>
         <result column="login_name" property="loginName"/>
-        <result column="JDECard" property="JDECard"/>
+        <result column="sum_amount" property="sumAmount"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="top_three" property="topThree"/>
     </resultMap>
 
     <insert id="create" parameterType="schoolExclusiveModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`school_exclusive`
-        (`invest_id`,
+        (`loan_id`,
         `login_name`,
         `sum_amount`,
         `created_time`,
         `top_three`)
-        VALUES(#{investId},#{loginName},#{sumAmount},#{createdTime},#{topThree})
+        VALUES(#{loanId},#{loginName},#{sumAmount},#{createdTime},#{topThree})
     </insert>
 
     <update id="update" parameterType="schoolExclusiveModel">
         UPDATE `edxactivity`.`school_exclusive` SET
-        `invest_id`= #{investId},
+        `loan_id`= #{loanId},
         `login_name`= #{loginName},
         `sum_amount`= #{sumAmount},
         `top_three` = #{topThree}
@@ -40,36 +35,37 @@
         `id` = #{id}
     </update>
 
-    <select id="findSchoolExclusiveModel" parameterType="map" resultType="schoolExclusiveModel">
+    <select id="findSchoolExclusiveModel" parameterType="map" resultMap="schoolExclusiveResultMap">
         SELECT *
         FROM `edxactivity`.`school_exclusive`
-        WHERE `invest_id`= #{investId}
+        WHERE `loan_id`= #{loanId}
         AND `login_name`= #{loginName}
     </select>
 
     <select id="sumTopThreeIsTrue" parameterType="map" resultType="int">
         SELECT COUNT(se.top_three)
         FROM `edxactivity`.`school_exclusive` se
-        WHERE `invest_id`= #{investId}`
+        WHERE `loan_id`= #{loanId}
         AND `top_three`=1
     </select>
 
-    <select id="sumJDECardByName" parameterType="map" resultMap="schoolExclusiveDto">
+    <select id="sumJDECardByName" parameterType="map" resultType="int">
         SELECT
-        se.login_name,
-        SUM(se.top_three) JDECard
+        COUNT(se.top_three) JDECard
         FROM
         `edxactivity`.`school_exclusive` se
         <where>
+            AND se.`top_three`=1
+            <if test="loginName !=null">
+                AND se.login_name = #{loginName}
+            </if>
             <if test="startTime !=null">
-                AND ai.created_time >= #{startTime}
+                AND se.created_time >= #{startTime}
             </if>
             <if test="endTime !=null">
-                AND ai.created_time &lt;= #{endTime}
+                AND se.created_time &lt;= #{endTime}
             </if>
         </where>
-        GROUP BY se.login_name
-        ORDER BY JDECard DESC
     </select>
 
 </mapper>

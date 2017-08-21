@@ -175,7 +175,7 @@ public class LotteryDrawActivityService {
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory) {
 
-        if (StringUtils.isEmpty(mobile)) {
+            if (StringUtils.isEmpty(mobile)) {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 

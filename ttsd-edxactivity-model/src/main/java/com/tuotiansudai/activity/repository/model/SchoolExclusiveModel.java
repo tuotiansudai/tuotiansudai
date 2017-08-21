@@ -1,21 +1,21 @@
 package com.tuotiansudai.activity.repository.model;
 
-import org.joda.time.DateTime;
+import java.util.Date;
 
 public class SchoolExclusiveModel {
 
     private long id;
-    private long investId;
+    private long loanId;
     private String loginName;
     private long sumAmount;
     private boolean topThree;
-    private DateTime createdTime;
+    private Date createdTime;
 
     public SchoolExclusiveModel() {
     }
 
-    public SchoolExclusiveModel(long investId, String loginName, long sumAmount, boolean topThree, DateTime createdTime) {
-        this.investId = investId;
+    public SchoolExclusiveModel(long loanId, String loginName, long sumAmount, boolean topThree, Date createdTime) {
+        this.loanId = loanId;
         this.loginName = loginName;
         this.sumAmount = sumAmount;
         this.topThree = topThree;
@@ -30,19 +30,19 @@ public class SchoolExclusiveModel {
         this.id = id;
     }
 
-    public long getInvestId() {
-        return investId;
+    public long getLoanId() {
+        return loanId;
     }
 
-    public void setInvestId(long investId) {
-        this.investId = investId;
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
     }
 
-    public DateTime getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(DateTime createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 

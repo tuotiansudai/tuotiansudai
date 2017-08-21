@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.controller;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
@@ -32,7 +31,7 @@ public class SchoolSeasonActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView schoolSeason(){
-        ModelAndView modelAndView = new ModelAndView("/activities/2017/school-season","responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/school-open","responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
         List<ActivityInvestView> activityInvestViews=schoolSeasonService.obtainRank();
@@ -44,31 +43,33 @@ public class SchoolSeasonActivityController {
             investRanking=0;
         }
 
+        activityInvestViews.stream().forEach(activityInvestView -> activityInvestView.setLoginName(schoolSeasonService.encryptMobileForWeb(loginName, activityInvestView.getLoginName(), activityInvestView.getMobile())));
         modelAndView.addObject("drawCount", loginName==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(),ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         modelAndView.addObject("drawList", lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("ranking", activityInvestViews);
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/school-season-draw", method = RequestMethod.POST)
+    @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
         DrawLotteryResultDto drawLotteryResultDto =lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
         return drawLotteryResultDto;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/my-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-list", method = RequestMethod.GET)
     public List<UserLotteryPrizeView> getPrizeRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile,
                                                                 @RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), activityCategory);
+        return lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), activityCategory);
     }
 
     @ResponseBody
     @RequestMapping(value = "/draw-time", method = RequestMethod.POST)
     public int drawTime(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(),ActivityCategory.SCHOOL_SEASON_ACTIVITY);
+        return LoginUserInfo.getLoginName()==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), activityCategory);
     }
 
 }

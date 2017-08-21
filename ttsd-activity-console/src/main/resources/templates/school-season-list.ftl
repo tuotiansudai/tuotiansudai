@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="HouseDecorate" title="开学季活动">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="SchoolSeason" title="开学季活动">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -38,7 +38,7 @@
                     ${item.mobile!}
                     </td>
                     <td>
-                    ${item.sumAmount!}
+                    ${(item.sumAmount/100)?string('0.00')}
                     </td>
                     <td>
                     ${item.JDECard!}

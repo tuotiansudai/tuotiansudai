@@ -64,7 +64,7 @@ public class InvestSuccessSchoolSeasonMessageConsumer implements MessageConsumer
             if (duringActivities()
                     && loanDetailInfo.isActivity()
                     && loanDetailInfo.getActivityDesc().equals("早鸟专享")){
-                schoolExclusive(userInfo, investInfo);
+                schoolExclusive(userInfo, investInfo, loanDetailInfo);
             }
 
             if (duringActivities()
@@ -85,21 +85,24 @@ public class InvestSuccessSchoolSeasonMessageConsumer implements MessageConsumer
 
     }
 
-    public void schoolExclusive(UserInfo userInfo, InvestInfo investInfo){
-        int topThreeCount = schoolExclusiveMapper.sumTopThreeIsTrue(investInfo.getInvestId());
-        SchoolExclusiveModel schoolExclusiveModel = schoolExclusiveMapper.findSchoolExclusiveModel(investInfo.getInvestId(), userInfo.getLoginName());
+    public void schoolExclusive(UserInfo userInfo, InvestInfo investInfo, LoanDetailInfo loanDetailInfo){
+        int topThreeCount = schoolExclusiveMapper.sumTopThreeIsTrue(loanDetailInfo.getLoanId());
+        SchoolExclusiveModel schoolExclusiveModel = schoolExclusiveMapper.findSchoolExclusiveModel(loanDetailInfo.getLoanId(), userInfo.getLoginName());
         long sumAmount = schoolExclusiveModel==null? investInfo.getAmount():investInfo.getAmount()+schoolExclusiveModel.getSumAmount();
         boolean isTopThree = false;
         if (topThreeCount<3 && sumAmount>= 5000000l){
             isTopThree=true;
         }
         if (schoolExclusiveModel == null){
-            schoolExclusiveMapper.create(new SchoolExclusiveModel(investInfo.getInvestId(),
+            schoolExclusiveMapper.create(new SchoolExclusiveModel(loanDetailInfo.getLoanId(),
                     userInfo.getLoginName(),
                     investInfo.getAmount(),
                     isTopThree,
-                    DateTime.now()));
+                    DateTime.now().toDate()));
 
+        }else if(schoolExclusiveModel.isTopThree()){
+            schoolExclusiveModel.setSumAmount(sumAmount);
+            schoolExclusiveMapper.update(schoolExclusiveModel);
         }else{
             schoolExclusiveModel.setSumAmount(sumAmount);
             schoolExclusiveModel.setTopThree(isTopThree);
