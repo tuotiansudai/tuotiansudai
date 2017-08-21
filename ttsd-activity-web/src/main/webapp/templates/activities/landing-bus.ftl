@@ -5,7 +5,7 @@
     <div class="register-box">
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
               novalidate="novalidate">
-            <ul class="reg-list tl register-step-one">
+            <ul class="reg-list tl register-step-one register-icon-list">
                 <li class="bg-col">
                     <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/landing-bus">
                     <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="请输入手机号"
@@ -28,7 +28,7 @@
                 </li>
                 <li id="appCaptchaErr" class="appCaptchaErr"></li>
                 <li class="bg-col-captcha">
-                    <i class="sprite-register-ic-captcha"></i>
+                    <i class="icon-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
                                 <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
                                        autocorrect="off" autocapitalize="off" placeholder="请输入短信验证码" maxlength="6">
