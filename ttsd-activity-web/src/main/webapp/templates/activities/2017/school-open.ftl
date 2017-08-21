@@ -61,10 +61,8 @@
                 <em>根据投资先后，前3名投资该项目5万元以上的同学，奖励<i class="reward-name">100元京东E卡</i></em>
                 <i class="note">（用户可在电脑端或App端“早鸟专享”项目中的“出借记录”查询获奖情况）</i>
             </span>
-
-            <img src="" class="img-reward">
-
-            <a href="#" class="btn-to-invest"></a>
+            <div class="img-reward"></div>
+            <a href="/loan-list" class="btn-to-invest"></a>
 
         </div>
     </div>
