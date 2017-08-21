@@ -195,7 +195,7 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
+			loader: 'url-loader?limit=2048&name=images/[name].[hash:8].[ext]'
 		}]
 	},
 	resolve: {
