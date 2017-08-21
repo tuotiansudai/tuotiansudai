@@ -1,4 +1,5 @@
 require("activityStyle/school_open_2017.scss");
+require('publicJs/login_tip');
 let drawCircleFun = require('activityJsModule/gift_circle_draw');
 let commonFun = require('publicJs/commonFun');
 let redirect = globalFun.browserRedirect();
@@ -22,26 +23,21 @@ $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option)
     tipGroupObj[kind] = option;
 });
 
-
-//跑马灯效果
-(function() {
-    let $userRecord= $('.user-record',$activityPageFrame),
-        lis = $userRecord.find('li');
-    let htmlUl = $userRecord.html();
-    let leftW=0;
-    $userRecord.append(htmlUl);
-    lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
-
-    let timer = setInterval(function() {
-        leftW-=3;
-        if(Math.abs(leftW) > ($userRecord.width()/2)-150) {
-            leftW=0;
-        }
-        $userRecord.css({'left':leftW});
-    },50);
-
-})();
-
+// 登录弹框
+$activityPageFrame.find('.to-login').on('click', function(event) {
+    event.preventDefault();
+    if (sourceKind.params.source == 'app') {
+        location.href = "/login";
+    } else {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $('#loginTip')
+        });
+    }
+});
 //排名翻页效果
 (function() {
     let $tableList = $('.table-list',$activityPageFrame),
@@ -83,7 +79,7 @@ $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option)
 //drawURL:抽奖的接口链接
 //oneData:接口参数
 //$oneThousandPoints:抽奖模版dom
-var drawCircle=new drawCircleFun(pointAllList,pointUserList,drawURL,paramData,$luckDrawBox);
+var drawCircle=new drawCircleFun(pointAllList,pointUserList,drawURL,paramData,$activityPageFrame);
 
 //渲染奖品
 drawCircle.MyGift();
@@ -131,18 +127,10 @@ $pointerImg.on('click',function() {
             //停止鸡蛋的动画
             $pointerImg.removeClass('win-result');
             if (data.returnCode == 0) {
-                var treasureUrl;
 
                 setCookie('drawSignToday','1');
-                if(sourceKind.params.source=='app') {
-                    treasureUrl='app/tuotian/myfortune-unuse';
-                } else {
-                    treasureUrl='/my-treasure';
-                }
-
                 var prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
-                $(tipGroupObj[prizeType]).find('.my-treasure').attr('href',treasureUrl);
                 var myTimes = parseInt($luckDrawBox.find('.my-number').text());
                 // 抽奖次数
                 $luckDrawBox.find('.my-number').text(function() {
@@ -189,3 +177,27 @@ $myRecordLink.on('click',function() {
     });
 
 });
+
+window.onload = function() {
+    //跑马灯效果
+    let $userRecord= $('.user-record',$activityPageFrame),
+        lis = $userRecord.find('li');
+    console.log(lis.length);
+    let htmlUl = $userRecord.html();
+    let leftW=0;
+    $userRecord.append(htmlUl);
+
+    if(lis.length>2) {
+        lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
+        let timer = setInterval(function() {
+            leftW-=3;
+            if(Math.abs(leftW) > ($userRecord.width()/2)-150) {
+                leftW=0;
+            }
+            $userRecord.css({'left':leftW});
+        },50);
+    } else if(lis.length==1){
+        $userRecord.css({'left':'30%'});
+    }
+
+}

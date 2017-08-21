@@ -15,18 +15,25 @@
         <div class="reward-info">
             <b>每日登录可获一次免费抽签机会</b>
             <div class="reward-scroll">
-                <ul class="scroll-inner user-record">
-                    <#--<#if (drawList?size > 0)>-->
-                        <#--<#list drawList as draw>-->
-                            <#--<li>${draw.mobile}抽中了${draw.prizeValue}</li>-->
-                        <#--</#list>-->
-                    <#--</#if>-->
-                </ul>
+                <ul class="scroll-inner user-record"></ul>
             </div>
+
             <div class="my-reward">
-                <b>您有<i class="my-number">${drawCount}</i>次抽签机会</b>
-                <span class="my-record-link">抽签记录></span>
+            <@global.isAnonymous>
+               <em class="login-box">
+                   <span class="to-login"></span>
+                   后查看信息
+               </em>
+
+            </@global.isAnonymous>
+            <@global.isNotAnonymous>
+
+                    <b>您有<i class="my-number">${drawCount}</i>次抽签机会</b>
+                    <span class="my-record-link">抽签记录></span>
+
+            </@global.isNotAnonymous>
             </div>
+
         </div>
 
         <div class="luck-draw-box">
@@ -97,36 +104,6 @@
                                 </li>
                             </#list>
                         </#if>
-                        <#--<li>-->
-                            <#--<span>1</span>-->
-                            <#--<span>134＊＊＊＊2345</span>-->
-                            <#--<span>900000</span>-->
-                        <#--</li>-->
-                        <#--<li>-->
-                            <#--<span>1</span>-->
-                            <#--<span>134＊＊＊＊2345</span>-->
-                            <#--<span>900000</span>-->
-                        <#--</li>-->
-                        <#--<li>-->
-                            <#--<span>1</span>-->
-                            <#--<span>134＊＊＊＊2345</span>-->
-                            <#--<span>900000</span>-->
-                        <#--</li>-->
-                        <#--<li>-->
-                            <#--<span>1</span>-->
-                            <#--<span>134＊＊＊＊2345</span>-->
-                            <#--<span>900000</span>-->
-                        <#--</li>-->
-                        <#--<li>-->
-                            <#--<span>1</span>-->
-                            <#--<span>134＊＊＊＊2345</span>-->
-                            <#--<span>900000</span>-->
-                        <#--</li>-->
-                        <#--<li>-->
-                            <#--<span>1</span>-->
-                            <#--<span>134＊＊＊＊2345</span>-->
-                            <#--<span>900000</span>-->
-                        <#--</li>-->
                     </ul>
 
                 </div>
@@ -303,5 +280,5 @@
     </div>
 
 </div>
-
+    <#include "../../module/login-tip.ftl" />
 </@global.main>
