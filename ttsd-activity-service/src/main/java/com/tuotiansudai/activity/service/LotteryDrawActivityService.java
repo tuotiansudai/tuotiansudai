@@ -138,6 +138,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.house.decorate.endTime}")
     private String acticityHouseDecorateEndTime;
 
+    @Value(value = "${activity.school.season.startTime}")
+    private String activitySchoolSeasonStartTime;
+
+    @Value(value = "${activity.school.season.endTime}")
+    private String activitySchoolSeasonEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -200,7 +206,7 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.getPrizeType().equals(PrizeType.EXPERIENCE)) {
-            grantExperience(userModel.getLoginName(), lotteryPrize);
+            grantExperience(userModel.getLoginName(), lotteryPrize, activityCategory);
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -354,6 +360,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_15,Lists.newArrayList(454L))
                 .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_5,Lists.newArrayList(455L))
                 .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_8,Lists.newArrayList(456L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_2_99,Lists.newArrayList(457L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_5_99,Lists.newArrayList(458L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_6_99,Lists.newArrayList(459L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_9_99,Lists.newArrayList(460L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_19_99,Lists.newArrayList(461L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_COUPON_5,Lists.newArrayList(462L))
                 .build()).get(lotteryPrize);
     }
 
@@ -435,6 +447,8 @@ public class LotteryDrawActivityService {
             case EXERCISE_WORK_ACTIVITY:
                 return getExerciseVSWorkDrawTime(userModel, activityCategory);
             case HOUSE_DECORATE_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case SCHOOL_SEASON_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
 
         }
@@ -581,6 +595,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
                 .put(ActivityCategory.EXERCISE_WORK_ACTIVITY,Lists.newArrayList(acticityExerciseWorkStartTime,acticityExerciseWorkEndTime))
                 .put(ActivityCategory.HOUSE_DECORATE_ACTIVITY,Lists.newArrayList(acticityHouseDecorateStartTime,acticityHouseDecorateEndTime))
+                .put(ActivityCategory.SCHOOL_SEASON_ACTIVITY,Lists.newArrayList(activitySchoolSeasonStartTime,activitySchoolSeasonEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -614,7 +629,7 @@ public class LotteryDrawActivityService {
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
 
-    private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
+    private void grantExperience(String loginName, LotteryPrize lotteryPrize, ActivityCategory activityCategory) {
         long experienceAmount = 0l;
         if (LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
             experienceAmount = 88800l;
@@ -624,11 +639,34 @@ public class LotteryDrawActivityService {
             experienceAmount = 288800l;
         }
 
+        if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_99.equals(lotteryPrize)){
+            experienceAmount = 9900l;
+        }
+
+        if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_999.equals(lotteryPrize)){
+            experienceAmount = 99900l;
+        }
+
         if (experienceAmount == 0) {
+            return;
+        }
+
+        ExperienceBillBusinessType experienceBillBusinessType = getExperienceBillBusinessType(activityCategory);
+        if (experienceBillBusinessType==null){
             return;
         }
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
+    }
+
+    public ExperienceBillBusinessType getExperienceBillBusinessType(ActivityCategory activityCategory){
+        if(ActivityCategory.SCHOOL_SEASON_ACTIVITY.equals(activityCategory)){
+            return ExperienceBillBusinessType.SCHOOL_SEASON;
+        }
+        if(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY.equals(activityCategory)){
+            return ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW;
+        }
+        return null;
     }
 
     public int getExerciseVSWorkDrawTime(UserModel userModel,ActivityCategory activityCategory){
