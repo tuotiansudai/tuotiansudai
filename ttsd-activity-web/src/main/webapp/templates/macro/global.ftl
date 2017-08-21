@@ -102,9 +102,15 @@
 
 </script>
 
+<#if (js.jquerydll)??>
 <script src="${js.jquerydll}"></script>
-<script src="${js.globalFun_page!}"></script>
+</#if>
+<#if (js.globalFun_page)??>
+<script src="${js.globalFun_page}"></script>
+</#if>
+<#if pageJavascript??>
 <script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+</#if>
 
 <#include "../pageLayout/statistic.ftl" />
 </body>
