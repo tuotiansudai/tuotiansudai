@@ -28,7 +28,7 @@ $width: 700px;
     @media (max-width: $width) {
       width: 100%;
 		}
-    @media (min-width:700px) and (max-width: 768px) {
+    @media (min-width:701px) and (max-width: 768px) {
       width: 100%;
     }
     &:after {
@@ -74,7 +74,7 @@ $width: 700px;
         padding-left: 40px;
         margin: 15px 0;
       }
-      @media (min-width:700px) and (max-width: 768px) {
+      @media (min-width:701px) and (max-width: 768px) {
         padding-left: 40px;
       }
       .border-item {
@@ -93,7 +93,7 @@ $width: 700px;
           height: 14px;
           margin-top: -7px;
         }
-        @media (min-width:700px) and (max-width: 768px) {
+        @media (min-width:701px) and (max-width: 768px) {
           left: 20px;
         }
 			}
@@ -452,7 +452,7 @@ $width: 700px;
                 @media (max-width: $width) {
                   font-size: 14px;
                 }
-                @media (min-width:700px) and (max-width: 768px) {
+                @media (min-width:701px) and (max-width: 768px) {
                   font-size: 18px;
                 }
               }

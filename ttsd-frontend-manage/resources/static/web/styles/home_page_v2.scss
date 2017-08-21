@@ -67,7 +67,7 @@ $pointColor:#ff5400;
     font-size: 14px;
     color: #808080;
     line-height: 45px;
-    @media (min-width:700px) and (max-width:768px) {
+    @media (min-width:701px) and (max-width:768px) {
       margin-right: 10px;
     }
     &:hover {
@@ -110,7 +110,7 @@ $pointColor:#ff5400;
     font-size:20px;
     i {
       font-size: 30px;
-      @media (min-width:700px) and (max-width:768px) {
+      @media (min-width:701px) and (max-width:768px) {
         font-size:28px;
       }
     }
@@ -404,7 +404,7 @@ $pointColor:#ff5400;
         border-right: 1px solid #e6e6e6;
         color: #999;
         background: url('../images/homepage/icon-notice.png') left center no-repeat;
-        @media (min-width:700px) and (max-width:768px) {
+        @media (min-width:701px) and (max-width:768px) {
           margin-left: 10px;
         }
       }
@@ -428,7 +428,7 @@ $pointColor:#ff5400;
         .text-href {
           color: #808080;
           float: right;
-          @media (min-width:700px) and (max-width:768px) {
+          @media (min-width:701px) and (max-width:768px) {
             margin-right: 10px;
           }
           &:hover {
@@ -448,7 +448,7 @@ $pointColor:#ff5400;
         display: inline-block;
         min-height:88px;
         text-align: left;
-        @media (min-width:700px) and (max-width:768px){
+        @media (min-width:701px) and (max-width:768px){
           float:left;
           width:33.333333%;
         }
@@ -465,14 +465,14 @@ $pointColor:#ff5400;
         &.assurance {
           width:27%;
           background: url('../images/homepage/icon-assurce.png') left center no-repeat;
-          @media (min-width:700px) and (max-width:768px){
+          @media (min-width:701px) and (max-width:768px){
             width:33.333333%;
           }
         }
         b {
           font-size: 20px;
           display: block;
-          @media (min-width:700px) and (max-width:768px){
+          @media (min-width:701px) and (max-width:768px){
             font-size: 18px;
           }
         }
@@ -492,7 +492,7 @@ $pointColor:#ff5400;
       float: left;
       margin-right:10px;
       position: relative;
-      @media (min-width:700px) and (max-width:768px){
+      @media (min-width:701px) and (max-width:768px){
         width:48%;
         margin:0 1%;
         margin-bottom: 10px;
@@ -550,7 +550,7 @@ $pointColor:#ff5400;
       background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
       display: inline-block;
       float: left;
-      @media (min-width:700px) and (max-width:768px){
+      @media (min-width:701px) and (max-width:768px){
         display:none;
       }
     }
@@ -571,7 +571,7 @@ $pointColor:#ff5400;
       background: url("../images/homepage/media.png")  right top no-repeat;
       margin-top:15px;
       margin-bottom:15px;
-      @media (min-width:700px) and (max-width:768px){
+      @media (min-width:701px) and (max-width:768px){
         background:none;
       }
       li {
@@ -581,7 +581,7 @@ $pointColor:#ff5400;
         padding-bottom: 13px;
         position: relative;
         width: 58%;
-        @media (min-width:700px) and (max-width:768px){
+        @media (min-width:701px) and (max-width:768px){
           width:100%;
         }
         &:nth-last-child(1) {

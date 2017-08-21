@@ -140,7 +140,7 @@
       height:350px;
       position: relative;
       background:url("../images/point-material.jpg") no-repeat center;
-      @media (min-width:700px) and (max-width:768px) {
+      @media (min-width:701px) and (max-width:768px) {
         background-size:cover;
       }
       .store-login{
@@ -154,7 +154,7 @@
         background:#fff url("../images/login-bg.png") no-repeat 95px -32px;
         border-radius: 5px;
         overflow: hidden;
-        @media (min-width:700px) and (max-width:768px) {
+        @media (min-width:701px) and (max-width:768px) {
           right:10px;
           margin-right: 0;
         }
@@ -334,7 +334,7 @@
           box-sizing:border-box;
           cursor: pointer;
           position: relative;
-          @media (min-width:700px) and (max-width:768px) {
+          @media (min-width:701px) and (max-width:768px) {
             float:none;
             display: inline-block;
           }

@@ -55,7 +55,7 @@
           line-height: 15px;
           border-right: 1px solid #666;
           padding: 0 10px;
-          @media (min-width:700px) and (max-width:768px) {
+          @media (min-width:701px) and (max-width:768px) {
             padding:0 5px;
           }
           &:nth-last-child(1) {
@@ -161,7 +161,7 @@
       height:30px;
       margin:3px 0;
       overflow:hidden;
-      @media (min-width:700px) and (max-width:768px) {
+      @media (min-width:701px) and (max-width:768px) {
         width:100%;
       }
       li {
@@ -173,7 +173,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        @media (min-width:700px) and (max-width:768px) {
+        @media (min-width:701px) and (max-width:768px) {
           width:10%;
           text-align: center;
         }
@@ -191,7 +191,7 @@
       margin: 6px 0;
       text-align:center;
       cursor:pointer;
-      @media (min-width:700px) and (max-width:768px) {
+      @media (min-width:701px) and (max-width:768px) {
         position: relative;
         left: 50%;
         margin-left: -32px;
@@ -478,7 +478,7 @@
   width: 1000px;
   height: auto;
   margin: 20px auto;
-  @media (min-width:700px) and (max-width:768px) {
+  @media (min-width:701px) and (max-width:768px) {
     width:100%;
   }
   .left-nav {
@@ -513,7 +513,7 @@
     padding:10px 30px 30px 40px;
     overflow: hidden;
     min-height: 400px;
-    @media (min-width:700px) and (max-width:768px) {
+    @media (min-width:701px) and (max-width:768px) {
       padding:0 10px;
     }
   }
@@ -537,7 +537,7 @@
       float:left;
       &.list-normal{
         width:155px;
-        @media (min-width:700px) and (max-width:768px) {
+        @media (min-width:701px) and (max-width:768px) {
           width:33.333333%;
           box-sizing:border-box;
           padding-left: 40px;
@@ -545,7 +545,7 @@
       }
       &.list-contact{
         width:420px;
-        @media (min-width:700px) and (max-width:768px) {
+        @media (min-width:701px) and (max-width:768px) {
           width:72%;
           box-sizing:border-box;
           padding-left: 40px;
@@ -575,7 +575,7 @@
     .images-app{
       float:right;
       width:100px;
-      @media (min-width:700px) and (max-width:768px) {
+      @media (min-width:701px) and (max-width:768px) {
         float:left;
       }
       .img-app-download{
