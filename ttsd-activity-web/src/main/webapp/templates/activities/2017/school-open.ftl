@@ -83,8 +83,8 @@
             <div class="winner-top"></div>
             <div class="winner-center">
                 <div class="top-column clearfix">
-                    <span class="fl">我的投资总额：${(investAmount/100)?string("0.00")}元</span>
-                    <span class="fr">我的排名：${investRanking}</span>
+                    <span class="fl">我的投资总额：<@global.isAnonymous>登录后查看</@global.isAnonymous><@global.isNotAnonymous>${(investAmount/100)?string("0.00")}元</@global.isNotAnonymous></span>
+                    <span class="fr">我的排名：<@global.isAnonymous>登录后查看</@global.isAnonymous><@global.isNotAnonymous>${investRanking}</@global.isNotAnonymous></span>
                 </div>
                 <div class="table-title clearfix">
                     <span>排名</span>
@@ -96,7 +96,7 @@
                         <#if (rankList?size > 0)>
                             <#list rankList as rank>
                                 <li>
-                                    <span>1</span>
+                                    <span>${rank_index+1}</span>
                                     <span>${rank.loginName}</span>
                                     <span>${(rank.sumAmount/100)?string("0.00")}</span>
                                 </li>
