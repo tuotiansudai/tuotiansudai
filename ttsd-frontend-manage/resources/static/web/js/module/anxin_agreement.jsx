@@ -19,7 +19,7 @@ define([], function() {
         }
         if($(this).hasClass('link-agree-service')){
             contentDom=$('.service-box',$safetyAgreement);
-            showAgreement('安心平台签服务协议',contentDom);
+            showAgreement('安心签平台服务协议',contentDom);
         }else if($(this).hasClass('link-agree-privacy')){
             contentDom=$('.privacy-box',$safetyAgreement);
             showAgreement('隐私条款',contentDom);
