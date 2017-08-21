@@ -118,7 +118,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         int drawTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
                         DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
 
-        if(drawTime==0){
+        if(drawTime==1){
             return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DONE, url+"/activity/school-season");
         }
 
