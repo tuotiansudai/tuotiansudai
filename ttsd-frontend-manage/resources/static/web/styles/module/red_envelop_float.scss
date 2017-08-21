@@ -1,4 +1,5 @@
 @charset "utf-8";
+
 //投资计算器
 .count-form {
   position: fixed;
@@ -24,10 +25,12 @@
     .close-count {
       display: block;
       position: absolute;
-      top: 5px;
+      background: url('../../images/global/icon-close.png') left top no-repeat;
+      top: 15px;
       right: 5px;
-      @extend .sprite-global-close;
       z-index: 999;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
     }
   }
@@ -39,7 +42,6 @@
       margin-bottom:15px;
     }
     .int-text {
-      //float: left;
       width: 178px;
       height: 28px;
       padding: 5px 35px;
@@ -128,16 +130,20 @@
       float: left;
       cursor: pointer;
       &.icon-phone {
-        @extend .sprite-global-mobile-icon;
-      }
-      &.icon-qq {
-        @extend .sprite-global-qq-icon;
+        width: 60px;
+        height: 60px;
+        background: url('../../images/global/mobile-icon.png') left top no-repeat;
       }
       &.icon-calculator {
-        @extend .sprite-global-calculator-icon;
+        width: 60px;
+        height: 60px;
+        background: url('../../images/global/calculator-icon.png') left top no-repeat;
+
       }
       &.icon-edit {
-        @extend .sprite-global-edit-icon;
+        width: 60px;
+        height: 60px;
+        background: url('../../images/global/icon-edit.png') left top no-repeat;
       }
     }
     .nav-text {
@@ -157,7 +163,9 @@
       &.app-img {
         top: -25px;
         right: 60px;
-        @extend .sprite-global-app-pc-top;
+        width: 180px;
+        height: 230px;
+        background: url('../../images/global/app-pc-top.png') left top no-repeat;
       }
     }
   }
@@ -191,7 +199,10 @@
     i {
       float: left;
       &.icon-top {
-        @extend .sprite-global-back-icon;
+        width: 60px;
+        height: 60px;
+        background: url('../../images/global/icon-back.png') center top no-repeat;
+        background-size: 100%;
       }
     }
     .nav-text {
@@ -207,7 +218,7 @@
   }
 }
 
-//意见反馈
+//已经反馈
 .feedback-container{
   position: fixed;
   width:600px;
@@ -236,11 +247,9 @@
       height:24px;
       margin:13px 20px;
       cursor:pointer;
-      background-image: url("../../../public/images/compress/global_20160904.png");
-      -webkit-background-size: 408px 290px;
-      -moz-background-size: 408px 290px;
-      background-size: 408px 290px;
-      background-position: -308px -200px;
+      background: url('../../images/global/icon-close.png') left top no-repeat;
+      background-size: 100%;
+
     }
   }
   .feed-content{
@@ -313,6 +322,7 @@
       }
       .code-text{
         width:86px;
+        float: left;
       }
       .phone-text{
         width:190px;
@@ -351,18 +361,6 @@
       color:#fff;
       margin-left:30px;
     }
-    .feed-close{
-      float:right;
-      width:24px;
-      height:24px;
-      margin:13px 20px;
-      cursor:pointer;
-      background-image: url("../images/compress/global_20160904.png");
-      -webkit-background-size: 408px 290px;
-      -moz-background-size: 408px 290px;
-      background-size: 408px 290px;
-      background-position: -308px -200px;
-    }
   }
   .tip-content{
     float:left;
@@ -391,3 +389,13 @@
     }
   }
 }
+
+@media screen and (max-width: 700px) {
+  .layer-tip-box, .fix-nav-list {
+    display: none;
+  }
+  .layer-tip-box, .fix-nav-list {
+    display: none;
+  }
+}
+
