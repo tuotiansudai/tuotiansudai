@@ -23,7 +23,10 @@
 
 <script src="http://localhost:3008/public/dllplugins/jquery.dll.js" ></script>
 <script src="http://localhost:3008/public/globalFun_page.js" ></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
+<#if pageJavascript??>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+</#if>
+
 </body>
 </html>
 </#macro>

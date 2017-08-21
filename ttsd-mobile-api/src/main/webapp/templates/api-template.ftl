@@ -19,7 +19,10 @@
 <script type="text/javascript">
     window.commonStaticServer='${commonStaticServer}';
 </script>
-<script src="${js.index!}" ></script>
+
+<#if (js.index)??>
+<script src="${js.index!}"></script>
+</#if>
 
 </body>
 </html>
