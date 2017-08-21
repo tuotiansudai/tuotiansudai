@@ -80,9 +80,6 @@ public class PointTaskServiceTest {
         maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.EACH_SUM_INVEST);
         assertThat(maxTaskLevel, is(1L));
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assertThat(accountModel.getPoint(), is(100L));
-
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
         assertThat(pointBillModels.size(), is(1));
 
