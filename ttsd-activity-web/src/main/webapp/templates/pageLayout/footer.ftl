@@ -27,7 +27,7 @@
         </ul>
         <ul class="last">
             <li class="tc fl">
-                <i class="img-weixin-img"></i> <br/>
+                <i class="wechat-public-img"></i> <br/>
                 扫我关注拓天速贷微信
             </li>
             <li class="tc fl">

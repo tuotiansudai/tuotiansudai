@@ -371,32 +371,6 @@ form label.error {
 
       ul.reg-list {
 
-        .newbie-register-ic-mobile {
-          width: 23px;
-          height: 23px;
-          background: url("../images/landingpage/newbie-icon-phone.png") center left no-repeat;
-        }
-
-        .newbie-register-ic-password {
-          width: 23px;
-          height: 23px;
-          background: url("../images/landingpage/newbie-icon-pwd.png") center left no-repeat;
-        }
-
-        .newbie-register-ic-img-captcha {
-          width: 23px;
-          height: 23px;
-          margin-top: 3px;
-          background: url("../images/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
-        }
-
-        .newbie-register-ic-captcha {
-          width: 23px;
-          height: 18px;
-          margin-top: 3px;
-          background: url("../images/landingpage/newbie-icon-captcha.png") center left no-repeat;
-        }
-
         font-size: 10px;
         .err-height {
           height: 15px;
@@ -435,6 +409,7 @@ form label.error {
             z-index: 20;
             filter: alpha(opacity=80);
             -moz-opacity: 0.8;
+            background-size:80%;
           }
 
           .captcha-tag {
