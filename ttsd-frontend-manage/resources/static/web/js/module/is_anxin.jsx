@@ -3,7 +3,6 @@ let $isAuthenticationRequired=$('#isAuthenticationRequired');
 //勾选马上投资下方 协议复选框
 $('.skip-group .skip-icon').on('click', function(event) {
     event.preventDefault();
-
     $(this).hasClass('active') ? $(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show() && $('#transferSubmit').prop('disabled', true) : $(this).addClass('active') && $('#skipCheck').val('true') && $('#checkTip').hide() && $('#transferSubmit').prop('disabled', false);
 });
 
@@ -14,7 +13,7 @@ $('.tip-item .skip-icon').on('click', function(event) {
 });
 
 //弹出安心签弹框
-function getSkipPhoneTip() {
+window.getSkipPhoneTip=function() {
     layer.open({
         shadeClose: false,
         title: '安心签代签署授权',
@@ -24,7 +23,6 @@ function getSkipPhoneTip() {
         content: $('#getSkipPhone')
     });
 }
-
 //获取短信验证码
 $('#getSkipCode').on('click', function(event) {
     event.preventDefault();
