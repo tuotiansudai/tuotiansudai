@@ -224,56 +224,7 @@
             <span>奖品名称</span>
         </div>
         <div class="own-record-box">
-            <ul class="own-record">
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-13 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-15 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-15 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-                <li>
-                    <span>2017-09-15 15:30:23</span>
-                    <span>2.9元红包</span>
-                </li>
-            </ul>
+            <ul class="own-record"></ul>
         </div>
     </div>
 
