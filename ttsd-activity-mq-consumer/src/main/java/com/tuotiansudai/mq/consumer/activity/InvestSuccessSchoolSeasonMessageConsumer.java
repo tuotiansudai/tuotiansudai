@@ -54,6 +54,10 @@ public class InvestSuccessSchoolSeasonMessageConsumer implements MessageConsumer
             logger.error("[MQ] message is empty");
             return;
         }
+        Date date=DateTime.now().toDate();
+        if(!date.before(activitySchoolSeasonEndTime) || !date.after(activitySchoolSeasonStartTime)){
+            return;
+        }
 
         try {
             InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
@@ -61,14 +65,11 @@ public class InvestSuccessSchoolSeasonMessageConsumer implements MessageConsumer
             UserInfo userInfo = investSuccessMessage.getUserInfo();
             InvestInfo investInfo = investSuccessMessage.getInvestInfo();
             LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
-            if (duringActivities()
-                    && loanDetailInfo.isActivity()
-                    && loanDetailInfo.getActivityDesc().equals("早鸟专享")){
+            if (loanDetailInfo.isActivity() && loanDetailInfo.getActivityDesc().equals("早鸟专享")){
                 schoolExclusive(userInfo, investInfo, loanDetailInfo);
             }
 
-            if (duringActivities()
-                    && !loanDetailInfo.getActivityType().equals("NEWBIE")
+            if (!loanDetailInfo.getActivityType().equals("NEWBIE")
                     && !investInfo.getTransferStatus().equals("SUCCESS")
                     && investInfo.getStatus().equals("SUCCESS")) {
                 activityInvestMapper.create(new ActivityInvestModel(investInfo.getInvestId(),
@@ -109,9 +110,5 @@ public class InvestSuccessSchoolSeasonMessageConsumer implements MessageConsumer
             schoolExclusiveMapper.update(schoolExclusiveModel);
         }
 
-    }
-
-    private boolean duringActivities() {
-        return activitySchoolSeasonStartTime.compareTo(new Date()) <= 0 && activitySchoolSeasonEndTime.compareTo(new Date()) >=0;
     }
 }
