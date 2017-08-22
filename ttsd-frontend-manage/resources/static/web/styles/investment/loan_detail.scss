@@ -242,6 +242,9 @@ $red: #eb4a3e;
                   font-size: 18px;
                   vertical-align: top;
                   color: #ffc89b;
+                  &.hide{
+                    display:none;
+                  }
                 }
                 .fa-sort-up {
                   margin-top: 7px;

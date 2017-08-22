@@ -83,7 +83,7 @@
                                 <div class="number"><@amount>${loan.loanAmount?string.computer}</@amount><span>元</span></div>
                             </div>
                         </div>
-                        <div class="row loan-active-detail">
+                        <div class="row loan-active-detail clearfix">
                             <div class="col-md-6">
                                 <span class="title">投资进度：</span>
                                 <div class="progress-bar">
@@ -714,7 +714,9 @@
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
-    <#include "component/anxin-qian.ftl" />
+    <div class="is-page" id="isPage">
+        <#include "component/anxin-qian.ftl" />
+    </div>
     <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
 </div>

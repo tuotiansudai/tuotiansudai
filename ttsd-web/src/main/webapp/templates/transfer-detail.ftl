@@ -199,7 +199,9 @@
          </div>
 
     </div>
-    <#include "component/anxin-qian.ftl" />
+    <div class="is-page" id="isPage">
+        <#include "component/anxin-qian.ftl" />
+    </div>
     <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
 </div>

@@ -73,6 +73,8 @@
 	<i class="fa fa-check-circle" aria-hidden="true"></i>
 	<p>申请转让成功！<br /><span class="count-time">3</span>秒后自动跳转至“转让中债权”</p>
 </div>
-<#include "component/anxin-qian.ftl" />
+<div class="is-page" id="isPage">
+    <#include "component/anxin-qian.ftl" />
+</div>
 <#include "component/anxin-agreement.ftl" />
 </@global.main>
