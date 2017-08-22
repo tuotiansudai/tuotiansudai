@@ -149,7 +149,14 @@ $pointerImg.on('click',function() {
                 if(sourceKind.params.source=='app') {
                     location.href="/login";
                 } else {
-                    $('.no-login-text',$activityPageFrame).trigger('click');  //弹框登录
+
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
                 }
 
             } else if(data.returnCode == 3){
