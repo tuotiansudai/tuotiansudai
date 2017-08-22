@@ -1,5 +1,6 @@
 let commonFun= require('publicJs/commonFun');
 let $isAuthenticationRequired=$('#isAuthenticationRequired');
+
 //勾选马上投资下方 协议复选框
 $('.skip-group .skip-icon').on('click', function(event) {
     event.preventDefault();
@@ -45,18 +46,19 @@ function getCode(type) {
             isVoice: type
         }
     },function (data) {
-        $('#getSkipCode').prop('disabled',false);
-        $('#microPhone').css('visibility', 'visible');
         if(data.success) {
         	commonFun.countDownLoan({
                 btnDom: $('#getSkipCode'),
                 isAfterText: '重新获取验证码'
             },function() {
+            	$('#getSkipCode').prop('disabled',false);
                 $('#microPhone').css('visibility', 'visible');
             });
         }
         else {
             layer.msg('请求失败，请重试或联系客服！');
+            $('#getSkipCode').prop('disabled',false);
+            $('#microPhone').css('visibility', 'visible');
         }
     });
 }
