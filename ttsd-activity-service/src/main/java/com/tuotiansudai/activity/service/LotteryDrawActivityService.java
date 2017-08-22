@@ -206,7 +206,7 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.getPrizeType().equals(PrizeType.EXPERIENCE)) {
-            grantExperience(userModel.getLoginName(), lotteryPrize, activityCategory);
+            grantExperience(userModel.getLoginName(), lotteryPrize, getExperienceBillBusinessType(activityCategory));
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -629,7 +629,7 @@ public class LotteryDrawActivityService {
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
 
-    private void grantExperience(String loginName, LotteryPrize lotteryPrize, ActivityCategory activityCategory) {
+    private void grantExperience(String loginName, LotteryPrize lotteryPrize, ExperienceBillBusinessType experienceBillBusinessType) {
         long experienceAmount = 0l;
         if (LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
             experienceAmount = 88800l;
@@ -651,12 +651,8 @@ public class LotteryDrawActivityService {
             return;
         }
 
-        ExperienceBillBusinessType experienceBillBusinessType = getExperienceBillBusinessType(activityCategory);
-        if (experienceBillBusinessType==null){
-            return;
-        }
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW));
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, experienceBillBusinessType));
     }
 
     public ExperienceBillBusinessType getExperienceBillBusinessType(ActivityCategory activityCategory){
@@ -666,6 +662,8 @@ public class LotteryDrawActivityService {
         if(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY.equals(activityCategory)){
             return ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW;
         }
+//        logger.error(activityCategory.name()+"not has ExperienceBillBusinessType");
+//        throw new Exception("该活动抽奖中没有定义发放的体验金类型");
         return null;
     }
 
