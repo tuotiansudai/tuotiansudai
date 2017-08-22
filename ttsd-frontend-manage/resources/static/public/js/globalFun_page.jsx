@@ -6,6 +6,7 @@ window.layer.config({
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
 
+require("publicStyle/reset.scss");
 require("publicStyle/btn.scss");
 require("publicStyle/table.scss");
 require("publicStyle/page_frame.scss");

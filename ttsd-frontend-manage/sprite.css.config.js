@@ -49,8 +49,7 @@ generateSpriteCss.prototype.initSprite = function() {
             compressionLevel:5
         },
         stylesheetOptions: {
-            prefix: 'sprite-',
-            pixelRatio: 2
+            prefix: 'sprite-'
         }
     }, function () {
         console.log('Sprite generated!');

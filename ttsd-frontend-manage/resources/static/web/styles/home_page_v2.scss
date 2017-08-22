@@ -2,7 +2,6 @@
 $normalColor:#666;
 $keyColor:#ff9c1b;
 $pointColor:#ff5400;
-
 /* project schedule progress */
 .progress-bar {
   position: relative;
@@ -436,20 +435,18 @@ $pointColor:#ff5400;
         display: inline-block;
         min-height:88px;
         text-align: left;
+        &.last {
+          width: 27%;
+        }
+        i {
+          margin-top:10px;
+          margin-right:10px;
+          vertical-align: bottom;
+        }
         a {
           display: inline-block;
-          padding-left:90px;
         }
-        &.guide {
-          background: url('../images/homepage/icon-guide.png') left center no-repeat;
-        }
-        &.risk {
-          background: url('../images/homepage/icon-risk.png') left center no-repeat;
-        }
-        &.assurance {
-          width:27%;
-          background: url('../images/homepage/icon-assurce.png') left center no-repeat;
-        }
+
         b {
           font-size: 20px;
           display: block;
