@@ -83,8 +83,14 @@
             <div class="winner-top"></div>
             <div class="winner-center">
                 <div class="top-column clearfix">
-                    <span class="fl">我的投资总额：<@global.isAnonymous>登录后查看</@global.isAnonymous><@global.isNotAnonymous>${(investAmount/100)?string("0.00")}元</@global.isNotAnonymous></span>
-                    <span class="fr">我的排名：<@global.isAnonymous>登录后查看</@global.isAnonymous><@global.isNotAnonymous>${investRanking}</@global.isNotAnonymous></span>
+                    <span class="fl">我的投资总额：
+                        <@global.isAnonymous><em class="to-text-login"> 登录后查看</em></@global.isAnonymous>
+                        <@global.isNotAnonymous>${(investAmount/100)?string("0.00")}元</@global.isNotAnonymous>
+                    </span>
+                    <span class="fr">我的排名：
+                        <@global.isAnonymous><em class="to-text-login"> 登录后查看 </em></@global.isAnonymous>
+                        <@global.isNotAnonymous>${investRanking}</@global.isNotAnonymous>
+                    </span>
                 </div>
                 <div class="table-title clearfix">
                     <span>排名</span>

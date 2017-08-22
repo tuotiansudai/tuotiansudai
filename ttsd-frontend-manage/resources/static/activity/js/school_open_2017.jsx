@@ -24,7 +24,7 @@ $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option)
 });
 
 // 登录弹框
-$activityPageFrame.find('.to-login').on('click', function(event) {
+$activityPageFrame.find('.to-login,.to-text-login').on('click', function(event) {
     event.preventDefault();
     if (sourceKind.params.source == 'app') {
         location.href = "/login";
