@@ -206,7 +206,7 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)) {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.getPrizeType().equals(PrizeType.EXPERIENCE)) {
-            grantExperience(userModel.getLoginName(), lotteryPrize, getExperienceBillBusinessType(activityCategory));
+            grantExperience(userModel.getLoginName(), lotteryPrize);
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -629,16 +629,8 @@ public class LotteryDrawActivityService {
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
     }
 
-    private void grantExperience(String loginName, LotteryPrize lotteryPrize, ExperienceBillBusinessType experienceBillBusinessType) {
+    private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
         long experienceAmount = 0l;
-        if (LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
-            experienceAmount = 88800l;
-        }
-
-        if (LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888.equals(lotteryPrize)) {
-            experienceAmount = 288800l;
-        }
-
         if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_99.equals(lotteryPrize)){
             experienceAmount = 9900l;
         }
@@ -652,19 +644,7 @@ public class LotteryDrawActivityService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, experienceBillBusinessType));
-    }
-
-    public ExperienceBillBusinessType getExperienceBillBusinessType(ActivityCategory activityCategory){
-        if(ActivityCategory.SCHOOL_SEASON_ACTIVITY.equals(activityCategory)){
-            return ExperienceBillBusinessType.SCHOOL_SEASON;
-        }
-        if(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY.equals(activityCategory)){
-            return ExperienceBillBusinessType.CELEBRATION_LUCK_DRAW;
-        }
-//        logger.error(activityCategory.name()+"not has ExperienceBillBusinessType");
-//        throw new Exception("该活动抽奖中没有定义发放的体验金类型");
-        return null;
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.SCHOOL_SEASON));
     }
 
     public int getExerciseVSWorkDrawTime(UserModel userModel,ActivityCategory activityCategory){

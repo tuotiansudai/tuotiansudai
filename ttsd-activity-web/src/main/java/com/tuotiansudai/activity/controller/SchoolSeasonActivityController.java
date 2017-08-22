@@ -72,11 +72,4 @@ public class SchoolSeasonActivityController {
     public List<UserLotteryPrizeView> getPrizeRecordByAll(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
         return lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, activityCategory);
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/draw-time", method = RequestMethod.GET)
-    public int drawTime(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return LoginUserInfo.getLoginName()==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), activityCategory);
-    }
-
 }

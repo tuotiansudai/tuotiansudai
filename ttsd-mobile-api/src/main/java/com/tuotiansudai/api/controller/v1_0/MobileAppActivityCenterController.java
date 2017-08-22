@@ -35,7 +35,7 @@ public class MobileAppActivityCenterController extends MobileAppBaseController {
     @RequestMapping(value = "/get/activity/school-season-status", method = RequestMethod.POST)
     @ApiOperation("获取开学季活动状态")
     public BaseResponseDto<ActivitySchoolSeasonStatusResponseDto> getSchoolSeasonStatus(@Valid @RequestBody BaseParamDto requestDto) {
-        ActivitySchoolSeasonStatusResponseDto activityStatusResponseDto= mobileAppActivityService.getActivitySchoolSeasonStatusResponseDto(ActivityCategory.SCHOOL_SEASON_ACTIVITY, requestDto.getBaseParam().getPhoneNum());
+        ActivitySchoolSeasonStatusResponseDto activityStatusResponseDto= mobileAppActivityService.getActivitySchoolSeasonStatusResponseDto(ActivityCategory.SCHOOL_SEASON_ACTIVITY, getLoginName());
         BaseResponseDto<ActivitySchoolSeasonStatusResponseDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
