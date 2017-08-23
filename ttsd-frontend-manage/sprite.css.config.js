@@ -1,3 +1,7 @@
+// 目前项目里有2种生成雪碧图的 方案
+// 1. sprite-css,就是 本页实现的方法，需要手动执行命令生成  node sprite.css.config.js
+// 2. sprite-loader ，自动生成雪碧图
+
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
