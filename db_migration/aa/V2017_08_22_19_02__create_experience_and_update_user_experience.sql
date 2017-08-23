@@ -1,70 +1,70 @@
 BEGIN;
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('0bSB8DAZ', 'IN', 500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('0bSB8DAZ', 'IN', 500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('0mulq6Wb', 'IN', 2007700, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了20077.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('0mulq6Wb', 'IN', 2007700, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了20077.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('6fSC0Sbv', 'IN', 999300, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了9993.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('6fSC0Sbv', 'IN', 999300, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了9993.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('baizhuying', 'IN', 8000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了80000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('baizhuying', 'IN', 8000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了80000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('ELYU05Of', 'IN', 1000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('ELYU05Of', 'IN', 1000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('g7W1SoLl', 'IN', 8000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了80000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('g7W1SoLl', 'IN', 8000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了80000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('g9LRJNeI', 'IN', 500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('g9LRJNeI', 'IN', 500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('Lixiaodong', 'IN', 1094800, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10948.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('Lixiaodong', 'IN', 1094800, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10948.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('NVBdCbqs', 'IN', 2500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了25000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('NVBdCbqs', 'IN', 2500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了25000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('QFbBa64b', 'IN', 1000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('QFbBa64b', 'IN', 1000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('QLS7A8ch', 'IN', 800000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了8000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('QLS7A8ch', 'IN', 800000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了8000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('rqkql', 'IN', 500200, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5002.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('rqkql', 'IN', 500200, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5002.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('Rs8KUjDC', 'IN', 1047500, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10475.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('Rs8KUjDC', 'IN', 1047500, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10475.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('ry0309', 'IN', 761700, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了7617.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('ry0309', 'IN', 761700, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了7617.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('SEW5pxAQ', 'IN', 550000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5500.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('SEW5pxAQ', 'IN', 550000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了5500.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('suKxZdYS', 'IN', 2500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了25000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('suKxZdYS', 'IN', 2500000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了25000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('ttrqguorui', 'IN', 2500600, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了25006.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('ttrqguorui', 'IN', 2500600, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了25006.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('ttrqwangyaning', 'IN', 1140400, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了11404.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('ttrqwangyaning', 'IN', 1140400, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了11404.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('uEwK2oNS', 'IN', 4000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了40000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('uEwK2oNS', 'IN', 4000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了40000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('VzWWCbQl', 'IN', 600000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了6000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('VzWWCbQl', 'IN', 600000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了6000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('x7DDtik5', 'IN', 1000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10000.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('x7DDtik5', 'IN', 1000000, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了10000.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 insert into experience_bill(login_name, operation_type, amount, business_type, note, created_time)
-values('y3r9e2t5', 'IN', 70202700, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了702027.00元体验金奖励，获奖时间：18/8/17 00:01 AM', '2017-08-19 00:01:00');
+values('y3r9e2t5', 'IN', 70202700, 'HOUSE_DECORATE', '恭喜您在家庭号大福利中获得了702027.00元体验金奖励，获奖时间：19/8/17 00:01 AM', '2017-08-19 00:01:00');
 
 update user set experience_balance = experience_balance+500000 where login_name = '0bSB8DAZ';
 
