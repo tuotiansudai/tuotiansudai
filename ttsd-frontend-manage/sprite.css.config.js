@@ -34,7 +34,7 @@ generateSpriteCss.prototype.initSprite = function() {
 
         var imgSize = parseFloat(states.size/1024).toFixed(2);
         // console.log(index+':'+imgSize);
-        return imgSize > 10 && imgSize<16;
+        return imgSize > 2 && imgSize<16;
     });
 
     console.log(filterImages.length);
