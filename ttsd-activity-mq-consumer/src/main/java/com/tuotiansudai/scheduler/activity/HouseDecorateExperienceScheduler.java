@@ -36,10 +36,11 @@ public class HouseDecorateExperienceScheduler {
     @Scheduled(cron = "0 1 0 * * ?", zone = "Asia/Shanghai")
     public void grantFamilyFinanceExperience() {
 
-        Date grantDate = new DateTime(new Date()).withTimeAtStartOfDay().minusMillis(1).toDate();
+        Date grantDate = DateTime.now().toDate();
         Date grantExperienceStartTime = DateTime.parse(startTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).plusDays(1).toDate();
         Date grantExperienceEndTime = DateTime.parse(endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).plusDays(1).toDate();
-        if(grantDate.compareTo(grantExperienceStartTime)== -1 || grantDate.compareTo(grantExperienceEndTime) == 1){
+
+        if(grantDate.before(grantExperienceStartTime) || grantDate.after(grantExperienceEndTime)){
             logger.info(String.format("[HouseDecorateExperienceScheduler %s] activity grand experience is over", DateFormatUtils.format(grantDate, "yyyy-MM-dd")));
             return;
         }
