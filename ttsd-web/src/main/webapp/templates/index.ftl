@@ -33,7 +33,7 @@
 
     <div class="notice-container bg-screen">
         <div class="page-width clearfix">
-            <h3>最新公告</h3>
+            <h3><i class="icon-notice"></i><span>最新公告</span></h3>
             <div class="notice-text scroll-top">
                 <ul id="noticeList">
                     <#list announces as announce>
@@ -192,7 +192,7 @@
             <#include "component/transfer-row.ftl">
         </#list>
 
-        <div class="media-coverage-box">
+        <div class="media-coverage-box clearfix">
             <h3 class="label-title">
                 媒体报道
                 <a href="/about/media" class="hot-more">更多></a>
@@ -216,6 +216,7 @@
                     <time>2015-12-28</time>
                 </li>
             </ul>
+            <div class="media-logo-section"></div>
 
         </div>
 

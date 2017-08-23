@@ -1,3 +1,4 @@
+/* sprite-loader-enable */
 @charset "utf-8";
 $normalColor:#666;
 $keyColor:#ff9c1b;
@@ -320,7 +321,7 @@ $pointColor:#ff5400;
       box-sizing: border-box;
       padding: 35px 35px 10px;
       background-color: rgba(0,0,0,0.4);
-      background: url("../images/homepage/base-bg-transport.png") left top repeat\9;
+      background: url("../images/homepage/base-bg-transport.png#spriteignore") left top repeat\9;
       color:#fff;
       i a {
         color:#ff752a;
@@ -396,7 +397,15 @@ $pointColor:#ff5400;
         text-align: center;
         border-right: 1px solid #e6e6e6;
         color: #999;
-        background: url('../images/homepage/icon-notice.png') left center no-repeat;
+
+        .icon-notice {
+          display: inline-block;
+          width:25px;
+          height:25px;
+          background: url('../images/homepage/icon-notice.png') left center no-repeat;
+          vertical-align: middle;
+          margin-right:10px;
+        }
       }
       .notice-text {
         margin-left: 134px;
@@ -435,16 +444,20 @@ $pointColor:#ff5400;
         display: inline-block;
         min-height:88px;
         text-align: left;
-        &.last {
+        &.risk {
+          background: url('../images/homepage/icon-risk.png') left center no-repeat;
+        }
+        &.guide {
+          background: url('../images/homepage/icon-guide.png') left center no-repeat;
+        }
+        &.assurance {
           width: 27%;
+          background: url('../images/homepage/icon-assurce.png') left center no-repeat;
         }
-        i {
-          margin-top:10px;
-          margin-right:10px;
-          vertical-align: bottom;
-        }
+
         a {
           display: inline-block;
+          padding-left:90px;
         }
 
         b {
@@ -517,7 +530,7 @@ $pointColor:#ff5400;
     .hot-bag {
       width:300px;
       height:240px;
-      background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
+      background: url('../images/homepage/hot-bag-a.png#spriteignore') left top no-repeat;
       display: inline-block;
       float: left;
     }
@@ -534,17 +547,28 @@ $pointColor:#ff5400;
         color: #ff770f;
       }
     }
-    ul {
+
+    .media-logo-section {
       background: url("../images/homepage/media.png")  right top no-repeat;
+      width: 38%;
+      height: 230px;
+      background-size: 100%;
+      float: right;
+      margin-top: 23px;
+    }
+
+    ul {
+      width: 58%;
       margin-top:15px;
       margin-bottom:15px;
+      float: left;
       li {
         font-size: 14px;
         color: #b2b2b2;
         padding-top:5px;
         padding-bottom: 13px;
         position: relative;
-        width: 58%;
+
         &:nth-last-child(1) {
           padding-bottom: 0px;
         }

@@ -155,7 +155,7 @@ plugins.push(new AssetsPlugin({
 //happypack利用缓存使rebuild更快
 plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 
-plugins.push(createHappyPlugin('sass', ['css!sass']));
+plugins.push(createHappyPlugin('sass', ['css!sprite!sass']));
 // plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
@@ -191,7 +191,7 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(css|scss)$/,
-			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sass')
+			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sprite!sass')
 		},
 		{
 			test: /\.(png|jpg|gif|woff|woff2)$/,
