@@ -217,40 +217,6 @@ form {
   filter: gray;
 }
 
-.img-itrust_logo {
-  width: 127px;
-  height: 47px;
-  display: inline-block;
-  background: url('../images/global/logo-itrust.png') left top no-repeat;
-}
-
-.img-chengxin_logo {
-  width: 127px;
-  height: 47px;
-  display: inline-block;
-  background: url('../images/global/logo-chengxin.png') left top no-repeat;
-}
-
-.img-knetSealLogo {
-  width: 127px;
-  height: 47px;
-  display: inline-block;
-  background: url('../images/global/logo-knetSeal.png') left top no-repeat;
-}
-
-.img-digicert {
-  display: inline-block;
-  width: 127px;
-  height: 47px;
-  background: url('../images/global/logo-digicert.png') left top no-repeat;
-}
-
-.img-logo-tip {
-  width: 50px;
-  height: 50px;
-  float: left;
-  background: url('../images/global/logo-tip.png') left top no-repeat;
-}
 
 .page-width {
   width:1000px;
@@ -259,12 +225,7 @@ form {
   box-sizing: border-box;
 }
 
-.btn-normal[disabled].loading {
-  background: transparent url("../images/loading.gif") no-repeat center center!important;
-  cursor: default!important;
-  border: 0!important;
-  text-indent: -9999px;
-}
+
 
 
 

@@ -62,19 +62,22 @@
     <div class="main-advantage clearfix bg-screen">
         <div class="page-width">
             <dl>
-                <dd class="guide">
+                <dd>
+                    <i class="guide"></i>
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
                         <span>预期年化收益8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
-                <dd class="risk">
+                <dd>
+                    <i class="risk"></i>
                     <a href="/about/risk-flow" target="_blank">
                         <b class="clearfix">六重风控 审核严谨</b>
                         <span>22道审核手续，<br>项目安全透明无死角</span>
                     </a>
                 </dd>
-                <dd class="assurance">
+                <dd class="last">
+                    <i class="assurance"></i>
                     <a href="/about/assurance" target="_blank">
                         <b class="clearfix">四大保障 投资无忧</b>
                         <span>12道保障措施并举，<br>资金、个人信息均安全</span>
@@ -225,7 +228,8 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-lian" href="http://www.umpay.com/" target="_blank">
+                <li>
+                    <a rel="nofollow" class="logo-lian" href="http://www.umpay.com/" target="_blank">
                 </a>
                 </li>
             </ul>

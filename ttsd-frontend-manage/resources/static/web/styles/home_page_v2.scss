@@ -1,8 +1,8 @@
-/* sprite-loader-enable */
 @charset "utf-8";
 $normalColor:#666;
 $keyColor:#ff9c1b;
 $pointColor:#ff5400;
+/* sprite-loader-enable */
 /* project schedule progress */
 .progress-bar {
   position: relative;
@@ -320,8 +320,9 @@ $pointColor:#ff5400;
       height: 300px;
       box-sizing: border-box;
       padding: 35px 35px 10px;
+      background-color: #ccc;
       background-color: rgba(0,0,0,0.4);
-      background: url("../images/homepage/base-bg-transport.png#spriteignore") left top repeat\9;
+
       color:#fff;
       i a {
         color:#ff752a;
@@ -439,25 +440,36 @@ $pointColor:#ff5400;
       text-align: center;
       font-size: 14px;
       color: #4d4d4d;
+      i {
+        width:82px;
+        height:88px;
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right:10px;
+        &.risk {
+          background: url('../images/homepage/icon-risk.png') left top no-repeat;
+          background-size: 100%;
+        }
+        &.guide {
+          background: url('../images/homepage/icon-guide.png') left top no-repeat;
+          background-size: 100%;
+        }
+        &.assurance {
+          width: 29%;
+          background: url('../images/homepage/icon-assurce.png') left top no-repeat;
+          background-size: 100%;
+        }
+      }
       dd {
-        width: 36%;
+        width: 35%;
         display: inline-block;
         min-height:88px;
         text-align: left;
-        &.risk {
-          background: url('../images/homepage/icon-risk.png') left center no-repeat;
+        &.last {
+          width:27%;
         }
-        &.guide {
-          background: url('../images/homepage/icon-guide.png') left center no-repeat;
-        }
-        &.assurance {
-          width: 27%;
-          background: url('../images/homepage/icon-assurce.png') left center no-repeat;
-        }
-
         a {
           display: inline-block;
-          padding-left:90px;
         }
 
         b {
@@ -595,21 +607,32 @@ $pointColor:#ff5400;
       li {
         float: left;
         margin-right:80px;
-      }
-      a {
         width:180px;
         height:70px;
-        display: inline-block;
         border:1px solid #e6e6e6;
         text-align: center;
         position: relative;
-        &.logo-lian {
-          background: url('../images/global/logo-lian.png') center center no-repeat;
-        }
         &:hover {
           box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);
         }
+        a {
+          width:140px;
+          height:55px;
+          margin:0 auto;
+          display: inline-block;
+          text-align: center;
+          position: absolute;
+          top:50%;
+          left:50%;
+          transform:translate(-50%,-50%);
+
+          &.logo-lian {
+            background: url('../images/global/logo-lian.png') center center no-repeat;
+          }
+
+        }
       }
+
   }
 }
 
