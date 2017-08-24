@@ -51,10 +51,19 @@ class MediaList extends React.Component {
 		if (section === 'ALL') {
 			delete sendData.section;
 		}
+		this.setState({
+			isShowLoading:true
+		});
+
 		mobileCommon.ajax({
 			url: '/media-center/article-list',
 			data: sendData,
-			done: callback
+			done: function(data) {
+				this.setState({
+					isShowLoading:false
+				});
+				callback && callback(data);
+			}.bind(this)
 		});
 	}
 	tabHeaderClickHandler(event) {
@@ -65,9 +74,10 @@ class MediaList extends React.Component {
 		this.listIndex = 1;
 		this.fetchData(1, value, (response) => {
 			this.setState((previousState) => {
+				console.log(response.data.articleList.length < pageSize );
 				return {
 					listData: Immutable(response.data.articleList),
-					isShowLoading: response.data.articleList.length < pageSize ? false : true
+					isShowLoading: false
 				};
 			});
 		});
@@ -87,9 +97,11 @@ class MediaList extends React.Component {
 		this.listIndex++;
 		this.fetchData(this.listIndex, this.state.active, (response) => {
 			this.setState((previousState) => {
+				console.log(response.data.articleList.length);
+				console.log(pageSize);
 				return {
 					listData: previousState.listData.concat(response.data.articleList),
-					isShowLoading: response.data.articleList.length < pageSize ? false : true
+					isShowLoading: false
 				}
 			});
 		})
@@ -106,7 +118,7 @@ class MediaList extends React.Component {
 					return {
 						listData: Immutable(listData),
 						bannerData: Immutable(bannerData),
-						isShowLoading: listData.length < pageSize ? false : true
+						isShowLoading: false
 					};
 				});
 			}
@@ -129,27 +141,63 @@ class MediaList extends React.Component {
 		});
 	}
 	componentDidUpdate() {
-		imagesLoaded(this.refs.scrollWrap).on('always', () => {
-			setTimeout(() => {
+		//数据加载完成后
+		if (!this.state.isShowLoading) {
+			imagesLoaded(this.refs.mainConWrap).on('done', () => {
+
 				if (!this.myScroll) {
-					// let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-					this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
-					this.myScroll = new IScroll(this.refs.scrollWrap);
-					this.myScroll.on('scrollEnd', () => {
-						if (this.myScroll.y <= this.myScroll.maxScrollY) {
-							if (this.state.isShowLoading) {
-								this.pagination.call(this);
-							}
-						}
+					this.refs.mainConWrap.style.height = (document.documentElement.clientHeight -this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight) + 'px';
+					this.myScroll = new IScroll(this.refs.mainConWrap, {
+						probeType: 3,
+						mouseWheel: true,
+						hScrollbar: false,
+						vScrollbar: true,
+						momentum: false,
+						useTransition: false,
+						bounce: false,
+						useTransform: true
+
 					});
-				} else {
+
+					this.myScroll.on('scroll', function () {
+
+						console.log(this.myScroll.y);
+						console.log('maxScrollY:'+this.myScroll.maxScrollY);
+						if (this.myScroll.y <= this.myScroll.maxScrollY) {
+								this.pagination.call(this);
+						}
+					}.bind(this));
+
+				}  else {
 					this.myScroll.refresh();
 					if (this.listIndex === 1) {
 						this.myScroll.scrollTo(0, 0);
 					}
 				}
-			}, 200);
-		});
+			});
+		}
+
+		// imagesLoaded(this.refs.scrollWrap).on('always', () => {
+		// 	setTimeout(() => {
+		// 		if (!this.myScroll) {
+        //
+		// 			this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
+		// 			this.myScroll = new IScroll(this.refs.scrollWrap);
+		// 			this.myScroll.on('scrollEnd', () => {
+		// 				if (this.myScroll.y <= this.myScroll.maxScrollY) {
+		// 					if (this.state.isShowLoading) {
+		// 						this.pagination.call(this);
+		// 					}
+		// 				}
+		// 			});
+		// 		} else {
+		// 			this.myScroll.refresh();
+		// 			if (this.listIndex === 1) {
+		// 				this.myScroll.scrollTo(0, 0);
+		// 			}
+		// 		}
+		// 	}, 200);
+		// });
 	}
 	componentWillUnmount() {
 		this.destroyIscroll.call(this);
@@ -172,8 +220,9 @@ class MediaList extends React.Component {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
 				</ul>
-				<div className="tab-body" ref="scroll-wrap">
-					<div className="scroll-wrap" ref="scrollWrap">
+				<div className="tab-body">
+					<div className="scroll-wrap" ref="mainConWrap">
+						<div className="clearfix">
 						<ul className="list">
 							{this.state.listData.map((value, index) => {
 								return (
@@ -194,6 +243,7 @@ class MediaList extends React.Component {
 							})}
 							{loading}
 						</ul>
+						</div>
 					</div>
 				</div>
 			</section>
