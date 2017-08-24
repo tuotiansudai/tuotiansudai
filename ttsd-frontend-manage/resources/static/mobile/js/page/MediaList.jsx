@@ -74,7 +74,6 @@ class MediaList extends React.Component {
 		this.listIndex = 1;
 		this.fetchData(1, value, (response) => {
 			this.setState((previousState) => {
-				console.log(response.data.articleList.length < pageSize );
 				return {
 					listData: Immutable(response.data.articleList),
 					isShowLoading: false
