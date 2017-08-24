@@ -1,7 +1,7 @@
 import 'mobileStyle/MediaList.scss';
 import React from 'react';
 import { hashHistory } from 'react-router';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
@@ -97,8 +97,6 @@ class MediaList extends React.Component {
 		this.listIndex++;
 		this.fetchData(this.listIndex, this.state.active, (response) => {
 			this.setState((previousState) => {
-				console.log(response.data.articleList.length);
-				console.log(pageSize);
 				return {
 					listData: previousState.listData.concat(response.data.articleList),
 					isShowLoading: false
@@ -130,6 +128,7 @@ class MediaList extends React.Component {
 		mobileCommon.ajax({
 			url: '/media-center/banner',
 			done: function(response) {
+
 				bannerData = response.data.articleList.map((value) => {
 					return {
 						img: value.showPicture,
@@ -142,31 +141,36 @@ class MediaList extends React.Component {
 	}
 	componentDidUpdate() {
 		//数据加载完成后
+		//数据加载完成后
 		if (!this.state.isShowLoading) {
 			imagesLoaded(this.refs.mainConWrap).on('done', () => {
 
-				if (!this.myScroll) {
-					this.refs.mainConWrap.style.height = (document.documentElement.clientHeight -this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight) + 'px';
-					this.myScroll = new IScroll(this.refs.mainConWrap, {
-						probeType: 3,
-						mouseWheel: true,
-						hScrollbar: false,
-						vScrollbar: true,
-						momentum: false,
-						useTransition: false,
-						bounce: false,
-						useTransform: true
+				let scrollHeight = (document.documentElement.clientHeight -this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight) + 'px';
+				let myIScrollSec = new IScroll(this.refs.mainConWrap, {
+					probeType: 3,
+					mouseWheel: true,
+					hScrollbar: false,
+					vScrollbar: true,
+					momentum: false,
+					useTransition: false,
+					bounce: false,
+					useTransform: true
 
+				});
+				if (!this.myScroll) {
+					this.refs.mainConWrap.style.height = scrollHeight;
+					this.myScroll = myIScrollSec;
+
+					this.myScroll.on('scrollEnd', () => {
+						if (this.myScroll.y <= this.myScroll.maxScrollY) {
+
+							this.pagination.call(this);
+
+							this.myScroll.refresh();
+
+						}
 					});
 
-					this.myScroll.on('scroll', function () {
-
-						console.log(this.myScroll.y);
-						console.log('maxScrollY:'+this.myScroll.maxScrollY);
-						if (this.myScroll.y <= this.myScroll.maxScrollY) {
-								this.pagination.call(this);
-						}
-					}.bind(this));
 
 				}  else {
 					this.myScroll.refresh();
@@ -176,28 +180,6 @@ class MediaList extends React.Component {
 				}
 			});
 		}
-
-		// imagesLoaded(this.refs.scrollWrap).on('always', () => {
-		// 	setTimeout(() => {
-		// 		if (!this.myScroll) {
-        //
-		// 			this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
-		// 			this.myScroll = new IScroll(this.refs.scrollWrap);
-		// 			this.myScroll.on('scrollEnd', () => {
-		// 				if (this.myScroll.y <= this.myScroll.maxScrollY) {
-		// 					if (this.state.isShowLoading) {
-		// 						this.pagination.call(this);
-		// 					}
-		// 				}
-		// 			});
-		// 		} else {
-		// 			this.myScroll.refresh();
-		// 			if (this.listIndex === 1) {
-		// 				this.myScroll.scrollTo(0, 0);
-		// 			}
-		// 		}
-		// 	}, 200);
-		// });
 	}
 	componentWillUnmount() {
 		this.destroyIscroll.call(this);
@@ -223,26 +205,26 @@ class MediaList extends React.Component {
 				<div className="tab-body">
 					<div className="scroll-wrap" ref="mainConWrap">
 						<div className="clearfix">
-						<ul className="list">
-							{this.state.listData.map((value, index) => {
-								return (
-									<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId} data-delegate="true">
-										<div className="pull-left">
-											<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
-										</div>
-										<h3>{value.title}</h3>
-										<div className="clearfix bottom-block">
-											<time className="pull-left">{value.creatTime}</time>
-											<div className="pull-right">
-												<div className="readed">阅读：<span>{value.readCount}</span></div>
-												<Praise className="praise" likeCount={value.likeCount}></Praise>
+							<ul className="list">
+								{this.state.listData.map((value, index) => {
+									return (
+										<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId} data-delegate="true">
+											<div className="pull-left">
+												<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
 											</div>
-										</div>
-									</li>
-								);
-							})}
-							{loading}
-						</ul>
+											<h3>{value.title}</h3>
+											<div className="clearfix bottom-block">
+												<time className="pull-left">{value.creatTime}</time>
+												<div className="pull-right">
+													<div className="readed">阅读：<span>{value.readCount}</span></div>
+													<Praise className="praise" likeCount={value.likeCount}></Praise>
+												</div>
+											</div>
+										</li>
+									);
+								})}
+								{loading}
+							</ul>
 						</div>
 					</div>
 				</div>
