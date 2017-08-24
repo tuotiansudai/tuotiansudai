@@ -207,8 +207,9 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sass')
 		},
 		{
-			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
+			test: /\.(jpe?g|png|gif|svg)$/i,
+			loaders:(NODE_ENV=='dev')?['url?limit=3072&name=images/[name].[hash:8].[ext]']:['url?limit=3072&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
+
 		}]
 	},
 	resolve: {
