@@ -63,21 +63,21 @@
         <div class="page-width">
             <dl>
                 <dd>
-                    <i class="guide"></i>
+                    <i class="guide sprite-homepage-icon-guide"></i>
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
                         <span>预期年化收益8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd>
-                    <i class="risk"></i>
+                    <i class="risk sprite-homepage-icon-risk"></i>
                     <a href="/about/risk-flow" target="_blank">
                         <b class="clearfix">六重风控 审核严谨</b>
                         <span>22道审核手续，<br>项目安全透明无死角</span>
                     </a>
                 </dd>
                 <dd class="last">
-                    <i class="assurance"></i>
+                    <i class="assurance sprite-homepage-icon-assurce"></i>
                     <a href="/about/assurance" target="_blank">
                         <b class="clearfix">四大保障 投资无忧</b>
                         <span>12道保障措施并举，<br>资金、个人信息均安全</span>
@@ -106,7 +106,7 @@
             </div>
             <#if newbieLoan??>
                 <div class="newer-experience clearfix hack-newbie" data-url="/loan/${newbieLoan.id?c}">
-                    <i class="tag-icon"></i>
+                    <i class="tag-icon sprite-homepage-icon-newuse"></i>
                     <div class="con-inner">
                         <b class="newer-title">${newbieLoan.name}</b>
                         <ul class="loan-info clearfix">
@@ -219,7 +219,7 @@
                     <time>2015-12-28</time>
                 </li>
             </ul>
-            <div class="media-logo-section"></div>
+            <div class="media-logo-section sprite-homepage-media"></div>
 
         </div>
 

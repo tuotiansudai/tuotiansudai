@@ -13,6 +13,7 @@ require("publicStyle/page_frame.scss");
 require("publicStyle/pagination.scss");
 require("publicStyle/error.scss");
 require("publicStyle/global.scss");
+require("publicStyle/spritecss/global.css");
 
 require('publicJs/error');
 require('babel-polyfill');

@@ -1,6 +1,4 @@
-// 目前项目里有2种生成雪碧图的 方案
-// 1. sprite-css,就是 本页实现的方法，需要手动执行命令生成  node sprite.css.config.js
-// 2. sprite-loader ，自动生成雪碧图
+//sprite-css,就是 本页实现的方法，需要手动执行命令生成  node sprite.css.config.js
 
 var webpack = require('webpack');
 var path = require('path');
@@ -21,7 +19,7 @@ function generateSpriteCss(option) {
         'public':packageRoute.publicStyle
 
     }
-
+    this.globalOption = thisOption;
     this.formPngImgs=glob.sync(path.join(packageRoute.staticPath, thisOption.siteFrom+'/images/'+thisOption.formPngFolder+'/*.png'));
 
     this.toSpriteImgPath = styleObjUrl[thisOption.siteFrom]+'/spritecss/'+thisOption.toSpriteImg+'.png' ;
@@ -37,7 +35,6 @@ generateSpriteCss.prototype.initSprite = function() {
         var states = fs.statSync(element);
 
         var imgSize = parseFloat(states.size/1024).toFixed(2);
-        // console.log(index+':'+imgSize);
         return imgSize > 2 && imgSize<16;
     });
 
@@ -53,7 +50,7 @@ generateSpriteCss.prototype.initSprite = function() {
             compressionLevel:2
         },
         stylesheetOptions: {
-            prefix: 'sprite-'
+            prefix: 'sprite-'+this.globalOption.formPngFolder+'-'
         }
     }, function () {
         console.log('Sprite generated!');

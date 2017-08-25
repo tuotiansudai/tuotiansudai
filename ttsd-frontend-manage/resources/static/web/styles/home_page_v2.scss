@@ -2,7 +2,6 @@
 $normalColor:#666;
 $keyColor:#ff9c1b;
 $pointColor:#ff5400;
-/* sprite-loader-enable */
 /* project schedule progress */
 .progress-bar {
   position: relative;
@@ -446,19 +445,6 @@ $pointColor:#ff5400;
         display: inline-block;
         vertical-align: bottom;
         margin-right:10px;
-        &.risk {
-          background: url('../images/homepage/icon-risk.png') left top no-repeat;
-          background-size: 100%;
-        }
-        &.guide {
-          background: url('../images/homepage/icon-guide.png') left top no-repeat;
-          background-size: 100%;
-        }
-        &.assurance {
-          width: 29%;
-          background: url('../images/homepage/icon-assurce.png') left top no-repeat;
-          background-size: 100%;
-        }
       }
       dd {
         width: 35%;
@@ -504,11 +490,7 @@ $pointColor:#ff5400;
         right:0;
 
       }
-      &.hack-newbie {
-        .tag-icon {
-          background: #fff url('../images/homepage/icon-newuse.png') right 0 no-repeat;
-        }
-      }
+
       .con-inner {
         padding:18px 28px;
       }
@@ -542,7 +524,7 @@ $pointColor:#ff5400;
     .hot-bag {
       width:300px;
       height:240px;
-      background: url('../images/homepage/hot-bag-a.png#spriteignore') left top no-repeat;
+      background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
       display: inline-block;
       float: left;
     }
@@ -561,10 +543,8 @@ $pointColor:#ff5400;
     }
 
     .media-logo-section {
-      background: url("../images/homepage/media.png")  right top no-repeat;
       width: 38%;
-      height: 230px;
-      background-size: 100%;
+      height: 225px;
       float: right;
       margin-top: 23px;
     }

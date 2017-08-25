@@ -3,7 +3,6 @@
 
 //用来兼容ie8
 @import 'ie_hack_grid';
-/* sprite-loader-enable */
 .error-box {
   visibility: visible;
   height:20px;
@@ -12,7 +11,9 @@
   padding-top:3px;
   text-align: left;
 }
-
+[class^='sprite-'], [class*=' sprite-'] {
+  display: inline-block;
+}
 .btn-normal[disabled].loading {
   background: transparent url("../images/loading.gif") no-repeat center center!important;
   cursor: default!important;
@@ -54,40 +55,40 @@
 }
 
 
-.img-itrust_logo {
-  width: 128px;
-  height: 47px;
-  display: inline-block;
-  background: url('../images/global/logo-itrust.png') left top no-repeat;
-}
+//.img-itrust_logo {
+//  width: 128px;
+//  height: 47px;
+//  display: inline-block;
+//  background: url('../images/global/logo-itrust.png') left top no-repeat;
+//}
+//
+//.img-chengxin_logo {
+//  width: 128px;
+//  height: 47px;
+//  display: inline-block;
+//  background: url('../images/global/logo-chengxin.png') left top no-repeat;
+//}
+//
+//.img-knetSealLogo {
+//  width: 128px;
+//  height: 47px;
+//  display: inline-block;
+//  background: url('../images/global/logo-knetSeal.png') left top no-repeat;
+//}
+//
+//.img-digicert {
+//  display: inline-block;
+//  width: 80px;
+//  height: 47px;
+//  background: url('../images/global/logo-digicert.png') left top no-repeat;
+//}
 
-.img-chengxin_logo {
-  width: 128px;
-  height: 47px;
-  display: inline-block;
-  background: url('../images/global/logo-chengxin.png') left top no-repeat;
-}
-
-.img-knetSealLogo {
-  width: 128px;
-  height: 47px;
-  display: inline-block;
-  background: url('../images/global/logo-knetSeal.png') left top no-repeat;
-}
-
-.img-digicert {
-  display: inline-block;
-  width: 80px;
-  height: 47px;
-  background: url('../images/global/logo-digicert.png') left top no-repeat;
-}
-
-.img-logo-tip {
-  width: 50px;
-  height: 50px;
-  float: left;
-  background: url('../images/global/logo-tip.png') left top no-repeat;
-}
+//.img-logo-tip {
+//  width: 50px;
+//  height: 50px;
+//  float: left;
+//  background: url('../images/global/logo-tip.png') left top no-repeat;
+//}
 
 
 //顶部标题
