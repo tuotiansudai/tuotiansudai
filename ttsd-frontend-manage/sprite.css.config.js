@@ -28,7 +28,6 @@ function generateSpriteCss(option) {
 
 generateSpriteCss.prototype.initSprite = function() {
 
-
      //文件大小，以字节为单位转为k
     //图片大于2k小于16K才会生成雪碧图
     var filterImages = this.formPngImgs.filter(function(element, index, array) {

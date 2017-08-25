@@ -198,7 +198,7 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loaders:(NODE_ENV=='dev')?['url?limit=2048&name=images/[name].[hash:8].[ext]']:['url?limit=2048&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
+			loaders:(NODE_ENV=='dev')?['url?limit=3072&name=images/[name].[hash:8].[ext]']:['url?limit=3072&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
 
 		}]
 	},
