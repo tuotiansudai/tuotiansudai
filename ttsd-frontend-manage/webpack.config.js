@@ -154,11 +154,6 @@ plugins.push(new AssetsPlugin({
 	metadata: {version: 123}
 }));
 
-//happypack利用缓存使rebuild更快
-plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
-
-plugins.push(createHappyPlugin('sass', ['css!sass']));
-// plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
 	manifest: require(packageRoute.publicPathJS+'/dllplugins/jquery-manifest.json')
@@ -178,6 +173,19 @@ function createHappyPlugin(id, loaders) {
 	});
 }
 
+//happypack利用缓存使rebuild更快
+plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
+
+plugins.push(createHappyPlugin('sass', ['css!postcss!sass']));
+
+// 图片base64,压缩
+var loaderObj = ['url?limit=3072&name=images/[name].[hash:8].[ext]'];
+if(NODE_ENV=='production') {
+	loaderObj = [
+		'url?limit=3072&name=images/[name].[hash:8].[ext]',
+		'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 9}}']
+}
+plugins.push(createHappyPlugin('image', ['url-loader?limit=3072&name=images/[name].[hash:8].[ext]']));
 
 var myObject = objectAssign(commonOptions, {
 	output: {
@@ -194,11 +202,12 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(css|scss)$/,
-			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sass')
+			loader: ExtractTextPlugin.extract('style','happypack/loader?id=sass')
 		},
 		{
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loaders:(NODE_ENV=='dev')?['url?limit=3072&name=images/[name].[hash:8].[ext]']:['url?limit=3072&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
+			loaders:loaderObj
+			// loaders:['happypack/loader?id=image']
 
 		}]
 	},
