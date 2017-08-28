@@ -201,7 +201,7 @@ $myRecordLink.on('click',function() {
             leftWidth=0;
         }
         $rewardOtherBox.css({'left':leftWidth});
-    },50);
+    },35);
 
 })();
 
