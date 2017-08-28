@@ -331,6 +331,9 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         long corpus = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(userInvestRepayRequestDto.getBaseParam().getUserId(),
                 transferInvestId);
+
+        userInvestRepayResponseDataDto.setRecheckTime(new SimpleDateFormat("yyyy/MM/dd").format(getRecheckTime(investModel, loanModel, investRepayModels)));
+
         for (InvestRepayModel investRepayModel : investRepayModels) {
             totalExpectedInterest += investRepayModel.getExpectedInterest();
             totalActualInterest += investRepayModel.getRepayAmount();
@@ -354,5 +357,19 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         baseResponseDto.setData(userInvestRepayResponseDataDto);
 
         return baseResponseDto;
+    }
+
+    public Date getRecheckTime(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels){
+        if (Lists.newArrayList(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
+            return loanModel.getRecheckTime();
+        }
+
+        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+        int minPeriod = investRepayModels.get(0).getPeriod();
+        if (minPeriod == 1){
+            return transferInvestModel.getInvestTime();
+        }else{
+            return new DateTime(investRepayMapper.findByInvestIdAndPeriod(investModel.getTransferInvestId(), minPeriod-1).getRepayDate()).plusDays(1).toDate();
+        }
     }
 }
