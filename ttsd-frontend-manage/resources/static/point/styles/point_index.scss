@@ -288,6 +288,9 @@
       width:100%;
       background:#f9f9f9;
       text-align:center;
+      @media (min-width:701px) and (max-width:999px){
+        overflow: hidden;
+      }
       span{
         display: inline-block;
         font-size: 30px;
