@@ -58,7 +58,7 @@
         border:1px solid #e6e6e6;
         position: relative;
         margin-bottom: 10px;
-        @media (min-width:701px) and (max-width:768px) {
+        @media (min-width:701px) and (max-width:999px) {
           box-sizing:border-box;
         }
         .activity-img {
@@ -68,7 +68,7 @@
           left: 0;
           top:0;
           overflow: hidden;
-          @media (min-width:701px) and (max-width:768px) {
+          @media (min-width:701px) and (max-width:999px) {
             width:100%;
           }
           .img-inner {

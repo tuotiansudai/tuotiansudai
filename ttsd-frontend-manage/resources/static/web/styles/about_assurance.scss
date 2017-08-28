@@ -131,7 +131,7 @@
     margin: 5px 0;
     box-sizing: border-box;
   }
-  @media (min-width:701px) and (max-width:768px) {
+  @media (min-width:701px) and (max-width:999px) {
   	width:48%;
   	margin:0 1%;
   	box-sizing:border-box;
@@ -190,12 +190,12 @@
 			dl {
 				width:265px;
 				float: left;
-				@media (min-width:701px) and (max-width:768px) {
+				@media (min-width:701px) and (max-width:999px) {
 					width:33.333333%;
 				}
 				&:nth-child(2) {
 					margin:0 100px;
-					@media (min-width:701px) and (max-width:768px) {
+					@media (min-width:701px) and (max-width:999px) {
 						margin:0;
 					}
 				}
@@ -222,7 +222,7 @@
 			}
 			  dd {
 				padding-top:20px;
-				@media (min-width:701px) and (max-width:768px) {
+				@media (min-width:701px) and (max-width:999px) {
 					padding:20px 20px 0;
 				}
 			  }
@@ -359,7 +359,7 @@
 		@media (max-width:700px) {
 			display:none;
 		}
-		@media (min-width:701px) and (max-width:768px) {
+		@media (min-width:701px) and (max-width:999px) {
 			display:none;
 		}
 	  }
@@ -376,7 +376,7 @@
 	  	margin-left: 0;
 	  	position: static;
 	  }
-	  @media (min-width:701px) and (max-width:768px) {
+	  @media (min-width:701px) and (max-width:999px) {
 		margin-left: 0;
 	}
 		dl {
@@ -393,7 +393,7 @@
 		  	margin-left: 0;
 		  	margin-top: 10px;
 		  }
-		  @media (min-width:701px) and (max-width:768px) {
+		  @media (min-width:701px) and (max-width:999px) {
 		  	width:31.333333%;
 		  	margin:40px 1% 0;
 		  }
@@ -441,7 +441,7 @@
 		  	box-sizing:border-box;
 		  	padding:0 10%;
 		  }
-		  @media (min-width:701px) and (max-width:768px) {
+		  @media (min-width:701px) and (max-width:999px) {
 		  	width:33.333333%;
 		  }
 		  dt {
@@ -482,7 +482,7 @@
 				font-size:12px;
 				text-align:center;
 			}
-			@media (min-width:701px) and (max-width:768px) {
+			@media (min-width:701px) and (max-width:999px) {
 				padding: 0 10px;
     			box-sizing: border-box;
 			}
@@ -492,7 +492,7 @@
 			@media (max-width:700px) {
 		  	margin:0;
 		  }
-			@media (min-width:701px) and (max-width:768px) {
+			@media (min-width:701px) and (max-width:999px) {
 			  	margin:0;
 			  }
 		  }
@@ -739,7 +739,7 @@
 	p {
 	  margin-top:10px;
 	  font-size: 16px;
-	  @media (min-width:701px) and (max-width:768px) {
+	  @media (min-width:701px) and (max-width:999px) {
 	  	padding: 0 10px;
 	  	box-sizing:border-box;
 	  }
@@ -749,7 +749,7 @@
 	overflow: hidden;
 	dl {
 	  margin-left: 80px;
-	  @media (min-width:701px) and (max-width:768px) {
+	  @media (min-width:701px) and (max-width:999px) {
 	  	margin-left: 0;
 	  	padding:0 10px;
 	  	box-sizing:border-box;
@@ -973,7 +973,7 @@
 	  .title-word {
 		left:700px;
 		width:160px;
-		@media (min-width:701px) and (max-width:768px) {
+		@media (min-width:701px) and (max-width:999px) {
 			left:auto;
 			right:50px;
 		}
@@ -991,7 +991,7 @@
 		text-align: center;
 		font-size:16px;
 		margin:0 45px;
-		@media (min-width:701px) and (max-width:768px) {
+		@media (min-width:701px) and (max-width:999px) {
 			margin:0 20px;
 		}
 		span {
@@ -1013,7 +1013,7 @@
   .section-box-four {
 	img {
 	  margin-bottom:30px;
-	  @media (min-width:701px) and (max-width:768px) {
+	  @media (min-width:701px) and (max-width:999px) {
 		width:100%;
 		}
 	}
@@ -1066,7 +1066,7 @@
 			display: inline-block;
 			vertical-align: middle;
 			background-size: 100%;
-			@media (min-width:701px) and (max-width:768px) {
+			@media (min-width:701px) and (max-width:999px) {
 				width:65%;
 			}
 		}

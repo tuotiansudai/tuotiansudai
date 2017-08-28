@@ -14,7 +14,7 @@
   }
 }
 .main-frame-ask {
-  @media (min-width:701px) and (max-width:768px) {
+  @media (min-width:701px) and (max-width:999px) {
     width:100%;
   }
   .btn-main {
@@ -104,7 +104,7 @@
   .pc-search-box {
     width: 75%;
     margin: 0 auto;
-    @media (min-width:700px) and (max-width:768px) {
+    @media (min-width:700px) and (max-width:999px) {
       width:100%;
     }
     .input-search {

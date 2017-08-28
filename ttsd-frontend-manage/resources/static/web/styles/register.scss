@@ -42,7 +42,7 @@
     margin-left: 322px;
     height: auto;
     overflow: auto;
-    @media (min-width:701px) and (max-width:768px) {
+    @media (min-width:701px) and (max-width:999px) {
       width: 500px;
       position: relative;
       left: 50%;
@@ -101,7 +101,7 @@
             background: #ff9c1b;
             color: #fff;
             cursor: pointer;
-            @media (min-width:701px) and (max-width:768px) {
+            @media (min-width:701px) and (max-width:999px) {
               right:120px;
             }
             &[disabled] {
