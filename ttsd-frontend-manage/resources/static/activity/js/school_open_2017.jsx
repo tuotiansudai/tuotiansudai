@@ -188,16 +188,19 @@ $myRecordLink.on('click',function() {
 (function() {
     //活动奖品跑马灯
     let $rewardOtherBox = $('#rewardOtherBox'),
+        boxScrollWid = $('.reward-other-list-out').width(),
         rewardLis = $rewardOtherBox.find('li');
 
     let rewarDhtmlUl = $rewardOtherBox.html();
     $rewardOtherBox.append(rewarDhtmlUl);
     let leftWidth=0;
-    rewardLis.length && $rewardOtherBox.width(rewardLis.length * (rewardLis[0].offsetWidth+10));
-    // debugger
+
+    let moveDistance = rewardLis.length * (rewardLis[0].offsetWidth+15);
+    $rewardOtherBox.width(moveDistance);
+
     let timer = setInterval(function() {
         leftWidth-=3;
-        if(Math.abs(leftWidth) > ($rewardOtherBox.width()/2)) {
+        if(Math.abs(leftWidth) > moveDistance - boxScrollWid) {
             leftWidth=0;
         }
         $rewardOtherBox.css({'left':leftWidth});
