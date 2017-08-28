@@ -117,12 +117,19 @@ public class InterestCalculator {
         }
         switch (couponModel.getCouponType()) {
             case INTEREST_COUPON:
-                List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
-                int period = 0;
-                for (Integer daysOfPeriod : daysOfPeriodList) {
-                    period += 1;
-                    if (couponModel.getPeriod() == null || period <= couponModel.getPeriod()) {
-                        couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+                //到期还本付息，按天计息，即投即生息,优惠券只加首期利息
+                if (loanModel.getType() == LoanType.INVEST_INTEREST_LUMP_SUM_REPAY){
+                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+                    couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriodList.get(0));
+                }
+                else{
+                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+                    int period = 0;
+                    for (Integer daysOfPeriod : daysOfPeriodList) {
+                        period += 1;
+                        if (couponModel.getPeriod() == null || period <= couponModel.getPeriod()) {
+                            couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriod);
+                        }
                     }
                 }
                 break;
@@ -190,16 +197,24 @@ public class InterestCalculator {
 
     public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {
         long expectedFee = 0;
-        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
-        int period = 0;
-        for (Integer daysOfPeriod : daysOfPeriodList) {
-            period += 1;
+        if(loanModel.getType() == LoanType.INVEST_INTEREST_LUMP_SUM_REPAY){
+            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), LoanType.LOAN_INTEREST_MONTHLY_REPAY);
             if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
-                if (couponModel.getPeriod() == null || period <= couponModel.getPeriod()) {
-                    expectedFee += new BigDecimal(getCouponExpectedInterest(loanModel, couponModel, amount, daysOfPeriod)).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                expectedFee += new BigDecimal(getCouponExpectedInterest(loanModel, couponModel, amount, daysOfPeriodList.get(0))).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            }
+        }else{
+            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+            int period = 0;
+            for (Integer daysOfPeriod : daysOfPeriodList) {
+                period += 1;
+                if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
+                    if (couponModel.getPeriod() == null || period <= couponModel.getPeriod()) {
+                        expectedFee += new BigDecimal(getCouponExpectedInterest(loanModel, couponModel, amount, daysOfPeriod)).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                    }
                 }
             }
         }
+
         return expectedFee;
     }
 
