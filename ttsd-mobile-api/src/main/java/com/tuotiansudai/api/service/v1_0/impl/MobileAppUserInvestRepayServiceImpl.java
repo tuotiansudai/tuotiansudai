@@ -87,13 +87,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
 
-            if (investModel.getTransferInvestId() == null) {
-                userInvestRepayResponseDataDto.setRecheckTime((Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanModel.getType())
-                        || loanModel.getProductType() == ProductType.EXPERIENCE) == true ?
-                        sdf.format(investModel.getInvestTime()):(String.valueOf(loanModel.getRecheckTime()==null?"":sdf.format(loanModel.getRecheckTime()))));
-            }else{
-                userInvestRepayResponseDataDto.setRecheckTime(investRepayModels==null?"":getRecheckTime(investModel.getTransferInvestId(), loanModel, investRepayModels));
-            }
+            userInvestRepayResponseDataDto.setRecheckTime(getValueDate(investModel, loanModel, investRepayModels));
 
             int maxPeriods = investRepayModels == null ? 0 : investRepayModels.size();
             InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
@@ -193,18 +187,27 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         return usedCouponName;
     }
 
-    public String getRecheckTime(long transferInvestId, LoanModel loanModel, List<InvestRepayModel> investRepayModels){
+    private String getValueDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        int minPeriod = investRepayModels.get(0).getPeriod();
+
+        if (investRepayModels == null){
+            return "";
+        }
+
+        if (investModel.getTransferInvestId()!=null && minPeriod > 1){
+            return sdf.format(new DateTime(investRepayMapper.findByInvestIdAndPeriod(investModel.getTransferInvestId(), minPeriod-1).getRepayDate()).plusDays(1).toDate());
+        }
+
         if (Lists.newArrayList(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
             return loanModel.getRecheckTime()==null? "":sdf.format(loanModel.getRecheckTime());
         }
 
-        InvestModel transferInvestModel = investService.findById(transferInvestId);
-        int minPeriod = investRepayModels.get(0).getPeriod();
-        if (minPeriod == 1){
-            return sdf.format(transferInvestModel.getInvestTime());
-        }else{
-            return sdf.format(new DateTime(investRepayMapper.findByInvestIdAndPeriod(transferInvestId, minPeriod-1).getRepayDate()).plusDays(1).toDate());
+
+        if(investModel.getTransferInvestId()!=null && minPeriod == 1){
+            investModel = investService.findById(investModel.getTransferInvestId());
         }
+
+        return sdf.format(investModel.getInvestTime());
     }
 }
