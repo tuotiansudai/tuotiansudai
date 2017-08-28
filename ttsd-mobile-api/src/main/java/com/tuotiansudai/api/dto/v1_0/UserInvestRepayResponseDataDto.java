@@ -81,6 +81,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.investId = String.valueOf(transferApplicationModel.getInvestId());
         this.investAmount = AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount());
         this.investTime = simpleDateFormat.format(transferApplicationModel.getTransferTime());
+        this.recheckTime = simpleDateFormat.format(loanModel.getRecheckTime());
     }
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
@@ -93,9 +94,6 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.duration = String.valueOf(loanModel.getDuration());
         this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
         this.productNewType = loanModel.getProductType().name();
-        this.recheckTime = (Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanModel.getType())
-                || loanModel.getProductType() == ProductType.EXPERIENCE) == true ?
-                sdf.format(investModel.getInvestTime()):(String.valueOf(loanModel.getRecheckTime()==null?"":sdf.format(loanModel.getRecheckTime())));
         this.investId = String.valueOf(investModel.getId());
         this.investAmount = AmountConverter.convertCentToString(investModel.getAmount());
         this.investTime = sdf.format(investModel.getInvestTime());
