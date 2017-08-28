@@ -1,4 +1,3 @@
-@import  "global_png";
 .header-download {
   display: none;
   padding: 10px 4px;
@@ -116,16 +115,18 @@
       &.last {
         margin-top: 40px;
         float:right;
+        .img-app-download {
+          width:90px;
+          height:90px;
+          background-size: 100%;
+          border:5px solid #fff;
+
+        }
+
         li{
           margin-left:20px;
-          .img-weixin-img {
-            @extend .sprite-global-weixin-img;
-            display: inline-block;
-          }
-          .img-app-download {
-            @extend .sprite-global-app-download;
-            display: inline-block;
-          }
+
+
         }
       }
     }
@@ -529,16 +530,6 @@
     .images-app{
       float:right;
       width:100px;
-      .img-app-download{
-        float:left;
-        width:100px;
-        height:100px;
-        background-image: url("../images/global_20160904.png");
-        background-position: -308px -100px;
-        -webkit-background-size: 408px 290px;
-        -moz-background-size: 408px 290px;
-        background-size: 408px 290px;
-      }
       p{
         float:left;
         width:100%;
