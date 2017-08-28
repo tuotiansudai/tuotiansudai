@@ -152,25 +152,86 @@
                 <span class="re-name">丹尼尔惠灵顿手表</span>
             </div>
         </div>
+            <div class="reward-other-list-out" >
+                <ul class="reward-other-list clearfix" id="rewardOtherBox">
+                    <li>
+                        <i>4</i>
+                        <em class="img-reward-in re04"></em>
+                        <span>红米Note4X</span>
+                    </li>
+                    <li>
+                        <i>5</i>
+                        <em class="img-reward-in re05"></em>
+                        <span>尼康数码相机</span>
+                    </li>
+                    <li>
+                        <i>6</i>
+                        <em class="img-reward-in re06"></em>
+                        <span>西部数据移动硬盘1TB</span>
+                    </li>
+                    <li>
+                        <i>7</i>
+                        <em class="img-reward-in re07"></em>
+                        <span>诺泰眼部按摩仪</span>
+                    </li>
+                    <li>
+                        <i>8</i>
+                        <em class="img-reward-in re08"></em>
+                        <span>爱华仕旅行箱24英寸</span>
+                    </li>
+                    <li>
+                        <i>9</i>
+                        <em class="img-reward-in re09"></em>
+                        <span>华为荣耀手环</span>
+                    </li>
+                    <li>
+                        <i>10</i>
+                        <em class="img-reward-in re10"></em>
+                        <span>美的1.5L蒸汽挂烫机</span>
+                    </li>
+                    <li>
+                        <i>11</i>
+                        <em class="img-reward-in re11"></em>
+                        <span>NIKI训练背包</span>
+                    </li>
+                    <li>
+                        <i>12</i>
+                        <em class="img-reward-in re12"></em>
+                        <span>也酷车载冰箱10L</span>
+                    </li>
+                    <li>
+                        <i>13</i>
+                        <em class="img-reward-in re13"></em>
+                        <span>漫步者多媒体音箱</span>
+                    </li>
+                    <li>
+                        <i>14</i>
+                        <em class="img-reward-in re14"></em>
+                        <span>乐视EB20无线蓝牙耳机</span>
+                    </li>
+                    <li>
+                        <i>15</i>
+                        <em class="img-reward-in re15"></em>
+                        <span>好视力LED台灯</span>
+                    </li>
+                    <li>
+                        <i>16</i>
+                        <em class="img-reward-in re16"></em>
+                        <span>电弧点烟器</span>
+                    </li>
+                    <li>
+                        <i>17</i>
+                        <em class="img-reward-in re17"></em>
+                        <span>颈肩捶打按摩器</span>
+                    </li>
+                    <li>
+                        <i>18</i>
+                        <em class="img-reward-in re18"></em>
+                        <span>乐扣乐扣保温杯</span>
+                    </li>
+                </ul>
+            </div>
 
-            <ul class="reward-other-list clearfix">
-                <li>
-                    <i>9</i>
-                    <span>红米note4x</span>
-                </li>
-                <li>
-                    <i>10</i>
-                    <span>红米note4x</span>
-                </li>
-                <li>
-                    <i>11</i>
-                    <span>红米note4x</span>
-                </li>
-                <li>
-                    <i>12</i>
-                    <span>红米note4x</span>
-                </li>
-            </ul>
     </div>
 
     <div class="box-column box-notice">

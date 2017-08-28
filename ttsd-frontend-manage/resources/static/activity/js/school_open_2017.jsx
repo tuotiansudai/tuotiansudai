@@ -185,11 +185,31 @@ $myRecordLink.on('click',function() {
 
 });
 
+(function() {
+    //活动奖品跑马灯
+    let $rewardOtherBox = $('#rewardOtherBox'),
+        rewardLis = $rewardOtherBox.find('li');
+
+    let rewarDhtmlUl = $rewardOtherBox.html();
+    $rewardOtherBox.append(rewarDhtmlUl);
+    let leftWidth=0;
+    rewardLis.length && $rewardOtherBox.width(rewardLis.length * (rewardLis[0].offsetWidth+10));
+    // debugger
+    let timer = setInterval(function() {
+        leftWidth-=3;
+        if(Math.abs(leftWidth) > ($rewardOtherBox.width()/2)) {
+            leftWidth=0;
+        }
+        $rewardOtherBox.css({'left':leftWidth});
+    },50);
+
+})();
+
+
 window.onload = function() {
     //跑马灯效果
     let $userRecord= $('.user-record',$activityPageFrame),
         lis = $userRecord.find('li');
-    console.log(lis.length);
     let htmlUl = $userRecord.html();
     let leftW=0;
     $userRecord.append(htmlUl);
