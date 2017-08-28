@@ -99,10 +99,10 @@
                     <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                     <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off"
                           novalidate="novalidate">
-                        <ul class="reg-list tl register-ul">
+                        <ul class="reg-list tl register-ul register-icon-list">
                             <li class="reg-row-container">
                             <#--手机号:-->
-                                <i class="newbie-register-ic-mobile reg-icon"></i>
+                                <i class="icon-mobile reg-icon"></i>
                                 <input validate type="text" id="mobile" name="mobile" class="mobile input-width"
                                        placeholder="手机号"
                                        maxlength="11" value="">
@@ -110,7 +110,7 @@
 
                             <li class="reg-row-container">
                             <#--密码:-->
-                                <i class="newbie-register-ic-password reg-icon"></i>
+                                <i class="icon-password reg-icon"></i>
                                 <input validate type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                        class="password input-width" value="">
                             </li>
@@ -118,7 +118,7 @@
 
                             <li class="code reg-row-container">
                             <#--验证码:-->
-                                <i class="newbie-register-ic-img-captcha reg-icon"></i>
+                                <i class="icon-img-captcha reg-icon"></i>
 
                                 <em class="image-captcha">
                                     <img src="" alt=""/>
@@ -130,7 +130,7 @@
 
                             <li class="reg-row-container">
                             <#--手机验证码:-->
-                                <i class="newbie-register-ic-captcha reg-icon"></i>
+                                <i class="icon-captcha reg-icon"></i>
                                 <span class="captcha-tag" id="pcCaptcha">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                                 <input validate type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"

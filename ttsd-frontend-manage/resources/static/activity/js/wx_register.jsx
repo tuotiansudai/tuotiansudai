@@ -1,5 +1,4 @@
 require("activityStyle/wx_register.scss");
-require('publicStyle/module/register_png.scss');
 let commonFun= require('publicJs/commonFun');
 require('publicJs/placeholder');
 let ValidatorObj= require('publicJs/validator');
