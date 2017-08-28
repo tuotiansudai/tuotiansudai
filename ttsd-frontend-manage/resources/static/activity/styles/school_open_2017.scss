@@ -102,6 +102,11 @@ body {
       b {
         color: #7a34cc;
         font-size:24px;
+        display: block;
+      }
+      .sub-title {
+        font-size:14px;
+        color: #7a34cc;
       }
       .reward-scroll {
         width:100%;
@@ -593,7 +598,7 @@ body {
 }
 .layer-reward-list {
   width:537px;
-  height:529px;
+  height:533px;
   background: url('../images/2017/school-open/bg-reward-list.png') left bottom no-repeat;
   background-size:contain;
   padding-top: 30px;
@@ -606,6 +611,10 @@ body {
   .own-record-title {
     color: #947f4a;
     font-size:29px;
+    span {
+      display: inline-block;
+      width: 48%;
+    }
   }
   ul {
     width:85%;
@@ -701,8 +710,8 @@ body {
     zoom:0.65;
   }
   .tip-list {
-    zoom:0.8;
-    left: 20px!important;
+    zoom:0.7;
+    left: 40px!important;
   }
   .layer-reward-box .layui-layer-ico {
     background-size:70%;
@@ -766,6 +775,10 @@ body {
         b {
           font-size:15px;
         }
+        .sub-title {
+          font-size:12px;
+        }
+
         .reward-scroll {
           height: 40px;
           line-height: 40px;
@@ -1015,7 +1028,7 @@ body {
 
 @media screen and (min-width: 376px) and (max-width: 415px) {
   .tip-list {
-    zoom: 0.9;
+    zoom: 0.8;
     left: 20px!important;
   }
 }
