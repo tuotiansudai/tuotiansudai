@@ -262,6 +262,9 @@ $pointColor:#ff5400;
           margin-left: -webkit-calc((1920px - 100%) / 2 * -1);
           margin-left: calc((1920px - 100%) / 2 * -1);
         }
+        @media (min-width:701px) and (max-width: 999px) {
+          margin-left: 0;
+        }
         li{
           position:absolute;
           top:0;
@@ -278,6 +281,9 @@ $pointColor:#ff5400;
             height:100%;
             display: block;
             img {
+              @media (min-width:701px) and (max-width: 999px) {
+                width:100%;
+              }
               &.pc-img{
                 height:350px;
               }
