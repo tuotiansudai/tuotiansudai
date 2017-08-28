@@ -97,7 +97,9 @@ if(NODE_ENV=='production') {
 				comments: false
 			},
 			compress: {
-				warnings: false
+				warnings: false,
+				drop_console: true,
+				drop_debugger: true
 			}
 		}
 	}));
@@ -105,7 +107,7 @@ if(NODE_ENV=='production') {
 }
 else if(NODE_ENV=='dev') {
 	plugins.push(new ExtractTextPlugin("[name].css"));
-	
+
 	//打包之前先删除打包文件里的图片文件方便重新打包
 	// plugins.push(new CleanWebpackPlugin(['develop'], {
 	// 	root: basePath,
@@ -186,6 +188,7 @@ function createHappyPlugin(id, loaders) {
 	});
 }
 
+
 var myObject = objectAssign(commonOptions, {
 	output: {
 		filename:outFilename,
@@ -204,8 +207,9 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract('style',(NODE_ENV=='dev')?'happypack/loader?id=sass':'css!postcss!sass')
 		},
 		{
-			test: /\.(png|jpg|gif|woff|woff2)$/,
-			loader: 'url-loader?limit=3072&name=images/[name].[hash:8].[ext]'
+			test: /\.(jpe?g|png|gif|svg)$/i,
+			loaders:(NODE_ENV=='dev')?['url?limit=3072&name=images/[name].[hash:8].[ext]']:['url?limit=3072&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
+
 		}]
 	},
 	resolve: {
