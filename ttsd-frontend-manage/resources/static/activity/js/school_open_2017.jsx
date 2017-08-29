@@ -104,7 +104,7 @@ function setCookie(name,value)
     let distanceTime = second.getTime() - exp.getTime();
 
     exp.setTime(exp.getTime() + distanceTime);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    document.cookie = name + "="+ escape (value) + ";path=/;expires=" + exp.toGMTString();
 }
 
 if(sourceKind.params.school =='yes') {
@@ -130,6 +130,7 @@ $pointerImg.on('click',function() {
             if (data.returnCode == 0) {
 
                 setCookie('drawSignToday','1');
+
                 var prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                 var myTimes = parseInt($luckDrawBox.find('.my-number').text());
@@ -140,13 +141,7 @@ $pointerImg.on('click',function() {
 
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
-                let lisLen = $userRecord.find('li');
-                if(lisLen==1) {
-                    $userRecord.addClass('only-one');
-                } else {
-                    $userRecord.removeClass('only-one');
-                }
-
+                scrollText();
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
@@ -218,15 +213,13 @@ $myRecordLink.on('click',function() {
 })();
 
 
-window.onload = function() {
-    //跑马灯效果
-
+function scrollText() {
     var lis = $userRecord.find('li');
     let htmlUl = $userRecord.html();
     let leftW=0;
-    $userRecord.append(htmlUl);
+    lis.length>1 && $userRecord.append(htmlUl);
 
-    if(lis.length>2) {
+    if(lis.length>1) {
         lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
         let timer = setInterval(function() {
             leftW-=3;
@@ -236,9 +229,14 @@ window.onload = function() {
             $userRecord.css({'left':leftW});
         },50);
         $userRecord.removeClass('only-one');
-    } else if(lis.length==1){
+    } else if(lis.length==0 || lis.length==1 ){
         $userRecord.addClass('only-one');
 
     }
+}
+window.onload = function() {
+    //跑马灯效果
+
+    scrollText();
 
 }
