@@ -58,7 +58,7 @@ $activityPageFrame.find('.to-login,.to-text-login').on('click', function(event) 
             pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
         }
         $('.page-index',$pageNumber).text(pageIndex);
-        let TopDistance = -235 * (pageIndex-1);
+        let TopDistance = -250 * (pageIndex-1);
         $tableList.animate({
             left:"0",
             top:TopDistance + 'px'
