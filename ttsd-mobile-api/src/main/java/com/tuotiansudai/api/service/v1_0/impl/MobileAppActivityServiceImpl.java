@@ -99,13 +99,13 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
     @Override
     @Transactional
-    public synchronized ActivitySchoolSeasonStatusResponseDto getActivitySchoolSeasonStatusResponseDto(ActivityCategory activityCategory,String mobile){
+    public synchronized ActivitySchoolSeasonStatusResponseDto getActivitySchoolSeasonStatusResponseDto(ActivityCategory activityCategory,String loginName){
+        UserModel userModel = userMapper.findByLoginName(loginName);
 
-        if (StringUtils.isEmpty(mobile)) {
+        if (StringUtils.isEmpty(loginName)) {
             return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DISABLED, "");
         }
 
-        UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
             return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DISABLED, "");
         }
@@ -115,7 +115,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
             return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DISABLED, "");
         }
 
-        int drawTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
+        int drawTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
                         DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
 
         if(drawTime==1){
