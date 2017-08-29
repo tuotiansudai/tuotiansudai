@@ -9,6 +9,7 @@ let $myRecordLink = $('.my-record-link',$activityPageFrame),
     tipGroupObj = {},
     sourceKind = globalFun.parseURL(location.href);
 
+let $userRecord= $('.user-record',$activityPageFrame);
 
 let $pointerImg = $('.draw-bucket',$luckDrawBox),
     pointAllList='/activity/school-season/all-list',  //中奖记录接口地址
@@ -138,7 +139,14 @@ $pointerImg.on('click',function() {
                 });
 
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
-                $('.user-record',$activityPageFrame).css({'left':'30%'});
+
+                let lisLen = $userRecord.find('li');
+                if(lisLen==1) {
+                    $userRecord.addClass('only-one');
+                } else {
+                    $userRecord.removeClass('only-one');
+                }
+
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
@@ -212,8 +220,8 @@ $myRecordLink.on('click',function() {
 
 window.onload = function() {
     //跑马灯效果
-    let $userRecord= $('.user-record',$activityPageFrame),
-        lis = $userRecord.find('li');
+
+    var lis = $userRecord.find('li');
     let htmlUl = $userRecord.html();
     let leftW=0;
     $userRecord.append(htmlUl);
@@ -227,8 +235,10 @@ window.onload = function() {
             }
             $userRecord.css({'left':leftW});
         },50);
+        $userRecord.removeClass('only-one');
     } else if(lis.length==1){
-        $userRecord.css({'left':'30%'});
+        $userRecord.addClass('only-one');
+
     }
 
 }

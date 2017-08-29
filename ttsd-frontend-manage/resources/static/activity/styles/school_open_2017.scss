@@ -102,7 +102,10 @@ body {
       b {
         color: #7a34cc;
         font-size:24px;
-        display: block;
+        &.main-title {
+          display: block;
+        }
+
       }
       .sub-title {
         font-size:14px;
@@ -122,7 +125,10 @@ body {
         .scroll-inner {
           //width:9999px;
           position: absolute;
-
+          &.only-one {
+            left:50%;
+            transform:translateX(-50%);
+          }
           li {
             float: left;
             display: inline-block;
@@ -160,6 +166,7 @@ body {
         color: #7a34cc;
         float: right;
         cursor: pointer;
+        margin-top:6px;
       }
     }
     .luck-draw-box {
@@ -569,7 +576,7 @@ body {
   .box-notice {
     .title-notice {
       display: block;
-      width:275px;
+      width:155px;
       height:52px;
       vertical-align: middle;
       margin:10px auto;
@@ -707,7 +714,7 @@ body {
     background: #655ddc;
   }
   .layer-reward-list {
-    zoom:0.65;
+    zoom:0.6;
   }
   .tip-list {
     zoom:0.7;
@@ -805,9 +812,7 @@ body {
         padding:20px 10px;
         font-size:12px;
         .title-notice {
-          zoom:0.5;
-          margin-top: -10px;
-          margin-left: 30%;
+          zoom: 0.8;
         }
       }
     }
