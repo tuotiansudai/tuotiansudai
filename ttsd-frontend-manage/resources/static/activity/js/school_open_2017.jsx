@@ -104,7 +104,7 @@ function setCookie(name,value)
     let distanceTime = second.getTime() - exp.getTime();
 
     exp.setTime(exp.getTime() + distanceTime);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    document.cookie = name + "="+ escape (value) + ";path=/;expires=" + exp.toGMTString();
 }
 
 if(sourceKind.params.school =='yes') {
@@ -130,6 +130,7 @@ $pointerImg.on('click',function() {
             if (data.returnCode == 0) {
 
                 setCookie('drawSignToday','1');
+
                 var prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                 var myTimes = parseInt($luckDrawBox.find('.my-number').text());
