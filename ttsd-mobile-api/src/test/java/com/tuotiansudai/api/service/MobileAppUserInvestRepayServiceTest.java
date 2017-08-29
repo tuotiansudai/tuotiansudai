@@ -32,6 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -212,36 +213,34 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         InvestModel transferInvestModel= getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
         transferInvestModel.setInvestFeeRate(0.1);
         transferInvestModel.setTransferInvestId(investModel.getId());
-        TransferApplicationModel transferApplicationModel=getFakeTransferApplicationModel(investModel.getId(), transferInvestModel.getId(), loanModel.getId(), 2, "loginuserInvestName");
-        List<TransferApplicationModel> transferApplicationModels = Lists.newArrayList();
-        transferApplicationModels.add(transferApplicationModel);
-        List<InvestRepayModel> investRepayModels = Lists.newArrayList();
-        InvestRepayModel investRepayModel1 = getFakeInvestReapyModel(investModel.getId(), 1, new DateTime().minusDays(30).toDate(), new DateTime().minusDays(30).toDate(), 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
-        investRepayModel1.setTransferred(true);
-        InvestRepayModel investRepayModel2 = getFakeInvestReapyModel(investModel.getId(), 2, new DateTime().minusDays(-30).toDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
-        investRepayModel2.setTransferred(true);
-        InvestRepayModel investRepayModel3 = getFakeInvestReapyModel(investModel.getId(), 3, new DateTime().minusDays(-60).toDate(), null, 12, 0, 2, 10, 5000, RepayStatus.COMPLETE);
-        investRepayModel3.setTransferred(true);
-        investRepayModels.add(investRepayModel1);
-        investRepayModels.add(investRepayModel2);
-        investRepayModels.add(investRepayModel3);
 
-        List<InvestRepayModel> transferInvestRepayModels = Lists.newArrayList();
+        TransferApplicationModel transferApplicationModel=getFakeTransferApplicationModel(investModel.getId(), transferInvestModel.getId(), loanModel.getId(), 2, "loginuserInvestName");
+        List<TransferApplicationModel> transferApplicationModels = Arrays.asList(transferApplicationModel);
+
+        InvestRepayModel investRepayModel1 = getFakeInvestReapyModel(investModel.getId(), 1, new DateTime().toDate(), new DateTime().minusDays(30).toDate(), 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        investRepayModel1.setTransferred(false);
+        InvestRepayModel investRepayModel2 = getFakeInvestReapyModel(investModel.getId(), 2, new DateTime().plusDays(30).toDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        investRepayModel2.setTransferred(true);
+        InvestRepayModel investRepayModel3 = getFakeInvestReapyModel(investModel.getId(), 3, new DateTime().plusDays(60).toDate(), null, 12, 0, 2, 10, 5000, RepayStatus.COMPLETE);
+        investRepayModel3.setTransferred(true);
+        List<InvestRepayModel> investRepayModels = Arrays.asList(investRepayModel1,investRepayModel2,investRepayModel3);
+
+
         InvestRepayModel transferInvestRepayModel2 = getFakeInvestReapyModel(transferInvestModel.getId(), 2, investRepayModel2.getRepayDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
         InvestRepayModel transferInvestRepayModel3 = getFakeInvestReapyModel(transferInvestModel.getId(), 3, investRepayModel3.getRepayDate(), null, 12, 0, 2, 10, 5000, RepayStatus.COMPLETE);
+        List<InvestRepayModel> transferInvestRepayModels = Lists.newArrayList();
         transferInvestRepayModels.add(transferInvestRepayModel2);
         transferInvestRepayModels.add(transferInvestRepayModel3);
 
-        List memberships = Lists.newArrayList();
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setFee(0);
         membershipModel.setExperience(0);
         membershipModel.setLevel(1);
-        memberships.add(membershipModel);
+        List memberships = Arrays.asList(membershipModel);
         CouponRepayModel couponRepayModel = new CouponRepayModel();
-        List userCoupon = Lists.newArrayList();
+
         UserCouponModel userCouponModel = new UserCouponModel();
-        userCoupon.add(userCouponModel);
+        List userCoupon = Arrays.asList(userCouponModel);
 
         when(investService.findById(anyLong())).thenReturn(transferInvestModel);
         when(transferApplicationMapper.findByInvestId(anyLong())).thenReturn(transferApplicationModel);
@@ -261,8 +260,17 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         userInvestRepayRequestDto.setInvestId(String.valueOf(transferInvestModel.getId()));
 
         BaseResponseDto<UserInvestRepayResponseDataDto> responseDto = mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);
+        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new DateTime().plusDays(1).toDate()), responseDto.getData().getRecheckTime());
 
-        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new DateTime().minusDays(29).toDate()), responseDto.getData().getRecheckTime());
+        investRepayModel1.setTransferred(true);
+        InvestRepayModel transferInvestRepayModel1 = getFakeInvestReapyModel(transferInvestModel.getId(), 1, investRepayModel1.getRepayDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        transferInvestRepayModels.add(0,transferInvestRepayModel1);
+        BaseResponseDto<UserInvestRepayResponseDataDto> responseDto1 = mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);
+        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new Date()), responseDto1.getData().getRecheckTime());
+
+        loanModel.setType(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY);
+        BaseResponseDto<UserInvestRepayResponseDataDto> responseDto2 = mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);
+        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new Date()), responseDto2.getData().getRecheckTime());
     }
 
     private LoanModel createLoanModel(){
