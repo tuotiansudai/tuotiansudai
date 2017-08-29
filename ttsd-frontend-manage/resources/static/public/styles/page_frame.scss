@@ -496,10 +496,16 @@
     float: left;
     background: #e7eaef;
     margin: 0 15px 20px 0;
+    @media (min-width:701px) and (max-width:999px) {
+      width:100%;
+    }
     li {
       float:left;
       width:100%;
       border-bottom: #f9f9f9 1px solid;
+      @media (min-width:701px) and (max-width:999px) {
+        width:10%;
+      }
       a {
         display: block;
         height: 45px;
