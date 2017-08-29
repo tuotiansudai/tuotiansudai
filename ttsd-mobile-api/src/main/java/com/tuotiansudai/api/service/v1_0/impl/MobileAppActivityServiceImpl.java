@@ -119,10 +119,10 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
                         DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
 
         if(drawTime==1){
-            return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DONE, url+"/activity/school-season");
+            return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DONE, url+"/activity/school-season?source=app");
         }
 
-        return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.PENDING, url+"/activity/school-season");
+        return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.PENDING, url+"/activity/school-season?source=app");
 
     }
 }
