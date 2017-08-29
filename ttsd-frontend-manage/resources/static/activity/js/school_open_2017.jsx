@@ -140,8 +140,8 @@ $pointerImg.on('click',function() {
 
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
-                let lisLen = $userRecord.find('li');
-                if(lisLen==1) {
+                let lisLen = $userRecord.find('li').length;
+                if(lisLen==0) {
                     $userRecord.addClass('only-one');
                 } else {
                     $userRecord.removeClass('only-one');

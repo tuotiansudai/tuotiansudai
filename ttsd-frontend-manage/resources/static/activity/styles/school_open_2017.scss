@@ -127,7 +127,7 @@ body {
           position: absolute;
           &.only-one {
             left:50%;
-            transform:translateX(-50%);
+            transform:translateX(-43%);
           }
           li {
             float: left;
@@ -798,6 +798,7 @@ body {
         padding: 15px;
         .my-record-link {
           font-size:14px;
+          margin-top: 0px;
         }
       }
       .luck-draw-box {
