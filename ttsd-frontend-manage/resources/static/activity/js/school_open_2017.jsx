@@ -140,13 +140,7 @@ $pointerImg.on('click',function() {
 
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
-                let lisLen = $userRecord.find('li').length;
-                if(lisLen==0) {
-                    $userRecord.addClass('only-one');
-                } else {
-                    $userRecord.removeClass('only-one');
-                }
-
+                scrollText();
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
@@ -218,15 +212,13 @@ $myRecordLink.on('click',function() {
 })();
 
 
-window.onload = function() {
-    //跑马灯效果
-
+function scrollText() {
     var lis = $userRecord.find('li');
     let htmlUl = $userRecord.html();
     let leftW=0;
-    $userRecord.append(htmlUl);
+    lis.length>1 && $userRecord.append(htmlUl);
 
-    if(lis.length>2) {
+    if(lis.length>1) {
         lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
         let timer = setInterval(function() {
             leftW-=3;
@@ -236,9 +228,14 @@ window.onload = function() {
             $userRecord.css({'left':leftW});
         },50);
         $userRecord.removeClass('only-one');
-    } else if(lis.length==1){
+    } else if(lis.length==0 || lis.length==1 ){
         $userRecord.addClass('only-one');
 
     }
+}
+window.onload = function() {
+    //跑马灯效果
+
+    scrollText();
 
 }
