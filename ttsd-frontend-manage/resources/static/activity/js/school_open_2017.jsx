@@ -138,6 +138,7 @@ $pointerImg.on('click',function() {
                 });
 
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
+                $('.user-record',$activityPageFrame).css({'left':'30%'});
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
