@@ -14,6 +14,7 @@
         <div class="line-column"></div>
         <div class="reward-info">
             <b>每日登录可获一次免费抽签机会</b>
+            <span class="sub-title">当日所获抽签机会，仅限当日使用，如当日未使用，则机会失效</span>
             <div class="reward-scroll">
                 <ul class="scroll-inner user-record"></ul>
             </div>
@@ -76,7 +77,7 @@
         <div class="bardeen-left"></div>
         <div class="bardeen-right"></div>
 
-        <p class="hack">活动期间，根据累计投资额进行实时排名，至9月15日24:00清算排名榜单，<br/>
+        <p class="hack">活动期间，根据累计投资额进行实时排名，至9月17日24:00清算排名榜单，<br/>
             <i class="key">前18名</i>上榜的投资尖子生，<i class="key">可获实物大奖</i>。</p>
 
         <div class="winners-box">
@@ -152,37 +153,98 @@
                 <span class="re-name">丹尼尔惠灵顿手表</span>
             </div>
         </div>
+            <div class="reward-other-list-out" >
+                <ul class="reward-other-list clearfix" id="rewardOtherBox">
+                    <li>
+                        <i>4</i>
+                        <em class="img-reward-in re04"></em>
+                        <span>红米Note4X</span>
+                    </li>
+                    <li>
+                        <i>5</i>
+                        <em class="img-reward-in re05"></em>
+                        <span>尼康数码相机</span>
+                    </li>
+                    <li>
+                        <i>6</i>
+                        <em class="img-reward-in re06"></em>
+                        <span>西部数据移动硬盘1TB</span>
+                    </li>
+                    <li>
+                        <i>7</i>
+                        <em class="img-reward-in re07"></em>
+                        <span>诺泰眼部按摩仪</span>
+                    </li>
+                    <li>
+                        <i>8</i>
+                        <em class="img-reward-in re08"></em>
+                        <span>爱华仕旅行箱24英寸</span>
+                    </li>
+                    <li>
+                        <i>9</i>
+                        <em class="img-reward-in re09"></em>
+                        <span>华为荣耀手环</span>
+                    </li>
+                    <li>
+                        <i>10</i>
+                        <em class="img-reward-in re10"></em>
+                        <span>美的1.5L蒸汽挂烫机</span>
+                    </li>
+                    <li>
+                        <i>11</i>
+                        <em class="img-reward-in re11"></em>
+                        <span>NIKI训练背包</span>
+                    </li>
+                    <li>
+                        <i>12</i>
+                        <em class="img-reward-in re12"></em>
+                        <span>也酷车载冰箱10L</span>
+                    </li>
+                    <li>
+                        <i>13</i>
+                        <em class="img-reward-in re13"></em>
+                        <span>漫步者多媒体音箱</span>
+                    </li>
+                    <li>
+                        <i>14</i>
+                        <em class="img-reward-in re14"></em>
+                        <span>乐视EB20无线蓝牙耳机</span>
+                    </li>
+                    <li>
+                        <i>15</i>
+                        <em class="img-reward-in re15"></em>
+                        <span>好视力LED台灯</span>
+                    </li>
+                    <li>
+                        <i>16</i>
+                        <em class="img-reward-in re16"></em>
+                        <span>电弧点烟器</span>
+                    </li>
+                    <li>
+                        <i>17</i>
+                        <em class="img-reward-in re17"></em>
+                        <span>颈肩捶打按摩器</span>
+                    </li>
+                    <li>
+                        <i>18</i>
+                        <em class="img-reward-in re18"></em>
+                        <span>乐扣乐扣保温杯</span>
+                    </li>
+                </ul>
+            </div>
 
-            <ul class="reward-other-list clearfix">
-                <li>
-                    <i>9</i>
-                    <span>红米note4x</span>
-                </li>
-                <li>
-                    <i>10</i>
-                    <span>红米note4x</span>
-                </li>
-                <li>
-                    <i>11</i>
-                    <span>红米note4x</span>
-                </li>
-                <li>
-                    <i>12</i>
-                    <span>红米note4x</span>
-                </li>
-            </ul>
     </div>
 
     <div class="box-column box-notice">
         <b class="title-notice"></b>
-        1.当日所获抽签机会，仅限当日使用，如当日未使用，则机会失效; <br/>
-        2.如早鸟专项标投资5万元以上的同学不足3名，则不足部分的奖励不予发放;<br/>
-        3.本活动仅限直投项目，债权转让及新手专享项目不参与累计；<br/>
-        4.用户在本活动中所获所有红包、加息券及体验金奖励即时发放，可在PC端“我的账户”或App端“我的”中进行查看；<br/>
-        5.实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；<br/>
-        6.为保证活动的公平性，获奖用户在活动期间内所投的所有项目不允许进行债权转让，如进行转让，则取消获奖资格；<br/>
-        7.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
-        8.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
+
+        1.如早鸟专项标投资5万元以上的同学不足3名，则不足部分的奖励不予发放;<br/>
+        2.本活动仅限直投项目，债权转让及新手专享项目不参与累计；<br/>
+        3.用户在本活动中所获所有红包、加息券及体验金奖励即时发放，可在PC端“我的账户”或App端“我的”中进行查看；<br/>
+        4.实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；<br/>
+        5.为保证活动的公平性，获奖用户在活动期间内所投的所有项目不允许进行债权转让，如进行转让，则取消获奖资格；<br/>
+        6.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
+        7.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
     </div>
 
 
@@ -193,7 +255,7 @@
             <div class="text-tip">
                 <p class="reward-text">恭喜您抽中了<em class="prizeValue"></em>！</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close"></a></div>
+            <div class="btn-list"><a href="/loan-list" class="go-on go-close"></a></div>
         </div>
 
         <!--虚拟奖品的提示-->
@@ -202,7 +264,7 @@
             <div class="text-tip">
                 <p class="reward-text">恭喜您抽中了<em class="prizeValue"></em></p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close"></a></div>
+            <div class="btn-list"><a href="/loan-list" class="go-on go-close"></a></div>
         </div>
 
         <!--没有抽奖机会-->

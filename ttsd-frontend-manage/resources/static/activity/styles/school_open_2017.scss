@@ -102,6 +102,11 @@ body {
       b {
         color: #7a34cc;
         font-size:24px;
+        display: block;
+      }
+      .sub-title {
+        font-size:14px;
+        color: #7a34cc;
       }
       .reward-scroll {
         width:100%;
@@ -429,16 +434,16 @@ body {
         width:355px;
         height:220px;
         display: inline-block;
-        background: url('../images/2017/school-open/r1.png') center center no-repeat;
+        background: url('../images/2017/school-open/reward/r1.png') center center no-repeat;
       }
       &.two {
         display: inline-block;
-        background: url('../images/2017/school-open/r2.png') center center no-repeat;
+        background: url('../images/2017/school-open/reward/r2.png') center center no-repeat;
       }
 
       &.three {
         display: inline-block;
-        background: url('../images/2017/school-open/r3.png') center center no-repeat;
+        background: url('../images/2017/school-open/reward/r3.png') center center no-repeat;
       }
 
     }
@@ -448,18 +453,93 @@ body {
       padding-top: 10px;
       font-size: 20px;
     }
-
   }
-
+.reward-other-list-out {
+  height: 220px;
+  width: 90%;
+  overflow: hidden;
+  margin: 20px auto 30px auto;
+  position: relative;
+}
   .reward-other-list {
+    width:9999px;
+    position: absolute;
+    left:0;
     li {
-      width:23%;
-      height:190px;
-      background: #fff url('../images/2017/school-open/other.png') center 20px no-repeat;
-      margin-left:2%;
+      width: 207px;
+      height: 190px;
+      margin-left: 15px;
       float: left;
-      box-shadow: 1px 1px 40px rgba(99, 96, 213, 0.35);
+      box-shadow: 1px 1px 20px rgba(99, 96, 213, 0.35);
       position: relative;
+      margin-bottom:10px;
+      background: #fff;
+      .img-reward-in {
+        display: inline-block;
+        width:70%;
+        height:70%;
+        margin-top: 20px;
+        &.re04 {
+          background:  url('../images/2017/school-open/reward/r4.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re05 {
+          background:  url('../images/2017/school-open/reward/r5.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re06 {
+          background:  url('../images/2017/school-open/reward/r6.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re07 {
+          background:  url('../images/2017/school-open/reward/r7.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re08 {
+          background:  url('../images/2017/school-open/reward/r8.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re09 {
+          background:  url('../images/2017/school-open/reward/r9.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re10 {
+          background:  url('../images/2017/school-open/reward/r10.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re11 {
+          background:  url('../images/2017/school-open/reward/r11.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re12 {
+          background:  url('../images/2017/school-open/reward/r12.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re13 {
+          background:  url('../images/2017/school-open/reward/r13.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re14 {
+          background:  url('../images/2017/school-open/reward/r14.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re15 {
+          background:  url('../images/2017/school-open/reward/r15.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re16 {
+          background:  url('../images/2017/school-open/reward/r16.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re17 {
+          background:  url('../images/2017/school-open/reward/r17.png') center center no-repeat;
+          background-size: contain;
+        }
+        &.re18 {
+          background:  url('../images/2017/school-open/reward/r18.png') center center no-repeat;
+          background-size: contain;
+        }
+      }
       i {
         display: inline-block;
         width:26px;
@@ -518,7 +598,7 @@ body {
 }
 .layer-reward-list {
   width:537px;
-  height:529px;
+  height:533px;
   background: url('../images/2017/school-open/bg-reward-list.png') left bottom no-repeat;
   background-size:contain;
   padding-top: 30px;
@@ -531,6 +611,10 @@ body {
   .own-record-title {
     color: #947f4a;
     font-size:29px;
+    span {
+      display: inline-block;
+      width: 48%;
+    }
   }
   ul {
     width:85%;
@@ -626,8 +710,8 @@ body {
     zoom:0.65;
   }
   .tip-list {
-    zoom:0.8;
-    left: 20px!important;
+    zoom:0.7;
+    left: 40px!important;
   }
   .layer-reward-box .layui-layer-ico {
     background-size:70%;
@@ -691,6 +775,10 @@ body {
         b {
           font-size:15px;
         }
+        .sub-title {
+          font-size:12px;
+        }
+
         .reward-scroll {
           height: 40px;
           line-height: 40px;
@@ -860,7 +948,7 @@ body {
         float: none;
         .inner {
           width:100%;
-          height: 90px;
+          height: 100px;
           i {
             zoom:0.8;
           }
@@ -870,10 +958,10 @@ body {
             height: 170px;
           }
           &.two {
-            background-size: 70%;
+            background-size: 60%;
           }
           &.three {
-            background-size: 70%;
+            background-size: 30%;
           }
         }
       &:nth-child(2) {
@@ -895,24 +983,30 @@ body {
       }
     }
 
-    .reward-other-list {
-      padding: 0 10px;
-      width: 100%;
-      box-sizing: border-box;
-      margin: 10px auto 10px auto;
-      li {
-        width:48%;
-        height: 130px;
-        margin-bottom: 6px;
-        float: left;
-        background-size: 50%;
-        i {
-          zoom:0.8;
+    .reward-other-list-out {
+      height:146px;
+      .reward-other-list {
+        padding: 0 10px;
+        box-sizing: border-box;
+        margin: 10px auto 10px auto;
+        li {
+          width:120px;
+          height: 130px;
+          margin-bottom: 6px;
+          float: left;
+          background-size: 50%;
+          .img-reward-in {
+            margin-top:8px;
+          }
+          span {
+            font-size:11px;
+          }
+          i {
+            zoom:0.8;
+          }
         }
       }
     }
-
-
   }
 }
 
@@ -934,7 +1028,7 @@ body {
 
 @media screen and (min-width: 376px) and (max-width: 415px) {
   .tip-list {
-    zoom: 0.9;
+    zoom: 0.8;
     left: 20px!important;
   }
 }

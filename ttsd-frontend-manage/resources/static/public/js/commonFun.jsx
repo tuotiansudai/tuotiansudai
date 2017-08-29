@@ -100,6 +100,7 @@ function popWindow(contentHtml,area) {
     $('.close-btn,.go-close',$popWindow).on('click',function() {
         $popWindow.remove();
         $shade.remove();
+        location.reload();
 
     })
 }
