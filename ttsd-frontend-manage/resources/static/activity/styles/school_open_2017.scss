@@ -104,12 +104,17 @@ body {
         font-size:24px;
         &.main-title {
           display: block;
+          line-height: 19px;
+          padding-top: 20px;
         }
 
       }
       .sub-title {
         font-size:14px;
         color: #7a34cc;
+        br {
+          display: none;
+        }
       }
       .reward-scroll {
         width:100%;
@@ -781,9 +786,18 @@ body {
       .reward-info {
         b {
           font-size:15px;
+          &.main-title {
+            padding-bottom:5px;
+          }
         }
         .sub-title {
-          font-size:12px;
+          font-size: 11px;
+          line-height: 18px;
+          display: inline-block;
+          color: rgba(122,52,204,0.7);
+          br {
+            display: block;
+          }
         }
 
         .reward-scroll {
