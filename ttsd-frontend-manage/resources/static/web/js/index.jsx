@@ -81,11 +81,18 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 
     // 如果成功抽奖一次就设置 drawSignToday为1
     // 在凌晨的时候重设drawSignToday为0
+    let nowDate = new Date();
+    let today = [
+        nowDate.getFullYear(),
+        (nowDate.getMonth()+1)<10?'0'+(nowDate.getMonth()+1):(nowDate.getMonth()+1),
+        nowDate.getDate()<10? '0'+nowDate.getDate() : nowDate.getDate()
+    ].join('');
+
+    let $redEnvelopFloatFrame =$('#redEnvelopFloatFrame'),
+        $drawTodayOne = $('.draw-today-one',$redEnvelopFloatFrame),
+        $drawTodayTwo = $('.draw-today-two',$redEnvelopFloatFrame);
 
     function showWhichSign() {
-        let $redEnvelopFloatFrame =$('#redEnvelopFloatFrame'),
-            $drawTodayOne = $('.draw-today-one',$redEnvelopFloatFrame),
-            $drawTodayTwo = $('.draw-today-two',$redEnvelopFloatFrame);
         let is_sign_today = getCookie('drawSignToday');
         if(is_sign_today=='1') {
             $drawTodayOne.hide();
@@ -96,8 +103,13 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
         }
     }
 
-    showWhichSign();
-
+    if(parseInt(today)>20170825 && parseInt(today)<20170917) {
+        showWhichSign();
+    } else {
+        $drawTodayOne.hide();
+        $drawTodayTwo.hide();
+    }
+    
 })();
 
 //预约投资,目前预约投资功能不需要，以后可能会需要

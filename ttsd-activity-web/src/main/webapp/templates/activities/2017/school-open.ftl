@@ -195,7 +195,7 @@
                     <li>
                         <i>11</i>
                         <em class="img-reward-in re11"></em>
-                        <span>NIKI训练背包</span>
+                        <span>NIKE训练背包</span>
                     </li>
                     <li>
                         <i>12</i>
