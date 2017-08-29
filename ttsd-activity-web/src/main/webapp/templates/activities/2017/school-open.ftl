@@ -13,10 +13,12 @@
         </div>
         <div class="line-column"></div>
         <div class="reward-info">
-            <b>每日登录可获一次免费抽签机会</b>
+            <b class="main-title">每日登录可获一次免费抽签机会</b>
             <span class="sub-title">当日所获抽签机会，仅限当日使用，如当日未使用，则机会失效</span>
             <div class="reward-scroll">
-                <ul class="scroll-inner user-record"></ul>
+                <ul class="scroll-inner user-record">
+                    <li>恭喜188****6626抽中了6.99元红包</li>
+                </ul>
             </div>
 
             <div class="my-reward">
