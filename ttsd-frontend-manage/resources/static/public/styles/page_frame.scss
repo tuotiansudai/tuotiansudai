@@ -483,7 +483,9 @@
     width:100%;
   }
   .swiper-container{
+    float:left;
     @media (min-width:701px) and (max-width:999px) {
+      float:none;
       overflow: hidden;
     }
   }
