@@ -2,7 +2,9 @@
 @import "import_search_filter";
 
 $CK1:#ffac2a #ff7a2a;
-
+.main-frame .swiper-container{
+  float:none;
+}
 .layui-layer-btn {
   text-align: center !important;
   .layui-layer-btn0 {

@@ -1,5 +1,8 @@
 @import "top_sub_menu";
 @import "import_search_filter";
+.main-frame .swiper-container{
+  float:none;
+}
 /* I want to invest page*/
 .loan-list-content {
   .loan-list-box ul {
