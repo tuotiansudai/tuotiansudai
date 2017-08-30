@@ -45,11 +45,10 @@ public class SchoolSeasonActivityController {
         if (investRanking>18){
             investRanking=0;
         }
-
         modelAndView.addObject("drawCount", loginName==null?0:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(),ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
-        modelAndView.addObject("rankList",activityInvestViews);
+        modelAndView.addObject("rankList", activityInvestViews.size()>=18? activityInvestViews.subList(0,18):activityInvestViews);
         return modelAndView;
     }
 

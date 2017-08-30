@@ -94,7 +94,7 @@
                     </span>
                     <span class="fr">我的排名：
                         <@global.isAnonymous><em class="to-text-login"> 登录后查看 </em></@global.isAnonymous>
-                        <@global.isNotAnonymous>${investRanking}</@global.isNotAnonymous>
+                        <@global.isNotAnonymous><#if investRanking==0 >未上榜<#else >${investRanking}</#if></@global.isNotAnonymous>
                     </span>
                 </div>
                 <div class="table-title clearfix">
