@@ -96,7 +96,7 @@ body {
     }
     .reward-info {
       text-align: center;
-      width: 530px;
+      width: 500px;
       margin:0 auto;
 
       b {
@@ -120,10 +120,11 @@ body {
         width:100%;
         height:60px;
         background: url('../images/2017/school-open/bg-col01.jpg') center top no-repeat;
+        background-size: 100%;
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        padding:0 50px;
+        //padding:0 50px;
         margin: 0 auto;
         line-height: 60px;
         color: #fff;
@@ -137,7 +138,7 @@ body {
           li {
             float: left;
             display: inline-block;
-            width:240px;
+            width:250px;
             font-size:14px;
           }
         }
@@ -1010,7 +1011,7 @@ body {
         box-sizing: border-box;
         margin: 10px auto 10px auto;
         li {
-          width:120px;
+          width:130px;
           height: 130px;
           margin-bottom: 6px;
           float: left;

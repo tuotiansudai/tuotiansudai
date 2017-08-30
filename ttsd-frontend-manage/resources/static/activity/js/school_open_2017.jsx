@@ -91,22 +91,6 @@ let $ownRecord = $('.own-record',$activityPageFrame);
 drawCircle.scrollList($ownRecord,9);
 drawCircle.hoverScrollList($ownRecord,9);
 
-
-// 写cookies
-function setCookie(name,value)
-{
-    var exp = new Date(),
-        year = exp.getFullYear(),
-        month = exp.getMonth()+1,
-        day = exp.getDate();
-
-    let second = new Date(year,month-1,day,24,0,0);
-    let distanceTime = second.getTime() - exp.getTime();
-
-    exp.setTime(exp.getTime() + distanceTime);
-    document.cookie = name + "="+ escape (value) + ";path=/;expires=" + exp.toGMTString();
-}
-
 if(sourceKind.params.school =='yes' || sourceKind.params.ttsdAction =='toRanking') {
     let rank_top = $('#RankingBox').offset().top;
     $('body,html').animate({scrollTop:rank_top},'fast');
@@ -129,8 +113,6 @@ $pointerImg.on('click',function() {
             $pointerImg.removeClass('win-result');
             if (data.returnCode == 0) {
 
-                setCookie('drawSignToday','1');
-
                 var prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
                 var myTimes = parseInt($luckDrawBox.find('.my-number').text());
@@ -145,7 +127,7 @@ $pointerImg.on('click',function() {
                 drawCircle.GiftRecord();
 
                 let times = setTimeout(function(){
-                    scrollText();
+                    scrollText($userRecord,0);
                 },200);
 
             } else if(data.returnCode == 1) {
@@ -194,55 +176,30 @@ $myRecordLink.on('click',function() {
 
 });
 
-(function() {
-    //活动奖品跑马灯
-    let $rewardOtherBox = $('#rewardOtherBox'),
-        boxScrollWid = $('.reward-other-list-out').width(),
-        rewardLis = $rewardOtherBox.find('li');
-
-    let rewarDhtmlUl = $rewardOtherBox.html();
-    $rewardOtherBox.append(rewarDhtmlUl);
-    let leftWidth=0;
-
-    let moveDistance = rewardLis.length * (rewardLis[0].offsetWidth+15);
-    $rewardOtherBox.width(moveDistance);
-
-    let timer = setInterval(function() {
-        leftWidth-=3;
-        if(Math.abs(leftWidth) > moveDistance - boxScrollWid) {
-            leftWidth=0;
-        }
-        $rewardOtherBox.css({'left':leftWidth});
-    },35);
-
-})();
-
-
-function scrollText() {
-    var lis = $userRecord.find('li');
-    let htmlUl = $userRecord.html();
+function scrollText(dom,marginWid) {
+    var lis = dom.find('li');
+    let htmlUl = dom.html();
     let leftW=0;
-    lis.length>1 && $userRecord.append(htmlUl);
+    lis.length>1 && dom.append(htmlUl);
+    let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
+    if(lis.length>1) {
 
-   let  scrollLen =1;
-    if(redirect=='pc') {
-        scrollLen = 2;
-    }
-    if(lis.length>scrollLen) {
-        lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
+        lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
         let timer = setInterval(function() {
             leftW-=3;
-            if(Math.abs(leftW) > ($userRecord.width()/2)-150) {
+
+            if(Math.abs(leftW) >=allTextWid) {
                 leftW=0;
             }
-            $userRecord.css({'left':leftW});
+            dom.css({'left':leftW});
         },50);
-        $userRecord.removeClass('only-one');
+        dom.removeClass('only-one');
     } else if(lis.length==0 || lis.length==1 ){
-        $userRecord.addClass('only-one');
+        dom.addClass('only-one');
     }
 }
 window.onload = function() {
     //跑马灯效果
-    scrollText();
+    scrollText($userRecord,0);
 }
+scrollText($('#rewardOtherBox'),15);
