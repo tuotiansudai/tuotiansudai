@@ -103,13 +103,10 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
         }
     }
 
-    if(parseInt(today)>20170825 && parseInt(today)<20170917) {
+    if($('.draw-today-one').length==1) {
         showWhichSign();
-    } else {
-        $drawTodayOne.hide();
-        $drawTodayTwo.hide();
     }
-    
+
 })();
 
 //预约投资,目前预约投资功能不需要，以后可能会需要
