@@ -107,7 +107,7 @@ function setCookie(name,value)
     document.cookie = name + "="+ escape (value) + ";path=/;expires=" + exp.toGMTString();
 }
 
-if(sourceKind.params.school =='yes') {
+if(sourceKind.params.school =='yes' || sourceKind.params.ttsdAction =='toRanking') {
     let rank_top = $('#RankingBox').offset().top;
     $('body,html').animate({scrollTop:rank_top},'fast');
 

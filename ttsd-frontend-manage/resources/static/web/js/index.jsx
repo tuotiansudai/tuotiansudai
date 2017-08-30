@@ -70,7 +70,7 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 
 //拓天开学季
 (function() {
-
+    let $fixNavList = $('#fixNavList');
     function getCookie(name) {
         var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
         if(arr=document.cookie.match(reg))

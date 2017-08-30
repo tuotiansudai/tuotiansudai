@@ -33,6 +33,10 @@ public class SchoolSeasonService {
 
 
     public int toDayIsDrawByMobile(String mobile, ActivityCategory activityCategory) {
+        Date nowDate = DateTime.now().toDate();
+        if (!nowDate.before(activitySchoolSeasonEndTime) || !nowDate.after(activitySchoolSeasonStartTime)) {
+            return 0;
+        }
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory,
                 DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().minusMillis(1).toDate())== 0 ? 1 : 0;
     }
