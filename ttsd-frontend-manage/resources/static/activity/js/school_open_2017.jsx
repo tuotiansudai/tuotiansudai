@@ -107,7 +107,7 @@ function setCookie(name,value)
     document.cookie = name + "="+ escape (value) + ";path=/;expires=" + exp.toGMTString();
 }
 
-if(sourceKind.params.school =='yes') {
+if(sourceKind.params.school =='yes' || sourceKind.params.ttsdAction =='toRanking') {
     let rank_top = $('#RankingBox').offset().top;
     $('body,html').animate({scrollTop:rank_top},'fast');
 
@@ -141,7 +141,12 @@ $pointerImg.on('click',function() {
 
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
-                scrollText();
+                drawCircle.MyGift();
+                drawCircle.GiftRecord();
+
+                let times = setTimeout(function(){
+                    scrollText();
+                },200);
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
@@ -219,7 +224,11 @@ function scrollText() {
     let leftW=0;
     lis.length>1 && $userRecord.append(htmlUl);
 
-    if(lis.length>1) {
+   let  scrollLen =1;
+    if(redirect=='pc') {
+        scrollLen = 2;
+    }
+    if(lis.length>scrollLen) {
         lis.length && $userRecord.width(lis.length * lis[0].offsetWidth);
         let timer = setInterval(function() {
             leftW-=3;
@@ -231,12 +240,9 @@ function scrollText() {
         $userRecord.removeClass('only-one');
     } else if(lis.length==0 || lis.length==1 ){
         $userRecord.addClass('only-one');
-
     }
 }
 window.onload = function() {
     //跑马灯效果
-
     scrollText();
-
 }

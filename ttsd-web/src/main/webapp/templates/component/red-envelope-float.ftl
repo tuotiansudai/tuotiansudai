@@ -29,6 +29,7 @@
 	</div>
 </div>
 <ul class="fix-nav-list">
+
 	<#if schoolSeason??>
         <li class="draw-today-one">
             <a href="activity/school-season" target="_blank" class="sign-school-open"></a>
