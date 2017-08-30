@@ -31,12 +31,15 @@
 <ul class="fix-nav-list">
 
 	<#if schoolSeason??>
-        <li class="draw-today-one">
-            <a href="activity/school-season" target="_blank" class="sign-school-open"></a>
-        </li>
-        <li class="draw-today-two">
-            <a href="activity/school-season?school=yes" target="_blank" class="sign-school-rank"></a>
-        </li>
+        <#if drawTime==1 >
+            <li class="draw-today-one">
+                <a href="activity/school-season" target="_blank" class="sign-school-open"></a>
+            </li>
+        <#else>
+            <li class="draw-today-two">
+                <a href="activity/school-season?school=yes" target="_blank" class="sign-school-rank"></a>
+            </li>
+        </#if>
     </#if>
 
     <li class="cal-btn">

@@ -3,7 +3,9 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.BannerMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.BannerModel;
+import com.tuotiansudai.activity.service.SchoolSeasonService;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -58,6 +60,9 @@ public class HomeController {
     @Autowired
     private TransferService transferService;
 
+    @Autowired
+    private SchoolSeasonService schoolSeasonService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.startTime}\")}")
     private Date activitySchoolSeasonStartTime;
 
@@ -91,6 +96,7 @@ public class HomeController {
         Date nowDate = DateTime.now().toDate();
         if (!nowDate.after(activitySchoolSeasonEndTime) && !nowDate.before(activitySchoolSeasonStartTime)) {
             modelAndView.addObject("schoolSeason",true);
+            modelAndView.addObject("drawTime",LoginUserInfo.getMobile()==null?1:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.SCHOOL_SEASON_ACTIVITY));
         }
 
         return modelAndView;
