@@ -2,12 +2,13 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
+import com.tuotiansudai.paywrapper.current.CurrentDepositService;
+import com.tuotiansudai.paywrapper.current.CurrentLoanOutService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
-import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,12 @@ public class PayCallbackController {
 
     @Autowired
     private CouponLoanOutService couponLoanOutService;
+
+    @Autowired
+    private CurrentDepositService currentDepositService;
+
+    @Autowired
+    private CurrentLoanOutService currentLoanOutService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -161,6 +168,34 @@ public class PayCallbackController {
     public ModelAndView investTransferNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.investTransferPurchaseService.purchaseCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/current_deposit_notify", method = RequestMethod.GET)
+    public ModelAndView currentDepositNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentDepositService.depositCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/current_over_deposit_payback_notify", method = RequestMethod.GET)
+    public ModelAndView currentOverDepositPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentDepositService.overDepositCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/current_loan_out_transfer_reserve_notify", method = RequestMethod.GET)
+    public ModelAndView currentLoanOutTransferReserveNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentLoanOutService.reserveTransferCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/current_loan_out_transfer_agent_notify", method = RequestMethod.GET)
+    public ModelAndView currentLoanOutTransferAgentNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.currentLoanOutService.agentTransferCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

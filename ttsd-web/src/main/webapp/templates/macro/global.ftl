@@ -24,7 +24,8 @@
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
         {"title":"直投项目", "url":"/loan-list"},
-        {"title":"转让项目", "url":"/transfer-list"}
+        {"title":"转让项目", "url":"/transfer-list"},
+        {"title":"日息宝", "url":"/day-list"}
     ]},
     {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
 
@@ -34,6 +35,7 @@
         {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"日息宝收益", "url":"/day-profit", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"},

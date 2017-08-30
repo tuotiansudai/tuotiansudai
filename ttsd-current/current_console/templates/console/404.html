@@ -1,0 +1,21 @@
+{% extends "/console/tpl/_layout.tpl" %}
+{% block content %}
+    <div class="error-group">
+		<div class="container">
+			<div class="row">
+				<p>
+					<img src="/static/src/images/404.png"/>
+				</p>
+				<p class="max-text">
+					哎呀亲...您访问的页面出错了！
+				</p>
+				<p class="tip-text">
+					你输入的网址有误或者链接已经过期。
+				</p>
+				<p>
+					<a href="{% url 'console_index' %}" class="go-index">返回首页</a>
+				</p>
+			</div>
+		</div>
+    </div>
+{% endblock %}

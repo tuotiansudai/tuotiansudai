@@ -4,6 +4,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.current.client.CurrentRestClient;
+import com.tuotiansudai.current.dto.DepositDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.service.InvestService;
@@ -31,10 +33,13 @@ public class FrontCallbackController {
 
     private final InvestService investService;
 
+    private final CurrentRestClient currentRestClient;
+
     @Autowired
-    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService) {
+    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService, CurrentRestClient currentRestClient) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
+        this.currentRestClient = currentRestClient;
     }
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
@@ -49,7 +54,9 @@ public class FrontCallbackController {
         try {
             AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service.toUpperCase());
 
-            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
                 data = payWrapperClient.validateFrontCallback(params).getData();
             }
 
@@ -62,6 +69,11 @@ public class FrontCallbackController {
             modelAndView.addObject("service", asyncUmPayService.name());
             if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investService.findById(Long.valueOf(params.get("order_id"))).getAmount()));
+            }
+            if (Lists.newArrayList(AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER, AsyncUmPayService.CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+                long orderId = Long.valueOf(params.get("order_id"));
+                DepositDto deposit = currentRestClient.getDeposit(orderId);
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(deposit.getAmount()));
             }
 
             return modelAndView;

@@ -89,6 +89,18 @@ $pointColor:#ff5400;
     color: #333;
     margin-top:20px;
     margin-bottom:10px;
+    .title-text{
+      padding: 0 5px;
+      border-radius: 10px;
+      font-size: 12px;
+      color: #ff7e38;
+      border: 1px solid #e8a649;
+      display: inline-block;
+      line-height: 18px;
+      position: relative;
+      margin-left: 15px;
+      top: -2px;
+    }
   }
   .btn-normal {
     font-size: 18px;
@@ -130,6 +142,43 @@ $pointColor:#ff5400;
     display: table;
     width:100%;
     color: $normalColor;
+    &.day-interest-item{
+      background:#fff;
+      display: block;
+      &:hover {
+        background: rgba(255,255,255,0.5);
+      }
+      .tip-item{
+        float:left;
+        width:100%;
+        box-sizing:border-box;
+        padding:30px 30px 0px;
+        text-align:left;
+        span{
+          display:inline-block;
+          padding:0 10px;
+          font-size:16px;
+          color:#ff752a;
+          background:#fffefc;
+          border:1px dashed #ff752a;
+        }
+      }
+      .target-column-con {
+        background: none;
+        &:hover{
+          background:none;
+        }
+        .table-row{
+          padding:0 0 20px 10px;
+          .name-text{
+            font-size:16px;
+            color:#666;
+            display: block;
+            line-height: 16px;
+          }
+        }
+      }
+    }
 
     .target-title,.transfer-title {
       display: table-header-group;
@@ -170,7 +219,6 @@ $pointColor:#ff5400;
       }
 
     }
-
     .target-column-con {
       display: table-row-group;
       cursor: pointer;

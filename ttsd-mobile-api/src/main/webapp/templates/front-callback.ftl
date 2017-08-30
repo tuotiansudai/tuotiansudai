@@ -80,6 +80,32 @@
     <#case 'membership_privilege_purchase_transfer_asyn'>
         <p>投资时将享受服务费7折优惠</p>
         <#break>
+    <#case 'current_redeem_apply'>
+        <ul class="info-item">
+            <li>
+                <span class="info-title">转出金额</span>
+                <span class="info-text">${values.amount!}</span>
+                <span class="info-text">${(values.orderId)!}</span>
+            </li>
+        </ul>
+        <#break>
+    <#case 'current_deposit_project_transfer'>
+    <#case 'current_deposit_project_transfer_nopwd'>
+        <ul class="info-item">
+            <li>
+                <span class="info-title">投资金额</span>
+                <span class="info-text">${(values.investAmount)!}元</span>
+            </li>
+            <li>
+                <span class="info-title">所投项目</span>
+                <span class="info-text">日息宝</span>
+            </li>
+            <li>
+                <span class="info-title">交易流水号</span>
+                <span class="info-text">${(values.orderId)!}</span>
+            </li>
+        </ul>
+        <#break>
 </#switch>
     <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
 </div>

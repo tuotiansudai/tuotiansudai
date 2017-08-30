@@ -79,6 +79,18 @@ public enum AsyncUmPayService {
      * 债权购买手续费标的转账
      */
     REPAY_TRANSFER_FEE_PROJECT_TRANSFER("project_transfer", "", "", "repay_transfer_fee_notify", ""),
+    /**
+     * 日息宝买入
+     */
+    CURRENT_DEPOSIT_PROJECT_TRANSFER("project_transfer", "callback/current_deposit_project_transfer", "callback/current_deposit_project_transfer", "current_deposit_notify", "tuotian://current-deposit/{0}"),
+    /**
+     * 日息宝超投返款
+     */
+    CURRENT_OVER_DEPOSIT_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "current_over_deposit_payback_notify", ""),
+    /**
+     * 日息宝赎回到用户账户
+     */
+    CURRENT_REDEEM_PROJECT_TRANSFER("project_transfer", "", "", "current_redeem_notify", ""),
 
 
     /**
@@ -93,6 +105,22 @@ public enum AsyncUmPayService {
      * 无密还款标的转入
      */
     NORMAL_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "normal_repay_notify", ""),
+    /**
+     * 无密日息宝买入
+     */
+    CURRENT_DEPOSIT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "callback/current_deposit_project_transfer_nopwd", "current_deposit_notify", "tuotian://current-deposit/{0}"),
+    /**
+     * 日息宝放款准备金垫付利息
+     */
+    CURRENT_LOAN_OUT_TRANSFER_RESERVE_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "current_loan_out_transfer_reserve_notify", ""),
+    /**
+     * 日息宝放款代理人收款
+     */
+    CURRENT_LOAN_OUT_TRANSFER_AGENT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "current_loan_out_transfer_agent_notify", ""),
+    /**
+     * 日息宝赎回-到标的
+     */
+    CURRENT_REDEEM_TO_LOAN_PROJECT_TRANSFER("project_transfer_nopwd", "", "", "current_redeem_to_loan_notify", ""),
 
 
     /**
@@ -146,7 +174,13 @@ public enum AsyncUmPayService {
     /**
      * 平台充值普通转账验密
      */
-    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
+    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", ""),
+
+
+    /**
+     * 日息宝赎回申请
+     */
+    CURRENT_REDEEM_APPLY("current_redeem_apply", "", "callback/current_redeem_apply", "", "tuotian://current/redeem/{0}");
 
 
     private final String serviceName;
