@@ -176,14 +176,15 @@ $myRecordLink.on('click',function() {
 
 });
 
-function scrollText(dom) {
+function scrollText(dom,marginWid) {
     var lis = dom.find('li');
     let htmlUl = dom.html();
     let leftW=0;
     lis.length>1 && dom.append(htmlUl);
-    let allTextWid = lis.length * lis[0].offsetWidth;
+    let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
     if(lis.length>1) {
-        lis.length && dom.width(lis.length * lis[0].offsetWidth*2);
+
+        lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
         let timer = setInterval(function() {
             leftW-=3;
 
@@ -199,6 +200,6 @@ function scrollText(dom) {
 }
 window.onload = function() {
     //跑马灯效果
-    scrollText($userRecord);
+    scrollText($userRecord,0);
 }
-scrollText($('#rewardOtherBox'));
+scrollText($('#rewardOtherBox'),15);
