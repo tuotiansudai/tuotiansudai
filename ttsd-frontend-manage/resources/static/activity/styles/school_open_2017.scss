@@ -931,7 +931,6 @@ body {
           margin-top: 10px;
           font-size: 14px;
           padding: 7px 35px;
-
         }
       }
       .table-list-box {
@@ -1188,8 +1187,9 @@ body {
         }
       }
       .top-column {
+        width:80%;
+        margin: 0px auto 10px auto;
         .fl,.fr {
-          float: none;
           margin-top: 10px;
           font-size: 14px;
           padding: 7px 35px;
