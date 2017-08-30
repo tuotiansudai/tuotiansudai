@@ -127,7 +127,7 @@ $pointerImg.on('click',function() {
                 drawCircle.GiftRecord();
 
                 let times = setTimeout(function(){
-                    scrollText($userRecord);
+                    scrollText($userRecord,0);
                 },200);
 
             } else if(data.returnCode == 1) {
