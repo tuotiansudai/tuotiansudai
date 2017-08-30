@@ -2,11 +2,19 @@
 	float: left;
 	width: 100%;
 	box-sizing: border-box;
+	@media (min-width:701px) and (max-width:999px) {
+		text-align: center;
+	}
 	.lottery-left-group {
 		float:left;
 		width: 570px;
 		height:430px;
 		margin-right: 20px;
+		@media (min-width:701px) and (max-width:999px) {
+			float:none;
+			display: inline-block;
+			margin-right: 0;
+		}
 		h3 {
 			float: left;
 			width: 100%;
@@ -106,6 +114,10 @@
 		box-sizing: border-box;
 		min-height: 430px;
 		overflow: hidden;
+		@media (min-width:701px) and (max-width:999px) {
+			float:none;
+			display: inline-block;
+		}
 		h3 {
 			float: left;
 			width: 100%;

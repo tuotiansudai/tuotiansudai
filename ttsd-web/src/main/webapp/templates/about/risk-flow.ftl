@@ -112,7 +112,7 @@
     <div class="bg-white project-examination-box hack clearfix">
         <div class="page-width clearfix">
             <div class="column-title-ac"><i></i>项目终审<i></i> </div>
-            <div class="project-examine-last">
+            <div class="project-examine-last clearfix">
                 <dl>
                     <dt><em><img src="${commonStaticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
                     <dd>总经理助理核实借款材料与风控报告的一致性</dd>
@@ -132,7 +132,7 @@
 
     <div class="page-width clearfix pad-box">
         <div class="column-title-ac clearfix"><i></i>权证放款<i></i></div>
-        <div class="pad-m">
+        <div class="pad-m clearfix">
             <dl class="rectangle-box  fl">
                 <dt>抵押公证</dt>
                 <dd>风控部办理相应抵押公证手续， 与客户签订借款协议</dd>
@@ -149,7 +149,7 @@
         <div class="page-width clearfix">
             <div class="column-title-ac"><i></i>贷后管理<i></i> </div>
             <div class="line-top-bar"></div>
-            <div class="lending-steps">
+            <div class="lending-steps clearfix">
                 <dl>
                     <dt><em></em>贷后回访</dt>
                     <dd>风控部定期回访客户，了解客户业务以及资金情况</dd>

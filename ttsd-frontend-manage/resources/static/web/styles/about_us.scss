@@ -5,7 +5,9 @@
   background: #fff;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
-
+  @media (min-width:701px) and (max-width:999px) {
+    padding:0 10px;
+  }
   .refer-reward-box {
     position: relative;
     img {
@@ -193,6 +195,14 @@
       margin-right:15px;
       margin-bottom:15px;
       position: relative;
+      @media (min-width:701px) and (max-width:999px) {
+        width:46%;
+        margin:10px 2%;
+        overflow: hidden;
+        img{
+          width:100%;
+        }
+      }
       span{
         width:100%;
         line-height:50px;
@@ -224,6 +234,10 @@
           width:170px;
           height:80px;
           border: 1px solid #e5e5e5;
+          @media (min-width:701px) and (max-width:999px) {
+            width:20%;
+            box-sizing:border-box;
+          }
         }
         &.logo-one{
           background: url("../images/global/logo-lian.png") center center no-repeat;
@@ -231,6 +245,10 @@
         &.partner-intro{
           width:570px;
           margin-left:20px;
+          @media (min-width:701px) and (max-width:999px) {
+            width:78%;
+            margin-left:2%;
+          }
           span{
             float:left;
             width:100%;

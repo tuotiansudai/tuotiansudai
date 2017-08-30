@@ -27,7 +27,7 @@
             <dd class="img-load">
                 <div class="arrow-rise"></div>
                 <img src="${commonStaticServer}/images/sign/assure/load.png">
-            </dd> d
+            </dd>
         </dl>
 
         <div class="line"></div>
