@@ -8,8 +8,8 @@ let leftMenuBox = globalFun.$('#leftMenuBox');
 
 
 (function(){
-    let browser = globalFun.browserRedirect();
-    if(browser=='mobile') {
+    let browser = $(window).width();
+    if(browser<1000) {
         let menuLen = $(leftMenuBox).find('li:visible').length;
         let screenW = $(window).width(),
             showMenuNum = 3, //希望一屏展示3个菜单

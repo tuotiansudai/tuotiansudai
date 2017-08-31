@@ -14,7 +14,7 @@
                     <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</a></dd>
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
-                        <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
+                        <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span><span style="width:100%;height:1px"></span>
                             <#list question.tags as tag>
                             <em class="fr tag">
                                 <a href="/question/category/${tag.name()}">${tag.description}</a>

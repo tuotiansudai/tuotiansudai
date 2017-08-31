@@ -67,6 +67,9 @@ $pointColor:#ff5400;
     font-size: 14px;
     color: #808080;
     line-height: 45px;
+    @media (min-width:701px) and (max-width:768px) {
+      margin-right: 10px;
+    }
     &:hover {
       text-decoration: underline;
       color: #ff752a;
@@ -107,6 +110,9 @@ $pointColor:#ff5400;
     font-size:20px;
     i {
       font-size: 30px;
+      @media (min-width:701px) and (max-width:768px) {
+        font-size:28px;
+      }
     }
     .sign-plus {
       display: inline-block;
@@ -251,10 +257,13 @@ $pointColor:#ff5400;
       width: 100%;
       height: 100%;
       position: relative;
-        @media (max-width: 1920px) {
+        @media (min-width:1025px) and (max-width: 1920px) {
           margin-left: -moz-calc((1920px - 100%) / 2 * -1);
           margin-left: -webkit-calc((1920px - 100%) / 2 * -1);
           margin-left: calc((1920px - 100%) / 2 * -1);
+        }
+        @media (min-width:701px) and (max-width: 999px) {
+          margin-left: 0;
         }
         li{
           position:absolute;
@@ -272,6 +281,9 @@ $pointColor:#ff5400;
             height:100%;
             display: block;
             img {
+              @media (min-width:701px) and (max-width: 999px) {
+                width:100%;
+              }
               &.pc-img{
                 height:350px;
               }
@@ -398,6 +410,9 @@ $pointColor:#ff5400;
         border-right: 1px solid #e6e6e6;
         color: #999;
         background: url('../images/homepage/icon-notice.png') left center no-repeat;
+        @media (min-width:701px) and (max-width:768px) {
+          margin-left: 10px;
+        }
       }
       .notice-text {
         margin-left: 134px;
@@ -419,6 +434,9 @@ $pointColor:#ff5400;
         .text-href {
           color: #808080;
           float: right;
+          @media (min-width:701px) and (max-width:768px) {
+            margin-right: 10px;
+          }
           &:hover {
             text-decoration: underline;
           }
@@ -436,6 +454,10 @@ $pointColor:#ff5400;
         display: inline-block;
         min-height:88px;
         text-align: left;
+        @media (min-width:701px) and (max-width:768px){
+          float:left;
+          width:33.333333%;
+        }
         a {
           display: inline-block;
           padding-left:90px;
@@ -449,10 +471,16 @@ $pointColor:#ff5400;
         &.assurance {
           width:27%;
           background: url('../images/homepage/icon-assurce.png') left center no-repeat;
+          @media (min-width:701px) and (max-width:768px){
+            width:33.333333%;
+          }
         }
         b {
           font-size: 20px;
           display: block;
+          @media (min-width:701px) and (max-width:768px){
+            font-size: 18px;
+          }
         }
         span {
           color: #999;
@@ -470,6 +498,11 @@ $pointColor:#ff5400;
       float: left;
       margin-right:10px;
       position: relative;
+      @media (min-width:701px) and (max-width:768px){
+        width:48%;
+        margin:0 1%;
+        margin-bottom: 10px;
+      }
       &:hover {
         box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);
       }
@@ -523,6 +556,9 @@ $pointColor:#ff5400;
       background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
       display: inline-block;
       float: left;
+      @media (min-width:701px) and (max-width:768px){
+        display:none;
+      }
     }
   }
 
@@ -541,6 +577,9 @@ $pointColor:#ff5400;
       background: url("../images/homepage/media.png")  right top no-repeat;
       margin-top:15px;
       margin-bottom:15px;
+      @media (min-width:701px) and (max-width:768px){
+        background:none;
+      }
       li {
         font-size: 14px;
         color: #b2b2b2;
@@ -548,6 +587,9 @@ $pointColor:#ff5400;
         padding-bottom: 13px;
         position: relative;
         width: 58%;
+        @media (min-width:701px) and (max-width:768px){
+          width:100%;
+        }
         &:nth-last-child(1) {
           padding-bottom: 0px;
         }
@@ -690,6 +732,20 @@ $pointColor:#ff5400;
 
 }
 
+.sign-school-open {
+  display: block;
+  height:100%;
+  background: url('../images/sign/sign-school-open.png') center center no-repeat;
+}
+
+.sign-school-rank {
+  display: block;
+  height:100%;
+  background: url('../images/sign/sign-school-rank.png') center center no-repeat;
+}
+.draw-today-yes,.draw-today-no {
+  display: none;
+}
 @media screen and (max-width: 700px) {
 
   .book-invest-box {

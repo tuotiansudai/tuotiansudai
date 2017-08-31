@@ -126,9 +126,29 @@
   background: #fff;
   margin-left:20px;
   margin-right:20px;
+  @media (max-width:700px) {
+  	width:100%;
+    margin: 5px 0;
+    box-sizing: border-box;
+  }
+  @media (min-width:701px) and (max-width:999px) {
+  	width:48%;
+  	margin:0 1%;
+  	box-sizing:border-box;
+  	min-height: 166px;
+  }
   dt {
 	font-size:24px;
 	font-weight: bold;
+	@media (max-width:700px) {
+	  	font-size:18px;
+	  }
+  }
+  dd{
+  	font-size:16px;
+  	@media (max-width:700px) {
+	  	font-size:14px;
+	  }
   }
   &:hover {
 	background: #3776cb;
@@ -170,9 +190,14 @@
 			dl {
 				width:265px;
 				float: left;
+				@media (min-width:701px) and (max-width:999px) {
+					width:33.333333%;
+				}
 				&:nth-child(2) {
-					margin-left:100px;
-					margin-right:100px;
+					margin:0 100px;
+					@media (min-width:701px) and (max-width:999px) {
+						margin:0;
+					}
 				}
 				dt {
 				  height: 123px;
@@ -197,6 +222,9 @@
 			}
 			  dd {
 				padding-top:20px;
+				@media (min-width:701px) and (max-width:999px) {
+					padding:20px 20px 0;
+				}
 			  }
 
 			}
@@ -311,6 +339,9 @@
 	padding-bottom:60px;
 	padding-top: 30px;
 	height: 500px;
+	@media (max-width:700px) {
+		height:auto;
+	}
 	&.hack {
 	  height:auto;
 	}
@@ -325,6 +356,12 @@
 		border: 2px solid #3776cb;
 		top: 110px;
 		z-index: 10;
+		@media (max-width:700px) {
+			display:none;
+		}
+		@media (min-width:701px) and (max-width:999px) {
+			display:none;
+		}
 	  }
 	}
 	.project-info-list {
@@ -334,6 +371,14 @@
 	  position: absolute;
 	  z-index: 30;
 	  margin-top: -15px;
+	  @media (max-width:700px) {
+	  	float:left;
+	  	margin-left: 0;
+	  	position: static;
+	  }
+	  @media (min-width:701px) and (max-width:999px) {
+		margin-left: 0;
+	}
 		dl {
 		  color: #4d4d4d;
 		  font-size:14px;
@@ -341,6 +386,17 @@
 		  width:235px;
 		  margin-left:50px;
 		  margin-top:40px;
+		  @media (max-width:700px) {
+		  	width:100%;
+		  	box-sizing:border-box;
+		  	padding:0 10%;
+		  	margin-left: 0;
+		  	margin-top: 10px;
+		  }
+		  @media (min-width:701px) and (max-width:999px) {
+		  	width:31.333333%;
+		  	margin:40px 1% 0;
+		  }
 		  dt {
 			font-size:18px;
 			color: #3776cb;
@@ -380,11 +436,22 @@
 		dl {
 		  width:258px;
 		  float: left;
+		  @media (max-width:700px) {
+		  	width:100%;
+		  	box-sizing:border-box;
+		  	padding:0 10%;
+		  }
+		  @media (min-width:701px) and (max-width:999px) {
+		  	width:33.333333%;
+		  }
 		  dt {
 			font-size: 22px;
 			color: #3776cb;
 			font-weight: bold;
 			text-align: center;
+			@media (max-width:700px) {
+				font-size:16px;
+			}
 			em {
 			  display: block;
 			  width:206px;
@@ -393,6 +460,14 @@
 			  border-radius: 103px;
 			  background: #3776cb;
 			  margin: 20px auto;
+			  @media (max-width:700px) {
+			  	width:150px;
+			  	height:150px;
+			  	line-height: 150px;
+			  	img{
+			  		width:30%;
+			  	}
+			  }
 			  &:hover {
 				-moz-transform:scale(1.2);
 				-webkit-transform:scale(1.2);
@@ -403,10 +478,23 @@
 		  dd {
 			font-size:16px;
 			color: #4c4c4c;
+			@media (max-width:700px) {
+				font-size:12px;
+				text-align:center;
+			}
+			@media (min-width:701px) and (max-width:999px) {
+				padding: 0 10px;
+    			box-sizing: border-box;
+			}
 		  }
 		  &.two {
-			margin-left: 112px;
-			margin-right:112px;
+			margin: 0 112px;
+			@media (max-width:700px) {
+		  	margin:0;
+		  }
+			@media (min-width:701px) and (max-width:999px) {
+			  	margin:0;
+			  }
 		  }
 
 		}
@@ -416,6 +504,9 @@
   .project-examine-two {
 	position: relative;
 	height: 660px;
+	@media (max-width:700px) {
+		height:700px;
+	}
 	.ellipse-shape-center {
 	  position: absolute;
 	  left:50%;
@@ -463,6 +554,9 @@
 	  color: #666;
 	  font-size:14px;
 	  width: 30%;
+	  @media (max-width:700px) {
+		font-size:12px;
+	}
 	  dt {
 		font-size:16px;
 	  }
@@ -488,10 +582,16 @@
 	  &.one {
 		left: 113px;
 		top: 21px;
+		@media (max-width:700px) {
+			left:10px;
+		}
 	  }
 	  &.two {
 		right: 118px;
 		top: 126px;
+		@media (max-width:700px) {
+			right:10px;
+		}
 		.triangle {
 		  right:auto;
 		  left: -18px;
@@ -507,10 +607,16 @@
 	  &.three {
 		left: 113px;
 		top: 225px;
+		@media (max-width:700px) {
+			left:10px;
+		}
 	  }
 	  &.four {
 		right: 118px;
 		top: 329px;
+		@media (max-width:700px) {
+			right:10px;
+		}
 		.triangle {
 		  right:auto;
 		  left: -18px;
@@ -526,6 +632,9 @@
 	  &.five {
 		left: 113px;
 		top: 431px;
+		@media (max-width:700px) {
+			left:10px;
+		}
 		.triangle {
 		  top:30px;
 		}
@@ -533,6 +642,10 @@
 	  &.six {
 		right: 118px;
 		top: 525px;
+		@media (max-width:700px) {
+			right:10px;
+			top:530px;
+		}
 		.triangle {
 		  right:auto;
 		  left: -18px;
@@ -551,14 +664,23 @@
   .post-lending-box {
 	position: relative;
 	height:245px;
+	@media (max-width:700px) {
+		height:300px;
+	}
 	.line-top-bar {
 	  height: 30px;
 	  background: url("../images/sign/assure/line-top.png") center top no-repeat;
-
+		@media (max-width:700px) {
+			background-size:100%;
+		}
 	}
 	.lending-steps {
 	  width: 87%;
 	  margin: 10px auto;
+	  @media (max-width:700px) {
+	  	width:100%;
+	  	margin:0;
+	  }
 	  dl {
 		float: left;
 		width: 208px;
@@ -569,6 +691,11 @@
 		color: #3776cb;
 		position: relative;
 		border-radius: 10px;
+		@media (max-width:700px) {
+			width:33.333333%;
+			margin:0;
+			box-sizing: border-box;
+		}
 		dt {
 		  font-size:18px;
 		  em {
@@ -613,12 +740,21 @@
 	p {
 	  margin-top:10px;
 	  font-size: 16px;
+	  @media (min-width:701px) and (max-width:999px) {
+	  	padding: 0 10px;
+	  	box-sizing:border-box;
+	  }
 	}
   }
   .section-box-two {
 	overflow: hidden;
 	dl {
 	  margin-left: 80px;
+	  @media (min-width:701px) and (max-width:999px) {
+	  	margin-left: 0;
+	  	padding:0 10px;
+	  	box-sizing:border-box;
+	  }
 	  dt {
 		position: relative;
 		color: #333333;
@@ -855,6 +991,10 @@
 	  .title-word {
 		left:700px;
 		width:160px;
+		@media (min-width:701px) and (max-width:999px) {
+			left:auto;
+			right:50px;
+		}
 	  }
 	}
 	.mortgage-list {
@@ -868,8 +1008,10 @@
 		color: #fff;
 		text-align: center;
 		font-size:16px;
-		margin-left: 45px;
-		margin-right: 45px;
+		margin:0 45px;
+		@media (min-width:701px) and (max-width:999px) {
+			margin:0 20px;
+		}
 		span {
 		  display: inline-block;
 		  padding-top:40px;
@@ -889,6 +1031,9 @@
   .section-box-four {
 	img {
 	  margin-bottom:30px;
+	  @media (min-width:701px) and (max-width:999px) {
+		width:100%;
+		}
 	}
   }
   .section-box-five {
@@ -900,10 +1045,15 @@
 		margin:20px 60px;
 		font-weight: bold;
 		i {
-		  border: 1px solid #e6e6e6;
-		  margin-bottom:20px;
+			border: 1px solid #e6e6e6;
+			margin-bottom:20px;
 			display: block;
 			padding: 5px;
+			@media (min-width:701px) and (max-width:999px){
+				width:220px;
+				height:220px;
+				background-size:100%;
+			}
 		}
 
 	  }
@@ -939,6 +1089,9 @@
 			display: inline-block;
 			vertical-align: middle;
 			background-size: 100%;
+			@media (min-width:701px) and (max-width:999px) {
+				width:65%;
+			}
 		}
 		.btn-normal {
 			margin-top: 0px;
@@ -998,6 +1151,7 @@
 	.section-box-one p {
 	  font-size:12px;
 	  margin-bottom:0;
+
 	}
 	.section-box-two dl {
 
