@@ -119,45 +119,76 @@
       margin-right: 20px;
       &.user-one {
         background: url('../images/sign/aboutus/user-one.jpg') left top no-repeat;
+        background-size: cover;
       }
       &.user-two {
         background: url('../images/sign/aboutus/user-two.jpg') left top no-repeat;
+        background-size: cover;
       }
       &.user-three {
         background: url('../images/sign/aboutus/user-three.jpg') left top no-repeat;
+        background-size: cover;
       }
       &.user-four {
         background: url('../images/sign/aboutus/user-four.jpg') left top no-repeat;
+        background-size: cover;
       }
       &.user-team1 {
+        width:340px;
+        height:226px;
+        margin-right: 50px;
         background: url('../images/sign/aboutus/team1.png') left top no-repeat;
+        background-size: cover;
       }
       &.user-team2 {
+        width:340px;
+        height:226px;
+        margin-left: 50px;
+        float: right;
         background: url('../images/sign/aboutus/team2.png') left top no-repeat;
+        background-size: cover;
       }
       &.user-team3 {
+        width:340px;
+        height:226px;
+        margin-right: 50px;
         background: url('../images/sign/aboutus/team3.png') left top no-repeat;
+        background-size: cover;
       }
       &.user-team4 {
+        width:340px;
+        height:226px;
+        margin-left: 50px;
+        float: right;
         background: url('../images/sign/aboutus/team4.png') left top no-repeat;
+        background-size: cover;
       }
       &.user-team5 {
+        width:340px;
+        height:226px;
+        margin-right: 50px;
         background: url('../images/sign/aboutus/team5.jpg') left top no-repeat;
+        background-size: cover;
       }
       &.photo-big01 {
         background: url('../images/sign/aboutus/photo_01.jpg') left top no-repeat;
+        background-size: contain;
       }
       &.photo-big02 {
         background: url('../images/sign/aboutus/photo_02.jpg') left top no-repeat;
+        background-size: contain;
       }
       &.photo-big03 {
         background: url('../images/sign/aboutus/photo_03.jpg') left top no-repeat;
+        background-size: contain;
       }
       &.photo-big04 {
         background: url('../images/sign/aboutus/photo_04.jpg') left top no-repeat;
+        background-size: cover;
       }
       &.photo-big05 {
         background: url('../images/sign/aboutus/photo_05.jpg') left top no-repeat;
+        background-size: contain;
       }
     }
     dl {
@@ -422,15 +453,21 @@
       width:100%!important;
     }
     .team-box{
-      padding-top: 0!important;
-      dl{
-        dt {
-          padding-bottom:0px!important;
+
+      .sign-profile {
+        width: 100%!important;
+        height: 420px;
+        margin-left:0;
+        margin-right: 0;
+        float: none;
+
+        &.user-team1 ,&.user-team2,&.user-team3,&.user-team4,&.user-team5 {
+          margin:0;
+          float: none;
         }
-        float:left;
-        margin-top: 4px;
-        margin-bottom: 8px;
+
       }
+
     }
     .notice-list{
       li{
