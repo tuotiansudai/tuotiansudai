@@ -10,7 +10,8 @@
             拓天速贷以透明、公平、高效为原则，为有资金需求的小微企业及有出借需求的个人提供规范、安全、专业的信息服务。
         </p>
     </div>
-    <img src="${commonStaticServer}/images/sign/aboutus/company.jpg" class="fr responsive-width" alt="拓天速贷是基于互联网的金融信息服务平台" title="拓天速贷是基于互联网的金融信息服务平台">
+    <img src="${commonStaticServer}/images/sign/aboutus/company.jpg" class="fr responsive-width"
+         alt="拓天速贷是基于互联网的金融信息服务平台" title="拓天速贷是基于互联网的金融信息服务平台">
     <div class="clear-blank-m">
     </div>
     <h2 class="column-title"><em>拓天理念</em></h2>
@@ -30,7 +31,8 @@
     <h2 class="column-title"><em>拓天资质</em></h2>
     <div class="clear-blank-m">
     </div>
-    <img src="${commonStaticServer}/images/sign/aboutus/aptitude_new.jpg" class="responsive-width" alt="拓天资质" title="拓天资质"/>
+    <img src="${commonStaticServer}/images/sign/aboutus/aptitude_new.jpg" class="responsive-width" alt="拓天资质"
+         title="拓天资质"/>
     <h2 class="column-title"><em>合作伙伴</em></h2>
     <ul class="partner-list">
         <li>
@@ -38,6 +40,13 @@
             <p class="partner-intro">
                 <span class="partner-name">联动优势</span>
                 <span>联动优势科技有限公司于2003年8月成立，是国内领先的第三方支付和供应链金融服务提供商，与110多家金融机构和3000多家大型企业合作，为70万家中小企业和4.5亿个人用户提供联动支付、联动金科、联动信息、联动惠商+和联动国际服务。目前拓天速贷已成功接入了联动优势电子商务有限公司的资金托管系统，实现了平台对个人及企业用户的账户进行独立管理，资金的同标的进出，做到了投资人出借用途与借款人申报的借款用途一一对应。</span>
+            </p>
+        </li>
+        <li>
+            <p class="icon-logo logo-three"></p>
+            <p class="partner-intro">
+                <span class="partner-name">CFCA</span>
+                <span>CFCA是中国金融认证中心（China Financial Certification Authority）的简称，于2000年6月29日挂牌成立，是经中国人民银行和国家信息安全管理机构批准成立的国家级权威的安全认证机构。《中华人民共和国电子签名法》颁布后，CFCA成为首批获得电子认证服务许可的电子认证服务机构。目前98%银行在使用CFCA提供的电子认证服务。</span>
             </p>
         </li>
     </ul>
