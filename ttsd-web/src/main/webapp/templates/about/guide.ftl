@@ -8,9 +8,7 @@
         <li class="assure"><a href="/about/assurance">安全保障</a></li>
     </ul>
     <div class="main-banner">
-        <div class="page-width">
-            <img id="guideBar" alt="风控流程">
-        </div>
+        <div class="page-width"></div>
     </div>
     <div class="section-box-one bg-white clearfix pad-box">
         <div class="page-width">
@@ -26,8 +24,8 @@
             <dd>可选择不同期限产品，预期年化收益最高可达<em>8%~11%</em></dd>
             <dd class="img-load">
                 <div class="arrow-rise"></div>
-                <img src="${commonStaticServer}/images/sign/assure/load.png">
-            </dd> d
+                <div class="report-load"></div>
+            </dd>
         </dl>
 
         <div class="line"></div>
@@ -67,8 +65,7 @@
         <dl class="box-03 fl">
             <dt><span>03</span>高效便捷＋门槛低</dt>
             <dd>手机APP随时随地便捷投资，只需50元。</dd>
-            <dd class="benefit-img">
-                <img src="${commonStaticServer}/images/sign/assure/benefit01.png">
+            <dd class="benefit-img ">
             </dd>
          </dl>
         <div class="line hack"></div>
@@ -76,8 +73,7 @@
             <dt><span>04</span>优质产品＋资金周转灵活</dt>
             <dd>抵押债权，相对安全的债权模式； <br/>
                 债权转让，急用即转，方便快捷。</dd>
-            <dd class="benefit-img">
-                <img src="${commonStaticServer}/images/sign/assure/benefit02.png">
+            <dd class="benefit-img ">
             </dd>
         </dl>
 
@@ -110,7 +106,7 @@
             </div>
 
             <div class="creditor-right-info">
-                <img src="${commonStaticServer}/images/sign/assure/creditor-right.png" class="fl">
+                <div class="creditor-right"></div>
                 <p>抵押贷债权持有者因资金流动性需求，将持有的债权项目挂出并转让，并承担一定比例的折让金。一对一转让，不可拆分。周期为5天，5天未有购买的将流标。5 天内如有回款则债权无法申请转让，当前为逾期状态债权也不能申请转让。
 
                 </p>
@@ -123,7 +119,7 @@
 
     <div class="section-box-four clearfix pad-box page-width">
         <div class="column-title-ac"><i></i>如何投资<i></i> </div>
-        <img src="${commonStaticServer}/images/sign/assure/steps.jpg" alt="风控流程">
+        <div class="assure-steps"></div>
         <div class="tc">
             <a href="/register/user" class="btn-guide">注册投资</a>
         </div>

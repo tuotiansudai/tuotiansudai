@@ -129,6 +129,7 @@
 			<dd>6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
 		</dl>
 	</div>
+
 	<div class="tip-list-frame">
     	<!-- 真实奖品的提示 -->
         <div class="tip-list" data-return="concrete">
@@ -179,6 +180,8 @@
             <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
         </div>
     </div>
+
+
 	<div class="gift-list-tip" id="giftList">
 		<i class="close-tip"></i>
 		<h3>拓天速贷定制礼盒（20选1）</h3>

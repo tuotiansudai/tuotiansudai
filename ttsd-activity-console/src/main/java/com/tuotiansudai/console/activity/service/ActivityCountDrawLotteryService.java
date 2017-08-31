@@ -2,6 +2,7 @@ package com.tuotiansudai.console.activity.service;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -40,6 +41,9 @@ public class ActivityCountDrawLotteryService {
 
     @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -93,6 +97,12 @@ public class ActivityCountDrawLotteryService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.exercise.work.endTime}\")}")
     private Date acticityExerciseWorkEndTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.startTime}\")}")
+    private Date acticitySchoolSeasonStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
+    private Date acticitySchoolSeasonEndTime;
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -150,6 +160,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case EXERCISE_WORK_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+            case SCHOOL_SEASON_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
         }
         return lotteryTime;
     }
@@ -251,6 +263,10 @@ public class ActivityCountDrawLotteryService {
                         time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
                     }
                     break;
+                case EACH_EVERY_DAY:
+                    time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                            DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
+                    break;
             }
         }
         return time;
@@ -292,6 +308,8 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(activitySingleStartTime, activitySingleEndTime);
             case EXERCISE_WORK_ACTIVITY:
                 return Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime);
+            case SCHOOL_SEASON_ACTIVITY:
+                return Lists.newArrayList(acticitySchoolSeasonStartTime, acticityExerciseWorkEndTime);
         }
         return null;
     }
