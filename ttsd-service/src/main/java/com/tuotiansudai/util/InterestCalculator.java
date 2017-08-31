@@ -80,6 +80,12 @@ public class InterestCalculator {
         // 2015-01-01 ~ 2015-01-31: 30
         int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
 
+        //到期还本付息，按天计息，即投即生息,优惠券只加首期利息
+        if (loanModel.getType() == LoanType.INVEST_INTEREST_LUMP_SUM_REPAY){
+            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(loanModel.getRecheckTime(), loanModel.getDeadline(), LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+            periodDuration = daysOfPeriodList.get(0);
+        }
+
         return getCouponExpectedInterest(loanModel, couponModel, investAmount, periodDuration);
     }
 
@@ -93,7 +99,9 @@ public class InterestCalculator {
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
-                estimateCouponExpectedInterest(investAmount,loanModel,couponModel);
+                expectedInterest = new BigDecimal(periodDuration * investAmount)
+                        .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case BIRTHDAY_COUPON:
                 expectedInterest = new BigDecimal(periodDuration * investAmount)
