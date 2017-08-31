@@ -81,7 +81,7 @@
         <div class="bardeen-left"></div>
         <div class="bardeen-right"></div>
 
-        <p class="hack">活动期间，根据累计投资额进行实时排名，至9月17日24:00清算排名榜单，<br/>
+        <p class="hack">活动期间，根据累计投资额进行实时排名，至9月24日24:00清算排名榜单，<br/>
             <i class="key">前18名</i>上榜的投资尖子生，<i class="key">可获实物大奖</i>。</p>
 
         <div class="winners-box">
