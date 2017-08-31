@@ -83,6 +83,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             if (investModel.getTransferInvestId() != null) {
                 TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
+                userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
+                        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()):userInvestRepayResponseDataDto.getInvestTime());
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
