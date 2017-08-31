@@ -93,8 +93,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
             userInvestRepayResponseDataDto.setRecheckTime(getValueDate(investModel, loanModel, investRepayModels));
 
-            int investRepayCount = 1;
-            String lastRepayDate = null;
+            InvestRepayModel investRepayModelTemp = investRepayModels.get(investRepayModels.size() - 1);
+
+            userInvestRepayResponseDataDto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModelTemp.getActualRepayDate() : investRepayModelTemp.getRepayDate()).toString("yyyy-MM-dd"));
             List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 Date repayDate = investRepayModel.getActualRepayDate();
@@ -112,12 +113,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
-                //取最后一个的到期日
-                if (investRepayCount == investRepayModels.size()) {
-                    lastRepayDate = new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModel.getActualRepayDate() : investRepayModel.getRepayDate()).toString("yyyy-MM-dd");
-                }
-                investRepayCount++;
-
                 int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
                 long corpus = 0;
                 if (periods == investRepayModel.getPeriod()) {
@@ -146,7 +141,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 totalExpectedInterest += expectedInterest;
             }
 
-            userInvestRepayResponseDataDto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
 
             userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
