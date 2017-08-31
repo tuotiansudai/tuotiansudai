@@ -93,9 +93,7 @@ public class InterestCalculator {
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(periodDuration * investAmount)
-                        .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+                estimateCouponExpectedInterest(investAmount,loanModel,couponModel);
                 break;
             case BIRTHDAY_COUPON:
                 expectedInterest = new BigDecimal(periodDuration * investAmount)
