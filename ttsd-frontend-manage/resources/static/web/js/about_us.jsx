@@ -92,6 +92,35 @@ if($noticeList.length) {
     });
 }
 
+let $companyPhoto = $('#companyPhoto');
+
+let photoGroup={
+    '1': {
+        small:require('../images/sign/aboutus/photo_01.jpg'),
+        big:require('../images/sign/aboutus/photo_big_01.jpg')
+    },
+    '2':{
+        small:require('../images/sign/aboutus/photo_02.jpg'),
+        big:require('../images/sign/aboutus/photo_big_02.jpg')
+    },
+    '3':{
+        small:require('../images/sign/aboutus/photo_03.jpg'),
+        big:require('../images/sign/aboutus/photo_big_03.jpg')
+    },
+    '4':{
+        small:require('../images/sign/aboutus/photo_04.jpg'),
+        big:require('../images/sign/aboutus/photo_big_04.jpg')
+    },
+    '5':{
+        small:require('../images/sign/aboutus/photo_05.jpg'),
+        big:require('../images/sign/aboutus/photo_big_05.jpg')
+    }
+};
+$companyPhoto.find('li').each(function(key,option) {
+    let num = key+1;
+    $(option).find('a').attr('href',photoGroup[num].big);
+    $(option).find('a').append(`<img src="${photoGroup[num].small}">`);
+});
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
