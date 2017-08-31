@@ -1,0 +1,78 @@
+.bank {
+  width:123px;
+  height:36px;
+  display: inline-block;
+  background-position: left top;
+  background-repeat: no-repeat;
+  border: #dddddd 1px solid;
+  cursor: pointer;
+  &.ABC {
+    background-image: url('../../images/bank/ABC.jpg');
+  }
+  &.BEA {
+    background-image: url('../../images/bank/BEA.jpg');
+  }
+  &.BHB {
+    background-image: url('../../images/bank/BHB.jpg');
+  }
+  &.BJB {
+    background-image: url('../../images/bank/BJB.jpg');
+  }
+  &.BOC {
+    background-image: url('../../images/bank/BOC.jpg');
+  }
+  &.CCB {
+    background-image: url('../../images/bank/CCB.jpg');
+  }
+  &.CEB {
+    background-image: url('../../images/bank/CEB.jpg');
+  }
+  &.CIB {
+    background-image: url('../../images/bank/CIB.jpg');
+  }
+  &.CITIC {
+    background-image: url('../../images/bank/CITIC.jpg');
+  }
+  &.CMB {
+    background-image: url('../../images/bank/CMB.jpg');
+  }
+
+  &.CMBC {
+    background-image: url('../../images/bank/CMBC.jpg');
+  }
+  &.COMM {
+    background-image: url('../../images/bank/COMM.jpg');
+  }
+  &.CZSB {
+    background-image: url('../../images/bank/CZSB.jpg');
+  }
+  &.GDB {
+    background-image: url('../../images/bank/GDB.jpg');
+  }
+  &.HXB {
+    background-image: url('../../images/bank/HXB.jpg');
+  }
+  &.ICBC {
+    background-image: url('../../images/bank/ICBC.jpg');
+  }
+  &.LZB {
+    background-image: url('../../images/bank/LZB.jpg');
+  }
+  &.PSBC {
+    background-image: url('../../images/bank/PSBC.jpg');
+  }
+
+  &.SHRCB {
+    background-image: url('../../images/bank/SHRCB.jpg');
+  }
+  &.SPAB {
+    background-image: url('../../images/bank/SPAB.jpg');
+  }
+  &.SPDB {
+    background-image: url('../../images/bank/SPDB.jpg');
+  }
+  &.WZCB {
+    background-image: url('../../images/bank/WZCB.jpg');
+  }
+
+}

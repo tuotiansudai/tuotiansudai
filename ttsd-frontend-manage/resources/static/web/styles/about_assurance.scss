@@ -8,6 +8,11 @@
 .pad-box {
   padding:20px 0 50px 0;
 }
+
+.img-app-download {
+	width:248px;
+	height:248px;
+}
 .column-title-ac {
   font-size:30px;
   font-weight: bold;
@@ -331,9 +336,11 @@
 .risk-flow-container {
   .main-banner {
 	background:#1877d3;
-	img {
-	  width:100%;
-	}
+	  .risk-bar {
+		  height:350px;
+		  width:100%;
+		  background: url('../images/sign/assure/risk-bar.jpg') center top no-repeat;
+	  }
   }
   .project-examination-box {
 	padding-bottom:60px;
@@ -460,6 +467,15 @@
 			  border-radius: 103px;
 			  background: #3776cb;
 			  margin: 20px auto;
+				&.end01 {
+					background:#3776cb url('../images/sign/assure/end01.png') center center no-repeat;
+				}
+				&.end02 {
+					background:#3776cb url('../images/sign/assure/end02.png') center center no-repeat;
+				}
+				&.end03 {
+					background:#3776cb url('../images/sign/assure/end03.png') center center no-repeat;
+				}
 			  @media (max-width:700px) {
 			  	width:150px;
 			  	height:150px;
@@ -729,6 +745,7 @@
 	}
   }
 
+
   .main-banner {
 	background:#e95b56;
 	img {
@@ -778,6 +795,17 @@
 		  padding-left:70px;
 		  padding-top:10px;
 		  position: relative;
+			height:350px;
+			.report-load {
+				width:667px;
+				height:322px;
+				background: url('../images/sign/assure/load.png') left top no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 69px;
+				top:30px;
+
+			}
 		  .arrow-rise {
 			position: absolute;
 			top: 33px;
@@ -918,14 +946,20 @@
 	  &.box-03 {
 		 dd {
 		   &.benefit-img {
-			 padding-top:53px;
+			 margin-top:53px;
+			   width:240px;
+			   height:130px;
+			   background: url('../images/sign/assure/benefit01.png') center top no-repeat;
 		   }
 		 }
 	   }
 	  &.box-04 {
 		dd {
 		  &.benefit-img {
-			padding-top:30px;
+			  margin-top:30px;
+			  width:240px;
+			  height:130px;
+			  background: url('../images/sign/assure/benefit02.png') center top no-repeat;
 		  }
 		}
 	  }
@@ -1001,9 +1035,19 @@
 	  }
 	}
 	.creditor-right-info {
-	  img {
-		margin-right:60px;
+		padding-top: 20px;
+	  .creditor-right {
+		  width:400px;
+		  height:180px;
+		  background: url('../images/sign/assure/creditor-right.png') left top no-repeat;
+		  float: left;
+		  margin-right: 60px;
 	  }
+		@media screen and (max-width: 700px) {
+			.creditor-right {
+				width:100%;
+			}
+		}
 	  .btn-guide {
 		margin-top:30px;
 	  }
@@ -1011,12 +1055,22 @@
   }
 
   .section-box-four {
-	img {
-	  margin-bottom:30px;
-	  @media (min-width:701px) and (max-width:999px) {
-		width:100%;
-		}
+	.assure-steps {
+		height:207px;
+		background: url('../images/sign/assure/steps.jpg') center top no-repeat;
+		margin:30px auto;
+		background-size: contain;
+
 	}
+
+	  @media screen and (max-width: 700px) {
+		  .assure-steps {
+			  width:100%;
+			  height: 100px;
+			  margin:20px auto 0 auto;
+
+		  }
+	  }
   }
   .section-box-five {
 	.code-ma {
@@ -1093,9 +1147,7 @@
 }
 
 @media screen and (max-width: 700px) {
-  //* {
-	//box-sizing: border-box;
-  //}
+
   .btn-guide {
 	padding: 3px 25px;
 	font-size: 12px;
@@ -1154,9 +1206,13 @@
 		font-size:10px;
 		&.img-load {
 		  padding-left:0;
-		  img {
+			height: 240px;
+		.report-load {
 			width:100%;
-		  }
+			height:240px;
+			background-size: 100%;
+			left:5px;
+			}
 		  .arrow-rise {
 			position: absolute;
 			top: 15px;
@@ -1210,22 +1266,29 @@
 		&.fl {
 		  float: none;
 		}
-
+		  dd.benefit-img {
+			  padding-top: 20px!important;
+			  padding-left: 0;
+			  text-align: center;
+			  padding-bottom: 20px;
+			  width:100%;
+			  background-size: 80%;
+		  }
 	  }
 	  &.box-04 {
 		&.fr {
 		  float: none;
 		}
+		  dd.benefit-img {
+			  padding-top: 20px!important;
+			  padding-left: 0;
+			  text-align: center;
+			  padding-bottom: 20px;
+			  width:100%;
+			  background-size: 80%;
+		  }
 	  }
-	  dd.benefit-img {
-		padding-top: 20px!important;
-		padding-left: 0;
-		text-align: center;
-		padding-bottom: 20px;
-		img {
-		  width:60%;
-		}
-	  }
+
 	}
 
 	.section-box-three {

@@ -10,8 +10,7 @@
             拓天速贷以透明、公平、高效为原则，为有资金需求的小微企业及有出借需求的个人提供规范、安全、专业的信息服务。
         </p>
     </div>
-    <img src="${commonStaticServer}/images/sign/aboutus/company.jpg" class="fr responsive-width"
-         alt="拓天速贷是基于互联网的金融信息服务平台" title="拓天速贷是基于互联网的金融信息服务平台">
+    <div class="company-img"></div>
     <div class="clear-blank-m">
     </div>
     <h2 class="column-title"><em>拓天理念</em></h2>
@@ -31,8 +30,7 @@
     <h2 class="column-title"><em>拓天资质</em></h2>
     <div class="clear-blank-m">
     </div>
-    <img src="${commonStaticServer}/images/sign/aboutus/aptitude_new.jpg" class="responsive-width" alt="拓天资质"
-         title="拓天资质"/>
+    <div class="aptitude-new"></div>
     <h2 class="column-title"><em>合作伙伴</em></h2>
     <ul class="partner-list">
         <li>
