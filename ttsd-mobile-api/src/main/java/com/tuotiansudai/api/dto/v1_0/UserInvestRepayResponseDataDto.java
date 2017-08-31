@@ -85,7 +85,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     }
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.loanId = String.valueOf(loanModel.getId());
         this.loanName = loanModel.getName();
