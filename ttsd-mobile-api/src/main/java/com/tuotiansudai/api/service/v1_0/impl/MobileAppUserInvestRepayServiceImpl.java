@@ -189,11 +189,12 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     private String getValueDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        int minPeriod = investRepayModels.get(0).getPeriod();
 
-        if (investRepayModels == null){
+        if (investRepayModels.size()==0){
             return "";
         }
+
+        int minPeriod = investRepayModels.get(0).getPeriod();
 
         if (investModel.getTransferInvestId()!=null && minPeriod > 1){
             return sdf.format(new DateTime(investRepayMapper.findByInvestIdAndPeriod(investModel.getTransferInvestId(), minPeriod-1).getRepayDate()).plusDays(1).toDate());
