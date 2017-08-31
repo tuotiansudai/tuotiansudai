@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD INDEX INDEX_USER_CHANNEL(`channel`);
