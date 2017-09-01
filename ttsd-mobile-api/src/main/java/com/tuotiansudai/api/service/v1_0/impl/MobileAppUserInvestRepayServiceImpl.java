@@ -93,9 +93,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
             userInvestRepayResponseDataDto.setRecheckTime(getValueDate(investModel, loanModel, investRepayModels));
 
-            InvestRepayModel investRepayModelTemp = investRepayModels.get(investRepayModels.size() - 1);
+            InvestRepayModel investRepayModelTemp = investRepayModels.size() > 0 ? investRepayModels.get(investRepayModels.size() - 1) : null;
 
-            userInvestRepayResponseDataDto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModelTemp.getActualRepayDate() : investRepayModelTemp.getRepayDate()).toString("yyyy-MM-dd"));
+            userInvestRepayResponseDataDto.setLastRepayDate(investRepayModelTemp == null ? "" : new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModelTemp.getActualRepayDate() : investRepayModelTemp.getRepayDate()).toString("yyyy/MM/dd"));
             List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 Date repayDate = investRepayModel.getActualRepayDate();
