@@ -3,8 +3,6 @@ package com.tuotiansudai.smswrapper.provider;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.exception.SmsSendingException;
-import com.tuotiansudai.smswrapper.repository.mapper.CouponNotifyMapper;
-import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,6 +26,7 @@ public class SmsProviderTest {
     private SmsProvider smsProviderAlidayu;
 
     @Test
+    @Ignore
     public void testSmsSendingNetease() throws SmsSendingException {
         List<String> mobileList = Lists.newArrayList("13810586920");
         List<String> paramList = Lists.newArrayList("1234");
@@ -37,6 +34,7 @@ public class SmsProviderTest {
     }
 
     @Test
+    @Ignore
     public void testSmsSendingAlidayu() throws SmsSendingException {
         List<String> mobileList = Lists.newArrayList("13810586920", "13691070223");
         List<String> paramList = Lists.newArrayList("1234");

@@ -30,8 +30,7 @@ public class PlatformBalanceMonitorScheduler {
     @Value("${platform.balance.notify.warning.line}")
     private String warningLine; // 5000
 
-//    @Scheduled(cron = "0 0 9 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(initialDelay = 1000 * 30, fixedDelay = 1000 * 60 * 10)
+    @Scheduled(cron = "0 0 9 * * ?", zone = "Asia/Shanghai")
     public void execute() {
 
         logger.info("[Platform Balance Monitor] Job is starting...");
