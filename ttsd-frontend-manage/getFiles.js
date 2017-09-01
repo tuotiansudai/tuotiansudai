@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
-var basePath = path.join(__dirname, 'resources'),
-    outputPath=path.join(basePath, 'develop'); //默认打包路径
+var packageRoute = require('./package.route.js');
+
 //遍历文件夹，获取所有文件夹里面的文件信息
 
 function geFileList(folderPath,fileName)
@@ -75,7 +75,7 @@ function geFileList(folderPath,fileName)
         fs.exists(this.folderPath, function (exists) {
             if(exists) {
               that.readFile(that.folderPath);
-              that.readFile(basePath+'/develop/public');
+              that.readFile(packageRoute.basePath+'/develop/public');
               that.formatHandler();
             }
         });
@@ -83,16 +83,16 @@ function geFileList(folderPath,fileName)
 }
 const NODE_ENV=process.env.NODE_ENV;
 if(NODE_ENV=='dev') {
-    outputPath=path.join(basePath, 'develop');
+    packageRoute.outputPath=path.join(packageRoute.basePath, 'develop');
     // 生成开发环境的json文件
 }
 else if(NODE_ENV=='production') {
-    outputPath=path.join(basePath, 'prod');
+    packageRoute.outputPath=path.join(packageRoute.basePath, 'prod');
     // 生成生产环境的json文件
 }
 
 // ask json
-var askFileList=new geFileList(outputPath+"/ask",outputPath+'/json-ask.json');
+var askFileList=new geFileList(packageRoute.outputPath+"/ask",packageRoute.outputPath+'/json-ask.json');
 askFileList.init();
 
 module.exports=geFileList;

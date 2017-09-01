@@ -13,19 +13,9 @@ var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
 var commonStaticServer = require('./getStaticServer.js');
-var basePath = path.join(__dirname, 'resources'),
-	staticPath = path.join(basePath, 'static'),
-	publicPath=path.join(staticPath, 'public'),
-	askPath=path.join(staticPath, 'ask'),
-	webPath=path.join(staticPath, 'web'),
-	pointPath=path.join(staticPath, 'point'),
-	activityPath=path.join(staticPath, 'activity'),
-	mobilePath=path.join(staticPath, 'mobile');
+var packageRoute = require('./package.route.js');
 
-var publicPathJS=path.join(publicPath, 'js');
-
-var outputPath=path.join(basePath, 'develop'),//打包文件路径
-	devServerPath=commonStaticServer+'/',
+var devServerPath=commonStaticServer+'/',
 	commonOptions={},
 	webpackdevServer='',
 	plugins=[];
@@ -37,10 +27,10 @@ var NODE_ENV=process.env.NODE_ENV;
  * 动态查找所有入口文件
  */
 
-var files = glob.sync(path.join(staticPath, '*/js/*.jsx'));
+var files = glob.sync(path.join(packageRoute.staticPath, '*/js/*.jsx'));
 
-var Accountfiles = glob.sync(path.join(staticPath, '*/js/account/*.jsx'));
-var wechatfiles = glob.sync(path.join(staticPath, '*/js/wechat/*.jsx'));
+var Accountfiles = glob.sync(path.join(packageRoute.staticPath, '*/js/account/*.jsx'));
+var wechatfiles = glob.sync(path.join(packageRoute.staticPath, '*/js/wechat/*.jsx'));
 files=files.concat(Accountfiles).concat(wechatfiles);
 var newEntries = {};
 
@@ -69,13 +59,13 @@ if(NODE_ENV=='production') {
 	];
 	var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'); //压缩js，提高压缩速度
 	outFilename="[name].[chunkhash].js";
-	outputPath=path.join(basePath, 'prod'); //打包文件路径
+	packageRoute.outputPath=path.join(packageRoute.basePath, 'prod'); //打包文件路径
 	//生成带hash的css
 	plugins.push(new ExtractTextPlugin("[name].[chunkhash].css"));
 
 	//打包之前先删除打包文件里的文件方便重新打包
 	plugins.push(new CleanWebpackPlugin(['prod'], {
-		root: basePath,
+		root: packageRoute.basePath,
 		verbose: true,
 		dry: false,
 		watch:true,
@@ -91,7 +81,7 @@ if(NODE_ENV=='production') {
 	// 	}
 	// }));
 	plugins.push(new ParallelUglifyPlugin({
-		cacheDir: outputPath+'/.cache/',
+		cacheDir: packageRoute.outputPath+'/.cache/',
 		uglifyJS:{
 			output: {
 				comments: false
@@ -110,7 +100,7 @@ else if(NODE_ENV=='dev') {
 
 	//打包之前先删除打包文件里的图片文件方便重新打包
 	// plugins.push(new CleanWebpackPlugin(['develop'], {
-	// 	root: basePath,
+	// 	root: packageRoute.basePath,
 	// 	verbose: true,
 	// 	dry: false,
 	// 	watch:true,
@@ -132,7 +122,7 @@ else if(NODE_ENV=='dev') {
 	// });
 
 	webpackdevServer={
-		contentBase: basePath,
+		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
 		hot: true,
 		devtool: 'eval',
@@ -149,9 +139,9 @@ else if(NODE_ENV=='dev') {
 }
 
 plugins.push(new CopyWebpackPlugin([
-	{ from: publicPathJS+'/dllplugins',to: 'public/dllplugins'},
-	{ from: staticPath+'/inlineImages',to: 'images'},
-	{ from: publicPath+'/styles/plugins/skin',to: 'public/skin'}
+	{ from: packageRoute.publicPathJS+'/dllplugins',to: 'public/dllplugins'},
+	{ from: packageRoute.staticPath+'/inlineImages',to: 'images'},
+	{ from: packageRoute.publicPath+'/styles/plugins/skin',to: 'public/skin'}
 ]));
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
@@ -160,18 +150,18 @@ plugins.push(new AssetsPlugin({
 	includeManifest: 'manifest',
 	prettyPrint: true,
 	update: true,
-	path: outputPath,
+	path: packageRoute.outputPath,
 	metadata: {version: 123}
 }));
 
 //happypack利用缓存使rebuild更快
-plugins.push(createHappyPlugin('jsx', ['babel']));
+plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 
 plugins.push(createHappyPlugin('sass', ['css!sass']));
 // plugins.push(createHappyPlugin('sass', ['css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded']));
 plugins.push(new webpack.DllReferencePlugin({
 	context: __dirname,
-	manifest: require(publicPathJS+'/dllplugins/jquery-manifest.json')
+	manifest: require(packageRoute.publicPathJS+'/dllplugins/jquery-manifest.json')
 }));
 
 function createHappyPlugin(id, loaders) {
@@ -192,7 +182,7 @@ function createHappyPlugin(id, loaders) {
 var myObject = objectAssign(commonOptions, {
 	output: {
 		filename:outFilename,
-		path:outputPath,
+		path:packageRoute.outputPath,
 		publicPath:devServerPath,
 		chunkFilename:'chucks/[name].[chunkhash].js'
 	},
@@ -208,37 +198,37 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loaders:(NODE_ENV=='dev')?['url?limit=3072&name=images/[name].[hash:8].[ext]']:['url?limit=3072&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
+			loaders:(NODE_ENV=='dev')?['url?limit=2048&name=images/[name].[hash:8].[ext]']:['url?limit=3072&name=images/[name].[hash:8].[ext]','image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 4}, mozjpeg: {quality: 85}}']
 
 		}]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
 		alias: {
-			publicJs:publicPathJS,
-			publicStyle:path.join(publicPath, 'styles'),
+			publicJs:packageRoute.publicPathJS,
+			publicStyle:packageRoute.publicStyle,
 
-			askJs:path.join(askPath, 'js'),
-			askStyle:path.join(askPath, 'styles'),
+			askJs:packageRoute.askJs,
+			askStyle:packageRoute.askStyle,
 
-			webJs:path.join(webPath, 'js'),
-			webJsModule:path.join(webPath, 'js/module'),
-			webStyle:path.join(webPath, 'styles'),
-			webImages:path.join(webPath, 'images'),
+			webJs:packageRoute.webJs,
+			webJsModule:packageRoute.webJsModule,
+			webStyle:packageRoute.webStyle,
+			webImages:packageRoute.webImages,
 
-			activityJs:path.join(activityPath, 'js'),
-			activityJsModule:path.join(activityPath, 'js/module'),
-			activityStyle:path.join(activityPath, 'styles'),
+			activityJs:packageRoute.activityJs,
+			activityJsModule:packageRoute.activityJsModule,
+			activityStyle:packageRoute.activityStyle,
 
-			pointJs:path.join(pointPath, 'js'),
-            pointJsModule:path.join(pointPath, 'js/module'),
-			pointStyle:path.join(pointPath, 'styles'),
-            pointImages:path.join(pointPath, 'images'),
+			pointJs:packageRoute.pointJs,
+            pointJsModule:packageRoute.pointJsModule,
+			pointStyle:packageRoute.pointStyle,
+            pointImages:packageRoute.pointImages,
 
-			mobileJs:path.join(mobilePath, 'js'),
-			mobileJsModule:path.join(mobilePath, 'js/components'),
-			mobileStyle:path.join(mobilePath, 'styles'),
-			mobileImages:path.join(mobilePath, 'images')
+			mobileJs:packageRoute.mobileJs,
+			mobileJsModule:packageRoute.mobileJsModule,
+			mobileStyle:packageRoute.mobileStyle,
+			mobileImages:packageRoute.mobileImages
 		}
 	},
 
