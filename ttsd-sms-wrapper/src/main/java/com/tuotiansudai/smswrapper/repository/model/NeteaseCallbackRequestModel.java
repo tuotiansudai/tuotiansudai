@@ -1,6 +1,8 @@
 package com.tuotiansudai.smswrapper.repository.model;
 
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -138,7 +140,7 @@ public class NeteaseCallbackRequestModel implements Serializable {
                 this.sendTime,
                 this.reportTime,
                 String.valueOf(this.spliced),
-                this.callbackTime,
-                this.createdTime);
+                new DateTime(this.callbackTime).toString("yyyy-MM-dd HH:mm:ss"),
+                new DateTime(this.createdTime).toString("yyyy-MM-dd HH:mm:ss"));
     }
 }
