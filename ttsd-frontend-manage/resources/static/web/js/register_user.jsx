@@ -75,7 +75,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
         layer.open({
             type: 1,
             title: '拓天速贷服务协议',
-            area: ['950px', '600px'],
+            area: $(window).width()<1000?['100%', '100%']:['950px', '600px'],
             shadeClose: true,
             move: false,
             scrollbar: true,

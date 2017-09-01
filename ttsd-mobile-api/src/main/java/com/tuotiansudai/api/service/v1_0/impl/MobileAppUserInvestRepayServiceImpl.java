@@ -13,6 +13,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,9 +83,14 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             if (investModel.getTransferInvestId() != null) {
                 TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
+                userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
+                        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()):userInvestRepayResponseDataDto.getInvestTime());
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
+
+            userInvestRepayResponseDataDto.setRecheckTime(getValueDate(investModel, loanModel, investRepayModels));
+
             int maxPeriods = investRepayModels == null ? 0 : investRepayModels.size();
             InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
             userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
@@ -181,5 +187,30 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         }
 
         return usedCouponName;
+    }
+
+    private String getValueDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+        if (investRepayModels.size()==0){
+            return "";
+        }
+
+        int minPeriod = investRepayModels.get(0).getPeriod();
+
+        if (investModel.getTransferInvestId()!=null && minPeriod > 1){
+            return sdf.format(new DateTime(investRepayMapper.findByInvestIdAndPeriod(investModel.getTransferInvestId(), minPeriod-1).getRepayDate()).plusDays(1).toDate());
+        }
+
+        if (Lists.newArrayList(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
+            return loanModel.getRecheckTime()==null? "":sdf.format(loanModel.getRecheckTime());
+        }
+
+
+        if(investModel.getTransferInvestId()!=null && minPeriod == 1){
+            investModel = investService.findById(investModel.getTransferInvestId());
+        }
+
+        return sdf.format(investModel.getInvestTime());
     }
 }

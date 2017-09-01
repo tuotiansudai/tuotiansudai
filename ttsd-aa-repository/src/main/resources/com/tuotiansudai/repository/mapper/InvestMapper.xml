@@ -1120,5 +1120,4 @@
         ORDER BY trading_time ASC
 
     </select>
-
 </mapper>

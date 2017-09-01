@@ -4,7 +4,7 @@
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
    <div class="bar-top-img">
-       <a href="/activity/share-reward">
+       <a href="/activity/invite-friend">
         </a>
    </div>
 
@@ -13,9 +13,9 @@
             <div class="invite-title"><i></i><span>微信邀请好友</span></div>
             <div class="tc wechat-code">
                 <em class="img-code">
-                    <!--[if gte IE 8]> 
+                    <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
-                    <![endif]--> 
+                    <![endif]-->
                 </em>
 
                 <span>将扫码后的页面<br/>

@@ -357,7 +357,7 @@
 
             <label class="col-sm-1 control-label">初审人员:</label>
             <div class="col-sm-2">
-                <p class="form-control-static">${loan.loan.verifyLoginName}</p>
+                <p class="form-control-static">${loan.loan.verifyLoginName!}</p>
             </div>
         </div>
         </#if>

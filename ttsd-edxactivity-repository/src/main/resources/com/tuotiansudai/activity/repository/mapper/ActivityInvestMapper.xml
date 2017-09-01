@@ -55,6 +55,7 @@
             </if>
         </where>
         GROUP BY ai.login_name , ai.user_name , ai.mobile
+        ORDER BY sumAmount DESC , MAX(ai.created_time)
     </select>
 
 </mapper>
