@@ -232,6 +232,9 @@
                     <a rel="nofollow" class="logo-lian" href="http://www.umpay.com/" target="_blank">
                 </a>
                 </li>
+                <li><a rel="nofollow" class="logo-cfca" href="https://www.anxinsign.com/" target="_blank">
+                </a>
+                </li>
             </ul>
         </div>
 

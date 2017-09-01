@@ -8,9 +8,7 @@
         <li class="assure"><a href="/about/assurance">安全保障</a></li>
     </ul>
     <div class="main-banner">
-        <div class="page-width">
-            <img id="guideBar" alt="风控流程">
-        </div>
+        <div class="page-width"></div>
     </div>
     <div class="section-box-one bg-white clearfix pad-box">
         <div class="page-width">
@@ -108,7 +106,7 @@
             </div>
 
             <div class="creditor-right-info">
-                <img src="${commonStaticServer}/images/sign/assure/creditor-right.png" class="fl">
+                <div class="creditor-right"></div>
                 <p>抵押贷债权持有者因资金流动性需求，将持有的债权项目挂出并转让，并承担一定比例的折让金。一对一转让，不可拆分。周期为5天，5天未有购买的将流标。5 天内如有回款则债权无法申请转让，当前为逾期状态债权也不能申请转让。
 
                 </p>
@@ -121,7 +119,7 @@
 
     <div class="section-box-four clearfix pad-box page-width">
         <div class="column-title-ac"><i></i>如何投资<i></i> </div>
-        <img src="${commonStaticServer}/images/sign/assure/steps.jpg" alt="风控流程">
+        <div class="assure-steps"></div>
         <div class="tc">
             <a href="/register/user" class="btn-guide">注册投资</a>
         </div>

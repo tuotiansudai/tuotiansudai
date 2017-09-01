@@ -470,12 +470,12 @@
         .gift-item{
           float:left;
           width:100%;
-          background:url('../images/2017/sport-play/gift-bg.png') no-repeat left top;
+          background:url('../images/2017/sport-play/gift-bg.png') no-repeat center top;
           background-size:100%;
           margin-bottom: 60px;
           position: relative;
           @media (max-width: 700px) {
-            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat left top;
+            background:url('../images/2017/sport-play/gift-bg-phone.png') no-repeat center top;
             background-size:cover;
             border-radius: 10px;
             margin-bottom: 30px;
