@@ -1,7 +1,7 @@
 import 'mobileStyle/MediaList.scss';
 import React from 'react';
 import { hashHistory } from 'react-router';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
@@ -167,7 +167,7 @@ class MediaList extends React.Component {
 				<div className="banner" ref="banner">
 					<Carousel data={this.state.bannerData} />
 				</div>
-				<ul className="tab-header clearfix" ref="tabHeader">
+				<ul className="tab-header clearfix" ref="tabHeader" >
 					{data.tabHeader.map((value, index) => {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
