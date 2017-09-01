@@ -11,12 +11,12 @@
         <result column="created_time" property="createdTime"></result>
         <result column="expired_time" property="expiredTime"></result>
         <result column="status" property="status"></result>
-        <result column="captcha_type" property="captchaType"></result>
+        <result column="captcha_type" property="smsCaptchaType"></result>
     </resultMap>
 
     <insert id="create" parameterType="SmsCaptchaModel" useGeneratedKeys="true" keyProperty="id">
           insert into sms_captcha(captcha, mobile, expired_time, created_time, captcha_type)
-          value(#{captcha}, #{mobile}, #{expiredTime}, #{createdTime}, #{captchaType})
+          value(#{captcha}, #{mobile}, #{expiredTime}, #{createdTime}, #{smsCaptchaType})
     </insert>
 
     <update id="update" parameterType="SmsCaptchaModel">
@@ -28,6 +28,6 @@
     </select>
 
     <select id="findByMobileAndCaptchaType" resultMap="smsCaptchaModelResultMap">
-        select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaType}
+        select * from sms_captcha where mobile = #{mobile} and captcha_type = #{smsCaptchaType}
     </select>
 </mapper>

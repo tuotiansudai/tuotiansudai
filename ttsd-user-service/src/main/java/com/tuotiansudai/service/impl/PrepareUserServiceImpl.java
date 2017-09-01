@@ -4,6 +4,7 @@ package com.tuotiansudai.service.impl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.PrepareUserService;
@@ -36,7 +37,7 @@ public class PrepareUserServiceImpl implements PrepareUserService {
 
         boolean referrerMobileIsExist = userService.mobileIsExist(requestDto.getReferrerMobile());
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
-        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(requestDto.getMobile(), requestDto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
+        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(requestDto.getMobile(), requestDto.getCaptcha(), SmsCaptchaType.REGISTER_CAPTCHA);
         boolean prepareUserExist = prepareUserMapper.findByMobile(requestDto.getMobile()) != null;
 
         if (!referrerMobileIsExist || mobileIsExist || verifyCaptchaFailed || prepareUserExist) {
