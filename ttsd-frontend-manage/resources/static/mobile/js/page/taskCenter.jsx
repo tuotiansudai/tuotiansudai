@@ -47,7 +47,6 @@ class NewbieTaskGroup extends React.Component {
         let rows=[];
         let jumto=this.props.jumpToEvent;
         let keyNum;
-        // debugger
         if(newbieTasks) {
             newbieTasks.forEach(function(option,key) {
             keyNum=key+1;

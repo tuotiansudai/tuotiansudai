@@ -1,7 +1,7 @@
 import 'mobileStyle/MediaList.scss';
 import React from 'react';
 import { hashHistory } from 'react-router';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
@@ -51,10 +51,19 @@ class MediaList extends React.Component {
 		if (section === 'ALL') {
 			delete sendData.section;
 		}
+		this.setState({
+			isShowLoading:true
+		});
+
 		mobileCommon.ajax({
 			url: '/media-center/article-list',
 			data: sendData,
-			done: callback
+			done: function(data) {
+				this.setState({
+					isShowLoading:false
+				});
+				callback && callback(data);
+			}.bind(this)
 		});
 	}
 	tabHeaderClickHandler(event) {
@@ -67,7 +76,7 @@ class MediaList extends React.Component {
 			this.setState((previousState) => {
 				return {
 					listData: Immutable(response.data.articleList),
-					isShowLoading: response.data.articleList.length < pageSize ? false : true
+					isShowLoading: false
 				};
 			});
 		});
@@ -89,7 +98,7 @@ class MediaList extends React.Component {
 			this.setState((previousState) => {
 				return {
 					listData: previousState.listData.concat(response.data.articleList),
-					isShowLoading: response.data.articleList.length < pageSize ? false : true
+					isShowLoading: false
 				}
 			});
 		})
@@ -106,7 +115,7 @@ class MediaList extends React.Component {
 					return {
 						listData: Immutable(listData),
 						bannerData: Immutable(bannerData),
-						isShowLoading: listData.length < pageSize ? false : true
+						isShowLoading: false
 					};
 				});
 			}
@@ -118,6 +127,7 @@ class MediaList extends React.Component {
 		mobileCommon.ajax({
 			url: '/media-center/banner',
 			done: function(response) {
+
 				bannerData = response.data.articleList.map((value) => {
 					return {
 						img: value.showPicture,
@@ -129,27 +139,46 @@ class MediaList extends React.Component {
 		});
 	}
 	componentDidUpdate() {
-		imagesLoaded(this.refs.scrollWrap).on('always', () => {
-			setTimeout(() => {
+		//数据加载完成后
+		//数据加载完成后
+		if (!this.state.isShowLoading) {
+			imagesLoaded(this.refs.mainConWrap).on('done', () => {
+
+				let scrollHeight = (document.documentElement.clientHeight -this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight) + 'px';
+				let myIScrollSec = new IScroll(this.refs.mainConWrap, {
+					probeType: 3,
+					mouseWheel: true,
+					hScrollbar: false,
+					vScrollbar: true,
+					momentum: false,
+					useTransition: false,
+					bounce: false,
+					useTransform: true
+
+				});
 				if (!this.myScroll) {
-					// let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-					this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
-					this.myScroll = new IScroll(this.refs.scrollWrap);
+					this.refs.mainConWrap.style.height = scrollHeight;
+					this.myScroll = myIScrollSec;
+
 					this.myScroll.on('scrollEnd', () => {
 						if (this.myScroll.y <= this.myScroll.maxScrollY) {
-							if (this.state.isShowLoading) {
-								this.pagination.call(this);
-							}
+
+							this.pagination.call(this);
+
+							this.myScroll.refresh();
+
 						}
 					});
-				} else {
+
+
+				}  else {
 					this.myScroll.refresh();
 					if (this.listIndex === 1) {
 						this.myScroll.scrollTo(0, 0);
 					}
 				}
-			}, 200);
-		});
+			});
+		}
 	}
 	componentWillUnmount() {
 		this.destroyIscroll.call(this);
@@ -172,28 +201,30 @@ class MediaList extends React.Component {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
 				</ul>
-				<div className="tab-body" ref="scroll-wrap">
-					<div className="scroll-wrap" ref="scrollWrap">
-						<ul className="list">
-							{this.state.listData.map((value, index) => {
-								return (
-									<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId} data-delegate="true">
-										<div className="pull-left">
-											<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
-										</div>
-										<h3>{value.title}</h3>
-										<div className="clearfix bottom-block">
-											<time className="pull-left">{value.creatTime}</time>
-											<div className="pull-right">
-												<div className="readed">阅读：<span>{value.readCount}</span></div>
-												<Praise className="praise" likeCount={value.likeCount}></Praise>
+				<div className="tab-body">
+					<div className="scroll-wrap" ref="mainConWrap">
+						<div className="clearfix">
+							<ul className="list">
+								{this.state.listData.map((value, index) => {
+									return (
+										<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId} data-delegate="true">
+											<div className="pull-left">
+												<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
 											</div>
-										</div>
-									</li>
-								);
-							})}
-							{loading}
-						</ul>
+											<h3>{value.title}</h3>
+											<div className="clearfix bottom-block">
+												<time className="pull-left">{value.creatTime}</time>
+												<div className="pull-right">
+													<div className="readed">阅读：<span>{value.readCount}</span></div>
+													<Praise className="praise" likeCount={value.likeCount}></Praise>
+												</div>
+											</div>
+										</li>
+									);
+								})}
+								{loading}
+							</ul>
+						</div>
 					</div>
 				</div>
 			</section>
