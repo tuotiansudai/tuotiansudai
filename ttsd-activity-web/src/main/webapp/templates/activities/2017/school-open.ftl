@@ -17,9 +17,6 @@
             <span class="sub-title">当日所获抽签机会，仅限当日使用，<br>如当日未使用，则机会失效</span>
             <div class="reward-scroll">
                 <ul class="scroll-inner user-record">
-                    <li>恭喜188****6621抽中了6.99元红包</li>
-                    <li>恭喜188****6622抽中了6.99元红包</li>
-                    <li>恭喜188****6623抽中了6.99元红包</li>
                 </ul>
             </div>
 
@@ -292,8 +289,8 @@
     </div>
     <div class="layer-reward-list" style="display: none">
         <div class="own-record-title">
-            <span>日期时间</span>
             <span>奖品名称</span>
+            <span>日期时间</span>
         </div>
         <div class="own-record-box">
             <ul class="own-record"></ul>
