@@ -191,7 +191,10 @@ function scrollText(dom,marginWid) {
     let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
     if(lis.length>1) {
         clearInterval(scrollTimer);
-        lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
+
+       lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
+
+
         scrollTimer = setInterval(function() {
             leftW-=3;
 
@@ -215,6 +218,8 @@ function scrollImg(dom,marginWid) {
     if(lis.length>1) {
         clearInterval(scrollImgTimer);
         lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
+
+
         scrollImgTimer = setInterval(function() {
             leftW-=3;
 
