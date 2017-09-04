@@ -84,7 +84,9 @@ var drawCircle=new drawCircleFun(pointAllList,pointUserList,drawURL,paramData,$a
 
 //渲染奖品
 drawCircle.MyGift();
-drawCircle.GiftRecord();
+drawCircle.GiftRecord(function() {
+    scrollText($userRecord,0);
+});
 
 let $ownRecord = $('.own-record',$activityPageFrame);
 
@@ -179,13 +181,13 @@ $myRecordLink.on('click',function() {
 function scrollText(dom,marginWid) {
     var lis = dom.find('li');
     let htmlUl = dom.html();
-    let leftW=0;
+    let leftW=0,scrollTimer;
     lis.length>1 && dom.append(htmlUl);
     let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
     if(lis.length>1) {
-
+        clearInterval(scrollTimer);
         lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
-        let timer = setInterval(function() {
+        scrollTimer = setInterval(function() {
             leftW-=3;
 
             if(Math.abs(leftW) >=allTextWid) {
@@ -198,8 +200,5 @@ function scrollText(dom,marginWid) {
         dom.addClass('only-one');
     }
 }
-window.onload = function() {
-    //跑马灯效果
-    scrollText($userRecord,0);
-}
+
 scrollText($('#rewardOtherBox'),15);
