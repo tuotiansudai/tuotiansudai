@@ -128,7 +128,7 @@ $pointerImg.on('click',function() {
 
                 let times = setTimeout(function(){
                     scrollText($userRecord,0);
-                },200);
+                },300);
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
