@@ -28,9 +28,9 @@ class App extends React.Component {
     }
 }
 
-// document.addEventListener('touchmove', function(event) {
-//     event.preventDefault();
-// });
+document.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+});
 
 ReactDom.render(<App />, document.getElementById('app'));
 
