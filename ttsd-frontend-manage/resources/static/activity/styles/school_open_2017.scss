@@ -124,10 +124,15 @@ body {
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        //padding:0 50px;
         margin: 0 auto;
         line-height: 60px;
         color: #fff;
+        .user-record {
+          height:60px;
+          -webkit-transform: translate3d(0,0,0);
+          overflow: hidden;
+          backface-visibility: hidden;
+        }
         .scroll-inner {
           //width:9999px;
           position: absolute;
