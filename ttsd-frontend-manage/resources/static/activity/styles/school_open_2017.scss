@@ -131,6 +131,7 @@ body {
           height:60px;
           -webkit-transform: translate3d(0,0,0);
           overflow: hidden;
+          backface-visibility: hidden;
         }
         .scroll-inner {
           //width:9999px;
