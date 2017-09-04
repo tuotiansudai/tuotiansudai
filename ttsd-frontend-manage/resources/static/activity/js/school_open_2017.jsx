@@ -18,7 +18,7 @@ let $pointerImg = $('.draw-bucket',$luckDrawBox),
     paramData={
         'activityCategory':'SCHOOL_SEASON_ACTIVITY'
         };
-
+let scrollTimer;
 $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
     let kind = $(option).data('return');
     tipGroupObj[kind] = option;
@@ -185,7 +185,7 @@ $myRecordLink.on('click',function() {
 function scrollText(dom,marginWid) {
     var lis = dom.find('li');
     let htmlUl = dom.html();
-    let leftW=0,scrollTimer;
+    let leftW=0;
     lis.length>1 && dom.append(htmlUl);
     let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
     if(lis.length>1) {
