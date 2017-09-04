@@ -292,8 +292,8 @@
     </div>
     <div class="layer-reward-list" style="display: none">
         <div class="own-record-title">
-            <span>日期时间</span>
             <span>奖品名称</span>
+            <span>日期时间</span>
         </div>
         <div class="own-record-box">
             <ul class="own-record"></ul>
