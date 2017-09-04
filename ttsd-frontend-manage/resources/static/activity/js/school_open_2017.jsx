@@ -18,7 +18,8 @@ let $pointerImg = $('.draw-bucket',$luckDrawBox),
     paramData={
         'activityCategory':'SCHOOL_SEASON_ACTIVITY'
         };
-let scrollTimer;
+let scrollTimer,
+    scrollImgTimer;
 $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
     let kind = $(option).data('return');
     tipGroupObj[kind] = option;
@@ -205,4 +206,27 @@ function scrollText(dom,marginWid) {
     }
 }
 
-scrollText($('#rewardOtherBox'),15);
+function scrollImg(dom,marginWid) {
+    var lis = dom.find('li');
+    let htmlUl = dom.html();
+    let leftW=0;
+    lis.length>1 && dom.append(htmlUl);
+    let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
+    if(lis.length>1) {
+        clearInterval(scrollImgTimer);
+        lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
+        scrollImgTimer = setInterval(function() {
+            leftW-=3;
+
+            if(Math.abs(leftW) >=allTextWid) {
+                leftW=0;
+            }
+            dom.css({'left':leftW});
+        },50);
+        dom.removeClass('only-one');
+    } else if(lis.length==0 || lis.length==1 ){
+        dom.addClass('only-one');
+    }
+}
+
+scrollImg($('#rewardOtherBox'),15);
