@@ -52,9 +52,15 @@ $activityPageFrame.find('.to-login,.to-text-login').on('click', function(event) 
         let thisClass = this.className;
         if(thisClass=='icon-left') {
             //上一页
+            if(pageIndex==1) {
+                return;
+            }
             pageIndex = (pageIndex>1) ? (pageIndex-1) : pageIndex;
         } else if(thisClass == 'icon-right') {
             //下一页
+            if(pageIndex ==totalPage) {
+                return;
+            }
             pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
         }
         $('.page-index',$pageNumber).text(pageIndex);
@@ -126,11 +132,9 @@ $pointerImg.on('click',function() {
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
                 drawCircle.MyGift();
-                drawCircle.GiftRecord();
-
-                let times = setTimeout(function(){
+                drawCircle.GiftRecord(function() {
                     scrollText($userRecord,0);
-                },200);
+                });
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
