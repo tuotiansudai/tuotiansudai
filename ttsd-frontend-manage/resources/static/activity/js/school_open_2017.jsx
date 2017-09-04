@@ -124,11 +124,9 @@ $pointerImg.on('click',function() {
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
                 drawCircle.MyGift();
-                drawCircle.GiftRecord();
-
-                let times = setTimeout(function(){
+                drawCircle.GiftRecord(function() {
                     scrollText($userRecord,0);
-                },300);
+                });
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
