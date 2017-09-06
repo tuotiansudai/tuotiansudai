@@ -64,7 +64,7 @@ public class CelebrationAchievementService {
     }
 
     public List<InvestAchievementView> obtainCelebrationAchievement(long loanId) {
-        return investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
+        return investMapper.findAmountOrderByLoanId(loanId, startTime, endTime,3);
     }
 
     public String encryptMobileForWeb(String loginName, String encryptLoginName, String encryptMobile) {

@@ -309,7 +309,8 @@ public interface InvestMapper {
 
     List<InvestAchievementView> findAmountOrderByLoanId(@Param(value = "loanId") long loanId,
                                                         @Param(value = "activityStartTime") Date activityStartTime,
-                                                        @Param(value = "activityEndTime") Date activityEndTime);
+                                                        @Param(value = "activityEndTime") Date activityEndTime,
+                                                        @Param(value = "page") Integer page);
 
     List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value="loginName") String loginName,
                                                                   @Param(value="startTime") Date startTime,

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.NationalMidAutumnMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="nationalMidAutumnMap" type="com.tuotiansudai.activity.repository.model.NationalMidAutumnModel">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="invest_cash" property="investCash"/>
+        <result column="invest_coupon" property="investCoupon"/>
+        <result column="money_amount" property="moneyAmount"/>
+        <result column="loan_type" property="loanType"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <resultMap id="nationalMidAutumnMap" type="com.tuotiansudai.activity.repository.model.NationalMidAutumnView">
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="sumCashInvestAmount" property="sumCashInvestAmount"/>
+        <result column="sumCouponInvestAmount" property="sumCouponInvestAmount"/>
+        <result column="sumMoneyAmount" property="sumMoneyAmount"/>
+    </resultMap>
+
+    <insert id="create" parameterType="ActivityModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`nationam_mid_autumn`
+        (`loan_id`, `login_name`, `user_name`, `mobile`, `invest_cash`, `invest_coupon`, `money_amount`, `loan_type`, `created_time`)
+        VALUES
+        (#{loanId}, #{loginName}, #{userName} ,#{mobile} ,#{investCash}, #{investCoupon}, #{moneyAmount}, #{loanType}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="ActivityModel">
+        UPDATE `edxactivity`.`nationam_mid_autumn`
+        SET
+        `loan_id` = #{loanId},
+        `login_name` = #{loginName},
+        `user_name` = #{userName},
+        `mobile` = #{mobile},
+        `invest_cash` = #{investCash},
+        `invest_coupon` = #{investCoupon},
+        `money_amount` = #{moneyAmount},
+        `loan_type` = #{loanType},
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findNationalMidAutumnModel" resultMap="nationalMidAutumnMap" parameterType="map">
+        SELECT * FROM `edxactivity`.`nationam_mid_autumn`
+        <where>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
+            </if>
+            <if test="loanId != null">
+                AND loan_id = #{loanId}
+            </if>
+            <if test="loanType != null">
+                AND loan_type = #{loanType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAll" resultMap="nationalMidAutumnMap">
+        SELECT
+        nma.user_name,
+        nma.mobile
+        SUM(nma.invest_cash) sumCashInvestAmount,
+        SUM(nma.invest_coupon) sumCouponInvestAmount,
+        SUM(nma.money_amount) sumMoneyAmount,
+        FROM `edxactivity`.`nationam_mid_autumn` nma
+        GROUP BY nma.login_name
+    </select>
+</mapper>
