@@ -239,6 +239,17 @@
                     </div>
 
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否可以使用优惠券: </label>
+
+                    <div class="col-sm-4 checkbox">
+                        <label for="nonUseCoupon">
+                            <input type="checkbox" name="nonTransferable" value="true">（选中后投资此标的不允许使用任何优惠券）
+                        </label>
+                    </div>
+
+                </div>
             </div>
         </section>
 

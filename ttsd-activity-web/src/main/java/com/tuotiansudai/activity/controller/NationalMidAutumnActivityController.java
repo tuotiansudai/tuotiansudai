@@ -56,7 +56,6 @@ public class NationalMidAutumnActivityController {
         modelAndView.addObject("activityStartTime", activityNationalDayStartTime);
         modelAndView.addObject("activityEndTime", activityNationalDayEndTime);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
-        modelAndView.addObject("prizeDto", nationalMidAutumnService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
 
         return modelAndView;
     }

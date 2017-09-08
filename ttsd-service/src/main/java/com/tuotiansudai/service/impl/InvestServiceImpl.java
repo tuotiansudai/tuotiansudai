@@ -189,6 +189,12 @@ public class InvestServiceImpl implements InvestService {
     // 验证优惠券是否可用
     private void checkUserCouponIsAvailable(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
+
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        if(loanDetailsModel.getNonUseCoupon()){
+            throw new InvestException(InvestExceptionType.NOT_USE_COUPON);
+        }
+
         LoanModel loanModel = loanMapper.findById(loanId);
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());

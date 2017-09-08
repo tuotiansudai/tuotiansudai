@@ -54,7 +54,11 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.midAutumn.endTime}\")}")
     private Date activityNationalMidAutumnEndTime;
 
+    //判断是否发过
     private static final String NATIONAL_MID_AUTUMN_CASH_KEY = "NATIONAL_MID_AUTUMN_CASH_KEY";
+
+    //已发的现金总额
+    private static final String NATIONAL_MID_AUTUMN_SUM_CASH_KEY = "NATIONAL_MID_AUTUMN_SUM_CASH_KEY";
 
     @Override
     public MessageQueue queue() {
@@ -111,13 +115,24 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
             return;
         }
 
-        long prizeAmount = (investAmount/1000000)*10000 > 1000000 ? 1000000 : (investAmount/1000000)*10000;
+        long sendPrizeAmount = 0;
+        if(redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName)){
+            sendPrizeAmount =  Long.parseLong(redisWrapperClient.hget(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName));
+        }
+
+        if(sendPrizeAmount >= 1000000){
+            logger.info("send cash is many than 10000, no prize.");
+            return;
+        }
+
+        long prizeAmount= (investAmount/1000000)*10000 > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : (investAmount/1000000)*1000;
 
         long orderId = IdGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount), NationalMidAutumnLoanType.InvestCash.name());
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
         if (response.getData()!=null && response.getData().getStatus()){
             redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY,String.valueOf(loanId)+loginName, String.valueOf(prizeAmount));
+            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName,String.valueOf(prizeAmount+sendPrizeAmount));
         }
         logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
     }

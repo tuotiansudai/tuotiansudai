@@ -87,6 +87,8 @@
         <result column="amount" property="amount"></result>
         <result column="mobile" property="mobile"></result>
         <result column="trading_time" property="tradingTime"></result>
+        <result column="loan_desc" property="loanDesc"></result>
+        <result column="user_name" property="userName"></result>
     </resultMap>
 
     <sql id="columns">
@@ -1105,7 +1107,7 @@
                     AND i.transfer_status != 'SUCCESS'
             GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
         ORDER BY amount desc,trading_time
-        <if test="page != null">
+        <if test=" page ! = null">
             LIMIT #{page}
         </if>
     </select>
@@ -1120,6 +1122,27 @@
         AND loan.activity_type!='NEWBIE'
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
         ORDER BY trading_time ASC
-
     </select>
+
+    <select id="findAmountByLoanIdAndDesc" parameterType="map" resultMap="investAchievementView">
+        SELECT temp.login_name,temp.amount,temp.trading_time,temp.loan_desc,user.mobile,user.user_name FROM
+        (SELECT
+        login_name,
+        loan_details.activity_desc AS loan_desc,
+        SUM(amount) AS amount,
+        MAX(trading_time) AS trading_time
+        FROM
+        invest i JOIN loan on i.loan_id = loan.id JOIN loan_details on loan.id = loan_details.loan_id
+        WHERE i.loan_id != 1
+        AND loan.activity_type != 'NEWBIE'
+        AND loan_details.activity_desc in
+        <foreach collection="loanActivityDescList" item="activityDesc" open="(" separator="," close=")">
+          #{activityDesc}
+        </foreach>
+        AND loan.fundraising_start_time BETWEEN #{startTime} AND #{endTime}
+        AND i.status = 'SUCCESS'
+        AND i.transfer_status != 'SUCCESS'
+        GROUP BY loan_details.activity_desc, i.login_name) temp join user on temp.login_name = user.login_name
+    </select>
+
 </mapper>

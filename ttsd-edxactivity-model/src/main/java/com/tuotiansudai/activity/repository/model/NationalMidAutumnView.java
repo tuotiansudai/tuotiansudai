@@ -5,6 +5,7 @@ import java.util.Date;
 public class NationalMidAutumnView {
 
     private String userName;
+    private String loginName;
     private String mobile;
     private long sumCashInvestAmount;
     private long sumCouponInvestAmount;
@@ -13,12 +14,29 @@ public class NationalMidAutumnView {
     public NationalMidAutumnView() {
     }
 
+    public NationalMidAutumnView(String userName, String loginName,String mobile, long sumCashInvestAmount, long sumCouponInvestAmount, long sumMoneyAmount) {
+        this.userName = userName;
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.sumCashInvestAmount = sumCashInvestAmount;
+        this.sumCouponInvestAmount = sumCouponInvestAmount;
+        this.sumMoneyAmount = sumMoneyAmount;
+    }
+
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getMobile() {

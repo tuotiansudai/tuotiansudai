@@ -315,4 +315,8 @@ public interface InvestMapper {
     List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value="loginName") String loginName,
                                                                   @Param(value="startTime") Date startTime,
                                                                   @Param(value="endTime") Date endTime);
+
+    List<InvestAchievementView> findAmountByLoanIdAndDesc(@Param(value="startTime") Date startTime,
+                                         @Param(value="endTime") Date endTime,
+                                         @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
 }
