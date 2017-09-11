@@ -42,8 +42,8 @@
             <if test="extraSource !=null"> extra_source = #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},</if>
             <if test="activity !=null">activity = #{activity},</if>
             <if test="activityDesc !=null">activity_desc = #{activityDesc},</if>
-            <if test="nonTransferable !=null">non_transferable = #{nonTransferable}</if>
-            <if test="nonUseCoupon !=null">non_use_coupon = #{nonUseCoupon}</if>
+            <if test="nonTransferable !=null">non_transferable = #{nonTransferable},</if>
+            <if test="nonUseCoupon !=null">non_use_coupon = #{nonUseCoupon},</if>
             <if test="pushMessage !=null and pushMessage != ''">push_message = #{pushMessage}</if>
         </trim>
         WHERE
