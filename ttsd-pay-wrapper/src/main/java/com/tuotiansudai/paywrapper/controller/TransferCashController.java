@@ -24,11 +24,4 @@ public class TransferCashController extends BaseController{
     public BaseDto<PayDataDto> transferCash(@Valid @RequestBody TransferCashDto transferCashDto) {
         return transferCashService.transferCash(transferCashDto);
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/national-day-cash", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> nationalDayCash(@Valid @RequestBody TransferCashDto transferCashDto) {
-        return transferCashService.nationalDayCash(transferCashDto);
-    }
-
 }

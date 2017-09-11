@@ -37,7 +37,7 @@ public class NationalMidAutumnActivityController {
     private Date activityNationalDayEndTime;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView schoolSeason(){
+    public ModelAndView nationalMidAutumn(){
         ModelAndView modelAndView=new ModelAndView("/activities/2017/national-mid-autumn","responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
@@ -62,7 +62,7 @@ public class NationalMidAutumnActivityController {
 
     @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BasePaginationDataDto<NewmanTyrantView> obtainCelebrationHero(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public BasePaginationDataDto<NewmanTyrantView> obtainRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> nationalDayRankViews = nationalMidAutumnService.obtainRank(tradingTime);

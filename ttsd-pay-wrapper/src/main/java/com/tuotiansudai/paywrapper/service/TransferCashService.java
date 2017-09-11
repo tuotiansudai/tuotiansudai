@@ -7,7 +7,4 @@ import com.tuotiansudai.dto.TransferCashDto;
 public interface TransferCashService {
 
     BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto);
-
-    BaseDto<PayDataDto> nationalDayCash(TransferCashDto transferCashDto);
-
 }

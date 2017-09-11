@@ -4,11 +4,14 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
@@ -104,7 +107,8 @@ public class InvestSuccessWechatLotteryConsumer implements MessageConsumer {
         }
 
         long orderId = IdGenerator.generate();
-        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
+        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount),
+                UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.LOTTERY_CASH, SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE);
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
         logger.info("send wechat invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
     }

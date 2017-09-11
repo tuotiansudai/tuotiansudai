@@ -1,13 +1,13 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.repository.model.NationalMidAutumnLoanType;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -15,6 +15,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.model.InvestAchievementView;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
+import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -55,10 +57,10 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
     private Date activityNationalMidAutumnEndTime;
 
     //判断是否发过
-    private static final String NATIONAL_MID_AUTUMN_CASH_KEY = "NATIONAL_MID_AUTUMN_CASH_KEY";
+    public static final String NATIONAL_MID_AUTUMN_CASH_KEY = "NATIONAL_MID_AUTUMN_CASH_KEY";
 
     //已发的现金总额
-    private static final String NATIONAL_MID_AUTUMN_SUM_CASH_KEY = "NATIONAL_MID_AUTUMN_SUM_CASH_KEY";
+    public static final String NATIONAL_MID_AUTUMN_SUM_CASH_KEY = "NATIONAL_MID_AUTUMN_SUM_CASH_KEY";
 
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
@@ -97,7 +99,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
                 logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_NationalMidAutumn send cash is executing , (loanId : {0}) ", String.valueOf(loanOutInfo.getLoanId())));
                 List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), activityNationalMidAutumnStartTime, activityNationalMidAutumnEndTime, null);
                 for (InvestAchievementView investAchievementView : invests) {
-                    if (!redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanOutInfo.getLoanId())+investAchievementView.getLoginName())){
+                    if (!redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanOutInfo.getLoanId()) + investAchievementView.getLoginName())) {
                         sendCashPrize(investAchievementView.getLoginName(), investAchievementView.getAmount(), loanOutInfo.getLoanId());
                     }
                 }
@@ -117,25 +119,26 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
         }
 
         long sendPrizeAmount = 0;
-        if(redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName)){
-            sendPrizeAmount =  Long.parseLong(redisWrapperClient.hget(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName));
+        if (redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName)) {
+            sendPrizeAmount = Long.parseLong(redisWrapperClient.hget(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName));
         }
 
-        if(sendPrizeAmount >= 1000000){
-            logger.info("send cash is many than 10000, no prize.");
+        if (sendPrizeAmount >= 1000000) {
+            logger.info("send cash is more than 10000, no prize.");
             return;
         }
 
-        long prizeAmount= (investAmount/1000000)*10000 > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : (investAmount/1000000)*10000;
+        long prizeAmount = (investAmount / 1000000) * 10000 > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : (investAmount / 1000000) * 10000;
 
         long orderId = IdGenerator.generate();
-        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
-        BaseDto<PayDataDto> response = payWrapperClient.nationalDayCash(transferCashDto);
-        if (response.isSuccess()){
-            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY,String.valueOf(loanId)+loginName, String.valueOf(prizeAmount), lifeSecond);
-            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName,String.valueOf(prizeAmount+sendPrizeAmount), lifeSecond);
+        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount),
+                UserBillBusinessType.NATIONAL_DAY_INVEST, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVEST_RETURN_CASH_DETAIL_TEMPLATE);
+        BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
+        if (response.isSuccess()) {
+            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId) + loginName, String.valueOf(prizeAmount), lifeSecond);
+            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName, String.valueOf(prizeAmount + sendPrizeAmount), lifeSecond);
             logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
-        }else{
+        } else {
             logger.error("send has_thousand_sent_hundred invest cash prize is fail, loginName:{}, prizeAmount:{} ,response:{}", loginName, String.valueOf(prizeAmount), response.getData().getMessage());
         }
     }

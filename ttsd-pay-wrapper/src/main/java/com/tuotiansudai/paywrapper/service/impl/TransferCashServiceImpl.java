@@ -50,9 +50,9 @@ public class TransferCashServiceImpl implements TransferCashService {
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
-                        UserBillBusinessType.INVEST_CASH_BACK, null, null);
-                String detail = MessageFormat.format(SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
-                systemBillService.transferOut(Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), SystemBillBusinessType.LOTTERY_CASH, detail);
+                        transferCashDto.getUserBillBusinessType(), null, null);
+                String detail = MessageFormat.format(transferCashDto.getSystemBillDetailTemplate().getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
+                systemBillService.transferOut(Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), transferCashDto.getSystemBillBusinessType(), detail);
             }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
@@ -64,31 +64,4 @@ public class TransferCashServiceImpl implements TransferCashService {
         baseDto.setData(payDataDto);
         return baseDto;
     }
-
-    @Override
-    @Transactional
-    public BaseDto<PayDataDto> nationalDayCash(TransferCashDto transferCashDto) {
-        PayDataDto payDataDto = new PayDataDto();
-        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
-        try {
-            AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
-            TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
-            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-            if (responseModel.isSuccess()) {
-                amountTransfer.transferInBalance(transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
-                        UserBillBusinessType.NATIONAL_DAY_INVEST, null, null);
-                String detail = MessageFormat.format(SystemBillDetailTemplate.INVEST_RETURN_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
-                systemBillService.transferOut(Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), SystemBillBusinessType.INVEST_CASH_BACK, detail);
-            }
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setMessage(responseModel.getRetMsg());
-        } catch (Exception e) {
-            payDataDto.setMessage(e.getMessage());
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        baseDto.setData(payDataDto);
-        return baseDto;
-    }
-
 }

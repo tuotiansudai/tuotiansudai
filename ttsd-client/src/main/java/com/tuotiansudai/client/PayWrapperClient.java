@@ -172,10 +172,6 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/loan-out-success-notify");
     }
 
-    public BaseDto<PayDataDto> nationalDayCash(Object transferCashDto) {
-        return syncExecute(transferCashDto, "/national-day-cash");
-    }
-
     public Map<String, String> getUserStatus(String loginName) {
         String json = this.execute(MessageFormat.format("/real-time/user/{0}", loginName), null, "GET");
         try {

@@ -2,7 +2,6 @@ package com.tuotiansudai.mq.consumer.loan;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tuotiansudai.activity.repository.model.NationalMidAutumnLoanType;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -15,7 +14,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.model.InvestAchievementView;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Test;
@@ -30,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.tuotiansudai.mq.consumer.loan.LoanOutSuccessNationalMidAutumnMessageConsumer.NATIONAL_MID_AUTUMN_CASH_KEY;
+import static com.tuotiansudai.mq.consumer.loan.LoanOutSuccessNationalMidAutumnMessageConsumer.NATIONAL_MID_AUTUMN_SUM_CASH_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
@@ -56,12 +56,6 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    //判断是否发过
-    private static final String NATIONAL_MID_AUTUMN_CASH_KEY = "NATIONAL_MID_AUTUMN_CASH_KEY";
-
-    //已发的现金总额
-    private static final String NATIONAL_MID_AUTUMN_SUM_CASH_KEY = "NATIONAL_MID_AUTUMN_SUM_CASH_KEY";
-
     @Test
     @Transactional
     public void shouldConsumeIsOk() throws JsonProcessingException {
@@ -71,7 +65,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
         LoanDetailsModel loanDetailsModel = getMockedLoanDetailsModel(loanOutSuccessMessage.getLoanId());
         List<InvestAchievementView> investAchievementViews = getMockedInvestAchievementViews();
 
-        when(investMapper.findAmountOrderByLoanId(anyLong(),any(),any(),any())).thenReturn(investAchievementViews);
+        when(investMapper.findAmountOrderByLoanId(anyLong(), any(), any(), any())).thenReturn(investAchievementViews);
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(loanDetailsModel);
 
         BaseDto<PayDataDto> baseDto = new BaseDto();
@@ -79,7 +73,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setMessage("message");
         baseDto.setData(payDataDto);
-        when(payWrapperClient.nationalDayCash(any(TransferCashDto.class))).thenReturn(baseDto);
+        when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(baseDto);
 
         consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
         verify(smsWrapperClient, times(0)).sendFatalNotify(any(SmsFatalNotifyDto.class));
@@ -93,11 +87,11 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
         clearRedisClient(loanOutSuccessMessage.getLoanId());
     }
 
-    private LoanOutSuccessMessage buildMockedLoanOutSuccessMessage(){
+    private LoanOutSuccessMessage buildMockedLoanOutSuccessMessage() {
         return new LoanOutSuccessMessage(123l);
     }
 
-    private LoanDetailsModel getMockedLoanDetailsModel(long loanID){
+    private LoanDetailsModel getMockedLoanDetailsModel(long loanID) {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
         loanDetailsModel.setNonTransferable(false);
         loanDetailsModel.setDeclaration("declaration");
@@ -108,7 +102,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
         return loanDetailsModel;
     }
 
-    private List<InvestAchievementView> getMockedInvestAchievementViews(){
+    private List<InvestAchievementView> getMockedInvestAchievementViews() {
         InvestAchievementView investAchievementView1 = new InvestAchievementView();
         investAchievementView1.setAmount(1800000);
         investAchievementView1.setLoginName("test1");
@@ -121,17 +115,17 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
         investAchievementView3.setAmount(100000);
         investAchievementView3.setLoginName("test3");
 
-        return Arrays.asList(investAchievementView1,investAchievementView2,investAchievementView3);
+        return Arrays.asList(investAchievementView1, investAchievementView2, investAchievementView3);
     }
 
-    private void clearRedisClient(long loanId){
-        redisWrapperClient.del(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId)+"test1");
-        redisWrapperClient.del(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId)+"test2");
-        redisWrapperClient.del(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,"test1");
-        redisWrapperClient.del(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,"test2");
+    private void clearRedisClient(long loanId) {
+        redisWrapperClient.del(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId) + "test1");
+        redisWrapperClient.del(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId) + "test2");
+        redisWrapperClient.del(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, "test1");
+        redisWrapperClient.del(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, "test2");
     }
 
-    private String getRedisClientAmount(String key){
-        return redisWrapperClient.hget(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,key);
+    private String getRedisClientAmount(String key) {
+        return redisWrapperClient.hget(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, key);
     }
 }
