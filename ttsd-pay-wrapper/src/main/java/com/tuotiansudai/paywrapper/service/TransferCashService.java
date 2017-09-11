@@ -8,4 +8,6 @@ public interface TransferCashService {
 
     BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto);
 
+    BaseDto<PayDataDto> nationalDayCash(TransferCashDto transferCashDto);
+
 }

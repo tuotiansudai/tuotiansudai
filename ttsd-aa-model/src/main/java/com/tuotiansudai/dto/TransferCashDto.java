@@ -16,9 +16,6 @@ public class TransferCashDto implements Serializable {
     @NotEmpty
     private String amount;
 
-    @NotEmpty
-    private String cashSource;
-
     public String getLoginName() {
         return loginName;
     }
@@ -43,25 +40,10 @@ public class TransferCashDto implements Serializable {
         this.amount = amount;
     }
 
-    public String getCashSource() {
-        return cashSource;
-    }
-
-    public void setCashSource(String cashSource) {
-        this.cashSource = cashSource;
-    }
-
     public TransferCashDto(String loginName, String orderId, String amount) {
         this.loginName = loginName;
         this.orderId = orderId;
         this.amount = amount;
-    }
-
-    public TransferCashDto(String loginName, String orderId, String amount, String cashSource) {
-        this.loginName = loginName;
-        this.orderId = orderId;
-        this.amount = amount;
-        this.cashSource = cashSource;
     }
 
     public TransferCashDto() {

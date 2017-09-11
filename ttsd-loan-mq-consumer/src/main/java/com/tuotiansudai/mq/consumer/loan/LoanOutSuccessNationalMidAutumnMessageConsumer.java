@@ -60,6 +60,8 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
     //已发的现金总额
     private static final String NATIONAL_MID_AUTUMN_SUM_CASH_KEY = "NATIONAL_MID_AUTUMN_SUM_CASH_KEY";
 
+    private final int lifeSecond = 180 * 24 * 60 * 60;
+
     @Override
     public MessageQueue queue() {
         return MessageQueue.LoanOutSuccess_NationalMidAutumn;
@@ -89,7 +91,6 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
         }
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanOutInfo.getLoanId());
-        Date date = new Date();
 
         try {
             if (loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("逢万返百")) {
@@ -125,15 +126,17 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
             return;
         }
 
-        long prizeAmount= (investAmount/1000000)*10000 > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : (investAmount/1000000)*1000;
+        long prizeAmount= (investAmount/1000000)*10000 > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : (investAmount/1000000)*10000;
 
         long orderId = IdGenerator.generate();
-        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount), NationalMidAutumnLoanType.InvestCash.name());
-        BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
-        if (response.getData()!=null && response.getData().getStatus()){
-            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY,String.valueOf(loanId)+loginName, String.valueOf(prizeAmount));
-            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName,String.valueOf(prizeAmount+sendPrizeAmount));
+        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount));
+        BaseDto<PayDataDto> response = payWrapperClient.nationalDayCash(transferCashDto);
+        if (response.isSuccess()){
+            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY,String.valueOf(loanId)+loginName, String.valueOf(prizeAmount), lifeSecond);
+            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY,loginName,String.valueOf(prizeAmount+sendPrizeAmount), lifeSecond);
+            logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
+        }else{
+            logger.error("send has_thousand_sent_hundred invest cash prize is fail, loginName:{}, prizeAmount:{} ,response:{}", loginName, String.valueOf(prizeAmount), response.getData().getMessage());
         }
-        logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
     }
 }

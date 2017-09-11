@@ -39,4 +39,7 @@ public interface UserBillMapper {
                            @Param("endTime") Date endTime);
 
     long findUserSumInterest(@Param("endDate") Date endDate);
+
+    long findUserAmountByBusinessType(@Param("loginName") String loginName,
+                                      @Param("userBillBusinessType") UserBillBusinessType userBillBusinessType);
 }

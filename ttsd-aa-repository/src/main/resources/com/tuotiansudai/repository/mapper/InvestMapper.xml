@@ -1107,7 +1107,7 @@
                     AND i.transfer_status != 'SUCCESS'
             GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
         ORDER BY amount desc,trading_time
-        <if test=" page ! = null">
+        <if test="page != null">
             LIMIT #{page}
         </if>
     </select>
