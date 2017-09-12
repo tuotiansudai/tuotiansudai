@@ -31,7 +31,9 @@ public class MobileAppClientStatisticsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest webRequest = new BufferedRequestWrapper((HttpServletRequest) request);
-        statisticsMobileClientParams(webRequest);
+        if (!((HttpServletRequest) request).getRequestURI().equals("/v1.0/register-huizu")) {
+            statisticsMobileClientParams(webRequest);
+        }
         chain.doFilter(webRequest, response);
     }
 
