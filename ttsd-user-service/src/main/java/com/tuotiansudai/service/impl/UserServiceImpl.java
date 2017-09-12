@@ -113,6 +113,20 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+        boolean register = registerUserCommon(dto, referrerUserModel);
+
+        mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(dto.getMobile(), dto.getOpenid()));//登录成功绑定微信号
+
+        return register;
+    }
+
+    @Override
+    @Transactional
+    public boolean registerUserFromHuizu(RegisterUserDto dto) {
+        return registerUserCommon(dto, null);
+    }
+
+    private boolean registerUserCommon(RegisterUserDto dto, UserModel referrerUserModel) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginNameGenerator.generate());
         dto.setLoginName(userModel.getLoginName());
@@ -124,11 +138,7 @@ public class UserServiceImpl implements UserService {
         userModel.setSalt(salt);
         userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
         userModel.setLastModifiedTime(new Date());
-        boolean register = registerUserService.register(userModel);
-
-        mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(dto.getMobile(), dto.getOpenid()));//登录成功绑定微信号
-
-        return register;
+        return registerUserService.register(userModel);
     }
 
     @Transactional

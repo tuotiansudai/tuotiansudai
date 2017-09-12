@@ -105,6 +105,29 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
     }
 
     @Override
+    public BaseResponseDto<RegisterResponseDataDto> registerUserFromHuizu(RegisterHuizuRequestDto registerHuizuRequestDto) {
+
+        RegisterUserDto dto = registerHuizuRequestDto.convertToRegisterUserDto();
+
+        BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
+        baseResponseDto.setData(registerDataDto);
+
+        registerDataDto.setPhoneNum(dto.getMobile());
+
+        boolean mobileIsExist = userService.mobileIsExist(dto.getMobile());
+        if (mobileIsExist) {
+            registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
+            return baseResponseDto;
+        }
+
+        userService.registerUserFromHuizu(dto);
+
+        registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
+        return baseResponseDto;
+    }
+
+    @Override
     public BaseResponseDto mobileNumberIsExist(MobileIsAvailableRequestDto requestDto) {
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
         return mobileIsExist ? new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg()) :
