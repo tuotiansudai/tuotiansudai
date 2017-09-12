@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="/activity/national-mid-autumn")
+@RequestMapping(value = "/activity/national-mid-autumn")
 public class NationalMidAutumnActivityController {
 
     @Autowired
@@ -37,18 +37,18 @@ public class NationalMidAutumnActivityController {
     private Date activityNationalDayEndTime;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView nationalMidAutumn(){
-        ModelAndView modelAndView=new ModelAndView("/activities/2017/national-mid-autumn","responsive", true);
+    public ModelAndView nationalMidAutumn() {
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/national-mid-autumn", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
-        List<NewmanTyrantView> celebrationHeroRankingViews=nationalMidAutumnService.obtainRank(new Date());
+        List<NewmanTyrantView> celebrationHeroRankingViews = nationalMidAutumnService.obtainRank(new Date());
 
         int investRanking = CollectionUtils.isNotEmpty(celebrationHeroRankingViews) ?
                 Iterators.indexOf(celebrationHeroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? celebrationHeroRankingViews.get(investRanking - 1).getSumAmount() : 0;
 
-        if (investRanking>10){
-            investRanking=0;
+        if (investRanking > 10) {
+            investRanking = 0;
         }
         modelAndView.addObject("prizeDto", nationalMidAutumnService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", investRanking);
@@ -67,7 +67,7 @@ public class NationalMidAutumnActivityController {
         BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> nationalDayRankViews = nationalMidAutumnService.obtainRank(tradingTime);
 
-        nationalDayRankViews=CollectionUtils.isNotEmpty(nationalDayRankViews) && nationalDayRankViews.size() > 10 ? nationalDayRankViews.subList(0, 10) : nationalDayRankViews;
+        nationalDayRankViews = CollectionUtils.isNotEmpty(nationalDayRankViews) && nationalDayRankViews.size() > 10 ? nationalDayRankViews.subList(0, 10) : nationalDayRankViews;
 
         nationalDayRankViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(nationalMidAutumnService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(), newmanTyrantView.getMobile())));
         baseListDataDto.setRecords(nationalDayRankViews);

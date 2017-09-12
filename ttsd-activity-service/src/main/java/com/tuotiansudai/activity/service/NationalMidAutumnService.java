@@ -36,19 +36,19 @@ public class NationalMidAutumnService {
     @Autowired
     private InvestCelebrationHeroRankingMapper investCelebrationHeroRankingMapper;
 
-    public List<NewmanTyrantView> obtainRank(Date tradingTime){
+    public List<NewmanTyrantView> obtainRank(Date tradingTime) {
         if (tradingTime == null) {
             logger.info("tradingTime is null");
             return null;
         }
 
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        List<NewmanTyrantView> celebrationHeroRankingViews=investCelebrationHeroRankingMapper.findCelebrationHeroRankingByTradingTime(tradingTime, activityNationalDayStartTime, activityNationalDayEndTime);
+        List<NewmanTyrantView> celebrationHeroRankingViews = investCelebrationHeroRankingMapper.findCelebrationHeroRankingByTradingTime(tradingTime, activityNationalDayStartTime, activityNationalDayEndTime);
         return celebrationHeroRankingViews;
 
     }
 
-    public String encryptMobileForWeb(String loginName,String encryptLoginName, String encryptMobile) {
+    public String encryptMobileForWeb(String loginName, String encryptLoginName, String encryptMobile) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return "您的位置";
         }

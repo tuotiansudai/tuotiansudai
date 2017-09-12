@@ -134,12 +134,8 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount),
                 UserBillBusinessType.NATIONAL_DAY_INVEST, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVEST_RETURN_CASH_DETAIL_TEMPLATE);
         BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
-        if (response.isSuccess()) {
-            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId) + loginName, String.valueOf(prizeAmount), lifeSecond);
-            redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName, String.valueOf(prizeAmount + sendPrizeAmount), lifeSecond);
-            logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
-        } else {
-            logger.error("send has_thousand_sent_hundred invest cash prize is fail, loginName:{}, prizeAmount:{} ,response:{}", loginName, String.valueOf(prizeAmount), response.getData().getMessage());
-        }
+        redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId) + loginName, String.valueOf(prizeAmount), lifeSecond);
+        redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName, String.valueOf(prizeAmount + sendPrizeAmount), lifeSecond);
+        logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
     }
 }

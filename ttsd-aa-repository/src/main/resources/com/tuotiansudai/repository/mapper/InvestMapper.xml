@@ -87,6 +87,9 @@
         <result column="amount" property="amount"></result>
         <result column="mobile" property="mobile"></result>
         <result column="trading_time" property="tradingTime"></result>
+    </resultMap>
+
+    <resultMap id="activityInvestAchievementView" type="InvestAchievementView" extends="investAchievementView">
         <result column="loan_desc" property="loanDesc"></result>
         <result column="user_name" property="userName"></result>
     </resultMap>
@@ -1107,8 +1110,8 @@
                     AND i.transfer_status != 'SUCCESS'
             GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
         ORDER BY amount desc,trading_time
-        <if test="page != null">
-            LIMIT #{page}
+        <if test="limit != null">
+            LIMIT #{limit}
         </if>
     </select>
 
@@ -1124,7 +1127,7 @@
         ORDER BY trading_time ASC
     </select>
 
-    <select id="findAmountByLoanIdAndDesc" parameterType="map" resultMap="investAchievementView">
+    <select id="findAmountByLoanIdAndDesc" parameterType="map" resultMap="activityInvestAchievementView">
         SELECT temp.login_name,temp.amount,temp.trading_time,temp.loan_desc,user.mobile,user.user_name FROM
         (SELECT
         login_name,
