@@ -413,7 +413,7 @@
 				},
 				setValue: function(s)
 				{
-					if(!$(this).attr('readonly') && !$(this).is(':disabled') && s != $(this).val())
+					if(!$(this).is(':disabled') && s != $(this).val())
 					{
 						$(this).val(s);
 					}
