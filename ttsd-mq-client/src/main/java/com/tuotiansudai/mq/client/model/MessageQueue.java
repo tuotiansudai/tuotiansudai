@@ -71,8 +71,7 @@ public enum MessageQueue {
     DragonBoatShareLoginTransfer("DragonBoatShareLoginTransfer"), // 端午节活动分享落地页老用户登录后，消息中转（为了获取用户信息）
     DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
     DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
-    DragonBoatChampagneEndSendCoupon("DragonBoatChampagneEndSendCoupon"), // 端午节香槟塔活动结束后，给投资用户发优惠券
-    InvestSuccess_InvestHeroRanking("InvestSuccess-InvestHeroRanking"); //周年庆 英雄排行榜，用户投资，消息中转（为了获取用户信息）
+    DragonBoatChampagneEndSendCoupon("DragonBoatChampagneEndSendCoupon"); // 端午节香槟塔活动结束后，给投资用户发优惠券
 
     private final String queueName;
 
