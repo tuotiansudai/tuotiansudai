@@ -116,12 +116,9 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         registerDataDto.setPhoneNum(dto.getMobile());
 
         boolean mobileIsExist = userService.mobileIsExist(dto.getMobile());
-        if (mobileIsExist) {
-            registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
-            return baseResponseDto;
+        if (!mobileIsExist) {
+            userService.registerUserFromHuizu(dto);
         }
-
-        userService.registerUserFromHuizu(dto);
 
         registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
         return baseResponseDto;

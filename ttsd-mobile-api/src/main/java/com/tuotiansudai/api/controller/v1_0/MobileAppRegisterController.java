@@ -41,18 +41,6 @@ public class MobileAppRegisterController extends MobileAppBaseController {
         }
     }
 
-    @RequestMapping(value = "/register-huizu", method = RequestMethod.POST)
-    @ApiOperation("注册慧租用户")
-    public BaseResponseDto<RegisterResponseDataDto> registerUserHuizu(@Valid @RequestBody RegisterHuizuRequestDto registerRequestDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String errorCode = bindingResult.getFieldError().getDefaultMessage();
-            String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto(errorCode, errorMessage);
-        } else {
-            return mobileAppRegisterService.registerUserFromHuizu(registerRequestDto);
-        }
-    }
-
     @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
     @ApiOperation("发送验证码")
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto, HttpServletRequest request) {
