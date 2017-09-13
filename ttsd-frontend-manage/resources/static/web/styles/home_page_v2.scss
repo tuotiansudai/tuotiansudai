@@ -898,13 +898,12 @@ $pointColor: #ff5400;
           }
         }
         .tag-icon {
-          width: 30px;
-          height: 40px;
-          background-size: 100%;
+          zoom:0.6;
+
         }
         &.hack-newbie {
           .tag-icon {
-            background-size: 100%;
+
           }
         }
         .loan-info {
