@@ -622,18 +622,13 @@ $pointColor: #ff5400;
           box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0, 0.07);
         }
         a {
-          width:140px;
-          height:55px;
-          margin:0 auto;
-          display: inline-block;
+          width:100%;
+          height:100%;
+          display: block;
           text-align: center;
-          position: absolute;
-          top:50%;
-          left:50%;
-          transform:translate(-50%,-50%);
-
-          &.logo-lian {
-            background: url('../images/global/logo-lian.png') center center no-repeat;
+          &.logo-cfca {
+            margin-top: 10px;
+            margin-left: 16px;
           }
 
         }
