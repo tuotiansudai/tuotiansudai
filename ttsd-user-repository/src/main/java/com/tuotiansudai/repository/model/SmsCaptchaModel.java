@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.enums.SmsCaptchaType;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +16,18 @@ public class SmsCaptchaModel implements Serializable {
 
     private Date createdTime;
 
-    private CaptchaType captchaType;
+    private SmsCaptchaType smsCaptchaType;
+
+    public SmsCaptchaModel() {
+    }
+
+    public SmsCaptchaModel(String captcha, String mobile, Date expiredTime, SmsCaptchaType smsCaptchaType) {
+        this.captcha = captcha;
+        this.mobile = mobile;
+        this.expiredTime = expiredTime;
+        this.createdTime = new Date();
+        this.smsCaptchaType = smsCaptchaType;
+    }
 
     public Long getId() {
         return id;
@@ -56,11 +69,11 @@ public class SmsCaptchaModel implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public CaptchaType getCaptchaType() {
-        return captchaType;
+    public SmsCaptchaType getSmsCaptchaType() {
+        return smsCaptchaType;
     }
 
-    public void setCaptchaType(CaptchaType captchaType) {
-        this.captchaType = captchaType;
+    public void setSmsCaptchaType(SmsCaptchaType smsCaptchaType) {
+        this.smsCaptchaType = smsCaptchaType;
     }
 }

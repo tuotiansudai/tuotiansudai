@@ -18,7 +18,7 @@
 			</div>
 			<div class="item-block date-filter">
 		        <span class="sub-hd">起止时间:</span>
-		        <input type="text" id="date-picker" class="input-control" size="35"/>
+		        <input type="text" id="date-picker" class="input-control" size="35" readonly/>
 		        <span class="select-item" data-day="1">今天</span>
 		        <span class="select-item" data-day="7">最近一周</span>
 		        <span class="select-item current" data-day="30">一个月</span>

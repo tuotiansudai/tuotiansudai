@@ -6,7 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppRetrievePasswordService;
 import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
@@ -32,7 +32,7 @@ public class MobileAppRetrievePasswordServiceImpl implements MobileAppRetrievePa
         String mobile = retrievePasswordDto.getMobile();
         String captcha = retrievePasswordDto.getCaptcha();
         String password = retrievePasswordDto.getPassword();
-        boolean verified = smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        boolean verified = smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
         if(verified){
             UserModel userModel = userMapper.findByMobile(mobile);
             if(userModel != null){

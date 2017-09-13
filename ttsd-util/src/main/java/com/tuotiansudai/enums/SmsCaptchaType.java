@@ -1,7 +1,7 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.enums;
 
 
-public enum CaptchaType {
+public enum SmsCaptchaType {
     REGISTER_CAPTCHA,
     RETRIEVE_PASSWORD_CAPTCHA,
     NO_PASSWORD_INVEST,

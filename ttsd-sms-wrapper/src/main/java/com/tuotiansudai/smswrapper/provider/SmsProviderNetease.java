@@ -1,11 +1,20 @@
 package com.tuotiansudai.smswrapper.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
+import com.tuotiansudai.dto.sms.NeteaseSmsResponseDto;
+import com.tuotiansudai.smswrapper.SmsChannel;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.CheckSumBuilder;
 import com.tuotiansudai.smswrapper.exception.SmsSendingException;
+import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.NeteaseCallbackRequestMapper;
+import com.tuotiansudai.smswrapper.repository.model.NeteaseCallbackRequestModel;
+import com.tuotiansudai.smswrapper.repository.model.SmsHistoryModel;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -16,24 +25,43 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Component
-public class SmsProviderNetease implements SmsProvider {
+public class SmsProviderNetease extends SmsProviderBase {
 
     private static Logger logger = Logger.getLogger(SmsProviderNetease.class);
+
+    private ObjectMapper objectMapper;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private final static HttpClient httpClient = HttpClientBuilder.create().build();
 
     private String url;
     private String appKey;
     private String appSecret;
+
+    private final NeteaseCallbackRequestMapper neteaseCallbackRequestMapper;
+
+    @Autowired
+    public SmsProviderNetease(NeteaseCallbackRequestMapper neteaseCallbackRequestMapper) {
+        this.neteaseCallbackRequestMapper = neteaseCallbackRequestMapper;
+        this.objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     @Value("${sms.netease.url}")
     public void setUrl(String url) {
@@ -50,30 +78,45 @@ public class SmsProviderNetease implements SmsProvider {
         this.appSecret = appSecret;
     }
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) {
+        List<SmsHistoryModel> smsHistoryModels = this.createSmsHistory(mobileList, smsTemplate, paramList, SmsChannel.NETEASE);
 
-    private HttpClient httpClient = HttpClientBuilder.create().build();
-
-    public void sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) throws SmsSendingException {
-        String templateId = smsTemplate.getTemplateIdNetease();
-        HttpPost httpPost = createHttpPostRequest();
         try {
+            String templateId = smsTemplate.getTemplateId(SmsChannel.NETEASE);
+            HttpPost httpPost = createHttpPostRequest();
             httpPost.setEntity(buildRequestEntity(mobileList, templateId, paramList));
-        } catch (JsonProcessingException e) {
-            throw new SmsSendingException(mobileList, smsTemplate, paramList, "build request entity failed: " + e.getMessage(), e);
-        }
-        try {
             HttpResponse response = httpClient.execute(httpPost);
-            int statusCode = response.getStatusLine().getStatusCode();
-            // 执行结果  {"code":200,"msg":"sendid","obj":1}
-            String responseText = EntityUtils.toString(response.getEntity(), "utf-8");
-            String responseCode = getRetCode(responseText);
-            boolean success = HttpStatus.OK.value() == statusCode && "200".equals(responseCode);
-            if (!success) {
-                throw new SmsSendingException(mobileList, smsTemplate, paramList, String.format("send sms failed, http status: %d, response: %s", statusCode, responseText));
-            }
+            String responseText = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8); // 执行结果  {"code":200,"msg":"sendid","obj":1}
+
+            logger.info(String.format("send sms, mobileList: [%s], content: %s, channel: %s, response: %s",
+                    String.join(",", mobileList),
+                    smsTemplate.generateContent(paramList, SmsChannel.NETEASE),
+                    SmsChannel.NETEASE,
+                    responseText));
+
+            NeteaseSmsResponseDto neteaseSmsResponseDto = objectMapper.readValue(responseText, NeteaseSmsResponseDto.class);
+
+            redisWrapperClient.hset(MessageFormat.format("sendid:{0}", neteaseSmsResponseDto.getObj()),
+                    "template", smsTemplate.name(), 300);
+
+            redisWrapperClient.hset(MessageFormat.format("sendid:{0}", neteaseSmsResponseDto.getObj()),
+                    "params", Joiner.on("|").join(paramList), 300);
+
+            this.initSmsCallback(smsHistoryModels, neteaseSmsResponseDto);
+            return this.updateSmsHistory(smsHistoryModels, neteaseSmsResponseDto.isSuccess(), responseText);
         } catch (IOException e) {
-            throw new SmsSendingException(mobileList, smsTemplate, paramList, "post sms request failed: " + e.getMessage(), e);
+            logger.error(String.format("send sms, mobileList: [%s], content: %s, channel: %s",
+                    String.join(",", mobileList),
+                    smsTemplate.generateContent(paramList, SmsChannel.NETEASE),
+                    SmsChannel.NETEASE), e);
+        }
+
+        return smsHistoryModels;
+    }
+
+    private void initSmsCallback(List<SmsHistoryModel> smsHistoryModels, NeteaseSmsResponseDto neteaseSmsResponse) {
+        for (SmsHistoryModel smsHistoryModel : smsHistoryModels) {
+            neteaseCallbackRequestMapper.create(new NeteaseCallbackRequestModel(smsHistoryModel.getId(), smsHistoryModel.getMobile(), neteaseSmsResponse.getObj()));
         }
     }
 
@@ -103,15 +146,5 @@ public class SmsProviderNetease implements SmsProvider {
         nvps.add(new BasicNameValuePair("params", paramJson));
 
         return new UrlEncodedFormEntity(nvps, Charset.forName("utf-8"));
-    }
-
-    private String getRetCode(String responseBody) {
-        try {
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-            return jsonNode.get("code").asText();
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return null;
     }
 }

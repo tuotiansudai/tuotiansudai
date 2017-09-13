@@ -6,7 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import org.junit.After;
 import org.junit.Before;
@@ -85,7 +85,7 @@ public class SmsCaptchaServiceTest {
         smsCaptchaModel.setMobile("13900000000");
         smsCaptchaModel.setExpiredTime(new Date());
         smsCaptchaModel.setCreatedTime(new Date());
-        smsCaptchaModel.setCaptchaType(CaptchaType.REGISTER_CAPTCHA);
+        smsCaptchaModel.setSmsCaptchaType(SmsCaptchaType.REGISTER_CAPTCHA);
         return smsCaptchaModel;
     }
 

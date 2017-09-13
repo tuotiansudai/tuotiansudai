@@ -18,7 +18,8 @@ let $pointerImg = $('.draw-bucket',$luckDrawBox),
     paramData={
         'activityCategory':'SCHOOL_SEASON_ACTIVITY'
         };
-
+let scrollTimer,
+    scrollImgTimer;
 $activityPageFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
     let kind = $(option).data('return');
     tipGroupObj[kind] = option;
@@ -52,9 +53,15 @@ $activityPageFrame.find('.to-login,.to-text-login').on('click', function(event) 
         let thisClass = this.className;
         if(thisClass=='icon-left') {
             //上一页
+            if(pageIndex==1) {
+                return;
+            }
             pageIndex = (pageIndex>1) ? (pageIndex-1) : pageIndex;
         } else if(thisClass == 'icon-right') {
             //下一页
+            if(pageIndex ==totalPage) {
+                return;
+            }
             pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
         }
         $('.page-index',$pageNumber).text(pageIndex);
@@ -84,7 +91,9 @@ var drawCircle=new drawCircleFun(pointAllList,pointUserList,drawURL,paramData,$a
 
 //渲染奖品
 drawCircle.MyGift();
-drawCircle.GiftRecord();
+drawCircle.GiftRecord(function() {
+    scrollText($userRecord,0);
+});
 
 let $ownRecord = $('.own-record',$activityPageFrame);
 
@@ -124,11 +133,9 @@ $pointerImg.on('click',function() {
                 drawCircle.noRotateFn(tipGroupObj[prizeType]);
 
                 drawCircle.MyGift();
-                drawCircle.GiftRecord();
-
-                let times = setTimeout(function(){
+                drawCircle.GiftRecord(function() {
                     scrollText($userRecord,0);
-                },200);
+                });
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
@@ -183,9 +190,12 @@ function scrollText(dom,marginWid) {
     lis.length>1 && dom.append(htmlUl);
     let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
     if(lis.length>1) {
+        clearInterval(scrollTimer);
 
-        lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
-        let timer = setInterval(function() {
+       lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
+
+
+        scrollTimer = setInterval(function() {
             leftW-=3;
 
             if(Math.abs(leftW) >=allTextWid) {
@@ -198,8 +208,30 @@ function scrollText(dom,marginWid) {
         dom.addClass('only-one');
     }
 }
-window.onload = function() {
-    //跑马灯效果
-    scrollText($userRecord,0);
+
+function scrollImg(dom,marginWid) {
+    var lis = dom.find('li');
+    let htmlUl = dom.html();
+    let leftW=0;
+    lis.length>1 && dom.append(htmlUl);
+    let allTextWid = lis.length * (lis[0].offsetWidth + marginWid);
+    if(lis.length>1) {
+        clearInterval(scrollImgTimer);
+        lis.length && dom.width(lis.length * (lis[0].offsetWidth+marginWid)*2);
+
+
+        scrollImgTimer = setInterval(function() {
+            leftW-=3;
+
+            if(Math.abs(leftW) >=allTextWid) {
+                leftW=0;
+            }
+            dom.css({'left':leftW});
+        },50);
+        dom.removeClass('only-one');
+    } else if(lis.length==0 || lis.length==1 ){
+        dom.addClass('only-one');
+    }
 }
-scrollText($('#rewardOtherBox'),15);
+
+scrollImg($('#rewardOtherBox'),15);

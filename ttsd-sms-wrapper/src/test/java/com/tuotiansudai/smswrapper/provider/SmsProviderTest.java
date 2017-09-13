@@ -1,37 +1,43 @@
 package com.tuotiansudai.smswrapper.provider;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.exception.SmsSendingException;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Arrays;
 import java.util.List;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class SmsProviderTest {
+
+    @Autowired
+    @Qualifier("smsProviderNetease")
+    private SmsProvider smsProviderNetease;
+
+    @Autowired
+    @Qualifier("smsProviderAlidayu")
+    private SmsProvider smsProviderAlidayu;
 
     @Test
     @Ignore
     public void testSmsSendingNetease() throws SmsSendingException {
-        SmsProviderNetease smsProviderNetease = new SmsProviderNetease();
-        smsProviderNetease.setUrl("https://api.netease.im/sms/sendtemplate.action");
-        smsProviderNetease.setAppKey("appkey");
-        smsProviderNetease.setAppSecret("secret");
-        List<String> mobileList = Arrays.asList("13800*****");
-        List<String> paramList = Arrays.asList("123456");
+        List<String> mobileList = Lists.newArrayList("13810586920");
+        List<String> paramList = Lists.newArrayList("1234");
         smsProviderNetease.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, paramList);
     }
 
     @Test
     @Ignore
     public void testSmsSendingAlidayu() throws SmsSendingException {
-        SmsProviderAlidayu smsProviderAlidayu = new SmsProviderAlidayu();
-        smsProviderAlidayu.setUrl("http://gw.api.taobao.com/router/rest");
-        smsProviderAlidayu.setAppKey("appkey");
-        smsProviderAlidayu.setAppSecret("secret");
-        smsProviderAlidayu.setSignName("拓天速贷");
-        List<String> mobileList = Arrays.asList("13800******","18600******");
-        List<String> paramList = Arrays.asList("a");
-        smsProviderAlidayu.sendSMS(mobileList, SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, paramList);
+        List<String> mobileList = Lists.newArrayList("13810586920", "13691070223");
+        List<String> paramList = Lists.newArrayList("1234");
+        smsProviderAlidayu.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, paramList);
     }
 }

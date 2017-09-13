@@ -1,7 +1,7 @@
 import 'mobileStyle/MediaList.scss';
 import React from 'react';
 import { hashHistory } from 'react-router';
-import IScroll from 'iscroll';
+
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
@@ -36,12 +36,6 @@ class MediaList extends React.Component {
 		bannerData: Immutable([])
 	};
 	listIndex = 1;
-	destroyIscroll() {
-		if (this.myScroll) {
-			this.myScroll.destroy();
-			this.myScroll = null;
-		}
-	}
 	fetchData(index = 1, section = 'ALL', callback = function() {}) {
 		let sendData = {
 			"index": index,//当前页面
@@ -130,29 +124,28 @@ class MediaList extends React.Component {
 	}
 	componentDidUpdate() {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
-			setTimeout(() => {
-				if (!this.myScroll) {
-					// let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-					this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
-					this.myScroll = new IScroll(this.refs.scrollWrap);
-					this.myScroll.on('scrollEnd', () => {
-						if (this.myScroll.y <= this.myScroll.maxScrollY) {
-							if (this.state.isShowLoading) {
-								this.pagination.call(this);
-							}
-						}
-					});
-				} else {
-					this.myScroll.refresh();
-					if (this.listIndex === 1) {
-						this.myScroll.scrollTo(0, 0);
+
+			let _this =this;
+			let scrollWrap = this.refs.scrollWrap;
+			scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
+			scrollWrap.onscroll = function() {
+
+				var scrollTop = scrollWrap.scrollTop;
+				var offsetHeight = scrollWrap.offsetHeight;
+				var scrollHeight = scrollWrap.scrollHeight;
+
+				if(scrollTop+offsetHeight == scrollHeight) {
+					console.log('bottom');
+					if (_this.state.isShowLoading) {
+						_this.pagination.call(_this);
 					}
 				}
-			}, 200);
+			}
+
 		});
 	}
 	componentWillUnmount() {
-		this.destroyIscroll.call(this);
+
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowCompare(this, nextProps, nextState);

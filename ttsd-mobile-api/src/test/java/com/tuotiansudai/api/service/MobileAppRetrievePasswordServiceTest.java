@@ -4,18 +4,16 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.RetrievePasswordRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppRetrievePasswordServiceImpl;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -43,7 +41,7 @@ public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {
         retrievePasswordRequestDto.setPassword("123abc");
         retrievePasswordRequestDto.setPhoneNum("13900000000");
         retrievePasswordRequestDto.setValidateCode("123456");
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(true);
         when(userMapper.findByMobile(anyString())).thenReturn(userModel);
         when(myShaPasswordEncoder.encodePassword(anyString(),anyString())).thenReturn("123456789");
         BaseResponseDto baseResponseDto = mobileAppRetrievePasswordService.retrievePassword(retrievePasswordRequestDto);
@@ -56,7 +54,7 @@ public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {
         retrievePasswordRequestDto.setPassword("123abc");
         retrievePasswordRequestDto.setPhoneNum("13900000000");
         retrievePasswordRequestDto.setValidateCode("123456");
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(false);
         when(userMapper.findByMobile(anyString())).thenReturn(userModel);
         when(myShaPasswordEncoder.encodePassword(anyString(),anyString())).thenReturn("123456789");
         BaseResponseDto baseResponseDto = mobileAppRetrievePasswordService.retrievePassword(retrievePasswordRequestDto);

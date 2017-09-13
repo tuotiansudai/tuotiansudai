@@ -179,13 +179,13 @@ plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 plugins.push(createHappyPlugin('sass', ['css!postcss!sass']));
 
 // 图片base64,压缩
-var loaderObj = ['url?limit=3072&name=images/[name].[hash:8].[ext]'];
+var loaderObj = ['url?limit=2048&name=images/[name].[hash:8].[ext]'];
 if(NODE_ENV=='production') {
 	loaderObj = [
-		'url?limit=3072&name=images/[name].[hash:8].[ext]',
+		'url?limit=2048&name=images/[name].[hash:8].[ext]',
 		'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 9}}']
 }
-plugins.push(createHappyPlugin('image', ['url-loader?limit=3072&name=images/[name].[hash:8].[ext]']));
+plugins.push(createHappyPlugin('image', ['url-loader?limit=2048&name=images/[name].[hash:8].[ext]']));
 
 var myObject = objectAssign(commonOptions, {
 	output: {

@@ -93,7 +93,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
                 return baseResponseDto;
             }
 
-            return new BaseResponseDto<>(payDataDto.getData().getCode(), payDataDto.getData().getMessage());
+            return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), payDataDto.getData().getMessage());
         } catch (InvestException e) {
             return new BaseResponseDto<>(this.convertExceptionToDto(e));
         }
@@ -124,7 +124,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
                 responseDto.setData(investResponseDataDto);
             } else {
                 responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
-                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + formDto.getData().getMessage());
+                responseDto.setMessage(formDto.getData().getMessage());
             }
         } catch (UnsupportedEncodingException e) {
             responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
