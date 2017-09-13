@@ -114,7 +114,17 @@ class taskCenter extends React.Component {
             }
         };
 
-    destroyIscroll() {
+    fixTopMenu(tabHeader,tabclassName,tabHeaderTop) {
+    
+        let winScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        tabHeader.className = (winScrollTop>=tabHeaderTop)? tabclassName + ' fix-menu' : tabclassName;
+        if(/fix-menu/.test(tabHeader.className)) {
+            tabHeader.style.top = winScrollTop + 'px';
+        } else {
+            tabHeader.removeAttribute('style')
+        }
+
+
     }
    
     fetchData(url , callback = function() {}) {
@@ -166,25 +176,16 @@ class taskCenter extends React.Component {
 	}
     componentDidUpdate() {
         //数据加载完成后
+        let _this = this;
         if (!this.state.isShowLoading) {
             imagesLoaded(this.refs.mainConWrap).on('done', () => {
                 let tabHeaderDom = document.getElementById('tabHeaderDom');
                 //菜单离屏幕的高度
                 let tabHeader = this.refs.tabHeader;
-                let tabHeaderTop = tabHeader.offsetTop;
-
                 let tabclassName = tabHeader.className;
-                let mainConWrap = this.refs.mainConWrap;
-                var scrollHeight = mainConWrap.scrollHeight;
-
+                var tabHeaderTop = tabHeader.offsetTop;
                 window.onscroll=function() {
-                    var winScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-                    if(winScrollTop>=tabHeaderTop) {
-                        //代表滚动到菜单的高度
-
-                           tabHeader.className =  tabclassName.indexOf('fix-menu')!=-1 ? '' :(tabclassName + ' fix-menu');
-
-                    }
+                    mobileCommon.throttle( _this.fixTopMenu(tabHeader,tabclassName,tabHeaderTop));
 
                 }
 
