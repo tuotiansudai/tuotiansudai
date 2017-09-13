@@ -141,7 +141,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 investDto.getSource()));
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(String.valueOf(investModel.getLoanId()),
-                String.valueOf(investModel.getId()),
+                        String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(transferApplicationModel.getTransferAmount()));
 
