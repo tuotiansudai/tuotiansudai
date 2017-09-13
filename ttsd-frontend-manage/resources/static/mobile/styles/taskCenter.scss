@@ -39,6 +39,11 @@
             height: 45px;
             line-height: 45px;
             margin: 0 auto;
+            &.fix-menu {
+                width:100%;
+                position: absolute;
+                top:0;
+            }
         }
         .MenuBox ul {
             border-radius: 3px;
