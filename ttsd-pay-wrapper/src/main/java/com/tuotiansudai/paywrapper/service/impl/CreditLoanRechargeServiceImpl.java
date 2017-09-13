@@ -1,20 +1,19 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.SystemRechargeDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNopwdMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.service.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.service.CreditLoanRechargeService;
@@ -61,20 +60,13 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         baseDto.setData(payFormDataDto);
 
         UserModel userModel = userMapper.findByMobile(dto.getMobile());
-        SystemRechargeModel systemRechargeModel = new SystemRechargeModel(dto, userModel.getLoginName());
-        systemRechargeModel.setId(IdGenerator.generate());
 
         AccountModel accountModel = accountMapper.findByLoginName(systemRechargeModel.getLoginName());
 
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(null,
-                String.valueOf(systemRechargeModel.getId()),
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(null,
+                String.valueOf(IdGenerator.generate()),
                 accountModel.getPayUserId(),
                 dto.getAmount());
-
-        String remark = MessageFormat.format("{0} 从 {1} 账户为信用贷标的账户充值 {2} 元", dto.getOperatorLoginName(),
-                dto.getMobile(), dto.getAmount());
-        systemRechargeModel.setRemark(remark);
-
         try {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     CreditLoanRechargeNopwdMapper.class,
@@ -92,6 +84,57 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             return baseDto;
         }
     }
+//
+//    @Override
+//    @Transactional
+//    public BaseDto<PayFormDataDto> purchase(InvestDto investDto) {
+//
+//        String transferee = investDto.getLoginName();
+//        AccountModel transfereeAccount = accountMapper.findByLoginName(transferee);
+//
+//        BaseDto<PayFormDataDto> dto = new BaseDto<>();
+//        PayFormDataDto payFormDataDto = new PayFormDataDto();
+//        dto.setData(payFormDataDto);
+//        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
+//
+//        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+//            payFormDataDto.setMessage("该项目已转让，请购买其他项目");
+//            return dto;
+//        }
+//
+//        if (transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
+//            payFormDataDto.setMessage("余额不足，请充值");
+//            return dto;
+//        }
+//
+//        InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+//        double rate = membershipPrivilegePurchaseService.obtainServiceFee(transferee);
+//        InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
+//
+//        investMapper.create(investModel);
+//
+//        logger.info(MessageFormat.format("[Transfer Invest Request Data] user={0}, loan={1}, invest={2}, transferInvest={3}, amount={4}, source={5}",
+//                investDto.getLoginName(),
+//                investDto.getLoanId(),
+//                String.valueOf(investModel.getId()),
+//                String.valueOf(investModel.getTransferInvestId()),
+//                investDto.getAmount(),
+//                investDto.getSource()));
+//
+//        try {
+//            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestTransferRequest(
+//                    String.valueOf(investModel.getLoanId()),
+//                    String.valueOf(investModel.getId()),
+//                    transfereeAccount.getPayUserId(),
+//                    String.valueOf(transferApplicationModel.getTransferAmount()),
+//                    investDto.getSource());
+//            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+//        } catch (PayException e) {
+//            logger.error(MessageFormat.format("{0} purchase transfer(transferApplicationId={1}) is failed", transferee, String.valueOf(transferApplicationModel.getId())), e);
+//        }
+//
+//        return dto;
+//    }
 
     @Override
     public String creditLoanRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
