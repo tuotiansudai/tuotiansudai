@@ -6,12 +6,14 @@ window.layer.config({
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
 
+require("publicStyle/reset.scss");
 require("publicStyle/btn.scss");
 require("publicStyle/table.scss");
 require("publicStyle/page_frame.scss");
 require("publicStyle/pagination.scss");
 require("publicStyle/error.scss");
 require("publicStyle/global.scss");
+require("publicStyle/spritecss/global.css");
 
 require('publicJs/error');
 require('babel-polyfill');

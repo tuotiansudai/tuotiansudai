@@ -33,7 +33,7 @@
 
     <div class="notice-container bg-screen">
         <div class="page-width clearfix">
-            <h3>最新公告</h3>
+            <h3><i class="icon-notice"></i><span>最新公告</span></h3>
             <div class="notice-text scroll-top">
                 <ul id="noticeList">
                     <#list announces as announce>
@@ -62,19 +62,22 @@
     <div class="main-advantage clearfix bg-screen">
         <div class="page-width">
             <dl>
-                <dd class="guide">
+                <dd>
+                    <i class="guide sprite-homepage-icon-guide"></i>
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
                         <span>预期年化收益8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
-                <dd class="risk">
+                <dd>
+                    <i class="risk sprite-homepage-icon-risk"></i>
                     <a href="/about/risk-flow" target="_blank">
                         <b class="clearfix">六重风控 审核严谨</b>
                         <span>22道审核手续，<br>项目安全透明无死角</span>
                     </a>
                 </dd>
-                <dd class="assurance">
+                <dd class="last">
+                    <i class="assurance sprite-homepage-icon-assurce"></i>
                     <a href="/about/assurance" target="_blank">
                         <b class="clearfix">四大保障 投资无忧</b>
                         <span>12道保障措施并举，<br>资金、个人信息均安全</span>
@@ -103,7 +106,7 @@
             </div>
             <#if newbieLoan??>
                 <div class="newer-experience clearfix hack-newbie" data-url="/loan/${newbieLoan.id?c}">
-                    <i class="tag-icon"></i>
+                    <i class="tag-icon sprite-homepage-icon-newuse"></i>
                     <div class="con-inner">
                         <b class="newer-title">${newbieLoan.name}</b>
                         <ul class="loan-info clearfix">
@@ -192,7 +195,7 @@
             <#include "component/transfer-row.ftl">
         </#list>
 
-        <div class="media-coverage-box">
+        <div class="media-coverage-box clearfix">
             <h3 class="label-title">
                 媒体报道
                 <a href="/about/media" class="hot-more">更多></a>
@@ -216,6 +219,7 @@
                     <time>2015-12-28</time>
                 </li>
             </ul>
+            <div class="media-logo-section sprite-homepage-media"></div>
 
         </div>
 
@@ -224,10 +228,11 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-lian" href="http://www.umpay.com/" target="_blank">
+                <li>
+                    <a rel="nofollow" class="logo-lian sprite-homepage-logo-cfca" href="http://www.umpay.com/" target="_blank">
                 </a>
                 </li>
-                <li><a rel="nofollow" class="logo-cfca" href="https://www.anxinsign.com/" target="_blank">
+                <li><a rel="nofollow" class="logo-cfca sprite-homepage-logo-lian" href="https://www.anxinsign.com/" target="_blank">
                 </a>
                 </li>
             </ul>
