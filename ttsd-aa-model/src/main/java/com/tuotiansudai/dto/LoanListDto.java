@@ -40,6 +40,8 @@ public class LoanListDto {
 
     private boolean nonTransferable;
 
+    private boolean nonUseCoupon;
+
     public long getId() {
         return id;
     }
@@ -169,5 +171,13 @@ public class LoanListDto {
 
     public void setNonTransferable(boolean nonTransferable) {
         this.nonTransferable = nonTransferable;
+    }
+
+    public boolean getNonUseCoupon() {
+        return nonUseCoupon;
+    }
+
+    public void setNonUseCoupon(boolean nonUseCoupon) {
+        this.nonUseCoupon = nonUseCoupon;
     }
 }

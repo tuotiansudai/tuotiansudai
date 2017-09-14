@@ -100,6 +100,6 @@ public class LoanCreateDetailsRequestDto {
     }
 
     public void setNonUseCoupon(boolean nonUseCoupon) {
-        this.nonTransferable = nonUseCoupon;
+        this.nonUseCoupon = nonUseCoupon;
     }
 }

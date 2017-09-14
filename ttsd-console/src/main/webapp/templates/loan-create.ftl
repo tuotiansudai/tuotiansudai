@@ -245,7 +245,7 @@
 
                     <div class="col-sm-4 checkbox">
                         <label for="nonUseCoupon">
-                            <input type="checkbox" name="nonTransferable" value="true">（选中后投资此标的不允许使用任何优惠券）
+                            <input type="checkbox" name="nonUseCoupon" value="true">（选中后投资此标的不允许使用任何优惠券）
                         </label>
                     </div>
 

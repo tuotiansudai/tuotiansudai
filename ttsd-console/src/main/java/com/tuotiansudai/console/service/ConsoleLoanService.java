@@ -67,6 +67,7 @@ public class ConsoleLoanService {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
             loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
             loanListDto.setNonTransferable(loanDetailsModel !=null ? loanDetailsModel.getNonTransferable():false);
+            loanListDto.setNonUseCoupon(loanDetailsModel !=null ? loanDetailsModel.getNonUseCoupon():false);
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;

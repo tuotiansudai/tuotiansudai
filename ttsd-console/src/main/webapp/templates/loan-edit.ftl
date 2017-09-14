@@ -275,6 +275,18 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否可以使用优惠券:</label>
+
+                <div class="col-sm-4 checkbox">
+                    <label for="extra">
+                        <input type="checkbox" id="nonUseCoupon" name="nonUseCoupon"
+                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if loan.loanDetails?? && loan.loanDetails.nonUseCoupon>checked="checked"</#if> value="true" />（选中后投资此标的不允许使用任何优惠券）
+                    </label>
+                </div>
+            </div>
+
         </section>
 
         <section id="section-two">

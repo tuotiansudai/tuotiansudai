@@ -34,6 +34,7 @@ public class LoanDetailsModel implements Serializable {
         this.activity = loanDetails.isActivity();
         this.activityDesc = loanDetails.isActivity() ? loanDetails.getActivityDesc() : null;
         this.nonTransferable = loanDetails.getNonTransferable();
+        this.nonUseCoupon = loanDetails.getNonUseCoupon();
         this.pushMessage = loanDetails.getPushMessage();
     }
 
