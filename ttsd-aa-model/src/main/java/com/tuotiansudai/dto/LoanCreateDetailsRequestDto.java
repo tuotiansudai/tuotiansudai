@@ -22,7 +22,7 @@ public class LoanCreateDetailsRequestDto {
 
     private boolean nonTransferable;
 
-    private boolean nonUseCoupon;
+    private boolean disableCoupon;
 
     private String pushMessage;
 
@@ -36,7 +36,7 @@ public class LoanCreateDetailsRequestDto {
         this.extraSource = loanDetailsModel.getExtraSource();
         this.nonTransferable = loanDetailsModel.getNonTransferable();
         this.pushMessage = loanDetailsModel.getPushMessage();
-        this.nonUseCoupon = loanDetailsModel.getNonUseCoupon();
+        this.disableCoupon = loanDetailsModel.getDisableCoupon();
     }
 
     public boolean getNonTransferable() {
@@ -95,11 +95,11 @@ public class LoanCreateDetailsRequestDto {
         this.pushMessage = pushMessage;
     }
 
-    public boolean getNonUseCoupon() {
-        return nonUseCoupon;
+    public boolean getDisableCoupon() {
+        return disableCoupon;
     }
 
-    public void setNonUseCoupon(boolean nonUseCoupon) {
-        this.nonUseCoupon = nonUseCoupon;
+    public void setDisableCoupon(boolean disableCoupon) {
+        this.disableCoupon = disableCoupon;
     }
 }

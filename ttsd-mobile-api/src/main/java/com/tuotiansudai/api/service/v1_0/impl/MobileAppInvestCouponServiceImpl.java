@@ -69,10 +69,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
-
-        if (loanDetailsMapper.getByLoanId(Long.parseLong(loanId)).getNonUseCoupon()){
-            userCouponModels.removeAll(userCouponModels);
+        List<UserCouponModel> userCouponModels = new ArrayList<>();
+        if (!loanDetailsMapper.getByLoanId(Long.parseLong(loanId)).getDisableCoupon()){
+            userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
         }
 
         List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());

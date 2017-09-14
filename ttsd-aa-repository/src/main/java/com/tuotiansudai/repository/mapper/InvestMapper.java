@@ -316,7 +316,7 @@ public interface InvestMapper {
                                                                   @Param(value="startTime") Date startTime,
                                                                   @Param(value="endTime") Date endTime);
 
-    List<InvestAchievementView> findAmountByLoanIdAndDesc(@Param(value="startTime") Date startTime,
+    List<LoanInvestAmountView> findAmountByNationalDayActivity(@Param(value="startTime") Date startTime,
                                          @Param(value="endTime") Date endTime,
                                          @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
 }

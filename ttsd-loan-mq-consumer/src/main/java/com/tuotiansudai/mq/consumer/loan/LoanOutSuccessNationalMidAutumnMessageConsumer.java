@@ -64,6 +64,8 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
 
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
+    private static final String HKEY = "{0}:{1}";
+
     @Override
     public MessageQueue queue() {
         return MessageQueue.LoanOutSuccess_NationalMidAutumn;
@@ -99,7 +101,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
                 logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_NationalMidAutumn send cash is executing , (loanId : {0}) ", String.valueOf(loanOutInfo.getLoanId())));
                 List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), activityNationalMidAutumnStartTime, activityNationalMidAutumnEndTime, null);
                 for (InvestAchievementView investAchievementView : invests) {
-                    if (!redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanOutInfo.getLoanId()) + investAchievementView.getLoginName())) {
+                    if (!redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_CASH_KEY, MessageFormat.format(HKEY, String.valueOf(loanOutInfo.getLoanId()), investAchievementView.getLoginName()) + investAchievementView.getLoginName())) {
                         sendCashPrize(investAchievementView.getLoginName(), investAchievementView.getAmount(), loanOutInfo.getLoanId());
                     }
                 }
@@ -111,7 +113,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
     }
 
     private void sendCashPrize(String loginName, long investAmount, long loanId) {
-        logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, investAmount:{}", loginName, investAmount);
+        logger.info("send has_thousand_sent_hundred invest cash prize begin, loginName:{}, loanId:{}, investAmount:{}", loginName, loanId, investAmount);
 
         if (investAmount < 1000000) {
             logger.info("invest amount is less than 10000, no prize.");
@@ -128,14 +130,31 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
             return;
         }
 
-        long prizeAmount = (investAmount / 1000000) * 10000 > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : (investAmount / 1000000) * 10000;
+        long investAmountCash = (investAmount / 1000000) * 10000;
+        long prizeAmount = investAmountCash > (1000000 - sendPrizeAmount) ? (1000000 - sendPrizeAmount) : investAmountCash;
 
         long orderId = IdGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(prizeAmount),
                 UserBillBusinessType.NATIONAL_DAY_INVEST, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVEST_RETURN_CASH_DETAIL_TEMPLATE);
-        BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
-        redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, String.valueOf(loanId) + loginName, String.valueOf(prizeAmount), lifeSecond);
+
+        String hkey = MessageFormat.format(HKEY, String.valueOf(loanId), loginName);
+        try {
+            BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
+            if (response.getData().getStatus()) {
+                logger.info("send has_thousand_sent_hundred invest cash prize success, loginName:{}, loanId:{}, cash{}", loginName, loanId, prizeAmount);
+                redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, hkey, "success", lifeSecond);
+                redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName, String.valueOf(prizeAmount + sendPrizeAmount), lifeSecond);
+                return;
+            }
+        } catch (Exception e) {
+            logger.error("send has_thousand_sent_hundred invest cash prize fail, loginName:{}, loanId:{}, cash", loginName, loanId, prizeAmount);
+        }
+
+        redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, hkey, "fail", lifeSecond);
         redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName, String.valueOf(prizeAmount + sendPrizeAmount), lifeSecond);
-        logger.info("send has_thousand_sent_hundred invest cash prize, loginName:{}, response:{}", loginName, response.getData().getMessage());
+
+        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【逢万返百标的放款】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(prizeAmount))));
+
+        logger.info("send has_thousand_sent_hundred invest cash prize end, loginName:{}, loanId:{}, investAmount:{}", loginName, loanId, investAmount);
     }
 }

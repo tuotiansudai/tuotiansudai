@@ -191,7 +191,7 @@ public class InvestServiceImpl implements InvestService {
         long loanId = Long.parseLong(investDto.getLoanId());
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
-        if(loanDetailsModel.getNonUseCoupon()){
+        if(loanDetailsModel.getDisableCoupon()){
             throw new InvestException(InvestExceptionType.NOT_USE_COUPON);
         }
 

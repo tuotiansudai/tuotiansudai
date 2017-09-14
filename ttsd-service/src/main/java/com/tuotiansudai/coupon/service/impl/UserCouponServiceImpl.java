@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -102,8 +103,8 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDto> getInvestUserCoupons(String loginName, long loanId) {
-        if (loanDetailsMapper.getByLoanId(loanId).getNonUseCoupon()){
-            return null;
+        if (loanDetailsMapper.getByLoanId(loanId).getDisableCoupon()){
+            return new ArrayList<UserCouponDto>();
         }
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);

@@ -8,8 +8,6 @@ public class InvestAchievementView implements Serializable {
     private long amount;
     private String mobile;
     private Date tradingTime;
-    private String loanDesc;
-    private String userName;
 
     public String getLoginName() {
         return loginName;
@@ -41,21 +39,5 @@ public class InvestAchievementView implements Serializable {
 
     public void setTradingTime(Date tradingTime) {
         this.tradingTime = tradingTime;
-    }
-
-    public String getLoanDesc() {
-        return loanDesc;
-    }
-
-    public void setLoanDesc(String loanDesc) {
-        this.loanDesc = loanDesc;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 }

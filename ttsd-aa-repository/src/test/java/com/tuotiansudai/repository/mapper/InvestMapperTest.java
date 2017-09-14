@@ -271,7 +271,7 @@ public class InvestMapperTest {
         assertEquals(1, transferableInvestViews.size());
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
         loanDetailsModel.setNonTransferable(true);
-        loanDetailsModel.setNonUseCoupon(true);
+        loanDetailsModel.setDisableCoupon(true);
         loanDetailsMapper.updateByLoanId(loanDetailsModel);
         List<TransferableInvestView> transferableInvestViews1 = investMapper.findWebTransferableApplicationPaginationByLoginName(investorModel.getLoginName(), 0, 10);
         assertEquals(0, transferableInvestViews1.size());

@@ -89,7 +89,7 @@
         <result column="trading_time" property="tradingTime"></result>
     </resultMap>
 
-    <resultMap id="activityInvestAchievementView" type="InvestAchievementView" extends="investAchievementView">
+    <resultMap id="NationalDayActivityInvestView" type="LoanInvestAmountView" extends="investAchievementView">
         <result column="loan_desc" property="loanDesc"></result>
         <result column="user_name" property="userName"></result>
     </resultMap>
@@ -1127,7 +1127,7 @@
         ORDER BY trading_time ASC
     </select>
 
-    <select id="findAmountByLoanIdAndDesc" parameterType="map" resultMap="activityInvestAchievementView">
+    <select id="findAmountByNationalDayActivity" parameterType="map" resultMap="NationalDayActivityInvestView">
         SELECT temp.login_name,temp.amount,temp.trading_time,temp.loan_desc,user.mobile,user.user_name FROM
         (SELECT
         login_name,

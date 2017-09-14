@@ -100,7 +100,7 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
         loanDetailsModel.setId(IdGenerator.generate());
         loanDetailsModel.setLoanId(loanId);
-        loanDetailsModel.setNonUseCoupon(false);
+        loanDetailsModel.setDisableCoupon(false);
         loanDetailsModel.setActivity(false);
         loanDetailsModel.setDeclaration("declaration");
         return loanDetailsModel;

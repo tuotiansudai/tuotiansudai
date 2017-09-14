@@ -116,7 +116,7 @@
                     <#--${(!loanListDto.extraLoanRateModels??)?string('是','-')}-->
                     </td>
                     <td>${loanListDto.nonTransferable?string('是','否')}</td>
-                    <td>${loanListDto.nonUseCoupon?string('是','否')}</td>
+                    <td>${loanListDto.disableCoupon?string('是','否')}</td>
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td><a class="invest_repay"

@@ -116,7 +116,9 @@
             </if>
         </where>
         order by ub.created_time desc, id desc
-        limit #{startLimit} , #{endLimit}
+        <if test="startLimit !=null and endLimit !=null ">
+            limit #{startLimit} , #{endLimit}
+        </if>
     </select>
 
     <select id="findUserFundsCount" parameterType="map" resultType="int">
@@ -144,11 +146,6 @@
     <select id="findUserSumInterest" resultType="long">
       select sum(amount) from user_bill
       where business_type in('ACTIVITY_REWARD', 'REFERRER_REWARD', 'INVEST_COUPON', 'INTEREST_COUPON', 'RED_ENVELOPE', 'LOTTERY_CASH', 'EXTRA_RATE');
-    </select>
-
-    <select id="findUserAmountByBusinessType" resultType="long" parameterType="map">
-        select IFNULL(sum(amount),0) from user_bill
-        where login_name = #{loginName} and business_type = #{userBillBusinessType}
     </select>
 
 </mapper>

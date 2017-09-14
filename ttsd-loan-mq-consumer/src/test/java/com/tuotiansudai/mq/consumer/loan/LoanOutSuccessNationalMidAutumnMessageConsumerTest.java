@@ -76,7 +76,6 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumerTest {
         when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(baseDto);
 
         consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
-        verify(smsWrapperClient, times(0)).sendFatalNotify(any(SmsFatalNotifyDto.class));
         assertEquals("10000", getRedisClientAmount("test1"));
         assertEquals("640000", getRedisClientAmount("test2"));
         loanOutSuccessMessage.setLoanId(234l);

@@ -7,6 +7,8 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.InvestAchievementView;
+import com.tuotiansudai.repository.model.LoanInvestAmountView;
+import com.tuotiansudai.repository.model.UserBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,27 +47,27 @@ public class ActivityConsoleNationalMidAutumnService {
 
     public List<NationalMidAutumnView> getNationalMidAutumnViews() {
         Map<String, NationalMidAutumnView> map = new HashMap<>();
-        List<InvestAchievementView> investAchievementViews = investMapper.findAmountByLoanIdAndDesc(activityNationalMidAutumnStartTime, activityNationalMidAutumnEndTime, Arrays.asList("逢万返百", "加息6.8%"));
-        for (InvestAchievementView investAchievementView : investAchievementViews) {
-            NationalMidAutumnView nationalMidAutumnView = map.get(investAchievementView.getLoginName());
-            if (investAchievementView.getLoanDesc().equals("逢万返百")) {
-                long moneyAmount = userBillMapper.findUserAmountByBusinessType(investAchievementView.getLoginName(), UserBillBusinessType.NATIONAL_DAY_INVEST);
-                map.put(investAchievementView.getLoginName(), nationalMidAutumnView == null ? new NationalMidAutumnView(investAchievementView.getUserName(),
-                        investAchievementView.getLoginName(),
-                        investAchievementView.getMobile(),
-                        investAchievementView.getAmount(),
+        List<LoanInvestAmountView> loanInvestAmountViews = investMapper.findAmountByNationalDayActivity(activityNationalMidAutumnStartTime, activityNationalMidAutumnEndTime, Arrays.asList("逢万返百", "加息6.8%"));
+        for (LoanInvestAmountView loanInvestAmountView : loanInvestAmountViews) {
+            NationalMidAutumnView nationalMidAutumnView = map.get(loanInvestAmountView.getLoginName());
+            if (loanInvestAmountView.getLoanDesc().equals("逢万返百")) {
+                long moneyAmount = userBillMapper.findUserFunds(UserBillBusinessType.NATIONAL_DAY_INVEST, UserBillOperationType.TI_BALANCE,loanInvestAmountView.getMobile(),null,null,null,null).stream().mapToLong(i->i.getAmount()).sum();;
+                map.put(loanInvestAmountView.getLoginName(), nationalMidAutumnView == null ? new NationalMidAutumnView(loanInvestAmountView.getUserName(),
+                        loanInvestAmountView.getLoginName(),
+                        loanInvestAmountView.getMobile(),
+                        loanInvestAmountView.getAmount(),
                         0,
                         moneyAmount) : new NationalMidAutumnView(nationalMidAutumnView.getUserName(), nationalMidAutumnView.getLoginName(), nationalMidAutumnView.getMobile(),
-                        investAchievementView.getAmount(), nationalMidAutumnView.getSumCouponInvestAmount(), moneyAmount));
+                        loanInvestAmountView.getAmount(), nationalMidAutumnView.getSumCouponInvestAmount(), moneyAmount));
 
             } else {
-                map.put(investAchievementView.getLoginName(), nationalMidAutumnView == null ? new NationalMidAutumnView(investAchievementView.getUserName(),
-                        investAchievementView.getLoginName(),
-                        investAchievementView.getMobile(),
+                map.put(loanInvestAmountView.getLoginName(), nationalMidAutumnView == null ? new NationalMidAutumnView(loanInvestAmountView.getUserName(),
+                        loanInvestAmountView.getLoginName(),
+                        loanInvestAmountView.getMobile(),
                         0,
-                        investAchievementView.getAmount(),
+                        loanInvestAmountView.getAmount(),
                         0) : new NationalMidAutumnView(nationalMidAutumnView.getUserName(), nationalMidAutumnView.getLoginName(), nationalMidAutumnView.getMobile(),
-                        nationalMidAutumnView.getSumCashInvestAmount(), investAchievementView.getAmount(), nationalMidAutumnView.getSumMoneyAmount()));
+                        nationalMidAutumnView.getSumCashInvestAmount(), loanInvestAmountView.getAmount(), nationalMidAutumnView.getSumMoneyAmount()));
             }
         }
         return new ArrayList<>(map.values());
