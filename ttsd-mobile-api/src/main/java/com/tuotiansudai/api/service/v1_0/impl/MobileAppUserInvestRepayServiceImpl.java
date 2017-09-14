@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -57,6 +59,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Value("${web.server}")
+    private String webServer;
 
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
@@ -153,6 +158,12 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
             List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
+            if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
+                String contractUrl =  investModel.getContractNo().equals("OLD") ?
+                        MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId()))
+                        : MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo());
+                userInvestRepayResponseDataDto.setContractLocation(contractUrl);
+            }
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
             responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
