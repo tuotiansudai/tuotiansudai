@@ -14,6 +14,9 @@
   }
 }
 .main-frame-ask {
+  @media (min-width:701px) and (max-width:999px) {
+    width:100%;
+  }
   .btn-main {
     font-size: 18px;
     font-weight: 400;
@@ -101,6 +104,9 @@
   .pc-search-box {
     width: 75%;
     margin: 0 auto;
+    @media (min-width:700px) and (max-width:999px) {
+      width:100%;
+    }
     .input-search {
       width: 450px;
       height: 25px;
@@ -250,6 +256,9 @@
     margin-top:10px;
     .article-content {
       width:700px;
+      @media (min-width:700px) and (max-width: 768px) {
+        width:60%;
+      }
       .switch-menu {
         clear: both;
         height:auto;
@@ -289,6 +298,10 @@
     }
     .aside-frame {
       width:288px;
+      @media (min-width:700px) and (max-width: 768px) {
+        width:38%;
+        margin-left: 2%;
+      }
       .profile-box {
         width:100%;
         height:210px;

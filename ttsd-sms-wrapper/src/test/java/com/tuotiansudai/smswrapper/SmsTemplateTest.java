@@ -12,7 +12,7 @@ public class SmsTemplateTest {
     @Test
     public void shouldGenerateRegisterCaptchaContentPrimary() throws Exception {
         List<String> paramList = ImmutableList.<String>builder().add("大宝剑").build();
-        String content = SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE.generateContent(paramList, SmsChannel.Primary);
+        String content = SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE.generateContent(paramList, SmsChannel.NETEASE);
 
         assertThat(content, is("尊敬的用户，恭喜您获得了一张大宝剑，请尽快使用拿奖励哦！"));
     }
@@ -20,7 +20,7 @@ public class SmsTemplateTest {
     @Test
     public void shouldGenerateRegisterCaptchaContentBackup() throws Exception {
         List<String> paramList = ImmutableList.<String>builder().add("大宝剑").build();
-        String content = SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE.generateContent(paramList, SmsChannel.Backup);
+        String content = SmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE.generateContent(paramList, SmsChannel.ALIDAYU);
 
         assertThat(content, is("尊敬的用户，恭喜您获得了一张大宝剑，请尽快使用拿奖励哦！"));
     }

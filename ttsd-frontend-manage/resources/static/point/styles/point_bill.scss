@@ -8,6 +8,9 @@
       width:1000px;
       margin:0 auto;
       position: relative;
+      @media (max-width:999px) {
+        width:100%;
+      }
       .detail-top{
         float:left;
         width:100%;
@@ -15,6 +18,10 @@
         font-size:16px;
         margin-top:10px;
         margin-bottom:20px;
+        @media (min-width:701px) and (max-width:999px) {
+          box-sizing:border-box;
+          padding:0 20px;
+        }
         a{
           color:#808080;
         }

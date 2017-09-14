@@ -2,7 +2,9 @@
 @import "import_search_filter";
 
 $CK1:#ffac2a #ff7a2a;
-
+.main-frame .swiper-container{
+  float:none;
+}
 .layui-layer-btn {
   text-align: center !important;
   .layui-layer-btn0 {
@@ -90,6 +92,9 @@ $CK1:#ffac2a #ff7a2a;
           float: left;
           width: 240px;
           margin: 10px 30px 0px 30px;
+          @media (min-width:701px) and (max-width:999px){
+            width:220px;
+          }
           .transfer-time{
             float:left;
             width:100%;

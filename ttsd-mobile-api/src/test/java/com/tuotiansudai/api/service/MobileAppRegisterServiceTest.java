@@ -7,7 +7,7 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -66,7 +66,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
     public void shouldRegisterUserLoginNameIsExist() {
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(false);
         when(userService.loginNameIsExist(anyString())).thenReturn(true);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
@@ -78,7 +78,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
     public void shouldRegisterUserMobileIsExist() {
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(false);
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(true);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
@@ -90,7 +90,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
     public void shouldRegisterUserCaptchaIsValid() {
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(false);
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
@@ -101,7 +101,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
     @Test
     public void shouldRegisterUserIsOk() {
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(true);
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);

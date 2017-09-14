@@ -4,11 +4,10 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
@@ -41,7 +40,7 @@ public class RetrievePasswordController {
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page", method = RequestMethod.GET)
     public ModelAndView inputPassword(@PathVariable String mobile, @PathVariable String captcha) {
-        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
+        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
             return new ModelAndView("/input-password").addObject("mobile", mobile).addObject("captcha", captcha);
         }
         return new ModelAndView("redirect:/mobile-retrieve-password");
@@ -72,7 +71,7 @@ public class RetrievePasswordController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
-        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
+        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
             baseDataDto.setStatus(true);
         }
         return baseDto;

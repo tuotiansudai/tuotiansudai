@@ -1,11 +1,8 @@
 @charset "utf-8";
-@import 'reset';
 @import 'plugins/font_awesome';
 
 //用来兼容ie8
-
 @import 'ie_hack_grid';
-
 .error-box {
   visibility: visible;
   height:20px;
@@ -14,7 +11,15 @@
   padding-top:3px;
   text-align: left;
 }
-
+[class^='sprite-'], [class*=' sprite-'] {
+  display: inline-block;
+}
+.btn-normal[disabled].loading {
+  background: transparent url("../images/loading.gif") no-repeat center center!important;
+  cursor: default!important;
+  border: 0!important;
+  text-indent: -9999px;
+}
 //微信扫码，app下载,微博关注
 
 //微信服务好
@@ -35,9 +40,10 @@
 
 .img-app-download {
   background: url("../images/scanCode/code-app.png") center center no-repeat;
-  width:248px;
-  height:248px;
+  width:100px;
+  height:100px;
   display: inline-block;
+  background-size: 100%;
 }
 //微博
 .img-micro-blog {
@@ -45,6 +51,7 @@
   width:200px;
   height:200px;
   display: inline-block;
+  background-size: 100%;
 }
 
 //顶部标题
@@ -299,6 +306,17 @@
 
 @media screen and (max-width: 700px) {
 
+  .img-we-chat {
+
+    zoom: 0.5;
+  }
+  .img-app-download {
+    zoom: 0.5;
+  }
+  .img-micro-blog {
+    zoom: 0.5;
+  }
+
   .page-width {
     width: 100%;
   }
@@ -369,7 +387,7 @@
 }
 
 
-@media screen and (min-width: 700px) and(max-width:768px){
+@media screen and (min-width: 700px) and(max-width:999px){
 
   .page-width {
     width: 100%;

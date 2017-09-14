@@ -4,7 +4,7 @@
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
    <div class="bar-top-img">
-       <a href="/activity/share-reward">
+       <a href="/activity/invite-friend">
         </a>
    </div>
 
@@ -13,9 +13,9 @@
             <div class="invite-title"><i></i><span>微信邀请好友</span></div>
             <div class="tc wechat-code">
                 <em class="img-code">
-                    <!--[if gte IE 8]> 
+                    <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
-                    <![endif]--> 
+                    <![endif]-->
                 </em>
 
                 <span>将扫码后的页面<br/>
@@ -37,7 +37,7 @@
         <div class="date-filter " id="search-box">
             <div class="title-search">查看我的推荐</div>
             <span class="rl-title">起止时间：</span>
-            <input type="text" id="date-picker" class="input-control" size="35"/>
+            <input type="text" id="date-picker" class="input-control" size="35" readonly/>
             <span class="rl-title">推荐用户名：</span>
             <input type="text" id="loginName" class="input-control login-name" size="25"/>
             <input type="button" class="btn-normal btn-search" value="查询" onclick=""/>

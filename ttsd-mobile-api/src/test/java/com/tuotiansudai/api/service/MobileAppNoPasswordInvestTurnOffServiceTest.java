@@ -4,10 +4,10 @@ import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOffRequestDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOffServiceImpl;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import org.junit.Ignore;
@@ -48,7 +48,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceTest extends ServiceTestBase
         userModel.setMobile("13688888888");
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
-        when(!smsCaptchaService.verifyMobileCaptcha(anyString(),anyString(), any(CaptchaType.class))).thenReturn(true);
+        when(!smsCaptchaService.verifyMobileCaptcha(anyString(),anyString(), any(SmsCaptchaType.class))).thenReturn(true);
 
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("shenjiaojiao");

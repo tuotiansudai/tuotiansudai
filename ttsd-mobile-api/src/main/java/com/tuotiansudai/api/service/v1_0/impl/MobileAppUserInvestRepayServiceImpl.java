@@ -8,11 +8,14 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,12 +85,17 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             if (investModel.getTransferInvestId() != null) {
                 TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
+                userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
+                        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()) : userInvestRepayResponseDataDto.getInvestTime());
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
-            int maxPeriods = investRepayModels == null ? 0 : investRepayModels.size();
-            InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
-            userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
+
+            userInvestRepayResponseDataDto.setRecheckTime(getValueDate(investModel, loanModel, investRepayModels));
+
+            InvestRepayModel investRepayModelTemp = investRepayModels.size() > 0 ? investRepayModels.get(investRepayModels.size() - 1) : null;
+
+            userInvestRepayResponseDataDto.setLastRepayDate(investRepayModelTemp == null ? "" : new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModelTemp.getActualRepayDate() : investRepayModelTemp.getRepayDate()).toString("yyyy/MM/dd"));
             List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 Date repayDate = investRepayModel.getActualRepayDate();
@@ -105,7 +113,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
-
                 int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
                 long corpus = 0;
                 if (periods == investRepayModel.getPeriod()) {
@@ -133,6 +140,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 }
                 totalExpectedInterest += expectedInterest;
             }
+
 
             userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
@@ -181,5 +189,30 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         }
 
         return usedCouponName;
+    }
+
+    private String getValueDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+        if (investRepayModels.size() == 0) {
+            return "";
+        }
+
+        int minPeriod = investRepayModels.get(0).getPeriod();
+
+        if (investModel.getTransferInvestId() != null && minPeriod > 1) {
+            return sdf.format(new DateTime(investRepayMapper.findByInvestIdAndPeriod(investModel.getTransferInvestId(), minPeriod - 1).getRepayDate()).plusDays(1).toDate());
+        }
+
+        if (Lists.newArrayList(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())) {
+            return loanModel.getRecheckTime() == null ? "" : sdf.format(loanModel.getRecheckTime());
+        }
+
+
+        if (investModel.getTransferInvestId() != null && minPeriod == 1) {
+            investModel = investService.findById(investModel.getTransferInvestId());
+        }
+
+        return sdf.format(investModel.getInvestTime());
     }
 }

@@ -589,6 +589,16 @@
       background:url('../images/invite-friend/reward-img-phone.png') no-repeat center;
       background-size:100%;
     }
+    @media(max-width:414px){
+      height:520px;
+      background:url('../images/invite-friend/reward-img-phone.png') no-repeat center;
+      background-size:100%;
+    }
+    @media(max-width:320px){
+      height:400px;
+      background:url('../images/invite-friend/reward-img-phone.png') no-repeat center;
+      background-size:100%;
+    }
   }
   .activity-rules {
     color: #fede69;

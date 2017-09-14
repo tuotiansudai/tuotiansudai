@@ -314,8 +314,8 @@
                 <#if ["REPAYING", "RECHECK", "CANCEL", "OVERDUE", "COMPLETE"]?seq_contains(loan.loanStatus)>
                     <form action="/loan-list" method="get">
                         <dl class="account-list">
-                            <dd class="img-status">
-                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
+                            <dd>
+                                <span class="img-status ${loan.loanStatus?lower_case}"></span>
                             </dd>
                             <dd>
                                 <button class="btn-pay btn-normal" type="submit">查看其他项目</button>

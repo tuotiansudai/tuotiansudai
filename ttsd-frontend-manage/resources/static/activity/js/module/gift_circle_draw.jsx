@@ -25,7 +25,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
     };
 
     //中奖记录
-    this.GiftRecord = function () {
+    this.GiftRecord = function (callback) {
         let self = this;
         commonFun.useAjax({
             url: this.allListURL,
@@ -37,6 +37,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
+            callback && callback();
         });
     };
 

@@ -8,6 +8,11 @@
 .pad-box {
   padding:20px 0 50px 0;
 }
+
+.img-app-download {
+	width:248px;
+	height:248px;
+}
 .column-title-ac {
   font-size:30px;
   font-weight: bold;
@@ -126,9 +131,29 @@
   background: #fff;
   margin-left:20px;
   margin-right:20px;
+  @media (max-width:700px) {
+  	width:100%;
+    margin: 5px 0;
+    box-sizing: border-box;
+  }
+  @media (min-width:701px) and (max-width:999px) {
+  	width:48%;
+  	margin:0 1%;
+  	box-sizing:border-box;
+  	min-height: 166px;
+  }
   dt {
 	font-size:24px;
 	font-weight: bold;
+	@media (max-width:700px) {
+	  	font-size:18px;
+	  }
+  }
+  dd{
+  	font-size:16px;
+  	@media (max-width:700px) {
+	  	font-size:14px;
+	  }
   }
   &:hover {
 	background: #3776cb;
@@ -170,9 +195,14 @@
 			dl {
 				width:265px;
 				float: left;
+				@media (min-width:701px) and (max-width:999px) {
+					width:33.333333%;
+				}
 				&:nth-child(2) {
-					margin-left:100px;
-					margin-right:100px;
+					margin:0 100px;
+					@media (min-width:701px) and (max-width:999px) {
+						margin:0;
+					}
 				}
 				dt {
 				  height: 123px;
@@ -197,6 +227,9 @@
 			}
 			  dd {
 				padding-top:20px;
+				@media (min-width:701px) and (max-width:999px) {
+					padding:20px 20px 0;
+				}
 			  }
 
 			}
@@ -303,14 +336,19 @@
 .risk-flow-container {
   .main-banner {
 	background:#1877d3;
-	img {
-	  width:100%;
-	}
+	  .risk-bar {
+		  height:350px;
+		  width:100%;
+		  background: url('../images/sign/assure/risk-bar.jpg') center top no-repeat;
+	  }
   }
   .project-examination-box {
 	padding-bottom:60px;
 	padding-top: 30px;
 	height: 500px;
+	@media (max-width:700px) {
+		height:auto;
+	}
 	&.hack {
 	  height:auto;
 	}
@@ -325,6 +363,12 @@
 		border: 2px solid #3776cb;
 		top: 110px;
 		z-index: 10;
+		@media (max-width:700px) {
+			display:none;
+		}
+		@media (min-width:701px) and (max-width:999px) {
+			display:none;
+		}
 	  }
 	}
 	.project-info-list {
@@ -334,6 +378,14 @@
 	  position: absolute;
 	  z-index: 30;
 	  margin-top: -15px;
+	  @media (max-width:700px) {
+	  	float:left;
+	  	margin-left: 0;
+	  	position: static;
+	  }
+	  @media (min-width:701px) and (max-width:999px) {
+		margin-left: 0;
+	}
 		dl {
 		  color: #4d4d4d;
 		  font-size:14px;
@@ -341,6 +393,17 @@
 		  width:235px;
 		  margin-left:50px;
 		  margin-top:40px;
+		  @media (max-width:700px) {
+		  	width:100%;
+		  	box-sizing:border-box;
+		  	padding:0 10%;
+		  	margin-left: 0;
+		  	margin-top: 10px;
+		  }
+		  @media (min-width:701px) and (max-width:999px) {
+		  	width:31.333333%;
+		  	margin:40px 1% 0;
+		  }
 		  dt {
 			font-size:18px;
 			color: #3776cb;
@@ -380,11 +443,22 @@
 		dl {
 		  width:258px;
 		  float: left;
+		  @media (max-width:700px) {
+		  	width:100%;
+		  	box-sizing:border-box;
+		  	padding:0 10%;
+		  }
+		  @media (min-width:701px) and (max-width:999px) {
+		  	width:33.333333%;
+		  }
 		  dt {
 			font-size: 22px;
 			color: #3776cb;
 			font-weight: bold;
 			text-align: center;
+			@media (max-width:700px) {
+				font-size:16px;
+			}
 			em {
 			  display: block;
 			  width:206px;
@@ -393,6 +467,23 @@
 			  border-radius: 103px;
 			  background: #3776cb;
 			  margin: 20px auto;
+				&.end01 {
+					background:#3776cb url('../images/sign/assure/end01.png') center center no-repeat;
+				}
+				&.end02 {
+					background:#3776cb url('../images/sign/assure/end02.png') center center no-repeat;
+				}
+				&.end03 {
+					background:#3776cb url('../images/sign/assure/end03.png') center center no-repeat;
+				}
+			  @media (max-width:700px) {
+			  	width:150px;
+			  	height:150px;
+			  	line-height: 150px;
+			  	img{
+			  		width:30%;
+			  	}
+			  }
 			  &:hover {
 				-moz-transform:scale(1.2);
 				-webkit-transform:scale(1.2);
@@ -403,10 +494,23 @@
 		  dd {
 			font-size:16px;
 			color: #4c4c4c;
+			@media (max-width:700px) {
+				font-size:12px;
+				text-align:center;
+			}
+			@media (min-width:701px) and (max-width:999px) {
+				padding: 0 10px;
+    			box-sizing: border-box;
+			}
 		  }
 		  &.two {
-			margin-left: 112px;
-			margin-right:112px;
+			margin: 0 112px;
+			@media (max-width:700px) {
+		  	margin:0;
+		  }
+			@media (min-width:701px) and (max-width:999px) {
+			  	margin:0;
+			  }
 		  }
 
 		}
@@ -416,6 +520,9 @@
   .project-examine-two {
 	position: relative;
 	height: 660px;
+	@media (max-width:700px) {
+		height:700px;
+	}
 	.ellipse-shape-center {
 	  position: absolute;
 	  left:50%;
@@ -463,6 +570,9 @@
 	  color: #666;
 	  font-size:14px;
 	  width: 30%;
+	  @media (max-width:700px) {
+		font-size:12px;
+	}
 	  dt {
 		font-size:16px;
 	  }
@@ -488,10 +598,16 @@
 	  &.one {
 		left: 113px;
 		top: 21px;
+		@media (max-width:700px) {
+			left:10px;
+		}
 	  }
 	  &.two {
 		right: 118px;
 		top: 126px;
+		@media (max-width:700px) {
+			right:10px;
+		}
 		.triangle {
 		  right:auto;
 		  left: -18px;
@@ -507,10 +623,16 @@
 	  &.three {
 		left: 113px;
 		top: 225px;
+		@media (max-width:700px) {
+			left:10px;
+		}
 	  }
 	  &.four {
 		right: 118px;
 		top: 329px;
+		@media (max-width:700px) {
+			right:10px;
+		}
 		.triangle {
 		  right:auto;
 		  left: -18px;
@@ -526,6 +648,9 @@
 	  &.five {
 		left: 113px;
 		top: 431px;
+		@media (max-width:700px) {
+			left:10px;
+		}
 		.triangle {
 		  top:30px;
 		}
@@ -533,6 +658,10 @@
 	  &.six {
 		right: 118px;
 		top: 525px;
+		@media (max-width:700px) {
+			right:10px;
+			top:530px;
+		}
 		.triangle {
 		  right:auto;
 		  left: -18px;
@@ -551,14 +680,23 @@
   .post-lending-box {
 	position: relative;
 	height:245px;
+	@media (max-width:700px) {
+		height:300px;
+	}
 	.line-top-bar {
 	  height: 30px;
 	  background: url("../images/sign/assure/line-top.png") center top no-repeat;
-
+		@media (max-width:700px) {
+			background-size:100%;
+		}
 	}
 	.lending-steps {
 	  width: 87%;
 	  margin: 10px auto;
+	  @media (max-width:700px) {
+	  	width:100%;
+	  	margin:0;
+	  }
 	  dl {
 		float: left;
 		width: 208px;
@@ -569,6 +707,11 @@
 		color: #3776cb;
 		position: relative;
 		border-radius: 10px;
+		@media (max-width:700px) {
+			width:33.333333%;
+			margin:0;
+			box-sizing: border-box;
+		}
 		dt {
 		  font-size:18px;
 		  em {
@@ -602,6 +745,7 @@
 	}
   }
 
+
   .main-banner {
 	background:#e95b56;
 	img {
@@ -612,12 +756,21 @@
 	p {
 	  margin-top:10px;
 	  font-size: 16px;
+	  @media (min-width:701px) and (max-width:999px) {
+	  	padding: 0 10px;
+	  	box-sizing:border-box;
+	  }
 	}
   }
   .section-box-two {
 	overflow: hidden;
 	dl {
 	  margin-left: 80px;
+	  @media (min-width:701px) and (max-width:999px) {
+	  	margin-left: 0;
+	  	padding:0 10px;
+	  	box-sizing:border-box;
+	  }
 	  dt {
 		position: relative;
 		color: #333333;
@@ -642,6 +795,17 @@
 		  padding-left:70px;
 		  padding-top:10px;
 		  position: relative;
+			height:350px;
+			.report-load {
+				width:667px;
+				height:322px;
+				background: url('../images/sign/assure/load.png') left top no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 69px;
+				top:30px;
+
+			}
 		  .arrow-rise {
 			position: absolute;
 			top: 33px;
@@ -782,14 +946,20 @@
 	  &.box-03 {
 		 dd {
 		   &.benefit-img {
-			 padding-top:53px;
+			 margin-top:53px;
+			   width:240px;
+			   height:130px;
+			   background: url('../images/sign/assure/benefit01.png') center top no-repeat;
 		   }
 		 }
 	   }
 	  &.box-04 {
 		dd {
 		  &.benefit-img {
-			padding-top:30px;
+			  margin-top:30px;
+			  width:240px;
+			  height:130px;
+			  background: url('../images/sign/assure/benefit02.png') center top no-repeat;
 		  }
 		}
 	  }
@@ -837,6 +1007,10 @@
 	  .title-word {
 		left:700px;
 		width:160px;
+		@media (min-width:701px) and (max-width:999px) {
+			left:auto;
+			right:50px;
+		}
 	  }
 	}
 	.mortgage-list {
@@ -850,8 +1024,10 @@
 		color: #fff;
 		text-align: center;
 		font-size:16px;
-		margin-left: 45px;
-		margin-right: 45px;
+		margin:0 45px;
+		@media (min-width:701px) and (max-width:999px) {
+			margin:0 20px;
+		}
 		span {
 		  display: inline-block;
 		  padding-top:40px;
@@ -859,9 +1035,19 @@
 	  }
 	}
 	.creditor-right-info {
-	  img {
-		margin-right:60px;
+		padding-top: 20px;
+	  .creditor-right {
+		  width:400px;
+		  height:180px;
+		  background: url('../images/sign/assure/creditor-right.png') left top no-repeat;
+		  float: left;
+		  margin-right: 60px;
 	  }
+		@media screen and (max-width: 700px) {
+			.creditor-right {
+				width:100%;
+			}
+		}
 	  .btn-guide {
 		margin-top:30px;
 	  }
@@ -869,9 +1055,22 @@
   }
 
   .section-box-four {
-	img {
-	  margin-bottom:30px;
+	.assure-steps {
+		height:207px;
+		background: url('../images/sign/assure/steps.jpg') center top no-repeat;
+		margin:30px auto;
+		background-size: contain;
+
 	}
+
+	  @media screen and (max-width: 700px) {
+		  .assure-steps {
+			  width:100%;
+			  height: 100px;
+			  margin:20px auto 0 auto;
+
+		  }
+	  }
   }
   .section-box-five {
 	.code-ma {
@@ -882,10 +1081,15 @@
 		margin:20px 60px;
 		font-weight: bold;
 		i {
-		  border: 1px solid #e6e6e6;
-		  margin-bottom:20px;
+			border: 1px solid #e6e6e6;
+			margin-bottom:20px;
 			display: block;
 			padding: 5px;
+			@media (min-width:701px) and (max-width:999px){
+				width:220px;
+				height:220px;
+				background-size:100%;
+			}
 		}
 
 	  }
@@ -921,6 +1125,9 @@
 			display: inline-block;
 			vertical-align: middle;
 			background-size: 100%;
+			@media (min-width:701px) and (max-width:999px) {
+				width:65%;
+			}
 		}
 		.btn-normal {
 			margin-top: 0px;
@@ -940,9 +1147,7 @@
 }
 
 @media screen and (max-width: 700px) {
-  //* {
-	//box-sizing: border-box;
-  //}
+
   .btn-guide {
 	padding: 3px 25px;
 	font-size: 12px;
@@ -982,6 +1187,7 @@
 	.section-box-one p {
 	  font-size:12px;
 	  margin-bottom:0;
+
 	}
 	.section-box-two dl {
 
@@ -1000,9 +1206,13 @@
 		font-size:10px;
 		&.img-load {
 		  padding-left:0;
-		  img {
+			height: 240px;
+		.report-load {
 			width:100%;
-		  }
+			height:240px;
+			background-size: 100%;
+			left:5px;
+			}
 		  .arrow-rise {
 			position: absolute;
 			top: 15px;
@@ -1056,22 +1266,29 @@
 		&.fl {
 		  float: none;
 		}
-
+		  dd.benefit-img {
+			  padding-top: 20px!important;
+			  padding-left: 0;
+			  text-align: center;
+			  padding-bottom: 20px;
+			  width:100%;
+			  background-size: 80%;
+		  }
 	  }
 	  &.box-04 {
 		&.fr {
 		  float: none;
 		}
+		  dd.benefit-img {
+			  padding-top: 20px!important;
+			  padding-left: 0;
+			  text-align: center;
+			  padding-bottom: 20px;
+			  width:100%;
+			  background-size: 80%;
+		  }
 	  }
-	  dd.benefit-img {
-		padding-top: 20px!important;
-		padding-left: 0;
-		text-align: center;
-		padding-bottom: 20px;
-		img {
-		  width:60%;
-		}
-	  }
+
 	}
 
 	.section-box-three {

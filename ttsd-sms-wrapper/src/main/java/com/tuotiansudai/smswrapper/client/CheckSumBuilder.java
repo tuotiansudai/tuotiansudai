@@ -11,15 +11,15 @@ public class CheckSumBuilder {
 
     //计算并获取checkSum
     public static String getCheckSum(String appSecret, String nonce, String curTime) {
-        return encode(appSecret + nonce + curTime);
+        return encode("sha1", appSecret + nonce + curTime);
     }
 
-    private static String encode(String value) {
+    public static String encode(String algorithm, String value) {
         if (value == null) {
             return null;
         }
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance("sha1");
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             messageDigest.update(value.getBytes());
             return getFormattedText(messageDigest.digest());
         } catch (Exception e) {
