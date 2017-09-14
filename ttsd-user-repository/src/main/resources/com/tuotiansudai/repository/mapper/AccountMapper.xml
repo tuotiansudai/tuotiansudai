@@ -30,6 +30,10 @@
         select * from account where login_name = #{loginName}
     </select>
 
+    <select id="findByMobile" parameterType="string" resultMap="accountResultMap">
+        select account.* from account join user on account.login_name = user.login_name where user.mobile = #{mobile}
+    </select>
+
     <select id="findByPayUserId" parameterType="string" resultMap="accountResultMap">
         select * from account where pay_user_id = #{payUserId}
     </select>
