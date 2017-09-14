@@ -145,8 +145,7 @@ class taskCenter extends React.Component {
         if(value == 'ONGOING') {
             taskUrl = 'task-center/tasks';
         } else if(value == 'FINISHED') {
-            // taskUrl = 'task-center/completed-tasks';
-            taskUrl = 'task-center/tasks';
+            taskUrl = 'task-center/completed-tasks';
         }
         mobileCommon.ajax({
             url: taskUrl,
