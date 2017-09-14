@@ -71,6 +71,11 @@ public enum AsyncUmPayService {
      * 债权购买标的转账
      */
     INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "callback/invest_transfer_project_transfer", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+
+    /**
+     * 慧租有密还款
+     */
+    HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/hz_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
     /**
      * 债权购买返款标的转账
      */
@@ -186,4 +191,4 @@ public enum AsyncUmPayService {
     public String getMobileLink() {
         return mobileLink;
     }
-    }
+}
