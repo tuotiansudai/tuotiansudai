@@ -114,13 +114,14 @@ class taskCenter extends React.Component {
             }
         };
 
-    fixTopMenu(tabHeader,tabclassName,tabHeaderTop) {
+    fixTopMenu(tabHeader,imageTopHead) {
     
         let winScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        tabHeader.className = (winScrollTop>=tabHeaderTop)? tabclassName + ' fix-menu' : tabclassName;
+        tabHeader.className = (winScrollTop>=imageTopHead)? 'MenuBox fix-menu' : 'MenuBox';
         if(/fix-menu/.test(tabHeader.className)) {
             tabHeader.style.top = winScrollTop + 'px';
         } else {
+
             tabHeader.removeAttribute('style')
         }
 
@@ -144,7 +145,8 @@ class taskCenter extends React.Component {
         if(value == 'ONGOING') {
             taskUrl = 'task-center/tasks';
         } else if(value == 'FINISHED') {
-            taskUrl = 'task-center/completed-tasks';
+            // taskUrl = 'task-center/completed-tasks';
+            taskUrl = 'task-center/tasks';
         }
         mobileCommon.ajax({
             url: taskUrl,
@@ -177,15 +179,15 @@ class taskCenter extends React.Component {
     componentDidUpdate() {
         //数据加载完成后
         let _this = this;
+
         if (!this.state.isShowLoading) {
             imagesLoaded(this.refs.mainConWrap).on('done', () => {
-                let tabHeaderDom = document.getElementById('tabHeaderDom');
+                let imageTopHead = this.refs.imageTopHead.offsetHeight;
+
                 //菜单离屏幕的高度
                 let tabHeader = this.refs.tabHeader;
-                let tabclassName = tabHeader.className;
-                var tabHeaderTop = tabHeader.offsetTop;
                 window.onscroll=function() {
-                    mobileCommon.throttle( _this.fixTopMenu(tabHeader,tabclassName,tabHeaderTop));
+                    mobileCommon.throttle( _this.fixTopMenu(tabHeader,imageTopHead));
 
                 }
 
