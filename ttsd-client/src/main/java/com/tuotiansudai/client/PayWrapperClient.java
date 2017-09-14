@@ -73,6 +73,10 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String transferCashPath = "/transfer-cash";
 
+    private final static String creditLoanPurchase = "/credit-loan/purchase";
+
+    private final static String noPasswordCreditLoanPurchase = "/credit-loan/no-password-purchase";
+
     public PayWrapperClient() {
         this.okHttpClient.setConnectTimeout(180, TimeUnit.SECONDS);
         this.okHttpClient.setReadTimeout(180, TimeUnit.SECONDS);
@@ -138,6 +142,14 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayFormDataDto> purchase(Object investDto) {
         return asyncExecute(investDto, purchase);
+    }
+
+    public BaseDto<PayFormDataDto> creditLoanPurchase(Object investDto) {
+        return asyncExecute(investDto, creditLoanPurchase);
+    }
+
+    public BaseDto<PayDataDto> noPasswordCreditLoanPurchase(Object investDto) {
+        return syncExecute(investDto, noPasswordCreditLoanPurchase);
     }
 
     public BaseDto<PayDataDto> noPasswordPurchase(Object investDto) {

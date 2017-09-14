@@ -1,8 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.SystemRechargeDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.service.CreditLoanRechargeService;
 import com.tuotiansudai.paywrapper.service.SystemRechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,13 @@ public class CreditLoanRechargeController {
 
     @RequestMapping(value = "/credit-loan-recharge", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> systemRecharge(@Valid @RequestBody SystemRechargeDto dto) {
+    public BaseDto<PayFormDataDto> creditLoanRecharge(@Valid @RequestBody InvestDto dto) {
         return creditLoanRecharge.creditLoanRecharge(dto);
+    }
+
+    @RequestMapping(value = "/no-password-credit-loan-recharge", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> creditLoanRechargeNoPwd(@Valid @RequestBody InvestDto dto) {
+        return creditLoanRecharge.creditLoanRechargeNoPwd(dto);
     }
 }
