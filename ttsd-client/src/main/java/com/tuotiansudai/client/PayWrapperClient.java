@@ -77,6 +77,8 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String noPasswordCreditLoanPurchase = "/credit-loan/no-password-recharge";
 
+    private final static String creditLoanOut = "/credit-loan-out";
+
     public PayWrapperClient() {
         this.okHttpClient.setConnectTimeout(180, TimeUnit.SECONDS);
         this.okHttpClient.setReadTimeout(180, TimeUnit.SECONDS);
@@ -150,6 +152,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> noPasswordCreditLoanPurchase(Object creditLoanRechargeDto) {
         return syncExecute(creditLoanRechargeDto, noPasswordCreditLoanPurchase);
+    }
+
+    public BaseDto<PayDataDto> creditLoanOut() {
+        return syncExecute(null, creditLoanOut);
     }
 
     public BaseDto<PayDataDto> noPasswordPurchase(Object investDto) {

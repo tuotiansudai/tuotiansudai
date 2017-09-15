@@ -12,7 +12,8 @@ package com.tuotiansudai.job;
 public enum JobType {
     Default("默认类别"),
     DragonBoatSendPKPrize("端午节活动结束后发PK体验金"),
-    DelayMessageDelivery("延迟消息投递");
+    DelayMessageDelivery("延迟消息投递"),
+    CreditLoanOut("信用贷标的放款");
 
     private final String description;
 

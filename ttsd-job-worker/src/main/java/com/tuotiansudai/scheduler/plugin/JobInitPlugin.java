@@ -6,9 +6,12 @@ import com.tuotiansudai.job.JobType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.spi.ClassLoadHelper;
+import org.quartz.spi.MutableTrigger;
 import org.quartz.spi.SchedulerPlugin;
 
 import java.util.Date;
@@ -35,6 +38,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.DragonBoatSendPKPrize.name().equalsIgnoreCase(schedulerName)) {
             createDragonBoatSendPKPrizeJob();
         }
+        createCreditLoanOutJob();
     }
 
     @Override
@@ -52,6 +56,18 @@ public class JobInitPlugin implements SchedulerPlugin {
                         .replaceExistingJob(true)
                         .runOnceAt(DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
             }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createCreditLoanOutJob(){
+        try {
+            jobManager.newJob(JobType.CreditLoanOut, CreditLoanOutJob.class)
+                    .withIdentity(JobType.CreditLoanOut.name(), JobType.CreditLoanOut.name())
+                    .replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 0 * * ?"))
+                    .submit();
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }

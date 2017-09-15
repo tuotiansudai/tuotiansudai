@@ -19,5 +19,11 @@
         insert into credit_loan_bill ( amount, detail, operation_type, created_time, order_id, business_type, login_name)
         value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{loginName})
     </insert>
+
+    <select id="findSumAmountByIncome" resultType="long" parameterType="map">
+        select IFNULL(SUM(amount),0) from credit_loan_bill
+        where operation_type=#{operationType}
+        AND business_type=#{businessType}
+    </select>
     
 </mapper>
