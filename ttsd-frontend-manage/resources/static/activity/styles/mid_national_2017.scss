@@ -1,0 +1,441 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+h1,h2,h4 {
+    font-weight: normal;
+}
+
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+
+@media screen and (max-width:1023px){
+
+    .header {
+        width: 100%;
+        height:350px;
+        background:url("../images/2017/mid-national/wap_banner.jpg") no-repeat center center;
+    }
+    .page-width {
+        width: 92%!important;
+        margin: 0 auto;
+    }
+    .mid-tit1 {
+        width: 92%;
+
+        background: url("../images/2017/mid-national/wap_1_bg.png") no-repeat center top;
+    }
+    .mid-tit1>h2{
+        background-size: 92%!important;
+        width: 90%!important;
+
+    }
+    .mid-tit1 .house-mortgage {
+        margin-top: 38px;
+        border:7px solid #ffdbab;
+        position:relative;
+
+        background: #fdf9f4;
+    }
+    .mid-tit1 .house-mortgage .hourse-con {
+        width: 92%!important;
+        height: 231px!important;
+        margin: 25px auto!important;
+        background: url("../images/2017/mid-national/wap_mid_con1.png")!important;
+
+    }
+
+}
+/*@media screen and (width:360px){*/
+    /*html{*/
+        /*font-size:360/20px;*/
+    /*}*/
+/*}*/
+/*@media screen and (width:375px){*/
+    /*html{*/
+        /*font-size:375/20px;*/
+    /*}*/
+/*}*/
+/*@media screen and (width:414px){*/
+    /*html{*/
+        /*font-size:414/20px;*/
+    /*}*/
+/*}*/
+/*@media screen and (width:412px){*/
+    /*html{*/
+        /*font-size:412/20px;*/
+    /*}*/
+/*}*/
+
+
+body {
+    font-size: 12px;
+    background: #e84e47;
+}
+.clearfix:after {
+    content: '';
+    height: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+.page-width {
+    width: 1000px;
+    margin: 0 auto;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.header {
+    width: 100%;
+    height:354px;
+    background:url("../images/2017/mid-national/banner_big.jpg") no-repeat center center;
+}
+/*加息6.8%*/
+.mid-tit1 {
+    width: 100%;
+    background-size: 100%;
+    background: url("../images/2017/mid-national/1_bg.jpg") no-repeat center top;
+}
+.mid-tit1>h2{
+    width: 812px;
+    height: 65px;
+    margin: 0 auto;
+    background: url("../images/2017/mid-national/mid_tit_1.png") no-repeat center center;
+}
+
+.mid-tit2 {
+    width: 100%;
+    background-size: 100%;
+    background: #ffd49a;
+    padding-bottom: 30px;
+}
+.mid-tit2>h2 {
+    height: 241px;
+    margin: 0 auto;
+    background: url("../images/2017/mid-national/raise_interest.jpg") no-repeat center center;
+}
+.mid-tit2 .mid-con .house-mortgage {
+    border:7px solid #e65b51;
+}
+.mid-con .house-mortgage {
+    margin-top: 38px;
+    border:7px solid #ffdbab;
+    position:relative;
+    background: #fdf9f4;
+}
+.mid-con .house-mortgage .pos {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+
+
+}
+.mid-con .house-mortgage .pos.left_top {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: -7px;
+    top:-7px;
+    background:#fc393f url("../images/2017/mid-national/left_top.png");
+}
+.mid-con .house-mortgage .pos.left_bottom {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: -7px;
+    bottom:-7px;
+    background:#fc393f url("../images/2017/mid-national/left_bottom.png");
+}
+.mid-con .house-mortgage .pos.right_top {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    right: -7px;
+    top:-7px;
+    background:#fc393f url("../images/2017/mid-national/right_top.png");
+}
+.mid-con .house-mortgage .pos.right_bottom {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    right: -7px;
+    bottom:-7px;
+    background:#fc393f url("../images/2017/mid-national/right_bottom.png");
+}
+/*第二部分*/
+.mid-tit2 .mid-con .house-mortgage .pos.left_top {
+    background:#ffd49a url("../images/2017/mid-national/wap_left_top.png");
+}
+.mid-tit2 .mid-con .house-mortgage .pos.left_bottom {
+    background:#ffd49a url("../images/2017/mid-national/wap_left_bottom.png");
+}
+.mid-tit2 .mid-con .house-mortgage .pos.right_top {
+    background:#ffd49a url("../images/2017/mid-national/wap_right_top.png");
+}
+.mid-tit2 .mid-con .house-mortgage .pos.right_bottom {
+    background:#ffd49a url("../images/2017/mid-national/wap_right_bottom.png");
+}
+
+
+.mid-con .house-mortgage .hourse-con {
+    width: 869px;
+    height: 153px;
+    margin: 40px auto;
+    background: url("../images/2017/mid-national/mid_con_1.png");
+
+}
+
+.house-mortgage .red-ware {
+    width: 676px;
+    margin: 40px auto;
+}
+.house-mortgage .red-ware-info{
+    width: 270px;
+
+}
+.house-mortgage .red-ware-info .top {
+    width: 270px;
+    background: #fdf050;
+    color: #cd3132;
+    padding: 12px;
+    border-radius: 14px;
+}
+
+.house-mortgage .red-ware-info .top h2 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+.house-mortgage .red-ware-info .top p {
+    font-size: 12px;
+    line-height: 22px;
+}
+.house-mortgage .red-ware-info .bottom {
+    width: 22px;
+    height:16px;
+    margin: 0 auto;
+    background:url("../images/2017/mid-national/ware_big.png") ;
+}
+.house-mortgage .red-ware-info .ware {
+    width: 270px;
+    height:320px;
+    background:url("../images/2017/mid-national/ware_big.png") ;
+}
+.house-mortgage .red-ware-info.fl .ware {
+    background:url("../images/2017/mid-national/ware_small.png") ;
+}
+
+.house-mortgage .tip p {
+    font-size: 16px;
+    text-align: center;
+    color: #e84e47;
+}
+
+.house-mortgage .tip p {
+    font-size: 16px;
+    text-align: center;
+    color: #e84e47;
+}
+.house-mortgage .invest {
+    width: 274px;
+    height: 76px;
+    margin: 30px auto;
+}
+.house-mortgage .invest a {
+    width: 274px;
+    height: 76px;
+    display: block;
+    background: url("../images/2017/mid-national/yellow_button.png");
+}
+/*第二部分的投资按钮*/
+.mid-tit2 .house-mortgage .invest a {
+    background: url("../images/2017/mid-national/red_button.png");
+}
+
+/*抽奖*/
+.lottery_warp {
+    width: 100%;
+}
+.lottery_warp>h2 {
+    width: 100%;
+    height: 65px;
+    margin-top: 38px;
+    background-size: 100%;
+    background: #e84e47 url("../images/2017/mid-national/wap_tit_con1.png") no-repeat center center;
+}
+.lottery {
+    width: 91.56%;
+    margin: auto;
+}
+.lottery>h4 {
+    font-size: 18px;
+    color: #fdf2e1;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.lottery>p {
+    font-size: 16px;
+    color: #fdf2e1;
+}
+.lottery>p strong {
+    font-size: 16px;
+    color: #ffd800;
+}
+.lottery-pai {
+     margin-top: 40px;
+ }
+.lottery_ware {
+    width: 26%;
+}
+.lottery_ware .img {
+    width: 100%;
+    height: 239px;
+    background: url("../images/2017/mid-national/ware300.png");
+}
+.lottery_ware p {
+    font-size: 18px;
+    color: #fdf2e1;
+    text-align: center;
+}
+.lottery_ware_fr .img {
+    background: url("../images/2017/mid-national/ware168.png");
+}
+.big-lottery {
+    width: 29%;/*270  height: 320px;*/
+    float: left;
+    margin-left: 9.5%;
+
+}
+.big-lottery .img {
+    overflow: hidden;
+    width: 100%;
+    height: 266px;
+    background-size: 100%;
+    background: url("../images/2017/mid-national/big_lottery.png") no-repeat;
+}
+.big-lottery .img .big-lottery-con {
+    width:114px ;/*43%*/
+    height: 143px;
+    margin: 28px auto;
+
+}
+.big-lottery p {
+    font-size: 18px;
+    color: #ffd800;
+    text-align: center;
+
+}
+.big_lottery .img .big-lottery-con img {
+    width: 100%;
+}
+/*大奖名单*/
+.ranking-list {
+    width: 100%;
+    margin: 30px auto;
+    background: #ffeed6;
+    overflow: hidden;
+}
+.ranking-list .wrap>h2 {
+    width: 133px;
+    height: 37px;
+    margin:20px auto;
+    margin-bottom: 20px;
+    background: url("../images/2017/mid-national/paihangbang.png") no-repeat;
+}
+.ranking-list .wrap {
+    width: 84.6%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.ranking-list .wrap .title {
+    width: 100%;
+    height:44px;
+    line-height: 44px;
+    border-radius: 8px;
+    background: #ffdbab;
+    color: #e84e47;
+    font-size: 18px;
+    padding-left: 35px;
+    padding-right: 35px;
+    box-sizing: border-box;
+}
+.ranking-list .wrap .title span {
+    display: block;
+    margin-right: 100px;
+
+}
+.ranking-list .wrap .title span.last {
+    margin-right: 0;
+}
+.ranking-list .wrap .title span {
+
+}
+.ranking-list .wrap table {
+    margin-top: 10px;
+    width: 100%;
+
+}
+.ranking-list .wrap table th {
+    font-size: 18px;
+    color: #333;
+    text-align: left;
+}
+.ranking-list table tr {
+    border-bottom: 1px solid #f0e0c9;
+    line-height: 45px;
+}
+
+.ranking-list table td {
+
+    font-size: 16px;
+    color: #525252;
+    text-align: left;
+    vertical-align: center;
+    width: 25%;
+    border-bottom: 1px solid #f0e0c9;
+}
+.ranking-list table td.last,
+.ranking-list table th.last{
+    padding-left: 40px;
+    box-sizing: border-box;
+    width: 20%;
+}
+.ranking-list .tab-footer {
+    width: 71%;
+    margin: 24px auto;
+}
+.ranking-list .tab-footer a {
+    display: block;
+    font-size: 16px;
+    color:#333;
+    float: left;
+    line-height: 60px;
+    margin-right:4%;
+
+}
+.ranking-list .tab-footer a.invest-button {
+    width: 274px;
+    height: 76px;
+    background-size:100%;
+    background: url("../images/2017/mid-national/invest_button.png") no-repeat;
+
+}
+.ranking-list .tab-footer a.next-day {
+    margin-right: 0;
+
+}
+.ranking-list .tab-footer a {
+
+
+}
+.ranking-list table th {
+}

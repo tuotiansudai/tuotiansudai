@@ -1,5 +1,6 @@
 require('webJsModule/coupon_alert');
 require('webStyle/home_page_v2.scss');
+require('webStyle/spritecss/homepage.css');
 //投资计算器和意见反馈
 require('webJsModule/red_envelope_float');
 let $homePageContainer = $('#homePageContainer'),

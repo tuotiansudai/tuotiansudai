@@ -55,16 +55,16 @@
     <div class="copyright page-width">
         <div class="fl">
             <a rel="nofollow" href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" target="_blank">
-                <div class="img-gray img-itrust_logo"></div>
+                <div class="img-gray sprite-global-logo-itrust"></div>
             </a>
             <a rel="nofollow" href="https://search.szfw.org/cert/l/CX20150616010363010507" target="_blank">
-                <div class="img-gray img-chengxin_logo"></div>
+                <div class="img-gray sprite-global-logo-chengxin"></div>
             </a>
             <a rel="nofollow" href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" target="_blank">
-                <div class="img-gray img-knetSealLogo"></div>
+                <div class="img-gray sprite-global-logo-knetSeal"></div>
             </a>
             <a rel="nofollow" href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" target="_blank">
-                <div class="img-gray img-digicert"></div>
+                <div class="img-gray sprite-global-logo-digicert"></div>
             </a>
         </div>
         <div class="fr tr">
