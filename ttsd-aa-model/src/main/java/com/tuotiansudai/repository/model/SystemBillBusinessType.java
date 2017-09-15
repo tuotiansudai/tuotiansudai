@@ -14,8 +14,6 @@ public enum SystemBillBusinessType {
 
     SYSTEM_RECHARGE("平台充值"),
 
-    CREDIT_LOAN_RECHARGE("信用贷标的账户充值"),
-
     INVEST_FEE("利息管理费"),
 
     TRANSFER_FEE("债权转让手续费"),

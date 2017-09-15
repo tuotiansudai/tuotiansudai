@@ -2,9 +2,10 @@ package com.tuotiansudai.console.controller;
 
 
 import com.tuotiansudai.console.service.CreditLoanRechargeService;
-import com.tuotiansudai.console.service.SystemRechargeService;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.CreditLoanRechargeDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -17,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(value = "/finance-manage")
@@ -36,33 +36,31 @@ public class CreditLoanRechargeController {
 
 
     @RequestMapping(value = "/credit-loan-recharge",method = RequestMethod.POST)
-    public ModelAndView systemRecharge(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
+    public ModelAndView systemRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
         String operatorLoginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountMapper.findByLoginName(operatorLoginName);
-        investDto.setLoginName(operatorLoginName);
+        creditLoanRechargeDto.setOperatorLoginName(operatorLoginName);
 
         if (accountModel.isNoPasswordInvest()) {
             try {
-                BaseDto<PayDataDto> baseDto = creditLoanRechargeService.NoPasswordCreditLoanRecharge(investDto);
+                BaseDto<PayDataDto> baseDto = creditLoanRechargeService.NoPasswordCreditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.getData().getStatus()) {
                     return new ModelAndView("/", "responsive", true);
                 }
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
-            } catch (InvestException e) {
+            } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("errorMessage", "充值失败");
             }
-            redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
         } else {
             try {
-                BaseDto<PayFormDataDto> baseDto = creditLoanRechargeService.creditLoanRecharge(investDto);
+                BaseDto<PayFormDataDto> baseDto = creditLoanRechargeService.creditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
                     return new ModelAndView("/pay", "pay", baseDto);
                 }
-            } catch (InvestException e) {
+            } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("errorMessage", "充值失败");
             }
-            redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
         }
         return modelAndView;
     }
