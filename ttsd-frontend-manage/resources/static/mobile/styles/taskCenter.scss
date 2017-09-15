@@ -7,7 +7,6 @@
         .bodyCon {
             height:auto;
             overflow: auto;
-            transform:translate3d(0,0,0);
         }
 
         .loading {
@@ -41,7 +40,7 @@
             margin: 0 auto;
             &.fix-menu {
                 width:100%;
-                position: absolute;
+                position: fixed;
                 top:0;
             }
         }

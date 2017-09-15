@@ -118,13 +118,6 @@ class taskCenter extends React.Component {
     
         let winScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         tabHeader.className = (winScrollTop>=imageTopHead)? 'MenuBox fix-menu' : 'MenuBox';
-        if(/fix-menu/.test(tabHeader.className)) {
-            tabHeader.style.top = winScrollTop + 'px';
-        } else {
-
-            tabHeader.removeAttribute('style')
-        }
-
 
     }
    
@@ -186,7 +179,7 @@ class taskCenter extends React.Component {
                 //菜单离屏幕的高度
                 let tabHeader = this.refs.tabHeader;
                 window.onscroll=function() {
-                    mobileCommon.throttle( _this.fixTopMenu(tabHeader,imageTopHead));
+                    mobileCommon.throttle( _this.fixTopMenu(tabHeader,imageTopHead),10);
 
                 }
 
