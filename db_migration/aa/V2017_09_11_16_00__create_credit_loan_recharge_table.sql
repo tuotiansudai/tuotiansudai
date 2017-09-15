@@ -7,5 +7,5 @@ CREATE TABLE `aa`.`credit_loan_recharge` (
   `status` varchar(100) DEFAULT NULL,
   `remark` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `FK_SYSTEM_RECHARGE_LOGIN_NAME_REF_LOGIN_NAME` FOREIGN KEY (`login_name`) REFERENCES `user` (`login_name`)
+  CONSTRAINT `FK_CREDIT_LOAN_RECHARGE_LOGIN_NAME_REF_LOGIN_NAME` FOREIGN KEY (`login_name`) REFERENCES `user` (`login_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
