@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -72,7 +74,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         model.setRemark(remark);
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(null,
-                String.valueOf(IdGenerator.generate()),
+                String.valueOf(model.getId()),
                 accountModel.getPayUserId(),
                 creditLoanRechargeDto.getAmount());
         try {
@@ -83,6 +85,9 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", String.valueOf(model.getId()))
+                    .build()));
             creditLoanRechargeMapper.create(model);
             return baseDto;
         } catch (PayException e) {
@@ -113,7 +118,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRequest(
                 null,
-                String.valueOf(IdGenerator.generate()),
+                String.valueOf(creditLoanRechargeModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(creditLoanRechargeDto.getAmount()));
 
