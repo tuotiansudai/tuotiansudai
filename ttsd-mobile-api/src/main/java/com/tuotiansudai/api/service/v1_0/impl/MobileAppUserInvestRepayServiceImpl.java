@@ -159,10 +159,16 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
             if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
-                String contractUrl =  investModel.getContractNo().equals("OLD") ?
-                        MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId()))
-                        : MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo());
-                userInvestRepayResponseDataDto.setContractLocation(contractUrl);
+                if (investModel.getContractNo().equals("OLD")) {
+                    if (investModel.getTransferInvestId() != null) {
+                        long transferApplicationId = transferApplicationMapper.findByInvestId(investModel.getId()).getId();
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/transfer/transferApplicationId/{1}", this.webServer, String.valueOf(transferApplicationId)));
+                    } else {
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId())));
+                    }
+                } else {
+                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo()));
+                }
             }
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
