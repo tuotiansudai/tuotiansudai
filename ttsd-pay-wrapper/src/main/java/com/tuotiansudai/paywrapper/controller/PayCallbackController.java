@@ -77,6 +77,9 @@ public class PayCallbackController {
     @Autowired
     private CouponLoanOutService couponLoanOutService;
 
+    @Autowired
+    private CreditLoanRechargeService creditLoanRechargeService;
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -296,6 +299,13 @@ public class PayCallbackController {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.couponLoanOutService.transferRedEnvelopNotify(paramsMap, request.getQueryString());
         logger.info(MessageFormat.format("[标的放款] red_envelope_notify end , responseData:{0}", responseData));
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_recharge_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanRechargeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanRechargeService.creditLoanRechargeCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
