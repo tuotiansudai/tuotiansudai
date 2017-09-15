@@ -36,8 +36,8 @@ public class CreditLoanRechargeController {
 
 
     @RequestMapping(value = "/credit-loan-recharge",method = RequestMethod.POST)
-    public ModelAndView systemRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto, RedirectAttributes redirectAttributes) {
-        ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
+    public ModelAndView systemRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto) {
+        ModelAndView modelAndView = new ModelAndView("/credit-loan-recharge", "responsive", true);
         String operatorLoginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountMapper.findByLoginName(operatorLoginName);
         creditLoanRechargeDto.setOperatorLoginName(operatorLoginName);
@@ -48,9 +48,8 @@ public class CreditLoanRechargeController {
                 if (baseDto.getData().getStatus()) {
                     return new ModelAndView("/", "responsive", true);
                 }
-                redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (Exception e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "充值失败");
+                modelAndView.addObject("errorMessage", "充值失败");
             }
         } else {
             try {
@@ -59,9 +58,10 @@ public class CreditLoanRechargeController {
                     return new ModelAndView("/pay", "pay", baseDto);
                 }
             } catch (Exception e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "充值失败");
+                modelAndView.addObject("errorMessage", "充值失败");
             }
         }
+        modelAndView.addObject("errorMessage", "充值失败");
         return modelAndView;
     }
 }

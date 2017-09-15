@@ -20,6 +20,7 @@
                 <input id="amount" name="amount" type="text" class="form-control" data-l-zero="deny"
                        data-v-min="0.00" placeholder="0.00" />
             </div>
+            <#if errorMessage??><span class="form-control" >${errorMessage}</span></#if>
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="form-group console-error-message" style="display: none">
