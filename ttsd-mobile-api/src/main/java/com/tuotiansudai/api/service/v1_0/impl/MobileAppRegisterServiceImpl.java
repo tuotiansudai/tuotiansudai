@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -115,9 +116,11 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
         registerDataDto.setPhoneNum(dto.getMobile());
 
-        boolean mobileIsExist = userService.mobileIsExist(dto.getMobile());
-        if (!mobileIsExist) {
+        UserModel userModel = userService.findByMobile(dto.getMobile());
+        if (userModel == null) {
             userService.registerUserFromHuizu(dto);
+        } else {
+            dto.setLoginName(userModel.getLoginName());
         }
 
         registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
