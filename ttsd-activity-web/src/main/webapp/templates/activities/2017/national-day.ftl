@@ -97,11 +97,11 @@
                     <div class="big-lottery">
                         <div class="img">
                             <div class="big-lottery-con">
-                                <img src="images/activity/big_lottery_hi.png" alt="">
+                                <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
                             </div>
                         </div>
 
-                        <p>今日大奖 <br>XXXXXX</p>
+                        <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
                     </div>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
@@ -113,7 +113,23 @@
                     <div class="wrap">
                         <h2></h2>
                         <div class="title clearfix">
-                            <span class="fl">日期：2017.10.01</span><span class="fl">我的排名：3</span><span class="last fr">当日累计投资：20999000元</span>
+                            <span class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>
+                            <span class="fl">我的排名：
+                            <@global.isAnonymous>
+                                 <a href="/login" target="_blank" class="get-rank">登录</a>
+                            </@global.isAnonymous>
+
+                            <@global.isNotAnonymous>
+                                <i class="ranking-order">${investRanking}</i>
+                            </@global.isNotAnonymous></span>
+
+                            <span class="last fr">当日累计投资：
+                            <@global.isAnonymous>
+                                <a href="/login" target="_blank" class="get-rank">登录</a>
+                            </@global.isAnonymous>
+                            <@global.isNotAnonymous>
+                                <i class="total">${(investAmount/100)?string('0.00')}</i>元
+                            </@global.isNotAnonymous>元</span>
                         </div>
                         <table>
                             <thead>

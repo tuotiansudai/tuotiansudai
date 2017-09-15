@@ -38,7 +38,7 @@ public class NationalMidAutumnActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView nationalMidAutumn() {
-        ModelAndView modelAndView = new ModelAndView("/activities/2017/national-mid-autumn", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/national-day", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
 
         List<NewmanTyrantView> celebrationHeroRankingViews = nationalMidAutumnService.obtainRank(new Date());
