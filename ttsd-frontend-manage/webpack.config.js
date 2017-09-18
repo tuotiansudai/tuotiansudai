@@ -166,10 +166,10 @@ function createHappyPlugin(id, loaders) {
 		threadPool: happyThreadPool,
 
 		// disable happy caching with HAPPY_CACHE=0
-		cache: process.env.HAPPY_CACHE !== '0',
+		cache: true,
 
 		// make happy more verbose with HAPPY_VERBOSE=1
-		verbose: process.env.HAPPY_VERBOSE === '1',
+		verbose: true
 	});
 }
 
@@ -179,12 +179,13 @@ plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 plugins.push(createHappyPlugin('sass', ['css!postcss!sass']));
 
 // 图片base64,压缩
-var loaderObj = ['url?limit=2048&name=images/[name].[hash:8].[ext]'];
-if(NODE_ENV=='production') {
-	loaderObj = [
-		'url?limit=2048&name=images/[name].[hash:8].[ext]',
-		'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 9}}']
-}
+// var loaderObjNo = ['url?limit=2048&name=images/[name].[hash:8].[ext]'];
+
+// if(NODE_ENV=='production') {
+// 	var loaderObj = [
+// 		'url?limit=2048&name=images/[name].[hash:8].[ext]',
+// 		'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 9}}']
+// }
 plugins.push(createHappyPlugin('image', ['url-loader?limit=2048&name=images/[name].[hash:8].[ext]']));
 
 var myObject = objectAssign(commonOptions, {
@@ -206,8 +207,7 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loaders:loaderObj
-			// loaders:['happypack/loader?id=image']
+			loaders:['happypack/loader?id=image']
 
 		}]
 	},
