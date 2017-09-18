@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v3_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -8,28 +9,19 @@ import com.tuotiansudai.api.dto.v3_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppInvestListsV3Service;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -168,10 +160,38 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
                 dto.setUsedRedEnvelope(couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setProductNewType(loanModel.getProductType().name());
 
+                createContractLink(dto, investModel);
                 list.add(dto);
             }
         }
         return list;
     }
 
+    @Value("${web.server}")
+    private String webServerHost;
+
+    private static final String NEW_CONTRACT_LINK_TEMPLATE = "{0}/contract/invest/contractNo/{1}";
+
+    private static final String OLD_CONTRACT_LINK_TEMPLATE_INVEST = "{0}/contract/investor/loanId/{1}/investId/{2}";
+
+    private static final String OLD_CONTRACT_LINK_TEMPLATE_TRANSFER = "{0}/contract/transfer/transferApplicationId/{1}";
+
+    private void createContractLink(UserInvestRecordResponseDataDto dto, InvestModel investModel) {
+        if (investModel == null || StringUtils.isEmpty(investModel.getContractNo())) {
+            dto.setContractLink("");
+            return;
+        }
+
+        String contractNo = investModel.getContractNo();
+
+        if ("OLD".equals(contractNo)) {
+            if (dto.isTransferInvest() && !TransferStatus.CANCEL.name().equals(dto.getTransferStatus())) {
+                dto.setContractLink(MessageFormat.format(OLD_CONTRACT_LINK_TEMPLATE_TRANSFER, webServerHost, dto.getTransferApplicationId()));
+            } else {
+                dto.setContractLink(MessageFormat.format(OLD_CONTRACT_LINK_TEMPLATE_INVEST, webServerHost, dto.getLoanId(), dto.getInvestId()));
+            }
+        } else {
+            dto.setContractLink(MessageFormat.format(NEW_CONTRACT_LINK_TEMPLATE, webServerHost, contractNo));
+        }
+    }
 }
