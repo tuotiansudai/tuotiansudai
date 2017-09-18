@@ -240,7 +240,12 @@ var myObject = objectAssign(commonOptions, {
 			mobileJs:packageRoute.mobileJs,
 			mobileJsModule:packageRoute.mobileJsModule,
 			mobileStyle:packageRoute.mobileStyle,
-			mobileImages:packageRoute.mobileImages
+			mobileImages:packageRoute.mobileImages,
+
+			wapSiteJs:packageRoute.wapSiteJs,
+			wapSiteJsModule:packageRoute.wapSiteJsModule,
+			wapSiteStyle:packageRoute.wapSiteStyle,
+			wapSiteImages:packageRoute.wapSiteImages
 
 		}
 	},

@@ -7,7 +7,8 @@ var basePath = path.join(__dirname, 'resources'),
     webPath=path.join(staticPath, 'web'),
     pointPath=path.join(staticPath, 'point'),
     activityPath=path.join(staticPath, 'activity'),
-    mobilePath=path.join(staticPath, 'mobile');
+    mobilePath=path.join(staticPath, 'mobile'),
+    wapSitePath = path.join(staticPath, 'wapSite');
 
 var publicPathJS=path.join(publicPath, 'js');
 var outputPath=path.join(basePath, 'develop');  //打包文件路径
@@ -35,7 +36,12 @@ var publicStyle=path.join(publicPath, 'styles'),
     mobileJs=path.join(mobilePath, 'js'),
     mobileJsModule=path.join(mobilePath, 'js/components'),
     mobileStyle=path.join(mobilePath, 'styles'),
-    mobileImages=path.join(mobilePath, 'images');
+    mobileImages=path.join(mobilePath, 'images'),
+
+    wapSiteJs = path.join(wapSitePath, 'js'),
+    wapSiteJsModule=path.join(wapSitePath, 'js/module'),
+    wapSiteStyle=path.join(wapSitePath, 'styles'),
+    wapSiteImages=path.join(wapSitePath, 'images');
 
 var allPath = {
     basePath:basePath,
@@ -66,7 +72,12 @@ var allPath = {
     mobileJs:mobileJs,
     mobileJsModule:mobileJsModule,
     mobileStyle:mobileStyle,
-    mobileImages:mobileImages
+    mobileImages:mobileImages,
+
+    wapSiteJs:wapSiteJs,
+    wapSiteJsModule:wapSiteJsModule,
+    wapSiteStyle:wapSiteStyle,
+    wapSiteImages:wapSiteImages
 };
 
 module.exports = allPath;
