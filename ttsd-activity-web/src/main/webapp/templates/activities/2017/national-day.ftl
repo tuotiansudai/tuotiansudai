@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="css/mid-national.css">
-</head>
-<body>
+<#import "../../macro/global.ftl" as global>
+<@global.main pageCss="${css.mid_national_2017}" pageJavascript="${js.mid_national_2017}" activeNav="" activeLeftNav="" title="中秋遇上国庆_拓天周国庆节_活动中心_拓天速贷" keywords="拓天速贷,国庆节,实物大奖,加息券" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
+
+<#--<body>-->
     <div class="header">
 
     </div>
@@ -65,6 +60,7 @@
         <h2></h2>
         <div class="mid-con mid-con2">
             <div class="house-mortgage page-width">
+                <h2>活动期间，投资带有“加息6.8%”标签的项目，可享受该笔投资资金的首期加息6.8%。</h2>
                 <div class="pos left_top"></div>
                 <div class="pos right_top"></div>
                 <div class="pos left_bottom"></div>
@@ -97,11 +93,11 @@
                     <div class="big-lottery">
                         <div class="img">
                             <div class="big-lottery-con">
-                                <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
+                                <#--<img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">-->
                             </div>
                         </div>
 
-                        <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
+                        <#--<p>今日大奖 <br>${prizeDto.goldPrizeName}</p>-->
                     </div>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
@@ -112,61 +108,40 @@
                 <div class="ranking-list">
                     <div class="wrap">
                         <h2></h2>
-                        <div class="title clearfix">
-                            <span class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>
-                            <span class="fl">我的排名：
-                            <@global.isAnonymous>
-                                 <a href="/login" target="_blank" class="get-rank">登录</a>
-                            </@global.isAnonymous>
+                        <#--<div class="title clearfix" id="sortBox">-->
+                            <#--<span class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>-->
+                            <#--<span class="fl">我的排名：-->
+                            <#--<@global.isAnonymous>-->
+                                 <#--<a href="/login" target="_blank" class="get-rank">登录</a>-->
+                            <#--</@global.isAnonymous>-->
 
-                            <@global.isNotAnonymous>
-                                <i class="ranking-order">${investRanking}</i>
-                            </@global.isNotAnonymous></span>
+                            <#--<@global.isNotAnonymous>-->
+                                <#--<i class="ranking-order">${investRanking}</i>-->
+                            <#--</@global.isNotAnonymous></span>-->
 
-                            <span class="last fr">当日累计投资：
-                            <@global.isAnonymous>
-                                <a href="/login" target="_blank" class="get-rank">登录</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <i class="total">${(investAmount/100)?string('0.00')}</i>元
-                            </@global.isNotAnonymous>元</span>
-                        </div>
+                            <#--<span class="last fr">当日累计投资：-->
+                            <#--<@global.isAnonymous>-->
+                                <#--<a href="/login" target="_blank" class="get-rank">登录</a>-->
+                            <#--</@global.isAnonymous>-->
+                            <#--<@global.isNotAnonymous>-->
+                                <#--<i class="total">${(investAmount/100)?string('0.00')}</i>元-->
+                            <#--</@global.isNotAnonymous>元</span>-->
+                        <#--</div>-->
+                        <div class="nodata-invest tc" style="display: none;"></div>
                         <table>
                             <thead>
                             <th>排名</th> <th>用户</th> <th>投资额（元）</th> <th class="last">奖励</th>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td class="ranking-number">1</td>
-                                <td>涨涨</td>
-                                <td>900000</td>
-                                <td class="last">实物大奖</td>
-                            </tr>
-                            <tr>
-                                <td class="ranking-number">2</td>
-                                <td>涨涨</td>
-                                <td>900000</td>
-                                <td class="last">300元红包</td>
-                            </tr>
-                            <tr>
-                                <td class="ranking-number">3</td>
-                                <td>涨涨</td>
-                                <td>900000</td>
-                                <td class="last">168元红包</td>
-                            </tr>
-                            <tr>
-                                <td class="ranking-number">4</td>
-                                <td>涨涨</td>
-                                <td>900000</td>
-                                <td class="last">实物大奖</td>
-                            </tr>
+                            <tbody id="investRanking-tbody">
+
+
                             </tbody>
 
                         </table>
-                        <div class="tab-footer clearfix">
-                            <a href="#" class="pre-day">查看前一天</a>
-                            <a href="#" class="invest-button"></a>
-                            <a href="#" class="next-day">查看后一天</a>
+                        <div class="tab-footer clearfix" id="investRanking-button">
+                            <a href="#" class="pre-day button-small" id="rankingPre">查看前一天</a>
+                            <a href="#" class="invest-button" id="toInvest"></a>
+                            <a href="#" class="next-day button-small" id="rankingNext">查看后一天</a>
                         </div>
                     </div>
                 </div>
@@ -188,6 +163,29 @@
             </div>
         </div>
     </div>
-    <!--大奖公布 end-->
-</body>
-</html>
+
+    <#include "../../module/login-tip.ftl" />
+<script type="text/template" id="tplTable">
+    <% for(var i = 0; i < records.length; i++) {
+    var item = records[i];
+    var reward;
+    if(i==0) {
+    reward='实物大奖';
+    }
+    else if(i>0 && i<4) {
+    reward='6.8%加息券';
+    }
+    else {
+    reward='0.8%加息券';
+    }
+    %>
+    <tr>
+        <td class="ranking-number"><%=i+1%></td>
+        <td><%=item.loginName%></td>
+        <td><%=item.centSumAmount%></td>
+        <td class="last"><%=reward%></td>
+    </tr>
+    <% } %>
+</script>
+
+</@global.main>

@@ -41,6 +41,10 @@ h1,h2,h4 {
 
         background: #fdf9f4;
     }
+    .mid-tit1 .house-mortgage h2 {
+        font-size: 20px;
+        color: #333;
+    }
     .mid-tit1 .house-mortgage .hourse-con {
         width: 92%!important;
         height: 231px!important;
@@ -50,27 +54,6 @@ h1,h2,h4 {
     }
 
 }
-/*@media screen and (width:360px){*/
-    /*html{*/
-        /*font-size:360/20px;*/
-    /*}*/
-/*}*/
-/*@media screen and (width:375px){*/
-    /*html{*/
-        /*font-size:375/20px;*/
-    /*}*/
-/*}*/
-/*@media screen and (width:414px){*/
-    /*html{*/
-        /*font-size:414/20px;*/
-    /*}*/
-/*}*/
-/*@media screen and (width:412px){*/
-    /*html{*/
-        /*font-size:412/20px;*/
-    /*}*/
-/*}*/
-
 
 body {
     font-size: 12px;
@@ -433,9 +416,9 @@ body {
     margin-right: 0;
 
 }
-.ranking-list .tab-footer a {
-
-
-}
-.ranking-list table th {
+.ranking-er {
+    font-size: 14px;
+    color: #ffdbab;
+    line-height: 28px;
+    padding-bottom: 20px;
 }

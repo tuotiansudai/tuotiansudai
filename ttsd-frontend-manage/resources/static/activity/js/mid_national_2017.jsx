@@ -1,5 +1,6 @@
 require("activityStyle/mid_national_2017.scss");
 require('activityJsModule/fast_register');
+require('publicJs/login_tip');
 let commonFun = require('publicJs/commonFun');
 
 //投资按钮，前一天后一天按钮
