@@ -26,12 +26,14 @@ import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Map;
 
+@Service
 public class CreditLoanOutServiceImpl implements CreditLoanOutService {
 
     private final static Logger logger = Logger.getLogger(CreditLoanOutServiceImpl.class);
@@ -59,31 +61,35 @@ public class CreditLoanOutServiceImpl implements CreditLoanOutService {
     @Autowired
     private AccountMapper accountMapper;
 
+    private final static String creditLoanId = "78365173103632";
+
+    private final static String agentMobile = "00000000000";
+
     @Override
     public void creditLoanOut(){
-        long sumAmountByIncome = creditLoanBillMapper.findSumAmountByIncome(CreditLoanBillBusinessType.XYD_USER_REPAY, SystemBillOperationType.IN);
-        if (sumAmountByIncome <= 0){
+        long investAmountTotal = creditLoanBillMapper.findSumAmountByIncome(CreditLoanBillBusinessType.XYD_USER_REPAY, SystemBillOperationType.IN);
+        if (investAmountTotal <= 0){
             return;
         }
+        UserModel userModel = userMapper.findByMobile(agentMobile);
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
 
-        long investAmountTotal = 0;
-        if (redisWrapperClient.hexists(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, null)){
-            investAmountTotal = sumAmountByIncome - Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT, null));
+        if (redisWrapperClient.hexists(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, userModel.getLoginName())){
+            investAmountTotal = investAmountTotal - Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, userModel.getLoginName()));
         }
-        logger.info("[标的放款]：发起联动优势放款请求，标的ID:" + null + "，代理人:" + null + "，放款金额:" + investAmountTotal);
+        logger.info("[标的放款]：发起联动优势放款请求，标的ID:" + creditLoanId + "，代理人:" + userModel.getLoginName() + "，放款金额:" + investAmountTotal);
 
-        AccountModel accountModel = accountMapper.findByLoginName(userMapper.findByMobile(null).getLoginName());
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanOutRequest(
-                null, String.valueOf(IdGenerator.generate()),
+                creditLoanId, String.valueOf(IdGenerator.generate()),
                 accountModel.getPayUserId(),
                 String.valueOf(investAmountTotal));
 
         try {
             ProjectTransferResponseModel resp = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
-            redisWrapperClient.hset(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT,null, String.valueOf(investAmountTotal));
+            redisWrapperClient.hset(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT,userModel.getLoginName(), String.valueOf(investAmountTotal));
         }catch (PayException e){
-            logger.error(MessageFormat.format("[信用贷标的放款]:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(null)), e);
+            logger.error(MessageFormat.format("[信用贷标的放款]:发起放款联动优势请求失败,标的ID : {0}", creditLoanId, e));
         }
 
     }
@@ -104,10 +110,10 @@ public class CreditLoanOutServiceImpl implements CreditLoanOutService {
     private void postCreditLoanOutCallback(BaseCallbackRequestModel callbackRequestModel) {
         try {
             long orderId= Long.parseLong(callbackRequestModel.getOrderId());
-            UserModel userModel = userMapper.findByMobile(null);
+            UserModel userModel = userMapper.findByMobile(agentMobile);
             long amount = 0;
-            if (redisWrapperClient.hexists(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT,null)){
-                amount = Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT,null));
+            if (redisWrapperClient.hexists(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT,userModel.getLoginName())){
+                amount = Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_OUT_REPAY_AGENT_AMOUNT,userModel.getLoginName()));
             }else{
                 logger.error("credit loan out not exists amount ");
                 return;
@@ -118,12 +124,12 @@ public class CreditLoanOutServiceImpl implements CreditLoanOutService {
                     creditLoanBillService.transferOut(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_OUT,
                             MessageFormat.format("信用贷标的账户放款", userModel.getLoginName(), amount), userModel.getLoginName());
 
-                    if (redisWrapperClient.hexists(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, null)){
-                        long repaySumAmount = Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, null));
-                        redisWrapperClient.hset(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, null, String.valueOf(amount+repaySumAmount));
+                    if (redisWrapperClient.hexists(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, userModel.getLoginName())){
+                        long repaySumAmount = Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, userModel.getLoginName()));
+                        redisWrapperClient.hset(CREDIT_LOAN_OUT_REPAY_AGENT_SUM_AMOUNT, userModel.getLoginName(), String.valueOf(amount+repaySumAmount));
                     }
                 } catch (AmountTransferException e) {
-                    logger.error(MessageFormat.format("credit loan recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
+                    logger.error(MessageFormat.format("credit loan out transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }
 
             } else {
