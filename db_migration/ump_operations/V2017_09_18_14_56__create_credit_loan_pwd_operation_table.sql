@@ -42,7 +42,7 @@ CREATE TABLE `ump_operations`.`credit_loan_recharge_transfer_response` (
   `response_data`  TEXT            NOT NULL,
   `response_time`  DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_CREDIT_LOAN_RECHARGE_TRANSFER_RESPONSE_REQUEST_ID_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `ump_operations`.`credit_loan_recharge_transfer_request` (`id`)
+  CONSTRAINT FK_CREDIT_LOAN_RESPONSE_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `ump_operations`.`credit_loan_recharge_transfer_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
