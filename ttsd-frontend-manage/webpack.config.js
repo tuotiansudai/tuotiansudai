@@ -178,9 +178,7 @@ plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 
 plugins.push(createHappyPlugin('sass', ['css!postcss!sass']));
 
-// 图片base64,压缩
-// var loaderObjNo = ['url?limit=2048&name=images/[name].[hash:8].[ext]'];
-
+// image-webpack-loader,图片压缩，目前项目不用
 // if(NODE_ENV=='production') {
 // 	var loaderObj = [
 // 		'url?limit=2048&name=images/[name].[hash:8].[ext]',
