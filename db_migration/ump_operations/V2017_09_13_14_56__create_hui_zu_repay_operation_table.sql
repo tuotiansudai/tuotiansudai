@@ -45,6 +45,7 @@ CREATE TABLE `ump_operations`.`hz_repay_notify_request` (
   `response_time`  DATETIME,
   `request_data`   TEXT            NOT NULL,
   `response_data`  TEXT,
+  `status`         VARCHAR(32)      NOT NULL     DEFAULT 'NOT_DONE',
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

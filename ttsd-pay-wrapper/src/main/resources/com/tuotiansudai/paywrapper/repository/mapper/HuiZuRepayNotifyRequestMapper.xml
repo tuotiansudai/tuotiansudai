@@ -25,22 +25,37 @@
     </resultMap>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true"
-            parameterType="AdvanceRepayNotifyRequestModel">
-        insert into advance_repay_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, ret_code, ret_msg, request_time, response_time, request_data, response_data, status)
+            parameterType="HuiZuRepayNotifyRequestModel">
+        insert into hz_repay_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, ret_code, ret_msg, request_time, response_time, request_data, response_data, status)
         values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData}, 'NOT_DONE')
     </insert>
 
     <select id="findById" parameterType="map" resultMap="resultMap"
-            resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.AdvanceRepayNotifyRequestModel">
+            resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.HuiZuRepayNotifyRequestModel">
         <![CDATA[
 
-          select * from advance_repay_notify_request where status='NOT_DONE' and id = #{id}
+
+
+
+          select * from hz_repay_notify_request where status='NOT_DONE' and id = #{id}
+
+
+
+
+        ]]>
+    </select>
+
+    <select id="findByOrderId" parameterType="map" resultMap="resultMap"
+            resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.HuiZuRepayNotifyRequestModel">
+        <![CDATA[
+
+          select * from hz_repay_notify_request where order_id = #{orderId}
 
         ]]>
     </select>
 
     <update id="updateStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update advance_repay_notify_request set status = #{status} where id = #{id}
+        update hz_repay_notify_request set status = #{status} where id = #{id}
     </update>
 
 </mapper>

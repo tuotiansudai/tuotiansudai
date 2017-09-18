@@ -3,12 +3,10 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.HuiZuRepayDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayMapper;
@@ -25,6 +23,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,10 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     static Logger logger = Logger.getLogger(HuizuRepayServiceImpl.class);
 
     private static final String REPAY_LOAN_ID = "88888";
+
+    public final static String REPAY_ORDER_ID_SEPARATOR = "X";
+
+    private final static String REPAY_ORDER_ID_TEMPLATE = "%s" + REPAY_ORDER_ID_SEPARATOR + "%s";
 
     private static final int REPAY_PAY_EXPIRE_SECOND = 60 * 60 * 24 * 30;
     @Autowired
@@ -78,8 +81,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         }
 
         try {
-            if (redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()))
-                    && redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "status").equals(SyncRequestStatus.SUCCESS.name())) {
+            if (redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()))) {
                 payFormDataDto.setMessage(String.format("用户:%s-第%s期-已经还款成功",
                         huiZuRepayDto.getLoginName(),
                         String.valueOf(huiZuRepayDto.getPeriod())));
@@ -89,14 +91,14 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                     Maps.newHashMap(ImmutableMap.builder()
                             .put("loginName", huiZuRepayDto.getLoginName())
-                            .put("amount", String.valueOf(huiZuRepayDto.getAmount()))
+                            .put("amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
                             .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                             .put("status", SyncRequestStatus.SENT.name())
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newHuiZuRepayPasswordRequest(
                     REPAY_LOAN_ID,
-                    String.valueOf(huiZuRepayDto.getRepayPlanId()),
+                    String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
                     accountModel.getPayUserId(),
                     String.valueOf(huiZuRepayDto.getAmount()));
             return payAsyncClient.generateFormData(HuiZuRepayMapper.class, requestModel);
@@ -127,41 +129,48 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         return callbackRequest.getResponseData();
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public void hzRepayModify(long notifyRequestId) {
 
 
         HuiZuRepayNotifyRequestModel model = huiZuRepayNotifyRequestMapper.findById(notifyRequestId);
-
+        String orderId = model.getOrderId().split("REPAY_ORDER_ID_SEPARATOR")[0];
         if (model != null && NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
-            if (!SyncRequestStatus.SENT.equals(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", model.getOrderId()), "status"))) {
+            if (!SyncRequestStatus.SENT.name().equals(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "status"))) {
                 logger.error(String.format("[HZ Repay:] ID:%s status is %s ",
-                        model.getOrderId(),
-                        redisWrapperClient.hmget(String.format("REPAY_PLAN_ID:%s", "status")).get(0)));
+                        orderId,
+                        redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "status")));
                 return;
             }
-            logger.info(String.format("[HZ Repay:] %s starting...", model.getOrderId()));
+            logger.info(String.format("[HZ Repay:] %s starting...", orderId));
             if (updateHuiZuNotifyRequestNotifyRequestStatus(model)) {
                 try {
                     if (model.isSuccess()) {
-                        redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", model.getOrderId()), "status", SyncRequestStatus.SUCCESS.name());
-                        amountTransfer.transferOutBalance(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", model.getOrderId()), "loginName"),
-                                Long.parseLong(model.getOrderId()),
-                                Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", model.getOrderId()), "amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
-                        //TODO:send MQ message to huizu 更新RepayPlan的status
-                        logger.info(MessageFormat.format("[HZ Repay:] update huizu balance and user bill", String.valueOf(model.getOrderId())));
+                        redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", orderId), "status", SyncRequestStatus.SUCCESS.name());
+                        this.postRepay(orderId);
+                        logger.info(MessageFormat.format("[HZ Repay:] update huizu balance and user bill", String.valueOf(orderId)));
                     } else {
-                        redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", model.getOrderId()), "status", SyncRequestStatus.FAILURE.name());
-                        logger.error(MessageFormat.format("[HZ Repay:] update huizu repay fail", String.valueOf(model.getOrderId())));
+                        redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", orderId), "status", SyncRequestStatus.FAILURE.name());
+                        logger.error(MessageFormat.format("[HZ Repay:] update huizu repay fail", String.valueOf(orderId)));
                     }
                 } catch (Exception e) {
-                    String errMsg = MessageFormat.format("[HZ Repay:] hzRepayModify error. ID:{0}", model.getOrderId());
+                    String errMsg = MessageFormat.format("[HZ Repay:] hzRepayModify error. ID:{0}", orderId);
                     logger.error(errMsg, e);
                     sendFatalNotify(MessageFormat.format("慧租还款回调处理错误。{0},{1}", environment, errMsg));
                 }
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void postRepay(String orderId) throws AmountTransferException {
+        amountTransfer.transferOutBalance(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "loginName"),
+                Long.parseLong(orderId),
+                Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
+
+        //TODO: modify loan_bill 流水数据
+        //TODO:send MQ message to huizu 更新RepayPlan的status
     }
 
     private void sendFatalNotify(String message) {

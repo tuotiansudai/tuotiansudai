@@ -14,4 +14,6 @@ public interface HuiZuRepayNotifyRequestMapper extends BaseCallbackMapper {
     HuiZuRepayNotifyRequestModel findById(@Param(value = "id") long id);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
+
+    List<HuiZuRepayNotifyRequestModel> findByOrderId(@Param(value = "orderId") String orderId);
 }
