@@ -87,7 +87,7 @@ public class CreditLoanRechargeServiceTest {
         userModelTest.setLoginName("loginName");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000001");
+        userModelTest.setMobile("13900000000");
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
