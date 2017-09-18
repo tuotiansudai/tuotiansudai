@@ -59,11 +59,6 @@ public class HuiZuRepayServiceTest {
         this.createFakeUser(loginName, 300);
     }
 
-    @After
-    public void tearDown() {
-        redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
-    }
-
     @Test
     public void shouldPasswordRepayIsSuccess() {
         HuiZuRepayDto huiZuRepayDto = createFakeHuiZuRepayDto("1.00", "111");
@@ -80,6 +75,8 @@ public class HuiZuRepayServiceTest {
         assertEquals(huiZuRepayDto.getAmount(), baseDto.getData().getFields().get("amount"));
         assertEquals(huiZuRepayDto.getRepayPlanId(), baseDto.getData().getFields().get("order_id").split(HuizuRepayServiceImpl.REPAY_ORDER_ID_SEPARATOR)[0]);
         assertEquals(accountModel.getPayUserId(), baseDto.getData().getFields().get("partic_user_id"));
+
+        redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
 
     }
 
@@ -103,6 +100,7 @@ public class HuiZuRepayServiceTest {
         assertEquals(UserBillBusinessType.HUI_ZU_REPAY_IN, userBillModels.get(0).getBusinessType());
         assertEquals(huiZuRepayDto.getRepayPlanId(), String.valueOf(userBillModels.get(0).getOrderId()));
         assertEquals(UserBillOperationType.TO_BALANCE, userBillModels.get(0).getOperationType());
+        redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
 
 
     }
@@ -131,28 +129,7 @@ public class HuiZuRepayServiceTest {
         assertEquals(String.format("用户:%s-第%s期-已经还款成功",
                 huiZuRepayDto.getLoginName(),
                 String.valueOf(huiZuRepayDto.getPeriod())), baseDto.getData().getMessage());
-    }
-
-    private HuiZuRepayNotifyRequestModel createFakeBaseCallbackRequestModel(String orderId) {
-        HuiZuRepayNotifyRequestModel huiZuRepayNotifyRequestModel = new HuiZuRepayNotifyRequestModel();
-        huiZuRepayNotifyRequestModel.setService("Service");
-        huiZuRepayNotifyRequestModel.setSignType("Sign_type");
-        huiZuRepayNotifyRequestModel.setSign("Sign");
-        huiZuRepayNotifyRequestModel.setMerId("mer_id");
-        huiZuRepayNotifyRequestModel.setVersion("1.0");
-        huiZuRepayNotifyRequestModel.setOrderId(orderId);
-        huiZuRepayNotifyRequestModel.setMerDate("mer_date");
-        huiZuRepayNotifyRequestModel.setTradeNo("trade_no");
-        huiZuRepayNotifyRequestModel.setMerCheckDate("mer_check_date");
-        huiZuRepayNotifyRequestModel.setRetCode("0000");
-        huiZuRepayNotifyRequestModel.setRetMsg("ret_msg");
-        huiZuRepayNotifyRequestModel.setRequestTime(new Date());
-        huiZuRepayNotifyRequestModel.setResponseTime(new Date());
-        huiZuRepayNotifyRequestModel.setRequestData("request_data");
-        huiZuRepayNotifyRequestModel.setResponseData("response_data");
-
-        return huiZuRepayNotifyRequestModel;
-
+        redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
     }
 
     private HuiZuRepayDto createFakeHuiZuRepayDto(String amount, String repayPlanId) {
