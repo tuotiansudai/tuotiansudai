@@ -80,6 +80,9 @@ public class PayCallbackController {
     @Autowired
     private CreditLoanRechargeService creditLoanRechargeService;
 
+    @Autowired
+    private CreditLoanOutService creditLoanOutService;
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -306,6 +309,13 @@ public class PayCallbackController {
     public ModelAndView creditLoanRechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.creditLoanRechargeService.creditLoanRechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_out_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanOutNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanOutService.creditLoanOutCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

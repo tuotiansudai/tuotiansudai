@@ -128,6 +128,14 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
+    public static ProjectTransferRequestModel newCreditLoanOutRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_OUT_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_OUT_LOAN_OUT.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.LOANER.getCode();
+        return model;
+    }
+
     private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType, Source source, AsyncUmPayService asyncUmPayService) {
         super(source, asyncUmPayService);
         this.service = asyncUmPayService.getServiceName();
