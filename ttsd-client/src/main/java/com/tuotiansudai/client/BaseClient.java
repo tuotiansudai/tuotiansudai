@@ -65,7 +65,8 @@ public abstract class BaseClient {
     }
 
     protected ResponseBody newCall(String path, String requestJson, String method) {
-        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
+//        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
+        String url = "http://localhost:8787/credit_loan/recharge";
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;

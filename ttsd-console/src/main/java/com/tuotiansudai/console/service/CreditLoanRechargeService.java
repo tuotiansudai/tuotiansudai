@@ -15,10 +15,10 @@ public class CreditLoanRechargeService {
     private PayWrapperClient payWrapperClient;
 
     public BaseDto<PayFormDataDto> creditLoanRecharge(CreditLoanRechargeDto creditLoanRechargeDto) {
-        return payWrapperClient.creditLoanPurchase(creditLoanRechargeDto);
+        return payWrapperClient.creditLoanRecharge(creditLoanRechargeDto);
     }
 
-    public BaseDto<PayDataDto> NoPasswordCreditLoanRecharge(CreditLoanRechargeDto creditLoanRechargeDto) {
-        return payWrapperClient.noPasswordCreditLoanPurchase(creditLoanRechargeDto);
+    public BaseDto<PayDataDto> noPasswordCreditLoanRecharge(CreditLoanRechargeDto creditLoanRechargeDto) {
+        return payWrapperClient.noPasswordCreditLoanRecharge(creditLoanRechargeDto);
     }
 }

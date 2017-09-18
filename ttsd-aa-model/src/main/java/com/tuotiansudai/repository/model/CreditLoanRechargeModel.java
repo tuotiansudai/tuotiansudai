@@ -10,21 +10,23 @@ public class CreditLoanRechargeModel implements Serializable {
 
     private long id;
 
-    private String loginName;
+    private String operatorName;
 
-    private Date time;
+    private String accountName;
+
+    private Date createdtime;
 
     private long amount;
 
-    private Date successTime;
+    private Date updatedTime;
 
     private RechargeStatus status;
 
-    private String remark;
-
-    public CreditLoanRechargeModel(CreditLoanRechargeDto dto, String loginName){
-        this.loginName = loginName;
-        this.time = new Date();
+    public CreditLoanRechargeModel(CreditLoanRechargeDto dto, String accountName){
+        this.operatorName = dto.getOperatorLoginName();
+        this.accountName = accountName;
+        this.createdtime = new Date();
+        this.updatedTime = new Date();
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.status = RechargeStatus.WAIT_PAY;
     }
@@ -40,20 +42,20 @@ public class CreditLoanRechargeModel implements Serializable {
         this.id = id;
     }
 
-    public String getLoginName() {
-        return loginName;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
-    public Date getTime() {
-        return time;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
     public long getAmount() {
@@ -64,14 +66,6 @@ public class CreditLoanRechargeModel implements Serializable {
         this.amount = amount;
     }
 
-    public Date getSuccessTime() {
-        return successTime;
-    }
-
-    public void setSuccessTime(Date successTime) {
-        this.successTime = successTime;
-    }
-
     public RechargeStatus getStatus() {
         return status;
     }
@@ -80,11 +74,19 @@ public class CreditLoanRechargeModel implements Serializable {
         this.status = status;
     }
 
-    public String getRemark() {
-        return remark;
+    public Date getCreatedtime() {
+        return createdtime;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setCreatedtime(Date createdtime) {
+        this.createdtime = createdtime;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }

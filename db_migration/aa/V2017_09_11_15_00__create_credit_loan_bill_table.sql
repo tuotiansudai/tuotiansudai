@@ -5,7 +5,7 @@ CREATE TABLE `aa`.`credit_loan_bill` (
   `operation_type` VARCHAR(8)     NOT NULL,
   `business_type` VARCHAR(32)     NOT NULL,
   `detail`        TEXT,
-  `login_name`    VARCHAR(25)     NOT NULL,
+  `mobile`        VARCHAR(25)     NOT NULL,
   `created_time`  DATETIME        NOT NULL,
   PRIMARY KEY (`id`)
 )

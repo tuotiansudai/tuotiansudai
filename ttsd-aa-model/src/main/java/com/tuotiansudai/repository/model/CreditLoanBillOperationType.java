@@ -1,12 +1,14 @@
 package com.tuotiansudai.repository.model;
 
-public enum CreditLoanBillBusinessType {
+public enum CreditLoanBillOperationType {
 
-    CREDIT_LOAN_RECHARGE("信用贷账户充值");
+    IN("入账"),
+
+    OUT("出账");
 
     private final String description;
 
-    CreditLoanBillBusinessType(String description) {
+    CreditLoanBillOperationType(String description) {
         this.description = description;
     }
 

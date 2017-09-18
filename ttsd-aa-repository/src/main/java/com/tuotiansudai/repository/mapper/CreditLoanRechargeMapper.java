@@ -13,5 +13,5 @@ public interface CreditLoanRechargeMapper {
 
     void updateCreditLoanRecharge(CreditLoanRechargeModel creditLoanRechargeModel);
 
-    List<CreditLoanRechargeModel> findByLoginName(String loginName);
+    List<CreditLoanRechargeModel> findByAccountName(String accountName);
 }
