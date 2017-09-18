@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

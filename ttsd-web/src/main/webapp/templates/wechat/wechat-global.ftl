@@ -31,9 +31,16 @@
     });
 </script>
 
+<#if (js.jquerydll)??>
 <script src="${js.jquerydll}" type="text/javascript" ></script>
+</#if>
+<#if (js.globalFun_page)??>
 <script src="${js.globalFun_page!}" type="text/javascript" ></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
+</#if>
+<#if pageJavascript??>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+</#if>
+
 </body>
 </html>
 </#macro>

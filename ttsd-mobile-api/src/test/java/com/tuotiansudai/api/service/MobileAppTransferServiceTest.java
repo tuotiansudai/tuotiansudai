@@ -144,7 +144,9 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         accountModel.setNoPasswordInvest(false);
         when(accountService.findByLoginName(anyString())).thenReturn(accountModel);
 
-        BaseDto<PayDataDto> baseDto = new BaseDto<>(new PayDataDto());
+        PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setMessage("error");
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
         baseDto.setSuccess(false);
         when(transferService.noPasswordTransferPurchase(any(InvestDto.class))).thenReturn(baseDto);
 
@@ -154,6 +156,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
 
         BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = mobileAppTransferServiceImpl.transferNoPasswordPurchase(transferPurchaseRequestDto);
         assertFalse(baseResponseDto.isSuccess());
+        assertThat(baseResponseDto.getMessage(), is("error"));
     }
 
     @Test

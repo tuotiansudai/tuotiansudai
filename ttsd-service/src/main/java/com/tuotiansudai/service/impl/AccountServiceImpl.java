@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.constants.PayReturnCode;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -30,6 +31,11 @@ public class AccountServiceImpl implements AccountService {
 
     static Logger logger = Logger.getLogger(AccountServiceImpl.class);
 
+    /**
+     * 第一次调用超时后，最多允许重试的次数。
+     */
+    private static final int MAX_REGISTER_RETRY_TIMES = 2;
+
     @Autowired
     private AccountMapper accountMapper;
 
@@ -44,7 +50,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
+        BaseDto<PayDataDto> baseDto = registerAccountRetryOnTimeout(dto, 0);
         if (baseDto.getData().getStatus()) {
             //Title:恭喜您认证成功
             //Content:尊敬的{0}女士/先生，恭喜您认证成功，您的支付密码已经由联动优势发送至注册手机号码中,马上【绑定银行卡】开启赚钱之旅吧！
@@ -94,5 +100,21 @@ public class AccountServiceImpl implements AccountService {
         }
         ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
         return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
+    }
+
+    private BaseDto<PayDataDto> registerAccountRetryOnTimeout(RegisterAccountDto dto, int retry_times) {
+        BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
+        PayDataDto payData = baseDto.getData();
+        if (!payData.getStatus()
+                && PayReturnCode.ERROR_TIMEOUT.getValue().equalsIgnoreCase(payData.getCode())
+                && retry_times < MAX_REGISTER_RETRY_TIMES) {
+            return registerAccountRetryOnTimeout(dto, retry_times + 1);
+        }
+        if (!payData.getStatus()
+                && PayReturnCode.ERROR_TIMEOUT.getValue().equalsIgnoreCase(payData.getCode())
+                && retry_times == MAX_REGISTER_RETRY_TIMES) {
+            logger.error(String.format("account register timeout %d times, mobile: %s", retry_times + 1, dto.getMobile()));
+        }
+        return baseDto;
     }
 }

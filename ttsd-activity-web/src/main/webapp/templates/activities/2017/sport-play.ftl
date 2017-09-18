@@ -2,10 +2,7 @@
 
 <@global.main pageCss="${css.sport_play_2017}" pageJavascript="${js.sport_play_2017}" activeNav="" activeLeftNav="" title="运动达人VS职场骄子_活动中心_拓天速贷" keywords="运动达人,职场骄子,活动中心,抽奖,拓天速贷" description="拓天速贷活动期间用户每日登陆即有一次免费抽签机会,累计投资还可兑换不同实物奖品,运动奖VS职场奖,总有一款适合你.">
 <div class="sport-play-container" id="sportPlayContainer">
-    <div class="top-img">
-        <img src="" width="100%" class="media-pc">
-        <img src="" width="100%" class="media-phone">
-    </div>
+    <div class="top-img"></div>
     <div class="shaking-item">
         <div class="wp clearfix">
             <h3 class="title-one"></h3>
@@ -18,9 +15,7 @@
                 剩余抽签机会：<span><strong class="draw-time">${drawCount}</strong>次</span>
             </div>
             <div class="draw-item">
-                <div class="draw-model">
-                    <img src="" class="draw-btn">
-                </div>
+                <div class="draw-model"></div>
             </div>
         </div>
     </div>
@@ -141,12 +136,22 @@
             </div>
         </div>
     </div>
-    <dl class="rule-item clearfix">
-        <dt>温馨提示</dt>
-        <dd>1.本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
-        <dd>2.活动二中不同档的奖品不可同时获得，拓天速贷将根据用户累计投资额所能获得的最大奖励组合为准进行发放；</dd>
-        <dd>3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的宝藏”或APP端“优惠券”中进行查看。</dd>
-    </dl>
+    <div class="page-width rule-item clearfix">
+
+        <i class="zs01"></i>
+        <i class="zs02"><em>温馨提示</em></i>
+        <i class="zs03"></i>
+        <i class="zs04"></i>
+        <p>1.本活动仅限直投项目，债权转让及新手专享项目不参与累计； <br/>
+            2.活动二中不同档的奖品不可同时获得，奖品将以用户活动期间在本活动页面所选择兑换的奖品为准，奖品在活动结束后不可进行添加和更换；<br/>
+            3.活动中所有红包、加息券奖励将即时发放，用户可在PC端“我的宝藏”或APP端“优惠券”中进行查看；<br/>
+            4.实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；<br/>
+            5.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
+            6.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。
+        </p>
+    </div>
+
+
     <#include "../../module/login-tip.ftl" />
     <div class="lottery-tip" id="lotteryTip"></div>
     <script type="text/html" id="lotteryTipTpl">
@@ -197,7 +202,6 @@
             {{/if}}
         </div>
     </script>
-    
 </div>
 
 </@global.main>

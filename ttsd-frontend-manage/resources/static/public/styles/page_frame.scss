@@ -1,4 +1,3 @@
-@import  "global_png";
 .header-download {
   display: none;
   padding: 10px 4px;
@@ -54,8 +53,10 @@
           display: inline-block;
           line-height: 15px;
           border-right: 1px solid #666;
-          padding-right: 10px;
-          padding-left: 10px;
+          padding: 0 10px;
+          @media (min-width:701px) and (max-width:999px) {
+            padding:0 5px;
+          }
           &:nth-last-child(1) {
             padding-right: 0px;
             border-right-width: 0;
@@ -116,16 +117,18 @@
       &.last {
         margin-top: 40px;
         float:right;
+        .img-app-download {
+          width:90px;
+          height:90px;
+          background-size: 100%;
+          border:5px solid #fff;
+
+        }
+
         li{
           margin-left:20px;
-          .img-weixin-img {
-            @extend .sprite-global-weixin-img;
-            display: inline-block;
-          }
-          .img-app-download {
-            @extend .sprite-global-app-download;
-            display: inline-block;
-          }
+
+
         }
       }
     }
@@ -159,6 +162,9 @@
       height:30px;
       margin:3px 0;
       overflow:hidden;
+      @media (min-width:701px) and (max-width:999px) {
+        width:100%;
+      }
       li {
         float:left;
         width:93px;
@@ -168,6 +174,10 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        @media (min-width:701px) and (max-width:999px) {
+          width:10%;
+          text-align: center;
+        }
         a {
           color: #c2c2c2;
         }
@@ -182,6 +192,11 @@
       margin: 6px 0;
       text-align:center;
       cursor:pointer;
+      @media (min-width:701px) and (max-width:999px) {
+        position: relative;
+        left: 50%;
+        margin-left: -32px;
+      }
       &.active{
         .fa-chevron-down{
           display:none;
@@ -319,6 +334,7 @@
           top: 40px;
           background: #fff;
           li {
+            width:100%;
             height: 40px;
             line-height: 40px;
             border-top-width: 0;
@@ -401,6 +417,9 @@
     height: 75px;
     position: relative;
     margin: 0 auto;
+    @media (max-width:999px) {
+      width:100%;
+    }
     .logo {
       background: url("../images/logo-index.png") left center no-repeat;
       width: 370px;
@@ -418,11 +437,18 @@
     ul {
       height: 100%;
       float: right;
+      @media (max-width:999px) {
+        width:100%;
+      }
       li {
         float: left;
         width: 90px;
         margin-left: 15px;
         position: relative;
+        @media (max-width:999px) {
+          width:16.666666%;
+          margin-left: 0;
+        }
         a {
           border-top: #fff 3px solid;
           display: block;
@@ -453,6 +479,16 @@
   width: 1000px;
   height: auto;
   margin: 20px auto;
+  @media (min-width:701px) and (max-width:999px) {
+    width:100%;
+  }
+  .swiper-container{
+    float:left;
+    @media (min-width:701px) and (max-width:999px) {
+      float:none;
+      overflow: hidden;
+    }
+  }
   .left-nav {
     width: 150px;
     height: auto;
@@ -460,8 +496,16 @@
     float: left;
     background: #e7eaef;
     margin: 0 15px 20px 0;
+    @media (min-width:701px) and (max-width:999px) {
+      width:100%;
+    }
     li {
+      float:left;
+      width:100%;
       border-bottom: #f9f9f9 1px solid;
+      @media (min-width:701px) and (max-width:999px) {
+        width:10%;
+      }
       a {
         display: block;
         height: 45px;
@@ -483,6 +527,9 @@
     padding:10px 30px 30px 40px;
     overflow: hidden;
     min-height: 400px;
+    @media (min-width:701px) and (max-width:999px) {
+      padding:0 10px;
+    }
   }
 }
 
@@ -494,6 +541,9 @@
     width:1000px;
     margin:0 auto;
     position: relative;
+    @media (max-width:999px) {
+      width:100%;
+    }
   }
   .footer-list{
     padding:40px 0;
@@ -501,9 +551,19 @@
       float:left;
       &.list-normal{
         width:155px;
+        @media (min-width:701px) and (max-width:999px) {
+          width:33.333333%;
+          box-sizing:border-box;
+          padding-left: 40px;
+        }
       }
       &.list-contact{
         width:420px;
+        @media (min-width:701px) and (max-width:999px) {
+          width:72%;
+          box-sizing:border-box;
+          padding-left: 40px;
+        }
       }
       dt{
         float:left;
@@ -529,15 +589,8 @@
     .images-app{
       float:right;
       width:100px;
-      .img-app-download{
+      @media (min-width:701px) and (max-width:999px) {
         float:left;
-        width:100px;
-        height:100px;
-        background-image: url("../images/global_20160904.png");
-        background-position: -308px -100px;
-        -webkit-background-size: 408px 290px;
-        -moz-background-size: 408px 290px;
-        background-size: 408px 290px;
       }
       p{
         float:left;
@@ -696,3 +749,29 @@
 
   }
 }
+
+@media screen and (min-width: 701px) and (max-width:999px){
+
+  .header-container .header-top {
+    padding: 0 10px;
+  }
+  .nav-container {
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+
+  .nav-container .nav-menu li {
+    width:16%;
+  }
+
+  .footer-container .footer {
+    padding:10px 20px;
+    height:300px;
+    ul.last {
+      display: none;
+    }
+  }
+
+
+}
+

@@ -589,6 +589,16 @@
       background:url('../images/invite-friend/reward-img-phone.png') no-repeat center;
       background-size:100%;
     }
+    @media(max-width:414px){
+      height:520px;
+      background:url('../images/invite-friend/reward-img-phone.png') no-repeat center;
+      background-size:100%;
+    }
+    @media(max-width:320px){
+      height:400px;
+      background:url('../images/invite-friend/reward-img-phone.png') no-repeat center;
+      background-size:100%;
+    }
   }
   .activity-rules {
     color: #fede69;
@@ -610,5 +620,78 @@
         font-size:12px;
       }
     }
+  }
+}
+
+@media screen and (min-width: 700px) and (max-width:768px){
+  .tour-slide {
+    height:250px;
+    background-size:cover;
+  }
+
+  .weixin-code-out {
+    text-align: center;
+    clear: both;
+
+  }
+  .share-reward-container {
+    padding:10px;
+    .bg-column-normal,.titel-item,.tip-item,.info-item,.reward-item,.btn-item,.loan-item,.icon-item {
+      float: none;
+    }
+    .bg-column-normal {
+      padding: 15px;
+    }
+    .info-item.free-list {
+      padding: 30px 10px 20px 10px;
+    }
+    .info-item.free-list li.free-type {
+      margin:0;
+    }
+    .info-item li {
+      margin:0;
+      &.free-list,&.money-type,.free-type {
+        width: 30%;
+
+      }
+    }
+
+    .invite-box-friend {
+      .btn-copy-link {
+        margin:0 auto;
+        float: none;
+      }
+      &.non-anonymous {
+        .weixin-code {
+          float: none;
+          margin:0 auto;
+
+        }
+        .and-text {
+          float: none;
+          margin:0 auto;
+        }
+        dl {
+          float: none;
+          margin:0 auto;
+          text-align: center;
+          dt {
+            width:100%;
+            text-align: center;
+          }
+        }
+      }
+      &.anonymous {
+        padding: 20px 0;
+
+        dl dd .input-invite {
+          width:275px;
+        }
+      }
+    }
+  }
+
+  .share-reward-container .info-item li.money-type .info-intro {
+    background-size: contain;
   }
 }

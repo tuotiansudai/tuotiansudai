@@ -413,7 +413,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);
         if (isTurnOn) {
@@ -456,13 +456,12 @@ public class InvestServiceImpl implements InvestService {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
         long extraLoanRateExpectedInterest = 0L;
+        int periodDuration = LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
         if (CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source)) {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
                 if ((extraLoanRateModel.getMinInvestAmount() <= investAmount && investAmount < extraLoanRateModel.getMaxInvestAmount()) ||
                         (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investAmount)) {
-
-                    int duration = LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
-                    extraLoanRateExpectedInterest = InterestCalculator.calculateExtraLoanRateExpectedInterest(extraLoanRateModel.getRate(), investAmount, duration, investFeeRate);
+                    extraLoanRateExpectedInterest = InterestCalculator.calculateExtraLoanRateExpectedInterest(extraLoanRateModel.getRate(), investAmount, periodDuration, investFeeRate);
                 }
             }
         }
@@ -471,10 +470,10 @@ public class InvestServiceImpl implements InvestService {
         //红包和投资体验券不计算在内
         for (Long couponId : couponIds) {
             CouponModel couponModel = couponMapper.findById(couponId);
-            if (loanModel == null || couponModel == null) {
-                continue;
-            } else {
-                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline())) : 0;
+            if (couponModel != null) {
+                int couponPeriodDuration = couponModel.getPeriod() == null ? periodDuration : couponModel.getPeriod() * InterestCalculator.DAYS_OF_MONTH;
+                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ?
+                        InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, couponPeriodDuration) : 0;
             }
         }
 

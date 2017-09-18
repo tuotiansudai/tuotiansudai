@@ -1,17 +1,15 @@
 var fs = require('fs');
 var path = require('path');
-var basePath = path.join(__dirname, 'resources'),
-    staticPath = path.join(basePath, 'static'),
-    dllplugins=path.join(staticPath, 'public/js/dllplugins'),
-    outputPath=path.join(basePath, 'develop'); //默认打包路径
+var packageRoute = require('./package.route.js');
+
 //遍历文件夹，获取所有文件夹里面的文件信息
 var NODE_ENV=process.env.NODE_ENV;
 if(NODE_ENV=='production') {
-    outputPath=path.join(basePath, 'prod');
+    packageRoute.outputPath=path.join(packageRoute.basePath, 'prod');
     // 生成生产环境的json文件
 }
 function getJsonFileList(projectCategory,formatName){
-    this.formatName=outputPath+'/'+formatName;
+    this.formatName=packageRoute.outputPath+'/'+formatName;
     this.projectCategory=projectCategory;
     // this.filesList = [];
     this.jsonFormat={
@@ -20,7 +18,7 @@ function getJsonFileList(projectCategory,formatName){
     };
 }
 
-getJsonFileList.prototype.mapPath=outputPath+'/assets-resources.json';
+getJsonFileList.prototype.mapPath=packageRoute.outputPath+'/assets-resources.json';
 //读文件里的内容
 getJsonFileList.prototype.readFile = function() {
     var textFile = fs.readFileSync(this.mapPath, 'utf8'); //需要用到同步读取
@@ -48,7 +46,7 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
             this.jsonFormat['cssFile'][outFileName]=keyNameObj.css;
         }
     }
-    this.addJqueryPlugin(dllplugins); //读取jquery文件
+    this.addJqueryPlugin(packageRoute.dllplugins); //读取jquery文件
     // console.log(this.jsonFormat);
     var strJsonObj=JSON.stringify(this.jsonFormat);
     this.writeFile(strJsonObj);

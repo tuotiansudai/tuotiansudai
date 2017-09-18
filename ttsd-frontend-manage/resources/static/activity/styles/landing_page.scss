@@ -39,14 +39,6 @@ form label.error:before {
   border-radius: 25px;
 }
 
-.header-container {
-  display: none;
-}
-
-.nav-container {
-  display: none;
-}
-
 .footer-container {
   margin-top: 0;
 
@@ -82,7 +74,7 @@ form label.error {
     height: 90px;
     text-align: center;
     margin: 0 auto;
-    background: url("../images/landingpage/logo-index.png") left center no-repeat;
+    background: url("../../public/images/logo-index.png") left center no-repeat;
     a {
       display: inline-block;
       float: right;
@@ -229,6 +221,7 @@ form label.error {
     .image-title {
       background: url("../images/landingpage/newbie-step4-title.png") center top no-repeat;
       height: 40px;
+      margin-top:20px;
     }
 
     .subtitle {
@@ -260,7 +253,7 @@ form label.error {
       @media (max-width:700px) {
         height:300px;
         background: url("../images/landingpage/newbie-step4-phone.png") center no-repeat;
-        background-size:80%;
+        background-size:contain;
       }
     }
     .btn-normal {
@@ -345,7 +338,7 @@ form label.error {
     left: 0;
     right:0;
     margin:0 auto;
-    top: 90px;
+    top: 20px;
     padding-top: 12px;
     width:1000px;
     height: 350px;
@@ -377,32 +370,6 @@ form label.error {
       }
 
       ul.reg-list {
-
-        .newbie-register-ic-mobile {
-          width: 23px;
-          height: 23px;
-          background: url("../images/landingpage/newbie-icon-phone.png") center left no-repeat;
-        }
-
-        .newbie-register-ic-password {
-          width: 23px;
-          height: 23px;
-          background: url("../images/landingpage/newbie-icon-pwd.png") center left no-repeat;
-        }
-
-        .newbie-register-ic-img-captcha {
-          width: 23px;
-          height: 23px;
-          margin-top: 3px;
-          background: url("../images/landingpage/newbie-icon-img-captcha.png") center left no-repeat;
-        }
-
-        .newbie-register-ic-captcha {
-          width: 23px;
-          height: 18px;
-          margin-top: 3px;
-          background: url("../images/landingpage/newbie-icon-captcha.png") center left no-repeat;
-        }
 
         font-size: 10px;
         .err-height {
@@ -442,6 +409,7 @@ form label.error {
             z-index: 20;
             filter: alpha(opacity=80);
             -moz-opacity: 0.8;
+            background-size:80%;
           }
 
           .captcha-tag {
@@ -589,7 +557,7 @@ form label.error {
     .landing-header-nav {
       width: 100%;
       height: 50px;
-      background: url("../images/icons/logo.png") left center no-repeat;
+      background: url("../../public/images/logo-index.png") left center no-repeat;
       background-size: 180px 25px;
       background-position-x: 15px;
       a {
@@ -847,5 +815,44 @@ form label.error {
   }
 }
 
+
+@media screen and (min-width: 710px) and (max-width:1024px){
+    .main-frame {
+      overflow-x: hidden;
+    }
+  .landing-container {
+    .newbie-step-register {
+      display: none;
+    }
+
+    .landing-top-banner {
+      height:250px;
+      background-size: cover;
+    }
+    .newbie-step-register {
+      display: none;
+    }
+    .newbie-step-four .image-steps {
+      background-size: 100%;
+    }
+    .newbie-step-four,.newbie-step-six {
+      padding: 10px;
+    }
+
+
+    .newbie-step-six .newbie-step-six-box {
+      min-width:96%;
+    }
+    .newbie-step-four {
+      padding-bottom:30px;
+    }
+
+  }
+
+  .footer-container .copyright {
+    display: none;
+  }
+
+}
 
 

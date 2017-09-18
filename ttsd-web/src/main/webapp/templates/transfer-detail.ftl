@@ -62,10 +62,10 @@
         </div>
         <div class="transfer-operat">
             <#if (transferApplication.transferStatus.name() == "SUCCESS")>
-                <p class="img-status"><img src="${commonStaticServer}/images/sign/loan/transfered.png"></p>
+                <span class="img-status transfered"></span>
                 <p class="status-text">转让完成时间：${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
             <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
-                <p class="img-status"><img src="${commonStaticServer}/images/sign/loan/transfercancel.png"></p>
+                <span class="img-status transfercancel"></span>
                 <p class="status-text"></p>
             <#else>
                 <form action="/transfer/purchase" method="post" id="transferForm">

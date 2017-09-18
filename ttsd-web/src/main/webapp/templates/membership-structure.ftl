@@ -113,7 +113,7 @@
                     </div>
                     <div class="fr">
                         <label>日期</label>
-                        <input type="text" id="date-time-picker"/>
+                        <input type="text" id="date-time-picker" readonly/>
                     </div>
                 </div>
             </div>

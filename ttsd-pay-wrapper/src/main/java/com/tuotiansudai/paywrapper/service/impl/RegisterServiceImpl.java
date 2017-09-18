@@ -17,7 +17,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +86,7 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setCode(responseModel.getRetCode());
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
+            dataDto.setCode(e.getCode().getValue());
             dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);

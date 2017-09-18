@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.SchoolExclusiveMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="schoolExclusiveResultMap" type="com.tuotiansudai.activity.repository.model.SchoolExclusiveModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="sum_amount" property="sumAmount"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="top_three" property="topThree"/>
+    </resultMap>
+
+    <insert id="create" parameterType="schoolExclusiveModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`school_exclusive`
+        (`loan_id`,
+        `login_name`,
+        `sum_amount`,
+        `created_time`,
+        `top_three`)
+        VALUES(#{loanId},#{loginName},#{sumAmount},#{createdTime},#{topThree})
+    </insert>
+
+    <update id="update" parameterType="schoolExclusiveModel">
+        UPDATE `edxactivity`.`school_exclusive` SET
+        `loan_id`= #{loanId},
+        `login_name`= #{loginName},
+        `sum_amount`= #{sumAmount},
+        `top_three` = #{topThree}
+        WHERE
+        `id` = #{id}
+    </update>
+
+    <select id="findSchoolExclusiveModel" parameterType="map" resultMap="schoolExclusiveResultMap">
+        SELECT *
+        FROM `edxactivity`.`school_exclusive`
+        WHERE `loan_id`= #{loanId}
+        AND `login_name`= #{loginName}
+    </select>
+
+    <select id="sumTopThreeIsTrue" parameterType="map" resultType="int">
+        SELECT COUNT(se.top_three)
+        FROM `edxactivity`.`school_exclusive` se
+        WHERE `loan_id`= #{loanId}
+        AND `top_three`=1
+    </select>
+
+    <select id="sumJDECardByName" parameterType="map" resultType="int">
+        SELECT
+        COUNT(se.top_three) JDECard
+        FROM
+        `edxactivity`.`school_exclusive` se
+        <where>
+            AND se.`top_three`=1
+            <if test="loginName !=null">
+                AND se.login_name = #{loginName}
+            </if>
+            <if test="startTime !=null">
+                AND se.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null">
+                AND se.created_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

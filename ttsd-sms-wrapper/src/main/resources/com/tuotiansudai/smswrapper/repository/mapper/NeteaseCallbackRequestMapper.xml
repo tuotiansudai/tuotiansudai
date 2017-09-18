@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tuotiansudai.smswrapper.repository.mapper.NeteaseCallbackRequestMapper">
+    <resultMap id="neteaseCallbackRequestModel" type="NeteaseCallbackRequestModel">
+        <id property="id" column="id"/>
+        <result property="smsHistoryId" column="sms_history_id"/>
+        <result property="mobile" column="mobile"/>
+        <result property="sendid" column="sendid"/>
+        <result property="result" column="result"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="reportTime" column="report_time"/>
+        <result property="spliced" column="spliced"/>
+        <result property="callbackTime" column="callback_time"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="NeteaseCallbackRequestModel">
+        insert into netease_callback_request (sms_history_id, mobile, sendid, result, send_time, report_time, spliced, callback_time, created_time)
+        values (#{smsHistoryId}, #{mobile}, #{sendid}, #{result}, #{sendTime}, #{reportTime}, #{spliced}, #{callbackTime}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="NeteaseCallbackRequestModel">
+        update netease_callback_request set
+        result = #{result},
+        send_time = #{sendTime},
+        report_time = #{reportTime},
+        spliced = #{spliced},
+        callback_time = #{callbackTime}
+        where id = #{id}
+    </update>
+
+
+    <select id="findByMobileAndSendid" resultMap="neteaseCallbackRequestModel" parameterType="map">
+        select * from netease_callback_request where mobile = #{mobile} and sendid = #{sendid}
+    </select>
+
+    <select id="findFailedRequests" resultMap="neteaseCallbackRequestModel" parameterType="map">
+        select * from netease_callback_request
+        where
+        60 > TIMESTAMPDIFF(SECOND, created_time, #{now})
+        and
+        exists (select 1 from sms_history where sms_history.id = netease_callback_request.sms_history_id and sms_history.backup_id is null)
+        and
+        ((result is null and #{now} > DATE_ADD(created_time, INTERVAL 30 SECOND))
+        or
+        (result is not null and result != 'DELIVRD'))
+    </select>
+</mapper>

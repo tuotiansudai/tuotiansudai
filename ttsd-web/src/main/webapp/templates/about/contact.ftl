@@ -29,7 +29,7 @@
 电话：53387992<br/>
         </span>
         </div>
-        <img src="${commonStaticServer}/images/sign/aboutus/company-map.png" class="fr" />
+        <div class="company-map"></div>
         <div class="clear-blank-m"></div>
         <h2 class="column-title"><em></em></h2>
         <b class="text-m">集团分部</b>

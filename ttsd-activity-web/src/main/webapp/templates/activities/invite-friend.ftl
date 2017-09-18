@@ -6,8 +6,6 @@
 <div class="share-reward-container page-width" id="shareRewardContainer">
 
     <div class="bg-column-normal invite-line">
-        
-
      <@global.isAnonymous>
         <div class="invite-box-friend anonymous">
             <dl>
@@ -16,7 +14,7 @@
                     <input type="text" class="input-invite" disabled value="您需要登录才可以邀请好友">
                 </dd>
                 <dd>
-                    <a class="btn-copy-link show-login" href="javascript:void(0);">去登录</a>
+                    <a class="btn-copy-link show-login" href="/login?redirect=/activity/invite-friend">去登录</a>
                 </dd>
             </dl>
         </div>
@@ -51,17 +49,20 @@
                         <a href="<#if !isAppSource>/referrer/refer-list<#else>app/tuotian/refer-reward-list</#if>" class="invite-btn">马上邀请好友</a>
                     </p>
                 </div>
-                <div class="weixin-code">
-                    <em class="img-code">
-                        <!--[if gte IE 8]>
-                        <span style="font-size:12px">请使用更高版本浏览器查看</span>
-                        <![endif]-->
-                    </em>
-                    <span>将扫码后的页面分享给好友即可邀请</span>
+                <div class="weixin-code-out">
+                    <div class="weixin-code">
+                        <em class="img-code">
+                            <!--[if gte IE 8]>
+                            <span style="font-size:12px">请使用更高版本浏览器查看</span>
+                            <![endif]-->
+                        </em>
+                        <span>将扫码后的页面分享给好友即可邀请</span>
+                    </div>
+                    <div class="and-text">
+                        <span>或</span>
+                    </div>
                 </div>
-                <div class="and-text">
-                    <span>或</span>
-                </div>
+
                 <dl>
                     <dd>
                         <input type="text" class="input-invite" id="clipboard_text1"  readonly data-mobile="<@global.security.authentication property='principal.mobile' />" >
@@ -222,7 +223,7 @@
             </p>
         </div>
     </div>
-    <div class="bg-column-normal">
+    <div class="bg-column-normal clearfix">
         <div class="titel-item">
             <div class="title-text">
                 <i class="left-icon"></i>
@@ -278,12 +279,11 @@
         <dd>2.好友需通过你的专属链接注册才能建立推荐关系；</dd>
         <dd>3.注册奖励将于好友完成指定任务时实时发放；</dd>
         <dd>4.平台将于每月15日统一发放上月的推荐红包奖励，为便于您分散投资，98元及288元红包将根据面额拆分发放，您可以在电脑端“我的账户-我的宝藏”或App端“我的-优惠券”中查看；</dd>
-        <dd>5.现金奖励额度为推荐的好友投资本金预期年化收益的1%，奖励计算方法：您的奖励=被推荐人投资金额X（1% / 365 X 标的期限）；</dd>
+        <dd>5.现金奖励额度为推荐的好友投资本金预期年化的0.5%，奖励计算方法：您的奖励=被推荐人投资金额X（0.5% / 365 X 标的期限）；</dd>
         <dd>6.现金奖励将于好友投资项目放款后，一次性以现金形式直接发放至您的账户，可以在“我的账户”中查询；</dd>
         <dd>7.活动中如发现恶意注册虚假账号、恶意刷奖等违规操作及作弊行为，若判定为违规操作及作弊行为，拓天速贷将取消您的获奖的资格，并有权撤销违规交易；</dd>
         <dd>8.活动遵守拓天速贷法律声明，最终解释权归拓天速贷平台所有。</dd>
     </dl>
 </div>
 
-<#include "../module/login-tip.ftl" />
 </@global.main>

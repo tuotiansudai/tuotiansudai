@@ -29,10 +29,23 @@
 	</div>
 </div>
 <ul class="fix-nav-list">
-	<li class="cal-btn">
-		<i class="icon-calculator"></i>
-		<span class="nav-text" >投资<br/>计算器</span>
-	</li>
+
+	<#if schoolSeason??>
+        <#if drawTime==1 >
+            <li class="draw-today-one">
+                <a href="activity/school-season" target="_blank" class="sign-school-open"></a>
+            </li>
+        <#else>
+            <li class="draw-today-two">
+                <a href="activity/school-season?school=yes" target="_blank" class="sign-school-rank"></a>
+            </li>
+        </#if>
+    </#if>
+
+    <li class="cal-btn">
+            <i class="icon-calculator"></i>
+            <span class="nav-text">投资<br/>计算器</span>
+        </li>
 	<li>
 		<i class="icon-phone"></i>
 		<span class="nav-text">APP<br/>下载</span>

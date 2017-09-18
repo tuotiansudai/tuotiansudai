@@ -42,6 +42,12 @@
     margin-left: 322px;
     height: auto;
     overflow: auto;
+    @media (min-width:701px) and (max-width:999px) {
+      width: 500px;
+      position: relative;
+      left: 50%;
+      margin-left: -170px;
+    }
     .register-step-one {
       margin-top: 20px;
     }
@@ -70,13 +76,7 @@
         height: auto;
         color: #999;
         position: relative;
-        i {
-          display: inline-block;
-          position: absolute;
-          left: 10px;
-          top: 8px;
-          z-index: 20;
-        }
+
         .reg-title {
           width:60px;
           padding-right: 3px;
@@ -101,7 +101,9 @@
             background: #ff9c1b;
             color: #fff;
             cursor: pointer;
-
+            @media (min-width:701px) and (max-width:999px) {
+              right:120px;
+            }
             &[disabled] {
               cursor: default;
               background: #b3b3b3;
@@ -168,16 +170,17 @@
       .register-account {
         display: block;
         &.loading {
-          background: url("/images/icons/loading.gif") no-repeat center center;
+          background: url("../images/icons/loading.gif") no-repeat center center;
           cursor: default;
           text-indent: -9999px;
         }
       }
     }
     .button-layer {
-      width: 362px;
+      width: 53%;
       text-align: center;
       padding-bottom:20px;
+      position: relative;
       .status {
         display: block;
         height:25px;
@@ -192,6 +195,13 @@
           background: #e6e6e6;
           border: 1px solid #ccc;
         }
+      }
+      .loading-effect {
+        position: absolute;
+        left: 58%;
+        top: 42%;
+        zoom: 0.8;
+        display: none;
       }
     }
   }
@@ -330,15 +340,11 @@
     border-width: 0;
     padding:0px 5%;
     .step-account-head {
-      .sprite-register-ic-account {
-        width:50px;
-        height:50px;
-        background-size: 80px 70px;
-        float: left;
-
+      span {
+        padding-left:0px;
       }
       .info-note {
-        width: calc(100% - 73px);
+        width: 100%;
         font-size:16px;
         line-height: 25px;
       }
@@ -355,6 +361,9 @@
       margin:0;
       width:100%;
       overflow: hidden;
+      .button-layer {
+        width:100%;
+      }
       ul.reg-list {
         li {
           .captcha-tag {
@@ -392,7 +401,7 @@
         .register-account {
           display: block;
           &.loading {
-            background: url("/images/icons/loading.gif") no-repeat center center;
+            background: url("../images/icons/loading.gif") no-repeat center center;
             cursor: default;
             text-indent: -9999px;
           }

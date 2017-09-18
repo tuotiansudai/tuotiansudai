@@ -8,8 +8,7 @@
 			<div class="title-item title-one">
 			</div>
 			<div class="intro-text">
-				<p>每日签到可获取积分奖励，连续签到积分阶梯递增，</p>
-				<p>最高每日30积分。如签到间断则重新从每日10积分计起。</p>
+				<p>每日签到可获取积分奖励，连续签到积分阶梯递增，最高每日30积分。如签到间断则重新从每日10积分计起。</p>
 			</div>
 			<div class="left-item">
 				<div class="title-name">

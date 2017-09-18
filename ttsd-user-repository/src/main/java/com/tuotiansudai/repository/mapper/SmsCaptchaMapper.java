@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,5 +14,6 @@ public interface SmsCaptchaMapper {
 
     void update(SmsCaptchaModel smsCaptchaModel);
 
-    SmsCaptchaModel findByMobileAndCaptchaType(@Param(value = "mobile") String mobile, @Param(value = "captchaType") CaptchaType captchaType);
+    SmsCaptchaModel findByMobileAndCaptchaType(@Param(value = "mobile") String mobile,
+                                               @Param(value = "smsCaptchaType") SmsCaptchaType smsCaptchaType);
 }

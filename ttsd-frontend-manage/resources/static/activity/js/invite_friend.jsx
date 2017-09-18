@@ -1,5 +1,4 @@
 require("activityStyle/invite_friend.scss");
-require('publicJs/login_tip');
 require('publicJs/plugins/jQuery.md5');
 let Clipboard= require('publicJs/plugins/clipboard');
 require('publicJs/plugins/jquery.qrcode.min');
@@ -9,30 +8,9 @@ let commonFun= require('publicJs/commonFun');
 window['Clipboard']=Clipboard;
 
 var $shareReward=$('#shareRewardContainer'),
-	$isLogin=$('.show-login',$shareReward),
 	$copyButton=$('.copy-button',$shareReward);
 
 
-$isLogin.on('click', function(event) {
-	event.preventDefault();
-    if ($('.header-login').data('wechat-login-name')) {
-        location.href = '/login?redirect=' + location.href;
-        return;
-    }
-	$.when(commonFun.isUserLogin())
-		.done(function() {
-		})
-		.fail(function() {
-			//判断是否需要弹框登陆
-			layer.open({
-				type: 1,
-				title: false,
-				closeBtn: 0,
-				area: ['auto', 'auto'],
-				content: $('#loginTip')
-			});
-		});
-});
 if($copyButton.length) {
 	//已登录已认证,复制功能
 	var $clipboardText=$('.input-invite',$shareReward);
