@@ -11,11 +11,11 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargePwdMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNopwdMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.InvestTransferNotifyRequestMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
@@ -81,7 +81,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 creditLoanRechargeDto.getAmount());
         try {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
-                    CreditLoanRechargeNopwdMapper.class,
+                    ProjectTransferNopwdMapper.class,
                     requestModel,
                     ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
@@ -125,7 +125,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 String.valueOf(creditLoanRechargeDto.getAmount()));
 
         try {
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CreditLoanRechargePwdMapper.class, requestModel);
+            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
             creditLoanRechargeMapper.create(creditLoanRechargeModel);
             return baseDto;
         } catch (PayException e) {
@@ -136,7 +136,8 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
     @Override
     public String creditLoanRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, InvestTransferNotifyRequestMapper.class,
+                InvestNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
