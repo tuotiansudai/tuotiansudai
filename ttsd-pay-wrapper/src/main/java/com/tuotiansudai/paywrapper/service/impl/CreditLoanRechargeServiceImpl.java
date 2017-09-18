@@ -55,6 +55,8 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
+    private final static String CREDIT_LIAN_ID = "78365173103632";
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> creditLoanRechargeNoPwd(CreditLoanRechargeDto creditLoanRechargeDto) {
@@ -73,7 +75,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 userModel.getMobile(), creditLoanRechargeDto.getAmount());
         model.setRemark(remark);
 
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(null,
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(CREDIT_LIAN_ID,
                 String.valueOf(model.getId()),
                 accountModel.getPayUserId(),
                 creditLoanRechargeDto.getAmount());
@@ -117,7 +119,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         creditLoanRechargeModel.setRemark(remark);
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRequest(
-                null,
+                CREDIT_LIAN_ID,
                 String.valueOf(creditLoanRechargeModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(creditLoanRechargeDto.getAmount()));
