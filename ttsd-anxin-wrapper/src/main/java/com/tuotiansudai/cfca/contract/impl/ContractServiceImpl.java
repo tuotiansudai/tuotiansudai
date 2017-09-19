@@ -209,8 +209,8 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
         dataModel.put("loanerUserName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()));
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()) + "元");
         dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
         dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
