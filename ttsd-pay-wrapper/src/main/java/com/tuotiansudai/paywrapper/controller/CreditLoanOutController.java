@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
-import com.tuotiansudai.paywrapper.service.CreditLoanOutService;
+import com.tuotiansudai.paywrapper.service.CreditLoanTransferAgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CreditLoanOutController {
 
     @Autowired
-    private CreditLoanOutService creditLoanOutService;
+    private CreditLoanTransferAgentService creditLoanOutService;
 
     @RequestMapping(value = "/credit-loan-out", method = RequestMethod.POST)
     @ResponseBody

@@ -73,9 +73,9 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String transferCashPath = "/transfer-cash";
 
-    private final static String creditLoanPurchase = "/credit-loan/recharge";
+    private final static String creditLoanRecharge = "/credit-loan/recharge";
 
-    private final static String noPasswordCreditLoanPurchase = "/credit-loan/no-password-recharge";
+    private final static String noPasswordCreditLoanRecharge = "/credit-loan/no-password-recharge";
 
     private final static String creditLoanOut = "/credit-loan-out";
 
@@ -146,12 +146,12 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(investDto, purchase);
     }
 
-    public BaseDto<PayFormDataDto> creditLoanPurchase(Object creditLoanRechargeDto) {
-        return asyncExecute(creditLoanRechargeDto, creditLoanPurchase);
+    public BaseDto<PayFormDataDto> creditLoanRecharge(Object creditLoanRechargeDto) {
+        return asyncExecute(creditLoanRechargeDto, creditLoanRecharge);
     }
 
-    public BaseDto<PayDataDto> noPasswordCreditLoanPurchase(Object creditLoanRechargeDto) {
-        return syncExecute(creditLoanRechargeDto, noPasswordCreditLoanPurchase);
+    public BaseDto<PayDataDto> noPasswordCreditLoanRecharge(Object creditLoanRechargeDto) {
+        return syncExecute(creditLoanRechargeDto, noPasswordCreditLoanRecharge);
     }
 
     public BaseDto<PayDataDto> creditLoanOut() {

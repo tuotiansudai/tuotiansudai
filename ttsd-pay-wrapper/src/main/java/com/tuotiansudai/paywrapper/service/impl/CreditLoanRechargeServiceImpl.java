@@ -10,16 +10,14 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargePwdMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNopwdMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.*;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
-import com.tuotiansudai.paywrapper.service.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.service.CreditLoanRechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
@@ -55,6 +53,8 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
+    private final static String CREDIT_LIAN_ID = "78365173103632";
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> creditLoanRechargeNoPwd(CreditLoanRechargeDto creditLoanRechargeDto) {
@@ -67,19 +67,16 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         CreditLoanRechargeModel model = new CreditLoanRechargeModel(creditLoanRechargeDto, userModel.getLoginName());
         model.setId(IdGenerator.generate());
 
-        AccountModel accountModel = accountMapper.findByLoginName(model.getLoginName());
+        AccountModel accountModel = accountMapper.findByLoginName(model.getAccountName());
 
-        String remark = MessageFormat.format("{0} 从 {1} 账户为信用贷标的账户充值 {2} 元", creditLoanRechargeDto.getOperatorLoginName(),
-                userModel.getMobile(), creditLoanRechargeDto.getAmount());
-        model.setRemark(remark);
-
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(null,
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(CREDIT_LIAN_ID,
                 String.valueOf(model.getId()),
                 accountModel.getPayUserId(),
-                creditLoanRechargeDto.getAmount());
+                String.valueOf(model.getAmount()));
         try {
+            creditLoanRechargeMapper.create(model);
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
-                    CreditLoanRechargeNopwdMapper.class,
+                    CreditLoanNopwdRechargeMapper.class,
                     requestModel,
                     ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
@@ -88,7 +85,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("order_id", String.valueOf(model.getId()))
                     .build()));
-            creditLoanRechargeMapper.create(model);
             return baseDto;
         } catch (PayException e) {
             payDataDto.setStatus(false);
@@ -110,21 +106,17 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         CreditLoanRechargeModel creditLoanRechargeModel = new CreditLoanRechargeModel(creditLoanRechargeDto, userModel.getLoginName());
         creditLoanRechargeModel.setId(IdGenerator.generate());
 
-        AccountModel accountModel = accountMapper.findByLoginName(creditLoanRechargeModel.getLoginName());
-
-        String remark = MessageFormat.format("{0} 从 {1} 账户为信用贷标的账户充值 {2} 元", creditLoanRechargeDto.getOperatorLoginName(),
-                userModel.getMobile(), creditLoanRechargeDto.getAmount());
-        creditLoanRechargeModel.setRemark(remark);
+        AccountModel accountModel = accountMapper.findByLoginName(creditLoanRechargeModel.getAccountName());
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRequest(
-                null,
+                CREDIT_LIAN_ID,
                 String.valueOf(creditLoanRechargeModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(creditLoanRechargeDto.getAmount()));
+                String.valueOf(creditLoanRechargeModel.getAmount()));
 
         try {
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CreditLoanRechargePwdMapper.class, requestModel);
             creditLoanRechargeMapper.create(creditLoanRechargeModel);
+            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CreditLoanPwdRechargeMapper.class, requestModel);
             return baseDto;
         } catch (PayException e) {
             logger.error(MessageFormat.format("{0} purchase credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName()), e);
@@ -134,7 +126,8 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
     @Override
     public String creditLoanRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, InvestTransferNotifyRequestMapper.class,
+                InvestNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
@@ -145,7 +138,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         return callbackRequest.getResponseData();
     }
 
-    @Transactional
     private void postCreditLoanRechargeCallback(BaseCallbackRequestModel callbackRequestModel) {
         try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
@@ -158,10 +150,10 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 logger.error(MessageFormat.format("credit loan has dealt with the credit loan recharge (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
-            String loginName = creditLoanRechargeModel.getLoginName();
+            String loginName = creditLoanRechargeModel.getAccountName();
             long amount = creditLoanRechargeModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                creditLoanRechargeModel.setSuccessTime(new Date());
+                creditLoanRechargeModel.setUpdatedTime(new Date());
                 creditLoanRechargeModel.setStatus(RechargeStatus.SUCCESS);
                 creditLoanRechargeMapper.updateCreditLoanRecharge(creditLoanRechargeModel);
                 try {

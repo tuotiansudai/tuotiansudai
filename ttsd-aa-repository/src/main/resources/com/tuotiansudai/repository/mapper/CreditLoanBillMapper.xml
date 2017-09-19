@@ -11,13 +11,13 @@
         <result column="operation_type" property="operationType"></result>
         <result column="business_type" property="businessType"></result>
         <result column="detail" property="detail"></result>
-        <result column="login_name" property="loginName"></result>
+        <result column="mobile" property="mobile"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="CreditLoanBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into credit_loan_bill ( amount, detail, operation_type, created_time, order_id, business_type, login_name)
-        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{loginName})
+        insert into credit_loan_bill ( amount, detail, operation_type, created_time, order_id, business_type, mobile)
+        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
     </insert>
 
     <select id="findSumAmountByIncome" resultType="long" parameterType="map">

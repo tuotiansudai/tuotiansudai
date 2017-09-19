@@ -2,7 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import java.util.Map;
 
-public interface CreditLoanOutService {
+public interface CreditLoanTransferAgentService {
 
     void creditLoanOut();
 

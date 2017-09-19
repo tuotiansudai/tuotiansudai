@@ -11,7 +11,7 @@ public class CreditLoanBillModel implements Serializable {
 
     private long amount;
 
-    private SystemBillOperationType operationType;
+    private CreditLoanBillOperationType operationType;
 
     private CreditLoanBillBusinessType businessType;
 
@@ -19,19 +19,19 @@ public class CreditLoanBillModel implements Serializable {
 
     private Date createdTime;
 
-    private String loginName;
+    private String mobile;
 
     public CreditLoanBillModel() {
     }
 
-    public CreditLoanBillModel(Long orderId, long amount, SystemBillOperationType operationType, CreditLoanBillBusinessType businessType, String detail, String loginName) {
+    public CreditLoanBillModel(Long orderId, long amount, CreditLoanBillOperationType operationType, CreditLoanBillBusinessType businessType, String detail, String mobile) {
         this.orderId = orderId;
         this.amount = amount;
         this.operationType = operationType;
         this.businessType = businessType;
         this.detail = detail;
         this.createdTime = new Date();
-        this.loginName = loginName;
+        this.mobile = mobile;
     }
 
     public long getId() {
@@ -58,11 +58,11 @@ public class CreditLoanBillModel implements Serializable {
         this.orderId = orderId;
     }
 
-    public SystemBillOperationType getOperationType() {
+    public CreditLoanBillOperationType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(SystemBillOperationType operationType) {
+    public void setOperationType(CreditLoanBillOperationType operationType) {
         this.operationType = operationType;
     }
 
@@ -90,11 +90,11 @@ public class CreditLoanBillModel implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public String getLoginName() {
-        return loginName;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

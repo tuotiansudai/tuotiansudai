@@ -7,7 +7,6 @@ import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
-import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class PayCallbackController {
     private CreditLoanRechargeService creditLoanRechargeService;
 
     @Autowired
-    private CreditLoanOutService creditLoanOutService;
+    private CreditLoanTransferAgentService creditLoanOutService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {

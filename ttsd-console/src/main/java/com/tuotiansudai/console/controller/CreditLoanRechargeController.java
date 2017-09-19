@@ -30,13 +30,13 @@ public class CreditLoanRechargeController {
     private AccountMapper accountMapper;
 
     @RequestMapping(value = "/credit-loan-recharge",method = RequestMethod.GET)
-    public ModelAndView systemRecharge() {
+    public ModelAndView creditLoanRecharge() {
         return new ModelAndView("/credit-loan-recharge");
     }
 
 
     @RequestMapping(value = "/credit-loan-recharge",method = RequestMethod.POST)
-    public ModelAndView systemRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto) {
+    public ModelAndView creditLoanRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto) {
         ModelAndView modelAndView = new ModelAndView("/credit-loan-recharge", "responsive", true);
         String operatorLoginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountMapper.findByLoginName(operatorLoginName);
@@ -44,7 +44,7 @@ public class CreditLoanRechargeController {
 
         if (accountModel.isNoPasswordInvest()) {
             try {
-                BaseDto<PayDataDto> baseDto = creditLoanRechargeService.NoPasswordCreditLoanRecharge(creditLoanRechargeDto);
+                BaseDto<PayDataDto> baseDto = creditLoanRechargeService.noPasswordCreditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.getData().getStatus()) {
                     return new ModelAndView("/", "responsive", true);
                 }

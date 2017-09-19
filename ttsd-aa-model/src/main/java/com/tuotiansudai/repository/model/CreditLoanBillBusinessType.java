@@ -2,9 +2,9 @@ package com.tuotiansudai.repository.model;
 
 public enum CreditLoanBillBusinessType {
 
-    CREDIT_LOAN_RECHARGE("信用贷标的账户充值"),
-    CREDIT_LOAN_OUT("信用贷标的账户放款"),
-    XYD_USER_REPAY("信用贷用户还款");
+    CREDIT_LOAN_TRANSFER_AGENT("信用贷给代理人转账"),
+    CREDIT_LOAN_REPAY("信用贷用户还款"),
+    CREDIT_LOAN_RECHARGE("信用贷账户充值");
 
     private final String description;
 
