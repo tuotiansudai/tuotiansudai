@@ -14,7 +14,7 @@ public class CreditLoanRechargeModel implements Serializable {
 
     private String accountName;
 
-    private Date createdtime;
+    private Date createdTime;
 
     private long amount;
 
@@ -25,7 +25,7 @@ public class CreditLoanRechargeModel implements Serializable {
     public CreditLoanRechargeModel(CreditLoanRechargeDto dto, String accountName){
         this.operatorName = dto.getOperatorLoginName();
         this.accountName = accountName;
-        this.createdtime = new Date();
+        this.createdTime = new Date();
         this.updatedTime = new Date();
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.status = RechargeStatus.WAIT_PAY;
@@ -42,6 +42,14 @@ public class CreditLoanRechargeModel implements Serializable {
         this.id = id;
     }
 
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
     public String getAccountName() {
         return accountName;
     }
@@ -50,12 +58,12 @@ public class CreditLoanRechargeModel implements Serializable {
         this.accountName = accountName;
     }
 
-    public String getOperatorName() {
-        return operatorName;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public long getAmount() {
@@ -66,27 +74,19 @@ public class CreditLoanRechargeModel implements Serializable {
         this.amount = amount;
     }
 
-    public RechargeStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(RechargeStatus status) {
-        this.status = status;
-    }
-
-    public Date getCreatedtime() {
-        return createdtime;
-    }
-
-    public void setCreatedtime(Date createdtime) {
-        this.createdtime = createdtime;
-    }
-
     public Date getUpdatedTime() {
         return updatedTime;
     }
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public RechargeStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RechargeStatus status) {
+        this.status = status;
     }
 }
