@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class TransferCashDto implements Serializable {
@@ -19,13 +20,13 @@ public class TransferCashDto implements Serializable {
     @NotEmpty
     private String amount;
 
-    @NotEmpty
+    @NotNull
     private UserBillBusinessType userBillBusinessType;
 
-    @NotEmpty
+    @NotNull
     private SystemBillBusinessType systemBillBusinessType;
 
-    @NotEmpty
+    @NotNull
     private SystemBillDetailTemplate systemBillDetailTemplate;
 
     public String getLoginName() {
