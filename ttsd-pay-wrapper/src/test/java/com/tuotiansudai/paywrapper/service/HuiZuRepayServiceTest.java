@@ -71,7 +71,7 @@ public class HuiZuRepayServiceTest {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
         assertEquals(true, redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId())));
-        assertEquals(huiZuRepayDto.getLoginName(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "loginName"));
+        assertEquals(huiZuRepayDto.getMobile(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "mobile"));
         assertEquals(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()), Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "amount")));
         assertEquals(String.valueOf(huiZuRepayDto.getPeriod()), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "period"));
         assertEquals(SyncRequestStatus.SENT.name(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "status"));
@@ -89,15 +89,15 @@ public class HuiZuRepayServiceTest {
         HuiZuRepayDto huiZuRepayDto = createFakeHuiZuRepayDto("1.10", "222");
         redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                 Maps.newHashMap(ImmutableMap.builder()
-                        .put("loginName", huiZuRepayDto.getLoginName())
+                        .put("mobile", huiZuRepayDto.getMobile())
                         .put("amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
                         .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                         .put("status", SyncRequestStatus.SENT.name())
                         .build()),
                 30 * 30);
         huiZuRepayService.postRepay(String.valueOf(huiZuRepayDto.getRepayPlanId()));
-        AccountModel accountModel = accountMapper.findByLoginName(huiZuRepayDto.getLoginName());
-        List<UserBillModel> userBillModels = userBillMapper.findByLoginName(huiZuRepayDto.getLoginName());
+        AccountModel accountModel = accountMapper.findByLoginName(huiZuRepayDto.getMobile());
+        List<UserBillModel> userBillModels = userBillMapper.findByLoginName(huiZuRepayDto.getMobile());
 
         assertEquals(190, accountModel.getBalance());
         assertEquals(110, userBillModels.get(0).getAmount());
@@ -124,21 +124,21 @@ public class HuiZuRepayServiceTest {
 
         redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                 Maps.newHashMap(ImmutableMap.builder()
-                        .put("loginName", huiZuRepayDto.getLoginName())
+                        .put("loginName", huiZuRepayDto.getMobile())
                         .put("amount", String.valueOf(huiZuRepayDto.getAmount()))
                         .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                         .put("status", SyncRequestStatus.SUCCESS.name())
                         .build()),
                 30 * 30);
         assertEquals(String.format("用户:%s-第%s期-已经还款成功",
-                huiZuRepayDto.getLoginName(),
+                huiZuRepayDto.getMobile(),
                 String.valueOf(huiZuRepayDto.getPeriod())), baseDto.getData().getMessage());
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
     }
 
     private HuiZuRepayDto createFakeHuiZuRepayDto(String amount, String repayPlanId) {
         HuiZuRepayDto huiZuRepayDto = new HuiZuRepayDto();
-        huiZuRepayDto.setLoginName(loginName);
+        huiZuRepayDto.setMobile(loginName);
         huiZuRepayDto.setPeriod(2);
         huiZuRepayDto.setAmount(amount);
         huiZuRepayDto.setRepayPlanId(repayPlanId);

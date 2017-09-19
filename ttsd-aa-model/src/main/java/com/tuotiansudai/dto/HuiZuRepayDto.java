@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class HuiZuRepayDto implements Serializable {
-    private String loginName;
+    private String mobile;
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
@@ -18,16 +18,18 @@ public class HuiZuRepayDto implements Serializable {
     @Pattern(regexp = "^\\d+$")
     private String repayPlanId;
 
-    public String getLoginName() {
-        return loginName;
-    }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
 
     public String getAmount() {
         return amount;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public void setAmount(String amount) {

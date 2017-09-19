@@ -18,7 +18,9 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.service.HuiZuRepayService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -55,6 +57,8 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     private Environment environment;
     @Autowired
     private AmountTransfer amountTransfer;
+    @Autowired
+    private UserMapper userMapper;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -62,11 +66,11 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     @Override
     public BaseDto<PayFormDataDto> passwordRepay(HuiZuRepayDto huiZuRepayDto) {
         logger.info(String.format("[HZ Repay:]%s-第%s期-还款金额:%s begin...",
-                huiZuRepayDto.getLoginName(),
+                huiZuRepayDto.getMobile(),
                 String.valueOf(huiZuRepayDto.getPeriod()),
                 String.valueOf(huiZuRepayDto.getAmount())));
-
-        AccountModel accountModel = accountMapper.lockByLoginName(huiZuRepayDto.getLoginName());
+        UserModel userModel = userMapper.findByMobile(huiZuRepayDto.getMobile());
+        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
@@ -83,14 +87,14 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         try {
             if (redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()))) {
                 payFormDataDto.setMessage(String.format("用户:%s-第%s期-已经还款成功",
-                        huiZuRepayDto.getLoginName(),
+                        huiZuRepayDto.getMobile(),
                         String.valueOf(huiZuRepayDto.getPeriod())));
                 return dto;
             }
 
             redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                     Maps.newHashMap(ImmutableMap.builder()
-                            .put("loginName", huiZuRepayDto.getLoginName())
+                            .put("mobile", huiZuRepayDto.getMobile())
                             .put("amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
                             .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                             .put("status", SyncRequestStatus.SENT.name())
@@ -103,11 +107,11 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                     String.valueOf(huiZuRepayDto.getAmount()));
             return payAsyncClient.generateFormData(HuiZuRepayMapper.class, requestModel);
         } catch (PayException e) {
-            logger.error(String.format("[HZ Repay:] id:{} loginName:{} period:{} repay fail"), e);
+            logger.error(String.format("[HZ Repay:] id:%s mobile:%s period:%s repay fail", String.valueOf(huiZuRepayDto.getRepayPlanId()), huiZuRepayDto.getMobile(), huiZuRepayDto.getPeriod()), e);
         }
 
         logger.info(String.format("[HZ Repay:]%s-第%s期-还款金额:%s end...",
-                huiZuRepayDto.getLoginName(),
+                huiZuRepayDto.getMobile(),
                 String.valueOf(huiZuRepayDto.getPeriod()),
                 String.valueOf(huiZuRepayDto.getAmount())));
         return dto;
@@ -165,7 +169,9 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     @Override
     @Transactional
     public void postRepay(String orderId) throws AmountTransferException {
-        amountTransfer.transferOutBalance(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "loginName"),
+        String mobile = redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "mobile");
+        UserModel userModel = userMapper.findByMobile(mobile);
+        amountTransfer.transferOutBalance(userModel.getLoginName(),
                 Long.parseLong(orderId),
                 Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
 
