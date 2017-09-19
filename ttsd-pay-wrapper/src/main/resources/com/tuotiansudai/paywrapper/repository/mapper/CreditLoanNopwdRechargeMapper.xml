@@ -29,11 +29,11 @@
     </resultMap>
 
     <select id="findRequestById" resultMap="requestMap" parameterType="long">
-        select * from credit_loan_recharge_transfer_nopwd_request where id = #{id}
+        select * from credit_loan_recharge_nopwd_request where id = #{id}
     </select>
 
     <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferRequestModel">
-        insert into credit_loan_recharge_transfer_nopwd_request (
+        insert into credit_loan_recharge_nopwd_request (
         service, sign_type, sign, charset, mer_Id, version,
         order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
         partic_user_id, amount, request_time, request_url, request_data, status
@@ -45,7 +45,7 @@
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update credit_loan_recharge_transfer_nopwd_request set status = #{status} where id = #{id}
+        update credit_loan_recharge_nopwd_request set status = #{status} where id = #{id}
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferResponseModel">

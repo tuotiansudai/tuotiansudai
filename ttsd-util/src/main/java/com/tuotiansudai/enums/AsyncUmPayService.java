@@ -88,7 +88,7 @@ public enum AsyncUmPayService {
     /**
      * 无密债权购买标的转入
      */
-    INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+    INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "Finvest_transfer_notify", "tuotian://invest-transfer/{0}"),
     /**
      * 无密还款标的转入
      */
@@ -158,7 +158,7 @@ public enum AsyncUmPayService {
     /**
      * 信用贷转账给代理人
      */
-    CREDIT_LOAN_AGENT_TRANSFER("project_transfer", "", "", "credit_loan_out_notify", "");
+    CREDIT_LOAN_AGENT_TRANSFER("project_transfer", "", "", "credit_loan_transfer_agent_notify", "");
 
     private final String serviceName;
 

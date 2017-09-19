@@ -12,7 +12,9 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.*;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
@@ -27,6 +29,7 @@ import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +56,8 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
-    private final static String CREDIT_LIAN_ID = "78365173103632";
+    @Value(value = "${credit.loan.id}")
+    private String creditLoanId;
 
     @Override
     @Transactional
@@ -69,7 +73,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
         AccountModel accountModel = accountMapper.findByLoginName(model.getAccountName());
 
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(CREDIT_LIAN_ID,
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanRechargeNopwdRequest(creditLoanId,
                 String.valueOf(model.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(model.getAmount()));
@@ -89,7 +93,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         } catch (PayException e) {
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+            logger.error(MessageFormat.format("{0} user {1} account recharge credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName(), userModel.getLoginName()), e);
         }
         return baseDto;
     }
@@ -109,7 +113,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         AccountModel accountModel = accountMapper.findByLoginName(creditLoanRechargeModel.getAccountName());
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRequest(
-                CREDIT_LIAN_ID,
+                creditLoanId,
                 String.valueOf(creditLoanRechargeModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(creditLoanRechargeModel.getAmount()));
@@ -119,14 +123,15 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CreditLoanPwdRechargeMapper.class, requestModel);
             return baseDto;
         } catch (PayException e) {
-            logger.error(MessageFormat.format("{0} purchase credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName()), e);
+            logger.error(MessageFormat.format("{0} user {1} account recharge credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName(), userModel.getLoginName()), e);
         }
         return dto;
     }
 
     @Override
+    @Transactional
     public String creditLoanRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, InvestTransferNotifyRequestMapper.class,
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, CreditLoanRechargeNotifyMapper.class,
                 InvestNotifyRequestModel.class);
 
         if (callbackRequest == null) {
@@ -159,7 +164,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 try {
                     amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
                     creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE,
-                            MessageFormat.format("{0}充值到信用贷标的账户{1}", loginName, amount), loginName);
+                            MessageFormat.format("{0}充值到信用贷账户{1}", loginName, amount), loginName);
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("credit loan recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }

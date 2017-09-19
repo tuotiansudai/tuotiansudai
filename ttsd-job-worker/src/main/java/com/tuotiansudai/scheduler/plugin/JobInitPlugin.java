@@ -38,7 +38,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.DragonBoatSendPKPrize.name().equalsIgnoreCase(schedulerName)) {
             createDragonBoatSendPKPrizeJob();
         }
-        createCreditLoanOutJob();
     }
 
     @Override
@@ -60,17 +59,4 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
-
-    private void createCreditLoanOutJob(){
-        try {
-            jobManager.newJob(JobType.CreditLoanOut, CreditLoanOutJob.class)
-                    .withIdentity(JobType.CreditLoanOut.name(), JobType.CreditLoanOut.name())
-                    .replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 0 * * ?"))
-                    .submit();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-    }
-
 }

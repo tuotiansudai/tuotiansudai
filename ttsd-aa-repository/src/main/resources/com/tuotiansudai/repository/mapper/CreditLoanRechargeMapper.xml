@@ -6,8 +6,8 @@
 
     <resultMap id="creditLoanRechargeResultMap" type="creditLoanRechargeModel">
         <id column="id" property="id"></id>
-        <result column="operator_name" property="OperatorName"></result>
-        <result column="account_name" property="AccountName"></result>
+        <result column="operator_name" property="operatorName"></result>
+        <result column="account_name" property="accountName"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="amount" property="amount"></result>
         <result column="updated_time" property="updatedTime"></result>
@@ -16,7 +16,7 @@
 
     <insert id="create" parameterType="creditLoanRechargeModel" useGeneratedKeys="true" keyProperty="id">
         insert into credit_loan_recharge (id, operator_name,account_name,created_time,updated_time,amount,status)
-        value( #{id},#{opreatorName}, #{accountName},#{createdTime}, #{updatedTime}, #{amount}, #{successTime}, #{status})
+        value( #{id},#{operatorName}, #{accountName},#{createdTime}, #{updatedTime}, #{amount}, #{status})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="creditLoanRechargeResultMap">

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface CreditLoanTransferAgentService {
 
-    void creditLoanOut();
+    void creditLoanTransferAgent();
 
-    String creditLoanOutCallback(Map<String, String> paramsMap, String queryString);
+    String creditLoanTransferAgentCallback(Map<String, String> paramsMap, String queryString);
 }

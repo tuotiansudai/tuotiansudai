@@ -311,10 +311,10 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/credit_loan_out_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/credit_loan_transfer_agent_notify", method = RequestMethod.GET)
     public ModelAndView creditLoanOutNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.creditLoanOutService.creditLoanOutCallback(paramsMap, request.getQueryString());
+        String responseData = this.creditLoanOutService.creditLoanTransferAgentCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

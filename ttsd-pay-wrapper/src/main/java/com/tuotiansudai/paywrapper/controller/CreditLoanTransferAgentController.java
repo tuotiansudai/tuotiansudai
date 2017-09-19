@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class CreditLoanOutController {
+public class CreditLoanTransferAgentController {
 
     @Autowired
     private CreditLoanTransferAgentService creditLoanOutService;
 
-    @RequestMapping(value = "/credit-loan-out", method = RequestMethod.POST)
+    @RequestMapping(value = "/credit-loan-transfer-agent", method = RequestMethod.POST)
     @ResponseBody
-    public void creditLoanRecharge() {
-        creditLoanOutService.creditLoanOut();
+    public void creditLoanTransferAgent() {
+        creditLoanOutService.creditLoanTransferAgent();
     }
 }

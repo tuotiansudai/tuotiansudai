@@ -7,6 +7,7 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
@@ -66,7 +67,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     private String agentMobile;
 
     @Override
-    public void creditLoanOut(){
+    public void creditLoanTransferAgent(){
         long investAmountTotal = creditLoanBillMapper.findSumAmountByIncome(CreditLoanBillBusinessType.CREDIT_LOAN_REPAY, SystemBillOperationType.IN);
         if (investAmountTotal <= 0){
             return;
@@ -98,8 +99,8 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
 
     @Override
     @Transactional
-    public String creditLoanOutCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+    public String creditLoanTransferAgentCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, CreditLoanTransferAgentNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;

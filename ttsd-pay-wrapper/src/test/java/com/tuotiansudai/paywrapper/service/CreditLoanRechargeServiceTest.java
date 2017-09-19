@@ -11,9 +11,9 @@ import com.tuotiansudai.paywrapper.service.impl.CreditLoanRechargeServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.RedisWrapperClient;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +24,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -59,7 +59,7 @@ public class CreditLoanRechargeServiceTest {
     }
 
     @Test
-    public void shouldPurchaseNoPassword() throws Exception {
+    public void shouldRechargeNoPassword() throws Exception {
         UserModel userModel = getFakeUserModel();
 
         AccountModel accountModel = new AccountModel("creditLoan", "payUserId", "payAccountId", new Date());
@@ -71,8 +71,9 @@ public class CreditLoanRechargeServiceTest {
         dto.setAmount("100");
 
         ProjectTransferNopwdResponseModel responseModel = new ProjectTransferNopwdResponseModel();
-        responseModel.setRetCode("0000");
-        responseModel.setRetMsg("msg");
+        Map<String, String> resp = new HashMap<>();
+        resp.put("ret_code", "0000");
+        responseModel.initializeModel(resp);
 
         when(userMapper.findByMobile(userModel.getMobile())).thenReturn(userModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
@@ -80,13 +81,11 @@ public class CreditLoanRechargeServiceTest {
 
         BaseDto<PayDataDto> baseDto = creditLoanRechargeService.creditLoanRechargeNoPwd(dto);
 
-        assertTrue(baseDto.isSuccess());
-        assertEquals("0000", baseDto.getData().getCode());
-        assertEquals("msg", baseDto.getData().getMessage());
+        assertTrue(baseDto.getData().getStatus());
     }
 
     @Test
-    public void shouldPurchase() throws Exception {
+    public void shouldRecharge() throws Exception {
         UserModel userModel = getFakeUserModel();
 
         AccountModel accountModel = new AccountModel("creditLoan", "payUserId", "payAccountId", new Date());
@@ -97,12 +96,9 @@ public class CreditLoanRechargeServiceTest {
         creditLoanRechargeDto.setOperatorLoginName("admin");
         creditLoanRechargeDto.setAmount("100");
 
-        ProjectTransferNopwdResponseModel responseModel = new ProjectTransferNopwdResponseModel();
-        responseModel.setRetCode("0000");
-        responseModel.setRetMsg("msg");
-
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
+        payFormDataDto.setStatus(true);
         dto.setData(payFormDataDto);
 
         when(userMapper.findByMobile(userModel.getMobile())).thenReturn(userModel);
@@ -110,7 +106,7 @@ public class CreditLoanRechargeServiceTest {
         when(payAsyncClient.generateFormData(any(Class.class), any())).thenReturn(dto);
 
         BaseDto<PayFormDataDto> baseDto = creditLoanRechargeService.creditLoanRecharge(creditLoanRechargeDto);
-        assertTrue(baseDto.isSuccess());
+        assertTrue(baseDto.getData().getStatus());
     }
 
     public UserModel getFakeUserModel() {
