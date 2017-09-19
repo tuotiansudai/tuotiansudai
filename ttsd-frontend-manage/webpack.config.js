@@ -110,17 +110,6 @@ else if(NODE_ENV=='dev') {
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
-	// 接口代理,目前用ftl-server模拟假数据
-	// var proxyList = ['media-center/*','task-center/*'];
-	// var proxyObj = {};
-	// proxyList.forEach(function(value) {
-	// 	proxyObj[value] = {
-	// 		target: 'http://localhost:3009',
-	// 		changeOrigin: true,
-	// 		secure: false
-	// 	};
-	// });
-
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
@@ -133,8 +122,7 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
-		},
-		// proxy:proxyObj
+		}
 	};
 }
 
@@ -164,11 +152,7 @@ function createHappyPlugin(id, loaders) {
 		id: id,
 		loaders: loaders,
 		threadPool: happyThreadPool,
-
-		// disable happy caching with HAPPY_CACHE=0
 		cache: true,
-
-		// make happy more verbose with HAPPY_VERBOSE=1
 		verbose: true
 	});
 }
@@ -205,7 +189,8 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loaders:['happypack/loader?id=image']
+			loaders:['url?limit=2048&name=images/[name].[hash:8].[ext]']
+			// loaders:['happypack/loader?id=image']
 
 		}]
 	},
