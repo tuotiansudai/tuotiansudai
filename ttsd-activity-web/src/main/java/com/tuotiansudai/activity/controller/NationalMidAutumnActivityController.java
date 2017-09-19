@@ -2,10 +2,7 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.ActivityInvestView;
-import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.activity.service.NationalMidAutumnService;
 import com.tuotiansudai.activity.service.SchoolSeasonService;
@@ -74,5 +71,25 @@ public class NationalMidAutumnActivityController {
         baseListDataDto.setStatus(true);
 
         return baseListDataDto;
+    }
+
+    @RequestMapping(value = "/my-ranking/{tradingTime}", method = RequestMethod.GET)
+    @ResponseBody
+    public MyHeroRanking obtainMyRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+        final String loginName = LoginUserInfo.getLoginName();
+        MyHeroRanking myHeroRanking = new MyHeroRanking();
+        List<NewmanTyrantView> celebrationHeroRankingViews = nationalMidAutumnService.obtainRank(tradingTime);
+
+        int investRanking = CollectionUtils.isNotEmpty(celebrationHeroRankingViews) ?
+                Iterators.indexOf(celebrationHeroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
+        long investAmount = investRanking > 0 ? celebrationHeroRankingViews.get(investRanking - 1).getSumAmount() : 0;
+
+        if (investRanking > 10) {
+            investRanking = 0;
+        }
+        myHeroRanking.setInvestAmount(investAmount);
+        myHeroRanking.setInvestRanking(investRanking);
+
+        return myHeroRanking;
     }
 }
