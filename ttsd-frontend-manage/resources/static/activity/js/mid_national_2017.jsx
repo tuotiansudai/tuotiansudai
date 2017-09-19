@@ -55,8 +55,7 @@ function activityStatus(nowDay) {
         }
         heroRank(nowDay);
     }
-
-    heroRank(nowDay);
+    
     $('.is-today',$activityPageFrame).text(function() {
         return isToday ? '今日' : '当日'
     });
@@ -115,7 +114,7 @@ $investRankingButton.find('.button-small').on('click', function (event) {
 function heroRank(date) {
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/hero-ranking/invest/' + date
+        url: '/activity/national-mid-autumn/ranking/' + date
     }, function (data) {
         console.log('000');
         if (data.status) {
@@ -134,7 +133,7 @@ function heroRank(date) {
 
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/national-mid-autumn/ranking/' + date
+        url: '/activity/national-mid-autumn/my-ranking/' + date
     }, function (data) {
         //今日投资总额 和 排名
         let investRanking = data.investRanking;
