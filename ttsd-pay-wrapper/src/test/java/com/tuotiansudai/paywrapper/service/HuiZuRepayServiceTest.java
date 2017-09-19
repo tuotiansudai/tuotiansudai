@@ -59,6 +59,11 @@ public class HuiZuRepayServiceTest {
         this.createFakeUser(loginName, 300);
     }
 
+    @After
+    public void tearDown() {
+        redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
+    }
+
     @Test
     public void shouldPasswordRepayIsSuccess() {
         HuiZuRepayDto huiZuRepayDto = createFakeHuiZuRepayDto("1.00", "111");
@@ -75,7 +80,6 @@ public class HuiZuRepayServiceTest {
         assertEquals(huiZuRepayDto.getAmount(), baseDto.getData().getFields().get("amount"));
         assertEquals(huiZuRepayDto.getRepayPlanId(), baseDto.getData().getFields().get("order_id").split(HuizuRepayServiceImpl.REPAY_ORDER_ID_SEPARATOR)[0]);
         assertEquals(accountModel.getPayUserId(), baseDto.getData().getFields().get("partic_user_id"));
-
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
 
     }
@@ -102,7 +106,6 @@ public class HuiZuRepayServiceTest {
         assertEquals(UserBillOperationType.TO_BALANCE, userBillModels.get(0).getOperationType());
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
 
-
     }
 
     @Test
@@ -110,6 +113,7 @@ public class HuiZuRepayServiceTest {
         HuiZuRepayDto huiZuRepayDto = createFakeHuiZuRepayDto("3.10", "001");
         BaseDto<PayFormDataDto> baseDto = huiZuRepayService.passwordRepay(huiZuRepayDto);
         assertEquals("余额不足，请充值", baseDto.getData().getMessage());
+        redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
 
     }
 
