@@ -152,7 +152,7 @@
                     <label class="col-sm-2 control-label">标的所属活动: </label>
 
                     <div class="col-sm-3">
-                        <input name="activityDesc" type="text" class="form-control" disabled="disabled" maxlength="4">
+                        <input name="activityDesc" type="text" class="form-control" disabled="disabled" maxlength="10">
                     </div>
                 </div>
 
