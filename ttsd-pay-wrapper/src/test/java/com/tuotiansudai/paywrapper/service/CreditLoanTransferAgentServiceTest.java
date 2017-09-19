@@ -78,12 +78,12 @@ public class CreditLoanTransferAgentServiceTest {
         responseModel.initializeModel(resData);
         when(paySyncClient.send(any(), any(), any())).thenReturn(responseModel);
 
-        creditLoanTransferAgentService.creditLoanOut();
+        creditLoanTransferAgentService.creditLoanTransferAgent();
         assertFalse(redisWrapperClient.hexists(CREDIT_LOAN_TRANSFER_AGENT_SUM_AMOUNT, userModel.getLoginName()));
 
         redisWrapperClient.hset(CREDIT_LOAN_TRANSFER_AGENT_SUM_AMOUNT, userModel.getLoginName(), "600");
         when(creditLoanBillMapper.findSumAmountByIncome(any(),any())).thenReturn(1200l);
-        creditLoanTransferAgentService.creditLoanOut();
+        creditLoanTransferAgentService.creditLoanTransferAgent();
         assertEquals(600l, Long.parseLong(redisWrapperClient.hget(CREDIT_LOAN_TRANSFER_AGENT_SUM_AMOUNT, userModel.getLoginName())));
         deleteRedis(userModel.getLoginName());
 
