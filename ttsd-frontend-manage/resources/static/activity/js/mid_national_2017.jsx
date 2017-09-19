@@ -1,12 +1,12 @@
 require("activityStyle/mid_national_2017.scss");
-require('activityJsModule/fast_register');
 require('publicJs/login_tip');
 let commonFun = require('publicJs/commonFun');
 
+let $activityPageFrame = $('#activityPageFrame');
 //投资按钮，前一天后一天按钮
 let $investRankingButton = $('#investRanking-button'),
-    $rankingNext = $('#rankingNext'),
-    $rankingPre = $('#rankingPre');
+    $heroNext = $('#rankingNext'),
+    $heroPre = $('#rankingPre');
 
 //排名
 let $sortBox = $('#sortBox'),
@@ -56,6 +56,7 @@ function activityStatus(nowDay) {
         heroRank(nowDay);
     }
 
+    heroRank(nowDay);
     $('.is-today',$activityPageFrame).text(function() {
         return isToday ? '今日' : '当日'
     });
@@ -75,10 +76,10 @@ activityStatus(todayDay);
             $bannerSlide.append(topImage);
         };
     }
-})();
+ })();
 //弹框登录
 (function () {
-    let $isLogin = $('.show-login', $activityPageFrame);
+    let $isLogin = $('.get-rank', $activityPageFrame);
     $isLogin.on('click', function (event) {
         event.preventDefault();
         $.when(commonFun.isUserLogin())
@@ -109,12 +110,14 @@ $investRankingButton.find('.button-small').on('click', function (event) {
 
 });
 
+
 //排名,今日投资排行
 function heroRank(date) {
     commonFun.useAjax({
         type: 'GET',
         url: '/activity/hero-ranking/invest/' + date
     }, function (data) {
+        console.log('000');
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
                 $('#investRanking-tbody').html('');
@@ -131,7 +134,7 @@ function heroRank(date) {
 
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/hero-ranking/ranking/' + date
+        url: '/activity/national-mid-autumn/ranking/' + date
     }, function (data) {
         //今日投资总额 和 排名
         let investRanking = data.investRanking;

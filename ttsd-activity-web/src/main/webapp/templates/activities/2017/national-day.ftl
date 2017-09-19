@@ -1,10 +1,10 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.mid_national_2017}" pageJavascript="${js.mid_national_2017}" activeNav="" activeLeftNav="" title="中秋遇上国庆_拓天周国庆节_活动中心_拓天速贷" keywords="拓天速贷,国庆节,实物大奖,加息券" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
 
-<#--<body>-->
     <div class="header">
 
     </div>
+<div  id="activityPageFrame">
     <!--第一部分 begin-->
     <div class="mid-tit mid-tit1">
         <h2></h2>
@@ -60,7 +60,7 @@
         <h2></h2>
         <div class="mid-con mid-con2">
             <div class="house-mortgage page-width">
-                <h2>活动期间，投资带有“加息6.8%”标签的项目，可享受该笔投资资金的首期加息6.8%。</h2>
+                <h2>活动期间，投资带有 <strong> “加息6.8%”</strong>标签的项目，可享受该笔投资资金的首期加息6.8%。</h2>
                 <div class="pos left_top"></div>
                 <div class="pos right_top"></div>
                 <div class="pos left_bottom"></div>
@@ -90,15 +90,16 @@
                         <div class="img"></div>
                         <p>2~3名 <br>300元红包</p>
                     </div>
+                    <#if prizeDto??>
                     <div class="big-lottery">
                         <div class="img">
                             <div class="big-lottery-con">
-                                <#--<img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">-->
+                                <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
                             </div>
                         </div>
-
-                        <#--<p>今日大奖 <br>${prizeDto.goldPrizeName}</p>-->
+                        <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
                     </div>
+                    </#if>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
                         <p>2~3名 <br>300元红包</p>
@@ -108,25 +109,25 @@
                 <div class="ranking-list">
                     <div class="wrap">
                         <h2></h2>
-                        <#--<div class="title clearfix" id="sortBox">-->
-                            <#--<span class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>-->
-                            <#--<span class="fl">我的排名：-->
-                            <#--<@global.isAnonymous>-->
-                                 <#--<a href="/login" target="_blank" class="get-rank">登录</a>-->
-                            <#--</@global.isAnonymous>-->
+                        <div class="title clearfix" id="sortBox">
+                            <span class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>
+                            <span class="fl">我的排名：
+                            <@global.isAnonymous>
+                                 <a href="javascript:void(0);" target="_blank" class="get-rank">登录</a>
+                            </@global.isAnonymous>
 
-                            <#--<@global.isNotAnonymous>-->
-                                <#--<i class="ranking-order">${investRanking}</i>-->
-                            <#--</@global.isNotAnonymous></span>-->
+                            <@global.isNotAnonymous>
+                                <i class="ranking-order">${investRanking}</i>
+                            </@global.isNotAnonymous></span>
 
-                            <#--<span class="last fr">当日累计投资：-->
-                            <#--<@global.isAnonymous>-->
-                                <#--<a href="/login" target="_blank" class="get-rank">登录</a>-->
-                            <#--</@global.isAnonymous>-->
-                            <#--<@global.isNotAnonymous>-->
-                                <#--<i class="total">${(investAmount/100)?string('0.00')}</i>元-->
-                            <#--</@global.isNotAnonymous>元</span>-->
-                        <#--</div>-->
+                            <span class="last fr">当日累计投资：
+                            <@global.isAnonymous>
+                                <a href="javascript:void(0);" target="_blank" class="get-rank">登录</a>
+                            </@global.isAnonymous>
+                            <@global.isNotAnonymous>
+                                <i class="total">${(investAmount/100)?string('0.00')}</i>元
+                            </@global.isNotAnonymous></span>
+                        </div>
                         <div class="nodata-invest tc" style="display: none;"></div>
                         <table>
                             <thead>
@@ -139,31 +140,32 @@
 
                         </table>
                         <div class="tab-footer clearfix" id="investRanking-button">
-                            <a href="#" class="pre-day button-small" id="rankingPre">查看前一天</a>
-                            <a href="#" class="invest-button" id="toInvest"></a>
-                            <a href="#" class="next-day button-small" id="rankingNext">查看后一天</a>
+                            <a class="pre-day button-small" id="rankingPre">查看前一天</a>
+                            <a class="invest-button" id="toInvest"></a>
+                            <a class="next-day button-small" id="rankingNext">查看后一天</a>
                         </div>
                     </div>
                 </div>
                 <!--英雄排行榜 ed-->
-                <!--温馨提示 begin-->
-                <div class="ranking-er">
-                    <h4>温馨提示：</h4>
-                    <p>1. 活动一仅限带有"逢万返百“标签的项目，活动二仅限带有”加息6.8%“标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；</p>
-                    <p>2. 排行榜活动仅限所有直投项目，债权转让不参与累计；</p>
-                    <p>3.现金奖励将于项目放款后1个工作日内发放到用户账户，用户可直接提现，也可用于投资其他项目；</p>
-                    <p>4.加息6.8%所得收益，将于项目首期回款后与收益一同转至用户账户；</p>
-                    <p>5.为方便您分散投资，排行榜中的红包奖励将以红包组的形式发放到您的账户，红包在中奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；</p>
-                    <p>6.每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</p>
-                    <p>7.拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</p>
-                    <p>8.为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</p>
-                    <p>9.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
-                </div>
-                <!--温馨提示 end-->
+
             </div>
         </div>
+        <!--温馨提示 begin-->
+        <div class="ranking-er page-width">
+            <h4>温馨提示：</h4>
+            <p>1. 活动一仅限带有"逢万返百“标签的项目，活动二仅限带有”加息6.8%“标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；</p>
+            <p>2. 排行榜活动仅限所有直投项目，债权转让不参与累计；</p>
+            <p>3.现金奖励将于项目放款后1个工作日内发放到用户账户，用户可直接提现，也可用于投资其他项目；</p>
+            <p>4.加息6.8%所得收益，将于项目首期回款后与收益一同转至用户账户；</p>
+            <p>5.为方便您分散投资，排行榜中的红包奖励将以红包组的形式发放到您的账户，红包在中奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；</p>
+            <p>6.每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</p>
+            <p>7.拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</p>
+            <p>8.为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</p>
+            <p>9.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
+        </div>
+        <!--温馨提示 end-->
     </div>
-
+</div>
     <#include "../../module/login-tip.ftl" />
 <script type="text/template" id="tplTable">
     <% for(var i = 0; i < records.length; i++) {

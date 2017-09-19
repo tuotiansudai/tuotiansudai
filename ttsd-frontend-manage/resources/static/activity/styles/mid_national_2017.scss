@@ -12,7 +12,10 @@ h1,h2,h4 {
 .fr {
     float: right;
 }
-
+.main-frame {
+    width: 100%;
+    margin: 0 auto;
+}
 @media screen and (max-width:1023px){
 
     .header {
@@ -57,7 +60,7 @@ h1,h2,h4 {
 
 body {
     font-size: 12px;
-    background: #e84e47;
+    background: #fc393f;
 }
 .clearfix:after {
     content: '';
@@ -79,7 +82,7 @@ body {
 .header {
     width: 100%;
     height:354px;
-    background:url("../images/2017/mid-national/banner_big.jpg") no-repeat center center;
+    background:#ff402d url("../images/2017/mid-national/banner_big.jpg") no-repeat center center;
 }
 /*加息6.8%*/
 .mid-tit1 {
@@ -97,7 +100,7 @@ body {
 .mid-tit2 {
     width: 100%;
     background-size: 100%;
-    background: #ffd49a;
+    background: #ffd291;
     padding-bottom: 30px;
 }
 .mid-tit2>h2 {
@@ -106,7 +109,7 @@ body {
     background: url("../images/2017/mid-national/raise_interest.jpg") no-repeat center center;
 }
 .mid-tit2 .mid-con .house-mortgage {
-    border:7px solid #e65b51;
+    border:7px solid #f94c4a;
 }
 .mid-con .house-mortgage {
     margin-top: 38px;
@@ -167,7 +170,17 @@ body {
     background:#ffd49a url("../images/2017/mid-national/wap_right_bottom.png");
 }
 
-
+.mid-con .house-mortgage >h2 {
+    width: 869px;
+    margin: 40px auto;
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+}
+.mid-con .hourse-mortgage >h2 strong {
+    font-size: 26px;
+    color: #e7413e;
+}
 .mid-con .house-mortgage .hourse-con {
     width: 869px;
     height: 153px;
@@ -205,7 +218,7 @@ body {
     width: 22px;
     height:16px;
     margin: 0 auto;
-    background:url("../images/2017/mid-national/ware_big.png") ;
+    background:url("../images/2017/mid-national/icon-trangle.png") ;
 }
 .house-mortgage .red-ware-info .ware {
     width: 270px;
@@ -252,7 +265,7 @@ body {
     height: 65px;
     margin-top: 38px;
     background-size: 100%;
-    background: #e84e47 url("../images/2017/mid-national/wap_tit_con1.png") no-repeat center center;
+    background: #fc393f url("../images/2017/mid-national/wap_tit_con1.png") no-repeat center center;
 }
 .lottery {
     width: 91.56%;
@@ -419,6 +432,11 @@ body {
 .ranking-er {
     font-size: 14px;
     color: #ffdbab;
-    line-height: 28px;
     padding-bottom: 20px;
+    padding-left: 3%;
+}
+.ranking-er p {
+    font-size: 14px;
+    color: #ffdbab;
+    line-height: 28px;
 }

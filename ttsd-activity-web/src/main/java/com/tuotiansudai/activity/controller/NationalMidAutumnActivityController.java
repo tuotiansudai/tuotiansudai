@@ -30,11 +30,11 @@ public class NationalMidAutumnActivityController {
     @Autowired
     private NationalMidAutumnService nationalMidAutumnService;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.day.startTime}\")}")
-    private Date activityNationalDayStartTime;
+    @Value(value = "${activity.national.day.startTime}")
+    private String activityNationalDayStartTime;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.day.endTime}\")}")
-    private Date activityNationalDayEndTime;
+    @Value(value = "${activity.national.day.endTime}")
+    private String activityNationalDayEndTime;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView nationalMidAutumn() {
@@ -60,7 +60,7 @@ public class NationalMidAutumnActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ranking/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
     public BasePaginationDataDto<NewmanTyrantView> obtainRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
