@@ -16,7 +16,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapp
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
@@ -73,7 +73,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
         AccountModel accountModel = accountMapper.findByLoginName(model.getAccountName());
 
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanPurchaseNopwdRequest(creditLoanId,
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanRechargeNopwdRequest(creditLoanId,
                 String.valueOf(model.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(model.getAmount()));
@@ -132,7 +132,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Transactional
     public String creditLoanRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, CreditLoanRechargeNotifyMapper.class,
-                TransferNotifyRequestModel.class);
+                InvestNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;

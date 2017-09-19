@@ -31,11 +31,11 @@
     </resultMap>
 
     <sql id="sqlFindById">
-        select * from credit_loan_recharge_transfer_request where id = #{id}
+        select * from credit_loan_recharge_pwd_request where id = #{id}
     </sql>
 
     <sql id="sqlCreate">
-        insert into credit_loan_recharge_transfer_request (
+        insert into credit_loan_recharge_pwd_request (
             service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url,
             order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
             partic_user_id, amount, request_time, request_url, request_data, status
@@ -66,11 +66,11 @@
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update project_transfer_request set status = #{status} where id = #{id}
+        update credit_loan_recharge_pwd_request set status = #{status} where id = #{id}
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferResponseModel">
-        insert into credit_loan_recharge_transfer_response (
+        insert into credit_loan_recharge_pwd_response (
             request_id, sign_type, sign, mer_id, version, mer_date, mer_check_date,
             trade_no,ret_code,ret_msg, response_data,response_time
         ) values (

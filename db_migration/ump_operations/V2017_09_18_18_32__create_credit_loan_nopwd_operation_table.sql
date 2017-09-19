@@ -1,4 +1,4 @@
-CREATE TABLE `ump_operations`.`credit_loan_recharge_transfer_nopwd_request` (
+CREATE TABLE `ump_operations`.`credit_loan_recharge_nopwd_request` (
   `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `service`         VARCHAR(32)     NOT NULL,
   `sign_type`       VARCHAR(8)      NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `ump_operations`.`credit_loan_recharge_nopwd_response` (
   `response_data`  TEXT            NOT NULL,
   `response_time`  DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_CREDIT_LOAN_NOPWD_RESPONSE_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `ump_operations`.`credit_loan_recharge_transfer_nopwd_request` (`id`)
+  CONSTRAINT FK_CREDIT_LOAN_NOPWD_RESPONSE_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `ump_operations`.`credit_loan_recharge_nopwd_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
