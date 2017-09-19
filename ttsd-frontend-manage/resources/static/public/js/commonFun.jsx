@@ -254,6 +254,25 @@ let GetDateStr = function(date,AddDayCount) {
     return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
 }
 
+
+// //模拟真实的checkbox
+// $.fn.initCheckbox=function(callback) {
+//     return $(this).each(function() {
+//         $(this).bind('click',function() {
+//             var $this=$(this);
+//             var checked=$this.find('input:checkbox').prop('checked');
+//             if(checked) {
+//                 $this.addClass("on");
+//             }
+//             else {
+//                 $this.removeClass("on");
+//             }
+//             callback && callback(this);
+//         })
+//     });
+// };
+
+
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -265,5 +284,4 @@ exports.countDownLoan = countDownLoan;
 exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;
 exports.GetDateStr = GetDateStr;
-
 

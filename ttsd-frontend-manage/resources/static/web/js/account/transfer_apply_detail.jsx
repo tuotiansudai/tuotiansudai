@@ -14,6 +14,8 @@ let $tipText=$('#tipText'),
     minTip = parseFloat($tipText.attr('data-min')),
     maxTip = parseFloat($tipText.attr('data-max'));
 
+let $getSkipPhone = $('#getSkipPhone');
+
 validator.add(createForm.price, [{
     strategy: 'isNonEmpty',
     errorMsg: '转让价格'
@@ -141,11 +143,7 @@ $('#cancleBtn').on('click', function (event) {
     history.go(-1);
 });
 
-//skip tip click chechbox
-$('.tip-item .skip-icon').on('click', function(event) {
-    event.preventDefault();
-    $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
-});
+$('.init-checkbox-style').initCheckbox();
 
 
 //show phone code tip
@@ -160,19 +158,53 @@ function getSkipPhoneTip(){
     });
 }
 
-var num = 60,Down;
+let $getSkipCode=$('#getSkipCode'),
+    $microPhone=$('#microPhone');
 
-//get phone code
-$('#getSkipCode').on('click', function(event) {
-    event.preventDefault();
-    getCode(false);
+
+$getSkipPhone.on('click',function(event) {
+    let $target=$(event.target),
+        targetId = event.target.id;
+    if(targetId=='getSkipCode') {
+        // 短信验证码
+        event.preventDefault();
+        getCode(false);
+    } else if(targetId=='microPhone') {
+        // 语音验证码
+        getCode(true);
+    } else if(targetId=='getSkipBtn') {
+        //去授权,安心签授权弹框表单提交
+
+        let $skipPhoneCode = $('#skipPhoneCode'),
+            $skipError = $('#skipError'),
+            skipCode = $skipPhoneCode.val();
+        if(!skipCode) {
+            $skipError.text('验证码不能为空').show();
+            return;
+        }
+        $target.addClass('active').val('授权中...').prop('disabled', true);
+        commonFun.useAjax({
+            url: '/anxinSign/verifyCaptcha',
+            type: 'POST',
+            data: {
+                captcha: $('#skipPhoneCode').val(),
+                skipAuth:$('#tipCheck').val()
+            }
+        },function(data) {
+            $target.removeClass('active').val('立即授权').prop('disabled', false);
+            if(data.success){
+                $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                if(data.skipAuth=='true'){
+                    $isAnxinAuthenticationRequired.val('false');
+                }
+                skipSuccess();
+            }else{
+                $skipError.text('验证码不正确').show();
+            }
+        });
+    }
 });
 
-//get phone code yuyin
-$('#microPhone').on('click', function(event) {
-    event.preventDefault();
-    getCode(true);
-});
 function getCode(type){
     $('#getSkipCode').prop('disabled',true);
     $('#microPhone').css('visibility', 'hidden');
@@ -186,56 +218,18 @@ function getCode(type){
         $('#getSkipCode').prop('disabled',false);
         $('#microPhone').css('visibility', 'visible');
         if(data.success) {
-            countDown();
-            Down = setInterval(countDown, 1000);
+            commonFun.countDownLoan({
+                btnDom:$getSkipCode,
+                isAfterText:'重新获取验证码'
+            },function() {
+                $microPhone.css('visibility', 'visible');
+            });
         }
         else {
             layer.msg('请求失败，请重试或联系客服！');
         }
     });
 }
-//countdown skip
-function countDown() {
-    $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
-    $('#microPhone').css('visibility', 'hidden');
-    if (num == 0) {
-        clearInterval(Down);
-        $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
-        $('#microPhone').css('visibility', 'visible');
-        num=60;
-    }else{
-        num--;
-    }
-
-}
-//submit data skip phone code
-$('#getSkipBtn').on('click',  function(event) {
-    event.preventDefault();
-    var $self=$(this);
-    if($('#skipPhoneCode').val()!=''){
-        commonFun.useAjax({
-            url: '/anxinSign/verifyCaptcha',
-            type: 'POST',
-            data: {
-                captcha: $('#skipPhoneCode').val(),
-                skipAuth:$('#tipCheck').val()
-            }
-        },function(data) {
-            $self.removeClass('active').val('立即授权').prop('disabled', false);
-            if(data.success){
-                $('#isAnxinUser').val('true') && $('.skip-group').hide();
-                if(data.skipAuth=='true'){
-                    $isAnxinAuthenticationRequired.val('false');
-                }
-                skipSuccess();
-            }else{
-                $('#skipError').text('验证码不正确').show();
-            }
-        });
-    }else{
-        $('#skipError').text('验证码不能为空').show();
-    }
-});
 
 //skip success
 function skipSuccess(){
@@ -244,7 +238,6 @@ function skipSuccess(){
     setTimeout(function(){
         $('#skipSuccess').hide();
         $('#skipPhoneCode').val('');
-        num=0;
         sendData();
     },3000)
 }

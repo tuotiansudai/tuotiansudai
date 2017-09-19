@@ -30,6 +30,8 @@ let isInvestor = 'INVESTOR' === $loanDetailContent.data('user-role');
 let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
+let $getSkipPhone = $('#getSkipPhone'); //安心签弹框盒
+
 var viewport = globalFun.browserRedirect();
 
 function showInputErrorTips(message) {
@@ -224,7 +226,7 @@ function getSkipPhoneTip(){
         btn: 0,
         type: 1,
         area: $(window).width()>700?['400px', 'auto']:['320px','auto'],
-        content: $('#getSkipPhone')
+        content: $getSkipPhone
     });
 }
 
@@ -858,13 +860,11 @@ function getSkipPhoneTip(){
 
 })();
 
-//安心签的业务,需要重构
 (function() {
-    var num = 60,Down;
+    let $getSkipCode=$('#getSkipCode'),
+        $microPhone=$('#microPhone');
     //安心签弹框中获取短信验证码请求
     function getCode(type){
-        let $getSkipCode=$('#getSkipCode'),
-            $microPhone=$('#microPhone');
 
         $getSkipCode.prop('disabled',true);
         $microPhone.css('visibility', 'hidden');
@@ -878,26 +878,20 @@ function getSkipPhoneTip(){
             $getSkipCode.prop('disabled',false);
             $microPhone.css('visibility', 'visible');
             if(data.success) {
-                countDown();
-                Down = setInterval(countDown, 1000);
+                //开始倒计时
+                $microPhone.css('visibility', 'hidden');
+                commonFun.countDownLoan({
+                    btnDom:$getSkipCode,
+                    isAfterText:'重新获取验证码'
+                },function() {
+                    $microPhone.css('visibility', 'visible');
+                });
+
             }
             else {
                 layer.msg('请求失败，请重试或联系客服！');
             }
         });
-    }
-    //安心签弹框中获取短信验证码倒计时效果
-    function countDown() {
-        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
-        $('#microPhone').css('visibility', 'hidden');
-        if (num == 0) {
-            clearInterval(Down);
-            $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
-            $('#microPhone').css('visibility', 'visible');
-            num=60;
-        }else{
-            num--;
-        }
     }
     //安心签授权成功弹框
     function skipSuccess(){
@@ -906,65 +900,59 @@ function getSkipPhoneTip(){
         setTimeout(function(){
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
-            num=0;
             noPasswordInvest?sendSubmitRequest():$investForm.submit();
 
         },3000)
     }
 
-//勾选马上投资下方 协议复选框
-    $('.skip-group .skip-icon').on('click', function(event) {
-        event.preventDefault();
+    $getSkipPhone.on('click',function(event) {
+        let $target=$(event.target),
+            targetId = event.target.id;
+        if(targetId=='getSkipCode') {
+            // 短信验证码
+            event.preventDefault();
+            getCode(false);
+        } else if(targetId=='microPhone') {
+            // 语音验证码
+            getCode(true);
+        } else if(targetId=='getSkipBtn') {
+            //去授权,安心签授权弹框表单提交
 
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
-    });
-
-    //勾选 安心签弹框中的复选框
-    $('.tip-item .skip-icon').on('click', function(event) {
-        event.preventDefault();
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
-    });
-    //获取短信验证码
-    $('#getSkipCode').on('click', function(event) {
-        event.preventDefault();
-        getCode(false);
-    });
-
-    //获取语音验证码
-    $('#microPhone').on('click', function(event) {
-        event.preventDefault();
-        getCode(true);
-    });
-
-    //安心签授权弹框表单提交
-    $('#getSkipBtn').on('click',  function(event) {
-        event.preventDefault();
-        var $self=$(this);
-        if($('#skipPhoneCode').val()!=''){
-            $self.addClass('active').val('授权中...').prop('disabled', true);
-            commonFun.useAjax({
-                url: '/anxinSign/verifyCaptcha',
-                type: 'POST',
-                data: {
-                    captcha: $('#skipPhoneCode').val(),
-                    skipAuth:$('#tipCheck').val()
-                }
-            },function(data) {
-                $self.removeClass('active').val('立即授权').prop('disabled', false);
-                if(data.success){
-                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
-                    if(data.skipAuth=='true'){
-                        $isAuthenticationRequired.val('false');
+            let $skipPhoneCode = $('#skipPhoneCode'),
+                $skipError = $('#skipError'),
+                skipCode = $skipPhoneCode.val();
+            if(!skipCode) {
+                $skipError.text('验证码不能为空').show();
+                return;
+            }
+                $target.addClass('active').val('授权中...').prop('disabled', true);
+                commonFun.useAjax({
+                    url: '/anxinSign/verifyCaptcha',
+                    type: 'POST',
+                    data: {
+                        captcha: $skipPhoneCode.val(),
+                        skipAuth:$('#tipCheck').val()
                     }
-                    skipSuccess();
-                }else{
-                    $('#skipError').text('验证码不正确').show();
-                }
-            });
-        }else{
-            $('#skipError').text('验证码不能为空').show();
+                },function(data) {
+                    $target.removeClass('active').val('立即授权').prop('disabled', false);
+                    if(data.success){
+                        $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                        if(data.skipAuth=='true'){
+                            $isAuthenticationRequired.val('false');
+                        }
+                        skipSuccess();
+                    }else{
+                        $skipError.text('验证码不正确').show();
+                    }
+                });
+
+
         }
     });
+
+    //勾选马上投资下方 协议复选框
+
+    $('.init-checkbox-style').initCheckbox();
 
 })();
 
