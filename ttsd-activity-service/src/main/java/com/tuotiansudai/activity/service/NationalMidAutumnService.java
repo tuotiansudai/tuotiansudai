@@ -25,10 +25,10 @@ public class NationalMidAutumnService {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Value(value = "${activity.national.day.startTime")
+    @Value(value = "${activity.national.day.startTime}")
     private String activityNationalDayStartTime;
 
-    @Value(value = "${activity.national.day.endTime")
+    @Value(value = "${activity.national.day.endTime}")
     private String activityNationalDayEndTime;
 
     private static final String NEWMAN_TYRANT_PRIZE_KEY = "console:Newman_Tyrant_Prize";

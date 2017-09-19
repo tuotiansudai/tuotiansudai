@@ -74,42 +74,39 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[标的放款MQ] LoanOutSuccess_NationalMidAutumn receive message: {}: {}.", this.queue(), message);
+        logger.info("[逢万返百标的放款MQ] LoanOutSuccess_NationalMidAutumn receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[标的放款MQ] LoanOutSuccess_NationalMidAutumn receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放逢万返百奖励失败, MQ消息为空"));
+            logger.error("[逢万返百标的放款MQ] LoanOutSuccess_NationalMidAutumn receive message is empty");
             return;
         }
         LoanOutSuccessMessage loanOutInfo;
         try {
             loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             if (loanOutInfo.getLoanId() == null) {
-                logger.error("[标的放款MQ] LoanOutSuccess_NationalMidAutumn loanId is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放逢万返百奖励失败, 消息中loanId为空"));
+                logger.error("[逢万返百标的放款MQ] LoanOutSuccess_NationalMidAutumn loanId is empty");
                 return;
             }
         } catch (IOException e) {
-            logger.error("[标的放款MQ] LoanOutSuccess_NationalMidAutumn json convert LoanOutSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放逢万返百奖励失败, 解析消息失败"));
+            logger.error("[逢万返百标的放款MQ] LoanOutSuccess_NationalMidAutumn json convert LoanOutSuccessMessage is fail, message:{}", message);
             return;
         }
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanOutInfo.getLoanId());
 
-        try {
-            if (loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("逢万返百")) {
-                logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_NationalMidAutumn send cash is executing , (loanId : {0}) ", String.valueOf(loanOutInfo.getLoanId())));
-                List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), activityNationalMidAutumnStartTime, activityNationalMidAutumnEndTime, null);
-                for (InvestAchievementView investAchievementView : invests) {
-                    if (!redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_CASH_KEY, MessageFormat.format(HKEY, String.valueOf(loanOutInfo.getLoanId()), investAchievementView.getLoginName()) + investAchievementView.getLoginName())) {
+        if (loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("逢万返百")) {
+            logger.info(MessageFormat.format("[逢万返百标的放款MQ] LoanOutSuccess_NationalMidAutumn send cash is executing , (loanId : {0}) ", String.valueOf(loanOutInfo.getLoanId())));
+            List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), activityNationalMidAutumnStartTime, activityNationalMidAutumnEndTime, null);
+            for (InvestAchievementView investAchievementView : invests) {
+                if (!redisWrapperClient.hexists(NATIONAL_MID_AUTUMN_CASH_KEY, MessageFormat.format(HKEY, String.valueOf(loanOutInfo.getLoanId()), investAchievementView.getLoginName()) + investAchievementView.getLoginName())) {
+                    try {
                         sendCashPrize(investAchievementView.getLoginName(), investAchievementView.getAmount(), loanOutInfo.getLoanId());
+                    } catch (Exception e) {
+                        logger.error("[逢万返百标的放款MQ] LoanOutSuccess_NationalMidAutumn 用户:{0}, 标的:{1}, 投资金额:{2} is send fail.", investAchievementView.getAmount(), loanOutInfo.getLoanId(), investAchievementView.getAmount());
                     }
                 }
             }
-        } catch (Exception e) {
-            logger.error("[[标的放款MQ] LoanOutSuccess_NationalMidAutumn consume fail.", e.getLocalizedMessage());
-            throw new RuntimeException(MessageFormat.format("[标的放款MQ] LoanOutSuccess_NationalMidAutumn  is fail. loanId:{0}", String.valueOf(loanOutInfo.getLoanId())));
         }
+
     }
 
     private void sendCashPrize(String loginName, long investAmount, long loanId) {
