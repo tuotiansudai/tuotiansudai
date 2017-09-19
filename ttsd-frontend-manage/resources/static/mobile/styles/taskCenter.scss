@@ -7,7 +7,6 @@
         .bodyCon {
             height:auto;
             overflow: auto;
-            transform:translate3d(0,0,0);
         }
 
         .loading {
@@ -39,6 +38,11 @@
             height: 45px;
             line-height: 45px;
             margin: 0 auto;
+            &.fix-menu {
+                width:100%;
+                position: fixed;
+                top:0;
+            }
         }
         .MenuBox ul {
             border-radius: 3px;

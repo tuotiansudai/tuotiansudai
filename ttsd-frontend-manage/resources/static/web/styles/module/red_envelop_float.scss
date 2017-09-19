@@ -25,7 +25,7 @@
     .close-count {
       display: block;
       position: absolute;
-      background: url('../../images/global/icon-close.png') left top no-repeat;
+      background: url('../../images/homepage/icon-close.png') left top no-repeat;
       top: 15px;
       right: 5px;
       z-index: 999;
@@ -132,18 +132,18 @@
       &.icon-phone {
         width: 60px;
         height: 60px;
-        background: url('../../images/global/mobile-icon.png') left top no-repeat;
+        background: url('../../images/homepage/mobile-icon.png') left top no-repeat;
       }
       &.icon-calculator {
         width: 60px;
         height: 60px;
-        background: url('../../images/global/calculator-icon.png') left top no-repeat;
+        background: url('../../images/homepage/calculator-icon.png') left top no-repeat;
 
       }
       &.icon-edit {
         width: 60px;
         height: 60px;
-        background: url('../../images/global/icon-edit.png') left top no-repeat;
+        background: url('../../images/homepage/icon-edit.png') left top no-repeat;
       }
     }
     .nav-text {
@@ -165,7 +165,7 @@
         right: 60px;
         width: 180px;
         height: 230px;
-        background: url('../../images/global/app-pc-top.png') left top no-repeat;
+        background: url('../../images/homepage/app-pc-top.png') left top no-repeat;
       }
     }
   }
@@ -201,7 +201,7 @@
       &.icon-top {
         width: 60px;
         height: 60px;
-        background: url('../../images/global/icon-back.png') center top no-repeat;
+        background: url('../../images/homepage/icon-back.png') center top no-repeat;
         background-size: 100%;
       }
     }
@@ -247,7 +247,7 @@
       height:24px;
       margin:13px 20px;
       cursor:pointer;
-      background: url('../../images/global/icon-close.png') left top no-repeat;
+      background: url('../../images/homepage/icon-close.png') left top no-repeat;
       background-size: 100%;
 
     }

@@ -268,6 +268,15 @@
             <div class="btn-list"><a href="/loan-list" class="go-on go-close"></a></div>
         </div>
 
+        <!--虚拟奖品的提示-->
+        <div class="tip-list" data-return="experience">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="reward-text">恭喜您抽中了<em class="prizeValue"></em></p>
+            </div>
+            <div class="btn-list"><a href="/loan-list" class="go-on go-close"></a></div>
+        </div>
+
         <!--没有抽奖机会-->
         <div class="tip-list" data-return="nochance">
             <div class="close-btn go-close"></div>
