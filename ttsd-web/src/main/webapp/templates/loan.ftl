@@ -59,7 +59,7 @@
                     </#if>
                     <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf" target="_blank">债权转让协议样本</a></span>
                 </h2>
-                <div class="container-block loan-info">s
+                <div class="container-block loan-info">
                     <div class="content">
                         <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
