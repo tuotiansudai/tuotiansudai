@@ -109,17 +109,17 @@ function toAuthorForAnxin(callback) {
         let $target=$(event.target);
         //首先检查验证码
         let errorSkip = checkSkipCode();
-        if(!errorSkip) {
+        if(errorSkip) {
             return;
         }
-        let skipCode = $skipPhoneCode.val()
+        let skipCode = $skipPhoneCode.val();
         $target.addClass('active').val('授权中...').prop('disabled', true);
 
         commonFun.useAjax({
             url: '/anxinSign/verifyCaptcha',
             type: 'POST',
             data: {
-                captcha: $skipPhoneCode.val(),
+                captcha: skipCode,
                 skipAuth:$('#tipCheck').val()
             }
         },function(data) {
