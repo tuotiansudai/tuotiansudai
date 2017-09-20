@@ -77,7 +77,7 @@ public class HuiZuRepayServiceTest {
         assertEquals(SyncRequestStatus.SENT.name(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "status"));
 
         assertEquals(true, baseDto.isSuccess());
-        assertEquals(huiZuRepayDto.getAmount(), baseDto.getData().getFields().get("amount"));
+        assertEquals(String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())), baseDto.getData().getFields().get("amount"));
         assertEquals(huiZuRepayDto.getRepayPlanId(), baseDto.getData().getFields().get("order_id").split(HuizuRepayServiceImpl.REPAY_ORDER_ID_SEPARATOR)[0]);
         assertEquals(accountModel.getPayUserId(), baseDto.getData().getFields().get("partic_user_id"));
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
@@ -128,7 +128,6 @@ public class HuiZuRepayServiceTest {
                         .put("status", SyncRequestStatus.SENT.name())
                         .build()),
                 30 * 30);
-        ;
         BaseDto<PayFormDataDto> baseDto = huiZuRepayService.passwordRepay(huiZuRepayDto);
 
 
