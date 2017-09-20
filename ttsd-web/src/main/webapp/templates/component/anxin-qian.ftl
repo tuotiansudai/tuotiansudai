@@ -3,7 +3,7 @@
             <span>
                 <input type="text" class="skip-phone-code" id="skipPhoneCode" maxlength="6" placeholder="请输入验证码">
             </span>
-            <span>
+            <span id="methodToMsg">
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
                 <i class="microphone" id="microPhone"></i>
             </span>

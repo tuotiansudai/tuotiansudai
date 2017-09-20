@@ -5,8 +5,12 @@ require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
 //投资计算器和意见反馈
 require('webJsModule/red_envelope_float');
+
 //安心签协议
 require('webJsModule/anxin_agreement');
+//安心签业务
+let anxinModule = require('webJsModule/anxin_signed');
+
 require('publicJs/login_tip');
 let commonFun= require('publicJs/commonFun');
 
@@ -119,7 +123,7 @@ function investSubmit(){
                 if($isAuthenticationRequired.val()==='false'){
                     sendSubmitRequest();
                 }else{
-                    getSkipPhoneTip();
+                    anxinModule.getSkipPhoneTip();
                     return false;
                 }
             }
@@ -130,7 +134,7 @@ function investSubmit(){
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
         $investForm.submit();
     }else{
-        getSkipPhoneTip();
+        anxinModule.getSkipPhoneTip();
         return false;
     }
 }
@@ -215,18 +219,6 @@ function showAuthorizeAgreementOptions(){
         end:function(){
             location.reload();
         }
-    });
-}
-
-//弹出安心签弹框
-function getSkipPhoneTip(){
-    layer.open({
-        shadeClose: false,
-        title: '安心签代签署授权',
-        btn: 0,
-        type: 1,
-        area: $(window).width()>700?['400px', 'auto']:['320px','auto'],
-        content: $getSkipPhone
     });
 }
 
@@ -860,101 +852,17 @@ function getSkipPhoneTip(){
 
 })();
 
-(function() {
-    let $getSkipCode=$('#getSkipCode'),
-        $microPhone=$('#microPhone');
-    //安心签弹框中获取短信验证码请求
-    function getCode(type){
 
-        $getSkipCode.prop('disabled',true);
-        $microPhone.css('visibility', 'hidden');
-        commonFun.useAjax({
-            url: '/anxinSign/sendCaptcha',
-            type: 'POST',
-            data:{
-                isVoice:type
-            }
-        },function(data) {
-            $getSkipCode.prop('disabled',false);
-            $microPhone.css('visibility', 'visible');
-            if(data.success) {
-                //开始倒计时
-                $microPhone.css('visibility', 'hidden');
-                commonFun.countDownLoan({
-                    btnDom:$getSkipCode,
-                    isAfterText:'重新获取验证码'
-                },function() {
-                    $microPhone.css('visibility', 'visible');
-                });
-
-            }
-            else {
-                layer.msg('请求失败，请重试或联系客服！');
-            }
-        });
+//安心签
+anxinModule.toAuthorForAnxin(function(data) {
+$('#isAnxinUser').val('true') && $('.skip-group').hide();
+    if(data.skipAuth=='true'){
+        $isAuthenticationRequired.val('false');
     }
-    //安心签授权成功弹框
-    function skipSuccess(){
-        layer.closeAll();
-        $('#skipSuccess').show();
-        setTimeout(function(){
-            $('#skipSuccess').hide();
-            $('#skipPhoneCode').val('');
-            noPasswordInvest?sendSubmitRequest():$investForm.submit();
-
-        },3000)
-    }
-
-    $getSkipPhone.on('click',function(event) {
-        let $target=$(event.target),
-            targetId = event.target.id;
-        if(targetId=='getSkipCode') {
-            // 短信验证码
-            event.preventDefault();
-            getCode(false);
-        } else if(targetId=='microPhone') {
-            // 语音验证码
-            getCode(true);
-        } else if(targetId=='getSkipBtn') {
-            //去授权,安心签授权弹框表单提交
-
-            let $skipPhoneCode = $('#skipPhoneCode'),
-                $skipError = $('#skipError'),
-                skipCode = $skipPhoneCode.val();
-            if(!skipCode) {
-                $skipError.text('验证码不能为空').show();
-                return;
-            }
-                $target.addClass('active').val('授权中...').prop('disabled', true);
-                commonFun.useAjax({
-                    url: '/anxinSign/verifyCaptcha',
-                    type: 'POST',
-                    data: {
-                        captcha: $skipPhoneCode.val(),
-                        skipAuth:$('#tipCheck').val()
-                    }
-                },function(data) {
-                    $target.removeClass('active').val('立即授权').prop('disabled', false);
-                    if(data.success){
-                        $('#isAnxinUser').val('true') && $('.skip-group').hide();
-                        if(data.skipAuth=='true'){
-                            $isAuthenticationRequired.val('false');
-                        }
-                        skipSuccess();
-                    }else{
-                        $skipError.text('验证码不正确').show();
-                    }
-                });
+    noPasswordInvest?sendSubmitRequest():$investForm.submit();
+});
 
 
-        }
-    });
-
-    //勾选马上投资下方 协议复选框
-
-    $('.init-checkbox-style').initCheckbox();
-
-})();
 
 
 
