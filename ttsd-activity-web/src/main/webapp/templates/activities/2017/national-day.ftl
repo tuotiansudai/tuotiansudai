@@ -15,7 +15,7 @@
                 <div class="pos left_bottom"></div>
                 <div class="pos right_bottom"></div>
                 <div class="hourse-con">
-
+                    <a href="javascript:;" class="toInvest"></a>
                 </div>
                 <div class="red-ware clearfix">
                     <div class="red-ware-info fl ">
@@ -35,7 +35,7 @@
                         <div class="top">
                             <div class="title">
                                 <h2>最高万元返现</h2>
-                                <p>每个用户在活动期间最高可返1万元现金奖励（投资100万），如投资达100万以上则不再累计现金奖励； </p>
+                                <p>每个用户在活动期间最高可返1万元现金奖励（投资100万），如投资达100万以上则不再累计现金奖励；&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             </div>
                         </div>
                         <div class="bottom"></div>
@@ -48,7 +48,7 @@
                     <p>注：在同一项目中不满1万的投资额自动舍去，不可与其他项目投资额累积。</p>
                 </div>
                 <div class="invest">
-                    <a href="#"></a>
+                    <a href="#" class="toInvest investYellow">立即投资</a>
                 </div>
 
             </div>
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="invest">
-                    <a href="#"></a>
+                    <a href="javascript:;" class="toInvest insRed">立即投资</a>
                 </div>
 
             </div>
@@ -102,7 +102,7 @@
                     </#if>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
-                        <p>2~3名 <br>300元红包</p>
+                        <p>4~6名 <br>168元红包</p>
                     </div>
                 </div>
                 <!--英雄排行榜 bg-->
@@ -110,22 +110,21 @@
                     <div class="wrap">
                         <h2></h2>
                         <div class="title clearfix" id="sortBox">
-                            <span class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>
-                            <span class="fl">我的排名：
-                            <@global.isAnonymous>
-                                 <a href="javascript:void(0);" target="_blank" class="get-rank">登录</a>
+                            <span class="fl">日期：<i class="date media-style" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>
+                            <span class="fl">我的排名:<@global.isAnonymous>
+                                 <a href="javascript:void(0);" target="_blank" class="get-rank media-style">登录</a>
                             </@global.isAnonymous>
 
                             <@global.isNotAnonymous>
-                                <i class="ranking-order">${investRanking}</i>
+                                <i class="ranking-order media-style">${investRanking}</i>
                             </@global.isNotAnonymous></span>
 
                             <span class="last fr">当日累计投资：
                             <@global.isAnonymous>
-                                <a href="javascript:void(0);" target="_blank" class="get-rank">登录</a>
+                                <a href="javascript:void(0);" target="_blank" class="get-rank media-style">登录</a>
                             </@global.isAnonymous>
                             <@global.isNotAnonymous>
-                                <i class="total">${(investAmount/100)?string('0.00')}</i>元
+                                <span class="media-style"><i class="total">${(investAmount/100)?string('0.00')}</i>元</span>
                             </@global.isNotAnonymous></span>
                         </div>
                         <div class="nodata-invest tc" style="display: none;"></div>
@@ -141,7 +140,7 @@
                         </table>
                         <div class="tab-footer clearfix" id="investRanking-button">
                             <a class="pre-day button-small" id="rankingPre">查看前一天</a>
-                            <a class="invest-button" id="toInvest"></a>
+                            <a class="invest-button toInvest invest">立即投资抢占排行榜</a>
                             <a class="next-day button-small" id="rankingNext">查看后一天</a>
                         </div>
                     </div>
@@ -153,15 +152,19 @@
         <!--温馨提示 begin-->
         <div class="ranking-er page-width">
             <h4>温馨提示：</h4>
-            <p>1. 活动一仅限带有"逢万返百“标签的项目，活动二仅限带有”加息6.8%“标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；</p>
-            <p>2. 排行榜活动仅限所有直投项目，债权转让不参与累计；</p>
-            <p>3.现金奖励将于项目放款后1个工作日内发放到用户账户，用户可直接提现，也可用于投资其他项目；</p>
-            <p>4.加息6.8%所得收益，将于项目首期回款后与收益一同转至用户账户；</p>
-            <p>5.为方便您分散投资，排行榜中的红包奖励将以红包组的形式发放到您的账户，红包在中奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；</p>
-            <p>6.每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</p>
-            <p>7.拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</p>
-            <p>8.为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</p>
-            <p>9.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
+            <p>1. 活动一仅限带有"逢万返百“标签的项目，活动二仅限带有”加息6.8%“标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；<br/>
+                2.“逢万返百”活动不可与平台其他优惠券同享；<br/>
+            3.参与“加息6.8%”活动时，请用户投标时在“优惠券”一栏中手动点选“6.8%加息券”，如未点选视为自动放弃该奖励；<br/>
+            4.现金奖励将于项目放款后1个工作日内发放到用户账户，用户可直接提现，也可用于投资其他项目；<br/>
+            5.加息6.8%所得收益，将于项目首期回款后与收益一同转至用户账户；<br/>
+            6. 排行榜活动仅限所有直投项目，债权转让不参与累计；<br/>
+            7.为方便您分散投资，排行榜中的红包奖励将以红包组的形式发放到您的账户，红包在活动结束后三个工作日内统一发放，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
+            8.每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；<br/>
+            9.拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；<br/>
+            10.为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；<br/>
+            11.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
+            12.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
+
         </div>
         <!--温馨提示 end-->
     </div>

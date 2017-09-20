@@ -55,7 +55,7 @@ function activityStatus(nowDay) {
         }
         heroRank(nowDay);
     }
-    
+
     $('.is-today',$activityPageFrame).text(function() {
         return isToday ? '今日' : '当日'
     });
@@ -147,7 +147,7 @@ function heroRank(date) {
     })
 }
 
-$('#toInvest').on('click',function() {
+$('#activityPageFrame').find('.toInvest').on('click',function() {
     window.location.href = '/loan-list';
 });
 
