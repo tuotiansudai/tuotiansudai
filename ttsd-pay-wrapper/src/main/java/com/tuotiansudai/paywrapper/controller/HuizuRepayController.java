@@ -8,8 +8,12 @@ import com.tuotiansudai.paywrapper.service.HuiZuRepayService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/repay")
@@ -18,9 +22,10 @@ public class HuizuRepayController {
     @Autowired
     private HuiZuRepayService huiZuRepayService;
 
-    @RequestMapping(value = "/password")
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> repayPassword(HuiZuRepayDto repayDto) {
+    public BaseDto<PayFormDataDto> repayPassword(@Valid @RequestBody HuiZuRepayDto repayDto) {
+
         return huiZuRepayService.passwordRepay(repayDto);
     }
 }

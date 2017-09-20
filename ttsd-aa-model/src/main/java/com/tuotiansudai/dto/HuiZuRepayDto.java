@@ -20,16 +20,16 @@ public class HuiZuRepayDto implements Serializable {
 
 
 
-    public String getAmount() {
-        return amount;
-    }
-
     public String getMobile() {
         return mobile;
     }
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getAmount() {
+        return amount;
     }
 
     public void setAmount(String amount) {

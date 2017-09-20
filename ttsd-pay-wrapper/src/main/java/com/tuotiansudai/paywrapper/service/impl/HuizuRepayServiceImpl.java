@@ -104,7 +104,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                     REPAY_LOAN_ID,
                     String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
                     accountModel.getPayUserId(),
-                    String.valueOf(huiZuRepayDto.getAmount()));
+                    String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
             return payAsyncClient.generateFormData(HuiZuRepayMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(String.format("[HZ Repay:] id:%s mobile:%s period:%s repay fail", String.valueOf(huiZuRepayDto.getRepayPlanId()), huiZuRepayDto.getMobile(), huiZuRepayDto.getPeriod()), e);
