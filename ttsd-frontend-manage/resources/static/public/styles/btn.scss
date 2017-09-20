@@ -246,6 +246,7 @@ label.checkbox {
   vertical-align: top;
   display: inline-block;
   margin-top:5px;
+  position: relative;
   &.on {
     background: url("../images/btn-checkbox.png") no-repeat 0 -26px;
   }
@@ -254,6 +255,12 @@ label.checkbox {
     cursor: pointer;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
+    position: absolute;
+    width:100%;
+    height:100%;
+    position: absolute;
+    left:-5px;
+    right:-5px;
   }
 }
 

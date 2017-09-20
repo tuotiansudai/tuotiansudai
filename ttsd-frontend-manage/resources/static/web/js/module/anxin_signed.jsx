@@ -7,8 +7,8 @@ let $getSkipPhone = $('#getSkipPhone'); //安心签弹框盒
 
 let $skipPhoneCode = $('#skipPhoneCode'),
     $methodToMsg = $('#methodToMsg'), //通过何种方式去获取验证码
-    $getSkipCode = $('.get-skip-code',$methodToMsg), //短信验证码
-    $microPhone = $('.microphone',$methodToMsg);  //语音验证码
+    $getSkipCode = $('.get-skip-code',$methodToMsg), //短信验证码按钮
+    $microPhone = $('.microphone',$methodToMsg);  //语音验证码按钮
 
 let $skipError = $('#skipError'), //错误提示位置
     $getSkipBtn = $('#getSkipBtn'); //立即授权按钮
@@ -90,7 +90,7 @@ function checkSkipCode() {
 
 }
 
-$getSkipCode.on('blur',function() {
+$skipPhoneCode.on('blur',function() {
     checkSkipCode();
 })
 
