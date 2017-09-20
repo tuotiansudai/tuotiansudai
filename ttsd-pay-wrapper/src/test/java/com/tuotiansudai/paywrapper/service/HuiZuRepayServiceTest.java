@@ -77,7 +77,7 @@ public class HuiZuRepayServiceTest {
         assertEquals(SyncRequestStatus.SENT.name(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "status"));
 
         assertEquals(true, baseDto.isSuccess());
-        assertEquals(huiZuRepayDto.getAmount(), baseDto.getData().getFields().get("amount"));
+        assertEquals(String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())), baseDto.getData().getFields().get("amount"));
         assertEquals(huiZuRepayDto.getRepayPlanId(), baseDto.getData().getFields().get("order_id").split(HuizuRepayServiceImpl.REPAY_ORDER_ID_SEPARATOR)[0]);
         assertEquals(accountModel.getPayUserId(), baseDto.getData().getFields().get("partic_user_id"));
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
@@ -119,17 +119,18 @@ public class HuiZuRepayServiceTest {
 
     @Test
     public void shouldPasswordRepayReturnRepayIdPaySuccess() {
-        HuiZuRepayDto huiZuRepayDto = createFakeHuiZuRepayDto("1.10", "001");
-        BaseDto<PayFormDataDto> baseDto = huiZuRepayService.passwordRepay(huiZuRepayDto);
-
+        HuiZuRepayDto huiZuRepayDto = createFakeHuiZuRepayDto("1.10", "111");
         redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                 Maps.newHashMap(ImmutableMap.builder()
                         .put("loginName", huiZuRepayDto.getMobile())
                         .put("amount", String.valueOf(huiZuRepayDto.getAmount()))
                         .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
-                        .put("status", SyncRequestStatus.SUCCESS.name())
+                        .put("status", SyncRequestStatus.SENT.name())
                         .build()),
                 30 * 30);
+        BaseDto<PayFormDataDto> baseDto = huiZuRepayService.passwordRepay(huiZuRepayDto);
+
+
         assertEquals(String.format("用户:%s-第%s期-已经还款成功",
                 huiZuRepayDto.getMobile(),
                 String.valueOf(huiZuRepayDto.getPeriod())), baseDto.getData().getMessage());
