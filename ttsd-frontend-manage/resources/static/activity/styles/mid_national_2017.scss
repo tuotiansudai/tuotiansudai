@@ -21,23 +21,7 @@ body {
     font-size: 12px;
     background: #fc393f;
 }
-.clearfix:after {
-    content: '';
-    height: 0;
-    display: block;
-    visibility: hidden;
-    clear: both;
-}
-.page-width {
-    width: 1000px;
-    margin: 0 auto;
-}
-.fl {
-    float: left;
-}
-.fr {
-    float: right;
-}
+
 .header {
     width: 100%;
     height:354px;
@@ -46,19 +30,20 @@ body {
 /*加息6.8%*/
 .mid-tit1 {
     width: 100%;
-    background-size: 100%;
     background: url("../images/2017/mid-national/1_bg.jpg") no-repeat center top;
+    background-size: 100%;
 }
 .mid-tit1>h2{
     width: 812px;
     height: 65px;
     margin: 0 auto;
     background: url("../images/2017/mid-national/mid_tit_1.png") no-repeat center center;
+    background-size: 100%;
 }
 
 .mid-tit2 {
     width: 100%;
-    background-size: 100%;
+
     background: #ffd291;
     padding-bottom: 30px;
 }
@@ -150,12 +135,15 @@ body {
     z-index: 100;
     position: relative;
     z-index: 100;
-    background: url("../images/2017/mid-national/mid_con_1.png");
+    background: url("../images/2017/mid-national/mid_con_1.png") center top no-repeat;
     background-size: 100%;
     a {
         display: block;
     }
 
+}
+.mid-con2 .house-mortgage .hourse-con {
+    background: url("../images/2017/mid-national/year68.png") center top no-repeat;
 }
 .mid-con2 .house-mortgage >h2 {
     width: 84%;
@@ -187,6 +175,7 @@ body {
             p {
                 font-size: 12px;
                 line-height: 22px;
+                margin-bottom: 0;
             }
         }
         .bottom {
@@ -237,7 +226,7 @@ body {
             line-height: 60px;
             text-align: center;
             &.insRed {
-                background: #e74643;
+                background: #fc393f;
                 border-bottom: 5px solid #d13239;
                 color: #fffeff;
             }
@@ -436,7 +425,42 @@ body {
     line-height: 28px;
 }
 
-
+//@media screen and (max-width: 700px) {
+//    .header {
+//                width: 100%;
+//                height:350px;
+//                background:url("../images/2017/mid-national/wap_banner.jpg") no-repeat center center;
+//                background-size: 100%;
+//            }
+//
+//    .mid-tit1{
+//        h2 {
+//            width:100%;
+//        }
+//    }
+//    .mid-con {
+//        padding:0 10px;
+//        .house-mortgage {
+//            .hourse-con {
+//                width: 100%;
+//                height: 60px;
+//            }
+//
+//            .red-ware {
+//                width:96%;
+//                .red-ware-info {
+//                    width:47%;
+//                    .ware {
+//                        height:205px;
+//                    }
+//                    .top {
+//                        height:200px;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 @media screen and (max-width:1023px){
 
     .header {
@@ -542,6 +566,7 @@ body {
 
 
     }
+
     .mid-con2 {
         .house-mortgage {
             .hourse-con {
@@ -558,6 +583,8 @@ body {
         .title {
             height: 110px!important;
             line-height: 50px!important;
+            padding-left: 0!important;
+            padding-right: 0!important;
             .media-style {
                 letter-spacing: 0px;
                 display: block!important;
@@ -615,7 +642,7 @@ body {
 
 @media screen and (max-width:415px){
     .page-width {
-        width: 100%!important;
+        width: 94%!important;
     }
     .header {
         height:175px;
@@ -670,7 +697,8 @@ body {
         }
         .tip p {
             font-size: 8px;
-            white-space: nowrap;
+            text-align: left;
+            padding-left: 10px;
         }
         .invest {
             width: 47%!important;
@@ -720,7 +748,7 @@ body {
             }
         }
         .tab-footer {
-            width: 80%!important;
+            width: 100%!important;
             margin: 10px auto!important;
             a {
                 font-size: 8px!important;
@@ -776,7 +804,7 @@ body {
 }
 @media screen and (max-width:376px){
     .tab-footer {
-        width: 80% !important;
+        width: 100% !important;
         .invest {
             width: 60% !important;
         }

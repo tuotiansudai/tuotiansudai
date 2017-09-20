@@ -147,7 +147,7 @@ function heroRank(date) {
     })
 }
 
-$('#activityPageFrame').find('.toInvest').on('click',function() {
+$('#activityPageFrame').find('.invest').on('click',function() {
     window.location.href = '/loan-list';
 });
 

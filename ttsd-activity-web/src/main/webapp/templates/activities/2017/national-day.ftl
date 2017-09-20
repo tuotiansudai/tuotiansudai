@@ -15,7 +15,7 @@
                 <div class="pos left_bottom"></div>
                 <div class="pos right_bottom"></div>
                 <div class="hourse-con">
-                    <a href="javascript:;" class="toInvest"></a>
+                    <a href="javascript:;" class="toInvest invest"></a>
                 </div>
                 <div class="red-ware clearfix">
                     <div class="red-ware-info fl ">
@@ -35,7 +35,7 @@
                         <div class="top">
                             <div class="title">
                                 <h2>最高万元返现</h2>
-                                <p>每个用户在活动期间最高可返1万元现金奖励（投资100万），如投资达100万以上则不再累计现金奖励；&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                <p>每个用户在活动期间最高可返1万元现金奖励（投资100万），如投资达100万以上则不再累计现金奖励；<br/></p>
                             </div>
                         </div>
                         <div class="bottom"></div>
@@ -48,7 +48,7 @@
                     <p>注：在同一项目中不满1万的投资额自动舍去，不可与其他项目投资额累积。</p>
                 </div>
                 <div class="invest">
-                    <a href="#" class="toInvest investYellow">立即投资</a>
+                    <a href="javascript:;" class="toInvest investYellow invest">立即投资</a>
                 </div>
 
             </div>
@@ -66,11 +66,11 @@
                 <div class="pos left_bottom"></div>
                 <div class="pos right_bottom"></div>
                 <div class="hourse-con">
-
+                    <a href="javascript:;" class="invest"></a>
                 </div>
 
                 <div class="invest">
-                    <a href="javascript:;" class="toInvest insRed">立即投资</a>
+                    <a href="javascript:;" class="toInvest insRed invest">立即投资</a>
                 </div>
 
             </div>
