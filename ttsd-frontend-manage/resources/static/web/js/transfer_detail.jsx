@@ -147,7 +147,20 @@ $questionList.find('dt').on('click', function(index) {
 })
 
 
-//安心签
+//**************************安心签*******************************
+
+//勾选马上投资下方 协议复选框
+$('.init-checkbox-style').initCheckbox(function(event) {
+    //如果安心签协议未勾选，马上投资按钮需要置灰
+    let $skipCheck = $('#skipCheck');
+
+    if($skipCheck.length) {
+        let checkBool = $skipCheck.prop('checked');
+        if(event.target.id=='skipCheck') {
+            $('#transferSubmit').prop('disabled',!checkBool);
+        }
+    }
+});
 anxinModule.toAuthorForAnxin(function(data) {
 
     $('#isAnxinUser').val('true');

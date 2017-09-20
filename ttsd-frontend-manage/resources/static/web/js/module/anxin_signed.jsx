@@ -15,10 +15,6 @@ let $skipError = $('#skipError'), //错误提示位置
 
 let $skipSuccess = $('#skipSuccess'); //授权成功弹框
 
-
-//勾选马上投资下方 协议复选框
-$('.init-checkbox-style').initCheckbox();
-
 //弹出安心签弹框
 function getSkipPhoneTip(){
     layer.open({
