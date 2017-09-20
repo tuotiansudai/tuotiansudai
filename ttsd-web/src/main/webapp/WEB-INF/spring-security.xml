@@ -78,7 +78,8 @@
 
         <intercept-url pattern="/loan-list/**" access="permitAll()"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
+        <intercept-url pattern="/investor/invest-list" access="hasAnyAuthority('USER', 'INVESTOR')"/>
+        <intercept-url pattern="/investor/invest-list-data" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/transferrer/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/message/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
@@ -103,10 +104,6 @@
         <intercept-url pattern="/invest/**" access="hasAnyAuthority('INVESTOR')"/>
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-
-        <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
-        <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
-
 
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
 

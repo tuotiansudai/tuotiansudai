@@ -1,6 +1,5 @@
 import  'mobileStyle/taskCenter.scss';
 import React from 'react';
-import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
@@ -47,7 +46,6 @@ class NewbieTaskGroup extends React.Component {
         let rows=[];
         let jumto=this.props.jumpToEvent;
         let keyNum;
-        // debugger
         if(newbieTasks) {
             newbieTasks.forEach(function(option,key) {
             keyNum=key+1;
@@ -116,11 +114,11 @@ class taskCenter extends React.Component {
             }
         };
 
-    destroyIscroll() {
-        if (this.myScroll) {
-            this.myScroll.destroy();
-            this.myScroll = null;
-        }
+    fixTopMenu(tabHeader,imageTopHead) {
+    
+        let winScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        tabHeader.className = (winScrollTop>=imageTopHead)? 'MenuBox fix-menu' : 'MenuBox';
+
     }
    
     fetchData(url , callback = function() {}) {
@@ -129,28 +127,6 @@ class taskCenter extends React.Component {
             type: 'get',
             done: callback
         });
-    }
-
-    //当下滑固定菜单在顶部
-    fixTopMenu(scrollY) {
-        let conOffsetTop = this.refs.imageTopHead.offsetHeight;
-        let tabHeaderDom = document.getElementById('tabHeaderDom');
-        let OngoingBoxTop = document.getElementById('OngoingBox').offsetTop;
-        if (!scrollY && tabHeaderDom.getAttribute('style')) {
-
-            let menuScrollTop = OngoingBoxTop - tabHeaderDom.offsetHeight * 0.26;
-            let conScrollTop = OngoingBoxTop - tabHeaderDom.offsetHeight;
-
-            this.myScroll.scrollTo(0, -conScrollTop, 0);
-            tabHeaderDom.setAttribute('style', 'position:absolute;top:' + menuScrollTop + 'px;width:100%;left:0;');
-        }
-        else if (scrollY && scrollY >= conOffsetTop) {
-            let yTop = scrollY + tabHeaderDom.offsetHeight * 0.26;
-            tabHeaderDom.setAttribute('style', 'position:absolute;top:' + yTop + 'px;width:100%;left:0;');
-        }
-        else if (scrollY && scrollY < conOffsetTop) {
-            tabHeaderDom.removeAttribute('style');
-        }
     }
 
     showListData(value) {
@@ -194,48 +170,29 @@ class taskCenter extends React.Component {
 	}
     componentDidUpdate() {
         //数据加载完成后
+        let _this = this;
+
         if (!this.state.isShowLoading) {
             imagesLoaded(this.refs.mainConWrap).on('done', () => {
-                let tabHeaderDom = document.getElementById('tabHeaderDom');
-                let menuHeight = tabHeaderDom.clientHeight * 0.5;
-                if (!this.myScroll) {
-                    this.refs.mainConWrap.style.height = document.documentElement.clientHeight + 'px';
-                    this.myScroll = new IScroll(this.refs.mainConWrap, {
-                        probeType: 3,
-                        mouseWheel: true,
-                        hScrollbar: false,
-                        vScrollbar: true,
-                        momentum: false,
-                        useTransition: false,
-                        bounce: false,
-                        useTransform: true
+                let imageTopHead = this.refs.imageTopHead.offsetHeight;
 
-                    });
-                    this.myScroll.on('scroll', function () {
-                        let curY = Math.abs(this.myScroll.y) - menuHeight/2;
-                        this.fixTopMenu(curY);
-                    }.bind(this));
+                //菜单离屏幕的高度
+                let tabHeader = this.refs.tabHeader;
+                window.onscroll=function() {
+                    mobileCommon.throttle( _this.fixTopMenu(tabHeader,imageTopHead),10);
 
                 }
-                else {
-                    this.myScroll.refresh();
-                    if (!this.myScroll.hasVerticalScroll) {
-                        //垂直方向没有滚动条
-                        tabHeaderDom.removeAttribute('style');
-                    }
-                }
+
             });
+
         }
     }
 
-	componentWillUnmount() {
-		this.destroyIscroll.call(this);
-	}
 	render() { 
         let loading = null;
   		return (
-			<div className='task-center-frame' >
-                <div className="bodyCon" ref='mainConWrap'>
+			<div className='task-center-frame' ref="mainConWrap">
+                <div className="bodyCon">
                 <div className="clearfix">
                     <div className="image-top-head" id="imageTopHead" ref="imageTopHead">
                         <img src={task_banner}/>
