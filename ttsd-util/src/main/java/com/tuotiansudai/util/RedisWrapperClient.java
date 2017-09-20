@@ -114,6 +114,13 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         return execute(jedis -> jedis.hmset(key, map));
     }
 
+    public String hmset(final String key, final Map map, int lifeSecond) {
+        return execute(jedis -> {
+            jedis.expire(key, lifeSecond);
+            return jedis.hmset(key, map);
+        });
+    }
+
     public Long hset(final String key, final String hkey, final String value) {
         return execute(jedis -> jedis.hset(key, hkey, value));
     }
