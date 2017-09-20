@@ -156,7 +156,7 @@ $('.init-checkbox-style').initCheckbox(function(event) {
 
     if($skipCheck.length) {
         let checkBool = $skipCheck.prop('checked');
-        if(event.target.id=='skipCheck') {
+        if(event.target.children[0].id=='skipCheck') {
             $('#transferSubmit').prop('disabled',!checkBool);
         }
     }
