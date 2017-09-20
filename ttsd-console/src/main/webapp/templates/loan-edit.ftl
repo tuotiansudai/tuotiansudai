@@ -162,7 +162,7 @@
                     <label class="col-sm-2 control-label">标的所属活动:</label>
 
                     <div class="col-sm-4">
-                        <input name="activityDesc" type="text" class="form-control" <#if !loan.loanDetails.activity>disabled="disabled"</#if> maxlength="4" value="${loan.loanDetails.activityDesc!}">
+                        <input name="activityDesc" type="text" class="form-control" <#if !loan.loanDetails.activity>disabled="disabled"</#if> maxlength="10" value="${loan.loanDetails.activityDesc!}">
                     </div>
                 </div>
 
