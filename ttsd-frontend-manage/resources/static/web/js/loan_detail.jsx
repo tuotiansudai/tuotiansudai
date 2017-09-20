@@ -857,13 +857,11 @@ function showAuthorizeAgreementOptions(){
 //勾选马上投资下方 协议复选框
 $('.init-checkbox-style').initCheckbox(function(event) {
     //如果安心签协议未勾选，马上投资按钮需要置灰
-    let $skipCheck = $('#skipCheck');
-
-    if($skipCheck.length) {
-        let checkBool = $skipCheck.prop('checked');
-        if(event.target.id=='skipCheck') {
-            $investSubmit.prop('disabled',!checkBool);
-        }
+    let checkboxBtn = event.children[0];
+    let checkBool = $(checkboxBtn).prop('checked');
+    if(checkboxBtn.id=='skipCheck') {
+        $investSubmit.prop('disabled',!checkBool);
+        $('#checkTip').toggle();
     }
 });
 
