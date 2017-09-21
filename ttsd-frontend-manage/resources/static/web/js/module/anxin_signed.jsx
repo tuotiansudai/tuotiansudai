@@ -30,7 +30,6 @@ function getSkipPhoneTip(){
 //安心签授权成功弹框
 function skipSuccess(callback){
     layer.closeAll();
-    $skipSuccess.show();
     setTimeout(function(){
         $skipSuccess.hide();
         $skipPhoneCode.val('');
@@ -109,9 +108,9 @@ function toAuthorForAnxin(callback) {
             return;
         }
         let skipCode = $skipPhoneCode.val(),
-            tipCheck = $('#tipCheck').prop('checked');
+            tipCheck = $('#tipCheck').prop('checked'); //是否同意短信免责申明
         $target.addClass('active').val('授权中...').prop('disabled', true);
-        debugger
+
         commonFun.useAjax({
             url: '/anxinSign/verifyCaptcha',
             type: 'POST',
