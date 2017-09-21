@@ -62,7 +62,7 @@ public class HuiZuActivateAccountServiceTest {
 
     @Test
     public void shouldPasswordActivateAccountIsSuccess() {
-        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto(false);
+        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto();
         BaseDto<PayFormDataDto> baseDto = huiZuActivateAccountService.password(huiZuActivateAccountDto);
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
@@ -81,7 +81,7 @@ public class HuiZuActivateAccountServiceTest {
 
     @Test
     public void shouldPasswordActivateAccountIsActivated() {
-        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto(false);
+        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto();
         redisWrapperClient.hmset(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", String.valueOf(huiZuActivateAccountDto.getMobile())),
                 Maps.newHashMap(ImmutableMap.builder()
                         .put("mobile", huiZuActivateAccountDto.getMobile())
@@ -99,7 +99,7 @@ public class HuiZuActivateAccountServiceTest {
 
     @Test
     public void shouldActivateAccountModifyIsSuccess() throws AmountTransferException {
-        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto(false);
+        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto();
 
         redisWrapperClient.hmset(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", String.valueOf(huiZuActivateAccountDto.getMobile())),
                 Maps.newHashMap(ImmutableMap.builder()
@@ -120,11 +120,9 @@ public class HuiZuActivateAccountServiceTest {
         assertEquals(UserBillOperationType.TO_BALANCE, userBillModels.get(0).getOperationType());
     }
 
-    private HuiZuActivateAccountDto createFakeHuiZuActivateAccountDto(boolean flag) {
+    private HuiZuActivateAccountDto createFakeHuiZuActivateAccountDto() {
         HuiZuActivateAccountDto huiZuActivateAccountDto = new HuiZuActivateAccountDto();
         huiZuActivateAccountDto.setMobile(mobile);
-        huiZuActivateAccountDto.setNoPassword(flag);
-        huiZuActivateAccountDto.setSource(Source.ANDROID);
         return huiZuActivateAccountDto;
     }
 

@@ -111,8 +111,7 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
                     activateAccountDto.getMobile(),
                     LOAN_ID,
                     orderId,
-                    String.valueOf(ACTIVATE_ACCOUNT_MONEY),
-                    activateAccountDto.getSource()));
+                    String.valueOf(ACTIVATE_ACCOUNT_MONEY)));
 
             ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newHuiZuActivateAccountNopwdRequest(
                     LOAN_ID,
@@ -174,8 +173,7 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
                     activateAccountDto.getMobile(),
                     LOAN_ID,
                     orderId,
-                    String.valueOf(ACTIVATE_ACCOUNT_MONEY),
-                    activateAccountDto.getSource()));
+                    String.valueOf(ACTIVATE_ACCOUNT_MONEY)));
 
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newHuiZuActivateAccountRequest(
                     String.valueOf(LOAN_ID),
