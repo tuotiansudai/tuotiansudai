@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.controller;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.HuiZuActivateAccountDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.service.HuiZuActivateAccountService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

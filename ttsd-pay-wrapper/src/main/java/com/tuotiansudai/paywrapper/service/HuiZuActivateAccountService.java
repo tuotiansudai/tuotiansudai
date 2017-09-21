@@ -14,4 +14,6 @@ public interface HuiZuActivateAccountService {
     void postActivateAccount(long orderId) throws AmountTransferException;
 
     String activateAccountCallback(Map<String, String> paramsMap, String queryString);
+
+    void activateAccountModify(long notifyRequestId);
 }

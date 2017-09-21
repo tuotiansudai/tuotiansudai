@@ -71,6 +71,11 @@ public enum AsyncUmPayService {
      * 债权购买标的转账
      */
     INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "callback/invest_transfer_project_transfer", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+
+    /**
+     * 慧租有密还款
+     */
+    HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/hz_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
     /**
      * 债权购买返款标的转账
      */
@@ -93,13 +98,12 @@ public enum AsyncUmPayService {
     /**
      * 惠租无密一分钱激活账户
      */
-    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/hz_activate_account_project_transfer_nopwd", "callback/hz_activate_account_project_transfer_nopwd", "hz_activate_account_transfer_notify", "huizu://activate-account/{0}"),
+    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "callback/hz_activate_account_notify", "hz_activate_account_notify", "huizu://activate-account/{0}"),
 
     /**
      * 惠租有密一分钱激活账户
      */
-    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "callback/hz_activate_account_project_transfer", "callback/hz_activate_account_project_transfer", "hz_activate_account_transfer_notify", "huizu://activate-account/{0}"),
-
+    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "callback/hz_activate_account_notify", "hz_activate_account_notify", "huizu://activate-account/{0}"),
 
 
     /**
@@ -199,4 +203,4 @@ public enum AsyncUmPayService {
     public String getMobileLink() {
         return mobileLink;
     }
-    }
+}
