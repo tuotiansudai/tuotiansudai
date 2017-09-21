@@ -43,6 +43,8 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
         $contentRanking.hide();
+        $('#headHide').hide();
+        $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
@@ -129,7 +131,8 @@ function heroRank(date) {
         console.log('000');
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
-                $('#investRanking-tbody').html('');
+                $('#headHide').hide();
+                $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
                 return;
             }
             //获取模版内容

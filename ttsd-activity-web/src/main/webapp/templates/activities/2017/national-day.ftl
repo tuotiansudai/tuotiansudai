@@ -35,7 +35,7 @@
                         <div class="top">
                             <div class="title">
                                 <h2>最高万元返现</h2>
-                                <p>每个用户在活动期间最高可返1万元现金奖励（投资100万），如投资达100万以上则不再累计现金奖励；<br/></p>
+                                <p>每个用户在活动期间最高可返1万元现金奖励（投资100万），如投资达100万以上则不再累积现金奖励；<br/></p>
                             </div>
                         </div>
                         <div class="bottom"></div>
@@ -110,7 +110,7 @@
                     </div>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
-                        <p>4~6名 <br>168元红包</p>
+                        <p>4~10名 <br>168元红包</p>
                     </div>
                 </div>
                 <!--英雄排行榜 bg-->
@@ -140,8 +140,8 @@
                         </div>
                         <div class="nodata-invest tc" style="display: none;"></div>
                         <table>
-                            <thead>
-                            <th>排名</th> <th>用户</th> <th>投资额（元）</th> <th class="last">奖励</th>
+                            <thead id="headHide">
+                            <th>排名</th> <th>用户</th> <th class="investTh">投资额（元）</th> <th class="last">奖励</th>
                             </thead>
                             <tbody id="investRanking-tbody">
 
@@ -163,7 +163,7 @@
         <!--温馨提示 begin-->
         <div class="ranking-er page-width">
             <h4>温馨提示：</h4>
-            <p>1. 活动一仅限带有"逢万返百“标签的项目，活动二仅限带有”加息6.8%“标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；<br/>
+            <p>1. 活动一仅限带有"逢万返百"标签的项目，活动二仅限带有"加息6.8%"标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；<br/>
                 2.“逢万返百”活动不可与平台其他优惠券同享；<br/>
             3.参与“加息6.8%”活动时，请用户投标时在“优惠券”一栏中手动点选“6.8%加息券”，如未点选视为自动放弃该奖励；<br/>
             4.现金奖励将于项目放款后1个工作日内发放到用户账户，用户可直接提现，也可用于投资其他项目；<br/>
@@ -188,17 +188,17 @@
     if(i==0) {
     reward='实物大奖';
     }
-    else if(i>0 && i<4) {
-    reward='6.8%加息券';
+    else if(i>0 && i<3) {
+    reward='300元红包（组）';
     }
     else {
-    reward='0.8%加息券';
+    reward='168元红包（组）';
     }
     %>
     <tr>
         <td class="ranking-number"><%=i+1%></td>
         <td><%=item.loginName%></td>
-        <td><%=item.centSumAmount%></td>
+        <td class="three"><%=item.centSumAmount%></td>
         <td class="last"><%=reward%></td>
     </tr>
     <% } %>
