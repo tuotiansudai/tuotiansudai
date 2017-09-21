@@ -7,6 +7,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
 
+
 var node_modules = path.resolve(__dirname, 'node_modules');
  //通过多进程模型，来加速代码构建
 var HappyPack = require('happypack');
@@ -188,11 +189,12 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract('style','happypack/loader?id=sass')
 		},
 		{
-			test: /\.(jpe?g|png|gif|svg)$/i,
+			test: /\.(jpe?g|png|gif|woff|woff2|svg|eot|ttf)$/i,
 			loaders:['url?limit=2048&name=images/[name].[hash:8].[ext]']
 			// loaders:['happypack/loader?id=image']
 
-		}]
+		}
+			]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
