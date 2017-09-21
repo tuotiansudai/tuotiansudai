@@ -333,10 +333,9 @@ $pointColor: #ff5400;
       height: 300px;
       box-sizing: border-box;
       padding: 35px 35px 10px;
-      background-color: rgba(0, 0, 0, 0.4);
-      background: url("../images/homepage/base-bg-transport.png") left top repeat \9
-    ;
-      color: #fff;
+      background-color: #ccc;
+      background-color: rgba(0,0,0,0.4);
+      color:#fff;
       i a {
         color: #ff752a;
       }
@@ -399,21 +398,27 @@ $pointColor: #ff5400;
   }
 
   .notice-container {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 1px solid #e6e6e6;
-    overflow: hidden;
-    h3 {
-      float: left;
-      width: 134px;
-      font-size: 16px;
-      text-align: center;
-      border-right: 1px solid #e6e6e6;
-      color: #999;
-      background: url('../images/homepage/icon-notice.png') left center no-repeat;
-      @media (min-width: 701px) and (max-width: 768px) {
-        margin-left: 10px;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #e6e6e6;
+      overflow: hidden;
+      h3 {
+        float: left;
+        width: 134px;
+        font-size: 16px;
+        text-align: center;
+        border-right: 1px solid #e6e6e6;
+        color: #999;
+
+        .icon-notice {
+          display: inline-block;
+          width:25px;
+          height:25px;
+          background: url('../images/homepage/icon-notice.png') left center no-repeat;
+          vertical-align: middle;
+          margin-right:10px;
+        }
       }
     }
     .notice-text {
@@ -451,32 +456,25 @@ $pointColor: #ff5400;
       text-align: center;
       font-size: 14px;
       color: #4d4d4d;
+      i {
+        width:82px;
+        height:88px;
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right:10px;
+      }
       dd {
-        width: 36%;
+        width: 35%;
         display: inline-block;
         min-height: 88px;
         text-align: left;
-        @media (min-width: 701px) and (max-width: 768px) {
-          float: left;
-          width: 33.333333%;
+        &.last {
+          width:27%;
         }
         a {
           display: inline-block;
-          padding-left: 90px;
         }
-        &.guide {
-          background: url('../images/homepage/icon-guide.png') left center no-repeat;
-        }
-        &.risk {
-          background: url('../images/homepage/icon-risk.png') left center no-repeat;
-        }
-        &.assurance {
-          width: 27%;
-          background: url('../images/homepage/icon-assurce.png') left center no-repeat;
-          @media (min-width: 701px) and (max-width: 768px) {
-            width: 33.333333%;
-          }
-        }
+
         b {
           font-size: 20px;
           display: block;
@@ -517,11 +515,7 @@ $pointColor: #ff5400;
         right: 0;
 
       }
-      &.hack-newbie {
-        .tag-icon {
-          background: #fff url('../images/homepage/icon-newuse.png') right 0 no-repeat;
-        }
-      }
+
       .con-inner {
         padding: 18px 28px;
       }
@@ -574,23 +568,25 @@ $pointColor: #ff5400;
         color: #ff770f;
       }
     }
+
+    .media-logo-section {
+      width: 38%;
+      height: 225px;
+      float: right;
+      margin-top: 23px;
+    }
+
     ul {
-      background: url("../images/homepage/media.png") right top no-repeat;
-      margin-top: 15px;
-      margin-bottom: 15px;
-      @media (min-width: 701px) and (max-width: 768px) {
-        background: none;
-      }
+      width: 58%;
+      margin-top:15px;
+      margin-bottom:15px;
+      float: left;
       li {
         font-size: 14px;
         color: #b2b2b2;
         padding-top: 5px;
         padding-bottom: 13px;
         position: relative;
-        width: 58%;
-        @media (min-width: 701px) and (max-width: 768px) {
-          width: 100%;
-        }
         &:nth-last-child(1) {
           padding-bottom: 0px;
         }
@@ -616,26 +612,27 @@ $pointColor: #ff5400;
       margin-top: 30px;
       li {
         float: left;
-        margin-right: 80px;
-      }
-      a {
-        width: 180px;
-        height: 70px;
-        display: inline-block;
-        border: 1px solid #e6e6e6;
+        margin-right:80px;
+        width:180px;
+        height:70px;
+        border:1px solid #e6e6e6;
         text-align: center;
         position: relative;
-        &.logo-lian {
-          background: url('../images/global/logo-lian.png') center center no-repeat;
-        }
-        &.logo-cfca {
-          background: url('../images/global/logo-cfca.png') center center no-repeat;
-        }
         &:hover {
           box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0, 0.07);
         }
+        a {
+          width:100%;
+          height:100%;
+          display: block;
+          text-align: center;
+          &.logo-cfca {
+            margin-top: 10px;
+            margin-left: 16px;
+          }
+
+        }
       }
-    }
   }
 
   .book-box-layer {
@@ -901,13 +898,12 @@ $pointColor: #ff5400;
           }
         }
         .tag-icon {
-          width: 30px;
-          height: 40px;
-          background-size: 100%;
+          zoom:0.6;
+
         }
         &.hack-newbie {
           .tag-icon {
-            background-size: 100%;
+
           }
         }
         .loan-info {

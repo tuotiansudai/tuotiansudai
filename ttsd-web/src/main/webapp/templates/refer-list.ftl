@@ -37,7 +37,7 @@
         <div class="date-filter " id="search-box">
             <div class="title-search">查看我的推荐</div>
             <span class="rl-title">起止时间：</span>
-            <input type="text" id="date-picker" class="input-control" size="35"/>
+            <input type="text" id="date-picker" class="input-control" size="35" readonly/>
             <span class="rl-title">推荐用户名：</span>
             <input type="text" id="loginName" class="input-control login-name" size="25"/>
             <input type="button" class="btn-normal btn-search" value="查询" onclick=""/>
