@@ -130,7 +130,7 @@ else if(NODE_ENV=='dev') {
 plugins.push(new CopyWebpackPlugin([
 	{ from: packageRoute.publicPathJS+'/dllplugins',to: 'public/dllplugins'},
 	{ from: packageRoute.staticPath+'/inlineImages',to: 'images'},
-	{ from: packageRoute.publicPath+'/styles/plugins/skin',to: 'public/skin'}
+	{ from: packageRoute.publicPath+'/styles/plugins/skin',to: 'public/theme'}
 ]));
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
