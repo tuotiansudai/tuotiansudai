@@ -15,6 +15,9 @@ let $skipError = $('#skipError'), //错误提示位置
 
 let $skipSuccess = $('#skipSuccess'); //授权成功弹框
 
+let $skipCheck = $('#skipCheck');
+$skipCheck && $skipCheck.prop('checked',true);
+
 //弹出安心签弹框
 function getSkipPhoneTip(){
     layer.open({

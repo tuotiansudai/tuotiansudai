@@ -14,8 +14,6 @@ var $transferDetailCon = $('#transferDetailCon'),
     $detailRecord = $('.detail-record', $transferDetailCon),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
-let $getSkipPhone = $('#getSkipPhone');
-
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
