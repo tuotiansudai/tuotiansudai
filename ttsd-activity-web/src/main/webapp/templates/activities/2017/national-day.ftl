@@ -90,16 +90,24 @@
                         <div class="img"></div>
                         <p>2~3名 <br>300元红包</p>
                     </div>
-                    <#if prizeDto??>
+                    <#--<#if prizeDto??>-->
+                    <#--<div class="big-lottery">-->
+                        <#--<div class="img">-->
+                            <#--<div class="big-lottery-con">-->
+                                <#--<img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">-->
+                            <#--</div>-->
+                        <#--</div>-->
+                        <#--<p>今日大奖 <br>${prizeDto.goldPrizeName}</p>-->
+                    <#--</div>-->
+                    <#--</#if>-->
                     <div class="big-lottery">
                         <div class="img">
                             <div class="big-lottery-con">
-                                <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
+
                             </div>
                         </div>
-                        <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
+                        <p>今日大奖 <br>hahhaa</p>
                     </div>
-                    </#if>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
                         <p>4~6名 <br>168元红包</p>
@@ -110,22 +118,25 @@
                     <div class="wrap">
                         <h2></h2>
                         <div class="title clearfix" id="sortBox">
-                            <span class="fl">日期：<i class="date media-style" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></span>
-                            <span class="fl">我的排名:<@global.isAnonymous>
+                            <div class="fl">日期：<i class="date media-style" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></div>
+                            <div class="line"></div>
+                            <div class="fl">我的排名:<@global.isAnonymous>
                                  <a href="javascript:void(0);" target="_blank" class="get-rank media-style">登录</a>
                             </@global.isAnonymous>
 
                             <@global.isNotAnonymous>
                                 <i class="ranking-order media-style">${investRanking}</i>
-                            </@global.isNotAnonymous></span>
+                            </@global.isNotAnonymous></div>
+                            <div class="line"></div>
 
-                            <span class="last fr">当日累计投资：
+                            <div class="last fr">当日累计投资：
                             <@global.isAnonymous>
                                 <a href="javascript:void(0);" target="_blank" class="get-rank media-style">登录</a>
                             </@global.isAnonymous>
                             <@global.isNotAnonymous>
-                                <span class="media-style"><i class="total">${(investAmount/100)?string('0.00')}</i>元</span>
-                            </@global.isNotAnonymous></span>
+                                <span class="media-style total">${(investAmount/100)?string('0.00')}元</span>
+                            </@global.isNotAnonymous></div>
+
                         </div>
                         <div class="nodata-invest tc" style="display: none;"></div>
                         <table>
