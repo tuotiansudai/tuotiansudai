@@ -214,7 +214,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
 
 
         HuiZuRepayNotifyRequestModel model = huiZuRepayNotifyRequestMapper.findById(notifyRequestId);
-        String orderId = model.getOrderId().split("REPAY_ORDER_ID_SEPARATOR")[0];
+        String orderId = model.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0];
         if (model != null && NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
             if (!SyncRequestStatus.SENT.name().equals(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "status"))) {
                 logger.error(String.format("[HZ Password Repay:] ID:%s status is %s ",
