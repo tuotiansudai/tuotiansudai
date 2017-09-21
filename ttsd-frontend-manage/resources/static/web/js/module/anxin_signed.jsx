@@ -34,8 +34,6 @@ function skipSuccess(callback){
         $skipSuccess.hide();
         $skipPhoneCode.val('');
         callback && callback();
-        // noPasswordInvest?sendSubmitRequest():$investForm.submit();
-
     },3000)
 }
 

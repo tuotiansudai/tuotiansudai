@@ -34,8 +34,6 @@ let isInvestor = 'INVESTOR' === $loanDetailContent.data('user-role');
 let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
-let $getSkipPhone = $('#getSkipPhone'); //安心签弹框盒
-
 var viewport = globalFun.browserRedirect();
 
 function showInputErrorTips(message) {
