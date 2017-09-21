@@ -146,7 +146,11 @@ $('#cancleBtn').on('click', function (event) {
 });
 
 
-//安心签
+//**************************安心签*******************************
+
+//勾选马上投资下方 协议复选框
+$('.init-checkbox-style').initCheckbox();
+
 anxinModule.toAuthorForAnxin(function(data) {
 
     $('#isAnxinUser').val('true');

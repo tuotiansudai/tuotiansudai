@@ -108,15 +108,16 @@ function toAuthorForAnxin(callback) {
         if(errorSkip) {
             return;
         }
-        let skipCode = $skipPhoneCode.val();
+        let skipCode = $skipPhoneCode.val(),
+            tipCheck = $('#tipCheck').prop('checked');
         $target.addClass('active').val('授权中...').prop('disabled', true);
-
+        debugger
         commonFun.useAjax({
             url: '/anxinSign/verifyCaptcha',
             type: 'POST',
             data: {
                 captcha: skipCode,
-                skipAuth:$('#tipCheck').val()
+                skipAuth:tipCheck
             }
         },function(data) {
             $target.removeClass('active').val('立即授权').prop('disabled', false);
