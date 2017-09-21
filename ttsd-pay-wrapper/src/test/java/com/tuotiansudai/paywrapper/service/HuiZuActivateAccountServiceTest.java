@@ -34,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 @Transactional
 public class HuiZuActivateAccountServiceTest {
     private static final String loginName = "testHuiZuActivateAccount";
+    private static final String mobile = "13900000000";
 
     @Autowired
     private HuiZuActivateAccountService huiZuActivateAccountService;
@@ -51,12 +52,12 @@ public class HuiZuActivateAccountServiceTest {
 
     @Before
     public void setUp() {
-        this.createFakeUser(loginName, 300);
+        this.createFakeUser(loginName,300);
     }
 
     @After
     public void tearDown() {
-        redisWrapperClient.del(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", 111), String.format("ACTIVATE_ACCOUNT_MOBILE:%s", 222));
+        redisWrapperClient.del(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", mobile));
     }
 
     @Test
@@ -71,12 +72,30 @@ public class HuiZuActivateAccountServiceTest {
         assertEquals(SyncRequestStatus.SENT.name(), redisWrapperClient.hget(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", huiZuActivateAccountDto.getMobile()), "status"));
 
         assertEquals(true, baseDto.isSuccess());
-        assertEquals(1, baseDto.getData().getFields().get("amount"));
-        assertEquals(huiZuActivateAccountDto.getMobile(), baseDto.getData().getFields().get("order_id").split("ACTIVATE_ACCOUNT_ORDER_ID_SEPARATOR")[0]);
+        assertEquals(1, Integer.parseInt(baseDto.getData().getFields().get("amount")));
+        assertEquals(huiZuActivateAccountDto.getMobile(), baseDto.getData().getFields().get("order_id").split("X")[0]);
         assertEquals(accountModel.getPayUserId(), baseDto.getData().getFields().get("partic_user_id"));
-        redisWrapperClient.del(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", 111), String.format("ACTIVATE_ACCOUNT_MOBILE:%s", 222));
+        redisWrapperClient.del(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", mobile));
 
     }
+
+    @Test
+    public void shouldPasswordActivateAccountIsActivated() {
+        HuiZuActivateAccountDto huiZuActivateAccountDto = createFakeHuiZuActivateAccountDto(false);
+        redisWrapperClient.hmset(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", String.valueOf(huiZuActivateAccountDto.getMobile())),
+                Maps.newHashMap(ImmutableMap.builder()
+                        .put("mobile", huiZuActivateAccountDto.getMobile())
+                        .put("amount", String.valueOf(1))
+                        .put("status", SyncRequestStatus.SENT.name())
+                        .build()),
+                30 * 30);
+
+        BaseDto<PayFormDataDto> baseDto = huiZuActivateAccountService.password(huiZuActivateAccountDto);
+
+        assertEquals(true, baseDto.isSuccess());
+        assertEquals(String.format("用户%s:已经激活过账户",huiZuActivateAccountDto.getMobile()), baseDto.getData().getMessage());
+    }
+
 
     @Test
     public void shouldActivateAccountModifyIsSuccess() throws AmountTransferException {
@@ -90,20 +109,20 @@ public class HuiZuActivateAccountServiceTest {
                         .build()),
                 30 * 30);
         huiZuActivateAccountService.postActivateAccount(Long.parseLong(huiZuActivateAccountDto.getMobile()));
-        AccountModel accountModel = accountMapper.findByLoginName(huiZuActivateAccountDto.getMobile());
-        List<UserBillModel> userBillModels = userBillMapper.findByLoginName(huiZuActivateAccountDto.getMobile());
+        UserModel userModel = userMapper.findByMobile(huiZuActivateAccountDto.getMobile());
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        List<UserBillModel> userBillModels = userBillMapper.findByLoginName(userModel.getLoginName());
 
-        assertEquals(209, accountModel.getBalance());
+        assertEquals(299, accountModel.getBalance());
         assertEquals(1, userBillModels.get(0).getAmount());
         assertEquals(UserBillBusinessType.HUI_ZU_ACTIVATE_ACCOUNT, userBillModels.get(0).getBusinessType());
         assertEquals(huiZuActivateAccountDto.getMobile(), String.valueOf(userBillModels.get(0).getOrderId()));
         assertEquals(UserBillOperationType.TO_BALANCE, userBillModels.get(0).getOperationType());
-        redisWrapperClient.del(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", 111), String.format("ACTIVATE_ACCOUNT_MOBILE:%s", 222));
     }
 
     private HuiZuActivateAccountDto createFakeHuiZuActivateAccountDto(boolean flag) {
         HuiZuActivateAccountDto huiZuActivateAccountDto = new HuiZuActivateAccountDto();
-        huiZuActivateAccountDto.setMobile(loginName);
+        huiZuActivateAccountDto.setMobile(mobile);
         huiZuActivateAccountDto.setNoPassword(flag);
         huiZuActivateAccountDto.setSource(Source.ANDROID);
         return huiZuActivateAccountDto;
@@ -113,7 +132,7 @@ public class HuiZuActivateAccountServiceTest {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName(loginName);
         fakeUserModel.setPassword("password");
-        fakeUserModel.setMobile(loginName);
+        fakeUserModel.setMobile(mobile);
         fakeUserModel.setRegisterTime(new Date());
         fakeUserModel.setStatus(UserStatus.ACTIVE);
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

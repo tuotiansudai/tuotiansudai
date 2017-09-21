@@ -23,13 +23,13 @@ public class HuiZuActivateAccountController {
 
     @RequestMapping(value = "/password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> invest(@Valid @RequestBody HuiZuActivateAccountDto activateAccountDto) {
+    public BaseDto<PayFormDataDto> password(@Valid @RequestBody HuiZuActivateAccountDto activateAccountDto) {
         return huiZuActivateAccountService.password(activateAccountDto);
     }
 
     @RequestMapping(value = "/no-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> noPasswordPurchase(@Valid @RequestBody HuiZuActivateAccountDto activateAccountDto) {
+    public BaseDto<PayDataDto> noPassword(@Valid @RequestBody HuiZuActivateAccountDto activateAccountDto) {
         return huiZuActivateAccountService.noPassword(activateAccountDto);
     }
 

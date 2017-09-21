@@ -48,9 +48,7 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
 
     private final static String ACTIVATE_ACCOUNT_ORDER_ID_SEPARATOR = "X";
 
-    private final static int ACTIVATE_ACCOUNT_EXPIRE_SECONDS = 60 * 60 * 24 * 30;
-
-    private final static String ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE = "{0}" + ACTIVATE_ACCOUNT_ORDER_ID_SEPARATOR + "{1}";
+    private final static String ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE = "%s" + ACTIVATE_ACCOUNT_ORDER_ID_SEPARATOR + "%s";
 
     @Autowired
     private AccountMapper accountMapper;
@@ -70,14 +68,13 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @Value("${common.environment}")
     private Environment environment;
 
     @Autowired
     private HuiZuActivateAccountNotifyMapper huiZuActivateAccountNotifyMapper;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
     public BaseDto<PayDataDto> noPassword(HuiZuActivateAccountDto activateAccountDto) {
@@ -108,7 +105,7 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
                             .put("amount", String.valueOf(ACTIVATE_ACCOUNT_MONEY))
                             .put("order_id", orderId)
                             .put("status", SyncRequestStatus.SENT.name())
-                            .build()), ACTIVATE_ACCOUNT_EXPIRE_SECONDS);
+                            .build()));
 
             logger.info(MessageFormat.format("[Activate Account Request Data] mobile={0}, loan={1}, orderId={2}, amount={3}, source={4}",
                     activateAccountDto.getMobile(),
