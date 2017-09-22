@@ -32,4 +32,12 @@ public class CreditLoanController {
                                 @PathVariable long amount) {
         return creditLoanOutService.loanOut(orderId, mobile, amount);
     }
+
+    @RequestMapping(value = "/password-repay/{orderId}/mobile/{mobile}/amount/{amount}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> passwordRepay(@PathVariable long orderId,
+                                       @PathVariable String mobile,
+                                       @PathVariable long amount) {
+        return creditLoanOutService.loanOut(orderId, mobile, amount);
+    }
 }

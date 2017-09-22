@@ -334,6 +334,20 @@ var Proxy_GlobalFun=function() {
     }
     return instance;
 }
+$.fn.initCheckbox = function (callback) {
+    return $(this).each(function () {
+        $(this).bind('click', function () {
+            var $this = $(this);
+            var checked = $this.find('input:checkbox').prop('checked');
+            if (checked) {
+                $this.addClass("on");
+            } else {
+                $this.removeClass("on");
+            }
+            callback && callback(this);
+        });
+    });
+};
 
 window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();

@@ -135,7 +135,6 @@ class MediaList extends React.Component {
 				var scrollHeight = scrollWrap.scrollHeight;
 
 				if(scrollTop+offsetHeight == scrollHeight) {
-					console.log('bottom');
 					if (_this.state.isShowLoading) {
 						_this.pagination.call(_this);
 					}
