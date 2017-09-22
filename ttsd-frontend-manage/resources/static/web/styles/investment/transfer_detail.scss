@@ -154,7 +154,6 @@ $CK1:#ffac2a #ff7a2a;
             display:inline-block;
             text-align:left;
             label{
-              float:left;
               width:20px;
               .skip-icon{
                 display:inline-block;
@@ -169,8 +168,7 @@ $CK1:#ffac2a #ff7a2a;
                 }
               }
               &.skip-text{
-                float:left;
-                width:250px;
+                width:240px;
                 font-size:12px;
                 color:#4d4d4d;
                 a{
