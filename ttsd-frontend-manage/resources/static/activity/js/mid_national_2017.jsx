@@ -42,16 +42,17 @@ function activityStatus(nowDay) {
         //活动未开始
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
-        $contentRanking.hide();
+        // $contentRanking.hide();
         $('#headHide').hide();
-        $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
+        $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
-        $nodataInvest.show().html('活动已经结束');
+        // $nodataInvest.show().html('不在活动时间范围内');
+        $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
@@ -128,11 +129,11 @@ function heroRank(date) {
         type: 'GET',
         url: '/activity/national-mid-autumn/ranking/' + date
     }, function (data) {
-        console.log('000');
+
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
                 $('#headHide').hide();
-                $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
+                 $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
                 return;
             }
             //获取模版内容
