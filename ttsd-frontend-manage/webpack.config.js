@@ -110,17 +110,6 @@ else if(NODE_ENV=='dev') {
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
-	// 接口代理,目前用ftl-server模拟假数据
-	// var proxyList = ['media-center/*','task-center/*'];
-	// var proxyObj = {};
-	// proxyList.forEach(function(value) {
-	// 	proxyObj[value] = {
-	// 		target: 'http://localhost:3009',
-	// 		changeOrigin: true,
-	// 		secure: false
-	// 	};
-	// });
-
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
@@ -133,8 +122,7 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
-		},
-		// proxy:proxyObj
+		}
 	};
 }
 
@@ -164,12 +152,8 @@ function createHappyPlugin(id, loaders) {
 		id: id,
 		loaders: loaders,
 		threadPool: happyThreadPool,
-
-		// disable happy caching with HAPPY_CACHE=0
-		cache: process.env.HAPPY_CACHE !== '0',
-
-		// make happy more verbose with HAPPY_VERBOSE=1
-		verbose: process.env.HAPPY_VERBOSE === '1',
+		cache: true,
+		verbose: true
 	});
 }
 
@@ -178,13 +162,12 @@ plugins.push(createHappyPlugin('jsx', ['babel?cacheDirectory=true']));
 
 plugins.push(createHappyPlugin('sass', ['css!postcss!sass']));
 
-// 图片base64,压缩
-var loaderObj = ['url?limit=2048&name=images/[name].[hash:8].[ext]'];
-if(NODE_ENV=='production') {
-	loaderObj = [
-		'url?limit=2048&name=images/[name].[hash:8].[ext]',
-		'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 9}}']
-}
+// image-webpack-loader,图片压缩，目前项目不用
+// if(NODE_ENV=='production') {
+// 	var loaderObj = [
+// 		'url?limit=2048&name=images/[name].[hash:8].[ext]',
+// 		'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 8}, pngquant:{quality: "85", speed: 9}}']
+// }
 plugins.push(createHappyPlugin('image', ['url-loader?limit=2048&name=images/[name].[hash:8].[ext]']));
 
 var myObject = objectAssign(commonOptions, {
@@ -206,7 +189,7 @@ var myObject = objectAssign(commonOptions, {
 		},
 		{
 			test: /\.(jpe?g|png|gif|svg)$/i,
-			loaders:loaderObj
+			loaders:['url?limit=2048&name=images/[name].[hash:8].[ext]']
 			// loaders:['happypack/loader?id=image']
 
 		}]
