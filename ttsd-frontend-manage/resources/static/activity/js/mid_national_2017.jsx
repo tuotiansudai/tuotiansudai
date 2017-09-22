@@ -58,11 +58,12 @@ function activityStatus(nowDay) {
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
-        if(isToday == nowDayStr){
-            $heroNext.css({'visibility':'visible'});
-        }
+
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
+        if(isToday){
+            $heroNext.css({'visibility':'hidden'});
+        }
         $contentRanking.show();
 
         if(nowDayStr==startTime) {
@@ -143,8 +144,8 @@ function heroRank(date) {
 
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
-                $('#headHide').hide();
-                 $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
+
+                 $('#investRanking-tbody').html('');
                 return;
             }
             //获取模版内容
