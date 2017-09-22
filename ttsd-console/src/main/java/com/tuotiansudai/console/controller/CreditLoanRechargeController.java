@@ -46,7 +46,7 @@ public class CreditLoanRechargeController {
             try {
                 BaseDto<PayDataDto> baseDto = creditLoanRechargeService.noPasswordCreditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.getData().getStatus()) {
-                    return new ModelAndView("/", "responsive", true);
+                    return new ModelAndView("redirect:/");
                 }
             } catch (Exception e) {
                 modelAndView.addObject("errorMessage", "充值失败");

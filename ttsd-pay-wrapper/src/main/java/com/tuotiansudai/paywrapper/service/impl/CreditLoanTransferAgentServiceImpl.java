@@ -67,6 +67,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     private String agentMobile;
 
     @Override
+    @Transactional
     public void creditLoanTransferAgent(){
         long investAmountTotal = creditLoanBillMapper.findSumAmountByIncome(CreditLoanBillBusinessType.CREDIT_LOAN_REPAY, SystemBillOperationType.IN);
         if (investAmountTotal <= 0){
