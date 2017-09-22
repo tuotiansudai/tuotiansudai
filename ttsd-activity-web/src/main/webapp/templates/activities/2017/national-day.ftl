@@ -97,7 +97,9 @@
                                 <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
                             </div>
                         </div>
+
                         <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
+
                     </div>
                     <#else>
                         <div class="big-lottery">
@@ -140,19 +142,13 @@
 
                         </div>
                         <div class="nodata-invest tc" style="display: none;"></div>
-                        <table>
-                            <thead id="headHide">
-                            <th>排名</th> <th>用户</th> <th class="investTh">投资额（元）</th> <th class="last">奖励</th>
-                            </thead>
-                            <tbody id="investRanking-tbody">
+                        <table id="investRanking-tbody">
 
-
-                            </tbody>
 
                         </table>
                         <div class="tab-footer clearfix" id="investRanking-button">
                             <a class="pre-day button-small" id="rankingPre">查看前一天</a>
-                            <a class="invest-button toInvest invest">立即投资抢占排行榜</a>
+                            <a class="invest-button toInvest invest">立即投资抢排行</a>
                             <a class="next-day button-small" id="rankingNext">查看后一天</a>
                         </div>
                     </div>
@@ -164,9 +160,9 @@
         <!--温馨提示 begin-->
         <div class="ranking-er page-width">
             <h4>温馨提示：</h4>
-            <p>1. 活动一仅限带有"逢万返百"标签的项目，活动二仅限带有"加息6.8%"标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；<br/>
-                2.“逢万返百”活动不可与平台其他优惠券同享；<br/>
-            3.参与“加息6.8%”活动时，请用户投标时在“优惠券”一栏中手动点选“6.8%加息券”，如未点选视为自动放弃该奖励；<br/>
+            <p>1. 活动一仅限带有 “逢万返百” 标签的项目，活动二仅限带有 “加息6.8%” 标签的项目，请用户投资时看准项目标签，没有标签的项目不参与该两项活动；<br/>
+                2.“逢万返百” 活动不可与平台其他优惠券同享；<br/>
+            3.参与 “加息6.8%” 活动时，请用户投标时在 “优惠券” 一栏中手动点选 “6.8%加息券” ，如未点选视为自动放弃该奖励；<br/>
             4.现金奖励将于项目放款后1个工作日内发放到用户账户，用户可直接提现，也可用于投资其他项目；<br/>
             5.加息6.8%所得收益，将于项目首期回款后与收益一同转至用户账户；<br/>
             6. 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；<br/>
@@ -183,6 +179,10 @@
 </div>
     <#include "../../module/login-tip.ftl" />
 <script type="text/template" id="tplTable">
+    <thead id="headHide">
+    <th>排名</th> <th>用户</th> <th class="investTh">投资额（元）</th> <th class="last">奖励</th>
+    </thead>
+    <tbody >
     <% for(var i = 0; i < records.length; i++) {
     var item = records[i];
     var reward;
@@ -203,6 +203,9 @@
         <td class="last"><%=reward%></td>
     </tr>
     <% } %>
+
+    </tbody>
+
 </script>
 
 </@global.main>
