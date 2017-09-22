@@ -7,7 +7,8 @@ let $activityPageFrame = $('#activityPageFrame');
 let $investRankingButton = $('#investRanking-button'),
     $heroNext = $('#rankingNext'),
     $heroPre = $('#rankingPre'),
-    sourceKind = globalFun.parseURL(location.href);;
+    sourceKind = globalFun.parseURL(location.href);
+
 
 //排名
 let $sortBox = $('#sortBox'),
@@ -57,9 +58,14 @@ function activityStatus(nowDay) {
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
+
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
+        if(isToday){
+            $heroNext.css({'visibility':'hidden'});
+        }
         $contentRanking.show();
+
         if(nowDayStr==startTime) {
             //活动第一天
             $heroPre.css({'visibility':'hidden'});
@@ -138,8 +144,8 @@ function heroRank(date) {
 
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
-                $('#headHide').hide();
-                 $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
+
+                 $('#investRanking-tbody').html('');
                 return;
             }
             //获取模版内容
