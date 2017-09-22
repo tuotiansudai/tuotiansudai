@@ -138,7 +138,7 @@ public class LoanOutSuccessNationalMidAutumnMessageConsumer implements MessageCo
         try {
             BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
             if (response.getData().getStatus()) {
-                logger.info("send has_thousand_sent_hundred invest cash prize success, loginName:{}, loanId:{}, cash{}", loginName, loanId, prizeAmount);
+                logger.info("send has_thousand_sent_hundred invest cash prize success, loginName:{}, loanId:{}, cash:{}", loginName, loanId, prizeAmount);
                 redisWrapperClient.hset(NATIONAL_MID_AUTUMN_CASH_KEY, hkey, "success", lifeSecond);
                 redisWrapperClient.hset(NATIONAL_MID_AUTUMN_SUM_CASH_KEY, loginName, String.valueOf(prizeAmount + sendPrizeAmount), lifeSecond);
                 return;
