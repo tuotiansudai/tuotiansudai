@@ -2,7 +2,6 @@ import { main } from 'mobileStyle/Article.scss';
 import React from 'react';
 import {mobileCommon} from 'mobileJsModule/mobileCommon';
 import Praise from 'mobileJsModule/Praise';
-import IScroll from 'iscroll';
 import imagesLoaded from 'imagesloaded';
 
 
@@ -51,7 +50,6 @@ class Article extends React.Component {
 	componentDidUpdate() {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
 			this.destroyIscroll.call(this);
-			this.myScroll = new IScroll(this.refs.scrollWrap);
 		});
 	}
 	componentWillUnmount() {

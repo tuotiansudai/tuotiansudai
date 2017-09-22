@@ -1,7 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -68,6 +69,9 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "回款记录", example = "list")
     private List<InvestRepayDataDto> investRepays = new ArrayList<>();
+
+    @ApiModelProperty(value = "CFCA合同", example = "/contract/invest/contractNo/JK20170822000085681")
+    private String contractLocation;
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -250,5 +254,13 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     public void setServiceFeeDesc(String serviceFeeDesc) {
         this.serviceFeeDesc = serviceFeeDesc;
+    }
+
+    public String getContractLocation() {
+        return contractLocation;
+    }
+
+    public void setContractLocation(String contractLocation) {
+        this.contractLocation = contractLocation;
     }
 }

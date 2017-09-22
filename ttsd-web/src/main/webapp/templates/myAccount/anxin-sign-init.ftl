@@ -12,7 +12,7 @@
         </@global.role>
          <a href="/register/account" class="btn-normal btn-open" style="width: 70px; <@global.role hasRole="'INVESTOR'">display: none</@global.role>">立即开启</a>
          <span class="init-checkbox-style on">
-             <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
+             <input type="checkbox" id="agreeOpen1" class="btn-open default-checkbox" checked>
          </span>
              <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>
                  <a href="javascript:void(0);" class="anxin_layer link-agree-service" >《安心签平台服务协议》</a>、
