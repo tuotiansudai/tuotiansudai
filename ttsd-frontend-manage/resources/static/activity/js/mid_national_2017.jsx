@@ -20,16 +20,6 @@ let startTime = Number($date.data('starttime').substring(0, 10).replace(/-/gi, '
 
 let $nodataInvest = $('.nodata-invest'),
     $contentRanking = $('#investRanking-tbody');
-//礼物图片静态
-let oLotteryUrl = require('../images/2017/mid-national/gift.png');
-let $gift = $activityPageFrame.find('.big-lottery-con');
-$gift.append(`<img src="${oLotteryUrl}">`);
-
-let oTopUrl = require('../images/2017/mid-national/pos_top.png');
-let $top = $activityPageFrame.find('.pos.top');
-$top.append(`<img src="${oTopUrl}">`);
-
-
 
 function activityStatus(nowDay) {
     let nowDayStr = Number(nowDay.replace(/-/gi, '')),
@@ -45,14 +35,24 @@ function activityStatus(nowDay) {
         // $contentRanking.hide();
         $('#headHide').hide();
         $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
+        //礼物图片静态
+        let oLotteryUrl = require('../images/2017/mid-national/gift.png');
+        let $gift = $activityPageFrame.find('.big-lottery-con');
+        $gift.append(`<img src="${oLotteryUrl}">`);
+
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
+
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
         // $nodataInvest.show().html('不在活动时间范围内');
         $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
+        //礼物图片静态
+        let oLotteryUrl = require('../images/2017/mid-national/gift.png');
+        let $gift = $activityPageFrame.find('.big-lottery-con');
+        $gift.append(`<img src="${oLotteryUrl}">`);
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
