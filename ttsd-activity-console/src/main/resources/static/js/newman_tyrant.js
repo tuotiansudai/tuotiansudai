@@ -89,8 +89,8 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     return;
 
                 }
-                if (this.height > 200) {
-                    defer.reject('图片高应为200px!');
+                if (this.height > 370) {
+                    defer.reject('图片高应为370px!');
                     return;
                 }
                 defer.resolve(file);

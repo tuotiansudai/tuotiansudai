@@ -41,6 +41,12 @@ public class ActivityConsoleNewmanTyrantService {
     @Value("#{'${activity.celebrationHeroRanking.activity.period}'.split('\\~')}")
     private List<String> celebrationHeroRankingActivityPeriod = Lists.newArrayList();
 
+    @Value(value = "${activity.national.day.startTime}")
+    private String activityNationalDayStartTime;
+
+    @Value(value = "${activity.national.day.endTime}")
+    private String activityNationalDayEndTime;
+
 
     private int lifeSecond = 5184000;
 
@@ -53,12 +59,9 @@ public class ActivityConsoleNewmanTyrantService {
         }
 
         List<NewmanTyrantView> tyrantViews=new ArrayList<>();
-        if(this.JudgeTime(tradingTime)){
+        if (this.activityDate(tradingTime).size() > 0){
             tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-            tyrantViews= investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, newmanTyrantActivityPeriod.get(0), newmanTyrantActivityPeriod.get(1), false);
-        }else{
-            tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-            tyrantViews = investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, celebrationHeroRankingActivityPeriod.get(0), celebrationHeroRankingActivityPeriod.get(1), false);
+            tyrantViews= investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, this.activityDate(tradingTime).get(0), this.activityDate(tradingTime).get(1), false);
         }
         return CollectionUtils.isNotEmpty(tyrantViews) && tyrantViews.size() > 10 ? tyrantViews.subList(0, 10) : tyrantViews;
 
@@ -92,12 +95,10 @@ public class ActivityConsoleNewmanTyrantService {
         List<Date> dates = Lists.newArrayList();
         Date activityBeginTime=new Date();
         Date activityEndTime=new Date();
-        if(this.JudgeTime(tradingTime)){
-            activityBeginTime = DateTime.parse(newmanTyrantActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            activityEndTime = DateTime.parse(newmanTyrantActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        }else{
-            activityBeginTime = DateTime.parse(celebrationHeroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            activityEndTime = DateTime.parse(celebrationHeroRankingActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        if (this.activityDate(tradingTime).size() > 0){
+            activityBeginTime = DateTime.parse(this.activityDate(tradingTime).get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            activityEndTime = DateTime.parse(this.activityDate(tradingTime).get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().toDate();
         while (tradingTime.compareTo(activityBeginTime) > -1 && tradingTime.compareTo(activityEndTime) <= 0) {
@@ -159,19 +160,24 @@ public class ActivityConsoleNewmanTyrantService {
         return null;
     }
 
-    public boolean JudgeTime(Date tradingTime){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date newmanTyrantEndTime =new Date();
-        try {
-            newmanTyrantEndTime=simpleDateFormat.parse(newmanTyrantActivityPeriod.get(1));
-            newmanTyrantEndTime=new DateTime(newmanTyrantEndTime).toDate();
-        } catch (ParseException e) {
-            e.printStackTrace();
+    public List<String> activityDate(Date tradingTime){
+        List<String> list = new ArrayList<>();
+        if (!stringToDate(activityNationalDayStartTime).after(tradingTime) && !tradingTime.after(stringToDate(activityNationalDayEndTime))){
+            list.add(activityNationalDayStartTime);
+            list.add(activityNationalDayEndTime);
         }
-        if(tradingTime.before(newmanTyrantEndTime)){
-            return true;
+        if (!stringToDate(newmanTyrantActivityPeriod.get(0)).after(tradingTime) && !tradingTime.after(stringToDate(newmanTyrantActivityPeriod.get(1)))){
+            list.add(newmanTyrantActivityPeriod.get(0));
+            list.add(newmanTyrantActivityPeriod.get(1));
         }
-        return false;
+        if (!stringToDate(celebrationHeroRankingActivityPeriod.get(0)).after(tradingTime) && !tradingTime.after(stringToDate(celebrationHeroRankingActivityPeriod.get(1)))){
+            list.add(celebrationHeroRankingActivityPeriod.get(0));
+            list.add(celebrationHeroRankingActivityPeriod.get(1));
+        }
+        return list;
     }
 
+    public Date stringToDate(String date){
+        return DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+    }
 }
