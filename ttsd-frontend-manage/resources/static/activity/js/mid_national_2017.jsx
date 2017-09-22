@@ -7,7 +7,8 @@ let $activityPageFrame = $('#activityPageFrame');
 let $investRankingButton = $('#investRanking-button'),
     $heroNext = $('#rankingNext'),
     $heroPre = $('#rankingPre'),
-    sourceKind = globalFun.parseURL(location.href);;
+    sourceKind = globalFun.parseURL(location.href);
+
 
 //排名
 let $sortBox = $('#sortBox'),
