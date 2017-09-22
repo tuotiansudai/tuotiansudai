@@ -88,17 +88,17 @@
                 <div class="lottery-pai clearfix">
                     <div class="lottery_ware fl">
                         <div class="img"></div>
-                        <p>2~3名 <br>300元红包</p>
+                        <p>2~3名 </p><p>300元红包</p>
                     </div>
                     <#if prizeDto??>
-                    <div class="big-lottery">
+                    <div class="big-lottery" id="bigLottery">
                         <div class="img">
                             <div class="big-lottery-con">
                                 <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
                             </div>
                         </div>
 
-                        <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
+                        <p>今日大奖</p> <p>${prizeDto.goldPrizeName}</p>
 
                     </div>
                     <#else>
@@ -108,12 +108,12 @@
 
                                 </div>
                             </div>
-                            <p>今日大奖 <br>实物大奖</p>
+                            <p>今日大奖</p> <p>实物大奖</p>
                         </div>
                     </#if>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
-                        <p>4~10名 <br>168元红包</p>
+                        <p>4~10名 </p><p>168元红包</p>
                     </div>
                 </div>
                 <!--英雄排行榜 bg-->
@@ -142,10 +142,10 @@
 
                         </div>
                         <div class="nodata-invest tc" style="display: none;"></div>
-                        <table id="investRanking-tbody">
+                        <div id="investRanking-tbody">
 
+                        </div>
 
-                        </table>
                         <div class="tab-footer clearfix" id="investRanking-button">
                             <a class="pre-day button-small" id="rankingPre">查看前一天</a>
                             <a class="invest-button toInvest invest">立即投资抢排行</a>
@@ -179,6 +179,8 @@
 </div>
     <#include "../../module/login-tip.ftl" />
 <script type="text/template" id="tplTable">
+    <table>
+
     <thead id="headHide">
     <th>排名</th> <th>用户</th> <th class="investTh">投资额（元）</th> <th class="last">奖励</th>
     </thead>
@@ -205,6 +207,7 @@
     <% } %>
 
     </tbody>
+    </table>
 
 </script>
 

@@ -10,6 +10,7 @@ h1,h2,h4 {
     line-height: 100px;
     text-align: center;
     color: #666;
+    font-size: 14px;
 }
 .fl {
     float: left;
@@ -39,11 +40,11 @@ body {
     background-size: 100%;
 }
 .mid-tit1>h2{
-    width: 100%;
+    width: 820px;
     height: 65px;
     margin: 0 auto;
     background: url("../images/2017/mid-national/mid_tit_1.png") no-repeat center center;
-    background-size: 70%;
+    background-size: 100%;
 }
 
 .mid-tit2 {
@@ -226,7 +227,6 @@ body {
             border-radius: 10px;
             font-size: 28px;
             color: #515151;
-            padding: 0 33px;
             line-height: 60px;
             text-align: center;
             &.insRed {
@@ -258,11 +258,12 @@ body {
 .lottery_warp {
     width: 100%;
     >h2 {
-        width: 100%;
+        width: 820px;
         height: 83px;
+        margin: 0 auto;
         margin-top: 38px;
         background: #fc393f url("../images/2017/mid-national/lottery_tit_h2.png") no-repeat center center;
-        background-size: 90%;
+        background-size: 100%;
     }
     .lottery {
         width: 91.56%;
@@ -296,6 +297,7 @@ body {
                     font-size: 18px;
                     color: #fdf2e1;
                     text-align: center;
+                    line-height: 24px;
                 }
                 &.lottery_ware_fr .img {
                     background: url("../images/2017/mid-national/ware168.png") no-repeat;
@@ -319,7 +321,7 @@ body {
 
 }
 .big-lottery {
-    p {
+   >p {
         font-size: 18px;
         color: #ffd800;
         text-align: center;
@@ -419,7 +421,7 @@ body {
 
         }
         .tab-footer {
-            width: 71%;
+            width: 60%;
             margin: 24px auto;
             a {
                 display: block;
@@ -511,6 +513,7 @@ body {
     }
     .mid-tit2{
         >h2 {
+
             height: 170px;
             background:url("../images/2017/mid-national/wap_tit_h2.png") no-repeat center center;
             background-size: 100%;
@@ -533,13 +536,20 @@ body {
 
     }
     .lottery_warp {
+        >h2 {
+            width: 100%;
+            background-size: 90%;
+            height: 70px;
+        }
         .lottery {
             >h4 {
                 font-size: 22px;
-                padding: 15px 0;
+                padding: 0;
             }
-            p {
+            >p {
                 font-size: 20px;
+                margin-bottom: 0;
+
             }
             .lottery-pai {
                 .lottery_ware {
@@ -549,6 +559,11 @@ body {
                 }
                 .big-lottery {
                     position: static;
+                    >p {
+                        font-size: 14px;
+                        line-height: 14px;
+
+                    }
                     .img {
                         height: 200px;
                     }
@@ -575,6 +590,9 @@ body {
             }
             .tab-footer {
                 width: 60%;
+                a {
+                    line-height: 40px;
+                }
                 .invest {
                     width: 48%;
                     height: 40px;
@@ -649,10 +667,10 @@ body {
             margin: 0;
         }
         .lottery {
-            h4 {
+            >h4 {
                 font-size: 18px;
             }
-            p {
+            >p {
                 font-size: 16px;
             }
             .lottery-pai {
@@ -700,6 +718,10 @@ body {
                 width: 110px;
                 height: 30px;
                 margin:10px auto;
+                @media screen and (max-width: 320px) {
+                    width: 97px;
+                    height: 24px;
+                }
             }
             .title {
                 >div {
@@ -936,7 +958,7 @@ body {
                     padding-right: 0;
                     @media screen and (max-width: 320px) {
                         font-size: 10px!important;
-                        margin-right: 1%;
+                        margin-right: 2%;
                     }
                 }
             }

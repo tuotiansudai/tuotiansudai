@@ -19,7 +19,8 @@ let startTime = Number($date.data('starttime').substring(0, 10).replace(/-/gi, '
     endTime = Number($date.data('endtime').substring(0, 10).replace(/-/gi, ''));
 
 let $nodataInvest = $('.nodata-invest'),
-    $contentRanking = $('#investRanking-tbody');
+    $contentRanking = $('#investRanking-tbody'),
+    $bigLottery = $('#bigLottery');
 
 function activityStatus(nowDay) {
     let nowDayStr = Number(nowDay.replace(/-/gi, '')),
@@ -32,13 +33,13 @@ function activityStatus(nowDay) {
         //活动未开始
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
-        // $contentRanking.hide();
-        $('#headHide').hide();
+
         $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
         //礼物图片静态
         let oLotteryUrl = require('../images/2017/mid-national/gift.png');
         let $gift = $activityPageFrame.find('.big-lottery-con');
         $gift.append(`<img src="${oLotteryUrl}">`);
+        $bigLottery.hide();
 
     }
     else if (nowDayStr > endTime) {
@@ -46,13 +47,12 @@ function activityStatus(nowDay) {
 
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
-        $contentRanking.hide();
-        // $nodataInvest.show().html('不在活动时间范围内');
         $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
         //礼物图片静态
         let oLotteryUrl = require('../images/2017/mid-national/gift.png');
         let $gift = $activityPageFrame.find('.big-lottery-con');
         $gift.append(`<img src="${oLotteryUrl}">`);
+        $bigLottery.hide();
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
@@ -94,17 +94,22 @@ activityStatus(todayDay);
     let $isLogin = $('.get-rank', $activityPageFrame);
     $isLogin.on('click', function (event) {
         event.preventDefault();
-        $.when(commonFun.isUserLogin())
-            .fail(function () {
-                //判断是否需要弹框登陆
-                layer.open({
-                    type: 1,
-                    title: false,
-                    closeBtn: 0,
-                    area: ['auto', 'auto'],
-                    content: $('#loginTip')
+        if (sourceKind.params.source == 'app') {
+            location.href = "/login";
+        }else {
+            $.when(commonFun.isUserLogin())
+                .fail(function () {
+                    //判断是否需要弹框登陆
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
                 });
-            });
+        }
+
     });
 })();
 
