@@ -20,6 +20,16 @@ let startTime = Number($date.data('starttime').substring(0, 10).replace(/-/gi, '
 
 let $nodataInvest = $('.nodata-invest'),
     $contentRanking = $('#investRanking-tbody');
+//礼物图片静态
+let oLotteryUrl = require('../images/2017/mid-national/gift.png');
+let $gift = $activityPageFrame.find('.big-lottery-con');
+$gift.append(`<img src="${oLotteryUrl}">`);
+
+let oTopUrl = require('../images/2017/mid-national/pos_top.png');
+let $top = $activityPageFrame.find('.pos.top');
+$top.append(`<img src="${oTopUrl}">`);
+
+
 
 function activityStatus(nowDay) {
     let nowDayStr = Number(nowDay.replace(/-/gi, '')),
@@ -33,6 +43,8 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
         $contentRanking.hide();
+        $('#headHide').hide();
+        $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
@@ -119,7 +131,8 @@ function heroRank(date) {
         console.log('000');
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
-                $('#investRanking-tbody').html('');
+                $('#headHide').hide();
+                $('#investRanking-tbody').html(`<div class="noData">不在活动时间范围内`);
                 return;
             }
             //获取模版内容
@@ -147,7 +160,7 @@ function heroRank(date) {
     })
 }
 
-$('#activityPageFrame').find('.toInvest').on('click',function() {
+$('#activityPageFrame').find('.invest').on('click',function() {
     window.location.href = '/loan-list';
 });
 
