@@ -76,6 +76,10 @@ public enum AsyncUmPayService {
      */
     INVEST_TRANSFER_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "invest_transfer_payback_notify", ""),
     /**
+     * 慧租信用贷放款
+     */
+    CREDIT_LOAN_OUT_PROJECT_TRANSFER("project_transfer", "", "", "credit_loan_out_notify", ""),
+    /**
      * 债权购买手续费标的转账
      */
     REPAY_TRANSFER_FEE_PROJECT_TRANSFER("project_transfer", "", "", "repay_transfer_fee_notify", ""),
