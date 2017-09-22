@@ -58,9 +58,13 @@ function activityStatus(nowDay) {
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
+        if(isToday == nowDayStr){
+            $heroNext.css({'visibility':'visible'});
+        }
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
+
         if(nowDayStr==startTime) {
             //活动第一天
             $heroPre.css({'visibility':'hidden'});
