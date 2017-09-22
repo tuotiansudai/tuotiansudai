@@ -6,12 +6,14 @@ window.layer.config({
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
 
+require("publicStyle/reset.scss");
 require("publicStyle/btn.scss");
 require("publicStyle/table.scss");
 require("publicStyle/page_frame.scss");
 require("publicStyle/pagination.scss");
 require("publicStyle/error.scss");
 require("publicStyle/global.scss");
+require("publicStyle/spritecss/global.css");
 
 require('publicJs/error');
 require('babel-polyfill');
@@ -332,6 +334,20 @@ var Proxy_GlobalFun=function() {
     }
     return instance;
 }
+$.fn.initCheckbox = function (callback) {
+    return $(this).each(function () {
+        $(this).bind('click', function () {
+            var $this = $(this);
+            var checked = $this.find('input:checkbox').prop('checked');
+            if (checked) {
+                $this.addClass("on");
+            } else {
+                $this.removeClass("on");
+            }
+            callback && callback(this);
+        });
+    });
+};
 
 window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();

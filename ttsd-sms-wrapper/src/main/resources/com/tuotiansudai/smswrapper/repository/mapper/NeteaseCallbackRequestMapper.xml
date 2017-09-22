@@ -34,7 +34,7 @@
 
 
     <select id="findByMobileAndSendid" resultMap="neteaseCallbackRequestModel" parameterType="map">
-        select * from netease_callback_request where mobile = #{mobile} and sendid = ${sendid}
+        select * from netease_callback_request where mobile = #{mobile} and sendid = #{sendid}
     </select>
 
     <select id="findFailedRequests" resultMap="neteaseCallbackRequestModel" parameterType="map">

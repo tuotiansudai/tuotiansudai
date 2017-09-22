@@ -1,6 +1,8 @@
 require('webStyle/investment/loan_detail.scss');
 let commonFun= require('publicJs/commonFun');
 require('webJs/plugins/autoNumeric');
+//投资计算器和意见反馈
+require('webJsModule/red_envelope_float');
 //新手体验项目
 let $experienceLoan=$('#experienceLoanDetailContent');
 let amountInputElement = $(".text-input-amount", $experienceLoan);

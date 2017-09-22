@@ -129,8 +129,7 @@ $pointerImg.on('click',function() {
                 $luckDrawBox.find('.my-number').text(function() {
                     return myTimes>0?(myTimes-1):0;
                 });
-
-                drawCircle.noRotateFn(tipGroupObj[prizeType]);
+                drawCircle.tipWindowPop(tipGroupObj[prizeType]);
 
                 drawCircle.MyGift();
                 drawCircle.GiftRecord(function() {
