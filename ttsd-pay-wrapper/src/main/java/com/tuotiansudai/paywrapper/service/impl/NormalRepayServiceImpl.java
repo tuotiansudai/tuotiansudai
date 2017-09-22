@@ -77,7 +77,13 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
+    private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     @Autowired
     private SystemBillMapper systemBillMapper;
@@ -603,7 +609,18 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
-        String title = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getTitleTemplate(), loanModel.getName(), AmountConverter.convertCentToString(currentInvestRepay.getRepayAmount()));
+        long repayAmount = currentInvestRepay.getRepayAmount();
+        CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(currentInvestRepay.getInvestId(), currentInvestRepay.getPeriod());
+        if (couponRepayModel != null) {
+            repayAmount += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+        }
+        if (currentInvestRepay.getPeriod() == loanModel.getPeriods()) {
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(currentInvestRepay.getInvestId());
+            if (investExtraRateModel != null) {
+                repayAmount += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+            }
+        }
+        String title = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getTitleTemplate(), loanModel.getName(), AmountConverter.convertCentToString(repayAmount));
         String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
