@@ -556,12 +556,15 @@ body {
                     .img {
                         height: 167px;
                     }
+                    p {
+                        line-height: 10px;
+                    }
                 }
                 .big-lottery {
                     position: static;
                     >p {
                         font-size: 14px;
-                        line-height: 14px;
+                        line-height: 10px;
 
                     }
                     .img {

@@ -6,7 +6,8 @@ let $activityPageFrame = $('#activityPageFrame');
 //投资按钮，前一天后一天按钮
 let $investRankingButton = $('#investRanking-button'),
     $heroNext = $('#rankingNext'),
-    $heroPre = $('#rankingPre');
+    $heroPre = $('#rankingPre'),
+    sourceKind = globalFun.parseURL(location.href);;
 
 //排名
 let $sortBox = $('#sortBox'),
@@ -39,7 +40,7 @@ function activityStatus(nowDay) {
         let oLotteryUrl = require('../images/2017/mid-national/gift.png');
         let $gift = $activityPageFrame.find('.big-lottery-con');
         $gift.append(`<img src="${oLotteryUrl}">`);
-        $bigLottery.hide();
+
 
     }
     else if (nowDayStr > endTime) {
