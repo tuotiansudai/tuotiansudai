@@ -104,6 +104,14 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
+    public static ProjectTransferRequestModel newHuiZuRepayPasswordRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
     public static ProjectTransferRequestModel newInvestTransferPaybackRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.INVEST_TRANSFER_PAYBACK_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
@@ -117,6 +125,14 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.PLATFORM.getCode();
+        return model;
+    }
+
+    public static ProjectTransferRequestModel newHuiZuActivateAccountRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER);
+        model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }
 
