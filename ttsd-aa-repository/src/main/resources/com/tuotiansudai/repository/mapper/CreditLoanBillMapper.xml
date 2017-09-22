@@ -10,14 +10,13 @@
         <result column="amount" property="amount"></result>
         <result column="operation_type" property="operationType"></result>
         <result column="business_type" property="businessType"></result>
-        <result column="detail" property="detail"></result>
         <result column="mobile" property="mobile"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="CreditLoanBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into credit_loan_bill ( amount, detail, operation_type, created_time, order_id, business_type, mobile)
-        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
+        insert into credit_loan_bill ( amount, operation_type, created_time, order_id, business_type, mobile)
+        value(#{amount}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
     </insert>
     
 </mapper>

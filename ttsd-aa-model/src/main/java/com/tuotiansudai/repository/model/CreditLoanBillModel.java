@@ -15,8 +15,6 @@ public class CreditLoanBillModel implements Serializable {
 
     private CreditLoanBillBusinessType businessType;
 
-    private String detail;
-
     private Date createdTime;
 
     private String mobile;
@@ -24,12 +22,11 @@ public class CreditLoanBillModel implements Serializable {
     public CreditLoanBillModel() {
     }
 
-    public CreditLoanBillModel(Long orderId, long amount, CreditLoanBillOperationType operationType, CreditLoanBillBusinessType businessType, String detail, String mobile) {
+    public CreditLoanBillModel(Long orderId, long amount, CreditLoanBillOperationType operationType, CreditLoanBillBusinessType businessType, String mobile) {
         this.orderId = orderId;
         this.amount = amount;
         this.operationType = operationType;
         this.businessType = businessType;
-        this.detail = detail;
         this.createdTime = new Date();
         this.mobile = mobile;
     }
@@ -72,14 +69,6 @@ public class CreditLoanBillModel implements Serializable {
 
     public void setBusinessType(CreditLoanBillBusinessType businessType) {
         this.businessType = businessType;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
 
     public Date getCreatedTime() {

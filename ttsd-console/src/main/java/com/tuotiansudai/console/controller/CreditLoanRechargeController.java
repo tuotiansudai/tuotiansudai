@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class CreditLoanRechargeController {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @RequestMapping(value = "/credit-loan-recharge",method = RequestMethod.GET)
     public ModelAndView creditLoanRecharge() {
         return new ModelAndView("/credit-loan-recharge");
@@ -39,7 +43,7 @@ public class CreditLoanRechargeController {
     public ModelAndView creditLoanRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto) {
         ModelAndView modelAndView = new ModelAndView("/credit-loan-recharge", "responsive", true);
         String operatorLoginName = LoginUserInfo.getLoginName();
-        AccountModel accountModel = accountMapper.findByLoginName(operatorLoginName);
+        AccountModel accountModel = accountMapper.findByLoginName(userMapper.findByMobile(creditLoanRechargeDto.getMobile()).getLoginName());
         creditLoanRechargeDto.setOperatorLoginName(operatorLoginName);
 
         if (accountModel.isNoPasswordInvest()) {
