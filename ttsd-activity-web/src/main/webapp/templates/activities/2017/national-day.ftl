@@ -90,24 +90,25 @@
                         <div class="img"></div>
                         <p>2~3名 <br>300元红包</p>
                     </div>
-                    <#--<#if prizeDto??>-->
-                    <#--<div class="big-lottery">-->
-                        <#--<div class="img">-->
-                            <#--<div class="big-lottery-con">-->
-                                <#--<img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">-->
-                            <#--</div>-->
-                        <#--</div>-->
-                        <#--<p>今日大奖 <br>${prizeDto.goldPrizeName}</p>-->
-                    <#--</div>-->
-                    <#--</#if>-->
+                    <#if prizeDto??>
                     <div class="big-lottery">
                         <div class="img">
                             <div class="big-lottery-con">
-
+                                <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
                             </div>
                         </div>
-                        <p>今日大奖 <br>hahhaa</p>
+                        <p>今日大奖 <br>${prizeDto.goldPrizeName}</p>
                     </div>
+                    <#else>
+                        <div class="big-lottery">
+                            <div class="img">
+                                <div class="big-lottery-con">
+
+                                </div>
+                            </div>
+                            <p>今日大奖 <br>实物大奖</p>
+                        </div>
+                    </#if>
                     <div class="lottery_ware fr lottery_ware_fr">
                         <div class="img"></div>
                         <p>4~10名 <br>168元红包</p>
