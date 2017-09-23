@@ -59,7 +59,6 @@
                 <th>年化/活动(利率)</th>
                 <th>投资奖励</th>
                 <th>禁止转让</th>
-                <th>禁用优惠券</th>
                 <th>项目状态</th>
                 <th>发起时间</th>
                 <th>投资/还款记录</th>
@@ -116,7 +115,6 @@
                     <#--${(!loanListDto.extraLoanRateModels??)?string('是','-')}-->
                     </td>
                     <td>${loanListDto.nonTransferable?string('是','否')}</td>
-                    <td>${loanListDto.disableCoupon?string('是','否')}</td>
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td><a class="invest_repay"
