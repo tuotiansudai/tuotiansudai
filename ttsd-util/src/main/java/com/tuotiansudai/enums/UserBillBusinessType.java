@@ -29,8 +29,9 @@ public enum UserBillBusinessType {
     EXTRA_RATE("投资奖励"),
     EXPERIENCE_INTEREST("体验金收益"),
     INVEST_CASH_BACK("现金补贴"),
-    HUI_ZU_REPAY_IN("慧租还款"),
-    MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买");
+    NATIONAL_DAY_INVEST("国庆节逢万返百奖励"),
+    MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买"),
+    HUI_ZU_REPAY_IN("慧租还款");
 
     private final String description;
 

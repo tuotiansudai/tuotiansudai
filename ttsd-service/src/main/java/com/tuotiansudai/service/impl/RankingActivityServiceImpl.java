@@ -11,10 +11,13 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
@@ -177,7 +180,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
     private void sendCash20(String loginName) {
         long orderId = IdGenerator.generate();
-        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), "2000");
+        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), "2000", UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.LOTTERY_CASH, SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE);
         payWrapperClient.transferCash(transferCashDto);
     }
 
