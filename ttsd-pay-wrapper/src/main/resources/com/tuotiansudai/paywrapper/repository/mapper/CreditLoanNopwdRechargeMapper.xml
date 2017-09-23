@@ -36,11 +36,11 @@
         insert into credit_loan_recharge_nopwd_request (
         service, sign_type, sign, charset, mer_Id, version,
         order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
-        partic_user_id, amount, request_time, request_url, request_data
+        partic_user_id, amount, request_time, request_url, request_data, status
         ) values (
         #{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version},
         #{orderId}, #{merDate}, #{projectId}, #{servType}, #{transAction}, #{particType}, #{particAccType},
-        #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}
+        #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}, #{status}
         )
     </insert>
 
