@@ -98,7 +98,7 @@ public enum AsyncUmPayService {
     /**
      * 惠租有密一分钱激活账户
      */
-    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer_activate_account", "", "callback/hz_activate_account", "callback/hz_activate_account_notify", "huizu://activate-account/{0}"),
+    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("hz_activate_account", "", "callback/hz_activate_account", "callback/hz_activate_account_notify", "huizu://activate-account/{0}"),
 
     /**
      * 无密还款标的转入
