@@ -24,5 +24,4 @@ public class TransferCashController extends BaseController{
     public BaseDto<PayDataDto> transferCash(@Valid @RequestBody TransferCashDto transferCashDto) {
         return transferCashService.transferCash(transferCashDto);
     }
-
 }

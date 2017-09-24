@@ -29,8 +29,8 @@ public interface UserBillMapper {
                                                @Param("mobile") String mobile,
                                                @Param("startTime") Date startTime,
                                                @Param("endTime") Date endTime,
-                                               @Param("startLimit") int startLimit,
-                                               @Param("endLimit") int endLimit);
+                                               @Param("startLimit") Integer startLimit,
+                                               @Param("endLimit") Integer endLimit);
 
     int findUserFundsCount(@Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
                            @Param("userBillOperationType") UserBillOperationType userBillOperationType,

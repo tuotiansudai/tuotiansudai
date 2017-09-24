@@ -13,6 +13,7 @@ public class LoanDetailsModel implements Serializable {
     private boolean activity;
     private String activityDesc;
     private boolean nonTransferable;
+    private boolean disableCoupon;
     private String pushMessage;
 
     public LoanDetailsModel() {
@@ -33,6 +34,7 @@ public class LoanDetailsModel implements Serializable {
         this.activity = loanDetails.isActivity();
         this.activityDesc = loanDetails.isActivity() ? loanDetails.getActivityDesc() : null;
         this.nonTransferable = loanDetails.getNonTransferable();
+        this.disableCoupon = loanDetails.getDisableCoupon();
         this.pushMessage = loanDetails.getPushMessage();
     }
 
@@ -98,5 +100,13 @@ public class LoanDetailsModel implements Serializable {
 
     public void setPushMessage(String pushMessage) {
         this.pushMessage = pushMessage;
+    }
+
+    public boolean getDisableCoupon() {
+        return disableCoupon;
+    }
+
+    public void setDisableCoupon(boolean disableCoupon) {
+        this.disableCoupon = disableCoupon;
     }
 }

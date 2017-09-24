@@ -3,7 +3,7 @@
             <span>
                 <input type="text" class="skip-phone-code" id="skipPhoneCode" maxlength="6" placeholder="请输入验证码">
             </span>
-            <span>
+            <span id="methodToMsg">
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
                 <i class="microphone" id="microPhone"></i>
             </span>
@@ -16,10 +16,9 @@
             <button class="get-skip-btn" id="getSkipBtn">立即授权</button>
         </div>
         <div class="tip-item">
-            <label>
-                <i class="skip-icon active"></i>
-                <input type="hidden" id="tipCheck" value="true">
-            </label>
+            <span class="init-checkbox-style on">
+                 <input type="checkbox" id="tipCheck" class="default-checkbox" checked>
+             </span>
             <a class="skip-text">
                 我已阅读并同意<span class="anxin_layer link-agree-free-SMS">《短信免责申明》</span>
             </a>

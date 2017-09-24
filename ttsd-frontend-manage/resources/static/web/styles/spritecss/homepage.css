@@ -1,0 +1,8 @@
+[class^='sprite-homepage-'], [class*=' sprite-homepage-'] { background-image:url('./homepage.png'); }
+.sprite-homepage-media { background-position:-1px -1px; width:360px; height:229px; }
+.sprite-homepage-logo-cfca { background-position:-1px -232px; width:180px; height:70px; }
+.sprite-homepage-logo-lian { background-position:-183px -232px; width:140px; height:55px; }
+.sprite-homepage-icon-assurce { background-position:-363px -1px; width:82px; height:88px; }
+.sprite-homepage-icon-guide { background-position:-363px -91px; width:82px; height:88px; }
+.sprite-homepage-icon-risk { background-position:-363px -181px; width:82px; height:88px; }
+.sprite-homepage-icon-newuse { background-position:-1px -304px; width:56px; height:75px; }
