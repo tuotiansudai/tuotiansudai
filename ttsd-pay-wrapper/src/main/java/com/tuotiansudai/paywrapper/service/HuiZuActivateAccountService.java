@@ -7,8 +7,6 @@ import java.util.Map;
 
 public interface HuiZuActivateAccountService {
 
-    BaseDto<PayDataDto> noPassword(HuiZuActivateAccountDto activateAccountDto);
-
     BaseDto<PayFormDataDto> password(HuiZuActivateAccountDto activateAccountDto);
 
     void postActivateAccount(long orderId) throws AmountTransferException;

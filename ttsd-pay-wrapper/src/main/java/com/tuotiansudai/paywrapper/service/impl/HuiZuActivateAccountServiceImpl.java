@@ -3,7 +3,10 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.dto.HuiZuActivateAccountDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -12,14 +15,11 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuActivateAccountMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuActivateAccountNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.HuiZuActivateAccountNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.service.HuiZuActivateAccountService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -77,70 +77,8 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
-    public BaseDto<PayDataDto> noPassword(HuiZuActivateAccountDto activateAccountDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
-
-        UserModel userModel = userMapper.findByMobile(activateAccountDto.getMobile());
-        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
-        String orderId = String.format(ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE, String.valueOf(activateAccountDto.getMobile()), String.valueOf(new DateTime().getMillis()));
-
-
-        if (ACTIVATE_ACCOUNT_MONEY > accountModel.getBalance()) {
-            payDataDto.setMessage("余额不足，请充值");
-            return baseDto;
-        }
-
-        try {
-
-            if (redisWrapperClient.exists(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", activateAccountDto.getMobile()))) {
-                payDataDto.setMessage(String.format("用户%s:已经激活过账户", activateAccountDto.getMobile()));
-                return baseDto;
-            }
-
-            redisWrapperClient.hmset(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", activateAccountDto.getMobile()),
-                    Maps.newHashMap(ImmutableMap.builder()
-                            .put("mobile", activateAccountDto.getMobile())
-                            .put("amount", String.valueOf(ACTIVATE_ACCOUNT_MONEY))
-                            .put("order_id", orderId)
-                            .put("status", SyncRequestStatus.SENT.name())
-                            .build()));
-
-            logger.info(MessageFormat.format("[Activate Account Request Data] mobile={0}, loan={1}, orderId={2}, amount={3}, source={4}",
-                    activateAccountDto.getMobile(),
-                    LOAN_ID,
-                    orderId,
-                    String.valueOf(ACTIVATE_ACCOUNT_MONEY)));
-
-            ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newHuiZuActivateAccountNopwdRequest(
-                    LOAN_ID,
-                    orderId,
-                    accountModel.getPayUserId(),
-                    String.valueOf(ACTIVATE_ACCOUNT_MONEY));
-
-            ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
-                    ProjectTransferNopwdMapper.class,
-                    requestModel,
-                    ProjectTransferNopwdResponseModel.class);
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("order_id", orderId)
-                    .build()));
-            payDataDto.setMessage(responseModel.getRetMsg());
-        } catch (PayException e) {
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return baseDto;
-    }
-
-    @Override
     @Transactional
     public BaseDto<PayFormDataDto> password(HuiZuActivateAccountDto activateAccountDto) {
-        //TODO: verify transfer
 
         UserModel userModel = userMapper.findByMobile(activateAccountDto.getMobile());
         AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
