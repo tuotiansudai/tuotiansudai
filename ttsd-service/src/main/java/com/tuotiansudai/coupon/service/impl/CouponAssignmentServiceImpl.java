@@ -221,7 +221,8 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 */
     }
 
-    private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName){
+    private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName) {
+        logger.info(MessageFormat.format("into sendCouponAssignMessage method, coupont id:{0}, loginName:{1}", couponModel.getId(), loginName));
         mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponModel.getId());
         return couponModel;
     }
@@ -272,7 +273,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
 
-        if(Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
+        if (Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
             mqWrapperClient.sendMessage(MessageQueue.CouponSmsAssignNotify, new CouponAssignSmsNotifyMessage(couponId, loginName));
         }
 
