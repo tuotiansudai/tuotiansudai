@@ -67,6 +67,7 @@ public class PayAsyncClient implements ApplicationContextAware {
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setStatus(true);
             payFormDataDto.setUrl(reqData.getUrl());
+            payFormDataDto.setCode("0000");
             payFormDataDto.setFields(reqData.getField());
             baseDto.setData(payFormDataDto);
             return baseDto;
