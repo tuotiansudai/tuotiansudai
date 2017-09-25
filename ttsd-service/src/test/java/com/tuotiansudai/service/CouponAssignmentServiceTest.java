@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.coupon.service.impl.CouponAssignmentServiceImpl;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
@@ -17,6 +18,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +44,8 @@ import static org.mockito.Mockito.verify;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class CouponAssignmentServiceTest {
+
+    private static Logger logger = Logger.getLogger(CouponAssignmentServiceTest.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -117,6 +121,7 @@ public class CouponAssignmentServiceTest {
         UserModel fakeUser = getFakeUser("fakeUser");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
+        logger.info("fakeCoupon id:" + fakeCoupon.getId());
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(couponAssignmentService, "mqWrapperClient", mqWrapperClient);
 
