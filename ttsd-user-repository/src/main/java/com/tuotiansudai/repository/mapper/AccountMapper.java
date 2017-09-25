@@ -13,6 +13,8 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
+    AccountModel findByMobile(String mobile);
+
     AccountModel findByPayUserId(String payUserId);
 
     AccountModel lockByLoginName(String loginName);

@@ -56,9 +56,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
-    @Value(value = "${credit.loan.id}")
-    private String creditLoanId;
-
     @Value(value = "${credit.loan.agent}")
     private String creditLoanAgent;
 
@@ -81,7 +78,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
         AccountModel accountModel = accountMapper.findByLoginName(model.getAccountName());
 
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanRechargeNopwdRequest(creditLoanId,
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanRechargeNopwdRequest(
                 String.valueOf(model.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(model.getAmount()));
@@ -126,7 +123,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         AccountModel accountModel = accountMapper.findByLoginName(creditLoanRechargeModel.getAccountName());
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRechargePwdRequest(
-                creditLoanId,
                 String.valueOf(creditLoanRechargeModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(creditLoanRechargeModel.getAmount()));
