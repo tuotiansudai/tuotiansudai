@@ -87,7 +87,7 @@ public class LoanOutSuccessAssignCelebrationAchievementMessageConsumer implement
         try {
             logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievementCelebration assignInvestAchievementUserCoupon is executing , (loanId : {0}) ", String.valueOf(loanId)));
 
-            List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanId, startTime, endTime);
+            List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanId, startTime, endTime, 3);
 
             if (invests.size() > 1) {
                 if (!redisWrapperClient.hexists(THE_SECOND_PRIZE, String.valueOf(loanId))) {
