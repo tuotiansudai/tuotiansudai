@@ -20,7 +20,6 @@ CREATE TABLE `ump_operations`.`credit_loan_recharge_pwd_request` (
   `request_time`    DATETIME        NOT NULL,
   `request_url`     VARCHAR(2048)   NOT NULL,
   `request_data`    TEXT            NOT NULL,
-  `status`          VARCHAR(10)     NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

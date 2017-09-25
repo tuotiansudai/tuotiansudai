@@ -27,7 +27,6 @@
         <result property="requestTime" column="request_time"/>
         <result property="requestUrl" column="request_url"/>
         <result property="requestData" column="request_data"/>
-        <result property="status" column="status"/><!-- 同步方法才需要此字段 -->
     </resultMap>
 
     <sql id="sqlFindById">
@@ -38,11 +37,11 @@
         insert into credit_loan_recharge_pwd_request (
         service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url,
         order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
-        partic_user_id, amount, request_time, request_url, request_data, status
+        partic_user_id, amount, request_time, request_url, request_data
         ) values (
         #{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl},
         #{orderId}, #{merDate}, #{projectId}, #{servType}, #{transAction}, #{particType}, #{particAccType},
-        #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}, #{status}
+        #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}
         )
     </sql>
 
