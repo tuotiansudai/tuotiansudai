@@ -2,11 +2,13 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -66,6 +68,8 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     private UserMapper userMapper;
     @Autowired
     private PaySyncClient paySyncClient;
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -225,12 +229,17 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             logger.info(String.format("[HZ Password Repay:] %s starting...", orderId));
             if (updateHuiZuNotifyRequestNotifyRequestStatus(model)) {
                 try {
+                    redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", orderId), "status", model.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                    String actualAmount = redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "actual_amount");
+                    mqWrapperClient.sendMessage(MessageQueue.HuiZuRentRepayNotify, Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                            .put("orderId", orderId)
+                            .put("actual_amount", actualAmount)
+                            .put("status", model.isSuccess())
+                            .build()));
                     if (model.isSuccess()) {
-                        redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", orderId), "status", SyncRequestStatus.SUCCESS.name());
                         this.postRepay(orderId);
                         logger.info(MessageFormat.format("[HZ Password Repay:] update huizu balance and user bill", String.valueOf(orderId)));
                     } else {
-                        redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", orderId), "status", SyncRequestStatus.FAILURE.name());
                         logger.error(MessageFormat.format("[HZ Password Repay:] update huizu repay fail", String.valueOf(orderId)));
                     }
                 } catch (Exception e) {
@@ -252,7 +261,6 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                 Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
 
         //TODO: modify loan_bill 流水数据
-        //TODO:send MQ message to huizu 更新RepayPlan的status
     }
 
     private void sendFatalNotify(String message) {
