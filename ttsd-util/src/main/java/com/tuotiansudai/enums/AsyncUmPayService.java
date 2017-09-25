@@ -75,7 +75,7 @@ public enum AsyncUmPayService {
     /**
      * 慧租信用贷验密还款
      */
-    CREDIT_LOAN_REPAY_PROJECT_TRANSFER("project_transfer", "callback/credit_loan_repay_notify", "callback/credit_loan_repay_notify", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+    CREDIT_LOAN_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/credit_loan_repay_notify", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
 
     /**
      * 慧租有密还款
