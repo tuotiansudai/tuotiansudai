@@ -189,12 +189,16 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract('style','happypack/loader?id=sass')
 		},
 		{
-			test: /\.(jpe?g|png|gif|woff|woff2|svg|eot|ttf)$/i,
+			test: /\.(jpe?g|png|gif)$/i,
 			loaders:['url?limit=2048&name=images/[name].[hash:8].[ext]']
 			// loaders:['happypack/loader?id=image']
 
+		},
+		{
+			test: /\.(woff|woff2|svg|eot|ttf)\??.*$/,
+			loader: 'file?name=images/fonts/[name].[ext]'
 		}
-			]
+		]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
