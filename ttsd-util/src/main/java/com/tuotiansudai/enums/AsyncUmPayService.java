@@ -93,7 +93,7 @@ public enum AsyncUmPayService {
     /**
      * 无密债权购买标的转入
      */
-    INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "Finvest_transfer_notify", "tuotian://invest-transfer/{0}"),
+    INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
     /**
      * 慧租无密还款
      */
