@@ -70,9 +70,6 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Value(value = "${credit.loan.id}")
-    private String creditLoanId;
-
     @Value(value = "${credit.loan.agent}")
     private String creditLoanAgent;
 
@@ -87,7 +84,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
         UserModel userModel = userMapper.findByMobile(creditLoanAgent);
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
 
-        logger.info("[信用贷还款转入代理人]：发起联动优势转账请求，信用贷账户:" + creditLoanId + "，代理人:" + creditLoanAgent + "，转入金额:" + transferAmount);
+        logger.info("[信用贷还款转入代理人]：发起联动优势转账请求，代理人:" + creditLoanAgent + "，转入金额:" + transferAmount);
 
         String orderId = String.valueOf(IdGenerator.generate());
 
@@ -96,7 +93,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
         }
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanTransferAgentRequest(
-                creditLoanId, orderId,
+                orderId,
                 accountModel.getPayUserId(),
                 String.valueOf(transferAmount));
         try {
@@ -116,7 +113,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
                         resp.getRetMsg(), String.valueOf(orderId), creditLoanAgent, String.valueOf(transferAmount)));
             }
         } catch (PayException e) {
-            logger.error(MessageFormat.format("[信用贷还款转入代理人]:发起放款联动优势请求失败,信用贷账户 : {0}", creditLoanId, e));
+            logger.error(MessageFormat.format("[信用贷还款转入代理人]:发起放款联动优势请求失败:{0}", e.getLocalizedMessage()));
             this.sendFatalNotify(MessageFormat.format("慧租信用贷转账给代理人异常，订单号({0}), 代理人({1}), 金额({2})",
                     String.valueOf(orderId), creditLoanAgent, String.valueOf(transferAmount)));
         }
