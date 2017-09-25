@@ -73,6 +73,11 @@ public enum AsyncUmPayService {
     INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "callback/invest_transfer_project_transfer", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
 
     /**
+     * 慧租信用贷验密还款
+     */
+    CREDIT_LOAN_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/credit_loan_repay_notify", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+
+    /**
      * 慧租有密还款
      */
     HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/hz_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
@@ -80,6 +85,10 @@ public enum AsyncUmPayService {
      * 债权购买返款标的转账
      */
     INVEST_TRANSFER_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "invest_transfer_payback_notify", ""),
+    /**
+     * 慧租信用贷放款
+     */
+    CREDIT_LOAN_OUT_PROJECT_TRANSFER("project_transfer", "", "", "credit_loan_out_notify", ""),
     /**
      * 债权购买手续费标的转账
      */
