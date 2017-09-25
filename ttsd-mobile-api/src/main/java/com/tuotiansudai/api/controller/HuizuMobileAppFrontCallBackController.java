@@ -19,7 +19,7 @@ import java.util.Enumeration;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/callback")
+@RequestMapping(value = "/huizu/callback")
 public class HuizuMobileAppFrontCallBackController {
 
     private static Logger logger = Logger.getLogger(HuizuMobileAppFrontCallBackController.class);
