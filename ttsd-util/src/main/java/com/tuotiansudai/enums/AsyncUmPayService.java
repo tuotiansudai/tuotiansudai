@@ -146,8 +146,11 @@ public enum AsyncUmPayService {
     /**
      * 平台充值普通转账验密
      */
-    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
-
+    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", ""),
+    /**
+     * 慧租信用贷无密还款
+     */
+    HUI_ZU_NOPWD_CREDIT_REPAY_PROJECT_TRANSFER("project_transfer_nopwd", "","callback/hz_nopwd_repay_notify","hz_repay_nopwd_notify","huizu://repay/{0}");
 
     private final String serviceName;
 
