@@ -2,18 +2,14 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -63,6 +59,9 @@ public class CouponAssignmentServiceTest {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
     @Mock
     private MQWrapperClient mqWrapperClient;
@@ -114,8 +113,12 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAsyncAssignUserGroup() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser1");
-        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
+        UserModel fakeUser = getFakeUser("fakeUser");
+        this.createMockUser("fakeUser");
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 6, new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.MEMBERSHIP_V5, false);
 
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(couponAssignmentService, "mqWrapperClient", mqWrapperClient);
@@ -123,7 +126,7 @@ public class CouponAssignmentServiceTest {
         ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
         ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
 
-        couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
+        couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.MEMBERSHIP_V5));
 
         verify(mqWrapperClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
