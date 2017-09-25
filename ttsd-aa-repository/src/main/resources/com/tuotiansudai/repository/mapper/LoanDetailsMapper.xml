@@ -14,14 +14,15 @@
         <result column="activity" property="activity"/>
         <result column="activity_desc" property="activityDesc"/>
         <result column="non_transferable" property="nonTransferable"/>
+        <result column="disable_coupon" property="disableCoupon"/>
         <result column="push_message" property="pushMessage"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanDetailsModel">
         INSERT INTO `aa`.`loan_details`
-        (id, loan_id, declaration, extra_source, activity, activity_desc, non_transferable, push_message)
+        (id, loan_id, declaration, extra_source, activity, activity_desc, non_transferable, push_message, disable_coupon)
         VALUES
-        (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc}, #{nonTransferable}, #{pushMessage})
+        (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc}, #{nonTransferable}, #{pushMessage}, #{disableCoupon})
     </insert>
 
     <select id="getByLoanId" resultMap="LoanDetailsResultMap">
@@ -41,7 +42,8 @@
             <if test="extraSource !=null"> extra_source = #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},</if>
             <if test="activity !=null">activity = #{activity},</if>
             <if test="activityDesc !=null">activity_desc = #{activityDesc},</if>
-            <if test="nonTransferable !=null">non_transferable = #{nonTransferable}</if>
+            <if test="nonTransferable !=null">non_transferable = #{nonTransferable},</if>
+            <if test="disableCoupon !=null">disable_coupon = #{disableCoupon},</if>
             <if test="pushMessage !=null and pushMessage != ''">push_message = #{pushMessage}</if>
         </trim>
         WHERE
