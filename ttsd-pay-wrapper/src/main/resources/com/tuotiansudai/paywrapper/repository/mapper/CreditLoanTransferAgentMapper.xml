@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper">
     <resultMap id="requestMap" type="ProjectTransferRequestModel">
         <id property="id" column="id" />
         <result property="service" column="service"/>
@@ -27,21 +27,22 @@
         <result property="requestTime" column="request_time"/>
         <result property="requestUrl" column="request_url"/>
         <result property="requestData" column="request_data"/>
+        <result property="status" column="status"/><!-- 同步方法才需要此字段 -->
     </resultMap>
 
     <sql id="sqlFindById">
-        select * from credit_loan_recharge_pwd_request where id = #{id}
+        select * from credit_loan_transfer_agent_request where id = #{id}
     </sql>
 
     <sql id="sqlCreate">
-        insert into credit_loan_recharge_pwd_request (
-        service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url,
-        order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
-        partic_user_id, amount, request_time, request_url, request_data
+        insert into credit_loan_transfer_agent_request (
+            service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url,
+            order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
+            partic_user_id, amount, request_time, request_url, request_data, status
         ) values (
-        #{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl},
-        #{orderId}, #{merDate}, #{projectId}, #{servType}, #{transAction}, #{particType}, #{particAccType},
-        #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}
+            #{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl},
+            #{orderId}, #{merDate}, #{projectId}, #{servType}, #{transAction}, #{particType}, #{particAccType},
+            #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}, #{status}
         )
     </sql>
 
@@ -65,11 +66,11 @@
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update credit_loan_recharge_pwd_request set status = #{status} where id = #{id}
+        update credit_loan_transfer_agent_request set status = #{status} where id = #{id}
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferResponseModel">
-        insert into credit_loan_recharge_pwd_response (
+        insert into credit_loan_transfer_agent_response (
             request_id, sign_type, sign, mer_id, version, mer_date, mer_check_date,
             trade_no,ret_code,ret_msg, response_data,response_time
         ) values (

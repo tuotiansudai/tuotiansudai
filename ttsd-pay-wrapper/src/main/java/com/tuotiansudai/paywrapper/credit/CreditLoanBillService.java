@@ -14,14 +14,13 @@ public class CreditLoanBillService {
     @Autowired
     private CreditLoanBillMapper creditLoanBillMapper;
 
-    @Transactional
-    public void transferOut(long orderId, long amount, CreditLoanBillBusinessType businessType, String detail, String mobile) {
-        CreditLoanBillModel creditLoanBillModel = new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.OUT, businessType, detail, mobile);
+    public void transferOut(long orderId, long amount, CreditLoanBillBusinessType businessType, String mobile) {
+        CreditLoanBillModel creditLoanBillModel = new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.OUT, businessType, mobile);
         creditLoanBillMapper.create(creditLoanBillModel);
     }
 
-    public void transferIn(long orderId, long amount, CreditLoanBillBusinessType businessType, String detail, String mobile) {
-        CreditLoanBillModel creditLoanBillModel = new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.IN, businessType, detail, mobile);
+    public void transferIn(long orderId, long amount, CreditLoanBillBusinessType businessType, String mobile) {
+        CreditLoanBillModel creditLoanBillModel = new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.IN, businessType, mobile);
         creditLoanBillMapper.create(creditLoanBillModel);
     }
 }

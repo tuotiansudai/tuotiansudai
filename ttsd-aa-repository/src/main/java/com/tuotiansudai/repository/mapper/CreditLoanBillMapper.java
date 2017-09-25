@@ -11,6 +11,5 @@ public interface CreditLoanBillMapper {
 
     void create(CreditLoanBillModel model);
 
-    long findSumAmountByIncome(@Param(value = "businessType") CreditLoanBillBusinessType businessType,
-                               @Param(value = "operationType") SystemBillOperationType operationType);
+    long findSumAmountByInAndRepayType();
 }

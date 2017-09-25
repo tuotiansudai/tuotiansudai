@@ -59,12 +59,20 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Value(value = "${credit.loan.id}")
     private String creditLoanId;
 
+    @Value(value = "${credit.loan.agent}")
+    private String creditLoanAgent;
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> creditLoanRechargeNoPwd(CreditLoanRechargeDto creditLoanRechargeDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
+
+        if (!creditLoanAgent.equals(creditLoanRechargeDto.getMobile())){
+            payDataDto.setMessage("该资金来源账户不是信用贷代理人");
+            return baseDto;
+        }
 
         UserModel userModel = userMapper.findByMobile(creditLoanRechargeDto.getMobile());
 
@@ -104,6 +112,11 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
+
+        if (!creditLoanAgent.equals(creditLoanRechargeDto.getMobile())){
+            payFormDataDto.setMessage("该资金来源账户不是信用贷代理人");
+            return dto;
+        }
 
         UserModel userModel = userMapper.findByMobile(creditLoanRechargeDto.getMobile());
 
@@ -158,20 +171,16 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             String loginName = creditLoanRechargeModel.getAccountName();
             long amount = creditLoanRechargeModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                creditLoanRechargeModel.setUpdatedTime(new Date());
-                creditLoanRechargeModel.setStatus(RechargeStatus.SUCCESS);
-                creditLoanRechargeMapper.updateCreditLoanRecharge(creditLoanRechargeModel);
+                creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.SUCCESS);
                 try {
                     amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
-                    creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE,
-                            MessageFormat.format("{0}充值到信用贷账户{1}", loginName, amount), loginName);
+                    creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, loginName);
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("credit loan recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }
 
             } else {
-                creditLoanRechargeModel.setStatus(RechargeStatus.FAIL);
-                creditLoanRechargeMapper.updateCreditLoanRecharge(creditLoanRechargeModel);
+                creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.FAIL);
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("credit loan Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
