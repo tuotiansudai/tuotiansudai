@@ -15,7 +15,6 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuNopwdRepayMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.HuiZuRepayNotifyRequestModel;
@@ -231,7 +230,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                 try {
                     redisWrapperClient.hset(String.format("REPAY_PLAN_ID:%s", orderId), "status", model.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
                     String actualAmount = redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "actual_amount");
-                    mqWrapperClient.sendMessage(MessageQueue.HuiZuRentRepayNotify, Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    mqWrapperClient.sendMessage(MessageQueue.HuiZuRentRepayNotifyQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
                             .put("orderId", orderId)
                             .put("actual_amount", actualAmount)
                             .put("status", model.isSuccess())

@@ -67,7 +67,7 @@ public enum MessageQueue {
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
     WeChatBoundNotify("WeChatBoundNotify"),
-    HuiZuRentRepayNotify("HuiZuRentRepayNotify"),
+    HuiZuRentRepayNotifyQueue("HuiZuRentRepayNotifyQueue"),
     ExperienceAssigning("ExperienceAssigning"),
     DragonBoatShareLoginTransfer("DragonBoatShareLoginTransfer"), // 端午节活动分享落地页老用户登录后，消息中转（为了获取用户信息）
     DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
