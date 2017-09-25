@@ -20,8 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
-@RequestMapping(path = "/auto-invest")
+//@Controller
+//@RequestMapping(path = "/auto-invest")
 public class AutoInvestController {
 
     @Autowired
