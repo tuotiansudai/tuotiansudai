@@ -183,12 +183,20 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
-        this.checkUserCouponIsAvailable(investDto);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        if (CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) && loanDetailsModel.getDisableCoupon()){
+            throw new InvestException(InvestExceptionType.NOT_USE_COUPON);
+        }
+
+        if (!loanDetailsModel.getDisableCoupon()){
+            this.checkUserCouponIsAvailable(investDto);
+        }
     }
 
     // 验证优惠券是否可用
     private void checkUserCouponIsAvailable(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
+
         LoanModel loanModel = loanMapper.findById(loanId);
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
@@ -413,7 +421,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);
         if (isTurnOn) {

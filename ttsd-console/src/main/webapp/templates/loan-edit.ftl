@@ -162,7 +162,7 @@
                     <label class="col-sm-2 control-label">标的所属活动:</label>
 
                     <div class="col-sm-4">
-                        <input name="activityDesc" type="text" class="form-control" <#if !loan.loanDetails.activity>disabled="disabled"</#if> maxlength="4" value="${loan.loanDetails.activityDesc!}">
+                        <input name="activityDesc" type="text" class="form-control" <#if !loan.loanDetails.activity>disabled="disabled"</#if> maxlength="10" value="${loan.loanDetails.activityDesc!}">
                     </div>
                 </div>
 
@@ -275,6 +275,18 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否可以使用优惠券:</label>
+
+                <div class="col-sm-4 checkbox">
+                    <label for="extra">
+                        <input type="checkbox" id="disableCoupon" name="disableCoupon"
+                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if loan.loanDetails?? && loan.loanDetails.disableCoupon>checked="checked"</#if> value="true" />（选中后投资此标的不允许使用任何优惠券）
+                    </label>
+                </div>
+            </div>
+
         </section>
 
         <section id="section-two">
@@ -357,7 +369,7 @@
 
             <label class="col-sm-1 control-label">初审人员:</label>
             <div class="col-sm-2">
-                <p class="form-control-static">${loan.loan.verifyLoginName}</p>
+                <p class="form-control-static">${loan.loan.verifyLoginName!}</p>
             </div>
         </div>
         </#if>

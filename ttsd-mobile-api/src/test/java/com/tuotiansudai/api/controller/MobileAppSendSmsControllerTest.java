@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.dto.v1_0.VerifyCaptchaRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppSendSmsService;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,7 +33,7 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
     public void shouldSendSmsIsOk() throws Exception {
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12345678900");
-        sendSmsRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         when(service.sendSms(any(SendSmsCompositeRequestDto.class), anyString())).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/sms-captcha/send", sendSmsRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
@@ -53,7 +53,7 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
     public void shouldSendSmsMobileIsValid() throws Exception{
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12345A78900");
-        sendSmsRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         when(service.sendSms(any(SendSmsCompositeRequestDto.class), anyString())).thenReturn(successResponseDto);
 
         doRequestWithServiceIsOkMockedTest("/sms-captcha/send", sendSmsRequestDto)
@@ -63,7 +63,7 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
     @Test
     public void shouldSendSmsMobileIsNull() throws Exception{
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
-        sendSmsRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         when(service.sendSms(any(SendSmsCompositeRequestDto.class), anyString())).thenReturn(successResponseDto);
 
         doRequestWithServiceIsOkMockedTest("/sms-captcha/send", sendSmsRequestDto)
@@ -74,7 +74,7 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
     public void shouldValidateCaptchaIsSuccess() throws Exception {
         VerifyCaptchaRequestDto verifyCaptchaRequestDto = new VerifyCaptchaRequestDto();
         verifyCaptchaRequestDto.setCaptcha("123456");
-        verifyCaptchaRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        verifyCaptchaRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         verifyCaptchaRequestDto.setPhoneNum("13800000098");
         when(service.validateCaptcha(any(VerifyCaptchaRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/validatecaptcha",
@@ -85,7 +85,7 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
         VerifyCaptchaRequestDto verifyCaptchaRequestDto = new VerifyCaptchaRequestDto();
         verifyCaptchaRequestDto.setCaptcha("1234");
         verifyCaptchaRequestDto.setPhoneNum("13800000098");
-        verifyCaptchaRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        verifyCaptchaRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         when(service.validateCaptcha(any(VerifyCaptchaRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceIsOkMockedTest("/validatecaptcha", verifyCaptchaRequestDto)
                 .andExpect(jsonPath("$.code").value("0009"));

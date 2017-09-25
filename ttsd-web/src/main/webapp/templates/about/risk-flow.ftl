@@ -8,9 +8,7 @@
         <li class="assure "><a href="/about/assurance">安全保障</a></li>
     </ul>
     <div class="main-banner">
-        <div class="page-width">
-            <img src="${commonStaticServer}/images/sign/assure/risk-bar.jpg" alt="风控流程">
-        </div>
+        <div class="page-width risk-bar"></div>
     </div>
     <div class="project-examination-box bg-white clearfix">
     <div class="page-width clearfix">
@@ -112,17 +110,17 @@
     <div class="bg-white project-examination-box hack clearfix">
         <div class="page-width clearfix">
             <div class="column-title-ac"><i></i>项目终审<i></i> </div>
-            <div class="project-examine-last">
+            <div class="project-examine-last clearfix">
                 <dl>
-                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end01.png" alt="风控流程"></em>材料复核</dt>
+                    <dt><em class="end01"></em>材料复核</dt>
                     <dd>总经理助理核实借款材料与风控报告的一致性</dd>
                 </dl>
                 <dl class="two">
-                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end02.png" alt="风控流程"></em>量化评级</dt>
+                    <dt><em class="end02"></em>量化评级</dt>
                     <dd>对应拓天速贷系统，量化借款人的安全等级与借款额度</dd>
                 </dl>
                 <dl>
-                    <dt><em><img src="${commonStaticServer}/images/sign/assure/end03.png" alt="风控流程"></em>终审上会</dt>
+                    <dt><em class="end03"></em>终审上会</dt>
                     <dd>总经理办公会审核材料，综合评判，确定项目是否通过，一票否决制</dd>
                 </dl>
             </div>
@@ -132,7 +130,7 @@
 
     <div class="page-width clearfix pad-box">
         <div class="column-title-ac clearfix"><i></i>权证放款<i></i></div>
-        <div class="pad-m">
+        <div class="pad-m clearfix">
             <dl class="rectangle-box  fl">
                 <dt>抵押公证</dt>
                 <dd>风控部办理相应抵押公证手续， 与客户签订借款协议</dd>
@@ -149,7 +147,7 @@
         <div class="page-width clearfix">
             <div class="column-title-ac"><i></i>贷后管理<i></i> </div>
             <div class="line-top-bar"></div>
-            <div class="lending-steps">
+            <div class="lending-steps clearfix">
                 <dl>
                     <dt><em></em>贷后回访</dt>
                     <dd>风控部定期回访客户，了解客户业务以及资金情况</dd>

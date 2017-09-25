@@ -22,13 +22,20 @@ body {
   left: 45%;
   border-top: 15px solid #fbf3e9;
 }
-.clearfix:after,.clearfix:before{
+.clearfix:after,.clearfix:before {
   content: "";
   display: block;
   clear: both;
   line-height: 0;
   height: 0;
   font-size:0;
+}
+.app-logo {
+  display: inline-block;
+  width:60%;
+  height:60px;
+  background: url('../images/app-download/logo.jpg') center center no-repeat;
+  background-size: contain;
 }
 .column-text {
   margin-top:20px;

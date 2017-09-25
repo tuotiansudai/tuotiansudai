@@ -2,9 +2,13 @@ require('webStyle/about_assurance.scss');
 let assureImgUrl = require('webImages/sign/assure/assure-bar.jpg');
 let guideImgUrl = require('webImages/sign/assure/newer-bar.jpg');
 
-globalFun.$('#assureBar') && globalFun.$('#assureBar').setAttribute('src',assureImgUrl);
-globalFun.$('#guideBar') && globalFun.$('#guideBar').setAttribute('src',guideImgUrl);
+let $guideBar = $('#guideBar'),
+    $assureBar = $('#assureBar');
 
+globalFun.$('#assureBar') && globalFun.$('#assureBar').setAttribute('src',assureImgUrl);
+
+
+$guideBar.length && $guideBar.append('<img src="'+guideImgUrl+'" />');
 let $riskFlow=$('#riskFlow');
 if($riskFlow.length) {
     var $projectList=$('.project-info-list',$riskFlow);

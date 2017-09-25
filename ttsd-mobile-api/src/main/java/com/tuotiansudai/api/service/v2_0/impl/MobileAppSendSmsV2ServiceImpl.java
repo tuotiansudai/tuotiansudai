@@ -7,7 +7,7 @@ import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsV2Service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.CaptchaHelper;
@@ -33,7 +33,7 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
 
     @Override
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
-        if (!sendSmsCompositeRequestDto.getType().equals(CaptchaType.NO_PASSWORD_INVEST) && !sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST)
+        if (!sendSmsCompositeRequestDto.getType().equals(SmsCaptchaType.NO_PASSWORD_INVEST) && !sendSmsCompositeRequestDto.getType().equals(SmsCaptchaType.TURN_OFF_NO_PASSWORD_INVEST)
                 && !captchaHelper.captchaVerify(sendSmsCompositeRequestDto.getImageCaptcha(), sendSmsCompositeRequestDto.getBaseParam().getDeviceId(), remoteIp)) {
             return new BaseResponseDto(ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
         }

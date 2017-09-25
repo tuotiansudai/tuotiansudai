@@ -1,17 +1,13 @@
 var path    = require('path');
 var webpack = require('webpack');
-
-var path = require('path');
-var basePath = path.join(__dirname, 'resources'),
-    staticPath = path.join(basePath, 'static'),
-    publicPath=path.join(staticPath, 'public');
+var packageRoute = require('./package.route.js');
 
 module.exports = {
     entry: {
         'jquery': ['jquery','layer','underscore']
     },
     output: {
-        path: path.join(publicPath, 'js/dllplugins'),
+        path: path.join(packageRoute.publicPath, 'js/dllplugins'),
         filename: '[name].dll.js',
         library: '[name]_library',
         libraryTarget: 'umd',
@@ -24,7 +20,7 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new webpack.DllPlugin({
-            path: path.join(publicPath, 'js/dllplugins', '[name]-manifest.json'),
+            path: path.join(packageRoute.publicPath, 'js/dllplugins', '[name]-manifest.json'),
             name: '[name]_library',
             context: __dirname
         }),

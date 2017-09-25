@@ -6,6 +6,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -14,9 +15,9 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
@@ -59,9 +60,6 @@ public class TransferCashServiceTest {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private SystemBillMapper systemBillMapper;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -123,7 +121,7 @@ public class TransferCashServiceTest {
         this.createAccountByUserId("testTransferCash");
         long orderId = IdGenerator.generate();
         String amount = "1";
-        TransferCashDto transferCashDto = new TransferCashDto("testTransferCash", String.valueOf(orderId), amount);
+        TransferCashDto transferCashDto = new TransferCashDto("testTransferCash", String.valueOf(orderId), amount, UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.LOTTERY_CASH, SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE);
         BaseDto<PayDataDto> baseDto = transferCashService.transferCash(transferCashDto);
         assertTrue(baseDto.isSuccess());
 

@@ -7,7 +7,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -89,7 +89,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         if (referrerIsNotExist) {
             return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(), ReturnMessage.REFERRER_IS_NOT_EXIST.getMsg());
         }
-        boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
+        boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), SmsCaptchaType.REGISTER_CAPTCHA);
         if (verifyCaptchaFailed) {
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }

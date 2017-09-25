@@ -7,17 +7,18 @@ import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOnRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOnService;
 import com.tuotiansudai.api.util.AppVersionUtil;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPasswordInvestTurnOnService {
@@ -37,13 +38,14 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
     private UserOpLogService userOpLogService;
 
     @Override
+    @Transactional
     public BaseResponseDto noPasswordInvestTurnOn(NoPasswordInvestTurnOnRequestDto dto, String ip) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = dto.getBaseParam().getUserId();
 
         if (AppVersionUtil.low != AppVersionUtil.compareVersion()) {
             UserModel userModel = userMapper.findByLoginName(loginName);
-            boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(userModel.getMobile(), dto.getCaptcha(), CaptchaType.NO_PASSWORD_INVEST);
+            boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(userModel.getMobile(), dto.getCaptcha(), SmsCaptchaType.NO_PASSWORD_INVEST);
             if (verifyCaptchaFailed) {
                 baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
                 baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
@@ -51,7 +53,7 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
             }
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         accountModel.setNoPasswordInvest(true);
         accountMapper.update(accountModel);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

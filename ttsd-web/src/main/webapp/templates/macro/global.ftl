@@ -75,6 +75,7 @@
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
     <meta name="description" content="${description}">
+    <meta name="format-detection" content="telephone=no, email=no"/>
     <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
@@ -132,9 +133,15 @@
     <#--}-->
 </script>
 
-<script src="${js.jquerydll}" ></script>
-<script src="${js.globalFun_page!}" ></script>
-<script src="${pageJavascript}" type="text/javascript" id="currentScript" ></script>
+<#if (js.jquerydll)??>
+<script src="${js.jquerydll}" type="text/javascript" ></script>
+</#if>
+<#if (js.globalFun_page)??>
+<script src="${js.globalFun_page!}" type="text/javascript" ></script>
+</#if>
+<#if pageJavascript??>
+<script src="${pageJavascript}" type="text/javascript" id="currentScript"></script>
+</#if>
 
 </body>
 </html>

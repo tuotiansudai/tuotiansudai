@@ -2,13 +2,14 @@ package com.tuotiansudai.smswrapper.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
+import com.tuotiansudai.smswrapper.SmsChannel;
 import com.tuotiansudai.smswrapper.SmsTemplate;
-import com.tuotiansudai.smswrapper.exception.SmsSendingException;
+import com.tuotiansudai.smswrapper.repository.model.SmsHistoryModel;
+import org.apache.log4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,12 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class SmsProviderAlidayu implements SmsProvider {
+public class SmsProviderAlidayu extends SmsProviderBase {
+
+    private static Logger logger = Logger.getLogger(SmsProviderAlidayu.class);
+
+    private final static String SIGN_NAME = "拓天速贷";
 
     private String url;
     private String appKey;
     private String appSecret;
-    private String signName = "拓天速贷";
 
     @Value("${sms.alidayu.url}")
     public void setUrl(String url) {
@@ -40,38 +44,41 @@ public class SmsProviderAlidayu implements SmsProvider {
         this.appSecret = appSecret;
     }
 
-    public void setSignName(String signName) {
-        this.signName = signName;
-    }
-
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) throws SmsSendingException {
-        String templateId = smsTemplate.getTemplateIdAlidayu();
-        TaobaoClient client = new DefaultTaobaoClient(url, appKey, appSecret);
-        AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
-        req.setExtend(MDC.get("requestId"));
-        req.setSmsType("normal");
-        req.setSmsFreeSignName(signName);
-        req.setRecNum(String.join(",", mobileList));
-        req.setSmsTemplateCode(templateId);
+    public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) {
+        List<SmsHistoryModel> smsHistoryModels = this.createSmsHistory(mobileList, smsTemplate, paramList, SmsChannel.ALIDAYU);
+
         try {
+            String templateId = smsTemplate.getTemplateId(SmsChannel.ALIDAYU);
+            TaobaoClient client = new DefaultTaobaoClient(url, appKey, appSecret);
+            AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
+            req.setExtend(MDC.get("requestId"));
+            req.setSmsType("normal");
+            req.setSmsFreeSignName(SIGN_NAME);
+            req.setRecNum(String.join(",", mobileList));
+            req.setSmsTemplateCode(templateId);
             req.setSmsParamString(generateParamString(paramList));
-        } catch (JsonProcessingException e) {
-            throw new SmsSendingException(mobileList, smsTemplate, paramList, "build request entity failed: " + e.getMessage(), e);
-        }
-        try {
             AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
+
+            logger.info(String.format("send sms, mobileList: [%s], content: %s, channel: %s, response: %s",
+                    String.join(",", mobileList),
+                    smsTemplate.generateContent(paramList, SmsChannel.ALIDAYU),
+                    SmsChannel.ALIDAYU,
+                    rsp.getBody()));
+
             boolean success = rsp.isSuccess() && rsp.getResult().getSuccess();
-            if (!success) {
-                throw new SmsSendingException(mobileList, smsTemplate, paramList,
-                        String.format("send sms failed, errorCode: %s, message: %s, response: %s",
-                                rsp.getErrorCode(), rsp.getMsg(), rsp.getBody()));
-            }
-        } catch (ApiException e) {
-            throw new SmsSendingException(mobileList, smsTemplate, paramList, "post sms request failed: " + e.getMessage(), e);
+
+            return this.updateSmsHistory(smsHistoryModels, success, rsp.getBody());
+        } catch (Exception e) {
+            logger.error(String.format("send sms, mobileList: [%s], content: %s, channel: %s",
+                    String.join(",", mobileList),
+                    smsTemplate.generateContent(paramList, SmsChannel.ALIDAYU),
+                    SmsChannel.ALIDAYU), e);
         }
+
+        return smsHistoryModels;
     }
 
     private String generateParamString(List<String> paramList) throws JsonProcessingException {

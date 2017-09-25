@@ -13,7 +13,9 @@
                     <#list banks as bank>
                         <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
                             <input data-name="${bank}" type="radio" value="${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if>>
-                            <label for="bank-${bank}"><img src="${commonStaticServer}/images/bank/${bank}.jpg" alt=""></label>
+                            <label for="bank-${bank}">
+                                <span class="bank ${bank}"></span>
+                            </label>
                         </li>
                     </#list>
                 </ol>

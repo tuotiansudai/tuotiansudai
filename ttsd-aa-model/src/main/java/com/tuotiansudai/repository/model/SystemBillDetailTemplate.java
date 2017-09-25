@@ -22,7 +22,9 @@ public enum SystemBillDetailTemplate {
 
     EXPERIENCE_INTEREST_DETAIL_TEMPLATE("发放用户({0})新手体检金收益{1}分"),
 
-    EXTRA_RATE_DETAIL_TEMPLATE("用户({0})投资(investId={1})加息奖励");
+    EXTRA_RATE_DETAIL_TEMPLATE("用户({0})投资(investId={1})加息奖励"),
+
+    INVEST_RETURN_CASH_DETAIL_TEMPLATE("用户({0})投资逢万返百标,获取现金奖励{1}分");
 
     private final String template;
 

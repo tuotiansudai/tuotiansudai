@@ -2,10 +2,7 @@
 
 <@global.main pageCss="${css.house_decorate_2017}" pageJavascript="${js.house_decorate_2017}" activeNav="" activeLeftNav="" title="818居家理财节_活动中心_拓天速贷" keywords="拓天速贷,818理财节,现金红包,体验金,实物奖励" description="拓天速贷818居家理财节活动,每日登录抢夺现金红包及加息劵,天降红包雨,全家抢不停,当日累计投资可获得该日投资额的2.18倍体验金奖励,以及相应的居家实物奖励.">
 <div class="house-decorate-container" id="houseDecorateContainer">
-    <div class="top-img">
-        <img src="" width="100%" class="media-pc">
-        <img src="" width="100%" class="media-phone">
-    </div>
+    <div class="top-img"></div>
         <div class="content-item page-width">
             <i class="bg-top"></i>
             <i class="bg-bottom"></i>
@@ -103,37 +100,37 @@
                     <dd class="row-item">
                         <p class="img-item gift-one"></p>
                         <p class="name-item">法国进口红酒</p>
-                        <p>累计投资额：3.8万元</p>
+                        <p>累计投资额：8万元</p>
                     </dd>
                     <dd class="row-item">
                         <p class="img-item gift-two"></p>
                         <p class="name-item">按摩披肩</p>
-                        <p>累计投资额：6.8万元</p>
+                        <p>累计投资额：15万元</p>
                     </dd>
                     <dd class="row-item">
                         <p class="img-item gift-three"></p>
                         <p class="name-item">足浴盆</p>
-                        <p>累计投资额：8.8万元</p>
+                        <p>累计投资额：18万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-four"></p>
                         <p class="name-item">艾美特遥控塔扇</p>
-                        <p>累计投资额：18.18万元</p>
+                        <p>累计投资额：38万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-five"></p>
                         <p class="name-item">格兰仕极光微波炉</p>
-                        <p>累计投资额：28.18万元</p>
+                        <p>累计投资额：56万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-six"></p>
                         <p class="name-item">松下吸尘器</p>
-                        <p>累计投资额：38.18万元</p>
+                        <p>累计投资额：80万元</p>
                     </dd>
                     <dd>
                         <p class="img-item gift-seven"></p>
                         <p class="name-item">小天鹅滚筒洗衣机</p>
-                        <p>累计投资额：58.18万元</p>
+                        <p>累计投资额：100万元</p>
                     </dd>
                 </dl>
             </div>

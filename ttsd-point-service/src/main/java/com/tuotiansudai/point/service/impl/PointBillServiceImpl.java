@@ -1,6 +1,9 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.message.ObtainPointMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.dto.AccountItemDataDto;
@@ -54,6 +57,9 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
@@ -62,10 +68,9 @@ public class PointBillServiceImpl implements PointBillService {
             logger.info(String.format("createPointBill:%s no account", loginName));
             return;
         }
-        accountModel.setPoint(accountModel.getPoint() + point);
         String note = this.generatePointBillNote(businessType, orderId);
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        accountMapper.update(accountModel);
+        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
 
     @Override
@@ -76,9 +81,8 @@ public class PointBillServiceImpl implements PointBillService {
             logger.info(String.format("createPointBill:%s no account", loginName));
             return;
         }
-        accountModel.setPoint(accountModel.getPoint() + point);
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        accountMapper.update(accountModel);
+        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
 
     @Override
@@ -89,9 +93,8 @@ public class PointBillServiceImpl implements PointBillService {
             logger.info(String.format("createTaskPointBill: %s no account", loginName));
             return;
         }
-        accountModel.setPoint(accountModel.getPoint() + point);
         pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
-        accountMapper.update(accountModel);
+        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
 
     @Override

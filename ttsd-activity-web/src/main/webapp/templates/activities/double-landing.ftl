@@ -1,6 +1,13 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.double_landing}" pageJavascript="${js.double_landing}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
-
+<style type="text/css">
+    .header-container {
+        display: none;
+    }
+    .nav-container {
+        display: none;
+    }
+</style>
 <div class="landingContainerBox">
     <div class="landing-container double-landing">
         <div class="landing-header-nav">
@@ -99,10 +106,10 @@
                     <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                     <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off"
                           novalidate="novalidate">
-                        <ul class="reg-list tl register-ul">
+                        <ul class="reg-list tl register-ul register-icon-list">
                             <li class="reg-row-container">
                             <#--手机号:-->
-                                <i class="newbie-register-ic-mobile reg-icon"></i>
+                                <i class="icon-mobile reg-icon"></i>
                                 <input validate type="text" id="mobile" name="mobile" class="mobile input-width"
                                        placeholder="手机号"
                                        maxlength="11" value="">
@@ -110,7 +117,7 @@
 
                             <li class="reg-row-container">
                             <#--密码:-->
-                                <i class="newbie-register-ic-password reg-icon"></i>
+                                <i class="icon-password reg-icon"></i>
                                 <input validate type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                        class="password input-width" value="">
                             </li>
@@ -118,7 +125,7 @@
 
                             <li class="code reg-row-container">
                             <#--验证码:-->
-                                <i class="newbie-register-ic-img-captcha reg-icon"></i>
+                                <i class="icon-img-captcha reg-icon"></i>
 
                                 <em class="image-captcha">
                                     <img src="" alt=""/>
@@ -130,7 +137,7 @@
 
                             <li class="reg-row-container">
                             <#--手机验证码:-->
-                                <i class="newbie-register-ic-captcha reg-icon"></i>
+                                <i class="icon-captcha reg-icon"></i>
                                 <span class="captcha-tag" id="pcCaptcha">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                                 <input validate type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
@@ -184,7 +191,7 @@
 
         <div class="header-download">
             <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
-            <div class="img-logo-tip" ></div>
+            <div class="img-logo-tip sprite-global-logo-tip" ></div>
             <span>APP客户端重磅来袭<br/>更便捷更安全</span>
             <a href="#" class="btn-normal fr" id="btnExperienceNow">立即体验</a>
         </div>

@@ -4,10 +4,8 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -50,13 +48,12 @@ public class TransferCashServiceImpl implements TransferCashService {
             TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
-
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
-                        UserBillBusinessType.INVEST_CASH_BACK, null, null);
+                        transferCashDto.getUserBillBusinessType(), null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 String detail = MessageFormat.format(SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
 
-                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), SystemBillBusinessType.LOTTERY_CASH, detail);
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), transferCashDto.getSystemBillBusinessType(), detail);
                 mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
             }
             payDataDto.setStatus(responseModel.isSuccess());
@@ -69,5 +66,4 @@ public class TransferCashServiceImpl implements TransferCashService {
         baseDto.setData(payDataDto);
         return baseDto;
     }
-
 }

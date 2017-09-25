@@ -105,9 +105,16 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         String loginName = investDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
+        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+            payDataDto.setMessage("该项目已转让，请购买其他项目");
             return baseDto;
         }
+
+        if (transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
+            payDataDto.setMessage("余额不足，请充值");
+            return baseDto;
+        }
+
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
@@ -160,9 +167,17 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
+
+        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+            payFormDataDto.setMessage("该项目已转让，请购买其他项目");
             return dto;
         }
+
+        if (transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
+            payFormDataDto.setMessage("余额不足，请充值");
+            return dto;
+        }
+
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(transferee);
         InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);

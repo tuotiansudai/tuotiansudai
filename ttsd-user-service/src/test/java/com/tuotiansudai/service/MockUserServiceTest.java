@@ -2,15 +2,12 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.impl.UserServiceImpl;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
@@ -144,7 +141,7 @@ public class MockUserServiceTest {
         when(loginNameGenerator.generate()).thenReturn(loginName);
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
-        when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         when(prepareUserMapper.findByMobile(anyString())).thenReturn(null);
         when(registerUserService.register(any(UserModel.class))).thenReturn(true);

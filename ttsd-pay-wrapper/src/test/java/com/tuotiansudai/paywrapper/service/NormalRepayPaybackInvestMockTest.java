@@ -60,6 +60,9 @@ public class NormalRepayPaybackInvestMockTest {
     private AccountMapper accountMapper;
 
     @Mock
+    private CouponRepayMapper couponRepayMapper;
+
+    @Mock
     private PaySyncClient paySyncClient;
 
     @Mock
@@ -336,6 +339,7 @@ public class NormalRepayPaybackInvestMockTest {
         when(investMapper.findById(invest1.getId())).thenReturn(invest1);
         List<InvestModel> successInvests = Lists.newArrayList(invest1);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
+        when(couponRepayMapper.findCouponRepayByInvestIdAndPeriod(invest1.getId(), loanRepay2.getPeriod())).thenReturn(null);
 
         InvestRepayModel invest1InvestRepay1 = new InvestRepayModel(1, invest1.getId(), 1, 0, 0, 0, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         invest1InvestRepay1.setActualInterest(invest1InvestRepay1.getExpectedInterest());

@@ -2,7 +2,6 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
@@ -71,6 +70,9 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "回款记录", example = "list")
     private List<InvestRepayDataDto> investRepays = new ArrayList<>();
 
+    @ApiModelProperty(value = "CFCA合同", example = "/contract/invest/contractNo/JK20170822000085681")
+    private String contractLocation;
+
     public UserInvestRepayResponseDataDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.loanId = String.valueOf(transferApplicationModel.getLoanId());
@@ -88,7 +90,6 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.loanId = String.valueOf(loanModel.getId());
         this.loanName = loanModel.getName();
@@ -97,7 +98,6 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.duration = String.valueOf(loanModel.getDuration());
         this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
         this.productNewType = loanModel.getProductType().name();
-        this.recheckTime = loanModel.getProductType() == ProductType.EXPERIENCE ? sdf.format(investModel.getInvestTime()):(String.valueOf(loanModel.getRecheckTime()==null?"":sdf2.format(loanModel.getRecheckTime())));
         this.investId = String.valueOf(investModel.getId());
         this.investAmount = AmountConverter.convertCentToString(investModel.getAmount());
         this.investTime = sdf.format(investModel.getInvestTime());
@@ -254,5 +254,13 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     public void setServiceFeeDesc(String serviceFeeDesc) {
         this.serviceFeeDesc = serviceFeeDesc;
+    }
+
+    public String getContractLocation() {
+        return contractLocation;
+    }
+
+    public void setContractLocation(String contractLocation) {
+        this.contractLocation = contractLocation;
     }
 }

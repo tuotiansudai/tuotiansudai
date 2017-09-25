@@ -57,7 +57,7 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf" target="_blank">债权转让协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
@@ -298,12 +298,13 @@
                             <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investor.anxinUser>
                             <dd class="skip-group">
-                                <label>
-                                    <i class="skip-icon active"></i>
-                                    <input type="hidden" id="skipCheck" value="true">
-                                </label>
+
+                                <span class="init-checkbox-style on">
+                                     <input type="checkbox" id="skipCheck" class="default-checkbox" checked>
+                                 </span>
                                 <div class="skip-text">
-                                    我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                                   我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span>
+                                    <span class="check-tip" id="checkTip">请勾选</span></a>
                                 </div>
                             </dd>
                             </#if>
@@ -314,8 +315,8 @@
                 <#if ["REPAYING", "RECHECK", "CANCEL", "OVERDUE", "COMPLETE"]?seq_contains(loan.loanStatus)>
                     <form action="/loan-list" method="get">
                         <dl class="account-list">
-                            <dd class="img-status">
-                                <img src="${commonStaticServer}/images/sign/loan/${loan.loanStatus?lower_case}.png" alt=""/>
+                            <dd>
+                                <span class="img-status ${loan.loanStatus?lower_case}"></span>
                             </dd>
                             <dd>
                                 <button class="btn-pay btn-normal" type="submit">查看其他项目</button>

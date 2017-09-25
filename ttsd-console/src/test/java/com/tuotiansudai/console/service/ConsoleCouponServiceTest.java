@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.CouponMapper;
@@ -104,7 +105,7 @@ public class ConsoleCouponServiceTest {
         SmsCaptchaModel smsCaptchaModel = new SmsCaptchaModel();
         smsCaptchaModel.setMobile("18600000101");
         smsCaptchaModel.setCaptcha("111111");
-        smsCaptchaModel.setCaptchaType(CaptchaType.REGISTER_CAPTCHA);
+        smsCaptchaModel.setSmsCaptchaType(SmsCaptchaType.REGISTER_CAPTCHA);
         smsCaptchaModel.setCreatedTime(new Date());
         DateTime expiredTime = new DateTime().plusDays(1);
         smsCaptchaModel.setExpiredTime(expiredTime.toDate());
