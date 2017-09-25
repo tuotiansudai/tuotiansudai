@@ -76,4 +76,16 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("amount", amount);
         return payRequestData;
     }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
 }

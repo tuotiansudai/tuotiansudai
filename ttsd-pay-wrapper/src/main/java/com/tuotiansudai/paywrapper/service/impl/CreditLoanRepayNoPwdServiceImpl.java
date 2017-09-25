@@ -5,7 +5,6 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayNoPwdMapper;
@@ -16,20 +15,28 @@ import com.tuotiansudai.paywrapper.service.CreditLoanRepayNoPwdService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Date;
 
+@Service
 public class CreditLoanRepayNoPwdServiceImpl implements CreditLoanRepayNoPwdService {
     private static Logger logger = Logger.getLogger(CreditLoanRepayNoPwdServiceImpl.class);
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final static String CREDIT_LOAN_REPAY_NOPWD_REDIS_KEY = "CREDIT_LOAN_REPAY_NOPWD_REDIS_KEY:{0}";
+    private final static String CREDIT_LOAN_REPAYING_REDIS_KEY = "credit:loan:repaying:{0}";
+
+    private final static String REPAY_ORDER_ID_SEPARATOR = "X";
+
+    private final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
 
     @Autowired
     private UserMapper userMapper;
@@ -42,9 +49,6 @@ public class CreditLoanRepayNoPwdServiceImpl implements CreditLoanRepayNoPwdServ
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
-    private PayAsyncClient payAsyncClient;
 
     @Value(value = "${credit.loan.id}")
     private String creditLoanId;
@@ -62,7 +66,8 @@ public class CreditLoanRepayNoPwdServiceImpl implements CreditLoanRepayNoPwdServ
             return dto;
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userMapper.findByMobile(mobile).getLoginName());
+        UserModel userModel = userMapper.findByMobile(mobile);
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         if (accountModel == null) {
             payDataDto.setMessage("用户未开通支付账户");
             payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
@@ -84,13 +89,13 @@ public class CreditLoanRepayNoPwdServiceImpl implements CreditLoanRepayNoPwdServ
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.creditLoanNoPwdRepayRequest(
                 creditLoanId,
-                String.valueOf(orderId),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(orderId), String.valueOf(new Date().getTime())),
                 accountModel.getPayUserId(),
                 String.valueOf(amount));
 
         try {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(CreditLoanRepayNoPwdMapper.class, requestModel, ProjectTransferNopwdResponseModel.class);
-            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_REPAY_NOPWD_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
+            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
             if (responseModel.isSuccess()) {
                 logger.info(MessageFormat.format("[credit loan repay]{0} nopwd is success, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
                 payDataDto.setMessage("还款成功");
@@ -114,6 +119,6 @@ public class CreditLoanRepayNoPwdServiceImpl implements CreditLoanRepayNoPwdServ
     }
 
     private boolean isRepaying(long orderId) {
-        return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_REPAY_NOPWD_REDIS_KEY, String.valueOf(orderId)));
+        return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)));
     }
 }
