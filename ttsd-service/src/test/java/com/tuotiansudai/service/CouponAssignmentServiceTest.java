@@ -43,6 +43,7 @@ import static org.mockito.Mockito.verify;
 @Transactional
 public class CouponAssignmentServiceTest {
 
+
     @Autowired
     private UserMapper userMapper;
 
