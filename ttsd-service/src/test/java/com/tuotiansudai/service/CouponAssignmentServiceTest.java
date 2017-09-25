@@ -70,7 +70,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldExchangeCode() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.EXCHANGER_CODE, false);
         exchangeCodeService.generateExchangeCode(fakeCoupon.getId(), 1);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(fakeCoupon.getId());
@@ -85,7 +85,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssignCoupon() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
         couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
@@ -98,7 +98,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssignMultipleCoupon() {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
 
         couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
@@ -114,7 +114,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAsyncAssignUserGroup() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
         MockitoAnnotations.initMocks(this);
@@ -133,7 +133,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssign() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
         couponAssignmentService.assign(fakeUser.getLoginName(), fakeCoupon.getId(), "");
@@ -151,7 +151,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssignMultiple() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
 
         couponAssignmentService.assign(fakeUser.getLoginName(), fakeCoupon.getId(), "");
@@ -168,7 +168,7 @@ public class CouponAssignmentServiceTest {
     }
 
     private CouponModel getFakeCoupon(UserGroup userGroup, boolean isMultiple) {
-        UserModel couponCreator = getFakeUser("fakeUser");
+        UserModel couponCreator = getFakeUser("fakeUser1");
         userMapper.create(couponCreator);
         return createCouponModel(userGroup, isMultiple, couponCreator.getLoginName());
     }
