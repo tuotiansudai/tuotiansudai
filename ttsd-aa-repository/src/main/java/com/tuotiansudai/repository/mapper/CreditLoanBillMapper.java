@@ -11,5 +11,7 @@ public interface CreditLoanBillMapper {
 
     void create(CreditLoanBillModel model);
 
-    long findSumAmountByInAndRepayType();
+    long findSumAmountByInAndBusinessType();
+
+    long findSumAmountByOutAndBusinessType();
 }
