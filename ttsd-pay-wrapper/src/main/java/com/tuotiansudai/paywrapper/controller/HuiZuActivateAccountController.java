@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.HuiZuActivateAccountDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.service.HuiZuActivateAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,4 @@ public class HuiZuActivateAccountController {
     public BaseDto<PayFormDataDto> password(@Valid @RequestBody HuiZuActivateAccountDto activateAccountDto) {
         return huiZuActivateAccountService.password(activateAccountDto);
     }
-
-    @RequestMapping(value = "/no-password", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> noPassword(@Valid @RequestBody HuiZuActivateAccountDto activateAccountDto) {
-        return huiZuActivateAccountService.noPassword(activateAccountDto);
-    }
-
 }

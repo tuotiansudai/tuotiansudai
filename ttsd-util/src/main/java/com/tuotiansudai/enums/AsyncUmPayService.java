@@ -96,15 +96,14 @@ public enum AsyncUmPayService {
     INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
 
     /**
-     * 惠租无密一分钱激活账户
-     */
-    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "callback/hz_activate_account_notify", "hz_activate_account_notify", "huizu://activate-account/{0}"),
-
-    /**
      * 惠租有密一分钱激活账户
      */
-    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "callback/hz_activate_account_notify", "hz_activate_account_notify", "huizu://activate-account/{0}"),
+    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("hz_activate_account", "", "callback/hz_activate_account", "callback/hz_activate_account_notify", "huizu://activate-account/{0}"),
 
+    /**
+     * 慧租无密还款
+     */
+    HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer_nopwd", "", "callback/hz_no_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
 
     /**
      * 无密还款标的转入

@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.HuiZuRepayDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.service.HuiZuRepayService;
 import org.apache.log4j.Logger;
@@ -27,5 +28,12 @@ public class HuizuRepayController {
     public BaseDto<PayFormDataDto> repayPassword(@Valid @RequestBody HuiZuRepayDto repayDto) {
 
         return huiZuRepayService.passwordRepay(repayDto);
+    }
+
+    @RequestMapping(value = "/no-password", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> repayNoPassword(@Valid @RequestBody HuiZuRepayDto repayDto) {
+
+        return huiZuRepayService.noPasswordRepay(repayDto);
     }
 }
