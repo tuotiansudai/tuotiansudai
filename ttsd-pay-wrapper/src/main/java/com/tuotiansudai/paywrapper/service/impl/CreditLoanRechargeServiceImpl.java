@@ -125,7 +125,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
 
         AccountModel accountModel = accountMapper.findByLoginName(creditLoanRechargeModel.getAccountName());
 
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRequest(
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRechargePwdRequest(
                 creditLoanId,
                 String.valueOf(creditLoanRechargeModel.getId()),
                 accountModel.getPayUserId(),
