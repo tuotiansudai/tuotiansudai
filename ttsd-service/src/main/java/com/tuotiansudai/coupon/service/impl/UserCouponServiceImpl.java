@@ -9,8 +9,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.tuotiansudai.dto.UserCouponDto;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserCouponView;
@@ -21,8 +20,6 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -36,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +60,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -102,6 +103,10 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDto> getInvestUserCoupons(String loginName, long loanId) {
+        if (loanDetailsMapper.getByLoanId(loanId).getDisableCoupon()){
+            return new ArrayList<UserCouponDto>();
+        }
+
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
 
         List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
