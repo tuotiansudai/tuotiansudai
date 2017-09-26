@@ -1,8 +1,8 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import org.hibernate.validator.constraints.NotEmpty;
 
