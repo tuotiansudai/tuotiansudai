@@ -36,8 +36,13 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
                 throw new RuntimeException(e);
             }
 
-            logger.info("[MQ] ready to consume message to save credit loan bill. message:{}", message);
-            creditLoanBillMapper.create(billModel);
+            CreditLoanBillModel billInDb = creditLoanBillMapper.findByOrderIdAndBusinessType(billModel.getOrderId(), billModel.getBusinessType());
+            if (billInDb != null) {
+                logger.info("[MQ] ready to consume message to save credit loan bill, but bill has already saved. message:{}", message);
+            } else {
+                logger.info("[MQ] ready to consume message to save credit loan bill. message:{}", message);
+                creditLoanBillMapper.create(billModel);
+            }
             logger.info("[MQ] consume message success.");
         }
     }
