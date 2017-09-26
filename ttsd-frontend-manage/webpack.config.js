@@ -111,6 +111,17 @@ else if(NODE_ENV=='dev') {
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
+	// 接口代理,目前用ftl-server模拟假数据
+	// var proxyList = ['/images/fonts/*'];
+	// var proxyObj = {};
+	// proxyList.forEach(function(value) {
+	// 	proxyObj[value] = {
+	// 		target: 'http://localhost:8080',
+	// 		changeOrigin: true,
+	// 		secure: false
+	// 	};
+	// });
+
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
@@ -123,14 +134,8 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
-		},
-		proxy: {
-			'/images/fonts/*': {
-				target: 'http://localhost:8080/',
-				changeOrigin: true,
-				secure: false
-			}
 		}
+		// proxy:proxyObj
 	};
 }
 
