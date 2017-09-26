@@ -27,5 +27,7 @@ public enum Source {
     /**
      * 微信
      */
-    WE_CHAT
+    WE_CHAT,
+
+    HUI_ZU
 }

@@ -19,6 +19,9 @@
     <#case 'project_transfer'>
         <p>账户激活成功！</p>
         <#break>
+    <#case 'hui_zu_password_repay_project_transfer'>
+        <p>租金还款成功！</p>
+        <#break>
 </#switch>
     <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
 </div>
