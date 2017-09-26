@@ -1,12 +1,14 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNotifyMapper;
@@ -59,6 +61,10 @@ public class CreditLoanRechargeServiceTest {
     private PaySyncClient paySyncClient;
     @Mock
     private PayAsyncClient payAsyncClient;
+    @Mock
+    private MQWrapperClient mqWrapperClient;
+    @Mock
+    private CreditLoanBillService creditLoanBillService;
 
     @Before
     public void init() throws Exception {
