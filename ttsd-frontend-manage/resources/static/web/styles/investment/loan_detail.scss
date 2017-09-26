@@ -922,6 +922,10 @@ $red: #eb4a3e;
 @media screen and (max-width:700px) {
   .invest-list-content .col-md-4 { width: 100%;}
   .loan-detail-content {
+    .project-model .model-content .text-list li {
+      width:100%;
+      float: none;
+    }
     .loan-model {
       display: block;
       .blank-middle {

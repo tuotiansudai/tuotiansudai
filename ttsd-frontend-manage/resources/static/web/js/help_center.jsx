@@ -1,6 +1,6 @@
 require('webStyle/help_center.scss');
+require('webJsModule/touch_menu');
 let helpCenterImgBarUrl = require('webImages/helpcenter/help-center.png');
-
 let $helpCenter = $("#helpCenter");
 
 $helpCenter.find("img.help-center-bar").attr("src", helpCenterImgBarUrl);
