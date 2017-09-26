@@ -53,16 +53,16 @@ public class CreditLoanBillService {
     }
 
     public long findSumCreditLoanIncome(Date startTime,
-                                    Date endTime,
-                                    CreditLoanBillOperationType operationType,
-                                    CreditLoanBillBusinessType businessType) {
+                                        Date endTime,
+                                        CreditLoanBillOperationType operationType,
+                                        CreditLoanBillBusinessType businessType) {
         return creditLoanBillMapper.findSumCreditLoanIncome(startTime, endTime, operationType, businessType);
     }
 
     public long findSumCreditLoanExpend(Date startTime,
-                                    Date endTime,
-                                    CreditLoanBillOperationType operationType,
-                                    CreditLoanBillBusinessType businessType) {
+                                        Date endTime,
+                                        CreditLoanBillOperationType operationType,
+                                        CreditLoanBillBusinessType businessType) {
 
         return creditLoanBillMapper.findSumCreditLoanExpend(startTime, endTime, operationType, businessType);
     }
