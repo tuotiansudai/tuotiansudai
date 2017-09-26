@@ -95,13 +95,6 @@ public class CreditLoanTransferAgentServiceTest {
         Field creditLoanAgentField = this.creditLoanTransferAgentService.getClass().getDeclaredField("creditLoanAgent");
         creditLoanAgentField.setAccessible(true);
         creditLoanAgentField.set(this.creditLoanTransferAgentService, "00000000000");
-        Field creditLoanIdField = this.creditLoanTransferAgentService.getClass().getDeclaredField("creditLoanId");
-        creditLoanIdField.setAccessible(true);
-        creditLoanIdField.set(this.creditLoanTransferAgentService, "11111");
-//        Field smsWrapperClientField = this.creditLoanTransferAgentService.getClass().getDeclaredField("smsWrapperClient");
-//        smsWrapperClientField.setAccessible(true);
-//        modifiersField.setInt(smsWrapperClientField, smsWrapperClientField.getModifiers() & ~Modifier.FINAL);
-//        smsWrapperClientField.set(this.creditLoanTransferAgentService, this.smsWrapperClient);
     }
 
     @Test
