@@ -2,10 +2,15 @@ require('webStyle/about_us.scss');
 require('publicJs/pagination');
 require('webJsModule/touch_menu');
 let paginationElement = $('.pagination');
-
 //拓天公告
 var $noticeList=$('#noticeList'),
     $noticeDetail=$('#noticeDetail');
+let $leftMenuBox = $('#leftMenuBox');
+
+let redirect = globalFun.browserRedirect();
+if(redirect=='mobile') {
+    $leftMenuBox.find('li').eq(3).hide();
+}
 if($noticeList.length) {
     let noticeTpl=$('#noticeListTemplate').html();
     let ListRender = _.template(noticeTpl);
