@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.paywrapper.credit.CreditLoanOutService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanRepayService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
@@ -31,15 +32,25 @@ public class CreditLoanCallbackController {
 
     private final CreditLoanOutService creditLoanOutService;
 
+    private final CreditLoanRepayService creditLoanRepayService;
+
     @Autowired
-    public CreditLoanCallbackController(CreditLoanOutService creditLoanOutService) {
+    public CreditLoanCallbackController(CreditLoanOutService creditLoanOutService, CreditLoanRepayService creditLoanRepayService) {
         this.creditLoanOutService = creditLoanOutService;
+        this.creditLoanRepayService = creditLoanRepayService;
     }
 
     @RequestMapping(value = "/credit_loan_out_notify", method = RequestMethod.GET)
     public ModelAndView loanOutNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.creditLoanOutService.loanOutCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanRepayService.repayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

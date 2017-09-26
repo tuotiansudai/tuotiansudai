@@ -1,10 +1,17 @@
 package com.tuotiansudai.paywrapper.credit;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -19,13 +26,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class CreditLoanRepayService {
 
     private static Logger logger = Logger.getLogger(CreditLoanRepayService.class);
 
-    private final static String CREDIT_LOAN_REPAYING_REDIS_KEY = "credit:loan:repaying:{0}";
+    private final static String CREDIT_LOAN_REPAY_REDIS_KEY = "credit:loan:repay:{0}";
+
+    private final static String CREDIT_LOAN_PASSWORD_REPAY_EXPIRED_REDIS_KEY = "credit:loan:password:repay:expired:{0}";
 
     private final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
@@ -39,11 +49,14 @@ public class CreditLoanRepayService {
 
     private final PayAsyncClient payAsyncClient;
 
+    private final MQWrapperClient mqWrapperClient;
+
     @Autowired
-    public CreditLoanRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient) {
+    public CreditLoanRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, MQWrapperClient mqWrapperClient) {
         this.userMapper = userMapper;
         this.accountMapper = accountMapper;
         this.payAsyncClient = payAsyncClient;
+        this.mqWrapperClient = mqWrapperClient;
     }
 
     @Transactional
@@ -73,13 +86,25 @@ public class CreditLoanRepayService {
             return dto;
         }
 
+        if (this.isRepaying(orderId)) {
+            payFormDataDto.setMessage("还款交易进行中, 请30分钟后查看");
+            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
+        if (this.isFinished(orderId)) {
+            payFormDataDto.setMessage("还款已完成, 请勿重复还款");
+            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRepayRequest(
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(orderId), String.valueOf(new Date().getTime())),
                     account.getPayUserId(),
                     String.valueOf(amount));
             BaseDto<PayFormDataDto> payFormDataDtoBaseDto = payAsyncClient.generateFormData(CreditLoanRepayProjectTransferMapper.class, requestModel);
-            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
+            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_PASSWORD_REPAY_EXPIRED_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
             return payFormDataDtoBaseDto;
         } catch (PayException e) {
             logger.error(MessageFormat.format("[credit loan repay {0}] generate form error, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
@@ -88,6 +113,36 @@ public class CreditLoanRepayService {
         }
 
         return dto;
+    }
+
+    public String repayCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                originalQueryString,
+                CreditLoanRepayProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            logger.warn("[credit loan out] parse callback error");
+            return null;
+        }
+
+        String orderId = callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0];
+
+        String key = MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, orderId);
+        if (!redisWrapperClient.exists(key)) {
+            if (callbackRequest.isSuccess()) {
+                redisWrapperClient.set(key, SyncRequestStatus.SUCCESS.name());
+                //TODO : loan_bill account user_bill
+            }
+
+            mqWrapperClient.sendMessage(MessageQueue.CreditLoanRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    .put("order_id", orderId)
+                    .put("success", callbackRequest.isSuccess())
+                    .build()));
+        }
+
+        return callbackRequest.getResponseData();
     }
 
     private boolean checkAmount(long orderId, long amount) {
@@ -100,8 +155,17 @@ public class CreditLoanRepayService {
     }
 
     private boolean isRepaying(long orderId) {
-        return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)));
+        return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_PASSWORD_REPAY_EXPIRED_REDIS_KEY, String.valueOf(orderId)));
+    }
 
+    private boolean isFinished(long orderId) {
+        try {
+            String key = MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId));
+            return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.get(key)) == SyncRequestStatus.SUCCESS;
+        } catch(Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
     }
 
     private AccountModel getAccount(long orderId, String mobile) {
