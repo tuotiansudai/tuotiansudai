@@ -71,12 +71,10 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             return baseDto;
         }
 
-        UserModel userModel = userMapper.findByMobile(creditLoanRechargeDto.getMobile());
+        AccountModel accountModel = accountMapper.findByMobile(creditLoanRechargeDto.getMobile());
 
-        CreditLoanRechargeModel model = new CreditLoanRechargeModel(creditLoanRechargeDto, userModel.getLoginName());
+        CreditLoanRechargeModel model = new CreditLoanRechargeModel(creditLoanRechargeDto, accountModel.getLoginName());
         model.setId(IdGenerator.generate());
-
-        AccountModel accountModel = accountMapper.findByLoginName(model.getAccountName());
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanRechargeNopwdRequest(
                 String.valueOf(model.getId()),
@@ -98,7 +96,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         } catch (PayException e) {
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(MessageFormat.format("{0} user {1} account recharge credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName(), userModel.getLoginName()), e);
+            logger.error(MessageFormat.format("{0} user {1} account recharge credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName(), accountModel.getLoginName()), e);
         }
         return baseDto;
     }
@@ -115,12 +113,10 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             return dto;
         }
 
-        UserModel userModel = userMapper.findByMobile(creditLoanRechargeDto.getMobile());
+        AccountModel accountModel = accountMapper.findByMobile(creditLoanRechargeDto.getMobile());
 
-        CreditLoanRechargeModel creditLoanRechargeModel = new CreditLoanRechargeModel(creditLoanRechargeDto, userModel.getLoginName());
+        CreditLoanRechargeModel creditLoanRechargeModel = new CreditLoanRechargeModel(creditLoanRechargeDto, accountModel.getLoginName());
         creditLoanRechargeModel.setId(IdGenerator.generate());
-
-        AccountModel accountModel = accountMapper.findByLoginName(creditLoanRechargeModel.getAccountName());
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRechargePwdRequest(
                 String.valueOf(creditLoanRechargeModel.getId()),
@@ -132,7 +128,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CreditLoanPwdRechargeMapper.class, requestModel);
             return baseDto;
         } catch (PayException e) {
-            logger.error(MessageFormat.format("{0} user {1} account recharge credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName(), userModel.getLoginName()), e);
+            logger.error(MessageFormat.format("{0} user {1} account recharge credit loan  is failed", creditLoanRechargeDto.getOperatorLoginName(), accountModel.getLoginName()), e);
         }
         return dto;
     }

@@ -30,9 +30,6 @@ public class CreditLoanRechargeController {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @RequestMapping(value = "/credit-loan-recharge",method = RequestMethod.GET)
     public ModelAndView creditLoanRecharge() {
         return new ModelAndView("/credit-loan-recharge");
@@ -43,7 +40,8 @@ public class CreditLoanRechargeController {
     public ModelAndView creditLoanRecharge(@Valid @ModelAttribute CreditLoanRechargeDto creditLoanRechargeDto) {
         ModelAndView modelAndView = new ModelAndView("/credit-loan-recharge", "responsive", true);
         String operatorLoginName = LoginUserInfo.getLoginName();
-        AccountModel accountModel = accountMapper.findByLoginName(userMapper.findByMobile(creditLoanRechargeDto.getMobile()).getLoginName());
+        AccountModel accountModel = accountMapper.findByMobile(creditLoanRechargeDto.getMobile());
+
         creditLoanRechargeDto.setOperatorLoginName(operatorLoginName);
 
         if (accountModel.isNoPasswordInvest()) {

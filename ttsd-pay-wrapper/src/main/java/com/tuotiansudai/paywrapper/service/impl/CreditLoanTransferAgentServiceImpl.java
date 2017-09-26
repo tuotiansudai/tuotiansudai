@@ -81,8 +81,10 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
         if (transferAmount <= 0) {
             return;
         }
-        UserModel userModel = userMapper.findByMobile(creditLoanAgent);
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        AccountModel accountModel = accountMapper.findByMobile(creditLoanAgent);
+        if (accountModel == null){
+            return;
+        }
 
         logger.info("[信用贷还款转入代理人]：发起联动优势转账请求，代理人:" + creditLoanAgent + "，转入金额:" + transferAmount);
 

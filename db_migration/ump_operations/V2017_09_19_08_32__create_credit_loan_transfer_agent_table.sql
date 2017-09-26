@@ -6,6 +6,8 @@ CREATE TABLE `ump_operations`.`credit_loan_transfer_agent_request` (
   `charset`         VARCHAR(16)     NOT NULL,
   `mer_id`          VARCHAR(8)      NOT NULL,
   `version`         VARCHAR(3)      NOT NULL,
+  `ret_url`         VARCHAR(128)    NULL,
+  `notify_url`      VARCHAR(128)    NULL,
   `order_id`        VARCHAR(32)     NOT NULL,
   `mer_date`        VARCHAR(8)      NOT NULL,
   `project_id`      VARCHAR(32)     NOT NULL,

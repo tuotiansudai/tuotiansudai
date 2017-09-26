@@ -62,8 +62,6 @@ public class CreditLoanRechargeServiceTest {
     @Mock
     private AccountMapper accountMapper;
     @Mock
-    private UserMapper userMapper;
-    @Mock
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
     @Mock
     private PaySyncClient paySyncClient;
@@ -102,21 +100,18 @@ public class CreditLoanRechargeServiceTest {
     public void shouldRechargeNoPasswordSuccess() throws Exception {
         ArgumentCaptor<ProjectTransferNopwdRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferNopwdRequestModel.class);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(userModel.getMobile())).thenReturn(userModel);
-
         AccountModel accountModel = new AccountModel("creditLoan", "payUserId", "payAccountId", new Date());
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         CreditLoanRechargeDto dto = new CreditLoanRechargeDto();
-        dto.setMobile(userModel.getMobile());
+        dto.setMobile("00000000000");
         dto.setOperatorLoginName("admin");
         dto.setAmount("100");
 
         ProjectTransferNopwdResponseModel responseModel = new ProjectTransferNopwdResponseModel();
         responseModel.setRetCode("0000");
 
-        when(this.paySyncClient.send(eq(CreditLoanNopwdRechargeMapper.class), any(ProjectTransferNopwdRequestModel.class), eq(ProjectTransferNopwdResponseModel.class))).thenReturn(responseModel);
+        when(this.paySyncClient.send(eq(CreditLoanNopwdRechargeMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenReturn(responseModel);
         BaseDto<PayDataDto> baseDto = this.creditLoanRechargeService.creditLoanRechargeNoPwd(dto);
 
         verify(this.paySyncClient, times(1)).send(eq(CreditLoanNopwdRechargeMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class));
@@ -132,14 +127,11 @@ public class CreditLoanRechargeServiceTest {
     public void shouldRechargePwdSuccess() throws Exception {
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(userModel.getMobile())).thenReturn(userModel);
-
         AccountModel accountModel = new AccountModel("creditLoan", "payUserId", "payAccountId", new Date());
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         CreditLoanRechargeDto dto = new CreditLoanRechargeDto();
-        dto.setMobile(userModel.getMobile());
+        dto.setMobile("00000000000");
         dto.setOperatorLoginName("admin");
         dto.setAmount("100");
 
@@ -229,17 +221,5 @@ public class CreditLoanRechargeServiceTest {
         assertThat(idCaptor.getAllValues().get(0), is(orderId));
         assertThat(statusCaptor.getAllValues().get(0), is(RechargeStatus.FAIL));
 
-    }
-
-    public UserModel getFakeUserModel() {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName("creditLoan");
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("00000000000");
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        return userModelTest;
     }
 }
