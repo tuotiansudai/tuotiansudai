@@ -2,15 +2,16 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
@@ -34,7 +35,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -50,9 +50,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Autowired
     private AmountTransfer amountTransfer;
     @Autowired
-    private CreditLoanBillService creditLoanBillService;
-    @Autowired
-    private UserMapper userMapper;
+    private MQWrapperClient mqWrapperClient;
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
@@ -66,7 +64,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        if (!creditLoanAgent.equals(creditLoanRechargeDto.getMobile())){
+        if (!creditLoanAgent.equals(creditLoanRechargeDto.getMobile())) {
             payDataDto.setMessage("该资金来源账户不是信用贷代理人");
             return baseDto;
         }
@@ -108,7 +106,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
 
-        if (!creditLoanAgent.equals(creditLoanRechargeDto.getMobile())){
+        if (!creditLoanAgent.equals(creditLoanRechargeDto.getMobile())) {
             payFormDataDto.setMessage("该资金来源账户不是信用贷代理人");
             return dto;
         }
@@ -166,11 +164,10 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.SUCCESS);
                 try {
                     amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
-                    creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, loginName);
+                    mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, creditLoanAgent));
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("credit loan recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }
-
             } else {
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.FAIL);
             }

@@ -1,13 +1,14 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
@@ -21,6 +22,8 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
+import com.tuotiansudai.repository.model.CreditLoanBillModel;
+import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -55,11 +58,11 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     @Autowired
     private AmountTransfer amountTransfer;
     @Autowired
-    private CreditLoanBillService creditLoanBillService;
-    @Autowired
     private AccountMapper accountMapper;
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value(value = "${credit.loan.agent}")
     private String creditLoanAgent;
@@ -73,7 +76,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
             return;
         }
         AccountModel accountModel = accountMapper.findByMobile(creditLoanAgent);
-        if (accountModel == null){
+        if (accountModel == null) {
             return;
         }
 
@@ -81,7 +84,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
 
         String orderId = String.valueOf(IdGenerator.generate());
 
-        if(!this.checkStatus(orderId)){
+        if (!this.checkStatus(orderId)) {
             return;
         }
 
@@ -139,7 +142,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
                 String statusString = redisWrapperClient.hget(redisKey, CREDIT_LOAN_TRANSFER);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
                     amountTransfer.transferInBalance(accountModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, null, null);
-                    creditLoanBillService.transferOut(orderId, transferAmount, CreditLoanBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, accountModel.getLoginName());
+                    mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, transferAmount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_RETRIEVE, creditLoanAgent));
                     redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (AmountTransferException e) {

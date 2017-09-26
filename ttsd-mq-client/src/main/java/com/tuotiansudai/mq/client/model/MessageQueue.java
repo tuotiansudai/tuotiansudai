@@ -73,7 +73,8 @@ public enum MessageQueue {
     DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
     DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
 
-    CreditLoanOutQueue("CreditLoanOutQueue");
+    CreditLoanOutQueue("CreditLoanOutQueue"),
+    CreditLoanBill("CreditLoanBill");
 
     private final String queueName;
 
