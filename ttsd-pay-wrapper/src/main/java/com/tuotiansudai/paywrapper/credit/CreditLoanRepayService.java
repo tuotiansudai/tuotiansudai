@@ -1,5 +1,8 @@
 package com.tuotiansudai.paywrapper.credit;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -17,7 +20,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class CreditLoanRepayService {
 
     private static Logger logger = Logger.getLogger(CreditLoanRepayService.class);
 
-    private final static String CREDIT_LOAN_REPAYING_REDIS_KEY = "credit:loan:repaying:{0}";
+    private final static String CREDIT_LOAN_REPAY_REDIS_KEY = "credit:loan:repay:{0}";
 
     private final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
@@ -93,7 +95,7 @@ public class CreditLoanRepayService {
                     account.getPayUserId(),
                     String.valueOf(amount));
             BaseDto<PayFormDataDto> payFormDataDtoBaseDto = payAsyncClient.generateFormData(CreditLoanRepayProjectTransferMapper.class, requestModel);
-            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
+            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
             return payFormDataDtoBaseDto;
         } catch (PayException e) {
             logger.error(MessageFormat.format("[credit loan repay {0}] generate form error, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
@@ -111,7 +113,7 @@ public class CreditLoanRepayService {
         PayDataDto payDataDto = new PayDataDto(false, "", String.valueOf(HttpStatus.OK));
         BaseDto<PayDataDto> dto = new BaseDto<>(payDataDto);
 
-        if (amount <= 0) {
+        if (!this.checkAmount(orderId, amount)) {
             payDataDto.setMessage("还款金额必须大于零");
             payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return dto;
@@ -130,12 +132,11 @@ public class CreditLoanRepayService {
             return dto;
         }
 
-        if (this.isRepaying(orderId)){
-            payDataDto.setMessage("还款交易进行中, 请30分钟后查看");
+        if (!checkRepayStatus(orderId)){
+            payDataDto.setMessage("您已还款成功");
             payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return dto;
         }
-
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanNoPwdRepayRequest(
                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(orderId), String.valueOf(new Date().getTime())),
@@ -143,21 +144,22 @@ public class CreditLoanRepayService {
                 String.valueOf(amount));
 
         try {
-            ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(CreditLoanRepayNoPwdMapper.class, requestModel, ProjectTransferNopwdResponseModel.class);
-            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
-            if (responseModel.isSuccess()) {
-                logger.info(MessageFormat.format("[credit loan repay]{0} nopwd is success, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
-                payDataDto.setMessage("还款成功");
-            } else {
-                logger.info(MessageFormat.format("[credit loan repay]{0} nopwd is fail, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
-                payDataDto.setMessage(MessageFormat.format("还款失败，{0}", responseModel.getRetMsg()));
-                this.sendFatalNotify(MessageFormat.format("慧租信用贷无密还款失败，orderId:{0}, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
-            }
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)), SyncRequestStatus.SENT.name());
+            ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
+                    CreditLoanRepayNoPwdMapper.class,
+                    requestModel,
+                    ProjectTransferNopwdResponseModel.class);
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(orderId)))
+                    .build()));
+            payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             logger.error(MessageFormat.format("[慧租信用贷无密还款]orderid:{0} error, mobile:{1} amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
             this.sendFatalNotify(MessageFormat.format("慧租信用贷无密还款异常，orderId:{0}, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
-            payDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
-            payDataDto.setMessage("还款异常");
+            payDataDto.setStatus(false);
+            payDataDto.setMessage(e.getLocalizedMessage());
         }
         return dto;
     }
@@ -172,7 +174,7 @@ public class CreditLoanRepayService {
     }
 
     private boolean isRepaying(long orderId) {
-        return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_REPAYING_REDIS_KEY, String.valueOf(orderId)));
+        return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)));
 
     }
 
@@ -190,5 +192,18 @@ public class CreditLoanRepayService {
     private void sendFatalNotify(String message) {
         SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+    }
+
+    private boolean checkRepayStatus(long orderId){
+        try {
+            String status = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)));
+            if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
+                return true;
+            }
+            logger.error(MessageFormat.format("[credit loan out {0}] status is {1}, do not try again", String.valueOf(orderId), status));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[credit loan out {0}] status check error", String.valueOf(orderId)), e);
+        }
+        return false;
     }
 }

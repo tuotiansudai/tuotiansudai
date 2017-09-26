@@ -14,7 +14,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +22,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -36,8 +34,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -93,23 +89,20 @@ public class CreditLoanRepayNoPwdServiceMockTest {
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("用户未开通免密支付功能"));
 
-
         accountModel.setNoPasswordInvest(true);
         when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:repaying:{0}", String.valueOf(orderId)))).thenReturn(true);
+        when(redisWrapperClient.get(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(SyncRequestStatus.SUCCESS.name());
         dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, 1);
         assertFalse(dto.getData().getStatus());
-        assertThat(dto.getData().getMessage(), is("还款交易进行中, 请30分钟后查看"));
+        assertThat(dto.getData().getMessage(), is("您已还款成功"));
     }
 
     @Test
     public void creditLoanRepayNoPwdSuccess() throws Exception {
-
         int orderId = 1;
         String mobile = "13900000000";
         int amount = 888;
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Integer> expiredCaptor = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<ProjectTransferNopwdRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferNopwdRequestModel.class);
 
@@ -124,20 +117,20 @@ public class CreditLoanRepayNoPwdServiceMockTest {
         responseModel.setRetCode("0000");
 
         when(this.paySyncClient.send(eq(CreditLoanRepayNoPwdMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenReturn(responseModel);
-        when(this.redisWrapperClient.exists(anyString())).thenReturn(false);
-        when(this.redisWrapperClient.setex(redisKeyCaptor.capture(), expiredCaptor.capture(), statusCaptor.capture())).thenReturn("");
+        when(this.redisWrapperClient.get(anyString())).thenReturn("");
+        when(this.redisWrapperClient.set(redisKeyCaptor.capture(), statusCaptor.capture())).thenReturn("");
 
         dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, amount);
 
-        assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:repaying:{0}", String.valueOf(orderId))));
-        assertThat(expiredCaptor.getValue(), is(30 * 60));
+        assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId))));
         assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(String.valueOf(orderId) + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
-        assertThat(dto.getData().getCode(), is(String.valueOf(HttpStatus.OK)));
+        assertTrue(dto.getData().getStatus());
+        assertThat(dto.getData().getCode(), is("0000"));
     }
 
     @Test
@@ -151,7 +144,7 @@ public class CreditLoanRepayNoPwdServiceMockTest {
         accountModel.setNoPasswordInvest(true);
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
 
-        when(this.redisWrapperClient.exists(anyString())).thenReturn(false);
+        when(this.redisWrapperClient.get(anyString())).thenReturn("");
         when(this.paySyncClient.send(eq(CreditLoanRepayNoPwdMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenThrow(new PayException("error"));
 
         BaseDto<PayDataDto> dataDtoBaseDto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, amount);
@@ -160,8 +153,8 @@ public class CreditLoanRepayNoPwdServiceMockTest {
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
-        assertThat(dataDtoBaseDto.getData().getCode(), is(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR)));
-        assertThat(dataDtoBaseDto.getData().getMessage(), is("还款异常"));
+        assertThat(dataDtoBaseDto.getData().getMessage(), is("error"));
+        assertFalse(dataDtoBaseDto.getData().getStatus());
     }
 
 }

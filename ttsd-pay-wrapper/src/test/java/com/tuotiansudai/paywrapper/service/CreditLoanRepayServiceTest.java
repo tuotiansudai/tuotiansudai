@@ -77,7 +77,7 @@ public class CreditLoanRepayServiceTest {
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
 
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:repaying:{0}", String.valueOf(orderId)))).thenReturn(true);
+        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(true);
         dto = this.creditLoanRepayService.passwordRepay(orderId, mobile, 1);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("还款交易进行中, 请30分钟后查看"));
@@ -107,7 +107,7 @@ public class CreditLoanRepayServiceTest {
         verify(this.payAsyncClient,times(1))
                 .generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), requestModelCaptor.capture());
 
-        assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:repaying:{0}", String.valueOf(orderId))));
+        assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId))));
         assertThat(expiredCaptor.getValue(), is(30 * 60));
         assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
