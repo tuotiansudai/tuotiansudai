@@ -6,29 +6,27 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerRechargePersonMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.RechargeNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargeRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.RechargeService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.RechargeModel;
+import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +49,6 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -175,10 +170,7 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     private void postRechargeCallback(long orderId, String loginName, long amount) {
-        try {
-            amountTransfer.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            logger.error(MessageFormat.format("recharge transfer in balance failed (orderId = {0})", String.valueOf(orderId)), e);
-        }
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
     }
 }
