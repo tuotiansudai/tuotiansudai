@@ -165,8 +165,19 @@ public enum AsyncUmPayService {
     /**
      * 平台充值普通转账验密
      */
-    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
-
+    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", ""),
+    /**
+     * 信用贷标的账户充值无密
+     */
+    CREDIT_LOAN_RECHARGE_TRANSFER_NOPWD("project_transfer_nopwd", "finance-manage/credit-loan-bill", "", "credit_loan_recharge_notify", ""),
+    /**
+     * 信用贷标的账户充值验密
+     */
+    CREDIT_LOAN_RECHARGE_TRANSFER("project_transfer", "finance-manage/credit-loan-bill", "", "credit_loan_recharge_notify", ""),
+    /**
+     * 信用贷转账给代理人
+     */
+    CREDIT_LOAN_AGENT_TRANSFER("project_transfer", "", "", "credit_loan_transfer_agent_notify", "");
 
     private final String serviceName;
 
