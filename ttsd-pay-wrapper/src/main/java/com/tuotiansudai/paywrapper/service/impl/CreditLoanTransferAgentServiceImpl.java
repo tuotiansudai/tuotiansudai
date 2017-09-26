@@ -9,10 +9,8 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -21,12 +19,8 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.CreditLoanTransferAgentService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
-import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
-import com.tuotiansudai.repository.model.SystemBillOperationType;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -35,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.dc.pr.PRError;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -63,8 +56,6 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     private AmountTransfer amountTransfer;
     @Autowired
     private CreditLoanBillService creditLoanBillService;
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
@@ -137,7 +128,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
 
     private void postCreditLoanOutCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
-        UserModel userModel = userMapper.findByMobile(creditLoanAgent);
+        AccountModel accountModel = accountMapper.findByMobile(creditLoanAgent);
         long transferAmount = this.transferAmount();
         if (transferAmount <= 0) {
             return;
@@ -147,8 +138,8 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
             try {
                 String statusString = redisWrapperClient.hget(redisKey, CREDIT_LOAN_TRANSFER);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                    amountTransfer.transferInBalance(userModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, null, null);
-                    creditLoanBillService.transferOut(orderId, transferAmount, CreditLoanBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, userModel.getLoginName());
+                    amountTransfer.transferInBalance(accountModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, null, null);
+                    creditLoanBillService.transferOut(orderId, transferAmount, CreditLoanBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, accountModel.getLoginName());
                     redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (AmountTransferException e) {

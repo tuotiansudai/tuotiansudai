@@ -20,8 +20,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
@@ -37,7 +35,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
@@ -108,10 +105,8 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();
         responseModel.setRetCode("0000");
@@ -149,10 +144,8 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         when(this.redisWrapperClient.hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture())).thenReturn(1L);
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenReturn(new ProjectTransferResponseModel());
@@ -188,10 +181,8 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         when(this.redisWrapperClient.hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture())).thenReturn(1L);
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenThrow(new PayException("error"));
@@ -224,8 +215,8 @@ public class CreditLoanTransferAgentServiceTest {
         when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
         when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         BaseCallbackRequestModel callbackRequestModel = new BaseCallbackRequestModel();
         callbackRequestModel.setRetCode("0000");
@@ -257,8 +248,8 @@ public class CreditLoanTransferAgentServiceTest {
         when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
         when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
 
-        UserModel userModel = getFakeUserModel();
-        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         BaseCallbackRequestModel callbackRequestModel = new BaseCallbackRequestModel();
         callbackRequestModel.setRetCode("0000");
@@ -277,17 +268,5 @@ public class CreditLoanTransferAgentServiceTest {
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
         assertThat(statusCaptor.getAllValues().get(0), is(SyncRequestStatus.FAILURE.name()));
 
-    }
-
-    public UserModel getFakeUserModel() {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName("loginName");
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("00000000000");
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        return userModelTest;
     }
 }
