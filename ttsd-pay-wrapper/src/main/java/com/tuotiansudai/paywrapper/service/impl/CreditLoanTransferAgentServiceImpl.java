@@ -122,11 +122,11 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
             return null;
         }
 
-        this.postCreditLoanOutCallback(callbackRequest);
+        this.postCreditLoanTransferAgentCallback(callbackRequest);
         return callbackRequest.getResponseData();
     }
 
-    private void postCreditLoanOutCallback(BaseCallbackRequestModel callbackRequestModel) {
+    private void postCreditLoanTransferAgentCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
         AccountModel accountModel = accountMapper.findByMobile(creditLoanAgent);
         long transferAmount = this.transferAmount();
