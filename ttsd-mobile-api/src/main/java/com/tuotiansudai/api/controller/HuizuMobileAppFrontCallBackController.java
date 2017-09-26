@@ -24,8 +24,12 @@ public class HuizuMobileAppFrontCallBackController {
 
     private static Logger logger = Logger.getLogger(HuizuMobileAppFrontCallBackController.class);
 
+    private final PayWrapperClient payWrapperClient;
+
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    public HuizuMobileAppFrontCallBackController(PayWrapperClient payWrapperClient) {
+        this.payWrapperClient = payWrapperClient;
+    }
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callback(@PathVariable String service, HttpServletRequest request) {

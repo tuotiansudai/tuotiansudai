@@ -9,26 +9,33 @@
 </head>
 
 <body class="success-body">
-<div class="success-info-container">
+<div class="success-info-container" style="padding-bottom: 20px; font-size:">
     <p>
         <i class="success-icon"></i>
     </p>
     <p>${(values.message)!}</p>
+
 <#switch service>
     <#case 'project_transfer_nopwd'>
+
     <#case 'project_transfer'>
         <p>账户激活成功！</p>
         <#break>
+
+    <#case 'credit_loan_repay_project_transfer'>
+        <p>还款成功！</p>
+        <#break>
 </#switch>
+
     <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
 </div>
 <a href="${href}" class="btn-disabled" id="Btn">3s</a>
 
 <script>
-    var num = 3,
-            href = document.getElementById('Btn').getAttribute('href');
+    var num = 3;
+    var href = document.getElementById('Btn').getAttribute('href');
     function countTime() {
-        if (num == 0) {
+        if (num === 0) {
             document.getElementById('Btn').innerHTML = '确定';
             document.getElementById('Btn').setAttribute('href', href);
             document.getElementById('Btn').setAttribute('class', 'btn-success');
