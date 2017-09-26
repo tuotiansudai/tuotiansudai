@@ -17,6 +17,8 @@ public interface UserService {
 
     boolean registerUser(RegisterUserDto dto);
 
+    boolean registerUserFromHuizu(RegisterUserDto dto);
+
     boolean loginNameIsExist(String loginName);
 
     boolean loginNameOrMobileIsExist(String loginNameOrMobile);

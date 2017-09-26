@@ -8,7 +8,7 @@ config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
 env.use_ssh_config = True
 env.always_use_pty = False
-env.ssh_config_path = config_path+'/config'
+env.ssh_config_path = config_path + '/config'
 env.roledefs = {
     'portal': ['beijing', 'shanghai'],
     'pay': ['chongqing', 'tianjin'],
@@ -59,6 +59,7 @@ def mk_mq_consumer():
     local('cd ./ttsd-point-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-activity-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-user-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-amount-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-email-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
 
@@ -148,6 +149,7 @@ def deploy_worker():
     put(local_path='./ttsd-user-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-email-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-amount-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
@@ -164,6 +166,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-user-mq-consumer/')
         sudo('rm -rf ttsd-auditLog-mq-consumer/')
         sudo('rm -rf ttsd-email-mq-consumer/')
+        sudo('rm -rf ttsd-amount-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
@@ -238,7 +241,8 @@ def deploy_point():
 
 @roles('ask-rest')
 def deploy_ask_rest():
-    upload_project(local_dir='./ttsd-ask-rest/build/distributions/ttsd-ask-rest.zip', remote_dir='/workspace/rest-service')
+    upload_project(local_dir='./ttsd-ask-rest/build/distributions/ttsd-ask-rest.zip',
+                   remote_dir='/workspace/rest-service')
     with cd('/workspace/rest-service'):
         sudo('/usr/local/bin/docker-compose -f ask-rest.yml stop')
         sudo('/usr/local/bin/docker-compose -f ask-rest.yml rm -f')
@@ -532,10 +536,10 @@ def restart_logstash(service):
 
     env.password = get_password()
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
-           'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
-           'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
-           'point': restart_logstash_service_for_point,
-           'signin': restart_logstash_service_for_sign_in, 'ask': restart_logstash_service_for_ask}.get(service)
+            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
+            'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
+            'point': restart_logstash_service_for_point,
+            'signin': restart_logstash_service_for_sign_in, 'ask': restart_logstash_service_for_ask}.get(service)
     execute(func)
 
 

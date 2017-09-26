@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
