@@ -23,7 +23,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -65,9 +64,9 @@ public class CreditLoanRechargeServiceTest {
     @Mock
     private PayAsyncClient payAsyncClient;
     @Mock
-    private CreditLoanBillService creditLoanBillService;
-    @Mock
     private MQWrapperClient mqWrapperClient;
+    @Mock
+    private CreditLoanBillService creditLoanBillService;
 
     @Before
     public void init() throws Exception {
