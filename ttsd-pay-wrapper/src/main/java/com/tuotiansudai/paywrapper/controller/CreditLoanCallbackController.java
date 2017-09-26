@@ -3,6 +3,8 @@ package com.tuotiansudai.paywrapper.controller;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.paywrapper.credit.CreditLoanOutService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanRechargeService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanTransferAgentService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
@@ -31,15 +33,37 @@ public class CreditLoanCallbackController {
 
     private final CreditLoanOutService creditLoanOutService;
 
+    private CreditLoanRechargeService creditLoanRechargeService;
+
+    private CreditLoanTransferAgentService creditLoanTransferAgentService;
+
     @Autowired
-    public CreditLoanCallbackController(CreditLoanOutService creditLoanOutService) {
+    public CreditLoanCallbackController(CreditLoanOutService creditLoanOutService,
+                                        CreditLoanRechargeService creditLoanRechargeService,
+                                        CreditLoanTransferAgentService creditLoanTransferAgentService) {
         this.creditLoanOutService = creditLoanOutService;
+        this.creditLoanRechargeService = creditLoanRechargeService;
+        this.creditLoanTransferAgentService = creditLoanTransferAgentService;
     }
 
     @RequestMapping(value = "/credit_loan_out_notify", method = RequestMethod.GET)
     public ModelAndView loanOutNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.creditLoanOutService.loanOutCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_recharge_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanRechargeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanRechargeService.creditLoanRechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_transfer_agent_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanTransferAgentNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

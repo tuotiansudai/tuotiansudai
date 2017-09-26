@@ -1,12 +1,17 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanRechargeService;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNotifyMapper;
@@ -15,10 +20,10 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotif
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
-import com.tuotiansudai.paywrapper.service.impl.CreditLoanRechargeServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -49,7 +54,7 @@ import static org.mockito.Mockito.*;
 public class CreditLoanRechargeServiceTest {
 
     @InjectMocks
-    private CreditLoanRechargeServiceImpl creditLoanRechargeService;
+    private CreditLoanRechargeService creditLoanRechargeService;
 
     @Mock
     private AccountMapper accountMapper;
@@ -59,6 +64,10 @@ public class CreditLoanRechargeServiceTest {
     private PaySyncClient paySyncClient;
     @Mock
     private PayAsyncClient payAsyncClient;
+    @Mock
+    private CreditLoanBillService creditLoanBillService;
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -160,6 +169,7 @@ public class CreditLoanRechargeServiceTest {
         creditLoanRechargeModel.setStatus(RechargeStatus.WAIT_PAY);
 
         when(creditLoanRechargeMapper.findById(orderId)).thenReturn(creditLoanRechargeModel);
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
 
         String message = this.creditLoanRechargeService.creditLoanRechargeCallback(Maps.newHashMap(), null);
         this.creditLoanRechargeMapper.updateCreditLoanRechargeStatus(idCaptor.capture(), statusCaptor.capture());
