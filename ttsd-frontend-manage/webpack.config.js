@@ -123,6 +123,13 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
+		},
+		proxy: {
+			'/images/fonts/*': {
+				target: 'http://localhost:8080/',
+				changeOrigin: true,
+				secure: false
+			}
 		}
 	};
 }
