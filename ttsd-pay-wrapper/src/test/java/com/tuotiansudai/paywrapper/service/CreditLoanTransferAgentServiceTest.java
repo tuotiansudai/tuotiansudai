@@ -2,10 +2,12 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
@@ -18,6 +20,7 @@ import com.tuotiansudai.paywrapper.service.impl.CreditLoanTransferAgentServiceIm
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,6 +70,12 @@ public class CreditLoanTransferAgentServiceTest {
 
     @Mock
     private MQWrapperClient mqWrapperClient;
+
+    @Mock
+    private CreditLoanBillService creditLoanBillService;
+
+    @Mock
+    private SmsWrapperClient smsWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -140,6 +149,8 @@ public class CreditLoanTransferAgentServiceTest {
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
 
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
+
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(this.redisWrapperClient, times(2))
@@ -176,6 +187,7 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenThrow(new PayException("error"));
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
@@ -213,6 +225,8 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
                 anyString(), eq(CreditLoanTransferAgentNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
                 .thenReturn(callbackRequestModel);
+
+        doNothing().when(this.creditLoanBillService).transferOut(anyLong(), anyLong(), any(CreditLoanBillBusinessType.class), anyString());
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
