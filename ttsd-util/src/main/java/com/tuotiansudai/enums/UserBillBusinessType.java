@@ -25,12 +25,15 @@ public enum UserBillBusinessType {
     BIRTHDAY_COUPON("生日福利"),
     RED_ENVELOPE("现金红包"),
     SYSTEM_RECHARGE("平台充值"),
+    CREDIT_LOAN_TRANSFER_AGENT("信用贷转账给代理人"),
+    CREDIT_LOAN_RECHARGE("信用贷账户充值"),
     LOTTERY_CASH("抽奖现金"),
     EXTRA_RATE("投资奖励"),
     EXPERIENCE_INTEREST("体验金收益"),
     INVEST_CASH_BACK("现金补贴"),
+    NATIONAL_DAY_INVEST("国庆节逢万返百奖励"),
     MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买"),
-    NATIONAL_DAY_INVEST("国庆节逢万返百奖励");
+    HUI_ZU_REPAY_IN("慧租还款");
 
     private final String description;
 

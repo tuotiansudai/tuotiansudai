@@ -7,7 +7,6 @@ import com.tuotiansudai.paywrapper.loanout.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
 import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
-import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +75,15 @@ public class PayCallbackController {
 
     @Autowired
     private CouponLoanOutService couponLoanOutService;
+
+    @Autowired
+    private CreditLoanRechargeService creditLoanRechargeService;
+
+    @Autowired
+    private CreditLoanTransferAgentService creditLoanOutService;
+
+    @Autowired
+    private HuiZuRepayService huiZuRepayService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -161,6 +169,13 @@ public class PayCallbackController {
     public ModelAndView investTransferNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.investTransferPurchaseService.purchaseCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/hz_repay_notify", method = RequestMethod.GET)
+    public ModelAndView huiZuPasswordRepayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.huiZuRepayService.huiZuRepayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
@@ -296,6 +311,20 @@ public class PayCallbackController {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.couponLoanOutService.transferRedEnvelopNotify(paramsMap, request.getQueryString());
         logger.info(MessageFormat.format("[标的放款] red_envelope_notify end , responseData:{0}", responseData));
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_recharge_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanRechargeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanRechargeService.creditLoanRechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_transfer_agent_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanOutNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanOutService.creditLoanTransferAgentCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
