@@ -114,7 +114,6 @@ public enum AsyncUmPayService {
      */
     CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "callback/hz_activate_account_nopwd", "hz_activate_account_notify", "huizu://activate-account/{0}"),
 
-
     /**
      * 慧租无密还款
      */

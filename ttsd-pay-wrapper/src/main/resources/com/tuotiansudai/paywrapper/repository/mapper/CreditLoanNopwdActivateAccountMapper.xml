@@ -46,7 +46,7 @@
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update hz_nopwd_repay_request set status = #{status} where id = #{id}
+        update credit_loan_nopwd_activate_account_request set status = #{status} where id = #{id}
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true"
