@@ -59,6 +59,8 @@ class Deployment(object):
         sh('cd ./ttsd-auditLog-mq-consumer/build/distributions && unzip \*.zip')
         sh('cd ./ttsd-email-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-email-mq-consumer/build/distributions && unzip \*.zip')
+        sh('cd ./ttsd-amount-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-amount-mq-consumer/build/distributions && unzip \*.zip')
 
     def build_rest_service(self):
         print "Making rest services build..."
