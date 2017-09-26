@@ -17,6 +17,7 @@ import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
+import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.AmountConverter;
@@ -100,6 +101,9 @@ public class ExportController {
 
     @Autowired
     private AskRestClient askRestClient;
+
+    @Autowired
+    private CreditLoanBillService creditLoanBillService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response,
@@ -195,6 +199,24 @@ public class ExportController {
                 Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildSystemBillCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SystemBillHeader, csvData, httpServletResponse.getOutputStream());
+
+    }
+
+    @RequestMapping(value = "/credit-loan-bill", method = RequestMethod.GET)
+    public void exportSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+                                     @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                                     @RequestParam(value = "operationType", required = false) CreditLoanBillOperationType operationType,
+                                     @RequestParam(value = "businessType", required = false) CreditLoanBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
+        fillExportResponse(httpServletResponse, CsvHeaderType.CreditLoanBillHeader.getDescription());
+        BaseDto<BasePaginationDataDto<CreditLoanBillPaginationItemDataDto>> baseDto = creditLoanBillService.findCreditLoanBillPagination(
+                startTime,
+                endTime,
+                operationType,
+                businessType,
+                1,
+                Integer.MAX_VALUE);
+        List<List<String>> csvData = exportService.buildCreditLoanBillCsvData(baseDto.getData().getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CreditLoanBillHeader, csvData, httpServletResponse.getOutputStream());
 
     }
 

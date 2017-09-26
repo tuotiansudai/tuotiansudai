@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.console.service.CreditLoanRechargeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
@@ -44,26 +45,31 @@ public class CreditLoanRechargeController {
 
         creditLoanRechargeDto.setOperatorLoginName(operatorLoginName);
 
+        String errorMessage;
         if (accountModel.isNoPasswordInvest()) {
             try {
                 BaseDto<PayDataDto> baseDto = creditLoanRechargeService.noPasswordCreditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.getData().getStatus()) {
                     return new ModelAndView("redirect:/");
+                }else{
+                    errorMessage = baseDto.getData().getMessage();
                 }
             } catch (Exception e) {
-                modelAndView.addObject("errorMessage", "充值失败");
+                errorMessage = e.getLocalizedMessage();
             }
         } else {
             try {
                 BaseDto<PayFormDataDto> baseDto = creditLoanRechargeService.creditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
                     return new ModelAndView("/pay", "pay", baseDto);
+                }else{
+                    errorMessage = baseDto.getData().getMessage();
                 }
             } catch (Exception e) {
-                modelAndView.addObject("errorMessage", "充值失败");
+                errorMessage = e.getLocalizedMessage();
             }
         }
-        modelAndView.addObject("errorMessage", "充值失败");
+        modelAndView.addObject("errorMessage", Strings.isNullOrEmpty(errorMessage) ? null:"充值失败 "+errorMessage);
         return modelAndView;
     }
 }

@@ -52,8 +52,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Autowired
     private CreditLoanBillService creditLoanBillService;
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
     @Value(value = "${credit.loan.agent}")
@@ -166,7 +164,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.SUCCESS);
                 try {
                     amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
-                    creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, loginName);
+                    creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, creditLoanAgent);
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("credit loan recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }
