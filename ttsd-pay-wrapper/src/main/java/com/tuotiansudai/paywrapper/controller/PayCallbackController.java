@@ -81,9 +81,6 @@ public class PayCallbackController {
     @Autowired
     private HuiZuRepayService huiZuRepayService;
 
-    @Autowired
-    private HuiZuActivateAccountService huiZuActivateAccountService;
-
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -175,13 +172,6 @@ public class PayCallbackController {
     public ModelAndView huiZuPasswordRepayNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.huiZuRepayService.huiZuRepayCallback(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
-    }
-
-    @RequestMapping(value = "/hz_activate_account_notify", method = RequestMethod.GET)
-    public ModelAndView huiZuPasswordActivateAccountNotify(HttpServletRequest request) {
-        Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.huiZuActivateAccountService.activateAccountCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
