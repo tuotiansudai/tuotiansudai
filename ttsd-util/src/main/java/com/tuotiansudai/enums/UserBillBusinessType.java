@@ -31,7 +31,8 @@ public enum UserBillBusinessType {
     INVEST_CASH_BACK("现金补贴"),
     NATIONAL_DAY_INVEST("国庆节逢万返百奖励"),
     MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买"),
-    HUI_ZU_REPAY_IN("慧租还款");
+    HUI_ZU_REPAY_IN("慧租还款"),
+    HUI_ZU_ACTIVATE_ACCOUNT("惠租一分钱激活账户");
 
     private final String description;
 

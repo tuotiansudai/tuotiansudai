@@ -103,6 +103,12 @@ public enum AsyncUmPayService {
      * 无密债权购买标的转入
      */
     INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+
+    /**
+     * 惠租有密一分钱激活账户
+     */
+    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "callback/hz_activate_account", "hz_activate_account_notify", "huizu://activate-account/{0}"),
+
     /**
      * 慧租无密还款
      */
