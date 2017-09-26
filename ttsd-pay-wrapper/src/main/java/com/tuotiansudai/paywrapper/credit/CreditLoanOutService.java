@@ -8,27 +8,18 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanOutProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanOutProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.InvestTransferNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.impl.InvestServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +35,7 @@ public class CreditLoanOutService {
 
     private static Logger logger = Logger.getLogger(CreditLoanOutService.class);
 
-    private final static String CREDIT_LOAN_REDIS_KEY = "credit:loan:out";
+    private final static String CREDIT_LOAN_LOAN_REDIS_KEY = "credit:loan:out";
 
     private final static String LOAN_OUT_ORDER_ID_SEPARATOR = "X";
 
@@ -106,10 +97,10 @@ public class CreditLoanOutService {
                 String.valueOf(amount));
 
         try {
-            redisWrapperClient.hset(CREDIT_LOAN_REDIS_KEY, String.valueOf(orderId), SyncRequestStatus.SENT.name());
+            redisWrapperClient.hset(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId), SyncRequestStatus.SENT.name());
             ProjectTransferResponseModel loanOutResponseModel = this.paySyncClient.send(CreditLoanOutProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             boolean isSuccess = loanOutResponseModel.isSuccess();
-            redisWrapperClient.hset(CREDIT_LOAN_REDIS_KEY, String.valueOf(orderId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+            redisWrapperClient.hset(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
 
             payDataDto.setStatus(isSuccess);
             if (isSuccess) {
@@ -152,7 +143,7 @@ public class CreditLoanOutService {
         String orderId = callbackRequest.getOrderId().split(LOAN_OUT_ORDER_ID_SEPARATOR)[0];
 
         try {
-            redisWrapperClient.hset(CREDIT_LOAN_REDIS_KEY, String.valueOf(orderId),
+            redisWrapperClient.hset(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId),
                     callbackRequest.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
 
             mqWrapperClient.sendMessage(MessageQueue.CreditLoanOutQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
@@ -183,7 +174,7 @@ public class CreditLoanOutService {
 
     private boolean checkStatus(long orderId) {
         try {
-            String status = redisWrapperClient.hget(CREDIT_LOAN_REDIS_KEY, String.valueOf(orderId));
+            String status = redisWrapperClient.hget(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId));
             if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
                 return true;
             }
