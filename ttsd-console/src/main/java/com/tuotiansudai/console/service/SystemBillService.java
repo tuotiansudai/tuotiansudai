@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillModel;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;

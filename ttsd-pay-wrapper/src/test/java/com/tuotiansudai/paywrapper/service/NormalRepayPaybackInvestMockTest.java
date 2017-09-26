@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.loanout.LoanService;
@@ -16,7 +15,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -26,7 +24,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -64,9 +61,6 @@ public class NormalRepayPaybackInvestMockTest {
 
     @Mock
     private CouponRepayMapper couponRepayMapper;
-
-    @Mock
-    private AmountTransfer amountTransfer;
 
     @Mock
     private PaySyncClient paySyncClient;
@@ -361,10 +355,7 @@ public class NormalRepayPaybackInvestMockTest {
         responseModel.setRetCode(BaseSyncResponseModel.SUCCESS_CODE);
         when(paySyncClient.send(eq(ProjectTransferMapper.class), any(BaseSyncRequestModel.class), eq(ProjectTransferResponseModel.class))).thenReturn(responseModel);
 
-        doNothing().when(amountTransfer).transferInBalance(anyString(), anyLong(), anyLong(), any(UserBillBusinessType.class), isNull(String.class), isNull(String.class));
-        doNothing().when(amountTransfer).transferOutBalance(anyString(), anyLong(), anyLong(), any(UserBillBusinessType.class), isNull(String.class), isNull(String.class));
         doNothing().when(investRepayMapper).update(any(InvestRepayModel.class));
-
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
@@ -377,31 +368,6 @@ public class NormalRepayPaybackInvestMockTest {
         assertTrue(normalRepayService.paybackInvest(loanRepay1.getId()));
 
         verify(paySyncClient, never()).send(eq(ProjectTransferMapper.class), any(BaseSyncRequestModel.class), eq(ProjectTransferResponseModel.class));
-
-        ArgumentCaptor<String> loginNameArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Long> orderIdArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Long> amountArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<UserBillBusinessType> userBillBusinessTypeArgumentCaptor = ArgumentCaptor.forClass(UserBillBusinessType.class);
-        verify(amountTransfer, times(1)).transferInBalance(loginNameArgumentCaptor.capture(),
-                orderIdArgumentCaptor.capture(),
-                amountArgumentCaptor.capture(),
-                userBillBusinessTypeArgumentCaptor.capture(),
-                isNull(String.class), isNull(String.class));
-        assertThat(loginNameArgumentCaptor.getValue(), is(investor1LoginName));
-        assertThat(orderIdArgumentCaptor.getValue(), is(invest1InvestRepay1.getId()));
-        assertThat(amountArgumentCaptor.getValue(), is(invest1InvestRepay1.getExpectedInterest()));
-        assertThat(userBillBusinessTypeArgumentCaptor.getValue(), is(UserBillBusinessType.NORMAL_REPAY));
-
-        verify(amountTransfer, times(1)).transferOutBalance(loginNameArgumentCaptor.capture(),
-                orderIdArgumentCaptor.capture(),
-                amountArgumentCaptor.capture(),
-                userBillBusinessTypeArgumentCaptor.capture(),
-                isNull(String.class), isNull(String.class));
-
-        assertThat(loginNameArgumentCaptor.getValue(), is(investor1LoginName));
-        assertThat(orderIdArgumentCaptor.getValue(), is(invest1InvestRepay1.getId()));
-        assertThat(amountArgumentCaptor.getValue(), is(invest1InvestRepay1.getExpectedFee()));
-        assertThat(userBillBusinessTypeArgumentCaptor.getValue(), is(UserBillBusinessType.INVEST_FEE));
 
         ArgumentCaptor<InvestRepayModel> investRepayArgumentCaptor = ArgumentCaptor.forClass(InvestRepayModel.class);
         verify(investRepayMapper, times(1)).update(investRepayArgumentCaptor.capture());
