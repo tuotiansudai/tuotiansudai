@@ -56,6 +56,7 @@
         <intercept-url pattern="/v1.0/get/transferee" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/operation-data" access="permitAll()"/>
         <intercept-url pattern="/callback/**" access="permitAll()"/>
+        <intercept-url pattern="/huizu/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
         <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>
         <intercept-url pattern="/v1.**/get/banner" access="permitAll()"/>
