@@ -1,5 +1,8 @@
 package com.tuotiansudai.paywrapper.credit;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -37,6 +40,8 @@ public class CreditLoanActivateAccountService {
 
     private final static String ACTIVATE_ACCOUNT_ORDER_ID_SEPARATOR = "X";
 
+    private final static String CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY = "credit:loan:activate:account:{0}";
+
     private final static String CREDIT_LOAN_ACTIVATE_ACCOUNT_CONCURRENCY_REDIS_KEY = "credit:loan:activate:account:concurrency:{0}";
 
     private final static String ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE = "{0}" + ACTIVATE_ACCOUNT_ORDER_ID_SEPARATOR + "{1}";
@@ -70,7 +75,7 @@ public class CreditLoanActivateAccountService {
     }
 
     public BaseDto<PayFormDataDto> passwordActivateAccount(String mobile) {
-        logger.info(MessageFormat.format("[credit loan activate account {0}] starting", String.valueOf(mobile)));
+        logger.info(MessageFormat.format("[credit loan password activate account {0}] starting", String.valueOf(mobile)));
 
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setCode("0000");
@@ -99,7 +104,7 @@ public class CreditLoanActivateAccountService {
             redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_CONCURRENCY_REDIS_KEY,mobile),30*60,SyncRequestStatus.SENT.name());
             return payFormDataDtoBaseDto;
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[credit loan activate account {0}] activate account error, mobile({1})",  mobile), e);
+            logger.error(MessageFormat.format("[credit loan password activate account {0}] activate account error, mobile({1})",  mobile), e);
             payFormDataDto.setMessage("发送激活账户数据失败");
             payFormDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
         }
@@ -119,12 +124,26 @@ public class CreditLoanActivateAccountService {
             return baseDto;
         }
 
+        if (!account.isNoPasswordInvest()) {
+            payDataDto.setMessage("用户未开通免密支付功能");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return baseDto;
+        }
+
+        if (!checkActivateAccountStatus(mobile)){
+            payDataDto.setMessage("您已经激活过账户");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return baseDto;
+        }
+
         try {
 
             ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanActivateAccountNopwdRequest(
-                    mobile,
+                    MessageFormat.format(ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE, mobile, String.valueOf(new Date().getTime())),
                     account.getPayUserId(),
                     String.valueOf(ACTIVATE_ACCOUNT_MONEY));
+
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile), SyncRequestStatus.SENT.name());
 
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     CreditLoanNopwdActivateAccountMapper.class,
@@ -133,8 +152,15 @@ public class CreditLoanActivateAccountService {
 
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("order_id", MessageFormat.format(ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE, mobile))
+                    .build()));
+
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
+            logger.error(MessageFormat.format("[慧租无密激活账户] error, mobile:{0}",  mobile), e);
+            this.sendFatalNotify(MessageFormat.format("慧租无密激活账户异常，mobile:{0}", mobile));
+
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
             logger.error(e.getLocalizedMessage(), e);
@@ -145,7 +171,7 @@ public class CreditLoanActivateAccountService {
     private AccountModel getAccount(String mobile) {
         AccountModel accountModel = accountMapper.findByMobile(mobile);
         if (accountModel == null) {
-            logger.error(MessageFormat.format("[credit loan activate account {0}] does not exist ", mobile));
+            logger.error(MessageFormat.format("[credit loan no pwd activate account {0}] does not exist ", mobile));
             return null;
         }
         return accountModel;
@@ -153,6 +179,24 @@ public class CreditLoanActivateAccountService {
 
     private boolean isActive(String mobile) {
         return redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_CONCURRENCY_REDIS_KEY, mobile));
+    }
+
+    private void sendFatalNotify(String message) {
+        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
+        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+    }
+
+    private boolean checkActivateAccountStatus(String mobile){
+        try {
+            String status = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile));
+            if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
+                return true;
+            }
+            logger.error(MessageFormat.format("[credit loan no pwd activate account {0}] status is {1}, do not try again", mobile, status));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[credit loan no pwd activate account {0}] status check error", mobile), e);
+        }
+        return false;
     }
 
 }

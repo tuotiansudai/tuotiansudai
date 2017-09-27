@@ -1,13 +1,20 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanActivateAccountService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanActivateAccountMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdActivateAccountMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -50,7 +57,13 @@ public class CreditLoanActivateAccountServiceTest {
     private PayAsyncClient payAsyncClient;
 
     @Mock
+    private PaySyncClient paySyncClient;
+
+    @Mock
     private RedisWrapperClient redisWrapperClient;
+
+    @Mock
+    private SmsWrapperClient smsWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -64,24 +77,20 @@ public class CreditLoanActivateAccountServiceTest {
     }
 
     @Test
-    public void shouldActivateAccountFailedWhenMobileIsNotExists() {
+    public void shouldActivateAccountFailedFailedWhenInvalidParameters() {
         String mobile = "13999999999";
         when(accountMapper.findByMobile(mobile)).thenReturn(null);
         BaseDto<PayFormDataDto> dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
-    }
 
-    @Test
-    public void shouldActivateAccountFailedWhenAccountIsAcitving() {
-        String mobile = "13999999999";
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-
         when(redisWrapperClient.exists(MessageFormat.format("credit:loan:activate:account:concurrency:{0}",mobile))).thenReturn(true);
-        BaseDto<PayFormDataDto> dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
+        dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("正在激活账户, 请30分钟后查看"));
     }
+
 
     @Test
     public void shouldGeneratePasswordActivateAccountSuccess() throws Exception {
@@ -140,4 +149,92 @@ public class CreditLoanActivateAccountServiceTest {
         assertFalse(actual.getData().getStatus());
         assertThat(actual.getData().getMessage(), is("发送激活账户数据失败"));
     }
+
+
+    @Test
+    public void shouldNoPasswordActivateAccountFailedWhenInvalidParameters() {
+        String mobile = "13999999999";
+
+        when(accountMapper.findByMobile(mobile)).thenReturn(null);
+        BaseDto<PayDataDto> dto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
+        assertFalse(dto.getData().getStatus());
+        assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
+
+        AccountModel accountModel = new AccountModel();
+        accountModel.setNoPasswordInvest(false);
+        when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        dto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
+        assertFalse(dto.getData().getStatus());
+        assertThat(dto.getData().getMessage(), is("用户未开通免密支付功能"));
+
+        accountModel.setNoPasswordInvest(true);
+        when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        when(redisWrapperClient.get(MessageFormat.format("credit:loan:activate:account:{0}",mobile))).thenReturn(SyncRequestStatus.SUCCESS.name());
+        dto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
+        assertFalse(dto.getData().getStatus());
+        assertThat(dto.getData().getMessage(), is("您已经激活过账户"));
+    }
+
+    @Test
+    public void shouldNoPasswordActivateAccountSuccess() throws Exception {
+        String mobile = "13999999999";
+        int amount = 1;
+
+        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<ProjectTransferNopwdRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferNopwdRequestModel.class);
+
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        accountModel.setNoPasswordInvest(true);
+        when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        PayDataDto payDataDto = new PayDataDto();
+        BaseDto<PayDataDto> dto = new BaseDto<>(payDataDto);
+        payDataDto.setStatus(true);
+
+        ProjectTransferNopwdResponseModel responseModel = new ProjectTransferNopwdResponseModel();
+        responseModel.setRetCode("0000");
+
+        when(this.paySyncClient.send(eq(CreditLoanNopwdActivateAccountMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenReturn(responseModel);
+        when(this.redisWrapperClient.get(anyString())).thenReturn("");
+        when(this.redisWrapperClient.set(redisKeyCaptor.capture(), statusCaptor.capture())).thenReturn("");
+
+        dto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
+
+        assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:activate:account:{0}", mobile)));
+        assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
+
+        assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
+        assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
+        assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
+
+        assertTrue(dto.getData().getStatus());
+        assertThat(dto.getData().getCode(), is("0000"));
+    }
+
+    @Test
+    public void shouldNoPasswordActivateAccountFail() throws Exception {
+        String mobile = "13999999999";
+        int amount = 1;
+        ArgumentCaptor<ProjectTransferNopwdRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferNopwdRequestModel.class);
+
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        accountModel.setNoPasswordInvest(true);
+        when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+
+        when(this.redisWrapperClient.get(anyString())).thenReturn("");
+        when(this.paySyncClient.send(eq(CreditLoanNopwdActivateAccountMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenThrow(new PayException("error"));
+        doNothing().when(this.smsWrapperClient).sendFatalNotify(any());
+
+        BaseDto<PayDataDto> dataDtoBaseDto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
+
+        assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
+        assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
+        assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
+
+        assertThat(dataDtoBaseDto.getData().getMessage(), is("error"));
+        assertFalse(dataDtoBaseDto.getData().getStatus());
+    }
+
+
+
 }
