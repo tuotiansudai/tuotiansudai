@@ -20,6 +20,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStat
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
+import com.tuotiansudai.repository.model.CreditLoanBillModel;
+import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,9 +157,11 @@ public class CreditLoanRepayService {
                                 Long.parseLong(orderId),
                                 amount,
                                 UserBillBusinessType.CREDIT_LOAN_REPAY, null, null));
+
+                mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
+                        new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_REPAY, mobile));
             }
 
-            //TODO : loan_bill
             redisWrapperClient.set(key, SyncRequestStatus.SUCCESS.name());
         }
 

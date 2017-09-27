@@ -24,6 +24,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
+import com.tuotiansudai.repository.model.CreditLoanBillModel;
+import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,6 +176,8 @@ public class CreditLoanOutService {
                                     Long.parseLong(orderId),
                                     amount,
                                     UserBillBusinessType.CREDIT_LOAN_OUT, null, null));
+                    mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
+                            new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_OFFER, mobile));
                 }
             } else {
                 logger.error(MessageFormat.format("[credit loan out {0}] loan out callback is failed, error is {1}", String.valueOf(orderId), callbackRequest.getRetMsg()));

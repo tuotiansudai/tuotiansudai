@@ -20,8 +20,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -179,9 +178,6 @@ public class CreditLoanRepayServiceTest {
         long orderId = 1L;
         String mobile = "13900000000";
         long amount = 888;
-        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<MessageQueue> queueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
         ArgumentCaptor<Object> messageCaptor = ArgumentCaptor.forClass(Object.class);
 
@@ -208,7 +204,7 @@ public class CreditLoanRepayServiceTest {
         verify(this.redisWrapperClient, times(1))
                 .set(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)), SyncRequestStatus.SUCCESS.name());
 
-        verify(this.mqWrapperClient, times(2))
+        verify(this.mqWrapperClient, times(3))
                 .sendMessage(queueCaptor.capture(), messageCaptor.capture());
 
         assertThat(queueCaptor.getAllValues().get(0), is(MessageQueue.CreditLoanRepayQueue));
@@ -220,5 +216,47 @@ public class CreditLoanRepayServiceTest {
         assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getLoginName(), is(userModel.getLoginName()));
         assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getOrderId(), is(orderId));
         assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getBusinessType(), is(UserBillBusinessType.CREDIT_LOAN_REPAY));
+
+        assertThat(queueCaptor.getAllValues().get(2), is(MessageQueue.CreditLoanBill));
+        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getOrderId(), is(orderId));
+        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getAmount(), is(amount));
+        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getBusinessType(), is(CreditLoanBillBusinessType.CREDIT_LOAN_REPAY));
+        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getOperationType(), is(CreditLoanBillOperationType.IN));
+        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getMobile(), is(mobile));
+    }
+
+    @Test
+    public void shouldLoanRepayCallbackFail() throws Exception {
+        long orderId = 1L;
+        String mobile = "13900000000";
+        long amount = 888;
+        ArgumentCaptor<MessageQueue> queueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
+        ArgumentCaptor<Object> messageCaptor = ArgumentCaptor.forClass(Object.class);
+
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        BaseCallbackRequestModel callbackRequestModel = new BaseCallbackRequestModel();
+        callbackRequestModel.setOrderId(String.valueOf(orderId) + "X");
+        when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        UserModel userModel = new UserModel();
+        userModel.setLoginName(accountModel.getLoginName());
+        when(this.userMapper.findByMobile(mobile)).thenReturn(userModel);
+        when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
+                anyString(), eq(CreditLoanRepayProjectTransferNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
+                .thenReturn(callbackRequestModel);
+
+        when(this.redisWrapperClient.get(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(SyncRequestStatus.SENT.name());
+        when(this.redisWrapperClient.get(MessageFormat.format("credit:loan:repay:info:{0}", String.valueOf(orderId))))
+                .thenReturn(MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
+
+        doNothing().when(this.mqWrapperClient).sendMessage(any(), any());
+
+        this.creditLoanRepayService.repayCallback(Maps.newHashMap(), null);
+
+        verify(this.mqWrapperClient, times(1))
+                .sendMessage(queueCaptor.capture(), messageCaptor.capture());
+
+        assertThat(queueCaptor.getAllValues().get(0), is(MessageQueue.CreditLoanRepayQueue));
+        assertThat(((Map)messageCaptor.getAllValues().get(0)).get("order_id"), is(String.valueOf(orderId)));
+        assertThat(((Map)messageCaptor.getAllValues().get(0)).get("success"), is(false));
     }
 }

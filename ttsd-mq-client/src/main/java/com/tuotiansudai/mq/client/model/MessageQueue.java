@@ -72,13 +72,11 @@ public enum MessageQueue {
     DragonBoatShareLoginTransfer("DragonBoatShareLoginTransfer"), // 端午节活动分享落地页老用户登录后，消息中转（为了获取用户信息）
     DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
     DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
-
-    AmountTransfer("AmountTransfer"),
     SystemBill("SystemBill"),
-
+    AmountTransfer("AmountTransfer"),
     CreditLoanOutQueue("CreditLoanOutQueue"), //慧租信用贷放款
-    CreditLoanRepayQueue("CreditLoanRepayQueue"); //慧租信用贷还款
-
+    CreditLoanRepayQueue("CreditLoanRepayQueue"), //慧租信用贷还款
+    CreditLoanBill("CreditLoanBill");
 
     private final String queueName;
 

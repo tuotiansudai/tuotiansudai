@@ -2,7 +2,8 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -40,7 +41,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyMapOf;
-import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,6 +67,9 @@ public class CreditLoanTransferAgentServiceTest {
 
     @Mock
     private MQWrapperClient mqWrapperClient;
+
+    @Mock
+    private SmsWrapperClient smsWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -246,7 +249,7 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
                 anyString(), eq(CreditLoanTransferAgentNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
                 .thenReturn(callbackRequestModel);
-        doThrow(new RuntimeException()).when(mqWrapperClient).sendMessage(any(MessageQueue.class), anyObject());
+        doThrow(new RuntimeException()).when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
