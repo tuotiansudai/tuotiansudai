@@ -106,8 +106,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newHuiZuRepayPasswordRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER);
+    public static ProjectTransferRequestModel newHuiZuRepayPasswordRequest(String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();

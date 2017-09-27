@@ -32,8 +32,8 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    private ProjectTransferNopwdRequestModel(String projectId, String orderId, String userId, String amount, UmPayServType umPayServType, UmPayParticType umPayParticType, AsyncUmPayService asyncUmPayService) {
-        super(Source.WEB, asyncUmPayService);
+    private ProjectTransferNopwdRequestModel(String projectId, String orderId, String userId, String amount, Source source, UmPayServType umPayServType, UmPayParticType umPayParticType, AsyncUmPayService asyncUmPayService) {
+        super(source == null ? Source.WEB : source, asyncUmPayService);
         this.service = asyncUmPayService.getServiceName();
         this.servType = umPayServType.getCode();
         this.transAction = UmPayTransAction.IN.getCode();
@@ -47,27 +47,27 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferNopwdRequestModel newInvestNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_INVEST, UmPayParticType.INVESTOR, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD);
+        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, Source.WEB, UmPayServType.TRANSFER_IN_INVEST, UmPayParticType.INVESTOR, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD);
     }
 
     public static ProjectTransferNopwdRequestModel newPurchaseNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD);
+        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, Source.WEB, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD);
     }
 
     public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.LOANER, AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER_NOPWD);
+        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, Source.WEB, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.LOANER, AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER_NOPWD);
     }
 
     public static ProjectTransferNopwdRequestModel newCreditLoanRechargeNopwdRequest(String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER_NOPWD);
+        return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, Source.WEB, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER_NOPWD);
     }
 
     public static ProjectTransferNopwdRequestModel newCreditLoanNoPasswordRepayRequest(String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CREDIT_LOAN_REPAY_PROJECT_TRANSFER_NOPWD);
+        return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, Source.HUI_ZU, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CREDIT_LOAN_REPAY_PROJECT_TRANSFER_NOPWD);
     }
 
-    public static ProjectTransferNopwdRequestModel newHuiZuRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.INVESTOR, AsyncUmPayService.HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER);
+    public static ProjectTransferNopwdRequestModel newHuiZuRepayNopwdRequest(String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, Source.HUI_ZU, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.INVESTOR, AsyncUmPayService.HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER);
     }
 
     public Map<String, String> generatePayRequestData() {
