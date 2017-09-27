@@ -6,8 +6,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.credit.CreditLoanRechargeService;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNotifyMapper;
@@ -16,7 +18,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotif
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
-import com.tuotiansudai.paywrapper.service.impl.CreditLoanRechargeServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -50,7 +51,7 @@ import static org.mockito.Mockito.*;
 public class CreditLoanRechargeServiceTest {
 
     @InjectMocks
-    private CreditLoanRechargeServiceImpl creditLoanRechargeService;
+    private CreditLoanRechargeService creditLoanRechargeService;
 
     @Mock
     private AccountMapper accountMapper;
@@ -163,11 +164,13 @@ public class CreditLoanRechargeServiceTest {
         creditLoanRechargeModel.setStatus(RechargeStatus.WAIT_PAY);
 
         when(creditLoanRechargeMapper.findById(orderId)).thenReturn(creditLoanRechargeModel);
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(Object.class));
 
         String message = this.creditLoanRechargeService.creditLoanRechargeCallback(Maps.newHashMap(), null);
         this.creditLoanRechargeMapper.updateCreditLoanRechargeStatus(idCaptor.capture(), statusCaptor.capture());
 
         verify(this.creditLoanRechargeMapper, times(2)).updateCreditLoanRechargeStatus(idCaptor.capture(), statusCaptor.capture());
+        verify(this.mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class), any(Object.class));
 
         assertThat(message, is("success"));
         assertThat(idCaptor.getAllValues().get(0), is(orderId));
