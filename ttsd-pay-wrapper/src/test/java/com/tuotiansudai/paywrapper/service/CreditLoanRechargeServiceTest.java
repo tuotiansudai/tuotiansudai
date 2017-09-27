@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -165,12 +164,13 @@ public class CreditLoanRechargeServiceTest {
         creditLoanRechargeModel.setStatus(RechargeStatus.WAIT_PAY);
 
         when(creditLoanRechargeMapper.findById(orderId)).thenReturn(creditLoanRechargeModel);
-        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
+        doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(Object.class));
 
         String message = this.creditLoanRechargeService.creditLoanRechargeCallback(Maps.newHashMap(), null);
         this.creditLoanRechargeMapper.updateCreditLoanRechargeStatus(idCaptor.capture(), statusCaptor.capture());
 
         verify(this.creditLoanRechargeMapper, times(2)).updateCreditLoanRechargeStatus(idCaptor.capture(), statusCaptor.capture());
+        verify(this.mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class), any(Object.class));
 
         assertThat(message, is("success"));
         assertThat(idCaptor.getAllValues().get(0), is(orderId));

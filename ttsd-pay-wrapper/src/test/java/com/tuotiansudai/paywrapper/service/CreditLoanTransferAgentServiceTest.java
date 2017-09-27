@@ -221,10 +221,12 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
                 anyString(), eq(CreditLoanTransferAgentNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
                 .thenReturn(callbackRequestModel);
+        doNothing().when(this.mqWrapperClient).sendMessage(any(MessageQueue.class), any(Object.class));
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
         verify(this.redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString());
+        verify(this.mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class), any(Object.class));
 
         assertThat(redisKeyCaptor1.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_IN_BALANCE:1"));
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
@@ -259,6 +261,7 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
         verify(this.redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString());
+        verify(this.mqWrapperClient, times(1)).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
 
         assertThat(redisKeyCaptor1.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_IN_BALANCE:1"));
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
