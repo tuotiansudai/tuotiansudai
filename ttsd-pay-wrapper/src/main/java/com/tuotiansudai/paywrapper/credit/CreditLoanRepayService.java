@@ -194,7 +194,9 @@ public class CreditLoanRepayService {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(CreditLoanRepayNoPwdMapper.class, requestModel, ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setMessage(responseModel.getRetMsg());
-
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("callbackUrl", requestModel.getRetUrl())
+                    .build()));
             logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
         } catch (Exception e) {
             logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay exception, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
