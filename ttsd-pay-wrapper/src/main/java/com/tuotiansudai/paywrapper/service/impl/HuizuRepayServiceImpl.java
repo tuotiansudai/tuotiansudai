@@ -45,8 +45,6 @@ import java.util.Map;
 public class HuizuRepayServiceImpl implements HuiZuRepayService {
     static Logger logger = Logger.getLogger(HuizuRepayServiceImpl.class);
 
-    private static final String REPAY_LOAN_ID = "88888";
-
     public final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
     private final static String REPAY_ORDER_ID_TEMPLATE = "%s" + REPAY_ORDER_ID_SEPARATOR + "%s";
@@ -110,7 +108,6 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newHuiZuRepayPasswordRequest(
-                    REPAY_LOAN_ID,
                     String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
                     accountModel.getPayUserId(),
                     String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
@@ -163,13 +160,10 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                             .put("status", SyncRequestStatus.SENT.name())
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
-            ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel
-                    .newHuiZuRepayNopwdRequest(
-                            REPAY_LOAN_ID,
+            ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newHuiZuRepayNopwdRequest(
                             String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
                             accountModel.getPayUserId(),
-                            String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()))
-                    );
+                            String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
 
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     HuiZuNopwdRepayMapper.class,
@@ -178,6 +172,9 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
+            payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("callbackUrl", requestModel.getRetUrl())
+                    .build()));
 
         } catch (PayException e) {
 
