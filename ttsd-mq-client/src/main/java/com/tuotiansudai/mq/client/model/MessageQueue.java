@@ -78,7 +78,7 @@ public enum MessageQueue {
     SystemBill("SystemBill"),
 
     CreditLoanOutQueue("CreditLoanOutQueue"),
-    CreditLoanActivateAccount("CreditLoanActivateAccount"),
+    CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
     CreditLoanBill("CreditLoanBill");
 
     private final String queueName;

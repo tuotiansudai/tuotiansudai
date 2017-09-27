@@ -89,6 +89,13 @@ public class CreditLoanActivateAccountServiceTest {
         dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("正在激活账户, 请30分钟后查看"));
+
+        when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
+        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:activate:account:concurrency:{0}",mobile))).thenReturn(false);
+        when(redisWrapperClient.get(MessageFormat.format("credit:loan:activate:account:{0}",mobile))).thenReturn(SyncRequestStatus.SUCCESS.name());
+        dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
+        assertFalse(dto.getData().getStatus());
+        assertThat(dto.getData().getMessage(), is("您已经激活过账户"));
     }
 
 
@@ -99,6 +106,10 @@ public class CreditLoanActivateAccountServiceTest {
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Integer> expiredCaptor = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
+
+        ArgumentCaptor<String> redisKeyStatusCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisValueStatusCaptor = ArgumentCaptor.forClass(String.class);
+
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
@@ -112,12 +123,19 @@ public class CreditLoanActivateAccountServiceTest {
         assertThat(this.creditLoanActivateAccountService.passwordActivateAccount(mobile), is(dto));
         verify(this.redisWrapperClient, times(1))
                 .setex(redisKeyCaptor.capture(), expiredCaptor.capture(), statusCaptor.capture());
+
+        verify(this.redisWrapperClient, times(1))
+                .set(redisKeyStatusCaptor.capture(), redisValueStatusCaptor.capture());
+
         verify(this.payAsyncClient,times(1))
                 .generateFormData(eq(CreditLoanActivateAccountMapper.class), requestModelCaptor.capture());
 
         assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:activate:account:concurrency:{0}", mobile)));
         assertThat(expiredCaptor.getValue(), is(30 * 60));
         assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
+
+        assertThat(redisKeyStatusCaptor.getValue(), is(MessageFormat.format("credit:loan:activate:account:{0}", mobile)));
+        assertThat(redisValueStatusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
@@ -139,6 +157,7 @@ public class CreditLoanActivateAccountServiceTest {
 
         BaseDto<PayFormDataDto> actual = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         verify(this.redisWrapperClient, times(0)).setex(anyString(), anyInt(), anyString());
+        verify(this.redisWrapperClient, times(0)).set(anyString(), anyString());
         verify(this.payAsyncClient,times(1))
                 .generateFormData(eq(CreditLoanActivateAccountMapper.class), requestModelCaptor.capture());
 
