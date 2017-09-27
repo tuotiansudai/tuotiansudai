@@ -107,12 +107,12 @@ public enum AsyncUmPayService {
     /**
      * 慧租有密一分钱激活账户
      */
-    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/credit_loan_activate_account_project_transfer", "credit_loan_activate_account_notify", "huizu://credit_loan_activate-account/{0}"),
+    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/credit_loan_activate_account_project_transfer", "activate_account_notify", "huizu://credit_loan_activate-account/{0}"),
 
     /**
      * 慧租无密一分钱激活账户
      */
-    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "huizu/callback/credit_loan_activate_account_project_transfer_nopwd", "credit_loan_activate_account_notify", "huizu://credit_loan_activate-account/{0}"),
+    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "huizu/callback/credit_loan_activate_account_project_transfer_nopwd", "activate_account_notify", "huizu://credit_loan_activate-account/{0}"),
 
     /**
      * 慧租信用贷无密还款
