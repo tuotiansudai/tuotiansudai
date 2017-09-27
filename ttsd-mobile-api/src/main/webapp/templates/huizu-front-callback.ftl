@@ -16,7 +16,7 @@
     <p>${(values.message)!}</p>
 
 <#switch service>
-    <#case 'project_transfer'>
+    <#case 'credit_loan_activate_account_project_transfer'>
         <p>账户激活成功！</p>
         <#break>
     <#case 'credit_loan_repay_project_transfer'>
