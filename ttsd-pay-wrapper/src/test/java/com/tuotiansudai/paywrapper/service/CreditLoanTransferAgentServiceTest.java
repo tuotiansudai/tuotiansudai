@@ -3,10 +3,12 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.credit.CreditLoanTransferAgentService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
@@ -15,7 +17,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.impl.CreditLoanTransferAgentServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -48,7 +49,7 @@ import static org.mockito.Mockito.*;
 public class CreditLoanTransferAgentServiceTest {
 
     @InjectMocks
-    private CreditLoanTransferAgentServiceImpl creditLoanTransferAgentService;
+    private CreditLoanTransferAgentService creditLoanTransferAgentService;
 
     @Mock
     private CreditLoanBillMapper creditLoanBillMapper;
@@ -88,8 +89,8 @@ public class CreditLoanTransferAgentServiceTest {
     @Test
     public void shouldCreditLoanTransferAgentIsSuccess() throws Exception {
 
-        when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
-        when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
+        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
+        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
 
         ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
@@ -127,8 +128,8 @@ public class CreditLoanTransferAgentServiceTest {
 
     @Test
     public void creditLoanTransferAgentIsFailed() throws Exception {
-        when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
-        when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
+        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
+        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
 
         ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
@@ -142,6 +143,8 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenReturn(new ProjectTransferResponseModel());
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
+
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
@@ -164,8 +167,8 @@ public class CreditLoanTransferAgentServiceTest {
 
     @Test
     public void creditLoanTransferException() throws Exception {
-        when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
-        when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
+        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
+        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
 
         ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
@@ -179,6 +182,8 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenThrow(new PayException("error"));
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
+
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
@@ -203,8 +208,8 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
 
-        when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
-        when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
+        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
+        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
@@ -216,10 +221,12 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
                 anyString(), eq(CreditLoanTransferAgentNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
                 .thenReturn(callbackRequestModel);
+        doNothing().when(this.mqWrapperClient).sendMessage(any(MessageQueue.class), any(Object.class));
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
         verify(this.redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString());
+        verify(this.mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class), any(Object.class));
 
         assertThat(redisKeyCaptor1.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_IN_BALANCE:1"));
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
@@ -236,8 +243,8 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
 
-        when(creditLoanBillMapper.findSumAmountByInAndBusinessType()).thenReturn(100l);
-        when(creditLoanBillMapper.findSumAmountByOutAndBusinessType()).thenReturn(0l);
+        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
+        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
@@ -254,6 +261,7 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
         verify(this.redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString());
+        verify(this.mqWrapperClient, times(1)).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
 
         assertThat(redisKeyCaptor1.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_IN_BALANCE:1"));
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
