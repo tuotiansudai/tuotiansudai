@@ -46,6 +46,8 @@ public class CreditLoanTransferAgentService {
 
     private final static String CREDIT_LOAN_TRANSFER = "CREDIT_LOAN_TRANSFER";
 
+    private final static String CREDIT_LOAN_TRANSFER_AGENT_AMOUNT = "{0}:CREDIT_LOAN_TRANSFER_AGENT_AMOUNT:{1}";
+
     private final static String CREDIT_LOAN_TRANSFER_AGENT_KEY = "CREDIT_LOAN_TRANSFER_AGENT_KEY";
 
     @Autowired
@@ -89,6 +91,7 @@ public class CreditLoanTransferAgentService {
                 accountModel.getPayUserId(),
                 String.valueOf(transferAmount));
         try {
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_TRANSFER_AGENT_AMOUNT, String.valueOf(creditLoanAgent),String.valueOf(orderId)), String.valueOf(transferAmount));
             redisWrapperClient.hset(CREDIT_LOAN_TRANSFER_AGENT_KEY, orderId, SyncRequestStatus.SENT.name());
             ProjectTransferResponseModel resp = paySyncClient.send(CreditLoanTransferAgentMapper.class, requestModel, ProjectTransferResponseModel.class);
             boolean isSuccess = resp.isSuccess();
@@ -99,17 +102,17 @@ public class CreditLoanTransferAgentService {
                         String.valueOf(orderId), resp.getRetMsg(), creditLoanAgent, String.valueOf(transferAmount)));
                 return;
             } else {
-                logger.info(MessageFormat.format("[credit loan transfer {0}] fail({1}), mobile({2}) amount({3})",
-                        String.valueOf(orderId), resp.getRetMsg(), creditLoanAgent, String.valueOf(transferAmount)));
+                logger.info(MessageFormat.format("[credit loan transfer agent] fail, orderId:{0} failMsg:{1} amount:{2}",
+                        String.valueOf(orderId), resp.getRetMsg(), String.valueOf(transferAmount)));
                 this.sendFatalNotify(MessageFormat.format("慧租信用贷转账给代理人失败({0})，订单号({1}), 代理人({2}), 金额({3})",
                         resp.getRetMsg(), String.valueOf(orderId), creditLoanAgent, String.valueOf(transferAmount)));
             }
         } catch (PayException e) {
-            logger.error(MessageFormat.format("[信用贷还款转入代理人]:发起放款联动优势请求失败:{0}", e.getLocalizedMessage()));
+            logger.error(MessageFormat.format("[credit loan transfer agent] error, orderId:{0} amount:{2} errorMsg:{3}",
+                    String.valueOf(orderId), String.valueOf(transferAmount), String.valueOf(orderId), e.getLocalizedMessage()));
             this.sendFatalNotify(MessageFormat.format("慧租信用贷转账给代理人异常，订单号({0}), 代理人({1}), 金额({2})",
                     String.valueOf(orderId), creditLoanAgent, String.valueOf(transferAmount)));
         }
-
     }
 
     @Transactional
@@ -127,8 +130,12 @@ public class CreditLoanTransferAgentService {
     private void postCreditLoanTransferAgentCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
         AccountModel accountModel = accountMapper.findByMobile(creditLoanAgent);
-        long transferAmount = this.transferAmount();
+
+        long transferAmount = redisWrapperClient.exists(MessageFormat.format(CREDIT_LOAN_TRANSFER_AGENT_AMOUNT, String.valueOf(creditLoanAgent), callbackRequestModel.getOrderId())) ?
+                Long.parseLong(redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_TRANSFER_AGENT_AMOUNT, String.valueOf(creditLoanAgent), callbackRequestModel.getOrderId()))) : 0;
+
         if (transferAmount <= 0) {
+            logger.error("[credit loan transfer agent callback] is fail, transferAmount less then 0");
             return;
         }
         if (callbackRequestModel.isSuccess()) {
@@ -143,13 +150,16 @@ public class CreditLoanTransferAgentService {
                 }
             } catch (Exception e) {
                 redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.FAILURE.name());
-                logger.error(MessageFormat.format("credit loan transfer agent out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
+                logger.error(MessageFormat.format("credit loan transfer agent out balance error orderId:{0}, agent:{1} amount:{2}",
+                        callbackRequestModel.getOrderId(), String.valueOf(creditLoanAgent),String.valueOf(transferAmount)));
             }
         } else {
-            logger.error(MessageFormat.format("credit loan transfer agent callback  is fail (orderId = {0})", callbackRequestModel.getOrderId()));
+            logger.error(MessageFormat.format("credit loan transfer agent callback  is fail orderId:{0}, agent:{1} amount:{2}",
+                    callbackRequestModel.getOrderId(), String.valueOf(creditLoanAgent), String.valueOf(transferAmount)));
             this.sendFatalNotify(MessageFormat.format("慧租信用贷转账给代理人回调失败，订单号({0}), 代理人({1}), 金额({2})",
                     String.valueOf(orderId), creditLoanAgent, String.valueOf(transferAmount)));
         }
+        redisWrapperClient.del(MessageFormat.format(CREDIT_LOAN_TRANSFER_AGENT_AMOUNT, String.valueOf(creditLoanAgent), callbackRequestModel.getOrderId()));
     }
 
     private void sendFatalNotify(String message) {
