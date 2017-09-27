@@ -1,14 +1,13 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRechargeNotifyMapper;
@@ -20,10 +19,10 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.impl.CreditLoanRechargeServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
+import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,24 +30,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.anyMapOf;
 import static org.mockito.Mockito.*;
 
 
@@ -68,9 +61,7 @@ public class CreditLoanRechargeServiceTest {
     @Mock
     private PayAsyncClient payAsyncClient;
     @Mock
-    private AmountTransfer amountTransfer;
-    @Mock
-    private CreditLoanBillService creditLoanBillService;
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() throws Exception {

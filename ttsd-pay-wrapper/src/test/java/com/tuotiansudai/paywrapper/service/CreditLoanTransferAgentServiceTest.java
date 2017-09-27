@@ -1,12 +1,12 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
@@ -18,9 +18,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.impl.CreditLoanTransferAgentServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +40,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyMapOf;
 import static org.mockito.Mockito.*;
 
@@ -57,9 +54,6 @@ public class CreditLoanTransferAgentServiceTest {
     private CreditLoanBillMapper creditLoanBillMapper;
 
     @Mock
-    private UserMapper userMapper;
-
-    @Mock
     private AccountMapper accountMapper;
 
     @Mock
@@ -72,13 +66,10 @@ public class CreditLoanTransferAgentServiceTest {
     private RedisWrapperClient redisWrapperClient;
 
     @Mock
+    private MQWrapperClient mqWrapperClient;
+
+    @Mock
     private SmsWrapperClient smsWrapperClient;
-
-    @Mock
-    private AmountTransfer amountTransfer;
-
-    @Mock
-    private CreditLoanBillService creditLoanBillService;
 
     @Before
     public void init() throws Exception {
@@ -258,7 +249,7 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
                 anyString(), eq(CreditLoanTransferAgentNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
                 .thenReturn(callbackRequestModel);
-        doThrow(new AmountTransferException("error")).when(amountTransfer).transferInBalance(anyString(), anyLong(), anyLong(), any(UserBillBusinessType.class), anyString(), anyString());
+        doThrow(new RuntimeException()).when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);

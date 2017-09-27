@@ -6,8 +6,10 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -28,7 +30,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -61,8 +62,6 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     private HuiZuRepayNotifyRequestMapper huiZuRepayNotifyRequestMapper;
     @Value("${common.environment}")
     private Environment environment;
-    @Autowired
-    private AmountTransfer amountTransfer;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -255,9 +254,10 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     public void postRepay(String orderId) throws AmountTransferException {
         String mobile = redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "mobile");
         UserModel userModel = userMapper.findByMobile(mobile);
-        amountTransfer.transferOutBalance(userModel.getLoginName(),
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userModel.getLoginName(),
                 Long.parseLong(orderId),
                 Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         //TODO: modify loan_bill 流水数据
     }

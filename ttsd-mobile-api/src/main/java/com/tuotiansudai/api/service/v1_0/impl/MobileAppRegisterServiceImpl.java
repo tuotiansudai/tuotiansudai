@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -101,6 +102,28 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
         registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), Source.valueOf(registerRequestDto.getBaseParam().getPlatform().toUpperCase())));
         baseResponseDto.setData(registerDataDto);
+        return baseResponseDto;
+    }
+
+    @Override
+    public BaseResponseDto<RegisterResponseDataDto> registerUserFromHuizu(RegisterHuizuRequestDto registerHuizuRequestDto) {
+
+        RegisterUserDto dto = registerHuizuRequestDto.convertToRegisterUserDto();
+
+        BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
+        baseResponseDto.setData(registerDataDto);
+
+        registerDataDto.setPhoneNum(dto.getMobile());
+
+        UserModel userModel = userService.findByMobile(dto.getMobile());
+        if (userModel == null) {
+            userService.registerUserFromHuizu(dto);
+        } else {
+            dto.setLoginName(userModel.getLoginName());
+        }
+
+        registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
         return baseResponseDto;
     }
 

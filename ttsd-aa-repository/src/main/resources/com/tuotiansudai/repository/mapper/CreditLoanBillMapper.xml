@@ -19,6 +19,12 @@
         value(#{amount}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
     </insert>
 
+    <select id="findByOrderIdAndBusinessType" resultMap="creditLoanBillResultMap" parameterType="map">
+        select * from credit_loan_bill
+        where order_id = #{orderId}
+        and business_type = #{businessType}
+    </select>
+
     <select id="findSumAmountByInAndBusinessType" resultType="long" parameterType="map">
         select IFNULL(SUM(amount),0) from credit_loan_bill
         where operation_type= 'IN'
@@ -31,6 +37,7 @@
         AND business_type= 'CREDIT_LOAN_TRANSFER_AGENT'
     </select>
 
+<<<<<<< HEAD
     <select id="findCreditLoanBillPagination" parameterType="map" resultMap="creditLoanBillResultMap">
         select * from credit_loan_bill
         <where>

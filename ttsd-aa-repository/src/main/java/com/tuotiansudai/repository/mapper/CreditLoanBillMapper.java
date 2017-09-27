@@ -4,7 +4,6 @@ import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.repository.model.CreditLoanBillModel;
 import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -14,6 +13,10 @@ import java.util.List;
 public interface CreditLoanBillMapper {
 
     void create(CreditLoanBillModel model);
+
+    CreditLoanBillModel findByOrderIdAndBusinessType(
+            @Param("orderId") long orderId,
+            @Param("businessType") CreditLoanBillBusinessType businessType);
 
     long findSumAmountByInAndBusinessType();
 
