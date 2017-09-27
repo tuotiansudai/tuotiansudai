@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
@@ -42,7 +43,11 @@ public class HuizuMobileAppFrontCallBackController {
         PayDataDto data = new PayDataDto();
         data.setStatus(true);
 
-        data = payWrapperClient.validateFrontCallback(params).getData();
+        if (!Lists.newArrayList(AsyncUmPayService.CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD,
+                AsyncUmPayService.CREDIT_LOAN_REPAY_PROJECT_TRANSFER_NOPWD,
+                AsyncUmPayService.HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER).contains(asyncUmPayService)) {
+            data = payWrapperClient.validateFrontCallback(params).getData();
+        }
 
         ModelAndView modelAndView = new ModelAndView("/huizu-front-callback", "message", data.getMessage());
 

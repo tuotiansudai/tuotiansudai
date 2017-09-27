@@ -98,6 +98,8 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> amountCaptor = ArgumentCaptor.forClass(String.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
@@ -107,6 +109,7 @@ public class CreditLoanTransferAgentServiceTest {
 
         when(this.redisWrapperClient.hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture())).thenReturn(1L);
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenReturn(responseModel);
+        when(this.redisWrapperClient.set(redisKeyCaptor2.capture(), amountCaptor.capture())).thenReturn("100");
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
 
@@ -114,6 +117,7 @@ public class CreditLoanTransferAgentServiceTest {
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(this.redisWrapperClient, times(2))
                 .hset(anyString(), anyString(), anyString());
+        verify(this.redisWrapperClient, times(1)).set(anyString(), anyString());
 
         assertThat(redisKeyCaptor.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_KEY"));
         assertNotNull(orderIdCaptor.getAllValues().get(0));
@@ -122,6 +126,9 @@ public class CreditLoanTransferAgentServiceTest {
         assertThat(redisKeyCaptor.getAllValues().get(1), is("CREDIT_LOAN_TRANSFER_AGENT_KEY"));
         assertNotNull(orderIdCaptor.getAllValues().get(1));
         assertThat(statusCaptor.getAllValues().get(1), is(SyncRequestStatus.SUCCESS.name()));
+
+        assertNotNull(redisKeyCaptor2.getAllValues().get(0));
+        assertThat(amountCaptor.getAllValues().get(0), is("100"));
 
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is("100"));
@@ -137,12 +144,15 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> amountCaptor = ArgumentCaptor.forClass(String.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         when(this.redisWrapperClient.hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture())).thenReturn(1L);
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenReturn(new ProjectTransferResponseModel());
+        when(this.redisWrapperClient.set(redisKeyCaptor2.capture(), amountCaptor.capture())).thenReturn("100");
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
 
@@ -152,6 +162,7 @@ public class CreditLoanTransferAgentServiceTest {
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(this.redisWrapperClient, times(2))
                 .hset(anyString(), anyString(), anyString());
+        verify(this.redisWrapperClient, times(1)).set(anyString(), anyString());
 
         assertThat(redisKeyCaptor.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_KEY"));
         assertNotNull(orderIdCaptor.getAllValues().get(0));
@@ -160,6 +171,9 @@ public class CreditLoanTransferAgentServiceTest {
         assertThat(redisKeyCaptor.getAllValues().get(1), is("CREDIT_LOAN_TRANSFER_AGENT_KEY"));
         assertNotNull(orderIdCaptor.getAllValues().get(1));
         assertThat(statusCaptor.getAllValues().get(1), is(SyncRequestStatus.FAILURE.name()));
+
+        assertNotNull(redisKeyCaptor2.getAllValues().get(0));
+        assertThat(amountCaptor.getAllValues().get(0), is("100"));
 
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is("100"));
@@ -176,12 +190,15 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> amountCaptor = ArgumentCaptor.forClass(String.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
 
         when(this.redisWrapperClient.hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture())).thenReturn(1L);
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenThrow(new PayException("error"));
+        when(this.redisWrapperClient.set(redisKeyCaptor2.capture(), amountCaptor.capture())).thenReturn("100");
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
         verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
@@ -196,6 +213,9 @@ public class CreditLoanTransferAgentServiceTest {
         assertThat(redisKeyCaptor.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_KEY"));
         assertNotNull(orderIdCaptor.getAllValues().get(0));
         assertThat(statusCaptor.getAllValues().get(0), is(SyncRequestStatus.SENT.name()));
+
+        assertNotNull(redisKeyCaptor2.getAllValues().get(0));
+        assertThat(amountCaptor.getAllValues().get(0), is("100"));
 
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is("100"));
@@ -227,9 +247,16 @@ public class CreditLoanTransferAgentServiceTest {
         doNothing().when(this.mqWrapperClient).sendMessage(any(MessageQueue.class), any(Object.class));
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
+        when(this.redisWrapperClient.exists(anyString())).thenReturn(true);
+        when(this.redisWrapperClient.get(anyString())).thenReturn("100");
+        when(this.redisWrapperClient.del(anyString())).thenReturn(true);
+
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
         verify(this.redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString());
         verify(this.mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class), any(Object.class));
+        verify(this.redisWrapperClient, times(1)).exists(anyString());
+        verify(this.redisWrapperClient, times(1)).get(anyString());
+        verify(this.redisWrapperClient, times(1)).del(anyString());
 
         assertThat(redisKeyCaptor1.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_IN_BALANCE:1"));
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
@@ -262,9 +289,16 @@ public class CreditLoanTransferAgentServiceTest {
         doThrow(new RuntimeException()).when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
 
         when(this.redisWrapperClient.hset(redisKeyCaptor1.capture(), redisKeyCaptor2.capture(), statusCaptor.capture())).thenReturn(1L);
+        when(this.redisWrapperClient.exists(anyString())).thenReturn(true);
+        when(this.redisWrapperClient.get(anyString())).thenReturn("100");
+        when(this.redisWrapperClient.del(anyString())).thenReturn(true);
+
         String responseDate = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(Maps.newHashMap(), null);
         verify(this.redisWrapperClient, times(1)).hset(anyString(), anyString(), anyString());
         verify(this.mqWrapperClient, times(1)).sendMessage(any(MessageQueue.class), any(AmountTransferMessage.class));
+        verify(this.redisWrapperClient, times(1)).exists(anyString());
+        verify(this.redisWrapperClient, times(1)).get(anyString());
+        verify(this.redisWrapperClient, times(1)).del(anyString());
 
         assertThat(redisKeyCaptor1.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER_AGENT_IN_BALANCE:1"));
         assertThat(redisKeyCaptor2.getAllValues().get(0), is("CREDIT_LOAN_TRANSFER"));
