@@ -10,7 +10,6 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanTransferAgentNotifyMapper;
@@ -24,6 +23,8 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
+import com.tuotiansudai.repository.model.CreditLoanBillModel;
+import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -56,8 +57,6 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     private PayAsyncClient payAsyncClient;
     @Autowired
     private MQWrapperClient mqWrapperClient;
-    @Autowired
-    private CreditLoanBillService creditLoanBillService;
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
@@ -142,7 +141,7 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
                     AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, accountModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, null, null);
                     mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-                    creditLoanBillService.transferOut(orderId, transferAmount, CreditLoanBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, accountModel.getLoginName());
+                    mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, transferAmount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_RETRIEVE, creditLoanAgent));
                     redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (Exception e) {
