@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuActivateAccountMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuActivateAccountNotifyMapper;
@@ -25,7 +24,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -58,9 +56,6 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
 
     @Autowired
     private PayAsyncClient payAsyncClient;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -177,9 +172,7 @@ public class HuiZuActivateAccountServiceImpl implements HuiZuActivateAccountServ
         String mobile = redisWrapperClient.hget(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", orderId), "mobile");
         UserModel userModel = userMapper.findByMobile(mobile);
         // generate transferee balance
-        amountTransfer.transferOutBalance(userModel.getLoginName(),
-                orderId,
-                Long.parseLong(redisWrapperClient.hget(String.format("ACTIVATE_ACCOUNT_MOBILE:%s", orderId), "amount")), UserBillBusinessType.HUI_ZU_ACTIVATE_ACCOUNT, null, null);
+
 
         //TODO: modify loan_bill 流水数据
         //TODO:send MQ message to huizu 更新慧租账户的激活状态

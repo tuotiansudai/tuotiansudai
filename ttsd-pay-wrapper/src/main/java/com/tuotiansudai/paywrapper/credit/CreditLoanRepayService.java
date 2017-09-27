@@ -5,6 +5,9 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -34,6 +37,8 @@ public class CreditLoanRepayService {
     private static Logger logger = Logger.getLogger(CreditLoanRepayService.class);
 
     private final static String CREDIT_LOAN_REPAY_REDIS_KEY = "credit:loan:repay:{0}";
+
+    private final static String CREDIT_LOAN_REPAY_INFO_REDIS_KEY = "credit:loan:repay:info:{0}";
 
     private final static String CREDIT_LOAN_PASSWORD_REPAY_EXPIRED_REDIS_KEY = "credit:loan:password:repay:expired:{0}";
 
@@ -105,6 +110,9 @@ public class CreditLoanRepayService {
                     String.valueOf(amount));
             BaseDto<PayFormDataDto> payFormDataDtoBaseDto = payAsyncClient.generateFormData(CreditLoanRepayProjectTransferMapper.class, requestModel);
             redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_PASSWORD_REPAY_EXPIRED_REDIS_KEY, String.valueOf(orderId)), 30 * 60, SyncRequestStatus.SENT.name());
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)), SyncRequestStatus.SENT.name());
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_INFO_REDIS_KEY, String.valueOf(orderId)),
+                    MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
             return payFormDataDtoBaseDto;
         } catch (PayException e) {
             logger.error(MessageFormat.format("[credit loan repay {0}] generate form error, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
@@ -130,16 +138,26 @@ public class CreditLoanRepayService {
         String orderId = callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0];
 
         String key = MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, orderId);
-        if (!redisWrapperClient.exists(key)) {
-            if (callbackRequest.isSuccess()) {
-                redisWrapperClient.set(key, SyncRequestStatus.SUCCESS.name());
-                //TODO : loan_bill account user_bill
+
+        mqWrapperClient.sendMessage(MessageQueue.CreditLoanRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("order_id", orderId)
+                .put("success", callbackRequest.isSuccess())
+                .build()));
+
+        if (callbackRequest.isSuccess()) {
+            if (SyncRequestStatus.SENT.name().equalsIgnoreCase(redisWrapperClient.get(key))) {
+                String loanRepayInfo = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_REPAY_INFO_REDIS_KEY, String.valueOf(orderId)));
+                String mobile = loanRepayInfo.split("\\|")[0];
+                long amount = Long.parseLong(loanRepayInfo.split("\\|")[1]);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                        new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
+                                Long.parseLong(orderId),
+                                amount,
+                                UserBillBusinessType.CREDIT_LOAN_REPAY, null, null));
             }
 
-            mqWrapperClient.sendMessage(MessageQueue.CreditLoanRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                    .put("order_id", orderId)
-                    .put("success", callbackRequest.isSuccess())
-                    .build()));
+            //TODO : loan_bill
+            redisWrapperClient.set(key, SyncRequestStatus.SUCCESS.name());
         }
 
         return callbackRequest.getResponseData();

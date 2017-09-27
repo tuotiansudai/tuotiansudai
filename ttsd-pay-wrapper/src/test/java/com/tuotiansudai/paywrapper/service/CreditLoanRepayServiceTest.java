@@ -1,16 +1,27 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanOutProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +37,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -52,6 +64,9 @@ public class CreditLoanRepayServiceTest {
     @Mock
     private RedisWrapperClient redisWrapperClient;
 
+    @Mock
+    private MQWrapperClient mqWrapperClient;
+
     @Before
     public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -77,7 +92,7 @@ public class CreditLoanRepayServiceTest {
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
 
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:repaying:{0}", String.valueOf(orderId)))).thenReturn(true);
+        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(true);
         dto = this.creditLoanRepayService.passwordRepay(orderId, mobile, 1);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("还款交易进行中, 请30分钟后查看"));
@@ -88,9 +103,13 @@ public class CreditLoanRepayServiceTest {
         int orderId = 1;
         String mobile = "13900000000";
         int amount = 888;
-        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Integer> expiredCaptor = ArgumentCaptor.forClass(Integer.class);
-        ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> expiredKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Integer> expiredValueCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> expiredStatusCaptor = ArgumentCaptor.forClass(String.class);
+
+        ArgumentCaptor<String> setKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> setValueCaptor = ArgumentCaptor.forClass(String.class);
+
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
@@ -102,18 +121,29 @@ public class CreditLoanRepayServiceTest {
         when(this.redisWrapperClient.exists(anyString())).thenReturn(false);
 
         assertThat(this.creditLoanRepayService.passwordRepay(orderId, mobile, amount), is(dto));
+
         verify(this.redisWrapperClient, times(1))
-                .setex(redisKeyCaptor.capture(), expiredCaptor.capture(), statusCaptor.capture());
+                .setex(expiredKeyCaptor.capture(), expiredValueCaptor.capture(), expiredStatusCaptor.capture());
+
+        verify(this.redisWrapperClient, times(2))
+                .set(setKeyCaptor.capture(), setValueCaptor.capture());
+
+
         verify(this.payAsyncClient,times(1))
                 .generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), requestModelCaptor.capture());
 
-        assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:repaying:{0}", String.valueOf(orderId))));
-        assertThat(expiredCaptor.getValue(), is(30 * 60));
-        assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
+        assertThat(expiredKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId))));
+        assertThat(expiredValueCaptor.getValue(), is(30 * 60));
+        assertThat(expiredStatusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(String.valueOf(orderId) + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
+
+        assertThat(setKeyCaptor.getAllValues().get(0), is(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId))));
+        assertThat(setValueCaptor.getAllValues().get(0), is(SyncRequestStatus.SENT.name()));
+        assertThat(setKeyCaptor.getAllValues().get(1), is(MessageFormat.format("credit:loan:repay:info:{0}", String.valueOf(orderId))));
+        assertThat(setValueCaptor.getAllValues().get(1), is(MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount))));
 
         assertTrue(dto.getData().getStatus());
     }
@@ -132,6 +162,7 @@ public class CreditLoanRepayServiceTest {
 
         BaseDto<PayFormDataDto> actual = this.creditLoanRepayService.passwordRepay(orderId, mobile, amount);
         verify(this.redisWrapperClient, times(0)).setex(anyString(), anyInt(), anyString());
+        verify(this.redisWrapperClient, times(0)).set(anyString(), anyString());
         verify(this.payAsyncClient,times(1))
                 .generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), requestModelCaptor.capture());
 
@@ -141,5 +172,53 @@ public class CreditLoanRepayServiceTest {
 
         assertFalse(actual.getData().getStatus());
         assertThat(actual.getData().getMessage(), is("生成交易数据失败"));
+    }
+
+    @Test
+    public void shouldLoanRepayCallbackSuccess() throws Exception {
+        long orderId = 1L;
+        String mobile = "13900000000";
+        long amount = 888;
+        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<MessageQueue> queueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
+        ArgumentCaptor<Object> messageCaptor = ArgumentCaptor.forClass(Object.class);
+
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        BaseCallbackRequestModel callbackRequestModel = new BaseCallbackRequestModel();
+        callbackRequestModel.setOrderId(String.valueOf(orderId) + "X");
+        callbackRequestModel.setRetCode("0000");
+        when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        UserModel userModel = new UserModel();
+        userModel.setLoginName(accountModel.getLoginName());
+        when(this.userMapper.findByMobile(mobile)).thenReturn(userModel);
+        when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
+                anyString(), eq(CreditLoanRepayProjectTransferNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
+                .thenReturn(callbackRequestModel);
+
+        when(this.redisWrapperClient.get(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(SyncRequestStatus.SENT.name());
+        when(this.redisWrapperClient.get(MessageFormat.format("credit:loan:repay:info:{0}", String.valueOf(orderId))))
+                .thenReturn(MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
+
+        doNothing().when(this.mqWrapperClient).sendMessage(any(), any());
+
+        this.creditLoanRepayService.repayCallback(Maps.newHashMap(), null);
+
+        verify(this.redisWrapperClient, times(1))
+                .set(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)), SyncRequestStatus.SUCCESS.name());
+
+        verify(this.mqWrapperClient, times(2))
+                .sendMessage(queueCaptor.capture(), messageCaptor.capture());
+
+        assertThat(queueCaptor.getAllValues().get(0), is(MessageQueue.CreditLoanRepayQueue));
+        assertThat(((Map)messageCaptor.getAllValues().get(0)).get("order_id"), is(String.valueOf(orderId)));
+        assertThat(((Map)messageCaptor.getAllValues().get(0)).get("success"), is(true));
+
+        assertThat(queueCaptor.getAllValues().get(1), is(MessageQueue.AmountTransfer));
+        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getTransferType(), is(TransferType.TRANSFER_OUT_BALANCE));
+        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getLoginName(), is(userModel.getLoginName()));
+        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getOrderId(), is(orderId));
+        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getBusinessType(), is(UserBillBusinessType.CREDIT_LOAN_REPAY));
     }
 }

@@ -115,7 +115,7 @@ public class HuiZuActivateAccountServiceTest {
 
         assertEquals(299, accountModel.getBalance());
         assertEquals(1, userBillModels.get(0).getAmount());
-        assertEquals(UserBillBusinessType.HUI_ZU_ACTIVATE_ACCOUNT, userBillModels.get(0).getBusinessType());
+        assertEquals(UserBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT, userBillModels.get(0).getBusinessType());
         assertEquals(huiZuActivateAccountDto.getMobile(), String.valueOf(userBillModels.get(0).getOrderId()));
         assertEquals(UserBillOperationType.TO_BALANCE, userBillModels.get(0).getOperationType());
     }
