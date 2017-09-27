@@ -223,10 +223,10 @@ public class CreditLoanActivateAccountServiceTest {
 
         when(this.redisWrapperClient.get(anyString())).thenReturn("");
         when(this.paySyncClient.send(eq(CreditLoanNopwdActivateAccountMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenThrow(new PayException("error"));
-        doNothing().when(this.smsWrapperClient).sendFatalNotify(any());
 
         BaseDto<PayDataDto> dataDtoBaseDto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
 
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));

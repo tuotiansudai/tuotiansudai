@@ -13,7 +13,6 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
@@ -26,10 +25,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.CreditLoanRechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
-import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +48,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     private PaySyncClient paySyncClient;
     @Autowired
     private MQWrapperClient mqWrapperClient;
-    @Autowired
-    private CreditLoanBillService creditLoanBillService;
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
@@ -167,7 +161,7 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.SUCCESS);
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-                creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, loginName);
+                mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, creditLoanAgent));
             } else {
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.FAIL);
             }

@@ -2,9 +2,15 @@ package com.tuotiansudai.repository.model;
 
 public enum CreditLoanBillBusinessType {
 
-    CREDIT_LOAN_TRANSFER_AGENT("信用贷给代理人转账"),
+    // 出账
+    CREDIT_LOAN_OFFER("发放信用贷用户借款"),
+    CREDIT_LOAN_RETRIEVE("发放信用贷代理人账户"),
+    YOOCAR_LOAN_RETRIEVE("发放优车贷代理人账户"),
+
+    // 入账
     CREDIT_LOAN_REPAY("信用贷用户还款"),
-    CREDIT_LOAN_RECHARGE("信用贷账户充值");
+    CREDIT_LOAN_RECHARGE("信用贷代理人账户充值"),
+    YOOCAR_LOAN_REPAY("优车贷用户还款");
 
     private final String description;
 

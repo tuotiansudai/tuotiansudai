@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -59,6 +60,8 @@ public class CreditLoanRechargeServiceTest {
     private PaySyncClient paySyncClient;
     @Mock
     private PayAsyncClient payAsyncClient;
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() throws Exception {
