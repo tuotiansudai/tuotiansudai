@@ -24,7 +24,7 @@
     </select>
 
     <update id="updateCreditLoanRechargeStatus" parameterType="map">
-        update credit_loan_recharge set updated_time = now(), status = #{status} where id = #{id}
+        update credit_loan_recharge set updated_time = now(), status = #{rechargeStatus} where id = #{id}
     </update>
 
     <select id="findByLoginName" parameterType="string" resultMap="creditLoanRechargeResultMap">
