@@ -324,6 +324,18 @@ user-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
 
+amount-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-amount-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-amount-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-amount-mq-consumer/bin/ttsd-amount-mq-consumer"
+  links:
+    - "redis-server"
+
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
   environment:

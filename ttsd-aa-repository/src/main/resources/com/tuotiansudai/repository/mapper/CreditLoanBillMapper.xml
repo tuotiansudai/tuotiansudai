@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.CreditLoanBillMapper">
+
+    <resultMap id="creditLoanBillResultMap" type="CreditLoanBillModel">
+        <id column="id" property="id"></id>
+        <result column="order_id" property="orderId"></result>
+        <result column="amount" property="amount"></result>
+        <result column="operation_type" property="operationType"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="CreditLoanBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into credit_loan_bill ( amount, operation_type, created_time, order_id, business_type, mobile)
+        value(#{amount}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
+    </insert>
+
+    <select id="findByOrderIdAndBusinessType" resultMap="creditLoanBillResultMap" parameterType="map">
+        select * from credit_loan_bill
+        where order_id = #{orderId}
+        and business_type = #{businessType}
+    </select>
+
+    <select id="findSumAmountByInAndBusinessType" resultType="long" parameterType="map">
+        select IFNULL(SUM(amount),0) from credit_loan_bill
+        where operation_type= 'IN'
+        AND business_type= 'CREDIT_LOAN_REPAY'
+    </select>
+
+    <select id="findSumAmountByOutAndBusinessType" resultType="long">
+        select IFNULL(SUM(amount),0) from credit_loan_bill
+        where operation_type= 'OUT'
+        AND business_type= 'CREDIT_LOAN_TRANSFER_AGENT'
+    </select>
+
+</mapper>

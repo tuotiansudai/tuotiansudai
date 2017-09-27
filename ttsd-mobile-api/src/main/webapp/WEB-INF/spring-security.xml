@@ -73,6 +73,7 @@
         <intercept-url pattern="/v1.0/get/help-center-category-list" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/help-center-search" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/activity/school-season-status" access="permitAll()"/>
+        <intercept-url pattern="/huizu/register" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

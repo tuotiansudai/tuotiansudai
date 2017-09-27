@@ -73,6 +73,11 @@ public enum AsyncUmPayService {
     INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "callback/invest_transfer_project_transfer", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
 
     /**
+     * 慧租信用贷验密还款
+     */
+    CREDIT_LOAN_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/credit_loan_repay_notify", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+
+    /**
      * 慧租有密还款
      */
     HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/hz_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
@@ -80,6 +85,10 @@ public enum AsyncUmPayService {
      * 债权购买返款标的转账
      */
     INVEST_TRANSFER_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "invest_transfer_payback_notify", ""),
+    /**
+     * 慧租信用贷放款
+     */
+    CREDIT_LOAN_OUT_PROJECT_TRANSFER("project_transfer", "", "", "credit_loan_out_notify", ""),
     /**
      * 债权购买手续费标的转账
      */
@@ -96,9 +105,14 @@ public enum AsyncUmPayService {
     INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
 
     /**
-     * 惠租有密一分钱激活账户
+     * 慧租有密一分钱激活账户
      */
-    HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("hz_activate_account", "", "callback/hz_activate_account", "callback/hz_activate_account_notify", "huizu://activate-account/{0}"),
+    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "callback/hz_activate_account", "hz_activate_account_notify", "huizu://activate-account/{0}"),
+
+    /**
+     * 慧租无密一分钱激活账户
+     */
+    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "callback/hz_activate_account_nopwd", "hz_activate_account_notify", "huizu://activate-account/{0}"),
 
     /**
      * 慧租无密还款
@@ -162,8 +176,19 @@ public enum AsyncUmPayService {
     /**
      * 平台充值普通转账验密
      */
-    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
-
+    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", ""),
+    /**
+     * 信用贷标的账户充值无密
+     */
+    CREDIT_LOAN_RECHARGE_TRANSFER_NOPWD("project_transfer_nopwd", "finance-manage/credit-loan-bill", "", "credit_loan_recharge_notify", ""),
+    /**
+     * 信用贷标的账户充值验密
+     */
+    CREDIT_LOAN_RECHARGE_TRANSFER("project_transfer", "finance-manage/credit-loan-bill", "", "credit_loan_recharge_notify", ""),
+    /**
+     * 信用贷转账给代理人
+     */
+    CREDIT_LOAN_AGENT_TRANSFER("project_transfer", "", "", "credit_loan_transfer_agent_notify", "");
 
     private final String serviceName;
 

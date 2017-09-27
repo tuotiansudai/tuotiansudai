@@ -16,7 +16,9 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
     private final static Logger logger = Logger.getLogger(BaseAsyncRequestModel.class);
 
-    protected static Properties CALLBACK_HOST_PROPS = new Properties();
+    protected static Properties ENV_PROPS = new Properties();
+
+    protected static Properties BIZ_PROPS = new Properties();
 
     protected String retUrl;
 
@@ -39,12 +41,22 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
     }
 
     static {
-        if (CALLBACK_HOST_PROPS.isEmpty()) {
+        if (ENV_PROPS.isEmpty()) {
             try {
                 Resource resourceService = new ClassPathResource("/ttsd-env.properties");
-                BaseAsyncRequestModel.CALLBACK_HOST_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
+                BaseAsyncRequestModel.ENV_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
             } catch (IOException e) {
                 logger.error("ttsd-env.properties 不存在!");
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        if (BIZ_PROPS.isEmpty()) {
+            try {
+                Resource resourceService = new ClassPathResource("/ttsd-biz.properties");
+                BaseAsyncRequestModel.BIZ_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
+            } catch (IOException e) {
+                logger.error("ttsd-biz.properties 不存在!");
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
@@ -55,9 +67,9 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
     public BaseAsyncRequestModel(Source source, AsyncUmPayService service) {
         this.retUrl = Source.WEB == source ?
-                MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.web.host"), service.getWebRetCallbackPath())
-                : MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.app.web.host"), service.getMobileRetCallbackPath());
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), service.getNotifyCallbackPath());
+                MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.web.host"), service.getWebRetCallbackPath())
+                : MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.app.web.host"), service.getMobileRetCallbackPath());
+        this.notifyUrl = MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.back.host"), service.getNotifyCallbackPath());
         this.setSourceV(source == Source.WEB ? null : "HTML5");
     }
 }

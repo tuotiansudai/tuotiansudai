@@ -5,8 +5,11 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.HuiZuRepayDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
@@ -18,7 +21,9 @@ import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,11 +33,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -96,14 +103,8 @@ public class HuiZuRepayServiceTest {
                         .build()),
                 30 * 30);
         huiZuRepayService.postRepay(String.valueOf(huiZuRepayDto.getRepayPlanId()));
-        AccountModel accountModel = accountMapper.findByLoginName(huiZuRepayDto.getMobile());
-        List<UserBillModel> userBillModels = userBillMapper.findByLoginName(huiZuRepayDto.getMobile());
 
-        assertEquals(190, accountModel.getBalance());
-        assertEquals(110, userBillModels.get(0).getAmount());
-        assertEquals(UserBillBusinessType.HUI_ZU_REPAY_IN, userBillModels.get(0).getBusinessType());
-        assertEquals(huiZuRepayDto.getRepayPlanId(), String.valueOf(userBillModels.get(0).getOrderId()));
-        assertEquals(UserBillOperationType.TO_BALANCE, userBillModels.get(0).getOperationType());
+        verifyPostRepayAmountTransferMessage(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()), loginName, huiZuRepayDto.getRepayPlanId());
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
 
     }
@@ -158,5 +159,19 @@ public class HuiZuRepayServiceTest {
         accountModel.setBalance(balance);
         accountModel.setFreeze(0l);
         accountMapper.create(accountModel);
+    }
+
+    private void verifyPostRepayAmountTransferMessage(long mockRepayAmount, String mockLoginName, String orderId) {
+        try {
+            String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+            assertThat(message.getLoginName(), CoreMatchers.is(mockLoginName));
+            assertThat(message.getOrderId(), CoreMatchers.is(Long.parseLong(orderId)));
+            assertThat(message.getAmount(), CoreMatchers.is(mockRepayAmount));
+            assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.HUI_ZU_REPAY_IN));
+            assertThat(message.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+        } catch (IOException e) {
+            assert false;
+        }
     }
 }
