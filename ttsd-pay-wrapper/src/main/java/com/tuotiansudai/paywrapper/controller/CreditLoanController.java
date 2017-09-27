@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.paywrapper.credit.CreditLoanActivateAccountService;
 import com.tuotiansudai.paywrapper.credit.CreditLoanOutService;
 import com.tuotiansudai.paywrapper.credit.CreditLoanRechargeService;
 import com.tuotiansudai.paywrapper.credit.CreditLoanRepayService;
@@ -26,6 +27,8 @@ public class CreditLoanController {
 
     private final CreditLoanRepayService creditLoanRepayService;
 
+    private final CreditLoanActivateAccountService creditLoanActivateAccountService;
+
     private final CreditLoanRechargeService creditLoanRechargeService;
 
     private final CreditLoanTransferAgentService creditLoanTransferAgentService;
@@ -33,10 +36,12 @@ public class CreditLoanController {
     @Autowired
     public CreditLoanController(CreditLoanOutService creditLoanOutService,
                                 CreditLoanRepayService creditLoanRepayService,
+                                CreditLoanActivateAccountService creditLoanActivateAccountService,
                                 CreditLoanRechargeService creditLoanRechargeService,
                                 CreditLoanTransferAgentService creditLoanTransferAgentService) {
         this.creditLoanOutService = creditLoanOutService;
         this.creditLoanRepayService = creditLoanRepayService;
+        this.creditLoanActivateAccountService = creditLoanActivateAccountService;
         this.creditLoanRechargeService = creditLoanRechargeService;
         this.creditLoanTransferAgentService = creditLoanTransferAgentService;
     }
@@ -55,6 +60,18 @@ public class CreditLoanController {
                                                  @PathVariable String mobile,
                                                  @PathVariable long amount) {
         return creditLoanRepayService.passwordRepay(orderId, mobile, amount);
+    }
+
+    @RequestMapping(value = "/password/activate-account/{mobile}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayFormDataDto> passwordActivateAccount(@PathVariable String mobile) {
+        return creditLoanActivateAccountService.passwordActivateAccount(mobile);
+    }
+
+    @RequestMapping(value = "/no-password/activate-account/{mobile}", method = RequestMethod.POST)
+    @ResponseBody
+    public  BaseDto<PayDataDto> noPasswordActivateAccount(@PathVariable String mobile) {
+        return creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
     }
 
     @RequestMapping(value = "/no-password-repay/{orderId}/mobile/{mobile}/amount/{amount}", method = RequestMethod.POST)
