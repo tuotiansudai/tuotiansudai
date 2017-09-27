@@ -45,4 +45,14 @@ public class CreditLoanController {
                                                  @PathVariable long amount) {
         return creditLoanRepayService.passwordRepay(orderId, mobile, amount);
     }
+
+    @RequestMapping(value = "/no-password-repay/{orderId}/mobile/{mobile}/amount/{amount}" , method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> creditLoanRepayNoPwd(@PathVariable long orderId,
+                                                    @PathVariable String mobile,
+                                                    @PathVariable long amount){
+
+        return creditLoanRepayService.noPwdRepay(orderId, mobile, amount);
+
+    }
 }

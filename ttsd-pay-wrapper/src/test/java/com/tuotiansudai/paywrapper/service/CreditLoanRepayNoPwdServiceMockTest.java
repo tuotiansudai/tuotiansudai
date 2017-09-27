@@ -1,13 +1,16 @@
 package com.tuotiansudai.paywrapper.service;
 
+
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayNoPwdMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -29,16 +32,16 @@ import java.util.Date;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class CreditLoanRepayServiceTest {
+public class CreditLoanRepayNoPwdServiceMockTest {
 
     @InjectMocks
-    private CreditLoanRepayService creditLoanRepayService;
+    private CreditLoanRepayService creditLoanRepayNoPwdService;
 
     @Mock
     private UserMapper userMapper;
@@ -47,68 +50,79 @@ public class CreditLoanRepayServiceTest {
     private AccountMapper accountMapper;
 
     @Mock
-    private PayAsyncClient payAsyncClient;
+    private PaySyncClient paySyncClient;
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
 
+    @Mock
+    private SmsWrapperClient smsWrapperClient;
+
     @Before
     public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
-        Field redisWrapperClientField = this.creditLoanRepayService.getClass().getDeclaredField("redisWrapperClient");
+        Field redisWrapperClientField = this.creditLoanRepayNoPwdService.getClass().getDeclaredField("redisWrapperClient");
         redisWrapperClientField.setAccessible(true);
         Field modifiersField = Field.class.getDeclaredField("modifiers");
         modifiersField.setAccessible(true);
         modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
-        redisWrapperClientField.set(this.creditLoanRepayService, this.redisWrapperClient);
+        redisWrapperClientField.set(this.creditLoanRepayNoPwdService, this.redisWrapperClient);
     }
 
     @Test
-    public void shouldLoanRepayFailedWhenInvalidParameters() {
+    public void shouldLoanNoPwdRepayFailedWhenInvalidParameters() {
         int orderId = 1;
         String mobile = "13900000000";
-        BaseDto<PayFormDataDto> dto = this.creditLoanRepayService.passwordRepay(orderId, mobile, 0);
+        BaseDto<PayDataDto> dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, 0);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("还款金额必须大于零"));
 
         when(accountMapper.findByMobile(mobile)).thenReturn(null);
-        dto = this.creditLoanRepayService.passwordRepay(orderId, mobile, 1);
+        dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, 1);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
 
-        when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(true);
-        dto = this.creditLoanRepayService.passwordRepay(orderId, mobile, 1);
+        AccountModel accountModel = new AccountModel();
+        accountModel.setNoPasswordInvest(false);
+        when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, 1);
         assertFalse(dto.getData().getStatus());
-        assertThat(dto.getData().getMessage(), is("还款交易进行中, 请30分钟后查看"));
+        assertThat(dto.getData().getMessage(), is("用户未开通免密支付功能"));
+
+        accountModel.setNoPasswordInvest(true);
+        when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        when(redisWrapperClient.get(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(SyncRequestStatus.SUCCESS.name());
+        dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, 1);
+        assertFalse(dto.getData().getStatus());
+        assertThat(dto.getData().getMessage(), is("您已还款成功"));
     }
 
     @Test
-    public void shouldGeneratePasswordRepaySuccess() throws Exception {
+    public void creditLoanRepayNoPwdSuccess() throws Exception {
         int orderId = 1;
         String mobile = "13900000000";
         int amount = 888;
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Integer> expiredCaptor = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
+        ArgumentCaptor<ProjectTransferNopwdRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferNopwdRequestModel.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        accountModel.setNoPasswordInvest(true);
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        BaseDto<PayFormDataDto> dto = new BaseDto<>(payFormDataDto);
-        payFormDataDto.setStatus(true);
-        when(this.payAsyncClient.generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), any(ProjectTransferRequestModel.class))).thenReturn(dto);
-        when(this.redisWrapperClient.exists(anyString())).thenReturn(false);
+        PayDataDto payDataDto = new PayDataDto();
+        BaseDto<PayDataDto> dto = new BaseDto<>(payDataDto);
+        payDataDto.setStatus(true);
 
-        assertThat(this.creditLoanRepayService.passwordRepay(orderId, mobile, amount), is(dto));
-        verify(this.redisWrapperClient, times(1))
-                .setex(redisKeyCaptor.capture(), expiredCaptor.capture(), statusCaptor.capture());
-        verify(this.payAsyncClient,times(1))
-                .generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), requestModelCaptor.capture());
+        ProjectTransferNopwdResponseModel responseModel = new ProjectTransferNopwdResponseModel();
+        responseModel.setRetCode("0000");
+
+        when(this.paySyncClient.send(eq(CreditLoanRepayNoPwdMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenReturn(responseModel);
+        when(this.redisWrapperClient.get(anyString())).thenReturn("");
+        when(this.redisWrapperClient.set(redisKeyCaptor.capture(), statusCaptor.capture())).thenReturn("");
+
+        dto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, amount);
 
         assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId))));
-        assertThat(expiredCaptor.getValue(), is(30 * 60));
         assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(String.valueOf(orderId) + "X"));
@@ -116,30 +130,31 @@ public class CreditLoanRepayServiceTest {
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
         assertTrue(dto.getData().getStatus());
+        assertThat(dto.getData().getCode(), is("0000"));
     }
 
     @Test
-    public void shouldGeneratePasswordLoanRepayFail() throws Exception {
+    public void creditLoanRepayNoPwdFail() throws Exception {
         int orderId = 1;
         String mobile = "13900000000";
         int amount = 888;
-        ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
+        ArgumentCaptor<ProjectTransferNopwdRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferNopwdRequestModel.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        accountModel.setNoPasswordInvest(true);
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        when(this.payAsyncClient.generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), any(ProjectTransferRequestModel.class))).thenThrow(new PayException("error"));
-        when(this.redisWrapperClient.exists(anyString())).thenReturn(false);
 
-        BaseDto<PayFormDataDto> actual = this.creditLoanRepayService.passwordRepay(orderId, mobile, amount);
-        verify(this.redisWrapperClient, times(0)).setex(anyString(), anyInt(), anyString());
-        verify(this.payAsyncClient,times(1))
-                .generateFormData(eq(CreditLoanRepayProjectTransferMapper.class), requestModelCaptor.capture());
+        when(this.redisWrapperClient.get(anyString())).thenReturn("");
+        when(this.paySyncClient.send(eq(CreditLoanRepayNoPwdMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenThrow(new PayException("error"));
+
+        BaseDto<PayDataDto> dataDtoBaseDto = this.creditLoanRepayNoPwdService.noPwdRepay(orderId, mobile, amount);
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(String.valueOf(orderId) + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
-        assertFalse(actual.getData().getStatus());
-        assertThat(actual.getData().getMessage(), is("生成交易数据失败"));
+        assertThat(dataDtoBaseDto.getData().getMessage(), is("error"));
+        assertFalse(dataDtoBaseDto.getData().getStatus());
     }
+
 }
