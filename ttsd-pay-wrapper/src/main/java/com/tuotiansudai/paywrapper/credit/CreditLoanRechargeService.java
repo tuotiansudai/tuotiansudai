@@ -24,10 +24,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
-import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +47,6 @@ public class CreditLoanRechargeService{
     private PaySyncClient paySyncClient;
     @Autowired
     private MQWrapperClient mqWrapperClient;
-    @Autowired
-    private CreditLoanBillService creditLoanBillService;
     @Autowired
     private CreditLoanRechargeMapper creditLoanRechargeMapper;
 
@@ -162,7 +157,7 @@ public class CreditLoanRechargeService{
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.SUCCESS);
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-                creditLoanBillService.transferIn(orderId, amount, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, loginName);
+                mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, creditLoanAgent));
             } else {
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.FAIL);
             }

@@ -10,7 +10,6 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.credit.CreditLoanBillService;
 import com.tuotiansudai.paywrapper.credit.CreditLoanRechargeService;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanNopwdRechargeMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanPwdRechargeMapper;
@@ -65,8 +64,6 @@ public class CreditLoanRechargeServiceTest {
     private PayAsyncClient payAsyncClient;
     @Mock
     private MQWrapperClient mqWrapperClient;
-    @Mock
-    private CreditLoanBillService creditLoanBillService;
 
     @Before
     public void init() throws Exception {
