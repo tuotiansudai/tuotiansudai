@@ -25,16 +25,14 @@
         and business_type = #{businessType}
     </select>
 
-    <select id="findSumAmountByInAndBusinessType" resultType="long" parameterType="map">
+    <select id="findSumAmountByIn" resultType="long">
         select IFNULL(SUM(amount),0) from credit_loan_bill
         where operation_type= 'IN'
-        AND business_type= 'CREDIT_LOAN_REPAY'
     </select>
 
-    <select id="findSumAmountByOutAndBusinessType" resultType="long">
+    <select id="findSumAmountByOut" resultType="long">
         select IFNULL(SUM(amount),0) from credit_loan_bill
         where operation_type= 'OUT'
-        AND business_type= 'CREDIT_LOAN_TRANSFER_AGENT'
     </select>
 
 <<<<<<< HEAD

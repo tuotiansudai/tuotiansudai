@@ -14,13 +14,13 @@ public interface CreditLoanBillMapper {
 
     void create(CreditLoanBillModel model);
 
+    long findSumAmountByIn();
+
+    long findSumAmountByOut();
+
     CreditLoanBillModel findByOrderIdAndBusinessType(
             @Param("orderId") long orderId,
             @Param("businessType") CreditLoanBillBusinessType businessType);
-
-    long findSumAmountByInAndBusinessType();
-
-    long findSumAmountByOutAndBusinessType();
 
     List<CreditLoanBillModel> findCreditLoanBillPagination(@Param(value = "startTime") Date startTime,
                                                            @Param(value = "endTime") Date endTime,

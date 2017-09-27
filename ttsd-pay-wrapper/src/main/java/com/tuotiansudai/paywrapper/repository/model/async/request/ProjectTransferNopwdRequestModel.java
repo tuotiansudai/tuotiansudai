@@ -57,9 +57,13 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
     public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
         return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.LOANER, AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER_NOPWD);
     }
-    
-    public static ProjectTransferNopwdRequestModel newCreditLoanRechargeNopwdRequest( String orderId, String userId, String amount) {
+
+    public static ProjectTransferNopwdRequestModel newCreditLoanRechargeNopwdRequest(String orderId, String userId, String amount) {
         return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER_NOPWD);
+    }
+
+    public static ProjectTransferNopwdRequestModel newCreditLoanNoPasswordRepayRequest(String orderId, String userId, String amount) {
+        return new ProjectTransferNopwdRequestModel(BIZ_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.CREDIT_LOAN_REPAY_PROJECT_TRANSFER_NOPWD);
     }
 
     public static ProjectTransferNopwdRequestModel newHuiZuRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
@@ -81,15 +85,15 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         return payRequestData;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
     public String getUserId() {
         return userId;
     }
 
     public String getAmount() {
         return amount;
-    }
-
-    public String getOrderId() {
-        return orderId;
     }
 }
