@@ -99,13 +99,13 @@ public class CreditLoanActivateAccountService {
             return dto;
         }
 
-        if(this.isActive(mobile)){
+        if (this.isActive(mobile)) {
             payFormDataDto.setMessage("正在激活账户, 请30分钟后查看");
             payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return dto;
         }
 
-        if (!this.checkActivateAccountStatus(mobile)){
+        if (!this.checkActivateAccountStatus(mobile)) {
             payFormDataDto.setMessage("您已经激活过账户");
             payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return dto;
@@ -118,11 +118,11 @@ public class CreditLoanActivateAccountService {
                     String.valueOf(ACTIVATE_ACCOUNT_MONEY));
 
             BaseDto<PayFormDataDto> payFormDataDtoBaseDto = payAsyncClient.generateFormData(CreditLoanActivateAccountMapper.class, requestModel);
-            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_CONCURRENCY_REDIS_KEY,mobile),30*60,SyncRequestStatus.SENT.name());
+            redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_CONCURRENCY_REDIS_KEY, mobile), 30 * 60, SyncRequestStatus.SENT.name());
             redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile), SyncRequestStatus.SENT.name());
             return payFormDataDtoBaseDto;
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[credit loan password activate account {0}] activate account error, mobile({1})",  mobile), e);
+            logger.error(MessageFormat.format("[credit loan password activate account {0}] activate account error, mobile({1})", mobile), e);
             payFormDataDto.setMessage("发送激活账户数据失败");
             payFormDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
         }
@@ -148,7 +148,7 @@ public class CreditLoanActivateAccountService {
             return baseDto;
         }
 
-        if (!this.checkActivateAccountStatus(mobile)){
+        if (!this.checkActivateAccountStatus(mobile)) {
             payDataDto.setMessage("您已经激活过账户");
             payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return baseDto;
@@ -171,12 +171,12 @@ public class CreditLoanActivateAccountService {
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("order_id", MessageFormat.format(ACTIVATE_ACCOUNT_ORDER_ID_TEMPLATE, mobile))
+                    .put("callbackUrl", requestModel.getRetUrl())
                     .build()));
 
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            logger.error(MessageFormat.format("[慧租无密激活账户] error, mobile:{0}",  mobile), e);
+            logger.error(MessageFormat.format("[慧租无密激活账户] error, mobile:{0}", mobile), e);
             this.sendFatalNotify(MessageFormat.format("慧租无密激活账户异常，mobile:{0}", mobile));
 
             payDataDto.setStatus(false);
@@ -243,7 +243,7 @@ public class CreditLoanActivateAccountService {
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
     }
 
-    private boolean checkActivateAccountStatus(String mobile){
+    private boolean checkActivateAccountStatus(String mobile) {
         try {
             String status = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile));
             if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
