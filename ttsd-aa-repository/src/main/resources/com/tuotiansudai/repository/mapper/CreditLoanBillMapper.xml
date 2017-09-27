@@ -35,7 +35,6 @@
         where operation_type= 'OUT'
     </select>
 
-<<<<<<< HEAD
     <select id="findCreditLoanBillPagination" parameterType="map" resultMap="creditLoanBillResultMap">
         select * from credit_loan_bill
         <where>
