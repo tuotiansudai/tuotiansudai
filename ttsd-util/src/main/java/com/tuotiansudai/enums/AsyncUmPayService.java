@@ -121,7 +121,7 @@ public enum AsyncUmPayService {
     /**
      * 慧租无密还款
      */
-    HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer_nopwd", "", "callback/hz_no_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
+    HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer_nopwd", "", "huizu/callback/hui_zu_no_password_repay_project_transfer", "hz_repay_notify", "huizu://repay/{0}"),
 
     /**
      * 无密还款标的转入
