@@ -8,6 +8,11 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
+        <div class="form-group">
+            <label for="control-label">订单号</label>
+            <input type="text" class="form-control" name="orderId" value="${orderId!}">
+        </div>
+
         <div class="form-group" id="recordDate">
             <label for="control-label">时间</label>
 
@@ -61,6 +66,7 @@
         </tr>
         <tr>
             <th>时间</th>
+            <th>订单号</th>
             <th>费用类型</th>
             <th>操作类型</th>
             <th>金额(元)</th>
@@ -72,6 +78,7 @@
                 <#list creditLoanBillList as creditLoanBillItem>
                 <tr>
                     <td>${(creditLoanBillItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                    <td>${creditLoanBillItem.orderId}</td>
                     <td>${creditLoanBillItem.operationType}</td>
                     <td>${creditLoanBillItem.businessType}</td>
                     <td>${creditLoanBillItem.amount}</td>

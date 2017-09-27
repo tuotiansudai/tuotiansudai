@@ -26,7 +26,8 @@ public class CreditLoanBillController {
     private CreditLoanBillService creditLoanBillService;
 
     @RequestMapping(value = "/credit-loan-bill", method = RequestMethod.GET)
-    public ModelAndView getSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+    public ModelAndView getSystemBillList(@RequestParam(value = "orderId", defaultValue = "") String orderId,
+            @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                           @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                           @RequestParam(value = "operationType", required = false) CreditLoanBillOperationType operationType,
                                           @RequestParam(value = "businessType", required = false) CreditLoanBillBusinessType businessType,
@@ -39,19 +40,22 @@ public class CreditLoanBillController {
                 operationType,
                 businessType,
                 index,
-                pageSize);
+                pageSize,
+                orderId);
 
         long sumIncome = creditLoanBillService.findSumCreditLoanIncome(
                 startTime,
                 endTime,
                 operationType,
-                businessType);
+                businessType,
+                orderId);
 
         long sumExpend = creditLoanBillService.findSumCreditLoanExpend(
                 startTime,
                 endTime,
                 operationType,
-                businessType);
+                businessType,
+                orderId);
 
         long sumWin = sumIncome - sumExpend;
 
@@ -67,6 +71,7 @@ public class CreditLoanBillController {
         modelAndView.addObject("businessType", businessType);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("orderId", orderId);
         return modelAndView;
     }
 }

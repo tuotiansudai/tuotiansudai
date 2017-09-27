@@ -11,7 +11,7 @@ public class CreditLoanBillPaginationItemDataDto implements Serializable {
 
     private long id;
 
-    private Long orderId;
+    private String orderId;
 
     private String amount;
 
@@ -23,7 +23,7 @@ public class CreditLoanBillPaginationItemDataDto implements Serializable {
 
     public CreditLoanBillPaginationItemDataDto(CreditLoanBillModel creditLoanBillModel) {
         this.id = creditLoanBillModel.getId();
-        this.orderId = creditLoanBillModel.getOrderId();
+        this.orderId = String.valueOf(creditLoanBillModel.getOrderId());
         this.amount = AmountConverter.convertCentToString(creditLoanBillModel.getAmount());
         this.operationType = creditLoanBillModel.getOperationType().getDescription();
         this.businessType = creditLoanBillModel.getBusinessType().getDescription();
@@ -38,11 +38,11 @@ public class CreditLoanBillPaginationItemDataDto implements Serializable {
         this.id = id;
     }
 
-    public Long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

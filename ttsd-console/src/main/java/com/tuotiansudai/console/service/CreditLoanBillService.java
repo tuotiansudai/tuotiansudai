@@ -26,7 +26,8 @@ public class CreditLoanBillService {
                                                                                                             CreditLoanBillOperationType operationType,
                                                                                                             CreditLoanBillBusinessType businessType,
                                                                                                             int index,
-                                                                                                            int pageSize) {
+                                                                                                            int pageSize,
+                                                                                                            String orderId) {
         if (index < 1) {
             index = 1;
         }
@@ -37,9 +38,9 @@ public class CreditLoanBillService {
         BaseDto<BasePaginationDataDto<CreditLoanBillPaginationItemDataDto>> baseDto = new BaseDto<>();
         List<CreditLoanBillPaginationItemDataDto> creditLoanBillPaginationItemDataDtos = Lists.newArrayList();
 
-        int count = creditLoanBillMapper.findCreditLoanBillCount(startTime, endTime, operationType, businessType);
+        int count = creditLoanBillMapper.findCreditLoanBillCount(startTime, endTime, operationType, businessType, orderId);
 
-        List<CreditLoanBillModel> creditLoanBillModelList = creditLoanBillMapper.findCreditLoanBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize);
+        List<CreditLoanBillModel> creditLoanBillModelList = creditLoanBillMapper.findCreditLoanBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize, orderId);
 
         for (CreditLoanBillModel model : creditLoanBillModelList) {
             CreditLoanBillPaginationItemDataDto creditLoanBillDto = new CreditLoanBillPaginationItemDataDto(model);
@@ -55,16 +56,18 @@ public class CreditLoanBillService {
     public long findSumCreditLoanIncome(Date startTime,
                                         Date endTime,
                                         CreditLoanBillOperationType operationType,
-                                        CreditLoanBillBusinessType businessType) {
-        return creditLoanBillMapper.findSumCreditLoanIncome(startTime, endTime, operationType, businessType);
+                                        CreditLoanBillBusinessType businessType,
+                                        String orderId) {
+        return creditLoanBillMapper.findSumCreditLoanIncome(startTime, endTime, operationType, businessType, orderId);
     }
 
     public long findSumCreditLoanExpend(Date startTime,
                                         Date endTime,
                                         CreditLoanBillOperationType operationType,
-                                        CreditLoanBillBusinessType businessType) {
+                                        CreditLoanBillBusinessType businessType,
+                                        String orderId) {
 
-        return creditLoanBillMapper.findSumCreditLoanExpend(startTime, endTime, operationType, businessType);
+        return creditLoanBillMapper.findSumCreditLoanExpend(startTime, endTime, operationType, businessType, orderId);
     }
 
 }

@@ -99,6 +99,7 @@ public class ExportService {
         for (CreditLoanBillPaginationItemDataDto creditLoanBillPaginationItemDataDto : CreditLoanBillPaginationItemDataDtos) {
             List<String> row = Lists.newArrayList();
             row.add(new DateTime(creditLoanBillPaginationItemDataDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(creditLoanBillPaginationItemDataDto.getOrderId());
             row.add(creditLoanBillPaginationItemDataDto.getOperationType());
             row.add(creditLoanBillPaginationItemDataDto.getBusinessType());
             row.add(creditLoanBillPaginationItemDataDto.getAmount());
