@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.credit;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -18,7 +18,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.CreditLoanTransferAgentService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -37,9 +36,9 @@ import java.text.MessageFormat;
 import java.util.Map;
 
 @Service
-public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAgentService {
+public class CreditLoanTransferAgentService {
 
-    private final static Logger logger = Logger.getLogger(CreditLoanTransferAgentServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(CreditLoanTransferAgentService.class);
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -65,7 +64,6 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     @Value(value = "${credit.loan.agent}")
     private String creditLoanAgent;
 
-    @Override
     @Transactional
     public void creditLoanTransferAgent() {
 
@@ -114,7 +112,6 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
 
     }
 
-    @Override
     @Transactional
     public String creditLoanTransferAgentCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, CreditLoanTransferAgentNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
@@ -161,9 +158,9 @@ public class CreditLoanTransferAgentServiceImpl implements CreditLoanTransferAge
     }
 
     private long transferAmount() {
-        long inSumAmountTotal = creditLoanBillMapper.findSumAmountByInAndBusinessType();
-        long outSumAmountTotal = creditLoanBillMapper.findSumAmountByOutAndBusinessType();
-        return inSumAmountTotal - outSumAmountTotal;
+        long inSumAmountTotal = creditLoanBillMapper.findSumAmountByIn();
+        long outSumAmountTotal = creditLoanBillMapper.findSumAmountByOut();
+        return inSumAmountTotal - outSumAmountTotal - 10000000l;
     }
 
     private boolean checkStatus(String orderId) {

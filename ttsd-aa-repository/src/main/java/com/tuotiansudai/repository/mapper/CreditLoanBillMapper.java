@@ -10,11 +10,11 @@ public interface CreditLoanBillMapper {
 
     void create(CreditLoanBillModel model);
 
+    long findSumAmountByIn();
+
     CreditLoanBillModel findByOrderIdAndBusinessType(
             @Param("orderId") long orderId,
             @Param("businessType") CreditLoanBillBusinessType businessType);
 
-    long findSumAmountByInAndBusinessType();
-
-    long findSumAmountByOutAndBusinessType();
+    long findSumAmountByOut();
 }

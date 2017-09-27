@@ -8,6 +8,9 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -19,7 +22,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
+import com.tuotiansudai.repository.model.CreditLoanBillModel;
+import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +42,15 @@ public class CreditLoanOutService {
 
     private static Logger logger = Logger.getLogger(CreditLoanOutService.class);
 
-    private final static String CREDIT_LOAN_LOAN_REDIS_KEY = "credit:loan:out";
+    private final static String CREDIT_LOAN_OUT_REDIS_KEY = "credit:loan:out";
+
+    private final static String CREDIT_LOAN_OUT_INFO_REDIS_KEY = "credit:loan:out:info:{0}";
 
     private final static String LOAN_OUT_ORDER_ID_SEPARATOR = "X";
 
     private final static String LOAN_OUT_ORDER_ID_TEMPLATE = "{0}" + LOAN_OUT_ORDER_ID_SEPARATOR + "{1}";
+
+    private final UserMapper userMapper;
 
     private final AccountMapper accountMapper;
 
@@ -54,11 +65,13 @@ public class CreditLoanOutService {
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    public CreditLoanOutService(AccountMapper accountMapper,
+    public CreditLoanOutService(UserMapper userMapper,
+                                AccountMapper accountMapper,
                                 PaySyncClient paySyncClient,
                                 PayAsyncClient payAsyncClient,
                                 SmsWrapperClient smsWrapperClient,
                                 MQWrapperClient mqWrapperClient) {
+        this.userMapper = userMapper;
         this.accountMapper = accountMapper;
         this.paySyncClient = paySyncClient;
         this.payAsyncClient = payAsyncClient;
@@ -68,7 +81,6 @@ public class CreditLoanOutService {
 
     public BaseDto<PayDataDto> loanOut(long orderId, String mobile, long amount) {
         logger.info(MessageFormat.format("[credit loan out {0}] loan out starting, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
-
         PayDataDto payDataDto = new PayDataDto(false, "", String.valueOf(HttpStatus.OK));
         BaseDto<PayDataDto> dto = new BaseDto<>(payDataDto);
 
@@ -97,10 +109,12 @@ public class CreditLoanOutService {
                 String.valueOf(amount));
 
         try {
-            redisWrapperClient.hset(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId), SyncRequestStatus.SENT.name());
+            redisWrapperClient.hset(CREDIT_LOAN_OUT_REDIS_KEY, String.valueOf(orderId), SyncRequestStatus.SENT.name());
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_OUT_INFO_REDIS_KEY, String.valueOf(orderId)),
+                    MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
             ProjectTransferResponseModel loanOutResponseModel = this.paySyncClient.send(CreditLoanOutProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             boolean isSuccess = loanOutResponseModel.isSuccess();
-            redisWrapperClient.hset(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+            redisWrapperClient.hset(CREDIT_LOAN_OUT_REDIS_KEY, String.valueOf(orderId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
 
             payDataDto.setStatus(isSuccess);
             if (isSuccess) {
@@ -143,19 +157,34 @@ public class CreditLoanOutService {
         String orderId = callbackRequest.getOrderId().split(LOAN_OUT_ORDER_ID_SEPARATOR)[0];
 
         try {
-            redisWrapperClient.hset(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId),
-                    callbackRequest.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-
-            mqWrapperClient.sendMessage(MessageQueue.CreditLoanOutQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                    .put("order_id", orderId)
-                    .put("success", callbackRequest.isSuccess())
-                    .build()));
+            mqWrapperClient.sendMessage(MessageQueue.CreditLoanOutQueue,
+                    Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                            .put("order_id", orderId)
+                            .put("success", callbackRequest.isSuccess())
+                            .build()));
 
             if (callbackRequest.isSuccess()) {
                 logger.info(MessageFormat.format("[credit loan out {0}] loan out callback is success", String.valueOf(orderId)));
+
+                if (SyncRequestStatus.SENT.name().equalsIgnoreCase(redisWrapperClient.hget(CREDIT_LOAN_OUT_REDIS_KEY, orderId))) {
+                    String loanOutInfo = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_OUT_INFO_REDIS_KEY, String.valueOf(orderId)));
+                    String mobile = loanOutInfo.split("\\|")[0];
+                    long amount = Long.parseLong(loanOutInfo.split("\\|")[1]);
+
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                            new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
+                                    Long.parseLong(orderId),
+                                    amount,
+                                    UserBillBusinessType.CREDIT_LOAN_OUT, null, null));
+                    mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
+                            new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_OFFER, mobile));
+                }
             } else {
                 logger.error(MessageFormat.format("[credit loan out {0}] loan out callback is failed, error is {1}", String.valueOf(orderId), callbackRequest.getRetMsg()));
             }
+
+            redisWrapperClient.hset(CREDIT_LOAN_OUT_REDIS_KEY, orderId,
+                    callbackRequest.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
         } catch (Exception e) {
             logger.error(MessageFormat.format("[credit loan out {0}] loan out callback is error", String.valueOf(orderId)), e);
         }
@@ -174,7 +203,7 @@ public class CreditLoanOutService {
 
     private boolean checkStatus(long orderId) {
         try {
-            String status = redisWrapperClient.hget(CREDIT_LOAN_LOAN_REDIS_KEY, String.valueOf(orderId));
+            String status = redisWrapperClient.hget(CREDIT_LOAN_OUT_REDIS_KEY, String.valueOf(orderId));
             if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
                 return true;
             }

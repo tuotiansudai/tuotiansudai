@@ -3,6 +3,9 @@ package com.tuotiansudai.paywrapper.controller;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.paywrapper.credit.CreditLoanActivateAccountService;
 import com.tuotiansudai.paywrapper.credit.CreditLoanOutService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanRepayService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanRechargeService;
+import com.tuotiansudai.paywrapper.credit.CreditLoanTransferAgentService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +25,26 @@ public class CreditLoanCallbackController {
     private static Logger logger = Logger.getLogger(CreditLoanCallbackController.class);
 
     private final CreditLoanOutService creditLoanOutService;
+
     private final CreditLoanActivateAccountService creditLoanActivateAccountService;
+
+    private final CreditLoanRepayService creditLoanRepayService;
+
+    private CreditLoanRechargeService creditLoanRechargeService;
+
+    private CreditLoanTransferAgentService creditLoanTransferAgentService;
 
     @Autowired
     public CreditLoanCallbackController(CreditLoanOutService creditLoanOutService,
-                                        CreditLoanActivateAccountService creditLoanActivateAccountService) {
+                                        CreditLoanActivateAccountService creditLoanActivateAccountService,
+                                        CreditLoanRepayService creditLoanRepayService,
+                                        CreditLoanRechargeService creditLoanRechargeService,
+                                        CreditLoanTransferAgentService creditLoanTransferAgentService) {
         this.creditLoanOutService = creditLoanOutService;
         this.creditLoanActivateAccountService = creditLoanActivateAccountService;
+        this.creditLoanRepayService = creditLoanRepayService;
+        this.creditLoanRechargeService = creditLoanRechargeService;
+        this.creditLoanTransferAgentService = creditLoanTransferAgentService;
     }
 
     @RequestMapping(value = "/credit_loan_out_notify", method = RequestMethod.GET)
@@ -42,6 +58,27 @@ public class CreditLoanCallbackController {
     public ModelAndView ActivateAccountNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.creditLoanActivateAccountService.activateAccountCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanRepayService.repayCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_recharge_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanRechargeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanRechargeService.creditLoanRechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/credit_loan_transfer_agent_notify", method = RequestMethod.GET)
+    public ModelAndView creditLoanTransferAgentNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.creditLoanTransferAgentService.creditLoanTransferAgentCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

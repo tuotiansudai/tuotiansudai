@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.paywrapper.credit;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -22,7 +22,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotif
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
-import com.tuotiansudai.paywrapper.service.CreditLoanRechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanRechargeMapper;
 import com.tuotiansudai.repository.model.*;
@@ -37,9 +36,9 @@ import java.text.MessageFormat;
 import java.util.Map;
 
 @Service
-public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService {
+public class CreditLoanRechargeService{
 
-    static Logger logger = Logger.getLogger(CreditLoanRechargeServiceImpl.class);
+    static Logger logger = Logger.getLogger(CreditLoanRechargeService.class);
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
@@ -54,7 +53,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
     @Value(value = "${credit.loan.agent}")
     private String creditLoanAgent;
 
-    @Override
     @Transactional
     public BaseDto<PayDataDto> creditLoanRechargeNoPwd(CreditLoanRechargeDto creditLoanRechargeDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -96,7 +94,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         return baseDto;
     }
 
-    @Override
     @Transactional
     public BaseDto<PayFormDataDto> creditLoanRecharge(CreditLoanRechargeDto creditLoanRechargeDto) {
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
@@ -128,7 +125,6 @@ public class CreditLoanRechargeServiceImpl implements CreditLoanRechargeService 
         return dto;
     }
 
-    @Override
     @Transactional
     public String creditLoanRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, CreditLoanRechargeNotifyMapper.class,

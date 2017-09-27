@@ -77,7 +77,7 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String noPasswordCreditLoanRecharge = "/credit-loan/no-password-recharge";
 
-    private final static String creditLoanTransferAgent = "/credit-loan-transfer-agent";
+    private final static String creditLoanTransferAgent = "/credit-loan/transfer-agent";
 
     public PayWrapperClient() {
         this.okHttpClient.setConnectTimeout(180, TimeUnit.SECONDS);
