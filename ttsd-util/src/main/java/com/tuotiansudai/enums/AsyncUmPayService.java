@@ -80,7 +80,7 @@ public enum AsyncUmPayService {
     /**
      * 慧租有密还款
      */
-    HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "callback/hz_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),
+    HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/hui_zu_password_repay_project_transfer", "hz_repay_notify", "huizu://repay/{0}"),
     /**
      * 债权购买返款标的转账
      */

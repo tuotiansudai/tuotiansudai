@@ -16,14 +16,14 @@
     <p>${(values.message)!}</p>
 
 <#switch service>
-    <#case 'project_transfer_nopwd'>
-
     <#case 'project_transfer'>
         <p>账户激活成功！</p>
         <#break>
-
     <#case 'credit_loan_repay_project_transfer'>
         <p>还款成功！</p>
+        <#break>
+    <#case 'hui_zu_password_repay_project_transfer'>
+        <p>租金还款成功！</p>
         <#break>
 </#switch>
 
