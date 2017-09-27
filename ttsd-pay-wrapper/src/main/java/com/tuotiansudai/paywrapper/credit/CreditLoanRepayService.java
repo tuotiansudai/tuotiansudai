@@ -3,20 +3,27 @@ package com.tuotiansudai.paywrapper.credit;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayNoPwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -59,12 +66,18 @@ public class CreditLoanRepayService {
 
     private final MQWrapperClient mqWrapperClient;
 
+    private final PaySyncClient paySyncClient;
+
+    private final SmsWrapperClient smsWrapperClient;
+
     @Autowired
-    public CreditLoanRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, MQWrapperClient mqWrapperClient) {
+    public CreditLoanRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, MQWrapperClient mqWrapperClient, PaySyncClient paySyncClient, SmsWrapperClient smsWrapperClient) {
         this.userMapper = userMapper;
         this.accountMapper = accountMapper;
         this.payAsyncClient = payAsyncClient;
         this.mqWrapperClient = mqWrapperClient;
+        this.paySyncClient = paySyncClient;
+        this.smsWrapperClient = smsWrapperClient;
     }
 
     @Transactional
@@ -107,6 +120,7 @@ public class CreditLoanRepayService {
         }
 
         try {
+
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCreditLoanRepayRequest(
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(orderId), String.valueOf(new Date().getTime())),
                     account.getPayUserId(),
@@ -116,11 +130,77 @@ public class CreditLoanRepayService {
             redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)), SyncRequestStatus.SENT.name());
             redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_INFO_REDIS_KEY, String.valueOf(orderId)),
                     MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
+
+            logger.info(MessageFormat.format("[credit loan repay {0}] generate form success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+
             return payFormDataDtoBaseDto;
-        } catch (PayException e) {
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[credit loan repay {0}] generate form error, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
             payFormDataDto.setMessage("生成交易数据失败");
             payFormDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+
+        return dto;
+    }
+
+    @Transactional
+    public BaseDto<PayDataDto> noPasswordRepay(long orderId, String mobile, long amount) {
+        logger.info(MessageFormat.format("[credit loan no password repay {0}] starting, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+
+        PayDataDto payDataDto = new PayDataDto(false, "", String.valueOf(HttpStatus.OK));
+        BaseDto<PayDataDto> dto = new BaseDto<>(payDataDto);
+
+        if (!this.checkAmount(orderId, amount)) {
+            payDataDto.setMessage("还款金额必须大于零");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
+        AccountModel account = this.getAccount(orderId, mobile);
+        if (account == null) {
+            payDataDto.setMessage("用户未开通支付账户");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
+        if (!account.isNoPasswordInvest()) {
+            payDataDto.setMessage("用户未开通免密支付功能");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
+        if (this.isRepaying(orderId)) {
+            payDataDto.setMessage("还款交易进行中, 请30分钟后查看");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
+        if (this.isFinished(orderId)){
+            payDataDto.setMessage("您已还款成功");
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            return dto;
+        }
+
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newCreditLoanNoPasswordRepayRequest(
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(orderId), String.valueOf(new Date().getTime())),
+                account.getPayUserId(),
+                String.valueOf(amount));
+
+        try {
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId)), SyncRequestStatus.SENT.name());
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_REPAY_INFO_REDIS_KEY, String.valueOf(orderId)),
+                    MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
+
+            ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(CreditLoanRepayNoPwdMapper.class, requestModel, ProjectTransferNopwdResponseModel.class);
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setMessage(responseModel.getRetMsg());
+
+            logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+        } catch (Exception e) {
+            logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay exception, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
+            this.sendFatalNotify(MessageFormat.format("慧租信用贷无密还款异常，orderId:{0}, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
+            payDataDto.setMessage("还款交易失败");
+            payDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
         }
 
         return dto;
@@ -200,5 +280,10 @@ public class CreditLoanRepayService {
 
         userMapper.lockByLoginName(accountModel.getLoginName());
         return accountModel;
+    }
+
+    private void sendFatalNotify(String message) {
+        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
+        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
     }
 }

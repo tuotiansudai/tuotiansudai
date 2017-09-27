@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -19,6 +20,7 @@ import com.tuotiansudai.paywrapper.service.impl.CreditLoanTransferAgentServiceIm
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +42,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyMapOf;
 import static org.mockito.Mockito.*;
 
@@ -143,6 +146,8 @@ public class CreditLoanTransferAgentServiceTest {
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
 
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
+
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(this.redisWrapperClient, times(2))
@@ -179,6 +184,7 @@ public class CreditLoanTransferAgentServiceTest {
         when(this.paySyncClient.send(eq(CreditLoanTransferAgentMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class))).thenThrow(new PayException("error"));
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
+        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));

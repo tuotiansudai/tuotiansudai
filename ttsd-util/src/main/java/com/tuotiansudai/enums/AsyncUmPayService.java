@@ -110,6 +110,10 @@ public enum AsyncUmPayService {
     HUI_ZU_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "callback/hz_activate_account", "hz_activate_account_notify", "huizu://activate-account/{0}"),
 
     /**
+     * 慧租信用贷无密还款
+     */
+    CREDIT_LOAN_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "","huizu/callback/credit_loan_repay_project_transfer_nopwd", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+    /**
      * 慧租无密还款
      */
     HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer_nopwd", "", "callback/hz_no_password_repay_notify", "hz_repay_notify", "huizu://repay/{0}"),

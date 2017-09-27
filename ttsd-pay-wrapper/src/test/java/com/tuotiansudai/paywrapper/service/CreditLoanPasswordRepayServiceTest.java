@@ -46,7 +46,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class CreditLoanRepayServiceTest {
+public class CreditLoanPasswordRepayServiceTest {
 
     @InjectMocks
     private CreditLoanRepayService creditLoanRepayService;
@@ -92,6 +92,7 @@ public class CreditLoanRepayServiceTest {
 
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
         when(redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(true);
+
         dto = this.creditLoanRepayService.passwordRepay(orderId, mobile, 1);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("还款交易进行中, 请30分钟后查看"));
