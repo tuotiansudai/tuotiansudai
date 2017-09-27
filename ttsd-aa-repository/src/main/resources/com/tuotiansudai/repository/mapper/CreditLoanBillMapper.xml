@@ -35,4 +35,86 @@
         where operation_type= 'OUT'
     </select>
 
+    <select id="findCreditLoanBillPagination" parameterType="map" resultMap="creditLoanBillResultMap">
+        select * from credit_loan_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCreditLoanBillCount" parameterType="map" resultType="int">
+        select count(1) from credit_loan_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type  = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumCreditLoanIncome" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from credit_loan_bill
+        <where>
+            operation_type = 'IN'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumCreditLoanExpend" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from credit_loan_bill
+        <where>
+            operation_type = 'OUT'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+
 </mapper>
