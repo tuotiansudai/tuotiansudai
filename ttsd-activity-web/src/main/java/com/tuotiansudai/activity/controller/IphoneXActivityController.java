@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-iphonex")
+@RequestMapping(value = "/activity/iphonex")
 public class IphoneXActivityController {
 
     @Autowired
