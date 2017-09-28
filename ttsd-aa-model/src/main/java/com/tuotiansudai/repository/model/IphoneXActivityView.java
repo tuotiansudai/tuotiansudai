@@ -1,23 +1,22 @@
 package com.tuotiansudai.repository.model;
 
-
 import java.io.Serializable;
 
 public class IphoneXActivityView implements Serializable{
 
     private String loginName;
     private String mobile;
-    private String sumInvestAmount;
-    private String sumAnnualizedAmount;
+    private long sumAmount;
+    private ProductType productType;
 
     public IphoneXActivityView() {
     }
 
-    public IphoneXActivityView(String loginName, String mobile, String sumInvestAmount, String sumAnnualizedAmount) {
+    public IphoneXActivityView(String loginName, String mobile, long sumAmount, ProductType productType) {
         this.loginName = loginName;
         this.mobile = mobile;
-        this.sumInvestAmount = sumInvestAmount;
-        this.sumAnnualizedAmount = sumAnnualizedAmount;
+        this.sumAmount = sumAmount;
+        this.productType = productType;
     }
 
     public String getLoginName() {
@@ -36,19 +35,19 @@ public class IphoneXActivityView implements Serializable{
         this.mobile = mobile;
     }
 
-    public String getSumInvestAmount() {
-        return sumInvestAmount;
+    public long getSumAmount() {
+        return sumAmount;
     }
 
-    public void setSumInvestAmount(String sumInvestAmount) {
-        this.sumInvestAmount = sumInvestAmount;
+    public void setSumAmount(long sumAmount) {
+        this.sumAmount = sumAmount;
     }
 
-    public String getSumAnnualizedAmount() {
-        return sumAnnualizedAmount;
+    public ProductType getProductType() {
+        return productType;
     }
 
-    public void setSumAnnualizedAmount(String sumAnnualizedAmount) {
-        this.sumAnnualizedAmount = sumAnnualizedAmount;
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

@@ -94,7 +94,12 @@
         <result column="user_name" property="userName"></result>
     </resultMap>
     
-    <resultMap id="" type=""
+    <resultMap id="iphoneXActivityView" type="IphoneXActivityView">
+        <result column="login_name" property="loginName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="sumAmount" property="sumAmount"></result>
+        <result column="product_type" property="productType"></result>
+    </resultMap>
 
     <sql id="columns">
         id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
@@ -1148,6 +1153,17 @@
         AND i.status = 'SUCCESS'
         AND i.transfer_invest_id IS NULL
         GROUP BY loan_details.activity_desc, i.login_name) temp join user on temp.login_name = user.login_name
+    </select>
+
+    <select id="iphoneXActivityView" parameterType="map" resultMap="IphoneXActivityView">
+        SELECT temp.login_name, temp.sumAmount, temp.product_type, user.mobile FROM
+        (SELECT login_name, SUM(amount), loan.product_type AS sumAmount,
+        FROM invest i JOIN loan on i.loan_id = loan.id
+        WHERE loan.activity_type != 'NEWBIE'
+        AND i.status = 'SUCCESS'
+        AND i.transfer_invest_id IS NULL
+        AND i.trading_time BETWEEN #{startTime} AND #{endTime}
+        GROUP BY loan.product_type, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
 
 </mapper>

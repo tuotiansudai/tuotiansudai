@@ -1,10 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.dto.IphoneXActivityDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -322,6 +320,6 @@ public interface InvestMapper {
                                          @Param(value="endTime") Date endTime,
                                          @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
 
-    List<IphoneXActivityDto> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
+    List<IphoneXActivityView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
                                                                  @Param(value = "endTime") Date endTime);
 }

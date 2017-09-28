@@ -1,6 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ProductType;
 
 import java.io.Serializable;
 
@@ -8,17 +7,17 @@ public class IphoneXActivityDto implements Serializable{
 
     private String loginName;
     private String mobile;
-    private long sumAmount;
-    private ProductType productType;
+    private String sumInvestAmount;
+    private String sumAnnualizedAmount;
 
     public IphoneXActivityDto() {
     }
 
-    public IphoneXActivityDto(String loginName, String mobile, long sumAmount, ProductType productType) {
+    public IphoneXActivityDto(String loginName, String mobile, String sumInvestAmount, String sumAnnualizedAmount) {
         this.loginName = loginName;
         this.mobile = mobile;
-        this.sumAmount = sumAmount;
-        this.productType = productType;
+        this.sumInvestAmount = sumInvestAmount;
+        this.sumAnnualizedAmount = sumAnnualizedAmount;
     }
 
     public String getLoginName() {
@@ -37,19 +36,19 @@ public class IphoneXActivityDto implements Serializable{
         this.mobile = mobile;
     }
 
-    public long getSumAmount() {
-        return sumAmount;
+    public String getSumInvestAmount() {
+        return sumInvestAmount;
     }
 
-    public void setSumAmount(long sumAmount) {
-        this.sumAmount = sumAmount;
+    public void setSumInvestAmount(String sumInvestAmount) {
+        this.sumInvestAmount = sumInvestAmount;
     }
 
-    public ProductType getProductType() {
-        return productType;
+    public String getSumAnnualizedAmount() {
+        return sumAnnualizedAmount;
     }
 
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
+    public void setSumAnnualizedAmount(String sumAnnualizedAmount) {
+        this.sumAnnualizedAmount = sumAnnualizedAmount;
     }
 }
