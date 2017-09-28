@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-iphoneX")
+@RequestMapping(value = "/activity-iphonex")
 public class IphoneXActivityController {
 
     @Autowired
@@ -28,11 +28,10 @@ public class IphoneXActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getDrawPrizeTime() {
-        ModelAndView modelAndView = new ModelAndView("/activities/iphoneX", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/iphonex", "responsive", true);
         modelAndView.addObject("drawCount", iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
         return modelAndView;
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/single-draw", method = RequestMethod.POST)

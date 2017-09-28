@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class IphoneXActivityView implements Serializable{
 
     private String loginName;
+    private String userName;
     private String mobile;
     private long sumAmount;
     private ProductType productType;
@@ -12,11 +13,20 @@ public class IphoneXActivityView implements Serializable{
     public IphoneXActivityView() {
     }
 
-    public IphoneXActivityView(String loginName, String mobile, long sumAmount, ProductType productType) {
+    public IphoneXActivityView(String loginName, String userName, String mobile, long sumAmount, ProductType productType) {
         this.loginName = loginName;
+        this.userName = userName;
         this.mobile = mobile;
         this.sumAmount = sumAmount;
         this.productType = productType;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getLoginName() {

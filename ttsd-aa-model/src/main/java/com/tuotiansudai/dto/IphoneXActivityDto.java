@@ -1,20 +1,21 @@
 package com.tuotiansudai.dto;
 
-
 import java.io.Serializable;
 
 public class IphoneXActivityDto implements Serializable{
 
     private String loginName;
+    private String userName;
     private String mobile;
-    private String sumInvestAmount;
-    private String sumAnnualizedAmount;
+    private long sumInvestAmount;
+    private long sumAnnualizedAmount;
 
     public IphoneXActivityDto() {
     }
 
-    public IphoneXActivityDto(String loginName, String mobile, String sumInvestAmount, String sumAnnualizedAmount) {
+    public IphoneXActivityDto(String loginName, String userName, String mobile, long sumInvestAmount, long sumAnnualizedAmount) {
         this.loginName = loginName;
+        this.userName = userName;
         this.mobile = mobile;
         this.sumInvestAmount = sumInvestAmount;
         this.sumAnnualizedAmount = sumAnnualizedAmount;
@@ -28,6 +29,14 @@ public class IphoneXActivityDto implements Serializable{
         this.loginName = loginName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -36,19 +45,19 @@ public class IphoneXActivityDto implements Serializable{
         this.mobile = mobile;
     }
 
-    public String getSumInvestAmount() {
+    public long getSumInvestAmount() {
         return sumInvestAmount;
     }
 
-    public void setSumInvestAmount(String sumInvestAmount) {
+    public void setSumInvestAmount(long sumInvestAmount) {
         this.sumInvestAmount = sumInvestAmount;
     }
 
-    public String getSumAnnualizedAmount() {
+    public long getSumAnnualizedAmount() {
         return sumAnnualizedAmount;
     }
 
-    public void setSumAnnualizedAmount(String sumAnnualizedAmount) {
+    public void setSumAnnualizedAmount(long sumAnnualizedAmount) {
         this.sumAnnualizedAmount = sumAnnualizedAmount;
     }
 }

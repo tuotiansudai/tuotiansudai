@@ -95,6 +95,7 @@
     </resultMap>
     
     <resultMap id="iphoneXActivityView" type="IphoneXActivityView">
+        <result column="user_name" property="userName"></result>
         <result column="login_name" property="loginName"></result>
         <result column="mobile" property="mobile"></result>
         <result column="sumAmount" property="sumAmount"></result>
@@ -1155,13 +1156,14 @@
         GROUP BY loan_details.activity_desc, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
 
-    <select id="iphoneXActivityView" parameterType="map" resultMap="IphoneXActivityView">
-        SELECT temp.login_name, temp.sumAmount, temp.product_type, user.mobile FROM
-        (SELECT login_name, SUM(amount), loan.product_type AS sumAmount,
+    <select id="findAmountOrderByNameAndProductType" parameterType="map" resultMap="iphoneXActivityView">
+        SELECT temp.login_name, temp.sumAmount, temp.product_type, user.mobile, user.user_name FROM
+        (SELECT i.login_name, SUM(amount) AS sumAmount, loan.product_type
         FROM invest i JOIN loan on i.loan_id = loan.id
         WHERE loan.activity_type != 'NEWBIE'
         AND i.status = 'SUCCESS'
         AND i.transfer_invest_id IS NULL
+        AND loan.product_type NOT IN ('_30', 'EXPERIENCE')
         AND i.trading_time BETWEEN #{startTime} AND #{endTime}
         GROUP BY loan.product_type, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
