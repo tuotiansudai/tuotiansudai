@@ -30,10 +30,6 @@
                             <h4>中奖名单</h4>
                             <div class="recode-list">
                                 <ul class="user-record">
-                                    <li>恭喜   185****9765    抽中88元体验金</li>
-                                    <li>恭喜   185****9765    抽中888元体验金</li>
-                                    <li>恭喜   185****9765    抽中588元红包</li>
-                                    <li>恭喜   185****9765    抽中iPhoneX</li>
                                 </ul>
                             </div>
                         </div>
@@ -48,7 +44,7 @@
                <div class="total-annual-wrap common-bg">
                    <div class="total-annual">
                        <div class="pos"></div>
-                       <div class="instruction">
+                       <div class="instruction common-style-font">
                            <p> “ 活动期间，计算累计年化投资额，累计年化投资额≥100万元的用户，即可免费获赠iPhoneX （64GB）；累计年化投资额不满100万元的用户，根据累计年化投资额最高奖励1888元现金，真金白银助您买iPhoneX! ”<strong>(注：现金奖励不可累计获得)</strong></p>
                        </div>
                       <div class="formula-wrap clearfix">
@@ -74,28 +70,32 @@
                <div class="chart">
 
                </div>
-               <div class="invest-on redBtn">立即投资</div>
-               <div class="exemple_wrap common-bg">
-                   <div class="exemple">
+               <a class="invest-on redBtn">立即投资</a>
+               <div class="exemple-wrap common-bg">
+                   <div class="exemple childStyle">
+                       <div class="pos"></div>
                        <h4 class="font-title">举个栗子</h4>
                        <p class="font-content">拓小天在活动期间投资3个月项目20万元，6个月项目10万元，12个月项目90万元，则拓小天在活动期间年化投资额=200000/4+100000/2+900000=1000000，可免费获赠iPhoneX奖励。</p>
                    </div>
                </div>
            </div>
-            <p></p> <p></p> <p></p> <p></p>
+
         </div>
-        <div class="kindly-reminder">
-            <h4>温馨提示</h4>
-            <p>
-                1、本活动仅限直投项目，债权转让不参与累计；<br/>
-                2、在活动二中，iphone X与现金奖励不可同时获得；
-                3、抽奖活动中所获的红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；<br/>
-                4、现金奖励将于活动结束后三个工作日内发放至用户账户；<br/>
-                5、iPhoneX奖励发放时间将以国内实际预购及发售情况为准，如出现断货情况，请您耐心等待，拓天速贷客服将于活动结束后7个工作日内与获奖用户取得联系，请保持手机畅通，若在7个工作日内无法联系，将视为自动放弃奖励；<br/>
-                6、为保证获奖结果的公平性，获奖用户在活动期间所进行的所有投标，不允许进行债权转让，如有转让，拓天速贷将取消其获奖资格；<br/>
-                7、活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
-                8、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
-            </p>
+        <div class="kindly-reminder-wrap">
+            <div class="childStyle">
+                <div class="pos pos2"></div>
+                <h4>温馨提示</h4>
+                <p>
+                    1、本活动仅限直投项目，债权转让不参与累计；<br/>
+                    2、在活动二中，iphone X与现金奖励不可同时获得；
+                    3、抽奖活动中所获的红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；<br/>
+                    4、现金奖励将于活动结束后三个工作日内发放至用户账户；<br/>
+                    5、iPhoneX奖励发放时间将以国内实际预购及发售情况为准，如出现断货情况，请您耐心等待，拓天速贷客服将于活动结束后7个工作日内与获奖用户取得联系，请保持手机畅通，若在7个工作日内无法联系，将视为自动放弃奖励；<br/>
+                    6、为保证获奖结果的公平性，获奖用户在活动期间所进行的所有投标，不允许进行债权转让，如有转让，拓天速贷将取消其获奖资格；<br/>
+                    7、活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
+                    8、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
+                </p>
+            </div>
         </div>
     </div>
     <#include "../module/login-tip.ftl" />

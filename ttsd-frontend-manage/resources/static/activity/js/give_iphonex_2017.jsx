@@ -24,12 +24,12 @@ $iphonex.find('.tip-list-frame .tip-list').each(function (key, option) {
     tipGroupObj[kind] = option;
 });
 
-//pointAllList:中奖记录接口地址
-//pointUserList:我的奖品接口地址
-//drawURL:抽奖的接口链接
-//oneData:接口参数
-//$oneThousandPoints:抽奖模版dom
-//抽奖机会接口
+pointAllList:中奖记录接口地址
+pointUserList:我的奖品接口地址
+drawURL:抽奖的接口链接
+oneData:接口参数
+$oneThousandPoints:抽奖模版dom
+抽奖机会接口
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
@@ -44,7 +44,6 @@ drawCircleOne.hoverScrollList($iphonex.find('.user-record'),10);
 //开始抽奖
 
 $pointerBtn.on('click', function(event) {
-
     drawCircleOne.beginLuckDraw(function(data) {
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
@@ -96,7 +95,7 @@ $pointerBtn.on('click', function(event) {
                 case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //iphonex
                     angleNum=45*8-20;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('iphonex')
-                        .parent().siblings('.des-text').html('奖品将于活动结束后发放');
+                        .parent().siblings('.des-text').html('活动结束后发放');
                     break;
             }
             drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
