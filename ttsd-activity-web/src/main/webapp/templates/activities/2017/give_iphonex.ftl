@@ -53,35 +53,37 @@
         <div class="invest-wrap page-width1200">
            <div class="page-width">
                <div class="invest-fonts"></div>
-               <div class="total-annual-wrap">
+               <div class="total-annual-wrap common-bg">
                    <div class="total-annual">
                        <div class="pos"></div>
                        <div class="instruction">
                            <p> “ 活动期间，计算累计年化投资额，累计年化投资额≥100万元的用户，即可免费获赠iPhoneX （64GB）；累计年化投资额不满100万元的用户，根据累计年化投资额最高奖励1888元现金，真金白银助您买iPhoneX! ”<strong>(注：现金奖励不可累计获得)</strong></p>
                        </div>
-                       <a class="computational" id="computational">计算公式</a>
-                       <div class="formula">
-                           <div class="fl">
-                               计算公式
-                           </div>
-                           <div class="fr">
-                               <h4>年化投资额计算公式</h4>
-                               <table>
-                                   <tr><td>60天～90天项目</td><td>年化投资额＝实际投资额/4</td></tr>
-                                   <tr><td>120天～180天项目</td><td>年化投资额＝实际投资额/2</td></tr>
-                                   <tr><td>330天～360天项目</td><td>年化投资额＝实际投资额</td></tr>
-                               </table>
-                           </div>
-                       </div>
+                      <div class="formula-wrap clearfix">
+                          <a class="computational" id="computational">计算公式</a>
+                          <div class="formula clearfix">
+
+                              <div class="formula-fonts">
+                                  计算公式
+                              </div>
+                              <h4>年化投资额计算公式</h4>
+                              <table>
+                                  <tr><td>60天～90天项目</td><td>年化投资额＝实际投资额/4</td></tr>
+                                  <tr><td>120天～180天项目</td><td>年化投资额＝实际投资额/2</td></tr>
+                                  <tr><td>330天～360天项目</td><td>年化投资额＝实际投资额</td></tr>
+                              </table>
+
+                          </div>
+                      </div>
 
                    </div>
 
                </div>
                <div class="chart">
-                   fdfdf
+
                </div>
                <div class="invest-on redBtn">立即投资</div>
-               <div class="exemple_wrap">
+               <div class="exemple_wrap common-bg">
                    <div class="exemple">
                        <h4 class="font-title">举个栗子</h4>
                        <p class="font-content">拓小天在活动期间投资3个月项目20万元，6个月项目10万元，12个月项目90万元，则拓小天在活动期间年化投资额=200000/4+100000/2+900000=1000000，可免费获赠iPhoneX奖励。</p>

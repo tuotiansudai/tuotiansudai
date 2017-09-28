@@ -2,6 +2,7 @@ body {
   background: #8b89ea;
   font-family: '黑体';
 }
+$colorFont: #1b1b1b;
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -24,6 +25,11 @@ body {
   border-radius: 10px;
   background: #ff4b4b;
 }
+.common-bg {
+  width: 904px;
+  background: #6360ce;
+  position: relative;
+}
 .phone-banner {
   height: 350px;
   background: url("../images/2017/give-iphonex/iphonex_pc.png") no-repeat center center;
@@ -32,7 +38,7 @@ body {
   width: 100%;
   background: url("../images/2017/give-iphonex/con_wrap_bg.png") no-repeat center top;
 }
-$colorFont: #1b1b1b;
+
 
 .activity-page-frame {
   .lottery-wrap {
@@ -127,7 +133,7 @@ $colorFont: #1b1b1b;
   .invest-wrap {
     overflow: hidden;
     background: #6e6be5;
-    height: 500px;
+    margin-top: 30px;
     .page-width {
       .invest-fonts {
         width: 936px;
@@ -139,10 +145,8 @@ $colorFont: #1b1b1b;
         background-size: 100%;
       }
       .total-annual-wrap {
-        width: 904px;
         height: 200px;
-        background: #6360ce;
-        position: relative;
+        margin-bottom: 145px;
         .total-annual {
           width: 910px;
           height: 208px;
@@ -167,13 +171,74 @@ $colorFont: #1b1b1b;
             p {
               color: $colorFont;
               line-height: 40px;
+              strong {
+                color: #ff4b4b;
+                font-weight: normal;
+              }
             }
           }
-          .computational {
-            color: #040009;
-            margin-left: 27%;
+          .formula-wrap {
+            .computational {
+              color: #040009;
+              margin-left: 27%;
+              float: left;
+            }
+            .formula {
+              float: right;
+              margin-right: 30px;
+              width: 388px;
+              height: 142px;
+              border: 4px solid $colorFont;
+              background: #8b89ea;
+              position: relative;
+              font-size: 20px;
+              text-align: center;
+              .formula-fonts {
+                width: 96px;
+                height: 28px;
+                line-height: 28px;
+                text-align: center;
+                border: 4px solid $colorFont;
+                border-right: none;
+                position: absolute;
+                left: -100px;
+                top:-4px;
+                color: #fff;
+                background: #8b89ea;
+              }
+              h4 {
+                height: 36px;
+                line-height: 40px;
+                color: #000;
+              }
+              table {
+                font-size: 16px;
+                color: $colorFont;
+                width: 96%;
+                margin: 10px auto;
+                background: #8b89ea;
+                td {
+                  background: #e8e7fb;
+                 line-height: 26px;
+                  padding: 0;
+                  cellspacing:3px;
 
+                }
+              }
+
+            }
           }
+        }
+      }
+      .chart {
+        width: 994px;
+        height: 315px;
+        background: url("../images/2017/give-iphonex/chart.png") no-repeat center top;
+      }
+      .exemple_wrap {
+        height: 156px;
+        .exemple {
+          height: 160px;
         }
       }
     }
