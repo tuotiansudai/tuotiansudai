@@ -86,7 +86,7 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
     @RequestMapping(value = "/get/transfer-application", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("债权转让详情")
-    public BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationDetail(@RequestBody TransferApplicationDetailRequestDto requestDto) {
+    public BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationDetail(@Valid @RequestBody TransferApplicationDetailRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.transferApplicationById(requestDto);
     }
