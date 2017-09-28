@@ -139,7 +139,7 @@ public class CreditLoanNoPasswordRepayServiceTest {
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
         assertTrue(dto.getData().getStatus());
-        assertThat(dto.getData().getCode(), is(String.valueOf(HttpStatus.OK)));
+        assertThat(dto.getData().getCode(), is("0000"));
         assertNotNull(dto.getData().getExtraValues());
     }
 
@@ -179,7 +179,7 @@ public class CreditLoanNoPasswordRepayServiceTest {
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
         assertFalse(dto.getData().getStatus());
-        assertThat(dto.getData().getCode(), is(String.valueOf(HttpStatus.OK)));
+        assertThat(dto.getData().getCode(), is("0000"));
         assertNotNull(dto.getData().getExtraValues());
     }
 

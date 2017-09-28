@@ -147,7 +147,7 @@ public class CreditLoanRepayService {
     public BaseDto<PayDataDto> noPasswordRepay(long orderId, String mobile, long amount) {
         logger.info(MessageFormat.format("[credit loan no password repay {0}] starting, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
 
-        PayDataDto payDataDto = new PayDataDto(false, "", String.valueOf(HttpStatus.OK));
+        PayDataDto payDataDto = new PayDataDto(false, "", "0000");
         BaseDto<PayDataDto> dto = new BaseDto<>(payDataDto);
 
         if (!this.checkAmount(orderId, amount)) {
