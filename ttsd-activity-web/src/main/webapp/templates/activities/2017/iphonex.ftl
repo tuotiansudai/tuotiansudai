@@ -30,6 +30,10 @@
                             <h4>中奖名单</h4>
                             <div class="recode-list">
                                 <ul class="user-record">
+<<<<<<< HEAD
+=======
+                                    
+>>>>>>> d1d6acab389c56821f424f536f7f77f4eaee8597
                                 </ul>
                             </div>
                         </div>

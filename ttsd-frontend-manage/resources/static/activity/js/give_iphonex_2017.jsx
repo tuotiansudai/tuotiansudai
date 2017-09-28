@@ -10,13 +10,13 @@ let $iphonex = $('#iphonex'),
     tipGroupObj = {};
 var $pointerBtn = $('.rotater',$iphonex);
 var $oneThousandPoints=$('.lottery-circle',$iphonex);
-var pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
-     //pointNumber='/activity/point-draw/user-list',   //我的奖品接口地址
-    drawURL='/activity/single-rank/single-draw';    //抽奖的接口链接
+var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
+    pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
+    drawURL='/activity/iphonex/iphonex-draw';    //抽奖的接口链接
 
 
 var oneData={
-        'activityCategory':'CELEBRATION_SINGLE_ACTIVITY'
+        'activityCategory':'IPHONEX_ACTIVITY'
     }
 
 $iphonex.find('.tip-list-frame .tip-list').each(function (key, option) {
@@ -50,7 +50,7 @@ $pointerBtn.on('click', function(event) {
             var angleNum=0;
             commonFun.useAjax({
                 dataType: 'json',
-                url:'/activity/single-rank/draw-time'
+                url:'/activity/iphonex/draw-time'
             }
             // ,function(data) {
             //     $leftDrawCount.text(data);
