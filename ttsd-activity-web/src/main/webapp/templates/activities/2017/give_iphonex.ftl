@@ -12,7 +12,7 @@
 <#--<@global.main pageCss="${css.jsName}" pageJavascript="${js.jsName}" activeLeftNav="" title="登录拓天速贷_拓天速贷" keywords="拓天速贷,拓天会员,新手理财,拓天速贷用户" description="拓天速贷为投资理财人士提供规范、安全、专业的互联网金融信息服务,让您获得稳定收益和高收益的投资理财产品.">-->
 <div class="phone-banner">
 </div>
-<div class="activity-wrap">
+<div class="activity-wrap" id="iphonex">
     <div class="activity-page-frame page-width1200" id="activityPageFrame">
         <div class="lottery-wrap">
             <div class="iphone-fonts clearfix">
@@ -38,12 +38,14 @@
                         <div class="recodes-con">
                             <div class="pos"></div>
                             <h4>中奖名单</h4>
-                            <ul>
-                                <li>恭喜   185****9765    抽中88元体验金</li>
-                                <li>恭喜   185****9765    抽中888元体验金</li>
-                                <li>恭喜   185****9765    抽中588元红包</li>
-                                <li>恭喜   185****9765    抽中iPhoneX</li>
-                            </ul>
+                            <div class="recode-list">
+                                <ul class="user-record">
+                                    <li>恭喜   185****9765    抽中88元体验金</li>
+                                    <li>恭喜   185****9765    抽中888元体验金</li>
+                                    <li>恭喜   185****9765    抽中588元红包</li>
+                                    <li>恭喜   185****9765    抽中iPhoneX</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -104,6 +106,59 @@
                 7、活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
                 8、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。<br/>
             </p>
+        </div>
+    </div>
+    <#include "../module/login-tip.ftl" />
+    <div class="tip-list-frame">
+        <!-- 真实奖品的提示 -->
+        <div class="tip-list" data-return="concrete">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text"></p>
+                <p class="reward-text"><em class="prizeValue"></em>！</p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
+        </div>
+
+        <!--虚拟奖品的提示-->
+        <div class="tip-list" data-return="virtual">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text"></p>
+                <p class="reward-text"><em class="prizeValue"></em></p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
+        </div>
+
+        <!--没有抽奖机会-->
+        <div class="tip-list" data-return="nochance">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您暂无抽奖机会啦～</p>
+                <p class="des-text">快去投资赢取抽奖机会吧</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close canble-btn">取消</a><a href="/loan-list" class="go-close">去投资</a></div>
+        </div>
+
+        <!--不在活动时间范围内-->
+        <div class="tip-list" data-return="expired">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">不在活动时间内~</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
+        </div>
+
+        <!--实名认证-->
+        <div class="tip-list" data-return="authentication">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="login-text">您还未实名认证~</p>
+                <p class="des-text">请实名认证后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
         </div>
     </div>
 </div>
