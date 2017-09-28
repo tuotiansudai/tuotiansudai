@@ -29,21 +29,21 @@ public class IphoneXActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getDrawPrizeTime() {
         ModelAndView modelAndView = new ModelAndView("/activities/iphonex", "responsive", true);
-        modelAndView.addObject("drawCount", iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
+        modelAndView.addObject("drawCount", iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(), LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/single-draw", method = RequestMethod.POST)
+    @RequestMapping(value = "/iphonex-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "IPHONEX_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        DrawLotteryResultDto drawLotteryResultDto =lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
         return drawLotteryResultDto;
     }
 
     @ResponseBody
     @RequestMapping(value = "/draw-time", method = RequestMethod.GET)
     public String singleTaskDrawPrize() {
-        return String.valueOf(iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(),LoginUserInfo.getLoginName()));
+        return String.valueOf(iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(), LoginUserInfo.getLoginName()));
     }
 
     @ResponseBody
