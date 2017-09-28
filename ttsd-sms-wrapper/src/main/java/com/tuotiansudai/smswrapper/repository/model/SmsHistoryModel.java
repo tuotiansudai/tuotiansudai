@@ -14,7 +14,7 @@ public class SmsHistoryModel implements Serializable {
 
     private String content;
 
-    private SmsChannel channel;
+    private SmsChannel channel = SmsChannel.ALIDAYU;
 
     private Date sendTime;
 
@@ -27,10 +27,9 @@ public class SmsHistoryModel implements Serializable {
     public SmsHistoryModel() {
     }
 
-    public SmsHistoryModel(String mobile, String content, SmsChannel channel) {
+    public SmsHistoryModel(String mobile, String content) {
         this.mobile = mobile;
         this.content = content;
-        this.channel = channel;
         this.sendTime = new Date();
     }
 

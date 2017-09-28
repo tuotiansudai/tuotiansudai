@@ -29,8 +29,4 @@
         where id = #{id}
     </update>
 
-    <select id="findById" resultMap="smsHistoryModel" parameterType="map">
-        select * from sms_history where id = #{id}
-    </select>
-
 </mapper>
