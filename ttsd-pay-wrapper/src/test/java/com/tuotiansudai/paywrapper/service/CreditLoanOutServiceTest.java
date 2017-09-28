@@ -134,7 +134,7 @@ public class CreditLoanOutServiceTest {
         when(this.redisWrapperClient.set(anyString(), anyString())).thenReturn("");
 
         BaseDto<PayDataDto> dto = this.creditLoanOutService.loanOut(orderId, mobile, amount);
-        verify(this.redisWrapperClient, times(2))
+        verify(this.redisWrapperClient, times(1))
                 .hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture());
 
         verify(this.redisWrapperClient, times(1))
@@ -143,13 +143,9 @@ public class CreditLoanOutServiceTest {
         verify(this.paySyncClient,times(1))
                 .send(eq(CreditLoanOutProjectTransferMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class));
 
-        assertThat(redisKeyCaptor.getAllValues().get(0), is("credit:loan:out"));
-        assertThat(orderIdCaptor.getAllValues().get(0), is(String.valueOf(1)));
-        assertThat(statusCaptor.getAllValues().get(0), is(SyncRequestStatus.SENT.name()));
-
-        assertThat(redisKeyCaptor.getAllValues().get(1), is("credit:loan:out"));
-        assertThat(orderIdCaptor.getAllValues().get(1), is(String.valueOf(1)));
-        assertThat(statusCaptor.getAllValues().get(1), is(SyncRequestStatus.SUCCESS.name()));
+        assertThat(redisKeyCaptor.getValue(), is("credit:loan:out"));
+        assertThat(orderIdCaptor.getValue(), is(String.valueOf(1)));
+        assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(String.valueOf(orderId) + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
@@ -183,7 +179,7 @@ public class CreditLoanOutServiceTest {
         when(this.redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1L);
 
         BaseDto<PayDataDto> dto = this.creditLoanOutService.loanOut(orderId, mobile, amount);
-        verify(this.redisWrapperClient, times(2))
+        verify(this.redisWrapperClient, times(1))
                 .hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture());
 
         verify(this.redisWrapperClient, times(1))
@@ -195,13 +191,9 @@ public class CreditLoanOutServiceTest {
         verify(this.smsWrapperClient,times(1))
                 .sendFatalNotify(any(SmsFatalNotifyDto.class));
 
-        assertThat(redisKeyCaptor.getAllValues().get(0), is("credit:loan:out"));
-        assertThat(orderIdCaptor.getAllValues().get(0), is(String.valueOf(orderId)));
-        assertThat(statusCaptor.getAllValues().get(0), is(SyncRequestStatus.SENT.name()));
-
-        assertThat(redisKeyCaptor.getAllValues().get(1), is("credit:loan:out"));
-        assertThat(orderIdCaptor.getAllValues().get(1), is(String.valueOf(orderId)));
-        assertThat(statusCaptor.getAllValues().get(1), is(SyncRequestStatus.FAILURE.name()));
+        assertThat(redisKeyCaptor.getValue(), is("credit:loan:out"));
+        assertThat(orderIdCaptor.getValue(), is(String.valueOf(1)));
+        assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertThat(loanInfoKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:out:info:{0}", String.valueOf(orderId))));
         assertThat(loanInfoValueCaptor.getValue(), is(MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount))));
@@ -244,9 +236,9 @@ public class CreditLoanOutServiceTest {
         verify(this.redisWrapperClient, times(1))
                 .set(loanInfoKeyCaptor.capture(), loanInfoValueCaptor.capture());
 
-        assertThat(redisKeyCaptor.getAllValues().get(0), is("credit:loan:out"));
-        assertThat(orderIdCaptor.getAllValues().get(0), is(String.valueOf(orderId)));
-        assertThat(statusCaptor.getAllValues().get(0), is(SyncRequestStatus.SENT.name()));
+        assertThat(redisKeyCaptor.getValue(), is("credit:loan:out"));
+        assertThat(orderIdCaptor.getValue(), is(String.valueOf(1)));
+        assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(String.valueOf(orderId) + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));

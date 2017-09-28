@@ -114,8 +114,6 @@ public class CreditLoanOutService {
                     MessageFormat.format("{0}|{1}", mobile, String.valueOf(amount)));
             ProjectTransferResponseModel loanOutResponseModel = this.paySyncClient.send(CreditLoanOutProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             boolean isSuccess = loanOutResponseModel.isSuccess();
-            redisWrapperClient.hset(CREDIT_LOAN_OUT_REDIS_KEY, String.valueOf(orderId), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
-
             payDataDto.setStatus(isSuccess);
             if (isSuccess) {
                 logger.info(MessageFormat.format("[credit loan out {0}] loan out success, mobile({1}) amount({2})",
