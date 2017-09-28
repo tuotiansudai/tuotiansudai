@@ -30,10 +30,7 @@
                             <h4>中奖名单</h4>
                             <div class="recode-list">
                                 <ul class="user-record">
-                                    <li>恭喜   185****9765    抽中88元体验金</li>
-                                    <li>恭喜   185****9765    抽中888元体验金</li>
-                                    <li>恭喜   185****9765    抽中588元红包</li>
-                                    <li>恭喜   185****9765    抽中iPhoneX</li>
+                                    
                                 </ul>
                             </div>
                         </div>
