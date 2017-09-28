@@ -4,6 +4,7 @@ import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
+import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.SmsTemplateCell;
 import com.tuotiansudai.smswrapper.repository.model.SmsHistoryModel;
 import org.apache.log4j.Logger;
@@ -18,11 +19,12 @@ public class SmsProviderAlidayuText extends SmsProviderAlidayuBase {
     private static Logger logger = Logger.getLogger(SmsProviderAlidayuText.class);
 
     @Override
-    public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplateCell smsTemplate, List<String> paramList) {
-        List<SmsHistoryModel> smsHistoryModels = this.createSmsHistory(mobileList, smsTemplate, paramList);
+    public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) {
+        SmsTemplateCell templateCell = smsTemplate.getTemplateCellText();
+        List<SmsHistoryModel> smsHistoryModels = this.createSmsHistory(mobileList, templateCell, paramList);
 
         try {
-            String templateId = smsTemplate.getTemplateId();
+            String templateId = templateCell.getTemplateId();
             TaobaoClient client = new DefaultTaobaoClient(url, appKey, appSecret);
             AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
             req.setExtend(MDC.get("requestId"));
@@ -35,7 +37,7 @@ public class SmsProviderAlidayuText extends SmsProviderAlidayuBase {
 
             logger.info(String.format("send sms, mobileList: [%s], content: %s, response: %s",
                     String.join(",", mobileList),
-                    smsTemplate.generateContent(paramList),
+                    templateCell.generateContent(paramList),
                     rsp.getBody()));
 
             boolean success = rsp.isSuccess() && rsp.getResult().getSuccess();
@@ -44,7 +46,7 @@ public class SmsProviderAlidayuText extends SmsProviderAlidayuBase {
         } catch (Exception e) {
             logger.error(String.format("send sms, mobileList: [%s], channel: %s",
                     String.join(",", mobileList),
-                    smsTemplate.generateContent(paramList)), e);
+                    templateCell.generateContent(paramList)), e);
         }
         return smsHistoryModels;
     }

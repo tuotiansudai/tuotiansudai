@@ -4,6 +4,7 @@ import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcTtsNumSinglecallRequest;
 import com.taobao.api.response.AlibabaAliqinFcTtsNumSinglecallResponse;
+import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.SmsTemplateCell;
 import com.tuotiansudai.smswrapper.repository.model.SmsHistoryModel;
 import org.apache.log4j.Logger;
@@ -19,10 +20,12 @@ public class SmsProviderAlidayuVoice extends SmsProviderAlidayuBase {
     private static Logger logger = Logger.getLogger(SmsProviderAlidayuVoice.class);
 
     @Override
-    public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplateCell smsTemplate, List<String> paramList) {
+    public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) {
+        SmsTemplateCell templateCell = smsTemplate.getTemplateCellVoice();
+
         List<SmsHistoryModel> smsHistoryModels = new ArrayList<>();
         for (String mobile : mobileList) {
-            smsHistoryModels.add(sendSMS(mobile, smsTemplate, paramList));
+            smsHistoryModels.add(sendSMS(mobile, templateCell, paramList));
         }
         return smsHistoryModels;
     }

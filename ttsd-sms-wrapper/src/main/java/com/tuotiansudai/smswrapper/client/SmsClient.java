@@ -46,14 +46,14 @@ public class SmsClient {
     @Value("${common.environment}")
     private Environment environment;
 
-    private Map<SmsMessageType, SmsProvider> smsProviderSelector;
+    private SmsProvider smsProviderAlidayuText;
+
+    private SmsProvider smsProviderAlidayuVoice;
 
     @Autowired
     public SmsClient(@Qualifier("smsProviderAlidayuText") SmsProvider smsProviderAlidayuText, @Qualifier("smsProviderAlidayuVoice") SmsProvider smsProviderAlidayuVoice) {
-        this.smsProviderSelector = Maps.newHashMap(ImmutableMap.<SmsMessageType, SmsProvider>builder()
-                .put(SmsMessageType.Voice, smsProviderAlidayuText)
-                .put(SmsMessageType.Text, smsProviderAlidayuVoice)
-                .build());
+        this.smsProviderAlidayuText = smsProviderAlidayuText;
+        this.smsProviderAlidayuVoice = smsProviderAlidayuVoice;
     }
 
     public BaseDto<SmsDataDto> sendSMS(String mobile, SmsTemplate template, boolean isVoice, String param, String restrictedIP) {
@@ -86,9 +86,9 @@ public class SmsClient {
             return dto;
         }
 
-        SmsMessageType messageType = isVoice ? SmsMessageType.Voice : SmsMessageType.Text;
+        SmsProvider smsProvider = isVoice ? this.smsProviderAlidayuVoice : this.smsProviderAlidayuText;
 
-        List<SmsHistoryModel> smsHistoryModels = this.smsProviderSelector.get(messageType).sendSMS(mobileList, template.getTemplateCell(isVoice), paramList);
+        List<SmsHistoryModel> smsHistoryModels = smsProvider.sendSMS(mobileList, template, paramList);
 
         data.setStatus(CollectionUtils.isNotEmpty(smsHistoryModels) && smsHistoryModels.get(0).isSuccess());
 
