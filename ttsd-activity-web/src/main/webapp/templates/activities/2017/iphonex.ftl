@@ -1,4 +1,4 @@
-<#import "../../macro/global-dev.ftl" as global>
+<#import "../macro/global.ftl" as global>
 
 <@global.main pageCss="${css.give_iphonex_2017}" pageJavascript="${js.give_iphonex_2017}" activeNav="" activeLeftNav="" title="不花钱拿走iPhoneX" keywords="拓天速贷,活动中心,iPhoneX,抽奖,现金红包" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
 
