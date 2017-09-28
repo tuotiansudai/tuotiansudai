@@ -102,7 +102,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                     Maps.newHashMap(ImmutableMap.builder()
                             .put("mobile", huiZuRepayDto.getMobile())
-                            .put("amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
+                            .put("actual_amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
                             .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                             .put("status", SyncRequestStatus.SENT.name())
                             .build()),
@@ -155,15 +155,15 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                     Maps.newHashMap(ImmutableMap.builder()
                             .put("mobile", huiZuRepayDto.getMobile())
-                            .put("amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
+                            .put("actual_amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
                             .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                             .put("status", SyncRequestStatus.SENT.name())
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
             ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newHuiZuRepayNopwdRequest(
-                            String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
-                            accountModel.getPayUserId(),
-                            String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
+                    String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
+                    accountModel.getPayUserId(),
+                    String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
 
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     HuiZuNopwdRepayMapper.class,
