@@ -12,15 +12,15 @@ public enum SmsTemplate {
 
     SMS_REGISTER_CAPTCHA_TEMPLATE(
             new SmsTemplateCell("SMS_45345002", "尊敬的拓天速贷客户，您的注册验证码是：${param0} 。请勿泄露给他人！"),
-            new SmsTemplateCell("TTS_100830048", "尊敬的拓天速贷客户，您的注册验证码是：${param0} 。请勿泄露给他人！")),
+            new SmsTemplateCell("TTS_100735042", "尊敬的拓天速贷客户，您的注册验证码是：${param0} 。请勿泄露给他人！")),
 
     SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE(
             new SmsTemplateCell("SMS_45395002", "尊敬的拓天速贷客户，您的验证码是：${param0} 。请勿泄露给他人！"),
-            new SmsTemplateCell("TTS_100865046", "尊敬的拓天速贷客户，您的验证码是：${param0} 。请勿泄露给他人！")),
+            new SmsTemplateCell("TTS_100910049", "尊敬的拓天速贷客户，您的验证码是：${param0} 。请勿泄露给他人！")),
 
     SMS_MOBILE_CAPTCHA_TEMPLATE(
             new SmsTemplateCell("SMS_45370002", "尊敬的拓天速贷客户，您的找回密码的验证码是：${param0} 。请勿泄露给他人！"),
-            new SmsTemplateCell("TTS_100865047", "尊敬的拓天速贷客户，您的找回密码的验证码是：${param0} 。请勿泄露给他人！")),
+            new SmsTemplateCell("TTS_100850051", "尊敬的拓天速贷客户，您的找回密码的验证码是：${param0} 。请勿泄露给他人！")),
 
     SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE(
             new SmsTemplateCell("SMS_45380002", "尊敬的用户，您的登录密码已修改。如非本人操作，请速登录拓天速贷官网重置密码，或联系客服处理，电话：400-169-1188。"),

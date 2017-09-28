@@ -24,11 +24,23 @@ abstract class SmsProviderBase implements SmsProvider {
         return models;
     }
 
+    SmsHistoryModel createSmsHistory(String mobile, SmsTemplateCell template, List<String> paramList) {
+        String content = template.generateContent(paramList);
+        SmsHistoryModel model = new SmsHistoryModel(mobile, content);
+        smsHistoryMapper.create(model);
+        return model;
+    }
+
+    SmsHistoryModel updateSmsHistory(SmsHistoryModel model, boolean isSuccess, String response) {
+        model.setSuccess(isSuccess);
+        model.setResponse(response);
+        smsHistoryMapper.update(model);
+        return model;
+    }
+
     List<SmsHistoryModel> updateSmsHistory(List<SmsHistoryModel> models, boolean isSuccess, String response) {
         for (SmsHistoryModel model : models) {
-            model.setSuccess(isSuccess);
-            model.setResponse(response);
-            smsHistoryMapper.update(model);
+            updateSmsHistory(model, isSuccess, response);
         }
         return models;
     }

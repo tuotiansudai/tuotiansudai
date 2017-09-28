@@ -29,7 +29,7 @@ public class SmsProviderTest {
     @Test
     @Ignore
     public void testSmsSendingAlidayuText() throws SmsSendingException {
-        List<String> mobileList = Lists.newArrayList("13810586920", "13691070223");
+        List<String> mobileList = Lists.newArrayList("18611445119", "13651020524");
         List<String> paramList = Lists.newArrayList("1234");
         smsProviderAlidayuText.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.getTemplateCell(false), paramList);
     }
@@ -37,7 +37,7 @@ public class SmsProviderTest {
     @Test
     @Ignore
     public void testSmsSendingAlidayuVoice() throws SmsSendingException {
-        List<String> mobileList = Lists.newArrayList("13810586920", "13691070223");
+        List<String> mobileList = Lists.newArrayList("18611445119", "13651020524");
         List<String> paramList = Lists.newArrayList("1234");
         smsProviderAlidayuVoice.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.getTemplateCell(true), paramList);
     }
