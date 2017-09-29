@@ -7,9 +7,10 @@
         <div class="lottery-wrap">
             <div class="iphone-fonts clearfix">
             </div>
-            <div class="lottery-content clearfix page-width">
+            <div class="lottery-content gift-circle-frame clearfix page-width">
                 <div class="fl">
-                    <div class="lottery-circle">
+                    <div class="lottery-circle gift-circle-out ">
+                        <div class="rotate-btn"></div>
                         <div class="rotater"></div>
                     </div>
                     <a class="draw-btn redBtn">立即抽奖</a>
@@ -28,12 +29,8 @@
                         <div class="recodes-con">
                             <div class="pos"></div>
                             <h4>中奖名单</h4>
-                            <div class="recode-list">
+                            <div class="record-list">
                                 <ul class="user-record">
-<<<<<<< HEAD
-=======
-                                    
->>>>>>> d1d6acab389c56821f424f536f7f77f4eaee8597
                                 </ul>
                             </div>
                         </div>
@@ -74,7 +71,7 @@
                <div class="chart">
 
                </div>
-               <a class="invest-on redBtn">立即投资</a>
+               <a class="invest-on redBtn to-invest">立即投资</a>
                <div class="exemple-wrap common-bg">
                    <div class="exemple childStyle">
                        <div class="pos"></div>
@@ -102,7 +99,7 @@
             </div>
         </div>
     </div>
-    <#include "../module/login-tip.ftl" />
+    <#include "../../module/login-tip.ftl" />
     <div class="tip-list-frame">
         <!-- 真实奖品的提示 -->
         <div class="tip-list" data-return="concrete">

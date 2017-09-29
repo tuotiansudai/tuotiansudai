@@ -3,15 +3,15 @@ let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
 let sourceKind = globalFun.parseURL(location.href);
-require('activityJsModule/fast_register');
+//require('activityJsModule/fast_register');
 
 
 let $iphonex = $('#iphonex'),
     tipGroupObj = {};
-var $pointerBtn = $('.rotater',$iphonex);
-var $oneThousandPoints=$('.lottery-circle',$iphonex);
+var $pointerBtn = $('.draw-btn',$iphonex);
+var $oneThousandPoints=$('.gift-circle-frame',$iphonex);
 var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
-    pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
+    // pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
     drawURL='/activity/iphonex/iphonex-draw';    //抽奖的接口链接
 
 
@@ -24,13 +24,13 @@ $iphonex.find('.tip-list-frame .tip-list').each(function (key, option) {
     tipGroupObj[kind] = option;
 });
 
-pointAllList:中奖记录接口地址
-pointUserList:我的奖品接口地址
-drawURL:抽奖的接口链接
-oneData:接口参数
-$oneThousandPoints:抽奖模版dom
-抽奖机会接口
-var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
+// pointAllList:中奖记录接口地址
+// pointUserList:我的奖品接口地址
+// drawURL:抽奖的接口链接
+// oneData:接口参数
+// $oneThousandPoints:抽奖模版dom
+// 抽奖机会接口
+var drawCircleOne=new drawCircle(pointAllList,null,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
 drawCircleOne.GiftRecord();
@@ -44,6 +44,7 @@ drawCircleOne.hoverScrollList($iphonex.find('.user-record'),10);
 //开始抽奖
 
 $pointerBtn.on('click', function(event) {
+
     drawCircleOne.beginLuckDraw(function(data) {
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
@@ -56,6 +57,7 @@ $pointerBtn.on('click', function(event) {
             //     $leftDrawCount.text(data);
             // }
             );
+            console.log(data)
             switch (data.prize) {
                 case 'IPHONEX_ACTIVITY_ENVELOP_COUPON_5': //0.5%加息券
                     angleNum=45*1-20;
@@ -95,7 +97,7 @@ $pointerBtn.on('click', function(event) {
                 case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //iphonex
                     angleNum=45*8-20;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('iphonex')
-                        .parent().siblings('.des-text').html('活动结束后发放');
+                        .parent().siblings('.des-text').html('奖品将于活动结束后发放');
                     break;
             }
             drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
@@ -129,7 +131,7 @@ $pointerBtn.on('click', function(event) {
     });
 });
 
-
-//点击切换按钮
-drawCircleOne.PrizeSwitch();
+$iphonex.find('.to-invest').on('click',function() {
+    window.location.href = '/loan-list';
+});
 
