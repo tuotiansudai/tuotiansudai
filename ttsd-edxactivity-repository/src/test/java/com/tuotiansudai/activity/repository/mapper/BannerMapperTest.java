@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class BannerMapperTest {
         bannerModel.setCreatedTime(new Date());
         bannerModel.setActivatedBy("1");
         bannerModel.setActivatedTime(new Date());
+        bannerModel.setDeactivatedTime(new DateTime(new Date()).plusDays(3).toDate());
         bannerModel.setAuthenticated(true);
         bannerModel.setContent("11");
         bannerModel.setCreatedBy("1");
