@@ -47,7 +47,7 @@ public class CreditLoanRechargeController {
             try {
                 BaseDto<PayDataDto> baseDto = creditLoanRechargeService.noPasswordCreditLoanRecharge(creditLoanRechargeDto);
                 if (baseDto.getData().getStatus()) {
-                    return new ModelAndView("redirect:/");
+                    return new ModelAndView("redirect:/finance-manage/credit-loan-bill");
                 }else{
                     errorMessage = baseDto.getData().getMessage();
                 }
