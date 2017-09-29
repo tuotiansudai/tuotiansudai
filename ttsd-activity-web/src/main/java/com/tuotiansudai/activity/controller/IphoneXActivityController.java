@@ -35,14 +35,14 @@ public class IphoneXActivityController {
 
     @ResponseBody
     @RequestMapping(value = "/iphonex-draw", method = RequestMethod.POST)
-    public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "IPHONEX_ACTIVITY", required = false) ActivityCategory activityCategory) {
+    public DrawLotteryResultDto iphoneXTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "IPHONEX_ACTIVITY", required = false) ActivityCategory activityCategory) {
         DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
         return drawLotteryResultDto;
     }
 
     @ResponseBody
     @RequestMapping(value = "/draw-time", method = RequestMethod.GET)
-    public String singleTaskDrawPrize() {
+    public String iphoneXTaskDrawTime() {
         return String.valueOf(iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(), LoginUserInfo.getLoginName()));
     }
 
