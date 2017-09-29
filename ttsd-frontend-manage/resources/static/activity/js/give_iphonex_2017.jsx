@@ -36,28 +36,37 @@ var drawCircleOne=new drawCircle(pointAllList,null,drawURL,oneData,$oneThousandP
 drawCircleOne.GiftRecord();
 
 drawCircleOne.hoverScrollList($iphonex.find('.user-record'),10);
-// commonFun.useAjax({
-//     dataType: 'json',
-//     url:pointNumber
-// });
+var flag = true;
+function investOrDraw(){
+    commonFun.useAjax({
+            type:'GET',
+            dataType: 'json',
+            url:'/activity/iphonex/draw-time'
+        }
+        ,function(data) {
+            if(data == 0){
+                $pointerBtn.text('立即投资');
+                flag = false;
+            }else {
+                $pointerBtn.text('立即抽奖');
+            }
 
+        })
+}
+
+investOrDraw();
 //开始抽奖
 
 $pointerBtn.on('click', function(event) {
-
+if(!flag) {
+    window.location.href = '/loan-list';
+}else {
     drawCircleOne.beginLuckDraw(function(data) {
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
-            commonFun.useAjax({
-                dataType: 'json',
-                url:'/activity/iphonex/draw-time'
-            }
-            // ,function(data) {
-            //     $leftDrawCount.text(data);
-            // }
-            );
-            console.log(data)
+            investOrDraw();
+
             switch (data.prize) {
                 case 'IPHONEX_ACTIVITY_ENVELOP_COUPON_5': //0.5%加息券
                     angleNum=45*1-20;
@@ -129,6 +138,8 @@ $pointerBtn.on('click', function(event) {
             drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
         }
     });
+}
+
 });
 
 $iphonex.find('.to-invest').on('click',function() {
