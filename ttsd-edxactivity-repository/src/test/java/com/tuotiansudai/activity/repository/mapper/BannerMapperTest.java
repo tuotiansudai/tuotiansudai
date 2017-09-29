@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,6 +45,6 @@ public class BannerMapperTest {
         bannerModel.setSource(Lists.newArrayList(Source.WEB, Source.ANDROID));
         bannerMapper.create(bannerModel);
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(true, Source.WEB);
-        assertTrue(bannerModelList.size() > 0);
+        assertNotNull(bannerModelList);
     }
 }
