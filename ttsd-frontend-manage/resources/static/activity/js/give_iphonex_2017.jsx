@@ -69,42 +69,42 @@ if(!flag) {
 
             switch (data.prize) {
                 case 'IPHONEX_ACTIVITY_ENVELOP_COUPON_5': //0.5%加息券
-                    angleNum=45*1-20;
+                    angleNum=45*8;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
                 case 'IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_88': //88体验金
-                    angleNum=45*2-20;
+                    angleNum=45*7;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('88体验金')
                         .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
                     break;
                 case 'IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_888': //888元体验金
-                    angleNum=45*3-20;
+                    angleNum=45*6;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金')
                         .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
                     break;
                 case 'IPHONEX_ACTIVITY_ENVELOP_ENVELOP_18': //18元红包
-                    angleNum=45*4-20;
+                    angleNum=45*5;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('18元红包')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
                 case 'IPHONEX_ACTIVITY_ENVELOP_ENVELOP_188': //188元红包
-                    angleNum=45*5-20;
+                    angleNum=45*4;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('188元红包')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
                 case 'IPHONEX_ACTIVITY_ENVELOP_ENVELOP_288':  //288元红包
-                    angleNum=45*6-20;
+                    angleNum=45*3;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('288元红包')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
                 case 'IPHONEX_ACTIVITY_ENVELOP_ENVELOP_588':  //588元红包
-                    angleNum=45*7-20;
+                    angleNum=45*2;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('588元红包')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
                 case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //iphonex
-                    angleNum=45*8-20;
+                    angleNum=45*1;
                     $(tipGroupObj['concrete']).find('.prizeValue').text('iphonex')
                         .parent().siblings('.des-text').html('奖品将于活动结束后发放');
                     break;

@@ -169,9 +169,14 @@ $colorFont: #1b1b1b;
               //font-size: 20px;
               //line-height: 38px;
             }
-            >ul {
-              >li {
-                //line-height: 38px;
+            .record-list {
+              height: 150px;
+              overflow: hidden;
+              ul {
+                li {
+                  font-size: 16px;
+                  line-height: 30px;
+                }
               }
             }
           }
