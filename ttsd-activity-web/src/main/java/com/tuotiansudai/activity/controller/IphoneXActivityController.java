@@ -28,7 +28,9 @@ public class IphoneXActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getDrawPrizeTime() {
-        return new ModelAndView("/activities/2017/iphonex", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/iphonex", "responsive", true);
+        modelAndView.addObject("drawCount", iphoneXService.iphoneXDrawTime(LoginUserInfo.getMobile(), LoginUserInfo.getLoginName()));
+        return modelAndView;
     }
 
     @ResponseBody
