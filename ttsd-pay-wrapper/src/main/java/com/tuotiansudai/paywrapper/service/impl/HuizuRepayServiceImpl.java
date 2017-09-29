@@ -27,14 +27,14 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.HuiZuRepayService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +48,8 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     public final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
     private final static String REPAY_ORDER_ID_TEMPLATE = "%s" + REPAY_ORDER_ID_SEPARATOR + "%s";
+
+    private final static String RENT_REPAY_PLAN_EXPIRED_REDIS_KEY = "rent:repay:plan:expired:%s";
 
     private static final int REPAY_PAY_EXPIRE_SECOND = 60 * 60 * 24 * 30;
     @Autowired
@@ -92,12 +94,22 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         }
 
         try {
-            if (redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()))) {
-                payFormDataDto.setMessage(String.format("用户:%s-第%s期-已经还款成功",
-                        huiZuRepayDto.getMobile(),
-                        String.valueOf(huiZuRepayDto.getPeriod())));
+            if (isPaying(Long.parseLong(huiZuRepayDto.getRepayPlanId()))) {
+                payFormDataDto.setMessage("还款交易进行中, 请30分钟后查看");
+                payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
                 return dto;
             }
+
+            if (isFinished(Long.parseLong(huiZuRepayDto.getRepayPlanId()))) {
+                payFormDataDto.setMessage("您已还款成功");
+                payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+                return dto;
+            }
+
+            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newHuiZuRepayPasswordRequest(
+                    String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
+                    accountModel.getPayUserId(),
+                    String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
 
             redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                     Maps.newHashMap(ImmutableMap.builder()
@@ -107,10 +119,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                             .put("status", SyncRequestStatus.SENT.name())
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
-            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newHuiZuRepayPasswordRequest(
-                    String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
-                    accountModel.getPayUserId(),
-                    String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
+            redisWrapperClient.setex(String.format(RENT_REPAY_PLAN_EXPIRED_REDIS_KEY, String.valueOf(huiZuRepayDto.getRepayPlanId())), 60 * 30, SyncRequestStatus.SENT.name());
             return payAsyncClient.generateFormData(HuiZuRepayMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(String.format("[HZ Password Repay:] id:%s mobile:%s period:%s repay fail", String.valueOf(huiZuRepayDto.getRepayPlanId()), huiZuRepayDto.getMobile(), huiZuRepayDto.getPeriod()), e);
@@ -134,7 +143,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         baseDto.setData(payDataDto);
 
         UserModel userModel = userMapper.findByMobile(huiZuRepayDto.getMobile());
-        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
 
 
         if (AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()) > accountModel.getBalance()) {
@@ -146,12 +155,24 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             return baseDto;
         }
         try {
-            if (redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()))) {
-                payDataDto.setMessage(String.format("用户:%s-第%s期-已经还款成功",
-                        huiZuRepayDto.getMobile(),
-                        String.valueOf(huiZuRepayDto.getPeriod())));
+
+            if (isPaying(Long.parseLong(huiZuRepayDto.getRepayPlanId()))) {
+                payDataDto.setMessage("还款交易进行中, 请30分钟后查看");
+                payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
                 return baseDto;
             }
+
+            if (isFinished(Long.parseLong(huiZuRepayDto.getRepayPlanId()))) {
+                payDataDto.setMessage("您已还款成功");
+                payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+                return baseDto;
+            }
+
+            ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newHuiZuRepayNopwdRequest(
+                    String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
+                    accountModel.getPayUserId(),
+                    String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
+
             redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                     Maps.newHashMap(ImmutableMap.builder()
                             .put("mobile", huiZuRepayDto.getMobile())
@@ -160,10 +181,8 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                             .put("status", SyncRequestStatus.SENT.name())
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
-            ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newHuiZuRepayNopwdRequest(
-                    String.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(huiZuRepayDto.getRepayPlanId()), String.valueOf(new DateTime().getMillis())),
-                    accountModel.getPayUserId(),
-                    String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())));
+
+            redisWrapperClient.setex(String.format(RENT_REPAY_PLAN_EXPIRED_REDIS_KEY, String.valueOf(huiZuRepayDto.getRepayPlanId())), 60 * 30, SyncRequestStatus.SENT.name());
 
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     HuiZuNopwdRepayMapper.class,
@@ -256,7 +275,11 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                 Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "actual_amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
-        //TODO: modify loan_bill 流水数据
+        mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
+                new CreditLoanBillModel(Long.parseLong(orderId),
+                        Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "actual_amount")),
+                        CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.YOOCAR_LOAN_REPAY, mobile));
+
     }
 
     private void sendFatalNotify(String message) {
@@ -274,6 +297,26 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
             return false;
         }
         return true;
+    }
+
+    private boolean isPaying(long orderId) {
+        try {
+            String key = String.format(RENT_REPAY_PLAN_EXPIRED_REDIS_KEY, String.valueOf(orderId));
+            return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.get(key)) == SyncRequestStatus.SENT;
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+    }
+
+    private boolean isFinished(long orderId) {
+        try {
+            String key = String.format("REPAY_PLAN_ID:%s", String.valueOf(orderId));
+            return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.get(key)) == SyncRequestStatus.SUCCESS;
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
     }
 
 
