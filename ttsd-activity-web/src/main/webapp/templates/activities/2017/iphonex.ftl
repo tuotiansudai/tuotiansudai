@@ -71,7 +71,7 @@
                <div class="chart">
 
                </div>
-               <a class="invest-on redBtn">立即投资</a>
+               <a class="invest-on redBtn to-invest">立即投资</a>
                <div class="exemple-wrap common-bg">
                    <div class="exemple childStyle">
                        <div class="pos"></div>

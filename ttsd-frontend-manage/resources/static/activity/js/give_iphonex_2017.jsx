@@ -131,7 +131,7 @@ $pointerBtn.on('click', function(event) {
     });
 });
 
-
-//点击切换按钮
-//drawCircleOne.PrizeSwitch();
+$iphonex.find('.to-invest').on('click',function() {
+    window.location.href = '/loan-list';
+});
 

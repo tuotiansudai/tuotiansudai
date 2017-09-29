@@ -321,8 +321,8 @@ $colorFont: #1b1b1b;
   margin-left: -235px !important;
   margin-top: -155px !important;
   border-radius:0px;
-  background:url('../images/single-rank/tip-bg.png') no-repeat center;
-  background-size:100%;
+  background:url('../images/2017/give-iphonex/tip-bg.png') no-repeat center!important;
+  background-size:100%!important;
   z-index: 999;
   @media (max-width:700px) {
     width: 300px !important;
@@ -333,81 +333,81 @@ $colorFont: #1b1b1b;
     margin-top: -155px !important;
   }
   .text-tip {
-    height: auto;
+    height: auto!important;
 
     p {
-      color: #fff;
+      color: #fff!important;
       &.success-text {
-        height: 220px;
-        padding-top: 0;
-        margin: -140px 0 20px;
-        background: url('../images/single-rank/success-title.png') no-repeat center;
-        background-size: 100%;
+        height: 220px!important;
+        padding-top: 0!important;
+        margin: -140px 0 20px!important;
+        background: url('../images/single-rank/success-title.png') no-repeat center!important;
+        background-size: 100%!important;
         @media (max-width:700px) {
-          height:150px;
-          margin:-40px 0 0;
+          height:150px!important;
+          margin:-40px 0 0!important;
         }
       }
       &.reward-text {
-        font-size:34px;
-        color:#ffe973;
+        font-size:34px!important;
+        color:#ffe973!important;
         @media (max-width:700px) {
-          font-size: 16px;
-          line-height: 30px;
+          font-size: 16px!important;
+          line-height: 30px!important;
         }
       }
       &.login-text {
-        font-size: 20px;
-        padding-top: 70px;
+        font-size: 20px!important;
+        padding-top: 70px!important;
         color:#ffe973;
         @media (max-width:700px) {
-          padding-top: 90px;
-          font-size: 14px;
+          padding-top: 90px!important;
+          font-size: 14px!important;
         }
       }
       &.des-text {
-        color: #fff;
-        font-size: 14px;
+        color: #fff!important;
+        font-size: 14px!important;
         @media (max-width:700px) {
-          font-size: 12px;
-          line-height: 24px;
+          font-size: 12px!important;
+          line-height: 24px!important;
         }
       }
     }
   }
   .close-btn {
-    width: 20px;
-    height: 20px;
-    top: 20px;
-    right: 20px;
-    margin-left: -14px;
-    background: url('../images/single-rank/close-tip.png') no-repeat center;
-    background-size: 100%;
+    width: 20px!important;
+    height: 20px!important;
+    top: 20px!important;
+    right: 20px!important;
+    margin-left: -14px!important;
+    background: url('../images/2017/give-iphonex/close-tip.png') no-repeat center;
+    background-size: 100%!important;
     @media (max-width:700px) {
-      top: 70px;
-      right: 10px;
+      top: 70px!important;
+      right: 10px!important;
     }
   }
   .btn-list {
     a {
-      background: #ffea77;
-      color: #e34758;
-      padding: 10px 30px;
-      font-size: 18px;
-      border-radius: 5px;
-      margin: 10px 20px;
-      min-width: 120px;
-      box-sizing: border-box;
+      background: #ffea77!important;
+      color: #e34758!important;
+      padding: 10px 30px!important;
+      font-size: 18px!important;
+      border-radius: 5px!important;
+      margin: 10px 20px!important;
+      min-width: 120px!important;
+      box-sizing: border-box!important;
       &.canble-btn{
-        color:#c0b67c;
-        border:1px solid #c0b67c;
-        background:none;
+        color:#c0b67c!important;
+        border:1px solid #c0b67c!important;
+        background:none!important;
       }
       @media (max-width:700px) {
-        padding: 5px 25px;
-        font-size: 16px;
-        min-width:100px;
-        margin: 15px 20px 10px;
+        padding: 5px 25px!important;
+        font-size: 16px!important;
+        min-width:100px!important;
+        margin: 15px 20px 10px!important;
       }
     }
   }
