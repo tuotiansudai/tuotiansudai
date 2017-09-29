@@ -37,7 +37,7 @@
     <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
         select * from banner
         where deleted = '0'
-        and now() BETWEEN activated_time and deactivated_time
+        and #{currentTime} between activated_time and deactivated_time
         <if test="authenticated != null and !authenticated">
             and authenticated = #{authenticated}
         </if>

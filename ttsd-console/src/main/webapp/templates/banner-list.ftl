@@ -48,7 +48,7 @@
                                 --
                             </#if>
                         </td>
-                        <td><#if banner.deactivatedTime?date gt .now?date>是<#else>否</#if></td>
+                        <td><#if banner.deactivatedTime?date gt .now?date && banner.activatedTime?date lt .now?date>是<#else>否</#if></td>
                         <td>
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                 <#if banner.deactivatedTime?date gt .now?date>

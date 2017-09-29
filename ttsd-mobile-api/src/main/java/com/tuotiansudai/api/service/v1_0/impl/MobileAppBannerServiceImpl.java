@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,7 +35,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(String loginName, Source source) {
         boolean isAuthenticated = !Strings.isNullOrEmpty(loginName);
-        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(isAuthenticated, source);
+        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(isAuthenticated, source, new Date());
         BannerResponseDataDto bannerResponseDataDto = new BannerResponseDataDto();
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
         bannerResponseDataDto.setPictures(pictures);

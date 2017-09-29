@@ -44,7 +44,7 @@ public class BannerMapperTest {
         bannerModel.setSharedUrl("11");
         bannerModel.setSource(Lists.newArrayList(Source.WEB, Source.ANDROID));
         bannerMapper.create(bannerModel);
-        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(true, Source.WEB);
+        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(true, Source.WEB, new Date());
         assertNotNull(bannerModelList);
     }
 }
