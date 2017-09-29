@@ -105,7 +105,17 @@ $colorFont: #1b1b1b;
           width: 548px;
           height: 548px;
           position: relative;
-          background: url("../images/2017/give-iphonex/circle_bg.png") no-repeat center center;
+          padding: 50px;
+          background: url("../images/2017/give-iphonex/rotate_out.png") no-repeat center center;
+          background-size: 100%;
+          box-sizing: border-box;
+          .rotate-btn {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: url("../images/2017/give-iphonex/rotate_in.png") no-repeat center center;
+            background-size: 100%;
+          }
           .rotater {
             width: 120px;
             height: 152px;
@@ -117,7 +127,6 @@ $colorFont: #1b1b1b;
             margin: auto;
             background: url("../images/2017/give-iphonex/rotater.png") no-repeat center center;
             background-size: 100%;
-            cursor: pointer;
           }
         }
       }
@@ -295,4 +304,115 @@ $colorFont: #1b1b1b;
     margin: 60px auto 110px;
 
   }
+}
+
+//提示框
+.tip-list-frame {
+  display: none;
+}
+.shade-body-mask {
+  z-index: 99;
+}
+.tip-list {
+  width: 470px !important;
+  height: 310px !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin-left: -235px !important;
+  margin-top: -155px !important;
+  border-radius:0px;
+  background:url('../images/single-rank/tip-bg.png') no-repeat center;
+  background-size:100%;
+  z-index: 999;
+  @media (max-width:700px) {
+    width: 300px !important;
+    height: 310px !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -150px !important;
+    margin-top: -155px !important;
+  }
+  .text-tip {
+    height: auto;
+
+    p {
+      color: #fff;
+      &.success-text {
+        height: 220px;
+        padding-top: 0;
+        margin: -140px 0 20px;
+        background: url('../images/single-rank/success-title.png') no-repeat center;
+        background-size: 100%;
+        @media (max-width:700px) {
+          height:150px;
+          margin:-40px 0 0;
+        }
+      }
+      &.reward-text {
+        font-size:34px;
+        color:#ffe973;
+        @media (max-width:700px) {
+          font-size: 16px;
+          line-height: 30px;
+        }
+      }
+      &.login-text {
+        font-size: 20px;
+        padding-top: 70px;
+        color:#ffe973;
+        @media (max-width:700px) {
+          padding-top: 90px;
+          font-size: 14px;
+        }
+      }
+      &.des-text {
+        color: #fff;
+        font-size: 14px;
+        @media (max-width:700px) {
+          font-size: 12px;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+  .close-btn {
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+    margin-left: -14px;
+    background: url('../images/single-rank/close-tip.png') no-repeat center;
+    background-size: 100%;
+    @media (max-width:700px) {
+      top: 70px;
+      right: 10px;
+    }
+  }
+  .btn-list {
+    a {
+      background: #ffea77;
+      color: #e34758;
+      padding: 10px 30px;
+      font-size: 18px;
+      border-radius: 5px;
+      margin: 10px 20px;
+      min-width: 120px;
+      box-sizing: border-box;
+      &.canble-btn{
+        color:#c0b67c;
+        border:1px solid #c0b67c;
+        background:none;
+      }
+      @media (max-width:700px) {
+        padding: 5px 25px;
+        font-size: 16px;
+        min-width:100px;
+        margin: 15px 20px 10px;
+      }
+    }
+  }
+}
+
+@media (max-width:1024px) {
+
 }
