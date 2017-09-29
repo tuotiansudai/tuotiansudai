@@ -79,7 +79,7 @@ public class HuiZuRepayServiceTest {
 
         assertEquals(true, redisWrapperClient.exists(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId())));
         assertEquals(huiZuRepayDto.getMobile(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "mobile"));
-        assertEquals(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()), Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "amount")));
+        assertEquals(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()), Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "actual_amount")));
         assertEquals(String.valueOf(huiZuRepayDto.getPeriod()), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "period"));
         assertEquals(SyncRequestStatus.SENT.name(), redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", huiZuRepayDto.getRepayPlanId()), "status"));
 
@@ -97,7 +97,7 @@ public class HuiZuRepayServiceTest {
         redisWrapperClient.hmset(String.format("REPAY_PLAN_ID:%s", String.valueOf(huiZuRepayDto.getRepayPlanId())),
                 Maps.newHashMap(ImmutableMap.builder()
                         .put("mobile", huiZuRepayDto.getMobile())
-                        .put("amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
+                        .put("actual_amount", String.valueOf(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount())))
                         .put("period", String.valueOf(huiZuRepayDto.getPeriod()))
                         .put("status", SyncRequestStatus.SENT.name())
                         .build()),
