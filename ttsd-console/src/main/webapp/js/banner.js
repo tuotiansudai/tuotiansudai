@@ -1,13 +1,25 @@
-require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'jquery-ui', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'jquery-ui', 'csrf','bootstrapDatetimepicker'], function ($) {
     $(function () {
         var $errorDom = $('.form-error'),
             $bannerForm = $('.banner-form'),
             $submitBtn = $('#btnSave'),
-            $selectDom = $('.selectpicker'), //select表单
+            $selectDom = $('.selectpicker'),
+            $activatedTime = $('#datepickerBegin'),
+            $deactivatedTime = $('#datepickerEnd'),
             boolFlag = false;
 
         //渲染select表单
         $selectDom.selectpicker();
+        $('#datepickerBegin,#datepickerEnd').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+        $activatedTime.on("dp.change", function (e) {
+            $deactivatedTime.data("DateTimePicker").minDate(e.date);
+        });
+
+        $deactivatedTime.on("dp.change", function (e) {
+            $activatedTime.data("DateTimePicker").maxDate(e.date);
+        });
 
         function showErrorMessage(msg, obj) {
             currentErrorObj = obj;
@@ -160,6 +172,15 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
 
             if ($("input[name='content']").val().length >= 500) {
                 showErrorMessage("分享后描述最多500个中文字符");
+                return false;
+            }
+
+            if ($("input[name='activatedTime']").val() == '') {
+                showErrorMessage("生效时间不能为空");
+                return false;
+            }
+            if ($("input[name='deactivatedTime']").val() == '') {
+                showErrorMessage("失效时间不能为空");
                 return false;
             }
 

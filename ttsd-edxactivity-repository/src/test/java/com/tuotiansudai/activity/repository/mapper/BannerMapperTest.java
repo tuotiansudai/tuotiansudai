@@ -31,7 +31,6 @@ public class BannerMapperTest {
         bannerModel.setCreatedTime(new Date());
         bannerModel.setActivatedBy("1");
         bannerModel.setActivatedTime(new Date());
-        bannerModel.setActive(true);
         bannerModel.setAuthenticated(true);
         bannerModel.setContent("11");
         bannerModel.setCreatedBy("1");
