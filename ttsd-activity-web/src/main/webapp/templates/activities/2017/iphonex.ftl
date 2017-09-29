@@ -13,8 +13,8 @@
                         <div class="rotate-btn"></div>
                         <div class="rotater"></div>
                     </div>
-                    <a class="invest-Btn redBtn to-invest">立即投资</a>
-                    <a class="draw-Btn redBtn">立即抽奖</a>
+                    <a class="invest-btn redBtn to-invest">立即投资</a>
+                    <a class="draw-btn redBtn">立即抽奖</a>
                 </div>
 
 

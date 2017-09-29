@@ -8,9 +8,9 @@ let sourceKind = globalFun.parseURL(location.href);
 
 let $iphonex = $('#iphonex'),
     tipGroupObj = {};
-i
+
 var $pointerBtn = $('.draw-btn',$iphonex),
-    $investBtn = $('.invest-Btn',$iphonex);
+    $investBtn = $('.invest-btn',$iphonex);
 var $oneThousandPoints=$('.gift-circle-frame',$iphonex);
 var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
     // pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
@@ -64,6 +64,7 @@ function investOrDraw(){
 $pointerBtn.on('click', function(event) {
 
     drawCircleOne.beginLuckDraw(function(data) {
+        console.log(3)
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
