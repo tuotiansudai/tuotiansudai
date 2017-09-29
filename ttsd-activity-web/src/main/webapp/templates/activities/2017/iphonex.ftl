@@ -13,7 +13,8 @@
                         <div class="rotate-btn"></div>
                         <div class="rotater"></div>
                     </div>
-                    <a class="draw-btn redBtn">立即抽奖</a>
+                    <a class="invest-Btn redBtn to-invest">立即投资</a>
+                    <a class="draw-Btn redBtn">立即抽奖</a>
                 </div>
 
 
@@ -39,11 +40,11 @@
                 </div>
             </div>
         </div>
-        <div class="invest-wrap page-width1200">
+        <div class="invest-wrap">
            <div class="page-width">
                <div class="invest-fonts"></div>
-               <div class="total-annual-wrap common-bg">
-                   <div class="total-annual">
+               <div class="total-annual-wrap commonStyle">
+                   <div class="total-annual childStyle">
                        <div class="pos"></div>
                        <div class="instruction common-style-font">
                            <p> “ 活动期间，计算累计年化投资额，累计年化投资额≥100万元的用户，即可免费获赠iPhoneX （64GB）；累计年化投资额不满100万元的用户，根据累计年化投资额最高奖励1888元现金，真金白银助您买iPhoneX! ”<strong>(注：现金奖励不可累计获得)</strong></p>
@@ -57,7 +58,7 @@
                               </div>
                               <h4>年化投资额计算公式</h4>
                               <table>
-                                  <tr><td>60天～90天项目</td><td>年化投资额＝实际投资额/4</td></tr>
+                                  <tr><td cellspacing="5">60天～90天项目</td><td>年化投资额＝实际投资额/4</td></tr>
                                   <tr><td>120天～180天项目</td><td>年化投资额＝实际投资额/2</td></tr>
                                   <tr><td>330天～360天项目</td><td>年化投资额＝实际投资额</td></tr>
                               </table>
@@ -72,7 +73,7 @@
 
                </div>
                <a class="invest-on redBtn to-invest">立即投资</a>
-               <div class="exemple-wrap common-bg">
+               <div class="exemple-wrap wap-parent">
                    <div class="exemple childStyle">
                        <div class="pos"></div>
                        <h4 class="font-title">举个栗子</h4>
@@ -82,13 +83,13 @@
            </div>
 
         </div>
-        <div class="kindly-reminder-wrap">
+        <div class="kindly-reminder-wrap wap-parent">
             <div class="childStyle">
                 <div class="pos pos2"></div>
                 <h4>温馨提示</h4>
                 <p>
                     1、本活动仅限直投项目，债权转让不参与累计；<br/>
-                    2、在活动二中，iphone X与现金奖励不可同时获得；
+                    2、在活动二中，iphone X与现金奖励不可同时获得；<br/>
                     3、抽奖活动中所获的红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；<br/>
                     4、现金奖励将于活动结束后三个工作日内发放至用户账户；<br/>
                     5、iPhoneX奖励发放时间将以国内实际预购及发售情况为准，如出现断货情况，请您耐心等待，拓天速贷客服将于活动结束后7个工作日内与获奖用户取得联系，请保持手机畅通，若在7个工作日内无法联系，将视为自动放弃奖励；<br/>

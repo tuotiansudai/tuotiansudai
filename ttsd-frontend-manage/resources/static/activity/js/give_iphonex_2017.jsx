@@ -8,7 +8,9 @@ let sourceKind = globalFun.parseURL(location.href);
 
 let $iphonex = $('#iphonex'),
     tipGroupObj = {};
-var $pointerBtn = $('.draw-btn',$iphonex);
+i
+var $pointerBtn = $('.draw-btn',$iphonex),
+    $investBtn = $('.invest-Btn',$iphonex);
 var $oneThousandPoints=$('.gift-circle-frame',$iphonex);
 var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
     // pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
@@ -36,7 +38,7 @@ var drawCircleOne=new drawCircle(pointAllList,null,drawURL,oneData,$oneThousandP
 drawCircleOne.GiftRecord();
 
 drawCircleOne.hoverScrollList($iphonex.find('.user-record'),10);
-var flag = true;
+
 function investOrDraw(){
     commonFun.useAjax({
             type:'GET',
@@ -45,22 +47,22 @@ function investOrDraw(){
         }
         ,function(data) {
             if(data == 0){
-                $pointerBtn.text('立即投资');
-                flag = false;
+
+                $pointerBtn.hide();
+                $investBtn.show();
             }else {
-                $pointerBtn.text('立即抽奖');
+                $investBtn.hide();
+                $pointerBtn.show();
             }
 
         })
 }
 
-investOrDraw();
+// investOrDraw();
 //开始抽奖
 
 $pointerBtn.on('click', function(event) {
-if(!flag) {
-    window.location.href = '/loan-list';
-}else {
+
     drawCircleOne.beginLuckDraw(function(data) {
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
@@ -138,7 +140,7 @@ if(!flag) {
             drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
         }
     });
-}
+
 
 });
 

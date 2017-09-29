@@ -3,11 +3,9 @@ body {
   font-family: '黑体';
 }
 $colorFont: #1b1b1b;
-@mixin common-styles ($selfHeight){
+@mixin common-styles (){
       width: 904px;
-      height: $selfHeight;
       background: #6360ce;
-      position: relative;
       font-size: 20px;
       color: $colorFont;
       .childStyle {
@@ -15,7 +13,7 @@ $colorFont: #1b1b1b;
         background: #fff;
         box-sizing: border-box;
         border:4px solid $colorFont;
-        position: absolute;
+        position: relative;
         left: 20px;
         top: 16px;
         font-size: 20px;
@@ -71,18 +69,20 @@ $colorFont: #1b1b1b;
     color: #fff;
   }
 }
-.common-bg {
-  width: 904px;
-  background: #6360ce;
-  position: relative;
-}
+//.common-bg {
+//  width: 904px;
+//  background: #6360ce;
+//  position: relative;
+//}
 .phone-banner {
   height: 350px;
   background: url("../images/2017/give-iphonex/iphonex_pc.png") no-repeat center center;
+  background-size: 100%;
 }
 .activity-wrap {
   width: 100%;
   background: url("../images/2017/give-iphonex/con_wrap_bg.png") no-repeat center top;
+  background-size: 100%;
 }
 
 
@@ -133,16 +133,13 @@ $colorFont: #1b1b1b;
       .fr {
         >div {
           width: 394px;
-          height: 230px;
           background: #e8465d;
-          position: relative;
           >div {
             width: 394px;
-            height: 230px;
             background: #fff;
             border:4px solid $colorFont;
             box-sizing: border-box;
-            position: absolute;
+            position: relative;
             left: 20px;
             top: 14px;
             padding: 0 7%;
@@ -164,10 +161,6 @@ $colorFont: #1b1b1b;
               line-height: 60px;
               font-weight: bold;
               text-align: center;
-            }
-            p {
-              //font-size: 20px;
-              //line-height: 38px;
             }
             .record-list {
               height: 150px;
@@ -206,27 +199,10 @@ $colorFont: #1b1b1b;
         background-size: 100%;
       }
       .total-annual-wrap {
-        height: 200px;
         margin-bottom: 145px;
+        @include common-styles ();
         .total-annual {
-          width: 910px;
-          height: 208px;
-          background: #fff;
-          box-sizing: border-box;
-          border:4px solid $colorFont;
-          position: absolute;
-          left: 20px;
-          top: 16px;
-          font-size: 20px;
-          .pos {
-            width: 43px;
-            height: 30px;
-            position: absolute;
-            right: -5px;
-            bottom: -5px;
-            background: url("../images/2017/give-iphonex/pos_purple.png") no-repeat center top;
-            background-size: 100%;
-          }
+          height: 230px;
           .instruction {
             padding: 2% 3% 0;
             p {
@@ -246,7 +222,6 @@ $colorFont: #1b1b1b;
             }
             .formula {
               float: right;
-              margin-right: 30px;
               width: 388px;
               height: 142px;
               border: 4px solid $colorFont;
@@ -295,16 +270,17 @@ $colorFont: #1b1b1b;
         width: 994px;
         height: 315px;
         background: url("../images/2017/give-iphonex/chart.png") no-repeat center top;
+        background-size: 100%;
       }
       .exemple-wrap {
-        @include common-styles (160px);
+        @include common-styles ();
         margin-bottom: 50px;
       }
 
     }
   }
   .kindly-reminder-wrap {
-    @include common-styles (530px);
+    @include common-styles ();
 
     margin: 60px auto 110px;
 
@@ -419,5 +395,100 @@ $colorFont: #1b1b1b;
 }
 
 @media (max-width:1024px) {
+  .page-width1200 {
+    width: 92%;
+  }
+  .page-width {
+    width: 90%;
+  }
+  .phone-banner {
+    height: 240px;
+    background-position: center top;
+    background-size:cover;
+  }
+  .redBtn {
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+  }
+
+  .activity-page-frame {
+      .lottery-wrap {
+        margin-bottom: 50px;
+        .iphone-fonts {
+          width: 82%;
+        }
+         .lottery-content {
+           margin-top: 20px;
+           .fl {
+             width: 50%;
+             .lottery-circle {
+               width: 100%;
+               height: 430px;
+             }
+           }
+           .fr {
+             >div {
+               >div {
+                 font-size: 16px;
+                 line-height: 24px;
+                 h4 {
+                   font-size: 16px;
+                   line-height: 34px;
+                 }
+                .record-list {
+                   height: 125px;
+                 }
+               }
+
+             }
+
+           }
+         }
+      }
+    .invest-wrap {
+      .page-width {
+        .invest-fonts {
+          width: 94%;
+          margin: 20px auto;
+        }
+        .exemple-wrap {
+          width: 94%;
+          .childStyle {
+            width:100%;
+
+            h4 {
+              font-size: 16px;
+              line-height: 24px;
+            }
+            p {
+              font-size: 16px;
+              line-height: 30px;
+            }
+          }
+        }
+        .chart {
+          width: 100%;
+          height: 280px;
+        }
+
+      }
+    }
+    .kindly-reminder-wrap {
+      width: 94%;
+      .childStyle {
+        width:100%;
+
+        h4 {
+          font-size: 16px;
+          line-height: 24px;
+        }
+        p {
+          font-size: 16px;
+          line-height: 30px;
+        }
+      }
+    }
+  }
 
 }
