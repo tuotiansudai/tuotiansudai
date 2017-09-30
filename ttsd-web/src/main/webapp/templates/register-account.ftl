@@ -21,6 +21,7 @@
                 <li><label class="title">身份证号</label>
                     <input type="text" name="identityNumber" placeholder="请输入您的身份证号码"
                            class="identity-number"
+                           maxlength="18"
                            value="${(originalFormData.identityNumber)!}"/>
                 </li>
             </ul>
