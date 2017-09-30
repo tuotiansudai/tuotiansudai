@@ -10,6 +10,9 @@ $colorFont: #1b1b1b;
       color: $colorFont;
       .childStyle {
         width: 910px;
+        @media (max-width:1024px) {
+          width: 100%;
+        }
         background: #fff;
         box-sizing: border-box;
         border:4px solid $colorFont;
@@ -200,6 +203,7 @@ $colorFont: #1b1b1b;
       }
       .total-annual-wrap {
         margin-bottom: 145px;
+        width: 98%;
         @include common-styles ();
         .total-annual {
           height: 230px;
@@ -453,7 +457,7 @@ $colorFont: #1b1b1b;
           margin: 20px auto;
         }
         .exemple-wrap {
-          width: 94%;
+          width: 98%;
           .childStyle {
             width:100%;
 
