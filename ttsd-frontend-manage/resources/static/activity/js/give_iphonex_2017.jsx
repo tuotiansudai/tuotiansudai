@@ -58,7 +58,11 @@ function investOrDraw(){
         })
 }
 
-// investOrDraw();
+$.when(commonFun.isUserLogin())
+    .done(function () {
+        investOrDraw();
+    });
+
 //开始抽奖
 
 $pointerBtn.on('click', function(event) {

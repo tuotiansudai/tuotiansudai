@@ -16,11 +16,8 @@
 
                     <@global.isAnonymous><a class="draw-btn redBtn">立即抽奖</a></@global.isAnonymous>
                     <@global.isNotAnonymous>
-                        <#if drawCount==0>
-                            <a class="invest-btn redBtn to-invest">立即投资</a>
-                        <#else>
-                            <a class="draw-btn redBtn">立即抽奖</a>
-                        </#if>
+                            <a class="invest-btn redBtn to-invest" style="display: none">立即投资</a>
+                            <a class="draw-btn redBtn" style="display: none">立即抽奖</a>
                      </@global.isNotAnonymous>
 
                 </div>
