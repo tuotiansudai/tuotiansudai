@@ -1,3 +1,5 @@
+import hashlib
+import uuid
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -32,19 +34,21 @@ class User(db.Model):
     sign_in_count = db.Column(db.BigInteger())
     experience_balance = db.Column(BIGINT(unsigned=True), nullable=False)
 
-    def __init__(self, login_name, mobile, password, salt, referrer, channel, source):
+    def __init__(self, login_name, mobile, referrer, channel, source):
         self.login_name = login_name
         self.mobile = mobile
-        self.password = password
-        self.salt = salt
-        if referrer:
-            self.referrer = referrer
+        self.referrer = referrer
         self.channel = channel
         self.source = source
         self.register_time = datetime.now()
         self.status = 'ACTIVE'
         self.last_modified_time = datetime.now()
         self.experience_balance = 0
+
+    def set_password(self, password):
+        self.salt = uuid.uuid4().hex
+        self.password = hashlib.sha1(
+            u"%s{%s}" % (hashlib.sha1(password.encode('utf-8')).hexdigest(), self.salt)).hexdigest()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in ('salt', 'password')}
