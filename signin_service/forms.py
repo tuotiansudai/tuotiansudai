@@ -63,7 +63,7 @@ class UserRegisterForm(wtforms.Form):
 class UserUpdateForm(wtforms.Form):
     login_name = wtforms.StringField('login_name',
                                      [wtforms.validators.required(), wtforms.validators.Length(min=5, max=25)])
-    mobile = wtforms.StringField('mobile', [wtforms.validators.Optional(), wtforms.validators.Regexp(r'^&|^1\d{10}$')])
+    mobile = wtforms.StringField('mobile', [wtforms.validators.Regexp(r'^(1\d{10})?$')])
     email = wtforms.StringField('email')
     user_name = wtforms.StringField('user_name', [wtforms.validators.Length(max=50)])
     identity_number = wtforms.StringField('identity_number', [wtforms.validators.Length(max=18)])
@@ -79,7 +79,7 @@ class UserUpdateForm(wtforms.Form):
 
     def validate_mobile(self, field):
         if field.data and User.query.filter(
-                (User.mobile == field.data, User.login_name != self.login_name.data)).first():
+                        (User.mobile == field.data) & (User.login_name != self.login_name.data)).first():
             raise ValidationError('user with mobile {} was already exists'.format(field.data))
 
     def validate_referrer(self, field):
@@ -89,4 +89,3 @@ class UserUpdateForm(wtforms.Form):
     def validate_status(self, field):
         if field.data and field.data not in ('INACTIVE', 'ACTIVE'):
             raise ValidationError('status must be INACTIVE or ACTIVE')
-
