@@ -274,9 +274,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     public BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationById(TransferApplicationDetailRequestDto requestDto) {
         BaseResponseDto<TransferApplicationDetailResponseDataDto> dto = new BaseResponseDto();
-        String transferApplicationId = requestDto.getTransferApplicationId();
+        long transferApplicationId = requestDto.getTransferApplicationId();
+
         String loginName = requestDto.getBaseParam().getUserId();
-        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId), loginName, 3);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationId, loginName, 3);
         TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.valueOf(transferApplicationId));
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
