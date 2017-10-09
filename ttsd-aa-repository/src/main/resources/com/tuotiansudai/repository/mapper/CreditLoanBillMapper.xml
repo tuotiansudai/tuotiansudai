@@ -5,24 +5,29 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.CreditLoanBillMapper">
 
     <resultMap id="creditLoanBillResultMap" type="CreditLoanBillModel">
-        <id column="id" property="id"></id>
-        <result column="order_id" property="orderId"></result>
-        <result column="amount" property="amount"></result>
-        <result column="operation_type" property="operationType"></result>
-        <result column="business_type" property="businessType"></result>
-        <result column="mobile" property="mobile"></result>
-        <result column="created_time" property="createdTime"></result>
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="amount" property="amount"/>
+        <result column="balance" property="balance"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="business_type" property="businessType"/>
+        <result column="mobile" property="mobile"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="CreditLoanBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into credit_loan_bill ( amount, operation_type, created_time, order_id, business_type, mobile)
-        value(#{amount}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
+        insert into credit_loan_bill (amount, balance, operation_type, created_time, order_id, business_type, mobile)
+        value(#{amount}, #{balance}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
     </insert>
 
     <select id="findByOrderIdAndBusinessType" resultMap="creditLoanBillResultMap" parameterType="map">
         select * from credit_loan_bill
         where order_id = #{orderId}
         and business_type = #{businessType}
+    </select>
+
+    <select id="findBalance" resultType="long">
+        select ifnull(balance, 0) from credit_loan_bill order by id desc limit 1
     </select>
 
     <select id="findSumAmountByIn" resultType="long">

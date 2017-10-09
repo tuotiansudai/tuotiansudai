@@ -18,6 +18,8 @@ public interface CreditLoanBillMapper {
 
     long findSumAmountByOut();
 
+    long findBalance();
+
     CreditLoanBillModel findByOrderIdAndBusinessType(
             @Param("orderId") long orderId,
             @Param("businessType") CreditLoanBillBusinessType businessType);

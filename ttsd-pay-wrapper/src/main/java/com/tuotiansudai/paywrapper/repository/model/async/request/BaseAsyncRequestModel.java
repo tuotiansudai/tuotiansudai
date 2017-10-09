@@ -18,8 +18,6 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
     protected static Properties ENV_PROPS = new Properties();
 
-    protected static Properties BIZ_PROPS = new Properties();
-
     protected String retUrl;
 
     protected String notifyUrl;
@@ -47,16 +45,6 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
                 BaseAsyncRequestModel.ENV_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
             } catch (IOException e) {
                 logger.error("ttsd-env.properties 不存在!");
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
-
-        if (BIZ_PROPS.isEmpty()) {
-            try {
-                Resource resourceService = new ClassPathResource("/ttsd-biz.properties");
-                BaseAsyncRequestModel.BIZ_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
-            } catch (IOException e) {
-                logger.error("ttsd-biz.properties 不存在!");
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
