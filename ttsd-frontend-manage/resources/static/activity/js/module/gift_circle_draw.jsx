@@ -127,7 +127,23 @@ giftCircleDraw.prototype.scrollList = function (domName, length) {
         });
     }
 };
+giftCircleDraw.prototype.scrollUp = function (domName,time) {
+     var $self = domName,
+     time = time||200;
+     var lineHeight = $self.find("li:first").height();
+    var z = 0;//向上滚动top值
+    function up() {//向上滚动
+        $self.animate({//中奖结果
+            'top': (z - 30) + 'px'
+        }, time, 'linear', function () {
+            $self.css({'top': '0px'})
+                .find("li:first").appendTo($self);
+            up();
+        });
+    }
 
+    up();
+};
 giftCircleDraw.prototype.hoverScrollList = function (domName, length) {
     var thisFun = this,
         scrollTimer;

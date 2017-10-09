@@ -8,6 +8,13 @@
             <div class="iphone-fonts clearfix">
             </div>
             <div class="lottery-content gift-circle-frame clearfix page-width">
+                <div class="rules-wap">
+                    <div class="rules-con">
+                        <div class="pos"></div>
+                        <h4>抽奖规则</h4>
+                        <p>活动期间，单笔投资额每满 1 万元可获得一次抽奖机会，如一次性投资 5 万元可获得 5 次抽奖机会，以此类推，机会多投多得，上不封顶。</p>
+                    </div>
+                </div>
                 <div class="fl">
                     <div class="lottery-circle gift-circle-out ">
                         <div class="rotate-btn"></div>
@@ -19,6 +26,7 @@
                             <a class="invest-btn redBtn to-invest" style="display: none">立即投资</a>
                             <a class="draw-btn redBtn" style="display: none">立即抽奖</a>
                      </@global.isNotAnonymous>
+                    <div class="chance">您还有 <strong>0</strong> 次抽奖机会</div>
 
                 </div>
 
@@ -56,14 +64,14 @@
                        </div>
                       <div class="formula-wrap clearfix">
                           <a class="computational" id="computational">计算公式</a>
-                          <div class="formula clearfix">
+                          <div class="formula clearfix" id="formualCon" >
 
                               <div class="formula-fonts">
                                   计算公式
                               </div>
                               <h4>年化投资额计算公式</h4>
                               <table>
-                                  <tr><td cellspacing="5">60天～90天项目</td><td>年化投资额＝实际投资额/4</td></tr>
+                                  <tr><td>60天～90天项目</td><td>年化投资额＝实际投资额/4</td></tr>
                                   <tr><td>120天～180天项目</td><td>年化投资额＝实际投资额/2</td></tr>
                                   <tr><td>330天～360天项目</td><td>年化投资额＝实际投资额</td></tr>
                               </table>
@@ -93,7 +101,7 @@
                 <div class="pos pos2"></div>
                 <h4>温馨提示</h4>
                 <p>
-                    1、本活动仅限直投项目，债权转让不参与累计；<br/>
+                    1、本活动仅限直投项目，债权转让及体验金不参与累计；<br/>
                     2、在活动二中，iphone X与现金奖励不可同时获得；<br/>
                     3、抽奖活动中所获的红包、加息券、体验金奖励将即时发放，用户可在PC端“我的账户”或App端“我的”中进行查看；<br/>
                     4、现金奖励将于活动结束后三个工作日内发放至用户账户；<br/>

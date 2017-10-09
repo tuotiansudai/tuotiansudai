@@ -15,8 +15,8 @@ var $oneThousandPoints=$('.gift-circle-frame',$iphonex);
 var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
     // pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
     drawURL='/activity/iphonex/iphonex-draw';    //抽奖的接口链接
-
-
+var $formualCon = $('#formualCon');//计算公式
+var $computational = $('#computational');
 var oneData={
         'activityCategory':'IPHONEX_ACTIVITY'
     }
@@ -37,8 +37,14 @@ var drawCircleOne=new drawCircle(pointAllList,null,drawURL,oneData,$oneThousandP
 //渲染中奖记录
 drawCircleOne.GiftRecord();
 
-drawCircleOne.hoverScrollList($iphonex.find('.user-record'),10);
-
+drawCircleOne.scrollUp($iphonex.find('.user-record'),100);
+//计算公式显示隐藏
+$computational.mouseover(function(){
+    $formualCon.show();
+})
+$computational.mouseout(function(){
+    $formualCon.hide();
+})
 function investOrDraw(){
     commonFun.useAjax({
             type:'GET',
