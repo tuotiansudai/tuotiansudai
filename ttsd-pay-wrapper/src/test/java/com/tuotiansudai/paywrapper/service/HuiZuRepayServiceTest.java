@@ -69,6 +69,7 @@ public class HuiZuRepayServiceTest {
     @After
     public void tearDown() {
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
+        redisWrapperClient.del(String.format("rent:repay:plan:expired:%s", 111), String.format("rent:repay:plan:expired:%s", 222));
     }
 
     @Test
@@ -88,6 +89,7 @@ public class HuiZuRepayServiceTest {
         assertEquals(huiZuRepayDto.getRepayPlanId(), baseDto.getData().getFields().get("order_id").split(HuizuRepayServiceImpl.REPAY_ORDER_ID_SEPARATOR)[0]);
         assertEquals(accountModel.getPayUserId(), baseDto.getData().getFields().get("partic_user_id"));
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
+        redisWrapperClient.del(String.format("rent:repay:plan:expired:%s", 111), String.format("rent:repay:plan:expired:%s", 222));
 
     }
 
@@ -106,6 +108,7 @@ public class HuiZuRepayServiceTest {
 
         verifyPostRepayAmountTransferMessage(AmountConverter.convertStringToCent(huiZuRepayDto.getAmount()), loginName, huiZuRepayDto.getRepayPlanId());
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
+        redisWrapperClient.del(String.format("rent:repay:plan:expired:%s", 111), String.format("rent:repay:plan:expired:%s", 222));
 
     }
 
@@ -115,6 +118,7 @@ public class HuiZuRepayServiceTest {
         BaseDto<PayFormDataDto> baseDto = huiZuRepayService.passwordRepay(huiZuRepayDto);
         assertEquals("余额不足，请充值", baseDto.getData().getMessage());
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
+        redisWrapperClient.del(String.format("rent:repay:plan:expired:%s", 111), String.format("rent:repay:plan:expired:%s", 222));
 
     }
 
@@ -131,10 +135,11 @@ public class HuiZuRepayServiceTest {
                 30 * 30);
         BaseDto<PayFormDataDto> baseDto = huiZuRepayService.passwordRepay(huiZuRepayDto);
 
-        assertEquals(String.format("用户:%s-第%s期-已经还款成功",
+        assertEquals(String.format("您已还款成功",
                 huiZuRepayDto.getMobile(),
                 String.valueOf(huiZuRepayDto.getPeriod())), baseDto.getData().getMessage());
         redisWrapperClient.del(String.format("REPAY_PLAN_ID:%s", 111), String.format("REPAY_PLAN_ID:%s", 222));
+        redisWrapperClient.del(String.format("rent:repay:plan:expired:%s", 111), String.format("rent:repay:plan:expired:%s", 222));
     }
 
     private HuiZuRepayDto createFakeHuiZuRepayDto(String amount, String repayPlanId) {

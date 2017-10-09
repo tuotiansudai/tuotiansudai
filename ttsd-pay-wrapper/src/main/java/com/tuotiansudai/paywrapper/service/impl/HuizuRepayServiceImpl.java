@@ -312,7 +312,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     private boolean isFinished(long orderId) {
         try {
             String key = String.format("REPAY_PLAN_ID:%s", String.valueOf(orderId));
-            return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.get(key)) == SyncRequestStatus.SUCCESS;
+            return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.hget(key, "status")) == SyncRequestStatus.SUCCESS;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
