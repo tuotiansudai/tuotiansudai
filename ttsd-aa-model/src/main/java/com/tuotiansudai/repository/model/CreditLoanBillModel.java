@@ -11,6 +11,8 @@ public class CreditLoanBillModel implements Serializable {
 
     private long amount;
 
+    private long balance;
+
     private CreditLoanBillOperationType operationType;
 
     private CreditLoanBillBusinessType businessType;
@@ -45,6 +47,14 @@ public class CreditLoanBillModel implements Serializable {
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
     }
 
     public Long getOrderId() {
