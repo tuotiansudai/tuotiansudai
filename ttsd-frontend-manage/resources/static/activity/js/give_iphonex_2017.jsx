@@ -32,8 +32,8 @@ var drawCircleOne=new drawCircle(pointAllList,null,drawURL,oneData,$oneThousandP
 var $leftDrawCount = $('#draw_chance');
 //渲染中奖记录
 drawCircleOne.GiftRecord();
-
-drawCircleOne.scrollUp($iphonex.find('.user-record'),100);
+//中奖纪录滚动
+drawCircleOne.scrollUp($iphonex.find('.user-record'),1000);
 //计算公式显示隐藏
 $computational.mouseover(function(){
     $formualCon.show();
