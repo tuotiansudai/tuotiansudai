@@ -80,7 +80,7 @@ class UserNotExistedError(Exception):
 
 
 class UserExistedError(Exception):
-    pass
+    message = u"用户名或手机号已存在"
 
 
 class UserBannedError(Exception):
