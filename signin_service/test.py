@@ -80,7 +80,7 @@ class TestSessionManager(TestCase):
         data = {'data': 'test data', 'login_name': user_name}
         token_id = manager.set(data, 'fake_session_id')
         manager.refresh(token_id)
-        user = User.query.filter(User.username == user_name).first()
+        user = User.query.filter(User.login_name == user_name).first()
         self.assertIsNotNone(user.last_login_time)
         self.assertEqual(user.last_login_source, "IOS")
 
@@ -97,7 +97,7 @@ class TestView(TestCase):
                 'token': 'fake_token', 'password': '123abc'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
-        user = User.query.filter(User.username == 'sidneygao').first()
+        user = User.query.filter(User.login_name == 'sidneygao').first()
         self.assertEqual(user.last_login_source, 'WEB')
         self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)
@@ -110,7 +110,7 @@ class TestView(TestCase):
                 'token': 'fake_token', 'password': 'wrong_pwd'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
-        self.assertEqual(400, rv.status_code)
+        self.assertEqual(401, rv.status_code)
         self.assertFalse(response_data['result'])
         self.assertEqual(u'用户名或密码错误', response_data['message'])
         self.assertIsNone(response_data['user_info'])
@@ -158,7 +158,7 @@ class TestView(TestCase):
                 'token': 'fake_token'}
         rv = self.app.post('/login/nopassword/', data=data)
         response_data = json.loads(rv.data)
-        user = User.query.filter(User.username == 'sidneygao').first()
+        user = User.query.filter(User.login_name == 'sidneygao').first()
         self.assertEqual(user.last_login_source, 'WEB')
         self.assertIsNotNone(user.last_login_time)
         self.assertEqual(200, rv.status_code)

@@ -1,19 +1,26 @@
 # coding=utf-8
 import hashlib
 import json
-import uuid
-import redis
+import re
 import time
-from models import User, db
+import uuid
+
+import redis
 from sqlalchemy import func
+
 import settings
 from logging_config import logger
+from models import User, db, UserRole
 from producer import producer
 
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 CAPTCHA_FORMAT = u"CAPTCHA:LOGIN:{0}"
 TOKEN_FORMAT = u"TOKEN:{0}"
 LOGIN_FAILED_TIMES_FORMAT = u'LOGIN_FAILED_TIMES:{0}'
+
+USER_LOGIN_NAME_REGEX = re.compile(r"(?!^\d+$)^\w{5,25}$")
+USER_MOBILE_REGEX = re.compile(r"^1\d{10}$")
+USER_PASSWORD_REGEX = re.compile(r"^(?=.*[^\d])(.{6,20})$")
 
 
 class SessionManager(object):
@@ -90,18 +97,18 @@ class LoginManager(object):
 
     def _load_user(self):
         user = User.query.filter(
-            (User.username == self.form.username.data) | (User.mobile == self.form.username.data)).first()
+            (User.login_name == self.form.username.data) | (User.mobile == self.form.username.data)).first()
         if not user:
             logger.debug(u"{} not exist".format(self.form.username.data))
             raise UserNotExistedError()
         return user
 
     def _success(self, user):
-        user_info = {'login_name': user.username, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
+        user_info = {'login_name': user.login_name, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
         new_token_id = self.session_manager.set(user_info, self.form.token.data)
         logger.info(u"{} login successful. source: {}, token_id: {}, user_info: {}".format(self.form.username.data,
-                                                                                          self.form.source.data,
-                                                                                          new_token_id, user_info))
+                                                                                           self.form.source.data,
+                                                                                           new_token_id, user_info))
         return new_token_id, user_info
 
     def _increase_failed_times(self):
@@ -117,7 +124,8 @@ class LoginManager(object):
 
     def _normal_login(self):
         login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(self.form.username.data)
-        failed_times = int(self.connection.get(login_failed_times_key)) if self.connection.get(login_failed_times_key) else 0
+        failed_times = int(self.connection.get(login_failed_times_key)) if self.connection.get(
+            login_failed_times_key) else 0
         if failed_times >= settings.LOGIN_FAILED_MAXIMAL_TIMES:
             logger.debug(u"{} have been locked. source: {}".format(self.form.username.data, self.form.source.data))
             raise UserBannedError()
@@ -174,7 +182,7 @@ class LoginManager(object):
 
 
 def update_last_login_time_source(username, source):
-    user = User.query.filter((User.username == username)).first()
+    user = User.query.filter((User.login_name == username)).first()
     user.last_login_time = func.now()
     user.last_login_source = source
     db.session.commit()
@@ -184,3 +192,77 @@ def active(username):
     login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(username)
     conn = redis.Redis(connection_pool=pool)
     conn.delete(login_failed_times_key)
+
+
+class UserFieldMissingError(Exception):
+    def __init__(self, field):
+        self.message = '{} missing'.format(field)
+
+
+class UserFieldValidationError(Exception):
+    def __init__(self, field):
+        self.message = '{} validate failed'.format(field)
+
+
+class UserService(object):
+    REGISTER_REQUIRED_FIELDS = ('login_name', 'mobile', 'password', 'referrer', 'channel', 'source')
+    EDITABLE_FIELDS = ('password', 'salt', 'email', 'user_name', 'identity_number',
+                       'last_modified_time', 'last_modified_user', 'avatar', 'referrer',
+                       'status', 'channel', 'province', 'city', 'source', 'experience_balance')
+
+    def create(self, json_data):
+        """ json : dict of {login_name, mobile, password, referrer, channel, source} """
+        for field_name in UserService.REGISTER_REQUIRED_FIELDS:
+            if field_name not in json_data:
+                raise UserFieldMissingError(field_name)
+
+        login_name = json_data['login_name']
+        mobile = json_data['mobile']
+        raw_password = json_data['password']
+
+        if not USER_LOGIN_NAME_REGEX.match(login_name):
+            raise UserFieldValidationError('login_name')
+
+        if not USER_MOBILE_REGEX.match(mobile):
+            raise UserFieldValidationError('mobile')
+
+        if not USER_PASSWORD_REGEX.match(raw_password):
+            raise UserFieldValidationError('password')
+
+        salt = self._gen_salt()
+        password = self._salt_password(salt, raw_password)
+        u = User(login_name, mobile, password, salt, json_data['referrer'], json_data['channel'], json_data['source'])
+        ur = UserRole(login_name, 'USER')
+        db.session.add(u)
+        db.session.add(ur)
+        db.session.commit()
+        return u.as_dict()
+
+    def update(self, json_data):
+        if 'login_name' not in json_data:
+            raise UserFieldMissingError('login_name')
+        user = User.query.filter((User.login_name == json_data['login_name'])).first()
+        for field_name in UserService.EDITABLE_FIELDS:
+            if field_name in json_data:
+                setattr(user, field_name, json_data[field_name])
+        db.session.commit()
+        return user.as_dict()
+
+    def _gen_salt(self):
+        return uuid.uuid4().hex
+
+    def _salt_password(self, salt, raw_password):
+        return hashlib.sha1(u"%s{%s}" % (hashlib.sha1(raw_password.encode('utf-8')).hexdigest(), salt)).hexdigest()
+
+    def find_by_login_name(self, login_name):
+        user = User.query.filter((User.login_name == login_name)).first()
+        return user.as_dict() if user else None
+
+    def find_by_mobile(self, mobile):
+        user = User.query.filter((User.mobile == mobile)).first()
+        return user.as_dict() if user else None
+
+    def find_by_login_name_or_mobile(self, login_name_or_mobile):
+        user = User.query.filter(
+            (User.login_name == login_name_or_mobile) | (User.mobile == login_name_or_mobile)).first()
+        return user.as_dict() if user else None
