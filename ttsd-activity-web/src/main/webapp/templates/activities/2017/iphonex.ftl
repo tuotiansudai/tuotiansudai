@@ -26,7 +26,7 @@
                             <a class="invest-btn redBtn to-invest" style="display: none">立即投资</a>
                             <a class="draw-btn redBtn" style="display: none">立即抽奖</a>
                      </@global.isNotAnonymous>
-                    <div class="chance">您还有 <strong>0</strong> 次抽奖机会</div>
+                    <div class="chance">您还有 <strong id="draw_chance">${drawCount}</strong> 次抽奖机会</div>
 
                 </div>
 
