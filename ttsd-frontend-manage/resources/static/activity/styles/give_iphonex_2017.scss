@@ -747,15 +747,23 @@ $colorFont: #1b1b1b;
             background-size: 100%;
             @media (max-width:414px){
               height: 85px;
+              @media (max-width:320px){
+                height: 72px;
+                margin-bottom: 5px;
+              }
             }
           }
 
         }
         .total-annual-wrap {
           margin-bottom: 40px;
-          @media (max-width:320px){
-            width: 98%;
+          @media (max-width:414px){
+            margin-bottom: 20px;
+            @media (max-width:320px){
+              width: 98%;
+            }
           }
+
           .total-annual {
             height: auto;
             padding-bottom: 30px;
@@ -766,6 +774,7 @@ $colorFont: #1b1b1b;
                 @media (max-width:320px){
                  left: 6px;
                   top:4px;
+                  padding-bottom: 26px;
                 }
               }
               .instruction {
@@ -857,6 +866,12 @@ $colorFont: #1b1b1b;
           width: 98%;
           @media (max-width:768px){
             width: 90%;
+            @media (max-width:414px){
+              margin-bottom: 30px;
+              @media (max-width:320px){
+                margin-bottom: 25px;
+              }
+            }
 
           }
 
