@@ -79,6 +79,10 @@ class UserNotExistedError(Exception):
     pass
 
 
+class UserExistedError(Exception):
+    pass
+
+
 class UserBannedError(Exception):
     pass
 
@@ -206,7 +210,7 @@ class UserFieldValidationError(Exception):
 
 class UserService(object):
     REGISTER_REQUIRED_FIELDS = ('login_name', 'mobile', 'password', 'referrer', 'channel', 'source')
-    EDITABLE_FIELDS = ('password', 'salt', 'email', 'user_name', 'identity_number',
+    EDITABLE_FIELDS = ('mobile', 'password', 'salt', 'email', 'user_name', 'identity_number',
                        'last_modified_time', 'last_modified_user', 'avatar', 'referrer',
                        'status', 'channel', 'province', 'city', 'source', 'experience_balance')
 
@@ -228,6 +232,12 @@ class UserService(object):
 
         if not USER_PASSWORD_REGEX.match(raw_password):
             raise UserFieldValidationError('password')
+
+        if self.find_by_login_name(login_name):
+            raise UserExistedError()
+
+        if self.find_by_mobile(mobile):
+            raise UserExistedError()
 
         salt = self._gen_salt()
         password = self._salt_password(salt, raw_password)
