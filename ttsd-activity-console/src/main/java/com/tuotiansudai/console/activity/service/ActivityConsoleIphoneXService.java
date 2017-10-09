@@ -1,9 +1,11 @@
 package com.tuotiansudai.console.activity.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.IphoneXActivityDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,14 @@ public class ActivityConsoleIphoneXService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.endTime}\")}")
     private Date activityIphoneXEndTime;
+
+    private final List<ActivityConsoleIphoneXService.CashReward> cashRewards = Lists.newArrayList(
+            new ActivityConsoleIphoneXService.CashReward("88", 10000000l, 20000000l),
+            new ActivityConsoleIphoneXService.CashReward("388", 20000000l, 40000000l),
+            new ActivityConsoleIphoneXService.CashReward("788", 40000000l, 60000000l),
+            new ActivityConsoleIphoneXService.CashReward("1288", 60000000l, 80000000l),
+            new ActivityConsoleIphoneXService.CashReward("1888", 80000000l, 100000000l),
+            new ActivityConsoleIphoneXService.CashReward("iPhoneX", 100000000l, Long.MAX_VALUE));
 
     public BasePaginationDataDto<IphoneXActivityDto> list(int index, int pageSize) {
         List<IphoneXActivityDto> list = getIphoneXList();
@@ -49,13 +59,15 @@ public class ActivityConsoleIphoneXService {
                                     iphoneXActivityView.getUserName(),
                                     iphoneXActivityView.getMobile(),
                                     iphoneXActivityView.getSumAmount(),
-                                    getAnnualizedAmount(iphoneXActivityView)) :
+                                    getAnnualizedAmount(iphoneXActivityView),
+                                    getSumCashReward(getAnnualizedAmount(iphoneXActivityView))) :
                             new IphoneXActivityDto(
                                     iphoneXActivityDto.getLoginName(),
                                     iphoneXActivityDto.getUserName(),
                                     iphoneXActivityDto.getMobile(),
-                                    iphoneXActivityDto.getSumInvestAmount() + iphoneXActivityView.getSumAmount(),
-                                    iphoneXActivityDto.getSumAnnualizedAmount() + getAnnualizedAmount(iphoneXActivityView)));
+                                    AmountConverter.convertStringToCent(iphoneXActivityDto.getSumInvestAmount()) + iphoneXActivityView.getSumAmount(),
+                                    AmountConverter.convertStringToCent(iphoneXActivityDto.getSumAnnualizedAmount()) + getAnnualizedAmount(iphoneXActivityView),
+                                    getSumCashReward(AmountConverter.convertStringToCent(iphoneXActivityDto.getSumAnnualizedAmount()) + getAnnualizedAmount(iphoneXActivityView))));
         }
         return new ArrayList<>(map.values());
     }
@@ -74,6 +86,35 @@ public class ActivityConsoleIphoneXService {
                 break;
         }
         return amount;
+    }
+
+    public String getSumCashReward(long annualizedAmount) {
+        Optional<CashReward> reward = cashRewards.stream().filter(mothersReward -> mothersReward.getStartAmount() <= annualizedAmount && annualizedAmount < mothersReward.getEndAmount()).findAny();
+        return reward.isPresent() ? reward.get().getReward() : "0";
+    }
+
+    class CashReward {
+        private String reward;
+        private Long startAmount;
+        private Long endAmount;
+
+        public CashReward(String reward, Long startAmount, Long endAmount) {
+            this.reward = reward;
+            this.startAmount = startAmount;
+            this.endAmount = endAmount;
+        }
+
+        public String getReward() {
+            return reward;
+        }
+
+        public Long getStartAmount() {
+            return startAmount;
+        }
+
+        public Long getEndAmount() {
+            return endAmount;
+        }
     }
 
 }
