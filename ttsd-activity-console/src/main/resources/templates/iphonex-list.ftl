@@ -23,6 +23,9 @@
                 <th>
                     累计年化投资额
                 </th>
+                <th>
+                    现金奖励
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -38,15 +41,22 @@
                     ${item.mobile!}
                     </td>
                     <td>
-                    ${(item.sumInvestAmount/100)?string('0.00')}
+                    ${item.sumInvestAmount!}
                     </td>
                     <td>
-                    ${(item.sumAnnualizedAmount/100)?string('0.00')}
+                    ${item.sumAnnualizedAmount!}
+                    </td>
+                    <td>
+                    ${item.reward!}
                     </td>
                 </tr>
                 </#list>
             </tbody>
         </table>
+    </div>
+
+    <div class="panel panel-default">
+        <a href="/activity-console/activity-manage/iphonex">请点击此处导出EXCEl</a>
     </div>
     <!-- pagination  -->
     <nav>
