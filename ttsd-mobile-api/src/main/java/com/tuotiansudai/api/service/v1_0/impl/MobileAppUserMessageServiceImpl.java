@@ -5,15 +5,23 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.MessageType;
+import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
+import javafx.event.EventType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +48,18 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
@@ -120,7 +140,39 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         }
         userMessageServices.readMessage(userMessageId);
         MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
-        return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl());
+
+        String path = messageModel.getAppUrl() == null ? null : messageModel.getAppUrl().getPath();
+        if (userMessageModel.getBusinessId() != null && !Strings.isNullOrEmpty(path)) {
+            path = MessageFormat.format(messageModel.getAppUrl().getPath(), investMapper.findById(userMessageModel.getBusinessId()).getLoanId());
+        }
+
+        return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), path);
+    }
+
+    public String getPath(Long businessId, MessageModel messageModel){
+        String path = messageModel.getAppUrl() == null ? null : messageModel.getAppUrl().getPath();
+
+        if (businessId != null && !Strings.isNullOrEmpty(path)) {
+            long loanId = 0;
+            switch (messageModel.getEventType()) {
+                case INVEST_SUCCESS:
+                    loanId = investMapper.findById(businessId).getLoanId();
+                    break;
+                case TRANSFER_SUCCESS:
+                case TRANSFER_FAIL:
+                    loanId = transferApplicationMapper.findById(businessId).getLoanId();
+                    break;
+                case LOAN_OUT_SUCCESS:
+                    loanId = businessId;
+                    break;
+                case REPAY_SUCCESS:
+                case ADVANCED_REPAY:
+                    loanId = investMapper.findById(investRepayMapper.findById(businessId).getInvestId()).getLoanId();
+                    break;
+            }
+            path = loanId == 0 ? path : MessageFormat.format(path, loanId);
+        }
+        return path;
     }
 
     @Override

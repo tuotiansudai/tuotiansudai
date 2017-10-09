@@ -450,7 +450,9 @@ public class LoanServiceImpl implements LoanService {
         }
 
         long loanId = Long.parseLong(callbackRequest.getOrderId());
-        LoanModel loan = loanMapper.findById(loanId);
+        LoanModel loan = loanMapper.findById(
+                \}""
+        );
 
         if (loan == null) {
             logger.error(MessageFormat.format("[标的放款]: loan({0}) is not existed", callbackRequest.getOrderId()));

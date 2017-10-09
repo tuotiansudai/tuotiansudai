@@ -24,7 +24,16 @@ public enum AppUrl {
     SHARE("分享弹框", "app/tuotian/share?param=%s"),
     RISK_ESTIMATE("投资偏好测评", "app/tuotian/risk-estimate"),
     OTHER("其他", ""),
-    NONE("无", null);
+    NONE("无", null),
+
+    //new
+    INVEST_NORMAL_EXPERIENCE("投资列表页>直投项目>体验金项目详情", "app/tuotian/invest-normal-experience"),
+    FUND_DETAIL_SPENDING("资金明细>支出", "app/tuotian/fund-detail-spending"),
+    MY_INVEST_RAISING_LOAN_DETAIL("我的投资>投标中>投标项目详情页", "app/tuotian/loan-detail/{0}"),
+    MY_INVEST_FINISH_LOAN_DETAIL("我的投资>已完成>投标项目详情页", "app/tuotian/loan-detail/{0}"),
+    MY_INVEST_REPAYING_LOAN_DETAIL("我的投资>回款中>投标项目详情页", "app/tuotian/loan-detail/{0}"),
+    RECOMMEND_LIST("邀请好友>我的奖励>推荐人列表","app/tuotian/recommend-list"),
+    CASH_WITHDRAWAL_LIST("提现记录","app/tuotian/cash-withdrawal-list");
 
     private String description;
 
