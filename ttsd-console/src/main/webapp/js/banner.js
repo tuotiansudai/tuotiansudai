@@ -13,13 +13,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         $('#datepickerBegin,#datepickerEnd').datetimepicker({
             format: 'YYYY-MM-DD HH:mm'
         });
-        $activatedTime.on("dp.change", function (e) {
-            $deactivatedTime.data("DateTimePicker").minDate(e.date);
-        });
-
-        $deactivatedTime.on("dp.change", function (e) {
-            $activatedTime.data("DateTimePicker").maxDate(e.date);
-        });
 
         function showErrorMessage(msg, obj) {
             currentErrorObj = obj;
@@ -181,6 +174,11 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             }
             if ($("input[name='deactivatedTime']").val() == '') {
                 showErrorMessage("失效时间不能为空");
+                return false;
+            }
+
+            if ($("input[name='activatedTime']").val() > $("input[name='deactivatedTime']").val()) {
+                showErrorMessage("生效时间不能大于失效时间");
                 return false;
             }
 
