@@ -19,10 +19,10 @@
         </div>
 
         <#if (pledgeHouse.propertyCardId)??>
-            <div class="form-group"><label class="col-sm-2 control-label">房本编号: </label>
+            <div class="form-group"><label class="col-sm-2 control-label">房产证编号: </label>
                 <div class="col-sm-4"><input name="propertyCardId" value="${pledgeHouse.propertyCardId}" type="text"
                                              class="form-control"
-                                             datatype="*" errormsg="房本编号不能为空"></div>
+                                             datatype="*" errormsg="房产证编号不能为空"></div>
 
             </div>
         <#else>
