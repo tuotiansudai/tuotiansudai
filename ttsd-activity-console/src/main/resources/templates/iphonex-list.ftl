@@ -4,6 +4,9 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <div class="col-md-3">总投资额:${(sumInvest/100)?string('0.00')}元</div>
+    <div class="col-md-3">总累计年化投资额:${(sumAnnualized/100)?string('0.00')}元</div>
+    <div class="col-md-3">总现金奖励:${(sumCash/100)?string('0.00')}元</div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
@@ -55,9 +58,8 @@
         </table>
     </div>
 
-    <div class="panel panel-default">
-        <a href="/activity-console/activity-manage/iphonex">请点击此处导出EXCEl</a>
-    </div>
+    <a href="/activity-console/activity-manage/iphonex" class="form-control" style="width: 200px">请点击此处导出EXCEl</a>
+    <br/>
     <!-- pagination  -->
     <nav>
         <div>
