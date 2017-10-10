@@ -172,7 +172,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                     path = loanId == 0 ? AppUrl.MY_INVEST_FINISH.getPath() : path;
                     break;
             }
-            path = loanId == 0 ? path : MessageFormat.format(path, loanId);
+            path = loanId == 0 ? path : MessageFormat.format(path, String.valueOf(loanId));
         }
         return path;
     }
