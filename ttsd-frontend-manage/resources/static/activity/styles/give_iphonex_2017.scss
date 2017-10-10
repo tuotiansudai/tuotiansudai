@@ -177,6 +177,13 @@ $colorFont: #1b1b1b;
   &:hover {
     color: #fff;
   }
+  &.red-invest {
+    margin-top: 60px;
+    margin-bottom: 10px;
+    @media (max-width:768px) {
+      margin-top: 40px;
+    }
+  }
 
 
 }
@@ -341,55 +348,73 @@ $colorFont: #1b1b1b;
                 color: #feda00;
               }
             }
-            .formula {
-              float: right;
-              width: 388px;
-              height: 142px;
-              border: 4px solid $colorFont;
-              background: #8b89ea;
-              position: relative;
-              font-size: 20px;
-              text-align: center;
+            .formula-box {
               display: none;
+            }
               .formula-fonts {
                 width: 96px;
-                height: 28px;
-                line-height: 28px;
-                text-align: center;
-                border: 4px solid $colorFont;
-                border-right: none;
-                position: absolute;
-                left: -100px;
-                top:-4px;
-                color: #fff;
-                background: #8b89ea;
-              }
-              h4 {
                 height: 36px;
-                line-height: 40px;
-                color: #000;
-              }
-              table {
-                font-size: 16px;
-                color: $colorFont;
-                width: 96%;
-                margin: 10px auto;
-                background: #8b89ea;
-                td {
-                  background: #e8e7fb;
-                 line-height: 26px;
-                  padding: 0;
-                  cellspacing:3px;
-                  border-right: 1px solid #8b89ea;
-                  border-bottom: 1px solid #8b89ea;
-                  &:last-child {
-                    text-align: left;
+                line-height: 36px;
+                text-align: center;
+                border-right: none;
+                position: relative;
+                margin: 0 auto;
+               color: #000;
+                cursor: pointer;
+                border: 4px solid transparent;
+                &:hover {
+                  color: #fff;
+                  border: 4px solid $colorFont;
+                  background: #8b89ea;
+                }
+                .formula-box {
+                  z-index: 100;
+                  width: 370px;
+                  position: absolute;
+                  left: 95px;
+                  top: -4px;
+                  background: #8b89ea;
+                  display: none;
+                  h4 {
+                    height: 36px;
+                    line-height: 40px;
+                    color: #000;
+                    border: 4px solid $colorFont;
+                    border-bottom: 0;
+                    border-left: 0;
                   }
+                  .bottom-box {
+                    width: 100%;
+                    padding: 8px;
+                    box-sizing: border-box;
+                    padding-top: 0;
+                    border: 4px solid $colorFont;
+                    border-top: 0;
+                    table {
+                      font-size: 16px;
+                      color: $colorFont;
+                      margin-top: 0;
+                      background: #8b89ea;
+                      td {
+                        background: #e8e7fb;
+                        line-height: 26px;
+                        padding: 0;
+                        cellspacing:3px;
+                        border-right: 1px solid #8b89ea;
+                        border-bottom: 1px solid #8b89ea;
+                        &:last-child {
+                          text-align: left;
+                          text-indent: 5px;
+                        }
 
+                      }
+                    }
+                  }
                 }
               }
 
-            }
+
+            //}
           }
         }
       }
@@ -768,7 +793,7 @@ $colorFont: #1b1b1b;
             height: auto;
             padding-bottom: 30px;
             @media (max-width:768px){
-              padding-bottom: 80px;
+              padding-bottom: 44px;
               @media (max-width:414px){
                 padding-bottom: 30px;
                 @media (max-width:320px){
@@ -798,7 +823,6 @@ $colorFont: #1b1b1b;
                 display: none;
                 float: none;
               }
-              .formula {
                 width: 100%;
                 @media (max-width:320px){
                   width: 103%;
@@ -819,44 +843,89 @@ $colorFont: #1b1b1b;
                 }
                 .formula-fonts {
                   display: none;
-                  position: static;
+                  .formula-box {
+                    display: block;
 
-                }
-                table {
-                  @media (max-width:360px){
-                    margin: 0 auto;
-                    width: 100%;
-                    @media (max-width:320px){
-                      margin: 0 auto;
-                      width: 100%;
-                    }
-                  }
+                    .bottom-box {
+                      table {
+                        @media (max-width:360px){
+                          margin: 0 auto;
+                          width: 100%;
+                          @media (max-width:320px){
+                            margin: 0 auto;
+                            width: 100%;
+                          }
+                        }
 
-                  td {
+                        td {
 
-                    background: #8b89ea;
-                    color: #fff;
-                    border-right:1px solid #fff;
-                    border-bottom:1px solid #fff;
-                    padding-left: 2%;
-                    @media (max-width:768px){
-                      font-size: 24px;
-                      line-height: 45px;
-                      @media (max-width:414px){
-                        font-size: 12px;
-                        line-height: 30px;
-                        @media (max-width:320px){
-                          &:last-child {
-                            padding-left: 0;
+                          background: #8b89ea;
+                          color: #fff;
+                          border-right:1px solid #fff;
+                          border-bottom:1px solid #fff;
+                          padding-left: 2%;
+                          @media (max-width:768px){
+                            font-size: 24px;
+                            line-height: 45px;
+                            @media (max-width:414px){
+                              font-size: 12px;
+                              line-height: 30px;
+                              @media (max-width:320px){
+                                &:last-child {
+                                  padding-left: 0;
+                                }
+
+                              }
+                            }
                           }
 
                         }
                       }
                     }
+                  }
+                }
+              .formula-box {
+                display: block;
 
+                .bottom-box {
+                  table {
+                    @media (max-width:360px){
+                      margin: 0 auto;
+                      width: 100%;
+                      @media (max-width:320px){
+                        margin: 0 auto;
+                        width: 100%;
+                      }
+                    }
+
+                    td {
+
+                      background: #8b89ea;
+                      color: #fff;
+                      border-right:1px solid #fff;
+                      border-bottom:1px solid #fff;
+                      padding-left: 2%;
+                      @media (max-width:768px){
+                        font-size: 24px;
+                        line-height: 45px;
+                        @media (max-width:414px){
+                          font-size: 12px;
+                          line-height: 30px;
+                          @media (max-width:320px){
+                            &:last-child {
+                              padding-left: 0;
+                            }
+
+                          }
+                        }
+                      }
+
+                    }
                   }
                 }
               }
+
+
 
             }
 
