@@ -1,5 +1,4 @@
 # coding=utf-8
-import hashlib
 import json
 import time
 import uuid
@@ -86,10 +85,6 @@ class LoginManager(object):
         self.session_manager = SessionManager(source=self.form.source.data)
         logger.debug("x-forwarded-for:{}".format(ip_address))
 
-    def _is_password_valid(self, user):
-        return user and user.password == hashlib.sha1(
-            u"%s{%s}" % (hashlib.sha1(self.form.password.data.encode('utf-8')).hexdigest(), user.salt)).hexdigest()
-
     def _load_user(self):
         user = User.query.filter(
             (User.login_name == self.form.username.data) | (User.mobile == self.form.username.data)).first()
@@ -114,7 +109,7 @@ class LoginManager(object):
 
     def _get_user_info(self):
         user = self._load_user()
-        if self._is_password_valid(user):
+        if user and user.validate_password(self.form.password.data):
             return self._success(user)
 
     def _normal_login(self):
@@ -195,7 +190,7 @@ class UserService(object):
                        'status', 'channel', 'province', 'city', 'source', 'experience_balance')
 
     def create(self, form):
-        u = User(form.login_name.data, form.mobile.data, form.referrer.data, form.channel.data, form.source.data)
+        u = User(form.mobile.data, form.referrer.data, form.channel.data, form.source.data)
         u.set_password(form.password.data)
         db.session.add(u)
 
@@ -207,8 +202,10 @@ class UserService(object):
     def update(self, form):
         user = User.query.filter((User.login_name == form.login_name.data)).first()
         for f in form:
-            if f.data:
-                setattr(user, f.name, f.data)
+            # 仅当提供了某字段，才修改某字段，否则保持数据不变
+            if f.data is not None:
+                # 当提供了某字段，但值为空，则清空该字段
+                setattr(user, f.name, f.data if f.data else None)
         db.session.commit()
         return user.as_dict()
 

@@ -1,6 +1,8 @@
 import hashlib
 import uuid
 from datetime import datetime
+from random import choice
+from string import ascii_lowercase
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.mysql import BIGINT
@@ -34,8 +36,8 @@ class User(db.Model):
     sign_in_count = db.Column(db.BigInteger())
     experience_balance = db.Column(BIGINT(unsigned=True), nullable=False)
 
-    def __init__(self, login_name, mobile, referrer, channel, source):
-        self.login_name = login_name
+    def __init__(self, mobile, referrer, channel, source):
+        self.login_name = self._generate_login_name()
         self.mobile = mobile
         self.referrer = referrer
         self.channel = channel
@@ -45,10 +47,25 @@ class User(db.Model):
         self.last_modified_time = datetime.now()
         self.experience_balance = 0
 
-    def set_password(self, password):
+    def set_password(self, raw_password):
         self.salt = uuid.uuid4().hex
-        self.password = hashlib.sha1(
-            u"%s{%s}" % (hashlib.sha1(password.encode('utf-8')).hexdigest(), self.salt)).hexdigest()
+        self.password = self._encode_password(raw_password)
+
+    def validate_password(self, raw_password):
+        return self.password == self._encode_password(raw_password)
+
+    def _encode_password(self, raw_password):
+        return hashlib.sha1(u"%s{%s}" % (hashlib.sha1(raw_password.encode('utf-8')).hexdigest(), self.salt)).hexdigest()
+
+    def _generate_login_name(self):
+
+        def random_string(length):
+            return ''.join(choice(ascii_lowercase) for i in range(length))
+
+        while True:
+            login_name = random_string(8)
+            if not User.query.filter((User.login_name == login_name)).first():
+                return login_name
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in ('salt', 'password')}
