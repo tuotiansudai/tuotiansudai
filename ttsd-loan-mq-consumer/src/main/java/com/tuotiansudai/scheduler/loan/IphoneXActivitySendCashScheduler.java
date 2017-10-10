@@ -70,6 +70,7 @@ public class IphoneXActivitySendCashScheduler {
                 continue;
             }
             long cash = getSumCashReward(entry.getValue());
+            logger.info(MessageFormat.format("[iPhoneX activity] loginName:{0}, cash:{1}", entry.getKey(), String.valueOf(cash)));
             if (cash == 0){
                 continue;
             }
