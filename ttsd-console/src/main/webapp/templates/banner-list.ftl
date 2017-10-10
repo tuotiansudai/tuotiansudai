@@ -40,25 +40,24 @@
                         <td>
                             <#list banner.source as source>${source.name()}<#sep>/</#list>
                         </td>
-                        <td>${banner.activatedTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${banner.activatedTime?string('yyyy-MM-dd HH:mm')}</td>
                         <td>
                             <#if banner.deactivatedTime??>
-                            ${banner.deactivatedTime?string('yyyy-MM-dd HH:mm:ss')}
+                            ${banner.deactivatedTime?string('yyyy-MM-dd HH:mm')}
                             <#else>
                                 --
                             </#if>
                         </td>
-                        <td>${banner.active?then('是','否')}</td>
+                        <td><#if banner.deactivatedTime?date gt .now?date && banner.activatedTime?date lt .now?date>是<#else>否</#if></td>
                         <td>
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                                <#if banner.active>
-                                    <a href="/banner-manage/banner/${banner.id?c}/edit">编辑</a> <a
-                                        href="javascript:void(0)" class="banner-deactivated"
-                                        data-link="/banner-manage/banner/${banner.id?c}/deactivated">下线</a>
+                                <#if banner.deactivatedTime?date gt .now?date>
+                                    <a href="/banner-manage/banner/${banner.id?c}/edit">编辑</a>
                                 <#else>
                                     <a href="javascript:void(0)" class="banner-delete"
                                        data-link="/banner-manage/banner/${banner.id?c}/delete">删除</a>
                                 </#if>
+
                             </@security.authorize>
                         </td>
                     </tr>

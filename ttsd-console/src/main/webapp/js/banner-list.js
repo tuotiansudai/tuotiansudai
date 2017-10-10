@@ -33,28 +33,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 
             }
         });
 
-        $bannerDeactivated.on('click', function () {
-            var $self = $(this),
-                thisLink = $self.attr('data-link');
-            if (!confirm("是否确认下线?")) {
-                return;
-            } else {
-                $.ajax({
-                    url: thisLink,
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                    .done(function (res) {
-                        if (res.data.status) {
-                            window.location.href = '/banner-manage/list';
-                        }
-                    })
-                    .fail(function (res) {
-                        console.log("fail");
-                    });
-            }
-        });
-
         var webShowLayer = function (src) {
             layer.open({
                 type: 1,
