@@ -91,8 +91,7 @@ public class CreditLoanTransferAgentServiceTest {
     @Test
     public void shouldCreditLoanTransferAgentIsSuccess() throws Exception {
 
-        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
-        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
+        when(creditLoanBillMapper.findBalance()).thenReturn(10000100l);
 
         ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
@@ -137,8 +136,8 @@ public class CreditLoanTransferAgentServiceTest {
 
     @Test
     public void creditLoanTransferAgentIsFailed() throws Exception {
-        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
-        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
+
+        when(creditLoanBillMapper.findBalance()).thenReturn(10000100l);
 
         ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
@@ -183,8 +182,8 @@ public class CreditLoanTransferAgentServiceTest {
 
     @Test
     public void creditLoanTransferException() throws Exception {
-        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
-        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
+
+        when(creditLoanBillMapper.findBalance()).thenReturn(10000100l);
 
         ArgumentCaptor<String> orderIdCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
@@ -231,8 +230,7 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
 
-        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
-        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
+        when(creditLoanBillMapper.findBalance()).thenReturn(10000100l);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
@@ -273,8 +271,7 @@ public class CreditLoanTransferAgentServiceTest {
         ArgumentCaptor<String> redisKeyCaptor2 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
 
-        when(creditLoanBillMapper.findSumAmountByIn()).thenReturn(10000100l);
-        when(creditLoanBillMapper.findSumAmountByOut()).thenReturn(0l);
+        when(creditLoanBillMapper.findBalance()).thenReturn(10000100l);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(accountMapper.findByMobile(anyString())).thenReturn(accountModel);
