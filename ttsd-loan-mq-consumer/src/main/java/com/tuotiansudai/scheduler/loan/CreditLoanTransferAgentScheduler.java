@@ -14,7 +14,8 @@ public class CreditLoanTransferAgentScheduler {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/10 * * * ?", zone = "Asia/Shanghai")
     private void creditLoanTransferAgent() {
         logger.info("[信用贷账户给代理人转账] is start");
         payWrapperClient.creditLoanTransferAgent();
