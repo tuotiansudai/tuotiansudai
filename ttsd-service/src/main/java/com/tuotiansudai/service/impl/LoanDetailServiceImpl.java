@@ -216,7 +216,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .put("抵押物借款金额", pledgeHouseModel.getLoanAmount())
                         .build();
                 pledgeHouseDetail.add(stringMap);
-                }
+            }
             loanDto.setPledgeHouseDetailList(pledgeHouseDetail);
         }
 
