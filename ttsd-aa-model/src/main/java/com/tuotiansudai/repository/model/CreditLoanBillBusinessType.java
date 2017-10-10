@@ -4,8 +4,7 @@ public enum CreditLoanBillBusinessType {
 
     // 出账
     CREDIT_LOAN_OFFER("发放信用贷用户借款"),
-    CREDIT_LOAN_RETRIEVE("发放信用贷代理人账户"),
-    YOOCAR_LOAN_RETRIEVE("发放优车贷代理人账户"),
+    CREDIT_LOAN_RETRIEVE("发放代理人账户"),
 
     // 入账
     CREDIT_LOAN_REPAY("信用贷用户还款"),

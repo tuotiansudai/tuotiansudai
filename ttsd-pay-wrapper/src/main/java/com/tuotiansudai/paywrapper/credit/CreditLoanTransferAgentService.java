@@ -69,7 +69,7 @@ public class CreditLoanTransferAgentService {
     @Transactional
     public void creditLoanTransferAgent() {
 
-        long transferAmount = this.transferAmount();
+        long transferAmount = creditLoanBillMapper.findBalance() - 10000000l;
         if (transferAmount <= 0) {
             return;
         }
@@ -165,12 +165,6 @@ public class CreditLoanTransferAgentService {
     private void sendFatalNotify(String message) {
         SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
-    }
-
-    private long transferAmount() {
-        long inSumAmountTotal = creditLoanBillMapper.findSumAmountByIn();
-        long outSumAmountTotal = creditLoanBillMapper.findSumAmountByOut();
-        return inSumAmountTotal - outSumAmountTotal - 10000000l;
     }
 
     private boolean checkStatus(String orderId) {
