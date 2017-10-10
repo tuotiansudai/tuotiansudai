@@ -102,11 +102,11 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         } else {
             BankModel bankModel = bankMapper.findByBankCode(bankCode);
             if (null == bankModel) {
-                return new BaseResponseDto(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             }
             long leftAmount = getLeftRechargeAmount(bankLimitRequestDto.getBaseParam().getPhoneNum(), bankModel);
             if (leftAmount < 0) {
-                return new BaseResponseDto(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.BANK_CARD_RECHARGE_DAILY_LIMIT.getCode(), ReturnMessage.BANK_CARD_RECHARGE_DAILY_LIMIT.getMsg());
             } else {
                 bankLimitResponseDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(leftAmount));
                 bankLimitResponseDataDto.setBankLimits(Lists.newArrayList(new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
