@@ -3,9 +3,6 @@ let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
 let sourceKind = globalFun.parseURL(location.href);
-//require('activityJsModule/fast_register');
-
-
 let $iphonex = $('#iphonex'),
     tipGroupObj = {};
 
@@ -13,10 +10,9 @@ var $pointerBtn = $('.draw-btn',$iphonex),
     $investBtn = $('.invest-btn',$iphonex);
 var $oneThousandPoints=$('.gift-circle-frame',$iphonex);
 var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
-    // pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
     drawURL='/activity/iphonex/iphonex-draw';    //抽奖的接口链接
-
-
+var $formualCon = $('#formualCon');//计算公式
+var $computational = $('#computational');
 var oneData={
         'activityCategory':'IPHONEX_ACTIVITY'
     }
@@ -33,12 +29,19 @@ $iphonex.find('.tip-list-frame .tip-list').each(function (key, option) {
 // $oneThousandPoints:抽奖模版dom
 // 抽奖机会接口
 var drawCircleOne=new drawCircle(pointAllList,null,drawURL,oneData,$oneThousandPoints);
-
+var $leftDrawCount = $('#draw_chance');
 //渲染中奖记录
 drawCircleOne.GiftRecord();
-
-drawCircleOne.hoverScrollList($iphonex.find('.user-record'),10);
-
+//中奖纪录滚动
+drawCircleOne.scrollUp($iphonex.find('.user-record'),1000);
+//计算公式显示隐藏
+$computational.mouseover(function(){
+    $formualCon.show();
+})
+$computational.mouseout(function(){
+    $formualCon.hide();
+})
+//显示立即抽奖还是立即投资
 function investOrDraw(){
     commonFun.useAjax({
             type:'GET',
@@ -46,6 +49,7 @@ function investOrDraw(){
             url:'/activity/iphonex/draw-time'
         }
         ,function(data) {
+            $leftDrawCount.text(data);
             if(data == 0){
 
                 $pointerBtn.hide();
@@ -68,7 +72,6 @@ $.when(commonFun.isUserLogin())
 $pointerBtn.on('click', function(event) {
 
     drawCircleOne.beginLuckDraw(function(data) {
-        console.log(3)
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
