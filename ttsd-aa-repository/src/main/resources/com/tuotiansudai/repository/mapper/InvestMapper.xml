@@ -1163,7 +1163,7 @@
         WHERE loan.activity_type != 'NEWBIE'
         AND i.status = 'SUCCESS'
         AND i.transfer_invest_id IS NULL
-        AND loan.product_type NOT IN ('_30', 'EXPERIENCE')
+        AND loan.product_type <![CDATA[ <> ]]> 'EXPERIENCE'
         AND i.trading_time BETWEEN #{startTime} AND #{endTime}
         GROUP BY loan.product_type, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
