@@ -275,7 +275,7 @@ class TestUserView(TestCase):
         data = {"login_name": "some_login_name", "channel": "new_channel", "source": "IOS"}
         ret = self.app.put('/user', data=json.dumps(data), content_type='application/json')
         response_data = json.loads(ret.data)
-        self.assertEqual(401, ret.status_code)
+        self.assertEqual(400, ret.status_code)
         self.assertFalse(response_data['result'])
 
     def tearDown(self):
