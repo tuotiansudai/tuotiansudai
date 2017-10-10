@@ -17,11 +17,22 @@
                                          class="form-control"
                                          datatype="*" errormsg="不动产登记证明不能为空"></div>
         </div>
-        <div class="form-group"><label class="col-sm-2 control-label">房本编号: </label>
-            <div class="col-sm-4"><input name="propertyCardId" value="${pledgeHouse.propertyCardId}" type="text"
-                                         class="form-control"
-                                         datatype="*" errormsg="房本编号不能为空"></div>
-        </div>
+
+        <#if (pledgeHouse.propertyCardId)??>
+            <div class="form-group"><label class="col-sm-2 control-label">房本编号: </label>
+                <div class="col-sm-4"><input name="propertyCardId" value="${pledgeHouse.propertyCardId}" type="text"
+                                             class="form-control"
+                                             datatype="*" errormsg="房本编号不能为空"></div>
+
+            </div>
+        <#else>
+            <div class="form-group"><label class="col-sm-2 control-label">房权证编号: </label>
+                <div class="col-sm-4"><input name="propertyCardId" value="${pledgeHouse.propertyRightCertificateId}" type="text"
+                                             class="form-control"
+                                             datatype="*" errormsg="房权证编号不能为空"></div>
+
+            </div>
+        </#if>
         <div class="form-group"><label class="col-sm-2 control-label">借款抵押房产面积: </label>
             <div class="col-sm-4"><input name="square" value="${pledgeHouse.square}" type="text" class="form-control"
                                          datatype="*"

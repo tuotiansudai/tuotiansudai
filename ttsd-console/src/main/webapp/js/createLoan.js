@@ -14,7 +14,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc']
 
-        var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'estateRegisterId', 'authenticAct'];
+        var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'propertyRightCertificateId', 'estateRegisterId', 'authenticAct'];
 
         var pledgeVehicleParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'brand', 'model'];
 
