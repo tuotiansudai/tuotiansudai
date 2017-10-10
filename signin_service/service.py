@@ -185,10 +185,6 @@ def active(username):
 
 
 class UserService(object):
-    EDITABLE_FIELDS = ('mobile', 'password', 'salt', 'email', 'user_name', 'identity_number',
-                       'last_modified_time', 'last_modified_user', 'avatar', 'referrer',
-                       'status', 'channel', 'province', 'city', 'source', 'experience_balance')
-
     def create(self, form):
         u = User(form.mobile.data, form.referrer.data, form.channel.data, form.source.data)
         u.set_password(form.password.data)

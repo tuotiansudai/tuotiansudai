@@ -102,7 +102,10 @@ class UserView(MethodView):
         """find by login_name or mobile"""
         user_service = service.UserService()
         u = user_service.find_by_login_name_or_mobile(login_name_or_mobile)
-        return success({'user_info': u})
+        if u:
+            return success({'user_info': u})
+        else:
+            return fail({'user_info': None}, code=404)
 
     def put(self):
         """update or patch"""
