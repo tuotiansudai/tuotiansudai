@@ -100,7 +100,7 @@ public enum SmsTemplate {
 
     SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3118145", "信用贷标的账户余额不足，请及时登录速贷后台充值。"),
-            new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_101130111", "信用贷标的账户余额不足，请及时登录速贷后台充值。")),
+            new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_101445012", "慧租账户余额不足，请及时登录后台充值。")),
             Lists.newArrayList(SmsChannel.ALIDAYU));
     /*
     !!! ATTENTION !!!

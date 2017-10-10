@@ -10,7 +10,6 @@ import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -21,9 +20,6 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(CreditLoanBillMessageConsumer.class);
 
     private static final long CREDIT_LOAN_BALANCE_ALERT = 100000 * 100;
-
-    @Value("${credit.loan.agent}")
-    private String creditLoanAgent;
 
     @Autowired
     private CreditLoanBillMapper creditLoanBillMapper;
