@@ -206,16 +206,16 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         if (pledgeHouseModelList.size() > 0) {
             List<Map<String, String>> pledgeHouseDetail = Lists.newArrayList();
             for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
-                    Map<String, String> stringMap = ImmutableMap.<String, String>builder()
-                            .put("抵押物所在地", pledgeHouseModel.getPledgeLocation())
-                            .put("抵押物估值", pledgeHouseModel.getEstimateAmount())
-                            .put("房屋面积", pledgeHouseModel.getSquare())
-                            .put(Strings.isNullOrEmpty(pledgeHouseModel.getPropertyCardId())?"房权证编号":"房产证编号", Strings.isNullOrEmpty(pledgeHouseModel.getPropertyCardId())?pledgeHouseModel.getPropertyRightCertificateId():pledgeHouseModel.getPropertyCardId())
-                            .put("不动产登记证明", pledgeHouseModel.getEstateRegisterId())
-                            .put("公证书编号", pledgeHouseModel.getAuthenticAct())
-                            .put("抵押物借款金额", pledgeHouseModel.getLoanAmount())
-                            .build();
-                    pledgeHouseDetail.add(stringMap);
+                Map<String, String> stringMap = ImmutableMap.<String, String>builder()
+                        .put("抵押物所在地", pledgeHouseModel.getPledgeLocation())
+                        .put("抵押物估值", pledgeHouseModel.getEstimateAmount())
+                        .put("房屋面积", pledgeHouseModel.getSquare())
+                        .put(Strings.isNullOrEmpty(pledgeHouseModel.getPropertyCardId())?"房权证编号":"房产证编号", Strings.isNullOrEmpty(pledgeHouseModel.getPropertyCardId())?pledgeHouseModel.getPropertyRightCertificateId():pledgeHouseModel.getPropertyCardId())
+                        .put("不动产登记证明", pledgeHouseModel.getEstateRegisterId())
+                        .put("公证书编号", pledgeHouseModel.getAuthenticAct())
+                        .put("抵押物借款金额", pledgeHouseModel.getLoanAmount())
+                        .build();
+                pledgeHouseDetail.add(stringMap);
                 }
             loanDto.setPledgeHouseDetailList(pledgeHouseDetail);
         }
