@@ -10,14 +10,3 @@ test-redis-server:
   image: "grokzen/redis-cluster"
   ports:
     - "$UT_REDIS_PORT:7006"
-
-test-sign-in:
-  image: "leoshi/ttsd-signin-flask"
-  environment:
-    - "TZ=Asia/Shanghai"
-  volumes:
-    - ./signin_service:/app
-  links:
-    - "test-db-server"
-    - "test-redis-server"
-  command: ["python", "test.py"]
