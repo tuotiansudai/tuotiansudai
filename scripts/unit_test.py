@@ -32,12 +32,11 @@ class UTRunner(object):
         sh('/usr/local/bin/docker-compose -f unit_test.yml rm -f')
 
     def _start_new_container(self):
-        sh('/usr/local/bin/docker-compose -f unit_test.yml up -d')
+        sh('/usr/local/bin/docker-compose -f unit_test.yml up -d test-db-server test-redis-server')
 
     def run_test(self):
         print "Starting test..."
-        sh('docker run -v `pwd`/signin_service:/app -e dbhost={0} -e dbport={1} -e redishost={2} -e redisport={3} leoshi/ttsd-signin-flask python test.py'.format(
-                self.db_host, self.db_port, self.redis_host, self.redis_port))
+        sh('/usr/local/bin/docker-compose -f unit_test.yml run --rm test-sign-in')
         sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} clean compileJava ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog test'.format(
                 self.db_host, self.db_port, self.redis_host, self.redis_port))
 
