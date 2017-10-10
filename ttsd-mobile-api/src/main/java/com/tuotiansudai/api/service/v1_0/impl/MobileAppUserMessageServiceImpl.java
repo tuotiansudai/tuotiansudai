@@ -141,33 +141,35 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         userMessageServices.readMessage(userMessageId);
         MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
 
-        String path = messageModel.getAppUrl() == null ? null : messageModel.getAppUrl().getPath();
-        if (userMessageModel.getBusinessId() != null && !Strings.isNullOrEmpty(path)) {
-            path = MessageFormat.format(messageModel.getAppUrl().getPath(), investMapper.findById(userMessageModel.getBusinessId()).getLoanId());
-        }
-
-        return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), path);
+        return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), getPath(userMessageModel.getBusinessId(), messageModel));
     }
 
     public String getPath(Long businessId, MessageModel messageModel){
         String path = messageModel.getAppUrl() == null ? null : messageModel.getAppUrl().getPath();
 
-        if (businessId != null && !Strings.isNullOrEmpty(path)) {
+        if (messageModel.getType().equals(MessageType.EVENT) && businessId != null && !Strings.isNullOrEmpty(path)) {
             long loanId = 0;
             switch (messageModel.getEventType()) {
                 case INVEST_SUCCESS:
-                    loanId = investMapper.findById(businessId).getLoanId();
+                    loanId = (businessId == null || investMapper.findById(businessId) == null) ? 0 : investMapper.findById(businessId).getLoanId();
+                    path = loanId == 0 ? AppUrl.MY_INVEST_RAISING.getPath() : path;
                     break;
                 case TRANSFER_SUCCESS:
                 case TRANSFER_FAIL:
-                    loanId = transferApplicationMapper.findById(businessId).getLoanId();
+                    loanId = (businessId == null || transferApplicationMapper.findById(businessId) == null) ? 0 : transferApplicationMapper.findById(businessId).getLoanId();
+                    path = loanId == 0 ? AppUrl.MY_INVEST_FINISH.getPath() : path;
                     break;
                 case LOAN_OUT_SUCCESS:
                     loanId = businessId;
+                    path = loanId == 0 ? AppUrl.MY_INVEST_REPAYING.getPath() : path;
                     break;
                 case REPAY_SUCCESS:
+                    loanId = (businessId == null || investRepayMapper.findById(businessId) == null) ? 0 : investMapper.findById(investRepayMapper.findById(businessId).getInvestId()).getLoanId();
+                    path = loanId == 0 ? AppUrl.MY_INVEST_REPAYING.getPath() : path;
+                    break;
                 case ADVANCED_REPAY:
-                    loanId = investMapper.findById(investRepayMapper.findById(businessId).getInvestId()).getLoanId();
+                    loanId = (businessId == null || investRepayMapper.findById(businessId) == null) ? 0 : investMapper.findById(investRepayMapper.findById(businessId).getInvestId()).getLoanId();
+                    path = loanId == 0 ? AppUrl.MY_INVEST_FINISH.getPath() : path;
                     break;
             }
             path = loanId == 0 ? path : MessageFormat.format(path, loanId);
