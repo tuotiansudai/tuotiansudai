@@ -5,65 +5,65 @@
 <div class="col-md-10">
     <div class="panel panel-default">
     <div class="panel-body">
-        <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/travel/user-prize-list" role="button">"0"元购获奖记录</a>
-        <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/travel/config-prize-list" role="button">奖品管理</a>
+        <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/user-prize-list" role="button">"0"元购获奖记录</a>
+        <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/config-prize-list" role="button">奖品管理</a>
     </div>
 </div>
 
-    <form action="/activity-console/activity-manage/travel/user-travel-list" class="form-inline query-build" method="get">
-        <div class="form-group">
-            <label for="mobile">手机号</label>
-            <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}">
-        </div>
+    <#--<form action="/activity-console/activity-manage/travel/user-travel-list" class="form-inline query-build" method="get">-->
+        <#--<div class="form-group">-->
+            <#--<label for="mobile">手机号</label>-->
+            <#--<input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}">-->
+        <#--</div>-->
 
-        <div class="form-group">
-            <label for="number">日期</label>
+        <#--<div class="form-group">-->
+            <#--<label for="number">日期</label>-->
 
-            <div class='input-group date' id='startTime'>
-                <input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-            -
-            <div class='input-group date' id='endTime'>
-                <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-sm btn-primary">查询</button>
-    </form>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead>
-            <tr>
-                <th>日期</th>
-                <th>奖品</th>
-                <th>手机号</th>
-                <th>姓名</th>
-                <th>投资金额</th>
-            </tr>
-            </thead>
-            <tbody>
-                <#list data.data.records as item>
-                <tr>
-                    <td>${item.createdTime?string("yyyy-MM-dd")}</td>
-                    <td>${item.prize}</td>
-                    <td>${item.mobile}</td>
-                    <td>${item.userName}</td>
-                    <td>${item.investAmount}</td>
-                </tr>
-                <#else>
-                <tr>
-                    <td colspan="5">暂无数据</td>
-                </tr>
-                </#list>
-            </tbody>
+            <#--<div class='input-group date' id='startTime'>-->
+                <#--<input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>-->
+                <#--<span class="input-group-addon">-->
+                    <#--<span class="glyphicon glyphicon-calendar"></span>-->
+                <#--</span>-->
+            <#--</div>-->
+            <#----->
+            <#--<div class='input-group date' id='endTime'>-->
+                <#--<input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>-->
+                <#--<span class="input-group-addon">-->
+                    <#--<span class="glyphicon glyphicon-calendar"></span>-->
+                <#--</span>-->
+            <#--</div>-->
+        <#--</div>-->
+        <#--<button type="submit" class="btn btn-sm btn-primary">查询</button>-->
+    <#--</form>-->
+    <#--<div class="table-responsive">-->
+        <#--<table class="table table-bordered table-hover">-->
+            <#--<thead>-->
+            <#--<tr>-->
+                <#--<th>日期</th>-->
+                <#--<th>奖品</th>-->
+                <#--<th>手机号</th>-->
+                <#--<th>姓名</th>-->
+                <#--<th>投资金额</th>-->
+            <#--</tr>-->
+            <#--</thead>-->
+            <#--<tbody>-->
+                <#--<#list data.data.records as item>-->
+                <#--<tr>-->
+                    <#--<td>${item.createdTime?string("yyyy-MM-dd")}</td>-->
+                    <#--<td>${item.prize}</td>-->
+                    <#--<td>${item.mobile}</td>-->
+                    <#--<td>${item.userName}</td>-->
+                    <#--<td>${item.investAmount}</td>-->
+                <#--</tr>-->
+                <#--<#else>-->
+                <#--<tr>-->
+                    <#--<td colspan="5">暂无数据</td>-->
+                <#--</tr>-->
+                <#--</#list>-->
+            <#--</tbody>-->
 
-        </table>
-    </div>
+        <#--</table>-->
+    <#--</div>-->
 
     <!-- pagination  -->
     <nav class="pagination-control">

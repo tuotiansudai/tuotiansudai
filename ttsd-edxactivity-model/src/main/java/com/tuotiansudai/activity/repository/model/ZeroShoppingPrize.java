@@ -15,7 +15,7 @@ public enum ZeroShoppingPrize {
     XiaPu_Television("夏普45英寸智能液晶电视", 2900000l),
     Philips_Purifier("飞利浦空气净化器", 3900000l),
     Sony_Camera("索尼DSC-RX100 M3 黑卡相机", 5400000l),
-    Apple_MacBook("Apple MacBook Air 13.3英寸笔记本电脑8GB内存/128GB闪存", 900000l),
+    Apple_MacBook("Apple MacBook Air 13.3英寸笔记本电脑8GB内存/128GB闪存", 9000000l),
     Iphone_X("iphone X 256GB", 13500000l);
 
     private String description;

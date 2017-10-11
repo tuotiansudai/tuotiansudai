@@ -5,8 +5,8 @@
 <div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
-            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/travel/user-prize-list" role="button">"0"元购获奖记录</a>
-            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/travel/config-prize-list" role="button">奖品管理</a>
+            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/user-prize-list" role="button">"0"元购获奖记录</a>
+            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/config-prize-list" role="button">奖品管理</a>
         </div>
     </div>
 
@@ -26,16 +26,18 @@
                 <#list data as item>
                 <tr>
                     <td>${item.prize.description}</td>
-                    <td>${item.price}</td>
-                    <td><img src="${commonStaticServer}${item.image}"></td>
-                    <td>投资满${item.investAmount/100}</td>
+                    <td>0</td>
+                    <td>投资满${item.prize.investPrice/100}</td>
+                    <td>${item.prizeTotal}</td>
+                    <td>${item.prizeSurplus}</td>
                     <td><a href="">更改数量</a></td>
                 </tr>
                 </#list>
             </tbody>
-
         </table>
     </div>
+
+
 </div>
 <!-- content area end -->
 </@global.main>
