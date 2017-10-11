@@ -209,3 +209,22 @@ class UserService(object):
         user = User.query.filter(
             (User.login_name == login_name_or_mobile) | (User.mobile == login_name_or_mobile)).first()
         return user.as_dict() if user else None
+
+    def reset_password(self, form):
+        user = User.query.filter(User.login_name == form.login_name.data).first()
+        if user:
+            user.set_password(form.password.data)
+            db.session.commit()
+        else:
+            raise UserNotExistedError()
+
+    def change_password(self, form):
+        user = User.query.filter(User.login_name == form.login_name.data).first()
+        if user:
+            if user.validate_password(form.ori_password.data):
+                user.set_password(form.password.data)
+                db.session.commit()
+            else:
+                raise UsernamePasswordError()
+        else:
+            raise UserNotExistedError()

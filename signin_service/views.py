@@ -1,9 +1,11 @@
+# coding=utf-8
 from flask import request, Blueprint
 from flask.json import jsonify
 from flask.views import MethodView
 
 import service
-from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm, UserRegisterForm, UserUpdateForm
+from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm, UserRegisterForm, UserUpdateForm, \
+    UserResetPasswordForm, UserChangePasswordForm
 
 sign_in = Blueprint('sign_in', __name__)
 
@@ -124,3 +126,37 @@ class UserView(MethodView):
 sign_in.add_url_rule('/users', view_func=UsersView.as_view('users'))
 sign_in.add_url_rule('/user', view_func=UserView.as_view('update_user'), methods=['PUT', ])
 sign_in.add_url_rule('/user/<string:login_name_or_mobile>', view_func=UserView.as_view('get_user'), methods=['GET', ])
+
+
+@sign_in.route("/user/reset-password", methods=['PUT'])
+def user_reset_password():
+    form = UserResetPasswordForm(data=request.get_json())
+    if form.validate():
+        user_service = service.UserService()
+        try:
+            user_service.reset_password(form)
+            return success()
+        except service.UserNotExistedError:
+            return fail({'message': u'用户不存在'}, code=400)
+        except Exception as ex:
+            return fail({'message': ex.message}, code=400)
+    else:
+        return fail({'errors': form.errors}, code=400)
+
+
+@sign_in.route("/user/change-password", methods=['POST'])
+def user_change_password():
+    form = UserChangePasswordForm(data=request.get_json())
+    if form.validate():
+        user_service = service.UserService()
+        try:
+            user_service.change_password(form)
+            return success()
+        except service.UserNotExistedError:
+            return fail({'message': u'用户不存在'}, code=400)
+        except service.UsernamePasswordError:
+            return fail({'message': u'原密码错误'}, code=401)
+        except Exception as ex:
+            return fail({'message': ex.message}, code=400)
+    else:
+        return fail({'errors': form.errors}, code=400)

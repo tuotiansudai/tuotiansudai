@@ -72,6 +72,10 @@ class UserUpdateForm(wtforms.Form):
     city = wtforms.StringField('city', [wtforms.validators.Length(max=32)])
     source = wtforms.StringField('source', [wtforms.validators.Length(max=16)])
 
+    def validate_login_name(self, field):
+        if field.data and not User.query.filter(User.login_name == field.data).first():
+            raise ValidationError('user with login_name {} was not exist'.format(field.data))
+
     def validate_mobile(self, field):
         if field.data and User.query.filter(
                         (User.mobile == field.data) & (User.login_name != self.login_name.data)).first():
@@ -84,3 +88,19 @@ class UserUpdateForm(wtforms.Form):
     def validate_status(self, field):
         if field.data and field.data not in constants.USER_STATUSES:
             raise ValidationError('status must be a value in {}'.format(constants.USER_STATUSES))
+
+
+class UserResetPasswordForm(wtforms.Form):
+    login_name = wtforms.StringField('login_name',
+                                     [wtforms.validators.required(), wtforms.validators.Length(min=5, max=25)])
+    password = wtforms.StringField('password', [wtforms.validators.required(),
+                                                wtforms.validators.Regexp(r'^(?=.*[^\d])(.{6,20})$')])
+
+    def validate_login_name(self, field):
+        if field.data and not User.query.filter(User.login_name == field.data).first():
+            raise ValidationError('user with login_name {} was not exist'.format(field.data))
+
+
+class UserChangePasswordForm(UserResetPasswordForm):
+    ori_password = wtforms.StringField('ori_password',
+                                       [wtforms.validators.required(), wtforms.validators.Length(min=6, max=20)])
