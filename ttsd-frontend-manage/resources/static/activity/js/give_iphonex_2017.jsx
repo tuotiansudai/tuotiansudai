@@ -11,7 +11,7 @@ var $pointerBtn = $('.draw-btn',$iphonex),
 var $oneThousandPoints=$('.gift-circle-frame',$iphonex);
 var pointAllList='/activity/iphonex/prize-list',  //中奖记录接口地址
     drawURL='/activity/iphonex/iphonex-draw';    //抽奖的接口链接
-var $formualCon = $('#formualCon');//计算公式
+var $formualCon = $('#formula_box');//计算公式
 var $computational = $('#computational');
 var oneData={
         'activityCategory':'IPHONEX_ACTIVITY'
