@@ -208,9 +208,6 @@ class TestView(TestCase):
 
 class TestUserView(TestCase):
     def setUp(self):
-        web.app.config['TESTING'] = True
-        self.connection = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-        self.connection.flushdb()
         self.app = web.app.test_client()
         self.mobile = "13888888888"
 
@@ -288,8 +285,6 @@ class TestUserView(TestCase):
 
 class TestModifyPassword(TestCase):
     def setUp(self):
-        self.connection = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-        self.connection.flushdb()
         self.app = web.app.test_client()
         self.ori_password = "123abc"
         self.user = User("13888888888", None, None, 'WEB')
