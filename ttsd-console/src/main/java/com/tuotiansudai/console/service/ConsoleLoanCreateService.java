@@ -163,7 +163,14 @@ public class ConsoleLoanCreateService {
             loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
         }
 
-        loanCreateRequestDto.getLoan().setName(loanCreateRequestDto.getLoan().getName() + loanNameSeq);
+        if (loanModel.getPledgeType() == loanCreateRequestDto.getLoan().getPledgeType())
+        {
+            loanCreateRequestDto.getLoan().setName(loanCreateRequestDto.getLoan().getName() + loanNameSeq);
+        }
+        else{
+            loanCreateRequestDto.getLoan().setName(generateLoanName(loanCreateRequestDto.getLoan().getName(),loanCreateRequestDto.getLoan().getPledgeType()));
+        }
+
         loanMapper.update(loanModel.updateLoan(loanCreateRequestDto));
 
         if (Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
