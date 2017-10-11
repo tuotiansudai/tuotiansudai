@@ -1,13 +1,14 @@
 # coding=utf-8
-import hashlib
 import json
-import uuid
-import redis
 import time
-from models import User, db
+import uuid
+
+import redis
 from sqlalchemy import func
+
 import settings
 from logging_config import logger
+from models import User, db, UserRole
 from producer import producer
 
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
@@ -84,24 +85,20 @@ class LoginManager(object):
         self.session_manager = SessionManager(source=self.form.source.data)
         logger.debug("x-forwarded-for:{}".format(ip_address))
 
-    def _is_password_valid(self, user):
-        return user and user.password == hashlib.sha1(
-            u"%s{%s}" % (hashlib.sha1(self.form.password.data.encode('utf-8')).hexdigest(), user.salt)).hexdigest()
-
     def _load_user(self):
         user = User.query.filter(
-            (User.username == self.form.username.data) | (User.mobile == self.form.username.data)).first()
+            (User.login_name == self.form.username.data) | (User.mobile == self.form.username.data)).first()
         if not user:
             logger.debug(u"{} not exist".format(self.form.username.data))
             raise UserNotExistedError()
         return user
 
     def _success(self, user):
-        user_info = {'login_name': user.username, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
+        user_info = {'login_name': user.login_name, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
         new_token_id = self.session_manager.set(user_info, self.form.token.data)
         logger.info(u"{} login successful. source: {}, token_id: {}, user_info: {}".format(self.form.username.data,
-                                                                                          self.form.source.data,
-                                                                                          new_token_id, user_info))
+                                                                                           self.form.source.data,
+                                                                                           new_token_id, user_info))
         return new_token_id, user_info
 
     def _increase_failed_times(self):
@@ -112,12 +109,13 @@ class LoginManager(object):
 
     def _get_user_info(self):
         user = self._load_user()
-        if self._is_password_valid(user):
+        if user and user.validate_password(self.form.password.data):
             return self._success(user)
 
     def _normal_login(self):
         login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(self.form.username.data)
-        failed_times = int(self.connection.get(login_failed_times_key)) if self.connection.get(login_failed_times_key) else 0
+        failed_times = int(self.connection.get(login_failed_times_key)) if self.connection.get(
+            login_failed_times_key) else 0
         if failed_times >= settings.LOGIN_FAILED_MAXIMAL_TIMES:
             logger.debug(u"{} have been locked. source: {}".format(self.form.username.data, self.form.source.data))
             raise UserBannedError()
@@ -174,7 +172,7 @@ class LoginManager(object):
 
 
 def update_last_login_time_source(username, source):
-    user = User.query.filter((User.username == username)).first()
+    user = User.query.filter((User.login_name == username)).first()
     user.last_login_time = func.now()
     user.last_login_source = source
     db.session.commit()
@@ -184,3 +182,30 @@ def active(username):
     login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(username)
     conn = redis.Redis(connection_pool=pool)
     conn.delete(login_failed_times_key)
+
+
+class UserService(object):
+    def create(self, form):
+        u = User(form.mobile.data, form.referrer.data, form.channel.data, form.source.data)
+        u.set_password(form.password.data)
+        db.session.add(u)
+
+        ur = UserRole(u.login_name, 'USER')
+        db.session.add(ur)
+        db.session.commit()
+        return u.as_dict()
+
+    def update(self, form):
+        user = User.query.filter((User.login_name == form.login_name.data)).first()
+        for f in form:
+            # 仅当提供了某字段，才修改某字段，否则保持数据不变
+            if f.data is not None:
+                # 当提供了某字段，但值为空，则清空该字段
+                setattr(user, f.name, f.data if f.data else None)
+        db.session.commit()
+        return user.as_dict()
+
+    def find_by_login_name_or_mobile(self, login_name_or_mobile):
+        user = User.query.filter(
+            (User.login_name == login_name_or_mobile) | (User.mobile == login_name_or_mobile)).first()
+        return user.as_dict() if user else None

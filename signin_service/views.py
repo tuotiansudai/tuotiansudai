@@ -1,15 +1,17 @@
 from flask import request, Blueprint
 from flask.json import jsonify
-from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm
+from flask.views import MethodView
+
 import service
+from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm, UserRegisterForm, UserUpdateForm
 
 sign_in = Blueprint('sign_in', __name__)
 
 
-def success(data={}):
+def success(data={}, code=200):
     ret = {'result': True}
     ret.update(data)
-    return jsonify(ret), 200
+    return jsonify(ret), code
 
 
 def fail(data={}, code=401):
@@ -68,3 +70,57 @@ def refresh_session(session_id):
 def active_user(username):
     service.active(username)
     return success()
+
+
+class UsersView(MethodView):
+    def post(self):
+        """create user"""
+        form = UserRegisterForm(data=request.get_json())
+        if form.validate():
+            user_service = service.UserService()
+            try:
+                u = user_service.create(form)
+                return success({'user_info': u}, code=201)
+            except Exception as ex:
+                return fail({'message': ex.message}, code=400)
+        else:
+            return fail({'errors': form.errors}, code=400)
+
+    def get(self):
+        """search user"""
+        # TODO
+        # fields = request.args.get('fields')
+        # page_size = request.args.get('page_size', default=10, type=int)
+        # page_index = request.args.get('page_index', default=0, type=int)
+
+        print 'GET /users'
+        return success({})
+
+
+class UserView(MethodView):
+    def get(self, login_name_or_mobile):
+        """find by login_name or mobile"""
+        user_service = service.UserService()
+        u = user_service.find_by_login_name_or_mobile(login_name_or_mobile)
+        if u:
+            return success({'user_info': u})
+        else:
+            return fail({'user_info': None}, code=404)
+
+    def put(self):
+        """update or patch"""
+        form = UserUpdateForm(data=request.get_json())
+        if form.validate():
+            user_service = service.UserService()
+            try:
+                u = user_service.update(form)
+                return success({'user_info': u}, code=200)
+            except Exception as ex:
+                return fail({'message': ex.message}, code=400)
+        else:
+            return fail({'errors': form.errors}, code=400)
+
+
+sign_in.add_url_rule('/users', view_func=UsersView.as_view('users'))
+sign_in.add_url_rule('/user', view_func=UserView.as_view('update_user'), methods=['PUT', ])
+sign_in.add_url_rule('/user/<string:login_name_or_mobile>', view_func=UserView.as_view('get_user'), methods=['GET', ])
