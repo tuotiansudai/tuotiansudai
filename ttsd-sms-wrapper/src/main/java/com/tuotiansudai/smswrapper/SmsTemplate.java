@@ -46,7 +46,7 @@ public enum SmsTemplate {
     SMS_LOAN_REPAY_NOTIFY_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "6486", "您今天有 %s 元尚未还款，请及时登录系统还款。"),
             new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_45420001", "您今天有 ${param0} 元尚未还款，请及时登录系统还款。")),
-            Lists.newArrayList(SmsChannel.NETEASE, SmsChannel.ALIDAYU)),
+            Lists.newArrayList(SmsChannel.ALIDAYU)),
 
     SMS_FATAL_NOTIFY_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "8455", "%s 警报：%s"),
@@ -56,17 +56,17 @@ public enum SmsTemplate {
     SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3032242", "系统账户余额不足 %s 元，请立刻充值！"),
             new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_45340002", "系统账户余额不足 ${param0} 元，请立刻充值！")),
-            Lists.newArrayList(SmsChannel.NETEASE, SmsChannel.ALIDAYU)),
+            Lists.newArrayList(SmsChannel.ALIDAYU)),
 
     SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "8510", "亲爱的用户，您投资的新手体验项目所得%s元现金红包奖励已发放，快来激活奖励吧！"),
             new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_45415002", "亲爱的用户，您投资的新手体验项目所得${param0}元现金红包奖励已发放，快来激活奖励吧！")),
-            Lists.newArrayList(SmsChannel.NETEASE, SmsChannel.ALIDAYU)),
+            Lists.newArrayList(SmsChannel.ALIDAYU)),
 
     SMS_CANCEL_TRANSFER_LOAN(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3031027", "尊敬的拓天速贷客户，由于原始项目提前还款，您的债权转让项目%s已自动取消，请尽快登录平台进行查看。"),
             new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_45340018", "尊敬的拓天速贷客户，由于原始项目提前还款，您的债权转让项目${param0}已自动取消，请尽快登录平台进行查看。")),
-            Lists.newArrayList(SmsChannel.NETEASE, SmsChannel.ALIDAYU)),
+            Lists.newArrayList(SmsChannel.ALIDAYU)),
 
     SMS_IMPORT_RECEIVE_MEMBERSHIP(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3031214", "尊敬的用户，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
@@ -86,7 +86,7 @@ public enum SmsTemplate {
     SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3038299", "%s上线的%s天总额为%sw的项目于今日%s已满，%s;%s，30分钟内将完成复核。"),
             new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_45610002", "${param0}上线的${param1}天总额为${param2}w的项目于今日${param3}已满，客户:${param4};代理人:${param5}，30分钟内将完成复核。")),
-            Lists.newArrayList(SmsChannel.NETEASE, SmsChannel.ALIDAYU)),
+            Lists.newArrayList(SmsChannel.ALIDAYU)),
 
     SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3057070", "尊敬的用户，恭喜您获得了一张%s，请尽快使用拿奖励哦！"),
