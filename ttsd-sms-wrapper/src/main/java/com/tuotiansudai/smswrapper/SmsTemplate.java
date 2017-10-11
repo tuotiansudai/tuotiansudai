@@ -96,6 +96,11 @@ public enum SmsTemplate {
     SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(Lists.newArrayList(
             new SmsTemplateCell(SmsChannel.NETEASE, "3050088", "尊敬的用户，您的%s即将过期（有效期至：%s），请尽快使用。"),
             new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_46865002", "尊敬的用户，您的${param0}即将过期（有效期至：${param1}），请尽快使用。")),
+            Lists.newArrayList(SmsChannel.ALIDAYU)),
+
+    SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE(Lists.newArrayList(
+            new SmsTemplateCell(SmsChannel.NETEASE, "3118145", "信用贷标的账户余额不足，请及时登录速贷后台充值。"),
+            new SmsTemplateCell(SmsChannel.ALIDAYU, "SMS_101445012", "慧租账户余额不足，请及时登录后台充值。")),
             Lists.newArrayList(SmsChannel.ALIDAYU));
     /*
     !!! ATTENTION !!!

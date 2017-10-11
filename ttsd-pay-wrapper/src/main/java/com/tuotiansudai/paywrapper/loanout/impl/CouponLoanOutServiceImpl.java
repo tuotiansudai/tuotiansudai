@@ -4,7 +4,12 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillMessageType;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -15,15 +20,16 @@ import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
+import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +62,6 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
     @Autowired
     private PaySyncClient paySyncClient;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -158,12 +158,14 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                     String.valueOf(userCouponModel.getId()),
                     String.valueOf(userCouponModel.getLoanId()),
                     String.valueOf(transferAmount));
-            systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON_RED_ENVELOPE, detail);
 
-            amountTransfer.transferInBalance(userCouponModel.getLoginName(),
-                    userCouponModel.getId(),
-                    transferAmount,
-                    couponModel.getCouponType().getUserBillBusinessType(), null, null);
+            SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON_RED_ENVELOPE, detail);
+            mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userCouponModel.getLoginName(),
+                    userCouponModel.getId(), transferAmount, couponModel.getCouponType().getUserBillBusinessType(), null, null);
+
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
             userCouponModel.setActualInterest(transferAmount);
             userCouponMapper.update(userCouponModel);
