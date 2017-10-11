@@ -232,7 +232,7 @@ class UserService(object):
     def experience_account(self, form):
         user = User.query.filter(User.login_name == form.login_name.data).with_for_update().first()
         if user:
-            user.experience_balance += int(form.amount.data)
+            user.experience_balance += int(form.bill_amount.data)
             db.session.commit()
         else:
             raise UserNotExistedError()

@@ -351,7 +351,7 @@ class TestUserExperienceView(TestCase):
         db.session.commit()
 
     def test_should_account_experience_balance(self):
-        data = {"login_name": self.user.login_name, "amount": "190"}
+        data = {"login_name": self.user.login_name, "bill_amount": "190"}
         ret = self.app.post('/user/experience-account', data=json.dumps(data), content_type='application/json')
         response_data = json.loads(ret.data)
         self.assertEqual(200, ret.status_code)
@@ -360,7 +360,7 @@ class TestUserExperienceView(TestCase):
         user = User.query.filter(User.login_name == self.user.login_name).first()
         self.assertEqual(190, user.experience_balance)
 
-        data = {"login_name": self.user.login_name, "amount": -90}
+        data = {"login_name": self.user.login_name, "bill_amount": -90}
         ret = self.app.post('/user/experience-account', data=json.dumps(data), content_type='application/json')
         response_data = json.loads(ret.data)
         self.assertEqual(200, ret.status_code)
@@ -370,7 +370,7 @@ class TestUserExperienceView(TestCase):
         self.assertEqual(100, user.experience_balance)
 
     def test_should_return_400_given_user_not_exist(self):
-        data = {"login_name": "some_login_name", "amount": "190"}
+        data = {"login_name": "some_login_name", "bill_amount": "190"}
         ret = self.app.post('/user/experience-account', data=json.dumps(data), content_type='application/json')
         response_data = json.loads(ret.data)
         self.assertEqual(400, ret.status_code)

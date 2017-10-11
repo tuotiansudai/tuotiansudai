@@ -109,4 +109,4 @@ class UserChangePasswordForm(UserResetPasswordForm):
 class UserExperienceAccountForm(wtforms.Form):
     login_name = wtforms.StringField('login_name',
                                      [wtforms.validators.required(), wtforms.validators.Length(min=5, max=25)])
-    amount = wtforms.IntegerField('amount', [wtforms.validators.required()])
+    bill_amount = wtforms.IntegerField('bill_amount', [wtforms.validators.required()])
