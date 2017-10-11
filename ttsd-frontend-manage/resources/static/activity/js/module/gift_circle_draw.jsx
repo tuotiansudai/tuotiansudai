@@ -72,7 +72,7 @@ giftCircleDraw.prototype.rotateFn = function (angles, tipMessage) {
         duration: 8000,
         callback: function () {
             thisFun.GiftRecord();
-            thisFun.MyGift();
+            this.userListURL&&thisFun.MyGift();
             thisFun.bRotate = !thisFun.bRotate;
             thisFun.tipWindowPop(tipMessage);
         }

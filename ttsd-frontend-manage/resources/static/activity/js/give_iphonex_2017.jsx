@@ -67,8 +67,6 @@ $.when(commonFun.isUserLogin())
     });
 //开始抽奖
 $pointerBtn.on('click', function(event) {
-    alert(999);
-    $(this).css('background','yellow')
 
     drawCircleOne.beginLuckDraw(function(data) {
         //抽奖接口成功后奖品指向位置
