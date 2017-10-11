@@ -208,9 +208,6 @@ class TestView(TestCase):
 
 class TestUserView(TestCase):
     def setUp(self):
-        web.app.config['TESTING'] = True
-        self.connection = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-        self.connection.flushdb()
         self.app = web.app.test_client()
         self.mobile = "13888888888"
 
@@ -284,6 +281,64 @@ class TestUserView(TestCase):
             UserRole.query.filter(UserRole.login_name == user.login_name).delete()
             User.query.filter(User.mobile == self.mobile).delete()
             db.session.commit()
+
+
+class TestModifyPassword(TestCase):
+    def setUp(self):
+        self.app = web.app.test_client()
+        self.ori_password = "123abc"
+        self.user = User("13888888888", None, None, 'WEB')
+        self.user.set_password(self.ori_password)
+        db.session.add(self.user)
+        db.session.commit()
+
+    def test_should_change_password(self):
+        new_password = '1234abcd'
+        data = {"login_name": self.user.login_name, "ori_password": self.ori_password, "password": new_password}
+        ret = self.app.post('/user/change-password', data=json.dumps(data), content_type='application/json')
+        response_data = json.loads(ret.data)
+        self.assertEqual(200, ret.status_code)
+        self.assertTrue(response_data['result'])
+
+        user = User.query.filter(User.login_name == self.user.login_name).first()
+        self.assertFalse(user.validate_password(self.ori_password))
+        self.assertTrue(user.validate_password(new_password))
+
+    def test_should_reset_password(self):
+        new_password = '1234abcd'
+        data = {"login_name": self.user.login_name, "password": new_password}
+        ret = self.app.put('/user/reset-password', data=json.dumps(data), content_type='application/json')
+        response_data = json.loads(ret.data)
+        self.assertEqual(200, ret.status_code)
+        self.assertTrue(response_data['result'])
+
+        user = User.query.filter(User.login_name == self.user.login_name).first()
+        self.assertFalse(user.validate_password(self.ori_password))
+        self.assertTrue(user.validate_password(new_password))
+
+    def test_should_return_400_given_user_not_exist(self):
+        data = {"login_name": "some_login_name", "password": "some_password"}
+        ret = self.app.put('/user/reset-password', data=json.dumps(data), content_type='application/json')
+        response_data = json.loads(ret.data)
+        self.assertEqual(400, ret.status_code)
+        self.assertFalse(response_data['result'])
+
+        data = {"login_name": "some_login_name", "ori_password": self.ori_password, "password": "some_password"}
+        ret = self.app.post('/user/change-password', data=json.dumps(data), content_type='application/json')
+        response_data = json.loads(ret.data)
+        self.assertEqual(400, ret.status_code)
+        self.assertFalse(response_data['result'])
+
+    def test_should_return_401_ori_password_wrong(self):
+        data = {"login_name": self.user.login_name, "ori_password": "lll111", "password": "some_password"}
+        ret = self.app.post('/user/change-password', data=json.dumps(data), content_type='application/json')
+        response_data = json.loads(ret.data)
+        self.assertEqual(401, ret.status_code)
+        self.assertFalse(response_data['result'])
+
+    def tearDown(self):
+        User.query.filter(User.login_name == self.user.login_name).delete()
+        db.session.commit()
 
 
 if __name__ == '__main__':

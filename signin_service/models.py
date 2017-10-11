@@ -5,7 +5,6 @@ from random import choice
 from string import ascii_lowercase
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.dialects.mysql import BIGINT
 
 db = SQLAlchemy()
 
@@ -34,7 +33,6 @@ class User(db.Model):
     city = db.Column(db.String(32))
     source = db.Column(db.String(16))
     sign_in_count = db.Column(db.BigInteger())
-    experience_balance = db.Column(BIGINT(unsigned=True), nullable=False)
 
     def __init__(self, mobile, referrer, channel, source):
         self.login_name = self._generate_login_name()
@@ -45,7 +43,6 @@ class User(db.Model):
         self.register_time = datetime.now()
         self.status = 'ACTIVE'
         self.last_modified_time = datetime.now()
-        self.experience_balance = 0
 
     def set_password(self, raw_password):
         self.salt = uuid.uuid4().hex
