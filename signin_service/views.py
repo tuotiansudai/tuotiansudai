@@ -5,7 +5,7 @@ from flask.views import MethodView
 
 import service
 from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm, UserRegisterForm, UserUpdateForm, \
-    UserResetPasswordForm, UserChangePasswordForm
+    UserResetPasswordForm, UserChangePasswordForm, UserExperienceAccountForm
 
 sign_in = Blueprint('sign_in', __name__)
 
@@ -160,3 +160,20 @@ def user_change_password():
             return fail({'message': ex.message}, code=400)
     else:
         return fail({'errors': form.errors}, code=400)
+
+
+@sign_in.route("/user/experience-account", methods=['POST'])
+def user_experience_account():
+    form = UserExperienceAccountForm(data=request.get_json())
+    if form.validate():
+        user_service = service.UserService()
+        try:
+            user_service.experience_account(form)
+            return success()
+        except service.UserNotExistedError:
+            return fail({'message': u'用户不存在'}, code=400)
+        except Exception as ex:
+            return fail({'message': ex.message}, code=400)
+    else:
+        return fail({'errors': form.errors}, code=400)
+
