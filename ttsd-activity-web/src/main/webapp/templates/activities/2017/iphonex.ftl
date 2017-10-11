@@ -1,5 +1,6 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.give_iphonex_2017}" pageJavascript="${js.give_iphonex_2017}" activeNav="" activeLeftNav="" title="不花钱拿走iPhoneX" keywords="拓天速贷,活动中心,iPhoneX,抽奖,现金红包" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
+<@global.main pageCss="${css.give_iphonex_2017}" pageJavascript="${js.give_iphonex_2017}" activeNav="" activeLeftNav="" title="免费送iPhoneX_活动中心_拓天速贷" keywords="拓天速贷,iPhoneX,抽奖,现金奖励" description="拓天速贷不花钱免费送iPhoneX活动,活动期间单笔投资额每满1万元获得一次抽奖机会,累计年化投资额大于100万元可免费获得iPhoneX,不满100万元的用户可获最高1888元现金奖励.
+">
 <div class="phone-banner">
 </div>
 <div class="activity-wrap" id="iphonex">
