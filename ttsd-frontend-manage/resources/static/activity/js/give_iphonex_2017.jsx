@@ -51,7 +51,6 @@ function investOrDraw(){
         ,function(data) {
             $leftDrawCount.text(data);
             if(data == 0){
-
                 $pointerBtn.hide();
                 $investBtn.show();
             }else {
@@ -66,9 +65,7 @@ $.when(commonFun.isUserLogin())
     .done(function () {
         investOrDraw();
     });
-
 //开始抽奖
-
 $pointerBtn.on('click', function(event) {
 
     drawCircleOne.beginLuckDraw(function(data) {
