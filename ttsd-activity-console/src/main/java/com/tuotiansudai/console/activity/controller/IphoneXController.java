@@ -25,7 +25,7 @@ public class IphoneXController {
         modelAndView.addObject("data", activityConsoleIphoneXService.list(index, pageSize));
         BasePaginationDataDto<IphoneXActivityDto> list = activityConsoleIphoneXService.list(1, Integer.MAX_VALUE);
         modelAndView.addObject("sumInvest", list.getRecords().stream().mapToLong(i->AmountConverter.convertStringToCent(i.getSumInvestAmount())).sum());
-        modelAndView.addObject("sumCash", list.getRecords().stream().mapToLong(i->AmountConverter.convertStringToCent(i.getReward())).sum());
+        modelAndView.addObject("sumCash", list.getRecords().stream().filter(i -> !i.getReward().equals("iPhoneX")).mapToLong(i -> AmountConverter.convertStringToCent(i.getReward())).sum());
         modelAndView.addObject("sumAnnualized", list.getRecords().stream().mapToLong(i->AmountConverter.convertStringToCent(i.getSumAnnualizedAmount())).sum());
         return modelAndView;
     }
