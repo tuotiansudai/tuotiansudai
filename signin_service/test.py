@@ -341,46 +341,6 @@ class TestModifyPassword(TestCase):
         db.session.commit()
 
 
-class TestUserExperienceView(TestCase):
-    def setUp(self):
-        self.app = web.app.test_client()
-        self.ori_password = "123abc"
-        self.user = User("13888888888", None, None, 'WEB')
-        self.user.set_password(self.ori_password)
-        db.session.add(self.user)
-        db.session.commit()
-
-    def test_should_account_experience_balance(self):
-        data = {"login_name": self.user.login_name, "bill_amount": "190"}
-        ret = self.app.post('/user/experience-account', data=json.dumps(data), content_type='application/json')
-        response_data = json.loads(ret.data)
-        self.assertEqual(200, ret.status_code)
-        self.assertTrue(response_data['result'])
-
-        user = User.query.filter(User.login_name == self.user.login_name).first()
-        self.assertEqual(190, user.experience_balance)
-
-        data = {"login_name": self.user.login_name, "bill_amount": -90}
-        ret = self.app.post('/user/experience-account', data=json.dumps(data), content_type='application/json')
-        response_data = json.loads(ret.data)
-        self.assertEqual(200, ret.status_code)
-        self.assertTrue(response_data['result'])
-
-        user = User.query.filter(User.login_name == self.user.login_name).first()
-        self.assertEqual(100, user.experience_balance)
-
-    def test_should_return_400_given_user_not_exist(self):
-        data = {"login_name": "some_login_name", "bill_amount": "190"}
-        ret = self.app.post('/user/experience-account', data=json.dumps(data), content_type='application/json')
-        response_data = json.loads(ret.data)
-        self.assertEqual(400, ret.status_code)
-        self.assertFalse(response_data['result'])
-
-    def tearDown(self):
-        User.query.filter(User.login_name == self.user.login_name).delete()
-        db.session.commit()
-
-
 if __name__ == '__main__':
     with web.app.app_context():
         main()

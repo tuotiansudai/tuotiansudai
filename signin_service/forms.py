@@ -104,9 +104,3 @@ class UserResetPasswordForm(wtforms.Form):
 class UserChangePasswordForm(UserResetPasswordForm):
     ori_password = wtforms.StringField('ori_password',
                                        [wtforms.validators.required(), wtforms.validators.Length(min=6, max=20)])
-
-
-class UserExperienceAccountForm(wtforms.Form):
-    login_name = wtforms.StringField('login_name',
-                                     [wtforms.validators.required(), wtforms.validators.Length(min=5, max=25)])
-    bill_amount = wtforms.IntegerField('bill_amount', [wtforms.validators.required()])
