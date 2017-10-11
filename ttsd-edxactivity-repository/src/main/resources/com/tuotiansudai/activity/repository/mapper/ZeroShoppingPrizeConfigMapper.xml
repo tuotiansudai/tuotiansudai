@@ -7,7 +7,7 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
     <resultMap id="zeroShoppingResultMap" type="com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel">
-        <id column="id" property="id"></id>
+        <result column="id" property="id"/>
         <result column="prize" property="prize"/>
         <result column="prize_total" property="prizeTotal"/>
         <result column="prize_surplus" property="prizeSurplus"/>

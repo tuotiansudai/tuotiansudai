@@ -1,15 +1,19 @@
 package com.tuotiansudai.console.activity.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.ZeroShoppingPrizeConfigMapper;
 import com.tuotiansudai.activity.repository.mapper.ZeroShoppingPrizeSelectMapper;
+import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeSelectModel;
+import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeSelectView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ActivityConsoleZeroShoppingService {
@@ -28,9 +32,10 @@ public class ActivityConsoleZeroShoppingService {
         zeroShoppingPrizeConfigMapper.update(zeroShoppingPrizeConfigModel);
     }
 
-    public BasePaginationDataDto<ZeroShoppingPrizeSelectModel> userPrizeList(int index, int pageSize, String mobile, Date startTime, Date endTime) {
+    public BasePaginationDataDto<ZeroShoppingPrizeSelectView> userPrizeList(int index, int pageSize, String mobile, Date startTime, Date endTime) {
         List<ZeroShoppingPrizeSelectModel> zeroShoppingPrizeSelectModels = zeroShoppingPrizeSelectMapper.findByMobileAndDate(mobile, startTime, endTime);
-        int count = zeroShoppingPrizeSelectModels.size();
+        List<ZeroShoppingPrizeSelectView> zeroShoppingPrizeSelectViews = zeroShoppingPrizeSelectModels.stream().map(i->new ZeroShoppingPrizeSelectView(i)).collect(Collectors.toList());
+        int count = zeroShoppingPrizeSelectViews.size();
         int endIndex = pageSize * index;
         int startIndex = (index - 1) * 10;
         if (count <= endIndex) {
@@ -39,7 +44,7 @@ public class ActivityConsoleZeroShoppingService {
         if (count < startIndex) {
             startIndex = count;
         }
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, zeroShoppingPrizeSelectModels.subList(startIndex, endIndex));
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, zeroShoppingPrizeSelectViews.subList(startIndex, endIndex));
         return basePaginationDataDto;
     }
 }

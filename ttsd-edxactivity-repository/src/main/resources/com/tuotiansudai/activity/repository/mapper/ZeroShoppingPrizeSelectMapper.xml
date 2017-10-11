@@ -6,28 +6,33 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="zeroShoppingResultMap" type="com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeSelectModel">
-        <id column="id" property="id"></id>
-        <result column="mobile" property="mobile"/>
+    <resultMap id="zeroShoppingSelectResultMap" type="com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeSelectModel">
         <result column="user_name" property="userName"/>
-        <result column="invest_amount" property="investAmount"/>
+        <result column="mobile" property="mobile"/>
         <result column="invest_amount" property="investAmount"/>
         <result column="select_prize" property="selectPrize"/>
         <result column="invest_time" property="investTime"/>
     </resultMap>
 
-    <select id="findByMobileAndDate" parameterType="map" resultMap="zeroShoppingResultMap">
-        SELECT * FROM `edxactivity`.`zero_shopping_prize_select`
-        WHERE
-        <if test="mobile != null and mobile !=''">
-            and mobile =#{mobile}
-        </if>
-        <if test="startTime != null">
-            and invest_time >= #{startTime}
-        </if>
-        <if test="endTime != null">
-            <![CDATA[ and invest_time <= #{endTime} ]]>
-        </if>
+    <insert id="create" parameterType="zeroShoppingPrizeSelectModel" useGeneratedKeys="true" keyProperty="id">
+        insert into zero_shopping_prize_select(mobile,user_name,invest_amount,select_prize,invest_time)
+               VALUES (#{mobile},#{userName},#{investAmount},#{selectPrize},#{investTime})
+    </insert>
+
+    <select id="findByMobileAndDate" parameterType="map" resultMap="zeroShoppingSelectResultMap">
+        SELECT user_name, mobile, invest_amount, select_prize, invest_time  FROM `edxactivity`.`zero_shopping_prize_select`
+        <where>
+            <if test="mobile != null and mobile !=''">
+                and mobile =#{mobile}
+            </if>
+            <if test="startTime != null">
+                and invest_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and invest_time <= #{endTime} ]]>
+            </if>
+        </where>
+        order by invest_time DESC
     </select>
 
 </mapper>

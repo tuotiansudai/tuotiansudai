@@ -4,6 +4,8 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.console.activity.service.ActivityConsoleZeroShoppingService;
+import com.tuotiansudai.util.CalculateUtil;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -30,8 +32,9 @@ public class ZeroShoppingController {
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
 
         ModelAndView modelAndView = new ModelAndView("/zero-shopping-select-list");
-        modelAndView.addObject("data", activityConsoleZeroShoppingService.userPrizeList(index, pageSize, mobile, startTime, endTime));
-        modelAndView.addObject("prizeTypes", ZeroShoppingPrize.getTaskZeroShoppingPrize());
+        modelAndView.addObject("data", activityConsoleZeroShoppingService.userPrizeList(index, pageSize, mobile,
+                startTime == null ? null : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? null : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()));
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);

@@ -1,5 +1,5 @@
 CREATE TABLE `zero_shopping_prize_select` (
-  `id`               BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`               INT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mobile`           VARCHAR(11)         NOT NULL,
   `user_name`        VARCHAR(50),
   `invest_amount`    BIGINT(20)          DEFAULT '0',
