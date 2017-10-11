@@ -33,7 +33,7 @@ public enum UserBillBusinessType {
     MEMBERSHIP_PRIVILEGE_PURCHASE("增值特权购买"),
     HUI_ZU_REPAY_IN("慧租租金还款"),
     CREDIT_LOAN_ACTIVATE_ACCOUNT("慧租一分钱激活账户"),
-    CREDIT_LOAN_TRANSFER_AGENT("信用贷转账给代理人"),
+    CREDIT_LOAN_TRANSFER_AGENT("发放代理人账户"),
     CREDIT_LOAN_RECHARGE("信用贷账户充值"),
     CREDIT_LOAN_OUT("信用贷放款"),
     CREDIT_LOAN_REPAY("信用贷还款");

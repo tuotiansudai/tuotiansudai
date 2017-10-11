@@ -30,16 +30,6 @@
         select ifnull(balance, 0) from credit_loan_bill order by id desc limit 1
     </select>
 
-    <select id="findSumAmountByIn" resultType="long">
-        select IFNULL(SUM(amount),0) from credit_loan_bill
-        where operation_type= 'IN'
-    </select>
-
-    <select id="findSumAmountByOut" resultType="long">
-        select IFNULL(SUM(amount),0) from credit_loan_bill
-        where operation_type= 'OUT'
-    </select>
-
     <select id="findCreditLoanBillPagination" parameterType="map" resultMap="creditLoanBillResultMap">
         select * from credit_loan_bill
         <where>
