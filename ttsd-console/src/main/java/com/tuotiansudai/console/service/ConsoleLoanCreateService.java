@@ -163,13 +163,7 @@ public class ConsoleLoanCreateService {
             loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
         }
 
-        if (loanModel.getPledgeType() == loanCreateRequestDto.getLoan().getPledgeType())
-        {
-            loanCreateRequestDto.getLoan().setName(loanCreateRequestDto.getLoan().getName() + loanNameSeq);
-        }
-        else{
-            loanCreateRequestDto.getLoan().setName(generateLoanName(loanCreateRequestDto.getLoan().getName(),loanCreateRequestDto.getLoan().getPledgeType()));
-        }
+        loanCreateRequestDto.getLoan().setName(loanModel.getPledgeType() == loanCreateRequestDto.getLoan().getPledgeType() ? loanCreateRequestDto.getLoan().getName() + loanNameSeq : generateLoanName(loanCreateRequestDto.getLoan().getName(), loanCreateRequestDto.getLoan().getPledgeType()));
 
         loanMapper.update(loanModel.updateLoan(loanCreateRequestDto));
 
@@ -270,7 +264,7 @@ public class ConsoleLoanCreateService {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             List<LoanCreatePledgeEnterpriseRequestDto> loanCreatePledgeEnterpriseRequestDtoList = pledgeEnterpriseMapper.getByLoanId(loanId).stream()
                     .map(n -> new LoanCreatePledgeEnterpriseRequestDto(n)).collect(Collectors.toList());
-             loanCreateRequestDto.setPledgeEnterprise(loanCreatePledgeEnterpriseRequestDtoList);
+            loanCreateRequestDto.setPledgeEnterprise(loanCreatePledgeEnterpriseRequestDtoList);
         }
         if (PledgeType.ENTERPRISE_CREDIT == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
