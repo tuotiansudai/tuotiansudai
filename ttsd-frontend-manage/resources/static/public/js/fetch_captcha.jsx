@@ -2,6 +2,8 @@
 let commonFun= require('publicJs/commonFun');
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm');
 let $imageCaptchaForm =$(imageCaptchaForm);
+let isVoice = false;
+let $voiceCaptcha = $('#voice_captcha');
 //获取手机验证
 let $captchaSubmit=$('.image-captcha-confirm',$imageCaptchaForm),
     $imageCaptchaText=$('.image-captcha-text',$imageCaptchaForm),
@@ -79,7 +81,8 @@ class fetchCaptchaFun{
                  ajaxOption={
                      url: '/register/user/send-register-captcha',
                      type:'POST',
-                     data:$imageCaptchaForm.serialize()
+                     data:$imageCaptchaForm.serialize()+'&isVoice='+isVoice
+                     // data:$imageCaptchaForm.serialize()
                  };
                 captchaSrc='/register/user/image-captcha';
             }
@@ -91,7 +94,9 @@ class fetchCaptchaFun{
                 captchaSrc='/mobile-retrieve-password/image-captcha';
             }
         commonFun.useAjax(ajaxOption,function(responseData) {
+            console.log(ajaxOption.data);
                 $captchaSubmit.prop('disabled',false);
+                $voiceCaptcha.hide();
                 //刷新验证码
                 commonFun.refreshCaptcha($imageCaptcha[0], captchaSrc);
 
@@ -100,7 +105,11 @@ class fetchCaptchaFun{
                     //获取手机验证码成功，关闭弹框，并开始倒计时
                     layer.closeAll();
                     commonFun.countDownLoan({
-                        btnDom:$fetchCaptcha
+                        btnDom:$fetchCaptcha,
+                        isAfterText:'语音验证码'
+                    },function(){
+                        isVoice = true;
+                        $voiceCaptcha.show();
                     });
 
                 } else if (!data.status && data.isRestricted) {

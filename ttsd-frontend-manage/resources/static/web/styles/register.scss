@@ -43,7 +43,7 @@
     height: auto;
     overflow: auto;
     @media (min-width:701px) and (max-width:999px) {
-      width: 500px;
+      width: 522px;
       position: relative;
       left: 50%;
       margin-left: -170px;
@@ -76,7 +76,22 @@
         height: auto;
         color: #999;
         position: relative;
-
+        .voice-captcha {
+          //position: absolute;
+          //left: 350px;
+          //top: 10px;
+          //width: 175px;
+          display: block;
+          line-height: 30px;
+          @media screen and (max-width: 700px) {
+            position: static;
+           display: block;
+            line-height: 30px;
+          }
+          a {
+            color: #ff9c1b;
+          }
+        }
         .reg-title {
           width:60px;
           padding-right: 3px;
@@ -95,6 +110,7 @@
             letter-spacing: 0;
             position: absolute;
             right: 281px;
+            //right: 0px;
             top: 2px;
             font-size: 14px;
             border: 0;
@@ -102,7 +118,9 @@
             color: #fff;
             cursor: pointer;
             @media (min-width:701px) and (max-width:999px) {
-              right:120px;
+              //right:120px;
+             // right:0px;
+              right:140px;
             }
             &[disabled] {
               cursor: default;
