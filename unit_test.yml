@@ -1,5 +1,6 @@
 test-db-server:
   image: "ywatase/test-docker-mysql"
+  container_name: test-db-server
   ports:
     - "$UT_DB_PORT:3306"
   volumes:
@@ -8,5 +9,6 @@ test-db-server:
 
 test-redis-server:
   image: "grokzen/redis-cluster"
+  container_name: test-redis-server
   ports:
     - "$UT_REDIS_PORT:7006"
