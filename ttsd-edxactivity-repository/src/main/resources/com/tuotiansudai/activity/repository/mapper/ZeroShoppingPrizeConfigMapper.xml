@@ -15,10 +15,10 @@
 
     <update id="update" parameterType="zeroShoppingPrizeConfigModel">
         UPDATE `edxactivity`.`zero_shopping_prize_config` SET
-        `prize_total`= #{prizeTotal},
-        `prize_surplus`= #{prizeSurplus},
+        prize_total= #{prizeTotal},
+        prize_surplus= #{prizeSurplus}
         WHERE
-        `id` = #{id}
+        id = #{id}
     </update>
 
     <select id="findAll" resultMap="zeroShoppingResultMap">

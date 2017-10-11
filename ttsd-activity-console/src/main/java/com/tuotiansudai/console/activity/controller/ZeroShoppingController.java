@@ -9,10 +9,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -49,9 +46,10 @@ public class ZeroShoppingController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "zero-shopping/update-prize-count", method = RequestMethod.POST)
-    public ModelAndView updatePrizeCount(@RequestBody ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel){
+    @ResponseBody
+    @RequestMapping(value = "zero-shopping/update-prize-count", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    public ZeroShoppingPrizeConfigModel updatePrizeCount(@RequestBody ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel){
         activityConsoleZeroShoppingService.updatePrizeCount(zeroShoppingPrizeConfigModel);
-        return new ModelAndView("redirect:config-prize-list");
+        return zeroShoppingPrizeConfigModel;
     }
 }

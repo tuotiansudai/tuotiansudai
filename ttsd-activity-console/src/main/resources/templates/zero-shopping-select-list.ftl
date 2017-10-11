@@ -65,7 +65,7 @@
         </table>
     </div>
 
-    <a href="/activity-console/activity-manage/zero-shopping" class="form-control" style="width: 200px">请点击此处导出EXCEl</a>
+    <a href="/activity-console/activity-manage/zero-shopping" class="form-control" style="width: 170px">请点击此处导出EXCEl</a><br/>
 
     <!-- pagination  -->
     <nav class="pagination-control">

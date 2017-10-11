@@ -7,8 +7,8 @@ import java.util.Date;
 
 public class ZeroShoppingPrizeSelectView implements Serializable{
 
-    private String mobile;
     private String userName;
+    private String mobile;
     private String investAmount;
     private String selectPrize;
     private Date investTime;
@@ -17,8 +17,8 @@ public class ZeroShoppingPrizeSelectView implements Serializable{
     }
 
     public ZeroShoppingPrizeSelectView(ZeroShoppingPrizeSelectModel zeroShoppingPrizeSelectModel) {
-        this.mobile = zeroShoppingPrizeSelectModel.getMobile();
         this.userName = zeroShoppingPrizeSelectModel.getUserName();
+        this.mobile = zeroShoppingPrizeSelectModel.getMobile();
         this.investAmount = AmountConverter.convertCentToString(zeroShoppingPrizeSelectModel.getInvestAmount());
         this.selectPrize = zeroShoppingPrizeSelectModel.getSelectPrize().getDescription();
         this.investTime = zeroShoppingPrizeSelectModel.getInvestTime();
