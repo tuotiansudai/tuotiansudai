@@ -38,7 +38,7 @@ class UTRunner(object):
         print "Starting test..."
         sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} clean compileJava ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog test'.format(
                 self.db_host, self.db_port, self.redis_host, self.redis_port))
-        sh('docker run -v `pwd`/signin_service:/app --rm leoshi/ttsd-signin-flask python test.py')
+        sh('docker run -v `pwd`/signin_service:/app --rm --net=bridge --link test-db-server --link test-redis-server leoshi/ttsd-signin-flask python test.py')
 
     def clean_env(self):
         self._remove_old_container()
