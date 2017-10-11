@@ -1148,4 +1148,21 @@
         GROUP BY loan_details.activity_desc, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
 
+    <select id="findSuccessByLoginNameDoubleElevenActivity" parameterType="map" resultMap="investResultMap">
+        SELECT invest.*
+        FROM invest
+        JOIN loan ON invest.loan_id = loan.id
+        JOIN loan_details ON invest.loan_id = loan_details.loan_id
+        WHERE invest.login_name = #{loginName}
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND loan.activity_type!='NEWBIE'
+        AND loan.id!='1'
+        AND loan_details.activity_desc!='0元购'
+        AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
+        ORDER BY trading_time ASC
+    </select>
+
+
+
 </mapper>

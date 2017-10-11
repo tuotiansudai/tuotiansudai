@@ -144,6 +144,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.school.season.endTime}")
     private String activitySchoolSeasonEndTime;
 
+    @Value(value = "${activity.double.eleven.startTime}")
+    private String activityDoubleElevenStartTime;
+
+    @Value(value = "${activity.double.eleven.endTime}")
+    private String activityDoubleElevenEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
