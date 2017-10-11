@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ZeroShoppingPrizeSelectMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="zeroShoppingResultMap" type="com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeSelectModel">
+        <id column="id" property="id"></id>
+        <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="select_prize" property="selectPrize"/>
+        <result column="invest_time" property="investTime"/>
+    </resultMap>
+
+    <select id="findByMobileAndDate" parameterType="map" resultMap="zeroShoppingResultMap">
+        SELECT * FROM `edxactivity`.`zero_shopping_prize_select`
+        WHERE
+        <if test="mobile != null and mobile !=''">
+            and mobile =#{mobile}
+        </if>
+        <if test="startTime != null">
+            and invest_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and invest_time <= #{endTime} ]]>
+        </if>
+    </select>
+
+</mapper>
