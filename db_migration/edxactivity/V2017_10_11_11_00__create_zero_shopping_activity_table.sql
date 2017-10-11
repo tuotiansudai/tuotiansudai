@@ -18,8 +18,8 @@ CREATE TABLE `zero_shopping_prize_config` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('Medihea_Mask');
-INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('Thailand_VIP');
+INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('Deerma_humidifier');
+INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('Trolley_case');
 INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('Philips_Shaver');
 INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('SK_II');
 INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('XiaoMi_5X');

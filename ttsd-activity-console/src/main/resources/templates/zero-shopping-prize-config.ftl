@@ -26,7 +26,7 @@
                 <#list data as item>
                 <tr>
                     <td>${item.prize.description}</td>
-                    <td>0</td>
+                    <td>${item.prize.marketPrice/100}</td>
                     <td>投资满${item.prize.investPrice/100}</td>
                     <td>${item.prizeTotal}</td>
                     <td>${item.prizeSurplus}</td>
