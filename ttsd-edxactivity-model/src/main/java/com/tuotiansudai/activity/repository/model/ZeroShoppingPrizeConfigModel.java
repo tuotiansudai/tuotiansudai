@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.repository.model;
 
 import java.io.Serializable;
 
-public class ZeroShoppingPrizeConfigModel implements Serializable{
+public class ZeroShoppingPrizeConfigModel implements Serializable {
 
     private long id;
     private ZeroShoppingPrize prize;

@@ -4,16 +4,20 @@
 
 <div class="col-md-10">
     <div class="panel panel-default">
-    <div class="panel-body">
-        <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/user-prize-list" role="button">"0"元购获奖记录</a>
-        <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/config-prize-list" role="button">奖品管理</a>
+        <div class="panel-body">
+            <a class="btn btn-default btn-primary"
+               href="/activity-console/activity-manage/zero-shopping/user-prize-list" role="button">"0"元购获奖记录</a>
+            <a class="btn btn-default btn-primary"
+               href="/activity-console/activity-manage/zero-shopping/config-prize-list" role="button">奖品管理</a>
+        </div>
     </div>
-</div>
 
-    <form action="/activity-console/activity-manage/zero-shopping/user-prize-list" class="form-inline query-build" method="get">
+    <form action="/activity-console/activity-manage/zero-shopping/user-prize-list" class="form-inline query-build"
+          method="get">
         <div class="form-group">
             <label for="mobile">手机号</label>
-            <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}">
+            <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*"
+                   autocomplete="off" value="${mobile!}">
         </div>
 
         <div class="form-group">
@@ -76,7 +80,8 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index-1}" aria-label="Previous">
+                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index-1}"
+                           aria-label="Previous">
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
                     </#if>
@@ -84,7 +89,8 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index+1}" aria-label="Previous">
+                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index+1}"
+                           aria-label="Previous">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>
                     </#if>

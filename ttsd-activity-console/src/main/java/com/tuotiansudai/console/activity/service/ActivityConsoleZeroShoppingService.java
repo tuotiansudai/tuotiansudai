@@ -24,17 +24,17 @@ public class ActivityConsoleZeroShoppingService {
     @Autowired
     private ZeroShoppingPrizeSelectMapper zeroShoppingPrizeSelectMapper;
 
-    public List<ZeroShoppingPrizeConfigModel> getAllPrize(){
+    public List<ZeroShoppingPrizeConfigModel> getAllPrize() {
         return zeroShoppingPrizeConfigMapper.findAll();
     }
 
-    public void updatePrizeCount(ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel){
+    public void updatePrizeCount(ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel) {
         zeroShoppingPrizeConfigMapper.update(zeroShoppingPrizeConfigModel);
     }
 
     public BasePaginationDataDto<ZeroShoppingPrizeSelectView> userPrizeList(int index, int pageSize, String mobile, Date startTime, Date endTime) {
         List<ZeroShoppingPrizeSelectModel> zeroShoppingPrizeSelectModels = zeroShoppingPrizeSelectMapper.findByMobileAndDate(mobile, startTime, endTime);
-        List<ZeroShoppingPrizeSelectView> zeroShoppingPrizeSelectViews = zeroShoppingPrizeSelectModels.stream().map(i->new ZeroShoppingPrizeSelectView(i)).collect(Collectors.toList());
+        List<ZeroShoppingPrizeSelectView> zeroShoppingPrizeSelectViews = zeroShoppingPrizeSelectModels.stream().map(i -> new ZeroShoppingPrizeSelectView(i)).collect(Collectors.toList());
         int count = zeroShoppingPrizeSelectViews.size();
         int endIndex = pageSize * index;
         int startIndex = (index - 1) * 10;

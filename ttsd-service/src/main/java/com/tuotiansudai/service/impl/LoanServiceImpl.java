@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +56,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
+    private Date activityZeroShoppingStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.endTime}\")}")
+    private Date activityZeroShoppingEndTime;
 
     @Override
     public LoanModel findLoanById(long loanId) {
@@ -124,6 +132,19 @@ public class LoanServiceImpl implements LoanService {
         index = (index - 1) * 10;
 
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd, durationStart, durationEnd, index);
+
+        List<LoanModel> activityLoanModels = new ArrayList<>();
+        for (LoanModel loanModel : loanModels) {
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+            if (!activityZeroShoppingStartTime.after(loanModel.getFundraisingStartTime())
+                    && !loanModel.getFundraisingStartTime().after(activityZeroShoppingEndTime)
+                    && loanDetailsModel != null
+                    && loanDetailsModel.getActivityDesc() != null
+                    && loanDetailsModel.getActivityDesc().equals("0元购")) {
+                activityLoanModels.add(loanModel);
+            }
+        }
+        Iterables.removeAll(loanModels, activityLoanModels);
 
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
@@ -209,6 +230,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd) {
-        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd);
+        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd) - loanMapper.findByActivityDescIsActivity(name, status, rateStart, rateEnd, durationStart, durationEnd, activityZeroShoppingStartTime, activityZeroShoppingEndTime).size();
     }
 }

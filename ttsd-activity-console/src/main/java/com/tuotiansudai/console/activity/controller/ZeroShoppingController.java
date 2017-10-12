@@ -26,7 +26,7 @@ public class ZeroShoppingController {
                                         @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         ModelAndView modelAndView = new ModelAndView("/zero-shopping-select-list");
         modelAndView.addObject("data", activityConsoleZeroShoppingService.userPrizeList(index, pageSize, mobile,
@@ -39,7 +39,7 @@ public class ZeroShoppingController {
     }
 
     @RequestMapping(value = "zero-shopping/config-prize-list", method = RequestMethod.GET)
-    public ModelAndView selectPrizeList(){
+    public ModelAndView selectPrizeList() {
         ModelAndView modelAndView = new ModelAndView("/zero-shopping-prize-config");
         modelAndView.addObject("data", activityConsoleZeroShoppingService.getAllPrize());
         modelAndView.addObject("prizeTypes", ZeroShoppingPrize.getTaskZeroShoppingPrize());
@@ -48,7 +48,7 @@ public class ZeroShoppingController {
 
     @ResponseBody
     @RequestMapping(value = "zero-shopping/update-prize-count", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    public ZeroShoppingPrizeConfigModel updatePrizeCount(@RequestBody ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel){
+    public ZeroShoppingPrizeConfigModel updatePrizeCount(@RequestBody ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel) {
         activityConsoleZeroShoppingService.updatePrizeCount(zeroShoppingPrizeConfigModel);
         return zeroShoppingPrizeConfigModel;
     }

@@ -5,8 +5,10 @@
 <div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
-            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/user-prize-list" role="button">"0"元购获奖记录</a>
-            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/zero-shopping/config-prize-list" role="button">奖品管理</a>
+            <a class="btn btn-default btn-primary"
+               href="/activity-console/activity-manage/zero-shopping/user-prize-list" role="button">"0"元购获奖记录</a>
+            <a class="btn btn-default btn-primary"
+               href="/activity-console/activity-manage/zero-shopping/config-prize-list" role="button">奖品管理</a>
         </div>
     </div>
 
@@ -50,7 +52,8 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">更新奖品数量</h4>
             </div>
-            <form data-toggle="validator" method="POST" id="updatePrizeCountForm" action="/activity-console/activity-manage/zero-shopping/update-prize-count">
+            <form data-toggle="validator" method="POST" id="updatePrizeCountForm"
+                  action="/activity-console/activity-manage/zero-shopping/update-prize-count">
                 <input id="id" type="hidden" name="id" value="">
                 <div class="modal-body">
                     <div class="modal-body">

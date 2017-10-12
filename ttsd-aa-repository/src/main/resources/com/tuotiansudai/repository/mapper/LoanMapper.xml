@@ -701,4 +701,34 @@
         </if>
     </select>
 
+    <select id="findByActivityDescIsActivity" resultMap="loanResultMap">
+        SELECT * FROM loan l join loan_details ld on l.id = ld.loan_id
+        AND ld.activity_desc = '0元购'
+        AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
+        <if test="name !=null and name != ''">
+            and l.name LIKE CONCAT(CONCAT('%', #{name}),'%')
+        </if>
+        <if test="status != null">
+            and l.status = #{status}
+        </if>
+        <if test="status == null">
+            and l.status != 'WAITING_VERIFY' and l.status != 'CANCEL'
+        </if>
+        <if test="rateStart != 0">
+            <if test="rateEnd !=0">
+                <![CDATA[ and (l.base_rate + l.activity_rate) >=  #{rateStart} ]]>
+            </if>
+            <if test="rateEnd ==0">
+                <![CDATA[ and (l.base_rate + l.activity_rate) >  #{rateStart} ]]>
+            </if>
+
+        </if>
+        <if test="rateEnd != 0">
+            <![CDATA[ and (l.base_rate + l.activity_rate) <=  #{rateEnd} ]]>
+        </if>
+        <if test="durationStart != 0 and durationEnd != 0">
+            and l.duration BETWEEN #{durationStart} and #{durationEnd}
+        </if>
+    </select>
+
 </mapper>

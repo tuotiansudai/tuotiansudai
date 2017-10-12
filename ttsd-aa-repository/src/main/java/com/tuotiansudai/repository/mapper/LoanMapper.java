@@ -105,4 +105,12 @@ public interface LoanMapper {
 
     long findLoanCountByYear(@Param(value = "createdTime") String createdTime, @Param(value = "pledgeType") PledgeType pledgeType);
 
+    List<LoanModel> findByActivityDescIsActivity(@Param(value = "name") String name,
+                                                 @Param(value = "status") LoanStatus status,
+                                                 @Param(value = "rateStart") double rateStart,
+                                                 @Param(value = "rateEnd") double rateEnd,
+                                                 @Param(value = "durationStart") int durationStart,
+                                                 @Param(value = "durationEnd") int durationEnd,
+                                                 @Param(value = "activityStartTime") Date activityStartTime,
+                                                 @Param(value = "activityEndTime") Date activityEndTime);
 }
