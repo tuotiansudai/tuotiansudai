@@ -53,6 +53,7 @@ function activityStatus(nowDay) {
         //礼物图片静态
         let oLotteryUrl = require('../images/2017/mid-national/gift.png');
         let $gift = $activityPageFrame.find('.big-lottery-con');
+        $gift.html('');
         $gift.append(`<img src="${oLotteryUrl}">`);
         $bigLottery.hide();
 

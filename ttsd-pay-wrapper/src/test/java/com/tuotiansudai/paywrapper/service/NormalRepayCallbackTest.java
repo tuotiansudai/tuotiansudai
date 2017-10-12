@@ -1,17 +1,21 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
+import org.hamcrest.CoreMatchers;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -62,6 +66,8 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
     @Autowired
     private MembershipMapper membershipMapper;
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Test
     public void shouldCallbackFirstPeriodWhenLoanIsRepaying() throws Exception {
         UserModel loaner = this.getFakeUser("loaner");
@@ -77,8 +83,6 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMembershipMapper.create(userMembershipModel);
 
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
-
-
 
         LoanModel loan = this.getFakeNormalLoan(IdGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
@@ -98,13 +102,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay1.getActualInterest()));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay1.getActualInterest(), UserBillBusinessType.NORMAL_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
@@ -175,13 +175,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepayTransferee2.setCorpus(investTransferee.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay1.getActualInterest()));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay1.getActualInterest(), UserBillBusinessType.NORMAL_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
@@ -196,8 +192,6 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepayTransferrer1.getActualFee(), is(is(0L)));
         assertNull(actualInvestRepayTransferrer1.getActualRepayDate());
         assertThat(actualInvestRepayTransferrer1.getStatus(), is(RepayStatus.COMPLETE));
-
-
     }
 
     @Test
@@ -238,13 +232,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay2.getCorpus() + loanRepay2ExpectedInterest));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay2.getCorpus() + loanRepay2ExpectedInterest, UserBillBusinessType.NORMAL_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay2.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
@@ -318,13 +308,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay2.getCorpus() + loanRepay2ExpectedInterest));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay2.getCorpus() + loanRepay2ExpectedInterest, UserBillBusinessType.NORMAL_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay2.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
@@ -341,6 +327,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepayTransferrer2.getStatus(), is(RepayStatus.COMPLETE));
 
     }
+
 
     @Test
     public void shouldCallbackOverdueWhenOnePeriodIsOverdue() throws Exception {
@@ -380,13 +367,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(IdGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay1ExpectedInterest + loanRepay1OverdueInterest));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay1ExpectedInterest + loanRepay1OverdueInterest, UserBillBusinessType.OVERDUE_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
@@ -396,6 +379,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepay1.getActualRepayDate(), is(loanRepay1.getActualRepayDate()));
         assertThat(actualInvestRepay1.getStatus(), is(RepayStatus.WAIT_PAY));
     }
+
     @Test
     public void shouldCallbackOverdueWhenOnePeriodIsOverdueTransfer() throws Exception {
         UserModel loaner = this.getFakeUser("loaner");
@@ -451,13 +435,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepayTransferee2 = new InvestRepayModel(IdGenerator.generate(), investTransferee.getId(), 2, investTransferee.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay1ExpectedInterest + loanRepay1OverdueInterest));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay1ExpectedInterest + loanRepay1OverdueInterest, UserBillBusinessType.OVERDUE_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
@@ -513,13 +493,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay2.getCorpus() + loanRepay1ExpectedInterest + loanRepay2ExpectedInterest + loanRepay1OverdueInterest));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay2.getCorpus() + loanRepay1ExpectedInterest + loanRepay2ExpectedInterest + loanRepay1OverdueInterest, UserBillBusinessType.OVERDUE_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
         assertNotNull(loanRepayMapper.findById(loanRepay1.getId()).getActualRepayDate());
@@ -589,13 +565,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(),"project_transfer_notify"), "");
+        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId(), "project_transfer_notify"), "");
 
-        List<UserBillModel> userBills = userBillMapper.findByLoginName(loaner.getLoginName());
-        assertThat(userBills.size(), is(1));
-        assertThat(userBills.get(0).getAmount(), is(loanRepay2.getCorpus() + loanRepay1ExpectedInterest + loanRepay2ExpectedInterest + loanRepay1OverdueInterest));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        verifyAmountTransferMessage(loan, loanRepay2.getCorpus() + loanRepay1ExpectedInterest + loanRepay2ExpectedInterest + loanRepay1OverdueInterest, UserBillBusinessType.OVERDUE_REPAY);
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
         assertNotNull(loanRepayMapper.findById(loanRepay1.getId()).getActualRepayDate());
@@ -612,6 +584,15 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepayTransferee2.getActualFee(), is(0l));
         assertNull(actualInvestRepayTransferee2.getActualRepayDate());
         assertThat(actualInvestRepayTransferee2.getStatus(), is(RepayStatus.COMPLETE));
-
     }
+
+    private void verifyAmountTransferMessage(LoanModel loan, long amount, UserBillBusinessType businessType) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+        assertThat(message.getLoginName(), CoreMatchers.is(loan.getAgentLoginName()));
+        assertThat(message.getAmount(), CoreMatchers.is(amount));
+        assertThat(message.getBusinessType(), CoreMatchers.is(businessType));
+        assertThat(message.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+    }
+
 }
