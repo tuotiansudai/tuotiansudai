@@ -10,6 +10,8 @@ public class PayFormDataDto extends BaseDataDto {
 
     private Map<String, String> fields = Maps.newHashMap();
 
+    private String code;
+
     public String getMessage() {
         return message;
     }
@@ -32,5 +34,13 @@ public class PayFormDataDto extends BaseDataDto {
 
     public void setFields(Map<String, String> fields) {
         this.fields = fields;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

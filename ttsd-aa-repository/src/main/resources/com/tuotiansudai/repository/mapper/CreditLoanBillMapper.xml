@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.CreditLoanBillMapper">
+
+    <resultMap id="creditLoanBillResultMap" type="CreditLoanBillModel">
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="amount" property="amount"/>
+        <result column="balance" property="balance"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="business_type" property="businessType"/>
+        <result column="mobile" property="mobile"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="CreditLoanBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into credit_loan_bill (amount, balance, operation_type, created_time, order_id, business_type, mobile)
+        value(#{amount}, #{balance}, #{operationType}, #{createdTime}, #{orderId}, #{businessType}, #{mobile})
+    </insert>
+
+    <select id="findByOrderIdAndBusinessType" resultMap="creditLoanBillResultMap" parameterType="map">
+        select * from credit_loan_bill
+        where order_id = #{orderId}
+        and business_type = #{businessType}
+    </select>
+
+    <select id="findBalance" resultType="long">
+        select ifnull(balance, 0) from credit_loan_bill order by id desc limit 1
+    </select>
+
+    <select id="findCreditLoanBillPagination" parameterType="map" resultMap="creditLoanBillResultMap">
+        select * from credit_loan_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCreditLoanBillCount" parameterType="map" resultType="int">
+        select count(1) from credit_loan_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type  = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumCreditLoanIncome" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from credit_loan_bill
+        <where>
+            operation_type = 'IN'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumCreditLoanExpend" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from credit_loan_bill
+        <where>
+            operation_type = 'OUT'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+            <if test="orderId !=null and orderId !=''">
+                and order_id = #{orderId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

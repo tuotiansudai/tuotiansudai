@@ -94,6 +94,20 @@ public class ExportService {
         return rows;
     }
 
+    public List<List<String>> buildCreditLoanBillCsvData(List<CreditLoanBillPaginationItemDataDto> CreditLoanBillPaginationItemDataDtos) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (CreditLoanBillPaginationItemDataDto creditLoanBillPaginationItemDataDto : CreditLoanBillPaginationItemDataDtos) {
+            List<String> row = Lists.newArrayList();
+            row.add(new DateTime(creditLoanBillPaginationItemDataDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(creditLoanBillPaginationItemDataDto.getOrderId());
+            row.add(creditLoanBillPaginationItemDataDto.getOperationType());
+            row.add(creditLoanBillPaginationItemDataDto.getBusinessType());
+            row.add(creditLoanBillPaginationItemDataDto.getAmount());
+            rows.add(row);
+        }
+        return rows;
+    }
+
     public List<List<String>> buildCouponExchangeCsvData(List<ExchangeCouponDto> exchangeCouponDtos) {
         List<List<String>> rows = Lists.newArrayList();
         for (ExchangeCouponDto exchangeCouponDto : exchangeCouponDtos) {
