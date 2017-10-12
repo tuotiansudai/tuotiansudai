@@ -43,7 +43,7 @@ class fetchCaptchaFun{
         let that =this;
         that.getCaptchaOrCancel();
         //点击获取验证码
-        $('#fetchCaptcha,#voice_captcha').on('click',function() {
+        $('#fetchCaptcha,#voice_btn').on('click',function() {
             commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');

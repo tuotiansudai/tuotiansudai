@@ -1,4 +1,23 @@
 //Personal Info Page
+.voice-captcha {
+  width: 94px;
+  color: #999;
+  text-align: left;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 12px;
+  line-height: 16px;
+  a {
+    color: #ff9c1b;
+  }
+}
+.img-captcha {
+  width: 134px;
+}
+.sms-captcha {
+  width: 134px;
+}
 .personal-info {
   .info-list {
     color: #797979;
