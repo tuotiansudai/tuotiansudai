@@ -282,9 +282,9 @@ class UserService(object):
                 return User.lookup_field(django_like_order_by)
 
         def __generate_result(_data):
-            if form.fields.data:  # result.items is a list of tuple
+            if form.fields.data:  # data is a list of tuple, if given select field
                 return [dict(zip(form.fields.data, row)) for row in _data]
-            else:  # result.items is a list of User object
+            else:  # data is a list of User object, otherwise
                 return [u.as_dict() for u in _data]
 
         qs = _build_query_where(User.query)
