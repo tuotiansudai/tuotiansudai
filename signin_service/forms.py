@@ -104,3 +104,37 @@ class UserResetPasswordForm(wtforms.Form):
 class UserChangePasswordForm(UserResetPasswordForm):
     ori_password = wtforms.StringField('ori_password',
                                        [wtforms.validators.required(), wtforms.validators.Length(min=6, max=20)])
+
+
+class CommaSeparatedField(wtforms.Field):
+    widget = wtforms.widgets.TextInput()
+
+    def _value(self):
+        if self.data:
+            return u', '.join(self.data)
+        else:
+            return u''
+
+    def process_formdata(self, value):
+        if value:
+            self.data = [x.strip() for x in value[0].split(',')]
+        else:
+            self.data = []
+
+
+class UserQueryForm(wtforms.Form):
+    page = wtforms.IntegerField('page', [wtforms.validators.number_range(min=1, max=1000)], default=1)
+    page_size = wtforms.IntegerField('page_size', [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])
+    sort = CommaSeparatedField('sort', [wtforms.validators.optional()])
+    fields = CommaSeparatedField('fields', [wtforms.validators.optional()])
+
+    email = wtforms.StringField('email', [wtforms.validators.optional()])
+    role = wtforms.StringField('role', [wtforms.validators.optional()])
+    status = wtforms.StringField('status', [wtforms.validators.optional()])
+    channels = CommaSeparatedField('channels', [wtforms.validators.optional()])
+    referrer = wtforms.StringField('referrer', [wtforms.validators.optional()])
+    identity_number = wtforms.StringField('identity_number', [wtforms.validators.Length(max=18)])
+
+    mobile__like = wtforms.StringField('mobile__like', [wtforms.validators.optional()])
+    register_time__gte = wtforms.DateTimeField('register_time__gte', [wtforms.validators.optional()])
+    register_time__lte = wtforms.DateTimeField('register_time__lte', [wtforms.validators.optional()])

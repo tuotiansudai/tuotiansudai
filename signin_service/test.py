@@ -1,5 +1,6 @@
 # coding=utf-8
 import json
+from datetime import datetime, timedelta
 from unittest import TestCase, main
 
 import redis
@@ -338,6 +339,110 @@ class TestModifyPassword(TestCase):
 
     def tearDown(self):
         User.query.filter(User.login_name == self.user.login_name).delete()
+        db.session.commit()
+
+
+class TestUserQuery(TestCase):
+    def _moke_user(self, seed, referrer, channel, status):
+        u = User('1779900{:04d}'.format(seed), referrer, channel, 'WEB')
+        u.set_password('123abc')
+        u.email = 'u{:04d}@user.test'.format(seed)
+        u.status = status
+        u.identity_number = '11011019901010{:04d}'.format(seed),
+        u.register_time = datetime(2017, 1, 1, 1, 1, 0) + timedelta(seconds=seed)
+        return u
+
+    def setUp(self):
+        self.app = web.app.test_client()
+        self.ref1 = User("17788000001", None, None, 'WEB')
+        self.ref2 = User("17788000002", None, None, 'WEB')
+        self.ref1.set_password("123abc")
+        self.ref2.set_password("123abc")
+        db.session.add_all((self.ref1, self.ref2))
+        db.session.commit()
+
+        self.users = [
+            self._moke_user(1, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(2, self.ref1.login_name, 'C1', 'INACTIVE'),
+            self._moke_user(3, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(4, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(5, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(6, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(7, self.ref1.login_name, 'C1', 'INACTIVE'),
+            self._moke_user(8, self.ref1.login_name, 'C2', 'ACTIVE'),
+            self._moke_user(9, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(10, self.ref1.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(11, self.ref2.login_name, 'C2', 'INACTIVE'),
+            self._moke_user(12, self.ref2.login_name, 'C3', 'ACTIVE'),
+            self._moke_user(13, self.ref2.login_name, 'C1', 'ACTIVE'),
+            self._moke_user(14, self.ref2.login_name, 'C4', 'ACTIVE'),
+            self._moke_user(15, self.ref2.login_name, 'C4', 'ACTIVE'),
+            self._moke_user(16, self.ref2.login_name, 'C4', 'ACTIVE'),
+        ]
+        self.user_roles = [UserRole(u.login_name, "USER") for u in self.users]
+        db.session.add_all(self.users)
+        db.session.add_all(self.user_roles)
+        db.session.commit()
+
+    def test_query_by_email(self):
+        ret_get = self.app.get('/users?email=u0002@user.test')
+        data = json.loads(ret_get.data)
+        self.assertEqual(200, ret_get.status_code)
+        self.assertTrue(data['result'])
+        self.assertEqual(1, len(data['items']))
+        self.assertEqual('17799000002', data['items'][0]['mobile'])
+        self.assertEqual('u0002@user.test', data['items'][0]['email'])
+
+    def test_query_by_identity_number(self):
+        ret_get = self.app.get('/users?identity_number=110110199010100011')
+        data = json.loads(ret_get.data)
+        self.assertEqual(200, ret_get.status_code)
+        self.assertTrue(data['result'])
+        self.assertEqual(1, len(data['items']))
+        self.assertEqual('17799000011', data['items'][0]['mobile'])
+        self.assertEqual('u0011@user.test', data['items'][0]['email'])
+
+    def test_query_by_role_mobile__like_and_sort(self):
+        ret_get = self.app.get('/users?role=USER&mobile__like=17799&sort=-register_time')
+        data = json.loads(ret_get.data)
+        self.assertEqual(200, ret_get.status_code)
+        self.assertTrue(data['result'])
+        self.assertEqual(16, len(data['items']))
+        self.assertEqual('17799000016', data['items'][0]['mobile'])
+        self.assertEqual('u0016@user.test', data['items'][0]['email'])
+        self.assertEqual('17799000002', data['items'][14]['mobile'])
+        self.assertEqual('u0002@user.test', data['items'][14]['email'])
+
+    def test_query_by_status_register_time_with_given_fields(self):
+        ret_get = self.app.get('/users?status=ACTIVE&register_time__gte=2017-1-1 1:1:0&register_time__lte=2017-1-1 1:1:59&fields=login_name,mobile')
+        data = json.loads(ret_get.data)
+        self.assertEqual(200, ret_get.status_code)
+        self.assertTrue(data['result'])
+        self.assertEqual(13, len(data['items']))
+        self.assertTrue('login_name' in data['items'][0])
+        self.assertTrue('mobile' in data['items'][0])
+        self.assertFalse('email' in data['items'][0])
+        self.assertFalse('register_time' in data['items'][0])
+
+    def test_query_by_channel_referrer_with_paging(self):
+        ret_get = self.app.get('/users?channels=C1,C2&referrer={}&page_size=3&page=2'.format(self.ref1.login_name))
+        data = json.loads(ret_get.data)
+        self.assertEqual(200, ret_get.status_code)
+        self.assertTrue(data['result'])
+        self.assertEqual(3, len(data['items']))
+        self.assertEqual(2, data['page'])
+        self.assertEqual(10, data['total_count'])
+        self.assertTrue(data['has_next'])
+        self.assertTrue(data['has_prev'])
+
+    def tearDown(self):
+        for u in self.users:
+            db.session.delete(u)
+        for ur in self.user_roles:
+            db.session.delete(ur)
+        db.session.commit()
+        db.session.delete(self.ref1)
+        db.session.delete(self.ref2)
         db.session.commit()
 
 

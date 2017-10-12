@@ -228,3 +228,66 @@ class UserService(object):
                 raise UsernamePasswordError()
         else:
             raise UserNotExistedError()
+
+    def query(self, form):
+        def _build_query_where(_qs):
+            if form.email.data:
+                _qs = _qs.filter(User.email == form.email.data)
+            if form.status.data:
+                _qs = _qs.filter(User.status == form.status.data)
+            if form.referrer.data:
+                _qs = _qs.filter(User.referrer == form.referrer.data)
+            if form.identity_number.data:
+                _qs = _qs.filter(User.identity_number == form.identity_number.data)
+            if form.channels.data:
+                _qs = _qs.filter(User.channel.in_(form.channels.data))
+            if form.mobile__like.data:
+                _qs = _qs.filter(User.mobile.like('{}%'.format(form.mobile__like.data)))
+            if form.register_time__gte.data:
+                _qs = _qs.filter(User.register_time >= form.register_time__gte.data)
+            if form.register_time__lte.data:
+                _qs = _qs.filter(User.register_time <= form.register_time__lte.data)
+            if form.role.data:
+                _qs = _qs.join(UserRole).filter(UserRole.role == form.role.data)
+            return _qs
+
+        def _build_query_sort(_qs):
+            if form.sort.data:
+                _qs = _qs.order_by(*[__build_order_by_criterion(fn) for fn in form.sort.data])
+            return _qs
+
+        def _build_query_select(_qs):
+            if form.fields.data:
+                _qs = _qs.with_entities(*[User.lookup_field(fn) for fn in form.fields.data])
+            return _qs
+
+        def _query_with_pagination(_qs):
+            if form.page_size.data:
+                pagination = _qs.paginate(form.page.data, form.page_size.data, error_out=False)
+                return {
+                    'total_count': pagination.total,
+                    'page': pagination.page,
+                    'page_size': pagination.per_page,
+                    'has_prev': pagination.has_prev,
+                    'has_next': pagination.has_next,
+                    'items': __generate_result(pagination.items)
+                }
+            else:
+                return {'items': __generate_result(_qs.all())}
+
+        def __build_order_by_criterion(django_like_order_by):
+            if django_like_order_by.startswith('-'):
+                return User.lookup_field(django_like_order_by[1:]).desc()
+            else:
+                return User.lookup_field(django_like_order_by)
+
+        def __generate_result(_data):
+            if form.fields.data:  # data is a list of tuple, if given select field
+                return [dict(zip(form.fields.data, row)) for row in _data]
+            else:  # data is a list of User object, otherwise
+                return [u.as_dict() for u in _data]
+
+        qs = _build_query_where(User.query)
+        qs = _build_query_sort(qs)
+        qs = _build_query_select(qs)
+        return _query_with_pagination(qs)
