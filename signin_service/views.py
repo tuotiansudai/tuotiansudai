@@ -5,7 +5,7 @@ from flask.views import MethodView
 
 import service
 from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm, UserRegisterForm, UserUpdateForm, \
-    UserResetPasswordForm, UserChangePasswordForm
+    UserResetPasswordForm, UserChangePasswordForm, UserQueryForm
 
 sign_in = Blueprint('sign_in', __name__)
 
@@ -90,13 +90,13 @@ class UsersView(MethodView):
 
     def get(self):
         """search user"""
-        # TODO
-        # fields = request.args.get('fields')
-        # page_size = request.args.get('page_size', default=10, type=int)
-        # page_index = request.args.get('page_index', default=0, type=int)
+        form = UserQueryForm(request.args)
+        if form.validate():
+            user_service = service.UserService()
+            return success(user_service.query(form))
+        else:
+            return fail({'errors': form.errors}, code=400)
 
-        print 'GET /users'
-        return success({})
 
 
 class UserView(MethodView):
