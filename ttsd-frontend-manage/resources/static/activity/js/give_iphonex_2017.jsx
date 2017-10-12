@@ -69,10 +69,12 @@ $.when(commonFun.isUserLogin())
 $pointerBtn.on('click', function(event) {
 
     drawCircleOne.beginLuckDraw(function(data) {
+        console.log(data)
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
+
             var angleNum=0;
-            investOrDraw();
+
 
             switch (data.prize) {
                 case 'IPHONEX_ACTIVITY_ENVELOP_COUPON_5': //0.5%加息券
@@ -116,11 +118,15 @@ $pointerBtn.on('click', function(event) {
                         .parent().siblings('.des-text').html('奖品将于活动结束后发放');
                     break;
             }
-            drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
+            drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete'], function(){
+                investOrDraw();
+            });
+
 
         } else if(data.returnCode == 1) {
             //抽奖次数不足
             drawCircleOne.tipWindowPop(tipGroupObj['nochance']);
+            investOrDraw();
         }
         else if (data.returnCode == 2) {
             //未登录

@@ -62,7 +62,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
 //angles:奖项对应的角度，
 //Drawplate:转盘的dom
 //data:抽奖成功后返回的数据
-giftCircleDraw.prototype.rotateFn = function (angles, tipMessage) {
+giftCircleDraw.prototype.rotateFn = function (angles, tipMessage,callbackFn) {
     var thisFun = this;
     thisFun.bRotate = !this.bRotate;
     thisFun.giftCircleFrame.find('.rotate-btn').stopRotate();
@@ -74,7 +74,13 @@ giftCircleDraw.prototype.rotateFn = function (angles, tipMessage) {
             thisFun.GiftRecord();
             this.userListURL&&thisFun.MyGift();
             thisFun.bRotate = !thisFun.bRotate;
-            thisFun.tipWindowPop(tipMessage);
+            //thisFun.tipWindowPop(tipMessage);
+            if(!callbackFn){
+                console.log('meiyou')
+                thisFun.tipWindowPop(tipMessage);
+            }else {
+                thisFun.tipWindowPop(tipMessage,callbackFn);
+            }
         }
     })
 };
