@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.service.ZeroShoppingActivityService;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.LoanService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.MessageFormat;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity/zero-shopping")
@@ -28,16 +32,22 @@ public class ZeroShoppingActivityController {
         return modelAndView;
     }
 
-    @ResponseBody
     @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
-    public Boolean activityLoanExists(){
-        return CollectionUtils.isNotEmpty(zeroShoppingActivityService.queryActivityLoan());
+    public ModelAndView activityLoanExists(ZeroShoppingPrize zeroShoppingPrize){
+        List<LoanModel> loanModels = zeroShoppingActivityService.queryActivityLoan();
+
+        ModelAndView modelAndView = new ModelAndView();
+        if(CollectionUtils.isEmpty(loanModels)){
+            modelAndView.setViewName("/activities/2017/zero-shopping-detail");
+            modelAndView.addObject("message", false);
+            return modelAndView;
+        }
+
+        modelAndView.setViewName("redirect:/loan/" + loanModels.get(0).getId());
+        modelAndView.addObject("zeroShoppingPrize", ZeroShoppingPrize.Apple_MacBook);
+//        modelAndView.addFlashAttribute("zeroShoppingPrize", ZeroShoppingPrize.Apple_MacBook);
+
+        return modelAndView;
     }
-
-    @RequestMapping(value = "/", method = {RequestMethod.GET})
-
-
-
-
 
 }
