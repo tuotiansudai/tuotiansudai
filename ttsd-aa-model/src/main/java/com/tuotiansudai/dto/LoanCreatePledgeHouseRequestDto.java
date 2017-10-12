@@ -17,6 +17,7 @@ public class LoanCreatePledgeHouseRequestDto {
     @NotEmpty
     private String square;
 
+    @NotEmpty
     private String propertyCardId;
 
     private String propertyRightCertificateId;
@@ -24,7 +25,6 @@ public class LoanCreatePledgeHouseRequestDto {
     @NotEmpty
     private String estateRegisterId;
 
-    @NotEmpty
     private String authenticAct;
 
     public LoanCreatePledgeHouseRequestDto() {

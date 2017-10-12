@@ -368,7 +368,7 @@
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeHouseDetail??>
-                                            <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '房权证编号','不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
+                                            <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
                                                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeHouseDetail[key]}</div>
                                                 </#if>
