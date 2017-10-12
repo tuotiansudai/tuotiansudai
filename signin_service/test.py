@@ -384,8 +384,7 @@ class TestUserQuery(TestCase):
         db.session.add_all(self.user_roles)
         db.session.commit()
 
-    def test_query_correctly(self):
-        # test search by email
+    def test_query_by_email(self):
         ret_get = self.app.get('/users?email=u0002@user.test')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
@@ -394,7 +393,7 @@ class TestUserQuery(TestCase):
         self.assertEqual('17799000002', data['items'][0]['mobile'])
         self.assertEqual('u0002@user.test', data['items'][0]['email'])
 
-        # test search by identity_number
+    def test_query_by_identity_number(self):
         ret_get = self.app.get('/users?identity_number=110110199010100011')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
@@ -403,7 +402,7 @@ class TestUserQuery(TestCase):
         self.assertEqual('17799000011', data['items'][0]['mobile'])
         self.assertEqual('u0011@user.test', data['items'][0]['email'])
 
-        # test search by role ,mobile_like and mobile__like
+    def test_query_by_role_mobile__like_and_sort(self):
         ret_get = self.app.get('/users?role=USER&mobile__like=17799&sort=-register_time')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
@@ -414,7 +413,7 @@ class TestUserQuery(TestCase):
         self.assertEqual('17799000002', data['items'][14]['mobile'])
         self.assertEqual('u0002@user.test', data['items'][14]['email'])
 
-        # test search by status, register_time, with given field
+    def test_query_by_status_register_time_with_given_fields(self):
         ret_get = self.app.get('/users?status=ACTIVE&register_time__gte=2017-1-1 1:1:0&register_time__lte=2017-1-1 1:1:59&fields=login_name,mobile')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
@@ -425,7 +424,7 @@ class TestUserQuery(TestCase):
         self.assertFalse('email' in data['items'][0])
         self.assertFalse('register_time' in data['items'][0])
 
-        # test search by channel, referrer, with paging
+    def test_query_by_channel_referrer_with_paging(self):
         ret_get = self.app.get('/users?channels=C1,C2&referrer={}&page_size=3&page=2'.format(self.ref1.login_name))
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
