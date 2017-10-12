@@ -5,12 +5,14 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -93,5 +96,122 @@ public class LotteryDrawActivityServiceTest {
 
         int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.ANNUAL_ACTIVITY);
         assertEquals(time, 21);
+
+    }
+
+    @Test
+    public void shouldDoubleElevenCountTime() {
+        String loginName = "testEleven";
+        String mobile = "15233";
+        UserModel userModel = createUserByLoginName(loginName, mobile);
+        List<InvestModel> investModels = Lists.newArrayList();
+        for(int i = 0; i < 50;i++){
+            investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        }
+        ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenStartTime", DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenEndTime", DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
+        when(investMapper.findSuccessDoubleElevenActivityByTime(any(Date.class), any(Date.class))).thenReturn(investModels);
+        when(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(anyString(), any(LotteryPrize.class), any(ActivityCategory.class), any(Date.class), any(Date.class))).thenReturn(0);
+
+        int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
+        assertEquals(time, 10);
+    }
+
+    @Test
+    public void shouldDoubleElevenCountTimeByMultiLoan() {
+        String loginName = "testEleven";
+        String mobile = "15233";
+        UserModel userModel = createUserByLoginName(loginName, mobile);
+        List<InvestModel> investModels = Lists.newArrayList();
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 112L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 112L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 112L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 112L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+
+
+        ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenStartTime", DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenEndTime", DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
+        when(investMapper.findSuccessDoubleElevenActivityByTime(any(Date.class), any(Date.class))).thenReturn(investModels);
+        when(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(anyString(), any(LotteryPrize.class), any(ActivityCategory.class), any(Date.class), any(Date.class))).thenReturn(0);
+
+        int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
+        assertEquals(time, 5);
+    }
+
+
+    @Test
+    public void shouldDoubleElevenCountTimeByDiffDay() {
+        String loginName = "testEleven";
+        String mobile = "15233";
+        UserModel userModel = createUserByLoginName(loginName, mobile);
+        List<InvestModel> investModels = Lists.newArrayList();
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+
+
+        ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenStartTime", DateTime.now().plusDays(-2).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenEndTime", DateTime.now().plusDays(2).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        when(userMapper.findByMobile(anyString())).thenReturn(userModel);
+        when(investMapper.findSuccessDoubleElevenActivityByTime(any(Date.class), any(Date.class))).thenReturn(investModels);
+        when(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(anyString(), any(LotteryPrize.class), any(ActivityCategory.class), any(Date.class), any(Date.class))).thenReturn(0);
+
+        int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
+        assertEquals(time, 15);
+    }
+
+    private UserModel createUserByLoginName(String loginName, String mobile) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile(mobile);
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+        return userModelTest;
+    }
+
+    private InvestModel getFakeInvestModelByLoginName(String loginName,Date tradingTime, long loanId){
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
+        model.setStatus(InvestStatus.SUCCESS);
+        model.setTradingTime(tradingTime);
+        return model;
     }
 }
