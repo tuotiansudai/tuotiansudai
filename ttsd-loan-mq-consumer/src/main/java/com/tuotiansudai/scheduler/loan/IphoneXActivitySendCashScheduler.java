@@ -7,10 +7,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.IphoneXActivityView;
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
 import org.slf4j.Logger;
@@ -85,7 +85,6 @@ public class IphoneXActivitySendCashScheduler {
                 logger.error("iphoneX activity send cash fail, loginName:{0}, cash:{1}", entry.getKey(), String.valueOf(cash));
             }
         }
-
         logger.info("[iphoneX activity] send cash end");
     }
 
