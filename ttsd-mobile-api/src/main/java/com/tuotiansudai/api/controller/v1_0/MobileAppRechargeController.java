@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @Api(description = "银行卡充值")
 public class MobileAppRechargeController extends MobileAppBaseController {
@@ -15,7 +17,7 @@ public class MobileAppRechargeController extends MobileAppBaseController {
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     @ApiOperation("快捷充值")
-    public BaseResponseDto<BankCardResponseDto> recharge(@RequestBody BankCardRequestDto bankCardRequestDto) {
+    public BaseResponseDto<BankCardResponseDto> recharge(@Valid @RequestBody BankCardRequestDto bankCardRequestDto) {
         bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         bankCardRequestDto.setUserId(getLoginName());
         bankCardRequestDto.setIsOpenFastPayment(true);

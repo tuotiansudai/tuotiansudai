@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
-import com.tuotiansudai.smswrapper.repository.mapper.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +32,9 @@ public class SmsService {
 
     @Value("#{'${sms.fatal.qa.mobile}'.split('\\|')}")
     private List<String> fatalNotifyQAMobiles;
+
+    @Value("${credit.loan.agent}")
+    private String creditLoanAgent;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -104,6 +106,10 @@ public class SmsService {
             return new BaseDto<>(false);
         }
         return smsClient.sendSMS(Lists.newArrayList(notifyDto.getMobile()), SmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, false, Lists.newArrayList(couponName, notifyDto.getExpiredDate()));
+    }
+
+    public BaseDto<SmsDataDto> creditLoanBalanceAlert() {
+        return smsClient.sendSMS(Lists.newArrayList(creditLoanAgent), SmsTemplate.SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE, Lists.newArrayList());
     }
 
     public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {

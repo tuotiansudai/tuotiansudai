@@ -32,7 +32,7 @@ public class MobileAppBannerServiceTest extends ServiceTestBase {
     public void shouldGetBanner() {
         List<BannerModel> bannerModelList = Lists.newArrayList();
         bannerModelList.add(getBannerModel());
-        when(bannerMapper.findBannerIsAuthenticatedOrderByOrder(anyBoolean(), any(Source.class))).thenReturn(bannerModelList);
+        when(bannerMapper.findBannerIsAuthenticatedOrderByOrder(anyBoolean(), any(Source.class),any())).thenReturn(bannerModelList);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("ceshi1");
         baseParam.setPlatform("android");
