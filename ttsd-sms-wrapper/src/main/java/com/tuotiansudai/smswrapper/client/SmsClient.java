@@ -89,7 +89,7 @@ public class SmsClient {
 
         if (hasExceedQALimit(mobileList)) {
             data.setIsRestricted(true);
-            data.setMessage(MessageFormat.format("已超出QA环境当日发送限额{}", QA_DAILY_LIMIT));
+            data.setMessage(MessageFormat.format("已超出QA环境当日发送限额{0}", QA_DAILY_LIMIT));
             return dto;
         }
 

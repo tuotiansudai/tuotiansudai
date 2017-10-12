@@ -67,11 +67,17 @@ public enum MessageQueue {
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
     WeChatBoundNotify("WeChatBoundNotify"),
+    HuiZuRentRepayNotifyQueue("HuiZuRentRepayNotifyQueue"),
     ExperienceAssigning("ExperienceAssigning"),
     DragonBoatShareLoginTransfer("DragonBoatShareLoginTransfer"), // 端午节活动分享落地页老用户登录后，消息中转（为了获取用户信息）
     DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
     DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
-    DragonBoatChampagneEndSendCoupon("DragonBoatChampagneEndSendCoupon"); // 端午节香槟塔活动结束后，给投资用户发优惠券
+    SystemBill("SystemBill"),
+    AmountTransfer("AmountTransfer"),
+    CreditLoanOutQueue("CreditLoanOutQueue"), //慧租信用贷放款
+    CreditLoanRepayQueue("CreditLoanRepayQueue"), //慧租信用贷还款
+    CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
+    CreditLoanBill("CreditLoanBill");
 
     private final String queueName;
 
