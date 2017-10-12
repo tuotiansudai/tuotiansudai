@@ -43,7 +43,7 @@ class fetchCaptchaFun{
         let that =this;
         that.getCaptchaOrCancel();
         //点击获取验证码
-        $fetchCaptcha.on('click',function() {
+        $('#fetchCaptcha,#voice_captcha').on('click',function() {
             commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
             let mobile=that.DomContainer.mobile.value;
             $errorBox.text('');
@@ -90,11 +90,11 @@ class fetchCaptchaFun{
                 ajaxOption={
                     type:'GET',
                     url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
+                    data:'&isVoice='+isVoice
                 };
                 captchaSrc='/mobile-retrieve-password/image-captcha';
             }
         commonFun.useAjax(ajaxOption,function(responseData) {
-            console.log(ajaxOption.data);
                 $captchaSubmit.prop('disabled',false);
                 $voiceCaptcha.hide();
                 //刷新验证码
