@@ -10,6 +10,7 @@ public enum SmsTemplate {
     !!! ATTENTION !!!
      */
 
+
     SMS_REGISTER_CAPTCHA_TEMPLATE(
             new SmsTemplateCell("SMS_45345002", "尊敬的拓天速贷客户，您的注册验证码是：${param0} 。请勿泄露给他人！"),
             new SmsTemplateCell("TTS_100735042", "尊敬的拓天速贷客户，您的注册验证码是：${param0} 。请勿泄露给他人！")),
@@ -68,6 +69,10 @@ public enum SmsTemplate {
 
     SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(
             new SmsTemplateCell("SMS_46865002", "尊敬的用户，您的${param0}即将过期（有效期至：${param1}），请尽快使用。"),
+            null),
+
+    SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE(
+            new SmsTemplateCell("SMS_101445012", "慧租账户余额不足，请及时登录后台充值。"),
             null);
 
 

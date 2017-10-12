@@ -20,6 +20,8 @@ public class SmsHistoryModel implements Serializable {
 
     private boolean success;
 
+    private boolean isVoice;
+
     private String response;
 
     private Long backupId;
@@ -30,6 +32,13 @@ public class SmsHistoryModel implements Serializable {
     public SmsHistoryModel(String mobile, String content) {
         this.mobile = mobile;
         this.content = content;
+        this.sendTime = new Date();
+    }
+
+    public SmsHistoryModel(String mobile, String content, boolean isVoice) {
+        this.mobile = mobile;
+        this.content = content;
+        this.isVoice = isVoice;
         this.sendTime = new Date();
     }
 
@@ -79,6 +88,14 @@ public class SmsHistoryModel implements Serializable {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public boolean isVoice() {
+        return isVoice;
+    }
+
+    public void setVoice(boolean voice) {
+        isVoice = voice;
     }
 
     public String getResponse() {

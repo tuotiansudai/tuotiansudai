@@ -1,8 +1,10 @@
 package com.tuotiansudai.activity.repository.dto;
 
 
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.repository.model.Source;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -36,12 +38,12 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     private int order;
 
-    private boolean active;
-
     private String activatedBy;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date activatedTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date deactivatedTime;
 
     private boolean deleted;
@@ -116,14 +118,6 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public String getActivatedBy() {

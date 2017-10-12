@@ -139,7 +139,7 @@ public class InvestController {
         baseDto.setData(dataDto);
         boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
         if (result) {
-            return smsCaptchaService.sendNoPasswordInvestCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
+            return smsCaptchaService.sendNoPasswordInvestCaptcha(dto.getMobile(), false, RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }

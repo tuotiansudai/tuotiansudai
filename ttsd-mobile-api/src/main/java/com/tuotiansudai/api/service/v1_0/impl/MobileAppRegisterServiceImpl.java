@@ -49,7 +49,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             returnCode = ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode();
         }
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
-            BaseDto<SmsDataDto> smsDto = smsCaptchaService.sendRegisterCaptcha(mobileNumber, remoteIp);
+            BaseDto<SmsDataDto> smsDto = smsCaptchaService.sendRegisterCaptcha(mobileNumber, false, remoteIp);
             if (!smsDto.isSuccess() || !smsDto.getData().getStatus()) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
                 log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());

@@ -379,7 +379,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     public void sholudTransferApplicationDetailIsSuccess(){
         TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
         TransferApplicationDetailRequestDto transferApplicationDetailRequestDto = new TransferApplicationDetailRequestDto();
-        transferApplicationDetailRequestDto.setTransferApplicationId(String.valueOf(transferApplicationModel1.getId()));
+        transferApplicationDetailRequestDto.setTransferApplicationId(transferApplicationModel1.getId());
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testuer1");
         transferApplicationDetailRequestDto.setBaseParam(baseParam);

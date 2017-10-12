@@ -228,13 +228,14 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
+                <li><a rel="nofollow" class="logo-cfca sprite-homepage-logo-lian" href="http://www.umpay.com/" target="_blank">
+                </a>
+                </li>
                 <li>
-                    <a rel="nofollow" class="logo-lian sprite-homepage-logo-cfca" href="http://www.umpay.com/" target="_blank">
+                    <a rel="nofollow" class="logo-lian sprite-homepage-logo-cfca" href="https://www.anxinsign.com/" target="_blank">
                 </a>
                 </li>
-                <li><a rel="nofollow" class="logo-cfca sprite-homepage-logo-lian" href="https://www.anxinsign.com/" target="_blank">
-                </a>
-                </li>
+
             </ul>
         </div>
 

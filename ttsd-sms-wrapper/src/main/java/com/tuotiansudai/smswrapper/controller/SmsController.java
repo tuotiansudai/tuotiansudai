@@ -99,4 +99,10 @@ public class SmsController {
     public BaseDto<SmsDataDto> couponExpiredNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
         return smsService.couponExpiredNotify(notifyDto);
     }
+
+    @RequestMapping(value = "/credit-loan-balance-alert", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> creditLoanBalanceAlert() {
+        return smsService.creditLoanBalanceAlert();
+    }
 }
