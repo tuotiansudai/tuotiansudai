@@ -190,7 +190,7 @@ public class RegisterUserController {
         HttpSession session = httpServletRequest.getSession(false);
         boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
         if (result) {
-            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
+            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), false, RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }
@@ -199,7 +199,7 @@ public class RegisterUserController {
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile) {
 
-        return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
+        return smsCaptchaService.sendRegisterCaptcha(mobile, false, RequestIPParser.parse(httpServletRequest));
     }
 
     @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)

@@ -94,7 +94,7 @@ public class RetrievePasswordController {
         baseDto.setData(dataDto);
         boolean result = captchaHelper.captchaVerify(imageCaptcha, httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
         if (result) {
-            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
+            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, false, RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }

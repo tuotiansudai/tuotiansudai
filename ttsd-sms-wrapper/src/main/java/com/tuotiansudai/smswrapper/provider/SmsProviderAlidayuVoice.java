@@ -31,7 +31,7 @@ public class SmsProviderAlidayuVoice extends SmsProviderAlidayuBase {
     }
 
     private SmsHistoryModel sendSMS(String mobile, SmsTemplateCell smsTemplate, List<String> paramList) {
-        SmsHistoryModel smsHistoryModel = this.createSmsHistory(mobile, smsTemplate, paramList);
+        SmsHistoryModel smsHistoryModel = this.createSmsHistory(mobile, smsTemplate, paramList, true);
 
         try {
             String templateId = smsTemplate.getTemplateId();

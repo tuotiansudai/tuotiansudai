@@ -21,7 +21,7 @@ public class SmsProviderAlidayuText extends SmsProviderAlidayuBase {
     @Override
     public List<SmsHistoryModel> sendSMS(List<String> mobileList, SmsTemplate smsTemplate, List<String> paramList) {
         SmsTemplateCell templateCell = smsTemplate.getTemplateCellText();
-        List<SmsHistoryModel> smsHistoryModels = this.createSmsHistory(mobileList, templateCell, paramList);
+        List<SmsHistoryModel> smsHistoryModels = this.createSmsHistory(mobileList, templateCell, paramList, false);
 
         try {
             String templateId = templateCell.getTemplateId();

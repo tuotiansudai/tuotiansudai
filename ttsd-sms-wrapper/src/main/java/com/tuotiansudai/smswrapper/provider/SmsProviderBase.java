@@ -13,20 +13,20 @@ abstract class SmsProviderBase implements SmsProvider {
     @Autowired
     private SmsHistoryMapper smsHistoryMapper;
 
-    List<SmsHistoryModel> createSmsHistory(List<String> mobileList, SmsTemplateCell template, List<String> paramList) {
+    List<SmsHistoryModel> createSmsHistory(List<String> mobileList, SmsTemplateCell template, List<String> paramList, boolean isVoice) {
         String content = template.generateContent(paramList);
         List<SmsHistoryModel> models = Lists.newArrayList();
         for (String mobile : mobileList) {
-            SmsHistoryModel model = new SmsHistoryModel(mobile, content);
+            SmsHistoryModel model = new SmsHistoryModel(mobile, content, isVoice);
             smsHistoryMapper.create(model);
             models.add(model);
         }
         return models;
     }
 
-    SmsHistoryModel createSmsHistory(String mobile, SmsTemplateCell template, List<String> paramList) {
+    SmsHistoryModel createSmsHistory(String mobile, SmsTemplateCell template, List<String> paramList, boolean isVoice) {
         String content = template.generateContent(paramList);
-        SmsHistoryModel model = new SmsHistoryModel(mobile, content);
+        SmsHistoryModel model = new SmsHistoryModel(mobile, content, isVoice);
         smsHistoryMapper.create(model);
         return model;
     }
