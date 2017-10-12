@@ -638,6 +638,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 var pledgeStr = arrPledgeInfo[0].substring(0, arrPledgeInfo[0].indexOf("_"));
                 requestData[pledgeStr] = getArray(arrPledgeInfo, pledgeStr);
             }
+            console.log(requestData)
             return requestData
         };
 
@@ -648,16 +649,18 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             var obj3 = {};
             var obj4 = {};
             if (pledgeType == "pledgeHouse") {
+                var pledgeHouseParamLength = pledgeHouseParam.length-1
                 for (i in arrPledgeInfo) {
-                    if (i < pledgeHouseParam.length) {
+
+                    if (i < pledgeHouseParamLength) {
                         obj1[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
-                    } else if (i >= pledgeHouseParam.length && i < pledgeHouseParam.length * 2) {
+                    } else if (i >= pledgeHouseParamLength && i < pledgeHouseParamLength * 2) {
                         obj2[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
                     }
-                    else if (i >= pledgeHouseParam.length * 2 && i < pledgeHouseParam.length * 3) {
+                    else if (i >= pledgeHouseParamLength * 2 && i < pledgeHouseParamLength * 3) {
                         obj3[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
                     }
-                    else if (i >= pledgeHouseParam.length * 3 && i < pledgeHouseParam.length * 4) {
+                    else if (i >= pledgeHouseParamLength * 3 && i < pledgeHouseParamLength * 4) {
                         obj4[arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf("_") + 1, arrPledgeInfo[i].indexOf(":"))] = arrPledgeInfo[i].substring(arrPledgeInfo[i].indexOf(":")+1, arrPledgeInfo[i].length);
                     }
                 }

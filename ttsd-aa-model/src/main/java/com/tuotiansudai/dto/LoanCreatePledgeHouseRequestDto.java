@@ -20,12 +20,12 @@ public class LoanCreatePledgeHouseRequestDto {
     @NotEmpty
     private String propertyCardId;
 
-    private String propertyRightCertificateId;
-
     @NotEmpty
     private String estateRegisterId;
 
     private String authenticAct;
+
+    private String propertyRightCertificateId;
 
     public LoanCreatePledgeHouseRequestDto() {
     }
