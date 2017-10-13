@@ -13,6 +13,7 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -169,14 +170,13 @@ public class ConsoleCouponService {
     public long findEstimatedCount(UserGroup userGroup) {
         switch (userGroup) {
             case ALL_USER:
-                return userMapper.findAllUsersByProvinces(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+                return userMapper.findUsersCount();
             case INVESTED_USER:
                 return investMapper.findInvestorCount();
             case REGISTERED_NOT_INVESTED_USER:
                 return investMapper.findRegisteredNotInvestCount();
             case STAFF:
-                return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.ZC_STAFF).put("districtName", Lists.newArrayList()).build())).size()
-                        + userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.SD_STAFF).put("districtName", Lists.newArrayList()).build())).size();
+                return userMapper.findCountByRole(Role.ZC_STAFF) + userMapper.findCountByRole(Role.SD_STAFF);
             case STAFF_RECOMMEND_LEVEL_ONE:
                 return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
             case MEMBERSHIP_V0:
@@ -204,7 +204,7 @@ public class ConsoleCouponService {
             userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
             long interest = 0;
 
-            if(userCouponModel.getStatus() == InvestStatus.SUCCESS && loanModel != null){
+            if (userCouponModel.getStatus() == InvestStatus.SUCCESS && loanModel != null) {
                 interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
                 couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
                         userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
@@ -235,10 +235,12 @@ public class ConsoleCouponService {
         return true;
     }
 
-    public int findCouponsCountByTypeRedAndMoney(String couponType,float amount,String couponSource){return couponMapper.findCouponsCountByTypeRedAndMoney(couponType,couponSource,(int)(amount*100));}
+    public int findCouponsCountByTypeRedAndMoney(String couponType, float amount, String couponSource) {
+        return couponMapper.findCouponsCountByTypeRedAndMoney(couponType, couponSource, (int) (amount * 100));
+    }
 
-    public List<CouponDto> findCouponsByTypeRedAndMoney(int index, int pageSize,String couponType,float amount,String couponSource) {
-        List<CouponModel> couponModels=couponMapper.findCouponsByTypeRedAndMoney(couponType,couponSource,(int)(amount*100),(index - 1) * pageSize,pageSize);
+    public List<CouponDto> findCouponsByTypeRedAndMoney(int index, int pageSize, String couponType, float amount, String couponSource) {
+        List<CouponModel> couponModels = couponMapper.findCouponsByTypeRedAndMoney(couponType, couponSource, (int) (amount * 100), (index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
             if ((CouponType.RED_ENVELOPE.getName().equals(couponType) || CouponType.INTEREST_COUPON.getName().equals(couponType)) && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {

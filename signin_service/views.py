@@ -134,8 +134,8 @@ def user_reset_password():
     if form.validate():
         user_service = service.UserService()
         try:
-            user_service.reset_password(form)
-            return success()
+            u = user_service.reset_password(form)
+            return success({'user_info': u}, code=200)
         except service.UserNotExistedError:
             return fail({'message': u'用户不存在'}, code=400)
         except Exception as ex:
@@ -150,8 +150,8 @@ def user_change_password():
     if form.validate():
         user_service = service.UserService()
         try:
-            user_service.change_password(form)
-            return success()
+            u = user_service.change_password(form)
+            return success({'user_info': u}, code=200)
         except service.UserNotExistedError:
             return fail({'message': u'用户不存在'}, code=400)
         except service.UsernamePasswordError:

@@ -10,8 +10,8 @@ import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -237,7 +237,7 @@ public class DragonBoatFestivalService {
         return dragonBoatFestivalMapper.getGroupSupportCount(group);
     }
 
-    public long getActivityInvestAmount(String loginName){
+    public long getActivityInvestAmount(String loginName) {
 
         if (StringUtils.isEmpty(loginName)) {
             return 0; //若没有登录，则返回0

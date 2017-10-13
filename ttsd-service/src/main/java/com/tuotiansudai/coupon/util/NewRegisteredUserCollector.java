@@ -1,14 +1,12 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

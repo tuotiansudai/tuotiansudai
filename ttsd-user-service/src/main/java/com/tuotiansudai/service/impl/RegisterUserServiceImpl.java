@@ -12,11 +12,11 @@ import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.ExperienceBillService;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.dto.request.UserRestRegisterRequestDto;
+import com.tuotiansudai.rest.dto.response.UserRestUserInfo;
 import com.tuotiansudai.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ import java.text.MessageFormat;
 public class RegisterUserServiceImpl implements RegisterUserService {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserRestClient userRestClient;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -47,12 +47,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) {
-        int result = this.userMapper.create(userModel);
-        if (result <= 0) {
-            return true;
-        }
-
-        this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
+        UserRestUserInfo registerUserInfo = userRestClient.register(new UserRestRegisterRequestDto(userModel.getMobile(), userModel.getPassword(), userModel.getReferrer(),
+                userModel.getChannel(), userModel.getSource()));
+        userModel = registerUserInfo.getUserInfo();
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());

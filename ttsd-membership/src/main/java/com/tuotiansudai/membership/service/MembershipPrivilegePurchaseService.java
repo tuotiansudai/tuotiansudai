@@ -15,10 +15,10 @@ import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,17 +87,17 @@ public class MembershipPrivilegePurchaseService {
 
     }
 
-    public MembershipPrivilegeModel obtainMembershipPrivilege(String loginName){
+    public MembershipPrivilegeModel obtainMembershipPrivilege(String loginName) {
         return membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
     }
 
-    public BaseDto<BasePaginationDataDto> getMembershipPurchaseList(String mobile, MembershipPrivilegePriceType membershipPrivilegePriceType, Source source, Date startTime, Date endTime, int index, int pageSize){
-        long count = membershipPrivilegePurchaseMapper.findCountMembershipPrivilegePagination(mobile,membershipPrivilegePriceType,source,startTime,endTime);
-        List<MembershipPrivilegePurchaseModel> membershipPrivilegeModels = membershipPrivilegePurchaseMapper.findMembershipPrivilegePagination(mobile,membershipPrivilegePriceType,source,startTime,endTime, PaginationUtil.calculateOffset(index, pageSize, count),pageSize);
+    public BaseDto<BasePaginationDataDto> getMembershipPurchaseList(String mobile, MembershipPrivilegePriceType membershipPrivilegePriceType, Source source, Date startTime, Date endTime, int index, int pageSize) {
+        long count = membershipPrivilegePurchaseMapper.findCountMembershipPrivilegePagination(mobile, membershipPrivilegePriceType, source, startTime, endTime);
+        List<MembershipPrivilegePurchaseModel> membershipPrivilegeModels = membershipPrivilegePurchaseMapper.findMembershipPrivilegePagination(mobile, membershipPrivilegePriceType, source, startTime, endTime, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<MembershipPrivilegePurchasePaginationItemDto> itemDtos = membershipPrivilegeModels
                 .stream()
                 .map(membershipPrivilegePurchaseModel -> new MembershipPrivilegePurchasePaginationItemDto(membershipPrivilegePurchaseModel)).collect(Collectors.toList());
-        BasePaginationDataDto paginationDataDto = new BasePaginationDataDto(PaginationUtil.validateIndex(index, pageSize, count),pageSize,count,itemDtos);
+        BasePaginationDataDto paginationDataDto = new BasePaginationDataDto(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, itemDtos);
         paginationDataDto.setStatus(true);
         return new BaseDto<>(paginationDataDto);
 

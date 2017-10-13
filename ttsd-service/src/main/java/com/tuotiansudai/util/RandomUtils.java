@@ -1,6 +1,6 @@
 package com.tuotiansudai.util;
 
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

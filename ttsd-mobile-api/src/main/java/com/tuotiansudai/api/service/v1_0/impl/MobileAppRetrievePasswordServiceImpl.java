@@ -5,9 +5,11 @@ import com.tuotiansudai.api.dto.v1_0.RetrievePasswordRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppRetrievePasswordService;
 import com.tuotiansudai.dto.RetrievePasswordDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.rest.dto.request.UserRestResetPasswordRequestDto;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.log4j.Logger;
@@ -24,6 +26,8 @@ public class MobileAppRetrievePasswordServiceImpl implements MobileAppRetrievePa
     @Autowired
     private UserMapper userMapper;
     @Autowired
+    private UserRestClient userRestClient;
+    @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Override
@@ -33,19 +37,19 @@ public class MobileAppRetrievePasswordServiceImpl implements MobileAppRetrievePa
         String captcha = retrievePasswordDto.getCaptcha();
         String password = retrievePasswordDto.getPassword();
         boolean verified = smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
-        if(verified){
+        if (verified) {
             UserModel userModel = userMapper.findByMobile(mobile);
-            if(userModel != null){
-                userMapper.updatePassword(userModel.getLoginName(), myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
+            if (userModel != null) {
+                userRestClient.resetPassword(new UserRestResetPasswordRequestDto(userModel.getLoginName(), password));
                 BaseResponseDto baseResponseDto = new BaseResponseDto();
                 baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseResponseDto.setMessage("");
                 return baseResponseDto;
-            }else{
-                return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+            } else {
+                return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
             }
-        }else{
-            return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+        } else {
+            return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
     }
 

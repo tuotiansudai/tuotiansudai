@@ -16,7 +16,7 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-config'),
             project(':ttsd-client'),
-            project(":ttsd-user-repository"),
+            project(":ttsd-user-rest-client"),
             project(":ttsd-edxlog-repository"),
             project(":ttsd-edxlog-model")
 }

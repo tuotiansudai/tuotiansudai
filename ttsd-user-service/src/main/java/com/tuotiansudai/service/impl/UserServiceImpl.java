@@ -10,10 +10,17 @@ import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.rest.dto.request.UserRestChangePasswordRequestDto;
+import com.tuotiansudai.rest.dto.response.UserRestUserInfo;
+import com.tuotiansudai.rest.support.client.exceptions.RestException;
+import com.tuotiansudai.service.LoginNameGenerator;
+import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRestClient userRestClient;
 
     @Autowired
     private SmsCaptchaService smsCaptchaService;
@@ -143,19 +153,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
-
         boolean returnValue = false;
-
-        boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
-
-        if (correct) {
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            String mobile = userModel.getMobile();
-
-            userMapper.updatePassword(loginName, myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
-            smsWrapperClient.sendPasswordChangedNotify(mobile);
-
-            returnValue = true;
+        try {
+            UserRestUserInfo userInfoResp = userRestClient.changePassword(new UserRestChangePasswordRequestDto(loginName, originalPassword, newPassword));
+            returnValue = userInfoResp.isSuccess();
+            smsWrapperClient.sendPasswordChangedNotify(userInfoResp.getUserInfo().getMobile());
+        } catch (RestException e) {
+            logger.error("change password failed", e);
         }
 
         // 发送用户行为日志 MQ

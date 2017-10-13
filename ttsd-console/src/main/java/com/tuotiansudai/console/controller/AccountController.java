@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;

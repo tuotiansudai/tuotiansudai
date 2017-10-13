@@ -215,6 +215,7 @@ class UserService(object):
         if user:
             user.set_password(form.password.data)
             db.session.commit()
+            return user.as_dict()
         else:
             raise UserNotExistedError()
 
@@ -224,6 +225,7 @@ class UserService(object):
             if user.validate_password(form.ori_password.data):
                 user.set_password(form.password.data)
                 db.session.commit()
+                return user.as_dict()
             else:
                 raise UsernamePasswordError()
         else:

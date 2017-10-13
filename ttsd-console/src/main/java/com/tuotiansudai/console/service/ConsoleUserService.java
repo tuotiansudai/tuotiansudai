@@ -18,14 +18,21 @@ import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.rest.dto.request.UserRestUpdateUserInfoRequestDto;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +50,9 @@ public class ConsoleUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRestClient userRestClient;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -85,13 +95,22 @@ public class ConsoleUserService {
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
 
-        userModel.setStatus(editUserDto.getStatus());
-        userModel.setMobile(mobile);
-        userModel.setEmail(editUserDto.getEmail());
-        userModel.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? null : editUserDto.getReferrer());
-        userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(operatorLoginName);
-        userMapper.updateUser(userModel);
+        UserRestUpdateUserInfoRequestDto updateDto = new UserRestUpdateUserInfoRequestDto(loginName);
+        if (userModel.getStatus() != editUserDto.getStatus()) {
+            updateDto.setStatus(editUserDto.getStatus());
+        }
+        if (!StringUtils.equalsIgnoreCase(userModel.getMobile(), editUserDto.getMobile())) {
+            updateDto.setMobile(editUserDto.getMobile());
+        }
+        if (!StringUtils.equalsIgnoreCase(userModel.getEmail(), editUserDto.getEmail())) {
+            updateDto.setEmail(editUserDto.getEmail());
+        }
+        if (!StringUtils.equalsIgnoreCase(userModel.getReferrer(), editUserDto.getReferrer())) {
+            updateDto.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? "" : editUserDto.getReferrer());
+        }
+        updateDto.setLastModifiedTime(new Date());
+        updateDto.setLastModifiedUser(operatorLoginName);
+        userRestClient.update(updateDto);
 
         if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),

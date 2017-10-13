@@ -6,9 +6,9 @@ import com.tuotiansudai.message.CouponAssignSmsNotifyMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
@@ -44,19 +44,19 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
 
         CouponAssignSmsNotifyMessage couponAssignSmsNotifyMessage;
         try {
-             couponAssignSmsNotifyMessage = JsonConverter.readValue(message, CouponAssignSmsNotifyMessage.class);
+            couponAssignSmsNotifyMessage = JsonConverter.readValue(message, CouponAssignSmsNotifyMessage.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[CouponAssignSmsNotifyMessageConsumer][consume] message parse failed!, message:{0}", message), e);
             return;
         }
 
         CouponModel couponModel = couponMapper.findById(couponAssignSmsNotifyMessage.getCouponId());
-        if(null == couponModel) {
+        if (null == couponModel) {
             logger.error(MessageFormat.format("[CouponAssignSmsNotifyMessageConsumer][consume] coupon is null!, message:{0}", message));
             return;
         }
         UserModel userModel = userMapper.findByLoginName(couponAssignSmsNotifyMessage.getLoginName());
-        if(null == userModel) {
+        if (null == userModel) {
             logger.error(MessageFormat.format("[CouponAssignSmsNotifyMessageConsumer][consume] user is null!, message:{0}", message));
             return;
         }

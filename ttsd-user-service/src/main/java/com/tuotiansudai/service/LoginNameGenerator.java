@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

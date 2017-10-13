@@ -1,22 +1,19 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.ActivityMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityModel;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
-import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -52,7 +49,6 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
     @Value(value = "${web.server}")
     private String url;
-
 
 
     @Override
@@ -99,7 +95,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
     @Override
     @Transactional
-    public synchronized ActivitySchoolSeasonStatusResponseDto getActivitySchoolSeasonStatusResponseDto(ActivityCategory activityCategory,String loginName){
+    public synchronized ActivitySchoolSeasonStatusResponseDto getActivitySchoolSeasonStatusResponseDto(ActivityCategory activityCategory, String loginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
 
         if (StringUtils.isEmpty(loginName)) {
@@ -116,13 +112,13 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         }
 
         int drawTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
-                        DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
+                DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate());
 
-        if(drawTime==1){
-            return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DONE, url+"/activity/school-season?source=app");
+        if (drawTime == 1) {
+            return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DONE, url + "/activity/school-season?source=app");
         }
 
-        return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.PENDING, url+"/activity/school-season?source=app");
+        return new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.PENDING, url + "/activity/school-season?source=app");
 
     }
 }

@@ -34,7 +34,7 @@ dependencies {
     compile project(':ttsd-rest')
     compile project(':ttsd-edxask-repository')
     compile project(':ttsd-edxask-model')
-    compile project(':ttsd-user-repository')
+    compile project(':ttsd-user-rest-client')
     compile project(':ttsd-util')
     compile project(':ttsd-client')
 
