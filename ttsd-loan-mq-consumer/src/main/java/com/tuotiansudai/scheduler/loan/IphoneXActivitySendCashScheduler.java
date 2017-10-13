@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.IphoneXActivityView;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +51,14 @@ public class IphoneXActivitySendCashScheduler {
             new IphoneXActivitySendCashScheduler.CashReward(128800l, 60000000l, 80000000l),
             new IphoneXActivitySendCashScheduler.CashReward(188800l, 80000000l, 100000000l));
 
-//    @Scheduled(cron = "0 0 10 6 11 ? 2017", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 30 12 13 10 ? 2017", zone = "Asia/Shanghai")
-//    @Scheduled(cron = "0 0/5 * * * ? ", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 20 15 13 10 ?", zone = "Asia/Shanghai")
     public void iphoneXActivitySendCash(){
-
         logger.info("[iphoneX activity] send cash start");
+
+        if (DateTime.now().getYear() != 2017) {
+            logger.info("[iphoneX activity] is over ");
+            return;
+        }
 
         Map<String, Long> map = new HashMap<>();
         List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime);

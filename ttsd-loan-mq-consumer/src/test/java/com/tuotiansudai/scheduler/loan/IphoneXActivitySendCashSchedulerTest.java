@@ -9,7 +9,9 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.IphoneXActivityView;
 import com.tuotiansudai.repository.model.ProductType;
+import org.apache.commons.lang.time.DateUtils;
 import org.assertj.core.util.Lists;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -53,6 +56,11 @@ public class IphoneXActivitySendCashSchedulerTest {
 
     @Test
     public void shouldSendCashIsSuccess() throws Exception {
+
+        if (DateTime.now().getYear() != 2016) {
+            return;
+        }
+
         IphoneXActivityView iphoneXActivityView1 = new IphoneXActivityView("0000", "userName0", "mobile0", 10000000, ProductType._360); //88
         IphoneXActivityView iphoneXActivityView2 = new IphoneXActivityView("1111", "userName1", "mobile1", 10000000, ProductType._180);
         IphoneXActivityView iphoneXActivityView3 = new IphoneXActivityView("1111", "userName1", "mobile1", 100000000, ProductType._90); //388
@@ -86,6 +94,11 @@ public class IphoneXActivitySendCashSchedulerTest {
 
     @Test
     public void shouldSendCashIsFail() throws Exception{
+
+        if (DateTime.now().getYear() != 2016) {
+            return;
+        }
+
         IphoneXActivityView iphoneXActivityView1 = new IphoneXActivityView("0000", "userName0", "mobile0", 10000000, ProductType._360); //88
         IphoneXActivityView iphoneXActivityView2 = new IphoneXActivityView("1111", "userName1", "mobile1", 10000000, ProductType._180);
         IphoneXActivityView iphoneXActivityView3 = new IphoneXActivityView("1111", "userName1", "mobile1", 100000000, ProductType._90); //388
