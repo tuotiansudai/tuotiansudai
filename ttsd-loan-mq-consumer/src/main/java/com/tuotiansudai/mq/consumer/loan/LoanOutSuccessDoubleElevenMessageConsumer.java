@@ -1,13 +1,17 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -51,6 +55,9 @@ public class LoanOutSuccessDoubleElevenMessageConsumer implements MessageConsume
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
     private Date activityDoubleElevenStartTime;
@@ -108,6 +115,8 @@ public class LoanOutSuccessDoubleElevenMessageConsumer implements MessageConsume
     private void sendExperience(String loginName, long experienceAmount) {
         logger.info("send double eleven activity of experience prize begin, loginName:{},  experienceAmount:{}", loginName, experienceAmount);
 
+        mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.DOUBLE_ELEVEN));
 
         logger.info("send double eleven activity of experience prize prize end, loginName:{}, experienceAmount:{}", loginName, experienceAmount);
     }

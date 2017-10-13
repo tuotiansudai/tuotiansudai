@@ -104,6 +104,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
     private Date acticitySchoolSeasonEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
+    private Date activityDoubleElevenStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.endTime}\")}")
+    private Date activityDoubleElevenEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -162,6 +168,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case SCHOOL_SEASON_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case DOUBLE_ELEVEN_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.DOUBLE_ELEVEN_INVEST));
         }
         return lotteryTime;
     }
@@ -267,6 +275,9 @@ public class ActivityCountDrawLotteryService {
                     time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     break;
+                case DOUBLE_ELEVEN_INVEST:
+                    List<InvestModel> investModelList = investMapper.findSuccessDoubleElevenActivityByTime(null,activityDoubleElevenStartTime,activityDoubleElevenEndTime);
+
             }
         }
         return time;
