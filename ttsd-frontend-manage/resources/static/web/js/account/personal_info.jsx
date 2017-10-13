@@ -292,7 +292,7 @@ require.ensure([],function() {
         commonFun.useAjax({
             url:"/no-password-invest/send-captcha",
             type:'POST',
-            data:$(imageCaptchaForm).serialize()+'&isVoice='+isVoice
+            data:$(imageCaptchaForm).serialize()+'&voice='+isVoice
         },function(response) {
             $getCaptchaElement.prop('disabled',false);
             $voiceCaptcha.hide();
