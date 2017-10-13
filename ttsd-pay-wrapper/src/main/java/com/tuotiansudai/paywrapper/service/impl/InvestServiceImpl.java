@@ -40,7 +40,6 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
@@ -82,9 +81,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private InvestNotifyRequestMapper investNotifyRequestMapper;
@@ -519,14 +515,10 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public void investSuccess(InvestModel investModel) {
-        try {
-            // 冻结资金
-            amountTransfer.freeze(investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(investModel.getId()), investModel.getAmount(), investModel.getLoginName(), investModel.getLoanId(), e);
-            return;
-        }
+        // 冻结资金
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);
         //设置交易时间

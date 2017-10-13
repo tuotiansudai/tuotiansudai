@@ -1,14 +1,21 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.message.SystemBillMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
+import org.hamcrest.CoreMatchers;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +24,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,6 +64,8 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
     @Autowired
     private AdvanceRepayService advanceRepayService;
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Test
     public void shouldCallbackInvestFee() throws Exception {
         UserModel loaner = this.getFakeUser("loaner");
@@ -92,11 +101,18 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(IdGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(),"project_transfer_notify"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(loanRepay1.getId(), "project_transfer_notify"), "");
 
-        SystemBillModel systemBill = systemBillMapper.findByOrderId(loanRepay1.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertThat(systemBill.getAmount(), is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
-        assertThat(systemBill.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBill.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
+        verifySystemBillMessage(loanRepay1, investRepay1);
+
+    }
+
+    private void verifySystemBillMessage(LoanRepayModel loanRepay1, InvestRepayModel investRepay1) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(loanRepay1.getActualInterest() - investRepay1.getActualInterest() + investRepay1.getActualFee()));
+        assertThat(message.getOrderId(), CoreMatchers.is(loanRepay1.getId()));
+        assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.INVEST_FEE));
+        assertThat(message.getMessageType(), CoreMatchers.is(SystemBillMessageType.TRANSFER_IN));
     }
 }

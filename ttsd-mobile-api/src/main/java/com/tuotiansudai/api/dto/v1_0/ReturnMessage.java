@@ -180,7 +180,9 @@ public enum ReturnMessage {
     SMS_IP_RESTRICTED("0204", "短信发送频繁，请稍后再试"),
 
     /******回款日历******/
-    REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦");
+    REPAY_CALENDAR_QUERY_FAILED("0114", "没有更多回款信息了哦"),
+
+    BANK_CARD_RECHARGE_DAILY_LIMIT("0205","超银行卡单日充值限额");
 
     private String code;
     private String msg;
