@@ -53,7 +53,7 @@
         <#if identityNumber??>
             <li><span class="info-title"> 支付密码</span>
                 <em class="info">********</em>
-            <span class="binding-set">
+                <span class="binding-set">
                <i class="fa fa-check-circle ok"></i>已设置<a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
             </span>
             </li>
@@ -62,12 +62,12 @@
             <#if noPasswordInvest>
                 <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
+                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" data-url="/no-password-invest/disabled" href="javascript:void(0);">关闭</a>
                 </span>
             <#elseif autoInvest>
                 <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
+                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest"  href="javascript:void(0);">开启</a>
                 </span>
             <#else>
                 <em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>
@@ -165,34 +165,36 @@
         </div>
     </form>
 </div>
-<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
+<div id="turnOnNoPasswordInvestDOM_identified" class="pad-m popLayer" style="display: none; ">
     <form id="imageCaptchaForm" name="imageCaptchaForm"  method="post">
         <dl>
-            <dt>推荐您开通免密投资功能，简化投资过程，投资快人一步，确认关闭吗？</dt>
+            <dt>推荐您开通免密投资功能，简化投资过程，投资快人一步，确认开启吗？</dt>
             <dd class="mt-20">
                 <span>图形验证码：</span>
-                <input type="text" class="input-control image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                <input type="text" class="input-control img-captcha image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                 <img src="/no-password-invest/image-captcha" alt="" class="image-captcha" id="imageCaptcha"/>
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
     </form>
-    <form id="turnOffNoPasswordInvestForm" name="turnOffNoPasswordInvestForm" >
-        <dl>
+    <form id="turnOnNoPasswordInvestForm" name="turnOnNoPasswordInvestForm" >
+        <dl style="position: relative">
             <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>
                 <span>短信验证码：</span>
-                <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
+                <input type="captcha" name="captcha" class="input-control sms-captcha captcha" placeholder="请输入短信验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <button type="button" class="btn-normal get-captcha" disabled="disabled" data-url="/no-password-invest/send-captcha">获取验证码</button>
+                <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
             </dd>
         </dl>
         <div class="error-box" ></div>
         <div class="tc person-info-btn">
             <button class="btn btn-success btn-cancel" type="button">取消</button>
-            <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
+            <button class="btn btn-close btn-close-turn-off" type="submit">我要开启</button>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
