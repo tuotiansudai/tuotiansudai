@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.enums.SystemBillBusinessType;
+
 import java.io.Serializable;
 import java.util.Date;
 

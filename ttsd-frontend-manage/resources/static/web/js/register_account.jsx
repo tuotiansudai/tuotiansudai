@@ -19,6 +19,9 @@ validator.add(registerAccountForm.identityNumber, [{
     strategy: 'identityValid',
     errorMsg: '您的身份证号码不正确'
 },{
+    strategy: 'maxLength:18',
+    errorMsg: '身份证位数不正确'
+},{
     strategy: 'ageValid',
     errorMsg: '年龄未满18周岁'
 },{
