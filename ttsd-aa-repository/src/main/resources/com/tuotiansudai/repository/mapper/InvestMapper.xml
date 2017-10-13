@@ -1159,6 +1159,9 @@
         AND loan.id!='1'
         AND loan_details.activity_desc!='0元购'
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
+        <if test="loanId != '' and loanId != null">
+            and invest.loan_id = #{loanId}
+        </if>
         ORDER BY trading_time ASC
     </select>
 
@@ -1168,11 +1171,20 @@
         JOIN loan ON invest.loan_id = loan.id
         JOIN loan_details ON invest.loan_id = loan_details.loan_id
         WHERE invest.status = 'SUCCESS'
+        AND invest.login_name = #{loginName}
         AND invest.transfer_invest_id IS NULL
         AND loan.activity_type!='NEWBIE'
         AND loan.id!='1'
         AND loan_details.activity_desc!='0元购'
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
     </select>
+
+    <select id="countActivityDoubleElevenByLoanId" parameterType="map" resultType="long">
+        SELECT count(id) AS sumCount
+        FROM invest
+        JOIN loan ON invest.loan_id = loan.id
+        WHERE invest.loan_id = #{loanId}
+    </select>
+
 
 </mapper>

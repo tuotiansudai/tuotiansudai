@@ -30,10 +30,10 @@ public class DoubleElevenActivityController {
     public ModelAndView doubleEleven() {
         ModelAndView modelAndView = new ModelAndView("/activities/2017/double-eleven", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
-        String sumAmount = loginName == null ? "0" : doubleElevenService.sumInvestAmountByloginName(loginName);
-        modelAndView.addObject("leftDrawCount", loginName == null ? 0 : lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.DOUBLE_ELEVEN_ACTIVITY));
+        String sumAmount = loginName == null ? "0" : doubleElevenService.sumInvestAmountByLoginName(loginName);
+        modelAndView.addObject("leftDrawCount", loginName == null ? 0 : doubleElevenService.leftDrawCount(LoginUserInfo.getMobile()));
         modelAndView.addObject("sumAmount", sumAmount);
-        modelAndView.addObject("jdAmount", doubleElevenService.calculateJDcardByAmount(sumAmount));
+        modelAndView.addObject("jdAmount", doubleElevenService.calculateJDCardAmountByInvestAmount(sumAmount));
         return modelAndView;
     }
 

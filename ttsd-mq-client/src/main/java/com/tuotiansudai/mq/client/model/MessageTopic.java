@@ -22,7 +22,8 @@ public enum MessageTopic {
             MessageQueue.LoanOutSuccess_AssignAchievement,
             MessageQueue.LoanOutSuccess_AssignAchievementCelebration,
             MessageQueue.LoanOutSuccess_GenerateAnXinContract,
-            MessageQueue.LoanOutSuccess_NationalMidAutumn),
+            MessageQueue.LoanOutSuccess_NationalMidAutumn,
+            MessageQueue.LoanOutSuccess_DoubleEleven),
 
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,

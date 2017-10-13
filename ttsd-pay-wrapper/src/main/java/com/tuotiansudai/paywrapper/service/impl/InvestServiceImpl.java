@@ -638,11 +638,35 @@ public class InvestServiceImpl implements InvestService {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
 
-            if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
+            if (DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
                     && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")
                     && !investModel.getTransferStatus().equals("SUCCESS")
-                    && investModel.getStatus().name().equals("SUCCESS")){
-                celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
+                    && investModel.getStatus().name().equals("SUCCESS")) {
+                celebrationOnePenAssignExperience(investModel.getLoginName(), investModel.getAmount());
+            }
+
+            //双十一活动发送站内信
+            if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanDetailInfo.getActivityDesc().equals("0元购")) {
+                long investSeq = investMapper.countActivityDoubleElevenByLoanId(loanModel.getId());
+                String activityTitle;
+                String activityContent;
+                MessageEventType messageEventType;
+                if (investSeq % 2 == 0) {
+                    activityTitle =  MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getTitleTemplate();
+                    activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getContentTemplate(), loanModel.getName());
+                    messageEventType = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD;
+                }
+                else{
+                    activityTitle =  MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getTitleTemplate();
+                    activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getContentTemplate(), loanModel.getName());
+                    messageEventType = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN;
+                }
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(messageEventType,
+                        Lists.newArrayList(investModel.getLoginName()),
+                        activityTitle,
+                        activityContent,
+                        investModel.getId()
+                ));
             }
 
         } catch (JsonProcessingException e) {
@@ -735,7 +759,7 @@ public class InvestServiceImpl implements InvestService {
         Optional<ExperienceReward> reward = singleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
         if (reward.isPresent()) {
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                   new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
+                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
 
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS,
                     Lists.newArrayList(loginName),

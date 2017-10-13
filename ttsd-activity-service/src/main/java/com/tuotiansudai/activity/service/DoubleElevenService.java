@@ -1,5 +1,8 @@
 package com.tuotiansudai.activity.service;
 
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,9 @@ public class DoubleElevenService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
     private Date activityDoubleElevenStartTime;
 
@@ -21,13 +27,19 @@ public class DoubleElevenService {
     private Date activityDoubleElevenEndTime;
 
 
-    public String sumInvestAmountByloginName(String loginName) {
-       long sumAmount = investMapper.sumAmountActivityDoubleElevenByLoginName(loginName,activityDoubleElevenStartTime, activityDoubleElevenEndTime);
-       return AmountConverter.convertCentToString(sumAmount);
+    public String sumInvestAmountByLoginName(String loginName) {
+        long sumAmount = investMapper.sumAmountActivityDoubleElevenByLoginName(loginName, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
+        return AmountConverter.convertCentToString(sumAmount);
     }
 
-    public String calculateJDcardByAmount(String amount){
-        return String.valueOf((Math.floor(Double.parseDouble(amount)/100000)) * 100);
+    public int calculateJDCardAmountByInvestAmount(String amount) {
+        return (int)(Math.floor(Double.parseDouble(amount) / 100000) * 100);
+    }
+
+    public int leftDrawCount(String mobile) {
+        int totalDrawCount = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
+        int usedDrawCount = lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY).size();
+        return totalDrawCount - usedDrawCount > 0 ? totalDrawCount - usedDrawCount : 0;
     }
 
 

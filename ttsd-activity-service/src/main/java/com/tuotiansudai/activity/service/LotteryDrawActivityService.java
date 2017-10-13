@@ -700,7 +700,7 @@ public class LotteryDrawActivityService {
         DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
         DateTime endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
 
-        List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(startTime.toDate(), endTime.toDate());
+        List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, startTime.toDate(), endTime.toDate());
 
         //根据投资的标的ID分组
         Map<String, List<InvestModel>> groupByLoanIdInvestCount = investModels
@@ -718,7 +718,7 @@ public class LotteryDrawActivityService {
             for (Map.Entry<String, List<InvestModel>> entry : groupDateInvestCount.entrySet()) {
                 int currentDateCount = 0;
                 for (InvestModel investModel : entry.getValue()) {
-                    if (userModel.getLoginName().equals(investModel.getLoginName()) && j % 2 == 1 && currentDateCount < 10) {
+                    if (userModel.getLoginName().equals(investModel.getLoginName()) && j % 2 == 0 && currentDateCount < 10) {
                         currentDateCount++;
                         investDrawTimes++;
                     }
