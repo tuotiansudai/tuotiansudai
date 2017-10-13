@@ -81,7 +81,7 @@ class fetchCaptchaFun{
                  ajaxOption={
                      url: '/register/user/send-register-captcha',
                      type:'POST',
-                     data:$imageCaptchaForm.serialize()+'&isVoice='+isVoice
+                     data:$imageCaptchaForm.serialize()+'&voice='+isVoice
                      // data:$imageCaptchaForm.serialize()
                  };
                 captchaSrc='/register/user/image-captcha';
