@@ -199,7 +199,6 @@ require.ensure([],function() {
     }
 
     $turnOnNoPasswordInvestLayer.on('click', function () {
-        console.log('开启绵密支付')
         commonFun.useAjax({
             url: "/checkLogin",
             type: 'GET'
@@ -216,9 +215,7 @@ require.ensure([],function() {
             });
         });
     });
-//关闭免密按钮原来
-    //开启lhm
-    // $turnOffNoPasswordInvestLayer.on('click', function () {
+    //开启免密支付按钮
     $noPasswordInvest.on('click', function () {
         commonFun.useAjax({
             url: "/checkLogin",
@@ -253,8 +250,7 @@ require.ensure([],function() {
         });
     });
 
-    //当认证以后开启免密支付data-url="/no-password-invest/disabled"
-    //关闭免密支付lhm
+    //关闭免密支付按钮
     $turnOffNoPasswordInvestLayer.on('click', function () {
         console.log('关闭免密支付')
         var _this = $(this);
@@ -386,8 +382,7 @@ require.ensure([],function() {
         errorBox.html(errorMsg);
 
     });
-// 关闭免密支付提交按钮
-    //开启lhm
+    //认证以后开启免密支付提交按钮
     turnOnNoPasswordInvestForm.onsubmit=function(event) {
         event.preventDefault();
         let thisForm = this;

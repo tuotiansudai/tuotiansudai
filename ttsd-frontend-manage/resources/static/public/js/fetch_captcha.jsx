@@ -89,8 +89,7 @@ class fetchCaptchaFun{
             else if(that.kind=='retrieve'){
                 ajaxOption={
                     type:'GET',
-                    url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha",
-                    data:'&isVoice='+isVoice
+                    url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha/"+isVoice,
                 };
                 captchaSrc='/mobile-retrieve-password/image-captcha';
             }
