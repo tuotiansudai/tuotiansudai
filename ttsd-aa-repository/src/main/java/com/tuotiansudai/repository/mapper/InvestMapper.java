@@ -319,4 +319,7 @@ public interface InvestMapper {
     List<LoanInvestAmountView> findAmountByNationalDayActivity(@Param(value="startTime") Date startTime,
                                          @Param(value="endTime") Date endTime,
                                          @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
+
+    List<IphoneXActivityView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
+                                                                 @Param(value = "endTime") Date endTime);
 }
