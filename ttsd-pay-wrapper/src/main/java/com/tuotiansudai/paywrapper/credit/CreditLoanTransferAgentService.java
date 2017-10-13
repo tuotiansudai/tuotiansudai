@@ -69,8 +69,7 @@ public class CreditLoanTransferAgentService {
     @Transactional
     public void creditLoanTransferAgent() {
 
-//        long transferAmount = creditLoanBillMapper.findBalance() - 10000000l;
-        long transferAmount = creditLoanBillMapper.findBalance() - 2000l;
+        long transferAmount = creditLoanBillMapper.findBalance() - 10000000l;
         if (transferAmount <= 0) {
             return;
         }
