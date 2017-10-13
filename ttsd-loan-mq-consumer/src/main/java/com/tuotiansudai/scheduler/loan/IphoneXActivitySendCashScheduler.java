@@ -51,7 +51,7 @@ public class IphoneXActivitySendCashScheduler {
             new IphoneXActivitySendCashScheduler.CashReward(128800l, 60000000l, 80000000l),
             new IphoneXActivitySendCashScheduler.CashReward(188800l, 80000000l, 100000000l));
 
-    @Scheduled(cron = "0 0 16 13 10 ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 10 6 11 ?", zone = "Asia/Shanghai")
     public void iphoneXActivitySendCash(){
         logger.info("[iphoneX activity] send cash start");
 
