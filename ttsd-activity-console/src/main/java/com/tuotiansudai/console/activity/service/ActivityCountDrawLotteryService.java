@@ -276,8 +276,8 @@ public class ActivityCountDrawLotteryService {
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     break;
                 case DOUBLE_ELEVEN_INVEST:
-                    List<InvestModel> investModelList = investMapper.findSuccessDoubleElevenActivityByTime(null,activityDoubleElevenStartTime,activityDoubleElevenEndTime);
-
+                    time = getDoubleElevenTotalAvailableDrawTimes(userModel);
+                    break;
             }
         }
         return time;
@@ -321,8 +321,42 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime);
             case SCHOOL_SEASON_ACTIVITY:
                 return Lists.newArrayList(acticitySchoolSeasonStartTime, acticityExerciseWorkEndTime);
+            case DOUBLE_ELEVEN_ACTIVITY:
+                return Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime);
         }
         return null;
+    }
+
+    private int getDoubleElevenTotalAvailableDrawTimes(UserModel userModel) {
+        int investDrawTimes = 0;
+
+        List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
+
+        //根据投资的标的ID分组
+        Map<String, List<InvestModel>> groupByLoanIdInvestCount = investModels
+                .stream()
+                .collect(Collectors.groupingBy(p -> String.format("%s", p.getLoanId())));
+
+        for (Map.Entry<String, List<InvestModel>> entryInvest : groupByLoanIdInvestCount.entrySet()) {
+            int j = 1;
+            //根据投资的标的ID的日期分组
+            Map<String, List<InvestModel>> groupDateInvestCount = entryInvest.getValue()
+                    .stream()
+                    .collect(Collectors.groupingBy(p -> String.format("%s", new DateTime(p.getTradingTime()).withTimeAtStartOfDay().toDate().toString())));
+
+            for (Map.Entry<String, List<InvestModel>> entry : groupDateInvestCount.entrySet()) {
+                int currentDateCount = 0;
+                for (InvestModel investModel : entry.getValue()) {
+                    if (userModel.getLoginName().equals(investModel.getLoginName()) && j % 2 == 0 && currentDateCount < 10) {
+                        currentDateCount++;
+                        investDrawTimes++;
+                    }
+                    j++;
+                }
+            }
+        }
+
+        return investDrawTimes;
     }
 
 }

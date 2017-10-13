@@ -39,14 +39,6 @@ import java.util.List;
 public class LoanOutSuccessDoubleElevenMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessDoubleElevenMessageConsumer.class);
 
-    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
     @Autowired
     private LoanMapper loanMapper;
 
@@ -93,7 +85,7 @@ public class LoanOutSuccessDoubleElevenMessageConsumer implements MessageConsume
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanOutInfo.getLoanId());
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
 
-        if (loanModel.getId() !=1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanDetailsModel.getActivityDesc().equals("0元购")) {
+        if (loanModel.getId() !=1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && (Strings.isNullOrEmpty(loanDetailsModel.getActivityDesc()) || !loanDetailsModel.getActivityDesc().equals("0元购"))) {
             logger.info(MessageFormat.format("[双11剁手活动标的放款MQ] LoanOutSuccess_DoubleEleven send experience is executing , (loanId : {0}) ", String.valueOf(loanOutInfo.getLoanId())));
             List<InvestModel> invests = investMapper.findSuccessDoubleElevenActivityByTime(loanOutInfo.getLoanId(), activityDoubleElevenStartTime, activityDoubleElevenEndTime);
             int count = 1;
@@ -101,18 +93,19 @@ public class LoanOutSuccessDoubleElevenMessageConsumer implements MessageConsume
                 if(count %2 == 1){
                     long experienceAmount = new BigDecimal(investModel.getAmount() * 1.1).longValue();
                     try {
-                        sendExperience(investModel.getLoginName(), experienceAmount);
+                        grantExperience(investModel.getLoginName(), experienceAmount);
                     }
                     catch(Exception e){
                         logger.error("[双11剁手活动标的放款MQ] LoanOutSuccess_DoubleEleven 用户:{0}, 标的:{1}, 体验金金额:{2} is send fail.", investModel.getLoginName(), loanOutInfo.getLoanId(), experienceAmount);
                     }
                 }
+                count++;
             }
         }
 
     }
 
-    private void sendExperience(String loginName, long experienceAmount) {
+    private void grantExperience(String loginName, long experienceAmount) {
         logger.info("send double eleven activity of experience prize begin, loginName:{},  experienceAmount:{}", loginName, experienceAmount);
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
