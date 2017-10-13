@@ -76,7 +76,6 @@ giftCircleDraw.prototype.rotateFn = function (angles, tipMessage,callbackFn) {
             thisFun.bRotate = !thisFun.bRotate;
             //thisFun.tipWindowPop(tipMessage);
             if(!callbackFn){
-                console.log('meiyou')
                 thisFun.tipWindowPop(tipMessage);
             }else {
                 thisFun.tipWindowPop(tipMessage,callbackFn);
