@@ -190,7 +190,7 @@ public class RegisterUserController {
         HttpSession session = httpServletRequest.getSession(false);
         boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
         if (result) {
-            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), false, RequestIPParser.parse(httpServletRequest));
+            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), dto.isVoice(), RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }
