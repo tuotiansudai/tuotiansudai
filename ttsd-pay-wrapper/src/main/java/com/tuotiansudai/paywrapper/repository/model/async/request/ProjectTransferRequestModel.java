@@ -7,6 +7,7 @@ import com.tuotiansudai.paywrapper.repository.model.UmPayServType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
 import com.tuotiansudai.repository.model.Source;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -140,9 +141,10 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newCreditLoanRechargePwdRequest(String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER);
-        model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
-        model.transAction = UmPayTransAction.OUT.getCode();
+        model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
+        model.setRetUrl(MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.console.host"), AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER.getWebRetCallbackPath()));
         return model;
     }
 
