@@ -7,7 +7,7 @@
     </div>
     <div class="clear-blank"></div>
     <nav></nav>
-    <div class="register-box ">
+    <div class="register-box " id="fetchaFrame">
         <div id="summary"></div>
         <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one register-icon-list">
