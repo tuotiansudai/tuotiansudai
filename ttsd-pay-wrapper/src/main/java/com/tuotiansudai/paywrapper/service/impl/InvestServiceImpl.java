@@ -39,7 +39,10 @@ import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -79,9 +82,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private InvestNotifyRequestMapper investNotifyRequestMapper;
@@ -526,14 +526,10 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public void investSuccess(InvestModel investModel) {
-        try {
-            // 冻结资金
-            amountTransfer.freeze(investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(investModel.getId()), investModel.getAmount(), investModel.getLoginName(), investModel.getLoanId(), e);
-            return;
-        }
+        // 冻结资金
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);
         //设置交易时间
@@ -645,11 +641,11 @@ public class InvestServiceImpl implements InvestService {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
 
-            if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
+            if (DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
                     && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")
                     && !investModel.getTransferStatus().equals("SUCCESS")
-                    && investModel.getStatus().name().equals("SUCCESS")){
-                celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
+                    && investModel.getStatus().name().equals("SUCCESS")) {
+                celebrationOnePenAssignExperience(investModel.getLoginName(), investModel.getAmount());
             }
 
         } catch (JsonProcessingException e) {
@@ -742,7 +738,7 @@ public class InvestServiceImpl implements InvestService {
         Optional<ExperienceReward> reward = singleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
         if (reward.isPresent()) {
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                   new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
+                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
 
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS,
                     Lists.newArrayList(loginName),

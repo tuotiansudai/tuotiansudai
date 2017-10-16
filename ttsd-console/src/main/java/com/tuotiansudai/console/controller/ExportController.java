@@ -10,6 +10,7 @@ import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.*;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
@@ -17,6 +18,7 @@ import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
+import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.AmountConverter;
@@ -101,54 +103,57 @@ public class ExportController {
     @Autowired
     private AskRestClient askRestClient;
 
+    @Autowired
+    private CreditLoanBillService creditLoanBillService;
+
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response,
-                              @RequestParam(value = "couponType",required = false) String couponType,
-                              @RequestParam(value = "couponSource",required = false) String couponSource,
-                              @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
+                              @RequestParam(value = "couponType", required = false) String couponType,
+                              @RequestParam(value = "couponSource", required = false) String couponSource,
+                              @RequestParam(value = "amount", required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize, couponType, amount, couponSource);
         List<List<String>> coupons = exportService.buildCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponHeader, coupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
     public void exportInterestCoupons(HttpServletResponse response,
-                                      @RequestParam(value = "couponType",required = false) String couponType,
-                                      @RequestParam(value = "couponSource",required = false) String couponSource,
-                                      @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
+                                      @RequestParam(value = "couponType", required = false) String couponType,
+                                      @RequestParam(value = "couponSource", required = false) String couponSource,
+                                      @RequestParam(value = "amount", required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.InterestCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize, couponType, amount, couponSource);
         List<List<String>> interestCoupons = exportService.buildInterestCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InterestCouponsHeader, interestCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
     public void exportRedEnvelopes(HttpServletResponse response,
-                                   @RequestParam(value = "couponType",required = false) String couponType,
-                                   @RequestParam(value = "couponSource",required = false) String couponSource,
-                                   @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
+                                   @RequestParam(value = "couponType", required = false) String couponType,
+                                   @RequestParam(value = "couponSource", required = false) String couponSource,
+                                   @RequestParam(value = "amount", required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.RedEnvelopesHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize, couponType, amount, couponSource);
         List<List<String>> redEnvelopeCoupons = exportService.buildRedEnvelopeCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.RedEnvelopesHeader, redEnvelopeCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
     public void exportBirthdayCoupons(HttpServletResponse response,
-                                      @RequestParam(value = "couponType",required = false) String couponType,
-                                      @RequestParam(value = "couponSource",required = false) String couponSource,
-                                      @RequestParam(value = "amount",required = false, defaultValue = "0") int amount) throws IOException {
+                                      @RequestParam(value = "couponType", required = false) String couponType,
+                                      @RequestParam(value = "couponSource", required = false) String couponSource,
+                                      @RequestParam(value = "amount", required = false, defaultValue = "0") int amount) throws IOException {
         fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index,pageSize,couponType,amount,couponSource);
+        List<CouponDto> records = consoleCouponService.findCouponsByTypeRedAndMoney(index, pageSize, couponType, amount, couponSource);
         List<List<String>> birthdayCoupons = exportService.buildBirthdayCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader, birthdayCoupons, response.getOutputStream());
     }
@@ -195,6 +200,26 @@ public class ExportController {
                 Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildSystemBillCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SystemBillHeader, csvData, httpServletResponse.getOutputStream());
+
+    }
+
+    @RequestMapping(value = "/credit-loan-bill", method = RequestMethod.GET)
+    public void exportSystemBillList(@RequestParam(value = "orderId", defaultValue = "")  String orderId,
+                                     @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+                                     @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                                     @RequestParam(value = "operationType", required = false) CreditLoanBillOperationType operationType,
+                                     @RequestParam(value = "businessType", required = false) CreditLoanBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
+        fillExportResponse(httpServletResponse, CsvHeaderType.CreditLoanBillHeader.getDescription());
+        BaseDto<BasePaginationDataDto<CreditLoanBillPaginationItemDataDto>> baseDto = creditLoanBillService.findCreditLoanBillPagination(
+                startTime,
+                endTime,
+                operationType,
+                businessType,
+                1,
+                Integer.MAX_VALUE,
+                orderId);
+        List<List<String>> csvData = exportService.buildCreditLoanBillCsvData(baseDto.getData().getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CreditLoanBillHeader, csvData, httpServletResponse.getOutputStream());
 
     }
 
