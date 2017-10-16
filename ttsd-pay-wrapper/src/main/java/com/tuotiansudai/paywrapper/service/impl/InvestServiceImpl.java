@@ -638,7 +638,7 @@ public class InvestServiceImpl implements InvestService {
             }
 
             //双十一活动发送站内信
-            if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanDetailInfo.getActivityDesc().equals("0元购")) {
+            if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && (loanDetailsModel != null && !loanDetailInfo.getActivityDesc().equals("0元购"))) {
                 long investSeq = investMapper.countActivityDoubleElevenByLoanId(loanModel.getId());
                 String activityTitle;
                 String activityContent;
