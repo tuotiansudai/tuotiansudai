@@ -161,7 +161,6 @@ public class InvestServiceImpl implements InvestService {
             new ExperienceReward(3222200l, 10000000l, 20000000l),
             new ExperienceReward(6888800l, 20000000l, Long.MAX_VALUE));
 
-    @Autowired
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final static String ZERO_SHOPPING_ACTIVITY_PRIZE = "zero_shopping_activity_prize:{0}";
