@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.controller.v1_0;
 
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import io.swagger.annotations.Api;
@@ -34,34 +35,11 @@ public class MobileAppActivityCenterController extends MobileAppBaseController {
     @RequestMapping(value = "/get/activity/school-season-status", method = RequestMethod.POST)
     @ApiOperation("获取开学季活动状态")
     public BaseResponseDto<ActivitySchoolSeasonStatusResponseDto> getSchoolSeasonStatus(@Valid @RequestBody BaseParamDto requestDto) {
+        ActivitySchoolSeasonStatusResponseDto activityStatusResponseDto= mobileAppActivityService.getActivitySchoolSeasonStatusResponseDto(ActivityCategory.SCHOOL_SEASON_ACTIVITY, getLoginName());
         BaseResponseDto<ActivitySchoolSeasonStatusResponseDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        baseResponseDto.setData(new ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus.DISABLED, ""));
+        baseResponseDto.setData(activityStatusResponseDto);
         return baseResponseDto;
-    }
-
-    public enum ActivitySchoolSeasonStatus {
-        DISABLED,
-        PENDING,
-        DONE
-    }
-
-    public static class ActivitySchoolSeasonStatusResponseDto extends BaseResponseDataDto {
-        private final ActivitySchoolSeasonStatus status;
-        private final String url;
-
-        public ActivitySchoolSeasonStatusResponseDto(ActivitySchoolSeasonStatus status, String url) {
-            this.status = status;
-            this.url = url;
-        }
-
-        public ActivitySchoolSeasonStatus getStatus() {
-            return status;
-        }
-
-        public String getUrl() {
-            return url;
-        }
     }
 }

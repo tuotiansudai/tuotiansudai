@@ -1,4 +1,3 @@
-require('publicStyle/module/register_png.scss');
 require('webStyle/register.scss');
 let commonFun=require('publicJs/commonFun');
 let ValidatorObj= require('publicJs/validator');
@@ -34,7 +33,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
             iconArrow=$this.find('i');
         $this.next('li').toggleClass('hide');
         checkOption=$this.next('li').hasClass('hide');
-        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
+        iconArrow[0].className=checkOption?'icon-arrow-bottom':'icon-arrow-right';
         if($referrer.is(':hidden')) {
             referrerValidBool=true;
         }
@@ -60,13 +59,13 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
         if($this.hasClass('checked')) {
             $this.removeClass('checked');
             $agreement.prop('checked',false);
-            $cIcon[0].className='sprite-register-no-checked';
+            $cIcon[0].className='icon-no-checked';
             agreementValid=false;
         }
         else {
             $this.addClass('checked');
             $agreement.prop('checked',true);
-            $cIcon[0].className='sprite-register-yes-checked';
+            $cIcon[0].className='icon-yes-checked';
             agreementValid=true;
         }
         isDisabledButton();
@@ -76,7 +75,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
         layer.open({
             type: 1,
             title: '拓天速贷服务协议',
-            area: ['950px', '600px'],
+            area: $(window).width()<1000?['100%', '100%']:['950px', '600px'],
             shadeClose: true,
             move: false,
             scrollbar: true,

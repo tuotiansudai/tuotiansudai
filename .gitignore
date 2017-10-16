@@ -41,3 +41,4 @@ ttsd-frontend-manage/resources/develop/**/*
 ttsd-frontend-manage/resources/prod/**/*
 
 ttsd-frontend-manage/.happypack
+venv/**

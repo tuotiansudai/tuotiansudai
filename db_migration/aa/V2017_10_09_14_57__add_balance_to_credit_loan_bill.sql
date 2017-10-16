@@ -1,0 +1,4 @@
+BEGIN;
+ALTER TABLE credit_loan_bill
+  ADD COLUMN `balance` BIGINT UNSIGNED NOT NULL DEFAULT 0 AFTER `amount`;
+COMMIT;

@@ -3,7 +3,9 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.BannerMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.BannerModel;
+import com.tuotiansudai.activity.service.SchoolSeasonService;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -24,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,11 +60,20 @@ public class HomeController {
     @Autowired
     private TransferService transferService;
 
+    @Autowired
+    private SchoolSeasonService schoolSeasonService;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.startTime}\")}")
+    private Date activitySchoolSeasonStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
+    private Date activitySchoolSeasonEndTime;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
 
-        modelAndView.addObject("bannerList", bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB)); //banner
+        modelAndView.addObject("bannerList", bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB,new Date())); //banner
 
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords()); //公告
 
@@ -80,6 +92,12 @@ public class HomeController {
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
 
         modelAndView.addObject("siteMapList", homeService.siteMapData());
+
+        Date nowDate = DateTime.now().toDate();
+        if (!nowDate.after(activitySchoolSeasonEndTime) && !nowDate.before(activitySchoolSeasonStartTime)) {
+            modelAndView.addObject("schoolSeason",true);
+            modelAndView.addObject("drawTime",LoginUserInfo.getMobile()==null?1:schoolSeasonService.toDayIsDrawByMobile(LoginUserInfo.getMobile(), ActivityCategory.SCHOOL_SEASON_ACTIVITY));
+        }
 
         return modelAndView;
     }

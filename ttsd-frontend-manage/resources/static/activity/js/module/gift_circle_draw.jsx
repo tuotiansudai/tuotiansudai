@@ -25,7 +25,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
     };
 
     //中奖记录
-    this.GiftRecord = function () {
+    this.GiftRecord = function (callback) {
         let self = this;
         commonFun.useAjax({
             url: this.allListURL,
@@ -37,6 +37,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
+            callback && callback();
         });
     };
 
@@ -61,7 +62,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
 //angles:奖项对应的角度，
 //Drawplate:转盘的dom
 //data:抽奖成功后返回的数据
-giftCircleDraw.prototype.rotateFn = function (angles, tipMessage) {
+giftCircleDraw.prototype.rotateFn = function (angles, tipMessage,callbackFn) {
     var thisFun = this;
     thisFun.bRotate = !this.bRotate;
     thisFun.giftCircleFrame.find('.rotate-btn').stopRotate();
@@ -71,9 +72,14 @@ giftCircleDraw.prototype.rotateFn = function (angles, tipMessage) {
         duration: 8000,
         callback: function () {
             thisFun.GiftRecord();
-            thisFun.MyGift();
+            this.userListURL&&thisFun.MyGift();
             thisFun.bRotate = !thisFun.bRotate;
-            thisFun.tipWindowPop(tipMessage);
+            //thisFun.tipWindowPop(tipMessage);
+            if(!callbackFn){
+                thisFun.tipWindowPop(tipMessage);
+            }else {
+                thisFun.tipWindowPop(tipMessage,callbackFn);
+            }
         }
     })
 };
@@ -126,7 +132,23 @@ giftCircleDraw.prototype.scrollList = function (domName, length) {
         });
     }
 };
+giftCircleDraw.prototype.scrollUp = function (domName,time) {
+     var $self = domName,
+     time = time||200;
+     var lineHeight = $self.find("li:first").height();
+    var z = 0;//向上滚动top值
+    function up() {//向上滚动
+        $self.animate({//中奖结果
+            'top': (z - 30) + 'px'
+        }, time, 'linear', function () {
+            $self.css({'top': '0px'})
+                .find("li:first").appendTo($self);
+            up();
+        });
+    }
 
+    up();
+};
 giftCircleDraw.prototype.hoverScrollList = function (domName, length) {
     var thisFun = this,
         scrollTimer;

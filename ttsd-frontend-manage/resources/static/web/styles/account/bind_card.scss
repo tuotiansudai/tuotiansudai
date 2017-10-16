@@ -1,3 +1,4 @@
+@import 'banks.scss';
 //recharge and bind-card pages
 .recharge-bind-card {
   position: relative;
@@ -233,17 +234,11 @@
           float: left;
           margin: 10px 15px 5px 10px;
           cursor: pointer;
-
           label {
             width: 123px;
             height: 38px;
-
-            img {
-              width: 123px;
-              height: 36px;
-              border: #dddddd 1px solid;
-              cursor: pointer;
-            }
+            display: inline-block;
+            vertical-align: top;
           }
         }
       }

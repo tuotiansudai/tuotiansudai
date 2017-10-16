@@ -4,7 +4,6 @@
 <div class="register-container page-width register-account">
 
     <div class="step-account-head">
-        <#--<i class="sprite-register-ic-account"></i>-->
        <span class="info-note">
            为了保障您的账户及资金安全， <br/>
        根据相关法律法规，我们会对您进行实名认证。
@@ -17,11 +16,13 @@
                 <li>
                     <label class="title">真实姓名</label>
                     <input type="text" name="userName" placeholder="请输入您的真实姓名"
+                           maxlength="17"
                            class="user-name" value="${(originalFormData.userName)!}"/>
                 </li>
                 <li><label class="title">身份证号</label>
                     <input type="text" name="identityNumber" placeholder="请输入您的身份证号码"
                            class="identity-number"
+                           maxlength="18"
                            value="${(originalFormData.identityNumber)!}"/>
                 </li>
             </ul>

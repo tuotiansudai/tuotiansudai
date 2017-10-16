@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -27,7 +27,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +54,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Autowired
     private BankCardMapper bankCardMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -125,7 +121,8 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                amountTransfer.freeze(loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE,loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
             } else {
                 withdrawModel.setStatus(WithdrawStatus.APPLY_FAIL);
@@ -155,8 +152,6 @@ public class WithdrawServiceImpl implements WithdrawService {
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);
-        } catch (AmountTransferException e) {
-            logger.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -175,10 +170,12 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                amountTransfer.transferOutFreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE,loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
             } else {
-                amountTransfer.unfreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE,loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.FAIL);
             }
             withdrawModel.setNotifyTime(new Date());
@@ -204,8 +201,6 @@ public class WithdrawServiceImpl implements WithdrawService {
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (AmountTransferException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }

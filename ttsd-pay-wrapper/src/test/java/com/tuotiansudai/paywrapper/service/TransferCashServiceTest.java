@@ -6,15 +6,25 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.SystemBillMapper;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -34,7 +43,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class TransferCashServiceTest {
 
@@ -52,14 +61,10 @@ public class TransferCashServiceTest {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private UserBillMapper userBillMapper;
-
-    @Autowired
-    private SystemBillMapper systemBillMapper;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private void createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId,"","",new Date());
+        AccountModel accountModel = new AccountModel(userId, "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
@@ -111,24 +116,34 @@ public class TransferCashServiceTest {
     }
 
     @Test
-    public void shouldTransferCash() {
+    public void shouldTransferCash() throws Exception {
         this.createUserByUserId("testTransferCash");
         this.createAccountByUserId("testTransferCash");
         long orderId = IdGenerator.generate();
         String amount = "1";
-        TransferCashDto transferCashDto = new TransferCashDto("testTransferCash",String.valueOf(orderId),amount);
+        TransferCashDto transferCashDto = new TransferCashDto("testTransferCash", String.valueOf(orderId), amount, UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.LOTTERY_CASH, SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE);
         BaseDto<PayDataDto> baseDto = transferCashService.transferCash(transferCashDto);
         assertTrue(baseDto.isSuccess());
 
-        AccountModel accountModel = accountMapper.findByLoginName("testTransferCash");
-        assertThat(accountModel.getBalance(), is(10001L));
+        verifyAmountTransferMessage(orderId);
 
-        List<UserBillModel> userBillModels = userBillMapper.findByLoginName("testTransferCash");
-        assertThat(userBillModels.get(0).getOrderId(), is(orderId));
-        assertThat(userBillModels.get(0).getAmount(), is(1L));
+        verifySystemBillMessage();
+    }
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(orderId, SystemBillBusinessType.LOTTERY_CASH);
-        assertThat(systemBillModel.getAmount(), is(1L));
+    private void verifySystemBillMessage() throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(1L));
+    }
+
+    private void verifyAmountTransferMessage(long orderId) throws IOException {
+        String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
+        assertThat(feeMessage.getLoginName(), CoreMatchers.is("testTransferCash"));
+        assertThat(feeMessage.getAmount(), CoreMatchers.is(1L));
+        assertThat(feeMessage.getOrderId(), is(orderId));
+        assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_CASH_BACK));
+        assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
     }
 
 }

@@ -3,19 +3,10 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.ExperienceBillBusinessType;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.message.ExperienceAssigningMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -23,14 +14,18 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
+import org.hamcrest.CoreMatchers;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -41,6 +36,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -85,12 +81,6 @@ public class InvestTransferPurchaseServiceTest {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private UserBillMapper userBillMapper;
-
-    @Autowired
-    private SystemBillMapper systemBillMapper;
-
-    @Autowired
     private MembershipMapper membershipMapper;
 
     @Autowired
@@ -107,6 +97,8 @@ public class InvestTransferPurchaseServiceTest {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Before
     public void setUp() throws Exception {
@@ -156,16 +148,12 @@ public class InvestTransferPurchaseServiceTest {
         TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
         InvestModel actualInvest = investMapper.findById(transferApplicationModel.getInvestId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(1));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transfereeUserBills.get(0).getLoginName(), is(transferee.getLoginName()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_IN));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        verifyAmountTransferMessage(transferrer, transferee, fakeTransferApplication);
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(transferApplicationModel.getInvestId()));
@@ -200,17 +188,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(actualTransferApplication.getTransferAmount()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(actualTransferApplication.getTransferFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+        verifySystemBillMessage(actualTransferApplication);
     }
 
     @Test
@@ -236,16 +214,12 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualInvest = investMapper.findById(fakeInvest.getId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(1));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transfereeUserBills.get(0).getLoginName(), is(transferee.getLoginName()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_IN));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        verifyAmountTransferMessage(transferrer, transferee, fakeTransferApplication);
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
@@ -279,18 +253,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(1).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
-
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(actualTransferApplication.getTransferAmount()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(actualTransferApplication.getTransferFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+        verifySystemBillMessage(actualTransferApplication);
     }
 
     @Test
@@ -316,16 +279,12 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualInvest = investMapper.findById(fakeInvest.getId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(1));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transfereeUserBills.get(0).getLoginName(), is(transferee.getLoginName()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_IN));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        verifyAmountTransferMessage(transferrer, transferee, fakeTransferApplication);
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
@@ -360,17 +319,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(actualTransferApplication.getTransferAmount()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(actualTransferApplication.getTransferFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+        verifySystemBillMessage(actualTransferApplication);
     }
 
     @Test
@@ -390,16 +339,12 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualInvest = investMapper.findById(fakeInvest.getId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(1));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(fakeTransferApplication.getTransferAmount()));
-        assertThat(transfereeUserBills.get(0).getLoginName(), is(transferee.getLoginName()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_IN));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        verifyAmountTransferMessage(transferrer, transferee, fakeTransferApplication);
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
@@ -427,18 +372,37 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
+        verifySystemBillMessage(actualTransferApplication);
+    }
 
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(actualTransferApplication.getTransferAmount()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_OUT));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(actualTransferApplication.getTransferFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+    private void verifyAmountTransferMessage(UserModel transferrer, UserModel transferee, TransferApplicationModel fakeTransferApplication) throws IOException {
+        String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transferFeeMessage = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMessage.class);
+        assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
+        assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
+        assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
 
-        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
-        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+        String transferMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transferMessage = JsonConverter.readValue(transferMessageBody, AmountTransferMessage.class);
+        assertThat(transferMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transferMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_OUT));
+        assertThat(transferMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+
+        String transfereeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMessage transfereeMessage = JsonConverter.readValue(transfereeMessageBody, AmountTransferMessage.class);
+        assertThat(transfereeMessage.getLoginName(), CoreMatchers.is(transferee.getLoginName()));
+        assertThat(transfereeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transfereeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_IN));
+        assertThat(transfereeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+    }
+
+    private void verifySystemBillMessage(TransferApplicationModel actualTransferApplication) throws IOException {
+        String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.SystemBill.getQueueName()));
+        SystemBillMessage message = JsonConverter.readValue(messageBody, SystemBillMessage.class);
+        assertThat(message.getAmount(), CoreMatchers.is(actualTransferApplication.getTransferFee()));
+        assertThat(message.getBusinessType(), CoreMatchers.is(SystemBillBusinessType.TRANSFER_FEE));
     }
 
     @Test

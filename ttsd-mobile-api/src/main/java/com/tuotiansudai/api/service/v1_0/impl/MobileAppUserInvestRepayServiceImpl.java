@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
@@ -8,12 +9,16 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -55,6 +60,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Autowired
     private LoanMapper loanMapper;
 
+    @Value("${web.server}")
+    private String webServer;
+
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
     private final static String NEWBIE_COUPON_TEMPLATE = "{0}元新手体验金";
@@ -82,12 +90,17 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             if (investModel.getTransferInvestId() != null) {
                 TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
+                userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
+                        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()) : userInvestRepayResponseDataDto.getInvestTime());
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
-            int maxPeriods = investRepayModels == null ? 0 : investRepayModels.size();
-            InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
-            userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
+
+            userInvestRepayResponseDataDto.setRecheckTime(getValueDate(investModel, loanModel, investRepayModels));
+
+            InvestRepayModel investRepayModelTemp = investRepayModels.size() > 0 ? investRepayModels.get(investRepayModels.size() - 1) : null;
+
+            userInvestRepayResponseDataDto.setLastRepayDate(investRepayModelTemp == null ? "" : new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModelTemp.getActualRepayDate() : investRepayModelTemp.getRepayDate()).toString("yyyy/MM/dd"));
             List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 Date repayDate = investRepayModel.getActualRepayDate();
@@ -105,7 +118,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
-
                 int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
                 long corpus = 0;
                 if (periods == investRepayModel.getPeriod()) {
@@ -134,6 +146,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 totalExpectedInterest += expectedInterest;
             }
 
+
             userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
@@ -145,6 +158,18 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
             List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
+            if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
+                if (investModel.getContractNo().equals("OLD")) {
+                    if (investModel.getTransferInvestId() != null) {
+                        long transferApplicationId = transferApplicationMapper.findByInvestId(investModel.getId()).getId();
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/transfer/transferApplicationId/{1}", this.webServer, String.valueOf(transferApplicationId)));
+                    } else {
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId())));
+                    }
+                } else {
+                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo()));
+                }
+            }
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
             responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -181,5 +206,30 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         }
 
         return usedCouponName;
+    }
+
+    private String getValueDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+        if (investRepayModels.size() == 0) {
+            return "";
+        }
+
+        int minPeriod = investRepayModels.get(0).getPeriod();
+
+        if (investModel.getTransferInvestId() != null && minPeriod > 1) {
+            return sdf.format(new DateTime(investRepayMapper.findByInvestIdAndPeriod(investModel.getTransferInvestId(), minPeriod - 1).getRepayDate()).plusDays(1).toDate());
+        }
+
+        if (Lists.newArrayList(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())) {
+            return loanModel.getRecheckTime() == null ? "" : sdf.format(loanModel.getRecheckTime());
+        }
+
+
+        if (investModel.getTransferInvestId() != null && minPeriod == 1) {
+            investModel = investService.findById(investModel.getTransferInvestId());
+        }
+
+        return sdf.format(investModel.getInvestTime());
     }
 }

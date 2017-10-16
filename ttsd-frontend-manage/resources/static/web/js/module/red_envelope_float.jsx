@@ -1,5 +1,7 @@
+require("webStyle/module/red_envelop_float.scss");
 require.ensure([],function() {
     require('webJsModule/drag');
+
     let commonFun= require('publicJs/commonFun');
     let ValidatorObj=require('publicJs/validator');
     let $redEnvelopFrame=$('#redEnvelopFloatFrame');

@@ -59,6 +59,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String COUPON_EXPIRED_NOTIFY = "/sms/coupon-expired-notify";
 
+    private final static String CREDIT_LOAN_BALANCE_ALERT = "/sms/credit-loan-balance-alert";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
@@ -113,6 +115,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendCouponExpiredNotify(SmsCouponNotifyDto dto) {
         return send(dto, COUPON_EXPIRED_NOTIFY);
+    }
+
+    public BaseDto<SmsDataDto> sendCreditLoanBalanceAlert() {
+        return send(null, CREDIT_LOAN_BALANCE_ALERT);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

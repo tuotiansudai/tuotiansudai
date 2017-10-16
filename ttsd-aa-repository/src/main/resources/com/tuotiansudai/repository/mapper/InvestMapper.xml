@@ -89,6 +89,19 @@
         <result column="trading_time" property="tradingTime"></result>
     </resultMap>
 
+    <resultMap id="NationalDayActivityInvestView" type="LoanInvestAmountView" extends="investAchievementView">
+        <result column="loan_desc" property="loanDesc"></result>
+        <result column="user_name" property="userName"></result>
+    </resultMap>
+    
+    <resultMap id="iphoneXActivityView" type="IphoneXActivityView">
+        <result column="user_name" property="userName"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="sumAmount" property="sumAmount"></result>
+        <result column="product_type" property="productType"></result>
+    </resultMap>
+
     <sql id="columns">
         id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
     </sql>
@@ -1105,7 +1118,9 @@
                     AND i.transfer_status != 'SUCCESS'
             GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
         ORDER BY amount desc,trading_time
-        LIMIT 3
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
     </select>
 
     <select id="findSuccessByLoginNameExceptTransferAndTime" parameterType="map" resultMap="investResultMap">
@@ -1118,7 +1133,39 @@
         AND loan.activity_type!='NEWBIE'
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
         ORDER BY trading_time ASC
+    </select>
 
+    <select id="findAmountByNationalDayActivity" parameterType="map" resultMap="NationalDayActivityInvestView">
+        SELECT temp.login_name,temp.amount,temp.trading_time,temp.loan_desc,user.mobile,user.user_name FROM
+        (SELECT
+        login_name,
+        loan_details.activity_desc AS loan_desc,
+        SUM(amount) AS amount,
+        MAX(trading_time) AS trading_time
+        FROM
+        invest i JOIN loan on i.loan_id = loan.id JOIN loan_details on loan.id = loan_details.loan_id
+        WHERE i.loan_id != 1
+        AND loan.activity_type != 'NEWBIE'
+        AND loan_details.activity_desc in
+        <foreach collection="loanActivityDescList" item="activityDesc" open="(" separator="," close=")">
+          #{activityDesc}
+        </foreach>
+        AND loan.fundraising_start_time BETWEEN #{startTime} AND #{endTime}
+        AND i.status = 'SUCCESS'
+        AND i.transfer_invest_id IS NULL
+        GROUP BY loan_details.activity_desc, i.login_name) temp join user on temp.login_name = user.login_name
+    </select>
+
+    <select id="findAmountOrderByNameAndProductType" parameterType="map" resultMap="iphoneXActivityView">
+        SELECT temp.login_name, temp.sumAmount, temp.product_type, user.mobile, user.user_name FROM
+        (SELECT i.login_name, SUM(amount) AS sumAmount, loan.product_type
+        FROM invest i JOIN loan on i.loan_id = loan.id
+        WHERE loan.activity_type != 'NEWBIE'
+        AND i.status = 'SUCCESS'
+        AND i.transfer_invest_id IS NULL
+        AND loan.product_type <![CDATA[ <> ]]> 'EXPERIENCE'
+        AND i.trading_time BETWEEN #{startTime} AND #{endTime}
+        GROUP BY loan.product_type, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
 
 </mapper>

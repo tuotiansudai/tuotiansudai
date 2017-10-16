@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RequestIPParser;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -59,24 +60,6 @@ public class BannerController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/banner/{id}/deactivated", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<BaseDataDto> deactivatedBanner(@PathVariable Long id, HttpServletRequest request) {
-        String loginName = LoginUserInfo.getLoginName();
-        String ip = RequestIPParser.parse(request);
-        BannerModel bannerModel = this.bannerService.findById(id);
-        bannerModel.setDeactivatedTime(new Date());
-        bannerModel.setActive(false);
-        bannerModel.setDeactivatedBy(LoginUserInfo.getLoginName());
-        bannerService.updateBanner(bannerModel, loginName, ip);
-        BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(true);
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        baseDto.setData(dataDto);
-
-        return baseDto;
-    }
-
     @RequestMapping(value = "/banner/{id}/edit", method = RequestMethod.GET)
     public ModelAndView editBanner(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/banner");
@@ -92,9 +75,7 @@ public class BannerController {
         String loginName = LoginUserInfo.getLoginName();
         String ip = RequestIPParser.parse(request);
         BannerModel bannerModel = new BannerModel(bannerDto);
-        bannerModel.setActive(true);
         bannerModel.setActivatedBy(LoginUserInfo.getLoginName());
-        bannerModel.setActivatedTime(new Date());
         bannerModel.setDeleted(false);
         bannerService.updateBanner(bannerModel, loginName, ip);
         return "redirect:/banner-manage/list";

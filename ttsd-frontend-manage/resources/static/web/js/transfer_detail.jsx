@@ -4,8 +4,9 @@ require('webJsModule/coupon_alert');
 require('webJsModule/red_envelope_float');
 require('publicJs/login_tip');
 let commonFun= require('publicJs/commonFun');
-//安心签协议
-require('webJsModule/anxin_agreement');
+
+//安心签业务
+let anxinModule = require('webJsModule/anxin_signed');
 
 var $transferDetailCon = $('#transferDetailCon'),
     $errorTip = $('.errorTip', $transferDetailCon),
@@ -121,7 +122,7 @@ function submitData() {
                     if($isAnxinAuthenticationRequired.val()=='false'){
                         $transferForm.submit();
                     }else{
-                        getSkipPhoneTip();
+                        anxinModule.getSkipPhoneTip();
                         return false;
                     }
 
@@ -144,125 +145,31 @@ $questionList.find('dt').on('click', function(index) {
 })
 
 
-//loan click checkbox
-$('.skip-group .skip-icon').on('click', function(event) {
-    event.preventDefault();
+//**************************安心签*******************************
 
-    $(this).hasClass('active') ? $(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show() && $('#transferSubmit').prop('disabled', true) : $(this).addClass('active') && $('#skipCheck').val('true') && $('#checkTip').hide() && $('#transferSubmit').prop('disabled', false);
-});
-
-//skip tip click chechbox
-$('.tip-item .skip-icon').on('click', function(event) {
-    event.preventDefault();
-    $(this).hasClass('active') ? $(this).removeClass('active') && $('#tipCheck').val('false') : $(this).addClass('active') && $('#tipCheck').val('true');
-});
-
-//show phone code tip
-function getSkipPhoneTip() {
-    layer.open({
-        shadeClose: false,
-        title: '安心签代签署授权',
-        btn: 0,
-        type: 1,
-        area: ['400px', 'auto'],
-        content: $('#getSkipPhone')
-    });
-}
-
-var num = 60,
-    Down;
-
-//get phone code
-$('#getSkipCode').on('click', function(event) {
-    event.preventDefault();
-    getCode(false);
-});
-
-//get phone code yuyin
-$('#microPhone').on('click', function(event) {
-    event.preventDefault();
-    getCode(true);
-});
-
-function getCode(type) {
-    $('#getSkipCode').prop('disabled',true);
-    $('#microPhone').css('visibility', 'hidden');
-    commonFun.useAjax({
-        url: '/anxinSign/sendCaptcha',
-        type: 'POST',
-        data: {
-            isVoice: type
-        }
-    },function (data) {
-        $('#getSkipCode').prop('disabled',false);
-        $('#microPhone').css('visibility', 'visible');
-        if(data.success) {
-            countDown();
-            Down = setInterval(countDown, 1000);
-        }
-        else {
-            layer.msg('请求失败，请重试或联系客服！');
-        }
-    });
-}
-//countdown skip
-function countDown() {
-    $('#getSkipCode').val(num + '秒后重新获取').prop('disabled', true);
-    $('#microPhone').css('visibility', 'hidden');
-    if (num == 0) {
-        clearInterval(Down);
-        $('#getSkipCode').val('重新获取验证码').prop('disabled', false);
-        $('#microPhone').css('visibility', 'visible');
-        num=60;
-    }else{
-        num--;
-    }
-}
-//submit data skip phone code
-$('#getSkipBtn').on('click', function(event) {
-    event.preventDefault();
-    var $self = $(this);
-    if ($('#skipPhoneCode').val() != '') {
-        $self.addClass('active').val('授权中...').prop('disabled', true);
-        commonFun.useAjax({
-            url: '/anxinSign/verifyCaptcha',
-            type: 'POST',
-            data: {
-                captcha: $('#skipPhoneCode').val(),
-                skipAuth: $('#tipCheck').val()
-            }
-        },function (data) {
-            $self.removeClass('active').val('立即授权').prop('disabled', false);
-            if(data.success){
-                $('#isAnxinUser').val('true');
-                if(data.data.message=='skipAuth'){
-                    $isAnxinAuthenticationRequired.val('false');
-                }
-                $('.skip-group').hide();
-                skipSuccess();
-            }else{
-                $('#skipError').text('验证码不正确').show();
-            }
-        });
-
-    } else {
-        $('#skipError').text('验证码不能为空').show();
+//勾选马上投资下方 协议复选框
+$('.init-checkbox-style').initCheckbox(function(event) {
+    //如果安心签协议未勾选，马上投资按钮需要置灰
+    let checkboxBtn = event.children[0];
+    let checkBool = $(checkboxBtn).prop('checked');
+    if(checkboxBtn.id=='skipCheck') {
+        $('#transferSubmit').prop('disabled',!checkBool);
+        $('#checkTip').toggle();
     }
 });
+anxinModule.toAuthorForAnxin(function(data) {
 
-//skip success
-function skipSuccess() {
-    layer.closeAll();
-    $('#skipSuccess').show();
-    setTimeout(function() {
-        $('#skipSuccess').hide();
-        $('#skipPhoneCode').val('');
-        num=0;
-        $('#transferForm').submit();
-    }, 3000)
-}
+    $('#isAnxinUser').val('true');
+    $('.skip-group').hide();
+    if(data.data.message=='skipAuth'){
+        $isAnxinAuthenticationRequired.val('false');
+    }
 
-$('#skipPhoneCode').on('keyup', function(event) {
-    event.preventDefault();
-    $(this).val() != '' ? $('#skipError').text('').hide() : $('#skipError').text('验证码不能为空').show();;
+    $('#transferForm').submit();
+
 });
+
+
+
+
+

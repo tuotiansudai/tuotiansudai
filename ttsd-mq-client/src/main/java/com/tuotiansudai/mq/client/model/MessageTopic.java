@@ -11,7 +11,9 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_ExperienceAssignInterestCoupon,
             MessageQueue.InvestSuccess_DragonBoat,
             MessageQueue.InvestSuccess_WechatLottery,
-            MessageQueue.InvestSuccess_HouseDecorate),
+            MessageQueue.InvestSuccess_HouseDecorate,
+            MessageQueue.InvestSuccess_SchoolSeason,
+            MessageQueue.InvestSuccess_NationalMidAutumn),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,
@@ -19,7 +21,8 @@ public enum MessageTopic {
             MessageQueue.LoanOutSuccess_AssignCoupon,
             MessageQueue.LoanOutSuccess_AssignAchievement,
             MessageQueue.LoanOutSuccess_AssignAchievementCelebration,
-            MessageQueue.LoanOutSuccess_GenerateAnXinContract),
+            MessageQueue.LoanOutSuccess_GenerateAnXinContract,
+            MessageQueue.LoanOutSuccess_NationalMidAutumn),
 
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,

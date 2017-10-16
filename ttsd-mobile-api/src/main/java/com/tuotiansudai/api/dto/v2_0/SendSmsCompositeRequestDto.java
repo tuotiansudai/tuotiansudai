@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v2_0;
 
 
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 public class SendSmsCompositeRequestDto extends BaseParamDto {
     @NotNull(message = "0022")
     @ApiModelProperty(value = "验证码类型", example = "REGISTER_CAPTCHA,RETRIEVE_PASSWORD_CAPTCHA,TURN_OFF_NO_PASSWORD_INVEST")
-    private CaptchaType type;
+    private SmsCaptchaType type;
 
     @NotEmpty(message = "0001")
     @Pattern(regexp = "^1\\d{10}$", message = "0002")
@@ -20,11 +20,11 @@ public class SendSmsCompositeRequestDto extends BaseParamDto {
     @ApiModelProperty(value = "图形验证码", example = "123456")
     private String imageCaptcha;
 
-    public CaptchaType getType() {
+    public SmsCaptchaType getType() {
         return type;
     }
 
-    public void setType(CaptchaType type) {
+    public void setType(SmsCaptchaType type) {
         this.type = type;
     }
 

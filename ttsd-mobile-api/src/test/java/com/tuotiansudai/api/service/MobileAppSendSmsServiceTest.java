@@ -7,7 +7,7 @@ import com.tuotiansudai.api.dto.v1_0.VerifyCaptchaRequestDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppSendSmsServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
     public void shouldSendSmsByRegisterCaptchaMobileIsDuplicate(){
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
-        sendSmsRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         when(userService.mobileIsExist(anyString())).thenReturn(true);
         BaseResponseDto baseResponseDto = mobileAppSendSmsService.sendSms(sendSmsRequestDto, "127.0.0.1");
         assertEquals(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),baseResponseDto.getCode());
@@ -44,7 +44,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
     public void shouldSendSmsByRetrievePasswordMobileNotExistCaptcha(){
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
-        sendSmsRequestDto.setType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         BaseResponseDto baseResponseDto = mobileAppSendSmsService.sendSms(sendSmsRequestDto, "127.0.0.1");
         assertEquals(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode(),baseResponseDto.getCode());
@@ -55,7 +55,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         String ip = "127.0.0.1";
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
-        sendSmsRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         BaseDto<SmsDataDto> smsDto = new BaseDto<>();
         SmsDataDto smsDataDto = new SmsDataDto();
         smsDataDto.setStatus(true);
@@ -74,7 +74,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         String ip = "127.0.0.1";
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
-        sendSmsRequestDto.setType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        sendSmsRequestDto.setType(SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
         BaseDto<SmsDataDto> smsDto = new BaseDto<>();
         SmsDataDto smsDataDto = new SmsDataDto();
         smsDataDto.setStatus(true);
@@ -93,7 +93,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         String ip = "127.0.0.1";
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
-        sendSmsRequestDto.setType(CaptchaType.NO_PASSWORD_INVEST);
+        sendSmsRequestDto.setType(SmsCaptchaType.NO_PASSWORD_INVEST);
         BaseDto<SmsDataDto> smsDto = new BaseDto<>();
         SmsDataDto smsDataDto = new SmsDataDto();
         smsDataDto.setStatus(true);
@@ -112,8 +112,8 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         VerifyCaptchaRequestDto requestDto = new VerifyCaptchaRequestDto();
         requestDto.setPhoneNum("13800138000");
         requestDto.setCaptcha("123456");
-        requestDto.setType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), eq(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA))).thenReturn(true);
+        requestDto.setType(SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), eq(SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA))).thenReturn(true);
         BaseResponseDto responseDto = mobileAppSendSmsService.validateCaptcha(requestDto);
         assert responseDto.isSuccess();
     }

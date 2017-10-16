@@ -13,6 +13,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -42,7 +43,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -100,9 +100,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -349,12 +346,9 @@ public class LoanServiceImpl implements LoanService {
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                    amountTransfer.transferOutFreeze(invest.getLoginName(),
-                            invest.getId(),
-                            invest.getAmount(),
-                            UserBillBusinessType.LOAN_SUCCESS,
-                            null,
-                            null);
+                    AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, invest.getLoginName(),
+                            invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS, null, null);
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                     redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (Exception e) {
@@ -372,7 +366,10 @@ public class LoanServiceImpl implements LoanService {
         try {
             String statusString = redisWrapperClient.hget(redisKey, TRANSFER_IN_BALANCE);
             if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                amountTransfer.transferInBalance(agentLoginName, loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, agentLoginName,
+                        loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.SUCCESS.name());
             }
         } catch (Exception e) {
@@ -427,11 +424,8 @@ public class LoanServiceImpl implements LoanService {
             if (investMapper.findById(investModel.getId()).getStatus() != InvestStatus.CANCEL_INVEST_PAYBACK) {
                 investModel.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
                 investMapper.update(investModel);
-                try {
-                    amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
-                } catch (AmountTransferException e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
             }
         }
         return callbackRequest.getResponseData();

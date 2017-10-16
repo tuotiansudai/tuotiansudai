@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -150,7 +150,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
 
     @Test
     public void shouldVerifyCaptchaIsValid() throws Exception {
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(true);
 
         this.mockMvc.perform(get("/register/user/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -161,7 +161,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
 
     @Test
     public void shouldVerifyCaptchaIsInValid() throws Exception {
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(SmsCaptchaType.class))).thenReturn(false);
 
         this.mockMvc.perform(get("/register/user/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))

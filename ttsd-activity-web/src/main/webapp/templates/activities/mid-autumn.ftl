@@ -227,17 +227,17 @@
                 <div class="landing-inner">
                     <div class="register-box">
                         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
-                            <ul class="reg-list tl register-step-one">
+                            <ul class="reg-list tl register-step-one register-icon-list">
                                 <li>
                                     <label for="" class="reg-title">手机号:</label>
-                                    <i class="sprite-register-ic-mobile"></i>
+                                    <i class="icon-mobile"></i>
                                     <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
                                            maxlength="11" value="">
                                 </li>
                                 <li id="mobileErr" class="height"></li>
                                 <li>
                                     <label for="" class="reg-title">密码:</label>
-                                    <i class="sprite-register-ic-password"></i>
+                                    <i class="icon-password"></i>
                                     <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                            class="password long" value="">
                                 </li>
@@ -245,7 +245,7 @@
 
                                 <li class="code">
                                     <label for="" class="reg-title">验证码:</label>
-                                    <i class="sprite-register-ic-img-code"></i>
+                                    <i class="icon-img-captcha"></i>
                                     <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
                                            class="appCaptcha" value="">
                                     <em class="image-captcha">
@@ -256,7 +256,7 @@
                                 <li id="appCaptchaErr" class="height appCaptchaErr"></li>
                                 <li>
                                     <label for="captcha" class="reg-title">手机验证码:</label>
-                                    <i class="sprite-register-ic-captcha"></i>
+                                    <i class="icon-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
                                 <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">

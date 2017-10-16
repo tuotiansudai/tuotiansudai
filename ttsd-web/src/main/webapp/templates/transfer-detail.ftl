@@ -55,17 +55,17 @@
                         <span>距下架时间：${transferApplication.beforeDeadLine}</span>
                     </li>
                     <li>
-                        <span><a href="${commonStaticServer}/images/pdf/transferAgreementSample.pdf" target="_blank">债权转让协议书(范本)</a></span>
+                        <span><a href="${commonStaticServer}/images/pdf/transferAgreement-sample.pdf" target="_blank">债权转让协议书(范本)</a></span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="transfer-operat">
             <#if (transferApplication.transferStatus.name() == "SUCCESS")>
-                <p class="img-status"><img src="${commonStaticServer}/images/sign/loan/transfered.png"></p>
+                <span class="img-status transfered"></span>
                 <p class="status-text">转让完成时间：${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
             <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
-                <p class="img-status"><img src="${commonStaticServer}/images/sign/loan/transfercancel.png"></p>
+                <span class="img-status transfercancel"></span>
                 <p class="status-text"></p>
             <#else>
                 <form action="/transfer/purchase" method="post" id="transferForm">
@@ -91,10 +91,10 @@
                     <@global.role hasRole="'INVESTOR'">
                     <#if anxinUser != true>
                     <p class="skip-group">
-                        <label>
-                            <i class="skip-icon active"></i>
-                            <input type="hidden" id="skipCheck" value="true">
-                        </label>
+                        <span class="init-checkbox-style on">
+                             <input type="checkbox" id="skipCheck" class="default-checkbox" checked>
+                         </span>
+
                         <label class="skip-text">
                             我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
                         </label>

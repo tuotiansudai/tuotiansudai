@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tuotiansudai.smswrapper.repository.mapper.SmsHistoryMapper">
+
+    <resultMap id="smsHistoryModel" type="SmsHistoryModel">
+        <id property="id" column="id"/>
+        <result property="mobile" column="mobile"/>
+        <result property="content" column="content"/>
+        <result property="channel" column="channel"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="success" column="success"/>
+        <result property="response" column="response"/>
+        <result property="backupId" column="backup_id"/>
+    </resultMap>
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="SmsHistoryModel">
+        insert into sms_history (mobile, content, channel, send_time, success)
+        values (#{mobile}, #{content}, #{channel}, #{sendTime}, #{success})
+    </insert>
+
+    <update id="update" parameterType="SmsHistoryModel">
+        update sms_history set
+        success = #{success},
+        response = #{response},
+        backup_id = #{backupId}
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="smsHistoryModel" parameterType="map">
+        select * from sms_history where id = #{id}
+    </select>
+
+</mapper>

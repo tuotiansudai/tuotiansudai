@@ -32,6 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -77,6 +78,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
 
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper;
 
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
@@ -201,6 +205,74 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
 
+    @Test
+    public void shouldUserInvestRepayTwoPeriodTransferValueDateIsOk(){
+        LoanModel loanModel = createLoanModel();
+        InvestModel investModel= getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
+        investModel.setInvestFeeRate(0.1);
+        InvestModel transferInvestModel= getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
+        transferInvestModel.setInvestFeeRate(0.1);
+        transferInvestModel.setTransferInvestId(investModel.getId());
+
+        TransferApplicationModel transferApplicationModel=getFakeTransferApplicationModel(investModel.getId(), transferInvestModel.getId(), loanModel.getId(), 2, "loginuserInvestName");
+        List<TransferApplicationModel> transferApplicationModels = Arrays.asList(transferApplicationModel);
+
+        InvestRepayModel investRepayModel1 = getFakeInvestReapyModel(investModel.getId(), 1, new DateTime().toDate(), new DateTime().minusDays(30).toDate(), 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        investRepayModel1.setTransferred(false);
+        InvestRepayModel investRepayModel2 = getFakeInvestReapyModel(investModel.getId(), 2, new DateTime().plusDays(30).toDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        investRepayModel2.setTransferred(true);
+        InvestRepayModel investRepayModel3 = getFakeInvestReapyModel(investModel.getId(), 3, new DateTime().plusDays(60).toDate(), null, 12, 0, 2, 10, 5000, RepayStatus.COMPLETE);
+        investRepayModel3.setTransferred(true);
+        List<InvestRepayModel> investRepayModels = Arrays.asList(investRepayModel1,investRepayModel2,investRepayModel3);
+
+
+        InvestRepayModel transferInvestRepayModel2 = getFakeInvestReapyModel(transferInvestModel.getId(), 2, investRepayModel2.getRepayDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        InvestRepayModel transferInvestRepayModel3 = getFakeInvestReapyModel(transferInvestModel.getId(), 3, investRepayModel3.getRepayDate(), null, 12, 0, 2, 10, 5000, RepayStatus.COMPLETE);
+        List<InvestRepayModel> transferInvestRepayModels = Lists.newArrayList();
+        transferInvestRepayModels.add(transferInvestRepayModel2);
+        transferInvestRepayModels.add(transferInvestRepayModel3);
+
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setFee(0);
+        membershipModel.setExperience(0);
+        membershipModel.setLevel(1);
+        List memberships = Arrays.asList(membershipModel);
+        CouponRepayModel couponRepayModel = new CouponRepayModel();
+
+        UserCouponModel userCouponModel = new UserCouponModel();
+        List userCoupon = Arrays.asList(userCouponModel);
+
+        when(investService.findById(anyLong())).thenReturn(transferInvestModel);
+        when(transferApplicationMapper.findByInvestId(anyLong())).thenReturn(transferApplicationModel);
+        when(transferApplicationMapper.findByTransferInvestId(anyLong(), anyList())).thenReturn(transferApplicationModels);
+        when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
+        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(transferInvestRepayModels);
+        when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(investRepayModel1);
+        when(couponRepayMapper.findCouponRepayByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(couponRepayModel);
+        when(membershipMapper.findAllMembership()).thenReturn(memberships);
+        when(userCouponMapper.findByInvestId(anyLong())).thenReturn(userCoupon);
+        when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
+        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
+        UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
+        userInvestRepayRequestDto.setInvestId(String.valueOf(transferInvestModel.getId()));
+
+        BaseResponseDto<UserInvestRepayResponseDataDto> responseDto = mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);
+        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new DateTime().plusDays(1).toDate()), responseDto.getData().getRecheckTime());
+
+        investRepayModel1.setTransferred(true);
+        InvestRepayModel transferInvestRepayModel1 = getFakeInvestReapyModel(transferInvestModel.getId(), 1, investRepayModel1.getRepayDate(), null, 12, 0, 2, 10, 0, RepayStatus.COMPLETE);
+        transferInvestRepayModels.add(0,transferInvestRepayModel1);
+        BaseResponseDto<UserInvestRepayResponseDataDto> responseDto1 = mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);
+        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new Date()), responseDto1.getData().getRecheckTime());
+
+        loanModel.setType(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY);
+        BaseResponseDto<UserInvestRepayResponseDataDto> responseDto2 = mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);
+        assertEquals(new SimpleDateFormat("yyyy/MM/dd").format(new Date()), responseDto2.getData().getRecheckTime());
+    }
+
     private LoanModel createLoanModel(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         LoanModel loanModel = new LoanModel();
@@ -269,5 +341,22 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         return investRepayModel;
     }
 
-
+    private TransferApplicationModel getFakeTransferApplicationModel(long investId, long transferInvestId, long loanId, int period, String loginName){
+        TransferApplicationModel transferApplicationModel=new TransferApplicationModel();
+        transferApplicationModel.setId(IdGenerator.generate());
+        transferApplicationModel.setName("ZR20160519-001");
+        transferApplicationModel.setInvestId(investId);
+        transferApplicationModel.setLoanId(loanId);
+        transferApplicationModel.setTransferInvestId(transferInvestId);
+        transferApplicationModel.setPeriod(period);
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setLoginName(loginName);
+        transferApplicationModel.setInvestAmount(500);
+        transferApplicationModel.setTransferAmount(450);
+        transferApplicationModel.setTransferTime(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationModel.setLeftPeriod(2);
+        transferApplicationModel.setDeadline(new Date());
+        return transferApplicationModel;
+    }
 }

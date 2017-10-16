@@ -9,7 +9,7 @@ import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppSendSmsV2ServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.CaptchaHelper;
@@ -39,7 +39,7 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
     public void shouldSendSmsIsOk(){
         SendSmsCompositeRequestDto sendSmsCompositeRequestDto = new SendSmsCompositeRequestDto();
         sendSmsCompositeRequestDto.setImageCaptcha("ABCDEF");
-        sendSmsCompositeRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsCompositeRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         sendSmsCompositeRequestDto.setPhoneNum("10002341");
         sendSmsCompositeRequestDto.setBaseParam(BaseParamTest.newInstance());
         mockMethod();
@@ -51,7 +51,7 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
     @Test
     public void shouldSendSmsIsFail(){
         SendSmsCompositeRequestDto sendSmsCompositeRequestDto = new SendSmsCompositeRequestDto();
-        sendSmsCompositeRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        sendSmsCompositeRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         sendSmsCompositeRequestDto.setPhoneNum("10002341");
         BaseParam baseParam = new BaseParam();
         baseParam.setDeviceId("1234443");

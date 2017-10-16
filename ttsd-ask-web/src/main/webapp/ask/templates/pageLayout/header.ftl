@@ -1,7 +1,7 @@
 <div class="header-container">
     <div class="header-download">
         <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
-        <div class="img-logo-tip" ></div>
+        <div class="img-logo-tip sprite-global-logo-tip fl" ></div>
         <span>APP客户端重磅来袭<br/>更便捷更安全</span>
         <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
     </div>
