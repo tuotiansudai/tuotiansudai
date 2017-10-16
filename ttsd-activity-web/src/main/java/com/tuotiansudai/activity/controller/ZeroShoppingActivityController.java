@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,8 +44,10 @@ public class ZeroShoppingActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/activity-loan-detail/{loanId:^\\d+$}", method = {RequestMethod.GET})
-    public ModelAndView redirectLoanDetail(@PathVariable long loanId, ZeroShoppingPrize zeroShoppingPrize, RedirectAttributes redirectAttributes){
+    @RequestMapping(value = "/activity-loan-detail", method = {RequestMethod.GET})
+    public ModelAndView redirectLoanDetail(@RequestParam(value = "loanId", required = false) long loanId,
+                                           @RequestParam(value = "zeroShoppingPrize", required = false) ZeroShoppingPrize zeroShoppingPrize,
+                                           RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("zeroShoppingPrize", zeroShoppingPrize);
         return new ModelAndView("redirect:/loan/" + loanId);
     }
