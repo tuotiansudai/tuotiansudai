@@ -31,14 +31,14 @@ public class ZeroShoppingActivityController {
 
     @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
     public ModelAndView activityLoanExists(){
-        List<LoanModel> loanModels = zeroShoppingActivityService.queryActivityLoan();
+        LoanModel loanModel = zeroShoppingActivityService.queryActivityLoan();
 
         ModelAndView modelAndView = new ModelAndView("activities/2017/zero-shopping-detail");
 
         Boolean exists = false;
-        if (!CollectionUtils.isEmpty(loanModels)){
+        if (loanModel != null){
             exists = true;
-            modelAndView.addObject("activityLoan", loanModels.get(0).getId());
+            modelAndView.addObject("activityLoan", loanModel.getId());
         }
         modelAndView.addObject("exists", exists);
         return modelAndView;

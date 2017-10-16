@@ -32,7 +32,7 @@ public class ZeroShoppingActivityService {
         return zeroShoppingMapper.findAll();
     }
 
-    public List<LoanModel> queryActivityLoan(){
-        return loanMapper.findByActivityDescIsActivity(null, LoanStatus.RAISING, 0.0, 0.0, 0, 0, activityZeroShoppingStartTime, activityZeroShoppingEndTime);
+    public LoanModel queryActivityLoan(){
+        return loanMapper.findZeroShoppingActivityByTime(activityZeroShoppingStartTime, activityZeroShoppingEndTime);
     }
 }
