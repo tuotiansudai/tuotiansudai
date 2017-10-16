@@ -574,9 +574,21 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         String content = MessageFormat.format(MessageEventType.ADVANCED_REPAY.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ADVANCED_REPAY,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
-        TransferApplicationModel transferApplicationModel = investModel.getTransferInvestId() != null
-                ? transferApplicationMapper.findByInvestId(investModel.getId())
-                : transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING)).stream().findFirst().get();
+        TransferApplicationModel transferApplicationModel = null;
+
+        if (investModel.getTransferInvestId() != null) {
+            transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+        } else {
+            Optional<TransferApplicationModel> optional = transferApplicationMapper
+                    .findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING))
+                    .stream()
+                    .findFirst();
+
+            if (optional.isPresent()) {
+                transferApplicationModel = optional.get();
+            }
+
+        }
         Map<String, String> params = Maps.newLinkedHashMap();
         params.put("investId", String.valueOf(investModel.getId()));
         params.put("transferApplicationId", transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");

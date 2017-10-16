@@ -49,6 +49,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class NormalRepayServiceImpl implements NormalRepayService {
@@ -630,9 +631,21 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String content = MessageFormat.format(MessageEventType.REPAY_SUCCESS.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
-        TransferApplicationModel transferApplicationModel = investModel.getTransferInvestId() != null
-                ? transferApplicationMapper.findByInvestId(investModel.getId())
-                : transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING)).stream().findFirst().get();
+        TransferApplicationModel transferApplicationModel = null;
+
+        if (investModel.getTransferInvestId() != null) {
+            transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+        } else {
+            Optional<TransferApplicationModel> optional = transferApplicationMapper
+                    .findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING))
+                    .stream()
+                    .findFirst();
+
+            if (optional.isPresent()) {
+                transferApplicationModel = optional.get();
+            }
+
+        }
         Map<String, String> params = Maps.newLinkedHashMap();
         params.put("investId", String.valueOf(investModel.getId()));
         params.put("transferApplicationId", transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");

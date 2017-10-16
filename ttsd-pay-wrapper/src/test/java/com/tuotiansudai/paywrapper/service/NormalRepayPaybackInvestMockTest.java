@@ -15,6 +15,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -73,6 +74,12 @@ public class NormalRepayPaybackInvestMockTest {
 
     @Mock
     private MQWrapperClient mqWrapperClient;
+
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Mock
+    private InvestTransferService investTransferService;
 
     @Before
     public void init() throws Exception {
@@ -364,6 +371,9 @@ public class NormalRepayPaybackInvestMockTest {
         when(loanService.updateLoanStatus(anyLong(), any(LoanStatus.class))).thenReturn(baseDto);
 
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("READY");
+
+        when(transferApplicationMapper.findByTransferInvestId(anyLong(), any(List.class))).thenReturn(Lists.newArrayList());
+        when(investTransferService.isTransferable(anyLong())).thenReturn(true);
 
         assertTrue(normalRepayService.paybackInvest(loanRepay1.getId()));
 
