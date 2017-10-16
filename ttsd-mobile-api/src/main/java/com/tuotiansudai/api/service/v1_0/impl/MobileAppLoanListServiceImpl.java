@@ -80,17 +80,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
-        List<LoanModel> activityLoanModels = new ArrayList<>();
-        for (LoanModel loanModel : loanModels) {
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            if (loanDetailsModel != null
-                    && loanDetailsModel.getActivityDesc() != null
-                    && loanDetailsModel.getActivityDesc().equals("0元购")) {
-                activityLoanModels.add(loanModel);
-            }
-        }
-        Iterables.removeAll(loanModels, activityLoanModels);
-
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
         if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
             loanModels = loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());

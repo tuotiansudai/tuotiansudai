@@ -92,10 +92,11 @@
         SELECT
         *
         FROM
-        loan temp
+        loan temp join loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
         <if test="name !=null and name!=''">
             and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -135,8 +136,9 @@
 
     <select id="findLoanListCountWeb" parameterType="map" resultType="int">
         select count(*) from (
-        select * from loan t
+        select * from loan t join loan_details on t.id = loan_details.loan_id
         where 1=1
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
         <if test="name !=null and name != ''">
             and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -168,9 +170,10 @@
         SELECT
         *
         FROM
-        loan temp
+        loan temp JOIN loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="productType !=null">
             and temp.product_type = #{productType}
@@ -662,24 +665,24 @@
     </select>
 
     <select id="findByProductType" resultMap="loanResultMap">
-        select * from loan
-        <where>
-            <if test="productTypeList != null ">
-                and loan.product_type IN
-                <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
-                    #{productType}
-                </foreach>
-            </if>
-            <if test="loanStatus != null and loanStatus.name() == 'RAISING'">
-                and loan.status in ('RAISING','PREHEAT')
-            </if>
-            <if test="loanStatus != null and loanStatus.name() == 'COMPLETE'">
-                and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
-            </if>
-            <if test="activityType !=null ">
-                and activity_type = #{activityType}
-            </if>
-        </where>
+        select * from loan join loan_details on loan.id = loan_details.loan_id
+        where
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
+        <if test="productTypeList != null ">
+            and loan.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
+        <if test="loanStatus != null and loanStatus.name() == 'RAISING'">
+            and loan.status in ('RAISING','PREHEAT')
+        </if>
+        <if test="loanStatus != null and loanStatus.name() == 'COMPLETE'">
+            and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
+        </if>
+        <if test="activityType !=null ">
+            and activity_type = #{activityType}
+        </if>
         ORDER BY CASE loan.status
         WHEN 'RAISING' THEN '1'
         WHEN 'PREHEAT' THEN '2' END,
@@ -701,34 +704,11 @@
         </if>
     </select>
 
-    <select id="findByActivityDescIsActivity" resultMap="loanResultMap">
+    <select id="findZeroShoppingActivityByTime" resultMap="loanResultMap">
         SELECT * FROM loan l join loan_details ld on l.id = ld.loan_id
         AND ld.activity_desc = '0元购'
+        and l.status = 'RAISING'
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
-        <if test="name !=null and name != ''">
-            and l.name LIKE CONCAT(CONCAT('%', #{name}),'%')
-        </if>
-        <if test="status != null">
-            and l.status = #{status}
-        </if>
-        <if test="status == null">
-            and l.status != 'WAITING_VERIFY' and l.status != 'CANCEL'
-        </if>
-        <if test="rateStart != 0">
-            <if test="rateEnd !=0">
-                <![CDATA[ and (l.base_rate + l.activity_rate) >=  #{rateStart} ]]>
-            </if>
-            <if test="rateEnd ==0">
-                <![CDATA[ and (l.base_rate + l.activity_rate) >  #{rateStart} ]]>
-            </if>
-
-        </if>
-        <if test="rateEnd != 0">
-            <![CDATA[ and (l.base_rate + l.activity_rate) <=  #{rateEnd} ]]>
-        </if>
-        <if test="durationStart != 0 and durationEnd != 0">
-            and l.duration BETWEEN #{durationStart} and #{durationEnd}
-        </if>
     </select>
 
 </mapper>

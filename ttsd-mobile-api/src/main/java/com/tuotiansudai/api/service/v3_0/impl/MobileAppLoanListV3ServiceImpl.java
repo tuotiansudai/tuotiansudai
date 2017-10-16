@@ -83,8 +83,6 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 loanModels = loanMapper.findByProductType(null, noContainExperienceLoans, null);
             }
 
-            deleteActivityLoan(loanModels);
-
             if (loanModels.size() <= 0) {
                 logger.error("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
             } else if (loanModels.size() > 0) {
@@ -96,9 +94,6 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             //登录 && 投资过标
             //目前同一时间可投标不超过100个
             List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
-
-            deleteActivityLoan(raisingLoanModels);
-
             //有可投标的,版本号小于4.3过滤掉经营性借款
             if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
                 raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
@@ -258,18 +253,5 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             extraRateListResponseDataDtos.add(extraRateListResponseDataDto);
         }
         return extraRateListResponseDataDtos;
-    }
-
-    private void deleteActivityLoan(List<LoanModel> loanModels){
-        List<LoanModel> activityLoanModels = new ArrayList<>();
-        for (LoanModel ActivityLoanModel : loanModels) {
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(ActivityLoanModel.getId());
-            if (loanDetailsModel != null
-                    && loanDetailsModel.getActivityDesc() != null
-                    && loanDetailsModel.getActivityDesc().equals("0元购")) {
-                activityLoanModels.add(ActivityLoanModel);
-            }
-        }
-        Iterables.removeAll(loanModels, activityLoanModels);
     }
 }

@@ -57,12 +57,6 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
-    private Date activityZeroShoppingStartTime;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.endTime}\")}")
-    private Date activityZeroShoppingEndTime;
-
     @Override
     public LoanModel findLoanById(long loanId) {
         return loanMapper.findById(loanId);
@@ -132,19 +126,6 @@ public class LoanServiceImpl implements LoanService {
         index = (index - 1) * 10;
 
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd, durationStart, durationEnd, index);
-
-        List<LoanModel> activityLoanModels = new ArrayList<>();
-        for (LoanModel loanModel : loanModels) {
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            if (!activityZeroShoppingStartTime.after(loanModel.getFundraisingStartTime())
-                    && !loanModel.getFundraisingStartTime().after(activityZeroShoppingEndTime)
-                    && loanDetailsModel != null
-                    && loanDetailsModel.getActivityDesc() != null
-                    && loanDetailsModel.getActivityDesc().equals("0元购")) {
-                activityLoanModels.add(loanModel);
-            }
-        }
-        Iterables.removeAll(loanModels, activityLoanModels);
 
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
@@ -230,6 +211,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd) {
-        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd) - loanMapper.findByActivityDescIsActivity(name, status, rateStart, rateEnd, durationStart, durationEnd, activityZeroShoppingStartTime, activityZeroShoppingEndTime).size();
+        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd);
     }
 }
