@@ -2,28 +2,21 @@ package com.tuotiansudai.mq.consumer.loan;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.RepayNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanerEnterpriseInfoMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanDetailsModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JsonConverter;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,14 +28,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static com.tuotiansudai.mq.consumer.loan.LoanOutSuccessNationalMidAutumnMessageConsumer.NATIONAL_MID_AUTUMN_CASH_KEY;
-import static com.tuotiansudai.mq.consumer.loan.LoanOutSuccessNationalMidAutumnMessageConsumer.NATIONAL_MID_AUTUMN_SUM_CASH_KEY;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -78,7 +66,7 @@ public class LoanOutSuccessDoubleElevenMessageConsumerTest {
 
         consumer.consume(JsonConverter.writeValueAsString(loanOutSuccessMessage));
 
-        verify(mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class),any());
+        verify(mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class),any(Object.class));
     }
 
     private LoanOutSuccessMessage buildMockedLoanOutSuccessMessage() {
