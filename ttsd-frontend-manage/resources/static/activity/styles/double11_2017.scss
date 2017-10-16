@@ -1,14 +1,249 @@
-
+strong {
+  font-weight: normal;
+}
 .main-frame {
   width: 100%;
   margin: 0 auto;
   background: #fff99b;
 }
+.small-btn {
+  width: 317px;
+  height: 81px;
+  margin: 0 auto;
+  margin-top: 30px;
+  background:url("../images/2017/double11/small_btn_bg.png") center top no-repeat;
+  background-size: 100%;
+  color: #fff;
+  font-size: 30px;
+  text-align: center;
+  line-height: 81px;
+  cursor: pointer;
+}
 .banner {
   height: 350px;
   background: url("../images/2017/double11/banner.png") no-repeat center center;
 }
-.page-width {
-  width: 96%;
-  max-width: 1265px;
+.con-width {
+  width: 920px;
+  margin: 0 auto;
+}
+.alone-gifts {
+  width: 1200px;
+  min-height: 1610px;
+  background:url("../images/2017/double11/alone.png") center top no-repeat;
+  background-size: 100%;
+  overflow: hidden;
+  position: relative;
+  .alone-title {
+    width: 618px;
+    height: 126px;
+    background:url("../images/2017/double11/alone_title.png") center top no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: -10px;
+    top: 70px;
+  }
+  .alone-rules {
+    width: 100%;
+    margin-top: 200px;
+    background: #ee781f;
+    color: #fff;
+    opacity: 0.8;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding: 15px 36px;
+    font-size: 18px;
+    strong {
+      font-size: 20px;
+      color: #fff600;
+    }
+  }
+  .gift-circle-frame {
+    margin-top: 16px;
+    .gift-circle-out {
+      width: 548px;
+      height: 548px;
+      margin: 0 auto;
+      background:url("../images/2017/double11/circle_bg.png") center top no-repeat;
+      background-size: 100%;
+      position: relative;
+      padding: 35px;
+      box-sizing: border-box;
+      .pointer-img {
+        width: 120px;
+        height: 152px;
+        background:url("../images/2017/double11/pointer.png") center top no-repeat;
+        background-size: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -26px;
+        bottom: 0;
+        margin: auto;
+      }
+      .rotate-btn {
+        width: 100%;
+        height: 100%;
+        background:url("../images/2017/double11/gift-circle.png") center top no-repeat;
+        background-size: 100%;
+      }
+
+    }
+    .gift-circle-detail {
+      margin: 0 auto;
+      .lottery-times {
+        p {
+          text-align: center;
+          font-size: 18px;
+          color: #040009;
+          a {
+            color: #040009;
+            text-decoration:underline;
+          }
+        }
+      }
+      .gift-info-box {
+        width: 600px;
+        margin: 0 auto;
+        .gift-record {
+          width: 320px;
+          height: 50px;
+          margin: 0 auto;
+          background: #f89c39;
+          border-radius: 25px;
+          overflow: hidden;
+          line-height: 50px;
+          li {
+            float: left;
+            color: #fff;
+            font-size: 20px;
+            opacity: 0.8;
+            width: 50%;
+            text-align: center;
+            background: #f89c39;
+            cursor: pointer;
+            &.active {
+              background: #ff4b4b;
+            }
+          }
+        }
+        .record-list {
+          width: 100%;
+          height: 350px;
+          background: #f79122;
+          overflow: hidden;
+          font-size: 20px;
+          color: #525252;
+          text-align:center;
+          padding:0 20px;
+          box-sizing: border-box;
+          margin-top: 10px;
+          li {
+            color: #fff;
+            opacity: 0.8;
+            &:nth-child(even) {
+              background: #f89c39;
+              border-radius: 30px;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+}
+.jde-cart {
+  width: 1200px;
+  min-height: 900px;
+  background:url("../images/2017/double11/jde_bg.png") center top no-repeat;
+  background-size: 100%;
+  overflow: hidden;
+  position: relative;
+  .jde-title {
+    width: 754px;
+    height: 126px;
+    background:url("../images/2017/double11/jde_title.png") center top no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: -15px;
+    top: 90px;
+  }
+  .jde-rules {
+    width: 100%;
+    margin-top: 230px;
+    background: #a852e7;
+    color: #fff;
+    opacity: 0.8;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding: 15px 36px;
+    font-size: 18px;
+    strong {
+      font-size: 20px;
+      color: #fff600;
+    }
+  }
+  .total-money {
+    margin: 0 auto;
+    margin-top: 20px;
+    p {
+      color: #fff;
+      opacity: 0.8;
+      font-size: 22px;
+      text-align: center;
+    }
+    .awarded {
+      width: 140px;
+      height: 46px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 46px;
+      background: #a852e7;
+      color: #fff600;
+      font-size: 22px;
+      border-radius: 40px 40px 6px 6px;
+    }
+    .reward {
+      width: 238px;
+      height: 162px;
+      margin: 0 auto;
+      position: relative;
+      top: -6px;
+      background:url("../images/2017/double11/jd_cart.png") center top no-repeat;
+      background-size: 100%;
+      span {
+        font-weight: bold;
+        font-size: 50px;
+        color: #000;
+        position: absolute;
+        top: 32px;
+        right: 73px;
+        transform: rotate(-9deg);
+      }
+    }
+    .to-login {
+      margin: 0 auto;
+      text-align: center;
+      a {
+        font-size: 18px;
+        color: #000;
+      }
+    }
+
+  }
+}
+.kindly-tips {
+  padding-bottom: 100px;
+  dl {
+    color: #2e290a;
+    dt {
+      font-size: 14px;
+      color: #2e290a;
+    }
+    dd {
+      font-size: 12px;
+      color: #2e290a;
+    }
+  }
 }
