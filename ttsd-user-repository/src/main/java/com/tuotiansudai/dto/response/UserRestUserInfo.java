@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.dto.response;
+package com.tuotiansudai.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuotiansudai.repository.model.UserModel;

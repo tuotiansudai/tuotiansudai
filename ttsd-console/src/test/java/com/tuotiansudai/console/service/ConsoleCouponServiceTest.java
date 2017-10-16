@@ -5,13 +5,13 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdGenerator;
@@ -27,8 +27,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -39,7 +39,7 @@ public class ConsoleCouponServiceTest {
     private ConsoleCouponService consoleCouponService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;

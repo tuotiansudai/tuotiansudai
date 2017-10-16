@@ -6,12 +6,12 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.ask.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.dto.request.*;
+import com.tuotiansudai.dto.response.UserRestPagingResponse;
+import com.tuotiansudai.dto.response.UserRestResponseBase;
+import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.dto.request.*;
-import com.tuotiansudai.rest.dto.response.UserRestPagingResponse;
-import com.tuotiansudai.rest.dto.response.UserRestResponseBase;
-import com.tuotiansudai.rest.dto.response.UserRestUserInfo;
 import org.apache.log4j.MDC;
 import org.junit.After;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class UserRestClientTest {
 //        String currentUserId = "yyyyyy";
 //        MDC.put("requestId", "xxxxxxx");
 //        MDC.put("userId", currentUserId);
-        UserRestRegisterRequestDto requestDto = new UserRestRegisterRequestDto(
+        RegisterRequestDto requestDto = new RegisterRequestDto(
                 "13800138012", "123abc", null, "Test", Source.WEB);
 //        this.mockServer.enqueue(buildCreateQuestionResponse(requestDto));
         UserRestUserInfo responseUserInfo = userRestClient.register(requestDto);
@@ -67,7 +67,7 @@ public class UserRestClientTest {
     @Ignore
     @Test
     public void shouldUpdateUser() {
-        UserRestUpdateUserInfoRequestDto requestDto = new UserRestUpdateUserInfoRequestDto("xaxwlnqf");
+        UpdateUserInfoRequestDto requestDto = new UpdateUserInfoRequestDto("xaxwlnqf");
         requestDto.setLastModifiedTime(new Date());
         UserRestUserInfo responseUserInfo = userRestClient.update(requestDto);
         UserModel userModel = responseUserInfo.getUserInfo();
@@ -86,7 +86,7 @@ public class UserRestClientTest {
     @Test
     public void shouldSearchUser() {
         UserRestQueryDto queryDto = new UserRestQueryDto(1);
-        queryDto.setFields(new String[]{"login_name", "register_time"});
+        queryDto.setFields("login_name", "register_time");
         UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
         List<UserModel> userModelList = searchResult.getItems();
         assertEquals(0, userModelList.size());
@@ -95,7 +95,7 @@ public class UserRestClientTest {
     @Ignore
     @Test
     public void shouldChangePassword() {
-        UserRestChangePasswordRequestDto requestDto = new UserRestChangePasswordRequestDto("xaxwlnqf", "123abc", "110abc");
+        ChangePasswordRequestDto requestDto = new ChangePasswordRequestDto("xaxwlnqf", "123abc", "110abc");
         UserRestResponseBase response = userRestClient.changePassword(requestDto);
         assertTrue(response.isSuccess());
     }
@@ -103,7 +103,7 @@ public class UserRestClientTest {
     @Ignore
     @Test
     public void shouldResetPassword() {
-        UserRestResetPasswordRequestDto requestDto = new UserRestResetPasswordRequestDto("xaxwlnqf", "123abc");
+        ResetPasswordRequestDto requestDto = new ResetPasswordRequestDto("xaxwlnqf", "123abc");
         UserRestResponseBase response = userRestClient.resetPassword(requestDto);
         assertTrue(response.isSuccess());
     }

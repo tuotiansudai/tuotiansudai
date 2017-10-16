@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 public class CouponAssignmentServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;

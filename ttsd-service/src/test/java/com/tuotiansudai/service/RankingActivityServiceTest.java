@@ -6,7 +6,7 @@ import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -43,7 +43,7 @@ public class RankingActivityServiceTest {
     private RankingActivityService rankingActivityService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;

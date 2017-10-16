@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 public class ContractServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private LoanMapper loanMapper;
     @Autowired

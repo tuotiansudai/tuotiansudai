@@ -1,17 +1,17 @@
-package com.tuotiansudai.rest.dto.request;
+package com.tuotiansudai.dto.request;
 
 import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
 
-public class UserRestRegisterRequestDto implements Serializable {
+public class RegisterRequestDto implements Serializable {
     private String mobile;
     private String password;
     private String referrer;
     private String channel;
     private Source source;
 
-    public UserRestRegisterRequestDto(String mobile, String password, String referrer, String channel, Source source) {
+    public RegisterRequestDto(String mobile, String password, String referrer, String channel, Source source) {
         this.mobile = mobile;
         this.password = password;
         this.referrer = referrer;

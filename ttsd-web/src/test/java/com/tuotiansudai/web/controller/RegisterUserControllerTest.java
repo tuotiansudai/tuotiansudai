@@ -1,9 +1,9 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;

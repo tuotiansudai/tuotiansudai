@@ -7,7 +7,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class InvestRepayMapperTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateInvestRepayModel() throws Exception {
@@ -174,8 +173,9 @@ public class InvestRepayMapperTest {
         assertEquals(21, repayModelCountPaid);
         assertEquals(9, repayModelCountUnPaid);
     }
+
     @Test
-    public void shouldFindLeftPeriodByTransferInvestIdAndPeriodIsSuccess(){
+    public void shouldFindLeftPeriodByTransferInvestIdAndPeriodIsSuccess() {
         InvestModel fakeInvestModel = getFakeInvestModel();
         investMapper.create(fakeInvestModel);
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
@@ -190,11 +190,12 @@ public class InvestRepayMapperTest {
         }
         investRepayMapper.create(investRepayModels);
 
-        int count = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(fakeInvestModel.getId(),2);
+        int count = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(fakeInvestModel.getId(), 2);
 
-        assertEquals(3,count);
+        assertEquals(3, count);
 
     }
+
     private UserModel getFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName("loginName");
@@ -255,7 +256,7 @@ public class InvestRepayMapperTest {
         investModel.setInvestTime(sdf.parse("2016-05-20"));
         investModel.setTransferStatus(TransferStatus.SUCCESS);
         investModel.setSource(Source.IOS);
-        Date startTime = DateUtils.addDays(new DateTime().dayOfMonth().withMinimumValue().toDate(),-1);
+        Date startTime = DateUtils.addDays(new DateTime().dayOfMonth().withMinimumValue().toDate(), -1);
         Date endTime = DateUtils.addMonths(startTime, 1);
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investModel.getId());
@@ -287,7 +288,7 @@ public class InvestRepayMapperTest {
         investModel.setInvestTime(new Date());
         investModel.setTransferStatus(TransferStatus.SUCCESS);
         investModel.setSource(Source.IOS);
-        Date startTime = DateUtils.addDays(new DateTime().dayOfMonth().withMinimumValue().toDate(),-1);
+        Date startTime = DateUtils.addDays(new DateTime().dayOfMonth().withMinimumValue().toDate(), -1);
         Date endTime = DateUtils.addMonths(startTime, 1);
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investModel.getId());

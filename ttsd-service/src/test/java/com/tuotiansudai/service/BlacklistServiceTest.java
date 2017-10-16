@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.repository.mapper.BlacklistMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.BlacklistModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -33,7 +33,7 @@ public class BlacklistServiceTest {
     BlacklistMapper blacklistMapper;
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     private UserModel createUserByLoginName(String loginName) {
         UserModel userModelTest = new UserModel();

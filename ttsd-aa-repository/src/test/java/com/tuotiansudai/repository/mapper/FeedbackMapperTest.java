@@ -24,7 +24,7 @@ public class FeedbackMapperTest {
     private FeedbackMapper feedbackMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateFeedback() throws Exception {

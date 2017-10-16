@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 public class LoanApplicationMapperTest {
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     AccountMapper accountMapper;

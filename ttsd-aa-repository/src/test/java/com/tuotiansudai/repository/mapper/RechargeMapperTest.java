@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
 public class RechargeMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private RechargeMapper rechargeMapper;

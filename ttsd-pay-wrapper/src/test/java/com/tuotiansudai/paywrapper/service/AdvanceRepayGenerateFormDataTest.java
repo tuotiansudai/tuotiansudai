@@ -31,7 +31,7 @@ import static org.junit.Assert.assertThat;
 public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;

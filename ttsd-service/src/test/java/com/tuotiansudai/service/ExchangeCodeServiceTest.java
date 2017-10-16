@@ -1,21 +1,16 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.ExchangeCouponDto;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -40,7 +35,7 @@ public class ExchangeCodeServiceTest {
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -82,14 +77,14 @@ public class ExchangeCodeServiceTest {
     }
 
     @Test
-    public void shouldExchangeCodeFailed4() throws Exception{
+    public void shouldExchangeCodeFailed4() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
         DateTime dateTime = new DateTime().plusDays(1);
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
-        CouponModel couponModel =  this.createCoupon("couponTest", exchangeCouponDto);
+        CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "sdrfujtheg";
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
@@ -98,24 +93,24 @@ public class ExchangeCodeServiceTest {
     }
 
     @Test
-    public void shouldExchangeCodeFailed5() throws Exception{
+    public void shouldExchangeCodeFailed5() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
         exchangeCouponDto.setStartTime(new DateTime().minusDays(7).toDate());
         exchangeCouponDto.setEndTime(new DateTime().minusDays(5).toDate());
-        CouponModel couponModel =  this.createCoupon("couponTest", exchangeCouponDto);
+        CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId(), exchangeCode, "0", 1000000);
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId(), exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已过期"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId());
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId());
     }
 
     @Test
-    public void shouldExchangeCodeFailed6() throws Exception{
+    public void shouldExchangeCodeFailed6() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
@@ -125,15 +120,15 @@ public class ExchangeCodeServiceTest {
         CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "SDRFUJTHEG";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId(), exchangeCode, "1", 1000000);
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId(), exchangeCode, "1", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已被使用"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId());
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId());
     }
 
     @Test
-    public void shouldExchangeCodeSuccess() throws Exception{
+    public void shouldExchangeCodeSuccess() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
@@ -145,7 +140,7 @@ public class ExchangeCodeServiceTest {
         exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER_CODE);
         long couponId = this.createCoupon("couponTest", exchangeCouponDto).getId();
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(true));
         assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
@@ -153,7 +148,7 @@ public class ExchangeCodeServiceTest {
         assertThat(couponModel.getIssuedCount(), is(1L));
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
         assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
     }
 
     @Test

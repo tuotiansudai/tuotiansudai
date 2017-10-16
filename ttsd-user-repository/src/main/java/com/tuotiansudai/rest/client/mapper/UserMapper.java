@@ -1,13 +1,11 @@
 package com.tuotiansudai.rest.client.mapper;
 
-import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserModel;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface UserMapper {
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
@@ -44,25 +42,11 @@ public interface UserMapper {
 
     // call UserMapperDB
 
-    void updateExperienceBalance(String loginName, ExperienceBillOperationType experienceBillOperationType, long experienceAmount);
-
-    Long findExperienceByLoginName(String loginName);
-
     List<String> findAllRecommendation(HashMap<String, Object> districtName);
-
-    List<Integer> findScaleByGender(Date endDate);
-
-    long findCountInvestCityScale(Date endDate);
-
-    List<Map<String, String>> findCountInvestCityScaleTop3(Date endDate);
-
-    List<Map<String, String>> findAgeDistributionByAge(Date endDate);
 
     UserModel lockByLoginName(String loginName);
 
     List<UserModel> findUsersByProvince();
 
     void updateProvinceAndCity(String loginName, String s, String s1);
-
-    List<String> findAllUserChannels();
 }

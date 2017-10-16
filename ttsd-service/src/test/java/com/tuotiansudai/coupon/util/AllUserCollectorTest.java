@@ -1,13 +1,10 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -35,7 +32,7 @@ public class AllUserCollectorTest {
     private UserCollector allUserCollector;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -81,7 +78,7 @@ public class AllUserCollectorTest {
         return fakeUserModel;
     }
 
-    private CouponModel fakeCouponModel(String activatedBy, CouponType couponType){
+    private CouponModel fakeCouponModel(String activatedBy, CouponType couponType) {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1L);
         couponModel.setActivatedBy(activatedBy);

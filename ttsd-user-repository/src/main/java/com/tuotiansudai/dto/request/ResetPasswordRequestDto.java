@@ -1,15 +1,15 @@
-package com.tuotiansudai.rest.dto.request;
+package com.tuotiansudai.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class UserRestResetPasswordRequestDto implements Serializable {
+public class ResetPasswordRequestDto implements Serializable {
     @JsonProperty("login_name")
     private String loginName;
     private String password;
 
-    public UserRestResetPasswordRequestDto(String loginName, String password) {
+    public ResetPasswordRequestDto(String loginName, String password) {
         this.loginName = loginName;
         this.password = password;
     }

@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 @Transactional
 public class AccountServiceTest {
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private AccountMapper accountMapper;
     @Autowired

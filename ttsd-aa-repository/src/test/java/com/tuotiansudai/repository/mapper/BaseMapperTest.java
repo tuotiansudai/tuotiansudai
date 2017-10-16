@@ -1,10 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -27,7 +23,7 @@ public abstract class BaseMapperTest {
 
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -42,9 +38,9 @@ public abstract class BaseMapperTest {
     private UserCouponMapper userCouponMapper;
 
     public UserModel createFakeUser(String loginName) {
-        if (userMapper.findByLoginName(loginName) != null) {
-            return userMapper.findByLoginName(loginName);
-        }
+//        if (userMapper.findByLoginName(loginName) != null) {
+//            return userMapper.findByLoginName(loginName);
+//        }
         UserModel model = new UserModel();
         model.setLoginName(loginName);
         model.setPassword("password");
@@ -61,7 +57,8 @@ public abstract class BaseMapperTest {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName("Fake Loan");
-        fakeLoanModel.setLoanerLoginName(userMapper.findByLoginName(loaner) != null ? loaner : createFakeUser(loaner).getLoginName());
+//        fakeLoanModel.setLoanerLoginName(userMapper.findByLoginName(loaner) != null ? loaner : createFakeUser(loaner).getLoginName());
+        fakeLoanModel.setLoanerLoginName(loaner);
         fakeLoanModel.setLoanerUserName("借款人");
         fakeLoanModel.setLoanerIdentityNumber(RandomStringUtils.randomNumeric(18));
         fakeLoanModel.setAgentLoginName(loaner);
@@ -95,9 +92,9 @@ public abstract class BaseMapperTest {
     }
 
     public CouponModel createFakeInterestCoupon(double rate) {
-        if (userMapper.findByLoginName("couponCreator") == null) {
-            this.createFakeUser("couponCreator");
-        }
+//        if (userMapper.findByLoginName("couponCreator") == null) {
+        this.createFakeUser("couponCreator");
+//        }
         CouponModel couponModel = new CouponModel();
         couponModel.setRate(rate);
         couponModel.setActive(true);

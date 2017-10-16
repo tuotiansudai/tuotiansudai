@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface UserMapper {
+public interface FakeUserHelper{
 
     int create(UserModel userModel);
 
     int updateUser(UserModel userModel);
 
+    /*
     int updateExperienceBalance(@Param(value = "loginName") String loginName,
                                 @Param(value = "experienceBillOperationType") ExperienceBillOperationType experienceBillOperationType,
                                 @Param(value = "experienceBalance") long experienceBalance);
@@ -43,4 +44,5 @@ public interface UserMapper {
     UserModel findByIdentityNumber(String identityNumber);
 
     Long findExperienceByLoginName(String loginName);
+    */
 }

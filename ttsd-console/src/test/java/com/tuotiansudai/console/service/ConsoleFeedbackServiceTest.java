@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.FeedbackService;
 import org.junit.Test;
@@ -31,14 +31,14 @@ public class ConsoleFeedbackServiceTest {
     private ConsoleFeedbackService consoleFeedbackService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateFeedbackService() {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
 
-        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content","13700000000");
+        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content", "13700000000");
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 

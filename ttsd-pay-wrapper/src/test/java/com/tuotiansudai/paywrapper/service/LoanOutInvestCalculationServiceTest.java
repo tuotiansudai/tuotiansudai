@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -39,7 +38,7 @@ public class LoanOutInvestCalculationServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -166,7 +165,7 @@ public class LoanOutInvestCalculationServiceTest {
         return model;
     }
 
-    private LoanModel fakeLoanModel(UserModel userModel,LoanType loanType) {
+    private LoanModel fakeLoanModel(UserModel userModel, LoanType loanType) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(userModel.getLoginName());
         loanModel.setBaseRate(16.00);
@@ -235,7 +234,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanDetailsModel.setId(id);
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsModel.setDeclaration("材料声明");
-        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB,Source.MOBILE));
-       return loanDetailsModel;
+        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB, Source.MOBILE));
+        return loanDetailsModel;
     }
 }

@@ -1,12 +1,11 @@
 package com.tuotiansudai.rest.client;
 
+import com.tuotiansudai.dto.request.*;
+import com.tuotiansudai.dto.response.UserRestPagingResponse;
+import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.rest.dto.request.*;
-import com.tuotiansudai.rest.dto.response.UserRestPagingResponse;
-import com.tuotiansudai.rest.dto.response.UserRestResponseBase;
-import com.tuotiansudai.rest.dto.response.UserRestUserInfo;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 
@@ -18,11 +17,11 @@ public interface UserRestClient {
 
     @POST
     @Path("/users")
-    UserRestUserInfo register(UserRestRegisterRequestDto requestDto) throws RestException;
+    UserRestUserInfo register(RegisterRequestDto requestDto) throws RestException;
 
     @PUT
     @Path("/user")
-    UserRestUserInfo update(UserRestUpdateUserInfoRequestDto requestDto) throws RestException;
+    UserRestUserInfo update(UpdateUserInfoRequestDto requestDto) throws RestException;
 
     @GET
     @Path("/user/{loginNameOrMobile}")
@@ -30,11 +29,11 @@ public interface UserRestClient {
 
     @PUT
     @Path("/user/reset-password")
-    UserRestUserInfo resetPassword(UserRestResetPasswordRequestDto requestDto) throws RestException;
+    UserRestUserInfo resetPassword(ResetPasswordRequestDto requestDto) throws RestException;
 
     @POST
     @Path("/user/change-password")
-    UserRestUserInfo changePassword(UserRestChangePasswordRequestDto requestDto) throws RestException;
+    UserRestUserInfo changePassword(ChangePasswordRequestDto requestDto) throws RestException;
 
     @GET
     @Path("/users")
@@ -43,7 +42,7 @@ public interface UserRestClient {
             @QueryParam("page_size") Integer pageSize,
             @QueryParam("sort") String sort,
             @QueryParam("fields") String fields,
-            @QueryParam("sort") String email,
+            @QueryParam("email") String email,
             @QueryParam("role") Role role,
             @QueryParam("status") UserStatus status,
             @QueryParam("channels") String channels,

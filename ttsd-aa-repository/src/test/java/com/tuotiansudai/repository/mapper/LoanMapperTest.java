@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 public class LoanMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;

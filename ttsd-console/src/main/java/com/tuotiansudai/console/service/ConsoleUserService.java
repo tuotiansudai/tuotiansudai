@@ -14,6 +14,7 @@ import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.request.UpdateUserInfoRequestDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
@@ -25,7 +26,6 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.rest.dto.request.UserRestUpdateUserInfoRequestDto;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
@@ -95,7 +95,7 @@ public class ConsoleUserService {
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
 
-        UserRestUpdateUserInfoRequestDto updateDto = new UserRestUpdateUserInfoRequestDto(loginName);
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
         if (userModel.getStatus() != editUserDto.getStatus()) {
             updateDto.setStatus(editUserDto.getStatus());
         }
@@ -150,7 +150,7 @@ public class ConsoleUserService {
     }
 
     public List<String> findAllUserChannels() {
-        return userMapper.findAllUserChannels();
+        return userMapperConsole.findAllUserChannels();
     }
 
     public UserModel findByLoginName(String loginName) {

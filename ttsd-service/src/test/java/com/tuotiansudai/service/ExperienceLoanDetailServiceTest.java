@@ -1,12 +1,10 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.impl.ExperienceLoanDetailServiceImpl;
 import com.tuotiansudai.util.IdGenerator;
@@ -52,7 +50,7 @@ public class ExperienceLoanDetailServiceTest {
     private CouponService couponService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Before
     public void init() {

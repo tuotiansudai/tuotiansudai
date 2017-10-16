@@ -14,7 +14,7 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -45,7 +45,7 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
     @Autowired
     private MembershipPrivilegePurchasePayService membershipPrivilegePurchasePayService;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private AccountMapper accountMapper;
     @Autowired

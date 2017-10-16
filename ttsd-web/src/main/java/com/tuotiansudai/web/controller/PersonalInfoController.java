@@ -66,17 +66,6 @@ public class PersonalInfoController {
         return mv;
     }
 
-    @RequestMapping(path = "/password/{password}/is-exist", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto<BaseDataDto> isOriginalPasswordExist(@PathVariable String password) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        baseDto.setData(dataDto);
-        dataDto.setStatus(userService.verifyPasswordCorrect(LoginUserInfo.getLoginName(), password));
-
-        return baseDto;
-    }
-
     @RequestMapping(path = "/email/{email}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> isEmailExist(@PathVariable String email) {

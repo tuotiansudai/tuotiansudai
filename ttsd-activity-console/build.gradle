@@ -21,54 +21,36 @@ repositories {
     maven { url "http://central.maven.org/maven2/" }
 }
 
+configurations {
+    all*.exclude group: "log4j", module: "log4j"
+    all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    all*.exclude module: 'ttsd-dependency'
+}
+
 dependencies {
-    compile(project(":ttsd-user-service")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-spring-extension")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-web-common-config")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-edxactivity-repository")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-membership")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-service")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-log-service")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile(project(":ttsd-edxpoint-repository")) {
-        exclude module: 'ttsd-dependency'
-    };
-
-    compile project(':ttsd-util'),
-            'org.springframework.boot:spring-boot-starter-mail',
-            "org.springframework.boot:spring-boot-starter-web",
-            "org.springframework.boot:spring-boot-configuration-processor",
-            "org.springframework.boot:spring-boot-starter-jdbc",
-            "org.springframework.boot:spring-boot-starter-security",
-            "org.springframework.boot:spring-boot-starter-redis",
-            "org.springframework.boot:spring-boot-starter-freemarker",
-            "org.springframework.security:spring-security-taglibs:4.1.1.RELEASE",
-            "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1",
-            'mysql:mysql-connector-java:5.1.39',
-            'com.zaxxer:HikariCP:2.4.7',
-            'com.squareup.okhttp:okhttp:2.7.5'
+    compile project(":ttsd-user-service")
+    compile project(":ttsd-spring-extension")
+    compile project(":ttsd-web-common-config")
+    compile project(":ttsd-edxactivity-repository")
+    compile project(":ttsd-membership")
+    compile project(":ttsd-service")
+    compile project(":ttsd-log-service")
+    compile project(":ttsd-edxpoint-repository")
+    compile project(':ttsd-util')
+    compile 'org.springframework.boot:spring-boot-starter-mail'
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+    compile "org.springframework.boot:spring-boot-starter-jdbc"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.boot:spring-boot-starter-redis"
+    compile "org.springframework.boot:spring-boot-starter-freemarker"
+    compile "org.springframework.security:spring-security-taglibs:4.1.1.RELEASE"
+    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
+    compile 'mysql:mysql-connector-java:5.1.39'
+    compile 'com.zaxxer:HikariCP:2.4.7'
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
 war {

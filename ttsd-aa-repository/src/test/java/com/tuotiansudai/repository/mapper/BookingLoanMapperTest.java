@@ -27,7 +27,7 @@ public class BookingLoanMapperTest {
     private BookingLoanMapper bookingLoanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateIsOk() {

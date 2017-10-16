@@ -26,7 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -42,7 +43,7 @@ public class InvestServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -205,7 +206,7 @@ public class InvestServiceTest {
         return list;
     }
 
-    private LoanDetailsModel createLoanDetails(long loanId){
+    private LoanDetailsModel createLoanDetails(long loanId) {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
         loanDetailsModel.setId(IdGenerator.generate());
         loanDetailsModel.setDeclaration("声明材料");

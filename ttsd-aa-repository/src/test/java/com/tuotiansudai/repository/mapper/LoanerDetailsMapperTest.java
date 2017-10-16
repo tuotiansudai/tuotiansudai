@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 @Transactional
 public class LoanerDetailsMapperTest {
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     LoanMapper loanMapper;

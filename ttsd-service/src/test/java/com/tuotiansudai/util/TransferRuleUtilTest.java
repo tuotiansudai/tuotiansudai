@@ -1,12 +1,11 @@
 package com.tuotiansudai.util;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferRuleModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -34,7 +33,7 @@ public class TransferRuleUtilTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private InvestMapper investMapper;

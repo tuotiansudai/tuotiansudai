@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.dto.request;
+package com.tuotiansudai.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +8,7 @@ import com.tuotiansudai.repository.model.UserStatus;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserRestUpdateUserInfoRequestDto implements Serializable {
+public class UpdateUserInfoRequestDto implements Serializable {
     @JsonProperty("login_name")
     private final String loginName;
     private String mobile;
@@ -32,7 +32,7 @@ public class UserRestUpdateUserInfoRequestDto implements Serializable {
     @JsonProperty("sign_in_count")
     private Integer signInCount;
 
-    public UserRestUpdateUserInfoRequestDto(String loginName) {
+    public UpdateUserInfoRequestDto(String loginName) {
         this.loginName = loginName;
     }
 

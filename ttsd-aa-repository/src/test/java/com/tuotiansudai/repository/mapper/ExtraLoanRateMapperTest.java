@@ -29,7 +29,7 @@ public class ExtraLoanRateMapperTest {
     @Autowired
     private LoanMapper loanMapper;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldFindMaxRateByLoanIdIsOk() {

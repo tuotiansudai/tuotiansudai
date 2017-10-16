@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.OperationDataMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -37,6 +38,9 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private OperationDataMapper operationDataMapper;
 
     @Autowired
     private UserBillMapper userBillMapper;
@@ -189,7 +193,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             }
         }
         else{
-            scaleByGenderList = userMapper.findScaleByGender(endDate);
+            scaleByGenderList = operationDataMapper.findScaleByGender(endDate);
             for(Integer value: scaleByGenderList){
                 redisWrapperClient.hset(getRedisKeyFromTemplateByDate(SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                         String.valueOf(value), String.valueOf(value), timeout);
@@ -207,8 +211,8 @@ public class OperationDataServiceImpl implements OperationDataService {
             }
         }
         else{
-            long totalScaleCount = userMapper.findCountInvestCityScale(endDate);
-            List<Map<String, String>> investCityList = userMapper.findCountInvestCityScaleTop3(endDate);
+            long totalScaleCount = operationDataMapper.findCountInvestCityScale(endDate);
+            List<Map<String, String>> investCityList = operationDataMapper.findCountInvestCityScaleTop3(endDate);
             for(Map<String,String> investCityMap: investCityList){
                 redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                         investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
@@ -258,7 +262,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             }
         }
         else{
-            List<Map<String, String>> AgeDistributionList = userMapper.findAgeDistributionByAge(endDate);
+            List<Map<String, String>> AgeDistributionList = operationDataMapper.findAgeDistributionByAge(endDate);
             Map<String, String> resultMap = new LinkedHashMap<>();
 
             for (Map<String, String> AgeDistributionMap : AgeDistributionList) {

@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -26,13 +26,13 @@ public class BindBankCardServiceTest {
     private BindBankCardService bindBankCardService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
 
     @Test
-    public void shouldAccountBalanceIsZeroIsManualIsOk(){
+    public void shouldAccountBalanceIsZeroIsManualIsOk() {
         UserModel userModel = getUserModelTest();
         userMapper.create(userModel);
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
@@ -42,7 +42,7 @@ public class BindBankCardServiceTest {
     }
 
     @Test
-    public void shouldAccountBalanceIsNotZeroIsManualIsOk(){
+    public void shouldAccountBalanceIsNotZeroIsManualIsOk() {
         UserModel userModel = getUserModelTest();
         userMapper.create(userModel);
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
@@ -52,7 +52,7 @@ public class BindBankCardServiceTest {
         assertTrue(isManual);
     }
 
-    private AccountModel getAccountModel(String loginName){
+    private AccountModel getAccountModel(String loginName) {
         AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         model.setBalance(0l);
         return model;

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 public class LicaiquanArticleCommentMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;

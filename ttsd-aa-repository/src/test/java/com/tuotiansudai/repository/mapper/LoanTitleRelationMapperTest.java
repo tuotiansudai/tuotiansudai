@@ -32,7 +32,7 @@ public class LoanTitleRelationMapperTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
 
     private void createMockUser(String loginName) {
@@ -46,8 +46,9 @@ public class LoanTitleRelationMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
     }
+
     @Test
-    public void createLoanTitleTest(){
+    public void createLoanTitleTest() {
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = IdGenerator.generate();
@@ -98,7 +99,7 @@ public class LoanTitleRelationMapperTest {
     }
 
     @Test
-    public void findLoanTitlesTest(){
+    public void findLoanTitlesTest() {
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = IdGenerator.generate();
@@ -151,7 +152,7 @@ public class LoanTitleRelationMapperTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = IdGenerator.generate();
@@ -203,7 +204,7 @@ public class LoanTitleRelationMapperTest {
     }
 
     @Test
-    public void findLoanTitleRelationAndTitleByLoanIdText(){
+    public void findLoanTitleRelationAndTitleByLoanIdText() {
         createMockUser("xiaoming");
         LoanTitleModel loanTitleModel1 = new LoanTitleModel();
         long loanTitleModel1Id = IdGenerator.generate();
@@ -268,8 +269,8 @@ public class LoanTitleRelationMapperTest {
 
         assertEquals(LoanTitleRelationModelList.get(0).getTitle(), loanTitleModel1.getTitle());
         assertEquals(LoanTitleRelationModelList.get(0).getApplicationMaterialUrls(), loanTitleRelationModel.getApplicationMaterialUrls());
-        assertEquals(LoanTitleRelationModelList.get(1).getTitle(),loanTitleModel2.getTitle());
-        assertEquals(LoanTitleRelationModelList.get(1).getApplicationMaterialUrls(),loanTitleRelationModelT.getApplicationMaterialUrls());
+        assertEquals(LoanTitleRelationModelList.get(1).getTitle(), loanTitleModel2.getTitle());
+        assertEquals(LoanTitleRelationModelList.get(1).getApplicationMaterialUrls(), loanTitleRelationModelT.getApplicationMaterialUrls());
 
     }
 }

@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 public class PointTaskServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -208,7 +208,7 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldFirstInvestReferrerCompleteEachRecommendInvestRewardIsOk(){
+    public void shouldFirstInvestReferrerCompleteEachRecommendInvestRewardIsOk() {
         UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
         UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
         LoanModel loanModel = createFakeLoan(ProductType._180);
@@ -223,7 +223,7 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldSecondInvestReferrerCompleteEachRecommendInvestRewardIsOk(){
+    public void shouldSecondInvestReferrerCompleteEachRecommendInvestRewardIsOk() {
         UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
         UserModel testName = createFakeUser("testName", referrerUserModel.getLoginName());
         LoanModel loanModel = createFakeLoan(ProductType._180);
@@ -238,7 +238,7 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldReferrerIsNullCompleteTaskIsOk(){
+    public void shouldReferrerIsNullCompleteTaskIsOk() {
         UserModel referrerUserModel = createFakeUser("referrerLoginName", null);
         UserModel testName = createFakeUser("testName", null);
         LoanModel loanModel = createFakeLoan(ProductType._180);
@@ -263,7 +263,7 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldEachRecommendReferrerBankCardIsOk(){
+    public void shouldEachRecommendReferrerBankCardIsOk() {
         UserModel referrerUserModel = createFakeUser("referrerCardLoginName", null);
         UserModel testName = createFakeUser("testCardLoginName", referrerUserModel.getLoginName());
 
@@ -284,7 +284,7 @@ public class PointTaskServiceTest {
     }
 
     @Test
-    public void shouldEachRecommendReferrerBankCardReferrerIsNullIsOk(){
+    public void shouldEachRecommendReferrerBankCardReferrerIsNullIsOk() {
         UserModel referrerUserModel = createFakeUser("referrerBankCardLoginName", null);
         UserModel testName = createFakeUser("testBankCardLoginName", null);
 

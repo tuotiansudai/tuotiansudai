@@ -66,7 +66,7 @@ public class InvestTransferPurchaseServiceTest {
     private PayAsyncClient payAsyncClient;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;

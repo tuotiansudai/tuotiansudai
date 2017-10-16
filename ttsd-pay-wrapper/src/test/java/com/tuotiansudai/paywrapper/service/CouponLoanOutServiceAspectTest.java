@@ -48,7 +48,7 @@ public class CouponLoanOutServiceAspectTest {
     private InvestMapper investMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;

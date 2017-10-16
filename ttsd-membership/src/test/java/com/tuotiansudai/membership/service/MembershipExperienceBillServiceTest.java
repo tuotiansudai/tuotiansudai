@@ -2,7 +2,7 @@ package com.tuotiansudai.membership.service;
 
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertThat;
 public class MembershipExperienceBillServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private MembershipExperienceBillMapper membershipExperienceBillMapper;
@@ -35,7 +34,7 @@ public class MembershipExperienceBillServiceTest {
     private MembershipExperienceBillService membershipExperienceBillService;
 
     @Test
-    public void shouldMembershipExperienceBillListByLoginName() throws Exception{
+    public void shouldMembershipExperienceBillListByLoginName() throws Exception {
         UserModel fakeUser = createFakeUser();
 
         MembershipExperienceBillModel membershipExperienceBillModelOne = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "投资了5000.增加5000成长值");

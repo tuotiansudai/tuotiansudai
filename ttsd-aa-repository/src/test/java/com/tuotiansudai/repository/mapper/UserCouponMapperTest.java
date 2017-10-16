@@ -32,7 +32,7 @@ public class UserCouponMapperTest {
     private CouponMapper couponMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateUserCoupon() {
@@ -101,7 +101,7 @@ public class UserCouponMapperTest {
     }
 
     @Test
-    public void shouldSumCouponAmountIsOk(){
+    public void shouldSumCouponAmountIsOk() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
 

@@ -1,8 +1,9 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,12 +33,15 @@ public class BindEmailServiceTest {
     private BindEmailService bindEmailService;
 
     @Autowired
+    private FakeUserHelper fakeUserHelper;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Test
     public void shouldVerifyEmailIsOk() {
         UserModel fakeUser = getFakeUser("loginname");
-        userMapper.create(fakeUser);
+        fakeUserHelper.create(fakeUser);
         mockLoginUser("loginname", "11900000000");
         redisWrapperClient.set("web:loginname:uuid", "loginname:testafter@tuotiansudai.com");
         bindEmailService.verifyEmail("loginname", "uuid", "127.0.0.1", "WEB", "");
@@ -45,12 +49,12 @@ public class BindEmailServiceTest {
         String value = redisWrapperClient.get("web:loginname:uuid");
         assertNull(value);
         assertNotNull(userModel);
-        assertEquals("testafter@tuotiansudai.com",userModel.getEmail());
+        assertEquals("testafter@tuotiansudai.com", userModel.getEmail());
     }
 
-    private void mockLoginUser(String loginName, String mobile){
-        User user = new User(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"));
-        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
+    private void mockLoginUser(String loginName, String mobile) {
+        User user = new User(loginName, "", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"));
+        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user, null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
     }
 
@@ -65,8 +69,6 @@ public class BindEmailServiceTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
-
-
 
 
 }

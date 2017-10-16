@@ -28,7 +28,7 @@ public class FinanceReportMapperTest {
     FinanceReportMapper financeReportMapper;
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     AccountMapper accountMapper;

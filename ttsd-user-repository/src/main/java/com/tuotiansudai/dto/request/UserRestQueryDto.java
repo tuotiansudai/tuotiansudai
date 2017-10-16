@@ -1,4 +1,4 @@
-package com.tuotiansudai.rest.dto.request;
+package com.tuotiansudai.dto.request;
 
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserStatus;

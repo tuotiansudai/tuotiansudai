@@ -26,7 +26,7 @@ public class ExperienceBillMapperTest {
     private ExperienceBillMapper experienceBillMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateExperienceBill() throws Exception {

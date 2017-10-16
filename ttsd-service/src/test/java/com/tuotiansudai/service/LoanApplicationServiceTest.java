@@ -4,8 +4,8 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 public class LoanApplicationServiceTest {
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     AccountMapper accountMapper;

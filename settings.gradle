@@ -14,7 +14,7 @@ include "ttsd-service",
         'ttsd-activity-console',
         'ttsd-util'
 include 'ttsd-message-repository', "ttsd-message-service"
-include 'ttsd-user-repository', 'ttsd-user-service', 'ttsd-user-rest-client'
+include 'ttsd-user-repository', 'ttsd-user-service'
 include 'ttsd-edxactivity-model', 'ttsd-edxactivity-repository', 'ttsd-activity-service', 'ttsd-activity-web'
 include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'
 include 'ttsd-edxask-model', 'ttsd-edxask-repository', 'ttsd-ask-service', 'ttsd-ask-web' , 'ttsd-ask-rest-client'

@@ -17,19 +17,16 @@ public class LoginNameGenerator {
 
     private final static Random random = new Random();
 
-    private final UserMapper userMapper;
-
     private final WeChatUserMapper weChatUserMapper;
 
     @Autowired
-    public LoginNameGenerator(UserMapper userMapper, WeChatUserMapper weChatUserMapper) {
-        this.userMapper = userMapper;
+    public LoginNameGenerator(WeChatUserMapper weChatUserMapper) {
         this.weChatUserMapper = weChatUserMapper;
     }
 
-    public String generate() {
+    public String generateWxLoginName() {
         String loginName = generateLoginName();
-        while (userMapper.findByLoginName(loginName) != null || CollectionUtils.isNotEmpty(weChatUserMapper.findByLoginName(loginName))) {
+        while (CollectionUtils.isNotEmpty(weChatUserMapper.findByLoginName(loginName))) {
             loginName = generateLoginName();
         }
         return loginName;
@@ -37,7 +34,7 @@ public class LoginNameGenerator {
 
     private String generateLoginName() {
         StringBuilder loginNameBuilder = new StringBuilder();
-        for (int i = 0; i < 8; ++i) {
+        for (int i = 0; i < 10; ++i) {
             loginNameBuilder.append(ALPHABET[random.nextInt(ALPHABET.length)]);
         }
 

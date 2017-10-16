@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 public class InvestReferrerRewardMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private LoanMapper loanMapper;
     @Autowired
@@ -32,7 +32,7 @@ public class InvestReferrerRewardMapperTest {
     private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Test
-    public void shouldCreateInvestReferrerReward(){
+    public void shouldCreateInvestReferrerReward() {
         UserModel userModelTest = createMockUser("helloworld");
         LoanModel loanModel = createMockLoan(userModelTest.getLoginName());
         InvestModel model = createMockInvest(userModelTest.getLoginName(), loanModel.getId());

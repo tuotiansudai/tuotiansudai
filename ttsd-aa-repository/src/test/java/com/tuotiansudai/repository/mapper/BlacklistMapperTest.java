@@ -28,7 +28,7 @@ public class BlacklistMapperTest {
     BlacklistMapper blacklistMapper;
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     private UserModel createUserByLoginName(String loginName) {
         UserModel userModelTest = new UserModel();

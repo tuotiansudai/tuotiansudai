@@ -19,9 +19,6 @@ import static org.junit.Assert.assertTrue;
 public class SystemBillMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private SystemBillMapper systemBillMapper;
 
     @Test

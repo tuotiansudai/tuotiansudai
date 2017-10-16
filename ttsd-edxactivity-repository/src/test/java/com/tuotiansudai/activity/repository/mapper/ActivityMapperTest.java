@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.ActivityModel;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -32,7 +32,7 @@ public class ActivityMapperTest {
     ActivityMapper activityMapper;
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();

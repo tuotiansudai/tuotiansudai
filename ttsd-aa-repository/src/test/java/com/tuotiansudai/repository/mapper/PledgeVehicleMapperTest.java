@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class PledgeVehicleMapperTest {
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     LoanMapper loanMapper;

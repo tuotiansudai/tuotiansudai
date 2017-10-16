@@ -1,10 +1,9 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class AccountMapperTest {
+
+    @Autowired
+    private FakeUserHelper fakeUserHelper;
 
     @Autowired
     private UserMapper userMapper;
@@ -66,7 +68,7 @@ public class AccountMapperTest {
     public void shouldFindByIdentityNumber() throws Exception {
         UserModel fakeUser = createFakeUser("testFindByIdentityNumber");
         fakeUser.setIdentityNumber(String.valueOf(new Random().nextInt(100)));
-        userMapper.updateUser(fakeUser);
+        fakeUserHelper.updateUser(fakeUser);
         assertNotNull(userMapper.findByIdentityNumber(fakeUser.getIdentityNumber()));
     }
 
@@ -81,7 +83,7 @@ public class AccountMapperTest {
         model.setRegisterTime(new Date());
         model.setStatus(UserStatus.ACTIVE);
         model.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(model);
+        fakeUserHelper.create(model);
         return model;
     }
 }

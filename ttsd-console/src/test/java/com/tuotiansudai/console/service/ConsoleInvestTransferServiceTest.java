@@ -2,13 +2,12 @@ package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -33,7 +32,7 @@ public class ConsoleInvestTransferServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -99,7 +98,7 @@ public class ConsoleInvestTransferServiceTest {
     }
 
     @Test
-    public void shouldFindTransferApplicationPaginationListIsSuccess(){
+    public void shouldFindTransferApplicationPaginationListIsSuccess() {
         long loanId = IdGenerator.generate();
         UserModel transferrerModel = createUserByUserId("transferrerTestuser");
         UserModel transfereeModel = createUserByUserId("transfereeTestUser");
@@ -126,8 +125,8 @@ public class ConsoleInvestTransferServiceTest {
         assertTrue(basePaginationDataDto.getStatus());
         assertNotNull(basePaginationDataDto.getRecords().get(0));
         assertEquals(1, basePaginationDataDto.getIndex());
-        assertEquals(10,basePaginationDataDto.getPageSize());
-        assertEquals(1,basePaginationDataDto.getCount());
+        assertEquals(10, basePaginationDataDto.getPageSize());
+        assertEquals(1, basePaginationDataDto.getCount());
         assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());

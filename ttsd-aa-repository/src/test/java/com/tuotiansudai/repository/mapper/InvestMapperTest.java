@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class InvestMapperTest {
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -160,9 +160,6 @@ public class InvestMapperTest {
     public void createUser() throws Exception {
         createUserByUserId(User_ID);
         createUserByUserId(User_ID2);
-
-        UserModel userModel = userMapper.findByLoginName(User_ID);
-        assertNotNull(userModel);
     }
 
     private UserModel createUserByUserId(String userId) {
@@ -1049,7 +1046,7 @@ public class InvestMapperTest {
     }
 
     @Test
-    public void shouldFindSumSuccessInvestByInvestTimeIsOk(){
+    public void shouldFindSumSuccessInvestByInvestTimeIsOk() {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(IdGenerator.generate());
         fakeLoanModel.setName(User_ID);

@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 public class LoanDetailsMapperTest {
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     LoanMapper loanMapper;

@@ -1,14 +1,13 @@
 package com.tuotiansudai.rest.client.mapper;
 
-import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.dto.request.UpdateUserInfoRequestDto;
+import com.tuotiansudai.dto.request.UserRestQueryDto;
+import com.tuotiansudai.dto.response.UserRestPagingResponse;
+import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.UserMapperDB;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.UserRestClient;
-import com.tuotiansudai.rest.dto.request.UserRestQueryDto;
-import com.tuotiansudai.rest.dto.request.UserRestUpdateUserInfoRequestDto;
-import com.tuotiansudai.rest.dto.response.UserRestPagingResponse;
-import com.tuotiansudai.rest.dto.response.UserRestUserInfo;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -73,21 +71,21 @@ public class UserRemoteMapper implements UserMapper {
 
     @Override
     public void updateEmail(String loginName, String email) {
-        UserRestUpdateUserInfoRequestDto updateDto = new UserRestUpdateUserInfoRequestDto(loginName);
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
         updateDto.setEmail(email);
         userRestClient.update(updateDto);
     }
 
     @Override
     public void updateSignInCount(String loginName, int signInCount) {
-        UserRestUpdateUserInfoRequestDto updateDto = new UserRestUpdateUserInfoRequestDto(loginName);
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
         updateDto.setSignInCount(signInCount);
         userRestClient.update(updateDto);
     }
 
     @Override
     public void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber) {
-        UserRestUpdateUserInfoRequestDto updateDto = new UserRestUpdateUserInfoRequestDto(loginName);
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
         updateDto.setUserName(userName);
         updateDto.setIdentityNumber(identityNumber);
         userRestClient.update(updateDto);
@@ -138,7 +136,7 @@ public class UserRemoteMapper implements UserMapper {
     }
 
     @Override
-    public List<UserModel> findUserModelByMobileLike(String mobile, int page, int pageSize){
+    public List<UserModel> findUserModelByMobileLike(String mobile, int page, int pageSize) {
         UserRestQueryDto queryDto = new UserRestQueryDto(page, pageSize);
         queryDto.setMobileLike(mobile);
         queryDto.setSort("-register_time");
@@ -148,45 +146,15 @@ public class UserRemoteMapper implements UserMapper {
 
     @Override
     public int findCountByMobileLike(String mobile) {
-        UserRestQueryDto queryDto = new UserRestQueryDto(1,1);
+        UserRestQueryDto queryDto = new UserRestQueryDto(1, 1);
         queryDto.setMobileLike(mobile);
         UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
         return searchResult.getTotalCount();
     }
 
     @Override
-    public void updateExperienceBalance(String loginName, ExperienceBillOperationType experienceBillOperationType, long experienceAmount) {
-        userMapperDB.updateExperienceBalance(loginName, experienceBillOperationType, experienceAmount);
-    }
-
-    @Override
-    public Long findExperienceByLoginName(String loginName) {
-        return userMapperDB.findExperienceByLoginName(loginName);
-    }
-
-    @Override
     public List<String> findAllRecommendation(HashMap<String, Object> districtName) {
         return userMapperDB.findAllRecommendation(districtName);
-    }
-
-    @Override
-    public List<Integer> findScaleByGender(Date endDate) {
-        return userMapperDB.findScaleByGender(endDate);
-    }
-
-    @Override
-    public long findCountInvestCityScale(Date endDate) {
-        return userMapperDB.findCountInvestCityScale(endDate);
-    }
-
-    @Override
-    public List<Map<String, String>> findCountInvestCityScaleTop3(Date endDate) {
-        return userMapperDB.findCountInvestCityScaleTop3(endDate);
-    }
-
-    @Override
-    public List<Map<String, String>> findAgeDistributionByAge(Date endDate) {
-        return userMapperDB.findAgeDistributionByAge(endDate);
     }
 
     @Override
@@ -203,10 +171,4 @@ public class UserRemoteMapper implements UserMapper {
     public void updateProvinceAndCity(String loginName, String province, String city) {
         userMapperDB.updateProvinceAndCity(loginName, province, city);
     }
-
-    @Override
-    public List<String> findAllUserChannels() {
-        return userMapperDB.findAllUserChannels();
-    }
-
 }

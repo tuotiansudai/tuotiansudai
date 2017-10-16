@@ -422,29 +422,7 @@ require.ensure([],function() {
 
     //修改密码表单验证
     let passValidator = new ValidatorObj.ValidatorForm();
-    //验证原密码是否存在
-    passValidator.newStrategy(changePasswordForm.originalPassword,'isNotExistPassword',function(errorMsg,showErrorAfter) {
-        var getResult='',
-            that=this,
-            _arguments=arguments;
-        commonFun.useAjax({
-            type:'GET',
-            async: false,
-            url:'/personal-info/password/'+this.value+'/is-exist'
-        },function(response) {
-            if(response.data.status) {
-                // 如果为true说明密码存在有效
-                getResult='';
-                ValidatorObj.isHaveError.no.apply(that,_arguments);
 
-            }
-            else {
-                getResult=errorMsg;
-                ValidatorObj.isHaveError.yes.apply(that,_arguments);
-            }
-        });
-        return getResult;
-    });
     passValidator.add(changePasswordForm.originalPassword, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入原密码'

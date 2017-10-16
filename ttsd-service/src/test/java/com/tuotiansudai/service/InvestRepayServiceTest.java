@@ -3,10 +3,10 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -39,7 +39,7 @@ public class InvestRepayServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -117,18 +117,18 @@ public class InvestRepayServiceTest {
         long investId = IdGenerator.generate();
         createInvest("testuser123", loanId, investId);
         createInvestRepay(investId, RepayStatus.COMPLETE, 1);
-        createInvestRepay(investId,RepayStatus.OVERDUE,2);
-        createInvestRepay(investId,RepayStatus.REPAYING,3);
+        createInvestRepay(investId, RepayStatus.OVERDUE, 2);
+        createInvestRepay(investId, RepayStatus.REPAYING, 3);
     }
 
     @Test
     public void investRepayAmount() {
         Date startTime = new DateTime().withTimeAtStartOfDay().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
-        long notSuccessInvestRepay = investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay("testuser123",startTime,endTime);
+        long notSuccessInvestRepay = investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay("testuser123", startTime, endTime);
         assertThat(notSuccessInvestRepay, is(400L));
 
-        long successInvestRepay = investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay("testuser123",startTime,endTime);
+        long successInvestRepay = investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay("testuser123", startTime, endTime);
         assertThat(successInvestRepay, is(200L));
     }
 

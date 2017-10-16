@@ -1,6 +1,9 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankCardStatus;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +27,7 @@ public class BankCardMapperTest {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
 
     @Test
@@ -68,8 +71,9 @@ public class BankCardMapperTest {
 
 
     }
+
     @Test
-    public void findByLoginNameAndIsFastPayOnIsOk(){
+    public void findByLoginNameAndIsFastPayOnIsOk() {
         UserModel fakeUser = createFakeUser();
         BankCardModel bankCardModel = new BankCardModel();
 

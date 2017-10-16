@@ -36,7 +36,7 @@ import static org.junit.Assert.*;
 public class NormalRepayCallbackTest extends RepayBaseTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -52,9 +52,6 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private UserBillMapper userBillMapper;
 
     @Autowired
     private NormalRepayService normalRepayService;

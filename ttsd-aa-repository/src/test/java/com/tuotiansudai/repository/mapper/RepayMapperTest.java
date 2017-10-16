@@ -31,7 +31,7 @@ public class RepayMapperTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateLoanRepayModel() throws Exception {

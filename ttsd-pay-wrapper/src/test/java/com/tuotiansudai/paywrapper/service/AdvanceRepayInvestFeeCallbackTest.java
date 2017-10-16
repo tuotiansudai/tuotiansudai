@@ -35,7 +35,7 @@ import static org.junit.Assert.assertThat;
 public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;

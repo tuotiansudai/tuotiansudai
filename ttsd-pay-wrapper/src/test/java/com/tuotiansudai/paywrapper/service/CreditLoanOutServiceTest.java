@@ -23,8 +23,8 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -140,7 +140,7 @@ public class CreditLoanOutServiceTest {
         verify(this.redisWrapperClient, times(1))
                 .set(loanInfoKeyCaptor.capture(), loanInfoValueCaptor.capture());
 
-        verify(this.paySyncClient,times(1))
+        verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanOutProjectTransferMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class));
 
         assertThat(redisKeyCaptor.getValue(), is("credit:loan:out"));
@@ -185,10 +185,10 @@ public class CreditLoanOutServiceTest {
         verify(this.redisWrapperClient, times(1))
                 .set(loanInfoKeyCaptor.capture(), loanInfoValueCaptor.capture());
 
-        verify(this.paySyncClient,times(1))
+        verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanOutProjectTransferMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class));
 
-        verify(this.smsWrapperClient,times(1))
+        verify(this.smsWrapperClient, times(1))
                 .sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         assertThat(redisKeyCaptor.getValue(), is("credit:loan:out"));
@@ -229,9 +229,9 @@ public class CreditLoanOutServiceTest {
         BaseDto<PayDataDto> dto = this.creditLoanOutService.loanOut(orderId, mobile, amount);
         verify(this.redisWrapperClient, times(1))
                 .hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture());
-        verify(this.paySyncClient,times(1))
+        verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanOutProjectTransferMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class));
-        verify(this.smsWrapperClient,times(1))
+        verify(this.smsWrapperClient, times(1))
                 .sendFatalNotify(any(SmsFatalNotifyDto.class));
         verify(this.redisWrapperClient, times(1))
                 .set(loanInfoKeyCaptor.capture(), loanInfoValueCaptor.capture());
@@ -272,7 +272,7 @@ public class CreditLoanOutServiceTest {
         when(this.userMapper.findByMobile(mobile)).thenReturn(userModel);
         when(this.payAsyncClient.parseCallbackRequest(anyMapOf(String.class, String.class),
                 anyString(), eq(CreditLoanOutProjectTransferNotifyMapper.class), eq(ProjectTransferNotifyRequestModel.class)))
-        .thenReturn(callbackRequestModel);
+                .thenReturn(callbackRequestModel);
 
         when(this.redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1L);
         when(this.redisWrapperClient.get(MessageFormat.format("credit:loan:out:info:{0}", String.valueOf(orderId))))
@@ -296,21 +296,21 @@ public class CreditLoanOutServiceTest {
         assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SUCCESS.name()));
 
         assertThat(queueCaptor.getAllValues().get(0), is(MessageQueue.CreditLoanOutQueue));
-        assertThat(((Map)messageCaptor.getAllValues().get(0)).get("order_id"), is(String.valueOf(orderId)));
-        assertThat(((Map)messageCaptor.getAllValues().get(0)).get("success"), is(true));
+        assertThat(((Map) messageCaptor.getAllValues().get(0)).get("order_id"), is(String.valueOf(orderId)));
+        assertThat(((Map) messageCaptor.getAllValues().get(0)).get("success"), is(true));
 
         assertThat(queueCaptor.getAllValues().get(1), is(MessageQueue.AmountTransfer));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getTransferType(), is(TransferType.TRANSFER_IN_BALANCE));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getLoginName(), is(userModel.getLoginName()));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getOrderId(), is(orderId));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getBusinessType(), is(UserBillBusinessType.CREDIT_LOAN_OUT));
+        assertThat(((AmountTransferMessage) messageCaptor.getAllValues().get(1)).getTransferType(), is(TransferType.TRANSFER_IN_BALANCE));
+        assertThat(((AmountTransferMessage) messageCaptor.getAllValues().get(1)).getLoginName(), is(userModel.getLoginName()));
+        assertThat(((AmountTransferMessage) messageCaptor.getAllValues().get(1)).getOrderId(), is(orderId));
+        assertThat(((AmountTransferMessage) messageCaptor.getAllValues().get(1)).getBusinessType(), is(UserBillBusinessType.CREDIT_LOAN_OUT));
 
         assertThat(queueCaptor.getAllValues().get(2), is(MessageQueue.CreditLoanBill));
-        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getOrderId(), is(orderId));
-        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getAmount(), is(amount));
-        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getBusinessType(), is(CreditLoanBillBusinessType.CREDIT_LOAN_OFFER));
-        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getOperationType(), is(CreditLoanBillOperationType.OUT));
-        assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getMobile(), is(mobile));
+        assertThat(((CreditLoanBillModel) messageCaptor.getAllValues().get(2)).getOrderId(), is(orderId));
+        assertThat(((CreditLoanBillModel) messageCaptor.getAllValues().get(2)).getAmount(), is(amount));
+        assertThat(((CreditLoanBillModel) messageCaptor.getAllValues().get(2)).getBusinessType(), is(CreditLoanBillBusinessType.CREDIT_LOAN_OFFER));
+        assertThat(((CreditLoanBillModel) messageCaptor.getAllValues().get(2)).getOperationType(), is(CreditLoanBillOperationType.OUT));
+        assertThat(((CreditLoanBillModel) messageCaptor.getAllValues().get(2)).getMobile(), is(mobile));
     }
 
     @Test

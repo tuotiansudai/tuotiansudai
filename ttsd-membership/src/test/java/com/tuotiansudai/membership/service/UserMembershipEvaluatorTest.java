@@ -3,7 +3,7 @@ package com.tuotiansudai.membership.service;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.joda.time.DateTime;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 public class UserMembershipEvaluatorTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;

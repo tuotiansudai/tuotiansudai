@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class MembershipExperienceBillMapperTest {
     private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateMembershipExperienceBill() throws Exception {

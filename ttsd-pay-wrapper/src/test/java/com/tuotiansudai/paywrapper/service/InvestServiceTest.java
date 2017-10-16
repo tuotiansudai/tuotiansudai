@@ -42,7 +42,7 @@ import static org.junit.Assert.*;
 public class InvestServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;

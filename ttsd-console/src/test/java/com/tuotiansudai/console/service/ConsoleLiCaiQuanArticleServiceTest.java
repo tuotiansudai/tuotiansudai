@@ -2,8 +2,8 @@ package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -37,7 +37,7 @@ public class ConsoleLiCaiQuanArticleServiceTest {
     private ConsoleLiCaiQuanArticleService consoleLiCaiQuanArticleService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
@@ -199,7 +199,7 @@ public class ConsoleLiCaiQuanArticleServiceTest {
     }
 
     @Test
-    public void shouldDeleteArticleIsOk(){
+    public void shouldDeleteArticleIsOk() {
         UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         consoleLiCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
@@ -210,7 +210,7 @@ public class ConsoleLiCaiQuanArticleServiceTest {
     }
 
     @Test
-    public void shouldcheckPassAndCreateArticleIsOk(){
+    public void shouldcheckPassAndCreateArticleIsOk() {
         UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         consoleLiCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);

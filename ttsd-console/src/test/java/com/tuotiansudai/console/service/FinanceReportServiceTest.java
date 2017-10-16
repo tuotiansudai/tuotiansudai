@@ -32,7 +32,7 @@ public class FinanceReportServiceTest {
     FinanceReportService financeReportService;
 
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     AccountMapper accountMapper;

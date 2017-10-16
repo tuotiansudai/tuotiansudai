@@ -1,6 +1,6 @@
 package com.tuotiansudai.membership.repository.mapper;
 
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang.RandomStringUtils;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Transactional
 public abstract class BaseMapperTest {
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Before
     public void setUp() {
@@ -34,7 +34,7 @@ public abstract class BaseMapperTest {
         UserModel model = new UserModel();
         model.setLoginName(loginName);
         model.setPassword("password");
-        model.setEmail(String.format("%s@tuotiansudai.com",loginName));
+        model.setEmail(String.format("%s@tuotiansudai.com", loginName));
         model.setMobile(RandomStringUtils.randomNumeric(11));
         model.setRegisterTime(new Date());
         model.setStatus(UserStatus.ACTIVE);

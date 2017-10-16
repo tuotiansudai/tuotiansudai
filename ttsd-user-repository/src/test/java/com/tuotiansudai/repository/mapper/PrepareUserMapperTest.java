@@ -21,7 +21,7 @@ import java.util.UUID;
 public class PrepareUserMapperTest{
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
