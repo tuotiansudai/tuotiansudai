@@ -3,19 +3,14 @@ package com.tuotiansudai.activity.controller;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.service.ZeroShoppingActivityService;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.service.LoanService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -33,7 +28,7 @@ public class ZeroShoppingActivityController {
     }
 
     @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
-    public ModelAndView activityLoanExists(ZeroShoppingPrize zeroShoppingPrize){
+    public ModelAndView activityLoanExists(ZeroShoppingPrize zeroShoppingPrize, RedirectAttributes redirectAttributes){
         List<LoanModel> loanModels = zeroShoppingActivityService.queryActivityLoan();
 
         ModelAndView modelAndView = new ModelAndView();
@@ -44,9 +39,7 @@ public class ZeroShoppingActivityController {
         }
 
         modelAndView.setViewName("redirect:/loan/" + loanModels.get(0).getId());
-        modelAndView.addObject("zeroShoppingPrize", ZeroShoppingPrize.Apple_MacBook);
-//        modelAndView.addFlashAttribute("zeroShoppingPrize", ZeroShoppingPrize.Apple_MacBook);
-
+        redirectAttributes.addFlashAttribute("zeroShoppingPrize", zeroShoppingPrize);
         return modelAndView;
     }
 

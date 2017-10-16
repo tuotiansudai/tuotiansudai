@@ -15,12 +15,12 @@ public class ZeroShoppingPrizeSelectModel implements Serializable{
     public ZeroShoppingPrizeSelectModel() {
     }
 
-    public ZeroShoppingPrizeSelectModel(String mobile, String userName, long investAmount, ZeroShoppingPrize prize, Date investTime) {
+    public ZeroShoppingPrizeSelectModel(String mobile, String userName, long investAmount, ZeroShoppingPrize prize) {
         this.mobile = mobile;
         this.userName = userName;
         this.investAmount = investAmount;
         this.selectPrize = prize;
-        this.investTime = investTime;
+        this.investTime = new Date();
     }
 
     public long getId() {

@@ -39,10 +39,7 @@ import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.AutoInvestMonthPeriod;
-import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -164,6 +161,11 @@ public class InvestServiceImpl implements InvestService {
             new ExperienceReward(3222200l, 10000000l, 20000000l),
             new ExperienceReward(6888800l, 20000000l, Long.MAX_VALUE));
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private final static String ZERO_SHOPPING_ACTIVITY_PRIZE = "zero_shopping_activity_prize:{0}";
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -174,6 +176,8 @@ public class InvestServiceImpl implements InvestService {
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
+
+        saveZeroShoppingActivityPrizeRedis(investModel.getId(), investModel.getLoginName(), dto.getZeroShoppingPrize());
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
                 dto.getLoginName(),
@@ -202,7 +206,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds, String prize) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -211,6 +215,9 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
+
+        saveZeroShoppingActivityPrizeRedis(investModel.getId(), investModel.getLoginName(), prize);
+
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
@@ -420,7 +427,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds(), dto.getZeroShoppingPrize());
     }
 
     @Override
@@ -464,7 +471,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null, null);
                 if (!baseDto.isSuccess()) {
                     logger.info(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
@@ -744,6 +751,14 @@ public class InvestServiceImpl implements InvestService {
                     null));
         }
 
+    }
+
+    private void saveZeroShoppingActivityPrizeRedis(long investId, String loginName, String prize){
+        final int lifeSecond = 180 * 24 * 60 * 60;
+        if (Strings.isNullOrEmpty(prize)){
+            return;
+        }
+        redisWrapperClient.hset(MessageFormat.format(ZERO_SHOPPING_ACTIVITY_PRIZE, String.valueOf(investId)), loginName, prize, lifeSecond);
     }
 
     class ExperienceReward {
