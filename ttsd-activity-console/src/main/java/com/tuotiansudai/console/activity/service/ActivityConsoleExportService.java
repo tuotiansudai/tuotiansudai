@@ -63,6 +63,9 @@ public class ActivityConsoleExportService {
     @Autowired
     private ActivityConsoleHouseDecorateService activityConsoleHouseDecorateService;
 
+    @Autowired
+    private ActivityConsoleIphoneXService activityConsoleIphoneXService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -274,5 +277,9 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildHouseDecorateCsvList(){
         return activityConsoleHouseDecorateService.list(1,Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildIphoneXCsvList(){
+        return activityConsoleIphoneXService.list(1,Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

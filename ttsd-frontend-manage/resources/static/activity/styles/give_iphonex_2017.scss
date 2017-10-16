@@ -1,0 +1,1066 @@
+body {
+  background: #8b89ea;
+}
+$colorFont: #1b1b1b;
+.rules-wap {
+  width: 96%;
+  background: #e8465d;
+  margin-bottom: 30px;
+  display: none;
+  @media (max-width:768px){
+    display: block;
+  }
+  >div {
+    width: 100%;
+    background: #fff;
+    border:4px solid $colorFont;
+    box-sizing: border-box;
+    position: relative;
+    left: 10px;
+    top: 8px;
+    padding: 0 7%;
+    color: $colorFont;
+
+    .pos {
+      width: 44px;
+      height: 30px;
+      background: url("../images/2017/give-iphonex/icon_right_bottom.png") no-repeat center center;
+      background-size: 100%;
+      position: absolute;
+      right: -5px;
+      bottom: -4px;
+
+    }
+    h4 {
+      font-size: 26px;
+      line-height: 40px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 16px;
+      line-height: 34px;
+      @media (max-width:768px){
+        font-size: 26px;
+        line-height: 45px;
+        @media (max-width:414px){
+          font-size: 16px;
+          line-height: 30px;
+          @media (max-width:375px){
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    p {
+      font-size: 24px;
+      line-height: 40px;
+      font-size: 16px;
+      line-height: 34px;
+      @media (max-width:768px){
+        font-size: 26px;
+        line-height: 45px;
+        @media (max-width:414px){
+          font-size: 16px;
+          line-height: 30px;
+          @media (max-width:375px){
+            font-size: 14px;
+            @media (max-width:320px){
+              font-size: 12px;
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@mixin common-styles (){
+      width: 904px;
+  @media (max-width:1024px) {
+    width: 98%;
+    @media (max-width:768px){
+      width: 90%;
+      font-size: 26px;
+      line-height: 45px;
+      @media (max-width:414px){
+        font-size: 20px;
+        line-height: 35px;
+      }
+    }
+  }
+      background: #6360ce;
+      font-size: 20px;
+      color: $colorFont;
+  margin-left: auto;
+  margin-right: auto;
+
+      .childStyle {
+        width: 910px;
+        @media (max-width:1024px) {
+          width: 100%;
+        }
+        background: #fff;
+        box-sizing: border-box;
+        border:4px solid $colorFont;
+        position: relative;
+        left: 20px;
+        top: 16px;
+        @media (max-width:414px){
+          left: 10px;
+          top: 8px;
+        }
+        font-size: 20px;
+        padding: 2% 3% 0;
+        .pos {
+          width: 43px;
+          height: 30px;
+          position: absolute;
+          right: -5px;
+          bottom: -5px;
+          background: url("../images/2017/give-iphonex/pos_purple.png") no-repeat center top;
+          background-size: 100%;
+          &.pos2 {
+            right: -6px;
+            bottom: -6px;
+            background: url("../images/2017/give-iphonex/pos_pur2.png") no-repeat center center;
+          }
+        }
+
+        h4 {
+          text-align: center;
+          font-size: 20px;
+          color: $colorFont;
+          @media (max-width:768px){
+            font-size: 26px;
+            line-height: 45px;
+            @media (max-width:414px){
+              font-size: 18px;
+              line-height: 30px;
+            }
+          }
+        }
+        p {
+
+          line-height: 40px;
+          @media (max-width:768px){
+            font-size: 24px;
+            line-height: 45px;
+            @media (max-width:414px){
+              font-size: 16px;
+              line-height: 30px;
+            }
+          }
+        }
+      }
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.page-width1200 {
+  width: 1200px;
+  margin: 0 auto;
+}
+.redBtn {
+  display: block;
+  width: 292px;
+  height: 72px;
+  font-size: 30px;
+  color: #fff;
+  font-weight: bold;
+  margin: 30px auto;
+  line-height: 72px;
+  text-align: center;
+  border:4px solid $colorFont;
+  border-radius: 10px;
+  background: #ff4b4b;
+  &:hover {
+    color: #fff;
+  }
+  &.red-invest {
+    margin-top: 60px;
+    margin-bottom: 10px;
+    @media (max-width:768px) {
+      margin-top: 40px;
+    }
+  }
+
+
+}
+
+.phone-banner {
+  height: 350px;
+  background: url("../images/2017/give-iphonex/iphonex_pc.png") no-repeat center center;
+  //background-size: 100%;
+}
+.activity-wrap {
+  width: 100%;
+  background: url("../images/2017/give-iphonex/con_wrap_bg.png") no-repeat center top;
+  background-size: 100%;
+}
+
+
+.activity-page-frame {
+  .lottery-wrap {
+    background: #ee7862;
+    padding-top: 28px;
+    padding-bottom: 70px;
+    .iphone-fonts {
+      width: 816px;
+      height: 105px;
+      margin: 25px auto;
+      background: url("../images/2017/give-iphonex/iph-title1.png") no-repeat center center;
+      background-size: 100%;
+    }
+    .lottery-content {
+      margin-top: 45px;
+      .fl {
+        .chance {
+          text-align: center;
+          font-size: 20px;
+          color: #000;
+          strong {
+            font-size: 22px;
+            color: #feda00;
+            font-weight: bold;
+          }
+        }
+        .lottery-circle {
+          width: 548px;
+          height: 548px;
+          position: relative;
+          padding: 7%;
+          background: url("../images/2017/give-iphonex/rotate_out.png") no-repeat center center;
+          background-size: 100%;
+          box-sizing: border-box;
+          .rotate-btn {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: url("../images/2017/give-iphonex/rotate_in.png") no-repeat center center;
+            background-size: 100%;
+          }
+          .rotater {
+            width: 22%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -18px;
+            bottom: 0;
+            margin: auto;
+            background: url("../images/2017/give-iphonex/rotater.png") no-repeat center center;
+            background-size: 100%;
+          }
+        }
+      }
+      .fr {
+        >div {
+          width: 394px;
+          background: #e8465d;
+          >div {
+            width: 394px;
+            background: #fff;
+            border:4px solid $colorFont;
+            box-sizing: border-box;
+            position: relative;
+            left: 20px;
+            top: 14px;
+            padding: 0 7%;
+            font-size: 20px;
+            line-height: 38px;
+            color: $colorFont;
+            .pos {
+              width: 44px;
+              height: 30px;
+              background: url("../images/2017/give-iphonex/icon_right_bottom.png") no-repeat center center;
+              background-size: 100%;
+              position: absolute;
+              right: -5px;
+              bottom: -4px;
+
+            }
+            h4 {
+              font-size: 20px;
+              line-height: 60px;
+              font-weight: bold;
+              text-align: center;
+            }
+            .record-list {
+              height: 150px;
+              overflow: hidden;
+              ul {
+                position: relative;
+                li {
+                  font-size: 16px;
+                  line-height: 30px;
+                }
+              }
+            }
+          }
+          &.rules {
+            margin-top: 20px;
+          }
+          &.recodes {
+            margin-top: 75px;
+          }
+        }
+
+      }
+    }
+  }
+  .invest-wrap {
+    overflow: hidden;
+    background: #6e6be5;
+    margin-top: 30px;
+    .page-width {
+      .invest-fonts {
+        width: 936px;
+        height: 100px;
+        margin: 0 auto;
+        margin-top:35px;
+        margin-bottom: 40px;
+        background: url("../images/2017/give-iphonex/invest_title2.png") no-repeat center top;
+        background-size: 100%;
+      }
+      .total-annual-wrap {
+        margin-bottom: 145px;
+        //width: 98%;
+        @include common-styles ();
+        .total-annual {
+          height: 230px;
+          .instruction {
+            padding: 2% 3% 0;
+            p {
+              color: $colorFont;
+              line-height: 40px;
+              strong {
+                color: #ff4b4b;
+                font-weight: normal;
+              }
+            }
+          }
+          .formula-wrap {
+            .computational {
+              color: #040009;
+              margin-left: 27%;
+              float: left;
+              &:hover {
+                color: #feda00;
+              }
+            }
+            .formula-box {
+              display: none;
+            }
+              .formula-fonts {
+                width: 96px;
+                height: 36px;
+                line-height: 36px;
+                text-align: center;
+                border-right: none;
+                position: relative;
+                margin: 0 auto;
+               color: #000;
+                cursor: pointer;
+                border: 4px solid transparent;
+                &:hover {
+                  color: #fff;
+                  border: 4px solid $colorFont;
+                  background: #8b89ea;
+                }
+                .formula-box {
+                  z-index: 100;
+                  width: 370px;
+                  position: absolute;
+                  left: 95px;
+                  top: -4px;
+                  background: #8b89ea;
+                  display: none;
+                  h4 {
+                    height: 36px;
+                    line-height: 40px;
+                    color: #000;
+                    border: 4px solid $colorFont;
+                    border-bottom: 0;
+                    border-left: 0;
+                  }
+                  .bottom-box {
+                    width: 100%;
+                    padding: 8px;
+                    box-sizing: border-box;
+                    padding-top: 0;
+                    border: 4px solid $colorFont;
+                    border-top: 0;
+                    table {
+                      font-size: 16px;
+                      color: $colorFont;
+                      margin-top: 0;
+                      background: #8b89ea;
+                      td {
+                        background: #e8e7fb;
+                        line-height: 26px;
+                        padding: 0;
+                        cellspacing:3px;
+                        border-right: 1px solid #8b89ea;
+                        border-bottom: 1px solid #8b89ea;
+                        &:last-child {
+                          text-align: left;
+                          text-indent: 5px;
+                        }
+
+                      }
+                    }
+                  }
+                }
+              }
+
+
+            //}
+          }
+        }
+      }
+      .chart {
+        width: 994px;
+        height: 315px;
+        background: url("../images/2017/give-iphonex/chart.png") no-repeat center top;
+        background-size: 100%;
+      }
+      .exemple-wrap {
+        @include common-styles ();
+        margin-bottom: 50px;
+      }
+
+    }
+  }
+  .kindly-reminder-wrap {
+    @include common-styles ();
+
+    margin: 60px auto 110px;
+
+  }
+}
+
+//提示框
+.tip-list-frame {
+  display: none;
+}
+.shade-body-mask {
+  z-index: 99;
+}
+.tip-list {
+  width: 470px !important;
+  height: 310px !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin-left: -235px !important;
+  margin-top: -155px !important;
+  border-radius:0px;
+  background:url('../images/2017/give-iphonex/tip-bg.png') no-repeat center!important;
+  background-size:100%!important;
+  z-index: 999;
+  @media (max-width:700px) {
+    width: 300px !important;
+    height: 310px !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -150px !important;
+    margin-top: -155px !important;
+  }
+  .text-tip {
+    height: auto!important;
+
+    p {
+      color: #fff!important;
+      &.success-text {
+        height: 220px!important;
+        padding-top: 0!important;
+        margin: -140px 0 20px!important;
+        background: url('../images/single-rank/success-title.png') no-repeat center!important;
+        background-size: 100%!important;
+        @media (max-width:700px) {
+          height:150px!important;
+          margin:-40px 0 0!important;
+        }
+      }
+      &.reward-text {
+        font-size:34px!important;
+        color:#ffe973!important;
+        @media (max-width:700px) {
+          font-size: 16px!important;
+          line-height: 30px!important;
+        }
+      }
+      &.login-text {
+        font-size: 20px!important;
+        padding-top: 70px!important;
+        color:#ffe973;
+        @media (max-width:700px) {
+          padding-top: 90px!important;
+          font-size: 14px!important;
+        }
+      }
+      &.des-text {
+        color: #fff!important;
+        font-size: 14px!important;
+        @media (max-width:700px) {
+          font-size: 12px!important;
+          line-height: 24px!important;
+        }
+      }
+    }
+  }
+  .close-btn {
+    width: 20px!important;
+    height: 20px!important;
+    top: 20px!important;
+    right: 20px!important;
+    margin-left: -14px!important;
+    background: url('../images/2017/give-iphonex/close-tip.png') no-repeat center;
+    background-size: 100%!important;
+    @media (max-width:700px) {
+      top: 70px!important;
+      right: 10px!important;
+    }
+  }
+  .btn-list {
+    a {
+      background: #ffea77!important;
+      color: #e34758!important;
+      padding: 10px 30px!important;
+      font-size: 18px!important;
+      border-radius: 5px!important;
+      margin: 10px 20px!important;
+      min-width: 120px!important;
+      box-sizing: border-box!important;
+      &.canble-btn{
+        color:#c0b67c!important;
+        border:1px solid #c0b67c!important;
+        background:none!important;
+      }
+      @media (max-width:700px) {
+        padding: 5px 25px!important;
+        font-size: 16px!important;
+        min-width:100px!important;
+        margin: 15px 20px 10px!important;
+      }
+    }
+  }
+}
+
+@media (max-width:1024px) {
+  .page-width1200 {
+    width: 92%;
+
+  }
+  .page-width {
+    width: 90%;
+    @media (max-width:768px){
+      width: 97%;
+    }
+  }
+  .phone-banner {
+    height: 240px;
+    background-position: center top;
+    background-size:cover;
+    @media (max-width:768px){
+      height: 350px;
+      background: url('../images/2017/give-iphonex/iphonex_app.png') no-repeat center top;
+      background-size: 100%;
+      @media (max-width:414px){
+        height: 185px;
+        @media (max-width:375px){
+          height: 170px;
+          @media (max-width:360px){
+            height: 163px;
+            @media (max-width:320px){
+              height: 146px;
+
+            }
+          }
+
+
+        }
+
+      }
+    }
+  }
+  .activity-wrap {
+    background: url("../images/2017/give-iphonex/con_wrap_bg_wap.png") no-repeat center top;
+    background-size: 100%;
+  }
+  .redBtn {
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+    @media (max-width:414px){
+      width: 150px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 22px;
+      margin: 5px auto;
+    }
+  }
+
+  .activity-page-frame {
+      .lottery-wrap {
+        margin-bottom: 50px;
+        @media (max-width:414px){
+          padding-bottom: 30px;
+          padding-top: 15px;
+
+        }
+        .iphone-fonts {
+          width: 82%;
+          @media (max-width:768px){
+            width: 90%;
+            @media (max-width:414px){
+              height: 45px;
+              margin: 0 auto;
+
+            }
+          }
+        }
+         .lottery-content {
+           margin-top: 20px;
+           @media (max-width:768px){
+             width: 90%;
+           }
+           .fl {
+             width: 50%;
+
+             @media (max-width:768px){
+               float: none;
+               width: 100%;
+               .chance {
+                 font-size: 20px;
+                 line-height: 40px;
+                 height: 40px;
+                 @media (max-width:768px){
+                   font-size: 18px;
+                   @media (max-width:414px){
+                     font-size: 16px;
+                     line-height: 30px;
+                     @media (max-width:375px){
+                       font-size: 12px;
+                       line-height: 20px;
+                     }
+                   }
+                 }
+
+                 strong {
+                   font-size: 20px;
+                   @media (max-width:414px){
+                     font-size: 18px;
+                     line-height: 30px;
+                     @media (max-width:320px){
+                       font-size: 14px;
+                     }
+                   }
+                 }
+               }
+             }
+             .lottery-circle {
+               width: 100%;
+               height: 430px;
+               @media (max-width:768px){
+                 height: 645px;
+                 @media (max-width:414px){
+                   height: 348px;
+                   @media (max-width:375px){
+                     height: 315px;
+                     @media (max-width:320px){
+                       height: 268px;
+
+                     }
+
+                   }
+
+                 }
+               }
+             }
+
+           }
+           .fr {
+             @media (max-width:768px){
+               float: none;
+               width: 100%;
+             }
+
+             >div {
+               @media (max-width:768px){
+                 width: 100%;
+                 &.rules {
+                   display: none;
+                 }
+                 &.recodes {
+                   margin-top: 20px;
+                 }
+                 @media (max-width:414px){
+                   width: 96%;
+                   &.recodes {
+                     margin-top: 0px;
+                   }
+                 }
+               }
+               >div {
+                 font-size: 16px;
+                 line-height: 24px;
+                 @media (max-width:768px){
+                   width: 100%;
+                   font-size: 24px;
+                   line-height: 45px;
+                   @media (max-width:414px){
+                     font-size: 16px;
+                     line-height: 30px;
+                     left: 10px;
+                     top:8px;
+                     @media (max-width:375px){
+                       font-size: 14px;
+                     }
+                   }
+                 }
+                 h4 {
+                   font-size: 16px;
+                   line-height: 34px;
+                   @media (max-width:768px){
+                     font-size: 26px;
+                     line-height: 45px;
+                     @media (max-width:414px){
+                       font-size: 16px;
+                       line-height: 30px;
+                       @media (max-width:375px){
+                         font-size: 14px;
+                       }
+                     }
+                   }
+                 }
+                .record-list {
+                   height: 125px;
+                  ul {
+                    li {
+                      font-size: 20px;
+                      line-height: 34px;
+                      @media (max-width:414px){
+                        font-size: 16px;
+                        line-height: 30px;
+                        @media (max-width:375px){
+                          font-size: 14px;
+                          line-height: 30px;
+                          @media (max-width:320px){
+                            font-size: 12px;
+                            line-height: 30px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                 }
+               }
+
+             }
+
+           }
+         }
+      }
+    .invest-wrap {
+      .page-width {
+        .invest-fonts {
+          width: 94%;
+          margin: 20px auto;
+          @media (max-width:768px){
+            height: 168px;
+            background: url("../images/2017/give-iphonex/invest_title2_wap.png") no-repeat center top;
+            background-size: 100%;
+            @media (max-width:414px){
+              height: 85px;
+              @media (max-width:320px){
+                height: 72px;
+                margin-bottom: 5px;
+              }
+            }
+          }
+
+        }
+        .total-annual-wrap {
+          margin-bottom: 40px;
+          @media (max-width:414px){
+            margin-bottom: 20px;
+            @media (max-width:320px){
+              width: 98%;
+            }
+          }
+
+          .total-annual {
+            height: auto;
+            padding-bottom: 30px;
+            @media (max-width:768px){
+              padding-bottom: 44px;
+              @media (max-width:414px){
+                padding-bottom: 30px;
+                @media (max-width:320px){
+                 left: 6px;
+                  top:4px;
+                  padding-bottom: 26px;
+                }
+              }
+              .instruction {
+                p {
+
+                  @media (max-width:414px){
+                    line-height: 30px;
+                    @media (max-width:375px){
+                      font-size: 14px;
+                      @media (max-width:320px){
+                        font-size: 12px;
+                        line-height: 20px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .formula-wrap {
+              .computational {
+                display: none;
+                float: none;
+              }
+                width: 100%;
+                @media (max-width:320px){
+                  width: 103%;
+                }
+                background: #fff;
+                float: none;
+                display: block;
+                margin: 0 auto;
+                border:none;
+                h4 {
+                  color: #8b89ea;
+                  @media (max-width:376px){
+                    font-size: 18px;
+                    @media (max-width:320px){
+                      font-size: 12px;
+                    }
+                  }
+                }
+                .formula-fonts {
+                  display: none;
+                  .formula-box {
+                    display: block;
+
+                    .bottom-box {
+                      table {
+                        @media (max-width:360px){
+                          margin: 0 auto;
+                          width: 100%;
+                          @media (max-width:320px){
+                            margin: 0 auto;
+                            width: 100%;
+                          }
+                        }
+
+                        td {
+
+                          background: #8b89ea;
+                          color: #fff;
+                          border-right:1px solid #fff;
+                          border-bottom:1px solid #fff;
+                          padding-left: 2%;
+                          @media (max-width:768px){
+                            font-size: 24px;
+                            line-height: 45px;
+                            @media (max-width:414px){
+                              font-size: 12px;
+                              line-height: 30px;
+                              @media (max-width:320px){
+                                &:last-child {
+                                  padding-left: 0;
+                                }
+
+                              }
+                            }
+                          }
+
+                        }
+                      }
+                    }
+                  }
+                }
+              .formula-box {
+                display: block;
+
+                .bottom-box {
+                  table {
+                    @media (max-width:360px){
+                      margin: 0 auto;
+                      width: 100%;
+                      @media (max-width:320px){
+                        margin: 0 auto;
+                        width: 100%;
+                      }
+                    }
+
+                    td {
+
+                      background: #8b89ea;
+                      color: #fff;
+                      border-right:1px solid #fff;
+                      border-bottom:1px solid #fff;
+                      padding-left: 2%;
+                      @media (max-width:768px){
+                        font-size: 24px;
+                        line-height: 45px;
+                        @media (max-width:414px){
+                          font-size: 12px;
+                          line-height: 30px;
+                          @media (max-width:320px){
+                            &:last-child {
+                              padding-left: 0;
+                            }
+
+                          }
+                        }
+                      }
+
+                    }
+                  }
+                }
+              }
+
+
+
+            }
+
+          }
+        }
+        .exemple-wrap {
+          width: 98%;
+          @media (max-width:768px){
+            width: 90%;
+            @media (max-width:414px){
+              margin-bottom: 30px;
+              @media (max-width:320px){
+                margin-bottom: 25px;
+              }
+            }
+
+          }
+
+          .childStyle {
+            width:100%;
+
+            h4 {
+              font-size: 16px;
+              line-height: 24px;
+              @media (max-width:768px){
+                font-size: 26px;
+                line-height: 45px;
+                @media (max-width:414px){
+                  font-size: 18px;
+                  line-height: 35px;
+                  @media (max-width:375px){
+                    font-size: 16px;
+                    @media (max-width:320px){
+                      font-size: 14px;
+                      line-height: 20px;
+                    }
+                  }
+                }
+              }
+            }
+            p {
+              font-size: 16px;
+              line-height: 30px;
+              @media (max-width:768px){
+                font-size: 24px;
+                line-height: 45px;
+                @media (max-width:414px){
+                  font-size: 16px;
+                  line-height: 35px;
+                  @media (max-width:375px){
+                    font-size: 14px;
+                    line-height: 25px;
+                    @media (max-width:320px){
+                      font-size: 12px;
+
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .chart {
+          width: 100%;
+          height: 280px;
+          @media (max-width:768px){
+            height: 369px;
+            background: url("../images/2017/give-iphonex/chart_wap.png") no-repeat center top;
+            background-size: 100%;
+            @media (max-width:414px){
+              height: 224px;
+              @media (max-width:375px){
+                height: 204px;
+                @media (max-width:320px){
+                  height: 174px;
+
+                }
+
+              }
+
+            }
+          }
+        }
+
+      }
+
+    }
+    .kindly-reminder-wrap {
+      width: 94%;
+      @media (max-width:414px){
+        margin: 30px auto 30px;
+      }
+      .childStyle {
+        width:100%;
+
+        h4 {
+          font-size: 16px;
+          line-height: 24px;
+          @media (max-width:768px){
+            font-size: 26px;
+            line-height: 45px;
+            @media (max-width:414px){
+              font-size: 18px;
+              line-height: 35px;
+              @media (max-width:375px){
+                font-size: 16px;
+                @media (max-width:320px){
+                  font-size: 14px;
+                  line-height: 20px;
+                }
+              }
+            }
+          }
+        }
+        p {
+          font-size: 16px;
+          line-height: 30px;
+          @media (max-width:768px){
+            font-size: 24px;
+            line-height: 45px;
+            @media (max-width:414px){
+              font-size: 16px;
+              line-height: 35px;
+              @media (max-width:375px){
+                font-size: 14px;
+                line-height: 25px;
+                @media (max-width:320px){
+                  font-size: 12px;
+                  line-height: 20px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
