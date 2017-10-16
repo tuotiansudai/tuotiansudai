@@ -14,6 +14,7 @@ public enum ExperienceBillBusinessType {
     CELEBRATION_SINGLE_ECONOMICAL("周年庆单笔聚划算", "恭喜您在周年庆单笔聚划算活动中获得了{0}元体验金奖励，获奖时间：{1}"),
     HOUSE_DECORATE("家装节奖励", "恭喜您在家庭号大福利中获得了{0}元体验金奖励，获奖时间：{1}"),
     SCHOOL_SEASON("开学季活动奖励", "恭喜您在求签加分场中获得了{0}元体验金奖励，获奖时间：{1}"),
+    IPHONEX("iphoneX活动奖励", "恭喜您在iphoneX活动中抽中了{0}元体验金奖励，获奖时间：{1}"),
     DOUBLE_ELEVEN("双11剁手活动奖励", "恭喜您抽中了{0}元体验金奖励，获奖时间：{1}");
 
     private final String description;

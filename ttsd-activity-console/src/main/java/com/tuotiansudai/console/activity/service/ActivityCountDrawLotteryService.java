@@ -104,6 +104,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
     private Date acticitySchoolSeasonEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.startTime}\")}")
+    private Date activityIphoneXStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.endTime}\")}")
+    private Date activityIphoneXEndTime;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
     private Date activityDoubleElevenStartTime;
 
@@ -168,6 +174,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case SCHOOL_SEASON_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case IPHONEX_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case DOUBLE_ELEVEN_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.DOUBLE_ELEVEN_INVEST));
         }
@@ -321,6 +329,8 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime);
             case SCHOOL_SEASON_ACTIVITY:
                 return Lists.newArrayList(acticitySchoolSeasonStartTime, acticityExerciseWorkEndTime);
+            case IPHONEX_ACTIVITY:
+                return Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime);
             case DOUBLE_ELEVEN_ACTIVITY:
                 return Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime);
         }
