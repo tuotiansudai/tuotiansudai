@@ -18,11 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/loan")
@@ -44,7 +41,7 @@ public class LoanDetailController {
     private double defaultFee;
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView getLoanDetail(@PathVariable long loanId, HttpServletRequest request) {
+    public ModelAndView getLoanDetail(@PathVariable long loanId) {
         LoanDetailDto loanDetail = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if (loanDetail == null) {
             return new ModelAndView("/error/404");
@@ -62,9 +59,6 @@ public class LoanDetailController {
             membershipLevel = membershipModel.getLevel();
         }
         modelAndView.addObject("membershipLevel", membershipLevel);
-
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-        modelAndView.addObject("zeroShoppingPrize", map == null ? null : map.containsKey("zeroShoppingPrize") ? map.get("zeroShoppingPrize") : null);
         return modelAndView;
     }
 

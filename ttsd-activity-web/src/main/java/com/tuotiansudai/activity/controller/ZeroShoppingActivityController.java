@@ -28,18 +28,18 @@ public class ZeroShoppingActivityController {
     }
 
     @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
-    public ModelAndView activityLoanExists(ZeroShoppingPrize zeroShoppingPrize, RedirectAttributes redirectAttributes){
+    public ModelAndView activityLoanExists(){
         List<LoanModel> loanModels = zeroShoppingActivityService.queryActivityLoan();
 
         ModelAndView modelAndView = new ModelAndView();
-        if(CollectionUtils.isEmpty(loanModels)){
-            modelAndView.setViewName("/activities/2017/zero-shopping-detail");
-            modelAndView.addObject("message", false);
-            return modelAndView;
-        }
 
-        modelAndView.setViewName("redirect:/loan/" + loanModels.get(0).getId());
-        redirectAttributes.addFlashAttribute("zeroShoppingPrize", zeroShoppingPrize);
+        Boolean isExists = false;
+        if (!CollectionUtils.isEmpty(loanModels)){
+            isExists = true;
+            modelAndView.addObject("activityLoan", loanModels.get(0).getId());
+        }
+        modelAndView.addObject("isExists", isExists);
+        modelAndView.setViewName("/activities/2017/zero-shopping-detail");
         return modelAndView;
     }
 
