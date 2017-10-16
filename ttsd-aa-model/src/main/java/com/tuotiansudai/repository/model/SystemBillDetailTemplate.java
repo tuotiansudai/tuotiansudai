@@ -24,7 +24,9 @@ public enum SystemBillDetailTemplate {
 
     EXTRA_RATE_DETAIL_TEMPLATE("用户({0})投资(investId={1})加息奖励"),
 
-    INVEST_RETURN_CASH_DETAIL_TEMPLATE("用户({0})投资逢万返百标,获取现金奖励{1}分");
+    INVEST_RETURN_CASH_DETAIL_TEMPLATE("用户({0})投资逢万返百标,获取现金奖励{1}分"),
+
+    IPHONEX_ACTIVITY_CASH_DETAIL_TEMPLATE("用户({0})在iPhoneX活动中,获取现金奖励{1}分");
 
     private final String template;
 
