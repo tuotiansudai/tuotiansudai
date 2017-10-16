@@ -214,6 +214,14 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
+        if(ActivityCategory.DOUBLE_ELEVEN_ACTIVITY.name() == "DOUBLE_ELEVEN_ACTIVITY"){
+            int CurrentUsedDrawTimes = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile,null,activityCategory, new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).plusDays(1).minusSeconds(1).toDate());
+            if (CurrentUsedDrawTimes >= 10) {
+                return new DrawLotteryResultDto(1);//您今天的抽奖机会已用完，明天再来抽奖吧！
+            }
+        }
+
+
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
             getCouponId(lotteryPrize).stream().forEach(couponId -> couponAssignmentService.assignUserCoupon(mobile, couponId));
