@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v3_0.impl;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -28,10 +29,7 @@ import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,6 +63,12 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
     public static long DEFAULT_INVEST_AMOUNT = 1000000;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
+    private Date activityZeroShoppingStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.endTime}\")}")
+    private Date activityZeroShoppingEndTime;
+
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
@@ -85,6 +89,8 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 loanModels = loanMapper.findByProductType(null, noContainExperienceLoans, null);
             }
 
+            deleteActivityLoan(loanModels);
+
             if (loanModels.size() <= 0) {
                 logger.error("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
             } else if (loanModels.size() > 0) {
@@ -96,6 +102,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             //登录 && 投资过标
             //目前同一时间可投标不超过100个
             List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
+
+            deleteActivityLoan(raisingLoanModels);
+
             //有可投标的,版本号小于4.3过滤掉经营性借款
             if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
                 raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
@@ -255,5 +264,20 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             extraRateListResponseDataDtos.add(extraRateListResponseDataDto);
         }
         return extraRateListResponseDataDtos;
+    }
+
+    private void deleteActivityLoan(List<LoanModel> loanModels){
+        List<LoanModel> activityLoanModels = new ArrayList<>();
+        for (LoanModel ActivityLoanModel : loanModels) {
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(ActivityLoanModel.getId());
+            if (!activityZeroShoppingStartTime.after(ActivityLoanModel.getFundraisingStartTime())
+                    && !ActivityLoanModel.getFundraisingStartTime().after(activityZeroShoppingEndTime)
+                    && loanDetailsModel != null
+                    && loanDetailsModel.getActivityDesc() != null
+                    && loanDetailsModel.getActivityDesc().equals("0元购")) {
+                activityLoanModels.add(ActivityLoanModel);
+            }
+        }
+        Iterables.removeAll(loanModels, activityLoanModels);
     }
 }

@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
@@ -67,6 +68,12 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
+    private Date activityZeroShoppingStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.endTime}\")}")
+    private Date activityZeroShoppingEndTime;
+
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
@@ -78,6 +85,19 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
 
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
+
+        List<LoanModel> activityLoanModels = new ArrayList<>();
+        for (LoanModel loanModel : loanModels) {
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+            if (!activityZeroShoppingStartTime.after(loanModel.getFundraisingStartTime())
+                    && !loanModel.getFundraisingStartTime().after(activityZeroShoppingEndTime)
+                    && loanDetailsModel != null
+                    && loanDetailsModel.getActivityDesc() != null
+                    && loanDetailsModel.getActivityDesc().equals("0元购")) {
+                activityLoanModels.add(loanModel);
+            }
+        }
+        Iterables.removeAll(loanModels, activityLoanModels);
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
         if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
