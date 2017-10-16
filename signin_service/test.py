@@ -248,21 +248,14 @@ class TestUserView(TestCase):
         self.assertTrue(response_data['result'])
         login_name = response_data['user_info']['login_name']
 
-        data = {"login_name": login_name, "sign_in_count": 5}
+        data = {"login_name": login_name, "sign_in_count": 5, "source": "IOS"}
         ret = self.app.put('/user', data=json.dumps(data), content_type='application/json')
         response_data = json.loads(ret.data)
         self.assertEqual(200, ret.status_code)
         self.assertTrue(response_data['result'])
         self.assertEqual(5, response_data['user_info']['sign_in_count'])
-
-        data = {"login_name": login_name, "channel": "new_channel", "source": "IOS"}
-        ret = self.app.put('/user', data=json.dumps(data), content_type='application/json')
-        response_data = json.loads(ret.data)
-        self.assertEqual(200, ret.status_code)
-        self.assertTrue(response_data['result'])
-        self.assertEqual('new_channel', response_data['user_info']['channel'])
+        self.assertEqual('test', response_data['user_info']['channel'])
         self.assertEqual('IOS', response_data['user_info']['source'])
-        self.assertEqual(5, response_data['user_info']['sign_in_count'])
 
     def test_should_return_400_given_wrong_source(self):
         data = {"mobile": self.mobile, "password": "123abc", "channel": "test", "source": "C"}
