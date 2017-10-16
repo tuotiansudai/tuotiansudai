@@ -199,4 +199,19 @@ public class ExportController {
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.HouseDecorateHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/iphonex", method = RequestMethod.GET)
+    public void iphoneXExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.IphoneXHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+
+        List<List<String>> csvData = activityConsoleExportService.buildIphoneXCsvList();
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.IphoneXHeader, csvData, response.getOutputStream());
+    }
 }

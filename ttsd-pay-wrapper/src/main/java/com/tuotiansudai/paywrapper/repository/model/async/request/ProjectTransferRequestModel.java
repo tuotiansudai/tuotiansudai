@@ -166,9 +166,9 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newCreditLoanTransferAgentRequest(String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_AGENT_TRANSFER);
-        model.servType = UmPayServType.TRANSFER_OUT_LOAN_OUT.getCode();
+        model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
-        model.particType = UmPayParticType.LOANER.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }
 

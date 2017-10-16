@@ -144,6 +144,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.school.season.endTime}")
     private String activitySchoolSeasonEndTime;
 
+    @Value(value = "${activity.iphoneX.startTime}")
+    private String activityIphoneXStartTime;
+
+    @Value(value = "${activity.iphoneX.endTime}")
+    private String activityIphoneXEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -175,7 +181,7 @@ public class LotteryDrawActivityService {
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory) {
 
-            if (StringUtils.isEmpty(mobile)) {
+        if (StringUtils.isEmpty(mobile)) {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
@@ -344,28 +350,33 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_ENVELOP_20, Lists.newArrayList(411L))
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(412L))
                 .put(LotteryPrize.MOTHERS_DAY_ACTIVITY_INTEREST_COUPON_1, Lists.newArrayList(413L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5,Lists.newArrayList(441L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10,Lists.newArrayList(442L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30,Lists.newArrayList(443L))
-                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5,Lists.newArrayList(444L))
-                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_5,Lists.newArrayList(445L))
-                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_10,Lists.newArrayList(446L))
-                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_20,Lists.newArrayList(447L))
-                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_30,Lists.newArrayList(448L))
-                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_5,Lists.newArrayList(449L))
-                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_8,Lists.newArrayList(450L))
-                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_5,Lists.newArrayList(451L))
-                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_8,Lists.newArrayList(452L))
-                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_10,Lists.newArrayList(453L))
-                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_15,Lists.newArrayList(454L))
-                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_5,Lists.newArrayList(455L))
-                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_8,Lists.newArrayList(456L))
-                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_2_99,Lists.newArrayList(457L))
-                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_5_99,Lists.newArrayList(458L))
-                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_6_99,Lists.newArrayList(459L))
-                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_9_99,Lists.newArrayList(460L))
-                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_19_99,Lists.newArrayList(461L))
-                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_COUPON_5,Lists.newArrayList(462L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5, Lists.newArrayList(441L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10, Lists.newArrayList(442L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30, Lists.newArrayList(443L))
+                .put(LotteryPrize.CELEBRATION_SINGLE_ACTIVITY_COUPON_5, Lists.newArrayList(444L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_5, Lists.newArrayList(445L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_10, Lists.newArrayList(446L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_20, Lists.newArrayList(447L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_ENVELOP_30, Lists.newArrayList(448L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_5, Lists.newArrayList(449L))
+                .put(LotteryPrize.EXERCISE_WORK_ACTIVITY_COUPON_8, Lists.newArrayList(450L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_5, Lists.newArrayList(451L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_8, Lists.newArrayList(452L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_10, Lists.newArrayList(453L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_ENVELOP_15, Lists.newArrayList(454L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_5, Lists.newArrayList(455L))
+                .put(LotteryPrize.HOUSE_DECORATE_ACTIVITY_COUPON_8, Lists.newArrayList(456L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_2_99, Lists.newArrayList(457L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_5_99, Lists.newArrayList(458L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_6_99, Lists.newArrayList(459L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_9_99, Lists.newArrayList(460L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_19_99, Lists.newArrayList(461L))
+                .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_COUPON_5, Lists.newArrayList(462L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_18, Lists.newArrayList(464L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_188, Lists.newArrayList(465L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_288, Lists.newArrayList(466L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_588, Lists.newArrayList(467L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_COUPON_5, Lists.newArrayList(468L))
                 .build()).get(lotteryPrize);
     }
 
@@ -450,6 +461,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case SCHOOL_SEASON_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case IPHONEX_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
 
         }
         return lotteryTime;
@@ -545,9 +558,9 @@ public class LotteryDrawActivityService {
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     return time;
                 case EACH_INVEST_10000:
-                    List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime,endTime);
-                    for (InvestModel investModel:investModels) {
-                        time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
+                    List<InvestModel> investModels = investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(), startTime, endTime);
+                    for (InvestModel investModel : investModels) {
+                        time += investModel.getAmount() < EACH_INVEST_AMOUNT_100000 ? 0 : Integer.parseInt(String.valueOf(investModel.getAmount() / EACH_INVEST_AMOUNT_100000));
                     }
                     break;
             }
@@ -592,10 +605,11 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.SPRING_FESTIVAL_ACTIVITY, springFestivalTime)
                 .put(ActivityCategory.WOMAN_DAY_ACTIVITY, Lists.newArrayList(activityWomanDayStartTime, activityWomanDayEndTime))
                 .put(ActivityCategory.MOTHERS_DAY_ACTIVITY, Lists.newArrayList(activityMothersStartTime, activityMothersEndTime))
-                .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY,Lists.newArrayList(activitySingleStartTime,activitySingleEndTime))
-                .put(ActivityCategory.EXERCISE_WORK_ACTIVITY,Lists.newArrayList(acticityExerciseWorkStartTime,acticityExerciseWorkEndTime))
-                .put(ActivityCategory.HOUSE_DECORATE_ACTIVITY,Lists.newArrayList(acticityHouseDecorateStartTime,acticityHouseDecorateEndTime))
-                .put(ActivityCategory.SCHOOL_SEASON_ACTIVITY,Lists.newArrayList(activitySchoolSeasonStartTime,activitySchoolSeasonEndTime))
+                .put(ActivityCategory.CELEBRATION_SINGLE_ACTIVITY, Lists.newArrayList(activitySingleStartTime, activitySingleEndTime))
+                .put(ActivityCategory.EXERCISE_WORK_ACTIVITY, Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime))
+                .put(ActivityCategory.HOUSE_DECORATE_ACTIVITY, Lists.newArrayList(acticityHouseDecorateStartTime, acticityHouseDecorateEndTime))
+                .put(ActivityCategory.SCHOOL_SEASON_ACTIVITY, Lists.newArrayList(activitySchoolSeasonStartTime, activitySchoolSeasonEndTime))
+                .put(ActivityCategory.IPHONEX_ACTIVITY, Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -631,12 +645,12 @@ public class LotteryDrawActivityService {
 
     private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
         long experienceAmount = 0l;
-        if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_99.equals(lotteryPrize)){
-            experienceAmount = 9900l;
+        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_88.equals(lotteryPrize)) {
+            experienceAmount = 8800l;
         }
 
-        if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_999.equals(lotteryPrize)){
-            experienceAmount = 99900l;
+        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
+            experienceAmount = 88800l;
         }
 
         if (experienceAmount == 0) {
@@ -644,30 +658,30 @@ public class LotteryDrawActivityService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.SCHOOL_SEASON));
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.IPHONEX));
     }
 
-    public int getExerciseVSWorkDrawTime(UserModel userModel,ActivityCategory activityCategory){
-        int investDrawTime=0;
-        int sumToDayIsDraw=1;
+    public int getExerciseVSWorkDrawTime(UserModel userModel, ActivityCategory activityCategory) {
+        int investDrawTime = 0;
+        int sumToDayIsDraw = 1;
         List<String> activityTime = getActivityTime(activityCategory);
         DateTime startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
         DateTime endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
 
-        List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime.toDate(),endTime.toDate());
-        for (InvestModel investModel:investModels) {
-            investDrawTime+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:Integer.parseInt(String.valueOf(investModel.getAmount()/EACH_INVEST_AMOUNT_100000));
+        List<InvestModel> investModels = investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(), startTime.toDate(), endTime.toDate());
+        for (InvestModel investModel : investModels) {
+            investDrawTime += investModel.getAmount() < EACH_INVEST_AMOUNT_100000 ? 0 : Integer.parseInt(String.valueOf(investModel.getAmount() / EACH_INVEST_AMOUNT_100000));
         }
-        if (investDrawTime==0){
-            return toDayIsDrawByMobile(userModel.getMobile(),activityCategory)==0?1:0;
+        if (investDrawTime == 0) {
+            return toDayIsDrawByMobile(userModel.getMobile(), activityCategory) == 0 ? 1 : 0;
         }
 
-        Date yesterdayDate=DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
-        startTime=startTime.withTimeAtStartOfDay();
-        while (startTime.toDate().before(yesterdayDate)){
-            sumToDayIsDraw+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
-                    startTime.toDate() , startTime.plusDays(1).minusMillis(1).toDate()) == 0 ? 0 : 1;
-            startTime=startTime.plusDays(1);
+        Date yesterdayDate = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
+        startTime = startTime.withTimeAtStartOfDay();
+        while (startTime.toDate().before(yesterdayDate)) {
+            sumToDayIsDraw += userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                    startTime.toDate(), startTime.plusDays(1).minusMillis(1).toDate()) == 0 ? 0 : 1;
+            startTime = startTime.plusDays(1);
         }
         return sumToDayIsDraw + investDrawTime - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory, null, null);
     }
