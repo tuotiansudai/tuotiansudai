@@ -19,6 +19,8 @@ public class AmountTransferMessage {
 
     private String interventionReason;
 
+    private int tryTimes = 0;
+
     public AmountTransferMessage() {
 
     }
@@ -89,4 +91,17 @@ public class AmountTransferMessage {
     public void setInterventionReason(String interventionReason) {
         this.interventionReason = interventionReason;
     }
+
+    public int getTryTimes() {
+        return tryTimes;
+    }
+
+    public void setTryTimes(int tryTimes) {
+        this.tryTimes = tryTimes;
+    }
+
+    public void addTryTimes() {
+        this.tryTimes++;
+    }
+
 }
