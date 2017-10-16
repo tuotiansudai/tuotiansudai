@@ -68,12 +68,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
-    private Date activityZeroShoppingStartTime;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.endTime}\")}")
-    private Date activityZeroShoppingEndTime;
-
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
@@ -89,9 +83,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         List<LoanModel> activityLoanModels = new ArrayList<>();
         for (LoanModel loanModel : loanModels) {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            if (!activityZeroShoppingStartTime.after(loanModel.getFundraisingStartTime())
-                    && !loanModel.getFundraisingStartTime().after(activityZeroShoppingEndTime)
-                    && loanDetailsModel != null
+            if (loanDetailsModel != null
                     && loanDetailsModel.getActivityDesc() != null
                     && loanDetailsModel.getActivityDesc().equals("0元购")) {
                 activityLoanModels.add(loanModel);

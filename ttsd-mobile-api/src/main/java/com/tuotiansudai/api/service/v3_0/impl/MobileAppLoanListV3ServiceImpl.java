@@ -63,12 +63,6 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
     public static long DEFAULT_INVEST_AMOUNT = 1000000;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
-    private Date activityZeroShoppingStartTime;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.endTime}\")}")
-    private Date activityZeroShoppingEndTime;
-
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
@@ -270,9 +264,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         List<LoanModel> activityLoanModels = new ArrayList<>();
         for (LoanModel ActivityLoanModel : loanModels) {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(ActivityLoanModel.getId());
-            if (!activityZeroShoppingStartTime.after(ActivityLoanModel.getFundraisingStartTime())
-                    && !ActivityLoanModel.getFundraisingStartTime().after(activityZeroShoppingEndTime)
-                    && loanDetailsModel != null
+            if (loanDetailsModel != null
                     && loanDetailsModel.getActivityDesc() != null
                     && loanDetailsModel.getActivityDesc().equals("0元购")) {
                 activityLoanModels.add(ActivityLoanModel);
