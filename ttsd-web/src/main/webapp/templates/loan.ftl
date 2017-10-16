@@ -214,7 +214,7 @@
                                                                 </#list>
                                                                 <#if minProductType=90><#assign couponTips='[适用于60天以上项目可用]'></#if>
                                                                 <#if minProductType=180><#assign couponTips='[适用于120天以上项目可用]'></#if>
-                                                                <i class="ticket-term" title="${couponTips}">${couponTips}</i>
+                                                                <i class="ticket-term" title="${couponTips!}">${couponTips!}</i>
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
