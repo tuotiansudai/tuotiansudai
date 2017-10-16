@@ -62,7 +62,7 @@
             <#if noPasswordInvest>
                 <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" data-url="/no-password-invest/disabled" href="javascript:void(0);">关闭</a>
+                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>
             <#elseif autoInvest>
                 <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
@@ -194,10 +194,30 @@
         <div class="error-box" ></div>
         <div class="tc person-info-btn">
             <button class="btn btn-success btn-cancel" type="button">取消</button>
-            <button class="btn btn-close btn-close-turn-off" type="submit">我要开启</button>
+            <button class="btn btn-success btn-close-turn-off" type="submit">我要开启</button>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+</div>
+<#--关闭免密支付 -->
+<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
+    <form name="turnOffNoPasswordInvestForm">
+        <div class="tc text-m">免密支付可以帮助您在投资时快速购买标的，<br/>您是否确认关闭免密支付？</div>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:50px;">
+            <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>
+            <button class="btn btn-success btn-turn-off" type="button">我要关闭</button>
+        </div>
+    </form>
+</div>
+<#--已关闭免密支付 -->
+<div id="alreadyTurnOffDOM" class="pad-m popLayer" style="display: none;">
+    <form name="alreadyTurnOffForm">
+        <div class="tc text-m">免密支付已关闭</div>
+        <div class="tc person-info-btn" style="margin-top:50px;">
+            <button class="btn  btn-cancel btn-close" type="button">我知道了</button>
+        </div>
     </form>
 </div>
 <div id="noPasswordInvestDOM" class="pad-m" style="display: none;">

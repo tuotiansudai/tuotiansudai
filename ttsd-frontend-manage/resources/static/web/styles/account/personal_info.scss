@@ -12,6 +12,15 @@
     color: #ff9c1b;
   }
 }
+.person-info-btn {
+  button {
+    &.btn-close {
+      background: #e5e5e5;
+      border-width: 0!important;
+      color:#808080;
+    }
+  }
+}
 .img-captcha {
   width: 134px;
 }
