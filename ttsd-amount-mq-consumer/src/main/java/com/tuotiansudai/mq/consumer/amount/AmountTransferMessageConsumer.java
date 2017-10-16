@@ -1,6 +1,5 @@
 package com.tuotiansudai.mq.consumer.amount;
 
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -23,9 +22,6 @@ public class AmountTransferMessageConsumer implements MessageConsumer {
     @Autowired
     private AmountTransferService amountTransferService;
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
     @Override
     public MessageQueue queue() {
         return MessageQueue.AmountTransfer;
@@ -37,21 +33,20 @@ public class AmountTransferMessageConsumer implements MessageConsumer {
 
         try {
             AmountTransferMessage atm = JsonConverter.readValue(message, AmountTransferMessage.class);
-            atm.addTryTimes();
             try {
                 amountTransferService.amountTransferProcess(atm);
             } catch (AmountTransferException e) {
                 // 如果消息消费失败了，则重试1次：
-                if (atm.getTryTimes() <= 1) {
-                    logger.info(MessageFormat.format("[MQ] amount transfer consumer fail, will retry soon. message:{0}", message), e);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ie) {
-                        logger.info(MessageFormat.format("[MQ] amount transfer consumer fail, message:{0}", message), ie);
-                    }
-                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-                } else {
-                    logger.error(MessageFormat.format("[MQ] amount transfer consumer fail after try {0} times, message:{0}", atm.getTryTimes(), message), e);
+                logger.info(MessageFormat.format("[MQ] amount transfer consumer fail, will retry soon. message:{0}", message), e);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ie) {
+                    logger.info(MessageFormat.format("[MQ] amount transfer consumer fail, message:{0}", message), ie);
+                }
+                try {
+                    amountTransferService.amountTransferProcess(atm);
+                } catch (AmountTransferException ae) {
+                    logger.error(MessageFormat.format("[MQ] amount transfer consumer fail after try 2 times, message:{0}", message), ae);
                 }
             }
         } catch (IOException e) {
