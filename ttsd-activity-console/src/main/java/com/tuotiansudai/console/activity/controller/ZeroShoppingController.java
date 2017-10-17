@@ -1,10 +1,8 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.console.activity.service.ActivityConsoleZeroShoppingService;
-import com.tuotiansudai.util.CalculateUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,14 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 
 @Controller
-@RequestMapping(value = "/activity-console/activity-manage")
+@RequestMapping(value = "/activity-console/activity-manage/zero-shopping")
 public class ZeroShoppingController {
 
     @Autowired
     private ActivityConsoleZeroShoppingService activityConsoleZeroShoppingService;
 
-    @RequestMapping(value = "zero-shopping/user-prize-list", method = RequestMethod.GET)
-    public ModelAndView selectPrizeList(@RequestParam(name = "mobile", required = false) String mobile,
+    @RequestMapping(value = "user-prize-list", method = RequestMethod.GET)
+    public ModelAndView userPrizeList(@RequestParam(name = "mobile", required = false) String mobile,
                                         @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
@@ -38,8 +36,8 @@ public class ZeroShoppingController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "zero-shopping/config-prize-list", method = RequestMethod.GET)
-    public ModelAndView selectPrizeList() {
+    @RequestMapping(value = "config-prize-list", method = RequestMethod.GET)
+    public ModelAndView configPrizeList() {
         ModelAndView modelAndView = new ModelAndView("/zero-shopping-prize-config");
         modelAndView.addObject("data", activityConsoleZeroShoppingService.getAllPrize());
         modelAndView.addObject("prizeTypes", ZeroShoppingPrize.getTaskZeroShoppingPrize());
@@ -47,7 +45,7 @@ public class ZeroShoppingController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "zero-shopping/update-prize-count", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "update-prize-count", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public ZeroShoppingPrizeConfigModel updatePrizeCount(@RequestBody ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel) {
         activityConsoleZeroShoppingService.updatePrizeCount(zeroShoppingPrizeConfigModel);
         return zeroShoppingPrizeConfigModel;
