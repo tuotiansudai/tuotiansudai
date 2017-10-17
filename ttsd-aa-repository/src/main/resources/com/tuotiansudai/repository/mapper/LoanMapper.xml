@@ -90,13 +90,13 @@
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
         SELECT
-        *
+        temp.*
         FROM
         loan temp join loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
         <if test="name !=null and name!=''">
             and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -136,9 +136,9 @@
 
     <select id="findLoanListCountWeb" parameterType="map" resultType="int">
         select count(*) from (
-        select * from loan t join loan_details on t.id = loan_details.loan_id
+        select t.* from loan t join loan_details on t.id = loan_details.loan_id
         where 1=1
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
         <if test="name !=null and name != ''">
             and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -168,12 +168,12 @@
 
     <select id="findLoanListMobileApp" parameterType="map" resultMap="loanResultMap">
         SELECT
-        *
+        temp.*
         FROM
         loan temp JOIN loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="productType !=null">
             and temp.product_type = #{productType}
@@ -665,9 +665,9 @@
     </select>
 
     <select id="findByProductType" resultMap="loanResultMap">
-        select * from loan join loan_details on loan.id = loan_details.loan_id
+        select loan.* from loan join loan_details on loan.id = loan_details.loan_id
         where
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]>
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
         <if test="productTypeList != null ">
             and loan.product_type IN
             <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
@@ -705,7 +705,7 @@
     </select>
 
     <select id="findZeroShoppingActivityByTime" resultMap="loanResultMap">
-        SELECT * FROM loan l join loan_details ld on l.id = ld.loan_id
+        SELECT l.* FROM loan l join loan_details ld on l.id = ld.loan_id
         AND ld.activity_desc = '0元购'
         and l.status = 'RAISING'
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
