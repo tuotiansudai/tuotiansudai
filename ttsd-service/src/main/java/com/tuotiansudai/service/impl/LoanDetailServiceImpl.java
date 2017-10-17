@@ -211,15 +211,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .put("抵押物估值", pledgeHouseModel.getEstimateAmount())
                         .put("房屋面积", pledgeHouseModel.getSquare())
                         .put("房产证编号", pledgeHouseModel.getPropertyCardId())
+                        .put("公证书编号", Strings.isNullOrEmpty(pledgeHouseModel.getAuthenticAct()) ? "" : pledgeHouseModel.getAuthenticAct())
+                        .put("房权证编号", Strings.isNullOrEmpty(pledgeHouseModel.getPropertyRightCertificateId()) ? "" : pledgeHouseModel.getPropertyRightCertificateId())
+                        .put("不动产登记证明", pledgeHouseModel.getEstateRegisterId())
+                        .put("抵押物借款金额", pledgeHouseModel.getLoanAmount())
                         .build();
-                if(Strings.isNullOrEmpty(pledgeHouseModel.getAuthenticAct())){
-                    stringMap.put("公证书编号",pledgeHouseModel.getAuthenticAct());
-                }
-                if(Strings.isNullOrEmpty(pledgeHouseModel.getPropertyRightCertificateId())){
-                    stringMap.put("房权证编号",pledgeHouseModel.getPropertyRightCertificateId());
-                }
-                stringMap.put("不动产登记证明", pledgeHouseModel.getEstateRegisterId());
-                stringMap.put("抵押物借款金额", pledgeHouseModel.getLoanAmount());
                 pledgeHouseDetail.add(stringMap);
             }
             loanDto.setPledgeHouseDetailList(pledgeHouseDetail);
