@@ -375,7 +375,7 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "原借款期限不能小于1天"));
         }
 
-        if (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date())) {
+        if (!loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
 
