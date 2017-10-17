@@ -179,7 +179,7 @@
         </dl>
     </form>
     <form id="turnOnNoPasswordInvestForm" name="turnOnNoPasswordInvestForm" >
-        <dl style="position: relative">
+        <dl style="position: relative;margin-bottom: 0px;">
             <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>
                 <span>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
@@ -201,10 +201,10 @@
     </form>
 </div>
 <#--关闭免密支付 -->
-<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
+<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
         <div class="tc text-m">免密支付可以帮助您在投资时快速购买标的，<br/>您是否确认关闭免密支付？</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <div class="tc person-info-btn" style="margin-top:50px;">
+        <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>
             <button class="btn btn-success btn-turn-off" type="button">我要关闭</button>
         </div>
