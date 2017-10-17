@@ -240,6 +240,7 @@ public class LoanMapperTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         fakeLoanModel.setCreatedTime(new Date());
+        System.out.print(fakeLoanModel.getId());
         return fakeLoanModel;
     }
 
