@@ -667,7 +667,7 @@
     <select id="findByProductType" resultMap="loanResultMap">
         select loan.* from loan join loan_details on loan.id = loan_details.loan_id
         where
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
+        <![CDATA[ loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
         <if test="productTypeList != null ">
             and loan.product_type IN
             <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
