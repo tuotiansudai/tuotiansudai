@@ -23,8 +23,9 @@ public class LoanCreatePledgeHouseRequestDto {
     @NotEmpty
     private String estateRegisterId;
 
-    @NotEmpty
     private String authenticAct;
+
+    private String propertyRightCertificateId;
 
     public LoanCreatePledgeHouseRequestDto() {
     }
@@ -35,6 +36,7 @@ public class LoanCreatePledgeHouseRequestDto {
         this.pledgeLoanAmount = pledgeHouseModel.getLoanAmount();
         this.square = pledgeHouseModel.getSquare();
         this.propertyCardId = pledgeHouseModel.getPropertyCardId();
+        this.propertyRightCertificateId = pledgeHouseModel.getPropertyRightCertificateId();
         this.estateRegisterId = pledgeHouseModel.getEstateRegisterId();
         this.authenticAct = pledgeHouseModel.getAuthenticAct();
     }
@@ -77,6 +79,14 @@ public class LoanCreatePledgeHouseRequestDto {
 
     public void setPropertyCardId(String propertyCardId) {
         this.propertyCardId = propertyCardId;
+    }
+
+    public String getPropertyRightCertificateId() {
+        return propertyRightCertificateId;
+    }
+
+    public void setPropertyRightCertificateId(String propertyRightCertificateId) {
+        this.propertyRightCertificateId = propertyRightCertificateId;
     }
 
     public String getEstateRegisterId() {
