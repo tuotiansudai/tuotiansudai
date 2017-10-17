@@ -92,11 +92,11 @@
         SELECT
         temp.*
         FROM
-        loan temp join loan_details on temp.id = loan_details.loan_id
+        loan temp left join loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null or temp.product_type = 'EXPERIENCE'
         <if test="name !=null and name!=''">
             and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -136,9 +136,9 @@
 
     <select id="findLoanListCountWeb" parameterType="map" resultType="int">
         select count(*) from (
-        select t.* from loan t join loan_details on t.id = loan_details.loan_id
+        select t.* from loan t left join loan_details on t.id = loan_details.loan_id
         where 1=1
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null or t.product_type = 'EXPERIENCE'
         <if test="name !=null and name != ''">
             and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -170,10 +170,10 @@
         SELECT
         temp.*
         FROM
-        loan temp JOIN loan_details on temp.id = loan_details.loan_id
+        loan temp left JOIN loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
-        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
+        <![CDATA[ and loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null or temp.product_type = 'EXPERIENCE'
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="productType !=null">
             and temp.product_type = #{productType}
@@ -665,9 +665,9 @@
     </select>
 
     <select id="findByProductType" resultMap="loanResultMap">
-        select loan.* from loan join loan_details on loan.id = loan_details.loan_id
+        select loan.* from loan left join loan_details on loan.id = loan_details.loan_id
         where
-        <![CDATA[ loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null
+        <![CDATA[ loan_details.activity_desc <> '0元购' ]]> or loan_details.activity_desc is null or loan.product_type = 'EXPERIENCE'
         <if test="productTypeList != null ">
             and loan.product_type IN
             <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
