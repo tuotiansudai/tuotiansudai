@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
@@ -7,6 +8,7 @@ import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
@@ -42,6 +44,8 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Before
     public void before() {
@@ -62,6 +66,8 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
         loanMapper.create(loanModel);
         InvestModel investModel = getInvestModel(loginName, loanModel.getId());
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel);
         investMapper.create(investModel);
         LoanModel loanModel1 = getFakeLoan(loginName, ActivityType.NEWBIE, ProductType.EXPERIENCE, LoanStatus.RAISING);
         loanMapper.create(loanModel1);
@@ -75,10 +81,14 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         userMapper.create(getUserModelTest(loginName));
         LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
         loanMapper.create(loanModel);
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel);
         InvestModel investModel = getInvestModel(loginName, loanModel.getId());
         investMapper.create(investModel);
         LoanModel loanModel1 = getFakeLoan(loginName, ActivityType.NEWBIE, ProductType.EXPERIENCE, LoanStatus.RAISING);
         loanMapper.create(loanModel1);
+        LoanDetailsModel loanDetailsModel1 = new LoanDetailsModel(loanModel1.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel1);
         InvestModel investModel1 = getInvestModel(loginName, loanModel1.getId());
         investMapper.create(investModel1);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
