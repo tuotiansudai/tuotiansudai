@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import sun.dc.pr.PRError;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,9 @@ public class LoanMapperTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Test
     public void shouldCreateLoan() {
@@ -325,9 +329,17 @@ public class LoanMapperTest {
         fakeCanceledLoan4.setVerifyTime(new Date());
         fakeCanceledLoan4.setProductType(ProductType.EXPERIENCE);
         loanMapper.create(fakeCanceledLoan1);
+        LoanDetailsModel loanDetailsModel1 = new LoanDetailsModel(fakeCanceledLoan1.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel1);
         loanMapper.create(fakeCanceledLoan2);
+        LoanDetailsModel loanDetailsModel2 = new LoanDetailsModel(fakeCanceledLoan2.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel2);
         loanMapper.create(fakeCanceledLoan3);
+        LoanDetailsModel loanDetailsModel3 = new LoanDetailsModel(fakeCanceledLoan3.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel3);
         loanMapper.create(fakeCanceledLoan4);
+        LoanDetailsModel loanDetailsModel4 = new LoanDetailsModel(fakeCanceledLoan4.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel4);
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,null,999999991,0,0, 10);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);
