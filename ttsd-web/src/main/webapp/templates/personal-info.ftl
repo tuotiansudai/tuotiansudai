@@ -202,23 +202,22 @@
 </div>
 <#--关闭免密支付 -->
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
-    <form name="turnOffNoPasswordInvestForm">
         <div class="tc text-m">免密支付可以帮助您在投资时快速购买标的，<br/>您是否确认关闭免密支付？</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:50px;">
             <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>
             <button class="btn btn-success btn-turn-off" type="button">我要关闭</button>
         </div>
-    </form>
 </div>
 <#--已关闭免密支付 -->
 <div id="alreadyTurnOffDOM" class="pad-m popLayer" style="display: none;">
-    <form name="alreadyTurnOffForm">
+
+        <div class="font-icon"></div>
         <div class="tc text-m">免密支付已关闭</div>
-        <div class="tc person-info-btn" style="margin-top:50px;">
+        <div class="tc person-info-btn" style="margin-top:10px;">
             <button class="btn  btn-success" type="button">我知道了</button>
         </div>
-    </form>
+
 </div>
 <div id="noPasswordInvestDOM" class="pad-m" style="display: none;">
     <p>请在新打开的联动优势页面充值完成后选择：</p>

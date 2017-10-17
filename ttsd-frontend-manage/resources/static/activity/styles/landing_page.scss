@@ -394,8 +394,14 @@ form label.error {
           span.error{
             display: inline-block;
             width: 100%;
-            @media screen and (max-width: 700px) {
-              line-height: 32px;
+
+          }
+          &.voice-row {
+            span.error{
+              @media screen and (max-width: 700px) {
+                line-height: 49px;
+                text-indent: 20px;
+              }
             }
           }
 
@@ -430,10 +436,13 @@ form label.error {
               color: #808080;
               @media screen and (max-width: 700px) {
                 position: absolute;
-                top:36px;
+                top:45px;
               }
               a {
-                color: #ff9c1b;
+                color: #ff473c;
+                @media screen and (max-width: 700px) {
+                  color: #ffe500;
+                }
               }
             }
             .fetch-captcha {
@@ -485,7 +494,7 @@ form label.error {
           &.agree-register-protocol {
             position: relative;
             margin-left: 0;
-            margin-top:20px;
+            margin-top:35px;
             .check-label {
               position: absolute;
               top: 1px;

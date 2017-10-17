@@ -184,7 +184,7 @@ require.ensure([],function() {
         imageCaptchaForm = globalFun.$('#imageCaptchaForm');
     let errorBox = $('.error-box',$(turnOnNoPasswordInvestForm));
     let $alreadyTurnOffDOM = $('#alreadyTurnOffDOM'),
-        $TurnOffPassBtn = $('.btn-cancel',$alreadyTurnOffDOM);
+        $TurnOffPassBtn = $('.btn-success',$alreadyTurnOffDOM);
 
     $TurnOffPassBtn.on('click',function(){
         layer.closeAll();

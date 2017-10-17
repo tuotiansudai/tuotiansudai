@@ -12,6 +12,18 @@
     color: #ff9c1b;
   }
 }
+#alreadyTurnOffDOM {
+  .font-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    background:url('../../images/myaccount/rightOk.png') no-repeat center;
+    background-size:100%;
+  }
+  .text-m {
+    margin-top: 10px;
+  }
+}
 .person-info-btn {
   button {
     margin-top: 0px;

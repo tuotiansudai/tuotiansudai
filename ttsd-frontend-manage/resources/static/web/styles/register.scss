@@ -89,15 +89,18 @@
           @media screen and (max-width: 700px) {
             position: absolute;
             left: 115px;
-            top:47px;
+            top:48px;
             @media screen and (max-width: 414px) {
-              left: 200px;
+              left: 190px;
             }
             @media screen and (max-width: 375px) {
               left: 165px;
             }
+            @media screen and (max-width: 360px) {
+              left: 136px;
+            }
             @media screen and (max-width: 320px) {
-              left: 115px;
+              left: 112px;
             }
           }
           a {
