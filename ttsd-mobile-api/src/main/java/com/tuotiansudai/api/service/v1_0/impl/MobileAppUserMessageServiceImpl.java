@@ -11,6 +11,7 @@ import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
+import com.tuotiansudai.message.repository.model.MessageCategory;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
@@ -174,7 +175,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             }
             path = loanId == 0 ? path : MessageFormat.format(path, String.valueOf(loanId));
         }
-        return path;
+
+        return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
     }
 
     @Override
