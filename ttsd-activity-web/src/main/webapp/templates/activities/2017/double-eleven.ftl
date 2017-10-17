@@ -104,14 +104,14 @@
         </div>
 
         <!--虚拟奖品的提示-->
-        <div class="tip-list" data-return="virtual">
+        <div class="tip-list" id="test" data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p class="success-text"></p>
+                <p class="success-text">eeeeeee<br/></p>
                 <p class="reward-text"><em class="prizeValue"></em></p>
                 <p class="des-text">请实名认证后再来抽奖吧！</p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
+            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close small-btn">确定</a></div>
         </div>
 
         <!--没有抽奖机会-->

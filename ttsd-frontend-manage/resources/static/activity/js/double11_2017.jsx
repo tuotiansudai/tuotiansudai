@@ -40,7 +40,13 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 
 //drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
 //drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
-
+layer.open({
+    type: 1,
+    title: false,
+    closeBtn: 0,
+    area: ['auto', 'auto'],
+    content: $('#test')
+});
 //开始抽奖
 
 $pointerBtn.on('click', function(event) {
