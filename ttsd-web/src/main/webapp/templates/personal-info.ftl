@@ -193,7 +193,7 @@
         </dl>
         <div class="error-box" ></div>
         <div class="tc person-info-btn">
-            <button class="btn btn-success btn-cancel" type="button">取消</button>
+            <button class="btn btn-cancel" type="button">取消</button>
             <button class="btn btn-success btn-close-turn-off" type="submit">我要开启</button>
         </div>
 
@@ -216,7 +216,7 @@
     <form name="alreadyTurnOffForm">
         <div class="tc text-m">免密支付已关闭</div>
         <div class="tc person-info-btn" style="margin-top:50px;">
-            <button class="btn  btn-cancel btn-close" type="button">我知道了</button>
+            <button class="btn  btn-success" type="button">我知道了</button>
         </div>
     </form>
 </div>
