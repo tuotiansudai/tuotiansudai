@@ -9,12 +9,14 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,10 @@ public class ActivityCountDrawLotteryService {
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -339,30 +345,15 @@ public class ActivityCountDrawLotteryService {
 
     private int getDoubleElevenTotalAvailableDrawTimes(UserModel userModel) {
         int investDrawTimes = 0;
-
         List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
 
-        //根据投资的标的ID分组
-        Map<String, List<InvestModel>> groupByLoanIdInvestCount = investModels
-                .stream()
-                .collect(Collectors.groupingBy(p -> String.format("%s", p.getLoanId())));
-
-        for (Map.Entry<String, List<InvestModel>> entryInvest : groupByLoanIdInvestCount.entrySet()) {
-            int j = 1;
-            //根据投资的标的ID的日期分组
-            Map<String, List<InvestModel>> groupDateInvestCount = entryInvest.getValue()
-                    .stream()
-                    .collect(Collectors.groupingBy(p -> String.format("%s", new DateTime(p.getTradingTime()).withTimeAtStartOfDay().toDate().toString())));
-
-            for (Map.Entry<String, List<InvestModel>> entry : groupDateInvestCount.entrySet()) {
-                int currentDateCount = 0;
-                for (InvestModel investModel : entry.getValue()) {
-                    if (userModel.getLoginName().equals(investModel.getLoginName()) && j % 2 == 0 && currentDateCount < 10) {
-                        currentDateCount++;
-                        investDrawTimes++;
-                    }
-                    j++;
-                }
+        for (InvestModel investModel : investModels) {
+            String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
+            String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toDate());
+            boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
+            if (even && Long.parseLong(!redisWrapperClient.exists(incrKey)?"0":redisWrapperClient.get(incrKey)) < 10) {
+                redisWrapperClient.incr(incrKey);
+                investDrawTimes++;
             }
         }
 

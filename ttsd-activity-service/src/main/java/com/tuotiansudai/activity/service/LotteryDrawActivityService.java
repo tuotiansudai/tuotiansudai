@@ -27,6 +27,7 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.MobileEncryptor;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -79,6 +80,10 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
 
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> pointTime = Lists.newArrayList();
@@ -214,8 +219,8 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
-        if(ActivityCategory.DOUBLE_ELEVEN_ACTIVITY.name() == "DOUBLE_ELEVEN_ACTIVITY"){
-            int CurrentUsedDrawTimes = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile,null,activityCategory, new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).plusDays(1).minusSeconds(1).toDate());
+        if (ActivityCategory.DOUBLE_ELEVEN_ACTIVITY.name() == "DOUBLE_ELEVEN_ACTIVITY") {
+            int CurrentUsedDrawTimes = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).plusDays(1).minusSeconds(1).toDate());
             if (CurrentUsedDrawTimes >= 10) {
                 return new DrawLotteryResultDto(1);//您今天的抽奖机会已用完，明天再来抽奖吧！
             }
@@ -723,28 +728,13 @@ public class LotteryDrawActivityService {
 
         List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, startTime.toDate(), endTime.toDate());
 
-        //根据投资的标的ID分组
-        Map<String, List<InvestModel>> groupByLoanIdInvestCount = investModels
-                .stream()
-                .collect(Collectors.groupingBy(p -> String.format("%s", p.getLoanId())));
-
-        for (Map.Entry<String, List<InvestModel>> entryInvest : groupByLoanIdInvestCount.entrySet()) {
-            int j = 1;
-
-            //根据投资的标的ID的日期分组
-            Map<String, List<InvestModel>> groupDateInvestCount = entryInvest.getValue()
-                    .stream()
-                    .collect(Collectors.groupingBy(p -> String.format("%s", new DateTime(p.getTradingTime()).withTimeAtStartOfDay().toDate().toString())));
-
-            for (Map.Entry<String, List<InvestModel>> entry : groupDateInvestCount.entrySet()) {
-                int currentDateCount = 0;
-                for (InvestModel investModel : entry.getValue()) {
-                    if (userModel.getLoginName().equals(investModel.getLoginName()) && j % 2 == 0 && currentDateCount < 10) {
-                        currentDateCount++;
-                        investDrawTimes++;
-                    }
-                    j++;
-                }
+        for (InvestModel investModel : investModels) {
+            String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
+            String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+            boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
+            if (even && Long.parseLong(!redisWrapperClient.exists(incrKey)?"0":redisWrapperClient.get(incrKey)) < 10) {
+                redisWrapperClient.incr(incrKey);
+                investDrawTimes++;
             }
         }
 
