@@ -182,8 +182,8 @@
         <dl style="position: relative">
             <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>
-                <span>短信验证码：</span>
-                <input type="captcha" name="captcha" class="input-control sms-captcha captcha" placeholder="请输入短信验证码" maxlength="6">
+                <span>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
+                <input type="captcha" name="captcha" class="input-control sms-captcha captcha" placeholder="请输入验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <button type="button" class="btn-normal get-captcha" disabled="disabled" data-url="/no-password-invest/send-captcha">获取验证码</button>
                 <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
