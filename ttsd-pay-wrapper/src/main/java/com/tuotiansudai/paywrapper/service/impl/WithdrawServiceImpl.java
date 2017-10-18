@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -122,7 +123,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE,loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                 withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
             } else {
                 withdrawModel.setStatus(WithdrawStatus.APPLY_FAIL);
@@ -171,11 +172,11 @@ public class WithdrawServiceImpl implements WithdrawService {
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE,loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
             } else {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE,loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                 withdrawModel.setStatus(WithdrawStatus.FAIL);
             }
             withdrawModel.setNotifyTime(new Date());

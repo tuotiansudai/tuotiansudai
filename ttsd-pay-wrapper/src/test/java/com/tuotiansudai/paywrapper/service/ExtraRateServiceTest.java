@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -277,7 +278,8 @@ public class ExtraRateServiceTest {
 
     private void verifyAmountTransferMessage(UserModel userModel, long actualInterest, long actualFee) throws IOException {
         String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
+        AmountTransferMultiMessage messages = JsonConverter.readValue(feeMessageBody, AmountTransferMultiMessage.class);
+        AmountTransferMessage feeMessage = messages.getMessageList().get(0);
         assertThat(feeMessage.getLoginName(), CoreMatchers.is(userModel.getLoginName()));
         assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInterest - actualFee));
         assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.EXTRA_RATE));

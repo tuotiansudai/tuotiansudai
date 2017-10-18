@@ -1,6 +1,6 @@
 package com.tuotiansudai.mq.consumer.amount;
 
-import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.mq.consumer.amount.service.AmountTransferService;
@@ -30,8 +30,8 @@ public class AmountTransferMessageConsumer implements MessageConsumer {
         logger.info("[AmountTransfer] receive message: {}: {}.", this.queue(), message);
 
         try {
-            AmountTransferMessage atm = JsonConverter.readValue(message, AmountTransferMessage.class);
-            amountTransferService.amountTransferProcess(atm);
+            AmountTransferMultiMessage atmm = JsonConverter.readValue(message, AmountTransferMultiMessage.class);
+            amountTransferService.amountTransferProcess(atmm);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] amount transfer consumer fail, message:{0}", message), e);
         }

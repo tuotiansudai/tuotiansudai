@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -91,7 +92,7 @@ public class CreditLoanTransferAgentService {
                 accountModel.getPayUserId(),
                 String.valueOf(transferAmount));
         try {
-            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_TRANSFER_AGENT_AMOUNT, String.valueOf(creditLoanAgent),String.valueOf(orderId)), String.valueOf(transferAmount));
+            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_TRANSFER_AGENT_AMOUNT, String.valueOf(creditLoanAgent), String.valueOf(orderId)), String.valueOf(transferAmount));
             redisWrapperClient.hset(CREDIT_LOAN_TRANSFER_AGENT_KEY, orderId, SyncRequestStatus.SENT.name());
             ProjectTransferResponseModel resp = paySyncClient.send(CreditLoanTransferAgentMapper.class, requestModel, ProjectTransferResponseModel.class);
             boolean isSuccess = resp.isSuccess();
@@ -144,14 +145,14 @@ public class CreditLoanTransferAgentService {
                 String statusString = redisWrapperClient.hget(redisKey, CREDIT_LOAN_TRANSFER);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
                     AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, accountModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, null, null);
-                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                     mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, transferAmount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_RETRIEVE, creditLoanAgent));
                     redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (Exception e) {
                 redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.FAILURE.name());
                 logger.error(MessageFormat.format("credit loan transfer agent out balance error orderId:{0}, agent:{1} amount:{2}",
-                        callbackRequestModel.getOrderId(), String.valueOf(creditLoanAgent),String.valueOf(transferAmount)));
+                        callbackRequestModel.getOrderId(), String.valueOf(creditLoanAgent), String.valueOf(transferAmount)));
             }
         } else {
             logger.error(MessageFormat.format("credit loan transfer agent callback  is fail orderId:{0}, agent:{1} amount:{2}",

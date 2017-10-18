@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -273,7 +274,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userModel.getLoginName(),
                 Long.parseLong(orderId),
                 Long.parseLong(redisWrapperClient.hget(String.format("REPAY_PLAN_ID:%s", orderId), "actual_amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
         mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                 new CreditLoanBillModel(Long.parseLong(orderId),

@@ -9,6 +9,7 @@ import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.message.TransferRedEnvelopCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -165,7 +166,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
             AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userCouponModel.getLoginName(),
                     userCouponModel.getId(), transferAmount, couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
             userCouponModel.setActualInterest(transferAmount);
             userCouponMapper.update(userCouponModel);

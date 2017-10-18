@@ -15,6 +15,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
@@ -376,26 +377,30 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private void verifyAmountTransferMessage(UserModel transferrer, UserModel transferee, TransferApplicationModel fakeTransferApplication) throws IOException {
-        String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage transferFeeMessage = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMessage.class);
-        assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
-        assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
-        assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
-        assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
 
-        String transferMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage transferMessage = JsonConverter.readValue(transferMessageBody, AmountTransferMessage.class);
+        String transferFeeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
+        AmountTransferMultiMessage transferOutMessages = JsonConverter.readValue(transferFeeMessageBody, AmountTransferMultiMessage.class);
+
+        AmountTransferMessage transferMessage = transferOutMessages.getMessageList().get(0);
         assertThat(transferMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
         assertThat(transferMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
         assertThat(transferMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_OUT));
         assertThat(transferMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
 
+        AmountTransferMessage transferFeeMessage = transferOutMessages.getMessageList().get(1);
+        assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(transferrer.getLoginName()));
+        assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferFee()));
+        assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.TRANSFER_FEE));
+        assertThat(transferFeeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+
         String transfereeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage transfereeMessage = JsonConverter.readValue(transfereeMessageBody, AmountTransferMessage.class);
+        AmountTransferMultiMessage transferInMessages = JsonConverter.readValue(transfereeMessageBody, AmountTransferMultiMessage.class);
+        AmountTransferMessage transfereeMessage = transferInMessages.getMessageList().get(0);
         assertThat(transfereeMessage.getLoginName(), CoreMatchers.is(transferee.getLoginName()));
         assertThat(transfereeMessage.getAmount(), CoreMatchers.is(fakeTransferApplication.getTransferAmount()));
         assertThat(transfereeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_TRANSFER_IN));
         assertThat(transfereeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+
     }
 
     private void verifySystemBillMessage(TransferApplicationModel actualTransferApplication) throws IOException {

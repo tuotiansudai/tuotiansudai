@@ -9,6 +9,7 @@ import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.HuiZuRepayNotifyRequestMapper;
@@ -169,7 +170,8 @@ public class HuiZuRepayServiceTest {
     private void verifyPostRepayAmountTransferMessage(long mockRepayAmount, String mockLoginName, String orderId) {
         try {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+            AmountTransferMultiMessage messages = JsonConverter.readValue(messageBody, AmountTransferMultiMessage.class);
+            AmountTransferMessage message = messages.getMessageList().get(0);
             assertThat(message.getLoginName(), CoreMatchers.is(mockLoginName));
             assertThat(message.getOrderId(), CoreMatchers.is(Long.parseLong(orderId)));
             assertThat(message.getAmount(), CoreMatchers.is(mockRepayAmount));

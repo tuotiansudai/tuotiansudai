@@ -6,6 +6,7 @@ import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
@@ -37,7 +38,7 @@ public class InvestRateServiceImpl implements InvestRateService {
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investExtraRateModel.getLoginName(),
                 investExtraRateModel.getId(), amount, UserBillBusinessType.EXTRA_RATE, null, null);
 
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
                 investExtraRateModel.getLoginName(), String.valueOf(investExtraRateModel.getInvestId()));
 

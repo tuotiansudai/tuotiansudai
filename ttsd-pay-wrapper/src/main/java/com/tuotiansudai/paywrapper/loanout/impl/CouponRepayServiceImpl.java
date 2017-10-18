@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -409,20 +410,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         couponRepayModel.getActualInterest(),
                         couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    logger.error("sleep between transfer in and out fail.", e);
-                }
-
                 AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualFee(),
                         UserBillBusinessType.INVEST_FEE, null, null);
 
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(inAtm, outAtm));
 
                 String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                         couponModel.getCouponType().getName(),

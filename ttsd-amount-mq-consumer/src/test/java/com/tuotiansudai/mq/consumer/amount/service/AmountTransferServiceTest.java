@@ -5,6 +5,7 @@ import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -52,7 +53,7 @@ public class AmountTransferServiceTest {
         AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId,
                 inAmount, businessType, null, null);
 
-        amountTransferService.amountTransferProcess(inAtm);
+        amountTransferService.amountTransferProcess(new AmountTransferMultiMessage(inAtm));
         verifyBalance(loginName, inAmount);
 
         // test transfer_out_balance
@@ -60,14 +61,14 @@ public class AmountTransferServiceTest {
         AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId,
                 outAmount, businessType, null, null);
 
-        amountTransferService.amountTransferProcess(outAtm);
+        amountTransferService.amountTransferProcess(new AmountTransferMultiMessage(outAtm));
         verifyBalance(loginName, inAmount - outAmount);
 
         // test freeze
         long freezeAmount = 150000;
         AmountTransferMessage freezeAtm = new AmountTransferMessage(TransferType.FREEZE, loginName, orderId,
                 freezeAmount, businessType, null, null);
-        amountTransferService.amountTransferProcess(freezeAtm);
+        amountTransferService.amountTransferProcess(new AmountTransferMultiMessage(freezeAtm));
 
         verifyBalance(loginName, inAmount - outAmount - freezeAmount);
         verifyFreeze(loginName, freezeAmount);
@@ -77,7 +78,7 @@ public class AmountTransferServiceTest {
 
         AmountTransferMessage unfreezeAtm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId,
                 unfreezeAmount, businessType, null, null);
-        amountTransferService.amountTransferProcess(unfreezeAtm);
+        amountTransferService.amountTransferProcess(new AmountTransferMultiMessage(unfreezeAtm));
         verifyBalance(loginName, inAmount - outAmount - freezeAmount + unfreezeAmount);
         verifyFreeze(loginName, freezeAmount - unfreezeAmount);
 
@@ -86,7 +87,7 @@ public class AmountTransferServiceTest {
 
         AmountTransferMessage toFreezeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId,
                 toFreezeAmount, businessType, null, null);
-        amountTransferService.amountTransferProcess(toFreezeAtm);
+        amountTransferService.amountTransferProcess(new AmountTransferMultiMessage(toFreezeAtm));
         verifyFreeze(loginName, freezeAmount - unfreezeAmount - toFreezeAmount);
     }
 

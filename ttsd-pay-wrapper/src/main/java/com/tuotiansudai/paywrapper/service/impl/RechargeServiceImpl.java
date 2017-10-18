@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -171,6 +172,6 @@ public class RechargeServiceImpl implements RechargeService {
 
     private void postRechargeCallback(long orderId, String loginName, long amount) {
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
     }
 }

@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -169,11 +170,11 @@ public class CreditLoanOutService {
                     String mobile = loanOutInfo.split("\\|")[0];
                     long amount = Long.parseLong(loanOutInfo.split("\\|")[1]);
 
-                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                            new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
-                                    Long.parseLong(orderId),
-                                    amount,
-                                    UserBillBusinessType.CREDIT_LOAN_OUT, null, null));
+                    AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
+                            Long.parseLong(orderId),
+                            amount,
+                            UserBillBusinessType.CREDIT_LOAN_OUT, null, null);
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                     mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                             new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_OFFER, mobile));
                 }

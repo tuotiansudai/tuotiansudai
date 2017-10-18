@@ -5,6 +5,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.dto.AdminInterventionDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserBillOperationType;
@@ -78,7 +79,7 @@ public class AdminInterventionController {
                 atm.setTransferType(TransferType.TRANSFER_OUT_FREEZE);
                 break;
         }
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
         redirectAttributes.addFlashAttribute("message", "修改成功");
 
         return modelAndView;
