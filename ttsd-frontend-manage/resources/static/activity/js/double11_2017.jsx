@@ -45,7 +45,7 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 //     type: 1,
 //     title: false,
 //     closeBtn: 0,
-//     scrollbar: false,
+//     // scrollbar: false,
 //     area: ['auto', 'auto'],
 //     content: $('#test')
 // });
@@ -65,44 +65,44 @@ $pointerBtn.on('click', function(event) {
             //     $leftDrawCount.text(data);
             // });
             switch (data.prize) {
-                case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //888元体验金
+                case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //0.5%加息券
                     angleNum=45*1-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('888元体验金')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券')
                         .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_LUGGAGE': //迷彩旅行箱
+                case 'CELEBRATION_SINGLE_ACTIVITY_LUGGAGE': //200元京东E卡
                     angleNum=45*2-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('迷彩旅行箱')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('200元京东E卡')
                         .parent().siblings('.des-text').html('奖品将于活动结束后发放');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_DOLL': //树袋熊玩偶
+                case 'CELEBRATION_SINGLE_ACTIVITY_DOLL': //200元红包
                     angleNum=45*3-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('树袋熊玩偶')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('200元红包')
                         .parent().siblings('.des-text').html('奖品将于活动结束后发放');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30': //30元红包
+                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30': //0.2%加息券
                     angleNum=45*4-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('30元红包')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('0.2%加息券')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_COUPON_5': //0.5%加息券
+                case 'CELEBRATION_SINGLE_ACTIVITY_COUPON_5': //100元红包
                     angleNum=45*5-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('100元红包')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10':  //10元红包
+                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10':  //20元红包
                     angleNum=45*6-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('10元红包')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('20元红包')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5':  //5元红包
+                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5':  //1000元体验金
                     angleNum=45*7-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('5元红包')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('1000元体验金')
                         .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //2888元体验金
+                case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //50元红包
                     angleNum=45*8-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('2888元体验金')
+                    $(tipGroupObj['concrete']).find('.prizeValue').text('50元红包')
                         .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
                     break;
             }

@@ -117,7 +117,7 @@
         </div>
 
         <!--没有抽奖机会-->
-        <div class="tip-list no-change-list" data-return="nochance">
+        <div class="tip-list no-change-list" id="test" data-return="nochance">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="login-text"></p>

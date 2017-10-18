@@ -302,16 +302,18 @@ strong {
   margin-top: -155px !important;
   border-radius:0px;
   background:url('../images/2017/double11/tips_bg.png') no-repeat center top!important;
-  background-size:100%;
+  background-size:contain!important;
   z-index: 999;
   &.no-change-list {
     background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+    background-size: contain!important;
     .btn-invest {
       margin-top: 40px;
     }
   }
   &.noTime {
     background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+    background-size:contain!important;
     .text-tip {
       padding-top: 60px;
       box-sizing: border-box;
@@ -372,7 +374,7 @@ strong {
       margin: 0 auto;
       margin-top: 30px;
       background:url("../images/2017/double11/small_btn_wap.png") center top no-repeat!important;
-      background-size: 100%;
+      background-size: contain!important;
       color: #fff!important;
       font-size: 30px;
       text-align: center;
@@ -606,19 +608,23 @@ strong {
     margin-left: -2.35rem !important;
     margin-top: -1.55rem !important;
     &.no-change-list {
-      //background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+      background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+      background-size: contain!important;
       .btn-invest {
         margin-top: 0.4rem;
       }
     }
     &.noTime {
-      //background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+      background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+      background-size: contain!important;
       .text-tip {
         padding-top: 0.6rem;
-        //box-sizing: border-box;
       }
       .btn-list {
         margin-top: 0.4rem;
+        a {
+          font-size: 0.24rem;
+        }
       }
     }
 
@@ -626,35 +632,24 @@ strong {
       height: 1.84rem!important;
 
       p {
-        //color: #fff;
+        line-height: 0.55rem!important;
         &.success-text {
           width: 2rem;
           height: 0.5rem;//444
-          //padding: 0px!important;
-          //margin: 0 auto;
           margin-top: 0.5rem;
-         // background: url('../images/2017/double11/success_text.png') no-repeat center;
-         // background-size: 100%;
         }
         &.icon_prize {
           width: 0.62rem;
           height: 0.64rem;
-          //margin: 0 auto;
-          //background: url('../images/2017/double11/experience_icon.png') no-repeat center;
-          //background-size: 100%;
         }
         &.reward-text {
           font-size:0.24rem!important;
-          //color:#000;
-          //font-weight: bold;
         }
         &.login-text {
           font-size: 0.2rem;
           padding-top: 0.7rem;
-          color:#fff;
         }
         &.des-text {
-          //color: #fff;
           font-size: 0.14rem;
         }
       }
@@ -663,31 +658,14 @@ strong {
       top: -5px!important;
       right: -19px!important;
       margin-left: -14px;
-      background: url('../images/2017/double11/db_close_btn.png') no-repeat center;
-      background-size: 100%;
     }
     .btn-list {
       a {
         width: 2.6rem!important;
         height: 0.66rem!important;
-        //margin: 0 auto;
         margin-top: 0.3rem;
-        //background:url("../images/2017/double11/small_btn_wap.png") center top no-repeat!important;
-        //background-size: 100%;
-        //color: #fff!important;
-        font-size: 0.3rem;
-        //text-align: center;
+        font-size: 0.3rem!important;
         line-height: 0.66rem!important;
-        //cursor: pointer;
-        //padding: 0!important;
-        //margin: 0!important;
-        //margin-top: 0;
-        //&.canble-btn{
-        //  color:#c0b67c;
-        //  border:1px solid #c0b67c;
-        //  background:none;
-        //}
-
       }
     }
   }
