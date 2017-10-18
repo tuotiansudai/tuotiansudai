@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Clock;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class WorkerMonitorTest {
 

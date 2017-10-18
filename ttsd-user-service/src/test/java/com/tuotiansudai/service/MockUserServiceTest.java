@@ -19,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,6 +30,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class MockUserServiceTest {
 
@@ -45,14 +47,10 @@ public class MockUserServiceTest {
     private PrepareUserMapper prepareUserMapper;
 
     @Mock
-    private UserRestClient userRestClient;
-
-    @Mock
     private RegisterUserService registerUserService;
 
     @Mock
     private MQWrapperClient mqWrapperClient;
-
 
     @Before
     public void init() {

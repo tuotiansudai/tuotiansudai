@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +18,13 @@ import java.util.Date;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class PrepareServiceTest {
 
     @Autowired
-    private FakeUserHelper userMapper;
+    private FakeUserHelper fakeUserHelper;
 
     @Autowired
     private PrepareUserService prepareService;
@@ -30,7 +32,7 @@ public class PrepareServiceTest {
     @Test
     public void buildPrepareRegister() {
         UserModel referrerUserModel = fakeReferrerUserMobile("prepareRegisterUser");
-        userMapper.create(referrerUserModel);
+        fakeUserHelper.create(referrerUserModel);
         PrepareRegisterRequestDto requestDto = new PrepareRegisterRequestDto();
         requestDto.setReferrerMobile(referrerUserModel.getMobile());
         requestDto.setMobile("18999999999");
@@ -40,7 +42,7 @@ public class PrepareServiceTest {
     @Test
     public void buildRegister() {
         UserModel referrerUserModel = fakeReferrerUserMobile("registerUser");
-        userMapper.create(referrerUserModel);
+        fakeUserHelper.create(referrerUserModel);
         RegisterUserDto requestDto = new RegisterUserDto();
         requestDto.setCaptcha("00000");
         requestDto.setChannel("tuotiansudai");

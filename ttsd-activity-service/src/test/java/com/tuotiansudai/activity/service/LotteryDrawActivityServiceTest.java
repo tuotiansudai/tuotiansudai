@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -33,8 +34,8 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class LotteryDrawActivityServiceTest {
 
     @InjectMocks

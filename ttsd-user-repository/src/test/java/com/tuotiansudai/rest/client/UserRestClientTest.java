@@ -7,6 +7,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.ask.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.dto.request.*;
+import com.tuotiansudai.dto.response.UserInfo;
 import com.tuotiansudai.dto.response.UserRestPagingResponse;
 import com.tuotiansudai.dto.response.UserRestResponseBase;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
@@ -20,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,8 +33,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class UserRestClientTest {
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class UserRestClientTest {
     @Value("${ask.rest.server}")
     private String askRestServerUrl;
 
@@ -60,8 +62,9 @@ public class UserRestClientTest {
                 "13800138012", "123abc", null, "Test", Source.WEB);
 //        this.mockServer.enqueue(buildCreateQuestionResponse(requestDto));
         UserRestUserInfo responseUserInfo = userRestClient.register(requestDto);
-        UserModel userModel = responseUserInfo.getUserInfo();
-        assertEquals(requestDto.getMobile(), userModel.getMobile());
+        UserInfo userInfo = responseUserInfo.getUserInfo();
+        UserModel userModel = userInfo.toUserModel();
+        assertEquals(requestDto.getMobile(), userInfo.getMobile());
     }
 
     @Ignore
@@ -70,16 +73,16 @@ public class UserRestClientTest {
         UpdateUserInfoRequestDto requestDto = new UpdateUserInfoRequestDto("xaxwlnqf");
         requestDto.setLastModifiedTime(new Date());
         UserRestUserInfo responseUserInfo = userRestClient.update(requestDto);
-        UserModel userModel = responseUserInfo.getUserInfo();
-        assertEquals(requestDto.getEmail(), userModel.getEmail());
+        UserInfo userInfo = responseUserInfo.getUserInfo();
+        assertEquals(requestDto.getEmail(), userInfo.getEmail());
     }
 
     @Ignore
     @Test
     public void shouldFindUser() {
         UserRestUserInfo responseUserInfo = userRestClient.findByLoginNameOrMobile("xaxwlnqf");
-        UserModel userModel = responseUserInfo.getUserInfo();
-        assertEquals("test@test.com", userModel.getEmail());
+        UserInfo userInfo = responseUserInfo.getUserInfo();
+        assertEquals("test@test.com", userInfo.getEmail());
     }
 
     @Ignore

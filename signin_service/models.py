@@ -65,7 +65,12 @@ class User(db.Model):
                 return login_name
 
     def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in ('salt', 'password')}
+        def __fmt(value):
+            if isinstance(value, datetime):
+                return value.strftime('%Y-%m-%d %H:%M:%S')
+            return value
+
+        return {c.name: __fmt(getattr(self, c.name)) for c in self.__table__.columns if c.name not in ('salt', 'password')}
 
     @staticmethod
     def lookup_field(field_name):

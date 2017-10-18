@@ -1,17 +1,16 @@
 package com.tuotiansudai.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.tuotiansudai.repository.model.UserModel;
 
 public class UserRestUserInfo extends UserRestResponseBase {
     @JsonProperty("user_info")
-    private UserModel userInfo;
+    private UserInfo userInfo;
 
-    public UserModel getUserInfo() {
+    public UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(UserModel userInfo) {
+    public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 }

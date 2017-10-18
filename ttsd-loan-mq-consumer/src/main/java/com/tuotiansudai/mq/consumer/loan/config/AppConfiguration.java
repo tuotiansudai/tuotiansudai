@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.consumer.loan.config;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.quartz.JobStoreBuilder;
 import com.tuotiansudai.quartz.SchedulerBuilder;
+import com.tuotiansudai.rest.client.UserMapperConfiguration;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -18,9 +19,10 @@ import javax.sql.DataSource;
         "com.tuotiansudai.coupon",
         "com.tuotiansudai.membership",
         "com.tuotiansudai.log"
-        })
+})
 @PropertySource(ignoreResourceNotFound = true, value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 @EnableAspectJAutoProxy(exposeProxy = true)
+@Import(UserMapperConfiguration.class)
 public class AppConfiguration {
 
     @Bean

@@ -28,6 +28,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -44,8 +45,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class CreditLoanPasswordRepayServiceTest {
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class CreditLoanPasswordRepayServiceTest {
 
     @InjectMocks
     private CreditLoanRepayService creditLoanRepayService;

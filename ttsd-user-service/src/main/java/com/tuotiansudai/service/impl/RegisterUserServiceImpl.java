@@ -44,7 +44,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Transactional(rollbackFor = Exception.class)
     public boolean register(RegisterRequestDto registerDto) {
         UserRestUserInfo registerUserInfo = userRestClient.register(registerDto);
-        UserModel userModel = registerUserInfo.getUserInfo();
+        UserModel userModel = registerUserInfo.getUserInfo().toUserModel();
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());

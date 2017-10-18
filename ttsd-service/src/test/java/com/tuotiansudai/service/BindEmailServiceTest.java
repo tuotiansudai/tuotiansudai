@@ -12,6 +12,7 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,8 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class BindEmailServiceTest {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();

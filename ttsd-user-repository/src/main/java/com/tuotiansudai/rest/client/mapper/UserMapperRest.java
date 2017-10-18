@@ -10,39 +10,31 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class UserRemoteMapper implements UserMapper {
-    @Autowired
-    private UserRestClient userRestClient;
+public class UserMapperRest implements UserMapper {
+    private final UserRestClient userRestClient;
 
     @Autowired
     private UserMapperDB userMapperDB;
+
+    @Autowired
+    public UserMapperRest(UserRestClient userRestClient) {
+        this.userRestClient = userRestClient;
+    }
 
     @Override
     public UserModel findByLoginNameOrMobile(String loginNameOrMobile) {
         try {
             UserRestUserInfo userRestUserInfo = userRestClient.findByLoginNameOrMobile(loginNameOrMobile);
-            return userRestUserInfo.getUserInfo();
+            return userRestUserInfo.getUserInfo().toUserModel();
         } catch (RestException e) {
             return null;
         }
-    }
-
-    @Override
-    public UserModel findByMobile(String mobile) {
-        return this.findByLoginNameOrMobile(mobile);
-    }
-
-    @Override
-    public UserModel findByLoginName(String loginName) {
-        return this.findByLoginNameOrMobile(loginName);
     }
 
     @Override
@@ -168,7 +160,7 @@ public class UserRemoteMapper implements UserMapper {
     }
 
     @Override
-    public void updateProvinceAndCity(String loginName, String province, String city) {
-        userMapperDB.updateProvinceAndCity(loginName, province, city);
+    public int updateProvinceAndCity(String loginName, String province, String city) {
+        return userMapperDB.updateProvinceAndCity(loginName, province, city);
     }
 }

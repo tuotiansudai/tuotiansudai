@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +32,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class RankingActivityServiceTest {
 
     private static Logger logger = Logger.getLogger(RankingActivityServiceTest.class);
