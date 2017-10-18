@@ -379,7 +379,7 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
 
-        if (!Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
+        if (!loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
             return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
         }
 
