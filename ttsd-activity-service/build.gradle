@@ -20,6 +20,7 @@ dependencies {
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-point-service'),
             project(":ttsd-user-service")
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 
 processResources.outputs.upToDateWhen { false }

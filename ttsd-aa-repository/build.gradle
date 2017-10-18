@@ -19,7 +19,7 @@ dependencies {
             project(':ttsd-aa-model')
 
     testCompile project(':ttsd-user-service')
-
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 
 processResources.outputs.upToDateWhen { false }
