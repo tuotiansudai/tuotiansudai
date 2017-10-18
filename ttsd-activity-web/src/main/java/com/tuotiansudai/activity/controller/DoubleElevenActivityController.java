@@ -31,10 +31,15 @@ public class DoubleElevenActivityController {
         ModelAndView modelAndView = new ModelAndView("/activities/2017/double-eleven", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
         String sumAmount = loginName == null ? "0" : doubleElevenService.sumInvestAmountByLoginName(loginName);
-        modelAndView.addObject("leftDrawCount", loginName == null ? 0 : doubleElevenService.leftDrawCount(LoginUserInfo.getMobile()));
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("jdAmount", doubleElevenService.calculateJDCardAmountByInvestAmount(sumAmount));
         return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public int leftDrawTimes() {
+        String loginName = LoginUserInfo.getLoginName();
+        return loginName == null ? 0 : doubleElevenService.leftDrawCount(LoginUserInfo.getMobile());
     }
 
     @ResponseBody
