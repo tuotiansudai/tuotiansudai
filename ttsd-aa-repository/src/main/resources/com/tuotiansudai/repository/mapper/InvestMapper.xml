@@ -1186,7 +1186,7 @@
     </select>
 
     <select id="sumAmountActivityDoubleElevenByLoginName" parameterType="map" resultType="long">
-        SELECT sum(amount) AS sumAmount
+        SELECT IFNULL(sum(amount),0) AS sumAmount
         FROM invest
         JOIN loan ON invest.loan_id = loan.id
         JOIN loan_details ON invest.loan_id = loan_details.loan_id

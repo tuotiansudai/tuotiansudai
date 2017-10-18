@@ -6,6 +6,11 @@ let drawCircle = require('activityJsModule/gift_circle_draw');
 let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
 //require('activityJsModule/fast_register');
+//pointAllList:中奖记录接口地址
+//pointUserList:我的奖品接口地址
+//drawURL:抽奖的接口链接
+//oneData:接口参数
+//$oneThousandPoints:抽奖模版dom
 
 let $double11 = $('#double11'),
     tipGroupObj = {};
@@ -13,7 +18,8 @@ var $pointerBtn = $('#draw_btn',$double11);
 var $oneThousandPoints=$('.gift-circle-frame',$double11);
 var pointAllList='/activity/double-eleven/all-list ',  //中奖记录接口地址
     pointUserList='/activity/double-eleven/user-list',   //我的奖品接口地址
-    drawURL='/activity/double-eleven/task-draw';    //抽奖的接口链接
+    drawURL='/activity/double-eleven/task-draw',//抽奖接口
+    leftDraw = '/activity/double-eleven/left-times';    //剩余抽奖次数接口
 
 
 var oneData={
@@ -26,11 +32,7 @@ $double11.find('.tip-list-frame .tip-list').each(function (key, option) {
     tipGroupObj[kind] = option;
 });
 
-//pointAllList:中奖记录接口地址
-//pointUserList:我的奖品接口地址
-//drawURL:抽奖的接口链接
-//oneData:接口参数
-//$oneThousandPoints:抽奖模版dom
+
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
@@ -50,20 +52,19 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 //     content: $('#test')
 // });
 //开始抽奖
-layer.msg('今天没有抽奖机会了哦~，明天再来吧');
+//layer.msg('今天没有抽奖机会了哦~，明天再来吧');
 $pointerBtn.on('click', function(event) {
-
     drawCircleOne.beginLuckDraw(function(data) {
         console.log(data)
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
-            // commonFun.useAjax({
-            //     dataType: 'json',
-            //     url:'/activity/double-eleven/draw-time'
-            // },function(data) {
-            //     $leftDrawCount.text(data);
-            // });
+            commonFun.useAjax({
+                dataType: 'json',
+                url:leftDraw
+            },function(data) {
+                $leftDrawCount.text(data);
+            });
             switch (data.prize) {
                 case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //0.5%加息券
                     angleNum=45*1-20;
@@ -131,7 +132,7 @@ $pointerBtn.on('click', function(event) {
             drawCircleOne.tipWindowPop(tipGroupObj['expired']);
 
         } else if(data.returnCode == 4){
-            //实名认证
+            //今日没有抽奖机会了
             drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
         }
     });
