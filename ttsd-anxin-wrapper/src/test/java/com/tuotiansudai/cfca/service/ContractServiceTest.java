@@ -29,7 +29,8 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class ContractServiceTest {
 
     @Autowired
