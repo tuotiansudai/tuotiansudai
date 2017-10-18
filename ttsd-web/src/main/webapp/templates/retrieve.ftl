@@ -14,6 +14,8 @@
                <label for="" class="title">验证码：</label>
                <button type="button" class="fetch-captcha btn-normal" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                <input type="text" name="captcha" class="yzm-txt" minlength="6" maxlength="6" placeholder="请输入验证码"/>
+               <span class="voice-captcha" id="voice_captcha" style="display: none;">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
+
            </li>
            <div class="error-box"></div>
            <li class="clear-blank-m tc">
