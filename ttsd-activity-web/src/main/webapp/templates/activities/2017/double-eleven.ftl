@@ -125,25 +125,6 @@
             </div>
             <div class="btn-list btn-invest"><a href="/loan-list" class="go-close">去投资</a></div>
         </div>
-
-        <#--<!--不在活动时间范围内&ndash;&gt;-->
-        <#--<div class="tip-list noTime" id="test" data-return="expired">-->
-            <#--<div class="close-btn go-close"></div>-->
-            <#--<div class="text-tip">-->
-                <#--<p class="login-text">不在活动时间内~</p>-->
-            <#--</div>-->
-            <#--<div class="btn-list"><a href="javascript:void(0)" class="go-close">去投资</a></div>-->
-        <#--</div>-->
-
-        <!--实名认证-->
-        <#--<div class="tip-list noTime" data-return="authentication">-->
-            <#--<div class="close-btn go-close"></div>-->
-            <#--<div class="text-tip">-->
-                <#--<p class="login-text">您还未实名认证~</p>-->
-                <#--<p class="des-text">请实名认证后再来抽奖吧！</p>-->
-            <#--</div>-->
-            <#--<div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>-->
-        <#--</div>-->
     </div>
 </div>
 

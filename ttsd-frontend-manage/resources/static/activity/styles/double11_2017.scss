@@ -395,15 +395,13 @@ strong {
 
 @media screen and (max-width:1024px) {
   .banner {
-    @media screen and (max-width:1024px) {
-      background:url("../images/2017/double11/banner_wap.png") center top no-repeat;
-      background-size: 100%;
-    }
+    background:url("../images/2017/double11/banner_wap.png") center top no-repeat;
+    background-size: 100%;
   }
   .alone-gifts {
     width: 100%;
     background:url("../images/2017/double11/alone1024.png") center top no-repeat;
-
+    margin-top: 30px;
   }
   .jde-cart {
     width: 100%;
