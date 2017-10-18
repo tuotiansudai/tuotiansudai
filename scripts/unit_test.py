@@ -1,6 +1,8 @@
 import os
 from paver.shell import sh
 
+import config_deploy
+
 
 class UTRunner(object):
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
@@ -12,9 +14,15 @@ class UTRunner(object):
         self.redis_port = redis_port
 
     def test(self):
+        self.config_file()
         self.init_docker()
         self.run_test()
         self.clean_env()
+
+    def config_file(self):
+        print "Generate config file..."
+        config_deploy.deploy({'env': 'UT'}, "./ttsd-config/src/main/resources/",
+                             "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
 
     def init_docker(self):
         print "Initialing docker..."
