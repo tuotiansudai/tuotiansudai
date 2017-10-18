@@ -80,6 +80,9 @@
         position: relative;
         span.error {
           display: block;
+          @media screen and (max-width: 700px) {
+            float: left;
+          }
         }
         .voice-captcha {
           position: absolute;
@@ -87,25 +90,9 @@
           top: 10px;
           width: 175px;
           @media screen and (max-width: 700px) {
-            position: absolute;
-            left: 136px;
-            top:48px;
-            @media screen and (max-width: 640px) {
-              left: 165px;
-              @media screen and (max-width: 414px) {
-                left: 190px;
-                @media screen and (max-width: 375px) {
-                  left: 165px;
-                  @media screen and (max-width: 360px) {
-                    left: 136px;
-                    @media screen and (max-width: 320px) {
-                      left: 112px;
-                    }
-                  }
-                }
-              }
-            }
-
+            position: static;
+            clear: both;
+            float: right;
           }
           a {
             color: #ff9c1b;
