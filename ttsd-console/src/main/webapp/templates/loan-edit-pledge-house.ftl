@@ -17,20 +17,34 @@
                                          class="form-control"
                                          datatype="*" errormsg="不动产登记证明不能为空"></div>
         </div>
-        <div class="form-group"><label class="col-sm-2 control-label">房本编号: </label>
+
+        <div class="form-group"><label class="col-sm-2 control-label">房产证编号: </label>
             <div class="col-sm-4"><input name="propertyCardId" value="${pledgeHouse.propertyCardId}" type="text"
                                          class="form-control"
-                                         datatype="*" errormsg="房本编号不能为空"></div>
+                                         datatype="*" errormsg="房产证编号不能为空"></div>
+
         </div>
+
         <div class="form-group"><label class="col-sm-2 control-label">借款抵押房产面积: </label>
             <div class="col-sm-4"><input name="square" value="${pledgeHouse.square}" type="text" class="form-control"
                                          datatype="*"
                                          errormsg="借款抵押房产面积不能为空"></div>
         </div>
-        <div class="form-group"><label class="col-sm-2 control-label">公证书: </label>
-            <div class="col-sm-4"><input name="authenticAct" value="${pledgeHouse.authenticAct}" type="text" class="form-control"
-                                         datatype="*" errormsg="公证书不能为空"></div>
-        </div>
+
+        <#if (pledgeHouse.authenticAct)??>
+            <div class="form-group"><label class="col-sm-2 control-label">公证书: </label>
+                <div class="col-sm-4"><input name="authenticAct" value="${pledgeHouse.authenticAct}" type="text" class="form-control"
+                                             datatype="*" errormsg="公证书不能为空"></div>
+            </div>
+        <#else>
+            <div class="form-group"><label class="col-sm-2 control-label">房权证编号: </label>
+                <div class="col-sm-4"><input name="propertyRightCertificateId" value="${pledgeHouse.propertyRightCertificateId}" type="text"
+                                             class="form-control"
+                                             datatype="*" errormsg="房权证编号不能为空"></div>
+
+            </div>
+        </#if>
+
         <div class="form-group"><label class="col-sm-2 control-label">借款抵押物估值: </label>
             <div class="col-sm-4"><input name="estimateAmount" value="${pledgeHouse.estimateAmount}" type="text"
                                          class="form-control"
