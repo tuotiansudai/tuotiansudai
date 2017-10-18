@@ -12,13 +12,14 @@
         <result property="channel" column="channel"/>
         <result property="sendTime" column="send_time"/>
         <result property="success" column="success"/>
+        <result property="isVoice" column="is_voice"/>
         <result property="response" column="response"/>
         <result property="backupId" column="backup_id"/>
     </resultMap>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="SmsHistoryModel">
-        insert into sms_history (mobile, content, channel, send_time, success)
-        values (#{mobile}, #{content}, #{channel}, #{sendTime}, #{success})
+        insert into sms_history (mobile, content, channel, send_time, success, is_voice)
+        values (#{mobile}, #{content}, #{channel}, #{sendTime}, #{success}, #{isVoice})
     </insert>
 
     <update id="update" parameterType="SmsHistoryModel">
@@ -28,9 +29,5 @@
         backup_id = #{backupId}
         where id = #{id}
     </update>
-
-    <select id="findById" resultMap="smsHistoryModel" parameterType="map">
-        select * from sms_history where id = #{id}
-    </select>
 
 </mapper>

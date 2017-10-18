@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SmsHistoryMapper {
 
-    SmsHistoryModel findById(@Param(value = "id") long id);
-
     void create(SmsHistoryModel model);
 
     void update(SmsHistoryModel model);

@@ -35,6 +35,7 @@
       display: inline-block;
       text-align: left;
       padding-left: 20px;
+
     }
   }
 
@@ -43,11 +44,12 @@
     height: auto;
     overflow: auto;
     @media (min-width:701px) and (max-width:999px) {
-      width: 500px;
+      width: 522px;
       position: relative;
       left: 50%;
       margin-left: -170px;
     }
+
     .register-step-one {
       margin-top: 20px;
     }
@@ -76,7 +78,26 @@
         height: auto;
         color: #999;
         position: relative;
-
+        span.error {
+          display: block;
+          @media screen and (max-width: 700px) {
+            float: left;
+          }
+        }
+        .voice-captcha {
+          position: absolute;
+          left: 350px;
+          top: 10px;
+          width: 175px;
+          @media screen and (max-width: 700px) {
+            position: static;
+            clear: both;
+            float: right;
+          }
+          a {
+            color: #ff9c1b;
+          }
+        }
         .reg-title {
           width:60px;
           padding-right: 3px;
@@ -95,6 +116,7 @@
             letter-spacing: 0;
             position: absolute;
             right: 281px;
+            //right: 0px;
             top: 2px;
             font-size: 14px;
             border: 0;
@@ -102,7 +124,9 @@
             color: #fff;
             cursor: pointer;
             @media (min-width:701px) and (max-width:999px) {
-              right:120px;
+              //right:120px;
+             // right:0px;
+              right:140px;
             }
             &[disabled] {
               cursor: default;

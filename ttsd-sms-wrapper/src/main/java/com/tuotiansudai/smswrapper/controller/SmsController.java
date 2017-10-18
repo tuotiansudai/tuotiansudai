@@ -19,19 +19,19 @@ public class SmsController {
     @RequestMapping(value = "/register-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.isVoice(), smsCaptchaDto.getIp());
     }
 
     @RequestMapping(value = "/no-password-invest-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        return smsService.sendNoPasswordInvestCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        return smsService.sendNoPasswordInvestCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.isVoice(), smsCaptchaDto.getIp());
     }
 
     @RequestMapping(value = "/retrieve-password-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        return smsService.sendRetrievePasswordCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        return smsService.sendRetrievePasswordCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.isVoice(), smsCaptchaDto.getIp());
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/password-changed-notify", method = RequestMethod.POST)

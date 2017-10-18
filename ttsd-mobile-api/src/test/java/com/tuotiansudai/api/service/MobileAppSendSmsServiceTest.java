@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -63,7 +64,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         smsDto.setData(smsDataDto);
 
         when(userService.mobileIsExist(anyString())).thenReturn(false);
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(smsDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(smsDto);
         BaseResponseDto baseResponseDto = mobileAppSendSmsService.sendSms(sendSmsRequestDto, ip);
 
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
@@ -82,7 +83,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         smsDto.setData(smsDataDto);
 
         when(userService.mobileIsExist(anyString())).thenReturn(true);
-        when(smsCaptchaService.sendRetrievePasswordCaptcha(anyString(), anyString())).thenReturn(smsDto);
+        when(smsCaptchaService.sendRetrievePasswordCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(smsDto);
         BaseResponseDto baseResponseDto = mobileAppSendSmsService.sendSms(sendSmsRequestDto, ip);
 
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
@@ -101,7 +102,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         smsDto.setData(smsDataDto);
 
         when(userService.mobileIsExist(anyString())).thenReturn(true);
-        when(smsCaptchaService.sendNoPasswordInvestCaptcha(anyString(), anyString())).thenReturn(smsDto);
+        when(smsCaptchaService.sendNoPasswordInvestCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(smsDto);
         BaseResponseDto baseResponseDto = mobileAppSendSmsService.sendSms(sendSmsRequestDto, ip);
 
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());

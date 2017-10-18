@@ -1,8 +1,10 @@
 package com.tuotiansudai.smswrapper;
 
-public class SmsTemplateCell {
+import org.springframework.util.CollectionUtils;
 
-    private SmsChannel smsChannel;
+import java.util.List;
+
+public class SmsTemplateCell {
 
     private String templateId;
 
@@ -11,14 +13,9 @@ public class SmsTemplateCell {
     public SmsTemplateCell() {
     }
 
-    public SmsTemplateCell(SmsChannel smsChannel, String templateId, String template) {
-        this.smsChannel = smsChannel;
+    public SmsTemplateCell(String templateId, String template) {
         this.templateId = templateId;
         this.template = template;
-    }
-
-    public SmsChannel getSmsChannel() {
-        return smsChannel;
     }
 
     public String getTemplateId() {
@@ -27,5 +24,18 @@ public class SmsTemplateCell {
 
     public String getTemplate() {
         return template;
+    }
+
+    public String generateContent(List<String> templateParameters) {
+
+        if (CollectionUtils.isEmpty(templateParameters)) {
+            return template;
+        }
+
+        String content = template;
+        for (String param : templateParameters) {
+            content = content.replaceFirst("\\$\\{param\\d+\\}", param);
+        }
+        return content;
     }
 }
