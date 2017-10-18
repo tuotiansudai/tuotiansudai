@@ -141,7 +141,7 @@
                                        class="appCaptcha fl" value="">
                             </li>
                         
-                            <li class="reg-row-container voice-row">
+                            <li class="reg-row-container voice-row clearfix">
                             <#--手机验证码:-->
                                 <i class="icon-captcha reg-icon"></i>
                                 <span class="captcha-tag" id="pcCaptcha">
