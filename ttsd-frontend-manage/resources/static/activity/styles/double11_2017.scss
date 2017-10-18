@@ -266,6 +266,22 @@ strong {
   background:url('../images/2017/double11/tips_bg.png') no-repeat center top!important;
   background-size:100%;
   z-index: 999;
+  &.no-change-list {
+    background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+    .btn-invest {
+      margin-top: 40px;
+    }
+  }
+  &.noTime {
+    background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+    .text-tip {
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+    .btn-list {
+      margin-top: 40px;
+    }
+  }
   @media (max-width:700px) {
     width: 300px !important;
     height: 310px !important;
@@ -275,23 +291,34 @@ strong {
     margin-top: -155px !important;
   }
   .text-tip {
-    height: 224px!important;
+    height: 184px!important;
 
     p {
       color: #fff;
       &.success-text {
-        height: 100px;//444
-        padding-top: 0;
-        background: url('../images/single-rank/success-title.png') no-repeat center;
+        width: 200px;
+        height: 50px;//444
+        padding: 0px!important;
+        margin: 0 auto;
+        margin-top: 50px;
+        background: url('../images/2017/double11/success_text.png') no-repeat center;
         background-size: 100%;
         @media (max-width:700px) {
           height:150px;
           margin:-40px 0 0;
         }
       }
+      &.icon_prize {
+        width: 62px;
+        height: 64px;
+        margin: 0 auto;
+        background: url('../images/2017/double11/experience_icon.png') no-repeat center;
+        background-size: 100%;
+      }
       &.reward-text {
-        font-size:34px;
-        color:#ffe973;
+        font-size:24px!important;
+        color:#000;
+        font-weight: bold;
         @media (max-width:700px) {
           font-size: 16px;
           line-height: 30px;
@@ -300,7 +327,7 @@ strong {
       &.login-text {
         font-size: 20px;
         padding-top: 70px;
-        color:#ffe973;
+        color:#fff;
         @media (max-width:700px) {
           padding-top: 90px;
           font-size: 14px;
@@ -354,6 +381,73 @@ strong {
         min-width:100px;
         margin: 15px 20px 10px;
       }
+    }
+  }
+}
+
+@media screen and (max-width:1024px) {
+  .banner {
+    @media screen and (max-width:1024px) {
+      background:url("../images/2017/double11/banner_wap.png") center top no-repeat;
+      background-size: 100%;
+    }
+  }
+  .alone-gifts {
+    width: 100%;
+    background:url("../images/2017/double11/alone1024.png") center top no-repeat;
+
+  }
+  .jde-cart {
+    width: 100%;
+    background:url("../images/2017/double11/jde_bg1024.png") center top no-repeat;
+  }
+}
+@media screen and (max-width:768px) {
+  .con-width {
+    width: 90%;
+  }
+  .alone-gifts {
+    background:url("../images/2017/double11/alone768.png") center top no-repeat;
+    .alone-title {
+      width: 52%;
+    }
+  }
+  .jde-cart {
+      background:url("../images/2017/double11/jde_bg768.png") center top no-repeat;
+    .jde-title {
+      width: 63%;
+    }
+  }
+}
+@media screen and (max-width:414px) {
+  .con-width {
+    width: 90%;
+  }
+  .banner {
+    height: 200px;
+  }
+  .alone-gifts {
+    width: 99%;
+    background:url("../images/2017/double11/alone_wap.png") center top no-repeat;
+    background-size: 100%;
+    .alone-title {
+      position: static;
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 32px;
+      height: 70px;
+    }
+  }
+  .jde-cart {
+    width: 99%;
+    background:url("../images/2017/double11/jde_wap.png") center top no-repeat;
+    background-size: 100%;
+    .jde-title {
+      position: static;
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 32px;
+      height: 70px;
     }
   }
 }

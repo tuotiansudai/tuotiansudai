@@ -40,15 +40,16 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 
 //drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
 //drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
-layer.open({
-    type: 1,
-    title: false,
-    closeBtn: 0,
-    area: ['auto', 'auto'],
-    content: $('#test')
-});
+// layer.open({
+//     type: 1,
+//     title: false,
+//     closeBtn: 0,
+//     scrollbar: false，
+//     area: ['auto', 'auto'],
+//     content: $('#test')
+// });
 //开始抽奖
-
+layer.msg('今天没有抽奖机会了哦~，明天再来吧');
 $pointerBtn.on('click', function(event) {
 
     drawCircleOne.beginLuckDraw(function(data) {
