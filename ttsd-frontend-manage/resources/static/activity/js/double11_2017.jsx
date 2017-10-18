@@ -1,4 +1,5 @@
 require("activityStyle/double11_2017.scss");
+require("activityStyle/media.scss");
 let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');
@@ -44,7 +45,7 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 //     type: 1,
 //     title: false,
 //     closeBtn: 0,
-//     scrollbar: false，
+//     scrollbar: false,
 //     area: ['auto', 'auto'],
 //     content: $('#test')
 // });

@@ -7,12 +7,13 @@
 <div  id="double11">
     <!--第一部分 begin-->
     <div class="alone-gifts page-width">
+        <div class="subsidy"></div>
 
        <div class="con-width">
            <div class="alone-title"></div>
            <div class="alone-rules">
                <dl>
-                   <dd>1. 活动期间投资活动项目，且投资顺序为奇数的用户，可获得其该笔投资额的<i>111111</i><strong>倍体验金</strong>奖励，体验金多投多得，上不封顶；</dd>
+                   <dd>1. 活动期间投资活动项目，且投资顺序为奇数的用户，可获得其该笔投资额的<i></i><strong>倍体验金</strong>奖励，体验金多投多得，上不封顶；</dd>
                    <dd>2.活动期间投资活动项目，且投资顺序为 <strong>偶数</strong>的用户，可获赠 <strong> 一次抽奖机会。</strong>每人每日最多可累计增加10次抽奖机会，如用户当日新增抽奖机会超过10次，则机会不再随投资次数的累计而增加。</dd>
                </dl>
            </div>
@@ -36,7 +37,7 @@
                            </ul>
                            <div class="record-list">
                                <ul class="record-model user-record" >
-                                   <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li>
+                                   <li>恭喜139****7148抽中 20元现金红包</li>  <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li>
                                </ul>
                                <ul class="record-model own-record" style="display: none"></ul>
                            </div>
@@ -50,6 +51,7 @@
 
     <!--第二部分 begin-->
     <div class="jde-cart page-width">
+        <div class="fly"></div>
         <div class="jde-title"></div>
         <div class="con-width">
             <div class="jde-rules">
@@ -93,18 +95,18 @@
     <#--奖品提示-->
     <div class="tip-list-frame">
         <!-- 真实奖品的提示 -->
-        <div class="tip-list" data-return="concrete">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="success-text"></p>
-                <p class="reward-text"><em class="prizeValue"></em></p>
-                <p class="des-text">请实名认证后再来抽奖吧！</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>
-        </div>
+        <#--<div class="tip-list" data-return="concrete" id="test">-->
+            <#--<div class="close-btn go-close"></div>-->
+            <#--<div class="text-tip">-->
+                <#--<p class="success-text"></p>-->
+                <#--<p class="reward-text"><em class="prizeValue"></em></p>-->
+                <#--<p class="des-text">请实名认证后再来抽奖吧！</p>-->
+            <#--</div>-->
+            <#--<div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>-->
+        <#--</div>-->
 
         <!--虚拟奖品的提示-->
-        <div class="tip-list" data-return="virtual">
+        <div class="tip-list"  data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="success-text"></p>
@@ -124,24 +126,24 @@
             <div class="btn-list btn-invest"><a href="/loan-list" class="go-close">去投资</a></div>
         </div>
 
-        <!--不在活动时间范围内-->
-        <div class="tip-list noTime" data-return="expired">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="login-text">不在活动时间内~</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">去投资</a></div>
-        </div>
+        <#--<!--不在活动时间范围内&ndash;&gt;-->
+        <#--<div class="tip-list noTime" id="test" data-return="expired">-->
+            <#--<div class="close-btn go-close"></div>-->
+            <#--<div class="text-tip">-->
+                <#--<p class="login-text">不在活动时间内~</p>-->
+            <#--</div>-->
+            <#--<div class="btn-list"><a href="javascript:void(0)" class="go-close">去投资</a></div>-->
+        <#--</div>-->
 
         <!--实名认证-->
-        <div class="tip-list noTime" data-return="authentication">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p class="login-text">您还未实名认证~</p>
-                <p class="des-text">请实名认证后再来抽奖吧！</p>
-            </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>
-        </div>
+        <#--<div class="tip-list noTime" data-return="authentication">-->
+            <#--<div class="close-btn go-close"></div>-->
+            <#--<div class="text-tip">-->
+                <#--<p class="login-text">您还未实名认证~</p>-->
+                <#--<p class="des-text">请实名认证后再来抽奖吧！</p>-->
+            <#--</div>-->
+            <#--<div class="btn-list"><a href="javascript:void(0)" class="go-close">确定</a></div>-->
+        <#--</div>-->
     </div>
 </div>
 
