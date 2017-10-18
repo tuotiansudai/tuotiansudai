@@ -7,6 +7,7 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
     private String loanAmount;
     private String square;
     private String propertyCardId;
+    private String propertyRightCertificateId;
     private String estateRegisterId;
     private String authenticAct;
 
@@ -14,11 +15,12 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
         super();
     }
 
-    public PledgeHouseModel(long loanId, String pledgeLocation, String estimateAmount, String loanAmount, String square, String propertyCardId, String estateRegisterId, String authenticAct) {
+    public PledgeHouseModel(long loanId, String pledgeLocation, String estimateAmount, String loanAmount, String square, String propertyCardId, String propertyRightCertificateId, String estateRegisterId, String authenticAct) {
         super(loanId, pledgeLocation, estimateAmount);
         this.loanAmount = loanAmount;
         this.square = square;
         this.propertyCardId = propertyCardId;
+        this.propertyRightCertificateId = propertyRightCertificateId;
         this.estateRegisterId = estateRegisterId;
         this.authenticAct = authenticAct;
     }
@@ -30,6 +32,7 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
         this.loanAmount = pledgeHouseDto.getLoanAmount();
         this.square = pledgeHouseDto.getSquare();
         this.propertyCardId = pledgeHouseDto.getPropertyCardId();
+        this.propertyRightCertificateId = pledgeHouseDto.getPropertyRightCertificateId();
         this.estateRegisterId = pledgeHouseDto.getEstateRegisterId();
         this.authenticAct = pledgeHouseDto.getAuthenticAct();
     }
@@ -41,6 +44,7 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
         this.loanAmount = pledgeHouse.getPledgeLoanAmount();
         this.square = pledgeHouse.getSquare();
         this.propertyCardId = pledgeHouse.getPropertyCardId();
+        this.propertyRightCertificateId = pledgeHouse.getPropertyRightCertificateId();
         this.estateRegisterId = pledgeHouse.getEstateRegisterId();
         this.authenticAct = pledgeHouse.getAuthenticAct();
     }
@@ -67,6 +71,14 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
 
     public void setPropertyCardId(String propertyCardId) {
         this.propertyCardId = propertyCardId;
+    }
+
+    public String getPropertyRightCertificateId() {
+        return propertyRightCertificateId;
+    }
+
+    public void setPropertyRightCertificateId(String propertyRightCertificateId) {
+        this.propertyRightCertificateId = propertyRightCertificateId;
     }
 
     public String getEstateRegisterId() {

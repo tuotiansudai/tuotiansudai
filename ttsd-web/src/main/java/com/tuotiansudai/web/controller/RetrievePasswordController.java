@@ -86,15 +86,15 @@ public class RetrievePasswordController {
         return new ModelAndView("/input-password").addObject("mobile", retrievePasswordDto.getMobile()).addObject("captcha", retrievePasswordDto.getCaptcha());
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/imageCaptcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/imageCaptcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha/{isVoice}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<SmsDataDto> mobileCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile, @PathVariable String imageCaptcha) {
+    public BaseDto<SmsDataDto> mobileCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile, @PathVariable String imageCaptcha, @PathVariable boolean isVoice) {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
         boolean result = captchaHelper.captchaVerify(imageCaptcha, httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
         if (result) {
-            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
+            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, isVoice, RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }

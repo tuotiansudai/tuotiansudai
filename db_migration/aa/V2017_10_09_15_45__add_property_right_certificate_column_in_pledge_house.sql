@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`pledge_house` add `property_right_certificate_id` VARCHAR(30) AFTER `property_card_id`;
