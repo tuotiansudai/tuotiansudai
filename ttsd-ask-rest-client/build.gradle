@@ -14,6 +14,8 @@ sourceSets {
 dependencies {
     compile project(':ttsd-rest-client')
     compile project(':ttsd-edxask-model')
+
+    testCompile project(path: ':ttsd-rest-client', configuration: 'tests')
 }
 
 processResources.outputs.upToDateWhen { false }

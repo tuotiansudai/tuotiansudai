@@ -25,7 +25,8 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class AskRestClientTest {
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+public class AskRestClientTest {
     @Value("${ask.rest.server}")
     private String askRestServerUrl;
 
