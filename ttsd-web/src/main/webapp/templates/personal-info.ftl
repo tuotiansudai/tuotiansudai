@@ -62,7 +62,7 @@
             <#if noPasswordInvest>
                 <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" data-url="/no-password-invest/disabled" href="javascript:void(0);">关闭</a>
+                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>
             <#elseif autoInvest>
                 <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
@@ -179,11 +179,11 @@
         </dl>
     </form>
     <form id="turnOnNoPasswordInvestForm" name="turnOnNoPasswordInvestForm" >
-        <dl style="position: relative">
+        <dl style="position: relative;margin-bottom: 0px;">
             <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>
-                <span>短信验证码：</span>
-                <input type="captcha" name="captcha" class="input-control sms-captcha captcha" placeholder="请输入短信验证码" maxlength="6">
+                <span>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
+                <input type="captcha" name="captcha" class="input-control sms-captcha captcha" placeholder="请输入验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <button type="button" class="btn-normal get-captcha" disabled="disabled" data-url="/no-password-invest/send-captcha">获取验证码</button>
                 <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
@@ -193,12 +193,31 @@
         </dl>
         <div class="error-box" ></div>
         <div class="tc person-info-btn">
-            <button class="btn btn-success btn-cancel" type="button">取消</button>
-            <button class="btn btn-close btn-close-turn-off" type="submit">我要开启</button>
+            <button class="btn btn-cancel" type="button">取消</button>
+            <button class="btn btn-success btn-close-turn-off" type="submit">我要开启</button>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
+</div>
+<#--关闭免密支付 -->
+<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+        <div class="tc text-m">免密支付可以帮助您在投资时快速购买标的，<br/>您是否确认关闭免密支付？</div>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>
+            <button class="btn btn-success btn-turn-off" type="button">我要关闭</button>
+        </div>
+</div>
+<#--已关闭免密支付 -->
+<div id="alreadyTurnOffDOM" class="pad-m popLayer" style="display: none;">
+
+        <div class="font-icon"></div>
+        <div class="tc text-m">免密支付已关闭</div>
+        <div class="tc person-info-btn" style="margin-top:10px;">
+            <button class="btn  btn-success" type="button">我知道了</button>
+        </div>
+
 </div>
 <div id="noPasswordInvestDOM" class="pad-m" style="display: none;">
     <p>请在新打开的联动优势页面充值完成后选择：</p>

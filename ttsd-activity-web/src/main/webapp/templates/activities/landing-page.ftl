@@ -141,13 +141,15 @@
                                        class="appCaptcha fl" value="">
                             </li>
                         
-                            <li class="reg-row-container">
+                            <li class="reg-row-container voice-row">
                             <#--手机验证码:-->
                                 <i class="icon-captcha reg-icon"></i>
                                 <span class="captcha-tag" id="pcCaptcha">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                                 <input validate type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
+                           <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
+
                             </span>
                             </li>
                     

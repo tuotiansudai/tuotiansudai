@@ -12,6 +12,43 @@
     color: #ff9c1b;
   }
 }
+#alreadyTurnOffDOM {
+  .font-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    background:url('../../images/myaccount/rightOk.png') no-repeat center;
+    background-size:100%;
+  }
+  .text-m {
+    margin-top: 10px;
+  }
+}
+#turnOnNoPasswordInvestForm {
+  .person-info-btn {
+    margin-top: 16px;
+  }
+  .error-box {
+    text-indent: 86px;
+  }
+}
+
+.person-info-btn {
+  button {
+    margin-top: 0px;
+    width: 37%;
+    letter-spacing: 2px;
+    font-size: 13px;
+    &.btn-cancel {
+      margin-right:20px;
+    }
+    &.btn-close {
+      background: #e5e5e5;
+      border-width: 0!important;
+      color:#808080;
+    }
+  }
+}
 .img-captcha {
   width: 134px;
 }

@@ -338,7 +338,7 @@ form label.error {
     left: 0;
     right:0;
     margin:0 auto;
-    top: 20px;
+    top: 0px;
     padding-top: 12px;
     width:1000px;
     height: 350px;
@@ -346,7 +346,7 @@ form label.error {
 
     .register-box {
       position: absolute;
-      padding: 25px 25px 25px 25px;
+      padding: 20px 25px 25px 25px;
       right: 0px;
       background: rgba(255, 255, 255, 0.8);
       border-radius: 5px;
@@ -394,6 +394,15 @@ form label.error {
           span.error{
             display: inline-block;
             width: 100%;
+
+          }
+          &.voice-row {
+            span.error{
+              @media screen and (max-width: 700px) {
+                line-height: 49px;
+                text-indent: 20px;
+              }
+            }
           }
 
           .img-change {
@@ -416,7 +425,26 @@ form label.error {
             position: relative;
             display: inline-block;
             width: 90%;
-
+            height: 29px;
+            margin-bottom: 5px;
+            .voice-captcha {
+              position: absolute;
+              right: -34px;
+              top: 29px;
+              width: 190px;
+              font-size: 12px;
+              color: #808080;
+              @media screen and (max-width: 700px) {
+                position: absolute;
+                top:45px;
+              }
+              a {
+                color: #ff473c;
+                @media screen and (max-width: 700px) {
+                  color: #ffe500;
+                }
+              }
+            }
             .fetch-captcha {
               width: 100px;
               height: 30px;
@@ -466,7 +494,7 @@ form label.error {
           &.agree-register-protocol {
             position: relative;
             margin-left: 0;
-
+            margin-top:35px;
             .check-label {
               position: absolute;
               top: 1px;
@@ -763,7 +791,7 @@ form label.error {
       .register-box {
         position: static;
         display: inline-block;
-        padding: 25px 0px 25px 0px;
+        padding: 25px 0px 10px 0px;
         background: #362d50;
         width: 300px;
 
