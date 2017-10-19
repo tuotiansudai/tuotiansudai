@@ -92,12 +92,22 @@ function toLogin() {
     }
 }
 //点击登录弹框登录
-$loginBtn.on('click',function(event){
+$('.to-login-btn').off('click');
+$('.to-login-btn').on('click',function(event){
+    debugger
     event.preventDefault();
     //判断是否需要弹框登陆
     toLogin();
 
 })
+//toLogin();
+// layer.open({
+//     type: 1,
+//     title: false,
+//     closeBtn: 0,
+//     area: ['auto', 'auto'],
+//     content: $('#loginTip')
+// });
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
@@ -107,15 +117,15 @@ drawCircleOne.GiftRecord();
 drawCircleOne.MyGift(function(){
     pageTurn();
 });
-(function(){
-
-})();
+$iconPrize.css({
+    'backgroundImg':'../images/2017/double11/coupon.png'
+});
 drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 
 //开始抽奖
 $pointerBtn.on('click', function(event) {
     drawCircleOne.beginLuckDraw(function(data) {
-        console.log(data)
+        alert(data)
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
@@ -124,9 +134,9 @@ $pointerBtn.on('click', function(event) {
                 case 'DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_5': //0.5%加息券
                     angleNum=45*0;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('0.5%加息券');
-                    $iconPrize.css({
-                        'backgroundImg':'../images/2017/double11/coupon.png'
-                    });
+                    // $iconPrize.css({
+                    //     'backgroundImg':'../images/2017/double11/coupon.png'
+                    // });
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_JD_E_CARD_200': //200元京东E卡
                     angleNum=45*1;
@@ -135,30 +145,30 @@ $pointerBtn.on('click', function(event) {
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_200': //200元红包
                     angleNum=45*2;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('200元红包');
-                    $iconPrize.css({
-                        'backgroundImg':'../images/2017/double11/red_ware.png'
-                    });
+                    // $iconPrize.css({
+                    //     'backgroundImg':'../images/2017/double11/red_ware.png'
+                    // });
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_2': //0.2%加息券
                     angleNum=45*3;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('0.2%加息券');
-                    $iconPrize.css({
-                        'backgroundImg':'../images/2017/double11/coupon.png'
-                    });
+                    // $iconPrize.css({
+                    //     'backgroundImg':'../images/2017/double11/coupon.png'
+                    // });
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_100': //100元红包
                     angleNum=45*4;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('100元红包');
-                    $iconPrize.css({
-                        'backgroundImg':'../images/2017/double11/red_ware.png'
-                    })
+                    // $iconPrize.css({
+                    //     'backgroundImg':'../images/2017/double11/red_ware.png'
+                    // })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_20':  //20元红包
                     angleNum=45*5;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('20元红包');
-                    $iconPrize.css({
-                        'backgroundImg':'../images/2017/double11/red_ware.png'
-                    })
+                    // $iconPrize.css({
+                    //     'backgroundImg':'../images/2017/double11/red_ware.png'
+                    // })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000':  //1000元体验金
                     angleNum=45*6;
@@ -167,9 +177,9 @@ $pointerBtn.on('click', function(event) {
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_50': //50元红包
                     angleNum=45*7;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('50元红包');
-                    $iconPrize.css({
-                        'backgroundImg':'../images/2017/double11/red_ware.png'
-                    })
+                    // $iconPrize.css({
+                    //     'backgroundImg':'../images/2017/double11/red_ware.png'
+                    // })
                     break;
             }
             drawCircleOne.rotateFn(angleNum,tipGroupObj['virtual']);
@@ -195,15 +205,6 @@ $pointerBtn.on('click', function(event) {
 
 
 //点击切换按钮
-// drawCircleOne.PrizeSwitch(function(){
-//
-//     if($myGiftDOM.hasClass('.active')) {
-//         $pageNumber.show();
-//         alert(2)
-//     }else {
-//         alert(3)
-//     }
-// });
 (function(){
     var menuCls = $('.gift-record').find('li'),
         contentCls = $double11.find('.record-list ul');

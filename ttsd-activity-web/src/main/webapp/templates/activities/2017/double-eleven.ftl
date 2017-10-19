@@ -70,7 +70,7 @@
                 <div class="awarded">已获取</div>
                 <div class="reward"> <div class="reward-con">￥<span id="reward_count">${jdAmount}</span></div> </div>
                 <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" class="to-login-btn">登录后查看已获得奖励></a></div>
-                <div class="small-btn" id="to_invest">获得更多奖励</div>
+                <div class="small-btn" id="to_invest"><a href="/loan-list"></a>获得更多奖励</div>
             </div>
         </div>
     </div>
