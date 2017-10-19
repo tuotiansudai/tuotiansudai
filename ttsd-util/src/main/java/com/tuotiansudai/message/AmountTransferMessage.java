@@ -19,6 +19,8 @@ public class AmountTransferMessage {
 
     private String interventionReason;
 
+    private AmountTransferMessage next;
+
     public AmountTransferMessage() {
 
     }
@@ -90,4 +92,11 @@ public class AmountTransferMessage {
         this.interventionReason = interventionReason;
     }
 
+    public AmountTransferMessage getNext() {
+        return next;
+    }
+
+    public void setNext(AmountTransferMessage next) {
+        this.next = next;
+    }
 }
