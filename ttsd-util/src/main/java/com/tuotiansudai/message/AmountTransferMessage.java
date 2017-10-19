@@ -89,4 +89,5 @@ public class AmountTransferMessage {
     public void setInterventionReason(String interventionReason) {
         this.interventionReason = interventionReason;
     }
+
 }

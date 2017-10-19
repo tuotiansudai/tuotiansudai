@@ -38,14 +38,14 @@ public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService {
 
         switch (sendSmsCompositeRequestDto.getType()) {
             case REGISTER_CAPTCHA:
-                smsDto = smsCaptchaService.sendRegisterCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), remoteIp);
+                smsDto = smsCaptchaService.sendRegisterCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), false, remoteIp);
                 break;
             case RETRIEVE_PASSWORD_CAPTCHA:
-                smsDto = smsCaptchaService.sendRetrievePasswordCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), remoteIp);
+                smsDto = smsCaptchaService.sendRetrievePasswordCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), false, remoteIp);
                 break;
             case NO_PASSWORD_INVEST:
             case TURN_OFF_NO_PASSWORD_INVEST:
-                smsDto = smsCaptchaService.sendNoPasswordInvestCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), remoteIp);
+                smsDto = smsCaptchaService.sendNoPasswordInvestCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), false, remoteIp);
                 break;
         }
 
