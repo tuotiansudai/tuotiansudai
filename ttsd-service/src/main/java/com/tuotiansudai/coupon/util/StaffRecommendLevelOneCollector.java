@@ -5,9 +5,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.repository.mapper.UserRecommendationMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StaffRecommendLevelOneCollector implements UserCollector{
+public class StaffRecommendLevelOneCollector implements UserCollector {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserRecommendationMapper userMapper;
 
     @Override
     public List<String> collect(long couponId) {

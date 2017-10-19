@@ -2,6 +2,7 @@ package com.tuotiansudai.rest.client.mapper;
 
 import com.tuotiansudai.dto.request.UpdateUserInfoRequestDto;
 import com.tuotiansudai.dto.request.UserRestQueryDto;
+import com.tuotiansudai.dto.response.UserInfo;
 import com.tuotiansudai.dto.response.UserRestPagingResponse;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
@@ -12,7 +13,6 @@ import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,24 +41,24 @@ public class UserMapperRest implements UserMapper {
     public UserModel findByIdentityNumber(String identityNumber) {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setIdentityNumber(identityNumber);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getTotalCount() > 0 ? searchResult.getItems().get(0) : null;
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getTotalCount() > 0 ? searchResult.getItems().get(0).toUserModel() : null;
     }
 
     @Override
     public UserModel findByEmail(String email) {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setEmail(email);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getTotalCount() > 0 ? searchResult.getItems().get(0) : null;
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getTotalCount() > 0 ? searchResult.getItems().get(0).toUserModel() : null;
     }
 
     @Override
     public List<String> findAllLoginNames() {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setFields("login_name");
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getItems().stream().map(UserModel::getLoginName).collect(Collectors.toList());
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::getLoginName).collect(Collectors.toList());
     }
 
     @Override
@@ -87,8 +87,8 @@ public class UserMapperRest implements UserMapper {
     public List<UserModel> findUsersByChannel(List<String> channels) {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setChannels(channels);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getItems();
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
     }
 
     @Override
@@ -98,8 +98,8 @@ public class UserMapperRest implements UserMapper {
         queryDto.setRegisterTimeLte(endTime);
         queryDto.setReferrer(referrer);
         queryDto.setSort("register_time");
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getItems();
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
     }
 
     @Override
@@ -107,8 +107,8 @@ public class UserMapperRest implements UserMapper {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setFields("login_name");
         queryDto.setRole(role);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getItems().stream().map(UserModel::getLoginName).collect(Collectors.toList());
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::getLoginName).collect(Collectors.toList());
     }
 
     @Override
@@ -116,14 +116,14 @@ public class UserMapperRest implements UserMapper {
         UserRestQueryDto queryDto = new UserRestQueryDto(1, 1);
         queryDto.setFields("login_name");
         queryDto.setRole(role);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
         return searchResult.getTotalCount();
     }
 
     @Override
     public long findUsersCount() {
         UserRestQueryDto queryDto = new UserRestQueryDto(1, 1);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
         return searchResult.getTotalCount();
     }
 
@@ -132,35 +132,34 @@ public class UserMapperRest implements UserMapper {
         UserRestQueryDto queryDto = new UserRestQueryDto(page, pageSize);
         queryDto.setMobileLike(mobile);
         queryDto.setSort("-register_time");
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        return searchResult.getItems();
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
     }
 
     @Override
     public int findCountByMobileLike(String mobile) {
         UserRestQueryDto queryDto = new UserRestQueryDto(1, 1);
         queryDto.setMobileLike(mobile);
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
         return searchResult.getTotalCount();
     }
 
     @Override
-    public List<String> findAllRecommendation(HashMap<String, Object> districtName) {
-        return userMapperDB.findAllRecommendation(districtName);
+    public List<UserModel> findEmptyProvinceUsers() {
+        UserRestPagingResponse<UserModel> searchResult = userRestClient.findEmptyProvinceUsers(100);
+        return searchResult.getItems();
+    }
+
+    @Override
+    public void updateProvinceAndCity(String loginName, String province, String city) {
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
+        updateDto.setProvince(province);
+        updateDto.setCity(city);
+        userRestClient.update(updateDto);
     }
 
     @Override
     public UserModel lockByLoginName(String loginName) {
         return userMapperDB.lockByLoginName(loginName);
-    }
-
-    @Override
-    public List<UserModel> findUsersByProvince() {
-        return userMapperDB.findUsersByProvince();
-    }
-
-    @Override
-    public int updateProvinceAndCity(String loginName, String province, String city) {
-        return userMapperDB.updateProvinceAndCity(loginName, province, city);
     }
 }

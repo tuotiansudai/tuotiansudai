@@ -1,7 +1,7 @@
 sign-in:
   image: "leoshi/ttsd-signin-flask"
   volumes:
-    - ./signin_service:/app
+    - ./ttsd-user-rest-service:/app
     - /var/log/tuotian/signin:/var/log/signin
   ports:
     - "20001:80"

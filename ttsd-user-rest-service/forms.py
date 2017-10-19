@@ -139,3 +139,6 @@ class UserQueryForm(wtforms.Form):
     mobile__like = wtforms.StringField('mobile__like', [wtforms.validators.optional()])
     register_time__gte = wtforms.DateTimeField('register_time__gte', [wtforms.validators.optional()])
     register_time__lte = wtforms.DateTimeField('register_time__lte', [wtforms.validators.optional()])
+
+class QueryLimitForm(wtforms.Form):
+    limit = wtforms.IntegerField('limit', [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])

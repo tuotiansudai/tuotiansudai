@@ -51,6 +51,9 @@ public class ConsoleCouponService {
     private UserMapper userMapper;
 
     @Autowired
+    private UserRecommendationMapper userRecommendationMapper;
+
+    @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
 
     @Autowired
@@ -178,7 +181,7 @@ public class ConsoleCouponService {
             case STAFF:
                 return userMapper.findCountByRole(Role.ZC_STAFF) + userMapper.findCountByRole(Role.SD_STAFF);
             case STAFF_RECOMMEND_LEVEL_ONE:
-                return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+                return userRecommendationMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
             case MEMBERSHIP_V0:
                 return userMembershipMapper.countMembershipByLevel(0);
             case MEMBERSHIP_V1:

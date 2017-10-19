@@ -61,19 +61,11 @@
         select * from user where email = #{email} and status = 'ACTIVE'
     </select>
 
-    <!--
-    findAllLoginNames
-    -->
     <update id="updateEmail" parameterType="map">
         update user set
         email = #{email}
         where login_name = #{loginName}
     </update>
-
-    <!--
-    updateSignInCount
-    updateUserNameAndIdentityNumber
-    -->
 
     <select id="findUsersByChannel" parameterType="map" resultMap="userResultMap">
         select * from user where channel is not null
@@ -93,55 +85,12 @@
         order by register_time
     </select>
 
-    <!--
-    findAllByRole
-    findCountByRole
-    -->
-
     <select id="findUsersCount" resultType="long">
         select count(1) FROM user
     </select>
 
-    <!--
-    findUserModelByMobileLike
-    findCountByMobileLike
-    -->
-
-    <update id="updateProvinceAndCity" parameterType="map">
-        update user set
-        province = #{province},
-        city = #{city}
-        where login_name = #{loginName}
-    </update>
-
     <select id="lockByLoginName" parameterType="string" resultMap="userResultMap" useCache="false">
         select * from user where login_name = #{loginName} for update
-    </select>
-
-    <select id="findUsersByProvince" resultMap="userResultMap" useCache="false">
-        select * from user
-        where province is NULL
-        or province = ''
-        order by register_time desc
-        limit 0, 100
-    </select>
-
-    <select id="findAllRecommendation" resultType="java.lang.String">
-        SELECT
-        r.login_name
-        FROM
-        referrer_relation r
-        JOIN user_role u
-        ON r.`referrer_login_name` = u.`login_name`
-        AND u.`role` in ('SD_STAFF', 'ZC_STAFF')
-        <if test="districtName != null and districtName.size != 0">
-            join user ur on ur.login_name = r.login_name
-            and ur.province in
-            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        WHERE r.`level` = '1'
     </select>
 
 

@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.FeignClientConfig;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.rest.client.mapper.UserMapperRest;
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -56,7 +57,7 @@ class UserMapperDBShadow implements UserMapper {
 
     @Override
     public List<String> findAllLoginNames() {
-        return mapper.findAllLoginNames();
+        throw new NotImplementedException("updateSignInCount not support for test, please Mock UserMapper for test");
     }
 
     @Override
@@ -66,12 +67,12 @@ class UserMapperDBShadow implements UserMapper {
 
     @Override
     public void updateSignInCount(String loginName, int signInCount) {
-        mapper.updateSignInCount(loginName, signInCount);
+        throw new NotImplementedException("updateSignInCount not support for test, please Mock UserMapper for test");
     }
 
     @Override
     public void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber) {
-        mapper.updateUserNameAndIdentityNumber(loginName, userName, identityNumber);
+        throw new NotImplementedException("updateUserNameAndIdentityNumber not support for test, please Mock UserMapper for test");
     }
 
     @Override
@@ -86,12 +87,12 @@ class UserMapperDBShadow implements UserMapper {
 
     @Override
     public List<String> findAllByRole(Role role) {
-        return mapper.findAllByRole(role);
+        throw new NotImplementedException("findAllByRole not support for test, please Mock UserMapper for test");
     }
 
     @Override
     public long findCountByRole(Role role) {
-        return mapper.findCountByRole(role);
+        throw new NotImplementedException("findCountByRole not support for test, please Mock UserMapper for test");
     }
 
     @Override
@@ -101,17 +102,12 @@ class UserMapperDBShadow implements UserMapper {
 
     @Override
     public List<UserModel> findUserModelByMobileLike(String mobile, int page, int pageSize) {
-        return mapper.findUserModelByMobileLike(mobile, page, pageSize);
+        throw new NotImplementedException("findUserModelByMobileLike not support for test, please Mock UserMapper for test");
     }
 
     @Override
     public int findCountByMobileLike(String mobile) {
-        return mapper.findCountByMobileLike(mobile);
-    }
-
-    @Override
-    public List<String> findAllRecommendation(HashMap<String, Object> districtName) {
-        return mapper.findAllRecommendation(districtName);
+        throw new NotImplementedException("findCountByMobileLike not support for test, please Mock UserMapper for test");
     }
 
     @Override
@@ -120,12 +116,12 @@ class UserMapperDBShadow implements UserMapper {
     }
 
     @Override
-    public List<UserModel> findUsersByProvince() {
-        return mapper.findUsersByProvince();
+    public List<UserModel> findEmptyProvinceUsers() {
+        throw new NotImplementedException("findEmptyProvinceUsers not support for test, please Mock UserMapper for test");
     }
 
     @Override
-    public int updateProvinceAndCity(String loginName, String province, String city) {
-        return mapper.updateProvinceAndCity(loginName, province, city);
+    public void updateProvinceAndCity(String loginName, String province, String city) {
+        throw new NotImplementedException("updateProvinceAndCity not support for test, please Mock UserMapper for test");
     }
 }

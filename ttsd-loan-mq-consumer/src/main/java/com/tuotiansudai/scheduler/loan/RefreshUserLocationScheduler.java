@@ -27,7 +27,7 @@ public class RefreshUserLocationScheduler {
         logger.info("RefreshUserLocationScheduler start ...");
         try {
             while (true) {
-                List<UserModel> userModels = userMapper.findUsersByProvince();
+                List<UserModel> userModels = userMapper.findEmptyProvinceUsers();
                 if (CollectionUtils.isEmpty(userModels)) {
                     break;
                 }

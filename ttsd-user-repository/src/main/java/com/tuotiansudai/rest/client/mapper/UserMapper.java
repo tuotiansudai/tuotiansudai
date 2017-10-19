@@ -2,7 +2,6 @@ package com.tuotiansudai.rest.client.mapper;
 
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -15,42 +14,34 @@ public interface UserMapper {
 
     UserModel findByEmail(String email);
 
-    List<String> findAllLoginNames(); // not implement with mybatis
+    List<String> findAllLoginNames();
 
-    void updateEmail(String loginName, String email); // not implement with mybatis
+    void updateEmail(String loginName, String email);
 
-    void updateSignInCount(String loginName, int signInCount); // not implement with mybatis
+    void updateSignInCount(String loginName, int signInCount);
 
-    void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber); // not implement with mybatis
+    void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber);
 
-    List<UserModel> findUsersByChannel(List<String> channels);// not implement with mybatis
+    List<UserModel> findUsersByChannel(List<String> channels);
 
-    List<UserModel> findUsersByRegisterTimeOrReferrer(@Param(value = "startTime") Date startTime,
-                                                      @Param(value = "endTime") Date endTime,
-                                                      @Param(value = "referrer") String referrer);
+    List<UserModel> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer);
 
-    List<String> findAllByRole(Role role);// not implement with mybatis
+    List<String> findAllByRole(Role role);
 
-    long findCountByRole(Role role);// not implement with mybatis
+    long findCountByRole(Role role);
 
     long findUsersCount();
 
-    List<UserModel> findUserModelByMobileLike(String mobile, int page, int pageSize);// not implement with mybatis
+    List<UserModel> findUserModelByMobileLike(String mobile, int page, int pageSize);
 
-    int findCountByMobileLike(String mobile);// not implement with mybatis
+    int findCountByMobileLike(String mobile);
+
+    List<UserModel> findEmptyProvinceUsers();
+
+    void updateProvinceAndCity(String loginName, String province, String city);
 
     // call UserMapperDB
-
-    List<String> findAllRecommendation(HashMap<String, Object> districtName);
-
     UserModel lockByLoginName(String loginName);
-
-    List<UserModel> findUsersByProvince();
-
-    int updateProvinceAndCity(@Param(value = "loginName") String loginName,
-                              @Param(value = "province") String province,
-                              @Param(value = "city") String city);
-
 
     default UserModel findByMobile(String mobile) {
         return findByLoginNameOrMobile(mobile);

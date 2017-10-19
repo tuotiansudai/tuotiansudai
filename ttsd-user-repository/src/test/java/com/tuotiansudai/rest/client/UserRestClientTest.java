@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.ask.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.dto.request.*;
 import com.tuotiansudai.dto.response.UserInfo;
 import com.tuotiansudai.dto.response.UserRestPagingResponse;
@@ -13,7 +11,7 @@ import com.tuotiansudai.dto.response.UserRestResponseBase;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
-import org.apache.log4j.MDC;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -26,6 +24,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -34,9 +36,10 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class UserRestClientTest {
-    @Value("${ask.rest.server}")
-    private String askRestServerUrl;
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+public class UserRestClientTest {
+    @Value("${user.rest.server}")
+    private String userRestServerUrl;
 
     @Autowired
     private UserRestClient userRestClient;
@@ -47,29 +50,28 @@ import static org.junit.Assert.assertTrue;
     @Before
     public void mockService() throws IOException {
         this.objectMapper = new ObjectMapper();
-//        this.mockServer = new MockWebServer();
-//        URL url = new URL(askRestServerUrl);
-//        this.mockServer.start(InetAddress.getByName(url.getHost()), url.getPort());
+        this.mockServer = new MockWebServer();
+        URL url = new URL(userRestServerUrl);
+        this.mockServer.start(InetAddress.getByName(url.getHost()), url.getPort());
     }
 
     @Test
-    @Ignore
     public void shouldRegisterUser() throws JsonProcessingException {
-//        String currentUserId = "yyyyyy";
-//        MDC.put("requestId", "xxxxxxx");
-//        MDC.put("userId", currentUserId);
-        RegisterRequestDto requestDto = new RegisterRequestDto(
-                "13800138012", "123abc", null, "Test", Source.WEB);
-//        this.mockServer.enqueue(buildCreateQuestionResponse(requestDto));
+        RegisterRequestDto requestDto = new RegisterRequestDto("13800138012", "123abc", null, "Test", Source.WEB);
+        UserRestUserInfo mockResp = buildMockUserRestUserInfoResponse(requestDto.getMobile(), requestDto.getChannel(), requestDto.getSource(), null);
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 201));
+
         UserRestUserInfo responseUserInfo = userRestClient.register(requestDto);
         UserInfo userInfo = responseUserInfo.getUserInfo();
         UserModel userModel = userInfo.toUserModel();
-        assertEquals(requestDto.getMobile(), userInfo.getMobile());
+        assertEquals(requestDto.getMobile(), userModel.getMobile());
     }
 
-    @Ignore
     @Test
-    public void shouldUpdateUser() {
+    public void shouldUpdateUser() throws JsonProcessingException {
+        UserRestUserInfo mockResp = buildMockUserRestUserInfoResponse("13800000000", "test", Source.WEB, null);
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
+
         UpdateUserInfoRequestDto requestDto = new UpdateUserInfoRequestDto("xaxwlnqf");
         requestDto.setLastModifiedTime(new Date());
         UserRestUserInfo responseUserInfo = userRestClient.update(requestDto);
@@ -77,53 +79,94 @@ import static org.junit.Assert.assertTrue;
         assertEquals(requestDto.getEmail(), userInfo.getEmail());
     }
 
-    @Ignore
     @Test
-    public void shouldFindUser() {
+    public void shouldFindUser() throws JsonProcessingException {
+        UserRestUserInfo mockResp = buildMockUserRestUserInfoResponse("13800000000", "test", Source.WEB, "test@test.com");
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
         UserRestUserInfo responseUserInfo = userRestClient.findByLoginNameOrMobile("xaxwlnqf");
         UserInfo userInfo = responseUserInfo.getUserInfo();
         assertEquals("test@test.com", userInfo.getEmail());
     }
 
-    @Ignore
     @Test
-    public void shouldSearchUser() {
+    public void shouldSearchUser() throws JsonProcessingException {
+        UserRestPagingResponse mockResp = buildMockUserRestUserInfoPagingResponse("13800000000", "test", Source.WEB, "test@test.com");
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
+
         UserRestQueryDto queryDto = new UserRestQueryDto(1);
         queryDto.setFields("login_name", "register_time");
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.search(queryDto);
-        List<UserModel> userModelList = searchResult.getItems();
-        assertEquals(0, userModelList.size());
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        List<UserInfo> userModelList = searchResult.getItems();
+        assertEquals(1, userModelList.size());
     }
 
-    @Ignore
     @Test
-    public void shouldChangePassword() {
+    public void shouldChangePassword() throws JsonProcessingException {
+        UserRestUserInfo mockResp = buildMockUserRestUserInfoResponse("13800000000", "test", Source.WEB, "test@test.com");
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
+
         ChangePasswordRequestDto requestDto = new ChangePasswordRequestDto("xaxwlnqf", "123abc", "110abc");
-        UserRestResponseBase response = userRestClient.changePassword(requestDto);
+        UserRestUserInfo response = userRestClient.changePassword(requestDto);
         assertTrue(response.isSuccess());
     }
 
-    @Ignore
     @Test
-    public void shouldResetPassword() {
+    public void shouldResetPassword() throws JsonProcessingException {
+        UserRestUserInfo mockResp = buildMockUserRestUserInfoResponse("13800000000", "test", Source.WEB, "test@test.com");
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
+
         ResetPasswordRequestDto requestDto = new ResetPasswordRequestDto("xaxwlnqf", "123abc");
         UserRestResponseBase response = userRestClient.resetPassword(requestDto);
         assertTrue(response.isSuccess());
     }
-//    UserRestChangePasswordRequestDto requestDto = new UserRestChangePasswordRequestDto()
 
-    private MockResponse buildCreateQuestionResponse(QuestionRequestDto requestDto) throws JsonProcessingException {
-        QuestionModel questionModel = new QuestionModel(String.valueOf(MDC.get("userId")), "123", "123",
-                requestDto.getQuestion(), requestDto.getAddition(), requestDto.getTags());
-        questionModel.setId(1110001);
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setResponseCode(201);
-        mockResponse.setBody(objectMapper.writeValueAsString(questionModel));
-        return mockResponse;
+    @Test
+    public void shouldFindEmptyProvinceUsers() throws JsonProcessingException {
+        UserRestPagingResponse mockResp = buildMockUserRestUserInfoPagingResponse("13800000000", "test", Source.WEB, "test@test.com");
+        this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
+
+        UserRestResponseBase response = userRestClient.findEmptyProvinceUsers(2);
+        assertTrue(response.isSuccess());
     }
 
     @After
     public void shutdownMockServer() throws IOException {
-//        this.mockServer.shutdown();
+        this.mockServer.shutdown();
+    }
+
+
+    private UserRestPagingResponse<UserInfo> buildMockUserRestUserInfoPagingResponse(String mobile, String test, Source source, String email) {
+        UserRestPagingResponse<UserInfo> pagingResponse = new UserRestPagingResponse<>();
+        pagingResponse.setSuccess(true);
+        pagingResponse.setMessage("");
+        pagingResponse.setItems(Collections.singletonList(buildMockUserInfo(mobile, test, source, email)));
+        return pagingResponse;
+    }
+
+    private UserRestUserInfo buildMockUserRestUserInfoResponse(String mobile, String test, Source source, String email) {
+        UserInfo mockUserInfo = buildMockUserInfo(mobile, test, source, email);
+
+        UserRestUserInfo mockResp = new UserRestUserInfo();
+        mockResp.setSuccess(true);
+        mockResp.setMessage("");
+        mockResp.setUserInfo(mockUserInfo);
+        return mockResp;
+    }
+
+    private UserInfo buildMockUserInfo(String mobile, String test, Source source, String email) {
+        UserInfo mockUserInfo = new UserInfo();
+        mockUserInfo.setMobile(mobile);
+        mockUserInfo.setChannel(test);
+        mockUserInfo.setSource(String.valueOf(source));
+        mockUserInfo.setStatus(String.valueOf(UserStatus.ACTIVE));
+        mockUserInfo.setEmail(email);
+        return mockUserInfo;
+    }
+
+    private MockResponse buildCreateQuestionResponse(Object data, int statusCode) throws JsonProcessingException {
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setResponseCode(statusCode);
+        mockResponse.setBody(objectMapper.writeValueAsString(data));
+        return mockResponse;
     }
 }

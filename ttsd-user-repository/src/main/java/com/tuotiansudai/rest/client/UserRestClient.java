@@ -1,6 +1,7 @@
 package com.tuotiansudai.rest.client;
 
 import com.tuotiansudai.dto.request.*;
+import com.tuotiansudai.dto.response.UserInfo;
 import com.tuotiansudai.dto.response.UserRestPagingResponse;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
@@ -37,7 +38,7 @@ public interface UserRestClient {
 
     @GET
     @Path("/users")
-    UserRestPagingResponse<UserModel> _search(
+    UserRestPagingResponse<UserInfo> _search(
             @QueryParam("page") Integer page,
             @QueryParam("page_size") Integer pageSize,
             @QueryParam("sort") String sort,
@@ -52,7 +53,7 @@ public interface UserRestClient {
             @QueryParam("register_time__gte") String registerTimeGte,
             @QueryParam("register_time__lte") String registerTimeLte) throws RestException;
 
-    default UserRestPagingResponse<UserModel> search(UserRestQueryDto queryDto) {
+    default UserRestPagingResponse<UserInfo> search(UserRestQueryDto queryDto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return this._search(queryDto.getPage(),
                 queryDto.getPageSize(),
@@ -68,4 +69,8 @@ public interface UserRestClient {
                 queryDto.getRegisterTimeGte() == null ? null : sdf.format(queryDto.getRegisterTimeGte()),
                 queryDto.getRegisterTimeLte() == null ? null : sdf.format(queryDto.getRegisterTimeLte()));
     }
+
+    @GET
+    @Path("/users/province-empty")
+    UserRestPagingResponse<UserModel> findEmptyProvinceUsers(@QueryParam("limit") int limit);
 }

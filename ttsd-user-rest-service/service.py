@@ -293,3 +293,8 @@ class UserService(object):
         qs = _build_query_sort(qs)
         qs = _build_query_select(qs)
         return _query_with_pagination(qs)
+
+    def empty_province_users(self, limit=10):
+        # NOTICE `User.province == None` SHOULD NOT be refactor to `User.province is None`
+        qs = User.query.filter((User.province == None) | (User.province == '')).limit(limit)
+        return {'items': [u.as_dict() for u in qs.all()]}

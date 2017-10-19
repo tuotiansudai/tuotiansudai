@@ -5,7 +5,7 @@ from flask.views import MethodView
 
 import service
 from forms import LoginForm, RefreshTokenForm, LoginAfterRegisterForm, UserRegisterForm, UserUpdateForm, \
-    UserResetPasswordForm, UserChangePasswordForm, UserQueryForm
+    UserResetPasswordForm, UserChangePasswordForm, UserQueryForm, QueryLimitForm
 
 sign_in = Blueprint('sign_in', __name__)
 
@@ -98,7 +98,6 @@ class UsersView(MethodView):
             return fail({'errors': form.errors}, code=400)
 
 
-
 class UserView(MethodView):
     def get(self, login_name_or_mobile):
         """find by login_name or mobile"""
@@ -126,6 +125,20 @@ class UserView(MethodView):
 sign_in.add_url_rule('/users', view_func=UsersView.as_view('users'))
 sign_in.add_url_rule('/user', view_func=UserView.as_view('update_user'), methods=['PUT', ])
 sign_in.add_url_rule('/user/<string:login_name_or_mobile>', view_func=UserView.as_view('get_user'), methods=['GET', ])
+
+
+@sign_in.route("/users/province-empty", methods=['GET'])
+def search_user_with_province_empty():
+    form = QueryLimitForm(request.args)
+    if form.validate():
+        user_service = service.UserService()
+        try:
+            result = user_service.empty_province_users(limit=form.limit.data)
+            return success(result, code=200)
+        except Exception as ex:
+            return fail({'message': ex.message}, code=400)
+    else:
+        return fail({'errors': form.errors}, code=400)
 
 
 @sign_in.route("/user/reset-password", methods=['PUT'])
