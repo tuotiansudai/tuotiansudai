@@ -57,10 +57,7 @@ $.when(commonFun.isUserLogin())
         $toLogin.show();
         $prizeLoginDOM.show();
     });
-//点击登录弹框登录
-$loginBtn.on('click',function(event){
-    event.preventDefault();
-    //判断是否需要弹框登陆
+function toLogin() {
     if (sourceKind.params.source == 'app') {
         location.href = "/login";
     }else {
@@ -72,6 +69,12 @@ $loginBtn.on('click',function(event){
             content: $('#loginTip')
         });
     }
+}
+//点击登录弹框登录
+$loginBtn.on('click',function(event){
+    event.preventDefault();
+    //判断是否需要弹框登陆
+    toLogin();
 
 })
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
@@ -93,7 +96,6 @@ drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
 //     content: $('#test')
 // });
 //开始抽奖
-//layer.msg('今天没有抽奖机会了哦~，明天再来吧');
 $pointerBtn.on('click', function(event) {
     drawCircleOne.beginLuckDraw(function(data) {
         console.log(data)
@@ -151,25 +153,15 @@ $pointerBtn.on('click', function(event) {
         }
         else if (data.returnCode == 2) {
             //未登录
-            if (sourceKind.params.source == 'app') {
-                location.href = "app/tuotian/login";
-            }else{
-                layer.open({
-                    type: 1,
-                    title: false,
-                    closeBtn: 0,
-                    area: ['auto', 'auto'],
-                    content: $('#loginTip')
-                });
-            }
+            toLogin();
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！
-            drawCircleOne.tipWindowPop(tipGroupObj['expired']);
+            layer.msg('不在活动时间范围内~');
 
         } else if(data.returnCode == 4){
             //今日没有抽奖机会了
-            drawCircleOne.tipWindowPop(tipGroupObj['authentication']);
+            layer.msg('今天没有抽奖机会了哦~，明天再来吧');
         }
     });
 });
