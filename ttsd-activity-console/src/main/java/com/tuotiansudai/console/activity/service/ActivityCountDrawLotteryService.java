@@ -349,7 +349,7 @@ public class ActivityCountDrawLotteryService {
 
         for (InvestModel investModel : investModels) {
             String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
-            String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toDate());
+            String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
             boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
             if (even && Long.parseLong(!redisWrapperClient.exists(incrKey)?"0":redisWrapperClient.get(incrKey)) < 10) {
                 redisWrapperClient.incr(incrKey);
