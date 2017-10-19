@@ -37,9 +37,14 @@
                            </ul>
                            <div class="record-list">
                                <ul class="record-model user-record" >
-                                   <li>恭喜139****7148抽中 20元现金红包</li>  <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li> <li>恭喜139****7148抽中 20元现金红包</li>
                                </ul>
-                               <ul class="record-model own-record" style="display: none"></ul>
+                               <ul class="record-model own-record" style="display: none">
+                               </ul>
+                           </div>
+                           <div class="page-number" id="pageNumber" style="display: none">
+                               <i class="icon-left"></i>
+                               <span class="page-index">1</span>
+                               <i class="icon-right"></i>
                            </div>
                        </div>
                    </div>
@@ -63,7 +68,7 @@
             <div class="total-money">
                 <p>累计投资金额：${sumAmount!}元</p>
                 <div class="awarded">已获取</div>
-                <div class="reward"> <span>${jdAmount}</span> </div>
+                <div class="reward"> <div class="reward-con">￥<span id="reward_count">${jdAmount}</span></div> </div>
                 <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" class="to-login-btn">登录后查看已获得奖励></a></div>
                 <div class="small-btn" id="to_invest">获得更多奖励</div>
             </div>

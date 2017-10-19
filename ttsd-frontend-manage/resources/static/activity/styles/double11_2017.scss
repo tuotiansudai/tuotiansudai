@@ -156,6 +156,32 @@ strong {
             }
           }
         }
+        .page-number {
+          height:30px;
+          color: #fcf821;
+          margin-top:15px;
+          text-align: center;
+          i {
+            display: inline-block;
+            width:12px;
+            height:20px;
+            background: url('../images/2017/double11/icon-arrow.png') left center no-repeat;
+            vertical-align: middle;
+            cursor: pointer;
+            &.icon-right {
+              transform: rotate(180deg);
+            }
+          }
+          span {
+            display: inline-block;
+            width:50px;
+            font-size: 24px;
+            text-align: center;
+            line-height:30px;
+            font-weight: bold;
+            vertical-align: middle;
+          }
+        }
         .record-list {
           width: 100%;
           height: 350px;
@@ -172,6 +198,11 @@ strong {
             opacity: 0.8;
             height: 44px;
             line-height: 44px;
+            text-align: left;
+            text-indent: 130px;
+            .to-login-btn {
+              color: #fff600;
+            }
             &:nth-child(odd) {
               background: #f89c39;
               border-radius: 30px;
@@ -250,17 +281,27 @@ strong {
       margin: 0 auto;
       position: relative;
       top: -6px;
-      background:url("../images/2017/double11/jd_cart.png") center top no-repeat;
+      background:url("../images/2017/double11/jde_cart.png") center top no-repeat;
       background-size: 100%;
-      span {
+      .reward-con {
+        width: 100px;
+        position: relative;
         font-weight: bold;
-        font-size: 50px;
+        font-size: 30px;
+        line-height: 184px;
+        margin: 0 auto;
         color: #000;
-        position: absolute;
-        top: 32px;
-        right: 73px;
-        transform: rotate(-9deg);
+        span {
+          font-weight: bold;
+          font-size: 50px;
+          color: #000;
+          position: absolute;
+          top: -8px;
+          left:30px;
+          transform: rotate(-9deg);
+        }
       }
+
     }
     .to-login {
       margin: 0 auto;
@@ -527,6 +568,7 @@ strong {
             li {
               height: 0.5rem;
               line-height: 0.5rem;
+              text-indent: 1.3rem;
               &:nth-child(odd) {
                 border-radius: 0.26rem;
               }
@@ -574,11 +616,17 @@ strong {
         width: 2.38rem;
         height: 1.62rem;
         top: -0.06rem;
-        span {
-          font-size: 0.5rem;
-          top: 0.32rem;
-          right: 0.73rem;
+        .reward-con {
+          width: 1rem;
+          font-size: 0.3rem;
+          line-height: 1.84rem;
+          span {
+            font-size: 0.5rem;
+            top: -0.08rem;
+            left:0.30rem;
+          }
         }
+
       }
       .to-login {
         a {

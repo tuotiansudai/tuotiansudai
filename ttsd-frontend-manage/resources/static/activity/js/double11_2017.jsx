@@ -19,7 +19,10 @@ var $oneThousandPoints=$('.gift-circle-frame',$double11);
 var $toLogin = $('#to_login_DOM'),
     $leftDrawDOM = $('#left_draw_DOM'),
     $loginBtn = $('.to-login-btn',$double11),
-    $prizeLoginDOM = $('#prize_login_DOM');
+    $prizeLoginDOM = $('#prize_login_DOM'),
+    $rewardCount = $('#reward_count'),
+    $ownRecord = $('.own-record'),
+    $pageNumber = $('.pageNumber');
 var pointAllList='/activity/double-eleven/all-list',  //中奖记录接口地址
     pointUserList='/activity/double-eleven/user-list',   //我的奖品接口地址
     drawURL='/activity/double-eleven/task-draw',//抽奖接口
@@ -58,7 +61,20 @@ $.when(commonFun.isUserLogin())
         $leftDrawDOM.hide();
         $toLogin.show();
         $prizeLoginDOM.show();
+        $rewardCount.text('?');
+        $ownRecord.html('<li>没有中奖纪录哦~</li><li><a href="javascript:;" class="to-login-btn">登录</a>后查看获奖记录</li>');
+        $('.to-login-btn').on('click',function(event){
+            event.preventDefault();
+            //判断是否需要弹框登陆
+            toLogin();
+
+        })
+        $ownRecord.find('li').css({
+            'textAlign':'center',
+            'textIndent':0
+        });
     });
+//去登录
 function toLogin() {
     if (sourceKind.params.source == 'app') {
         location.href = "/login";
@@ -85,10 +101,11 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 drawCircleOne.GiftRecord();
 
 //渲染我的奖品
-drawCircleOne.MyGift();
+drawCircleOne.MyGift(function(){
+    pageTurn();
+});
 
-drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
-drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
+drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 
 //开始抽奖
 $pointerBtn.on('click', function(event) {
@@ -156,4 +173,38 @@ $pointerBtn.on('click', function(event) {
 
 //点击切换按钮
 drawCircleOne.PrizeSwitch();
+
+//我的奖品翻页效果
+function pageTurn() {
+    let $ownList = $('.own-record',$double11),
+        $pageNumber = $('.page-number',$double11);
+    let totalNumber = $ownList.find('li').length,
+        pageSize = 5, //每页5条
+        pageIndex = 1,
+        totalPage = Math.ceil(totalNumber/pageSize);
+    $pageNumber.find('i').on('click',function(index) {
+        let thisClass = this.className;
+        if(thisClass=='icon-left') {
+            //上一页
+            if(pageIndex==1) {
+                return;
+            }
+            pageIndex = (pageIndex>1) ? (pageIndex-1) : pageIndex;
+        } else if(thisClass == 'icon-right') {
+            //下一页
+            if(pageIndex ==totalPage) {
+                return;
+            }
+            pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
+        }
+        $('.page-index',$pageNumber).text(pageIndex);
+        let TopDistance = -350 * (pageIndex-1);
+        $ownList.animate({
+            left:"0",
+            top:TopDistance + 'px'
+        });
+    });
+}
+
+
 
