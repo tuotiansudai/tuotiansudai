@@ -33,13 +33,12 @@ public class DoubleElevenService {
     }
 
     public int calculateJDCardAmountByInvestAmount(String amount) {
-        return (int)(Math.floor(Double.parseDouble(amount) / 100000) * 100);
+        return (int) (Math.floor(Double.parseDouble(amount) / 100000) * 100);
     }
 
     public int leftDrawCount(String mobile) {
-        int totalDrawCount = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
-        int usedDrawCount = lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY).size();
-        return totalDrawCount - usedDrawCount > 0 ? totalDrawCount - usedDrawCount : 0;
+        int leftDrawCount = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
+        return leftDrawCount > 0 ? leftDrawCount : 0;
     }
 
 

@@ -744,7 +744,8 @@ public class LotteryDrawActivityService {
 
             }
         }
-        return investDrawTimes;
+
+        return investDrawTimes > 0 ? investDrawTimes - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory, null, null) : investDrawTimes;
     }
 
 }
