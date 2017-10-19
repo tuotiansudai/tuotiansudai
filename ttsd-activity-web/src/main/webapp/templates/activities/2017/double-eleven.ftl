@@ -61,9 +61,9 @@
                 </dl>
             </div>
             <div class="total-money">
-                <p>累计投资金额：103,989.00元</p>
+                <p>累计投资金额：${sumAmount!}元</p>
                 <div class="awarded">已获取</div>
-                <div class="reward"> <span>100</span> </div>
+                <div class="reward"> <span>${jdAmount}</span> </div>
                 <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" class="to-login-btn">登录后查看已获得奖励></a></div>
                 <div class="small-btn" id="to_invest">获得更多奖励</div>
             </div>
@@ -94,36 +94,25 @@
     <#include "../../module/login-tip.ftl" />
     <#--奖品提示-->
     <div class="tip-list-frame">
-        <!-- 真实奖品的提示 -->
-        <#--<div class="tip-list" data-return="concrete" id="test">-->
-            <#--<div class="close-btn go-close"></div>-->
-            <#--<div class="text-tip">-->
-                <#--<p class="success-text"></p>-->
-                <#--<p class="reward-text"><em class="prizeValue"></em></p>-->
-                <#--<p class="des-text">请实名认证后再来抽奖吧！</p>-->
-            <#--</div>-->
-            <#--<div class="btn-list"><a href="javascript:void(0)" class="go-on go-close">确定</a></div>-->
-        <#--</div>-->
-
         <!--虚拟奖品的提示-->
         <div class="tip-list"  data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="success-text"></p>
                 <p class="icon_prize"></p>
-                <p class="reward-text"><em class="prizeValue">1000元体验金</em></p>
+                <p class="reward-text"><em class="prizeValue"></em></p>
             </div>
-            <div class="btn-list"><a href="javascript:void(0)" class="go-on go-close small-btn">去使用</a></div>
+            <div class="btn-list"><a href="/loan-list" class="go-on small-btn">去使用</a></div>
         </div>
 
         <!--没有抽奖机会-->
-        <div class="tip-list no-change-list" id="test" data-return="nochance">
+        <div class="tip-list no-change-list" data-return="nochance">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="login-text"></p>
                 <p class="des-text"></p>
             </div>
-            <div class="btn-list btn-invest"><a href="/loan-list" class="go-close">去投资</a></div>
+            <div class="btn-list btn-invest"><a href="/loan-list">去投资</a></div>
         </div>
     </div>
 </div>

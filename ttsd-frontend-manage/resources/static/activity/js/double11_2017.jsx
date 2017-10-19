@@ -20,14 +20,14 @@ var $toLogin = $('#to_login_DOM'),
     $leftDrawDOM = $('#left_draw_DOM'),
     $loginBtn = $('.to-login-btn',$double11),
     $prizeLoginDOM = $('#prize_login_DOM');
-var pointAllList='/activity/double-eleven/all-list ',  //中奖记录接口地址
+var pointAllList='/activity/double-eleven/all-list',  //中奖记录接口地址
     pointUserList='/activity/double-eleven/user-list',   //我的奖品接口地址
     drawURL='/activity/double-eleven/task-draw',//抽奖接口
     leftDraw = '/activity/double-eleven/left-times';    //剩余抽奖次数接口
 
 
 var oneData={
-        'activityCategory':'CELEBRATION_DOUBLE_ELEVEN_ACTIVITY'
+        'activityCategory':'DOUBLE_ELEVEN_ACTIVITY'
     },
     $leftDrawCount=$('#leftDrawCount');
 
@@ -35,12 +35,14 @@ $double11.find('.tip-list-frame .tip-list').each(function (key, option) {
     let kind = $(option).attr('data-return');
     tipGroupObj[kind] = option;
 });
+//抽奖次数
 function drawTimes(){
     commonFun.useAjax({
         dataType: 'json',
         type:'get',
-        url:'/activity/double-eleven/left-times'
+        url:leftDraw
     },function(data) {
+        console.log(data);
         $leftDrawCount.text(data);
     });
 }
@@ -87,14 +89,7 @@ drawCircleOne.MyGift();
 
 drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
 drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
-// layer.open({
-//     type: 1,
-//     title: false,
-//     closeBtn: 0,
-//     // scrollbar: false,
-//     area: ['auto', 'auto'],
-//     content: $('#test')
-// });
+
 //开始抽奖
 $pointerBtn.on('click', function(event) {
     drawCircleOne.beginLuckDraw(function(data) {
@@ -104,48 +99,40 @@ $pointerBtn.on('click', function(event) {
             var angleNum=0;
             drawTimes();
             switch (data.prize) {
-                case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //0.5%加息券
-                    angleNum=45*1-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('0.5%加息券')
-                        .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
+                case 'DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_5': //0.5%加息券
+                    angleNum=45*0;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('0.5%加息券')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_LUGGAGE': //200元京东E卡
-                    angleNum=45*2-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('200元京东E卡')
-                        .parent().siblings('.des-text').html('奖品将于活动结束后发放');
+                case 'DOUBLE_ELEVEN_ACTIVITY_JD_E_CARD_200': //200元京东E卡
+                    angleNum=45*1;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('200元京东E卡')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_DOLL': //200元红包
-                    angleNum=45*3-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('200元红包')
-                        .parent().siblings('.des-text').html('奖品将于活动结束后发放');
+                case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_200': //200元红包
+                    angleNum=45*2;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('200元红包')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_30': //0.2%加息券
-                    angleNum=45*4-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('0.2%加息券')
-                        .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
+                case 'DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_2': //0.2%加息券
+                    angleNum=45*3;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('0.2%加息券')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_COUPON_5': //100元红包
-                    angleNum=45*5-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('100元红包')
-                        .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
+                case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_100': //100元红包
+                    angleNum=45*4;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('100元红包')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_10':  //20元红包
-                    angleNum=45*6-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('20元红包')
-                        .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
+                case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_20':  //20元红包
+                    angleNum=45*5;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('20元红包')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_ENVELOP_5':  //1000元体验金
-                    angleNum=45*7-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('1000元体验金')
-                        .parent().siblings('.des-text').html('您可以在 “个人中心” 中进行查看');
+                case 'DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000':  //1000元体验金
+                    angleNum=45*6;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('1000元体验金')
                     break;
-                case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_2888': //50元红包
-                    angleNum=45*8-20;
-                    $(tipGroupObj['concrete']).find('.prizeValue').text('50元红包')
-                        .parent().siblings('.des-text').html('您可以在 “APP个人中心－<br />我的体验金” 中进行查看');
+                case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_50': //50元红包
+                    angleNum=45*7;
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('50元红包')
                     break;
             }
-            drawCircleOne.rotateFn(angleNum,tipGroupObj['concrete']);
+            drawCircleOne.rotateFn(angleNum,tipGroupObj['virtual']);
 
         } else if(data.returnCode == 1) {
             //抽奖次数不足
