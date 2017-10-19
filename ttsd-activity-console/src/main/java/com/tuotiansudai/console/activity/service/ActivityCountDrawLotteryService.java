@@ -51,6 +51,8 @@ public class ActivityCountDrawLotteryService {
 
     public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
 
+    public final static String ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY = "activity:double:eleven:user:invest:count";
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -347,13 +349,18 @@ public class ActivityCountDrawLotteryService {
         int investDrawTimes = 0;
         List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
 
+        redisWrapperClient.del(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY);
+        int count = 0;
         for (InvestModel investModel : investModels) {
             String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
             String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
             boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
-            if (even && Long.parseLong(!redisWrapperClient.exists(incrKey)?"0":redisWrapperClient.get(incrKey)) < 10) {
-                redisWrapperClient.incr(incrKey);
+            redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, "0");
+            if (even && Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY,incrKey)) < 10) {
+                count++;
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, String.valueOf(count));
                 investDrawTimes++;
+
             }
         }
 
