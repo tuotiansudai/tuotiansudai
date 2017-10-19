@@ -159,7 +159,6 @@ strong {
         .page-number {
           height:30px;
           color: #fcf821;
-          margin-top:15px;
           text-align: center;
           i {
             display: inline-block;
@@ -498,9 +497,10 @@ strong {
     background-size: 100%;
     min-height: 17.88rem;
     padding-top: 0.5rem;
+    margin-top: 0;
     .alone-title {
       position: static;
-      margin: 0.3rem auto;
+      margin: 0;
       width: 6.18rem;
       height: 1.26rem;
     }
@@ -557,6 +557,18 @@ strong {
             li {
               font-size: 0.24rem;
               width: 50%;
+            }
+          }
+          .page-number {
+            height:0.3rem;
+            i {
+              width:0.12rem;
+              height:0.2rem;
+            }
+            span {
+              width:0.5rem;
+              font-size: 0.24rem;
+              line-height:0.3rem;
             }
           }
           .record-list {

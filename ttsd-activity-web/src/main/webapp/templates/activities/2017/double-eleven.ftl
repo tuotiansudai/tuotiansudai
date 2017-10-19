@@ -33,7 +33,7 @@
                        <div class="gift-info-box">
                            <ul class="gift-record clearfix">
                                <li class="active"><span>中奖记录</span></li>
-                               <li><span>我的奖品</span></li>
+                               <li id="myGiftDOM"><span>我的奖品</span></li>
                            </ul>
                            <div class="record-list">
                                <ul class="record-model user-record" >
