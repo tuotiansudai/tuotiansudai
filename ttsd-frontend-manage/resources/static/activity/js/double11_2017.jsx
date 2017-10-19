@@ -125,7 +125,7 @@ $pointerBtn.on('click', function(event) {
                     angleNum=45*0;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('0.5%加息券');
                     $iconPrize.css({
-                        'background-img':'../images/2017/double11/coupon.png'
+                        'backgroundImg':'../images/2017/double11/coupon.png'
                     });
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_JD_E_CARD_200': //200元京东E卡
@@ -136,28 +136,28 @@ $pointerBtn.on('click', function(event) {
                     angleNum=45*2;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('200元红包');
                     $iconPrize.css({
-                        'background-img':'../images/2017/double11/red_ware.png'
+                        'backgroundImg':'../images/2017/double11/red_ware.png'
                     });
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_2': //0.2%加息券
                     angleNum=45*3;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('0.2%加息券');
                     $iconPrize.css({
-                        'background-img':'../images/2017/double11/coupon.png'
+                        'backgroundImg':'../images/2017/double11/coupon.png'
                     });
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_100': //100元红包
                     angleNum=45*4;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('100元红包');
                     $iconPrize.css({
-                        'background-img':'../images/2017/double11/red_ware.png'
+                        'backgroundImg':'../images/2017/double11/red_ware.png'
                     })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_20':  //20元红包
                     angleNum=45*5;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('20元红包');
                     $iconPrize.css({
-                        'background-img':'../images/2017/double11/red_ware.png'
+                        'backgroundImg':'../images/2017/double11/red_ware.png'
                     })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000':  //1000元体验金
@@ -168,7 +168,7 @@ $pointerBtn.on('click', function(event) {
                     angleNum=45*7;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('50元红包');
                     $iconPrize.css({
-                        'background-img':'../images/2017/double11/red_ware.png'
+                        'backgroundImg':'../images/2017/double11/red_ware.png'
                     })
                     break;
             }
