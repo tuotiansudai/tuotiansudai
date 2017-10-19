@@ -74,15 +74,15 @@ $loginBtn.on('click',function(event){
     }
 
 })
-//var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
+var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
-//drawCircleOne.GiftRecord();
+drawCircleOne.GiftRecord();
 
 //渲染我的奖品
-//drawCircleOne.MyGift();
+drawCircleOne.MyGift();
 
-//drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
+drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
 //drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
 // layer.open({
 //     type: 1,
@@ -100,12 +100,7 @@ $pointerBtn.on('click', function(event) {
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
-            commonFun.useAjax({
-                dataType: 'json',
-                url:leftDraw
-            },function(data) {
-                $leftDrawCount.text(data);
-            });
+            drawTimes();
             switch (data.prize) {
                 case 'CELEBRATION_SINGLE_ACTIVITY_EXPERIENCE_GOLD_888': //0.5%加息券
                     angleNum=45*1-20;
@@ -181,5 +176,5 @@ $pointerBtn.on('click', function(event) {
 
 
 //点击切换按钮
-//drawCircleOne.PrizeSwitch();
+drawCircleOne.PrizeSwitch();
 
