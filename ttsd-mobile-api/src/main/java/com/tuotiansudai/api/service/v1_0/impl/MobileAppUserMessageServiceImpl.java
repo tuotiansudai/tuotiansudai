@@ -158,7 +158,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                     break;
                 case TRANSFER_SUCCESS:
                 case TRANSFER_FAIL:
-                    investId = transferApplicationMapper.findById(businessId).getInvestId();
+                    investId = transferApplicationMapper.findById(businessId).getTransferInvestId();
                     break;
                 case REPAY_SUCCESS:
                 case ADVANCED_REPAY:
