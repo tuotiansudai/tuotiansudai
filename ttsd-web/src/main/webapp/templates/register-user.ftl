@@ -7,7 +7,7 @@
     </div>
     <div class="clear-blank"></div>
     <nav></nav>
-    <div class="register-box ">
+    <div class="register-box " id="fetchaFrame">
         <div id="summary"></div>
         <form class="register-user-form" id="registerUserForm" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one register-icon-list">
@@ -25,6 +25,8 @@
                     <span class="captcha-tag">
                          <button type="button" class="fetch-captcha" disabled="disabled" id="fetchCaptcha">获取验证码</button>
                         <input validate type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
+                        <span class="voice-captcha" id="voice_captcha" style="display: none;">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
+
                     </span>
                 </li>
                 <li class="referrer-open"> <i class="icon-arrow-right"></i>请输入推荐人（此项选填）</li>

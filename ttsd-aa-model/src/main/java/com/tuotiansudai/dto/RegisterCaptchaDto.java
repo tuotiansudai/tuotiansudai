@@ -14,6 +14,8 @@ public class RegisterCaptchaDto {
     @Pattern(regexp = "^[a-zA-Z0-9]{5}$")
     private String imageCaptcha;
 
+    private boolean isVoice;
+
     public String getMobile() {
         return mobile;
     }
@@ -28,5 +30,13 @@ public class RegisterCaptchaDto {
 
     public void setImageCaptcha(String imageCaptcha) {
         this.imageCaptcha = imageCaptcha;
+    }
+
+    public boolean isVoice() {
+        return isVoice;
+    }
+
+    public void setVoice(boolean voice) {
+        isVoice = voice;
     }
 }

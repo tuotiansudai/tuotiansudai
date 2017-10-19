@@ -13,6 +13,8 @@ let $btnChangeImgCode=$('.img-change',$landingContainer);
 let registerForm=globalFun.$('#registerUserForm');
 let $fetchCaptcha=$('#fetchCaptcha');
 let $registerSubmit=$('input[type="submit"]',$(registerForm));
+let $voiceCaptcha = $('#voice_captcha');
+let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 
 
 require.ensure(['publicJs/placeholder'], function(require){
@@ -97,9 +99,15 @@ $('#appCaptcha').on('focusout', function (event) {
         $fetchCaptcha.prop('disabled', true);
     }
 });
-
+let isVoice = false;
 //获取短信验证码
 $fetchCaptcha.on('click', function(event) {
+    isVoice = false;
+    event.preventDefault();
+    getSmsCaptcha();
+});
+$voiceBtn.on('click', function(event) {
+    isVoice = true;
     event.preventDefault();
     getSmsCaptcha();
 });
@@ -111,17 +119,20 @@ function getSmsCaptcha() {
         url: '/register/user/send-register-captcha',
         type: 'POST',
         dataType: 'json',
-        data: {imageCaptcha: captchaVal, mobile: mobileNum}
+        data: {imageCaptcha: captchaVal, mobile: mobileNum,isVoice:isVoice}
     },function(data) {
         var countdown = 60;
+        console.log(isVoice)
         if (data.data.status && !data.data.isRestricted) {
             var timer = setInterval(function () {
                 $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
+                $voiceCaptcha.hide();
                 countdown--;
                 if (countdown == 0) {
                     clearInterval(timer);
                     countdown = 60;
                     $fetchCaptcha.prop('disabled', false).text('重新发送');
+                    $voiceCaptcha.show();
                 }
             }, 1000);
             return;

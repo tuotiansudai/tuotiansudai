@@ -538,6 +538,12 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         logger.info(MessageFormat.format("[Advance Repay {0}] invest repay({1}) update user bill payback amount({2})",
                 String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount)));
 
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            logger.error("sleep between transfer in and out fail.", e);
+        }
+
         // fee user bill
         AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
                 investRepayId, currentInvestRepay.getActualFee(), UserBillBusinessType.INVEST_FEE, null, null);

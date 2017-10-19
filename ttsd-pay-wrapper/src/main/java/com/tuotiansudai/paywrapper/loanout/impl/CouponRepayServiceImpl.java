@@ -411,6 +411,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    logger.error("sleep between transfer in and out fail.", e);
+                }
+
                 AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualFee(),

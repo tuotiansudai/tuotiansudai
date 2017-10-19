@@ -18,12 +18,15 @@ public class SmsCaptchaDto implements Serializable {
     @NotEmpty
     private String ip;
 
+    private boolean isVoice;
+
     public SmsCaptchaDto() {
     }
 
-    public SmsCaptchaDto(String mobile, String captcha, String ip) {
+    public SmsCaptchaDto(String mobile, String captcha, boolean isVoice, String ip) {
         this.mobile = mobile;
         this.captcha = captcha;
+        this.isVoice = isVoice;
         this.ip = ip;
     }
 
@@ -49,5 +52,13 @@ public class SmsCaptchaDto implements Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public boolean isVoice() {
+        return isVoice;
+    }
+
+    public void setVoice(boolean voice) {
+        isVoice = voice;
     }
 }

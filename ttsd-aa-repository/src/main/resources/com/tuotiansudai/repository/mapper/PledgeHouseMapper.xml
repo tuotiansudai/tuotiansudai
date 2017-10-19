@@ -17,15 +17,16 @@
     <resultMap id="PledgeHouseResultMap" type="PledgeHouseModel" extends="AbstractPledgeDetailResultMap">
         <result column="square" property="square"/>
         <result column="property_card_id" property="propertyCardId"/>
+        <result column="property_right_certificate_id" property="propertyRightCertificateId"/>
         <result column="estate_register_id" property="estateRegisterId"/>
         <result column="authentic_act" property="authenticAct"/>
     </resultMap>
 
     <insert id="create" parameterType="PledgeHouseModel">
         INSERT INTO `aa`.`pledge_house`
-        (id, loan_id, pledge_location, estimate_amount, loan_amount, square, property_card_id, estate_register_id, authentic_act)
+        (id, loan_id, pledge_location, estimate_amount, loan_amount, square, property_card_id, property_right_certificate_id, estate_register_id, authentic_act)
         VALUES
-        (#{id}, #{loanId}, #{pledgeLocation}, #{estimateAmount}, #{loanAmount}, #{square}, #{propertyCardId},
+        (#{id}, #{loanId}, #{pledgeLocation}, #{estimateAmount}, #{loanAmount}, #{square}, #{propertyCardId}, #{propertyRightCertificateId},
         #{estateRegisterId}, #{authenticAct})
     </insert>
 
@@ -56,6 +57,9 @@
             </if>
             <if test="propertyCardId != null and propertyCardId !=''">
                 property_card_id = #{propertyCardId},
+            </if>
+            <if test="propertyRightCertificateId != null and propertyRightCertificateId !=''">
+                property_right_certificate_id = #{propertyRightCertificateId},
             </if>
             <if test="estateRegisterId != null and estateRegisterId != ''">
                 estate_register_id = #{estateRegisterId},
