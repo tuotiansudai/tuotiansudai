@@ -1199,10 +1199,4 @@
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
     </select>
 
-    <select id="countActivityDoubleElevenByLoanId" parameterType="map" resultType="long">
-        SELECT count(id) AS sumCount
-        FROM invest
-        JOIN loan ON invest.loan_id = loan.id
-        WHERE invest.loan_id = #{loanId}
-    </select>
 </mapper>
