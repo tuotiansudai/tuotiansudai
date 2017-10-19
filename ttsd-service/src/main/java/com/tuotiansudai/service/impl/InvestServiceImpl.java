@@ -284,7 +284,7 @@ public class InvestServiceImpl implements InvestService {
         long extraRateFee = 0;
         if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
             List<LoanStatus> soldOutLoanList = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE);
-            boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
+            boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE;
             //根据不同的标的状态显示不同的periodDuration
             int periodDuration = isRealTimeInterest ? loanModel.getDuration() : LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
             extraRateInterest = getExtraRate(loanId, amount, periodDuration);
