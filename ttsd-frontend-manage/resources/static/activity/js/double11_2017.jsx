@@ -16,6 +16,10 @@ let $double11 = $('#double11'),
     tipGroupObj = {};
 var $pointerBtn = $('#draw_btn',$double11);
 var $oneThousandPoints=$('.gift-circle-frame',$double11);
+var $toLogin = $('#to_login_DOM'),
+    $leftDrawDOM = $('#left_draw_DOM'),
+    $loginBtn = $('.to-login-btn',$double11),
+    $prizeLoginDOM = $('#prize_login_DOM');
 var pointAllList='/activity/double-eleven/all-list ',  //中奖记录接口地址
     pointUserList='/activity/double-eleven/user-list',   //我的奖品接口地址
     drawURL='/activity/double-eleven/task-draw',//抽奖接口
@@ -31,9 +35,46 @@ $double11.find('.tip-list-frame .tip-list').each(function (key, option) {
     let kind = $(option).attr('data-return');
     tipGroupObj[kind] = option;
 });
+function drawTimes(){
+    commonFun.useAjax({
+        dataType: 'json',
+        type:'get',
+        url:'/activity/double-eleven/left-times'
+    },function(data) {
+        $leftDrawCount.text(data);
+    });
+}
+//通过判断是否登录显示隐藏相应的按钮
+$.when(commonFun.isUserLogin())
+    .done(function () {
+        $toLogin.hide();
+        $leftDrawDOM.show();
+        $prizeLoginDOM.hide();
+        drawTimes();
+    })
+    .fail(function(){
+        $leftDrawDOM.hide();
+        $toLogin.show();
+        $prizeLoginDOM.show();
+    });
+//点击登录弹框登录
+$loginBtn.on('click',function(event){
+    event.preventDefault();
+    //判断是否需要弹框登陆
+    if (sourceKind.params.source == 'app') {
+        location.href = "/login";
+    }else {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $('#loginTip')
+        });
+    }
 
-
-var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
+})
+//var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
 //drawCircleOne.GiftRecord();
@@ -140,5 +181,5 @@ $pointerBtn.on('click', function(event) {
 
 
 //点击切换按钮
-drawCircleOne.PrizeSwitch();
+//drawCircleOne.PrizeSwitch();
 

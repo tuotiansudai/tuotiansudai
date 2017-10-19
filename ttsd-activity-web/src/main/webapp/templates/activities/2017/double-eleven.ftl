@@ -26,8 +26,8 @@
                <div class="small-btn" id="draw_btn">立即抽奖</div>
                <div class="gift-circle-detail">
                        <div class="lottery-times">
-                          <#--<p> 剩余抽奖次数：<span id="leftDrawCount">8</span></p>-->
-                           <p><a href="javascript:;">登录</a>后查看抽奖次数</p>
+                           <p id="left_draw_DOM" style="display: none"> 剩余抽奖次数：<span id="leftDrawCount"></span></p>
+                           <p id="to_login_DOM" style="display: none"><a href="javascript:;" id="to_login" class="to-login-btn">登录</a>后查看抽奖次数</p>
                        </div>
 
                        <div class="gift-info-box">
@@ -64,8 +64,8 @@
                 <p>累计投资金额：103,989.00元</p>
                 <div class="awarded">已获取</div>
                 <div class="reward"> <span>100</span> </div>
-                <div class="to-login"><a href="javascript:;">登录后查看已获得奖励></a></div>
-                <div class="small-btn">获得更多奖励</div>
+                <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" class="to-login-btn">登录后查看已获得奖励></a></div>
+                <div class="small-btn" id="to_invest">获得更多奖励</div>
             </div>
         </div>
     </div>
