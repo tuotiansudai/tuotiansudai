@@ -173,8 +173,8 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
             return 100;
         }
         if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())) {
-            int passedDays = Days.daysBetween(new DateTime(loanModel.getRecheckTime()), new DateTime()).getDays() + 1;
-            int totalRepayDays = Days.daysBetween(new DateTime(loanModel.getRecheckTime()), new DateTime(loanModel.getDeadline())).getDays() + 1;
+            int passedDays = Days.daysBetween(new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays() + 1;
+            int totalRepayDays = Days.daysBetween(new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay(), new DateTime(loanModel.getDeadline()).withTimeAtStartOfDay()).getDays() + 1;
             int progress = passedDays * 100 / totalRepayDays;
             return progress > 100 ? 100 : (progress == 0 ? 1 : progress);
         }
