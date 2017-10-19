@@ -43,6 +43,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
 
     //我的奖品
     this.MyGift = function (callback) {
+        alert(88)
         let self = this;
         commonFun.useAjax({
             url: this.userListURL,
