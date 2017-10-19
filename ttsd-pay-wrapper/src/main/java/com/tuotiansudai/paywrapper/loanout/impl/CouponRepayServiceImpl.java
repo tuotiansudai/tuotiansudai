@@ -409,20 +409,13 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         couponRepayModel.getActualInterest(),
                         couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    logger.error("sleep between transfer in and out fail.", e);
-                }
-
                 AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualFee(),
                         UserBillBusinessType.INVEST_FEE, null, null);
 
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
+                inAtm.setNext(outAtm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
                 String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                         couponModel.getCouponType().getName(),
