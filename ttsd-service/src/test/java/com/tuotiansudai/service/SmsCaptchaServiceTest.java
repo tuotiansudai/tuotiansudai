@@ -57,7 +57,7 @@ public class SmsCaptchaServiceTest {
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
         smsWrapperClient.setApplicationContext("");
-        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", false, "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
@@ -73,7 +73,7 @@ public class SmsCaptchaServiceTest {
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
         smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", false, "127.0.0.1");
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
         assertFalse(dto.getData().getStatus());

@@ -114,19 +114,19 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 
         try {
-            String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
-            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
-            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualFee()));
-            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
-            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-
             String interestMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
             AmountTransferMessage interestMessage = JsonConverter.readValue(interestMessageBody, AmountTransferMessage.class);
             assertThat(interestMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
             assertThat(interestMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualInterest()));
             assertThat(interestMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.NORMAL_REPAY));
             assertThat(interestMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+
+            AmountTransferMessage feeMessage = interestMessage.getNext();
+            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
+            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualFee()));
+            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
+            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
+
         } catch (IOException e) {
             assert false;
         }
@@ -183,19 +183,18 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
 
         try {
-            String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
-            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
-            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay2.getActualFee()));
-            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
-            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-
             String interestMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
             AmountTransferMessage interestMessage = JsonConverter.readValue(interestMessageBody, AmountTransferMessage.class);
             assertThat(interestMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
             assertThat(interestMessage.getAmount(), CoreMatchers.is(invest.getAmount() + actualInvestRepay2.getActualInterest()));
             assertThat(interestMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.NORMAL_REPAY));
             assertThat(interestMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+
+            AmountTransferMessage feeMessage = interestMessage.getNext();
+            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
+            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay2.getActualFee()));
+            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
+            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
         } catch (IOException e) {
             assert false;
         }
@@ -249,19 +248,18 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 
         try {
-            String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
-            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
-            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualFee()));
-            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
-            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-
             String interestMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
             AmountTransferMessage interestMessage = JsonConverter.readValue(interestMessageBody, AmountTransferMessage.class);
             assertThat(interestMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
             assertThat(interestMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualInterest()));
             assertThat(interestMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.OVERDUE_REPAY));
             assertThat(interestMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+
+            AmountTransferMessage feeMessage = interestMessage.getNext();
+            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
+            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualFee()));
+            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
+            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
         } catch (IOException e) {
             assert false;
         }
@@ -317,19 +315,18 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
 
         try {
-            String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
-            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
-            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualFee() + actualInvestRepay2.getActualFee()));
-            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
-            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
-
             String interestMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
             AmountTransferMessage interestMessage = JsonConverter.readValue(interestMessageBody, AmountTransferMessage.class);
             assertThat(interestMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
             assertThat(interestMessage.getAmount(), CoreMatchers.is(actualInvestRepay2.getCorpus() + actualInvestRepay2.getActualInterest()));
             assertThat(interestMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.OVERDUE_REPAY));
             assertThat(interestMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+
+            AmountTransferMessage feeMessage = interestMessage.getNext();
+            assertThat(feeMessage.getLoginName(), CoreMatchers.is(investor.getLoginName()));
+            assertThat(feeMessage.getAmount(), CoreMatchers.is(actualInvestRepay1.getActualFee() + actualInvestRepay2.getActualFee()));
+            assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_FEE));
+            assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_OUT_BALANCE));
         } catch (IOException e) {
             assert false;
         }

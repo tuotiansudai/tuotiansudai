@@ -400,9 +400,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
                 AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
                 AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
+                inAtm.setNext(outAtm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {

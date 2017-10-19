@@ -4,6 +4,7 @@ package com.tuotiansudai.api.dto.v2_0;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -19,6 +20,9 @@ public class SendSmsCompositeRequestDto extends BaseParamDto {
 
     @ApiModelProperty(value = "图形验证码", example = "123456")
     private String imageCaptcha;
+
+    @ApiModelProperty(value = "是否语音验证码", example = "true")
+    private boolean isVoice;
 
     public SmsCaptchaType getType() {
         return type;
@@ -36,8 +40,20 @@ public class SendSmsCompositeRequestDto extends BaseParamDto {
         this.phoneNum = phoneNum;
     }
 
-    public String getImageCaptcha() { return imageCaptcha; }
+    public String getImageCaptcha() {
+        return imageCaptcha;
+    }
 
-    public void setImageCaptcha(String imageCaptcha) { this.imageCaptcha = imageCaptcha; }
+    public void setImageCaptcha(String imageCaptcha) {
+        this.imageCaptcha = imageCaptcha;
+    }
+
+    public boolean getVoice() {
+        return isVoice;
+    }
+
+    public void setVoice(boolean voice) {
+        isVoice = voice;
+    }
 }
 

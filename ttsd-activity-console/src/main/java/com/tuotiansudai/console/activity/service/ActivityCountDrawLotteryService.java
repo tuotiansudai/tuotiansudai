@@ -108,6 +108,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
     private Date acticitySchoolSeasonEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.startTime}\")}")
+    private Date activityIphoneXStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.endTime}\")}")
+    private Date activityIphoneXEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -166,6 +172,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case SCHOOL_SEASON_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case IPHONEX_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
         }
         return lotteryTime;
     }
@@ -314,6 +322,8 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime);
             case SCHOOL_SEASON_ACTIVITY:
                 return Lists.newArrayList(acticitySchoolSeasonStartTime, acticityExerciseWorkEndTime);
+            case IPHONEX_ACTIVITY:
+                return Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime);
         }
         return null;
     }

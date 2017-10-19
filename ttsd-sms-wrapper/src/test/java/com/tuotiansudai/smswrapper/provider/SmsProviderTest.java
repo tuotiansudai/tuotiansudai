@@ -19,26 +19,27 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class SmsProviderTest {
 
     @Autowired
-    @Qualifier("smsProviderNetease")
-    private SmsProvider smsProviderNetease;
+    @Qualifier("smsProviderAlidayuText")
+    private SmsProvider smsProviderAlidayuText;
+
 
     @Autowired
-    @Qualifier("smsProviderAlidayu")
-    private SmsProvider smsProviderAlidayu;
+    @Qualifier("smsProviderAlidayuVoice")
+    private SmsProvider smsProviderAlidayuVoice;
 
     @Test
     @Ignore
-    public void testSmsSendingNetease() throws SmsSendingException {
-        List<String> mobileList = Lists.newArrayList("13810586920");
+    public void testSmsSendingAlidayuText() throws SmsSendingException {
+        List<String> mobileList = Lists.newArrayList("18611445119");
         List<String> paramList = Lists.newArrayList("1234");
-        smsProviderNetease.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, paramList);
+        smsProviderAlidayuText.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, paramList);
     }
 
     @Test
     @Ignore
-    public void testSmsSendingAlidayu() throws SmsSendingException {
-        List<String> mobileList = Lists.newArrayList("13810586920", "13691070223");
+    public void testSmsSendingAlidayuVoice() throws SmsSendingException {
+        List<String> mobileList = Lists.newArrayList("18611445119");
         List<String> paramList = Lists.newArrayList("1234");
-        smsProviderAlidayu.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, paramList);
+        smsProviderAlidayuVoice.sendSMS(mobileList, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, paramList);
     }
 }

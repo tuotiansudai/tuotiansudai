@@ -7,7 +7,8 @@ var $InfoBox = $('#personInfoBox'),
     $updateBankCard = $('#update-bank-card'),
     countTimer,
     $riskTip=$('#riskTip'),
-    $closeRisk=$('.close-risk',$riskTip);
+    $closeRisk=$('.close-risk',$riskTip),
+    $voiceCaptcha = $('#voice_captcha');
 
 
 
@@ -165,27 +166,39 @@ require.ensure([],function() {
     let $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
         $turnOffNoPasswordInvestLayer = $('.setTurnOffNoPasswordInvest', $InfoBox),
         $turnOnNoPasswordInvestDOM = $('#turnOnNoPasswordInvestDOM'),
-        $turnOffNoPasswordInvestDOM = $('#turnOffNoPasswordInvestDOM'),
+        $turnOffPasswordInvestDOM = $('#turnOffNoPasswordInvestDOM'),//关闭免密支付按钮
+        $turnOnNoPasswordInvestIdentifiedDOM = $('#turnOnNoPasswordInvestDOM_identified'),
         $btnTurnOnElement = $('.btn-turn-on',$turnOnNoPasswordInvestDOM),
-        $noPasswordInvest = $('.setNoPasswordInvest',$InfoBox),
+        $noPasswordInvest = $('.setNoPasswordInvest',$InfoBox),//开启按钮
         $noPasswordInvestDOM = $('#noPasswordInvestDOM');
     let $imageCaptchaElement = $('#imageCaptcha'),
-        $getCaptchaElement = $('.get-captcha',$turnOffNoPasswordInvestDOM);
+        $getCaptchaElement = $('.get-captcha',$turnOnNoPasswordInvestIdentifiedDOM);
 
-    let $imageCaptchaTextElement = $('.image-captcha-text', $turnOffNoPasswordInvestDOM),
-        $btnCancelElement = $('.btn-cancel',$turnOffNoPasswordInvestDOM),
+    let $imageCaptchaTextElement = $('.image-captcha-text', $turnOnNoPasswordInvestIdentifiedDOM),
+        $btnCancelElement = $('.btn-cancel',$turnOnNoPasswordInvestIdentifiedDOM),
+        $btnCancelTurnOffNoPassword = $('.btn-cancel',$turnOffPasswordInvestDOM),//关闭免密支付弹框里面的取消按钮
         $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
-        $btnCloseTurnOffElement = $('.btn-close-turn-off', $turnOffNoPasswordInvestDOM),
-        turnOffNoPasswordInvestForm= globalFun.$('#turnOffNoPasswordInvestForm'),
-        $codeNumber = $('.code-number',$(turnOffNoPasswordInvestForm)),
+        $btnCloseTurnOffElement = $('.btn-close-turn-off', $turnOnNoPasswordInvestIdentifiedDOM),
+        turnOnNoPasswordInvestForm= globalFun.$('#turnOnNoPasswordInvestForm'),
+        $codeNumber = $('.code-number',$('#turnOnNoPasswordInvestForm')),
         imageCaptchaForm = globalFun.$('#imageCaptchaForm');
-    let errorBox = $('.error-box',$(turnOffNoPasswordInvestForm));
+    let errorBox = $('.error-box',$(turnOnNoPasswordInvestForm));
+    let $alreadyTurnOffDOM = $('#alreadyTurnOffDOM'),
+        $TurnOffPassBtn = $('.btn-success',$alreadyTurnOffDOM);
 
+    $TurnOffPassBtn.on('click',function(){
+        layer.closeAll();
+        location.href = "/personal-info";
+    });
     $btnCancelElement.on('click',function(){
+        layer.closeAll();
+    });
+    $btnCancelTurnOffNoPassword.on('click',function(){
         layer.closeAll();
     });
     $btnCloseTurnOnElement.on('click',function(){
         layer.closeAll();
+
     });
 
     function refreshTurnOffNoPasswordInvestLayer(){
@@ -215,7 +228,8 @@ require.ensure([],function() {
         });
     });
 
-    $turnOffNoPasswordInvestLayer.on('click', function () {
+    //开启免密支付按钮
+    $noPasswordInvest.on('click', function () {
         commonFun.useAjax({
             url: "/checkLogin",
             type: 'get'
@@ -229,12 +243,12 @@ require.ensure([],function() {
                     title: '免密投资',
                     closeBtn:0,
                     shadeClose: false,
-                    content: $turnOffNoPasswordInvestDOM
+                    content: $turnOnNoPasswordInvestIdentifiedDOM
                 });
             }
         });
     });
-
+//点击联动优势按钮
     $btnTurnOnElement.on('click',function(){
         layer.closeAll();
         layer.open({
@@ -249,19 +263,47 @@ require.ensure([],function() {
         });
     });
 
-    //开启
-    $noPasswordInvest.on('click', function () {
-        var _this = $(this);
+//关闭免密支付按钮
+    $turnOffNoPasswordInvestLayer.on('click', function () {
         commonFun.useAjax({
-            url: _this.data('url'),
-            type: 'POST'
-        },function(response) {
-            if (response.data.status) {
-                location.href = "/personal-info";
-            }
+            url: "/checkLogin",
+            type: 'GET'
+        },function() {
+            layer.open({
+                type: 1,
+                move: false,
+                offset: "200px",
+                title: '免密投资',
+                area: ['490px', '220px'],
+                shadeClose: false,
+                closeBtn:0,
+                content: $turnOffPasswordInvestDOM
+            });
         });
     });
+    var $turnOffPasswordBtn = $('.btn-turn-off',$turnOffPasswordInvestDOM);
+    $turnOffPasswordBtn.on('click',function(e){
 
+            commonFun.useAjax({
+                url: '/no-password-invest/disabled',
+                type: 'POST'
+            },function(response) {
+                if (response.data.status) {
+                    // location.href = "/personal-info";
+                    layer.open({
+                        type: 1,
+                        move: false,
+                        offset: "200px",
+                        title: '免密投资',
+                        area: ['490px', '220px'],
+                        shadeClose: false,
+                        closeBtn:0,
+                        content: $alreadyTurnOffDOM
+                    });
+                }
+            });
+
+    })
     //关闭免密投资功能
     let noPassValidator = new ValidatorObj.ValidatorForm();
     noPassValidator.add(imageCaptchaForm.imageCaptcha, [{
@@ -281,28 +323,43 @@ require.ensure([],function() {
             $getCaptchaElement.prop('disabled',false);
         }
     });
+    let isVoice = false;
 
-    $getCaptchaElement.on('click',function(event){
+    $('.get-captcha').on('click',function(event){
         // $(imageCaptchaForm).submit();
         event.preventDefault();
         $getCaptchaElement.prop('disabled',true);
+        fetchaCountDown();
+    });
+    $('#voice_btn').on('click',function(event){
+        event.preventDefault();
+        isVoice = true;
+        $getCaptchaElement.prop('disabled',true);
+        fetchaCountDown();
+        console.log(isVoice);
+    });
+    function fetchaCountDown() {
         commonFun.useAjax({
             url:"/no-password-invest/send-captcha",
             type:'POST',
-            data:$(imageCaptchaForm).serialize()
+            data:$(imageCaptchaForm).serialize()+'&voice='+isVoice
         },function(response) {
             $getCaptchaElement.prop('disabled',false);
             let data =response.data;
             errorBox.html('');
             if (data.status && !data.isRestricted) {
                 $codeNumber.removeClass('code-number-hidden');
+                $voiceCaptcha.hide();
                 var seconds = 60;
+
                 countTimer = setInterval(function () {
                     $getCaptchaElement.html(seconds + '秒后重新发送').prop('disabled',true);
                     if (seconds == 0) {
                         clearInterval(countTimer);
                         $getCaptchaElement.html('重新发送').prop('disabled',false);
-                        commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
+                        $voiceCaptcha.show();
+                        console.log(isVoice)
+                        //commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
                     }
                     seconds--;
                 }, 1000);
@@ -320,8 +377,7 @@ require.ensure([],function() {
             }
             commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'),'/no-password-invest/image-captcha');
         });
-    });
-
+    }
     $imageCaptchaElement.click(function () {
         $imageCaptchaTextElement.val('');
         commonFun.refreshCaptcha(this,'/no-password-invest/image-captcha');
@@ -331,13 +387,13 @@ require.ensure([],function() {
         layer.closeAll();
     });
 
-    let turnOffPassValidator = new ValidatorObj.ValidatorForm();
+    let turnOnPassValidator = new ValidatorObj.ValidatorForm();
     //免密投资验证图形码
-    turnOffPassValidator.newStrategy(turnOffNoPasswordInvestForm.captcha,'isNoPasswordCaptchaVerify',function(errorMsg,showErrorAfter) {
+    turnOnPassValidator.newStrategy(turnOnNoPasswordInvestForm.captcha,'isNoPasswordCaptchaVerify',function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this,
             _arguments=arguments;
-        let turnOffForm=globalFun.$('#turnOffNoPasswordInvestForm');
+        let turnOffForm=globalFun.$('#turnOnNoPasswordInvestForm');
         var _phone = turnOffForm.mobile.value,
             _captcha=turnOffForm.captcha.value;
         commonFun.useAjax({
@@ -359,7 +415,7 @@ require.ensure([],function() {
         return getResult;
     });
 
-    turnOffPassValidator.add(turnOffNoPasswordInvestForm.captcha, [{
+    turnOnPassValidator.add(turnOnNoPasswordInvestForm.captcha, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入验证码'
     },{
@@ -370,21 +426,21 @@ require.ensure([],function() {
         errorMsg: '验证码不正确'
     }]);
 
-    $(turnOffNoPasswordInvestForm.captcha).on('blur',function(event) {
-        let errorMsg = turnOffPassValidator.start(this);
+    $(turnOnNoPasswordInvestForm.captcha).on('blur',function(event) {
+        let errorMsg = turnOnPassValidator.start(this);
         errorBox.html(errorMsg);
 
     });
-
-    turnOffNoPasswordInvestForm.onsubmit=function(event) {
+    //认证以后开启免密支付提交按钮
+    turnOnNoPasswordInvestForm.onsubmit=function(event) {
         event.preventDefault();
         let thisForm = this;
-        let errorMsg = turnOffPassValidator.start(thisForm.captcha);
+        let errorMsg = turnOnPassValidator.start(thisForm.captcha);
         errorBox.html(errorMsg);
         if (!errorMsg) {
             $(thisForm).find(':submit').prop('disabled', true);
             commonFun.useAjax({
-                url: "/no-password-invest/disabled",
+                url: "/no-password-invest/enabled",
                 type: 'POST',
                 data: $(thisForm).serialize()
             }, function (response) {

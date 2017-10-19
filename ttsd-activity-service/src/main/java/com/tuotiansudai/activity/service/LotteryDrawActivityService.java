@@ -148,6 +148,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.school.season.endTime}")
     private String activitySchoolSeasonEndTime;
 
+    @Value(value = "${activity.iphoneX.startTime}")
+    private String activityIphoneXStartTime;
+
+    @Value(value = "${activity.iphoneX.endTime}")
+    private String activityIphoneXEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -370,6 +376,11 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_9_99, Lists.newArrayList(460L))
                 .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_ENVELOP_19_99, Lists.newArrayList(461L))
                 .put(LotteryPrize.SCHOOL_SEASON_ACTIVITY_COUPON_5, Lists.newArrayList(462L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_18, Lists.newArrayList(464L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_188, Lists.newArrayList(465L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_288, Lists.newArrayList(466L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_ENVELOP_588, Lists.newArrayList(467L))
+                .put(LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_COUPON_5, Lists.newArrayList(468L))
                 .build()).get(lotteryPrize);
     }
 
@@ -454,6 +465,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case SCHOOL_SEASON_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case IPHONEX_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
 
         }
         return lotteryTime;
@@ -600,6 +613,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.EXERCISE_WORK_ACTIVITY, Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime))
                 .put(ActivityCategory.HOUSE_DECORATE_ACTIVITY, Lists.newArrayList(acticityHouseDecorateStartTime, acticityHouseDecorateEndTime))
                 .put(ActivityCategory.SCHOOL_SEASON_ACTIVITY, Lists.newArrayList(activitySchoolSeasonStartTime, activitySchoolSeasonEndTime))
+                .put(ActivityCategory.IPHONEX_ACTIVITY, Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -635,12 +649,12 @@ public class LotteryDrawActivityService {
 
     private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
         long experienceAmount = 0l;
-        if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_99.equals(lotteryPrize)) {
-            experienceAmount = 9900l;
+        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_88.equals(lotteryPrize)) {
+            experienceAmount = 8800l;
         }
 
-        if (LotteryPrize.SCHOOL_SEASON_ACTIVITY_EXPERIENCE_GOLD_999.equals(lotteryPrize)) {
-            experienceAmount = 99900l;
+        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
+            experienceAmount = 88800l;
         }
 
         if (experienceAmount == 0) {
@@ -648,7 +662,7 @@ public class LotteryDrawActivityService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.SCHOOL_SEASON));
+                new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.IPHONEX));
     }
 
     public int getExerciseVSWorkDrawTime(UserModel userModel, ActivityCategory activityCategory) {

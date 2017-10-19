@@ -40,12 +40,16 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
                 throw new RuntimeException(e);
             }
 
-            String loginName = obtainPointMessage.getLoginName();
-            long point = obtainPointMessage.getPoint();
-            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-            accountModel.setPoint(accountModel.getPoint() + point);
-            logger.info("[MQ] ready to consume message: . loginName:{}, point:{}", loginName, point);
-            accountMapper.update(accountModel);
+            try {
+                String loginName = obtainPointMessage.getLoginName();
+                long point = obtainPointMessage.getPoint();
+                AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+                accountModel.setPoint(accountModel.getPoint() + point);
+                logger.info("[MQ] ready to consume message: . loginName:{}, point:{}", loginName, point);
+                accountMapper.update(accountModel);
+            } catch (Exception e) {
+                logger.error("consume ObtainPoint message fail", e);
+            }
         }
         logger.info("[MQ] consume message success.");
     }
