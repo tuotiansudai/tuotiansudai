@@ -5,10 +5,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.enums.AppUrl;
-import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.MessageType;
-import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageCategory;
@@ -20,9 +17,11 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
-import javafx.event.EventType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,33 +148,27 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         String path = messageModel.getAppUrl() == null ? null : messageModel.getAppUrl().getPath();
 
         if (messageModel.getType().equals(MessageType.EVENT) && businessId != null && !Strings.isNullOrEmpty(path)) {
-            long loanId = 0;
+            long investId = 0;
             switch (messageModel.getEventType()) {
                 case INVEST_SUCCESS:
-                    loanId = (businessId == null || investMapper.findById(businessId) == null) ? 0 : investMapper.findById(businessId).getLoanId();
-                    path = loanId == 0 ? AppUrl.MY_INVEST_RAISING.getPath() : path;
+                case LOAN_OUT_SUCCESS:
+                    investId = businessId;
                     break;
                 case TRANSFER_SUCCESS:
                 case TRANSFER_FAIL:
-                    loanId = (businessId == null || transferApplicationMapper.findById(businessId) == null) ? 0 : transferApplicationMapper.findById(businessId).getLoanId();
-                    path = loanId == 0 ? AppUrl.MY_INVEST_FINISH.getPath() : path;
-                    break;
-                case LOAN_OUT_SUCCESS:
-                    loanId = businessId;
-                    path = loanId == 0 ? AppUrl.MY_INVEST_REPAYING.getPath() : path;
+                    investId = transferApplicationMapper.findById(businessId).getInvestId();
                     break;
                 case REPAY_SUCCESS:
-                    loanId = (businessId == null || investRepayMapper.findById(businessId) == null) ? 0 : investMapper.findById(investRepayMapper.findById(businessId).getInvestId()).getLoanId();
-                    path = loanId == 0 ? AppUrl.MY_INVEST_REPAYING.getPath() : path;
-                    break;
                 case ADVANCED_REPAY:
-                    loanId = (businessId == null || investRepayMapper.findById(businessId) == null) ? 0 : investMapper.findById(investRepayMapper.findById(businessId).getInvestId()).getLoanId();
-                    path = loanId == 0 ? AppUrl.MY_INVEST_FINISH.getPath() : path;
+                    investId = investRepayMapper.findById(businessId).getInvestId();
                     break;
             }
-            path = loanId == 0 ? path : MessageFormat.format(path, String.valueOf(loanId));
+            InvestModel investModel = investMapper.findById(investId);
+            LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            path = investModel == null ? path : MessageFormat.format(path, investModel.getTransferInvestId() == null ? 0 : 1,
+                    loanModel.getStatus(), investModel.getId(), transferApplicationModel == null ? 0 : transferApplicationModel.getId(), investModel.getTransferStatus());
         }
-
         return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
     }
 

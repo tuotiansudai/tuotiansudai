@@ -1,6 +1,7 @@
 package com.tuotiansudai.mq.consumer.message;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
@@ -15,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class EventMessageConsumer implements MessageConsumer {
@@ -59,11 +60,20 @@ public class EventMessageConsumer implements MessageConsumer {
                 return;
             }
 
-            for (String loginName : eventMessage.getLoginNames()) {
-                UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, eventMessage.getTitle(), eventMessage.getContent(), new Date());
-                userMessageModel.setBusinessId(eventMessage.getBusinessId() != null ? eventMessage.getBusinessId() : null);
-                userMessageMapper.create(userMessageModel);
+            if (eventMessage.getEventType()==MessageEventType.LOAN_OUT_SUCCESS){
+                for (Map.Entry<Long, String> entry : eventMessage.getInvestIdLoginNames().entrySet()){
+                    UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), entry.getValue(), eventMessage.getTitle(), eventMessage.getContent(), new Date());
+                    userMessageModel.setBusinessId(entry.getKey());
+                    userMessageMapper.create(userMessageModel);
+                }
+            }else{
+                for (String loginName : eventMessage.getLoginNames()) {
+                    UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, eventMessage.getTitle(), eventMessage.getContent(), new Date());
+                    userMessageModel.setBusinessId(eventMessage.getBusinessId() != null ? eventMessage.getBusinessId() : null);
+                    userMessageMapper.create(userMessageModel);
+                }
             }
+
         } catch (Exception e) {
             logger.error(MessageFormat.format("[EventMessageConsumer] {0}", message), e);
         }
