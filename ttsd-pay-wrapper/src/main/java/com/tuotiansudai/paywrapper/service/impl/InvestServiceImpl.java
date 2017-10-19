@@ -111,6 +111,7 @@ public class InvestServiceImpl implements InvestService {
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
+    public final static String ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY = "activity:double:eleven:loanId:{0}:count";
     private final static int SIX_MONTH_SECOND = 60 * 60 * 24 * 30 * 6;
 
     @Value("${common.environment}")
@@ -758,7 +759,7 @@ public class InvestServiceImpl implements InvestService {
 
     private void sendUserMessageByDoubleElevenActivity(InvestModel investModel, LoanModel loanModel, LoanDetailsModel loanDetailsModel, LoanDetailInfo loanDetailInfo) {
         if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && (loanDetailsModel != null && !loanDetailInfo.getActivityDesc().equals("0元购"))) {
-            long investSeq = investMapper.countActivityDoubleElevenByLoanId(loanModel.getId());
+            long investSeq = redisWrapperClient.incr(MessageFormat.format(ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY,loanModel.getId()));
 
             String activityTitle;
             String activityContent;
@@ -782,7 +783,6 @@ public class InvestServiceImpl implements InvestService {
                     investModel.getId()
             ));
         }
-
     }
 
     class ExperienceReward {
