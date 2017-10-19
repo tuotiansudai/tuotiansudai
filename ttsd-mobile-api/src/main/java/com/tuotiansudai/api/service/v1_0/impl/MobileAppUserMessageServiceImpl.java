@@ -166,8 +166,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             InvestModel investModel = investMapper.findById(investId);
             LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
-            path = investModel == null ? path : MessageFormat.format(path, investModel.getTransferInvestId() == null ? 0 : 1,
-                    loanModel.getStatus(), investModel.getId(), transferApplicationModel == null ? 0 : transferApplicationModel.getId(), investModel.getTransferStatus());
+            path = investModel == null ? path : MessageFormat.format(path, investModel.getTransferInvestId() == null ? "0" : "1",
+                    loanModel.getStatus(), String.valueOf(investModel.getId()), transferApplicationModel == null ? "0" : String.valueOf(transferApplicationModel.getId()), investModel.getTransferStatus());
         }
         return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
     }
