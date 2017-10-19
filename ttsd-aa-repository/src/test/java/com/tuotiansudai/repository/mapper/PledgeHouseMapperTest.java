@@ -71,7 +71,7 @@ public class PledgeHouseMapperTest {
         prepareData();
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
-                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+                "square", "propertyCardId","propertyRightCertificateId", "estateRegisterId", "authenticAct");
 
         pledgeHouseMapper.create(pledgeHouseModel);
 
@@ -91,7 +91,7 @@ public class PledgeHouseMapperTest {
     public void testUpdateByLoanId() throws Exception {
         prepareData();
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
-                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+                "square", "propertyCardId", "propertyRightCertificateId", "estateRegisterId", "authenticAct");
         pledgeHouseMapper.create(pledgeHouseModel);
 
         pledgeHouseModel.setPledgeLocation("updateLocation");
@@ -119,7 +119,7 @@ public class PledgeHouseMapperTest {
     public void testDeleteByLoanId() throws Exception {
         prepareData();
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
-                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+                "square", "propertyCardId","propertyRightCertificateId",  "estateRegisterId", "authenticAct");
         pledgeHouseMapper.create(pledgeHouseModel);
         assertNotNull(pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId()));
 

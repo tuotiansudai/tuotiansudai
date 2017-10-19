@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +37,7 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
     private SmsCaptchaService smsCaptchaService;
 
     @Test
-    public void shouldSendSmsIsOk(){
+    public void shouldSendSmsIsOk() {
         SendSmsCompositeRequestDto sendSmsCompositeRequestDto = new SendSmsCompositeRequestDto();
         sendSmsCompositeRequestDto.setImageCaptcha("ABCDEF");
         sendSmsCompositeRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
@@ -44,12 +45,12 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
         sendSmsCompositeRequestDto.setBaseParam(BaseParamTest.newInstance());
         mockMethod();
         when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(true);
-        BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto,"192.168.1.1");
+        BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto, "192.168.1.1");
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
     }
 
     @Test
-    public void shouldSendSmsIsFail(){
+    public void shouldSendSmsIsFail() {
         SendSmsCompositeRequestDto sendSmsCompositeRequestDto = new SendSmsCompositeRequestDto();
         sendSmsCompositeRequestDto.setType(SmsCaptchaType.REGISTER_CAPTCHA);
         sendSmsCompositeRequestDto.setPhoneNum("10002341");
@@ -57,17 +58,17 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
         baseParam.setDeviceId("1234443");
         sendSmsCompositeRequestDto.setBaseParam(baseParam);
         mockMethod();
-        BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto,"192.168.1.1");
+        BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto, "192.168.1.1");
         assertEquals(baseResponseDto.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getCode());
     }
 
-    private void mockMethod(){
+    private void mockMethod() {
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         BaseDto<SmsDataDto> sms = new BaseDto<>();
         sms.setSuccess(true);
         SmsDataDto smsDataDto = new SmsDataDto();
         smsDataDto.setStatus(true);
         sms.setData(smsDataDto);
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(),anyString())).thenReturn(sms);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(sms);
     }
 }

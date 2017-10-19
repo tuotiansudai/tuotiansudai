@@ -39,7 +39,8 @@ public enum ActivityCategory {
     CELEBRATION_SINGLE_ACTIVITY("周年庆单笔狂欢场活动",ConsumeCategory.TASK_COUNT),
     EXERCISE_WORK_ACTIVITY("运动达人VS职场骄子",ConsumeCategory.TASK_COUNT),
     HOUSE_DECORATE_ACTIVITY("家装节奖励",ConsumeCategory.TASK_COUNT),
-    SCHOOL_SEASON_ACTIVITY("开学季活动奖励",ConsumeCategory.TASK_COUNT);
+    SCHOOL_SEASON_ACTIVITY("开学季活动奖励",ConsumeCategory.TASK_COUNT),
+    IPHONEX_ACTIVITY("iphoneX活动奖励",ConsumeCategory.TASK_COUNT);
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;

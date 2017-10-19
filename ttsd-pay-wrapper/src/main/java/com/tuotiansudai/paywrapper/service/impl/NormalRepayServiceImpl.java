@@ -568,20 +568,19 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 paybackAmount,
                 currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
                 null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
-
-        logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update user bill payback amount({2})",
-                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount)));
 
         // fee user bill
         AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
                 investRepayId,
                 currentInvestRepay.getActualFee(),
                 UserBillBusinessType.INVEST_FEE, null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
 
-        logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update user bill fee amount({2})",
-                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(currentInvestRepay.getActualFee())));
+        inAtm.setNext(outAtm);
+
+        logger.info(MessageFormat.format("[Normal Repay {0}] send message to update user account. invest repay({1}), payback amount({2}), fee amount({3})",
+                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount), String.valueOf(currentInvestRepay.getActualFee())));
+
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
         //update invest repay
         currentInvestRepay.setStatus(RepayStatus.COMPLETE);

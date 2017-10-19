@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +54,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         smsDto.setData(successSmsDataDto);
         successSmsDataDto.setStatus(true);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(smsDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(smsDto);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 

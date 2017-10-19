@@ -148,7 +148,7 @@
 
                 </th>
                 <th class="tr spec-bg">已收回款(元)</th>
-                <th class="tr spec-bg">回款时间(元)</th>
+                <th class="tr spec-bg">回款时间</th>
                 <th class="spec-bg">状态</th>
             </tr>
             <tbody>
