@@ -125,7 +125,7 @@ drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 //开始抽奖
 $pointerBtn.on('click', function(event) {
     drawCircleOne.beginLuckDraw(function(data) {
-        alert(data)
+        alert(data.returnCode)
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
