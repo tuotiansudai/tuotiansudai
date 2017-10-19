@@ -125,7 +125,8 @@ class CommaSeparatedField(wtforms.Field):
 
 class UserQueryForm(wtforms.Form):
     page = wtforms.IntegerField('page', [wtforms.validators.number_range(min=1, max=1000)], default=1)
-    page_size = wtforms.IntegerField('page_size', [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])
+    page_size = wtforms.IntegerField('page_size',
+                                     [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])
     sort = CommaSeparatedField('sort', [wtforms.validators.optional()])
     fields = CommaSeparatedField('fields', [wtforms.validators.optional()])
 
@@ -140,5 +141,7 @@ class UserQueryForm(wtforms.Form):
     register_time__gte = wtforms.DateTimeField('register_time__gte', [wtforms.validators.optional()])
     register_time__lte = wtforms.DateTimeField('register_time__lte', [wtforms.validators.optional()])
 
+
 class QueryLimitForm(wtforms.Form):
-    limit = wtforms.IntegerField('limit', [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])
+    limit = wtforms.IntegerField('limit',
+                                 [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])

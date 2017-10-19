@@ -41,6 +41,7 @@ class UTRunner(object):
         sh(
             '/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} clean compileJava ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog test'.format(
                 self.db_host, self.db_port, self.redis_host, self.redis_port))
+        sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
         sh(
             'docker run -v `pwd`/ttsd-user-rest-service:/app --rm --net=bridge --link test-db-server --link test-redis-server leoshi/ttsd-signin-flask python test.py')
 
