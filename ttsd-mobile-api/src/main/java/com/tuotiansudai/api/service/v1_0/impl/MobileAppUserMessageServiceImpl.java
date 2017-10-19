@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
@@ -153,6 +154,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                 case INVEST_SUCCESS:
                 case LOAN_OUT_SUCCESS:
                     investId = businessId;
+                    path = investMapper.findById(investId) == null ? AppUrl.MY_INVEST_REPAYING.getPath() : path;
                     break;
                 case TRANSFER_SUCCESS:
                 case TRANSFER_FAIL:
