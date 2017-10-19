@@ -10,10 +10,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegePurchaseMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.SystemBillMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -120,7 +117,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
             long amount = membershipPrivilegePurchaseModel.getAmount();
             membershipPrivilegePurchaseModel.setStatus(MembershipPrivilegePurchaseStatus.SUCCESS);
             AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE, null, null);
-            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
             SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
                     orderId, amount, SystemBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE,

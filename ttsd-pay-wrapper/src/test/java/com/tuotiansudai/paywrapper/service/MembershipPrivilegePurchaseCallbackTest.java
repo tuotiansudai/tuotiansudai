@@ -11,6 +11,7 @@ import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -102,7 +103,8 @@ public class MembershipPrivilegePurchaseCallbackTest extends RepayBaseTest {
 
     private void verifyAmountTransferMessage(UserModel userModel, MembershipPrivilegePurchaseModel membershipPrivilegePurchaseModel) throws IOException {
         String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+        AmountTransferMultiMessage messages = JsonConverter.readValue(messageBody, AmountTransferMultiMessage.class);
+        AmountTransferMessage message = messages.getMessageList().get(0);
         assertThat(message.getLoginName(), is(userModel.getLoginName()));
         assertThat(message.getAmount(), is(membershipPrivilegePurchaseModel.getAmount()));
         assertThat(message.getBusinessType(), is(UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE));

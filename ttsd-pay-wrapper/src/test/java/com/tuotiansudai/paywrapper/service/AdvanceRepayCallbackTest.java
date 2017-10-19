@@ -9,6 +9,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -209,7 +210,8 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
     private void verifyAgentUserBillMessage(UserModel loaner, LoanRepayModel loanRepay1, LoanRepayModel loanRepay2) {
         try {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage transferFeeMessage = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+            AmountTransferMultiMessage messages = JsonConverter.readValue(messageBody, AmountTransferMultiMessage.class);
+            AmountTransferMessage transferFeeMessage = messages.getMessageList().get(0);
             assertThat(transferFeeMessage.getLoginName(), CoreMatchers.is(loaner.getLoginName()));
             assertThat(transferFeeMessage.getAmount(), CoreMatchers.is(loanRepay2.getCorpus() + loanRepay1.getActualInterest()));
             assertThat(transferFeeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.ADVANCE_REPAY));

@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -50,7 +51,7 @@ public class TransferCashServiceImpl implements TransferCashService {
             if (responseModel.isSuccess()) {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
                         transferCashDto.getUserBillBusinessType(), null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                 String detail = MessageFormat.format(SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), transferCashDto.getSystemBillBusinessType(), detail);

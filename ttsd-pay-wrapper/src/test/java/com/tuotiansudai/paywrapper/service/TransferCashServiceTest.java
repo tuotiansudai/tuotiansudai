@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
@@ -138,7 +139,8 @@ public class TransferCashServiceTest {
 
     private void verifyAmountTransferMessage(long orderId) throws IOException {
         String feeMessageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage feeMessage = JsonConverter.readValue(feeMessageBody, AmountTransferMessage.class);
+        AmountTransferMultiMessage messages = JsonConverter.readValue(feeMessageBody, AmountTransferMultiMessage.class);
+        AmountTransferMessage feeMessage = messages.getMessageList().get(0);
         assertThat(feeMessage.getLoginName(), CoreMatchers.is("testTransferCash"));
         assertThat(feeMessage.getAmount(), CoreMatchers.is(1L));
         assertThat(feeMessage.getOrderId(), is(orderId));

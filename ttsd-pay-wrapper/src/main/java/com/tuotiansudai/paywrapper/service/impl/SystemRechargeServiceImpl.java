@@ -9,6 +9,7 @@ import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -117,7 +118,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
                 systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
 
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
                         orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,

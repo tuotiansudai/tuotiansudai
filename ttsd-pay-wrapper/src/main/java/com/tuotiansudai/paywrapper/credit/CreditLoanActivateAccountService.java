@@ -12,6 +12,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -209,11 +210,10 @@ public class CreditLoanActivateAccountService {
 
         if (callbackRequest.isSuccess()) {
             if (SyncRequestStatus.SENT.name().equalsIgnoreCase(redisWrapperClient.get(key))) {
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                        new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(orderId).getLoginName(),
-                                Long.parseLong(orderId),
-                                ACTIVATE_ACCOUNT_MONEY,
-                                UserBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT, null, null));
+
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(orderId).getLoginName(),
+                        Long.parseLong(orderId), ACTIVATE_ACCOUNT_MONEY, UserBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                         new CreditLoanBillModel(Long.parseLong(orderId), ACTIVATE_ACCOUNT_MONEY, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT, orderId));

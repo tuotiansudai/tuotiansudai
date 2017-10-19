@@ -11,10 +11,10 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayNoPwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferNotifyMapper;
@@ -175,7 +175,7 @@ public class CreditLoanRepayService {
             return dto;
         }
 
-        if (this.isFinished(orderId)){
+        if (this.isFinished(orderId)) {
             payDataDto.setMessage("您已还款成功");
             payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return dto;
@@ -234,11 +234,12 @@ public class CreditLoanRepayService {
                 String loanRepayInfo = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_REPAY_INFO_REDIS_KEY, String.valueOf(orderId)));
                 String mobile = loanRepayInfo.split("\\|")[0];
                 long amount = Long.parseLong(loanRepayInfo.split("\\|")[1]);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                        new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
-                                Long.parseLong(orderId),
-                                amount,
-                                UserBillBusinessType.CREDIT_LOAN_REPAY, null, null));
+
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
+                        Long.parseLong(orderId),
+                        amount,
+                        UserBillBusinessType.CREDIT_LOAN_REPAY, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                         new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_REPAY, mobile));
@@ -267,7 +268,7 @@ public class CreditLoanRepayService {
         try {
             String key = MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId));
             return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.get(key)) == SyncRequestStatus.SUCCESS;
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;

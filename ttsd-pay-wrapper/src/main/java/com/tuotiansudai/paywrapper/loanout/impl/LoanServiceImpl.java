@@ -12,10 +12,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.LoanOutSuccessMessage;
-import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -347,7 +344,7 @@ public class LoanServiceImpl implements LoanService {
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
                     AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, invest.getLoginName(),
                             invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS, null, null);
-                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                     redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (Exception e) {
@@ -368,7 +365,7 @@ public class LoanServiceImpl implements LoanService {
 
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, agentLoginName,
                         loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
                 redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.SUCCESS.name());
             }
         } catch (Exception e) {
@@ -424,7 +421,7 @@ public class LoanServiceImpl implements LoanService {
                 investModel.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
                 investMapper.update(investModel);
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
             }
         }
         return callbackRequest.getResponseData();

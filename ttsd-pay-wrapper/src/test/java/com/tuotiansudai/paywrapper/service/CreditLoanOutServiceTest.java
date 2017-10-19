@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -300,10 +301,10 @@ public class CreditLoanOutServiceTest {
         assertThat(((Map)messageCaptor.getAllValues().get(0)).get("success"), is(true));
 
         assertThat(queueCaptor.getAllValues().get(1), is(MessageQueue.AmountTransfer));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getTransferType(), is(TransferType.TRANSFER_IN_BALANCE));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getLoginName(), is(userModel.getLoginName()));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getOrderId(), is(orderId));
-        assertThat(((AmountTransferMessage)messageCaptor.getAllValues().get(1)).getBusinessType(), is(UserBillBusinessType.CREDIT_LOAN_OUT));
+        assertThat(((AmountTransferMultiMessage)messageCaptor.getAllValues().get(1)).getMessageList().get(0).getTransferType(), is(TransferType.TRANSFER_IN_BALANCE));
+        assertThat(((AmountTransferMultiMessage)messageCaptor.getAllValues().get(1)).getMessageList().get(0).getLoginName(), is(userModel.getLoginName()));
+        assertThat(((AmountTransferMultiMessage)messageCaptor.getAllValues().get(1)).getMessageList().get(0).getOrderId(), is(orderId));
+        assertThat(((AmountTransferMultiMessage)messageCaptor.getAllValues().get(1)).getMessageList().get(0).getBusinessType(), is(UserBillBusinessType.CREDIT_LOAN_OUT));
 
         assertThat(queueCaptor.getAllValues().get(2), is(MessageQueue.CreditLoanBill));
         assertThat(((CreditLoanBillModel)messageCaptor.getAllValues().get(2)).getOrderId(), is(orderId));

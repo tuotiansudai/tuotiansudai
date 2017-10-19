@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -172,7 +173,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
                 investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                 investModel.getLoginName(), String.valueOf(investRepayModel.getRepayAmount()));

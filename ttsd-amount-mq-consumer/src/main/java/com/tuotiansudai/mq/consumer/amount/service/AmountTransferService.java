@@ -4,6 +4,7 @@ import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.*;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -29,8 +30,19 @@ public class AmountTransferService {
     private UserBillMapper userBillMapper;
 
     @Transactional
-    public void amountTransferProcess(AmountTransferMessage message) throws AmountTransferException {
-        logger.info("start amount transfer process, message");
+    public void amountTransferProcess(AmountTransferMultiMessage atmm) throws AmountTransferException {
+        logger.info("start amount transfer process, multi message size:{}", atmm.getMessageList().size());
+
+        for (AmountTransferMessage message : atmm.getMessageList()) {
+            amountTransferProcessOne(message);
+        }
+        logger.info("end amount transfer process.");
+    }
+
+
+    private void amountTransferProcessOne(AmountTransferMessage message) throws AmountTransferException {
+        logger.info("amount transfer process one message. loginName: {}, orderId:{}, amount:{}, businessType:{}",
+                message.getLoginName(), message.getOrderId(), message.getAmount(), message.getBusinessType());
 
         TransferType transferType = message.getTransferType();
 
@@ -63,7 +75,6 @@ public class AmountTransferService {
                 throw new AmountTransferException(MessageFormat.format("transfer type incorrect. transferType:{0}", transferType));
         }
     }
-
 
     private void freeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
         logger.info("start freeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());

@@ -517,7 +517,7 @@ public class InvestServiceImpl implements InvestService {
     public void investSuccess(InvestModel investModel) {
         // 冻结资金
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);

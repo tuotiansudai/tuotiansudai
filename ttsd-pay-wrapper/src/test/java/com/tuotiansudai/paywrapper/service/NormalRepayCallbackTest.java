@@ -9,6 +9,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -588,7 +589,8 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
 
     private void verifyAmountTransferMessage(LoanModel loan, long amount, UserBillBusinessType businessType) throws IOException {
         String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-        AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+        AmountTransferMultiMessage messages = JsonConverter.readValue(messageBody, AmountTransferMultiMessage.class);
+        AmountTransferMessage message = messages.getMessageList().get(0);
         assertThat(message.getLoginName(), CoreMatchers.is(loan.getAgentLoginName()));
         assertThat(message.getAmount(), CoreMatchers.is(amount));
         assertThat(message.getBusinessType(), CoreMatchers.is(businessType));

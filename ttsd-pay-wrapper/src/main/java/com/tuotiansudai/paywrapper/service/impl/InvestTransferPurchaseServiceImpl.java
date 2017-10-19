@@ -319,7 +319,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         // generate transferee balance
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(atm));
 
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferee balance and user bill", String.valueOf(investId)));
 
@@ -400,16 +400,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
                 AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    logger.error("sleep between transfer in and out fail.", e);
-                }
-
                 AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, outAtm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMultiMessage(inAtm, outAtm));
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {

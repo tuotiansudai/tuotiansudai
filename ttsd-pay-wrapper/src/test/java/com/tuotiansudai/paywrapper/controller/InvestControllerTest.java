@@ -11,6 +11,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.AmountTransferMultiMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -159,7 +160,8 @@ public class InvestControllerTest {
     private void verifyInvestSuccessAmountTransferMessage(long mockInvestAmount, String mockInvestLoginName) {
         try {
             String messageBody = redisWrapperClient.lpop(String.format("MQ:LOCAL:%s", MessageQueue.AmountTransfer.getQueueName()));
-            AmountTransferMessage message = JsonConverter.readValue(messageBody, AmountTransferMessage.class);
+            AmountTransferMultiMessage messages = JsonConverter.readValue(messageBody, AmountTransferMultiMessage.class);
+            AmountTransferMessage message = messages.getMessageList().get(0);
             assertThat(message.getLoginName(), CoreMatchers.is(mockInvestLoginName));
             assertThat(message.getAmount(), CoreMatchers.is(mockInvestAmount));
             assertThat(message.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_SUCCESS));
