@@ -86,7 +86,7 @@ drawCircleOne.GiftRecord();
 drawCircleOne.MyGift();
 
 drawCircleOne.hoverScrollList($double11.find('.user-record'),10);
-//drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
+drawCircleOne.hoverScrollList($double11.find('.own-record'),10);
 // layer.open({
 //     type: 1,
 //     title: false,
