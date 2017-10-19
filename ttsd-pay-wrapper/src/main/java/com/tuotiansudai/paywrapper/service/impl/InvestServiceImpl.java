@@ -653,7 +653,7 @@ public class InvestServiceImpl implements InvestService {
 
             //双十一活动发送站内信
             if (DateTime.now().toDate().before(activityDoubleElevenEndTime) && DateTime.now().toDate().after(activityDoubleElevenStartTime)) {
-                this.sendUserMessageByDoubleElevenActivity(investModel, loanModel, loanDetailsModel, loanDetailInfo);
+                this.sendUserMessageByDoubleElevenActivity(investModel, loanModel, loanDetailInfo);
             }
 
         } catch (JsonProcessingException e) {
