@@ -108,7 +108,7 @@ public class HomeController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/refuse", method = {RequestMethod.GET, RequestMethod.POST}, params = "taskId")
+    @RequestMapping(value = "/refuse", method = RequestMethod.GET, params = "taskId")
     public BaseDto<BaseDataDto> refuseApply(String taskId, HttpServletRequest request) {
 
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();

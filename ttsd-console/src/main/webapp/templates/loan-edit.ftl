@@ -410,7 +410,6 @@
 
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                         <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/open">审核通过</button>
-                        <button type="button" class="btn form-submit-btn btn-danger" data-url="/refuse?taskId=PROJECT-${loan.loan.id?c}">审核拒绝</button>
                     </@security.authorize>
                 </#if>
 
@@ -431,7 +430,7 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h5>确认修改？</h5>
+                    <h5>确认提交？</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
