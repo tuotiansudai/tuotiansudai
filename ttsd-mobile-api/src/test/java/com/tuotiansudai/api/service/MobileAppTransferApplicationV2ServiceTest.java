@@ -15,14 +15,11 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.repository.model.TransferRuleModel;
-import com.tuotiansudai.transfer.service.InvestTransferService;
-import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -90,7 +87,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         when(investMapper.findCountTransferableApplicationPaginationByLoginName(anyString())).thenReturn(1L);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(1000l);
+        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong(), new Date())).thenReturn(1000l);
         when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(investRepayModel);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         BaseResponseDto<UserInvestListResponseDataDto> baseResponseDto = mobileAppTransferApplicationV2Service.generateTransferableInvest(transferableInvestRequestDto);
