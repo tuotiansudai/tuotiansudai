@@ -1,10 +1,14 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankCardStatus;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class BankCardMapperTest {
@@ -24,7 +29,7 @@ public class BankCardMapperTest {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
 
     @Test
@@ -68,8 +73,9 @@ public class BankCardMapperTest {
 
 
     }
+
     @Test
-    public void findByLoginNameAndIsFastPayOnIsOk(){
+    public void findByLoginNameAndIsFastPayOnIsOk() {
         UserModel fakeUser = createFakeUser();
         BankCardModel bankCardModel = new BankCardModel();
 

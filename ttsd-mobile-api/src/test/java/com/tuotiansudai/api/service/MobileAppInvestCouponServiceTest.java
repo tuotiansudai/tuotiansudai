@@ -5,10 +5,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.InvestRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserCouponListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -21,7 +19,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private CouponMapper couponMapper;
     @Autowired

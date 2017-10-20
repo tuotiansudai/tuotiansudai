@@ -1,16 +1,16 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppReferrerListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.impl.ReferrerManageServiceImpl;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -22,12 +22,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
-public class MobileAppReferrerListServiceTest extends ServiceTestBase{
+public class MobileAppReferrerListServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppReferrerListServiceImpl mobileAppReferrerListService;
     @Mock
@@ -43,9 +41,9 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
     private PageValidUtils pageValidUtils;
 
     @Test
-    public void shouldGenerateReferrerListIsOk(){
+    public void shouldGenerateReferrerListIsOk() {
         ReflectionTestUtils.setField(referrerManageService, "userReward", "0.1|0.2|0.3");
-        ReflectionTestUtils.setField(referrerManageService,"staffReward","0.1|0.2|0.3|0.4");
+        ReflectionTestUtils.setField(referrerManageService, "staffReward", "0.1|0.2|0.3|0.4");
         ReferrerRelationView referrerRelationView1 = new ReferrerRelationView();
         referrerRelationView1.setLoginName("loginName1");
         referrerRelationView1.setReferrerLoginName("referrerLoginName1");
@@ -60,7 +58,7 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
         List<ReferrerRelationView> referrerRelationDtos = Lists.newArrayList();
         referrerRelationDtos.add(referrerRelationView1);
         referrerRelationDtos.add(referrerRelationView2);
-        when(referrerManageMapper.findReferRelationList(anyString(), anyString(), any(Date.class), any(Date.class),anyString(),anyInt(), anyInt())).thenReturn(referrerRelationDtos);
+        when(referrerManageMapper.findReferRelationList(anyString(), anyString(), any(Date.class), any(Date.class), anyString(), anyInt(), anyInt())).thenReturn(referrerRelationDtos);
         when(referrerManageMapper.findReferRelationCount(anyString(), anyString(), any(Date.class), any(Date.class), anyString())).thenReturn(2);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         UserModel userModel = new UserModel();
@@ -73,7 +71,7 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
         BaseResponseDto<ReferrerListResponseDataDto> baseResponseDto = mobileAppReferrerListService.generateReferrerList(referrerListRequestDto);
         assertTrue(baseResponseDto.isSuccess());
         assertEquals("2", baseResponseDto.getData().getReferrerList().get(0).getLevel());
-        assertEquals("4",baseResponseDto.getData().getReferrerList().get(1).getLevel());
+        assertEquals("4", baseResponseDto.getData().getReferrerList().get(1).getLevel());
 
 
     }

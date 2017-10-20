@@ -2,8 +2,8 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ResetUmpayPasswordDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.ResetUmpayPasswordDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerSendSmsPwdMapper;
@@ -11,9 +11,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.MerSendSmsPwdRe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerSendSmsPwdResponseModel;
 import com.tuotiansudai.paywrapper.service.ResetUmpayPasswordService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

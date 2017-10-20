@@ -7,27 +7,19 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppMembershipPrivilegePurchaseServiceImpl;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.membership.exception.MembershipPrivilegeIsPurchasedException;
 import com.tuotiansudai.membership.exception.NotEnoughAmountException;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
-import com.tuotiansudai.membership.repository.model.MembershipPrivilege;
-import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -37,7 +29,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class MobileAppMembershipPrivilegePurchaseServiceTest extends ServiceTestBase{
+public class MobileAppMembershipPrivilegePurchaseServiceTest extends ServiceTestBase {
 
     @InjectMocks
     private MobileAppMembershipPrivilegePurchaseServiceImpl mobileAppMembershipPrivilegePurchaseService;
@@ -51,7 +43,7 @@ public class MobileAppMembershipPrivilegePurchaseServiceTest extends ServiceTest
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    public void shouldObtainMembershipPrivilegePricesIsSuccess(){
+    public void shouldObtainMembershipPrivilegePricesIsSuccess() {
 
         MembershipPrivilegePriceResponseDto responseDto = mobileAppMembershipPrivilegePurchaseService.obtainMembershipPrivilegePrices();
 
@@ -73,7 +65,7 @@ public class MobileAppMembershipPrivilegePurchaseServiceTest extends ServiceTest
     public void shouldPurchaseIsSuccess() throws MembershipPrivilegeIsPurchasedException, NotEnoughAmountException, JsonProcessingException, UnsupportedEncodingException {
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         Map<String, String> fields = Maps.newHashMap();
-        fields.put("key","value");
+        fields.put("key", "value");
         System.out.println(objectMapper.writeValueAsString(fields));
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setStatus(true);
@@ -88,12 +80,12 @@ public class MobileAppMembershipPrivilegePurchaseServiceTest extends ServiceTest
         baseParam.setPlatform("ios");
         requestDto.setDuration(30);
         requestDto.setBaseParam(baseParam);
-        when(membershipPrivilegePurchaseService.purchase(anyString(),any(MembershipPrivilegePriceType.class),any(Source.class))).thenReturn(baseDto);
+        when(membershipPrivilegePurchaseService.purchase(anyString(), any(MembershipPrivilegePriceType.class), any(Source.class))).thenReturn(baseDto);
 
 
-        BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> baseResponseDto =  mobileAppMembershipPrivilegePurchaseService.purchase(requestDto);
-        assertThat(baseResponseDto.getData().getUrl(),is(baseDto.getData().getUrl()));
-        assertThat(baseResponseDto.getData().getRequestData(),is(CommonUtils.mapToFormData(baseDto.getData().getFields())));
+        BaseResponseDto<MembershipPrivilegePurchaseResponseDataDto> baseResponseDto = mobileAppMembershipPrivilegePurchaseService.purchase(requestDto);
+        assertThat(baseResponseDto.getData().getUrl(), is(baseDto.getData().getUrl()));
+        assertThat(baseResponseDto.getData().getRequestData(), is(CommonUtils.mapToFormData(baseDto.getData().getFields())));
     }
 
 

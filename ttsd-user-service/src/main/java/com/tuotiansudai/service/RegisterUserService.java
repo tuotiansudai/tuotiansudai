@@ -1,8 +1,8 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.dto.request.RegisterRequestDto;
 
 public interface RegisterUserService {
 
-    boolean register(UserModel userModel);
+    boolean register(RegisterRequestDto registerDto);
 }

@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class UserCouponMapperTest {
 
     @Autowired
@@ -32,7 +33,7 @@ public class UserCouponMapperTest {
     private CouponMapper couponMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateUserCoupon() {
@@ -101,7 +102,7 @@ public class UserCouponMapperTest {
     }
 
     @Test
-    public void shouldSumCouponAmountIsOk(){
+    public void shouldSumCouponAmountIsOk() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
 

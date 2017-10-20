@@ -1,13 +1,9 @@
 package com.tuotiansudai.activity.controller;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity/app-share")
@@ -39,7 +34,7 @@ public class AppShareController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getAppSharePage(@RequestParam(value = "referrerMobile",required = false) String referrerMobile, HttpServletRequest httpServletRequest) {
+    public ModelAndView getAppSharePage(@RequestParam(value = "referrerMobile", required = false) String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
             ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
@@ -49,7 +44,7 @@ public class AppShareController {
 
         String registerMobile = null;
         Cookie[] cookies = httpServletRequest.getCookies();
-        if(cookies != null){
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("registerMobile")) {
                     registerMobile = cookie.getValue();
@@ -59,7 +54,7 @@ public class AppShareController {
         }
 
         if (!StringUtils.isEmpty(registerMobile)) {
-            if(userService.mobileIsRegister(registerMobile)){
+            if (userService.mobileIsRegister(registerMobile)) {
                 ModelAndView modelAndView = new ModelAndView("/wechat/share-app");
                 modelAndView.addObject("responsive", true);
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
@@ -72,9 +67,9 @@ public class AppShareController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/success",method = RequestMethod.GET)
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
     public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile,
-                                        @RequestParam(value = "mobile",required = false) String mobile) {
+                                       @RequestParam(value = "mobile", required = false) String mobile) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         ModelAndView modelAndView = new ModelAndView();
         if (null == referrer) {
@@ -84,7 +79,7 @@ public class AppShareController {
         }
         UserModel userModel = userMapper.findByMobile(mobile);
         boolean isOldUser = userModel != null && !"shareAB".equals(userModel.getChannel()) && prepareUserMapper.findByMobile(mobile) == null;
-        modelAndView.addObject("isOldUser",isOldUser);
+        modelAndView.addObject("isOldUser", isOldUser);
         modelAndView.setViewName("/wechat/share-app");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
@@ -93,7 +88,7 @@ public class AppShareController {
 
     private String getReferrerInfo(UserModel referrer) {
         if (!StringUtils.isEmpty(referrer.getUserName())) {
-            return  StringUtils.leftPad(StringUtils.right(referrer.getUserName(),1),referrer.getUserName().length(),"*") ;
+            return StringUtils.leftPad(StringUtils.right(referrer.getUserName(), 1), referrer.getUserName().length(), "*");
         } else {
             return referrer.getMobile().substring(0, 3) + "****" + referrer.getMobile().substring(7);
         }

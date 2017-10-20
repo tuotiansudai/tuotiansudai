@@ -1,9 +1,8 @@
 package com.tuotiansudai.activity.service;
 
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

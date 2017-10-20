@@ -2,10 +2,10 @@ package com.tuotiansudai.activity.service;
 
 
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -29,14 +30,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class LotteryActivityServiceTest {
 
     @Autowired
     private LotteryActivityService lotteryActivityService;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
     @Autowired
@@ -51,49 +52,49 @@ public class LotteryActivityServiceTest {
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Ignore
-    public void shouldGetDrawPrizeTimeIsOk(){
+    public void shouldGetDrawPrizeTimeIsOk() {
         String loginName = "testDrawPrize";
         String referrerName = "testReferrerName";
         String mobile = "15510001234";
         String referrerMobile = "15510001235";
-        Date activityAutumnStartTime = DateUtils.addMonths(DateTime.now().toDate(),-1);
+        Date activityAutumnStartTime = DateUtils.addMonths(DateTime.now().toDate(), -1);
         Date activityAutumnEndTime = DateUtils.addMonths(DateTime.now().toDate(), 1);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnStartTime", activityAutumnStartTime);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
-        UserModel userModel = getFakeUser(referrerName,referrerMobile);
-        getFakeUser(loginName,mobile);
+        UserModel userModel = getFakeUser(referrerName, referrerMobile);
+        getFakeUser(loginName, mobile);
         getReferrer(referrerName, loginName);
         LoanModel loanModel = getFakeLoan(loginName, referrerName);
-        getFakeInvestModel(loanModel.getId(),loginName);
+        getFakeInvestModel(loanModel.getId(), loginName);
         getAccountModel(referrerName);
         getFakeInvestModel(loanModel.getId(), referrerName);
         getRechargeModel(userModel.getLoginName());
         int time = lotteryActivityService.getDrawPrizeTime(userModel.getMobile());
-        assertEquals(time,6);
+        assertEquals(time, 6);
     }
 
     @Test
-    public void shouldNoLoginNameGetDrawPrizeTimeIsOk(){
+    public void shouldNoLoginNameGetDrawPrizeTimeIsOk() {
         int time = lotteryActivityService.getDrawPrizeTime("");
-        assertEquals(time,0);
+        assertEquals(time, 0);
     }
 
     @Test
-    public void shouldNoRegisterLoginNameGetDrawPrizeTimeIsOk(){
+    public void shouldNoRegisterLoginNameGetDrawPrizeTimeIsOk() {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName("testNoRegisterTime");
         fakeUser.setPassword("password");
         fakeUser.setEmail("fakeUsr@tuotiansudai.com");
         fakeUser.setMobile("testNoResisterTime");
-        fakeUser.setRegisterTime(DateUtils.addMonths(DateTime.now().toDate(),-2));
+        fakeUser.setRegisterTime(DateUtils.addMonths(DateTime.now().toDate(), -2));
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         int time = lotteryActivityService.getDrawPrizeTime("");
-        assertEquals(time,0);
+        assertEquals(time, 0);
     }
 
     @Ignore
-    public void shouldFindDrawLotteryPrizeRecordByMobileIsOk(){
+    public void shouldFindDrawLotteryPrizeRecordByMobileIsOk() {
         UserModel userModel = getFakeUser("testDrawPrize11", "12345678902");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), null);
@@ -103,7 +104,7 @@ public class LotteryActivityServiceTest {
     }
 
     @Ignore
-    public void shouldFindDrawLotteryPrizeRecordIsOk(){
+    public void shouldFindDrawLotteryPrizeRecordIsOk() {
         UserModel userModel = getFakeUser("testDrawPrize12", "12345678901");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecord(userModel.getMobile(), null);
@@ -111,8 +112,8 @@ public class LotteryActivityServiceTest {
     }
 
     @Test
-    public void shouldDrawLotteryPrizeIsOk(){
-        Date activityAutumnStartTime = DateUtils.addMonths(DateTime.now().toDate(),-1);
+    public void shouldDrawLotteryPrizeIsOk() {
+        Date activityAutumnStartTime = DateUtils.addMonths(DateTime.now().toDate(), -1);
         Date activityAutumnEndTime = DateUtils.addMonths(DateTime.now().toDate(), 1);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnStartTime", activityAutumnStartTime);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
@@ -120,7 +121,7 @@ public class LotteryActivityServiceTest {
         assertTrue(!drawLotteryResultDto.getStatus());
     }
 
-    private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,String userName){
+    private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName, String mobile, String userName) {
         UserLotteryPrizeModel userLotteryPrizeModel = new UserLotteryPrizeModel();
         userLotteryPrizeModel.setPrize(LotteryPrize.INTEREST_COUPON_2);
         userLotteryPrizeModel.setLotteryTime(DateTime.now().toDate());
@@ -131,7 +132,7 @@ public class LotteryActivityServiceTest {
         return userLotteryPrizeModel;
     }
 
-    private RechargeModel getRechargeModel(String loginName){
+    private RechargeModel getRechargeModel(String loginName) {
         RechargeModel model = new RechargeModel();
         model.setId(IdGenerator.generate());
         model.setLoginName(loginName);
@@ -144,14 +145,14 @@ public class LotteryActivityServiceTest {
         return model;
     }
 
-    private AccountModel getAccountModel(String loginName){
+    private AccountModel getAccountModel(String loginName) {
         AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(model);
         return model;
 
     }
 
-    private InvestModel getFakeInvestModel(long loanId,String loginName) {
+    private InvestModel getFakeInvestModel(long loanId, String loginName) {
         InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000000L, loginName, DateTime.now().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
@@ -181,7 +182,7 @@ public class LotteryActivityServiceTest {
         return fakeLoanModel;
     }
 
-    private ReferrerRelationModel getReferrer(String referrerName,String loginName){
+    private ReferrerRelationModel getReferrer(String referrerName, String loginName) {
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
         referrerRelationModel.setReferrerLoginName(referrerName);
         referrerRelationModel.setLoginName(loginName);
@@ -190,7 +191,7 @@ public class LotteryActivityServiceTest {
         return referrerRelationModel;
     }
 
-    private UserModel getFakeUser(String loginName,String mobile) {
+    private UserModel getFakeUser(String loginName, String mobile) {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName(loginName);
         fakeUser.setPassword("password");

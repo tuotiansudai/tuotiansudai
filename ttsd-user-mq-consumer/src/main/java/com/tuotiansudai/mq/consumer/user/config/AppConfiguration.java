@@ -1,8 +1,8 @@
 package com.tuotiansudai.mq.consumer.user.config;
 
+import com.tuotiansudai.rest.client.UserMapperConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -18,6 +18,7 @@ import redis.clients.jedis.JedisPoolConfig;
         "classpath:ttsd-biz.properties"
 })
 @EnableAspectJAutoProxy(exposeProxy = true)
+@Import(UserMapperConfiguration.class)
 public class AppConfiguration {
 
     @Bean

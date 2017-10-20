@@ -1,13 +1,14 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,21 +19,21 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class BindBankCardServiceTest {
 
     @Autowired
     private BindBankCardService bindBankCardService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
 
     @Test
-    public void shouldAccountBalanceIsZeroIsManualIsOk(){
+    public void shouldAccountBalanceIsZeroIsManualIsOk() {
         UserModel userModel = getUserModelTest();
         userMapper.create(userModel);
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
@@ -42,7 +43,7 @@ public class BindBankCardServiceTest {
     }
 
     @Test
-    public void shouldAccountBalanceIsNotZeroIsManualIsOk(){
+    public void shouldAccountBalanceIsNotZeroIsManualIsOk() {
         UserModel userModel = getUserModelTest();
         userMapper.create(userModel);
         AccountModel accountModel = getAccountModel(userModel.getLoginName());
@@ -52,7 +53,7 @@ public class BindBankCardServiceTest {
         assertTrue(isManual);
     }
 
-    private AccountModel getAccountModel(String loginName){
+    private AccountModel getAccountModel(String loginName) {
         AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         model.setBalance(0l);
         return model;

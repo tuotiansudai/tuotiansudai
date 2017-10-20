@@ -4,13 +4,14 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.SystemRechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,26 +24,25 @@ import static org.junit.Assert.assertEquals;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class SystemRechargeServiceTest {
     @Autowired
     private SystemRechargeService systemRechargeService;
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private SystemRechargeMapper systemRechargeMapper;
 
 
-
     @Test
-    public void shouldSystemRechargeIsSuccess(){
+    public void shouldSystemRechargeIsSuccess() {
         UserModel userModel = getFakeUserModel();
         userMapper.create(userModel);
 
-        AccountModel accountModel = new AccountModel("loginName","payUserId","payAccountId",new Date());
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         accountModel.setBalance(1000l);
         accountMapper.create(accountModel);
 
@@ -54,10 +54,10 @@ public class SystemRechargeServiceTest {
 
         List<SystemRechargeModel> systemRechargeModels = systemRechargeMapper.findByLoginName(userModel.getLoginName());
 
-        assertEquals(1,systemRechargeModels.size());
+        assertEquals(1, systemRechargeModels.size());
         SystemRechargeModel systemRechargeModel1 = systemRechargeModels.get(0);
-        assertEquals(AmountConverter.convertStringToCent(dto.getAmount()),systemRechargeModel1.getAmount());
-        assertEquals(RechargeStatus.WAIT_PAY,systemRechargeModel1.getStatus());
+        assertEquals(AmountConverter.convertStringToCent(dto.getAmount()), systemRechargeModel1.getAmount());
+        assertEquals(RechargeStatus.WAIT_PAY, systemRechargeModel1.getStatus());
 
 
     }
@@ -74,7 +74,7 @@ public class SystemRechargeServiceTest {
         return userModelTest;
     }
 
-    public SystemRechargeModel getFakeSystemRechargeModel(){
+    public SystemRechargeModel getFakeSystemRechargeModel() {
         SystemRechargeModel systemRechargeModel = new SystemRechargeModel();
         systemRechargeModel.setLoginName("loginName");
         systemRechargeModel.setTime(new Date());

@@ -7,8 +7,12 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +159,7 @@ public class ActivityCountDrawLotteryService {
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
             case LANTERN_FESTIVAL_ACTIVITY:
-                return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
             case MONEY_TREE:
@@ -189,7 +193,7 @@ public class ActivityCountDrawLotteryService {
                     break;
                 case EACH_REFERRER:
                     List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    if(activityCategory.name().startsWith("MONEY_TREE")){
+                    if (activityCategory.name().startsWith("MONEY_TREE")) {
                         //根据注册时间分组
                         Map<String, Long> groupByEveryDayCounts = userModels
                                 .stream()
@@ -203,7 +207,7 @@ public class ActivityCountDrawLotteryService {
                                 time += entry.getValue();
                             }
                         }
-                    }else{
+                    } else {
                         for (UserModel referrerUserModel : userModels) {
                             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
                                 time++;
@@ -263,12 +267,12 @@ public class ActivityCountDrawLotteryService {
                     time = time >= 10 ? 10 : time;
                     break;
                 case EACH_INVEST_1000:
-                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(), startTime, endTime, 100000);
                     break;
                 case EACH_INVEST_10000:
-                    List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime,endTime);
-                    for (InvestModel investModel:investModels) {
-                        time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
+                    List<InvestModel> investModels = investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(), startTime, endTime);
+                    for (InvestModel investModel : investModels) {
+                        time += investModel.getAmount() < EACH_INVEST_AMOUNT_100000 ? 0 : (int) (investModel.getAmount() / EACH_INVEST_AMOUNT_100000);
                     }
                     break;
                 case EACH_EVERY_DAY:
@@ -294,8 +298,8 @@ public class ActivityCountDrawLotteryService {
             case CHRISTMAS_ACTIVITY:
                 return Lists.newArrayList(activityChristmasSecondStartTime, activityChristmasEndTime);
             case LANTERN_FESTIVAL_ACTIVITY:
-                return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
-                        DateTime.parse(lanternFestivalEndTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+                return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
+                        DateTime.parse(lanternFestivalEndTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case MONEY_TREE:
             case MONEY_TREE_UNDER_1000_ACTIVITY:
             case MONEY_TREE_UNDER_10000_ACTIVITY:

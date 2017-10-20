@@ -5,23 +5,20 @@ import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -31,8 +28,8 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
 
     @Autowired
     private LoanMapper loanMapper;
@@ -41,7 +38,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
     @Autowired
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Before
     public void before() {
@@ -51,7 +48,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         baseParam.setAppVersion("4.2");
         baseParam.setUserId("userId");
         baseParamDto.setBaseParam(baseParam);
-        request.setAttribute("baseParam",baseParamDto);
+        request.setAttribute("baseParam", baseParamDto);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 

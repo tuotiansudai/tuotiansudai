@@ -1,12 +1,13 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.FeedbackService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class ConsoleFeedbackServiceTest {
 
     @Autowired
@@ -31,14 +32,14 @@ public class ConsoleFeedbackServiceTest {
     private ConsoleFeedbackService consoleFeedbackService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
     public void shouldCreateFeedbackService() {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
 
-        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content","13700000000");
+        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content", "13700000000");
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 

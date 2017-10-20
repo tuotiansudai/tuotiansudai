@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserExperienceMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <update id="updateExperienceBalance" parameterType="map">
+        update user set
+        <choose>
+            <when test='experienceBillOperationType.name().equals("IN")'>experience_balance = experience_balance + #{experienceBalance}</when>
+            <when test='experienceBillOperationType.name().equals("OUT")'>experience_balance = experience_balance - #{experienceBalance}</when>
+            <otherwise>experience_balance = experience_balance</otherwise>
+        </choose>
+        where login_name = #{loginName}
+    </update>
+
+    <select id="findExperienceByLoginName" parameterType="string" resultType="long" useCache="false">
+        select IFNULL(experience_balance,0) as experienceAmount from user where login_name = #{loginName}
+    </select>
+
+</mapper>

@@ -17,6 +17,7 @@ public class CouponRepayMapperTest extends BaseMapperTest {
     @Test
     public void shouldCreateCouponRepay() throws Exception {
         UserModel investor = this.createFakeUser("investor");
+        UserModel loaner = this.createFakeUser("loaner");
         LoanModel fakeLoan = this.createFakeLoan("loaner", ProductType._30, 1, LoanStatus.REPAYING);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), 1, investor.getLoginName());
         CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1);
@@ -31,6 +32,7 @@ public class CouponRepayMapperTest extends BaseMapperTest {
     @Test
     public void shouldUpdateCouponRepay() throws Exception {
         UserModel investor = this.createFakeUser("investor");
+        UserModel loaner = this.createFakeUser("loaner");
         LoanModel fakeLoan = this.createFakeLoan("loaner", ProductType._30, 1, LoanStatus.REPAYING);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), 1, investor.getLoginName());
         CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1);

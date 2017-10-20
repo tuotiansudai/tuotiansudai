@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.console.repository.mapper.UserMapperConsole">
 
-    <cache-ref namespace="com.tuotiansudai.repository.mapper.UserMapper"/>
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.UserMapperDB"/>
 
     <resultMap id="userViewResultMap" type="UserView">
         <id column="id" property="id"/>
@@ -806,5 +806,9 @@
             </if>
 
         </where>
+    </select>
+
+    <select id="findAllUserChannels" resultType="string">
+        select IFNULL(channel,'其他') from user group by channel order by channel desc
     </select>
 </mapper>

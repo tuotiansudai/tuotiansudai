@@ -3,20 +3,16 @@ package com.tuotiansudai.api.service;
 import com.tuotiansudai.api.dto.MediaArticleListResponseDataDto;
 import com.tuotiansudai.api.dto.MediaArticleResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;
@@ -30,7 +26,7 @@ public class MobileAppMediaCenterServiceTest extends ServiceTestBase {
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Value("${common.static.server}")
     private String domainName;
 
