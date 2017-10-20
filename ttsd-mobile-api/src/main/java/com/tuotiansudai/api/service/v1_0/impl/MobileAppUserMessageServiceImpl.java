@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
@@ -14,13 +15,8 @@ import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +60,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
 
     @Override
     public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
@@ -169,6 +169,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             }
             InvestModel investModel = investMapper.findById(investId);
             LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
+            List<LoanRepayModel> loanRepayModels = loanModel==null? null: loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()).stream().filter(i->i.getStatus()== RepayStatus.REPAYING).collect(Collectors.toList());
+            boolean isTransfer = CollectionUtils.isNotEmpty(loanRepayModels) ? false : loanRepayModels.get(loanRepayModels.size() - 1).getRepayDate().after(DateTime.now().plusDays(6).toDate()) ? true : false;
+
             List<TransferApplicationModel> transferApplicationModels = investModel == null ? null : transferApplicationMapper.findByTransferInvestId(investId, null);
             TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(transferApplicationModels.size() - 1) : null;
             path = investModel == null ? path : MessageFormat.format(path,
@@ -176,7 +179,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                     loanModel.getStatus(),
                     String.valueOf(investModel.getId()),
                     transferApplicationModel == null ? "0" : String.valueOf(transferApplicationModel.getId()),
-                    transferApplicationModel == null ? investModel.getTransferStatus() : transferApplicationModel.getApplicationTime().before(DateTime.now().withTimeAtStartOfDay().toDate()) ?
+                    isTransfer ? TransferStatus.NONTRANSFERABLE : transferApplicationModel == null ? investModel.getTransferStatus() : transferApplicationModel.getApplicationTime().before(DateTime.now().withTimeAtStartOfDay().toDate()) ?
                             investModel.getTransferStatus(): transferApplicationModel.getStatus());
         }
         return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
