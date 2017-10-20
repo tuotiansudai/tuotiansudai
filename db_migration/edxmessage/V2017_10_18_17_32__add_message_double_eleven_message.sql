@@ -1,7 +1,7 @@
 BEGIN;
 INSERT INTO `message` (`title`, `template`, `template_txt`, `type`, `event_type`, `user_group`, `channels`, `message_category`, `web_url`, `app_url`, `status`, `read_count`, `push_id`, `activated_by`, `activated_time`, `valid_end_time`, `created_by`, `created_time`, `updated_by`, `updated_time`, `deleted`)
 VALUES ('双十一活动投资奖励通知', '双十一活动投资奇数奖励',
-                        '亲爱的用户，您投资的{0}项目的顺序为基数，当项目满额放款后，我们将发送给您投资金额1.1倍的体验金奖励。', 'EVENT', 'DOUBLE_ELEVEN_ACTIVITY_EVEN', 'ALL_USER',
+                        '亲爱的用户，您投资的{0}项目的顺序为奇数，当项目满额放款后，我们将发送给您投资金额1.1倍的体验金奖励。', 'EVENT', 'DOUBLE_ELEVEN_ACTIVITY_EVEN', 'ALL_USER',
                         'WEBSITE,APP_MESSAGE', 'SYSTEM', 'https://tuotiansudai.com/loan-list', 'INVEST_NORMAL',
                         'APPROVED', 0,
                                     NULL,
