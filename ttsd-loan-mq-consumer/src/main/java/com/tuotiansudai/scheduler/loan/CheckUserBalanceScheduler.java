@@ -71,8 +71,9 @@ public class CheckUserBalanceScheduler {
             List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(lastCheckUserBalanceTime, BATCH_SIZE);
             int accountModelCount = accountModelList.size();
             logger.info("[checkUserBalance:] cycle start lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
-            for (int i = 0; i < accountModelCount; i++) {
-                AccountModel account = accountModelList.get(i);
+            int count = 0;
+            while (count < accountModelCount) {
+                AccountModel account = accountModelList.get(count);
                 logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
 
                 // 如果连接umpay失败，共尝试3次
@@ -96,10 +97,12 @@ public class CheckUserBalanceScheduler {
                 if (balance != account.getBalance()) {
                     mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
                 }
-                if (i == BATCH_SIZE - 1) {
-                    logger.info("[checkUserBalance:] last record register time-{},id-{}", DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"), String.valueOf(account.getId()));
-                    redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
+                if (count == BATCH_SIZE - 1) {
+                    String lastRecordRegisterTime = DateConvertUtil.format(account.getRegisterTime();
+                    logger.info("[checkUserBalance:] last record register time-{},id-{}", lastRecordRegisterTime, String.valueOf(account.getId()));
+                    redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, lastRecordRegisterTime);
                 }
+                count++;
             }
             logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
 
@@ -113,12 +116,13 @@ public class CheckUserBalanceScheduler {
             Map<String, Object> resultMap = Maps.newHashMap(ImmutableMap.<String, Object>builder()
                     .put("failList", failUserList)
                     .put("userList", mismatchUserList)
+                    .put("totalUserCount", count)
                     .put("startTime", startTime)
                     .put("endTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
                     .build());
 
             this.sendUserBalanceCheckingResult(notifyEmailAddressList, resultMap);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("[checkUserBalance] job execution is failed.", e);
         }
 
@@ -134,7 +138,8 @@ public class CheckUserBalanceScheduler {
                 .put("startTime", map.get("startTime").toString())
                 .put("endTime", map.get("endTime").toString())
                 .put("env", environment.name())
-                .put("userCount", String.valueOf(mismatchUserList.size()))
+                .put("totalUserCount", String.valueOf(map.get("count")))
+                .put("mismatchUserCount", String.valueOf(mismatchUserList.size()))
                 .build());
         String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
 
