@@ -60,6 +60,7 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
+layer.msg('今天没有抽奖机会了哦~，明天再来吧');
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -122,7 +123,7 @@ $('.to-login-btn').on('click',function(event){
     event.preventDefault();
     $('.to-login-btn').off();
     //判断是否需要弹框登陆
-    toLogin();
+
 
 })
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);

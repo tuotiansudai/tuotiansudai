@@ -103,7 +103,7 @@
     <#--奖品提示-->
     <div class="tip-list-frame">
         <!--虚拟奖品的提示-->
-        <div class="tip-list"  data-return="virtual">
+        <div class="tip-list" id="test"  data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="success-text"></p>
