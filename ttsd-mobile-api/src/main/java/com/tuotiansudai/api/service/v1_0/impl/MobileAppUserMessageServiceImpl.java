@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
@@ -26,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +61,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     @Override
     public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
@@ -170,7 +171,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             InvestModel investModel = investMapper.findById(investId);
             LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
             List<LoanRepayModel> loanRepayModels = loanModel==null? null: loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()).stream().filter(i->i.getStatus()== RepayStatus.REPAYING).collect(Collectors.toList());
-            boolean isTransfer = CollectionUtils.isNotEmpty(loanRepayModels) ? false : !loanRepayModels.get(0).getRepayDate().after(DateTime.now().plusDays(6).toDate());
+            boolean isTransfer = CollectionUtils.isNotEmpty(loanRepayModels) ? false : !loanRepayModels.get(0).getRepayDate().after(DateTime.now().plusDays(transferRuleMapper.find().getDaysLimit()+1).toDate());
 
             List<TransferApplicationModel> transferApplicationModels = investModel == null ? null : transferApplicationMapper.findByTransferInvestId(investId, null);
             TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(transferApplicationModels.size() - 1) : null;
