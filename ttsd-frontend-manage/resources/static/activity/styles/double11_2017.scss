@@ -1,0 +1,670 @@
+html {
+  font-size: 100px;
+  body {
+    font-size: 12px;
+  }
+}
+p {
+  margin: 0;
+}
+strong {
+  font-weight: normal;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #fff99b;
+}
+.small-btn {
+  width: 317px;
+  height: 81px;
+  margin: 0 auto;
+  margin-top: 30px;
+  background:url("../images/2017/double11/small_btn_bg.png") center top no-repeat;
+  background-size: 100%;
+  color: #fff;
+  font-size: 30px;
+  text-align: center;
+  line-height: 81px;
+  cursor: pointer;
+}
+.banner {
+  height: 350px;
+  background: url("../images/2017/double11/banner.png") no-repeat center center;
+}
+.con-width {
+  width: 920px;
+  margin: 0 auto;
+}
+.alone-gifts {
+  width: 1200px;
+  min-height: 1610px;
+  background:url("../images/2017/double11/alone.png") center top no-repeat;
+  background-size: 100%;
+  position: relative;
+  padding-top: 200px;
+  .subsidy {
+    width: 243px;
+    height: 248px;
+    position: absolute;
+    right: -202px;
+    top: 138px;
+    background:url("../images/2017/double11/subsidy.png") center top no-repeat;
+    background-size: 100%;
+  }
+  .alone-title {
+    width: 618px;
+    height: 126px;
+    background:url("../images/2017/double11/alone_title.png") center top no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: 0px;
+    top: 70px;
+  }
+  .alone-rules {
+    width: 100%;
+    margin: 0 auto;
+    background: #ee781f;
+    color: #fff;
+    opacity: 0.8;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding: 15px 36px;
+    padding-top: 0;
+    font-size: 18px;
+    strong {
+      font-size: 20px;
+      color: #fff600;
+    }
+    i {
+      width: 50px;
+      height: 51px;
+      display: inline-block;
+      background:url("../images/2017/double11/font11.png") center top no-repeat;
+      background-size: 100%;
+      position: relative;
+      top: 12px;
+    }
+  }
+  .gift-circle-frame {
+    margin-top: 16px;
+    .gift-circle-out {
+      width: 548px;
+      height: 548px;
+      margin: 0 auto;
+      background:url("../images/2017/double11/circle_bg.png") center top no-repeat;
+      background-size: 100%;
+      position: relative;
+      padding: 35px;
+      box-sizing: border-box;
+      .pointer-img {
+        width: 120px;
+        height: 152px;
+        background:url("../images/2017/double11/pointer.png") center top no-repeat;
+        background-size: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -26px;
+        bottom: 0;
+        margin: auto;
+      }
+      .rotate-btn {
+        width: 100%;
+        height: 100%;
+        background:url("../images/2017/double11/gift-circle.png") center top no-repeat;
+        background-size: 100%;
+      }
+
+    }
+    .gift-circle-detail {
+      margin: 0 auto;
+      .lottery-times {
+        p {
+          text-align: center;
+          font-size: 18px;
+          color: #040009;
+          a {
+            color: #040009;
+            text-decoration:underline;
+          }
+        }
+      }
+      .gift-info-box {
+        width: 600px;
+        margin: 0 auto;
+        .gift-record {
+          width: 320px;
+          height: 50px;
+          margin: 0 auto;
+          background: #f89c39;
+          border-radius: 25px;
+          overflow: hidden;
+          line-height: 50px;
+          li {
+            float: left;
+            color: #fff;
+            font-size: 20px;
+            opacity: 0.8;
+            width: 50%;
+            text-align: center;
+            background: #f89c39;
+            cursor: pointer;
+            &.active {
+              background: #ff4b4b;
+            }
+          }
+        }
+        .record-list {
+          width: 100%;
+          height: 350px;
+          background: #f79122;
+          overflow: hidden;
+          font-size: 20px;
+          color: #525252;
+          text-align:center;
+          padding:0 20px;
+          box-sizing: border-box;
+          margin-top: 10px;
+          li {
+            color: #fff;
+            opacity: 0.8;
+            height: 44px;
+            line-height: 44px;
+            &:nth-child(odd) {
+              background: #f89c39;
+              border-radius: 30px;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+}
+.jde-cart {
+  width: 1200px;
+  min-height: 900px;
+  background:url("../images/2017/double11/jde_bg.png") center top no-repeat;
+  background-size: 100%;
+  position: relative;
+  padding-top: 230px;
+  box-sizing: border-box;
+  .fly {
+    width: 232px;
+    height: 149px;
+    position: absolute;
+    left: -190px;
+    top: 222px;
+    background:url("../images/2017/double11/fly.png") center top no-repeat;
+    background-size: 100%;
+  }
+  .jde-title {
+    width: 754px;
+    height: 126px;
+    background:url("../images/2017/double11/jde_title.png") center top no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: 0px;
+    top: 90px;
+  }
+  .jde-rules {
+    width: 100%;
+    background: #a852e7;
+    color: #fff;
+    opacity: 0.8;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding: 15px 36px;
+    font-size: 18px;
+    strong {
+      font-size: 20px;
+      color: #fff600;
+    }
+  }
+  .total-money {
+    margin: 0 auto;
+    margin-top: 20px;
+    p {
+      color: #fff;
+      opacity: 0.8;
+      font-size: 22px;
+      text-align: center;
+    }
+    .awarded {
+      width: 140px;
+      height: 46px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 46px;
+      background: #a852e7;
+      color: #fff600;
+      font-size: 22px;
+      border-radius: 40px 40px 6px 6px;
+    }
+    .reward {
+      width: 238px;
+      height: 162px;
+      margin: 0 auto;
+      position: relative;
+      top: -6px;
+      background:url("../images/2017/double11/jd_cart.png") center top no-repeat;
+      background-size: 100%;
+      span {
+        font-weight: bold;
+        font-size: 50px;
+        color: #000;
+        position: absolute;
+        top: 32px;
+        right: 73px;
+        transform: rotate(-9deg);
+      }
+    }
+    .to-login {
+      margin: 0 auto;
+      text-align: center;
+      a {
+        font-size: 18px;
+        color: #000;
+      }
+    }
+
+  }
+}
+.kindly-tips {
+  padding-bottom: 100px;
+  dl {
+    color: #2e290a;
+    dt {
+      font-size: 14px;
+      color: #2e290a;
+    }
+    dd {
+      font-size: 12px;
+      color: #2e290a;
+    }
+  }
+}
+
+.tip-list-frame {
+  display: block;
+}
+.shade-body-mask {
+  z-index: 99;
+}
+.tip-list {
+  width: 470px !important;
+  height: 347px !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin-left: -235px !important;
+  margin-top: -155px !important;
+  border-radius:0px;
+  background:url('../images/2017/double11/tips_bg.png') no-repeat center top!important;
+  background-size:contain!important;
+  z-index: 999;
+  &.no-change-list {
+    background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+    background-size: contain!important;
+    .btn-invest {
+      margin-top: 40px;
+    }
+  }
+  &.noTime {
+    background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+    background-size:contain!important;
+    .text-tip {
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+    .btn-list {
+      margin-top: 40px;
+    }
+  }
+
+  .text-tip {
+    height: 184px!important;
+
+    p {
+      color: #fff;
+      &.success-text {
+        width: 200px;
+        height: 50px;//444
+        padding: 0px!important;
+        margin: 0 auto;
+        margin-top: 50px;
+        background: url('../images/2017/double11/success_text.png') no-repeat center;
+        background-size: 100%;
+      }
+      &.icon_prize {
+        width: 62px;
+        height: 64px;
+        margin: 0 auto;
+        background: url('../images/2017/double11/experience_icon.png') no-repeat center;
+        background-size: 100%;
+      }
+      &.reward-text {
+        font-size:24px!important;
+        color:#000;
+        font-weight: bold;
+      }
+      &.login-text {
+        font-size: 20px;
+        padding-top: 70px;
+        color:#fff;
+      }
+      &.des-text {
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+  }
+  .close-btn {
+    top: -5px!important;
+    right: -19px!important;
+    margin-left: -14px;
+    background: url('../images/2017/double11/db_close_btn.png') no-repeat center;
+    background-size: 100%;
+  }
+  .btn-list {
+    a {
+      width: 260px!important;
+      height: 66px!important;
+      margin: 0 auto;
+      margin-top: 30px;
+      background:url("../images/2017/double11/small_btn_wap.png") center top no-repeat!important;
+      background-size: contain!important;
+      color: #fff!important;
+      font-size: 30px;
+      text-align: center;
+      line-height: 66px!important;
+      cursor: pointer;
+      padding: 0!important;
+      margin: 0!important;
+      margin-top: 0;
+      &.canble-btn{
+        color:#c0b67c;
+        border:1px solid #c0b67c;
+        background:none;
+      }
+
+    }
+  }
+}
+
+@media screen and (max-width:1024px) {
+  .banner {
+    background:url("../images/2017/double11/banner_wap.png") center top no-repeat;
+    background-size: 100%;
+  }
+  .alone-gifts {
+    width: 100%;
+    background:url("../images/2017/double11/alone1024.png") center top no-repeat;
+    margin-top: 30px;
+  }
+  .jde-cart {
+    width: 100%;
+    background:url("../images/2017/double11/jde_bg1024.png") center top no-repeat;
+  }
+}
+@media screen and (max-width:768px) {
+  .con-width {
+    width: 90%;
+  }
+  .alone-gifts {
+    background:url("../images/2017/double11/alone768.png") center top no-repeat;
+    padding-top: 170px;
+    .subsidy {
+      display: none;
+    }
+    .alone-title {
+      width: 52%;
+    }
+    .alone-rules {
+      width: 98%;
+    }
+  }
+  .jde-cart {
+      background:url("../images/2017/double11/jde_bg768.png") center top no-repeat;
+    padding-top: 195px;
+    .fly {
+      display: none;
+    }
+    .jde-title {
+      width: 63%;
+    }
+  }
+}
+@media screen and (max-width:750px) {
+  .con-width {
+    width: 6.3rem;
+  }
+  .banner {
+    height: 3.5rem;
+  }
+  .small-btn {
+    width: 3.21rem;
+    height: 0.84rem;
+    margin-top: 0;
+    font-size: 0.31rem;
+    line-height: 0.84rem;
+  }
+  .alone-gifts {
+    width: 7.5rem;
+    background:url("../images/2017/double11/alone_wap.png") center top no-repeat;
+    background-size: 100%;
+    min-height: 17.88rem;
+    padding-top: 0.5rem;
+    .alone-title {
+      position: static;
+      margin: 0.3rem auto;
+      width: 6.18rem;
+      height: 1.26rem;
+    }
+    .alone-rules {
+      background: none;
+      padding: 0;
+      margin-top: 0;
+      dl {
+        line-height: 0.44rem;
+        dd {
+          font-size: 0.22rem;
+          strong {
+            font-size: 0.27rem;
+          }
+          i {
+            width: 0.5rem;
+            height: 0.51rem;
+            background:url("../images/2017/double11/font11.png") center top no-repeat;
+            background-size: contain;
+            top:0.1rem;
+          }
+        }
+      }
+    }
+    .gift-circle-frame {
+      margin-top: 0;
+      .gift-circle-out {
+        width: 5.48rem;
+        height: 5.48rem;
+        padding: 0.35rem;
+        .pointer-img {
+          width: 1.2rem;
+          height: 1.52rem;
+          top: -0.19rem;
+        }
+
+      }
+      .small-btn {
+        margin-top: 0.3rem;
+      }
+      .gift-circle-detail {
+        .lottery-times {
+          p {
+            font-size: 0.2rem;
+          }
+        }
+        .gift-info-box {
+          width: 6rem;
+          .gift-record {
+            width: 3.24rem;
+            height: 0.54rem;
+            border-radius: 0.27rem;
+            line-height: 0.54rem;
+            li {
+              font-size: 0.24rem;
+              width: 50%;
+            }
+          }
+          .record-list {
+            height: 3.56rem;
+            font-size: 0.22rem;
+            padding: 0;
+            box-sizing: border-box;
+            margin-top: 0.26rem;
+            li {
+              height: 0.5rem;
+              line-height: 0.5rem;
+              &:nth-child(odd) {
+                border-radius: 0.26rem;
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+  .jde-cart {
+    width: 7.5rem;
+    background:url("../images/2017/double11/jde_wap.png") center top no-repeat;
+    background-size: 100%;
+    min-height: 8.73rem; //853px
+    padding-top: 0.56rem;
+    .jde-title {
+      position: static;
+      width: 100%;
+      height: 1.32rem;
+    }
+    .jde-rules {
+      background: none;
+      padding: 0;
+      margin-top: 0.2rem;
+      font-size: 0.22rem;
+      line-height: 0.44rem;
+      strong {
+        font-size: 0.27rem;
+      }
+    }
+    .total-money {
+      margin-top: 0.2rem;
+      p {
+        font-size: 0.28rem;
+      }
+      .awarded {
+        width: 1.4rem;
+        height: 0.55rem;
+        line-height: 0.55rem;
+        font-size: 0.28rem;
+        border-radius: 0.4rem 0.4rem 0.06rem 0.06rem;
+      }
+      .reward {
+        width: 2.38rem;
+        height: 1.62rem;
+        top: -0.06rem;
+        span {
+          font-size: 0.5rem;
+          top: 0.32rem;
+          right: 0.73rem;
+        }
+      }
+      .to-login {
+        a {
+          font-size:0.22rem;
+        }
+      }
+
+    }
+  }
+  .kindly-tips {
+    padding-bottom: 0.6rem;
+    dl {
+      dt {
+        font-size: 0.2rem;
+      }
+      dd {
+        font-size: 0.2rem;
+      }
+    }
+  }
+  .tip-list {
+    width: 4.7rem !important;
+    height: 3.47rem !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -2.35rem !important;
+    margin-top: -1.55rem !important;
+    &.no-change-list {
+      background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+      background-size: contain!important;
+      .btn-invest {
+        margin-top: 0.4rem;
+      }
+    }
+    &.noTime {
+      background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+      background-size: contain!important;
+      .text-tip {
+        padding-top: 0.6rem;
+      }
+      .btn-list {
+        margin-top: 0.4rem;
+        a {
+          font-size: 0.24rem;
+        }
+      }
+    }
+
+    .text-tip {
+      height: 1.84rem!important;
+
+      p {
+        line-height: 0.55rem!important;
+        &.success-text {
+          width: 2rem;
+          height: 0.5rem;//444
+          margin-top: 0.5rem;
+        }
+        &.icon_prize {
+          width: 0.62rem;
+          height: 0.64rem;
+        }
+        &.reward-text {
+          font-size:0.24rem!important;
+        }
+        &.login-text {
+          font-size: 0.2rem;
+          padding-top: 0.7rem;
+        }
+        &.des-text {
+          font-size: 0.14rem;
+        }
+      }
+    }
+    .close-btn {
+      top: -5px!important;
+      right: -19px!important;
+      margin-left: -14px;
+    }
+    .btn-list {
+      a {
+        width: 2.6rem!important;
+        height: 0.66rem!important;
+        margin-top: 0.3rem;
+        font-size: 0.3rem!important;
+        line-height: 0.66rem!important;
+      }
+    }
+  }
+}
