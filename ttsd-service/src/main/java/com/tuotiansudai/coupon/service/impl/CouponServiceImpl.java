@@ -4,7 +4,6 @@ import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.CouponMapper;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +48,7 @@ public class CouponServiceImpl implements CouponService {
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Override
-    public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount) {
+    public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount, Date investTime) {
         long totalInterest = 0;
 
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
@@ -64,7 +64,7 @@ public class CouponServiceImpl implements CouponService {
             if (loanModel == null || couponModel == null) {
                 continue;
             }
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel, investTime);
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
             totalInterest += expectedInterest - expectedFee;
         }

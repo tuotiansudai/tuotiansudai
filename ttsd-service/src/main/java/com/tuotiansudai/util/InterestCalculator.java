@@ -52,17 +52,11 @@ public class InterestCalculator {
         return InterestCalculator.calculateInterest(loanModel, corpusMultiplyPeriodDays);
     }
 
-    public static List<Long> estimateExpectedInterest(LoanModel loanModel, long amount) {
+    public static List<Long> estimateExpectedInterest(LoanModel loanModel, long amount, Date investTime) {
         List<Long> expectedInterestList = Lists.newArrayList();
-        List<LoanStatus> soldOutLoanList = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE);
-        boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
-        if (isRealTimeInterest) {
-            expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration()));
-        } else {
-            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
-            for (Integer daysOfPeriod : daysOfPeriodList) {
-                expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * daysOfPeriod));
-            }
+        List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(investTime, loanModel.getDeadline(), loanModel.getType());
+        for (Integer daysOfPeriod : daysOfPeriodList) {
+            expectedInterestList.add(InterestCalculator.calculateInterest(loanModel, amount * daysOfPeriod));
         }
         return expectedInterestList;
     }
@@ -116,7 +110,7 @@ public class InterestCalculator {
         return expectedInterest;
     }
 
-    public static long estimateCouponExpectedInterest(long investAmount, LoanModel loanModel, CouponModel couponModel) {
+    public static long estimateCouponExpectedInterest(long investAmount, LoanModel loanModel, CouponModel couponModel, Date investTime) {
         long couponExpectedInterest = 0;
         if (loanModel == null || couponModel == null) {
             return 0;
@@ -125,11 +119,11 @@ public class InterestCalculator {
             case INTEREST_COUPON:
                 //到期还本付息，按天计息，即投即生息,优惠券只加首期利息
                 if (loanModel.getType() == LoanType.INVEST_INTEREST_LUMP_SUM_REPAY){
-                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(investTime, loanModel.getDeadline(), LoanType.INVEST_INTEREST_MONTHLY_REPAY);
                     couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriodList.get(0));
                 }
                 else{
-                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(new Date(), loanModel.getDeadline(), loanModel.getType());
+                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(investTime, loanModel.getDeadline(), loanModel.getType());
                     int period = 0;
                     for (Integer daysOfPeriod : daysOfPeriodList) {
                         period += 1;
