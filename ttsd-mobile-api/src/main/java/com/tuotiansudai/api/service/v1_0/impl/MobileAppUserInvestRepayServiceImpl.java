@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
@@ -89,7 +90,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             //未放款时按照预计利息计算(拓天体验项目没有本金，所以不需要计算)
             if (loanModel.getRecheckTime() == null && loanModel.getProductType() != ProductType.EXPERIENCE) {
-                List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().map(UserCouponModel::getCouponId).collect(Collectors.toList());
+                List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
                 long estimateInvestIncome = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount());
                 long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount());
                 totalExpectedInterest = estimateInvestIncome + couponExpectedInterest;
