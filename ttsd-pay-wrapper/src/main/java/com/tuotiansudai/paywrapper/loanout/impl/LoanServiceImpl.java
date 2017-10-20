@@ -511,7 +511,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
-                title, content, investIdLoginNames));
+                loginNames, title, content, investIdLoginNames));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(loginNames, PushSource.ALL, PushType.LOAN_OUT_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
     }

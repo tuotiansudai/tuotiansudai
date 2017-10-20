@@ -18,7 +18,7 @@ public class EventMessage implements Serializable {
 
     private Long businessId;
 
-    private Map<Long, String> investIdLoginNames;
+    private Map<Long, String> businessIdLoginNames;
 
     public EventMessage() {
     }
@@ -31,11 +31,12 @@ public class EventMessage implements Serializable {
         this.businessId = businessId;
     }
 
-    public EventMessage(MessageEventType eventType, String title, String content, Map<Long, String> investIdLoginNames) {
+    public EventMessage(MessageEventType eventType, List<String> loginNames, String title, String content, Map<Long, String> businessIdLoginNames) {
         this.eventType = eventType;
+        this.loginNames = loginNames;
         this.title = title;
         this.content = content;
-        this.investIdLoginNames = investIdLoginNames;
+        this.businessIdLoginNames = businessIdLoginNames;
     }
 
     public MessageEventType getEventType() {
@@ -78,13 +79,11 @@ public class EventMessage implements Serializable {
         this.businessId = businessId;
     }
 
-    public Map<Long, String> getInvestIdLoginNames() {
-        return investIdLoginNames;
+    public Map<Long, String> getBusinessIdLoginNames() {
+        return businessIdLoginNames;
     }
 
-    public void setInvestIdLoginNames(Map<Long, String> investIdLoginNames) {
-        this.investIdLoginNames = investIdLoginNames;
+    public void setBusinessIdLoginNames(Map<Long, String> businessIdLoginNames) {
+        this.businessIdLoginNames = businessIdLoginNames;
     }
-
-
 }

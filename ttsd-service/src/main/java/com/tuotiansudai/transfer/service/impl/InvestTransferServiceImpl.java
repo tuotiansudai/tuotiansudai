@@ -1,8 +1,7 @@
 package com.tuotiansudai.transfer.service.impl;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -222,7 +221,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 Lists.newArrayList(transferApplicationModel.getLoginName()),
                 MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
                 MessageEventType.TRANSFER_FAIL.getContentTemplate(),
-                transferApplicationId));
+                ImmutableMap.of(transferApplicationId, transferApplicationModel.getLoginName())));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(transferApplicationModel.getLoginName()),
                 PushSource.ALL,

@@ -61,7 +61,7 @@ public class EventMessageConsumer implements MessageConsumer {
             }
 
             if (eventMessage.getEventType()==MessageEventType.LOAN_OUT_SUCCESS){
-                for (Map.Entry<Long, String> entry : eventMessage.getInvestIdLoginNames().entrySet()){
+                for (Map.Entry<Long, String> entry : eventMessage.getBusinessIdLoginNames().entrySet()){
                     UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), entry.getValue(), eventMessage.getTitle(), eventMessage.getContent(), new Date());
                     userMessageModel.setBusinessId(entry.getKey());
                     userMessageMapper.create(userMessageModel);
