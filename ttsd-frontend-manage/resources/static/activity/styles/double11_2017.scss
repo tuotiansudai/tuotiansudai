@@ -20,6 +20,7 @@ strong {
   border-bottom: 2px solid #000;
   padding: 0 2px;
   &.my-gift-color {
+    color: #fff600;
     border-bottom: 2px solid #fff600;
   }
 }
@@ -175,7 +176,8 @@ strong {
             vertical-align: middle;
             cursor: pointer;
             &.icon-right {
-              transform: rotate(180deg);
+              background: url('../images/2017/double11/icon_right.png') left center no-repeat;
+              background-size: 100%;
             }
           }
           span {

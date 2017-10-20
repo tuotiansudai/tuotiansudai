@@ -60,7 +60,13 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
-layer.msg('今天没有抽奖机会了哦~，明天再来吧');
+layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
+    time:3000
+},function(){
+    $('.layui-layer-content').css({
+        'width':'100%'
+    })
+});
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -89,10 +95,9 @@ $.when(commonFun.isUserLogin())
         $leftDrawDOM.hide();
         $toLogin.show();
         $prizeLoginDOM.show();
-        $rewardCount.text('?');
-        $ownRecord.html('<li><a href="javascript:;" class="to-login-btn font-underline my-gift-color">登录</a>后查看获奖记录</li>');
-        $('.to-login-btn').on('click',function(event){
-            $('.to-login-btn').off('click');
+        //$rewardCount.text('?');
+        $ownRecord.html('<li><a href="javascript:;" id="toGiftLogin" class="font-underline my-gift-color">登录</a>后查看获奖记录</li>');
+        $('#toGiftLogin').on('click',function(event){
             event.preventDefault();
             //判断是否需要弹框登陆
             toLogin();
@@ -119,11 +124,10 @@ function toLogin() {
 }
 //点击登录弹框登录
 
-$('.to-login-btn').on('click',function(event){
+$('#toLoginBtnDraw,#toLoginBtnPrize').on('click',function(event){
     event.preventDefault();
-    $('.to-login-btn').off();
     //判断是否需要弹框登陆
-
+    toLogin();
 
 })
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
