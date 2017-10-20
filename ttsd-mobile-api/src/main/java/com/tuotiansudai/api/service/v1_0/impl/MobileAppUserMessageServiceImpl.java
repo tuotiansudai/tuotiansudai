@@ -23,6 +23,7 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +170,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             InvestModel investModel = investMapper.findById(investId);
             LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
             List<TransferApplicationModel> transferApplicationModels = investModel == null ? null : transferApplicationMapper.findByTransferInvestId(investId, null);
-            TransferApplicationModel transferApplicationModel = transferApplicationModels == null ? null : transferApplicationModels.get(transferApplicationModels.size() - 1);
+            TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(transferApplicationModels.size() - 1) : null;
             path = investModel == null ? path : MessageFormat.format(path,
                     investModel.getTransferInvestId() == null ? "0" : "1",
                     loanModel.getStatus(),
