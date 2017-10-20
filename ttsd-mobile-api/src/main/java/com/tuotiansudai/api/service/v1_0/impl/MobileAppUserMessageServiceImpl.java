@@ -176,7 +176,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                     loanModel.getStatus(),
                     String.valueOf(investModel.getId()),
                     transferApplicationModel == null ? "0" : String.valueOf(transferApplicationModel.getId()),
-                    transferApplicationModel == null ? "0" : transferApplicationModel.getApplicationTime().before(DateTime.now().withTimeAtStartOfDay().toDate()) ?
+                    transferApplicationModel == null ? investModel.getTransferStatus() : transferApplicationModel.getApplicationTime().before(DateTime.now().withTimeAtStartOfDay().toDate()) ?
                             investModel.getTransferStatus(): transferApplicationModel.getStatus());
         }
         return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
