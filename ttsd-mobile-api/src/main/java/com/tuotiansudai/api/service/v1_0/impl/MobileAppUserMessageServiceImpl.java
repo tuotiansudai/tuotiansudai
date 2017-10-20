@@ -24,6 +24,7 @@ import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -168,12 +169,14 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             InvestModel investModel = investMapper.findById(investId);
             LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
             List<TransferApplicationModel> transferApplicationModels = investModel == null ? null : transferApplicationMapper.findByTransferInvestId(investId, null);
+            TransferApplicationModel transferApplicationModel = transferApplicationModels == null ? null : transferApplicationModels.get(transferApplicationModels.size() - 1);
             path = investModel == null ? path : MessageFormat.format(path,
                     investModel.getTransferInvestId() == null ? "0" : "1",
                     loanModel.getStatus(),
                     String.valueOf(investModel.getId()),
-                    transferApplicationModels == null ? "0" : String.valueOf(transferApplicationModels.get(transferApplicationModels.size()-1).getId()),
-                    transferApplicationModels == null ? "0" : transferApplicationModels.get(transferApplicationModels.size()-1).getStatus());
+                    transferApplicationModel == null ? "0" : String.valueOf(transferApplicationModel.getId()),
+                    transferApplicationModel == null ? "0" : transferApplicationModel.getApplicationTime().before(DateTime.now().withTimeAtStartOfDay().toDate()) ?
+                            investModel.getTransferStatus(): transferApplicationModel.getStatus());
         }
         return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
     }
