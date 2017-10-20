@@ -43,7 +43,6 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
 
     //我的奖品
     this.MyGift = function (callback) {
-        alert(88)
         let self = this;
         commonFun.useAjax({
             url: this.userListURL,
@@ -74,7 +73,7 @@ giftCircleDraw.prototype.rotateFn = function (angles, tipMessage,callbackFn) {
         duration: 8000,
         callback: function () {
             thisFun.GiftRecord();
-            this.userListURL&&thisFun.MyGift();
+            thisFun.userListURL&&thisFun.MyGift();
             thisFun.bRotate = !thisFun.bRotate;
             //thisFun.tipWindowPop(tipMessage);
             if(!callbackFn){

@@ -32,6 +32,7 @@ var pointAllList='/activity/double-eleven/all-list',  //中奖记录接口地址
 
 let redWareUrl = require('../images/2017/double11/red_ware.png');
 let conpouUrl = require('../images/2017/double11/coupon.png');
+let jdeUrl = require('../images/2017/double11/icon_jd.png');
 
 var oneData={
         'activityCategory':'DOUBLE_ELEVEN_ACTIVITY'
@@ -129,7 +130,7 @@ drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 //开始抽奖
 $pointerBtn.on('click', function(event) {
     drawCircleOne.beginLuckDraw(function(data) {
-        
+
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
@@ -139,13 +140,16 @@ $pointerBtn.on('click', function(event) {
                     angleNum=45*0;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('0.5%加息券');
                     $iconPrize.css({
-                        'backgroundImg':'url('+conpouUrl+')'
+                        'backgroundImage':'url('+conpouUrl+')'
                     });
 
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_JD_E_CARD_200': //200元京东E卡
                     angleNum=45*1;
-                    $(tipGroupObj['virtual']).find('.prizeValue').text('200元京东E卡')
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('200元京东E卡');
+                    $iconPrize.css({
+                        'backgroundImage':'url('+jdeUrl+')'
+                    })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_200': //200元红包
                     angleNum=45*2;
