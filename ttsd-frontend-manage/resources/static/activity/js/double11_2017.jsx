@@ -24,6 +24,7 @@ var $toLogin = $('#to_login_DOM'),
     $ownRecord = $('.own-record'),//我的奖品列表ul
     $pageNumber = $('#pageNumber'),//分页
     $myGiftDOM = $('#myGiftDOM'),
+    $recodeList  = $('.record-list',$double11),//中奖纪记录大框
     $iconPrize = $('.icon_prize','.tip-list');//我的奖品切换按钮
 var pointAllList='/activity/double-eleven/all-list',  //中奖记录接口地址
     pointUserList='/activity/double-eleven/user-list',   //我的奖品接口地址
@@ -33,6 +34,7 @@ var pointAllList='/activity/double-eleven/all-list',  //中奖记录接口地址
 let redWareUrl = require('../images/2017/double11/red_ware.png');
 let conpouUrl = require('../images/2017/double11/coupon.png');
 let jdeUrl = require('../images/2017/double11/icon_jd.png');
+let experienceUrl = require('../images/2017/double11/experience_icon.png');
 //京东卡字体居中
 let $money = $('#money');
 let $rewardCon = $('#rewardCon');
@@ -58,28 +60,27 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
-
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
     .done(function () {
-        $toLogin.hide();
+       $toLogin.hide();
         $leftDrawDOM.show();
         $prizeLoginDOM.hide();
         drawTimes();
         //渲染我的奖品
         drawCircleOne.MyGift(function(data){
-            if(data.length == 0&&$myGiftDOM.hasClass('active')){
-                $ownRecord.html('<li>没有中奖纪录哦~</li>');
-                $ownRecord.find('li').css({
-                    'textAlign':'center',
-                    'textIndent':'0px'
-                });
-                $pageNumber.hide();
-            } else if(data.length !== 0&&$myGiftDOM.hasClass('active')){
-                $pageNumber.show();
-                pageTurn();
+                if(data.length == 0){
+                    $recodeList.removeClass('show-pageNumber');
+                    $ownRecord.html('<li>没有中奖纪录哦~</li>');
+                    $ownRecord.find('li').css({
+                        'textAlign':'center',
+                        'textIndent':'0px'
+                    });
+                    $pageNumber.hide();
+                } else if(data.length !== 0){
+                    $recodeList.addClass('show-pageNumber');
+                }
 
-            }
 
         });
     })
@@ -124,24 +125,11 @@ $('.to-login-btn').on('click',function(event){
     toLogin();
 
 })
-//toLogin();
-// layer.open({
-//     type: 1,
-//     title: false,
-//     closeBtn: 0,
-//     area: ['auto', 'auto'],
-//     content: $('#loginTip')
-// });
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
 drawCircleOne.GiftRecord();
 
-
-
-// $iconPrize.css({
-//     'backgroundImg':'url("../images/2017/double11/red_ware.png")'
-// });
 drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 
 //开始抽奖
@@ -171,7 +159,6 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_200': //200元红包
                     angleNum=45*2;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('200元红包');
-                    console.log('url('+redWareUrl+')');
                     $iconPrize.css({
                         'backgroundImage':'url('+redWareUrl+')'
                     })
@@ -199,7 +186,10 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000':  //1000元体验金
                     angleNum=45*6;
-                    $(tipGroupObj['virtual']).find('.prizeValue').text('1000元体验金')
+                    $(tipGroupObj['virtual']).find('.prizeValue').text('1000元体验金');
+                    $iconPrize.css({
+                        'backgroundImage':'url('+experienceUrl+') no-repeat center!important'
+                    })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_50': //50元红包
                     angleNum=45*7;
@@ -231,7 +221,7 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
 });
 
 //点击切换按钮
-(function(){
+function switchPrize(){
     var menuCls = $('.gift-record').find('li'),
         contentCls = $double11.find('.record-list ul');
     menuCls.on('click', function (index) {
@@ -239,10 +229,16 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
             index = $this.index();
         $this.addClass('active').siblings().removeClass('active');
         contentCls.eq(index).show().siblings().hide();
+        if($recodeList.hasClass('show-pageNumber')&&$myGiftDOM.hasClass('active')) {
+            $pageNumber.show();
+            pageTurn();
+        }else {
+            $pageNumber.hide();
+        }
     });
 
-})();
-
+}
+switchPrize();
 //我的奖品翻页效果
 function pageTurn() {
     let $ownList = $('.own-record',$double11),
@@ -250,7 +246,8 @@ function pageTurn() {
     let totalNumber = $ownList.find('li').length,
         pageSize = 5, //每页5条
         pageIndex = 1,
-        totalPage = Math.ceil(totalNumber/pageSize);
+        totalPage = Math.ceil(totalNumber/pageSize),
+        heightContent = $recodeList.height();
     $pageNumber.find('i').on('click',function(index) {
         console.log(totalNumber)
         let thisClass = this.className;
@@ -268,9 +265,8 @@ function pageTurn() {
             pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
         }
         $('.page-index',$pageNumber).text(pageIndex);
-        let TopDistance = -350 * (pageIndex-1);
+        let TopDistance = -heightContent * (pageIndex-1);
         $ownList.animate({
-            left:"0",
             top:TopDistance + 'px'
         });
     });

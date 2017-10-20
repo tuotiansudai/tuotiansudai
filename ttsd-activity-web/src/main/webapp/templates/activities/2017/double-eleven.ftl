@@ -53,7 +53,6 @@
        </div>
     </div>
     <!--第一部分 end-->
-    <li><a href="javascript:;" class="to-login-btn font-underline my-gift-color">登录</a>后查看获奖记录</li>
     <!--第二部分 begin-->
     <div class="jde-cart page-width">
         <div class="jde-title"></div>
@@ -67,7 +66,12 @@
             <div class="total-money">
                 <p>累计投资金额：${sumAmount!}元</p>
                 <div class="awarded">已获得</div>
-                <div class="reward"> <div class="reward-con" id="rewardCon"><em class="money" id="money">￥</em><em id="reward_count">${jdAmount}</em></div> </div>
+                <div class="reward">
+                    <div class="reward-con" id="rewardCon"><em class="money" id="money">￥</em>
+                        <@global.isAnonymous><em id="reward_count">${jdAmount}</em></@global.isAnonymous>
+                        <@global.isNotAnonymous><em id="reward_count">?</em></@global.isNotAnonymous>
+                    </div>
+                </div>
                 <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" class="to-login-btn font-underline">登录后查看已获得奖励></a></div>
                 <div class="small-btn" id="to_invest"><a href="/loan-list">获得更多奖励</a></div>
             </div>
