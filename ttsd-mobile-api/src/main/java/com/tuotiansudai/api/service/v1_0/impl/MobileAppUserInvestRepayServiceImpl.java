@@ -121,10 +121,10 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 }
                 CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
                 long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
-                long actualInterest = investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+                long actualInterest = investRepayModel.getRepayAmount();
                 if (couponRepayModel != null) {
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
-                    actualInterest += couponRepayModel.getActualInterest() - couponRepayModel.getActualFee();
+                    actualInterest += couponRepayModel.getRepayAmount();
                 }
                 int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
                 long corpus = 0;
