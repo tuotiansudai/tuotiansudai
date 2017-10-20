@@ -171,7 +171,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             InvestModel investModel = investMapper.findById(investId);
             LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
             List<LoanRepayModel> loanRepayModels = loanModel==null? null: loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()).stream().filter(i->i.getStatus()== RepayStatus.REPAYING).collect(Collectors.toList());
-            boolean isTransfer = CollectionUtils.isNotEmpty(loanRepayModels) ? false : !loanRepayModels.get(0).getRepayDate().after(DateTime.now().plusDays(transferRuleMapper.find().getDaysLimit()+1).toDate());
+            boolean isTransfer = CollectionUtils.isEmpty(loanRepayModels) ? false : !loanRepayModels.get(0).getRepayDate().after(DateTime.now().plusDays(transferRuleMapper.find().getDaysLimit()+1).toDate());
 
             List<TransferApplicationModel> transferApplicationModels = investModel == null ? null : transferApplicationMapper.findByTransferInvestId(investId, null);
             TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(transferApplicationModels.size() - 1) : null;
