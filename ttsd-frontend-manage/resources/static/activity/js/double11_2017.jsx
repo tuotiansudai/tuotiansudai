@@ -33,7 +33,11 @@ var pointAllList='/activity/double-eleven/all-list',  //中奖记录接口地址
 let redWareUrl = require('../images/2017/double11/red_ware.png');
 let conpouUrl = require('../images/2017/double11/coupon.png');
 let jdeUrl = require('../images/2017/double11/icon_jd.png');
-
+//京东卡字体居中
+let $money = $('#money');
+let $rewardCon = $('#rewardCon');
+let totalMoney = $money.width() + $rewardCount.width();
+$rewardCon.width(totalMoney);
 var oneData={
         'activityCategory':'DOUBLE_ELEVEN_ACTIVITY'
     },
@@ -62,13 +66,29 @@ $.when(commonFun.isUserLogin())
         $leftDrawDOM.show();
         $prizeLoginDOM.hide();
         drawTimes();
+        //渲染我的奖品
+        drawCircleOne.MyGift(function(data){
+            if(data.length == 0&&$myGiftDOM.hasClass('active')){
+                $ownRecord.html('<li>没有中奖纪录哦~</li>');
+                $ownRecord.find('li').css({
+                    'textAlign':'center',
+                    'textIndent':'0px'
+                });
+                $pageNumber.hide();
+            } else if(data.length !== 0&&$myGiftDOM.hasClass('active')){
+                $pageNumber.show();
+                pageTurn();
+
+            }
+
+        });
     })
     .fail(function(){
         $leftDrawDOM.hide();
         $toLogin.show();
         $prizeLoginDOM.show();
         $rewardCount.text('?');
-        $ownRecord.html('<li>没有中奖纪录哦~</li><li><a href="javascript:;" class="to-login-btn">登录</a>后查看获奖记录</li>');
+        $ownRecord.html('<li><a href="javascript:;" class="to-login-btn font-underline my-gift-color">登录</a>后查看获奖记录</li>');
         $('.to-login-btn').on('click',function(event){
             $('.to-login-btn').off('click');
             event.preventDefault();
@@ -117,10 +137,7 @@ var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$one
 //渲染中奖记录
 drawCircleOne.GiftRecord();
 
-//渲染我的奖品
-drawCircleOne.MyGift(function(){
-    pageTurn();
-});
+
 
 // $iconPrize.css({
 //     'backgroundImg':'url("../images/2017/double11/red_ware.png")'
@@ -128,7 +145,7 @@ drawCircleOne.MyGift(function(){
 drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 
 //开始抽奖
-$pointerBtn.on('click', function(event) {
+$('#draw_btn,.pointer-img').on('click', function(event) {
     drawCircleOne.beginLuckDraw(function(data) {
 
         //抽奖接口成功后奖品指向位置
@@ -222,11 +239,6 @@ $pointerBtn.on('click', function(event) {
             index = $this.index();
         $this.addClass('active').siblings().removeClass('active');
         contentCls.eq(index).show().siblings().hide();
-        if($myGiftDOM.hasClass('active')&&$ownRecord.find('li').length !== 0) {
-            $pageNumber.show();
-        }else {
-            $pageNumber.hide();
-        }
     });
 
 })();
@@ -240,6 +252,7 @@ function pageTurn() {
         pageIndex = 1,
         totalPage = Math.ceil(totalNumber/pageSize);
     $pageNumber.find('i').on('click',function(index) {
+        console.log(totalNumber)
         let thisClass = this.className;
         if(thisClass=='icon-left') {
             //上一页

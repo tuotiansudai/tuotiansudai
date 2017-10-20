@@ -54,7 +54,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li> ' + data[i].prizeValue + '<time> ' + data[i].lotteryTime + ' </time></li>');
             }
             self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
-            callback && callback();
+            callback && callback(data);
         });
     }
 }

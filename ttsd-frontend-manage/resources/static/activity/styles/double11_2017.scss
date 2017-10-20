@@ -15,6 +15,14 @@ strong {
   margin: 0 auto;
   background: #fff99b;
 }
+.font-underline {
+  text-align: center;
+  border-bottom: 2px solid #000;
+  padding: 0 2px;
+  &.my-gift-color {
+    border-bottom: 2px solid #fff600;
+  }
+}
 .small-btn {
   width: 317px;
   height: 81px;
@@ -23,9 +31,13 @@ strong {
   background:url("../images/2017/double11/small_btn_bg.png") center top no-repeat;
   background-size: 100%;
   color: #fff;
-  font-size: 30px;
+  a {
+    color: #fff;
+  }
+  font-size: 28px;
   text-align: center;
   line-height: 81px;
+  font-weight: bold;
   cursor: pointer;
 }
 .banner {
@@ -43,15 +55,6 @@ strong {
   background-size: 100%;
   position: relative;
   padding-top: 200px;
-  .subsidy {
-    width: 243px;
-    height: 248px;
-    position: absolute;
-    right: -202px;
-    top: 138px;
-    background:url("../images/2017/double11/subsidy.png") center top no-repeat;
-    background-size: 100%;
-  }
   .alone-title {
     width: 618px;
     height: 126px;
@@ -109,6 +112,7 @@ strong {
         bottom: 0;
         margin: auto;
         z-index: 66;
+        cursor: pointer;
       }
       .rotate-btn {
         width: 100%;
@@ -127,7 +131,6 @@ strong {
           color: #040009;
           a {
             color: #040009;
-            text-decoration:underline;
           }
         }
       }
@@ -157,14 +160,18 @@ strong {
           }
         }
         .page-number {
-          height:30px;
-          color: #fcf821;
+          width: 100px;
+          height:20px;
+          margin: 0 auto;
+          color: #fff;
           text-align: center;
           i {
             display: inline-block;
-            width:12px;
+            width:19px;
             height:20px;
-            background: url('../images/2017/double11/icon-arrow.png') left center no-repeat;
+            float: left;
+            background: url('../images/2017/double11/icon_left.png') left center no-repeat;
+            background-size: 100%;
             vertical-align: middle;
             cursor: pointer;
             &.icon-right {
@@ -172,13 +179,14 @@ strong {
             }
           }
           span {
+            float: left;
             display: inline-block;
-            width:50px;
-            font-size: 24px;
+            width:35px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 18px;
             text-align: center;
-            line-height:30px;
             font-weight: bold;
-            vertical-align: middle;
           }
         }
         .record-list {
@@ -193,6 +201,10 @@ strong {
           padding:0 20px;
           box-sizing: border-box;
           margin-top: 10px;
+          .own-record {
+            position: absolute;
+            width: 100%;
+          }
           li {
             color: #fff;
             opacity: 0.8;
@@ -223,15 +235,6 @@ strong {
   position: relative;
   padding-top: 230px;
   box-sizing: border-box;
-  .fly {
-    width: 232px;
-    height: 149px;
-    position: absolute;
-    left: -190px;
-    top: 222px;
-    background:url("../images/2017/double11/fly.png") center top no-repeat;
-    background-size: 100%;
-  }
   .jde-title {
     width: 754px;
     height: 126px;
@@ -285,20 +288,26 @@ strong {
       background-size: 100%;
       .reward-con {
         width: 100px;
+        height: 100%;
         position: relative;
         font-weight: bold;
         font-size: 30px;
         line-height: 184px;
         margin: 0 auto;
         color: #000;
-        span {
+        em {
           font-weight: bold;
           font-size: 50px;
           color: #000;
           position: absolute;
           top: -8px;
-          left:30px;
+          left:35px;
           transform: rotate(-9deg);
+          &.money {
+            top: 2px;
+            left:5px;
+            font-size: 30px;
+          }
         }
       }
 
@@ -319,12 +328,14 @@ strong {
   dl {
     color: #2e290a;
     dt {
-      font-size: 14px;
+      font-size: 20px;
       color: #2e290a;
+      font-weight: bold;
     }
     dd {
-      font-size: 12px;
+      font-size: 14px;
       color: #2e290a;
+      line-height: 30px;
     }
   }
 }
@@ -458,9 +469,6 @@ strong {
   .alone-gifts {
     background:url("../images/2017/double11/alone768.png") center top no-repeat;
     padding-top: 170px;
-    .subsidy {
-      display: none;
-    }
     .alone-title {
       width: 52%;
     }
@@ -471,9 +479,6 @@ strong {
   .jde-cart {
       background:url("../images/2017/double11/jde_bg768.png") center top no-repeat;
     padding-top: 195px;
-    .fly {
-      display: none;
-    }
     .jde-title {
       width: 63%;
     }
@@ -490,7 +495,7 @@ strong {
     width: 3.21rem;
     height: 0.84rem;
     margin-top: 0;
-    font-size: 0.31rem;
+    font-size: 0.28rem;
     line-height: 0.84rem;
   }
   .alone-gifts {
@@ -562,19 +567,20 @@ strong {
             }
           }
           .page-number {
-            height:0.3rem;
+            width: 1rem;
+            height:0.2rem;
             i {
-              width:0.12rem;
+              width:0.19rem;
               height:0.2rem;
             }
             span {
-              width:0.5rem;
-              font-size: 0.24rem;
-              line-height:0.3rem;
+              width:0.35rem;
+              height: 0.2rem;
+              line-height: 0.2rem;
+              font-size: 0.18rem;
             }
           }
           .record-list {
-            //height: 3.56rem;
             max-height: 3.5rem;
             font-size: 0.22rem;
             padding: 0;
@@ -635,10 +641,16 @@ strong {
           width: 1rem;
           font-size: 0.3rem;
           line-height: 1.84rem;
-          span {
+          em {
             font-size: 0.5rem;
             top: -0.08rem;
-            left:0.30rem;
+            left:0.35rem;
+            transform: rotate(-9deg);
+            &.money {
+              top: 0.02rem;
+              left:0.05rem;
+              font-size: 0.30rem;
+            }
           }
         }
 
@@ -652,13 +664,15 @@ strong {
     }
   }
   .kindly-tips {
+    padding-top: 0.3rem;
     padding-bottom: 0.6rem;
     dl {
       dt {
-        font-size: 0.2rem;
+        font-size: 0.24rem;
       }
       dd {
         font-size: 0.2rem;
+        line-height: 0.36rem;
       }
     }
   }
