@@ -49,7 +49,8 @@ public class EventMessageConsumer implements MessageConsumer {
 
         try {
             EventMessage eventMessage = JsonConverter.readValue(message, EventMessage.class);
-            if (eventMessage == null || Strings.isNullOrEmpty(eventMessage.getTitle()) || Strings.isNullOrEmpty(eventMessage.getContent()) || eventMessage.getEventType() == null || CollectionUtils.isEmpty(eventMessage.getLoginNames())) {
+            if (eventMessage == null || Strings.isNullOrEmpty(eventMessage.getTitle()) || Strings.isNullOrEmpty(eventMessage.getContent()) || eventMessage.getEventType() == null
+                    || (CollectionUtils.isEmpty(eventMessage.getLoginNames()) && eventMessage.getEventType() != MessageEventType.LOAN_OUT_SUCCESS)) {
                 logger.error(MessageFormat.format("[EventMessageConsumer] message({0}) is invalid", message));
                 return;
             }
@@ -60,7 +61,7 @@ public class EventMessageConsumer implements MessageConsumer {
                 return;
             }
 
-            if (eventMessage.getEventType()==MessageEventType.LOAN_OUT_SUCCESS){
+            if (eventMessage.getEventType() == MessageEventType.LOAN_OUT_SUCCESS){
                 for (Map.Entry<Long, String> entry : eventMessage.getBusinessIdLoginNames().entrySet()){
                     UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), entry.getValue(), eventMessage.getTitle(), eventMessage.getContent(), new Date());
                     userMessageModel.setBusinessId(entry.getKey());

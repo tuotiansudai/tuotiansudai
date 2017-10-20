@@ -31,9 +31,8 @@ public class EventMessage implements Serializable {
         this.businessId = businessId;
     }
 
-    public EventMessage(MessageEventType eventType, List<String> loginNames, String title, String content, Map<Long, String> businessIdLoginNames) {
+    public EventMessage(MessageEventType eventType, String title, String content, Map<Long, String> businessIdLoginNames) {
         this.eventType = eventType;
-        this.loginNames = loginNames;
         this.title = title;
         this.content = content;
         this.businessIdLoginNames = businessIdLoginNames;
