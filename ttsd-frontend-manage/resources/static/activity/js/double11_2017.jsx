@@ -249,7 +249,7 @@ function pageTurn() {
     let $ownList = $('.own-record',$double11),
         $pageNumber = $('.page-number',$double11);
     let totalNumber = $ownList.find('li').length,
-        pageSize = 5, //每页5条
+        pageSize = 8, //每页5条
         pageIndex = 1,
         totalPage = Math.ceil(totalNumber/pageSize),
         heightContent = $recodeList.height();
