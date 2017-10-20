@@ -98,7 +98,7 @@ public class CheckUserBalanceScheduler {
                     mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
                 }
                 if (count == BATCH_SIZE - 1) {
-                    String lastRecordRegisterTime = DateConvertUtil.format(account.getRegisterTime();
+                    String lastRecordRegisterTime = DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss");
                     logger.info("[checkUserBalance:] last record register time-{},id-{}", lastRecordRegisterTime, String.valueOf(account.getId()));
                     redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, lastRecordRegisterTime);
                 }
