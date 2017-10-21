@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -32,6 +33,7 @@ import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -44,10 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdvanceRepayServiceImpl implements AdvanceRepayService {
@@ -100,6 +99,12 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     protected AdvanceRepayNotifyMapper advanceRepayNotifyMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private InvestTransferService investTransferService;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -568,7 +573,26 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         String content = MessageFormat.format(MessageEventType.ADVANCED_REPAY.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ADVANCED_REPAY,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.ADVANCED_REPAY, title, AppUrl.MESSAGE_CENTER_LIST));
+        TransferApplicationModel transferApplicationModel = null;
+
+        if (investModel.getTransferInvestId() != null) {
+            transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+        } else {
+            Optional<TransferApplicationModel> optional = transferApplicationMapper
+                    .findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING))
+                    .stream()
+                    .findFirst();
+
+            if (optional.isPresent()) {
+                transferApplicationModel = optional.get();
+            }
+
+        }
+        Map<String, String> params = Maps.newLinkedHashMap();
+        params.put("investId", String.valueOf(investModel.getId()));
+        params.put("transferApplicationId", transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : "");
+        params.put("transferStatus", investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()));
+        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.ADVANCED_REPAY, title, AppUrl.INVEST_DETAIL, params));
     }
 
     private boolean isPaybackInvestSuccess(LoanRepayModel currentLoanRepayModel, List<InvestModel> successInvests) {

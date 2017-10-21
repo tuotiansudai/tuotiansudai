@@ -3,6 +3,7 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -228,7 +229,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 PushSource.ALL,
                 PushType.TRANSFER_FAIL,
                 MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
-                AppUrl.MESSAGE_CENTER_LIST));
+                AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
 
         return true;
     }

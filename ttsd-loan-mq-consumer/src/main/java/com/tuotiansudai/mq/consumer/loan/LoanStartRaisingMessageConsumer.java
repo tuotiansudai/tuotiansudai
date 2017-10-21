@@ -1,6 +1,7 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
@@ -49,7 +50,7 @@ public class LoanStartRaisingMessageConsumer implements MessageConsumer {
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
             if (!Strings.isNullOrEmpty(loanDetailsModel.getPushMessage())) {
-                mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(null, PushSource.ALL, PushType.PREHEAT, loanDetailsModel.getPushMessage(), AppUrl.INVEST_NORMAL));
+                mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(null, PushSource.ALL, PushType.PREHEAT, loanDetailsModel.getPushMessage(), AppUrl.INVEST_NORMAL, Maps.newLinkedHashMap()));
             }
         }
     }

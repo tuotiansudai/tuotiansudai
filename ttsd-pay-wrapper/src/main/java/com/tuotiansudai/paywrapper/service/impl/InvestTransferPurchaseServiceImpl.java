@@ -596,6 +596,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 PushSource.ALL,
                 PushType.TRANSFER_SUCCESS,
                 title,
-                AppUrl.MESSAGE_CENTER_LIST));
+                AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
     }
 }

@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -94,7 +95,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                     PushSource.ALL,
                     PushType.RECOMMEND_SUCCESS,
                     MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
-                    AppUrl.MESSAGE_CENTER_LIST));
+                    AppUrl.MESSAGE_CENTER_LIST, Maps.newLinkedHashMap()));
         }
     }
 }

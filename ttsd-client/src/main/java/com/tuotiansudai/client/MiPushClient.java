@@ -50,32 +50,36 @@ public class MiPushClient {
                 pushMessage.getLoginNames() == null ? "ALL" : pushMessage.getLoginNames().size(), pushMessage.getPushSource(), pushMessage.getPushType(), pushMessage.getContent(), userListStr));
 
         if (pushMessage.getPushSource() == PushSource.ANDROID || pushMessage.getPushSource() == PushSource.ALL) {
-            Message message = new Message.Builder()
+            Message.Builder builder = new Message.Builder()
                     .title("拓天速贷")
                     .description(pushMessage.getContent())
                     .payload(pushMessage.getContent())
                     .notifyType(-1)
-                    .extra(PUSH_KEY_JUMP_TO, pushMessage.getJumpTo().getPath())
-                    .build();
+                    .extra(PUSH_KEY_JUMP_TO, pushMessage.getJumpTo().getPath());
+
+            pushMessage.getParams().forEach((key, value) -> builder.extra(key, value));
+
             // 安卓推送，测试环境和正式环境，都使用official（配置了不同的小米平台账户）
             Constants.useOfficial();
-            sendPushMessage(pushMessage, message, PushSource.ANDROID);
+            sendPushMessage(pushMessage, builder.build(), PushSource.ANDROID);
         }
 
         if (pushMessage.getPushSource() == PushSource.IOS || pushMessage.getPushSource() == PushSource.ALL) {
-            Message message = new Message.IOSBuilder()
+            Message.IOSBuilder builder = new Message.IOSBuilder()
                     .title("拓天速贷")
                     .body(pushMessage.getContent())
                     .soundURL("default")
-                    .extra(PUSH_KEY_JUMP_TO, pushMessage.getJumpTo().getPath())
-                    .build();
+                    .extra(PUSH_KEY_JUMP_TO, pushMessage.getJumpTo().getPath());
+            pushMessage.getParams().forEach((key, value) -> builder.extra(key, value));
+
+
             // 针对IOS推送，需要根据环境来设置是否使用sandbox，安卓则无需这样
             if (environment != Environment.PRODUCTION) {
                 Constants.useSandbox();
             } else {
                 Constants.useOfficial();
             }
-            sendPushMessage(pushMessage, message, PushSource.IOS);
+            sendPushMessage(pushMessage, builder.build(), PushSource.IOS);
         }
         logger.info("send push message end.");
     }

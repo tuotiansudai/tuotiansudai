@@ -2,6 +2,7 @@ package com.tuotiansudai.console.service;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -104,7 +105,8 @@ public class ConsoleMessageService {
                     pushModel.getPushSource(),
                     pushModel.getPushType(),
                     pushModel.getContent(),
-                    pushModel.getJumpTo()));
+                    pushModel.getJumpTo(),
+                    Maps.newLinkedHashMap()));
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
