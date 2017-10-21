@@ -16,7 +16,7 @@ public interface InvestService {
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
 
-    long estimateInvestIncome(long loanId, String loginName, long amount);
+    long estimateInvestIncome(long loanId, String loginName, long amount, Date investTime);
 
     BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String investorLoginName,
                                                                                    int index,

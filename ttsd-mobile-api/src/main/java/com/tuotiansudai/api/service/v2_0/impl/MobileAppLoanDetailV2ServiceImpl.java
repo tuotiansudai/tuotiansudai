@@ -158,7 +158,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
 
-        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT);
+        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT, new Date());
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
 
         String interestPointName = loanModel.getType().getInterestPointName();

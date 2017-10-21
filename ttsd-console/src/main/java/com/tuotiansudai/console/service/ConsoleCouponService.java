@@ -208,7 +208,7 @@ public class ConsoleCouponService {
             long interest = 0;
 
             if (userCouponModel.getStatus() == InvestStatus.SUCCESS && loanModel != null) {
-                interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount());
+                interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount(), new Date());
                 couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
                         userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
                 continue;

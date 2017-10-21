@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -171,7 +172,7 @@ public class InvestController {
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = investService.estimateInvestIncome(loanId, loginName, amount);
+        long expectedInterest = investService.estimateInvestIncome(loanId, loginName, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
@@ -181,7 +182,7 @@ public class InvestController {
                                                   @PathVariable long amount,
                                                   @RequestParam List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
 

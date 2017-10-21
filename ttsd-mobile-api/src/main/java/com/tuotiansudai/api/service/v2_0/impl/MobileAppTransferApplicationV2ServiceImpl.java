@@ -25,7 +25,6 @@ import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateLeftDays;
-import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +110,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount(), new Date());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

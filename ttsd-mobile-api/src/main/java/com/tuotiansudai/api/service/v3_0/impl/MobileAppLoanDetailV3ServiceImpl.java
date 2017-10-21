@@ -7,7 +7,6 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.dto.v3_0.DisclosureDto;
 import com.tuotiansudai.api.dto.v3_0.ItemDto;
 import com.tuotiansudai.api.dto.v3_0.LoanDetailV3RequestDto;
@@ -135,7 +134,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
 
-        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT);
+        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT, new Date());
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
 
         String interestPointName = loanModel.getType().getInterestPointName();

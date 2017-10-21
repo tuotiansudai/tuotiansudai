@@ -266,11 +266,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, String loginName, long amount) {
+    public long estimateInvestIncome(long loanId, String loginName, long amount, Date investTime) {
         LoanModel loanModel = loanMapper.findById(loanId);
 
         //根据loginName查询出会员的相关信息
-        List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount);
+        List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount, investTime);
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         long expectedInterest = 0L;
@@ -284,10 +284,8 @@ public class InvestServiceImpl implements InvestService {
         long extraRateInterest = 0;
         long extraRateFee = 0;
         if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
-            List<LoanStatus> soldOutLoanList = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE);
-            boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
             //根据不同的标的状态显示不同的periodDuration
-            int periodDuration = isRealTimeInterest ? loanModel.getDuration() : LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
+            int periodDuration = LoanPeriodCalculator.calculateDuration(investTime, loanModel.getDeadline());
             extraRateInterest = getExtraRate(loanId, amount, periodDuration);
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
@@ -487,7 +485,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long interest = 0L;
-        List<Long> perPeriodInterestList = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
+        List<Long> perPeriodInterestList = InterestCalculator.estimateExpectedInterest(loanModel, investAmount, new Date());
         for (Long perPeriodInterest : perPeriodInterestList) {
             interest += perPeriodInterest;
         }

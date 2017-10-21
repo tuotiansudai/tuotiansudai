@@ -25,6 +25,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -186,7 +187,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount(), new Date());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));
