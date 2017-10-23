@@ -2,7 +2,6 @@
 <@global.main pageCss="${css.double11_2017}" pageJavascript="${js.double11_2017}" activeNav="" activeLeftNav="" title="双11活动_活动中心_拓天速贷" keywords="拓天速贷,体验金,抽奖奖励,京东E卡" description="拓天速贷双11活动,活动期间投资顺序为奇数的用户,可获得投资额的1.1倍体验金奖励,投资顺序为偶数的用户可获得抽奖机会,累计投资额每满10万元获赠100元京东E卡.">
 
 <div class="banner">
-
 </div>
 <div  id="double11">
     <!--第一部分 begin-->
@@ -26,7 +25,7 @@
                <div class="gift-circle-detail">
                        <div class="lottery-times">
                            <p id="left_draw_DOM" style="display: none"> 剩余抽奖次数：<span id="leftDrawCount"></span></p>
-                           <p id="to_login_DOM" style="display: none"><a href="javascript:;" id="to_login" class="to-login-btn font-underline">登录</a> 后查看抽奖次数</p>
+                           <p id="to_login_DOM" style="display: none"><a href="javascript:;" id="toLoginBtnDraw" class="to-login-btn font-underline">登录</a> 后查看抽奖次数</p>
                        </div>
 
                        <div class="gift-info-box">
@@ -53,7 +52,6 @@
        </div>
     </div>
     <!--第一部分 end-->
-    <li><a href="javascript:;" class="to-login-btn font-underline my-gift-color">登录</a>后查看获奖记录</li>
     <!--第二部分 begin-->
     <div class="jde-cart page-width">
         <div class="jde-title"></div>
@@ -67,8 +65,13 @@
             <div class="total-money">
                 <p>累计投资金额：${sumAmount!}元</p>
                 <div class="awarded">已获得</div>
-                <div class="reward"> <div class="reward-con" id="rewardCon"><em class="money" id="money">￥</em><em id="reward_count">${jdAmount}</em></div> </div>
-                <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" class="to-login-btn font-underline">登录后查看已获得奖励></a></div>
+                <div class="reward">
+                    <div class="reward-con" id="rewardCon"><em class="money" id="money">￥</em>
+                        <@global.isAnonymous><em id="reward_count">?</em></@global.isAnonymous>
+                        <@global.isNotAnonymous><em id="reward_count">${jdAmount}</em></@global.isNotAnonymous>
+                    </div>
+                </div>
+                <div class="to-login" id="prize_login_DOM" style="display: none"><a href="javascript:;" id="toLoginBtnPrize" class="to-login-btn font-underline">登录后查看已获得奖励></a></div>
                 <div class="small-btn" id="to_invest"><a href="/loan-list">获得更多奖励</a></div>
             </div>
         </div>
@@ -99,7 +102,7 @@
     <#--奖品提示-->
     <div class="tip-list-frame">
         <!--虚拟奖品的提示-->
-        <div class="tip-list"  data-return="virtual">
+        <div class="tip-list" id="test"  data-return="virtual">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p class="success-text"></p>
