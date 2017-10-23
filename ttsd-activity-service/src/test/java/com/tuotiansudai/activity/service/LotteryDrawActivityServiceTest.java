@@ -250,29 +250,25 @@ public class LotteryDrawActivityServiceTest {
         investModels.add(investModel16);
         investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
 
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
+        InvestModel investModel18 = getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L);
+        String hkey18 = MessageFormat.format("{0}:{1}:{2}",investModel18.getLoanId(),investModel18.getId(),loginName);
+        redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey18,"0");
+        investModels.add(investModel18);
         investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+
+
+        InvestModel investModel20 = getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L);
+        String hkey20 = MessageFormat.format("{0}:{1}:{2}",investModel20.getLoanId(),investModel20.getId(),loginName);
+        redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey20,"0");
+        investModels.add(investModel20);
         investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+
+        InvestModel investModel22 = getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L);
+        String hkey22 = MessageFormat.format("{0}:{1}:{2}",investModel22.getLoanId(),investModel22.getId(),loginName);
+        redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey22,"0");
+        investModels.add(investModel22);
         investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new Date(), 111L));
-        investModels.add(getFakeInvestModelByLoginName(loginName, new DateTime(new Date()).plusDays(1).toDate(), 111L));
+
 
 
         ReflectionTestUtils.setField(lotteryDrawActivityService, "activityDoubleElevenStartTime", DateTime.now().plusDays(-2).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
@@ -282,7 +278,7 @@ public class LotteryDrawActivityServiceTest {
         when(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(anyString(), any(LotteryPrize.class), any(ActivityCategory.class), any(Date.class), any(Date.class))).thenReturn(0);
 
         int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
-        assertEquals(time, 8);
+        assertEquals(time, 11);
     }
 
     private UserModel createUserByLoginName(String loginName, String mobile) {

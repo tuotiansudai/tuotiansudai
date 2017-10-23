@@ -154,7 +154,7 @@ public class ActivityCountDrawLotteryService {
     private final long EACH_INVEST_AMOUNT_100000 = 1000000L;
 
 
-    public int countDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
+    public int xcountDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
         int lotteryTime = 0;
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) return lotteryTime;
@@ -292,7 +292,7 @@ public class ActivityCountDrawLotteryService {
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     break;
                 case DOUBLE_ELEVEN_INVEST:
-                    time = getDoubleElevenTotalAvailableDrawTimes(userModel);
+                    time = getDoubleElevenDrawTimes(userModel);
                     break;
             }
         }
@@ -345,7 +345,7 @@ public class ActivityCountDrawLotteryService {
         return null;
     }
 
-    private int getDoubleElevenTotalAvailableDrawTimes(UserModel userModel) {
+    private int getDoubleElevenDrawTimes(UserModel userModel) {
         int investDrawTimes = 0;
         List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
 
@@ -355,12 +355,16 @@ public class ActivityCountDrawLotteryService {
             String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
             String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
             boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
-            redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, "0");
-            if (even && Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY,incrKey)) < 10) {
-                count++;
+            boolean booleanEvenOfDay = redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey) != null;
+            long evenCountOfDay = booleanEvenOfDay ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey)) : 0;
+            if (even && evenCountOfDay < 10) {
+                if(booleanEvenOfDay){
+                    count++;
+                }else{
+                    count = 1;
+                }
                 redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, String.valueOf(count));
                 investDrawTimes++;
-
             }
         }
 
