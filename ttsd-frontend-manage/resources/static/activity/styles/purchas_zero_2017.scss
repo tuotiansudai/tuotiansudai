@@ -126,3 +126,23 @@ strong,h1,h2,h3,h4 {
     }
   }
 }
+.kindly-tips {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  .tips-title {
+    margin-bottom: 30px;
+    height: 78px;
+    background: url("../images/2017/purchas_zero/tips_title.png") no-repeat center center;
+  }
+  .tips-content {
+    background: #eaefff;
+    padding: 30px;
+    dl {
+      dd {
+        font-size: 16px;
+        color: #456df3;
+        line-height: 30px;
+      }
+    }
+  }
+}
