@@ -34,7 +34,7 @@
                                <li id="myGiftDOM"><span>我的奖品</span></li>
                            </ul>
                            <div class="record-list clearfix">
-                               <ul class="record-model user-record" >
+                               <ul class="record-model user-record" id="user_record" >
                                </ul>
                                <ul class="record-model own-record" style="display: none">
                                </ul>

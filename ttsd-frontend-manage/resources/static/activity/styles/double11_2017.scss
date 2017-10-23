@@ -24,6 +24,9 @@ strong {
     border-bottom: 2px solid #fff600;
   }
 }
+.layui-layer-hui {
+  left: 30px!important;
+}
 .small-btn {
   width: 317px;
   height: 81px;
@@ -164,6 +167,7 @@ strong {
           width: 100px;
           height:20px;
           margin: 0 auto;
+          margin-top: 10px;
           color: #fff;
           text-align: center;
           i {
@@ -193,7 +197,7 @@ strong {
         }
         .record-list {
           width: 600px;
-          height: 350px;
+          height: 310px;
           margin: 0 auto;
           max-height: 350px;
           background: #f79122;
@@ -572,6 +576,7 @@ strong {
           .page-number {
             width: 1rem;
             height:0.2rem;
+            margin-top: 0.1rem;
             i {
               width:0.19rem;
               height:0.2rem;
@@ -585,7 +590,7 @@ strong {
           }
           .record-list {
             width: 6rem;
-            max-height: 3.5rem;
+            height: 3.5rem;
             font-size: 0.22rem;
             padding: 0;
             box-sizing: border-box;

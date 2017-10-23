@@ -37,7 +37,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
                 UlList.push('<li>恭喜 ' + data[i].mobile + ' 抽中了 ' + data[i].prizeValue + ' </li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-            callback && callback();
+            callback && callback(data);
         });
     };
 

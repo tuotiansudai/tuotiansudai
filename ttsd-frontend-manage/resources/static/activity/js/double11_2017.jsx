@@ -60,12 +60,8 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
-layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
-    time:3000
-},function(){
-    $('.layui-layer-content').css({
-        'width':'100%'
-    })
+layer.msg('今天没有抽奖机会了哦33333333333~，明天再来吧',{
+    time:20000000
 });
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
@@ -133,7 +129,16 @@ $('#toLoginBtnDraw,#toLoginBtnPrize').on('click',function(event){
 var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
 //渲染中奖记录
-drawCircleOne.GiftRecord();
+let $userRecord = $('#user_record');
+drawCircleOne.GiftRecord(function(data){
+    if(data== 0) {
+        $userRecord.html('<li>没有中奖纪录哦~</li>');
+        $userRecord.find('li').css({
+            'textAlign':'center',
+            'textIndent':'0px'
+        })
+    }
+});
 
 drawCircleOne.scrollUp($double11.find('.user-record'),1000);
 
