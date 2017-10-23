@@ -1176,6 +1176,7 @@
         WHERE invest.status = 'SUCCESS'
         AND invest.transfer_invest_id IS NULL
         AND loan.activity_type!='NEWBIE'
+        AND loan.product_type != '_30'
         AND loan.id!='1'
         AND (loan_details.activity_desc IS NULL OR loan_details.activity_desc !='0元购')
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
@@ -1194,6 +1195,7 @@
         AND invest.login_name = #{loginName}
         AND invest.transfer_invest_id IS NULL
         AND loan.activity_type!='NEWBIE'
+        AND loan.product_type != '_30'
         AND loan.id!='1'
         AND (loan_details.activity_desc IS NULL OR loan_details.activity_desc !='0元购')
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}

@@ -758,7 +758,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void sendUserMessageByDoubleElevenActivity(InvestModel investModel, LoanModel loanModel, LoanDetailInfo loanDetailInfo) {
-        if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && (Strings.isNullOrEmpty(loanDetailInfo.getActivityDesc()) || !loanDetailInfo.getActivityDesc().equals("0元购"))) {
+        if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanModel.getProductType().equals(ProductType._30) && (Strings.isNullOrEmpty(loanDetailInfo.getActivityDesc()) || !loanDetailInfo.getActivityDesc().equals("0元购"))) {
             long investSeq = redisWrapperClient.incr(MessageFormat.format(ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY,loanModel.getId()));
 
             String activityTitle;
