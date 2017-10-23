@@ -1,11 +1,128 @@
+body {
+   background: #fff;
+}
 .main-frame {
   width: 100%;
   margin: 0 auto;
 }
-.page-width {
-  width: 1000px;
-  margin: 0 auto;
+.banner-slide {
+  height: 350px;
+  width: 100%;
+  background: url("../images/2017/purchas_zero/banner.png") no-repeat center top;
 }
-body {
-  background: red;
+strong,h1,h2,h3,h4 {
+  font-weight: normal;
+}
+.activity-process {
+  dl.title {
+    dt {
+      height: 77px;
+      background: url("../images/2017/purchas_zero/activity_process_title.png") no-repeat center center;
+    }
+    dd {
+      margin-top: 35px;
+      font-size: 25px;
+      line-height: 50px;
+      color: #323232;
+      strong {
+        color: #ff1313;
+      }
+    }
+  }
+  .process-content {
+    margin-top: 25px;
+    dl {
+      float: left;
+      text-align: center;
+      dt {
+        width: 160px;
+        height: 160px;
+        background: #eaefff;
+        line-height: 160px;
+        text-align: center;
+      }
+      dd {
+        font-size: 20px;
+        color: #6189ff;
+        line-height: 50px;
+      }
+    }
+    .arrow-right {
+      width: 86px;
+      height: 29px;
+      margin:  0 16px;
+      margin-top: 65px;
+      float: left;
+      background: url("../images/2017/purchas_zero/arrow_right.png") no-repeat center top;
+    }
+  }
+}
+.goods-select-wrap {
+  width: 100%;
+  background: url("../images/2017/purchas_zero/goods_list_bg.png") no-repeat;
+  background-size: contain;
+}
+.goods-select {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  .goods-title {
+    height: 77px;
+    background: url("../images/2017/purchas_zero/goods_select.png") no-repeat center top;
+  }
+  .goods-list {
+    ul {
+      margin-left: -40px;
+      li {
+        width: 480px;
+        height: 250px;
+        float: left;
+        margin-left: 40px;
+        margin-top: 40px;
+        background: #456ef4;
+        padding:  10px;
+        box-sizing: border-box;
+        .img {
+          width: 230px;
+          height: 230px;
+          background: #fff;
+          text-align: center;
+          line-height: 230px;
+          img {
+            width: 160px;
+          }
+        }
+        .fr {
+          width: 210px;
+          .goods-name {
+            font-size: 18px;
+            color: #fff;
+            line-height: 22px;
+          }
+          .goods-features {
+            font-size: 16px;
+            color: #b4c3f4;
+            line-height: 40px;
+          }
+          .goods-price {
+            font-size: 16px;
+            color: #b4c3f4;
+          }
+          .goods-income {
+            font-size: 18px;
+            color: #fff;
+          }
+          .invest-btn {
+            display: block;
+            width: 200px;
+            height: 44px;
+            background: #f93f53;
+            line-height: 44px;
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
 }
