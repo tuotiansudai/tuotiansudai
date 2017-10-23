@@ -154,7 +154,7 @@ public class ActivityCountDrawLotteryService {
     private final long EACH_INVEST_AMOUNT_100000 = 1000000L;
 
 
-    public int xcountDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
+    public int countDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
         int lotteryTime = 0;
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) return lotteryTime;
