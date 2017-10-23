@@ -71,8 +71,9 @@ public class InvestSuccessZeroShoppingMessageConsumer implements MessageConsumer
         UserInfo userInfo = investSuccessMessage.getUserInfo();
         InvestInfo investInfo = investSuccessMessage.getInvestInfo();
         LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
+        String prizeKey = MessageFormat.format(ZERO_SHOPPING_ACTIVITY_PRIZE, String.valueOf(investInfo.getInvestId()));
 
-        if (!redisWrapperClient.hexists(MessageFormat.format(ZERO_SHOPPING_ACTIVITY_PRIZE, String.valueOf(investInfo.getInvestId())), userInfo.getLoginName())) {
+        if (!redisWrapperClient.hexists(prizeKey, userInfo.getLoginName())) {
             return;
         }
 
@@ -82,9 +83,9 @@ public class InvestSuccessZeroShoppingMessageConsumer implements MessageConsumer
             zeroShoppingPrizeSelectMapper.create(new ZeroShoppingPrizeSelectModel(userInfo.getMobile(),
                     userInfo.getUserName(),
                     investInfo.getAmount(),
-                    ZeroShoppingPrize.valueOf(redisWrapperClient.hget(MessageFormat.format(ZERO_SHOPPING_ACTIVITY_PRIZE, String.valueOf(investInfo.getInvestId())), userInfo.getLoginName()))));
+                    ZeroShoppingPrize.valueOf(redisWrapperClient.hget(prizeKey, userInfo.getLoginName()))));
         }
-        redisWrapperClient.hdel(MessageFormat.format(ZERO_SHOPPING_ACTIVITY_PRIZE, String.valueOf(investInfo.getInvestId())), userInfo.getLoginName());
+        redisWrapperClient.hdel(prizeKey, userInfo.getLoginName());
     }
 
 }

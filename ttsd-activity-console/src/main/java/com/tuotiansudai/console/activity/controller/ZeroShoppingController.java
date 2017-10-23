@@ -29,7 +29,7 @@ public class ZeroShoppingController {
         ModelAndView modelAndView = new ModelAndView("/zero-shopping-select-list");
         modelAndView.addObject("data", activityConsoleZeroShoppingService.userPrizeList(index, pageSize, mobile,
                 startTime == null ? null : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? null : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()));
+                endTime == null ? null : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).toDate()));
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
