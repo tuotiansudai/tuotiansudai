@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
@@ -51,10 +50,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -503,12 +499,19 @@ public class LoanServiceImpl implements LoanService {
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<String> loginNames = investMapper.findSuccessInvestsByLoanId(loanId).stream().map(InvestModel::getLoginName).collect(Collectors.toList());
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         String title = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getTitleTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
         String content = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getContentTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
 
+        List<String> loginNames = new ArrayList<>();
+        Map<Long, String> investIdLoginNames = new HashMap<>();
+        for (InvestModel investModel:investModels) {
+            loginNames.add(investModel.getLoginName());
+            investIdLoginNames.put(investModel.getId(), investModel.getLoginName());
+        }
+
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
-                loginNames, title, content, loanId));
+                title, content, investIdLoginNames));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(loginNames, PushSource.ALL, PushType.LOAN_OUT_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
     }
