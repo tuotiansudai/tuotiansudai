@@ -85,7 +85,7 @@ public class ConsoleUserService {
         final String loginName = editUserDto.getLoginName();
 
         String mobile = editUserDto.getMobile();
-        UserModel userModel = userMapper.lockByLoginName(loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
         String beforeUpdateUserMobile = userModel.getMobile();
 
         // update role
@@ -256,22 +256,24 @@ public class ConsoleUserService {
         }
 
         String newReferrerLoginName = editUserDto.getReferrer();
-        UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
-        if (!Strings.isNullOrEmpty(newReferrerLoginName) && newReferrerModel == null) {
-            throw new EditUserException("推荐人不存在");
-        }
+        if(!Strings.isNullOrEmpty(newReferrerLoginName)) {
+            UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
+            if (newReferrerModel == null) {
+                throw new EditUserException("推荐人不存在");
+            }
 
-        if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
-            throw new EditUserException("不能将推荐人设置为自己");
+            if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
+                throw new EditUserException("不能将推荐人设置为自己");
+            }
+
+            // 是否新推荐人是该用户推荐的
+            if (this.isNewReferrerReferree(loginName, newReferrerLoginName)) {
+                throw new EditUserException("推荐人与该用户存在间接推荐关系");
+            }
         }
 
         if (editUserDto.getRoles().contains(Role.SD_STAFF) && editUserDto.getRoles().contains(Role.ZC_STAFF)) {
             throw new EditUserException("不能同时设置速贷业务员和资产业务员");
-        }
-
-        // 是否新推荐人是该用户推荐的
-        if (this.isNewReferrerReferree(loginName, newReferrerLoginName)) {
-            throw new EditUserException("推荐人与该用户存在间接推荐关系");
         }
     }
 

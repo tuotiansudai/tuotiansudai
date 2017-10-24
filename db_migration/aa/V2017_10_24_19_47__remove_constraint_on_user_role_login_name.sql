@@ -1,0 +1,5 @@
+BEGIN;
+
+alter table user_role drop FOREIGN KEY FK_USER_ROLE_LOGIN_NAME_REF_USER_LOGIN_NAME;
+
+COMMIT;
