@@ -60,9 +60,16 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
-layer.msg('今天没有抽奖机会了哦33333333333~，明天再来吧',{
-    time:20000000
-});
+//提示信息水平居中
+// layer.msg('今天没有抽奖机会了哦33333333333~，明天再来吧',{
+//     time:20000000
+// });
+// let $layerDom = $('.layui-layer-hui');
+// let layerWidth = $layerDom.width();
+// let posLeft = ($(document).width() - layerWidth)/2;
+// $layerDom.css({
+//     'left':posLeft+'px!important'
+// })
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -225,7 +232,14 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
 
         } else if(data.returnCode == 4){
             //今日没有抽奖机会了
+            let $layerDom = $('.layui-layer-hui');
+            let layerWidth = $layerDom.width();
+            let posLeft = ($(document).width() - layerWidth)/2;
+            $layerDom.css({
+                'left':posLeft+'px!important'
+            })
             layer.msg('今天没有抽奖机会了哦~，明天再来吧');
+
         }
     });
 });
