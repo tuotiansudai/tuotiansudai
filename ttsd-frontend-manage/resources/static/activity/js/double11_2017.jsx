@@ -60,9 +60,11 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
-layer.msg('今天没有抽奖机会了哦33333333333~，明天再来吧',{
-    time:20000000
-});
+//提示信息水平居中
+
+layer.msg('通过判断是否登录显示隐藏相应的按钮',{
+    time:4000000
+})
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -198,14 +200,14 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
                     angleNum=45*6;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('1000元体验金');
                     $iconPrize.css({
-                        'backgroundImage':'url('+experienceUrl+') no-repeat center!important'
+                        'backgroundImage':'url('+experienceUrl+')'
                     })
                     break;
                 case 'DOUBLE_ELEVEN_ACTIVITY_ENVELOP_50': //50元红包
                     angleNum=45*7;
                     $(tipGroupObj['virtual']).find('.prizeValue').text('50元红包');
                     $iconPrize.css({
-                        'backgroundImage':'url('+redWareUrl+') no-repeat center!important'
+                        'backgroundImage':'url('+redWareUrl+')'
                     })
                     break;
             }
@@ -225,7 +227,10 @@ $('#draw_btn,.pointer-img').on('click', function(event) {
 
         } else if(data.returnCode == 4){
             //今日没有抽奖机会了
-            layer.msg('今天没有抽奖机会了哦~，明天再来吧');
+            layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
+                time:3000
+            });
+
         }
     });
 });

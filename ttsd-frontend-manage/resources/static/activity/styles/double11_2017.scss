@@ -15,6 +15,13 @@ strong {
   margin: 0 auto;
   background: #fff99b;
 }
+.layui-layer-content {
+  font-size: 12px!important;
+  @media screen and (max-width:750px){
+    font-size: 0.12rem!important;
+    padding: 0.12rem 0.25rem!important;
+  }
+}
 .font-underline {
   text-align: center;
   border-bottom: 2px solid #000;
@@ -23,9 +30,6 @@ strong {
     color: #fff600;
     border-bottom: 2px solid #fff600;
   }
-}
-.layui-layer-hui {
-  left: 30px!important;
 }
 .small-btn {
   width: 317px;
