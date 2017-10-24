@@ -13,4 +13,9 @@ public class ActivityZeroShoppingController {
     public ModelAndView zeroShopping() {
         return new ModelAndView("/activities/2017/purchas_zero", "responsive", true);
     }
+
+    @RequestMapping(value = "/article", method = RequestMethod.GET)
+    public ModelAndView zeroShoppingDetail() {
+        return new ModelAndView("/activities/2017/purchas_zero_article", "responsive", true);
+    }
 }
