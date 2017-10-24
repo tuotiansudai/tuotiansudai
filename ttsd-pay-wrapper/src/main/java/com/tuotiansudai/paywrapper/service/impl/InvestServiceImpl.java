@@ -112,6 +112,7 @@ public class InvestServiceImpl implements InvestService {
 
     public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
     public final static String ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY = "activity:double:eleven:loanId:{0}:count";
+    public final static String ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY = "activity:double:eleven:every:day:even:count";
     private final static int SIX_MONTH_SECOND = 60 * 60 * 24 * 30 * 6;
 
     @Value("${common.environment}")
@@ -759,13 +760,16 @@ public class InvestServiceImpl implements InvestService {
 
     private void sendUserMessageByDoubleElevenActivity(InvestModel investModel, LoanModel loanModel, LoanDetailInfo loanDetailInfo) {
         if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanModel.getProductType().equals(ProductType._30) && (Strings.isNullOrEmpty(loanDetailInfo.getActivityDesc()) || !loanDetailInfo.getActivityDesc().equals("0元购"))) {
-            long investSeq = redisWrapperClient.incr(MessageFormat.format(ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY,loanModel.getId()));
+            long investSeq = redisWrapperClient.incr(MessageFormat.format(ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY, loanModel.getId()));
 
             String activityTitle;
             String activityContent;
             MessageEventType messageEventType;
             String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), investModel.getLoginName());
-            if (investSeq % 2 == 0) {
+            String hInvestEvenKey = MessageFormat.format("{0}:{1}", investModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+            long everyDayInvestEvenCount = redisWrapperClient.exists(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY) ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey)) : 0;
+            if (investSeq % 2 == 0 && everyDayInvestEvenCount <= 10) {
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey, String.valueOf(everyDayInvestEvenCount+1));
                 redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "0", SIX_MONTH_SECOND);
                 activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getTitleTemplate();
                 activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getContentTemplate(), loanModel.getName());
