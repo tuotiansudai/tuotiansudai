@@ -13,6 +13,11 @@ body {
 strong,h1,h2,h3,h4 {
   font-weight: normal;
 }
+@media screen and (max-width: 999px) and (min-width: 750px) {
+  .page-width {
+    width: 1000px;
+  }
+}
 .activity-process {
   dl.title {
     dt {
