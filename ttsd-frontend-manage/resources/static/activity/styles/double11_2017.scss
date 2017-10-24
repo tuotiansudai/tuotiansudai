@@ -18,7 +18,8 @@ strong {
 .layui-layer-content {
   font-size: 12px!important;
   @media screen and (max-width:750px){
-    padding: 0.12rem 0.25rem;
+    font-size: 0.12rem!important;
+    padding: 0.12rem 0.25rem!important;
   }
 }
 .font-underline {
