@@ -62,11 +62,8 @@ function drawTimes(){
 }
 //提示信息水平居中
 
-let $layerDom = $('.layui-layer-hui');
-let layerWidth = $layerDom.width();
-let posLeft = ($(document).width() - layerWidth)/2;
-$layerDom.css({
-    'left':posLeft+'px!important'
+layer.msg('通过判断是否登录显示隐藏相应的按钮',{
+    time:4000000
 })
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
