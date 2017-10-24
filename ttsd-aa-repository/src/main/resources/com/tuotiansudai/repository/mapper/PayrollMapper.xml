@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.PayrollMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="payRollResultMap" type="PayrollModel">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="total_amount" property="totalAmount"></result>
+        <result column="head_count" property="headCount"></result>
+        <result column="status" property="status"></result>
+        <result column="remark" property="remark"></result>
+        <result column="grant_time" property="grantTime"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="updated_time" property="updatedTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="PayrollModel" useGeneratedKeys="true" keyProperty="id">
+        insert into payroll (title, total_amount, head_count, status, remark, grant_time, created_time, updated_time)
+        value(#{title}, #{totalAmount}, #{headCount}, #{status}, #{remark}, #{grantTime}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="PayrollModel">
+        update payroll
+        set title = #{title},
+        total_amount = #{totalAmount},
+        head_count = #{headCount},
+        status = #{status},
+        remark = #{remark},
+        grant_time = #{grant_time},
+        updated_time = now()
+        where id = #{id}
+    </update>
+
+</mapper>
