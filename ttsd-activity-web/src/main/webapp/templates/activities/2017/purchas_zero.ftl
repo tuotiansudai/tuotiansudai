@@ -11,7 +11,7 @@
             <dt></dt>
             <dd>活动期间，用户可点选心仪好货，并通过活动页面“立即投资”按钮进入投资页面，投资带有“0元购”标签的专享项目达到该商品对应的投资额，即可0元获赠该商品。<strong> 注：用户参与活动时需严格按照此兑换流程进行操作。</strong></dd>
         </dl>
-        <div class="process-content">
+        <div class="process-content clearfix">
             <dl>
                 <dt class="process-img" id="goodsBetter">
 
@@ -23,7 +23,7 @@
                 <dt class="process-img" id="goodsInvest">
 
                 </dt>
-                <dd>投资一定金额</dd>
+                <dd class="long-font">投资一定金额</dd>
             </dl>
             <span class="arrow-right"></span>
             <dl>
@@ -37,7 +37,7 @@
                 <dt class="process-img" id="goodsInterest">
 
                 </dt>
-                <dd>到期还本付息</dd>
+                <dd class="long-font">到期还本付息</dd>
             </dl>
         </div>
 

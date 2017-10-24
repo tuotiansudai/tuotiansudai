@@ -1,14 +1,13 @@
+html {
+  font-size: 100px;
+}
 body {
+  font-size: 12px;
    background: #fff;
 }
 .main-frame {
   width: 100%;
   margin: 0 auto;
-}
-.banner-slide {
-  height: 350px;
-  width: 100%;
-  background: url("../images/2017/purchas_zero/banner.png") no-repeat center top;
 }
 strong,h1,h2,h3,h4 {
   font-weight: normal;
@@ -21,7 +20,10 @@ p {
     width: 1000px;
   }
 }
-.shopping-zero-frame {
+.banner-slide {
+  height: 350px;
+  width: 100%;
+  background: url("../images/2017/purchas_zero/banner.png") no-repeat center top;
 }
 
 //列表页样式
@@ -74,7 +76,6 @@ p {
 }
 .goods-select {
   margin-top: 50px;
-  margin-bottom: 50px;
   .goods-title {
     height: 77px;
     background: url("../images/2017/purchas_zero/goods_select.png") no-repeat center top;
@@ -109,6 +110,7 @@ p {
             font-size: 18px;
             color: #fff;
             line-height: 22px;
+            font-weight: bold;
           }
           .goods-features {
             font-size: 16px;
@@ -244,6 +246,241 @@ p {
     margin-bottom: 40px;
     img {
       width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 750px){
+  .page-width {
+    width: 7.05rem;
+    &.page680 {
+      width: 6.8rem;
+    }
+  }
+  //列表页样式
+  .banner-slide {
+    height: 3.5rem;
+    width: 100%;
+    background: url("../images/2017/purchas_zero/banner_wap.png") no-repeat center top;
+    background-size: 100%;
+  }
+  .activity-process {
+    dl.title {
+      dt {
+        width: 7rem;
+        height: 0.86rem;
+        margin: 0 auto;
+        background: url("../images/2017/purchas_zero/activity_title_wap.png") no-repeat center center;
+        background-size: 100%;
+      }
+      dd {
+        margin-top: 0.28rem;
+        font-size: 0.3rem;
+        line-height: 0.58rem;
+        padding-left: 0.16rem;
+        padding-right: 0.16rem;
+        strong {
+          display: block;
+        }
+      }
+    }
+    .process-content {
+      margin-top: 0.2rem;
+      dl {
+        position: relative;
+        dt {
+          width: 1.14rem;
+          height: 1.14rem;
+          line-height: 1.14rem;
+        }
+        dd {
+          width: 1.14rem;
+          font-size: 0.24rem;
+          line-height: 0.5rem;
+          position: absolute;
+          bottom: -0.5rem;
+          left: 0;
+          &.long-font {
+            width: 1.6rem;
+            left: 50%;
+            transform: translatex(-50%);
+          }
+        }
+      }
+      .arrow-right {
+        width: 0.58rem;
+        height: 0.2rem;
+        margin:  0 0.06rem;
+        margin-top: 0.47rem;
+        background-size: contain;
+      }
+    }
+  }
+  .goods-select-wrap {
+    width: 100%;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    overflow: hidden;
+}
+  .goods-select {
+    margin-top: 0.5rem;
+    .goods-title {
+      height: 0.86rem;
+      background: url("../images/2017/purchas_zero/goods_select_wap.png") no-repeat center top;
+    }
+    .goods-list {
+      background: url("../images/2017/purchas_zero/goods_list_bg_wap.png") center top no-repeat,url("../images/2017/purchas_zero/goods_list_bg_wap.png") center bottom no-repeat;
+      background-size: 100%;
+      ul {
+        margin-left: 0;
+        li {
+          width: 6.72rem;
+          height: 3.52rem;
+          float: none;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 0.4rem;
+          padding:  0.14rem;
+          .img {
+            width: 3.22rem;
+            height: 3.22rem;
+            line-height: 3.22rem;
+            img {
+              width: 2.23rem;
+            }
+          }
+          .fr {
+            width: 2.93rem;
+            .goods-name {
+              font-size: 0.26rem;
+              line-height: 0.3rem;
+            }
+            .goods-features {
+              font-size: 0.22rem;
+              line-height: 0.6rem;
+              margin-top: 0.05rem;
+            }
+            .goods-price {
+              font-size: 0.22rem;
+            }
+            .goods-income {
+              font-size: 0.25rem;
+            }
+            .invest-btn {
+              display: block;
+              width: 2.8rem;
+              height: 0.62rem;
+              line-height: 0.62rem;
+              margin-top: 0.3rem;
+              font-size: 0.26rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  .kindly-tips {
+    margin-top:0.3rem;
+    margin-bottom: 0.3rem;
+    .tips-title {
+      margin-bottom: 0.5rem;
+      height: 0.86rem;
+      background: url("../images/2017/purchas_zero/kindly_tips_wap.png") no-repeat center center;
+      background-size: 100%;
+    }
+    .tips-content {
+      background: #eaefff;
+      padding: 0.3rem;
+      dl {
+        dd {
+          font-size: 0.26rem;
+          line-height: 0.5rem;
+        }
+      }
+    }
+  }
+
+  //详情页样式
+  .product-intro-wrap {
+    padding: 0;
+    box-sizing: border-box;
+    .preview-wrap {
+      float: none;
+      width: 6.8rem;
+      height: 6.8rem;
+      line-height: 6.8rem;
+      border:none;
+      border-bottom: 1px solid #dcdcdc;
+      img {
+        height: 3.9rem;
+      }
+    }
+    .itemInfo-wrap {
+      float: none;
+      width: 6.8rem;
+      margin-right: 0;
+      .item-name {
+        font-size: 0.36rem;
+        line-height: 1;
+      }
+      .info-price {
+        font-size: 0.24rem;
+        margin-top: 0.3rem;
+        margin-bottom: 0.4rem;
+        strong {
+          font-size: 0.38rem;
+        }
+      }
+      ul {
+        padding: 25px;
+        background: #fafafa;
+        li {
+          background: url("../images/2017/purchas_zero/circle_bg.png") no-repeat left center;
+          font-size: 16px;
+          color: #999;
+          text-indent:15px;
+          span {
+            color: #333;
+          }
+        }
+      }
+      .invest-btn {
+        display: block;
+        width: 180px;
+        height: 44px;
+        background: #e95a58;
+        color: #fff;
+        font-size: 16px;
+        text-align: center;
+        line-height: 44px;
+        margin-top: 40px;
+      }
+    }
+  }
+  .shopping-process {
+    height: 273px;
+    margin-top: 20px;
+    background: #fff url("../images/2017/purchas_zero/shopping_process.png") no-repeat center top;
+    background-size: 100%;
+
+  }
+  .product-detail {
+    background: #fff;
+    .detail-product {
+      font-size: 22px;
+      color: #333;
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+    .product-imgs {
+      width: 750px;
+      height: 500px;
+      background: red;
+      margin: 0 auto;
+      margin-bottom: 40px;
+      img {
+        width: 100%;
+      }
     }
   }
 }
