@@ -5,7 +5,7 @@
 <div class="banner-slide" id="bannerSlide">
 
 </div>
-<div id="purchas_zero">
+<div id="purchas_zero" class="shopping-zero-frame">
     <div class="activity-process clearfix page-width">
         <dl class="title">
             <dt></dt>
