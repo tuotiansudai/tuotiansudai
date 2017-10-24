@@ -17,9 +17,7 @@ import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -178,7 +176,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         long maxBenefit = 0;
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel, new Date());
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
@@ -243,7 +241,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             userCoupon.setInvestId(investId);
             userCoupon.setUsedTime(new Date());
             userCoupon.setStatus(InvestStatus.SUCCESS);
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(investModel.getAmount(), loanModel, couponModel);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(investModel.getAmount(), loanModel, couponModel, new Date());
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, investModel.getAmount(), investModel.getInvestFeeRate());
             userCoupon.setExpectedInterest(expectedInterest);
             userCoupon.setExpectedFee(expectedFee);

@@ -16,12 +16,12 @@ public class UserMessageViewDto extends BaseResponseDataDto {
     public UserMessageViewDto() {
     }
 
-    public UserMessageViewDto(long userMessageId, String title, String content, Date createdTime, AppUrl appUrl) {
+    public UserMessageViewDto(long userMessageId, String title, String content, Date createdTime, String appUrl) {
         this.userMessageId = userMessageId;
         this.title = title;
         this.content = content;
         this.createdTime = createdTime;
-        this.appUrl = appUrl == null ? null : appUrl.getPath();
+        this.appUrl = appUrl;
     }
 
     public long getUserMessageId() {

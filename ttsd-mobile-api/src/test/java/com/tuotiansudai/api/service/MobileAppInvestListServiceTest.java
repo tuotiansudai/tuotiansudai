@@ -14,7 +14,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
@@ -23,7 +22,6 @@ import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -187,7 +185,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investMapper.findCountByLoginNameExceptTransfer(anyString())).thenReturn((long) INVEST_COUNT);
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
-        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(INTEREST);
+        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong(), any(Date.class))).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
         when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);

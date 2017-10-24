@@ -49,6 +49,6 @@ public class LoanPeriodCalculator {
         if (startTime == null || endTime == null || startTime.after(endTime)) {
             return 0;
         }
-        return Days.daysBetween(new DateTime(startTime).withTimeAtStartOfDay(), new DateTime(endTime)).getDays() + 1;
+        return Days.daysBetween(new DateTime(startTime).withTimeAtStartOfDay(), new DateTime(endTime).withTimeAtStartOfDay()).getDays() + 1;
     }
 }
