@@ -56,12 +56,12 @@ public class CheckUserBalanceScheduler {
     private static final int RETRY_TIMES = 6;
 
 //    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 5 17 * * *", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 45 17 * * *", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("[checkUserBalance:] start .");
-        if (Environment.PRODUCTION != environment) {
-            return;
-        }
+//        if (Environment.PRODUCTION != environment) {
+//            return;
+//        }
         try {
 
             List<String> mismatchUserList = Lists.newArrayList();
