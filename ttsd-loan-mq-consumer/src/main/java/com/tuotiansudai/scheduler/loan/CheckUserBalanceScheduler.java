@@ -55,8 +55,8 @@ public class CheckUserBalanceScheduler {
 
     private static final int RETRY_TIMES = 6;
 
-//    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 45 17 * * *", zone = "Asia/Shanghai")
+    //    @Scheduled(cron = "0 30 1 * * SUN,SAT", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 35 19 * * *", zone = "Asia/Shanghai")
     public void checkUserBalance() {
         logger.info("[checkUserBalance:] start .");
 //        if (Environment.PRODUCTION != environment) {
@@ -73,8 +73,8 @@ public class CheckUserBalanceScheduler {
             int accountModelCount = accountModelList.size();
             logger.info("[checkUserBalance:] cycle start lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
             int count = 0;
-            while (count < accountModelCount) {
-                AccountModel account = accountModelList.get(count);
+            while (count++ < accountModelCount) {
+                AccountModel account = accountModelList.get(count - 1);
                 logger.info("[checkUserBalance:]run to id:{} ", String.valueOf(account.getId()));
 
                 // 如果连接umpay失败，共尝试3次
@@ -98,12 +98,11 @@ public class CheckUserBalanceScheduler {
                 if (balance != account.getBalance()) {
                     mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
                 }
-                if (count == BATCH_SIZE - 1) {
+                if (count == BATCH_SIZE) {
                     String lastRecordRegisterTime = DateConvertUtil.format(account.getRegisterTime(), "yyyy-MM-dd HH:mm:ss");
                     logger.info("[checkUserBalance:] last record register time-{},id-{}", lastRecordRegisterTime, String.valueOf(account.getId()));
                     redisWrapperClient.setex(LAST_CHECK_USER_BALANCE_TIME, LEFT_SECOND, lastRecordRegisterTime);
                 }
-                count++;
             }
             logger.info("[checkUserBalance:] cycle end lastCheckUserBalanceTime-{},size-{}", lastCheckUserBalanceTime, accountModelList.size());
 
