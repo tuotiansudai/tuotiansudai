@@ -18,7 +18,7 @@ strong {
 .layui-layer-content {
   font-size: 12px!important;
   @media screen and (max-width:750px){
-    font-size: 0.12rem!important;
+    font-size: 0.24rem!important;
     padding: 0.12rem 0.25rem!important;
   }
 }
@@ -578,7 +578,7 @@ strong {
             }
           }
           .page-number {
-            width: 1rem;
+            width: 1.2rem;
             height:0.2rem;
             margin-top: 0.1rem;
             i {
@@ -590,6 +590,8 @@ strong {
               height: 0.2rem;
               line-height: 0.2rem;
               font-size: 0.18rem;
+              margin-left: 0.1rem;
+              margin-right: 0.2rem;
             }
           }
           .record-list {

@@ -60,11 +60,7 @@ function drawTimes(){
         $leftDrawCount.text(data);
     });
 }
-//提示信息水平居中
 
-layer.msg('通过判断是否登录显示隐藏相应的按钮',{
-    time:4000000
-})
 //通过判断是否登录显示隐藏相应的按钮
 $.when(commonFun.isUserLogin())
     .done(function () {
