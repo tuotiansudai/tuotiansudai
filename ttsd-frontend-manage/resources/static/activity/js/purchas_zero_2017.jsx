@@ -23,5 +23,10 @@ $goodsInterest.append(purchasImg4);
 let imgUrl = require('../images/2017/purchas_zero/video.png');
 let conImg = $('<img src = "'+imgUrl+'">');
 $('.img').append(conImg);
+//商品详情页图片
+let articleUrl = require('../images/2017/purchas_zero/phone.png');
+let imgDom = $('<img src = "'+articleUrl+'">');
+$('#previewImg').append(imgDom);
+
 
 

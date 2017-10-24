@@ -5,8 +5,7 @@
 <div id="purchas_zero_detail" class="shopping-zero-frame">
    <div class="product-intro-wrap clearfix page-width">
         <#--<div class="product-intro">-->
-            <div class="preview-wrap">
-                <img src="" alt="">
+            <div class="preview-wrap" id="previewImg">
             </div>
         <#--</div>-->
        <div class="itemInfo-wrap">
@@ -22,11 +21,14 @@
            <a href="javascript:;" class="invest-btn">立即白拿</a>
        </div>
    </div>
-    <div class="shopping-process">
+    <div class="shopping-process page-width">
         <h2></h2>
     </div>
-    <div class="product-detail">
-        <img src="" alt="">
+    <div class="product-detail page-width">
+        <h2 class="detail-product">商品介绍</h2>
+        <div class="product-imgs">
+dfdsfdsf
+        </div>
     </div>
     <#include "../../module/login-tip.ftl" />
 </div>

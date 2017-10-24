@@ -43,121 +43,114 @@
 
     </div>
     <div class="goods-select-wrap">
-        <div class="goods-select page-width">
+        <div class="goods-select">
             <div class="goods-title"></div>
             <div class="goods-list">
-                <ul class="clearfix">
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img fl"></div>
-                        <div class="fr">
-                            <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
-                            <div class="goods-features">温润你的生活</div>
-                            <div class="goods-price"><del>市场价：119元</del></div>
-                            <div class="goods-income">额外收益：约42元</div>
-                            <a href="javascript:;"class="invest-btn">投资1600元可得</a>
-                        </div>
-                    </li>
-                </ul>
+                <div class="page-width">
+                    <ul class="clearfix">
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="/activity/zero-shopping/article"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="/activity/zero-shopping/article"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="/activity/zero-shopping/article"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="/activity/zero-shopping/article"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="/activity/zero-shopping/article"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="javascript:;"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="javascript:;"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="javascript:;"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="javascript:;"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img fl"></div>
+                            <div class="fr">
+                                <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
+                                <div class="goods-features">温润你的生活</div>
+                                <div class="goods-price"><del>市场价：119元</del></div>
+                                <div class="goods-income">额外收益：约42元</div>
+                                <a href="javascript:;"class="invest-btn">投资1600元可得</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
