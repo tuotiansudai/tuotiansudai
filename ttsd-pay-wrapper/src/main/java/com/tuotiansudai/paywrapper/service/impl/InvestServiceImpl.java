@@ -769,7 +769,7 @@ public class InvestServiceImpl implements InvestService {
             String hInvestEvenKey = MessageFormat.format("{0}:{1}", investModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
             long everyDayInvestEvenCount = redisWrapperClient.exists(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY) ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey)) : 0;
             if (investSeq % 2 == 0 && everyDayInvestEvenCount <= 10) {
-                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey, String.valueOf(count+1));
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey, String.valueOf(everyDayInvestEvenCount+1));
                 redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "0", SIX_MONTH_SECOND);
                 activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getTitleTemplate();
                 activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getContentTemplate(), loanModel.getName());
