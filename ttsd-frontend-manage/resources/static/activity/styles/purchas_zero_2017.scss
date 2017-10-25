@@ -54,6 +54,9 @@ p {
         background: #eaefff;
         line-height: 160px;
         text-align: center;
+        img {
+          width: 112px;
+        }
       }
       dd {
         font-size: 20px;
@@ -94,12 +97,36 @@ p {
         background: #456ef4;
         padding:  10px;
         box-sizing: border-box;
+        position: relative;
+        .sold {
+          position: absolute;
+          left: 0;
+          top: 0;
+          margin: auto;
+          width: 480px;
+          height: 250px;
+          background: #000 url("../images/2017/purchas_zero/sold.png") no-repeat center center;
+          opacity: 0.2;
+          z-index: 100;
+        }
         .img {
           width: 230px;
           height: 230px;
           background: #fff;
           text-align: center;
           line-height: 230px;
+          position: relative;
+          .limitation {
+            width: 60px;
+            height: 38px;
+            line-height: 38px;
+            font-size: 20px;
+            color: #fff;
+            position: absolute;
+            right: -8px;
+            top: 8px;
+            background: #fd9739;
+          }
           img {
             width: 160px;
           }
@@ -227,7 +254,6 @@ p {
   margin-top: 20px;
   background: #fff url("../images/2017/purchas_zero/shopping_process.png") no-repeat center top;
   background-size: 100%;
-
 }
 .product-detail {
   background: #fff;
@@ -240,7 +266,6 @@ p {
   }
   .product-imgs {
     width: 750px;
-    height: 500px;
     background: red;
     margin: 0 auto;
     margin-bottom: 40px;
@@ -249,7 +274,110 @@ p {
     }
   }
 }
+/*弹层样式开始*/
+.layui-layer {
+  border-radius: 10px!important;
+  width: 385px!important;
+  height: 290px!important;
+}
+.layui-layer-close2 {
+  width: 16px!important;
+  height: 16px!important;
+  right: -7px!important;
+  top: -9px!important;
+  background: #fff url("../images/2017/purchas_zero/colse.png") no-repeat center top!important;
+  background-size: 100%!important;
+}
+.layui-layer-content {
+  height: auto!important;
+}
+.layui-layer-btn {
+  padding: 0!important;
+  margin-top: 30px!important;
+  .layui-layer-btn0 {
+    display: block!important;
+    border-radius: 23px!important;
+    width: 155px!important;
+    height: 46px!important;
+    text-align: center;
+    line-height: 46px!important;
+    border-radius: 23px!important;
+    font-size: 18px!important;
+    background: #d74e45!important;
+    color: #fff!important;
+    margin: 0 auto!important;
+    padding: 0!important;
+    border: none;
+  }
+}
+
+.sold-tip {
+  width: 385px;
+  background: #fff;
+  text-align: center;
+  .icon-sold {
+    width: 113px;
+    height: 85px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background: #fff url("../images/2017/purchas_zero/icon_sold.png") no-repeat center top;
+    background-size: 100%;
+  }
+  p {
+    font-size: 18px;
+    color: #333;
+    line-height: 34px;
+  }
+}
+/*弹层样式结束*/
 @media screen and (max-width: 750px){
+  /*弹层样式开始*/
+  .layui-layer {
+    border-radius: 0.1rem!important;
+    width: 6rem!important;
+    height: 4.5rem!important;
+  }
+  .layui-layer-close2 {
+    width: 0.34rem!important;
+    height: 0.33rem!important;
+    right: 0.08rem!important;
+    top: 0.08rem!important;
+    background: url("../images/2017/purchas_zero/close_wap.png") no-repeat center top!important;
+    background-size: 100%!important;
+  }
+  .layui-layer-content {
+    height: auto!important;
+  }
+  .layui-layer-btn {
+    padding: 0!important;
+    margin-top: 0.4rem!important;
+    .layui-layer-btn0 {
+      display: block!important;
+      border-radius: 0.35rem!important;
+      width: 2.4rem!important;
+      height: 0.7rem!important;
+      line-height: 0.7rem!important;
+      font-size: 0.26rem!important;
+    }
+  }
+
+  .sold-tip {
+    width: 6rem;
+    .icon-sold {
+      width: 1.79rem;
+      height: 1.28rem;
+      margin-top: 0.3rem;
+      margin-bottom: 0.3rem;
+      //background: #fff url("../images/2017/purchas_zero/icon_sold.png") no-repeat center top;
+      background-size: contain;
+    }
+    p {
+      font-size: 0.25rem;
+      line-height: 0.5rem;
+    }
+  }
+  /*弹层样式结束*/
   .page-width {
     width: 7.05rem;
     &.page680 {
@@ -291,6 +419,9 @@ p {
           width: 1.14rem;
           height: 1.14rem;
           line-height: 1.14rem;
+          img {
+            width: 0.8rem;
+          }
         }
         dd {
           width: 1.14rem;
@@ -340,6 +471,12 @@ p {
           margin-right: auto;
           margin-top: 0.4rem;
           padding:  0.14rem;
+          position: relative;
+          .sold {
+            width: 6.72rem;
+            height: 3.52rem;
+            background: #000 url("../images/2017/purchas_zero/sold.png") no-repeat center center;
+          }
           .img {
             width: 3.22rem;
             height: 3.22rem;
@@ -406,10 +543,11 @@ p {
     .preview-wrap {
       float: none;
       width: 6.8rem;
-      height: 6.8rem;
-      line-height: 6.8rem;
+      height: 4.6rem;
+      line-height: 4.6rem;
       border:none;
       border-bottom: 1px solid #dcdcdc;
+      margin-top: 0.35rem;
       img {
         height: 3.9rem;
       }
@@ -418,66 +556,52 @@ p {
       float: none;
       width: 6.8rem;
       margin-right: 0;
+      margin-top: 0.4rem;
       .item-name {
         font-size: 0.36rem;
         line-height: 1;
       }
       .info-price {
         font-size: 0.24rem;
-        margin-top: 0.3rem;
+        margin-top: 0;
         margin-bottom: 0.4rem;
         strong {
           font-size: 0.38rem;
         }
       }
       ul {
-        padding: 25px;
-        background: #fafafa;
+        padding: 0.3rem 0.15rem;
         li {
-          background: url("../images/2017/purchas_zero/circle_bg.png") no-repeat left center;
-          font-size: 16px;
-          color: #999;
-          text-indent:15px;
-          span {
-            color: #333;
-          }
+          font-size: 0.24rem;
+          text-indent:0.15rem;
         }
       }
       .invest-btn {
         display: block;
-        width: 180px;
-        height: 44px;
-        background: #e95a58;
-        color: #fff;
-        font-size: 16px;
-        text-align: center;
-        line-height: 44px;
-        margin-top: 40px;
+        width: 3rem;
+        height: 0.68rem;
+        font-size: 0.28rem;
+        line-height: 0.68rem;
+        margin-top: 0.4rem;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
   }
   .shopping-process {
-    height: 273px;
-    margin-top: 20px;
-    background: #fff url("../images/2017/purchas_zero/shopping_process.png") no-repeat center top;
-    background-size: 100%;
-
+    height: 5.55rem;
+    margin-top: 0.4rem;
+    background: #fff url("../images/2017/purchas_zero/purchas_process_wap.png") no-repeat center top;
   }
   .product-detail {
-    background: #fff;
     .detail-product {
-      font-size: 22px;
-      color: #333;
-      text-align: center;
-      margin-top: 40px;
-      margin-bottom: 40px;
+      font-size:0.3rem;
+      margin-top: 0.3rem;
+      margin-bottom: 0.4rem;
     }
     .product-imgs {
-      width: 750px;
-      height: 500px;
-      background: red;
-      margin: 0 auto;
-      margin-bottom: 40px;
+      width: 7.5rem;
+      margin-bottom: 6rem;
       img {
         width: 100%;
       }

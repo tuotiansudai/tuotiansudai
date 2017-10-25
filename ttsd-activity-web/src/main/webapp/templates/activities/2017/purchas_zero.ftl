@@ -119,6 +119,7 @@
                             </div>
                         </li>
                         <li>
+                            <span class="sold"></span>
                             <div class="img fl"></div>
                             <div class="fr">
                                 <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
@@ -129,7 +130,9 @@
                             </div>
                         </li>
                         <li>
-                            <div class="img fl"></div>
+                            <div class="img fl">
+                                <div class="limitation">限量</div>
+                            </div>
                             <div class="fr">
                                 <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
                                 <div class="goods-features">温润你的生活</div>
@@ -139,7 +142,9 @@
                             </div>
                         </li>
                         <li>
-                            <div class="img fl"></div>
+                            <div class="img fl">
+                                <div class="limitation">限量</div>
+                            </div>
                             <div class="fr">
                                 <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
                                 <div class="goods-features">温润你的生活</div>
