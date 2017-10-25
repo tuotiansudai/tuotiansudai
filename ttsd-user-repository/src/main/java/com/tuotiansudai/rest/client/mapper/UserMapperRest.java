@@ -146,8 +146,8 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public List<UserModel> findEmptyProvinceUsers() {
-        UserRestPagingResponse<UserModel> searchResult = userRestClient.findEmptyProvinceUsers(100);
-        return searchResult.getItems();
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.findEmptyProvinceUsers(100);
+        return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
     }
 
     @Override

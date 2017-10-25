@@ -485,9 +485,6 @@ require.ensure([],function() {
     }, {
         strategy: 'checkPassword',
         errorMsg: '密码为6位至20位，不能全是数字'
-    },{
-        strategy: 'isNotExistPassword',
-        errorMsg: '原密码不正确'
     }],true);
 
     passValidator.add(changePasswordForm.newPassword, [{

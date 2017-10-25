@@ -72,5 +72,5 @@ public interface UserRestClient {
 
     @GET
     @Path("/users/province-empty")
-    UserRestPagingResponse<UserModel> findEmptyProvinceUsers(@QueryParam("limit") int limit);
+    UserRestPagingResponse<UserInfo> findEmptyProvinceUsers(@QueryParam("limit") int limit);
 }
