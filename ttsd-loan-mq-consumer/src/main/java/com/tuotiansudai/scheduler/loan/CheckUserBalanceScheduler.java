@@ -138,7 +138,7 @@ public class CheckUserBalanceScheduler {
                 .put("startTime", map.get("startTime").toString())
                 .put("endTime", map.get("endTime").toString())
                 .put("env", environment.name())
-                .put("totalUserCount", String.valueOf(map.get("count")))
+                .put("totalUserCount", String.valueOf(map.get("totalUserCount")))
                 .put("mismatchUserCount", String.valueOf(mismatchUserList.size()))
                 .build());
         String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
