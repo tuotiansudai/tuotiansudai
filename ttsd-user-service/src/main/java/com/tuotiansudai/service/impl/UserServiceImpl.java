@@ -95,7 +95,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getRealName(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        return userModel == null ? loginNameOrMobile : userModel.getUserName();
+        if (userModel == null || Strings.isNullOrEmpty(userModel.getUserName())) {
+            return loginNameOrMobile;
+        }
+        return userModel.getUserName();
     }
 
     @Override

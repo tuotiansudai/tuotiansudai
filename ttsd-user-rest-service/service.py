@@ -275,7 +275,15 @@ class UserService(object):
                     'items': __generate_result(pagination.items)
                 }
             else:
-                return {'items': __generate_result(_qs.all())}
+                _rows = _qs.all()
+                return {
+                    'total_count': len(_rows),
+                    'page': 1,
+                    'page_size': len(_rows),
+                    'has_prev': False,
+                    'has_next': False,
+                    'items': __generate_result(_rows)
+                }
 
         def __build_order_by_criterion(django_like_order_by):
             if django_like_order_by.startswith('-'):
