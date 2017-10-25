@@ -9,12 +9,14 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,12 @@ public class ActivityCountDrawLotteryService {
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY = "activity:double:eleven:user:invest:count";
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -110,6 +118,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.endTime}\")}")
     private Date activityIphoneXEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
+    private Date activityDoubleElevenStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.endTime}\")}")
+    private Date activityDoubleElevenEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -170,6 +184,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case IPHONEX_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+            case DOUBLE_ELEVEN_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.DOUBLE_ELEVEN_INVEST));
         }
         return lotteryTime;
     }
@@ -275,6 +291,9 @@ public class ActivityCountDrawLotteryService {
                     time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
                     break;
+                case DOUBLE_ELEVEN_INVEST:
+                    time = getDoubleElevenDrawTimes(userModel);
+                    break;
             }
         }
         return time;
@@ -320,8 +339,36 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(acticitySchoolSeasonStartTime, acticityExerciseWorkEndTime);
             case IPHONEX_ACTIVITY:
                 return Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime);
+            case DOUBLE_ELEVEN_ACTIVITY:
+                return Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime);
         }
         return null;
+    }
+
+    private int getDoubleElevenDrawTimes(UserModel userModel) {
+        int investDrawTimes = 0;
+        List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
+
+        redisWrapperClient.del(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY);
+        int count = 0;
+        for (InvestModel investModel : investModels) {
+            String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
+            String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+            boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
+            boolean booleanEvenOfDay = redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey) != null;
+            long evenCountOfDay = booleanEvenOfDay ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey)) : 0;
+            if (even && evenCountOfDay < 10) {
+                if(booleanEvenOfDay){
+                    count++;
+                }else{
+                    count = 1;
+                }
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, String.valueOf(count));
+                investDrawTimes++;
+            }
+        }
+
+        return investDrawTimes;
     }
 
 }

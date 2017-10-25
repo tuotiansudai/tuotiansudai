@@ -5,16 +5,22 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
+import com.tuotiansudai.message.repository.model.MessageCategory;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +46,24 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     @Override
     public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
@@ -120,7 +144,46 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         }
         userMessageServices.readMessage(userMessageId);
         MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
-        return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl());
+
+        return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), getPath(userMessageModel.getBusinessId(), messageModel));
+    }
+
+    public String getPath(Long businessId, MessageModel messageModel){
+        String path = messageModel.getAppUrl() == null ? null : messageModel.getAppUrl().getPath();
+
+        if (messageModel.getType().equals(MessageType.EVENT) && businessId != null && !Strings.isNullOrEmpty(path)) {
+            long investId = 0;
+            switch (messageModel.getEventType()) {
+                case INVEST_SUCCESS:
+                case LOAN_OUT_SUCCESS:
+                    investId = businessId;
+                    path = investMapper.findById(investId) == null ? AppUrl.MY_INVEST_REPAYING.getPath() : path;
+                    break;
+                case TRANSFER_SUCCESS:
+                case TRANSFER_FAIL:
+                    investId = transferApplicationMapper.findById(businessId).getTransferInvestId();
+                    break;
+                case REPAY_SUCCESS:
+                case ADVANCED_REPAY:
+                    investId = investRepayMapper.findById(businessId).getInvestId();
+                    break;
+            }
+            InvestModel investModel = investMapper.findById(investId);
+            LoanModel loanModel = investModel == null ? null : loanMapper.findById(investModel.getLoanId());
+            List<LoanRepayModel> loanRepayModels = loanModel==null? null: loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()).stream().filter(i->i.getStatus()== RepayStatus.REPAYING).collect(Collectors.toList());
+            boolean isTransfer = CollectionUtils.isEmpty(loanRepayModels) ? false : !loanRepayModels.get(0).getRepayDate().after(DateTime.now().plusDays(transferRuleMapper.find().getDaysLimit()+1).toDate());
+
+            List<TransferApplicationModel> transferApplicationModels = investModel == null ? null : transferApplicationMapper.findByTransferInvestId(investId, null);
+            TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(transferApplicationModels.size() - 1) : null;
+            path = investModel == null ? path : MessageFormat.format(path,
+                    investModel.getTransferInvestId() == null ? "0" : "1",
+                    loanModel.getStatus(),
+                    String.valueOf(investModel.getId()),
+                    transferApplicationModel == null ? "0" : String.valueOf(transferApplicationModel.getId()),
+                    isTransfer ? TransferStatus.NONTRANSFERABLE : transferApplicationModel == null ? investModel.getTransferStatus() : transferApplicationModel.getApplicationTime().before(DateTime.now().withTimeAtStartOfDay().toDate()) ?
+                            investModel.getTransferStatus(): transferApplicationModel.getStatus());
+        }
+        return messageModel.getMessageCategory().equals(MessageCategory.NOTIFY) ? null : path;
     }
 
     @Override
