@@ -1,8 +1,7 @@
 package com.tuotiansudai.transfer.service.impl;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -218,7 +217,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         //Title:您提交的债权转让到期取消，请查看！
         //Content:尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功。如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.TRANSFER_FAIL,
                 Lists.newArrayList(transferApplicationModel.getLoginName()),
                 MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
                 MessageEventType.TRANSFER_FAIL.getContentTemplate(),

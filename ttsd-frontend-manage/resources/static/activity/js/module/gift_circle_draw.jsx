@@ -34,15 +34,15 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
         }, function (data) {
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
-                UlList.push('<li>恭喜' + data[i].mobile + '抽中了' + data[i].prizeValue + '</li>');
+                UlList.push('<li>恭喜 ' + data[i].mobile + ' 抽中了 ' + data[i].prizeValue + ' </li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-            callback && callback();
+            callback && callback(data);
         });
     };
 
     //我的奖品
-    this.MyGift = function () {
+    this.MyGift = function (callback) {
         let self = this;
         commonFun.useAjax({
             url: this.userListURL,
@@ -51,9 +51,10 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
         }, function (data) {
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
-                UlList.push('<li>' + data[i].prizeValue + '<time>' + data[i].lotteryTime + '</time></li>');
+                UlList.push('<li> ' + data[i].prizeValue + '<time> ' + data[i].lotteryTime + ' </time></li>');
             }
             self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
+            callback && callback(data);
         });
     }
 }
@@ -72,7 +73,7 @@ giftCircleDraw.prototype.rotateFn = function (angles, tipMessage,callbackFn) {
         duration: 8000,
         callback: function () {
             thisFun.GiftRecord();
-            this.userListURL&&thisFun.MyGift();
+            thisFun.userListURL&&thisFun.MyGift();
             thisFun.bRotate = !thisFun.bRotate;
             //thisFun.tipWindowPop(tipMessage);
             if(!callbackFn){
@@ -132,6 +133,7 @@ giftCircleDraw.prototype.scrollList = function (domName, length) {
         });
     }
 };
+//向上连续不断滚动不停顿
 giftCircleDraw.prototype.scrollUp = function (domName,time) {
      var $self = domName,
      time = time||200;

@@ -322,4 +322,12 @@ public interface InvestMapper {
 
     List<IphoneXActivityView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
                                                                  @Param(value = "endTime") Date endTime);
+
+    List<InvestModel> findSuccessDoubleElevenActivityByTime(@Param(value = "loanId") Long loanId,
+                                                            @Param(value="startTime") Date startTime,
+                                                            @Param(value="endTime") Date endTime);
+
+    long sumAmountActivityDoubleElevenByLoginName(@Param(value = "loginName") String loginName,
+                                                  @Param(value = "startTime") Date startTime,
+                                                  @Param(value="endTime") Date endTime);
 }
