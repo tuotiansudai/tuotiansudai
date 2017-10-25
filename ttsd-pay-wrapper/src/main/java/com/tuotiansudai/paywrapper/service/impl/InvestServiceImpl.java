@@ -42,6 +42,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -51,6 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -106,6 +108,13 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMapper userMapper;
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
+    public final static String ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY = "activity:double:eleven:loanId:{0}:count";
+    public final static String ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY = "activity:double:eleven:every:day:even:count";
+    private final static int SIX_MONTH_SECOND = 60 * 60 * 24 * 30 * 6;
+
     @Value("${common.environment}")
     private Environment environment;
 
@@ -147,6 +156,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.endTime}\")}")
     private Date activitySingleEndTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
+    private Date activityDoubleElevenStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.endTime}\")}")
+    private Date activityDoubleElevenEndTime;
 
     private final List<ExperienceReward> mothersRewards = Lists.newArrayList(
             new ExperienceReward(688800l, 1000000l, 5000000l),
@@ -637,6 +652,11 @@ public class InvestServiceImpl implements InvestService {
                 celebrationOnePenAssignExperience(investModel.getLoginName(), investModel.getAmount());
             }
 
+            //双十一活动发送站内信
+            if (DateTime.now().toDate().before(activityDoubleElevenEndTime) && DateTime.now().toDate().after(activityDoubleElevenStartTime)) {
+                this.sendUserMessageByDoubleElevenActivity(investModel, loanModel, loanDetailInfo);
+            }
+
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员
             fatalLog("[MQ] invest success, but send mq message fail", String.valueOf(investInfo.getInvestId()), investInfo.getAmount(), investInfo.getLoginName(), investModel.getLoanId(), e);
@@ -736,6 +756,46 @@ public class InvestServiceImpl implements InvestService {
                     null));
         }
 
+    }
+
+    private void sendUserMessageByDoubleElevenActivity(InvestModel investModel, LoanModel loanModel, LoanDetailInfo loanDetailInfo) {
+        if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanModel.getProductType().equals(ProductType._30) && (Strings.isNullOrEmpty(loanDetailInfo.getActivityDesc()) || !loanDetailInfo.getActivityDesc().equals("0元购"))) {
+            long investSeq = redisWrapperClient.incr(MessageFormat.format(ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY, loanModel.getId()));
+
+            String activityTitle;
+            String activityContent;
+            MessageEventType messageEventType;
+            String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), investModel.getLoginName());
+            String hInvestEvenKey = MessageFormat.format("{0}:{1}", investModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+            long everyDayInvestEvenCount = redisWrapperClient.exists(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY) ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey)) : 0;
+            if (investSeq % 2 == 0 && everyDayInvestEvenCount < 10) {
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey, String.valueOf(everyDayInvestEvenCount + 1));
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "0", SIX_MONTH_SECOND);
+                activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getTitleTemplate();
+                activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getContentTemplate(), loanModel.getName());
+                messageEventType = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD;
+
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(messageEventType,
+                        Lists.newArrayList(investModel.getLoginName()),
+                        activityTitle,
+                        activityContent,
+                        investModel.getId()
+                ));
+            }
+            if(investSeq % 2 == 1) {
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "1", SIX_MONTH_SECOND);
+                activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getTitleTemplate();
+                activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getContentTemplate(), loanModel.getName());
+                messageEventType = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN;
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(messageEventType,
+                        Lists.newArrayList(investModel.getLoginName()),
+                        activityTitle,
+                        activityContent,
+                        investModel.getId()
+                ));
+            }
+
+        }
     }
 
     class ExperienceReward {
