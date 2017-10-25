@@ -1,6 +1,3 @@
-html {
-  font-size: 100px;
-}
 body {
   font-size: 12px;
    background: #fff;
@@ -15,11 +12,12 @@ strong,h1,h2,h3,h4 {
 p {
   margin: 0;
 }
-@media screen and (max-width: 999px) and (min-width: 750px) {
+@media screen and (max-width: 999px) and (min-width: 769px) {
   .page-width {
     width: 1000px;
   }
 }
+
 .banner-slide {
   height: 350px;
   width: 100%;
@@ -331,7 +329,7 @@ p {
   }
 }
 /*弹层样式结束*/
-@media screen and (max-width: 750px){
+@media screen and (max-width: 768px){
   /*弹层样式开始*/
   .layui-layer {
     border-radius: 0.1rem!important;
@@ -455,8 +453,9 @@ p {
   .goods-select {
     margin-top: 0.5rem;
     .goods-title {
-      height: 0.86rem;
+      height: 0.96rem;
       background: url("../images/2017/purchas_zero/goods_select_wap.png") no-repeat center top;
+      background-size: 100%;
     }
     .goods-list {
       background: url("../images/2017/purchas_zero/goods_list_bg_wap.png") center top no-repeat,url("../images/2017/purchas_zero/goods_list_bg_wap.png") center bottom no-repeat;
@@ -546,7 +545,6 @@ p {
       height: 4.6rem;
       line-height: 4.6rem;
       border:none;
-      border-bottom: 1px solid #dcdcdc;
       margin-top: 0.35rem;
       img {
         height: 3.9rem;
