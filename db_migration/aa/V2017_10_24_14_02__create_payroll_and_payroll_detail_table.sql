@@ -3,7 +3,7 @@ CREATE TABLE `aa`.`payroll` (
   `title`         VARCHAR(50)     NOT NULL,
   `total_amount`  BIGINT UNSIGNED NOT NULL,
   `head_count`    BIGINT UNSIGNED NOT NULL,
-  `status`        VARCHAR(16)      NOT NULL,
+  `status`        VARCHAR(16)     NOT NULL DEFAULT 'PENDING',
   `remark`        VARCHAR(400),
   `grant_time`    DATETIME,
   `created_time`  DATETIME        NOT NULL,

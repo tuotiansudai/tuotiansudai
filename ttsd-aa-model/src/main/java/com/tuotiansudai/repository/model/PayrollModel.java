@@ -13,9 +13,7 @@ public class PayrollModel implements Serializable {
 
     private long headCount;
 
-    private String status;
-
-    private PayrollStatusType payrollStatusType;
+    private PayrollStatusType status;
 
     private String remark;
 
@@ -23,21 +21,20 @@ public class PayrollModel implements Serializable {
 
     private Date createdTime = new Date();
 
-    private Date updateTime;
+    private Date updatedTime;
 
     public PayrollModel() {
     }
 
-    public PayrollModel(String title, long totalAmount, long headCount, String status, PayrollStatusType payrollStatusType, String remark, Date grantTime, Date createdTime, Date updateTime) {
+    public PayrollModel(String title, long totalAmount, long headCount, PayrollStatusType status, String remark, Date grantTime, Date createdTime, Date updatedTime) {
         this.title = title;
         this.totalAmount = totalAmount;
         this.headCount = headCount;
         this.status = status;
-        this.payrollStatusType = payrollStatusType;
         this.remark = remark;
         this.grantTime = grantTime;
         this.createdTime = createdTime;
-        this.updateTime = updateTime;
+        this.updatedTime = updatedTime;
     }
 
     public long getId() {
@@ -72,20 +69,20 @@ public class PayrollModel implements Serializable {
         this.headCount = headCount;
     }
 
-    public String getStatus() {
+    public PayrollStatusType getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PayrollStatusType status) {
         this.status = status;
     }
 
-    public PayrollStatusType getPayrollStatusType() {
-        return payrollStatusType;
+    public Date getGrantTime() {
+        return grantTime;
     }
 
-    public void setPayrollStatusType(PayrollStatusType payrollStatusType) {
-        this.payrollStatusType = payrollStatusType;
+    public void setGrantTime(Date grantTime) {
+        this.grantTime = grantTime;
     }
 
     public String getRemark() {
@@ -104,11 +101,11 @@ public class PayrollModel implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(Date updateTime) {
+        this.updatedTime = updatedTime;
     }
 }
