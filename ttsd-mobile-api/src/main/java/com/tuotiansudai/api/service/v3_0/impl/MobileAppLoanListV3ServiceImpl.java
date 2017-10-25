@@ -234,7 +234,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 loanResponseDataDto.setExtraSource((loanDetailsModel != null && loanDetailsModel.getExtraSource() != null) ? ((loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : "") : "");
             }
 
-            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT);
+            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT, new Date());
             loanResponseDataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
             loanDtoList.add(loanResponseDataDto);
         }

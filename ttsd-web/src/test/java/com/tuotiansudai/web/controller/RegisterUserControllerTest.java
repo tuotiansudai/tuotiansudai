@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -177,7 +178,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(baseDto);
         when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(true);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -196,7 +197,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
 
         dataDto.setStatus(true);
         when(userService.mobileIsRegister(anyString())).thenReturn(false);
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(baseDto);
         this.mockMvc.perform(get("/register/user/13900000000/send-register-captcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -209,7 +210,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(baseDto);
         when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(false);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -226,7 +227,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(baseDto);
 
         this.mockMvc.perform(get("/register/user/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());

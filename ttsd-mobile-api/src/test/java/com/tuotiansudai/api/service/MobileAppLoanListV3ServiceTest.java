@@ -17,7 +17,6 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -223,7 +222,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertTrue(CollectionUtils.isNotEmpty(loanList));
         LoanResponseDataDto loanResponseDataDto = loanList.get(0);
 
-        long expectedInterest = investService.estimateInvestIncome(Long.parseLong(loanResponseDataDto.getLoanId()), loginName, 1000000);
+        long expectedInterest = investService.estimateInvestIncome(Long.parseLong(loanResponseDataDto.getLoanId()), loginName, 1000000, new Date());
         assertTrue(String.valueOf(expectedInterest).equals(loanResponseDataDto.getInterestPerTenThousands()));
     }
 

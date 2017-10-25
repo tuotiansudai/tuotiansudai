@@ -4,6 +4,7 @@ import com.tuotiansudai.enums.MessageEventType;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class EventMessage implements Serializable {
 
@@ -17,6 +18,8 @@ public class EventMessage implements Serializable {
 
     private Long businessId;
 
+    private Map<Long, String> businessIdLoginNames;
+
     public EventMessage() {
     }
 
@@ -26,6 +29,13 @@ public class EventMessage implements Serializable {
         this.title = title;
         this.content = content;
         this.businessId = businessId;
+    }
+
+    public EventMessage(MessageEventType eventType, String title, String content, Map<Long, String> businessIdLoginNames) {
+        this.eventType = eventType;
+        this.title = title;
+        this.content = content;
+        this.businessIdLoginNames = businessIdLoginNames;
     }
 
     public MessageEventType getEventType() {
@@ -66,5 +76,13 @@ public class EventMessage implements Serializable {
 
     public void setBusinessId(Long businessId) {
         this.businessId = businessId;
+    }
+
+    public Map<Long, String> getBusinessIdLoginNames() {
+        return businessIdLoginNames;
+    }
+
+    public void setBusinessIdLoginNames(Map<Long, String> businessIdLoginNames) {
+        this.businessIdLoginNames = businessIdLoginNames;
     }
 }

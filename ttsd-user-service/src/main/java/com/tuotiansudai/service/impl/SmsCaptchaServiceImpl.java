@@ -29,21 +29,21 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     private SmsWrapperClient smsWrapperClient;
 
     @Override
-    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String requestIP) {
+    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, boolean isVoice, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, SmsCaptchaType.NO_PASSWORD_INVEST);
-        return smsWrapperClient.sendNoPasswordInvestCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+        return smsWrapperClient.sendNoPasswordInvestCaptchaSms(new SmsCaptchaDto(mobile, captcha, isVoice, requestIP));
     }
 
     @Override
-    public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String requestIP) {
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, boolean isVoice, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, SmsCaptchaType.REGISTER_CAPTCHA);
-        return smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+        return smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto(mobile, captcha, isVoice, requestIP));
     }
 
     @Override
-    public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String requestIP) {
+    public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, boolean isVoice, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
-        return smsWrapperClient.sendRetrievePasswordCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+        return smsWrapperClient.sendRetrievePasswordCaptchaSms(new SmsCaptchaDto(mobile, captcha, isVoice, requestIP));
     }
 
     @Override

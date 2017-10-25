@@ -30,7 +30,18 @@ public class AmountTransferService {
 
     @Transactional
     public void amountTransferProcess(AmountTransferMessage message) throws AmountTransferException {
-        logger.info("start amount transfer process, message");
+        logger.info("start amount transfer linked messages process.");
+        do {
+            amountTransferProcessOne(message);
+            message = message.getNext();
+        } while (message != null);
+        logger.info("end amount transfer linked messages process");
+    }
+
+
+    private void amountTransferProcessOne(AmountTransferMessage message) throws AmountTransferException {
+        logger.info("amount transfer process one message. loginName: {}, orderId:{}, amount:{}, businessType:{}",
+                message.getLoginName(), message.getOrderId(), message.getAmount(), message.getBusinessType());
 
         TransferType transferType = message.getTransferType();
 
