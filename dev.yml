@@ -1,5 +1,7 @@
 sign-in:
   image: "leoshi/ttsd-signin-flask"
+  environment:
+    - "TZ=Asia/Shanghai"
   volumes:
     - ./ttsd-user-rest-service:/app
     - /var/log/tuotian/signin:/var/log/signin
