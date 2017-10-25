@@ -116,7 +116,7 @@ public class CheckUserBalanceScheduler {
             Map<String, Object> resultMap = Maps.newHashMap(ImmutableMap.<String, Object>builder()
                     .put("failList", failUserList)
                     .put("userList", mismatchUserList)
-                    .put("totalUserCount", count)
+                    .put("totalUserCount", count - 1)
                     .put("startTime", startTime)
                     .put("endTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
                     .build());
