@@ -24,7 +24,7 @@ public class ZeroShoppingActivityController {
 
     @RequestMapping(method = {RequestMethod.GET})
     public ModelAndView zeroShopping(){
-        ModelAndView modelAndView = new ModelAndView("/activities/2017/zero-shopping", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero", "responsive", true);
         modelAndView.addObject("prize", zeroShoppingActivityService.getAllPrize());
         return modelAndView;
     }

@@ -25,9 +25,19 @@ $goodsGive.append($giftsImg);
 $goodsInterest.append($investImg);
 
 //商品列表图片加载
-let imgUrl = require('../images/2017/purchas_zero/video.png');
-let conImg = $('<img src = "'+imgUrl+'">');
-$('.img').append(conImg);
+let $humidifier = $('#humidifier'),//加湿器
+    $barBox = $('#barBox'),//拉杆箱
+    $razor = $('#razor'),//剃须刀
+    $cosmetics = $('#cosmetics'),//化妆品
+    $phone = $('#phone'),//小米手机
+    $video = $('#video'),//夏普电视
+    $purifier = $('#purifier'),//飞利浦净化器
+    $camara = $('#camara'),//索尼相机
+    $macAir = $('#macAir'),//小米Air
+    $iphonex = $('#iphonex');//iphonex
+let barBoxUrl = require('../images/2017/purchas_zero/product/bar_box.png');
+let $barBoxImg = $('<img src = "'+barBoxUrl+'">');
+$('.img').append($barBoxImg);
 //商品详情页图片
 let articleUrl = require('../images/2017/purchas_zero/phone.png');
 let imgDom = $('<img src = "'+articleUrl+'">');
@@ -43,6 +53,8 @@ let $soldTipDOM = $('#soldTipDOM');
 //     // area: ['385px', '290px'],
 //     content: $soldTipDOM
 // });
+let sourceKind = globalFun.parseURL(location.href);
+console.log(sourceKind)
 
 
 
