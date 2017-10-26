@@ -29,11 +29,18 @@ public class ZeroShoppingActivityController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/article", method = {RequestMethod.GET})
+    public ModelAndView zeroShoppingDetail(ZeroShoppingPrize zeroShoppingPrize){
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero-article", "responsive", true);
+        modelAndView.addObject("prizeName", zeroShoppingPrize);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
     public ModelAndView activityLoanExists(){
         LoanModel loanModel = zeroShoppingActivityService.queryActivityLoan();
 
-        ModelAndView modelAndView = new ModelAndView("activities/2017/zero-shopping-detail");
+        ModelAndView modelAndView = new ModelAndView("activities/2017/purchas-zero-article");
 
         Boolean exists = false;
         if (loanModel != null){
