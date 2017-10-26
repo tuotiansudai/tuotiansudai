@@ -56,23 +56,19 @@
 
         <div class="form-group">
             <label>发放状态:</label>
-            <select class="selectpicker" name="sendStatus">
-                <option value="" >全部</option>
-            <#--<#list investStatusList as status>-->
-            <#--<option value="${status}" <#if investStatus?? && status==investStatus>selected</#if>>-->
-            <#--${status.description}-->
-            <#--</option>-->
-            <#--</#list>-->
+            <select class="selectpicker" name="payrollStatusType">
+                <option value="">全部</option>
+                <#list payrollStatusTypes as status>
+                    <option value="${status}"<#if payrollStatusType?? && payrollStatusType==status>selected</#if>>
+                    ${status.description}
+                    </option>
+                </#list>
             </select>
         </div>
 
-
-
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
 
-
     </form>
-    <button data-payroll-id="1" data-remark="qwe" class="btn btn-sm btn-primary btnRemark">备注</button>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -89,6 +85,37 @@
             </tr>
             </thead>
             <tbody>
+                <#list data.records as payroll>
+                <tr>
+                    <td>${payroll.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <td>${payroll.title!}</td>
+                    <td>${payroll.grantTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <td>${(payroll.totalAmount/100)?string('0.00')}</td>
+                    <td>${payroll.headCount!}</td>
+                    <td>
+                        <#list payrollStatusTypes as status>
+                            <#if payroll.status == status>
+                                ${status.description}
+                            </#if>
+                        </#list>
+                    </td>
+                    <td>${payroll.remark!}</td>
+                    <td>
+                        <#if payroll.status=='PENDING'>
+                            <a href="" class="btn btn-sm btn-primary">审核</a>
+                        <#elseif payroll.status=='REJECTED'>
+                            <a href="" class="btn btn-sm btn-primary">编辑</a>
+                        <#else>
+                            <a href="" class="btn btn-sm btn-primary">详情</a>
+                        </#if>
+                        <button data-payroll-id="${payroll.id}" data-remark="${payroll.remark!}" class="btn btn-sm btn-primary btnRemark">备注</button>
+                    </td>
+                </tr>
+                <#else>
+                <tr>
+                    <td colspan="18">Empty</td>
+                </tr>
+                </#list>
 
             </tbody>
 
@@ -102,8 +129,8 @@
                     <h4 class="modal-title" >备注</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="id" name="id">
-                    <form action="" method="post" id="remarkForm">
+                    <form action="/payroll-manage/update-remark" method="post" id="remarkForm">
+                        <input type="hidden" id="id" name="id">
                         <textarea type="text" id="remark" name="remark" class="form-control" STYLE="height: 100px; resize: none"></textarea>
                     </form>
                 </div>
@@ -116,42 +143,39 @@
     </div>
 
     <!-- pagination  -->
-    <#--<nav class="pagination-control">-->
-        <#--<div>-->
-            <#--<span class="bordern">总共${data.count}条, 每页显示${data.pageSize}条</span>-->
-        <#--</div>-->
-        <#--<#if data.records?has_content>-->
-            <#--<ul class="pagination pull-left">-->
-                <#--<li>-->
-                    <#--<#if data.hasPreviousPage >-->
-                    <#--<a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"-->
-                       <#--aria-label="Previous">-->
-                    <#--<#else>-->
-                    <#--<a href="#" aria-label="Previous">-->
-                    <#--</#if>-->
-                    <#--<span aria-hidden="true">&laquo; Prev</span>-->
-                <#--</a>-->
-                <#--</li>-->
-                <#--<li><a>${data.index}</a></li>-->
-                <#--<li>-->
-                    <#--<#if data.hasNextPage>-->
-                    <#--<a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"-->
-                       <#--aria-label="Next">-->
-                    <#--<#else>-->
-                    <#--<a href="#" aria-label="Next">-->
-                    <#--</#if>-->
-                    <#--<span aria-hidden="true">Next &raquo;</span>-->
-                <#--</a>-->
-                <#--</li>-->
-            <#--</ul>-->
-            <#--<@security.authorize access="hasAnyAuthority('DATA')">-->
-                <#--<button class="btn btn-default pull-left down-load" type="button">导出Excel</button>-->
-            <#--</@security.authorize>-->
-        <#--</#if>-->
-    <@security.authorize access="hasAnyAuthority('DATA')">
-        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-    </@security.authorize>
-    <#--</nav>-->
+    <nav class="pagination-control">
+        <div>
+            <span class="bordern">总共${data.count}条, 每页显示${data.pageSize}条</span>
+        </div>
+        <#if data.records?has_content>
+            <ul class="pagination pull-left">
+                <li>
+                    <#if data.hasPreviousPage >
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                       aria-label="Previous">
+                    <#else>
+                    <a href="#" aria-label="Previous">
+                    </#if>
+                    <span aria-hidden="true">&laquo; Prev</span>
+                </a>
+                </li>
+                <li><a>${data.index}</a></li>
+                <li>
+                    <#if data.hasNextPage>
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                       aria-label="Next">
+                    <#else>
+                    <a href="#" aria-label="Next">
+                    </#if>
+                    <span aria-hidden="true">Next &raquo;</span>
+                </a>
+                </li>
+            </ul>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
+        </#if>
+    </nav>
     <!-- pagination -->
 </div>
 <!-- content area end -->

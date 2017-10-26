@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.PayrollDetailMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="payrollDetailResultMap" type="PayrollDetailModel">
+        <id column="id" property="id"></id>
+        <result column="payroll_id" property="payrollId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="amount" property="amount"></result>
+        <result column="status" property="status"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="PayrollDetailModel" useGeneratedKeys="true" keyProperty="id">
+        insert into payroll_detail (payroll_id, login_name, user_name, mobile, amount, status, created_time)
+        value(#{payrollId}, #{loginName}, #{userName}, #{mobile}, #{amount}, #{status}, #{createdTime})
+    </insert>
+
+    <delete id="deleteByPayrollId" parameterType="long">
+        delete from payroll_detail where payroll_id = #{payrollId}
+    </delete>
+
+</mapper>

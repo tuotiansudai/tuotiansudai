@@ -68,9 +68,7 @@
                     {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                 {"name":"","class":"sub-title-1","text":"信用贷标的账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"creditLoanBill","text":"信用贷标的账户查询","link":"/finance-manage/credit-loan-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                {"name":"","class":"sub-title-1","text":"用户资金发放","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"creditLoanBill","text":"发放记录","link":"/finance-manage/payroll","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
             ]
         },
         {
