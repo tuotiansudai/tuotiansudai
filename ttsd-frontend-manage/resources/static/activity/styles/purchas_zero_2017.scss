@@ -96,16 +96,29 @@ p {
         padding:  10px;
         box-sizing: border-box;
         position: relative;
-        .sold {
+        .sold-wrap{
           position: absolute;
           left: 0;
           top: 0;
           margin: auto;
           width: 480px;
           height: 250px;
-          background: #000 url("../images/2017/purchas_zero/sold.png") no-repeat center center;
-          opacity: 0.2;
-          z-index: 100;
+          background: #000;
+          opacity: 0.5;
+          z-index: 50;
+          .sold {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 153px;
+            height: 111px;
+            background: url("../images/2017/purchas_zero/sold.png") no-repeat center center;
+            background-size: 100%;
+            z-index: 100;
+          }
         }
         .img {
           width: 230px;
@@ -471,15 +484,26 @@ p {
           margin-top: 0.4rem;
           padding:  0.14rem;
           position: relative;
-          .sold {
+          .sold-wrap{
             width: 6.72rem;
             height: 3.52rem;
-            background: #000 url("../images/2017/purchas_zero/sold.png") no-repeat center center;
+            .sold {
+              width: 1.6rem;
+              height: 1.14rem;
+            }
           }
           .img {
             width: 3.22rem;
             height: 3.22rem;
             line-height: 3.22rem;
+            .limitation {
+              width: 0.86rem;
+              height: 0.52rem;
+              line-height: 0.52rem;
+              font-size: 0.26rem;
+              right: -0.13rem;
+              top: 0.13rem;
+            }
             img {
               width: 2.23rem;
             }
