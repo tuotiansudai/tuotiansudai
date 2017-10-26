@@ -7,7 +7,7 @@ CREATE TABLE `aa`.`payroll` (
   `remark`        VARCHAR(400),
   `grant_time`    DATETIME,
   `created_time`  DATETIME        NOT NULL,
-  `updated_time`  DATETIME        NOT NULL,
+  `updated_time`  DATETIME,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

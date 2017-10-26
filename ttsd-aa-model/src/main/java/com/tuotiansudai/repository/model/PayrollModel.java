@@ -26,15 +26,11 @@ public class PayrollModel implements Serializable {
     public PayrollModel() {
     }
 
-    public PayrollModel(String title, long totalAmount, long headCount, PayrollStatusType status, String remark, Date grantTime, Date createdTime, Date updatedTime) {
+    public PayrollModel(String title, long totalAmount, long headCount) {
         this.title = title;
         this.totalAmount = totalAmount;
         this.headCount = headCount;
-        this.status = status;
-        this.remark = remark;
-        this.grantTime = grantTime;
-        this.createdTime = createdTime;
-        this.updatedTime = updatedTime;
+        this.status = PayrollStatusType.PENDING;
     }
 
     public long getId() {

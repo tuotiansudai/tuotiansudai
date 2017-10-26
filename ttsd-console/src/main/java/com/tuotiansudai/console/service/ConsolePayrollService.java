@@ -1,12 +1,16 @@
 package com.tuotiansudai.console.service;
 
-import com.tuotiansudai.console.dto.PayrollDetailDto;
-import com.tuotiansudai.console.dto.PayrollDto;
-import com.tuotiansudai.dto.ExchangeCouponDto;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.google.common.base.Strings;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
+import com.tuotiansudai.repository.mapper.PayrollMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.PayrollDetailModel;
+import com.tuotiansudai.repository.model.PayrollModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -22,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,8 +34,6 @@ import java.util.regex.Pattern;
 public class ConsolePayrollService {
 
     static Logger logger = Logger.getLogger(ConsolePayrollService.class);
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
     private UserMapper userMapper;
@@ -43,41 +44,37 @@ public class ConsolePayrollService {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private PayrollDetailMapper payrollDetailMapper;
 
     @Transactional
-    public void createPayroll(PayrollDto payrollDto) {
-        PayrollModel payrollModel = new PayrollModel();
-        payrollModel.setTitle(payrollDto.getTitle());
-        payrollModel.setTotalAmount(payrollDto.getTotalAmount());
-        payrollModel.setHeadCount(payrollDto.getHeadCount());
-        payrollModel.setStatus(PayrollStatusType.PENDING);
+    private void createPayroll(PayrollModel payrollModel, List<PayrollDetailModel> payrollDetailModelList) {
         payrollMapper.create(payrollModel);
 
-        for (PayrollDetailDto payrollDetailDto : payrollDto.getPayrollDetailDtoList()) {
-            PayrollDetailModel  payrollDetailModel = new PayrollDetailModel();
-            payrollDetailModel.setMobile(payrollDetailDto.getMobile());
-            payrollDetailModel.setUserName(payrollDetailDto.getUserName());
+        for (PayrollDetailModel payrollDetailModel :payrollDetailModelList) {
             payrollDetailModel.setPayrollId(payrollModel.getId());
-            payrollDetailModel.setAmount(payrollDetailDto.getAmount());
+            payrollDetailMapper.create(payrollDetailModel);
         }
     }
 
-    public PayrollDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
+    public BaseDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        String title = httpServletRequest.getParameter("title");
         InputStream inputStream = null;
-        PayrollDto payrollDto = new PayrollDto();
+        BaseDataDto baseDataDto = new BaseDataDto();
         List<String> listUserNotExists = new ArrayList<>();
         List<String> listUserAndUserNameNotMatch = new ArrayList<>();
         List<String> listUserNotAccount = new ArrayList<>();
         List<String> listUserAmountError = new ArrayList<>();
-        List<PayrollDetailDto> payrollDetailDtoList = new ArrayList<>();
+        List<PayrollDetailModel> payrollDetailModelList = new ArrayList<>();
         long totalAmount = 0;
         long headCount = 0;
+        if (Strings.isNullOrEmpty(title)) {
+            return new BaseDataDto(false,"标题不能为空!");
+        }
         if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
-            payrollDto.setStatus(false);
-            payrollDto.setMessage("上传失败!文件必须是csv格式");
-            return payrollDto;
+            return new BaseDataDto(false,"上传失败!文件必须是csv格式");
         }
         try {
             inputStream = multipartFile.getInputStream();
@@ -106,12 +103,10 @@ public class ConsolePayrollService {
                 }
                 totalAmount += AmountConverter.convertStringToCent(arrayData[2]);
                 headCount++;
-                payrollDetailDtoList.add(new PayrollDetailDto(arrayData[0], arrayData[1], AmountConverter.convertStringToCent(arrayData[2])));
+                payrollDetailModelList.add(new PayrollDetailModel(arrayData[0], arrayData[1], AmountConverter.convertStringToCent(arrayData[2])));
             }
         } catch (IOException e) {
-            payrollDto.setStatus(false);
-            payrollDto.setMessage("上传失败!文件内容错误");
-            return payrollDto;
+            return new BaseDataDto(false,"上传失败!文件内容错误");
         } finally {
             if (null != inputStream) {
                 inputStream.close();
@@ -120,7 +115,7 @@ public class ConsolePayrollService {
 
         if (CollectionUtils.isNotEmpty(listUserNotExists) || CollectionUtils.isNotEmpty(listUserAndUserNameNotMatch)
                 || CollectionUtils.isNotEmpty(listUserNotAccount) || CollectionUtils.isNotEmpty(listUserAmountError)) {
-            payrollDto.setStatus(false);
+            baseDataDto.setStatus(false);
             String msg = "导入发放名单失败!<br/> ";
             if (CollectionUtils.isNotEmpty(listUserNotExists)) {
                 msg += StringUtils.join(listUserNotExists, ",") + " 用户不存在<br/>";
@@ -134,15 +129,14 @@ public class ConsolePayrollService {
             if (CollectionUtils.isNotEmpty(listUserAmountError)) {
                 msg += StringUtils.join(listUserAmountError, ",") + " 金额不正确";
             }
-            payrollDto.setMessage(msg);
+            baseDataDto.setMessage(msg);
         } else {
-            payrollDto.setStatus(true);
-            payrollDto.setTotalAmount(totalAmount);
-            payrollDto.setHeadCount(headCount);
-            payrollDto.setPayrollDetailDtoList(payrollDetailDtoList);
-            payrollDto.setMessage("导入发放名单成功!");
+            PayrollModel payrollModel = new PayrollModel(title,totalAmount,headCount);
+            this.createPayroll(payrollModel,payrollDetailModelList);
+            baseDataDto.setStatus(true);
+            baseDataDto.setMessage("导入发放名单成功!");
         }
-        return payrollDto;
+        return baseDataDto;
 
     }
 

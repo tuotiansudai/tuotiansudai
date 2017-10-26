@@ -11,26 +11,20 @@
             <label class="col-sm-2 control-label">标题</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control payroll-title" name="title" value=""/>
+                <input type="text" class="form-control payroll-title" name="title" value="" maxlength="50"/>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="file-btn">
-                <input type="file" id="file-in">
-                上传发放名单
-            </div>
-        </div>
-
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <div class="form-group ">
             <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-4 form-error">
-                <#if errorMessage?has_content>
-                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
-                </#if>
+            <div class="col-sm-4">
+                <div class="file-btn">
+                    <input type="file" id="file-in">
+                    上传发放名单
+                </div>
             </div>
         </div>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </div>
 <!-- content area end -->

@@ -15,20 +15,17 @@ public class PayrollDetailModel implements Serializable {
 
     private long amount;
 
-    private PayrollStatusType payrollStatusType;
+    private PayrollStatusType status;
 
     private Date createdTime = new Date();
 
     public PayrollDetailModel() {
     }
 
-    public PayrollDetailModel(long payrollId, String userName, String mobile, long amount, PayrollStatusType payrollStatusType, Date createdTime) {
-        this.payrollId = payrollId;
+    public PayrollDetailModel(String userName, String mobile, long amount) {
         this.userName = userName;
         this.mobile = mobile;
         this.amount = amount;
-        this.payrollStatusType = payrollStatusType;
-        this.createdTime = createdTime;
     }
 
     public long getId() {
@@ -71,12 +68,12 @@ public class PayrollDetailModel implements Serializable {
         this.amount = amount;
     }
 
-    public PayrollStatusType getPayrollStatusType() {
-        return payrollStatusType;
+    public PayrollStatusType getStatus() {
+        return status;
     }
 
-    public void setPayrollStatusType(PayrollStatusType payrollStatusType) {
-        this.payrollStatusType = payrollStatusType;
+    public void setStatus(PayrollStatusType status) {
+        this.status = status;
     }
 
     public Date getCreatedTime() {
