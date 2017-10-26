@@ -6,10 +6,7 @@ import com.tuotiansudai.repository.model.LoanModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,19 +33,11 @@ public class ZeroShoppingActivityController {
         return modelAndView;
     }
 
+
+    @ResponseBody
     @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
-    public ModelAndView activityLoanExists(){
-        LoanModel loanModel = zeroShoppingActivityService.queryActivityLoan();
-
-        ModelAndView modelAndView = new ModelAndView("activities/2017/purchas-zero-article");
-
-        Boolean exists = false;
-        if (loanModel != null){
-            exists = true;
-            modelAndView.addObject("activityLoan", loanModel.getId());
-        }
-        modelAndView.addObject("exists", exists);
-        return modelAndView;
+    public Boolean activityLoanExists(){
+        return zeroShoppingActivityService.queryActivityLoan() != null;
     }
 
     @RequestMapping(value = "/activity-loan-detail", method = {RequestMethod.GET})
