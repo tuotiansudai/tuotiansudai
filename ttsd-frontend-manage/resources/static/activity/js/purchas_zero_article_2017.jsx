@@ -295,16 +295,16 @@ productList[product].images.forEach(function(item,index) {
     $('#productImages').append($detailImgDOM);
 })
 //弹窗提示已售完
-$('#toInvest').on('click',function(){
-    commonFun.useAjax({
-        dataType: 'json',
-        type:'get',
-        url:'/activity/zero-shopping/activity-loan-exists'
-    },function(data) {
-        console.log(data);
-
-    });
-})
+// $('#toInvest').on('click',function(){
+//     commonFun.useAjax({
+//         dataType: 'json',
+//         type:'get',
+//         url:'/activity/zero-shopping/activity-loan-exists'
+//     },function(data) {
+//         console.log(data);
+//
+//     });
+// })
 
 let $soldTipDOM = $('#soldTipDOM');
 // layer.open({

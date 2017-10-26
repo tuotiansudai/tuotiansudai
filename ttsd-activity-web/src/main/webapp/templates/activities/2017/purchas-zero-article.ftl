@@ -17,6 +17,7 @@
                <li class="media-320">收益说明：<span id="explain"></span></li>
            </ul>
            <a href="javascript:;" class="invest-btn" id="toInvest">立即白拿</a>
+           <a href="javascript:;" class="invest-btn" id="loanNoExist">立即白拿</a>
        </div>
    </div>
     <div class="shopping-process page-width">
