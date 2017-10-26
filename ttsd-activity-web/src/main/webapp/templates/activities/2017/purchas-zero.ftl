@@ -49,6 +49,9 @@
                 <div class="page-width">
                     <ul class="clearfix">
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Deerma_humidifier">
                                 <div class="img fl" id="humidifier"></div>
                                 <div class="fr">
@@ -61,6 +64,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Trolley_case">
                                 <div class="img fl" id="barBox"></div>
                                 <div class="fr">
@@ -73,6 +79,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Shaver">
                                 <div class="img fl" id="razor"></div>
                                 <div class="fr">
@@ -85,6 +94,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=SK_II">
                                 <div class="img fl" id="cosmetics"></div>
                                 <div class="fr">
@@ -98,6 +110,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaoMi_5X">
                                 <div class="img fl" id="phone"></div>
                                 <div class="fr">
@@ -110,6 +125,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaPu_Television">
                                 <div class="img fl" id="video"></div>
                                 <div class="fr">
@@ -122,6 +140,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Purifier">
                                 <div class="img fl" id="purifier"></div>
                                 <div class="fr">
@@ -152,6 +173,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook">
                                 <div class="img fl" id="macAir">
                                     <div class="limitation">限量</div>
@@ -166,6 +190,9 @@
                             </a>
                         </li>
                         <li>
+                            <div class="sold-wrap">
+                                <span class="sold"></span>
+                            </div>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Iphone_X">
                                 <div class="img fl" id="iphonex">
                                     <div class="limitation">限量</div>
