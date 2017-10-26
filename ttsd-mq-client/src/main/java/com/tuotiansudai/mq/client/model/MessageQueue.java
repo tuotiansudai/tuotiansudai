@@ -78,7 +78,10 @@ public enum MessageQueue {
     CreditLoanOutQueue("CreditLoanOutQueue"), //慧租信用贷放款
     CreditLoanRepayQueue("CreditLoanRepayQueue"), //慧租信用贷还款
     CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
-    CreditLoanBill("CreditLoanBill");
+    CreditLoanBill("CreditLoanBill"),
+    Payroll("Payroll"),
+    PayrollConfirmFail("PayrollConfirmFail"),
+    ;
 
     private final String queueName;
 

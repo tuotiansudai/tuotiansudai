@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -78,6 +79,8 @@ public class PayWrapperClient extends BaseClient {
     private final static String noPasswordCreditLoanRecharge = "/credit-loan/no-password-recharge";
 
     private final static String creditLoanTransferAgent = "/credit-loan/transfer-agent";
+
+    private final static String payrollPath = "/payroll/pay";
 
     public PayWrapperClient() {
         this.okHttpClient.setConnectTimeout(180, TimeUnit.SECONDS);
@@ -262,7 +265,6 @@ public class PayWrapperClient extends BaseClient {
         return Lists.newArrayList();
     }
 
-
     private BaseDto<PayDataDto> parsePayResponseJson(String json) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
@@ -425,5 +427,19 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> validateFrontCallback(Map<String, String> params) {
         return syncExecute(params, "/validate-front-callback");
+    }
+
+    public BaseDto<BaseDataDto> payroll(long payrollId) {
+        try {
+            String responseJson = this.execute(payrollPath, String.valueOf(payrollId), "POST");
+            return objectMapper.readValue(responseJson, new TypeReference<BaseDto<BaseDataDto>>() {
+            });
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 }
