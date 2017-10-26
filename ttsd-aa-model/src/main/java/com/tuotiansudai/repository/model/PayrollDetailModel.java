@@ -9,6 +9,8 @@ public class PayrollDetailModel implements Serializable {
 
     private long payrollId;
 
+    private String loginName;
+
     private String userName;
 
     private String mobile;
@@ -42,6 +44,14 @@ public class PayrollDetailModel implements Serializable {
 
     public void setPayrollId(long payrollId) {
         this.payrollId = payrollId;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getUserName() {

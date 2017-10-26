@@ -9,6 +9,7 @@
     <resultMap id="payrollDetailResultMap" type="PayrollDetailModel">
         <id column="id" property="id"></id>
         <result column="payroll_id" property="payrollId"></result>
+        <result column="login_name" property="loginName"></result>
         <result column="user_name" property="userName"></result>
         <result column="mobile" property="mobile"></result>
         <result column="amount" property="amount"></result>
@@ -17,8 +18,8 @@
     </resultMap>
 
     <insert id="create" parameterType="PayrollDetailModel" useGeneratedKeys="true" keyProperty="id">
-        insert into payroll_detail (payroll_id, user_name, mobile, amount, status, created_time)
-        value(#{payrollId}, #{userName}, #{mobile}, #{amount}, #{status}, #{createdTime})
+        insert into payroll_detail (payroll_id, login_name, user_name, mobile, amount, status, created_time)
+        value(#{payrollId}, #{loginName}, #{userName}, #{mobile}, #{amount}, #{status}, #{createdTime})
     </insert>
 
     <delete id="deleteByPayrollId" parameterType="long">

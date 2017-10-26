@@ -10,8 +10,7 @@ CREATE TABLE `aa`.`payroll` (
   `created_time`  DATETIME NOT NULL,
   `updated_by`    VARCHAR(25),
   `updated_time`  DATETIME,
-  PRIMARY KEY (`id`),
-  CONSTRAINT FK_CREATED_BY_PAYROLL_REF_USER_LOGIN_NAME FOREIGN KEY (`created_by`) REFERENCES user (`login_name`)
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
@@ -21,6 +20,7 @@ CREATE TABLE `aa`.`payroll` (
 CREATE TABLE `aa`.`payroll_detail` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `payroll_id`    BIGINT UNSIGNED NOT NULL,
+  `login_name`    VARCHAR(50)     NOT NULL,
   `user_name`     VARCHAR(50)     NOT NULL,
   `mobile`        VARCHAR(15)     NOT NULL,
   `amount`        BIGINT UNSIGNED NOT NULL,
