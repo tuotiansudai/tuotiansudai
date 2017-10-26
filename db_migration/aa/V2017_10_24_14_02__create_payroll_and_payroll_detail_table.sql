@@ -21,7 +21,7 @@ CREATE TABLE `aa`.`payroll_detail` (
   `user_name`     VARCHAR(50)     NOT NULL,
   `mobile`        VARCHAR(15)     NOT NULL,
   `amount`        BIGINT UNSIGNED NOT NULL,
-  `status`        VARCHAR(16),
+  `status`        VARCHAR(16)     NOT NULL,
   `created_time`  DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_PAYROLL_DETAIL_PAYROLL_ID_REF_PAYROLL_ID FOREIGN KEY (`payroll_id`) REFERENCES `aa`.`payroll` (`id`)

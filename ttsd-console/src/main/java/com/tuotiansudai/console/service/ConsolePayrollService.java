@@ -1,7 +1,8 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.base.Strings;
+import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
@@ -11,6 +12,7 @@ import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -35,6 +37,8 @@ public class ConsolePayrollService {
 
     static Logger logger = Logger.getLogger(ConsolePayrollService.class);
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Autowired
     private UserMapper userMapper;
 
@@ -47,6 +51,8 @@ public class ConsolePayrollService {
     @Autowired
     private PayrollDetailMapper payrollDetailMapper;
 
+    private static final String redisKey = "payroll:data";
+
     @Transactional
     private void createPayroll(PayrollModel payrollModel, List<PayrollDetailModel> payrollDetailModelList) {
         payrollMapper.create(payrollModel);
@@ -57,12 +63,11 @@ public class ConsolePayrollService {
         }
     }
 
-    public BaseDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
+    public PayrollDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
-        String title = httpServletRequest.getParameter("title");
         InputStream inputStream = null;
-        BaseDataDto baseDataDto = new BaseDataDto();
+        PayrollDataDto payrollDataDto = new PayrollDataDto();
         List<String> listUserNotExists = new ArrayList<>();
         List<String> listUserAndUserNameNotMatch = new ArrayList<>();
         List<String> listUserNotAccount = new ArrayList<>();
@@ -70,11 +75,8 @@ public class ConsolePayrollService {
         List<PayrollDetailModel> payrollDetailModelList = new ArrayList<>();
         long totalAmount = 0;
         long headCount = 0;
-        if (Strings.isNullOrEmpty(title)) {
-            return new BaseDataDto(false,"标题不能为空!");
-        }
         if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
-            return new BaseDataDto(false,"上传失败!文件必须是csv格式");
+            return new PayrollDataDto(false,"上传失败!文件必须是csv格式");
         }
         try {
             inputStream = multipartFile.getInputStream();
@@ -103,10 +105,11 @@ public class ConsolePayrollService {
                 }
                 totalAmount += AmountConverter.convertStringToCent(arrayData[2]);
                 headCount++;
+                redisWrapperClient.hset(redisKey,"payrolldetail",)
                 payrollDetailModelList.add(new PayrollDetailModel(arrayData[0], arrayData[1], AmountConverter.convertStringToCent(arrayData[2])));
             }
         } catch (IOException e) {
-            return new BaseDataDto(false,"上传失败!文件内容错误");
+            return new PayrollDataDto(false,"上传失败!文件内容错误");
         } finally {
             if (null != inputStream) {
                 inputStream.close();
@@ -115,7 +118,7 @@ public class ConsolePayrollService {
 
         if (CollectionUtils.isNotEmpty(listUserNotExists) || CollectionUtils.isNotEmpty(listUserAndUserNameNotMatch)
                 || CollectionUtils.isNotEmpty(listUserNotAccount) || CollectionUtils.isNotEmpty(listUserAmountError)) {
-            baseDataDto.setStatus(false);
+            payrollDataDto.setStatus(false);
             String msg = "导入发放名单失败!<br/> ";
             if (CollectionUtils.isNotEmpty(listUserNotExists)) {
                 msg += StringUtils.join(listUserNotExists, ",") + " 用户不存在<br/>";
@@ -129,14 +132,14 @@ public class ConsolePayrollService {
             if (CollectionUtils.isNotEmpty(listUserAmountError)) {
                 msg += StringUtils.join(listUserAmountError, ",") + " 金额不正确";
             }
-            baseDataDto.setMessage(msg);
+            payrollDataDto.setMessage(msg);
         } else {
-            PayrollModel payrollModel = new PayrollModel(title,totalAmount,headCount);
-            this.createPayroll(payrollModel,payrollDetailModelList);
-            baseDataDto.setStatus(true);
-            baseDataDto.setMessage("导入发放名单成功!");
+            payrollDataDto.setTotalAmount(totalAmount);
+            payrollDataDto.setHeadCount(headCount);
+            payrollDataDto.setPayrollDetailModelList(payrollDetailModelList);
+            payrollDataDto.setMessage("导入发放名单成功!");
         }
-        return baseDataDto;
+        return payrollDataDto;
 
     }
 

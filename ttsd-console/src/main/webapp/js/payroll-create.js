@@ -24,13 +24,8 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui'], function (
 
         $('.file-btn').on('change', function () {
             var file = $(this).find('input').get(0).files[0];
-            var title = $('.payroll-title').val();
-            console.log("before " + typeof(file));
-            file.setAttribute("name",'ssst.csv')
-            console.log("after " + file.name);
             var formData = new FormData();
             formData.append('file', file);
-            formData.append('title', title);
             $.ajax({
                 url: '/payroll-manage/import-csv',
                 type: 'POST',
@@ -41,8 +36,8 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui'], function (
             })
                 .done(function (data) {
                     if (data.status) {
-                        layer.msg('用户发放名单导入成功！');
-                        window.location.href = '/payroll-manage/list'
+                        consoel.log(data.totalAmount)
+                        consoel.log(data.totalAmount)
                     }
                     else {
                         layer.open({
@@ -50,11 +45,11 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui'], function (
                             content: data.message,
                             btn:['确定'],
                         });
-
+                        //window.location.reload();
+                        $('.payroll-title').val(title);
                     }
 
                 });
-
         });
     });
 });

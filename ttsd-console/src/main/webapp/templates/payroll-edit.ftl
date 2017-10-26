@@ -6,31 +6,24 @@
 <div class="col-md-10">
 
     <form action="/payroll-manage/payroll" method="post" class="form-horizontal form-payroll">
-        <input type="text" class="form-control totalAmount" name="totalAmount" value=""/>
-        <input type="text" class="form-control headCount" name="headCount" value=""/>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">标题</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control title" name="title" value="" maxlength="50"/>
+                <input type="text" class="form-control payroll-title" name="title" value="" maxlength="50"/>
             </div>
-
-
         </div>
-        <div class="payroll-details"></div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
                 <div class="file-btn">
                     <input type="file" id="file-in">
-                    上传发放名单
+                    重新上传发放名单
                 </div>
             </div>
         </div>
-
-
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </div>

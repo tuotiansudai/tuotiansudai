@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.console.service.ConsolePayrollService;
 import com.tuotiansudai.dto.BaseDataDto;
 import org.apache.log4j.Logger;
@@ -29,7 +30,9 @@ public class PayrollController {
 
     @RequestMapping(value = "/import-csv", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
+    public PayrollDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
         return consolePayrollService.importPayrollUserList(httpServletRequest);
     }
+
+
 }
