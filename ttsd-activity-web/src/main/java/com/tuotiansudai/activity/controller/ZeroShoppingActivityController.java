@@ -30,21 +30,16 @@ public class ZeroShoppingActivityController {
     public ModelAndView zeroShoppingDetail(ZeroShoppingPrize zeroShoppingPrize){
         ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero-article", "responsive", true);
         modelAndView.addObject("prizeName", zeroShoppingPrize);
+        LoanModel loanModel = zeroShoppingActivityService.queryActivityLoan();
+        modelAndView.addObject("exists", loanModel != null);
+        modelAndView.addObject("loanId", loanModel == null ? null : String.valueOf(loanModel.getId()));
         return modelAndView;
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/activity-loan-exists", method = {RequestMethod.GET})
-    public Boolean activityLoanExists(){
-        return zeroShoppingActivityService.queryActivityLoan() != null;
-    }
-
     @RequestMapping(value = "/activity-loan-detail", method = {RequestMethod.GET})
-    public ModelAndView redirectLoanDetail(@RequestParam(value = "loanId", required = false) long loanId,
-                                           @RequestParam(value = "zeroShoppingPrize", required = false) ZeroShoppingPrize zeroShoppingPrize,
+    public ModelAndView redirectLoanDetail(@RequestParam(value = "zeroShoppingPrize", required = false) ZeroShoppingPrize zeroShoppingPrize,
                                            RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("zeroShoppingPrize", zeroShoppingPrize);
-        return new ModelAndView("redirect:/loan/" + loanId);
+        return new ModelAndView("redirect:/loan/" + zeroShoppingActivityService.queryActivityLoan().getId());
     }
 }

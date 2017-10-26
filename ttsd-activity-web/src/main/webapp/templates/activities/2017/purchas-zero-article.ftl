@@ -16,8 +16,16 @@
                <li>存入本金：<span id="principal"></span></li>
                <li class="media-320">收益说明：<span id="explain"></span></li>
            </ul>
-           <a href="javascript:;" class="invest-btn" id="toInvest">立即白拿</a>
-           <a href="javascript:;" class="invest-btn" id="loanNoExist">立即白拿</a>
+
+           <#assign versions = ['4.4.1','4.3.5', '4.3.4', '4.4']>
+           <#if exists>
+               <a href="<#if !isAppSource>/activity/zero-shopping/activity-loan-detail?zeroShoppingPrize=${prizeName}
+                        <#else>
+                           ${versions?seq_contains(appVersion)?string("app/tuotian/loan-detail/${loanId}", "app/tuotian/loan-detail/${loanId}?zeroShoppingPrize=${prizeName}")}
+                        </#if>" class="invest-btn" id="toInvest">立即白拿</a>
+           <#else>
+               <a href="" class="invest-btn" id="loanNoExist">立即白拿</a>
+           </#if>
        </div>
    </div>
     <div class="shopping-process page-width">
