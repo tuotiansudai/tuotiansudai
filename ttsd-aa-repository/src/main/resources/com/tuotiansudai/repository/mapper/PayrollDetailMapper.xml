@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="payRollDetailResultMap" type="PayrollDetailModel">
+    <resultMap id="payrollDetailResultMap" type="PayrollDetailModel">
         <id column="id" property="id"></id>
         <result column="payroll_id" property="payrollId"></result>
         <result column="user_name" property="userName"></result>
