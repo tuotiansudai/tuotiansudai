@@ -26,4 +26,8 @@
         delete from payroll_detail where payroll_id = #{payrollId}
     </delete>
 
+    <select id="findByPayrollId" parameterType="long" resultMap="payrollDetailResultMap">
+        select * from payroll_detail where payroll_id = #{payrollId}
+    </select>
+
 </mapper>

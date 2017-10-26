@@ -9,4 +9,6 @@ public interface PayrollMapper {
     void create(PayrollModel payrollModel);
 
     void update(PayrollModel payrollModel);
+
+    PayrollModel findById(long id);
 }
