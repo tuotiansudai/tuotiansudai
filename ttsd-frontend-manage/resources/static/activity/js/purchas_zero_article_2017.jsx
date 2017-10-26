@@ -295,27 +295,60 @@ productList[product].images.forEach(function(item,index) {
     $('#productImages').append($detailImgDOM);
 })
 //弹窗提示已售完
-// $('#toInvest').on('click',function(){
-//     commonFun.useAjax({
-//         dataType: 'json',
-//         type:'get',
-//         url:'/activity/zero-shopping/activity-loan-exists'
-//     },function(data) {
-//         console.log(data);
-//
-//     });
-// })
-
 let $soldTipDOM = $('#soldTipDOM');
-// layer.open({
-//     type: 1,
-//     title: false,
-//     closeBtn: 1,
-//     btn: ['我知道啦'],
-//     shadeClose: true,
-//     // area: ['385px', '290px'],
-//     content: $soldTipDOM
-// });
+$('#loanNoExist').on('click',function(){
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 1,
+                btn: ['我知道啦'],
+                shadeClose: true,
+                content: $soldTipDOM
+            });
+        })
+        .fail(function(){
+            toLogin();
+        })
+
+
+})
+
+$('#toInvest').on('click',function(){
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 1,
+                btn: ['我知道啦'],
+                shadeClose: true,
+                content: $soldTipDOM
+            });
+        })
+        .fail(function(){
+            toLogin();
+        })
+
+
+})
+//弹框登录还是链接登录
+function toLogin() {
+    if (sourceKind.params.source == 'app') {
+        location.href = "/login";
+    }else {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $('#loginTip')
+        });
+    }
+}
+
+
 
 
 
