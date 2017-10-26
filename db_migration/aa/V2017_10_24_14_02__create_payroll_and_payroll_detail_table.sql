@@ -6,9 +6,12 @@ CREATE TABLE `aa`.`payroll` (
   `status`        VARCHAR(16)     NOT NULL DEFAULT 'PENDING',
   `remark`        VARCHAR(400),
   `grant_time`    DATETIME,
-  `created_time`  DATETIME        NOT NULL,
+  `created_by`    VARCHAR(25) NOT NULL,
+  `created_time`  DATETIME NOT NULL,
+  `updated_by`    VARCHAR(25),
   `updated_time`  DATETIME,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT FK_CREATED_BY_PAYROLL_REF_USER_LOGIN_NAME FOREIGN KEY (`created_by`) REFERENCES user (`login_name`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

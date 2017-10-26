@@ -19,7 +19,11 @@ public class PayrollModel implements Serializable {
 
     private Date grantTime;
 
+    private String createdBy;
+
     private Date createdTime = new Date();
+
+    private String updatedBy;
 
     private Date updatedTime;
 
@@ -73,6 +77,14 @@ public class PayrollModel implements Serializable {
         this.status = status;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public Date getGrantTime() {
         return grantTime;
     }
@@ -81,12 +93,12 @@ public class PayrollModel implements Serializable {
         this.grantTime = grantTime;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getCreatedTime() {
@@ -97,11 +109,19 @@ public class PayrollModel implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
     public Date getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(Date updateTime) {
+    public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
 }

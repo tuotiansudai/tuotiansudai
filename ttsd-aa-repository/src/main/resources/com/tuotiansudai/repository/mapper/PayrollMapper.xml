@@ -14,13 +14,15 @@
         <result column="status" property="status"></result>
         <result column="remark" property="remark"></result>
         <result column="grant_time" property="grantTime"></result>
+        <result column="created_by" property="createdBy"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="updated_by" property="updatedBy"></result>
         <result column="updated_time" property="updatedTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="PayrollModel" useGeneratedKeys="true" keyProperty="id">
-        insert into payroll (title, total_amount, head_count, status, remark, grant_time, created_time, updated_time)
-        value(#{title}, #{totalAmount}, #{headCount}, #{status}, #{remark}, #{grantTime}, #{createdTime}, #{updatedTime})
+        insert into payroll (title, total_amount, head_count, status, remark, grant_time, created_by, created_time, updated_by, updated_time)
+        value(#{title}, #{totalAmount}, #{headCount}, #{status}, #{remark}, #{grantTime}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime})
     </insert>
 
     <update id="update" parameterType="PayrollModel">
@@ -31,7 +33,8 @@
         status = #{status},
         remark = #{remark},
         grant_time = #{grant_time},
-        updated_time = now()
+        updated_by = #{updatedBy},
+        updated_time = #{updatedTime}
         where id = #{id}
     </update>
 
