@@ -17,6 +17,8 @@ public class DelayMessageDeliveryJobCreator {
 
     private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 60 * 10;
 
+    private final static int PAYROLL_FAIL_WAIT_SECONDS = 30 * 60;
+
     public static void createAutoLoanOutDelayJob(JobManager jobManager, long loanId) {
         String messageBody = String.valueOf(loanId);
         create(jobManager, AUTO_LOAN_OUT_DELAY_SECONDS, MessageQueue.LoanOut, messageBody, String.valueOf(loanId), true);
@@ -45,6 +47,11 @@ public class DelayMessageDeliveryJobCreator {
     public static void createCancelTransferApplicationDelayJob(JobManager jobManager, long transferApplicationId, Date deadline) {
         String messageBody = String.valueOf(transferApplicationId);
         create(jobManager, deadline, MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
+    }
+
+    public static void createConfirmPayrollFailedDelayJob(JobManager jobManager, long payrollDetailId) {
+        String messageBody = String.valueOf(payrollDetailId);
+        create(jobManager, PAYROLL_FAIL_WAIT_SECONDS, MessageQueue.PayrollConfirmFail, messageBody);
     }
 
     public static void create(JobManager jobManager, int delaySeconds, MessageQueue messageQueue, String messageBody) {

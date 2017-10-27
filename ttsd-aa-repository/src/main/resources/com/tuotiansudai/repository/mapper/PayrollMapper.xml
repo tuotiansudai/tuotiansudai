@@ -38,8 +38,12 @@
         where id = #{id}
     </update>
 
-    <select id="findById" parameterType="long" resultMap="payRollResultMap">
-        SELECT * FROM payroll WHERE id = #{id}
+    <select id="findById" parameterType="map" resultMap="payRollResultMap">
+        select * from payroll where id = #{id}
     </select>
+
+    <update id="updateStatus" parameterType="map">
+        update payroll set status = #{status} where id=#{id}
+    </update>
 
 </mapper>

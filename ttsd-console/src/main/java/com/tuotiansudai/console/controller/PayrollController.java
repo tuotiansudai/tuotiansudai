@@ -1,6 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsolePayrollService;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +24,21 @@ public class PayrollController {
     @RequestMapping(value = "/primary-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView primaryAudit(@PathVariable long payRollId) {
-        consolePayrollService.primaryAudit(payRollId);
-        return null;
+        consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName());
+        return new ModelAndView("redirect:/finance-manage/payroll-manage/list");
+    }
+
+    @RequestMapping(value = "/advanced-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> advancedAudit(@PathVariable long payRollId) {
+        return consolePayrollService.advancedAudit(payRollId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/reject/{payRollId:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView reject(@PathVariable long payRollId) {
+        consolePayrollService.reject(payRollId, LoginUserInfo.getLoginName());
+        return new ModelAndView("redirect:/finance-manage/payroll-manage/list");
     }
 
 
