@@ -32,6 +32,26 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     private T obj;
 
+    public OperationTask() {
+
+    }
+
+    public OperationTask(String id, TaskType taskType,
+                         OperationType operationType, String sender,
+                         String receiver, String objId, String objName,
+                         String description, String operateURL) {
+        this.id = id;
+        this.taskType = taskType;
+        this.operationType = operationType;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.objId = objId;
+        this.objName = objName;
+        this.description = description;
+        this.operateURL = operateURL;
+        this.createdTime = new Date();
+    }
+
     public String getId() {
         return id;
     }
