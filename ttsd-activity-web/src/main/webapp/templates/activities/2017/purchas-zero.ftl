@@ -49,9 +49,11 @@
                 <div class="page-width">
                     <ul class="clearfix">
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Deerma_humidifier==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Deerma_humidifier">
                                 <div class="img fl" id="humidifier"></div>
                                 <div class="fr">
@@ -64,9 +66,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Trolley_case==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Trolley_case">
                                 <div class="img fl" id="barBox"></div>
                                 <div class="fr">
@@ -79,9 +83,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Philips_Shaver==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Shaver">
                                 <div class="img fl" id="razor"></div>
                                 <div class="fr">
@@ -94,9 +100,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if SK_II==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=SK_II">
                                 <div class="img fl" id="cosmetics"></div>
                                 <div class="fr">
@@ -110,9 +118,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if XiaoMi_5X==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaoMi_5X">
                                 <div class="img fl" id="phone"></div>
                                 <div class="fr">
@@ -125,9 +135,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if XiaPu_Television==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaPu_Television">
                                 <div class="img fl" id="video"></div>
                                 <div class="fr">
@@ -140,9 +152,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Philips_Purifier==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Purifier">
                                 <div class="img fl" id="purifier"></div>
                                 <div class="fr">
@@ -155,12 +169,12 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Sony_Camera==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Sony_Camera">
-
-
                                 <div class="img fl" id="camara"></div>
                                 <div class="fr">
                                     <div class="goods-name">索尼DSC-RX100 M3 黑卡
@@ -173,9 +187,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Apple_MacBook==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook">
                                 <div class="img fl" id="macAir">
                                     <div class="limitation">限量</div>
@@ -190,9 +206,11 @@
                             </a>
                         </li>
                         <li>
-                            <div class="sold-wrap">
-                                <span class="sold"></span>
-                            </div>
+                            <#if Iphone_X==0 >
+                                <div class="sold-wrap">
+                                    <span class="sold"></span>
+                                </div>
+                            </#if>
                             <a href="/activity/zero-shopping/article?zeroShoppingPrize=Iphone_X">
                                 <div class="img fl" id="iphonex">
                                     <div class="limitation">限量</div>

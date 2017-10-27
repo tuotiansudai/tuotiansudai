@@ -18,14 +18,24 @@
            </ul>
 
            <#assign versions = ['4.4.1','4.3.5', '4.3.4', '4.4']>
+
+           <#--未登录-->
+           <@global.isAnonymous>
+               <a href="javascript:void(0)" class="invest-btn" id="unLogin">立即白拿</a>
+           </@global.isAnonymous>
+
+           <#--已登录-->
+           <@global.isNotAnonymous>
            <#if exists>
                <a href="<#if !isAppSource>/activity/zero-shopping/activity-loan-detail?zeroShoppingPrize=${prizeName}
                         <#else>
                            ${versions?seq_contains(appVersion)?string("app/tuotian/loan-detail/${loanId}", "app/tuotian/loan-detail/${loanId}?zeroShoppingPrize=${prizeName}")}
                         </#if>" class="invest-btn" id="toInvest">立即白拿</a>
            <#else>
-               <a href="" class="invest-btn" id="loanNoExist">立即白拿</a>
+           <#--标的不存在 弹框-->
+               <a href="javascript:void(0)" class="invest-btn" id="loanNoExist">立即白拿</a>
            </#if>
+           </@global.isNotAnonymous>
        </div>
    </div>
     <div class="shopping-process page-width">

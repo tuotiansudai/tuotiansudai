@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
+import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.activity.service.ZeroShoppingActivityService;
 import com.tuotiansudai.repository.model.LoanModel;
 import org.apache.commons.collections4.CollectionUtils;
@@ -22,7 +23,10 @@ public class ZeroShoppingActivityController {
     @RequestMapping(method = {RequestMethod.GET})
     public ModelAndView zeroShopping(){
         ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero", "responsive", true);
-        modelAndView.addObject("prize", zeroShoppingActivityService.getAllPrize());
+        List<ZeroShoppingPrizeConfigModel> list = zeroShoppingActivityService.getAllPrize();
+        for (ZeroShoppingPrizeConfigModel zeroShoppingPrizeConfigModel: list) {
+            modelAndView.addObject(zeroShoppingPrizeConfigModel.getPrize().name(), zeroShoppingPrizeConfigModel.getPrizeSurplus());
+        }
         return modelAndView;
     }
 
