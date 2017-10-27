@@ -201,7 +201,7 @@
                                     <div class="goods-features">纤巧轻薄 性能强劲</div>
                                     <div class="goods-price"><del>市场价：6588元</del></div>
                                     <div class="goods-income">额外收益：约2377元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook" class="invest-btn">投资90000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook" class="invest-btn margin-less">投资90000元可得</a>
                                 </div>
                             </a>
                         </li>

@@ -286,41 +286,41 @@ p {
   }
 }
 /*弹层样式开始*/
-.layui-layer {
-  border-radius: 10px!important;
-  width: 385px!important;
-  height: 290px!important;
-}
-.layui-layer-close2 {
-  width: 16px!important;
-  height: 16px!important;
-  right: -7px!important;
-  top: -9px!important;
-  background: #fff url("../images/2017/purchas_zero/colse.png") no-repeat center top!important;
-  background-size: 100%!important;
-}
-.layui-layer-content {
-  height: auto!important;
-}
-.layui-layer-btn {
-  padding: 0!important;
-  margin-top: 30px!important;
-  .layui-layer-btn0 {
-    display: block!important;
-    border-radius: 23px!important;
-    width: 155px!important;
-    height: 46px!important;
-    text-align: center;
-    line-height: 46px!important;
-    border-radius: 23px!important;
-    font-size: 18px!important;
-    background: #d74e45!important;
-    color: #fff!important;
-    margin: 0 auto!important;
-    padding: 0!important;
-    border: none;
-  }
-}
+//.layui-layer {
+//  border-radius: 10px!important;
+//  width: 385px!important;
+//  height: 290px!important;
+//}
+//.layui-layer-close2 {
+//  width: 16px!important;
+//  height: 16px!important;
+//  right: -7px!important;
+//  top: -9px!important;
+//  background: #fff url("../images/2017/purchas_zero/colse.png") no-repeat center top!important;
+//  background-size: 100%!important;
+//}
+//.layui-layer-content {
+//  height: auto!important;
+//}
+//.layui-layer-btn {
+//  padding: 0!important;
+//  margin-top: 30px!important;
+//  .layui-layer-btn0 {
+//    display: block!important;
+//    border-radius: 23px!important;
+//    width: 155px!important;
+//    height: 46px!important;
+//    text-align: center;
+//    line-height: 46px!important;
+//    border-radius: 23px!important;
+//    font-size: 18px!important;
+//    background: #d74e45!important;
+//    color: #fff!important;
+//    margin: 0 auto!important;
+//    padding: 0!important;
+//    border: none;
+//  }
+//}
 
 .sold-tip {
   width: 385px;
@@ -340,38 +340,63 @@ p {
     color: #333;
     line-height: 34px;
   }
+  .close-btn {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    right: 12px;
+    top: 10px;
+    cursor: pointer;
+    background: #fff url("../images/2017/purchas_zero/colse.png") no-repeat center top;
+    background-size: 100%;
+  }
+  .known-btn {
+        border-radius: 23px;
+        width: 155px;
+        height: 46px;
+        text-align: center;
+        line-height: 46px;
+        border-radius: 23px;
+        font-size: 18px;
+        background: #d74e45;
+        color: #fff;
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
 }
 /*弹层样式结束*/
 @media screen and (max-width: 768px){
   /*弹层样式开始*/
-  .layui-layer {
-    border-radius: 0.1rem!important;
-    width: 6rem!important;
-    height: 4.5rem!important;
-  }
-  .layui-layer-close2 {
-    width: 0.34rem!important;
-    height: 0.33rem!important;
-    right: 0.08rem!important;
-    top: 0.08rem!important;
-    background: url("../images/2017/purchas_zero/close_wap.png") no-repeat center top!important;
-    background-size: 100%!important;
-  }
-  .layui-layer-content {
-    height: auto!important;
-  }
-  .layui-layer-btn {
-    padding: 0!important;
-    margin-top: 0.4rem!important;
-    .layui-layer-btn0 {
-      display: block!important;
-      border-radius: 0.35rem!important;
-      width: 2.4rem!important;
-      height: 0.7rem!important;
-      line-height: 0.7rem!important;
-      font-size: 0.26rem!important;
-    }
-  }
+  //.layui-layer {
+  //  border-radius: 0.1rem!important;
+  //  width: 6rem!important;
+  //  height: 4.5rem!important;
+  //}
+  //.layui-layer-close2 {
+  //  width: 0.34rem!important;
+  //  height: 0.33rem!important;
+  //  right: 0.08rem!important;
+  //  top: 0.08rem!important;
+  //  background: url("../images/2017/purchas_zero/close_wap.png") no-repeat center top!important;
+  //  background-size: 100%!important;
+  //}
+  //.layui-layer-content {
+  //  height: auto!important;
+  //}
+  //.layui-layer-btn {
+  //  padding: 0!important;
+  //  margin-top: 0.4rem!important;
+  //  .layui-layer-btn0 {
+  //    display: block!important;
+  //    border-radius: 0.35rem!important;
+  //    width: 2.4rem!important;
+  //    height: 0.7rem!important;
+  //    line-height: 0.7rem!important;
+  //    font-size: 0.26rem!important;
+  //  }
+  //}
 
   .sold-tip {
     width: 6rem;
@@ -511,6 +536,7 @@ p {
           .fr {
             width: 2.93rem;
             .goods-name {
+
               font-size: 0.26rem;
               line-height: 0.3rem;
             }
@@ -526,6 +552,9 @@ p {
               font-size: 0.25rem;
             }
             .invest-btn {
+              &.margin-less {
+                margin-top: 0.1rem;
+              }
               display: block;
               width: 2.8rem;
               height: 0.62rem;
@@ -594,6 +623,10 @@ p {
       }
       ul {
         padding: 0.3rem 0.15rem;
+        @media screen and (max-width: 320px){
+          width: 105%;
+          margin-left: -0.3rem;
+        }
         li {
           font-size: 0.24rem;
           text-indent:0.15rem;
