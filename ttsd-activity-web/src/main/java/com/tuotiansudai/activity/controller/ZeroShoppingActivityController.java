@@ -5,6 +5,7 @@ import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.activity.service.ZeroShoppingActivityService;
 import com.tuotiansudai.repository.model.LoanModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -22,6 +24,12 @@ public class ZeroShoppingActivityController {
     @Autowired
     private ZeroShoppingActivityService zeroShoppingActivityService;
 
+    @Value(value = "${activity.zero.shopping.startTime}")
+    private String activityZeroShoppingStartTime;
+
+    @Value(value = "${activity.zero.shopping.endTime}")
+    private String activityZeroShoppingEndTime;
+
     @RequestMapping(method = {RequestMethod.GET})
     public ModelAndView zeroShopping(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero", "responsive", true);
@@ -30,6 +38,9 @@ public class ZeroShoppingActivityController {
             modelAndView.addObject(zeroShoppingPrizeConfigModel.getPrize().name(), zeroShoppingPrizeConfigModel.getPrizeSurplus());
         }
         modelAndView.addObject("appVersion", request.getHeader("appversion"));
+        modelAndView.addObject("token", request.getHeader("token"));
+        modelAndView.addObject("activityStartTime", activityZeroShoppingStartTime);
+        modelAndView.addObject("activityEndTime", activityZeroShoppingEndTime);
         return modelAndView;
     }
 

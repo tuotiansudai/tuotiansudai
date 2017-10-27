@@ -54,14 +54,14 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Deerma_humidifier">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Deerma_humidifier<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="humidifier"></div>
                                 <div class="fr">
                                     <div class="goods-name">德尔玛（Deerma）加湿器5L大容量</div>
                                     <div class="goods-features">温润你的生活</div>
                                     <div class="goods-price"><del>市场价：119元</del></div>
                                     <div class="goods-income">额外收益：约42元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Deerma_humidifier<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资1600元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Deerma_humidifier<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资1600元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -71,14 +71,14 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Trolley_case">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Trolley_case<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="barBox"></div>
                                 <div class="fr">
                                     <div class="goods-name">90分商旅两用拉杆箱</div>
                                     <div class="goods-features">刚柔并济 悠享自在旅程</div>
                                     <div class="goods-price"><del>市场价：349元</del></div>
                                     <div class="goods-income">额外收益：约127元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Trolley_case<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资4800元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Trolley_case<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}" class="invest-btn">投资4800元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -88,14 +88,14 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Shaver">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Shaver<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="razor"></div>
                                 <div class="fr">
                                     <div class="goods-name">飞利浦（PHILIPS）电动剃须刀</div>
                                     <div class="goods-features">多效理容 更自信有型</div>
                                     <div class="goods-price"><del>市场价：649元</del></div>
                                     <div class="goods-income">额外收益：约 <em></em> 238元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Shaver<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资9000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Shaver<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资9000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -105,7 +105,7 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=SK_II">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=SK_II<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="cosmetics"></div>
                                 <div class="fr">
                                     <div class="goods-name">SK-II"神仙水"晶透修护礼
@@ -113,7 +113,7 @@
                                     <div class="goods-features">神仙美肌 剔透改变</div>
                                     <div class="goods-price"><del>市场价：1370 元</del></div>
                                     <div class="goods-income">额外收益：约502元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=SK_II<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资19000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=SK_II<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资19000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -123,14 +123,14 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaoMi_5X">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaoMi_5X<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="phone"></div>
                                 <div class="fr">
                                     <div class="goods-name">小米5X 4GB+64GB</div>
                                     <div class="goods-features">变焦双摄  拍人更美</div>
                                     <div class="goods-price"><del>市场价：1499元</del></div>
                                     <div class="goods-income">额外收益：约555元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaoMi_5X<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资21000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaoMi_5X<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资21000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -140,14 +140,14 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaPu_Television">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaPu_Television<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="video"></div>
                                 <div class="fr">
                                     <div class="goods-name">夏普45英寸智能液晶电视</div>
                                     <div class="goods-features">定义全新的视界</div>
                                     <div class="goods-price"><del>市场价：2099元</del></div>
                                     <div class="goods-income">额外收益：约766元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaPu_Television<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资29000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=XiaPu_Television<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资29000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -157,14 +157,14 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Purifier">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Purifier<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="purifier"></div>
                                 <div class="fr">
                                     <div class="goods-name">飞利浦空气净化器</div>
                                     <div class="goods-features">健康新家 持久享受</div>
                                     <div class="goods-price"><del>市场价：2799元</del></div>
                                     <div class="goods-income">额外收益：约1030元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Purifier<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资39000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Philips_Purifier<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资39000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -174,7 +174,7 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Sony_Camera">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Sony_Camera<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="camara"></div>
                                 <div class="fr">
                                     <div class="goods-name">索尼DSC-RX100 M3 黑卡
@@ -182,7 +182,7 @@
                                     <div class="goods-features">2010万有效像素</div>
                                     <div class="goods-price"><del>市场价：3899元</del></div>
                                     <div class="goods-income">额外收益：约1426元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Sony_Camera<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资54000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Sony_Camera<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资54000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -192,7 +192,7 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="macAir">
                                     <div class="limitation">限量</div>
                                 </div>
@@ -201,7 +201,7 @@
                                     <div class="goods-features">纤巧轻薄 性能强劲</div>
                                     <div class="goods-price"><del>市场价：6588元</del></div>
                                     <div class="goods-income">额外收益：约2377元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资90000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Apple_MacBook<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资90000元可得</a>
                                 </div>
                             </a>
                         </li>
@@ -211,7 +211,7 @@
                                     <span class="sold"></span>
                                 </div>
                             </#if>
-                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Iphone_X">
+                            <a href="/activity/zero-shopping/article?zeroShoppingPrize=Iphone_X<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>">
                                 <div class="img fl" id="iphonex">
                                     <div class="limitation">限量</div>
                                 </div>
@@ -220,7 +220,7 @@
                                     <div class="goods-features">全面屏 全面绽放</div>
                                     <div class="goods-price"><del>市场价：9688元</del></div>
                                     <div class="goods-income">额外收益：约3565元</div>
-                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Iphone_X<#if isAppSource>&source=app&appVersion=${appVersion!}</#if>" class="invest-btn">投资135000元可得</a>
+                                    <a href="/activity/zero-shopping/article?zeroShoppingPrize=Iphone_X<#if isAppSource>&source=app&token=${token!}&appVersion=${appVersion!}</#if>" class="invest-btn">投资135000元可得</a>
                                 </div>
                             </a>
                         </li>
