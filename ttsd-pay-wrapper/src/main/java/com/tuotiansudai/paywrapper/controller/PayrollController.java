@@ -26,8 +26,8 @@ public class PayrollController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         try {
-            boolean success = payrollService.pay(payrollId);
-            dataDto.setStatus(success);
+            payrollService.pay(payrollId);
+            dataDto.setStatus(true);
         } catch (Exception e) {
             dataDto.setStatus(false);
             dataDto.setMessage(e.getMessage());

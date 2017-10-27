@@ -7,7 +7,6 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.PayrollTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
@@ -67,24 +66,19 @@ public class PayrollServiceImpl implements PayrollService {
      * 4. 发放时若无异常，则根据联动优势的结果，修改状态
      */
     @Override
-    public boolean pay(long payrollId) {
+    public void pay(long payrollId) {
         PayrollModel payroll = payrollMapper.findById(payrollId);
         if (payroll.getStatus() == PayrollStatusType.AUDITED || payroll.getStatus() == PayrollStatusType.FAIL) {
             payrollMapper.updateStatus(payrollId, PayrollStatusType.PAYING);
             List<PayrollDetailModel> payrollList = payrollDetailMapper.findByPayrollId(payrollId);
-            boolean allSuccess = payrollList.stream()
+            payrollList.stream()
                     .filter(m -> m.getStatus() != PayrollPayStatus.SUCCESS)
-                    .map(this::payOnePerson)
-                    .reduce((r, r2) -> r && r2)
-                    .orElse(true);
-            payrollMapper.updateStatus(payrollId, allSuccess ? PayrollStatusType.SUCCESS : PayrollStatusType.FAIL);
-            return allSuccess;
+                    .forEach(this::payOnePerson);
+            refreshPayrollPayStatus(payrollId);
         } else if (payroll.getStatus() == PayrollStatusType.PAYING) {
             logger.info("cancel to payoff, because the status is PAYING, id: " + payrollId);
-            return true;
         } else {
             logger.error("execute payoff failed, status is not AUDITED, id: " + payrollId);
-            return false;
         }
     }
 
@@ -145,13 +139,16 @@ public class PayrollServiceImpl implements PayrollService {
         if (detailModel.getStatus() != PayrollPayStatus.SUCCESS) {
             payrollDetailMapper.updateStatus(payrollDetailId, callbackRequest.isSuccess() ? PayrollPayStatus.SUCCESS : PayrollPayStatus.FAIL);
             logger.info("[Payroll Notify] payroll status update success, payrollDetailId: " + payrollDetailId + ", success: " + callbackRequest.isSuccess());
-
-            List<PayrollDetailModel> payrollDetailModels = payrollDetailMapper.findByPayrollId(detailModel.getPayrollId());
-            boolean allSuccess = payrollDetailModels.stream().allMatch(p -> p.getStatus() == PayrollPayStatus.SUCCESS);
-            if (allSuccess) {
-                payrollMapper.updateStatus(detailModel.getPayrollId(), PayrollStatusType.SUCCESS);
-            }
+            refreshPayrollPayStatus(detailModel.getPayrollId());
         }
         return callbackRequest.getResponseData();
+    }
+
+    private void refreshPayrollPayStatus(long payrollId) {
+        List<PayrollDetailModel> payrollDetailModels = payrollDetailMapper.findByPayrollId(payrollId);
+        boolean allSuccess = payrollDetailModels.stream().allMatch(p -> p.getStatus() == PayrollPayStatus.SUCCESS);
+        if (allSuccess) {
+            payrollMapper.updateStatus(payrollId, PayrollStatusType.SUCCESS);
+        }
     }
 }
