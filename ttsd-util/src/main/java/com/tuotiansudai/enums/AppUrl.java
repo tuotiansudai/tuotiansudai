@@ -4,6 +4,7 @@ public enum AppUrl {
     LOGIN("登录", "app/tuotian/login"),
     MY_ASSESS("我的主页面", "app/tuotian/myfund"),
     MY_ACCOUNT("个人资料", "app/tuotian/myAccount"),
+    MY_FUND_AVAILABLE("账户余额","app/tuotian/myfund-available"),
     SETTING("设置", "app/tuotian/setting"),
     FAST_PAY("开通快捷支付页面", "app/tuotian/open-fastpay"),
     REAL_NAME_IDENTITY("实名认证", "app/tuotian/authentication"),
