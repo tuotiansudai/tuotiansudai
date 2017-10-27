@@ -45,10 +45,11 @@
         </div>
     </div>
     <div id="soldTipDOM" class="sold-tip" style="display: none">
-        <div class="close-btn"></div>
+        <div class="close-btn to-close"></div>
         <div class="icon-sold"></div>
         <p>太火爆了！该标的已售罄，<br/>
             新标的正在努力筹备中，请稍候重试...</p>
+        <div class="known-btn to-close">我知道啦</div>
     </div>
     <#include "../../module/login-tip.ftl" />
 </div>

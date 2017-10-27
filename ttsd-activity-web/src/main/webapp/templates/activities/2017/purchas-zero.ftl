@@ -49,7 +49,7 @@
                 <div class="page-width">
                     <ul class="clearfix">
                         <li>
-                            <#if Deerma_humidifier==0 >
+                            <#if Deerma_humidifier < 1 >
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if Trolley_case==0 >
+                            <#if Trolley_case < 1 >
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -83,7 +83,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if Philips_Shaver==0 >
+                            <#if Philips_Shaver < 1>
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -100,7 +100,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if SK_II==0 >
+                            <#if SK_II < 1>
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -118,7 +118,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if XiaoMi_5X==0 >
+                            <#if XiaoMi_5X < 1 >
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -135,7 +135,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if XiaPu_Television==0 >
+                            <#if XiaPu_Television < 1>
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -152,7 +152,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if Philips_Purifier==0 >
+                            <#if Philips_Purifier < 1>
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -169,7 +169,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if Sony_Camera==0 >
+                            <#if Sony_Camera < 1 >
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -187,7 +187,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if Apple_MacBook==0 >
+                            <#if Apple_MacBook < 1 >
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>
@@ -206,7 +206,7 @@
                             </a>
                         </li>
                         <li>
-                            <#if Iphone_X==0 >
+                            <#if Iphone_X < 1 >
                                 <div class="sold-wrap">
                                     <span class="sold"></span>
                                 </div>

@@ -76,23 +76,6 @@ let iphonexUrl = require('../images/2017/purchas_zero/product/iphonex.png');
 let $iphonexImg = $('<img src = "'+iphonexUrl+'">');
 $iphonex.append($iphonexImg);
 
-//商品详情页图片
-let articleUrl = require('../images/2017/purchas_zero/phone.png');
-let imgDom = $('<img src = "'+articleUrl+'">');
-$('#previewImg').append(imgDom);
-//弹窗提示已售完
-let $soldTipDOM = $('#soldTipDOM');
-// layer.open({
-//     type: 1,
-//     title: false,
-//     closeBtn: 1,
-//     btn: ['我知道啦'],
-//     shadeClose: true,
-//     // area: ['385px', '290px'],
-//     content: $soldTipDOM
-// });
-let sourceKind = globalFun.parseURL(location.href);
-console.log(sourceKind)
 
 
 
