@@ -25,7 +25,7 @@
         update `edxactivity`.`zero_shopping_prize_config` SET
          prize_surplus = prize_surplus-1
          where
-         prize = #{prize}
+         prize = #{zeroShoppingPrize}
     </update>
 
     <select id="findAll" resultMap="zeroShoppingResultMap">

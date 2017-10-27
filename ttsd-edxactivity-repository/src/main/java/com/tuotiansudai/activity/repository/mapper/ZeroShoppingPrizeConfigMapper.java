@@ -14,6 +14,6 @@ public interface ZeroShoppingPrizeConfigMapper {
 
     void update(ZeroShoppingPrizeConfigModel zeroShoppingPrizeModel);
 
-    void prizeSurplusMinus(@Param(value = "prizeName") ZeroShoppingPrize prizeName);
+    void prizeSurplusMinus(@Param(value = "zeroShoppingPrize") ZeroShoppingPrize zeroShoppingPrize);
 
 }
