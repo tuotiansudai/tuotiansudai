@@ -1,9 +1,17 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillMessageType;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.PayrollTransferMapper;
@@ -47,6 +55,9 @@ public class PayrollServiceImpl implements PayrollService {
 
     @Autowired
     private PayrollDetailMapper payrollDetailMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -116,12 +127,14 @@ public class PayrollServiceImpl implements PayrollService {
             success = responseModel.isSuccess();
             if (success) {
                 payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.SUCCESS);
+                payrollBill(payrollDetailModel);
                 logger.info(String.format("[Payroll %d - itemId : %d] paid success", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()));
             } else {
                 payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.FAIL);
                 logger.error(String.format("[Payroll %d - itemId : %d] paid failed, code:%s, message: %s", payrollDetailModel.getPayrollId(),
                         payrollDetailModel.getId(), responseModel.getRetCode(), responseModel.getRetMsg()));
             }
+
         } catch (Exception e) {
             logger.error(String.format("[Payroll %d - itemId : %d] paid failed, orderId: %s", payrollDetailModel.getPayrollId(),
                     payrollDetailModel.getId(), orderId), e);
@@ -130,6 +143,20 @@ public class PayrollServiceImpl implements PayrollService {
             sendSmsErrNotify(fatalMsg);
         }
         return success;
+    }
+
+    private void payrollBill(PayrollDetailModel payrollDetailModel) {
+        AmountTransferMessage atm = new AmountTransferMessage(
+                TransferType.TRANSFER_IN_BALANCE, payrollDetailModel.getLoginName(),
+                payrollDetailModel.getId(), payrollDetailModel.getAmount(),
+                UserBillBusinessType.PAYROLL, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
+        SystemBillMessage sbm = new SystemBillMessage(
+                SystemBillMessageType.TRANSFER_OUT, payrollDetailModel.getId(),
+                payrollDetailModel.getAmount(), SystemBillBusinessType.PAYROLL,
+                SystemBillDetailTemplate.PAYROLL_DETAIL_TEMPLATE.buildDetail(payrollDetailModel.getMobile()));
+        mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
     }
 
     @Override
@@ -151,6 +178,7 @@ public class PayrollServiceImpl implements PayrollService {
 
         if (detailModel.getStatus() != PayrollPayStatus.SUCCESS) {
             payrollDetailMapper.updateStatus(payrollDetailId, callbackRequest.isSuccess() ? PayrollPayStatus.SUCCESS : PayrollPayStatus.FAIL);
+            payrollBill(detailModel);
             logger.info("[Payroll Notify] payroll status update success, payrollDetailId: " + payrollDetailId + ", success: " + callbackRequest.isSuccess());
             refreshPayrollPayStatus(detailModel.getPayrollId());
         }

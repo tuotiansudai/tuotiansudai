@@ -36,7 +36,9 @@ public enum UserBillBusinessType {
     CREDIT_LOAN_TRANSFER_AGENT("发放代理人账户"),
     CREDIT_LOAN_RECHARGE("信用贷账户充值"),
     CREDIT_LOAN_OUT("信用贷放款"),
-    CREDIT_LOAN_REPAY("信用贷还款");
+    CREDIT_LOAN_REPAY("信用贷还款"),
+    PAYROLL("代发工资"),
+    ;
 
     private final String description;
 
