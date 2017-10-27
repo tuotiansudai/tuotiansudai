@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollModel;
+import com.tuotiansudai.repository.model.PayrollPayStatus;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +45,7 @@ public class PayrollDetailMapperTest {
         payrollDetailModel.setPayrollId(payrollModel.getId());
         payrollDetailModel.setAmount(5000);
         payrollDetailModel.setMobile("13900000000");
-        payrollDetailModel.setStatus(PayrollStatusType.PENDING);
+        payrollDetailModel.setStatus(PayrollPayStatus.WAITING);
         payrollDetailModel.setCreatedTime(new Date());
         payrollDetailModel.setUserName("张山");
         payrollDetailModel.setLoginName("test11");
@@ -55,7 +56,7 @@ public class PayrollDetailMapperTest {
         payrollDetailModel2.setPayrollId(payrollModel.getId());
         payrollDetailModel2.setAmount(5000);
         payrollDetailModel2.setMobile("13900000001");
-        payrollDetailModel2.setStatus(PayrollStatusType.PENDING);
+        payrollDetailModel2.setStatus(PayrollPayStatus.WAITING);
         payrollDetailModel2.setCreatedTime(new Date());
         payrollDetailModel2.setUserName("李四");
         payrollDetailModel2.setLoginName("test12");

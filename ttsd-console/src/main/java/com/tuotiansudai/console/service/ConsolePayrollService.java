@@ -1,7 +1,9 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.dto.PayrollDataDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
@@ -48,20 +50,25 @@ public class ConsolePayrollService {
     @Autowired
     private PayrollDetailMapper payrollDetailMapper;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     private static final String redisKey = "payroll:data:{0}";
+
+    private static final int LEFT_SECONDS = 60 * 60 * 24;
 
     @Transactional
     public void createPayroll(String loginName, PayrollDataDto payrollDataDto) {
-        PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(),payrollDataDto.getTotalAmount(),payrollDataDto.getHeadCount());
+        PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(), payrollDataDto.getTotalAmount(), payrollDataDto.getHeadCount());
         payrollModel.setCreatedBy(loginName);
         payrollMapper.create(payrollModel);
-        String existsRedisKey = MessageFormat.format(redisKey,payrollDataDto.getUuid());
-        String payrollDetail = redisWrapperClient.hget(existsRedisKey,"payrolldetail");
-        List<PayrollDetailModel> payrollDetailModelList=(List<PayrollDetailModel>)JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
+        String existsRedisKey = MessageFormat.format(redisKey, payrollDataDto.getUuid());
+        String payrollDetail = redisWrapperClient.get(existsRedisKey);
+        List<PayrollDetailModel> payrollDetailModelList = (List<PayrollDetailModel>) JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
 
-        for (PayrollDetailModel payrollDetailModel :payrollDetailModelList) {
+        for (PayrollDetailModel payrollDetailModel : payrollDetailModelList) {
             payrollDetailModel.setPayrollId(payrollModel.getId());
-            payrollDetailModel.setStatus(PayrollStatusType.PENDING);
+            payrollDetailModel.setStatus(PayrollPayStatus.WAITING);
             payrollDetailMapper.create(payrollDetailModel);
         }
         redisWrapperClient.del(existsRedisKey);
@@ -77,26 +84,26 @@ public class ConsolePayrollService {
         payrollModel.setUpdatedTime(new Date());
         payrollMapper.update(payrollModel);
 
-        if(!Strings.isNullOrEmpty(payrollDataDto.getUuid())){
-            String existsRedisKey = MessageFormat.format(redisKey,payrollDataDto.getUuid());
-            String payrollDetail = redisWrapperClient.hget(existsRedisKey,"payrolldetail");
-            List<PayrollDetailModel> payrollDetailModelList=(List<PayrollDetailModel>)JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
+        if (!Strings.isNullOrEmpty(payrollDataDto.getUuid())) {
+            String existsRedisKey = MessageFormat.format(redisKey, payrollDataDto.getUuid());
+            String payrollDetail = redisWrapperClient.hget(existsRedisKey, "payrolldetail");
+            List<PayrollDetailModel> payrollDetailModelList = (List<PayrollDetailModel>) JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
 
             payrollDetailMapper.deleteByPayrollId(payrollModel.getId());
-            for (PayrollDetailModel payrollDetailModel :payrollDetailModelList) {
+            for (PayrollDetailModel payrollDetailModel : payrollDetailModelList) {
                 payrollDetailModel.setPayrollId(payrollModel.getId());
-                payrollDetailModel.setStatus(PayrollStatusType.PENDING);
+                payrollDetailModel.setStatus(PayrollPayStatus.WAITING);
                 payrollDetailMapper.create(payrollDetailModel);
             }
             redisWrapperClient.del(existsRedisKey);
         }
     }
 
-    public PayrollModel findById(long id){
+    public PayrollModel findById(long id) {
         return payrollMapper.findById(id);
     }
 
-    public List<PayrollDetailModel> findByPayrollId(long payrollId){
+    public List<PayrollDetailModel> findByPayrollId(long payrollId) {
         return payrollDetailMapper.findByPayrollId(payrollId);
     }
 
@@ -137,11 +144,15 @@ public class ConsolePayrollService {
                 totalAmount += AmountConverter.convertStringToCent(arrayData[2]);
                 headCount++;
                 loginNameList.add(userModel.getLoginName());
-                payrollDetailModelList.add(new PayrollDetailModel(userModel.getLoginName(), arrayData[0], arrayData[1], AmountConverter.convertStringToCent(arrayData[2])));
+                payrollDetailModelList.add(new PayrollDetailModel(userModel.getLoginName(), arrayData[0].trim(), arrayData[1].trim(), AmountConverter.convertStringToCent(arrayData[2])));
             }
-        } catch (IOException e) {
-            return new PayrollDataDto(false,"上传失败!文件内容错误");
-        } finally {
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return new PayrollDataDto(false, "上传失败!请检查文件的列数或数据不符合规范");
+        }
+        catch (IOException e) {
+            return new PayrollDataDto(false, "上传失败!文件内容读取错误");
+        }
+        finally {
             if (null != inputStream) {
                 inputStream.close();
             }
@@ -171,7 +182,7 @@ public class ConsolePayrollService {
             payrollDataDto.setPayrollDetailModelList(payrollDetailModelList);
             String uuid = UUIDGenerator.generate();
             payrollDataDto.setUuid(uuid);
-            redisWrapperClient.hset(MessageFormat.format(redisKey, uuid),"payrolldetail",convertJavaListToString(payrollDetailModelList));
+            redisWrapperClient.setex(MessageFormat.format(redisKey, uuid), LEFT_SECONDS, convertJavaListToString(payrollDetailModelList));
             payrollDataDto.setMessage("导入发放名单成功!");
         }
         return payrollDataDto;
@@ -188,9 +199,12 @@ public class ConsolePayrollService {
         }
     }
 
-    private String convertJavaListToString(List<PayrollDetailModel> payrollDetailModelList){
+    private String convertJavaListToString(List<PayrollDetailModel> payrollDetailModelList) {
         JSONArray jsArr = JSONArray.fromObject(payrollDetailModelList);
         return jsArr.toString();
     }
 
+    private void beginPayroll(long payrollId) {
+        mqWrapperClient.sendMessage(MessageQueue.Payroll, String.valueOf(payrollId));
+    }
 }

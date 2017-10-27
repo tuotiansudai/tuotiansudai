@@ -17,7 +17,7 @@ public class PayrollDetailModel implements Serializable {
 
     private long amount;
 
-    private PayrollStatusType status;
+    private PayrollPayStatus status;
 
     private Date createdTime = new Date();
 
@@ -79,11 +79,11 @@ public class PayrollDetailModel implements Serializable {
         this.amount = amount;
     }
 
-    public PayrollStatusType getStatus() {
+    public PayrollPayStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PayrollStatusType status) {
+    public void setStatus(PayrollPayStatus status) {
         this.status = status;
     }
 
