@@ -18,12 +18,10 @@
            </ul>
 
            <#assign versions = ['4.4.1','4.3.5', '4.3.4', '4.4']>
-
            <#--未登录-->
            <@global.isAnonymous>
                <a href="javascript:void(0)" class="invest-btn" id="unLogin">立即白拿</a>
            </@global.isAnonymous>
-
            <#--已登录-->
            <@global.isNotAnonymous>
            <#if exists>
