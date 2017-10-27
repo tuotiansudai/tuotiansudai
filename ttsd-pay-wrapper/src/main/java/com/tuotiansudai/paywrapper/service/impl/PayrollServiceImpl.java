@@ -5,11 +5,9 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.SystemBillBusinessType;
-import com.tuotiansudai.enums.SystemBillMessageType;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -32,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +89,8 @@ public class PayrollServiceImpl implements PayrollService {
             List<PayrollDetailModel> payrollList = payrollDetailMapper.findByPayrollId(payrollId);
             payrollList.stream()
                     .filter(m -> m.getStatus() != PayrollPayStatus.SUCCESS)
-                    .forEach(this::payOnePerson);
+                    .filter(this::payOnePerson)
+                    .forEach(m -> this.sendUserMessage(payroll, m));
             refreshPayrollPayStatus(payrollId);
         } else if (payroll.getStatus() == PayrollStatusType.PAYING) {
             logger.info("cancel to payoff, because the status is PAYING, id: " + payrollId);
@@ -126,13 +126,9 @@ public class PayrollServiceImpl implements PayrollService {
             TransferResponseModel responseModel = paySyncClient.send(PayrollTransferMapper.class, requestModel, TransferResponseModel.class);
             success = responseModel.isSuccess();
             if (success) {
-                payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.SUCCESS);
-                payrollBill(payrollDetailModel);
-                logger.info(String.format("[Payroll %d - itemId : %d] paid success", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()));
+                paySuccess(payrollDetailModel);
             } else {
-                payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.FAIL);
-                logger.error(String.format("[Payroll %d - itemId : %d] paid failed, code:%s, message: %s", payrollDetailModel.getPayrollId(),
-                        payrollDetailModel.getId(), responseModel.getRetCode(), responseModel.getRetMsg()));
+                payFail(payrollDetailModel, responseModel.getRetCode(), responseModel.getRetMsg());
             }
 
         } catch (Exception e) {
@@ -145,7 +141,7 @@ public class PayrollServiceImpl implements PayrollService {
         return success;
     }
 
-    private void payrollBill(PayrollDetailModel payrollDetailModel) {
+    private void updateUserAccount(PayrollDetailModel payrollDetailModel) {
         AmountTransferMessage atm = new AmountTransferMessage(
                 TransferType.TRANSFER_IN_BALANCE, payrollDetailModel.getLoginName(),
                 payrollDetailModel.getId(), payrollDetailModel.getAmount(),
@@ -177,12 +173,28 @@ public class PayrollServiceImpl implements PayrollService {
         PayrollDetailModel detailModel = payrollDetailMapper.findById(payrollDetailId);
 
         if (detailModel.getStatus() != PayrollPayStatus.SUCCESS) {
-            payrollDetailMapper.updateStatus(payrollDetailId, callbackRequest.isSuccess() ? PayrollPayStatus.SUCCESS : PayrollPayStatus.FAIL);
-            payrollBill(detailModel);
-            logger.info("[Payroll Notify] payroll status update success, payrollDetailId: " + payrollDetailId + ", success: " + callbackRequest.isSuccess());
-            refreshPayrollPayStatus(detailModel.getPayrollId());
+            if (callbackRequest.isSuccess()) {
+                paySuccess(detailModel);
+                refreshPayrollPayStatus(detailModel.getPayrollId());
+                PayrollModel payroll = payrollMapper.findById(detailModel.getPayrollId());
+                sendUserMessage(payroll, detailModel);
+            } else {
+                payFail(detailModel, callbackRequest.getRetCode(), callbackRequest.getRetMsg());
+            }
         }
         return callbackRequest.getResponseData();
+    }
+
+    private void paySuccess(PayrollDetailModel payrollDetailModel) {
+        payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.SUCCESS);
+        updateUserAccount(payrollDetailModel);
+        logger.info(String.format("[Payroll %d - itemId : %d] paid success", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()));
+    }
+
+    private void payFail(PayrollDetailModel payrollDetailModel, String retCode, String retMsg) {
+        payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.FAIL);
+        logger.error(String.format("[Payroll %d - itemId : %d] paid failed, code:%s, message: %s", payrollDetailModel.getPayrollId(),
+                payrollDetailModel.getId(), retCode, retMsg));
     }
 
     private void refreshPayrollPayStatus(long payrollId) {
@@ -197,5 +209,13 @@ public class PayrollServiceImpl implements PayrollService {
         logger.info("sent payroll fatal sms message");
         SmsFatalNotifyDto dto = new SmsFatalNotifyDto(String.format("%s, %s", environment, errMsg));
         smsWrapperClient.sendFatalNotify(dto);
+    }
+
+    private void sendUserMessage(PayrollModel payrollModel, PayrollDetailModel payrollDetailModel) {
+        String title = MessageFormat.format(MessageEventType.PAYROLL_HAS_BEEN_TRANSFERRED.getTitleTemplate(), payrollModel.getTitle());
+        String message = MessageFormat.format(MessageEventType.PAYROLL_HAS_BEEN_TRANSFERRED.getContentTemplate(), payrollModel.getTitle());
+        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.PAYROLL_HAS_BEEN_TRANSFERRED,
+                Collections.singletonList(payrollDetailModel.getLoginName()),
+                title, message, null));
     }
 }
