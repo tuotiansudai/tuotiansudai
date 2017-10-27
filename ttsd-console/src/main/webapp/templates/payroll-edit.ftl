@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-payroll.js" headLab="finance-manage" sideLab="payrollCreate" title="创建工资单">
+<@global.main pageCss="" pageJavascript="create-payroll.js" headLab="finance-manage" sideLab="payroll" title="编辑">
 
 <div class="col-md-10">
     <form action="/finance-manage/payroll-manage/edit" method="post" class="form-horizontal form-payroll">
@@ -58,7 +58,9 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
-                <button type="button" class="btn btn-sm btn-primary" id="btnSave" <@security.authorize access="hasAnyAuthority('OPERATOR')">disabled</@security.authorize>>提 交</button>
+                <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                    <button type="button" class="btn btn-sm btn-primary" id="btnSave">提 交</button>
+                </@security.authorize>
             </div>
         </div>
 

@@ -9,9 +9,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Controller
@@ -43,7 +47,7 @@ public class PayrollController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
         consolePayrollService.updatePayroll(loginName, payrollDataDto);
-        modelAndView.setViewName("redirect:/finance-manage/payroll-manage/list");
+        modelAndView.setViewName("redirect:/finance-manage/payroll-manage/payroll-list");
         return modelAndView;
     }
 
@@ -53,13 +57,29 @@ public class PayrollController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
         consolePayrollService.createPayroll(loginName, payrollDataDto);
-        modelAndView.setViewName("redirect:/finance-manage/payroll-manage/list");
+        modelAndView.setViewName("redirect:/finance-manage/payroll-manage/payroll-list");
         return modelAndView;
     }
 
     @RequestMapping(value = "/import-csv", method = {RequestMethod.POST})
     @ResponseBody
     public PayrollDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
-        return this.consolePayrollService.importPayrollUserList(httpServletRequest);
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        if (null == multipartFile) {
+            return new PayrollDataDto(false,"请上传文件！");
+        }
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            return new PayrollDataDto(false,"上传失败!文件必须是csv格式");
+        }
+
+        PayrollDataDto payrollDataDto = new PayrollDataDto();
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            payrollDataDto = consolePayrollService.importPayrollUserList(inputStream);
+        } catch (IOException e) {
+            payrollDataDto.setStatus(false);
+            payrollDataDto.setMessage("上传失败!文件内容错误");
+        }
+        return payrollDataDto;
     }
 }

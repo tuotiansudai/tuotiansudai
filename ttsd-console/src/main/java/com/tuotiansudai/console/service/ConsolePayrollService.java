@@ -17,10 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,10 +100,7 @@ public class ConsolePayrollService {
         return payrollDetailMapper.findByPayrollId(payrollId);
     }
 
-    public PayrollDataDto importPayrollUserList(HttpServletRequest httpServletRequest) throws Exception {
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
-        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
-        InputStream inputStream = null;
+    public PayrollDataDto importPayrollUserList(InputStream inputStream) throws Exception {
         PayrollDataDto payrollDataDto = new PayrollDataDto();
         List<String> listUserNotExists = new ArrayList<>();
         List<String> listUserAndUserNameNotMatch = new ArrayList<>();
@@ -116,11 +110,7 @@ public class ConsolePayrollService {
         List<String> loginNameList = new ArrayList<>();
         long totalAmount = 0;
         long headCount = 0;
-        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
-            return new PayrollDataDto(false,"上传失败!文件必须是csv格式");
-        }
         try {
-            inputStream = multipartFile.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "GBK"));
             String strVal;
 
@@ -140,7 +130,7 @@ public class ConsolePayrollService {
                     listUserNotAccount.add(arrayData[1]);
                     continue;
                 }
-                if (!isNumber(arrayData[2])) {
+                if (!isAmount(arrayData[2])) {
                     listUserAmountError.add(arrayData[1]);
                     continue;
                 }
@@ -188,7 +178,7 @@ public class ConsolePayrollService {
 
     }
 
-    private boolean isNumber(String str) {
+    private boolean isAmount(String str) {
         Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后2位的数字的正则表达式
         Matcher match = pattern.matcher(str);
         if (match.matches() == false) {
