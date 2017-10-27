@@ -21,9 +21,7 @@ public class PayrollController {
     @RequestMapping(value = "/primary-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView primaryAudit(@PathVariable long payRollId) {
-
-
-
+        consolePayrollService.primaryAudit(payRollId);
         return null;
     }
 
