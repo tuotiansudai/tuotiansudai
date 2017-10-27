@@ -12,10 +12,11 @@ CREATE TABLE `zero_shopping_prize_select` (
 
 CREATE TABLE `zero_shopping_prize_config` (
   `id`                          INT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `prize`                       VARCHAR(50) NOT NULL,
+  `prize`                       VARCHAR(50) NOT NULL ,
   `prize_total`                 INT(5) UNSIGNED NOT NULL DEFAULT 0,
   `prize_surplus`               INT(5) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE(`prize`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 INSERT INTO `edxactivity`.`zero_shopping_prize_config` (`prize`) VALUES ('Deerma_humidifier');
