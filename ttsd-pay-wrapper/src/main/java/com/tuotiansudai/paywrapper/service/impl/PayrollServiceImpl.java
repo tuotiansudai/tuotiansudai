@@ -1,8 +1,9 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
-import com.tuotiansudai.job.JobManager;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.PayrollTransferMapper;
@@ -18,6 +19,7 @@ import com.tuotiansudai.repository.mapper.PayrollMapper;
 import com.tuotiansudai.repository.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -47,7 +49,10 @@ public class PayrollServiceImpl implements PayrollService {
     private PayrollDetailMapper payrollDetailMapper;
 
     @Autowired
-    private JobManager jobManager;
+    private SmsWrapperClient smsWrapperClient;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     /**
      * 对于某一批次：
@@ -60,10 +65,11 @@ public class PayrollServiceImpl implements PayrollService {
      * 对于某一批次中的某一个人：
      * 1. 若当前状态是 待支付(WAITING)或支付失败(FAIL), 则发钱
      * 2. 若当前状态是 支付中(PAYING), 则直接视为失败
-     * 3. 发放时若出现异常，则将状态设置为 支付中(PAYING), 本次发放视为失败
-     * 3.1. 并添加定时任务：30分钟后若仍为 支付中，则将状态改为发放失败(FAIL)
-     * 3.2. 若收到异步回调，则根据异步回调的结果修改支付状态，并更新此批次的状态
-     * 4. 发放时若无异常，则根据联动优势的结果，修改状态
+     * 3. 调用联动优势前先将状态置为 支付中(PAYING)
+     * 4. 调用联动优势接口给用户转账
+     * 4.1. 根据联动优势的同步结果，修改状态
+     * 4.2. 若出现异常，则短信报警
+     * 5. 同时接收联动优势的后台回调，并更新此记录状态，和此批次的状态
      */
     @Override
     public void pay(long payrollId) {
@@ -91,6 +97,11 @@ public class PayrollServiceImpl implements PayrollService {
         String timestamp = new SimpleDateFormat("HHmmss").format(new Date());
         String orderId = String.format("%dX%dX%s", payrollDetailModel.getPayrollId(), payrollDetailModel.getId(), timestamp);
         AccountModel accountModel = accountMapper.findByLoginName(payrollDetailModel.getLoginName());
+        if (accountModel == null) {
+            payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.FAIL);
+            logger.info(String.format("[Payroll %d - itemId : %d] paid failed, account not exists", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()));
+            return false;
+        }
 
         TransferRequestModel requestModel = TransferRequestModel.newPayrollRequest(
                 orderId,
@@ -100,21 +111,23 @@ public class PayrollServiceImpl implements PayrollService {
 
         boolean success = false;
         try {
+            payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.PAYING);
             TransferResponseModel responseModel = paySyncClient.send(PayrollTransferMapper.class, requestModel, TransferResponseModel.class);
             success = responseModel.isSuccess();
             if (success) {
+                payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.SUCCESS);
                 logger.info(String.format("[Payroll %d - itemId : %d] paid success", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()));
             } else {
+                payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.FAIL);
                 logger.error(String.format("[Payroll %d - itemId : %d] paid failed, code:%s, message: %s", payrollDetailModel.getPayrollId(),
                         payrollDetailModel.getId(), responseModel.getRetCode(), responseModel.getRetMsg()));
             }
-            payrollDetailMapper.updateStatus(payrollDetailModel.getId(), success ? PayrollPayStatus.SUCCESS : PayrollPayStatus.FAIL);
         } catch (Exception e) {
-            logger.error(String.format("[Payroll %d - itemId : %d] paid failed", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()), e);
-            // 异常时，将该笔工资状态记为正在处理
-            payrollDetailMapper.updateStatus(payrollDetailModel.getId(), PayrollPayStatus.PAYING);
-            // 并且在30分钟后再将状态置为失败
-            DelayMessageDeliveryJobCreator.createConfirmPayrollFailedDelayJob(jobManager, payrollDetailModel.getId());
+            logger.error(String.format("[Payroll %d - itemId : %d] paid failed, orderId: %s", payrollDetailModel.getPayrollId(),
+                    payrollDetailModel.getId(), orderId), e);
+            String fatalMsg = String.format("代发工资转账异常，订单号: %s", orderId);
+            logger.fatal(fatalMsg, e);
+            sendSmsErrNotify(fatalMsg);
         }
         return success;
     }
@@ -150,5 +163,11 @@ public class PayrollServiceImpl implements PayrollService {
         if (allSuccess) {
             payrollMapper.updateStatus(payrollId, PayrollStatusType.SUCCESS);
         }
+    }
+
+    private void sendSmsErrNotify(String errMsg) {
+        logger.info("sent payroll fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(String.format("%s, %s", environment, errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
     }
 }

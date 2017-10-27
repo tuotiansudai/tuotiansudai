@@ -49,11 +49,6 @@ public class DelayMessageDeliveryJobCreator {
         create(jobManager, deadline, MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
     }
 
-    public static void createConfirmPayrollFailedDelayJob(JobManager jobManager, long payrollDetailId) {
-        String messageBody = String.valueOf(payrollDetailId);
-        create(jobManager, PAYROLL_FAIL_WAIT_SECONDS, MessageQueue.PayrollConfirmFail, messageBody);
-    }
-
     public static void create(JobManager jobManager, int delaySeconds, MessageQueue messageQueue, String messageBody) {
         create(jobManager, delaySeconds, messageQueue, messageBody, String.valueOf(System.currentTimeMillis()), true);
     }
