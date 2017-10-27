@@ -5,6 +5,7 @@ import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.repository.mapper.PayrollTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
@@ -105,7 +106,7 @@ public class PayrollServiceImpl implements PayrollService {
 
         boolean success = false;
         try {
-            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+            TransferResponseModel responseModel = paySyncClient.send(PayrollTransferMapper.class, requestModel, TransferResponseModel.class);
             success = responseModel.isSuccess();
             if (success) {
                 logger.info(String.format("[Payroll %d - itemId : %d] paid success", payrollDetailModel.getPayrollId(), payrollDetailModel.getId()));
