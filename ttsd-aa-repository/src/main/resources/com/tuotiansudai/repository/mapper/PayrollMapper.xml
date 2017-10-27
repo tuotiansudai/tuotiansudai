@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.PayrollMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="payRollResultMap" type="PayrollModel">
         <id column="id" property="id"></id>
@@ -36,6 +36,14 @@
         updated_by = #{updatedBy},
         updated_time = #{updatedTime}
         where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="map" resultMap="payRollResultMap">
+        select * from payroll where id = #{id}
+    </select>
+
+    <update id="updateStatus" parameterType="map">
+        update payroll set status = #{status} where id=#{id}
     </update>
 
 </mapper>
