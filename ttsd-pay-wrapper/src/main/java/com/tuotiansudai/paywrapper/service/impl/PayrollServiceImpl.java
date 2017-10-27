@@ -58,7 +58,7 @@ public class PayrollServiceImpl implements PayrollService {
      * <p>
      * <p>
      * 对于某一批次中的某一个人：
-     * 1. 若当前状态是 待支付(WAITING), 则发钱
+     * 1. 若当前状态是 待支付(WAITING)或支付失败(FAIL), 则发钱
      * 2. 若当前状态是 支付中(PAYING), 则直接视为失败
      * 3. 发放时若出现异常，则将状态设置为 支付中(PAYING), 本次发放视为失败
      * 3.1. 并添加定时任务：30分钟后若仍为 支付中，则将状态改为发放失败(FAIL)
