@@ -296,28 +296,13 @@ productList[product].images.forEach(function(item,index) {
 })
 //弹窗提示已售完
 let $soldTipDOM = $('#soldTipDOM');
-$('#loanNoExist').on('click',function(){
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-            layer.open({
-                type: 1,
-                title: false,
-                closeBtn: 1,
-                btn: ['我知道啦'],
-                shadeClose: true,
-                content: $soldTipDOM
-            });
-        })
-        .fail(function(){
-            toLogin();
-        })
-
-
+$('#unLogin').on('click',function(){
+    toLogin();
 })
 
-$('#toInvest').on('click',function(){
-    $.when(commonFun.isUserLogin())
-        .done(function () {
+$('#loanNoExist').on('click',function(){
+
+
             layer.open({
                 type: 1,
                 title: false,
@@ -326,10 +311,7 @@ $('#toInvest').on('click',function(){
                 shadeClose: true,
                 content: $soldTipDOM
             });
-        })
-        .fail(function(){
-            toLogin();
-        })
+
 
 
 })
