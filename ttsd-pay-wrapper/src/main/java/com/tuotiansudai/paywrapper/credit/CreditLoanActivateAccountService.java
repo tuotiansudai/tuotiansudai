@@ -119,7 +119,6 @@ public class CreditLoanActivateAccountService {
 
             BaseDto<PayFormDataDto> payFormDataDtoBaseDto = payAsyncClient.generateFormData(CreditLoanActivateAccountMapper.class, requestModel);
             redisWrapperClient.setex(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_CONCURRENCY_REDIS_KEY, mobile), 30 * 60, SyncRequestStatus.SENT.name());
-            redisWrapperClient.set(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile), SyncRequestStatus.SENT.name());
             return payFormDataDtoBaseDto;
         } catch (Exception e) {
             logger.error(MessageFormat.format("[credit loan password activate account {0}] activate account error, mobile({1})", mobile), e);
@@ -208,7 +207,7 @@ public class CreditLoanActivateAccountService {
                 .build()));
 
         if (callbackRequest.isSuccess()) {
-            if (SyncRequestStatus.SENT.name().equalsIgnoreCase(redisWrapperClient.get(key))) {
+            if (Strings.isNullOrEmpty(redisWrapperClient.get(key)) || SyncRequestStatus.SENT.name().equalsIgnoreCase(redisWrapperClient.get(key))) {
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
                         new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(orderId).getLoginName(),
                                 Long.parseLong(orderId),
