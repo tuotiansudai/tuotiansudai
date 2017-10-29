@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollPayStatus;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +51,6 @@ public class PayrollDetailMapperTest {
         payrollDetailModel.setCreatedTime(new Date());
         payrollDetailModel.setUserName("张山");
         payrollDetailModel.setLoginName("test11");
-        payrollDetailMapper.create(payrollDetailModel);
 
         PayrollDetailModel payrollDetailModel2 = new PayrollDetailModel();
         payrollDetailModel2.setId(2L);
@@ -60,11 +61,11 @@ public class PayrollDetailMapperTest {
         payrollDetailModel2.setCreatedTime(new Date());
         payrollDetailModel2.setUserName("李四");
         payrollDetailModel2.setLoginName("test12");
-        payrollDetailMapper.create(payrollDetailModel);
+        payrollDetailMapper.create(Lists.newArrayList(payrollDetailModel,payrollDetailModel2));
 
-        List<PayrollDetailModel> payrollDetailModelList = payrollDetailMapper.findByPayrollId(payrollModel.getId());
+        List<PayrollDetailModel> payrollDetailModelList2 = payrollDetailMapper.findByPayrollId(payrollModel.getId());
 
-        assertThat(payrollDetailModelList.size(), is(2));
+        assertThat(payrollDetailModelList2.size(), is(2));
     }
 
 }

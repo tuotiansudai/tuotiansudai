@@ -73,8 +73,13 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
             },
             beforeCheck: function(curform) {
                 var title = $('.payroll-title', curform).val();
+                var filename = $('#file-in', curform).val();
                 if (title == '') {
                     showErrorMessage('标题不能为空', $('.payroll-title', curform));
+                    return false;
+                }
+                if($('.payroll-id',curform).val() == undefined && filename == ''){
+                    showErrorMessage('请上传发放名单', $('#file-in', curform));
                     return false;
                 }
             },

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PayrollDetailMapper {
 
-    void create(PayrollDetailModel payrollDetailModel);
+    int create(@Param("payrollDetails") List<PayrollDetailModel> payrollDetailModels);
 
     void deleteByPayrollId(@Param(value = "payrollId") long payrollId);
 

@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -95,7 +96,7 @@ public class PayrollServiceTest {
             detailModel.setLoginName(RandomStringUtils.randomAlphabetic(8));
             detailModel.setStatus(PayrollPayStatus.WAITING);
             detailModel.setPayrollId(payrollModel.getId());
-            payrollDetailMapper.create(detailModel);
+            payrollDetailMapper.create(Lists.newArrayList(detailModel));
             totalAmount -= amount;
         }
     }

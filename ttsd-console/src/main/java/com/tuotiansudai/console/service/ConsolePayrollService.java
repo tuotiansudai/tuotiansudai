@@ -62,16 +62,8 @@ public class ConsolePayrollService {
         PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(), payrollDataDto.getTotalAmount(), payrollDataDto.getHeadCount());
         payrollModel.setCreatedBy(loginName);
         payrollMapper.create(payrollModel);
-        String existsRedisKey = MessageFormat.format(redisKey, payrollDataDto.getUuid());
-        String payrollDetail = redisWrapperClient.get(existsRedisKey);
-        List<PayrollDetailModel> payrollDetailModelList = (List<PayrollDetailModel>) JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
 
-        for (PayrollDetailModel payrollDetailModel : payrollDetailModelList) {
-            payrollDetailModel.setPayrollId(payrollModel.getId());
-            payrollDetailModel.setStatus(PayrollPayStatus.WAITING);
-            payrollDetailMapper.create(payrollDetailModel);
-        }
-        redisWrapperClient.del(existsRedisKey);
+        this.insertPayrollDetail(payrollDataDto, payrollModel);
     }
 
     @Transactional
@@ -85,17 +77,7 @@ public class ConsolePayrollService {
         payrollMapper.update(payrollModel);
 
         if (!Strings.isNullOrEmpty(payrollDataDto.getUuid())) {
-            String existsRedisKey = MessageFormat.format(redisKey, payrollDataDto.getUuid());
-            String payrollDetail = redisWrapperClient.hget(existsRedisKey, "payrolldetail");
-            List<PayrollDetailModel> payrollDetailModelList = (List<PayrollDetailModel>) JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
-
-            payrollDetailMapper.deleteByPayrollId(payrollModel.getId());
-            for (PayrollDetailModel payrollDetailModel : payrollDetailModelList) {
-                payrollDetailModel.setPayrollId(payrollModel.getId());
-                payrollDetailModel.setStatus(PayrollPayStatus.WAITING);
-                payrollDetailMapper.create(payrollDetailModel);
-            }
-            redisWrapperClient.del(existsRedisKey);
+           this.insertPayrollDetail(payrollDataDto, payrollModel);
         }
     }
 
@@ -114,7 +96,6 @@ public class ConsolePayrollService {
         List<String> listUserNotAccount = new ArrayList<>();
         List<String> listUserAmountError = new ArrayList<>();
         List<PayrollDetailModel> payrollDetailModelList = new ArrayList<>();
-        List<String> loginNameList = new ArrayList<>();
         long totalAmount = 0;
         long headCount = 0;
         try {
@@ -123,31 +104,30 @@ public class ConsolePayrollService {
 
             while (null != (strVal = bufferedReader.readLine())) {
                 String arrayData[] = strVal.split(",");
-                UserModel userModel = userMapper.findByMobile(arrayData[1]);
+                UserModel userModel = userMapper.findByMobile(arrayData[1].trim());
                 if (userModel == null) {
-                    listUserNotExists.add(arrayData[1]);
+                    listUserNotExists.add(arrayData[1].trim());
                     continue;
                 }
-                if (!userModel.getUserName().equals(arrayData[0])) {
-                    listUserAndUserNameNotMatch.add(arrayData[1]);
+                if (!userModel.getUserName().equals(arrayData[0].trim())) {
+                    listUserAndUserNameNotMatch.add(arrayData[1].trim());
                     continue;
                 }
-                AccountModel accountModel = accountMapper.findByMobile(arrayData[1]);
+                AccountModel accountModel = accountMapper.findByMobile(arrayData[1].trim());
                 if (accountModel == null) {
-                    listUserNotAccount.add(arrayData[1]);
+                    listUserNotAccount.add(arrayData[1].trim());
                     continue;
                 }
-                if (!isAmount(arrayData[2])) {
-                    listUserAmountError.add(arrayData[1]);
+                if (!isAmount(arrayData[2].trim())) {
+                    listUserAmountError.add(arrayData[1].trim());
                     continue;
                 }
-                totalAmount += AmountConverter.convertStringToCent(arrayData[2]);
+                totalAmount += AmountConverter.convertStringToCent(arrayData[2].trim());
                 headCount++;
-                loginNameList.add(userModel.getLoginName());
-                payrollDetailModelList.add(new PayrollDetailModel(userModel.getLoginName(), arrayData[0].trim(), arrayData[1].trim(), AmountConverter.convertStringToCent(arrayData[2])));
+                payrollDetailModelList.add(new PayrollDetailModel(userModel.getLoginName(), arrayData[0].trim(), arrayData[1].trim(), AmountConverter.convertStringToCent(arrayData[2].trim())));
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            return new PayrollDataDto(false, "上传失败!请检查文件的列数或数据不符合规范");
+            return new PayrollDataDto(false, "上传失败!请检查文件的列数");
         }
         catch (IOException e) {
             return new PayrollDataDto(false, "上传失败!文件内容读取错误");
@@ -186,7 +166,6 @@ public class ConsolePayrollService {
             payrollDataDto.setMessage("导入发放名单成功!");
         }
         return payrollDataDto;
-
     }
 
     private boolean isAmount(String str) {
@@ -197,6 +176,19 @@ public class ConsolePayrollService {
         } else {
             return true;
         }
+    }
+
+    private void insertPayrollDetail(PayrollDataDto payrollDataDto, PayrollModel payrollModel){
+        String existsRedisKey = MessageFormat.format(redisKey, payrollDataDto.getUuid());
+        String payrollDetail = redisWrapperClient.get(existsRedisKey);
+        List<PayrollDetailModel> payrollDetailModelList = (List<PayrollDetailModel>) JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
+        payrollDetailModelList.stream().forEach(n ->{
+            n.setPayrollId(payrollModel.getId());
+            n.setStatus(PayrollPayStatus.WAITING);
+        });
+        payrollDetailMapper.deleteByPayrollId(payrollModel.getId());
+        payrollDetailMapper.create(payrollDetailModelList);
+        redisWrapperClient.del(existsRedisKey);
     }
 
     private String convertJavaListToString(List<PayrollDetailModel> payrollDetailModelList) {
