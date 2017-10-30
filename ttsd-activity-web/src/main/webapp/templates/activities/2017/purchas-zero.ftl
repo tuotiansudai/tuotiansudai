@@ -197,7 +197,7 @@
                                     <div class="limitation">限量</div>
                                 </div>
                                 <div class="fr">
-                                    <div class="goods-name">MacBook Air 13.3英寸笔记本 8GB内存/128GB闪存</div>
+                                    <div class="goods-name">MacBook Air 13.3英寸 8GB内存/128GB闪存</div>
                                     <div class="goods-features">纤巧轻薄 性能强劲</div>
                                     <div class="goods-price"><del>市场价：6588元</del></div>
                                     <div class="goods-income">额外收益：约2377元</div>
