@@ -30,7 +30,8 @@ public interface UserLotteryPrizeMapper {
 
     List<UserLotteryPrizeView> findLotteryPrizeByMobileAndPrize(@Param(value = "mobile") String mobile,
                                                                 @Param("lotteryPrizes") List<LotteryPrize> lotteryPrizes,
-                                                                @Param("activityCategory") ActivityCategory activityCategory);
+                                                                @Param("activityCategory") ActivityCategory activityCategory,
+                                                                @Param(value = "limitCount") Integer limitCount);
 
     List<UserLotteryTop10PrizeView> findMoneyTreeLotteryPrizeTop10(@Param(value = "activityCategory") ActivityCategory activityCategory);
 
