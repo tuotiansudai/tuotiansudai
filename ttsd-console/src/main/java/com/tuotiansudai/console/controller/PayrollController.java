@@ -34,7 +34,7 @@ public class PayrollController {
                                 @RequestParam(name = "title", required = false) String title,
                                 @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                 @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        ModelAndView modelAndView = new ModelAndView("/payroll");
+        ModelAndView modelAndView = new ModelAndView("/payroll-list");
         BasePaginationDataDto basePaginationDataDto = payrollService.list(
                 createStartTime == null ? new DateTime(0).toDate() : new DateTime(createStartTime).withTimeAtStartOfDay().toDate(),
                 createEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(createEndTime).withTimeAtStartOfDay().plusDays(1).toDate(),
