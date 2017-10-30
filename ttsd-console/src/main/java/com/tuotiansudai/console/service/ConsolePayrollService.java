@@ -101,7 +101,7 @@ public class ConsolePayrollService {
     public void reject(long payRollId, String loginName) {
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         if (payrollModel == null
-                || Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.AUDITED).contains(payrollModel.getStatus())) {
+                || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.AUDITED).contains(payrollModel.getStatus())) {
             logger.debug("payRollId not exist or status no pending audited ");
             return;
         }
@@ -137,7 +137,7 @@ public class ConsolePayrollService {
         PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(), payrollDataDto.getTotalAmount(), payrollDataDto.getHeadCount());
         payrollModel.setCreatedBy(loginName);
         payrollMapper.create(payrollModel);
-
+        payrollDataDto.setId(payrollModel.getId());
         this.insertPayrollDetail(payrollDataDto, payrollModel);
     }
 
