@@ -29,7 +29,8 @@
     "file-loader": "^0.8.5",
     "glob": "^7.1.1",
     "happypack": "^3.0.2",
-    "node-sass": "^3.7.0",
+    "image-webpack-loader": "^3.3.1",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.9.2",
     "object-assign": "^4.1.0",
     "postcss-loader": "^0.9.1",
@@ -42,8 +43,7 @@
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-md5-hash": "0.0.5",
-    "webpack-parallel-uglify-plugin": "^0.4.0",
-    "image-webpack-loader": "^3.3.1"
+    "webpack-parallel-uglify-plugin": "^0.4.0"
   },
   "dependencies": {
     "art-template": "^3.1.3",

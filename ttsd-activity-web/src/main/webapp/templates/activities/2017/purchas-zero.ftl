@@ -197,7 +197,7 @@
                                     <div class="limitation">限量</div>
                                 </div>
                                 <div class="fr">
-                                    <div class="goods-name">MacBook Air 13.3英寸笔记本 8GB内存/128GB闪存</div>
+                                    <div class="goods-name">MacBook Air 13.3英寸 8GB内存/128GB闪存</div>
                                     <div class="goods-features">纤巧轻薄 性能强劲</div>
                                     <div class="goods-price"><del>市场价：6588元</del></div>
                                     <div class="goods-income">额外收益：约2377元</div>
@@ -234,7 +234,7 @@
         <div class="tips-title"></div>
         <div class="tips-content">
             <dl>
-                <dd>1、用户在点选心仪商品后，需通过活动页面的“立即投资”按钮进行投资，方可成功兑换奖励；</dd>
+                <dd>1、用户在点选心仪商品后，需通过活动页面的“立即白拿”按钮进行投资，方可成功兑换奖励；</dd>
                 <dd>2、用户在每次点选心仪商品后，需按该商品指定的投资额进行投资，如超出指定商品所需投资额，则超出部分的投资额不予兑换更多奖励。如欲兑换多项商品，每次兑换时均需在活动页面点选该商品，并通过活动页面中“立即投资”按钮进行投资；</dd>
                 <dd>3、如用户活动期间累计投资额未达到所选商品所需的投资额，则无法兑换奖励；</dd>
                 <dd>4、每名用户在活动期间兑换同种商品最多仅限兑换3次；</dd>
