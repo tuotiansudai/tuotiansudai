@@ -8,6 +8,7 @@ import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
@@ -275,15 +276,14 @@ public class ConsolePayrollService {
         mqWrapperClient.sendMessage(MessageQueue.Payroll, String.valueOf(payrollId));
     }
 
-    public BasePaginationDataDto<PayrollModel> list(Date createStartTime, Date createEndTime,
-                                                    Date sendStartTime, Date sendEndTime,
-                                                    String amountMin, String amountMax,
-                                                    PayrollStatusType payrollStatusType, String title,
-                                                    int index, int pageSize) {
-        List<PayrollModel> payrollModels = payrollMapper.findPayroll(createStartTime, createEndTime, sendStartTime, sendEndTime,
-                Integer.parseInt(amountMin) * 100, Integer.parseInt(amountMax) * 100, payrollStatusType, title);
+    public BasePaginationDataDto<PayrollModel> list(PayrollQueryDto payrollQueryDto) {
+        List<PayrollModel> payrollModels = payrollMapper.findPayroll(payrollQueryDto.getCreateStartTime(), payrollQueryDto.getCreateEndTime(),
+                payrollQueryDto.getSendStartTime(), payrollQueryDto.getSendEndTime(),
+                payrollQueryDto.getAmountMin(), payrollQueryDto.getAmountMax(),
+                payrollQueryDto.getPayrollStatusType(), payrollQueryDto.getTitle());
         int count = payrollModels.size();
-        int endIndex = pageSize * index;
+        int index = payrollQueryDto.getIndex() == null ? 1 : payrollQueryDto.getIndex();
+        int endIndex = 10 * index;
         int startIndex = (index - 1) * 10;
         if (count <= endIndex) {
             endIndex = count;
@@ -291,26 +291,19 @@ public class ConsolePayrollService {
         if (count < startIndex) {
             startIndex = count;
         }
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, payrollModels.subList(startIndex, endIndex));
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, 10, count, payrollModels.subList(startIndex, endIndex));
         return basePaginationDataDto;
     }
 
     public void updateRemark(long id, String remark, String loginName) {
-        payrollMapper.updateRemark(id, remark, loginName, new Date());
+        PayrollModel payrollModel = payrollMapper.findById(id);
+        payrollModel.setRemark(remark);
+        payrollModel.setUpdatedBy(loginName);
+        payrollModel.setUpdatedTime(new Date());
+        payrollMapper.update(payrollModel);
     }
 
-    public BasePaginationDataDto<PayrollDetailModel> detail(long payrollId, int index, int pageSize) {
-        List<PayrollDetailModel> payrollDetailModels = payrollDetailMapper.findByPayrollId(payrollId);
-        int count = payrollDetailModels.size();
-        int endIndex = pageSize * index;
-        int startIndex = (index - 1) * 10;
-        if (count <= endIndex) {
-            endIndex = count;
-        }
-        if (count < startIndex) {
-            startIndex = count;
-        }
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, payrollDetailModels.subList(startIndex, endIndex));
-        return basePaginationDataDto;
+    public List<PayrollDetailModel> detail(long payrollId) {
+        return payrollDetailMapper.findByPayrollId(payrollId);
     }
 }

@@ -9,22 +9,33 @@
             <label>创建时间:</label>
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="createStartTime"
-                       value="${(createStartTime?string('yyyy-MM-dd'))!}"/>
+                <<<<<<< HEAD
+                value="${(createStartTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
+=======
+                       value="${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}"/>
+					                <span class="input-group-addon">
+>>>>>>> payroll_master
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
             -
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" name="createEndTime"
-                       value="${(createEndTime?string('yyyy-MM-dd'))!}"/>
+                <<<<<<< HEAD
+                value="${(createEndTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
+=======
+                       value="${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}"/>
+					                <span class="input-group-addon">
+>>>>>>> payroll_master
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
         </div>
 
         <div class="form-group">
+            <<<<<<< HEAD
             <label for="control-label">发放总金额:</label>
             <input type="text" class="form-control jq-balance-min" name="amountMin" value="${amountMin!}"
                    onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
@@ -32,13 +43,24 @@
             <input type="text" class="form-control jq-balance-max" name="amountMax" value="${amountMax!}"
                    onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            =======
+            <label for="control-label">发放总金额(分):</label>
+            <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin"
+                   value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
+                   onkeyup="this.value=this.value.replace(/\D/g,'')"
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')">-
+            <input type="text" class="form-control jq-balance-max" id="amountMax" name="amountMax"
+                   value="${(payrollQueryDto.amountMax?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
+                   onkeyup="this.value=this.value.replace(/\D/g,'')"
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            >>>>>>> payroll_master
         </div>
 
         <div class="form-group">
             <label>发放时间:</label>
             <div class='input-group date' id='datetimepicker3'>
                 <input type='text' class="form-control" name="sendStartTime"
-                       value="${(sendStartTime?string('yyyy-MM-dd'))!}"/>
+                       value="${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -46,7 +68,7 @@
             -
             <div class='input-group date' id='datetimepicker4'>
                 <input type='text' class="form-control" name="sendEndTime"
-                       value="${(sendEndTime?string('yyyy-MM-dd'))!}"/>
+                       value="${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}"/>
                 <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -55,7 +77,7 @@
 
         <div class="form-group">
             <label for="control-label">标题:</label>
-            <input type="text" class="form-control jq-loginName" name="title" value="${title!}">
+            <input type="text" class="form-control jq-loginName" name="title" value="${payrollQueryDto.title!}">
         </div>
 
         <div class="form-group">
@@ -63,7 +85,8 @@
             <select class="selectpicker" name="payrollStatusType">
                 <option value="">全部</option>
                 <#list payrollStatusTypes as status>
-                    <option value="${status}"<#if payrollStatusType?? && payrollStatusType==status>selected</#if>>
+                    <option value="${status}"
+                            <#if payrollQueryDto.payrollStatusType?? && payrollQueryDto.payrollStatusType==status>selected</#if>>
                     ${status.description}
                     </option>
                 </#list>
@@ -96,12 +119,7 @@
                 <tr>
                     <td>${payroll.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${payroll.title!}</td>
-                    <#if payroll.grantTime??>
-                        <td>${payroll.grantTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <#else >
-                        <td></td>
-                    </#if>
-
+                    <td>${(payroll.grantTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${(payroll.totalAmount/100)?string('0.00')}</td>
                     <td>${payroll.headCount!}</td>
                     <td>
@@ -158,7 +176,6 @@
             </div>
         </div>
     </div>
-
     <!-- pagination  -->
     <nav class="pagination-control">
         <div>
@@ -168,12 +185,8 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                        <a href="?index=${data.index - 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
-                                                      <#if amountMin??>amountMin=${amountMin}&</#if><#if amountMax??>amountMax=${amountMax}&</#if>
-                                                      <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if><#if sendEndTime??>sendEndTime=${sendEndTime?string('yyyy-MM-dd')}&</#if>                                                       <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if>
-                                                      <#if title??>title=${title}&</#if>
-                                                      <#if payrollStatusType??>payrollStatusType=${payrollStatusType}&</#if>
-                       aria-label=" Previous">
+                    <a href="?index=${data.index - 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${(payrollQueryDto.amountMin?string("0"))!}&amountMax=${(payrollQueryDto.amountMax?string("0"))!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
+                       aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -183,12 +196,8 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                        <a href="?index=${data.index + 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
-                                                      <#if amountMin??>amountMin=${amountMin}&</#if><#if amountMax??>amountMax=${amountMax}&</#if>
-                                                      <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if><#if sendEndTime??>sendEndTime=${sendEndTime?string('yyyy-MM-dd')}&</#if>
-                                                      <#if title??>title=${title}&</#if>
-                                                      <#if payrollStatusType??>payrollStatusType=${payrollStatusType}&</#if>
-                       aria-label=" Next">
+                    <a href="?index=${data.index + 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${(payrollQueryDto.amountMin?string("0"))!}&amountMax=${(payrollQueryDto.amountMax?string("0"))!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
+                       aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
@@ -196,7 +205,6 @@
                 </a>
                 </li>
             </ul>
-            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
         </#if>
     </nav>
     <!-- pagination -->

@@ -15,7 +15,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list data.records as detail>
+                <#list data as detail>
                 <tr>
                     <td>${detail.userName!}</td>
                     <td>${detail.mobile}</td>
@@ -38,7 +38,6 @@
 
         </table>
     </div>
-
     <div>
         <table class="table">
             <tr>
@@ -69,42 +68,7 @@
             </tr>
         </table>
     </div>
-
-    <!-- pagination  -->
-    <nav class="pagination-control">
-        <div>
-            <span class="bordern">总共${data.count}条, 每页显示${data.pageSize}条</span>
-        </div>
-        <#if data.records?has_content>
-            <ul class="pagination pull-left">
-                <li>
-                    <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}"
-                       aria-label="Previous">
-                    <#else>
-                    <a href="#" aria-label="Previous">
-                    </#if>
-                    <span aria-hidden="true">&laquo; Prev</span>
-                </a>
-                </li>
-                <li><a>${data.index}</a></li>
-                <li>
-                    <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}"
-                       aria-label="Next">
-                    <#else>
-                    <a href="#" aria-label="Next">
-                    </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-                </li>
-            </ul>
-        </#if>
-    </nav>
-    <!-- pagination -->
 </div>
-
-<a href="/export/payroll-detail" class="btn btn-default pull-left">导出EXCEl</a>
 
 <!-- content area end -->
 </@global.main>
