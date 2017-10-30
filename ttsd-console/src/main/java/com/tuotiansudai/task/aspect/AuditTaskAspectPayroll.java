@@ -38,14 +38,15 @@ public class AuditTaskAspectPayroll {
     @Autowired
     private PayrollMapper payrollMapper;
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.create(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.createPayroll(..))" +
+            "execution(* com.tuotiansudai.console.service.ConsolePayrollService.updatePayroll(..))")
     public void afterReturnCreatePayroll(JoinPoint joinPoint) {
         logger.info("after create payroll aspect.");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
-            String creator = String.valueOf(joinPoint.getArgs()[1]);
+            String loginName = String.valueOf(joinPoint.getArgs()[1]);
 
-            schedulingPayrollTask(payrollId, creator);
+            schedulingPayrollTask(payrollId, loginName, PayrollStatusType.PENDING);
         } catch (Exception e) {
             logger.error("after create payroll aspect fail ", e);
         }
@@ -57,14 +58,43 @@ public class AuditTaskAspectPayroll {
         logger.info("after primaryAudit payroll aspect.");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
-            String creator = String.valueOf(joinPoint.getArgs()[1]);
+            String loginName = String.valueOf(joinPoint.getArgs()[1]);
 
-            schedulingPayrollTask(payrollId, creator, );
+            schedulingPayrollTask(payrollId, loginName, PayrollStatusType.AUDITED);
         } catch (Exception e) {
             logger.error("after primaryAudit payroll aspect fail ", e);
         }
         logger.info("after primaryAudit payroll aspect.");
     }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.advancedAudit(..))")
+    public void afterReturnAdvancedAudit(JoinPoint joinPoint) {
+        logger.info("after advancedAudit payroll aspect.");
+        try {
+            long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
+            String loginName = String.valueOf(joinPoint.getArgs()[1]);
+
+            schedulingPayrollTask(payrollId, loginName, PayrollStatusType.SUCCESS);
+        } catch (Exception e) {
+            logger.error("after advancedAudit payroll aspect fail ", e);
+        }
+        logger.info("after advancedAudit payroll aspect.");
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.reject(..))")
+    public void afterReturnReject(JoinPoint joinPoint) {
+        logger.info("after reject payroll aspect.");
+        try {
+            long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
+            String loginName = String.valueOf(joinPoint.getArgs()[1]);
+
+            schedulingPayrollTask(payrollId, loginName, PayrollStatusType.REJECTED);
+        } catch (Exception e) {
+            logger.error("after reject payroll aspect fail ", e);
+        }
+        logger.info("after reject payroll aspect.");
+    }
+
 
     private void schedulingPayrollTask(Long payrollId, String loginName, PayrollStatusType statusType) {
         String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), String.valueOf(payrollId));
