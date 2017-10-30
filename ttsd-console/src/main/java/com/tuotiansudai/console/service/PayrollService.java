@@ -26,11 +26,19 @@ public class PayrollService {
                                                     String amountMin, String amountMax,
                                                     PayrollStatusType payrollStatusType, String title,
                                                     int index, int pageSize) {
-        List<PayrollModel> list = payrollMapper.findPayrollPagination(createStartTime, createEndTime, sendStartTime, sendEndTime,
-                Integer.parseInt(amountMin) * 100, Integer.parseInt(amountMax) * 100, payrollStatusType, title, index-1, pageSize);
-        long count = payrollMapper.count(createStartTime, createEndTime, sendStartTime, sendEndTime,
+        List<PayrollModel> payrollModels =  payrollMapper.findPayroll(createStartTime, createEndTime, sendStartTime, sendEndTime,
                 Integer.parseInt(amountMin) * 100, Integer.parseInt(amountMax) * 100, payrollStatusType, title);
-        return new BasePaginationDataDto<>(index, pageSize, count, list);
+        int count = payrollModels.size();
+        int endIndex = pageSize * index;
+        int startIndex = (index - 1) * 10;
+        if (count <= endIndex) {
+            endIndex = count;
+        }
+        if (count < startIndex) {
+            startIndex = count;
+        }
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, payrollModels.subList(startIndex, endIndex));
+        return basePaginationDataDto;
     }
 
     public void updateRemark(long id, String remark, String loginName){
@@ -38,7 +46,17 @@ public class PayrollService {
     }
 
     public BasePaginationDataDto<PayrollDetailModel> detail(long payrollId, int index, int pageSize){
-        List<PayrollDetailModel> list = payrollDetailMapper.findDetailPagination(payrollId, index-1, pageSize);
-        return new BasePaginationDataDto<>(index, pageSize, payrollDetailMapper.countByPayrollId(payrollId), list);
+            List<PayrollDetailModel> payrollDetailModels = payrollDetailMapper.findByPayrollId(payrollId);
+            int count = payrollDetailModels.size();
+            int endIndex = pageSize * index;
+            int startIndex = (index - 1) * 10;
+            if (count <= endIndex) {
+                endIndex = count;
+            }
+            if (count < startIndex) {
+                startIndex = count;
+            }
+            BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, payrollDetailModels.subList(startIndex, endIndex));
+            return basePaginationDataDto;
     }
 }

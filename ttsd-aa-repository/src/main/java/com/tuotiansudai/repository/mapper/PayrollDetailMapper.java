@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollPayStatus;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,13 +13,6 @@ public interface PayrollDetailMapper {
     void create(PayrollDetailModel payrollDetailModel);
 
     void deleteByPayrollId(@Param(value = "payrollId") long payrollId);
-
-    List<PayrollDetailModel> findDetailPagination(@Param(value = "payrollId") long payrollId,
-                                             @Param(value = "index") int index,
-                                             @Param(value = "pageSize") int pageSize);
-
-    long countByPayrollId(@Param(value = "payrollId") long payrollId);
-
 
     PayrollDetailModel findById(
             @Param(value = "id") long id);

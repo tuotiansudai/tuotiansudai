@@ -106,7 +106,7 @@
                         <#elseif payroll.status=='REJECTED'>
                             <a href="" class="btn btn-sm btn-primary">编辑</a>
                         <#else>
-                            <a href="/payroll-manage/${payroll.id?string('0')}/detail" class="btn btn-sm btn-primary">详情</a>
+                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail" class="btn btn-sm btn-primary">详情</a>
                         </#if>
                         <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}" class="btn btn-sm btn-primary btnRemark">备注</button>
                     </td>

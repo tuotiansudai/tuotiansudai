@@ -21,7 +21,7 @@
                     <td>${detail.mobile}</td>
                     <td>${(detail.amount/100)?string('0.00')}</td>
                     <td>
-                        <#list payrollStatusTypes as status>
+                        <#list payrollStatus as status>
                             <#if detail.status == status>
                                 ${status.description}
                             </#if>

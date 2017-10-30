@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.console.service.PayrollService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.PayrollModel;
+import com.tuotiansudai.repository.model.PayrollPayStatus;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.CalculateUtil;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 
 @Controller
-@RequestMapping(value = "/payroll-manage")
+@RequestMapping(value = "/finance-manage/payroll-manage")
 public class PayrollController {
 
     @Autowired
@@ -66,7 +67,7 @@ public class PayrollController {
                                       @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize){
         ModelAndView modelAndView = new ModelAndView("/payroll-detail");
         modelAndView.addObject("data", payrollService.detail(id, index, pageSize));
-        modelAndView.addObject("payrollStatusTypes", PayrollStatusType.values());
+        modelAndView.addObject("payrollStatus", PayrollPayStatus.values());
         return modelAndView;
     }
 }

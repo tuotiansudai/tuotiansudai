@@ -26,15 +26,6 @@
         delete from payroll_detail where payroll_id = #{payrollId}
     </delete>
 
-    <select id="findDetailPagination" parameterType="map" resultMap="payrollDetailResultMap">
-        select * from payroll_detail where payroll_id = #{payrollId}
-        limit #{index}, #{pageSize}
-    </select>
-
-    <select id="countByPayrollId" parameterType="map" resultType="long">
-        select count(1) from payroll_detail where payroll_id = #{payrollId}
-    </select>
-
     <select id="findById" parameterType="map" resultMap="payrollDetailResultMap">
         select * from payroll_detail where id = #{id}
     </select>

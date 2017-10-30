@@ -20,25 +20,14 @@ public interface PayrollMapper {
                       @Param(value = "updatedBy") String updatedBy,
                       @Param(value = "updatedTime") Date updatedTime);
 
-    List<PayrollModel> findPayrollPagination(@Param(value = "createStartTime") Date createStartTime,
-                                             @Param(value = "createEndTime") Date createEndTime,
-                                             @Param(value = "sendStartTime") Date sendStartTime,
-                                             @Param(value = "sendEndTime") Date sendEndTime,
-                                             @Param(value = "amountMin") long amountMin,
-                                             @Param(value = "amountMax") long amountMax,
-                                             @Param(value = "payrollStatusType") PayrollStatusType payrollStatusType,
-                                             @Param(value = "title") String title,
-                                             @Param(value = "index") int index,
-                                             @Param(value = "pageSize") int pageSize);
-
-    long count(@Param(value = "createStartTime") Date createStartTime,
-               @Param(value = "createEndTime") Date createEndTime,
-               @Param(value = "sendStartTime") Date sendStartTime,
-               @Param(value = "sendEndTime") Date sendEndTime,
-               @Param(value = "amountMin") long amountMin,
-               @Param(value = "amountMax") long amountMax,
-               @Param(value = "payrollStatusType") PayrollStatusType payrollStatusType,
-               @Param(value = "title") String title);
+    List<PayrollModel> findPayroll(@Param(value = "createStartTime") Date createStartTime,
+                                   @Param(value = "createEndTime") Date createEndTime,
+                                   @Param(value = "sendStartTime") Date sendStartTime,
+                                   @Param(value = "sendEndTime") Date sendEndTime,
+                                   @Param(value = "amountMin") long amountMin,
+                                   @Param(value = "amountMax") long amountMax,
+                                   @Param(value = "payrollStatusType") PayrollStatusType payrollStatusType,
+                                   @Param(value = "title") String title);
 
     PayrollModel findById(
             @Param(value = "id") long id);
