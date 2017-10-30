@@ -38,14 +38,6 @@
         where id = #{id}
     </update>
 
-    <update id="updateRemark" parameterType="map">
-        UPDATE payroll
-        SET remark = #{remark},
-        updated_by = #{updatedBy},
-        updated_time = #{updatedTime}
-        WHERE id = #{id}
-    </update>
-
     <select id="findPayroll" parameterType="map" resultMap="payrollResultMap">
         select * from payroll
         <where>

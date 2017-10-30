@@ -218,7 +218,11 @@ public class ConsolePayrollService {
     }
 
     public void updateRemark(long id, String remark, String loginName){
-        payrollMapper.updateRemark(id, remark, loginName, new Date());
+        PayrollModel payrollModel = payrollMapper.findById(id);
+        payrollModel.setRemark(remark);
+        payrollModel.setUpdatedBy(loginName);
+        payrollModel.setUpdatedTime(new Date());
+        payrollMapper.update(payrollModel);
     }
 
     public List<PayrollDetailModel> detail(long payrollId){

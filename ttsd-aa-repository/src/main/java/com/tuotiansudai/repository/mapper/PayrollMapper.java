@@ -16,11 +16,6 @@ public interface PayrollMapper {
 
     void update(PayrollModel payrollModel);
 
-    void updateRemark(@Param(value = "id") long id,
-                      @Param(value = "remark") String remark,
-                      @Param(value = "updatedBy") String updatedBy,
-                      @Param(value = "updatedTime") Date updatedTime);
-
     List<PayrollModel> findPayroll(PayrollQueryDto payrollQueryDto);
 
     PayrollModel findById(@Param(value = "id") long id);
