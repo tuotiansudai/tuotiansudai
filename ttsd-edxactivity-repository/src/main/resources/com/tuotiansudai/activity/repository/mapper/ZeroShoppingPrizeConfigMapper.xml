@@ -21,13 +21,6 @@
         id = #{id}
     </update>
 
-    <update id="prizeSurplusMinus" parameterType="map">
-        update `edxactivity`.`zero_shopping_prize_config` SET
-         prize_surplus = prize_surplus-1
-         where
-         prize = #{zeroShoppingPrize}
-    </update>
-
     <select id="findAll" resultMap="zeroShoppingResultMap">
         SELECT * FROM `edxactivity`.`zero_shopping_prize_config`
     </select>

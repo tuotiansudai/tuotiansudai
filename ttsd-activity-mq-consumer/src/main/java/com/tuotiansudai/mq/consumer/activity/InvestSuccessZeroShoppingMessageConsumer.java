@@ -37,9 +37,6 @@ public class InvestSuccessZeroShoppingMessageConsumer implements MessageConsumer
     @Autowired
     private ZeroShoppingPrizeSelectMapper zeroShoppingPrizeSelectMapper;
 
-    @Autowired
-    private ZeroShoppingPrizeConfigMapper zeroShoppingPrizeConfigMapper;
-
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.zero.shopping.startTime}\")}")
     private Date activityZeroShoppingStartTime;
 
@@ -88,7 +85,6 @@ public class InvestSuccessZeroShoppingMessageConsumer implements MessageConsumer
                     userInfo.getUserName(),
                     investInfo.getAmount(),
                     ZeroShoppingPrize.valueOf(redisWrapperClient.hget(prizeKey, userInfo.getLoginName()))));
-            zeroShoppingPrizeConfigMapper.prizeSurplusMinus(ZeroShoppingPrize.valueOf(redisWrapperClient.hget(prizeKey, userInfo.getLoginName())));
         }
         redisWrapperClient.hdel(prizeKey, userInfo.getLoginName());
     }
