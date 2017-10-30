@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="payroll-list.js" headLab="finance-manage" sideLab="payroll" title="用户资金发放">
+<@global.main pageCss="" pageJavascript="payroll.js" headLab="finance-manage" sideLab="payroll" title="用户资金发放">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -106,9 +106,9 @@
                         <#elseif payroll.status=='REJECTED'>
                             <a href="" class="btn btn-sm btn-primary">编辑</a>
                         <#else>
-                            <a href="" class="btn btn-sm btn-primary">详情</a>
+                            <a href="/payroll-manage/${payroll.id?string('0')}/detail" class="btn btn-sm btn-primary">详情</a>
                         </#if>
-                        <button data-payroll-id="${payroll.id}" data-remark="${payroll.remark!}" class="btn btn-sm btn-primary btnRemark">备注</button>
+                        <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}" class="btn btn-sm btn-primary btnRemark">备注</button>
                     </td>
                 </tr>
                 <#else>
@@ -151,7 +151,11 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index - 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
+                                                      <#if amountMin??>amountMin=${amountMin}&</#if><#if amountMax??>amountMax=${amountMax}&</#if>
+                                                      <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if><#if sendEndTime??>sendEndTime=${sendEndTime?string('yyyy-MM-dd')}&</#if>                                                       <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if>
+                                                      <#if title??>title=${title}&</#if>
+                                                      <#if payrollStatusType??>payrollStatusType=${payrollStatusType}&</#if>
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -162,7 +166,11 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index + 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
+                                                      <#if amountMin??>amountMin=${amountMin}&</#if><#if amountMax??>amountMax=${amountMax}&</#if>
+                                                      <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if><#if sendEndTime??>sendEndTime=${sendEndTime?string('yyyy-MM-dd')}&</#if>
+                                                      <#if title??>title=${title}&</#if>
+                                                      <#if payrollStatusType??>payrollStatusType=${payrollStatusType}&</#if>
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
@@ -171,9 +179,7 @@
                 </a>
                 </li>
             </ul>
-            <@security.authorize access="hasAnyAuthority('DATA')">
-                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-            </@security.authorize>
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
         </#if>
     </nav>
     <!-- pagination -->

@@ -40,7 +40,7 @@
 
     <update id="updateRemark" parameterType="map">
         UPDATE payroll
-        SET remark = #{remark}
+        SET remark = #{remark},
         updated_by = #{updatedBy},
         updated_time = #{updatedTime}
         WHERE id = #{id}

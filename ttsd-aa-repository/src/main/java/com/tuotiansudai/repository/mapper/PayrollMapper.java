@@ -3,8 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import org.apache.ibatis.annotations.Param;
-import org.omg.PortableServer.LIFESPAN_POLICY_ID;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -19,7 +17,7 @@ public interface PayrollMapper {
 
     void updateRemark(@Param(value = "id") long id,
                       @Param(value = "remark") String remark,
-                      @Param(value = "updatedBy") String updateBy,
+                      @Param(value = "updatedBy") String updatedBy,
                       @Param(value = "updatedTime") Date updatedTime);
 
     List<PayrollModel> findPayrollPagination(@Param(value = "createStartTime") Date createStartTime,

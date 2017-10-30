@@ -2,17 +2,15 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.PayrollService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.CalculateUtil;
-import org.apache.ibatis.annotations.Param;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -35,15 +33,13 @@ public class PayrollController {
                                 @RequestParam(name = "title", required = false) String title,
                                 @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                 @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        ModelAndView modelAndView = new ModelAndView("/payroll-list");
-
+        ModelAndView modelAndView = new ModelAndView("/payroll");
         BasePaginationDataDto basePaginationDataDto = payrollService.list(
                 createStartTime == null ? new DateTime(0).toDate() : new DateTime(createStartTime).withTimeAtStartOfDay().toDate(),
                 createEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(createEndTime).withTimeAtStartOfDay().plusDays(1).toDate(),
                 sendStartTime == null ? new DateTime(0).toDate() : new DateTime(sendStartTime).withTimeAtStartOfDay().toDate(),
                 sendEndTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(sendEndTime).withTimeAtStartOfDay().plusDays(1).toDate(),
                 amountMin, amountMax, payrollStatusType, title, index, pageSize);
-
         modelAndView.addObject("data", basePaginationDataDto);
         modelAndView.addObject("payrollStatusTypes", PayrollStatusType.values());
         modelAndView.addObject("createStartTime", createStartTime);
@@ -57,10 +53,20 @@ public class PayrollController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/update-remark", method = RequestMethod.POST)
-    public ModelAndView updateRemark(@Param(value = "id") long id,
-                                     @Param(value = "remark") String remark){
-        payrollService.updateRemark(id, remark, LoginUserInfo.getLoginName());
-        return new ModelAndView("redirect:/payroll-manage/list");
+    @ResponseBody
+    @RequestMapping(value = "/update/remark", method = RequestMethod.POST)
+    public PayrollModel updateRemark(@RequestBody PayrollModel payrollModel){
+        payrollService.updateRemark(payrollModel.getId(), payrollModel.getRemark(), LoginUserInfo.getLoginName());
+        return payrollModel;
+    }
+
+    @RequestMapping(value = "/{id:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView payrollDetail(@PathVariable long id,
+                                      @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                      @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize){
+        ModelAndView modelAndView = new ModelAndView("/payroll-detail");
+        modelAndView.addObject("data", payrollService.detail(id, index, pageSize));
+        modelAndView.addObject("payrollStatusTypes", PayrollStatusType.values());
+        return modelAndView;
     }
 }

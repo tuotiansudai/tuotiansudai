@@ -1,7 +1,9 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
+import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class PayrollService {
 
     @Autowired
     private PayrollMapper payrollMapper;
+
+    @Autowired
+    private PayrollDetailMapper payrollDetailMapper;
 
     public BasePaginationDataDto<PayrollModel> list(Date createStartTime, Date createEndTime,
                                                     Date sendStartTime, Date sendEndTime,
@@ -30,5 +35,10 @@ public class PayrollService {
 
     public void updateRemark(long id, String remark, String loginName){
         payrollMapper.updateRemark(id, remark, loginName, new Date());
+    }
+
+    public BasePaginationDataDto<PayrollDetailModel> detail(long payrollId, int index, int pageSize){
+        List<PayrollDetailModel> list = payrollDetailMapper.findByPayrollId(payrollId, index-1, pageSize);
+        return new BasePaginationDataDto<>(index, pageSize, payrollDetailMapper.countByPayrollId(payrollId), list);
     }
 }
