@@ -83,7 +83,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public BaseDto<BaseDataDto> advancedAudit(long payRollId, String loginName) {
+    public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName) {
         if (!isSufficientBalance(payRollId)) {
             logger.info("system balance is not sufficient");
             return new BaseDto<>(new BaseDataDto(false, "系统账户余额不足!"));

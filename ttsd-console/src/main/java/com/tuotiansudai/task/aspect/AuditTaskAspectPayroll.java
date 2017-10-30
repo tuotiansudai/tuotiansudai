@@ -75,24 +75,24 @@ public class AuditTaskAspectPayroll {
         logger.info("after primaryAudit payroll aspect.");
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.advancedAudit(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.finalAudit(..))", returning = "returnValue")
     public void afterReturnAdvancedAudit(JoinPoint joinPoint, Object returnValue) {
-        logger.info("after advancedAudit payroll aspect.");
+        logger.info("after finalAudit payroll aspect.");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
 
             BaseDto<BaseDataDto> baseDto = (BaseDto) returnValue;
             if (!baseDto.getData().getStatus()) {
-                logger.debug(String.format("advancedAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
+                logger.debug(String.format("finalAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
                 return;
             }
 
             schedulingPayrollTask(payrollId, loginName, PayrollStatusType.SUCCESS);
         } catch (Exception e) {
-            logger.error("after advancedAudit payroll aspect fail ", e);
+            logger.error("after finalAudit payroll aspect fail ", e);
         }
-        logger.info("after advancedAudit payroll aspect.");
+        logger.info("after finalAudit payroll aspect.");
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.reject(..))")

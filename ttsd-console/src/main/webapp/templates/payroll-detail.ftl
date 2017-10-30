@@ -56,7 +56,7 @@
                 <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
                     <td>
                         <button class="btn btn-primary advanced-audit"
-                                data-url="/finance-manage/payroll-manage/advanced-audit/${payrollId?string('0')}">通过
+                                data-url="/finance-manage/payroll-manage/final-audit/${payrollId?string('0')}">通过
                         </button>
                     </td>
                     <td>

@@ -38,10 +38,10 @@ public class PayrollController {
         return consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName());
     }
 
-    @RequestMapping(value = "/advanced-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/final-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> advancedAudit(@PathVariable long payRollId) {
-        return consolePayrollService.advancedAudit(payRollId, LoginUserInfo.getLoginName());
+        return consolePayrollService.finalAudit(payRollId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/reject/{payRollId:^\\d+$}", method = RequestMethod.GET)
