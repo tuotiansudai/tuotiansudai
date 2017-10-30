@@ -8,14 +8,6 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
         $('#datetimepicker3').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker4').datetimepicker({format: 'YYYY-MM-DD'});
 
-        $('.down-load').click(function () {
-            window.location.href = "/export/payroll?" + $('form').serialize();
-        });
-
-        $('.detail-down-load').click(function () {
-            window.location.href = "/export/payroll-detail?" + $('form').serialize();
-        });
-
         $('.btnRemark').click(function () {
             var self = $(this);
             $('#id').prop('value', self.data('payroll-id'));
@@ -25,7 +17,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
         $('.btnSubmit').on('click', function (e) {
             $.ajax({
-                url: '/payroll-manage/update/remark',
+                url: '/finance-manage/payroll-manage/update/remark',
                 type: 'POST',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8',

@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import org.apache.ibatis.annotations.Param;
@@ -20,14 +21,7 @@ public interface PayrollMapper {
                       @Param(value = "updatedBy") String updatedBy,
                       @Param(value = "updatedTime") Date updatedTime);
 
-    List<PayrollModel> findPayroll(@Param(value = "createStartTime") Date createStartTime,
-                                   @Param(value = "createEndTime") Date createEndTime,
-                                   @Param(value = "sendStartTime") Date sendStartTime,
-                                   @Param(value = "sendEndTime") Date sendEndTime,
-                                   @Param(value = "amountMin") long amountMin,
-                                   @Param(value = "amountMax") long amountMax,
-                                   @Param(value = "payrollStatusType") PayrollStatusType payrollStatusType,
-                                   @Param(value = "title") String title);
+    List<PayrollModel> findPayroll(PayrollQueryDto payrollQueryDto);
 
     PayrollModel findById(@Param(value = "id") long id);
 
