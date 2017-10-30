@@ -3,6 +3,8 @@ package com.tuotiansudai.console.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.dto.PayrollDataDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
@@ -198,5 +200,36 @@ public class ConsolePayrollService {
 
     private void beginPayroll(long payrollId) {
         mqWrapperClient.sendMessage(MessageQueue.Payroll, String.valueOf(payrollId));
+    }
+
+    public BasePaginationDataDto<PayrollModel> list(PayrollQueryDto payrollQueryDto) {
+        List<PayrollModel> payrollModels = payrollMapper.findPayroll(payrollQueryDto.getCreateStartTime(), payrollQueryDto.getCreateEndTime(),
+                payrollQueryDto.getSendStartTime(), payrollQueryDto.getSendEndTime(),
+                payrollQueryDto.getAmountMin(), payrollQueryDto.getAmountMax(),
+                payrollQueryDto.getPayrollStatusType(),payrollQueryDto.getTitle());
+        int count = payrollModels.size();
+        int index = payrollQueryDto.getIndex() == null ? 1 : payrollQueryDto.getIndex();
+        int endIndex = 10 * index;
+        int startIndex = (index - 1) * 10;
+        if (count <= endIndex) {
+            endIndex = count;
+        }
+        if (count < startIndex) {
+            startIndex = count;
+        }
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, 10, count, payrollModels.subList(startIndex, endIndex));
+        return basePaginationDataDto;
+    }
+
+    public void updateRemark(long id, String remark, String loginName){
+        PayrollModel payrollModel = payrollMapper.findById(id);
+        payrollModel.setRemark(remark);
+        payrollModel.setUpdatedBy(loginName);
+        payrollModel.setUpdatedTime(new Date());
+        payrollMapper.update(payrollModel);
+    }
+
+    public List<PayrollDetailModel> detail(long payrollId){
+        return payrollDetailMapper.findByPayrollId(payrollId);
     }
 }

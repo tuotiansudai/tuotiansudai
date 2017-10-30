@@ -2,8 +2,12 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.console.service.ConsolePayrollService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollModel;
+import com.tuotiansudai.repository.model.PayrollPayStatus;
+import com.tuotiansudai.repository.model.PayrollStatusType;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +18,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 @Controller
-@RequestMapping({"/finance-manage/payroll-manage"})
+@RequestMapping(value = "/finance-manage/payroll-manage")
 public class PayrollController {
+
     static Logger logger = Logger.getLogger(PayrollController.class);
     @Autowired
     private ConsolePayrollService consolePayrollService;
@@ -81,5 +87,31 @@ public class PayrollController {
             payrollDataDto.setMessage("上传失败!文件内容错误");
         }
         return payrollDataDto;
+    }
+
+    @RequestMapping(value = "/payroll-list", method = RequestMethod.GET)
+    public ModelAndView payroll(@Valid @ModelAttribute PayrollQueryDto payrollQueryDto) {
+        ModelAndView modelAndView = new ModelAndView("/payroll-list");
+        BasePaginationDataDto basePaginationDataDto = consolePayrollService.list(payrollQueryDto);
+        modelAndView.addObject("data", basePaginationDataDto);
+        modelAndView.addObject("payrollQueryDto", payrollQueryDto);
+        modelAndView.addObject("payrollStatusTypes", PayrollStatusType.values());
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/update/remark", method = RequestMethod.POST)
+    public PayrollModel updateRemark(@RequestBody PayrollModel payrollModel){
+        consolePayrollService.updateRemark(payrollModel.getId(), payrollModel.getRemark(), LoginUserInfo.getLoginName());
+        return payrollModel;
+    }
+
+    @RequestMapping(value = "/{id:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView payrollDetail(@PathVariable long id){
+        ModelAndView modelAndView = new ModelAndView("/payroll-detail");
+        modelAndView.addObject("data", consolePayrollService.detail(id));
+        modelAndView.addObject("payrollStatus", PayrollPayStatus.values());
+        modelAndView.addObject("payrollId", String.valueOf(id));
+        return modelAndView;
     }
 }
