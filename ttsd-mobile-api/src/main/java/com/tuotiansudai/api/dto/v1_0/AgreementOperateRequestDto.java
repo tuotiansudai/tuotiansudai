@@ -6,8 +6,12 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.repository.model.Source;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+
+
 public class AgreementOperateRequestDto extends BaseParamDto {
 
+    @NotNull
     @ApiModelProperty(value = "自动投资类型", example = "//AUTO_INVEST：自动投标 ，NO_PASSWORD_INVEST：免密投资")
     private AgreementBusinessType type;
 
