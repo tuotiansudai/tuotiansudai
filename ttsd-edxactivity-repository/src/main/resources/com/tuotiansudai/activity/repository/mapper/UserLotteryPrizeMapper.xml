@@ -128,6 +128,9 @@
             </if>
         </where>
         order by lottery_time DESC
+        <if test="limitCount != null">
+            limit #{limitCount}
+        </if>
     </select>
 
     <select id="findMoneyTreeLotteryPrizeTop10" parameterType="map" resultMap="userLotteryTop10PrizeView">
