@@ -2,12 +2,9 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.console.service.ConsolePayrollService;
-<<<<<<<HEAD
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-=======
 import com.tuotiansudai.dto.BasePaginationDataDto;
->>>>>>>features/zk/user_payroll_list
 import com.tuotiansudai.repository.model.PayrollDetailModel;
 import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollPayStatus;
