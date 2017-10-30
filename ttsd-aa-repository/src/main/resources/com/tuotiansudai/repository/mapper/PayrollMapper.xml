@@ -40,32 +40,32 @@
 
     <select id="findPayroll" parameterType="map" resultMap="payrollResultMap">
         select * from payroll
-        <!--<where>-->
-            <!--<if test="createStartTime !=null">-->
-                <!--AND created_time &gt;= #{createStartTime}-->
-            <!--</if>-->
-            <!--<if test="createEndTime !=null">-->
-                <!--AND created_time &lt;= #{createEndTime}-->
-            <!--</if>-->
-            <!--<if test="sendStartTime !=null">-->
-                <!--AND grant_time &gt;= #{sendStartTime}-->
-            <!--</if>-->
-            <!--<if test="sendEndTime !=null">-->
-                <!--AND grant_time &lt;= #{sendEndTime}-->
-            <!--</if>-->
-            <!--<if test="amountMin !=null and amountMin !=''">-->
-                <!--AND total_amount &gt;= #{amountMin}-->
-            <!--</if>-->
-            <!--<if test="amountMax !=null and amountMax !=''">-->
-                <!--AND total_amount &lt;= #{amountMax}-->
-            <!--</if>-->
-            <!--<if test="payrollStatusType !=null">-->
-                <!--AND status = #{payrollStatusType}-->
-            <!--</if>-->
-            <!--<if test="title !=null and title !=''">-->
-                <!--AND title = #{title}-->
-            <!--</if>-->
-        <!--</where>-->
+        <where>
+            <if test="createStartTime !=null">
+                AND created_time &gt;= #{createStartTime}
+            </if>
+            <if test="createEndTime !=null">
+                AND created_time &lt;= #{createEndTime}
+            </if>
+            <if test="sendStartTime !=null">
+                AND grant_time &gt;= #{sendStartTime}
+            </if>
+            <if test="sendEndTime !=null">
+                AND grant_time &lt;= #{sendEndTime}
+            </if>
+            <if test="amountMin !=null and amountMin !=''">
+                AND total_amount &gt;= #{amountMin}
+            </if>
+            <if test="amountMax !=null and amountMax !=''">
+                AND total_amount &lt;= #{amountMax}
+            </if>
+            <if test="payrollStatusType !=null">
+                AND status = #{payrollStatusType}
+            </if>
+            <if test="title !=null and title !=''">
+                AND title = #{title}
+            </if>
+        </where>
         ORDER BY created_time DESC
     </select>
 
