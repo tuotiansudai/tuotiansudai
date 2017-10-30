@@ -101,7 +101,7 @@ let productList = {
                 deposit_period:360,
                 principal:29000,
                 explain:766,
-                images:['product/XiaoMi_5X/descrip01.png','product/XiaPu_Television/descrip02.png',
+                images:['product/XiaPu_Television/descrip01.png','product/XiaPu_Television/descrip02.png',
                     'product/XiaPu_Television/descrip03.png','product/XiaPu_Television/descrip04.png',
                     'product/XiaPu_Television/descrip05.png','product/XiaPu_Television/descrip06.png',
                     'product/XiaPu_Television/descrip07.png','product/XiaPu_Television/descrip08.png',
@@ -161,7 +161,7 @@ let productList = {
             deposit_period:360,
             principal:90000,
             explain:2377,
-            images:['product/Sony_Camera/descrip01.png','product/Apple_MacBook/descrip02.png',
+            images:['product/Apple_MacBook/descrip01.png','product/Apple_MacBook/descrip02.png',
                 'product/Apple_MacBook/descrip03.png','product/Apple_MacBook/descrip04.png',
                 'product/Apple_MacBook/descrip05.png','product/Apple_MacBook/descrip06.png',
                 'product/Apple_MacBook/descrip07.png','product/Apple_MacBook/descrip08.png'
