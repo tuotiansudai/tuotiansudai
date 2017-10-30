@@ -203,17 +203,21 @@ public class ConsolePayrollService {
     }
 
     public BasePaginationDataDto<PayrollModel> list(PayrollQueryDto payrollQueryDto) {
-        List<PayrollModel> payrollModels = payrollMapper.findPayroll(payrollQueryDto);
+        List<PayrollModel> payrollModels = payrollMapper.findPayroll(payrollQueryDto.getCreateStartTime(), payrollQueryDto.getCreateEndTime(),
+                payrollQueryDto.getSendStartTime(), payrollQueryDto.getSendEndTime(),
+                payrollQueryDto.getAmountMin(), payrollQueryDto.getAmountMax(),
+                payrollQueryDto.getPayrollStatusType(),payrollQueryDto.getTitle());
         int count = payrollModels.size();
-        int endIndex = payrollQueryDto.getPageSize() * payrollQueryDto.getIndex();
-        int startIndex = (payrollQueryDto.getIndex() - 1) * 10;
+        int index = payrollQueryDto.getIndex() == null ? 1 : payrollQueryDto.getIndex();
+        int endIndex = 10 * index;
+        int startIndex = (index - 1) * 10;
         if (count <= endIndex) {
             endIndex = count;
         }
         if (count < startIndex) {
             startIndex = count;
         }
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(payrollQueryDto.getIndex(), payrollQueryDto.getPageSize(), count, payrollModels.subList(startIndex, endIndex));
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, 10, count, payrollModels.subList(startIndex, endIndex));
         return basePaginationDataDto;
     }
 

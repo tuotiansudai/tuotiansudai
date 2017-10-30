@@ -3,22 +3,27 @@ package com.tuotiansudai.dto;
 import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class PayrollQueryDto implements Serializable {
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createStartTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createEndTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sendStartTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sendEndTime;
-    private String amountMin;
-    private String amountMax;
+    private Long amountMin;
+    private Long amountMax;
     private PayrollStatusType payrollStatusType;
     private String title;
     private Integer index;
-    private Integer pageSize;
+    private Integer pageSize = 10;
 
     public PayrollQueryDto() {
     }
@@ -55,19 +60,19 @@ public class PayrollQueryDto implements Serializable {
         this.sendEndTime = Strings.isNullOrEmpty(sendEndTime) ? null : new DateTime(sendEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
     }
 
-    public String getAmountMin() {
+    public Long getAmountMin() {
         return amountMin;
     }
 
-    public void setAmountMin(String amountMin) {
+    public void setAmountMin(Long amountMin) {
         this.amountMin = amountMin;
     }
 
-    public String getAmountMax() {
+    public Long getAmountMax() {
         return amountMax;
     }
 
-    public void setAmountMax(String amountMax) {
+    public void setAmountMax(Long amountMax) {
         this.amountMax = amountMax;
     }
 
@@ -88,7 +93,7 @@ public class PayrollQueryDto implements Serializable {
     }
 
     public Integer getIndex() {
-        return index == null ? 1 : index;
+        return index;
     }
 
     public void setIndex(Integer index) {
@@ -100,6 +105,6 @@ public class PayrollQueryDto implements Serializable {
     }
 
     public Integer getPageSize() {
-        return pageSize == null ? 10 : pageSize;
+        return pageSize;
     }
 }

@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect','autoNumeric', 'moment', 'csrf'], function ($) {
 
     $(function () {
         $('.selectpicker').selectpicker();

@@ -26,8 +26,8 @@
 
         <div class="form-group">
             <label for="control-label">发放总金额(分):</label>
-            <input type="text" class="form-control jq-balance-min" name="amountMin" value="${payrollQueryDto.amountMin!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">-
-            <input type="text" class="form-control jq-balance-max" name="amountMax" value="${payrollQueryDto.amountMax!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin" value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">-
+            <input type="text" class="form-control jq-balance-max" id="amountMax" name="amountMax" value="${(payrollQueryDto.amountMax?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
 
         <div class="form-group">
@@ -153,7 +153,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${payrollQueryDto.amountMin!}&amountMax=${payrollQueryDto.amountMax!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
+                    <a href="?index=${data.index - 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${(payrollQueryDto.amountMin?string("0"))!}&amountMax=${(payrollQueryDto.amountMax?string("0"))!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
                                                      aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -164,8 +164,8 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${payrollQueryDto.amountMin!}&amountMax=${payrollQueryDto.amountMax!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
-
+                    <a href="?index=${data.index + 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${(payrollQueryDto.amountMin?string("0"))!}&amountMax=${(payrollQueryDto.amountMax?string("0"))!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
+                                                    aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
