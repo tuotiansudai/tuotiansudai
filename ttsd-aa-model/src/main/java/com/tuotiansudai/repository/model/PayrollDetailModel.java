@@ -24,7 +24,8 @@ public class PayrollDetailModel implements Serializable {
     public PayrollDetailModel() {
     }
 
-    public PayrollDetailModel(String userName, String mobile, long amount) {
+    public PayrollDetailModel(String loginName, String userName, String mobile, long amount) {
+        this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.amount = amount;

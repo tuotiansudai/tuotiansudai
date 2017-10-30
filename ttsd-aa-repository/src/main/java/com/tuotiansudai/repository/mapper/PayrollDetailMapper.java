@@ -10,18 +10,14 @@ import java.util.List;
 @Repository
 public interface PayrollDetailMapper {
 
-    void create(PayrollDetailModel payrollDetailModel);
+    int create(@Param("payrollDetails") List<PayrollDetailModel> payrollDetailModels);
 
-    void deleteByPayrollId(
-            @Param(value = "payrollId") long payrollId);
+    void deleteByPayrollId(@Param(value = "payrollId") long payrollId);
 
-    PayrollDetailModel findById(
-            @Param(value = "id") long id);
+    PayrollDetailModel findById(@Param(value = "id") long id);
 
-    List<PayrollDetailModel> findByPayrollId(
-            @Param(value = "payrollId") long payrollId);
+    List<PayrollDetailModel> findByPayrollId(@Param(value = "payrollId") long payrollId);
 
-    int updateStatus(
-            @Param(value = "id") long id,
-            @Param(value = "status") PayrollPayStatus status);
+    int updateStatus(@Param(value = "id") long id,
+                     @Param(value = "status") PayrollPayStatus status);
 }

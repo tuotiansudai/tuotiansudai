@@ -80,7 +80,6 @@ public enum MessageQueue {
     CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
     CreditLoanBill("CreditLoanBill"),
     Payroll("Payroll"),
-    PayrollConfirmFail("PayrollConfirmFail"),
     ;
 
     private final String queueName;

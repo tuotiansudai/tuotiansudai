@@ -17,9 +17,11 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="PayrollDetailModel" useGeneratedKeys="true" keyProperty="id">
-        insert into payroll_detail (payroll_id, login_name, user_name, mobile, amount, status, created_time)
-        value(#{payrollId}, #{loginName}, #{userName}, #{mobile}, #{amount}, #{status}, #{createdTime})
+    <insert id="create" parameterType="PayrollDetailModel">
+        insert into payroll_detail (payroll_id, login_name, user_name, mobile, amount, status, created_time) VALUES
+        <foreach collection="payrollDetails" item="item" index="index" separator=",">
+            (#{item.payrollId}, #{item.loginName}, #{item.userName}, #{item.mobile}, #{item.amount}, #{item.status}, #{item.createdTime})
+        </foreach>
     </insert>
 
     <delete id="deleteByPayrollId" parameterType="long">
