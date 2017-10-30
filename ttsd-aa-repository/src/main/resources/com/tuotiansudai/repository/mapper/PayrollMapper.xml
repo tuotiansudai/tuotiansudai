@@ -38,6 +38,45 @@
         where id = #{id}
     </update>
 
+    <update id="updateRemark" parameterType="map">
+        UPDATE payroll
+        SET remark = #{remark},
+        updated_by = #{updatedBy},
+        updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findPayroll" parameterType="map" resultMap="payrollResultMap">
+        select * from payroll
+        <where>
+            <if test="createStartTime !=null">
+                AND created_time &gt;= #{createStartTime}
+            </if>
+            <if test="createEndTime !=null">
+                AND created_time &lt;= #{createEndTime}
+            </if>
+            <if test="sendStartTime !=null">
+                AND grant_time &gt;= #{sendStartTime}
+            </if>
+            <if test="sendEndTime !=null">
+                AND grant_time &lt;= #{sendEndTime}
+            </if>
+            <if test="amountMin !=null and amountMin !=''">
+                AND total_amount &gt;= #{amountMin}
+            </if>
+            <if test="amountMax !=null and amountMax !=''">
+                AND total_amount &lt;= #{amountMax}
+            </if>
+            <if test="payrollStatusType !=null">
+                AND status = #{payrollStatusType}
+            </if>
+            <if test="title !=null and title !=''">
+                AND title = #{title}
+            </if>
+        </where>
+        ORDER BY created_time DESC
+    </select>
+
     <select id="findById" parameterType="map" resultMap="payrollResultMap">
         select * from payroll where id = #{id}
     </select>
@@ -45,5 +84,4 @@
     <update id="updateStatus" parameterType="map">
         update payroll set status = #{status} where id=#{id}
     </update>
-
 </mapper>
