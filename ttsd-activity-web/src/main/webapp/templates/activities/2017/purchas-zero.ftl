@@ -40,8 +40,10 @@
                 <dd class="long-font">到期还本付息</dd>
             </dl>
         </div>
-
     </div>
+
+    <i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"></i>
+
     <div class="goods-select-wrap">
         <div class="goods-select">
             <div class="goods-title"></div>
