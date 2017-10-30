@@ -36,9 +36,8 @@ public class PayrollController {
 
     @RequestMapping(value = "/primary-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView primaryAudit(@PathVariable long payRollId) {
-        consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName());
-        return new ModelAndView("redirect:/finance-manage/payroll-manage/list");
+    public BaseDto<BaseDataDto> primaryAudit(@PathVariable long payRollId) {
+        return consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/advanced-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
@@ -158,6 +157,7 @@ public class PayrollController {
         ModelAndView modelAndView = new ModelAndView("/payroll-detail");
         modelAndView.addObject("data", consolePayrollService.detail(id, index, pageSize));
         modelAndView.addObject("payrollStatus", PayrollPayStatus.values());
+        modelAndView.addObject("payrollId", id);
         return modelAndView;
     }
 }

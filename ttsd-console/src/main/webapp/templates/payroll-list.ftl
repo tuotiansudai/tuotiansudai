@@ -10,7 +10,7 @@
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="createStartTime"
                        value="${(createStartTime?string('yyyy-MM-dd'))!}"/>
-					                <span class="input-group-addon">
+                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
@@ -18,7 +18,7 @@
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" name="createEndTime"
                        value="${(createEndTime?string('yyyy-MM-dd'))!}"/>
-					                <span class="input-group-addon">
+                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
@@ -26,8 +26,12 @@
 
         <div class="form-group">
             <label for="control-label">发放总金额:</label>
-            <input type="text" class="form-control jq-balance-min" name="amountMin" value="${amountMin!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">-
-            <input type="text" class="form-control jq-balance-max" name="amountMax" value="${amountMax!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            <input type="text" class="form-control jq-balance-min" name="amountMin" value="${amountMin!}"
+                   onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')">-
+            <input type="text" class="form-control jq-balance-max" name="amountMax" value="${amountMax!}"
+                   onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
 
         <div class="form-group">
@@ -92,26 +96,35 @@
                 <tr>
                     <td>${payroll.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${payroll.title!}</td>
-                    <td>${payroll.grantTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <#if payroll.grantTime??>
+                        <td>${payroll.grantTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <#else >
+                        <td></td>
+                    </#if>
+
                     <td>${(payroll.totalAmount/100)?string('0.00')}</td>
                     <td>${payroll.headCount!}</td>
                     <td>
                         <#list payrollStatusTypes as status>
                             <#if payroll.status == status>
-                                ${status.description}
-                            </#if>
+                        ${status.description}
+                        </#if>
                         </#list>
                     </td>
                     <td>${payroll.remark!}</td>
                     <td>
-                        <#if payroll.status=='PENDING'>
-                            <a href="" class="btn btn-sm btn-primary">审核</a>
+                        <#if payroll.status=='PENDING' || payroll.status=='AUDITED'>
+                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
+                               class="btn btn-sm btn-primary">审核</a>
                         <#elseif payroll.status=='REJECTED'>
                             <a href="" class="btn btn-sm btn-primary">编辑</a>
                         <#else>
-                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail" class="btn btn-sm btn-primary">详情</a>
+                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
+                               class="btn btn-sm btn-primary">详情</a>
                         </#if>
-                        <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}" class="btn btn-sm btn-primary btnRemark">备注</button>
+                        <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}"
+                                class="btn btn-sm btn-primary btnRemark">备注
+                        </button>
                     </td>
                 </tr>
                 <#else>
@@ -129,12 +142,13 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" >备注</h4>
+                    <h4 class="modal-title">备注</h4>
                 </div>
                 <div class="modal-body">
                     <form action="/payroll-manage/update-remark" method="post" id="remarkForm">
                         <input type="hidden" id="id" name="id">
-                        <textarea type="text" id="remark" name="remark" class="form-control" STYLE="height: 100px; resize: none"></textarea>
+                        <textarea type="text" id="remark" name="remark" class="form-control"
+                                  STYLE="height: 100px; resize: none"></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -154,12 +168,12 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
+                        <a href="?index=${data.index - 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
                                                       <#if amountMin??>amountMin=${amountMin}&</#if><#if amountMax??>amountMax=${amountMax}&</#if>
                                                       <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if><#if sendEndTime??>sendEndTime=${sendEndTime?string('yyyy-MM-dd')}&</#if>                                                       <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if>
                                                       <#if title??>title=${title}&</#if>
                                                       <#if payrollStatusType??>payrollStatusType=${payrollStatusType}&</#if>
-                       aria-label="Previous">
+                       aria-label=" Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -169,12 +183,12 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
+                        <a href="?index=${data.index + 1}&<#if createStartTime??>createStartTime=${createStartTime?string('yyyy-MM-dd')}&</#if><#if createEndTime??>createEndTime=${createEndTime?string('yyyy-MM-dd')}&</#if>
                                                       <#if amountMin??>amountMin=${amountMin}&</#if><#if amountMax??>amountMax=${amountMax}&</#if>
                                                       <#if sendStartTime??>sendStartTime=${sendStartTime?string('yyyy-MM-dd')}&</#if><#if sendEndTime??>sendEndTime=${sendEndTime?string('yyyy-MM-dd')}&</#if>
                                                       <#if title??>title=${title}&</#if>
                                                       <#if payrollStatusType??>payrollStatusType=${payrollStatusType}&</#if>
-                       aria-label="Next">
+                       aria-label=" Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

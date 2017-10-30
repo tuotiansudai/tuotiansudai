@@ -67,17 +67,18 @@ public class ConsolePayrollService {
     private static final int LEFT_SECONDS = 60 * 60 * 24;
 
     @Transactional
-    public void primaryAudit(long payRollId, String loginName) {
+    public BaseDto<BaseDataDto> primaryAudit(long payRollId, String loginName) {
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         if (payrollModel == null
-                || Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.REJECTED).contains(payrollModel.getStatus())) {
+                || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.REJECTED).contains(payrollModel.getStatus())) {
             logger.debug("payRollId not exist or status no pending rejected ");
-            return;
+            return new BaseDto<>(new BaseDataDto(false, "状态不正确!"));
         }
         payrollModel.setUpdatedBy(loginName);
         payrollModel.setUpdatedTime(new Date());
         payrollModel.setStatus(PayrollStatusType.AUDITED);
         payrollMapper.update(payrollModel);
+        return new BaseDto<>(new BaseDataDto(true));
     }
 
     @Transactional
@@ -294,11 +295,11 @@ public class ConsolePayrollService {
         return basePaginationDataDto;
     }
 
-    public void updateRemark(long id, String remark, String loginName){
+    public void updateRemark(long id, String remark, String loginName) {
         payrollMapper.updateRemark(id, remark, loginName, new Date());
     }
 
-    public BasePaginationDataDto<PayrollDetailModel> detail(long payrollId, int index, int pageSize){
+    public BasePaginationDataDto<PayrollDetailModel> detail(long payrollId, int index, int pageSize) {
         List<PayrollDetailModel> payrollDetailModels = payrollDetailMapper.findByPayrollId(payrollId);
         int count = payrollDetailModels.size();
         int endIndex = pageSize * index;

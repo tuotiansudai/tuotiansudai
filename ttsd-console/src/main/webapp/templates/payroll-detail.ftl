@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="finance-manage" sideLab="payrollDetail" title="用户资金发放详情">
+<@global.main pageCss="" pageJavascript="payroll.js" headLab="finance-manage" sideLab="payrollDetail" title="用户资金发放详情">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -23,8 +23,8 @@
                     <td>
                         <#list payrollStatus as status>
                             <#if detail.status == status>
-                                ${status.description}
-                            </#if>
+                        ${status.description}
+                        </#if>
                         </#list>
                     </td>
                 </tr>
@@ -39,24 +39,35 @@
         </table>
     </div>
 
-    <div class="modal fade" id="remarkModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" >备注</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="/payroll-manage/update-remark" method="post" id="remarkForm">
-                        <input type="hidden" id="id" name="id">
-                        <textarea type="text" id="remark" name="remark" class="form-control" STYLE="height: 100px; resize: none"></textarea>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button class="btn btn-default btnSubmit">确认</button>
-                </div>
-            </div>
-        </div>
+    <div>
+        <table class="table">
+            <tr>
+                <@security.authorize access="hasAuthority('FINANCE_ADMIN')">
+                    <td>
+                        <button class="btn btn-primary primary-audit"
+                                data-url="/finance-manage/payroll-manage/primary-audit/${payrollId?string('0')}">通过
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary reject"
+                                data-url="/finance-manage/payroll-manage/reject/${payrollId?string('0')}">驳回
+                        </button>
+                    </td>
+                </@security.authorize>
+                <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
+                    <td>
+                        <button class="btn btn-primary advanced-audit"
+                                data-url="/finance-manage/payroll-manage/advanced-audit/${payrollId?string('0')}">通过
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary reject"
+                                data-url="/finance-manage/payroll-manage/reject/${payrollId?string('0')}">驳回
+                        </button>
+                    </td>
+                </@security.authorize>
+            </tr>
+        </table>
     </div>
 
     <!-- pagination  -->

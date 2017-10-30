@@ -1,6 +1,8 @@
 package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.console.dto.PayrollDataDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.log.service.AuditLogService;
@@ -54,12 +56,17 @@ public class AuditTaskAspectPayroll {
         logger.info("after create payroll aspect.");
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.primaryAudit(..))")
-    public void afterReturnPrimaryAudit(JoinPoint joinPoint) {
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.primaryAudit(..))", returning = "returnValue")
+    public void afterReturnPrimaryAudit(JoinPoint joinPoint, Object returnValue) {
         logger.info("after primaryAudit payroll aspect.");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
+            BaseDto<BaseDataDto> baseDto = (BaseDto) returnValue;
+            if (!baseDto.getData().getStatus()) {
+                logger.debug(String.format("primaryAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
+                return;
+            }
 
             schedulingPayrollTask(payrollId, loginName, PayrollStatusType.AUDITED);
         } catch (Exception e) {
@@ -68,12 +75,18 @@ public class AuditTaskAspectPayroll {
         logger.info("after primaryAudit payroll aspect.");
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.advancedAudit(..))")
-    public void afterReturnAdvancedAudit(JoinPoint joinPoint) {
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.advancedAudit(..))", returning = "returnValue")
+    public void afterReturnAdvancedAudit(JoinPoint joinPoint, Object returnValue) {
         logger.info("after advancedAudit payroll aspect.");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
+
+            BaseDto<BaseDataDto> baseDto = (BaseDto) returnValue;
+            if (!baseDto.getData().getStatus()) {
+                logger.debug(String.format("advancedAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
+                return;
+            }
 
             schedulingPayrollTask(payrollId, loginName, PayrollStatusType.SUCCESS);
         } catch (Exception e) {
@@ -117,15 +130,16 @@ public class AuditTaskAspectPayroll {
                 if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.FINANCE_ADMIN, taskId)) {
                     OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.FINANCE_ADMIN, taskId);
                     description = String.format("财务管理员%s通过了%s提交的发放现金申请，请进行二次审核", operatorRealName, task.getSender());
-                    task.setDescription(description);
-                    task.setSender(loginName);
                     OperationTask<Long> notify = new OperationTask(taskId, TaskType.NOTIFY, OperationType.PAYROLL, loginName,
                             task.getSender(), String.valueOf(payrollId), "代发工资",
                             String.format("财务管理员%s通过了您提交的发放现金申请，等待运营管理员审核", operatorRealName), null);
-
-
                     redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.FINANCE_ADMIN, taskId);
                     redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
+
+                    task.setDescription(description);
+                    task.setSender(loginName);
+
+
                     redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
                 }
 
