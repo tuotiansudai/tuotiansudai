@@ -252,7 +252,10 @@ function toLogin() {
     }
 }
 
-
+//不在活动时间范围内时提示信息
+let dateTime = $('#dateTime');
+console.log(dateTime.data('starttime'));
+alert(dateTime.data('starttime'));
 
 
 

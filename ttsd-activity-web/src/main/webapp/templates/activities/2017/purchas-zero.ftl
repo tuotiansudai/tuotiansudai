@@ -42,8 +42,6 @@
         </div>
     </div>
 
-    <i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"></i>
-
     <div class="goods-select-wrap">
         <div class="goods-select">
             <div class="goods-title"></div>
