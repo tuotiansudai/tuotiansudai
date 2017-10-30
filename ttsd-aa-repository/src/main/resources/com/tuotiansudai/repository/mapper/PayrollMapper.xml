@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <resultMap id="payRollResultMap" type="PayrollModel">
+    <resultMap id="payrollResultMap" type="PayrollModel">
         <id column="id" property="id"></id>
         <result column="title" property="title"></result>
         <result column="total_amount" property="totalAmount"></result>
@@ -32,7 +32,7 @@
         head_count = #{headCount},
         status = #{status},
         remark = #{remark},
-        grant_time = #{grant_time},
+        grant_time = #{grantTime},
         updated_by = #{updatedBy},
         updated_time = #{updatedTime}
         where id = #{id}
@@ -46,7 +46,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findPayroll" resultMap="payRollResultMap" parameterType="map">
+    <select id="findPayroll" parameterType="map" resultMap="payrollResultMap">
         select * from payroll
         <where>
             <if test="createStartTime !=null">
@@ -77,7 +77,7 @@
         ORDER BY created_time DESC
     </select>
 
-    <select id="findById" parameterType="map" resultMap="payRollResultMap">
+    <select id="findById" parameterType="map" resultMap="payrollResultMap">
         select * from payroll where id = #{id}
     </select>
 

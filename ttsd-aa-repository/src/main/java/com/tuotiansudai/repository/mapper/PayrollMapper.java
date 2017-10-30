@@ -29,10 +29,8 @@ public interface PayrollMapper {
                                    @Param(value = "payrollStatusType") PayrollStatusType payrollStatusType,
                                    @Param(value = "title") String title);
 
-    PayrollModel findById(
-            @Param(value = "id") long id);
+    PayrollModel findById(@Param(value = "id") long id);
 
-    int updateStatus(
-            @Param(value = "id") long id,
-            @Param(value = "status") PayrollStatusType status);
+    int updateStatus(@Param(value = "id") long id,
+                     @Param(value = "status") PayrollStatusType status);
 }

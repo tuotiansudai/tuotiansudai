@@ -3,7 +3,7 @@
 <@global.main pageCss="" pageJavascript="payroll.js" headLab="finance-manage" sideLab="payroll" title="用户资金发放">
 
 <!-- content area begin -->
-<div class="col-md-10">
+<div class="col-md-10" xmlns="http://www.w3.org/1999/html">
     <form action="" method="get" class="form-inline query-build">
         <div class="form-group">
             <label>创建时间:</label>
@@ -67,8 +67,11 @@
         </div>
 
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
-
     </form>
+
+    <div class="form-group">
+        <a href="/finance-manage/payroll-manage/create" class="btn btn-sm btn-primary">创建</a>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
