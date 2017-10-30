@@ -171,6 +171,10 @@ public enum AsyncUmPayService {
      * 抽奖现金奖励普通转账
      */
     LOTTERY_REWARD_TRANSFER("transfer", "", "", "lottery_reward_notify", ""),
+    /**
+     * 代发工资普通转账
+     */
+    PAYROLL_TRANSFER("transfer", "", "", "payroll_notify", ""),
 
 
     /**

@@ -39,4 +39,11 @@ public interface PayrollMapper {
                @Param(value = "amountMax") long amountMax,
                @Param(value = "payrollStatusType") PayrollStatusType payrollStatusType,
                @Param(value = "title") String title);
+
+    PayrollModel findById(
+            @Param(value = "id") long id);
+
+    int updateStatus(
+            @Param(value = "id") long id,
+            @Param(value = "status") PayrollStatusType status);
 }

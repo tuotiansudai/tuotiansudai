@@ -38,7 +38,7 @@ public class PayrollService {
     }
 
     public BasePaginationDataDto<PayrollDetailModel> detail(long payrollId, int index, int pageSize){
-        List<PayrollDetailModel> list = payrollDetailMapper.findByPayrollId(payrollId, index-1, pageSize);
+        List<PayrollDetailModel> list = payrollDetailMapper.findDetailPagination(payrollId, index-1, pageSize);
         return new BasePaginationDataDto<>(index, pageSize, payrollDetailMapper.countByPayrollId(payrollId), list);
     }
 }

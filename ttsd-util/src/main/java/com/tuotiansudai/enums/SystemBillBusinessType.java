@@ -36,7 +36,10 @@ public enum SystemBillBusinessType {
 
     INVEST_CASH_BACK("现金补贴"),
 
-    MEMBERSHIP_PRIVILEGE_PURCHASE("购买增值特权");
+    MEMBERSHIP_PRIVILEGE_PURCHASE("购买增值特权"),
+
+    PAYROLL("代发工资"),
+    ;
 
     private final String description;
 
