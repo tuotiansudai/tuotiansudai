@@ -44,24 +44,24 @@
                 <@security.authorize access="hasAuthority('FINANCE_ADMIN')">
                     <td>
                         <button class="btn btn-primary primary-audit"
-                                data-url="/finance-manage/payroll-manage/primary-audit/${payrollId?string('0')}">通过
+                                data-url="/finance-manage/payroll-manage/primary-audit/${payrollId}">通过
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-primary reject"
-                                data-url="/finance-manage/payroll-manage/reject/${payrollId?string('0')}">驳回
+                                data-url="/finance-manage/payroll-manage/reject/${payrollId}">驳回
                         </button>
                     </td>
                 </@security.authorize>
                 <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
                     <td>
                         <button class="btn btn-primary advanced-audit"
-                                data-url="/finance-manage/payroll-manage/final-audit/${payrollId?string('0')}">通过
+                                data-url="/finance-manage/payroll-manage/final-audit/${payrollId}">通过
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-primary reject"
-                                data-url="/finance-manage/payroll-manage/reject/${payrollId?string('0')}">驳回
+                                data-url="/finance-manage/payroll-manage/reject/${payrollId}">驳回
                         </button>
                     </td>
                 </@security.authorize>
