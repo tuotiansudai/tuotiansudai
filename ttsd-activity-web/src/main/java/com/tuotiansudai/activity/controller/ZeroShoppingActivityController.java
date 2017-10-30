@@ -38,8 +38,6 @@ public class ZeroShoppingActivityController {
         }
         modelAndView.addObject("appVersion", request.getHeader("appversion"));
         modelAndView.addObject("token", request.getHeader("token"));
-        modelAndView.addObject("activityStartTime", activityZeroShoppingStartTime);
-        modelAndView.addObject("activityEndTime", activityZeroShoppingEndTime);
         return modelAndView;
     }
 
@@ -51,6 +49,8 @@ public class ZeroShoppingActivityController {
         modelAndView.addObject("exists", loanModel != null);
         modelAndView.addObject("loanId", loanModel == null ? null : String.valueOf(loanModel.getId()));
         modelAndView.addObject("appVersion", appVersion);
+        modelAndView.addObject("activityStartTime", activityZeroShoppingStartTime);
+        modelAndView.addObject("activityEndTime", activityZeroShoppingEndTime);
         return modelAndView;
     }
 
