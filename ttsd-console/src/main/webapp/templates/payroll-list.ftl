@@ -9,41 +9,25 @@
             <label>创建时间:</label>
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="createStartTime"
-                <<<<<<< HEAD
-                value="${(createStartTime?string('yyyy-MM-dd'))!}"/>
-                <span class="input-group-addon">
-=======
+
                        value="${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}"/>
-					                <span class="input-group-addon">
->>>>>>> payroll_master
+                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
             -
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" name="createEndTime"
-                <<<<<<< HEAD
-                value="${(createEndTime?string('yyyy-MM-dd'))!}"/>
-                <span class="input-group-addon">
-=======
+
                        value="${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}"/>
-					                <span class="input-group-addon">
->>>>>>> payroll_master
+                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
         </div>
 
         <div class="form-group">
-            <<<<<<< HEAD
-            <label for="control-label">发放总金额:</label>
-            <input type="text" class="form-control jq-balance-min" name="amountMin" value="${amountMin!}"
-                   onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
-                   onafterpaste="this.value=this.value.replace(/\D/g,'')">-
-            <input type="text" class="form-control jq-balance-max" name="amountMax" value="${amountMax!}"
-                   onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"
-                   onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            =======
+
             <label for="control-label">发放总金额(分):</label>
             <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin"
                    value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
@@ -53,7 +37,6 @@
                    value="${(payrollQueryDto.amountMax?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
                    onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')">
-            >>>>>>> payroll_master
         </div>
 
         <div class="form-group">
