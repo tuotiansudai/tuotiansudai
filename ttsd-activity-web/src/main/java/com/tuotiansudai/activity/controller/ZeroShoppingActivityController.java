@@ -4,6 +4,7 @@ import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.activity.service.ZeroShoppingActivityService;
 import com.tuotiansudai.repository.model.LoanModel;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -43,6 +44,9 @@ public class ZeroShoppingActivityController {
 
     @RequestMapping(value = "/article", method = {RequestMethod.GET})
     public ModelAndView zeroShoppingDetail(ZeroShoppingPrize zeroShoppingPrize, String appVersion){
+        if (zeroShoppingActivityService.queryPrizeSurplus(zeroShoppingPrize) < 1){
+            return new ModelAndView("redirect:/activity/zero-shopping");
+        }
         ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero-article", "responsive", true);
         modelAndView.addObject("prizeName", zeroShoppingPrize);
         LoanModel loanModel = zeroShoppingActivityService.queryActivityLoan();

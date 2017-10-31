@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.service;
 
 import com.tuotiansudai.activity.repository.mapper.ZeroShoppingPrizeConfigMapper;
+import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -34,5 +35,9 @@ public class ZeroShoppingActivityService {
 
     public LoanModel queryActivityLoan(){
         return loanMapper.findZeroShoppingActivityByTime(activityZeroShoppingStartTime, activityZeroShoppingEndTime);
+    }
+
+    public int queryPrizeSurplus(ZeroShoppingPrize zeroShoppingPrize){
+        return zeroShoppingMapper.prizeSurplus(zeroShoppingPrize);
     }
 }
