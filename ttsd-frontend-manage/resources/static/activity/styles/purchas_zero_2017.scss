@@ -610,6 +610,9 @@ p {
     background-size: 100%;
   }
   .product-detail {
+    &.wap-width-detail {
+      width: 100%;
+    }
     .detail-product {
       font-size:0.3rem;
       margin-top: 0.3rem;

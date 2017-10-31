@@ -43,7 +43,7 @@
     <div class="shopping-process page-width">
         <h2></h2>
     </div>
-    <div class="product-detail page-width">
+    <div class="product-detail page-width wap-width-detail">
         <h2 class="detail-product">商品介绍</h2>
         <div class="product-imgs" id="productImages">
         </div>
