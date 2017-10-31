@@ -217,7 +217,7 @@ public class LotteryDrawActivityService {
 
         userMapper.lockByLoginName(userModel.getLoginName());
 
-        if (ActivityCategory.DOUBLE_ELEVEN_ACTIVITY.name() == activityCategory.name()) {
+        if (ActivityCategory.DOUBLE_ELEVEN_ACTIVITY == activityCategory) {
             int CurrentUsedDrawTimes = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, null, activityCategory, new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).plusDays(1).minusSeconds(1).toDate());
             if (CurrentUsedDrawTimes >= 10) {
                 return new DrawLotteryResultDto(4);//您今天的抽奖机会已用完，明天再来抽奖吧！
