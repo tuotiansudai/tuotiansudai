@@ -177,8 +177,9 @@ public class AuditTaskAspectPayroll {
             if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + currentRole, taskId)) {
 
                 OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + currentRole, taskId);
+                String senderRealName = userService.getRealName(task.getSender());
                 String description = isFinanceAdmin(loginName)
-                        ? String.format("提交的发放现金的申请被财务管理员%s驳回", operatorRealName) : String.format("运营管理员%s通过了你提交的发放现金申请。", operatorRealName);
+                        ? String.format("提交的发放现金的申请被财务管理员%s驳回", operatorRealName) : String.format("%s提交的发放现金申请被运营管理员%s驳回", senderRealName, operatorRealName);
                 OperationTask<Long> notify = new OperationTask(taskId, TaskType.NOTIFY, OperationType.PAYROLL, loginName,
                         task.getSender(), task.getObjId(), task.getObjName(),
                         description, null);
@@ -187,7 +188,7 @@ public class AuditTaskAspectPayroll {
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
                 if (!isFinanceAdmin(loginName)) {
                     PayrollModel payrollModel = payrollMapper.findById(payrollId);
-                    String creator = userService.getRealName(payrollModel.getCreatedBy());
+                    String creator = payrollModel.getCreatedBy();
                     OperationTask<Long> creatorNotify = new OperationTask(taskId, TaskType.NOTIFY, OperationType.PAYROLL, loginName,
                             creator, task.getObjId(), task.getObjName(),
                             String.format("你提交的发放现金申请被运营管理员%s驳回", operatorRealName), null);

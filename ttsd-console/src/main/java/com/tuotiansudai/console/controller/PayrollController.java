@@ -131,8 +131,12 @@ public class PayrollController {
     public ModelAndView payrollDetail(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("/payroll-detail");
         modelAndView.addObject("data", consolePayrollService.detail(id));
-        modelAndView.addObject("payrollStatus", PayrollPayStatus.values());
+        modelAndView.addObject("payrollStatuses", PayrollPayStatus.values());
         modelAndView.addObject("payrollId", String.valueOf(id));
+        PayrollModel payrollModel = consolePayrollService.findById(id);
+        if (payrollModel != null) {
+            modelAndView.addObject("payrollStatus", payrollModel.getStatus());
+        }
         return modelAndView;
     }
 }

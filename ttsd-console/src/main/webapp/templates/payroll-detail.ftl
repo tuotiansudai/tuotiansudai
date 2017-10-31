@@ -21,7 +21,7 @@
                     <td>${detail.mobile}</td>
                     <td>${(detail.amount/100)?string('0.00')}</td>
                     <td>
-                        <#list payrollStatus as status>
+                        <#list payrollStatuses as status>
                             <#if detail.status == status>
                         ${status.description}
                         </#if>
@@ -42,28 +42,33 @@
         <table class="table">
             <tr>
                 <@security.authorize access="hasAuthority('FINANCE_ADMIN')">
-                    <td>
-                        <button class="btn btn-primary primary-audit"
-                                data-url="/finance-manage/payroll-manage/primary-audit/${payrollId}">通过
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary reject"
-                                data-url="/finance-manage/payroll-manage/reject/${payrollId}">驳回
-                        </button>
-                    </td>
+                    <#if payrollStatus?? && payrollStatus == 'PENDING'>
+                        <td>
+                            <button class="btn btn-primary primary-audit"
+                                    data-url="/finance-manage/payroll-manage/primary-audit/${payrollId}">通过
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary reject"
+                                    data-url="/finance-manage/payroll-manage/reject/${payrollId}">驳回
+                            </button>
+                        </td>
+                    </#if>
                 </@security.authorize>
                 <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
-                    <td>
-                        <button class="btn btn-primary advanced-audit"
-                                data-url="/finance-manage/payroll-manage/final-audit/${payrollId}">通过
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary reject"
-                                data-url="/finance-manage/payroll-manage/reject/${payrollId}">驳回
-                        </button>
-                    </td>
+                    <#if payrollStatus?? && payrollStatus == 'AUDITED'>
+                        <td>
+                            <button class="btn btn-primary advanced-audit"
+                                    data-url="/finance-manage/payroll-manage/final-audit/${payrollId}">通过
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary reject"
+                                    data-url="/finance-manage/payroll-manage/reject/${payrollId}">驳回
+                            </button>
+                        </td>
+
+                    </#if>
                 </@security.authorize>
             </tr>
         </table>
