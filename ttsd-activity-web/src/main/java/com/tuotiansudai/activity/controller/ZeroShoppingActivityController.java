@@ -44,9 +44,6 @@ public class ZeroShoppingActivityController {
 
     @RequestMapping(value = "/article", method = {RequestMethod.GET})
     public ModelAndView zeroShoppingDetail(ZeroShoppingPrize zeroShoppingPrize, String appVersion){
-        if (zeroShoppingActivityService.queryPrizeSurplus(zeroShoppingPrize) < 1){
-            return new ModelAndView("redirect:/activity/zero-shopping");
-        }
         ModelAndView modelAndView = new ModelAndView("/activities/2017/purchas-zero-article", "responsive", true);
         modelAndView.addObject("prizeName", zeroShoppingPrize);
         LoanModel loanModel = zeroShoppingActivityService.queryActivityLoan();
@@ -61,6 +58,9 @@ public class ZeroShoppingActivityController {
     @RequestMapping(value = "/activity-loan-detail", method = {RequestMethod.GET})
     public ModelAndView redirectLoanDetail(@RequestParam(value = "zeroShoppingPrize", required = false) ZeroShoppingPrize zeroShoppingPrize,
                                            RedirectAttributes redirectAttributes){
+        if (zeroShoppingActivityService.queryPrizeSurplus(zeroShoppingPrize) < 1){
+            return new ModelAndView("redirect:/activity/zero-shopping");
+        }
         redirectAttributes.addFlashAttribute("zeroShoppingPrize", zeroShoppingPrize);
         return new ModelAndView("redirect:/loan/" + zeroShoppingActivityService.queryActivityLoan().getId());
     }
