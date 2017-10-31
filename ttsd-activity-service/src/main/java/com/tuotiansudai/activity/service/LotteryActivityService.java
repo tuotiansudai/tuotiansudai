@@ -50,7 +50,7 @@ public class LotteryActivityService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,LotteryPrize activityType){
         List<LotteryPrize> lotteryPrizes = activityType.equals(LotteryPrize.TOURISM) ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
 
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes, ActivityCategory.AUTUMN_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes, ActivityCategory.AUTUMN_PRIZE, null);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
         }
