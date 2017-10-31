@@ -42,7 +42,7 @@ public class AuditTaskAspectPayroll {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.createPayroll(..)) || execution(* com.tuotiansudai.console.service.ConsolePayrollService.updatePayroll(..))")
     public void afterReturnCreatePayroll(JoinPoint joinPoint) {
-        logger.info("after create payroll aspect.");
+        logger.info("after create payroll aspect begin ...");
         try {
             String loginName = String.valueOf(joinPoint.getArgs()[0]);
             PayrollDataDto payrollDataDto = (PayrollDataDto) joinPoint.getArgs()[1];
@@ -51,12 +51,12 @@ public class AuditTaskAspectPayroll {
         } catch (Exception e) {
             logger.error("after create payroll aspect fail ", e);
         }
-        logger.info("after create payroll aspect.");
+        logger.info("after create payroll aspect end ...");
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.primaryAudit(..))", returning = "returnValue")
     public void afterReturnPrimaryAudit(JoinPoint joinPoint, Object returnValue) {
-        logger.info("after primaryAudit payroll aspect.");
+        logger.info("after primaryAudit payroll aspect begin ...");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
@@ -69,12 +69,12 @@ public class AuditTaskAspectPayroll {
         } catch (Exception e) {
             logger.error("after primaryAudit payroll aspect fail ", e);
         }
-        logger.info("after primaryAudit payroll aspect.");
+        logger.info("after primaryAudit payroll aspect end ...");
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.finalAudit(..))", returning = "returnValue")
     public void afterReturnAdvancedAudit(JoinPoint joinPoint, Object returnValue) {
-        logger.info("after finalAudit payroll aspect.");
+        logger.info("after finalAudit payroll aspect begin ...");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
@@ -88,12 +88,12 @@ public class AuditTaskAspectPayroll {
         } catch (Exception e) {
             logger.error("after finalAudit payroll aspect fail ", e);
         }
-        logger.info("after finalAudit payroll aspect.");
+        logger.info("after finalAudit payroll aspect end ...");
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.reject(..))")
     public void afterReturnReject(JoinPoint joinPoint) {
-        logger.info("after reject payroll aspect.");
+        logger.info("after reject payroll aspect begin ...");
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
@@ -101,7 +101,7 @@ public class AuditTaskAspectPayroll {
         } catch (Exception e) {
             logger.error("after reject payroll aspect fail ", e);
         }
-        logger.info("after reject payroll aspect.");
+        logger.info("after reject payroll aspect end ...");
     }
 
     AuditTaskPayroll<String, Long> pending = new AuditTaskPayroll<String, Long>() {
