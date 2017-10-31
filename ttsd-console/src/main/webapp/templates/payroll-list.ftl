@@ -118,7 +118,8 @@
                             <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
                                class="btn btn-sm btn-primary">审核</a>
                         <#elseif payroll.status=='REJECTED'>
-                            <a href="" class="btn btn-sm btn-primary">编辑</a>
+                            <a href="/finance-manage/payroll-manage/edit/${payroll.id?string('0')}"
+                               class="btn btn-sm btn-primary">编辑</a>
                         <#else>
                             <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
                                class="btn btn-sm btn-primary">详情</a>

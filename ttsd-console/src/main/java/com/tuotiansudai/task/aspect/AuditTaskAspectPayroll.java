@@ -1,6 +1,5 @@
 package com.tuotiansudai.task.aspect;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -10,7 +9,6 @@ import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.PayrollModel;
-import com.tuotiansudai.repository.model.PayrollStatusType;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
@@ -25,9 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 @Aspect
 @Component
@@ -45,15 +40,14 @@ public class AuditTaskAspectPayroll {
     @Autowired
     private PayrollMapper payrollMapper;
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.createPayroll(..))" +
-            "execution(* com.tuotiansudai.console.service.ConsolePayrollService.updatePayroll(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.createPayroll(..)) || execution(* com.tuotiansudai.console.service.ConsolePayrollService.updatePayroll(..))")
     public void afterReturnCreatePayroll(JoinPoint joinPoint) {
         logger.info("after create payroll aspect.");
         try {
             String loginName = String.valueOf(joinPoint.getArgs()[0]);
             PayrollDataDto payrollDataDto = (PayrollDataDto) joinPoint.getArgs()[1];
 
-            schedulingPayrollTask(payrollDataDto.getId(), loginName, pending);
+            pending.accept(loginName, payrollDataDto.getId());
         } catch (Exception e) {
             logger.error("after create payroll aspect fail ", e);
         }
@@ -71,8 +65,7 @@ public class AuditTaskAspectPayroll {
                 logger.debug(String.format("primaryAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
                 return;
             }
-
-            schedulingPayrollTask(payrollId, loginName, audited);
+            audited.accept(loginName, payrollId);
         } catch (Exception e) {
             logger.error("after primaryAudit payroll aspect fail ", e);
         }
@@ -91,8 +84,7 @@ public class AuditTaskAspectPayroll {
                 logger.debug(String.format("finalAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
                 return;
             }
-
-            schedulingPayrollTask(payrollId, loginName, success);
+            success.accept(loginName, payrollId);
         } catch (Exception e) {
             logger.error("after finalAudit payroll aspect fail ", e);
         }
@@ -105,19 +97,16 @@ public class AuditTaskAspectPayroll {
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
-
-            schedulingPayrollTask(payrollId, loginName, rejected);
+            rejected.accept(loginName, payrollId);
         } catch (Exception e) {
             logger.error("after reject payroll aspect fail ", e);
         }
         logger.info("after reject payroll aspect.");
     }
 
-    Consumer<List<String>> pending = new Consumer<List<String>>() {
+    AuditTaskPayroll<String, Long> pending = new AuditTaskPayroll<String, Long>() {
         @Override
-        public void accept(List<String> list) {
-            String loginName = list.get(0);
-            String payrollId = list.get(1);
+        public void accept(String loginName, Long payrollId) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String operatorRealName = userService.getRealName(loginName);
             String description = String.format("%s提交了一份发放现金的申请，请审核。", operatorRealName);
@@ -131,11 +120,9 @@ public class AuditTaskAspectPayroll {
         }
     };
 
-    Consumer<List<String>> audited = new Consumer<List<String>>() {
+    AuditTaskPayroll<String, Long> audited = new AuditTaskPayroll<String, Long>() {
         @Override
-        public void accept(List<String> list) {
-            String loginName = list.get(0);
-            String payrollId = list.get(1);
+        public void accept(String loginName, Long payrollId) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String description = "";
             String operatorRealName = userService.getRealName(loginName);
@@ -159,11 +146,9 @@ public class AuditTaskAspectPayroll {
         }
     };
 
-    Consumer<List<String>> success = new Consumer<List<String>>() {
+    AuditTaskPayroll<String, Long> success = new AuditTaskPayroll<String, Long>() {
         @Override
-        public void accept(List<String> list) {
-            String loginName = list.get(0);
-            String payrollId = list.get(1);
+        public void accept(String loginName, Long payrollId) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String operatorRealName = userService.getRealName(loginName);
             if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -183,11 +168,9 @@ public class AuditTaskAspectPayroll {
         }
     };
 
-    Consumer<List<String>> rejected = new Consumer<List<String>>() {
+    AuditTaskPayroll<String, Long> rejected = new AuditTaskPayroll<String, Long>() {
         @Override
-        public void accept(List<String> list) {
-            String loginName = list.get(0);
-            String payrollId = list.get(1);
+        public void accept(String loginName, Long payrollId) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String operatorRealName = userService.getRealName(loginName);
             Role currentRole = isFinanceAdmin(loginName) ? Role.FINANCE_ADMIN : Role.OPERATOR_ADMIN;
@@ -203,7 +186,7 @@ public class AuditTaskAspectPayroll {
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + currentRole, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
                 if (!isFinanceAdmin(loginName)) {
-                    PayrollModel payrollModel = payrollMapper.findById(Long.parseLong(payrollId));
+                    PayrollModel payrollModel = payrollMapper.findById(payrollId);
                     String creator = userService.getRealName(payrollModel.getCreatedBy());
                     OperationTask<Long> creatorNotify = new OperationTask(taskId, TaskType.NOTIFY, OperationType.PAYROLL, loginName,
                             creator, task.getObjId(), task.getObjName(),
@@ -215,16 +198,16 @@ public class AuditTaskAspectPayroll {
         }
     };
 
-    private void schedulingPayrollTask(Long payrollId, String loginName, Consumer<List<String>> statusType) {
-        List<String> param = Lists.newArrayList(loginName, String.valueOf(payrollId));
-        statusType.accept(param);
-    }
-
     private boolean isFinanceAdmin(String loginName) {
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
         return userRoleModels.stream().anyMatch(userRoleModel -> userRoleModel.getRole() == Role.FINANCE_ADMIN);
     }
 
+}
+
+@FunctionalInterface
+interface AuditTaskPayroll<T, P> {
+    void accept(T t, P p);
 }
 
 
