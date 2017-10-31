@@ -228,6 +228,7 @@ $('.to-close',$soldTipDOM).on('click',function(event) {
     layer.closeAll();
 });
 //标的不存在点击弹框显示已售完
+if(!dateTime.hasClass('activity-ing')) {}
 $('#loanNoExist').on('click',function(){
     layer.open({
         type: 1,
@@ -267,6 +268,8 @@ let currentTimeNum = Number(currentTimeArray.join(''));
 activityStatus(currentTimeNum,startTime,endTime,dateTime);
 
     if(!dateTime.hasClass('activity-ing')) {
+        $('#loanNoExist').off();
+        $('#unLogin').off();
         $('.invest-btn').click(function(e){
             e.preventDefault();
             layer.msg('不在活动时间范围内');
