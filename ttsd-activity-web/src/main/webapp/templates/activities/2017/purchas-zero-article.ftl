@@ -25,10 +25,13 @@
            <#--已登录-->
            <@global.isNotAnonymous>
            <#if exists>
-               <a href="<#if !isAppSource>/activity/zero-shopping/activity-loan-detail?zeroShoppingPrize=${prizeName}
-                        <#else>
-                           ${versions?seq_contains(appVersion)?string("app/tuotian/loan-detail/${loanId}", "app/tuotian/loan-detail/${loanId}?zeroShoppingPrize=${prizeName}")}
-                        </#if>" class="invest-btn" id="toInvest">立即白拿</a>
+               <#if !isAppSource>
+                   <a href="/activity/zero-shopping/activity-loan-detail?zeroShoppingPrize=${prizeName}" class="invest-btn" id="toInvest">立即白拿</a>
+               <#elseif versions?seq_contains(appVersion)?string('true','false') == 'true'>
+                   <a href="javascript:void(0)" class="invest-btn" id="versionUpdate">立即白拿</a>
+               <#else>
+                   <a href="app/tuotian/loan-detail/${loanId}?zeroShoppingPrize=${prizeName}" class="invest-btn" id="toInvest">立即白拿</a>
+               </#if>
            <#else>
            <#--标的不存在 弹框-->
                <a href="javascript:void(0)" class="invest-btn" id="loanNoExist">立即白拿</a>
