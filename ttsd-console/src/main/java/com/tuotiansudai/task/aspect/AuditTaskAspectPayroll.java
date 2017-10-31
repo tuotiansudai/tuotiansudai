@@ -116,7 +116,7 @@ public class AuditTaskAspectPayroll {
                         description, String.format("/finance-manage/payroll-manage/%s/detail", String.valueOf(payrollId)));
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.FINANCE_ADMIN, String.valueOf(taskId), task);
             }
-            auditLogService.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, null);
+            auditLogService.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, "");
         }
     };
 
@@ -142,7 +142,7 @@ public class AuditTaskAspectPayroll {
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
 
-            auditLogService.createAuditLog(null, operatorRealName, OperationType.PAYROLL, String.valueOf(payrollId), description, null);
+            auditLogService.createAuditLog(null, operatorRealName, OperationType.PAYROLL, String.valueOf(payrollId), description, "");
         }
     };
 
@@ -163,7 +163,7 @@ public class AuditTaskAspectPayroll {
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
-                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, null);
+                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, "");
             }
         }
     };
@@ -194,7 +194,7 @@ public class AuditTaskAspectPayroll {
                             String.format("你提交的发放现金申请被运营管理员%s驳回", operatorRealName), null);
                     redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + creator, taskId, creatorNotify);
                 }
-                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, null);
+                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, "");
             }
         }
     };
