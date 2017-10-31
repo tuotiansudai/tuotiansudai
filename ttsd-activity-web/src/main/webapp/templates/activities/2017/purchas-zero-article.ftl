@@ -55,6 +55,12 @@
             新标的正在努力筹备中，请稍候重试...</p>
         <div class="known-btn to-close">我知道啦</div>
     </div>
+    <div id="versionUpdateDOM" class="sold-tip" style="display: none">
+        <div class="close-btn to-close"></div>
+        <#--<div class="icon-sold"></div>-->
+        <p>该活动需更新版本后参加！</p>
+        <div class="known-btn to-close">我知道啦</div>
+    </div>
     <#include "../../module/login-tip.ftl" />
 </div>
 </@global.main>

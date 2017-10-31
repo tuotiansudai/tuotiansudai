@@ -254,10 +254,8 @@ function toLogin() {
 
 //不在活动时间范围内时提示信息
 let dateTime = $('#dateTime'),
-    //startTime = Number(dateTime.data('starttime').substring(0, 10).replace(/-/gi, '')),
-    startTime = 20171002,
-   // endTime = Number(dateTime.data('endtime').substring(0, 10).replace(/-/gi, '')),
-    endTime = 20171004,
+    startTime = Number(dateTime.data('starttime').substring(0, 10).replace(/-/gi, '')),
+    endTime = Number(dateTime.data('endtime').substring(0, 10).replace(/-/gi, '')),
     currentTime = new Date();
 let currentTimeArray = [];
 let year = currentTime.getFullYear().toString();
@@ -267,9 +265,17 @@ currentTimeArray = [year,month,day];
 let currentTimeNum = Number(currentTimeArray.join(''));
 
 activityStatus(currentTimeNum,startTime,endTime,dateTime);
-if(!dateTime.hasClass('activity-ing')) {
-    layer.msg('不在活动时间范围内');
-}
+
+    if(!dateTime.hasClass('activity-ing')) {
+        $('.invest-btn').click(function(e){
+            e.preventDefault();
+            layer.msg('不在活动时间范围内');
+
+        })
+    }
+
+
+
 //活动状态
 function activityStatus(nowDay,startTime,endTime,dom) {
     if (nowDay < startTime) {
@@ -288,8 +294,14 @@ function activityStatus(nowDay,startTime,endTime,dom) {
 
 }
 
+//提示版本更新
+let $versionUpdateDOM = $('#versionUpdateDOM');
+$versionUpdateDOM.click(function() {
+    layer.msg('该活动需更新版本后参加，请升级到最新版本后重试！',{
+        time:5000
+    });
 
-
+})
 
 
 
