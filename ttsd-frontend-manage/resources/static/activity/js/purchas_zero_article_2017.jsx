@@ -252,9 +252,56 @@ function toLogin() {
     }
 }
 
+//不在活动时间范围内时提示信息
+let dateTime = $('#dateTime'),
+    startTime = Number(dateTime.data('starttime').substring(0, 10).replace(/-/gi, '')),
+    endTime = Number(dateTime.data('endtime').substring(0, 10).replace(/-/gi, '')),
+    currentTime = new Date();
+let currentTimeArray = [];
+let year = currentTime.getFullYear().toString();
+let month = (currentTime.getMonth()+1).toString();
+let day = currentTime.getDate().toString();
+currentTimeArray = [year,month,day];
+let currentTimeNum = Number(currentTimeArray.join(''));
+
+activityStatus(currentTimeNum,startTime,endTime,dateTime);
+
+    if(!dateTime.hasClass('activity-ing')) {
+        $('.invest-btn').click(function(e){
+            e.preventDefault();
+            layer.msg('不在活动时间范围内');
+
+        })
+    }
 
 
 
+//活动状态
+function activityStatus(nowDay,startTime,endTime,dom) {
+    if (nowDay < startTime) {
+        //活动未开始
+        dom.addClass('activity-noStarted');
+    }
+    else if (nowDay > endTime) {
+        //活动已经结束
+        dom.addClass('activity-end');
+
+    }  else if(nowDay>=startTime && nowDay<=endTime){
+        //活动中
+        dom.addClass('activity-ing');
+    }
+
+
+}
+
+//提示版本更新
+let $versionUpdateDOM = $('#versionUpdateDOM');
+$versionUpdateDOM.click(function() {
+    layer.msg('该活动需更新版本后参加，请升级到最新版本后重试！',{
+        time:5000
+    });
+
+})
 
 
 

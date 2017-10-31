@@ -41,6 +41,7 @@
             </dl>
         </div>
     </div>
+
     <div class="goods-select-wrap">
         <div class="goods-select">
             <div class="goods-title"></div>

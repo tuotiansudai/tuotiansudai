@@ -3,6 +3,7 @@
 <@global.main pageCss="${css.purchas_zero_2017}" pageJavascript="${js.purchas_zero_article_2017}" activeNav="" activeLeftNav="" title="好货0元购_活动中心_拓天速贷" keywords="拓天速贷,0元购,商品奖励,专享项目" description="拓天速贷好货0元购活动,活动期间用户点选心仪好货,通过活动页面'立即投资'按钮进入投资页面,投资带有'0元购'标签的专享项目达到该商品对应投资额,即可0元白拿商品.">
 
 <div id="purchas_zero_detail" class="shopping-zero-frame">
+    <i class="date" id="dateTime" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"></i>
    <div class="product-intro-wrap clearfix page-width page680">
             <div class="preview-wrap" id="previewImg">
             </div>
@@ -42,7 +43,7 @@
     <div class="shopping-process page-width">
         <h2></h2>
     </div>
-    <div class="product-detail page-width">
+    <div class="product-detail page-width wap-width-detail">
         <h2 class="detail-product">商品介绍</h2>
         <div class="product-imgs" id="productImages">
         </div>
@@ -52,6 +53,12 @@
         <div class="icon-sold"></div>
         <p>太火爆了！该标的已售罄，<br/>
             新标的正在努力筹备中，请稍候重试...</p>
+        <div class="known-btn to-close">我知道啦</div>
+    </div>
+    <div id="versionUpdateDOM" class="sold-tip" style="display: none">
+        <div class="close-btn to-close"></div>
+        <#--<div class="icon-sold"></div>-->
+        <p>该活动需更新版本后参加！</p>
         <div class="known-btn to-close">我知道啦</div>
     </div>
     <#include "../../module/login-tip.ftl" />
