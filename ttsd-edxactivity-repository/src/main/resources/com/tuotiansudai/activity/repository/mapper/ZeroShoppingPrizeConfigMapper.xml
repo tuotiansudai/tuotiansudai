@@ -25,4 +25,8 @@
         SELECT * FROM `edxactivity`.`zero_shopping_prize_config`
     </select>
 
+    <select id="prizeSurplus" parameterType="map" resultType="int">
+        SELECT prize_surplus FROM `edxactivity`.`zero_shopping_prize_config` where prize = #{zeroShoppingPrize}
+    </select>
+
 </mapper>

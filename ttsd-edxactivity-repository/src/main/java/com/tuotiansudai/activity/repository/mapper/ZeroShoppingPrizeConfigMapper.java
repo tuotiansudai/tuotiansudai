@@ -13,4 +13,6 @@ public interface ZeroShoppingPrizeConfigMapper {
     List<ZeroShoppingPrizeConfigModel> findAll();
 
     void update(ZeroShoppingPrizeConfigModel zeroShoppingPrizeModel);
+
+    int prizeSurplus(@Param(value = "zeroShoppingPrize") ZeroShoppingPrize zeroShoppingPrize);
 }
