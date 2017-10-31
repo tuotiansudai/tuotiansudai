@@ -253,9 +253,41 @@ function toLogin() {
 }
 
 //不在活动时间范围内时提示信息
-let dateTime = $('#dateTime');
-console.log(dateTime.data('starttime'));
-alert(dateTime.data('starttime'));
+let dateTime = $('#dateTime'),
+    //startTime = Number(dateTime.data('starttime').substring(0, 10).replace(/-/gi, '')),
+    startTime = 20171002,
+   // endTime = Number(dateTime.data('endtime').substring(0, 10).replace(/-/gi, '')),
+    endTime = 20171004,
+    currentTime = new Date();
+let currentTimeArray = [];
+let year = currentTime.getFullYear().toString();
+let month = (currentTime.getMonth()+1).toString();
+let day = currentTime.getDate().toString();
+currentTimeArray = [year,month,day];
+let currentTimeNum = Number(currentTimeArray.join(''));
+
+activityStatus(currentTimeNum,startTime,endTime,dateTime);
+if(!dateTime.hasClass('activity-ing')) {
+    layer.msg('不在活动时间范围内');
+}
+//活动状态
+function activityStatus(nowDay,startTime,endTime,dom) {
+    if (nowDay < startTime) {
+        //活动未开始
+        dom.addClass('activity-noStarted');
+    }
+    else if (nowDay > endTime) {
+        //活动已经结束
+        dom.addClass('activity-end');
+
+    }  else if(nowDay>=startTime && nowDay<=endTime){
+        //活动中
+        dom.addClass('activity-ing');
+    }
+
+
+}
+
 
 
 

@@ -18,7 +18,7 @@
                <li class="media-320">收益说明：<span id="explain"></span></li>
            </ul>
 
-           <#assign versions = ['4.4.1','4.3.5', '4.3.4', '4.4']>
+           <#assign versions = ['4.4.1', '4.4.2', '4.3.5', '4.3.4', '4.3.3', '4.4', '4.5']>
            <#--未登录-->
            <@global.isAnonymous>
                <a href="javascript:void(0)" class="invest-btn" id="unLogin">立即白拿</a>

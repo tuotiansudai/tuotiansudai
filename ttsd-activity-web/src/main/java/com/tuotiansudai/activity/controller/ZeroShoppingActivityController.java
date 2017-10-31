@@ -4,6 +4,7 @@ import com.tuotiansudai.activity.repository.model.ZeroShoppingPrize;
 import com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel;
 import com.tuotiansudai.activity.service.ZeroShoppingActivityService;
 import com.tuotiansudai.repository.model.LoanModel;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -38,8 +39,6 @@ public class ZeroShoppingActivityController {
         }
         modelAndView.addObject("appVersion", request.getHeader("appversion"));
         modelAndView.addObject("token", request.getHeader("token"));
-        modelAndView.addObject("activityStartTime", activityZeroShoppingStartTime);
-        modelAndView.addObject("activityEndTime", activityZeroShoppingEndTime);
         return modelAndView;
     }
 
@@ -51,6 +50,8 @@ public class ZeroShoppingActivityController {
         modelAndView.addObject("exists", loanModel != null);
         modelAndView.addObject("loanId", loanModel == null ? null : String.valueOf(loanModel.getId()));
         modelAndView.addObject("appVersion", appVersion);
+        modelAndView.addObject("activityStartTime", activityZeroShoppingStartTime);
+        modelAndView.addObject("activityEndTime", activityZeroShoppingEndTime);
         return modelAndView;
     }
 
