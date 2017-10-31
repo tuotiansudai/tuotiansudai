@@ -2,6 +2,8 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.console.service.ConsolePayrollService;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.repository.model.PayrollDetailModel;
@@ -26,10 +28,29 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/finance-manage/payroll-manage")
 public class PayrollController {
-
     static Logger logger = Logger.getLogger(PayrollController.class);
     @Autowired
     private ConsolePayrollService consolePayrollService;
+
+    @RequestMapping(value = "/primary-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> primaryAudit(@PathVariable long payRollId) {
+        return consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/final-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> advancedAudit(@PathVariable long payRollId) {
+        return consolePayrollService.finalAudit(payRollId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/reject/{payRollId:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView reject(@PathVariable long payRollId) {
+        consolePayrollService.reject(payRollId, LoginUserInfo.getLoginName());
+        return new ModelAndView("redirect:/finance-manage/payroll-manage/list");
+    }
+
 
     @RequestMapping(value = "/create", method = {RequestMethod.GET})
     public ModelAndView payroll() {
@@ -42,8 +63,8 @@ public class PayrollController {
         ModelAndView modelAndView = new ModelAndView("/payroll-edit");
         PayrollModel payrollModel = consolePayrollService.findById(id);
         List<PayrollDetailModel> payrollDetailModels = consolePayrollService.findByPayrollId(id);
-        modelAndView.addObject("payrollModel",payrollModel);
-        modelAndView.addObject("payrollDetailModels",payrollDetailModels);
+        modelAndView.addObject("payrollModel", payrollModel);
+        modelAndView.addObject("payrollDetailModels", payrollDetailModels);
         return modelAndView;
     }
 
@@ -73,10 +94,10 @@ public class PayrollController {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
         if (null == multipartFile) {
-            return new PayrollDataDto(false,"请上传文件！");
+            return new PayrollDataDto(false, "请上传文件！");
         }
         if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
-            return new PayrollDataDto(false,"上传失败!文件必须是csv格式");
+            return new PayrollDataDto(false, "上传失败!文件必须是csv格式");
         }
 
         PayrollDataDto payrollDataDto = new PayrollDataDto();
@@ -101,13 +122,13 @@ public class PayrollController {
 
     @ResponseBody
     @RequestMapping(value = "/update/remark", method = RequestMethod.POST)
-    public PayrollModel updateRemark(@RequestBody PayrollModel payrollModel){
+    public PayrollModel updateRemark(@RequestBody PayrollModel payrollModel) {
         consolePayrollService.updateRemark(payrollModel.getId(), payrollModel.getRemark(), LoginUserInfo.getLoginName());
         return payrollModel;
     }
 
     @RequestMapping(value = "/{id:^\\d+$}/detail", method = RequestMethod.GET)
-    public ModelAndView payrollDetail(@PathVariable long id){
+    public ModelAndView payrollDetail(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("/payroll-detail");
         modelAndView.addObject("data", consolePayrollService.detail(id));
         modelAndView.addObject("payrollStatus", PayrollPayStatus.values());

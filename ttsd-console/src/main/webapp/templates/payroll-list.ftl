@@ -9,25 +9,34 @@
             <label>创建时间:</label>
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="createStartTime"
+
                        value="${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}"/>
-					                <span class="input-group-addon">
+                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
             -
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" name="createEndTime"
+
                        value="${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}"/>
-					                <span class="input-group-addon">
+                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
         </div>
 
         <div class="form-group">
+
             <label for="control-label">发放总金额(分):</label>
-            <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin" value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">-
-            <input type="text" class="form-control jq-balance-max" id="amountMax" name="amountMax" value="${(payrollQueryDto.amountMax?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin"
+                   value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
+                   onkeyup="this.value=this.value.replace(/\D/g,'')"
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')">-
+            <input type="text" class="form-control jq-balance-max" id="amountMax" name="amountMax"
+                   value="${(payrollQueryDto.amountMax?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
+                   onkeyup="this.value=this.value.replace(/\D/g,'')"
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
 
         <div class="form-group">
@@ -59,7 +68,8 @@
             <select class="selectpicker" name="payrollStatusType">
                 <option value="">全部</option>
                 <#list payrollStatusTypes as status>
-                    <option value="${status}"<#if payrollQueryDto.payrollStatusType?? && payrollQueryDto.payrollStatusType==status>selected</#if>>
+                    <option value="${status}"
+                            <#if payrollQueryDto.payrollStatusType?? && payrollQueryDto.payrollStatusType==status>selected</#if>>
                     ${status.description}
                     </option>
                 </#list>
@@ -98,20 +108,24 @@
                     <td>
                         <#list payrollStatusTypes as status>
                             <#if payroll.status == status>
-                                ${status.description}
-                            </#if>
+                        ${status.description}
+                        </#if>
                         </#list>
                     </td>
                     <td>${payroll.remark!}</td>
                     <td>
-                        <#if payroll.status=='PENDING'>
-                            <a href="" class="btn btn-sm btn-primary">审核</a>
+                        <#if payroll.status=='PENDING' || payroll.status=='AUDITED'>
+                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
+                               class="btn btn-sm btn-primary">审核</a>
                         <#elseif payroll.status=='REJECTED'>
                             <a href="" class="btn btn-sm btn-primary">编辑</a>
                         <#else>
-                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail" class="btn btn-sm btn-primary">详情</a>
+                            <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
+                               class="btn btn-sm btn-primary">详情</a>
                         </#if>
-                        <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}" class="btn btn-sm btn-primary btnRemark">备注</button>
+                        <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}"
+                                class="btn btn-sm btn-primary btnRemark">备注
+                        </button>
                     </td>
                 </tr>
                 <#else>
@@ -129,12 +143,13 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" >备注</h4>
+                    <h4 class="modal-title">备注</h4>
                 </div>
                 <div class="modal-body">
                     <form action="/payroll-manage/update-remark" method="post" id="remarkForm">
                         <input type="hidden" id="id" name="id">
-                        <textarea type="text" id="remark" name="remark" class="form-control" STYLE="height: 100px; resize: none"></textarea>
+                        <textarea type="text" id="remark" name="remark" class="form-control"
+                                  STYLE="height: 100px; resize: none"></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -154,7 +169,7 @@
                 <li>
                     <#if data.hasPreviousPage >
                     <a href="?index=${data.index - 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${(payrollQueryDto.amountMin?string("0"))!}&amountMax=${(payrollQueryDto.amountMax?string("0"))!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
-                                                     aria-label="Previous">
+                       aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -165,7 +180,7 @@
                 <li>
                     <#if data.hasNextPage>
                     <a href="?index=${data.index + 1}&createStartTime=${(payrollQueryDto.createStartTime?string('yyyy-MM-dd'))!}&createEndTime=${(payrollQueryDto.createEndTime?string('yyyy-MM-dd'))!}&amountMin=${(payrollQueryDto.amountMin?string("0"))!}&amountMax=${(payrollQueryDto.amountMax?string("0"))!}&sendStartTime=${(payrollQueryDto.sendStartTime?string('yyyy-MM-dd'))!}&sendEndTime=${(payrollQueryDto.sendEndTime?string('yyyy-MM-dd'))!}&title=${payrollQueryDto.title!}&payrollStatusType=${payrollQueryDto.payrollStatusType!}"
-                                                    aria-label="Next">
+                       aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

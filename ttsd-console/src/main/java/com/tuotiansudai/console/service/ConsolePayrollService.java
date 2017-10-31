@@ -1,8 +1,12 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.dto.PayrollDataDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -17,7 +21,6 @@ import com.tuotiansudai.util.UUIDGenerator;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,14 +33,16 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 @Service
 public class ConsolePayrollService {
 
-    static Logger logger = Logger.getLogger(ConsolePayrollService.class);
-
+    static Logger logger = Logger.getLogger(ConsoleLoanService.class);
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
@@ -50,21 +55,92 @@ public class ConsolePayrollService {
     private AccountMapper accountMapper;
 
     @Autowired
+    private MQWrapperClient mqWrapperClient;
+
+    @Autowired
     private PayrollDetailMapper payrollDetailMapper;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
+    private PayWrapperClient payWrapperClient;
 
     private static final String redisKey = "payroll:data:{0}";
 
     private static final int LEFT_SECONDS = 60 * 60 * 24;
 
     @Transactional
+    public BaseDto<BaseDataDto> primaryAudit(long payRollId, String loginName) {
+        PayrollModel payrollModel = payrollMapper.findById(payRollId);
+        if (payrollModel == null
+                || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.REJECTED).contains(payrollModel.getStatus())) {
+            logger.debug("payRollId not exist or status no pending rejected ");
+            return new BaseDto<>(new BaseDataDto(false, "状态不正确!"));
+        }
+        payrollModel.setUpdatedBy(loginName);
+        payrollModel.setUpdatedTime(new Date());
+        payrollModel.setStatus(PayrollStatusType.AUDITED);
+        payrollMapper.update(payrollModel);
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Transactional
+    public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName) {
+        if (!isSufficientBalance(payRollId)) {
+            logger.info("system balance is not sufficient");
+            return new BaseDto<>(new BaseDataDto(false, "系统账户余额不足!"));
+        }
+        PayrollModel payrollModel = payrollMapper.findById(payRollId);
+        payrollModel.setUpdatedBy(loginName);
+        payrollModel.setUpdatedTime(new Date());
+        payrollModel.setStatus(PayrollStatusType.AUDITED);
+        payrollMapper.update(payrollModel);
+        logger.info(String.format("%s send payroll message begin ...", String.valueOf(payRollId)));
+        beginPayroll(payRollId);
+        logger.info(String.format("%s send payroll message end ...", String.valueOf(payRollId)));
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Transactional
+    public void reject(long payRollId, String loginName) {
+        PayrollModel payrollModel = payrollMapper.findById(payRollId);
+        if (payrollModel == null
+                || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.AUDITED).contains(payrollModel.getStatus())) {
+            logger.debug("payRollId not exist or status no pending audited ");
+            return;
+        }
+        payrollModel.setUpdatedBy(loginName);
+        payrollModel.setUpdatedTime(new Date());
+        payrollModel.setStatus(PayrollStatusType.REJECTED);
+        payrollMapper.update(payrollModel);
+
+    }
+
+    private boolean isSufficientBalance(long payRollId) {
+        long systemBalance = obtainSystemBalanceFromUmp();
+
+        return systemBalance > 0 && systemBalance >= sumPayingAmount(payRollId);
+    }
+
+    private long obtainSystemBalanceFromUmp() {
+        Map<String, String> systemInfo = payWrapperClient.getPlatformStatus();
+
+        return systemInfo != null && systemInfo.containsKey("账户余额")
+                ? AmountConverter.convertStringToCent(systemInfo.get("账户余额")) : 0l;
+
+    }
+
+    private long sumPayingAmount(long payRollId) {
+        List<PayrollDetailModel> details = payrollDetailMapper.findByPayrollId(payRollId);
+
+        return details.stream().map(detail -> detail.getAmount()).reduce(0l, Long::sum).longValue();
+    }
+
+    @Transactional
     public void createPayroll(String loginName, PayrollDataDto payrollDataDto) {
         PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(), payrollDataDto.getTotalAmount(), payrollDataDto.getHeadCount());
         payrollModel.setCreatedBy(loginName);
         payrollMapper.create(payrollModel);
-
+        payrollDataDto.setId(payrollModel.getId());
         this.insertPayrollDetail(payrollDataDto, payrollModel);
     }
 
@@ -79,7 +155,7 @@ public class ConsolePayrollService {
         payrollMapper.update(payrollModel);
 
         if (!Strings.isNullOrEmpty(payrollDataDto.getUuid())) {
-           this.insertPayrollDetail(payrollDataDto, payrollModel);
+            this.insertPayrollDetail(payrollDataDto, payrollModel);
         }
     }
 
@@ -130,11 +206,9 @@ public class ConsolePayrollService {
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             return new PayrollDataDto(false, "上传失败!请检查文件的列数");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return new PayrollDataDto(false, "上传失败!文件内容读取错误");
-        }
-        finally {
+        } finally {
             if (null != inputStream) {
                 inputStream.close();
             }
@@ -180,11 +254,11 @@ public class ConsolePayrollService {
         }
     }
 
-    private void insertPayrollDetail(PayrollDataDto payrollDataDto, PayrollModel payrollModel){
+    private void insertPayrollDetail(PayrollDataDto payrollDataDto, PayrollModel payrollModel) {
         String existsRedisKey = MessageFormat.format(redisKey, payrollDataDto.getUuid());
         String payrollDetail = redisWrapperClient.get(existsRedisKey);
         List<PayrollDetailModel> payrollDetailModelList = (List<PayrollDetailModel>) JSONArray.toList(JSONArray.fromObject(payrollDetail), PayrollDetailModel.class);
-        payrollDetailModelList.stream().forEach(n ->{
+        payrollDetailModelList.stream().forEach(n -> {
             n.setPayrollId(payrollModel.getId());
             n.setStatus(PayrollPayStatus.WAITING);
         });
@@ -206,7 +280,7 @@ public class ConsolePayrollService {
         List<PayrollModel> payrollModels = payrollMapper.findPayroll(payrollQueryDto.getCreateStartTime(), payrollQueryDto.getCreateEndTime(),
                 payrollQueryDto.getSendStartTime(), payrollQueryDto.getSendEndTime(),
                 payrollQueryDto.getAmountMin(), payrollQueryDto.getAmountMax(),
-                payrollQueryDto.getPayrollStatusType(),payrollQueryDto.getTitle());
+                payrollQueryDto.getPayrollStatusType(), payrollQueryDto.getTitle());
         int count = payrollModels.size();
         int index = payrollQueryDto.getIndex() == null ? 1 : payrollQueryDto.getIndex();
         int endIndex = 10 * index;
@@ -221,7 +295,7 @@ public class ConsolePayrollService {
         return basePaginationDataDto;
     }
 
-    public void updateRemark(long id, String remark, String loginName){
+    public void updateRemark(long id, String remark, String loginName) {
         PayrollModel payrollModel = payrollMapper.findById(id);
         payrollModel.setRemark(remark);
         payrollModel.setUpdatedBy(loginName);
@@ -229,7 +303,7 @@ public class ConsolePayrollService {
         payrollMapper.update(payrollModel);
     }
 
-    public List<PayrollDetailModel> detail(long payrollId){
+    public List<PayrollDetailModel> detail(long payrollId) {
         return payrollDetailMapper.findByPayrollId(payrollId);
     }
 }

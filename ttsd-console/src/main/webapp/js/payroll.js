@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect','autoNumeric', 'moment', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'autoNumeric', 'moment', 'csrf'], function ($) {
 
     $(function () {
         $('.selectpicker').selectpicker();
@@ -30,6 +30,60 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
                 location.reload();
             })
         });
+
+        $('.primary-audit').click(function () {
+            var self = $(this);
+            if (confirm("请确认金额无误后再通过该申请?")) {
+                $.ajax({
+                    url: self.data('url'),
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                }).done(function (result) {
+                    if (result.data.status) {
+                        window.location.href = "/finance-manage/payroll-manage/payroll-list"
+                    } else {
+                        alert(result.data.message)
+                    }
+                })
+            }
+        });
+
+        $('.advanced-audit').click(function () {
+            var self = $(this);
+
+            $.ajax({
+                url: self.data('url'),
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+            }).done(function (result) {
+                if (result.data.status) {
+                    window.location.href = "/finance-manage/payroll-manage/payroll-list"
+                } else {
+                    alert(result.data.message)
+                }
+            })
+        });
+
+        $('.reject').click(function () {
+            var self = $(this);
+            if (confirm("确认驳回该申请")) {
+                $.ajax({
+                    url: self.data('url'),
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                }).done(function () {
+
+                    window.location.href = "/finance-manage/payroll-manage/payroll-list"
+
+                }).fail(function () {
+                    window.location.href = "/finance-manage/payroll-manage/payroll-list"
+                })
+            }
+        });
+
     })
 
 });
