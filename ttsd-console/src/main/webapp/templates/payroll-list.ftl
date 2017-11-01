@@ -102,7 +102,13 @@
                 <tr>
                     <td>${payroll.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${payroll.title!}</td>
-                    <td>${(payroll.grantTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                    <td>
+                        <#if payroll.grantTime??>
+                            ${(payroll.grantTime?string('yyyy-MM-dd HH:mm:ss'))!}
+                        <#else >
+                            --
+                        </#if>
+                    </td>
                     <td>${(payroll.totalAmount/100)?string('0.00')}</td>
                     <td>${payroll.headCount!}</td>
                     <td>
@@ -112,7 +118,6 @@
                         </#if>
                         </#list>
                     </td>
-                    <#--<td>${payroll.remark!}</td>-->
                     <td style="text-align:left;" width="160">
                         <#if payroll.remark??>
                             <span class="tooltip-list"
