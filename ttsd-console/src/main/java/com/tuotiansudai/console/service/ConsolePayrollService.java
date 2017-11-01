@@ -68,7 +68,7 @@ public class ConsolePayrollService {
     private static final int LEFT_SECONDS = 60 * 60 * 24;
 
     @Transactional
-    public BaseDto<BaseDataDto> primaryAudit(long payRollId, String loginName) {
+    public BaseDto<BaseDataDto> primaryAudit(long payRollId, String loginName, String ipAddress) {
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         if (payrollModel == null
                 || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.REJECTED).contains(payrollModel.getStatus())) {
@@ -83,7 +83,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName) {
+    public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName,String ipAddress) {
         if (!isSufficientBalance(payRollId)) {
             logger.info("system balance is not sufficient");
             return new BaseDto<>(new BaseDataDto(false, "系统账户余额不足!"));
@@ -101,7 +101,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public void reject(long payRollId, String loginName) {
+    public void reject(long payRollId, String loginName,String ipAddress) {
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         if (payrollModel == null
                 || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.AUDITED).contains(payrollModel.getStatus())) {
@@ -136,7 +136,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public void createPayroll(String loginName, PayrollDataDto payrollDataDto) {
+    public void createPayroll(String loginName, PayrollDataDto payrollDataDto,String ipAddress) {
         PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(), payrollDataDto.getTotalAmount(), payrollDataDto.getHeadCount());
         payrollModel.setCreatedBy(loginName);
         payrollMapper.create(payrollModel);
@@ -145,7 +145,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public void updatePayroll(String loginName, PayrollDataDto payrollDataDto) {
+    public void updatePayroll(String loginName, PayrollDataDto payrollDataDto,String ipAddress) {
         PayrollModel payrollModel = payrollMapper.findById(payrollDataDto.getId());
         payrollModel.setTitle(payrollDataDto.getTitle());
         payrollModel.setTotalAmount(payrollDataDto.getTotalAmount());

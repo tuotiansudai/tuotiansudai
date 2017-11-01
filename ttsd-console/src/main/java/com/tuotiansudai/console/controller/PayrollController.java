@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.PayrollModel;
 import com.tuotiansudai.repository.model.PayrollPayStatus;
 import com.tuotiansudai.repository.model.PayrollStatusType;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,20 +35,20 @@ public class PayrollController {
 
     @RequestMapping(value = "/primary-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<BaseDataDto> primaryAudit(@PathVariable long payRollId) {
-        return consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> primaryAudit(@PathVariable long payRollId,HttpServletRequest request) {
+        return consolePayrollService.primaryAudit(payRollId, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
     }
 
     @RequestMapping(value = "/final-audit/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<BaseDataDto> advancedAudit(@PathVariable long payRollId) {
-        return consolePayrollService.finalAudit(payRollId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> advancedAudit(@PathVariable long payRollId,HttpServletRequest request) {
+        return consolePayrollService.finalAudit(payRollId, LoginUserInfo.getLoginName(),RequestIPParser.parse(request));
     }
 
     @RequestMapping(value = "/reject/{payRollId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView reject(@PathVariable long payRollId) {
-        consolePayrollService.reject(payRollId, LoginUserInfo.getLoginName());
+    public ModelAndView reject(@PathVariable long payRollId,HttpServletRequest request) {
+        consolePayrollService.reject(payRollId, LoginUserInfo.getLoginName(),RequestIPParser.parse(request));
         return new ModelAndView("redirect:/finance-manage/payroll-manage/list");
     }
 
@@ -70,20 +71,20 @@ public class PayrollController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView editPayroll(@ModelAttribute PayrollDataDto payrollDataDto) {
+    public ModelAndView editPayroll(@ModelAttribute PayrollDataDto payrollDataDto,HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
-        consolePayrollService.updatePayroll(loginName, payrollDataDto);
+        consolePayrollService.updatePayroll(loginName, payrollDataDto,RequestIPParser.parse(request));
         modelAndView.setViewName("redirect:/finance-manage/payroll-manage/payroll-list");
         return modelAndView;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView createPayroll(@ModelAttribute PayrollDataDto payrollDataDto) {
+    public ModelAndView createPayroll(@ModelAttribute PayrollDataDto payrollDataDto,HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
-        consolePayrollService.createPayroll(loginName, payrollDataDto);
+        consolePayrollService.createPayroll(loginName, payrollDataDto,RequestIPParser.parse(request));
         modelAndView.setViewName("redirect:/finance-manage/payroll-manage/payroll-list");
         return modelAndView;
     }

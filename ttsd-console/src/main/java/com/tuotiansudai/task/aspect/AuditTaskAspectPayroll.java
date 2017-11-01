@@ -46,8 +46,8 @@ public class AuditTaskAspectPayroll {
         try {
             String loginName = String.valueOf(joinPoint.getArgs()[0]);
             PayrollDataDto payrollDataDto = (PayrollDataDto) joinPoint.getArgs()[1];
-
-            pending.accept(loginName, payrollDataDto.getId());
+            String ipAddress = String.valueOf(joinPoint.getArgs()[2]);
+            pending.accept(loginName, payrollDataDto.getId(), ipAddress);
         } catch (Exception e) {
             logger.error("after create payroll aspect fail ", e);
         }
@@ -60,12 +60,13 @@ public class AuditTaskAspectPayroll {
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
+            String ipAddress = String.valueOf(joinPoint.getArgs()[2]);
             BaseDto<BaseDataDto> baseDto = (BaseDto) returnValue;
             if (!baseDto.getData().getStatus()) {
                 logger.debug(String.format("primaryAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
                 return;
             }
-            audited.accept(loginName, payrollId);
+            audited.accept(loginName, payrollId, ipAddress);
         } catch (Exception e) {
             logger.error("after primaryAudit payroll aspect fail ", e);
         }
@@ -78,13 +79,14 @@ public class AuditTaskAspectPayroll {
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
+            String ipAddress = String.valueOf(joinPoint.getArgs()[2]);
 
             BaseDto<BaseDataDto> baseDto = (BaseDto) returnValue;
             if (!baseDto.getData().getStatus()) {
                 logger.debug(String.format("finalAudit payroll aspect fail,error:%s", baseDto.getData().getMessage()));
                 return;
             }
-            success.accept(loginName, payrollId);
+            success.accept(loginName, payrollId, ipAddress);
         } catch (Exception e) {
             logger.error("after finalAudit payroll aspect fail ", e);
         }
@@ -97,16 +99,17 @@ public class AuditTaskAspectPayroll {
         try {
             long payrollId = Long.valueOf(String.valueOf(joinPoint.getArgs()[0]));
             String loginName = String.valueOf(joinPoint.getArgs()[1]);
-            rejected.accept(loginName, payrollId);
+            String ipAddress = String.valueOf(joinPoint.getArgs()[2]);
+            rejected.accept(loginName, payrollId, ipAddress);
         } catch (Exception e) {
             logger.error("after reject payroll aspect fail ", e);
         }
         logger.info("after reject payroll aspect end ...");
     }
 
-    AuditTaskPayroll<String, Long> pending = new AuditTaskPayroll<String, Long>() {
+    AuditTaskPayroll<String, Long, String> pending = new AuditTaskPayroll<String, Long, String>() {
         @Override
-        public void accept(String loginName, Long payrollId) {
+        public void accept(String loginName, Long payrollId, String ipAddress) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String operatorRealName = userService.getRealName(loginName);
             String description = String.format("%s提交了一份发放现金的申请，请审核。", operatorRealName);
@@ -116,13 +119,13 @@ public class AuditTaskAspectPayroll {
                         description, String.format("/finance-manage/payroll-manage/%s/detail", String.valueOf(payrollId)));
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.FINANCE_ADMIN, String.valueOf(taskId), task);
             }
-            auditLogService.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, "");
+            auditLogService.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
         }
     };
 
-    AuditTaskPayroll<String, Long> audited = new AuditTaskPayroll<String, Long>() {
+    AuditTaskPayroll<String, Long, String> audited = new AuditTaskPayroll<String, Long, String>() {
         @Override
-        public void accept(String loginName, Long payrollId) {
+        public void accept(String loginName, Long payrollId, String ipAddress) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String description = "";
             String operatorRealName = userService.getRealName(loginName);
@@ -142,13 +145,13 @@ public class AuditTaskAspectPayroll {
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
 
-            auditLogService.createAuditLog(null, operatorRealName, OperationType.PAYROLL, String.valueOf(payrollId), description, "");
+            auditLogService.createAuditLog(null, operatorRealName, OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
         }
     };
 
-    AuditTaskPayroll<String, Long> success = new AuditTaskPayroll<String, Long>() {
+    AuditTaskPayroll<String, Long, String> success = new AuditTaskPayroll<String, Long, String>() {
         @Override
-        public void accept(String loginName, Long payrollId) {
+        public void accept(String loginName, Long payrollId, String ipAddress) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String operatorRealName = userService.getRealName(loginName);
             if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -163,14 +166,14 @@ public class AuditTaskAspectPayroll {
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
-                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, "");
+                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
             }
         }
     };
 
-    AuditTaskPayroll<String, Long> rejected = new AuditTaskPayroll<String, Long>() {
+    AuditTaskPayroll<String, Long, String> rejected = new AuditTaskPayroll<String, Long, String>() {
         @Override
-        public void accept(String loginName, Long payrollId) {
+        public void accept(String loginName, Long payrollId, String ipAddress) {
             String taskId = String.format("%s-%s", OperationType.PAYROLL.name(), payrollId);
             String operatorRealName = userService.getRealName(loginName);
             Role currentRole = isFinanceAdmin(loginName) ? Role.FINANCE_ADMIN : Role.OPERATOR_ADMIN;
@@ -194,7 +197,7 @@ public class AuditTaskAspectPayroll {
                             String.format("你提交的发放现金申请被运营管理员%s驳回", operatorRealName), null);
                     redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + creator, taskId, creatorNotify);
                 }
-                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, "");
+                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
             }
         }
     };
@@ -207,8 +210,8 @@ public class AuditTaskAspectPayroll {
 }
 
 @FunctionalInterface
-interface AuditTaskPayroll<T, P> {
-    void accept(T t, P p);
+interface AuditTaskPayroll<T, P, I> {
+    void accept(T t, P p, I i);
 }
 
 
