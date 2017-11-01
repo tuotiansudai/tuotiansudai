@@ -297,7 +297,7 @@ public class ConsolePayrollService {
 
     public void updateRemark(long id, String remark, String loginName) {
         PayrollModel payrollModel = payrollMapper.findById(id);
-        payrollModel.setRemark(remark);
+        payrollModel.setRemark(StringUtils.isEmpty(payrollModel.getRemark())  ? remark : payrollModel.getRemark() + "|" + remark);
         payrollModel.setUpdatedBy(loginName);
         payrollModel.setUpdatedTime(new Date());
         payrollMapper.update(payrollModel);

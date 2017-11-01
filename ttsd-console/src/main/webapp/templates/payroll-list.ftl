@@ -112,7 +112,22 @@
                         </#if>
                         </#list>
                     </td>
-                    <td>${payroll.remark!}</td>
+                    <#--<td>${payroll.remark!}</td>-->
+                    <td style="text-align:left;" width="160">
+                        <#if payroll.remark??>
+                            <span class="tooltip-list"
+                                <#if payroll.remark?length gt 20 && payroll.remark?contains('|')>
+                                    data-original-title="${payroll.remark?replace('|','—————————————————')!}">${(payroll.remark?replace('|',''))?substring(0,20)!}...
+                                <#elseif payroll.remark?length gt 20 && !payroll.remark?contains('|')>
+                                    data-original-title="${payroll.remark!}">${payroll.remark?substring(0,20)!}...
+                                <#elseif payroll.remark?length lt 20 && payroll.remark?contains('|')>
+                                    data-original-title="${payroll.remark?replace('|','—————————————————')!}">${(payroll.remark?replace('|',' '))!}
+                                <#else>
+                                    data-original-title="${payroll.remark!}">${payroll.remark!}
+                                </#if>
+                            </span>
+                        </#if>
+                    </td>
                     <td>
                         <#if payroll.status!='REJECTED'>
                             <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
@@ -122,7 +137,7 @@
                                class="btn btn-sm btn-primary">编辑</a>
                         </#if>
 
-                        <button data-payroll-id="${payroll.id?string('0')}" data-remark="${payroll.remark!}"
+                        <button data-payroll-id="${payroll.id?string('0')}"
                                 class="btn btn-sm btn-primary btnRemark">备注
                         </button>
                     </td>
