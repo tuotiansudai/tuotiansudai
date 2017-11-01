@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'autoNumeric', 'moment', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'layer', 'layer-extend', 'layerWrapper', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'autoNumeric', 'moment', 'csrf'], function ($) {
 
     $(function () {
         $('.selectpicker').selectpicker();
@@ -11,11 +11,24 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
         $('.btnRemark').click(function () {
             var self = $(this);
             $('#id').prop('value', self.data('payroll-id'));
-            $('#remark').prop('value', self.data('remark'));
             $('#remarkModal').modal({});
         });
 
+        $('.tooltip-list').on('mouseover', function () {
+            var that = this,
+                tiptext = $(this).attr('data-original-title');
+            layer.tips(tiptext, that, {
+                tips: [4, '#000000']
+            });
+        });
+
         $('.btnSubmit').on('click', function (e) {
+            var remark = $('#remark').val();
+
+            if (remark == '' || remark.trim() == '') {
+                alert('备注不能为空');
+                return false;
+            }
             $.ajax({
                 url: '/finance-manage/payroll-manage/update/remark',
                 type: 'POST',
@@ -23,7 +36,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify({
                     'id': $('#id').val(),
-                    'remark': $('#remark').val()
+                    'remark': remark
                 }),
             }).done(function (data) {
                 $('#remarkModal').modal('hide');
