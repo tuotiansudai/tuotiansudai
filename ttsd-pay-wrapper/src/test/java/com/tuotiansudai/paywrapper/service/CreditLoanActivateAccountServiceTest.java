@@ -107,9 +107,6 @@ public class CreditLoanActivateAccountServiceTest {
         ArgumentCaptor<Integer> expiredCaptor = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
 
-        ArgumentCaptor<String> redisKeyStatusCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> redisValueStatusCaptor = ArgumentCaptor.forClass(String.class);
-
         ArgumentCaptor<ProjectTransferRequestModel> requestModelCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
@@ -124,18 +121,12 @@ public class CreditLoanActivateAccountServiceTest {
         verify(this.redisWrapperClient, times(1))
                 .setex(redisKeyCaptor.capture(), expiredCaptor.capture(), statusCaptor.capture());
 
-        verify(this.redisWrapperClient, times(1))
-                .set(redisKeyStatusCaptor.capture(), redisValueStatusCaptor.capture());
-
         verify(this.payAsyncClient,times(1))
                 .generateFormData(eq(CreditLoanActivateAccountMapper.class), requestModelCaptor.capture());
 
         assertThat(redisKeyCaptor.getValue(), is(MessageFormat.format("credit:loan:activate:account:concurrency:{0}", mobile)));
         assertThat(expiredCaptor.getValue(), is(30 * 60));
         assertThat(statusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
-
-        assertThat(redisKeyStatusCaptor.getValue(), is(MessageFormat.format("credit:loan:activate:account:{0}", mobile)));
-        assertThat(redisValueStatusCaptor.getValue(), is(SyncRequestStatus.SENT.name()));
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));

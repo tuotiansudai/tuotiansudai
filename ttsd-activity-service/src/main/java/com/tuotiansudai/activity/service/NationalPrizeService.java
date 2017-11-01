@@ -57,7 +57,7 @@ public class NationalPrizeService {
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.NATIONAL_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.NATIONAL_PRIZE, null);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(MobileEncryptor.encryptMiddleMobile(view.getMobile()));
         }
