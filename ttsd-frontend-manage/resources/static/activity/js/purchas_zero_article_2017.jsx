@@ -2,7 +2,7 @@ require("activityStyle/purchas_zero_2017.scss");
 require("activityStyle/media.scss");
   let commonFun= require('publicJs/commonFun');
 require("publicJs/login_tip");
-
+let dateTime = $('#dateTime');
 //商品详情页
 let productList = {
     Deerma_humidifier:
@@ -220,7 +220,7 @@ productList[product].images.forEach(function(item,index) {
 })
 //去登录
 let $soldTipDOM = $('#soldTipDOM');
-$('#unLogin').on('click',function(){
+$('#unLogin').click(function(){
     toLogin();
 })
 $('.to-close',$soldTipDOM).on('click',function(event) {
@@ -229,7 +229,7 @@ $('.to-close',$soldTipDOM).on('click',function(event) {
 });
 //标的不存在点击弹框显示已售完
 if(dateTime.hasClass('activity-ing')) {
-    $('#loanNoExist').on('click',function(){
+    $('#loanNoExist').click(function(){
         layer.open({
             type: 1,
             title: false,
@@ -254,30 +254,39 @@ function toLogin() {
         });
     }
 }
-
+//日期格式化
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
 //不在活动时间范围内时提示信息
-let dateTime = $('#dateTime'),
-    startTime = Number(dateTime.data('starttime').substring(0, 10).replace(/-/gi, '')),
+
+let startTime = Number(dateTime.data('starttime').substring(0, 10).replace(/-/gi, '')),
     endTime = Number(dateTime.data('endtime').substring(0, 10).replace(/-/gi, '')),
-    currentTime = new Date();
-let currentTimeArray = [];
-let year = currentTime.getFullYear().toString();
-let month = (currentTime.getMonth()+1).toString();
-let day = currentTime.getDate().toString();
-currentTimeArray = [year,month,day];
-let currentTimeNum = Number(currentTimeArray.join(''));
+    currentTime = Number(new Date().Format("yyyyMMdd"));
+activityStatus(currentTime,startTime,endTime,dateTime);
+$.when(commonFun.isUserLogin())
+    .done(function () {
+        if(!dateTime.hasClass('activity-ing')) {
+            $('.invest-btn').click(function(e){
+                e.preventDefault();
+                layer.msg('不在活动时间范围内');
 
-activityStatus(currentTimeNum,startTime,endTime,dateTime);
+            })
+        }
+    })
 
-    if(!dateTime.hasClass('activity-ing')) {
-        $('#loanNoExist').off();
-        $('#unLogin').off();
-        $('.invest-btn').click(function(e){
-            e.preventDefault();
-            layer.msg('不在活动时间范围内');
-
-        })
-    }
 
 
 
@@ -285,14 +294,19 @@ activityStatus(currentTimeNum,startTime,endTime,dateTime);
 function activityStatus(nowDay,startTime,endTime,dom) {
     if (nowDay < startTime) {
         //活动未开始
+        dom.removeClass('activity-end');
+        dom.removeClass('activity-ing');
         dom.addClass('activity-noStarted');
     }
     else if (nowDay > endTime) {
         //活动已经结束
+        dom.removeClass('activity-ing');
+        dom.removeClass('activity-noStarted');
         dom.addClass('activity-end');
-
     }  else if(nowDay>=startTime && nowDay<=endTime){
         //活动中
+        dom.removeClass('activity-noStarted');
+        dom.removeClass('activity-end');
         dom.addClass('activity-ing');
     }
 
