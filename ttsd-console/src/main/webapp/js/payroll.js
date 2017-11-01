@@ -64,19 +64,21 @@ require(['jquery', 'bootstrap', 'layer', 'layer-extend', 'layerWrapper', 'bootst
 
         $('.advanced-audit').click(function () {
             var self = $(this);
+            if (confirm("通过后将会把资金划转至用户的账户余额中，请确认金额无误后再审核通过！")) {
+                $.ajax({
+                    url: self.data('url'),
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                }).done(function (result) {
+                    if (result.data.status) {
+                        window.location.href = "/finance-manage/payroll-manage/payroll-list"
+                    } else {
+                        alert(result.data.message)
+                    }
+                })
+            }
 
-            $.ajax({
-                url: self.data('url'),
-                type: 'GET',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-            }).done(function (result) {
-                if (result.data.status) {
-                    window.location.href = "/finance-manage/payroll-manage/payroll-list"
-                } else {
-                    alert(result.data.message)
-                }
-            })
         });
 
         $('.reject').click(function () {
