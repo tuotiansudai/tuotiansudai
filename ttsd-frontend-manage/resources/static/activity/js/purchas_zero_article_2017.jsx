@@ -227,18 +227,7 @@ $('.to-close',$soldTipDOM).on('click',function(event) {
     event.preventDefault();
     layer.closeAll();
 });
-//标的不存在点击弹框显示已售完
-if(dateTime.hasClass('activity-ing')) {
-    $('#loanNoExist').click(function(){
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: ['auto', 'auto'],
-            content: $soldTipDOM
-        })
-    })
-}
+
 
 //弹框登录还是链接登录
 function toLogin() {
@@ -322,6 +311,17 @@ $versionUpdateDOM.click(function() {
 
 })
 
-
+//标的不存在点击弹框显示已售完
+if(dateTime.hasClass('activity-ing')) {
+    $('#loanNoExist').click(function(){
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $soldTipDOM
+        })
+    })
+}
 
 
