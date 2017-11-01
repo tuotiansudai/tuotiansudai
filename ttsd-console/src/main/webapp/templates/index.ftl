@@ -17,7 +17,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <#list taskList as task>
+                    <#list taskList as task>
                     <tr>
                         <td>${task.sender!}</td>
                         <td><a href="${task.operateURL!}">${task.description}</a></td>
@@ -25,16 +25,20 @@
                         <td>
                             <#if task.taskType == "TASK" >
                                 <a class="btn btn-primary btn-xs" href="${task.operateURL!}">去审核</a>
-                                <#if task.operationType != 'PUSH'>
-                                    <a class="btn btn-danger btn-xs" href="javascript:void(0);" data-taskId="${task.id}">拒绝</a>
+                                <#if task.operationType == 'PAYROLL'>
+                                    <a class="btn btn-xs btn-danger" href="${task.operateURL!}">驳回</a>
+                                <#elseif task.operationType != 'PUSH'>
+                                    <a class="btn btn-danger btn-xs refuse" href="javascript:void(0);"
+                                       data-url="" data-taskId="${task.id}">拒绝</a>
                                 </#if>
                             </#if>
                             <#if task.taskType == "NOTIFY" >
-                                <a class="btn btn-info btn-xs" href="javascript:void(0);" data-taskId="${task.id}">知道了</a>
+                                <a class="btn btn-info btn-xs" href="javascript:void(0);"
+                                   data-taskId="${task.id}">知道了</a>
                             </#if>
                         </td>
                     </tr>
-                </#list>
+                    </#list>
                 </tbody>
             </table>
         <#else>
