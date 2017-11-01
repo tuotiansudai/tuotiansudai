@@ -29,6 +29,8 @@ public class InvestDto implements Serializable {
 
     private boolean noPassword;
 
+    private String zeroShoppingPrize;
+
     public String getLoanId() {
         return loanId;
     }
@@ -93,4 +95,11 @@ public class InvestDto implements Serializable {
         this.noPassword = noPassword;
     }
 
+    public String getZeroShoppingPrize() {
+        return zeroShoppingPrize;
+    }
+
+    public void setZeroShoppingPrize(String zeroShoppingPrize) {
+        this.zeroShoppingPrize = zeroShoppingPrize;
+    }
 }

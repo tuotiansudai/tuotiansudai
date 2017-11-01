@@ -105,4 +105,6 @@ public interface LoanMapper {
 
     long findLoanCountByYear(@Param(value = "createdTime") String createdTime, @Param(value = "pledgeType") PledgeType pledgeType);
 
+    LoanModel findZeroShoppingActivityByTime(@Param(value = "activityStartTime") Date activityStartTime,
+                                             @Param(value = "activityEndTime") Date activityEndTime);
 }

@@ -45,7 +45,8 @@ public enum CsvHeaderType {
     MothersDayHeader("用户名, 姓名, 手机号, 活动期内投资金额, 获得奖励, 获得体验金", "母亲节详情导出"),
     DragonBoatHeader("姓名, 手机号, 活动期内累计投资金额, PK阵营, 参与PK金额, 邀请新用户获得体验金, PK获得体验金, 邀请老用户领取数量, 邀请新用户注册数量", "端午节详情导出"),
     HouseDecorateHeader("用户名, 姓名, 手机号, 活动期内投资金额, 获得奖励, 获得体验金", "家装节详情导出"),
-    IphoneXHeader("用户名, 姓名, 手机号, 活动期内投资金额, 累计年化投资额, 现金奖励", "iPhoneX活动导出");
+    IphoneXHeader("用户名, 姓名, 手机号, 活动期内投资金额, 累计年化投资额, 现金奖励", "iPhoneX活动导出"),
+    ZeroShoppingHeader("姓名, 手机号, 投资金额, 选择的奖品, 日期", "0元购获奖记录导出");
 
     private String header;
 
