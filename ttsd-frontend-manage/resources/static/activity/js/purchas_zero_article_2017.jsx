@@ -228,16 +228,18 @@ $('.to-close',$soldTipDOM).on('click',function(event) {
     layer.closeAll();
 });
 //标的不存在点击弹框显示已售完
-if(!dateTime.hasClass('activity-ing')) {}
-$('#loanNoExist').on('click',function(){
-    layer.open({
-        type: 1,
-        title: false,
-        closeBtn: 0,
-        area: ['auto', 'auto'],
-        content: $soldTipDOM
+if(dateTime.hasClass('activity-ing')) {
+    $('#loanNoExist').on('click',function(){
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $soldTipDOM
+        })
     })
-})
+}
+
 //弹框登录还是链接登录
 function toLogin() {
     if (sourceKind.params.source == 'app') {
