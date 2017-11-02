@@ -18,6 +18,7 @@ dependencies {
             project(":ttsd-log-service"),
             project(":ttsd-util"),
             project(":ttsd-client")
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 
 processResources.outputs.upToDateWhen { false }

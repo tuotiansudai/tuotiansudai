@@ -3,10 +3,11 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -17,6 +18,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +34,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class OperationDataServiceTest {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private FakeUserHelper fakeUserHelper;
 
     @Autowired
     private UserMapper userMapper;
@@ -103,11 +108,11 @@ public class OperationDataServiceTest {
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
+        fakeUserHelper.create(userModelTest);
         return userModelTest;
     }
 
-    private UserModel createUserByUserIdAndIdentityNumber(String userId ,String identityNumber, Date registerTime) {
+    private UserModel createUserByUserIdAndIdentityNumber(String userId, String identityNumber, Date registerTime) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(userId);
         userModelTest.setPassword("123abc");
@@ -117,13 +122,13 @@ public class OperationDataServiceTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userModelTest.setIdentityNumber(identityNumber);
-        userMapper.create(userModelTest);
+        fakeUserHelper.create(userModelTest);
         return userModelTest;
     }
 
 
-    private AccountModel createAccountByloginName(String loginName){
-        AccountModel accountModel = new AccountModel(loginName, "payUserId" , "payAccountId", new DateTime().minusDays(30).toDate());
+    private AccountModel createAccountByloginName(String loginName) {
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new DateTime().minusDays(30).toDate());
         accountMapper.create(accountModel);
         return accountModel;
     }
@@ -243,16 +248,16 @@ public class OperationDataServiceTest {
     }
 
     @Test
-    public void testFindScaleByGender(){
+    public void testFindScaleByGender() {
         Date testEndDate = new DateTime().plusDays(30).toDate();
-        UserModel userModel1 = createUserByUserIdAndIdentityNumber("testUserInvest1","42138119880520241X", new DateTime().plusDays(4).toDate());
-        UserModel userModel2 = createUserByUserIdAndIdentityNumber("testUserInvest2","22012219881003356X", new DateTime().plusDays(5).toDate());
+        UserModel userModel1 = createUserByUserIdAndIdentityNumber("testUserInvest1", "42138119880520241X", new DateTime().plusDays(4).toDate());
+        UserModel userModel2 = createUserByUserIdAndIdentityNumber("testUserInvest2", "22012219881003356X", new DateTime().plusDays(5).toDate());
         createUserByUserId("testUserLoaner");
         createAccountByloginName(userModel1.getLoginName());
         createAccountByloginName(userModel2.getLoginName());
         LoanModel loanModel = createLoanByUserId("testUserLoaner", 1000001, ProductType._30);
         createInvest(userModel1.getLoginName(), loanModel.getId(), 100000, testEndDate, new DateTime().plusDays(10).toDate());
-        createInvest(userModel2.getLoginName(), loanModel.getId(), 100000, testEndDate,  new DateTime().plusDays(10).toDate());
+        createInvest(userModel2.getLoginName(), loanModel.getId(), 100000, testEndDate, new DateTime().plusDays(10).toDate());
         List<Integer> intList = operationDataService.findScaleByGender(testEndDate);
         assertTrue(intList.size() > 0);
     }

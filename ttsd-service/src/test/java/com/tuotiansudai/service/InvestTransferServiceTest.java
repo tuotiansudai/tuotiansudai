@@ -3,14 +3,10 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.TransferApplicationDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferRuleModel;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -19,6 +15,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +29,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class InvestTransferServiceTest {
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -42,7 +39,7 @@ public class InvestTransferServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -146,11 +143,11 @@ public class InvestTransferServiceTest {
 
     private List<InvestRepayModel> createInvestRepay(long investId) {
         InvestRepayModel model1 = new InvestRepayModel(IdGenerator.generate(), investId, 1, 0, 10, 1, new DateTime().plusDays(-60).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model2 = new InvestRepayModel(IdGenerator.generate(), investId, 2, 0, 10, 1,  new DateTime().plusDays(-30).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model3 = new InvestRepayModel(IdGenerator.generate(), investId, 3, 0, 10, 1,  new DateTime().plusDays(0).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model4 = new InvestRepayModel(IdGenerator.generate(), investId, 4, 0, 10, 1,  new DateTime().plusDays(30).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model5 = new InvestRepayModel(IdGenerator.generate(), investId, 5, 0, 10, 1,  new DateTime().plusDays(60).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model6 = new InvestRepayModel(IdGenerator.generate(), investId, 6, 100, 10, 1,  new DateTime().plusDays(90).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model2 = new InvestRepayModel(IdGenerator.generate(), investId, 2, 0, 10, 1, new DateTime().plusDays(-30).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model3 = new InvestRepayModel(IdGenerator.generate(), investId, 3, 0, 10, 1, new DateTime().plusDays(0).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model4 = new InvestRepayModel(IdGenerator.generate(), investId, 4, 0, 10, 1, new DateTime().plusDays(30).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model5 = new InvestRepayModel(IdGenerator.generate(), investId, 5, 0, 10, 1, new DateTime().plusDays(60).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model6 = new InvestRepayModel(IdGenerator.generate(), investId, 6, 100, 10, 1, new DateTime().plusDays(90).toDate(), RepayStatus.REPAYING);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(model1, model2, model3, model4, model5, model6);
         investRepayMapper.create(investRepayModels);
         return investRepayModels;
@@ -186,7 +183,7 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldInvestTransferApply() throws Exception{
+    public void shouldInvestTransferApply() throws Exception {
         long loanId = IdGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId(userModel.getLoginName(), loanId);
@@ -212,7 +209,7 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldInvestTransferApplyFailWhenInvestIsApplied() throws Exception{
+    public void shouldInvestTransferApplyFailWhenInvestIsApplied() throws Exception {
         long loanId = IdGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId(userModel.getLoginName(), loanId);
@@ -261,7 +258,7 @@ public class InvestTransferServiceTest {
 
         investTransferService.investTransferApply(transferApplicationDto);
 
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(),Lists.newArrayList(TransferStatus.TRANSFERRING));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
         TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationModel.setInvestId(investModelError.getId());
@@ -273,7 +270,7 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldIsTransferableByOverDaysLimit(){
+    public void shouldIsTransferableByOverDaysLimit() {
         UserModel userModel = createUserByUserId("testuser");
         long loanId = IdGenerator.generate();
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
@@ -310,7 +307,7 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldFindWebTransferApplicationPaginationListIsSuccess(){
+    public void shouldFindWebTransferApplicationPaginationListIsSuccess() {
         long loanId = IdGenerator.generate();
         UserModel transferrerModel = createUserByUserId("transferrerTestuser");
         UserModel transfereeModel = createUserByUserId("transfereeTestUser");
@@ -332,13 +329,13 @@ public class InvestTransferServiceTest {
         transferApplicationMapper.create(transferApplicationModel);
         createInvestRepay(transferApplicationModel.getTransferInvestId());
 
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findWebTransferApplicationPaginationList(transferrerInvestModel.getLoginName(), Lists.newArrayList(TransferStatus.TRANSFERRING),1,10);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findWebTransferApplicationPaginationList(transferrerInvestModel.getLoginName(), Lists.newArrayList(TransferStatus.TRANSFERRING), 1, 10);
 
         assertTrue(basePaginationDataDto.getStatus());
         assertNotNull(basePaginationDataDto.getRecords().get(0));
         assertEquals(1, basePaginationDataDto.getIndex());
-        assertEquals(10,basePaginationDataDto.getPageSize());
-        assertEquals(1,basePaginationDataDto.getCount());
+        assertEquals(10, basePaginationDataDto.getPageSize());
+        assertEquals(1, basePaginationDataDto.getCount());
         assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
@@ -347,7 +344,7 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldValidTransferIsDayLimitIsOk(){
+    public void shouldValidTransferIsDayLimitIsOk() {
         TransferRuleModel transferRuleModel = new TransferRuleModel();
         transferRuleModel.setId(1);
         transferRuleModel.setDaysLimit(1);
@@ -363,7 +360,7 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldValidTransferIsCanceledIsOk(){
+    public void shouldValidTransferIsCanceledIsOk() {
         String loginName = "transferrerTestuser";
         long loanId = IdGenerator.generate();
         createUserByUserId(loginName);
@@ -400,7 +397,7 @@ public class InvestTransferServiceTest {
         assertTrue(investTransferService.validTransferIsCanceled(transferrerInvestModel.getId()));
     }
 
-    public List<LoanRepayModel> createLoanRepayModel(long loanId){
+    public List<LoanRepayModel> createLoanRepayModel(long loanId) {
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
         loanRepayModel.setId(IdGenerator.generate());

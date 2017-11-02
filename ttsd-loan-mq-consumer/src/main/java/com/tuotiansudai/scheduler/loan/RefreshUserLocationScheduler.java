@@ -1,7 +1,7 @@
 package com.tuotiansudai.scheduler.loan;
 
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.MobileLocationUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -28,7 +27,7 @@ public class RefreshUserLocationScheduler {
         logger.info("RefreshUserLocationScheduler start ...");
         try {
             while (true) {
-                List<UserModel> userModels = userMapper.findUsersByProvince();
+                List<UserModel> userModels = userMapper.findEmptyProvinceUsers();
                 if (CollectionUtils.isEmpty(userModels)) {
                     break;
                 }

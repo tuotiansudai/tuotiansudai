@@ -3,6 +3,8 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.request.RegisterRequestDto;
+import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -12,11 +14,8 @@ import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.ExperienceBillService;
+import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +27,7 @@ import java.text.MessageFormat;
 public class RegisterUserServiceImpl implements RegisterUserService {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private UserRoleMapper userRoleMapper;
+    private UserRestClient userRestClient;
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -46,13 +42,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean register(UserModel userModel) {
-        int result = this.userMapper.create(userModel);
-        if (result <= 0) {
-            return true;
-        }
-
-        this.userRoleMapper.create(Lists.newArrayList(new UserRoleModel(userModel.getLoginName(), Role.USER)));
+    public boolean register(RegisterRequestDto registerDto) {
+        UserRestUserInfo registerUserInfo = userRestClient.register(registerDto);
+        UserModel userModel = registerUserInfo.getUserInfo().toUserModel();
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());

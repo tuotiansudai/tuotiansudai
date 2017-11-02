@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.OperationDataMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <select id="findScaleByGender" parameterType="map" resultType="int">
+        select count(distinct invest.login_name)
+        from invest
+        inner join loan on invest.loan_id= loan.id
+        inner join user on user.login_name = invest.login_name
+        where invest.status= 'SUCCESS'
+        and loan.product_type != 'EXPERIENCE'
+        and user.register_time &lt;= #{endDate}
+        group by
+        case if(length(identity_number)=18, cast(substring(identity_number,17,1) as UNSIGNED)%2, if(length(identity_number)=15,cast(substring(identity_number,15,1) as UNSIGNED)%2,3))
+        when 1 then '男'
+        else '女'
+        end
+    </select>
+
+    <select id="findAgeDistributionByAge" parameterType="map" resultType="java.util.HashMap">
+        SELECT CEIL(year(now()) - if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null))) as age, count(1) as totalCount
+        from(
+        select distinct identity_number
+        from invest
+        inner join loan on invest.loan_id= loan.id
+        inner join user on user.login_name = invest.login_name
+        where invest.status= 'SUCCESS'
+        and loan.product_type != 'EXPERIENCE'
+        and user.register_time &lt;= #{endDate}) u
+        group by age
+        order by totalCount asc
+    </select>
+
+    <select id="findCountInvestCityScaleTop3" parameterType="map" resultType="java.util.HashMap">
+        select u.city, count(*) as totalCount
+        from (
+        select user.city, user.login_name
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user on user.login_name = invest.login_name
+        where invest.status = 'SUCCESS'
+        and loan.product_type != 'EXPERIENCE'
+        and user.register_time &lt;= #{endDate}
+        group by user.login_name , user.city) u
+        group by u.city
+        order by totalCount desc
+        limit 3
+    </select>
+
+    <select id="findCountInvestCityScale" parameterType="map" resultType="long">
+        select count(distinct user.login_name)
+        from invest
+        inner join loan on invest.loan_id= loan.id
+        inner join user on user.login_name = invest.login_name
+        where invest.status= 'SUCCESS'
+        and loan.product_type != 'EXPERIENCE'
+        and user.register_time &lt;= #{endDate}
+    </select>
+
+</mapper>

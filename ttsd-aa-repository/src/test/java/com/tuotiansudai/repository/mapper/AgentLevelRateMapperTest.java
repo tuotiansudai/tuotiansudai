@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,21 +14,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class AgentLevelRateMapperTest {
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private AgentLevelRateMapper agentLevelRateMapper;
 
     @Test
-    public void shouldCreateAgentLevelRateIsSuccess(){
+    public void shouldCreateAgentLevelRateIsSuccess() {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
@@ -36,11 +36,11 @@ public class AgentLevelRateMapperTest {
         agentLevelRateModel.setRate(2.0d);
         agentLevelRateModel.setCreatedTime(new Date());
         agentLevelRateMapper.create(agentLevelRateModel);
-        assertNotNull(agentLevelRateModel.getId());
+        assertNotEquals(0, agentLevelRateModel.getId());
     }
 
     @Test
-    public void shouldFindAgentLevelRateByLoginNameAndLevel(){
+    public void shouldFindAgentLevelRateByLoginNameAndLevel() {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
@@ -50,11 +50,12 @@ public class AgentLevelRateMapperTest {
         agentLevelRateModel.setUpdatedTime(new Date());
         agentLevelRateMapper.create(agentLevelRateModel);
 
-        AgentLevelRateModel agentLevelRateModel1 = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(userModel.getLoginName(),2);
+        AgentLevelRateModel agentLevelRateModel1 = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(userModel.getLoginName(), 2);
         assertNotNull(agentLevelRateModel1);
     }
+
     @Test
-    public void shouldDeleteIsSuccess(){
+    public void shouldDeleteIsSuccess() {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
@@ -71,8 +72,9 @@ public class AgentLevelRateMapperTest {
         assertNull(agentLevelRateModel1);
 
     }
+
     @Test
-    public void shouldUpdateIsSuccess(){
+    public void shouldUpdateIsSuccess() {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
@@ -87,7 +89,7 @@ public class AgentLevelRateMapperTest {
 
         AgentLevelRateModel agentLevelRateModel1 = agentLevelRateMapper.findAgentLevelRateById(agentLevelRateModel.getId());
 
-        assertEquals(3,agentLevelRateModel1.getLevel());
+        assertEquals(3, agentLevelRateModel1.getLevel());
     }
 
     private UserModel createFakeUser() {

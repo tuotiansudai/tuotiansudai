@@ -1,17 +1,22 @@
 package com.tuotiansudai.console.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.squareup.okhttp.mockwebserver.MockResponse;
+import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.enums.SmsCaptchaType;
+import com.tuotiansudai.dto.response.UserInfo;
+import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdGenerator;
@@ -19,18 +24,24 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class ConsoleCouponServiceTest {
@@ -39,7 +50,7 @@ public class ConsoleCouponServiceTest {
     private ConsoleCouponService consoleCouponService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -55,6 +66,30 @@ public class ConsoleCouponServiceTest {
 
     @Autowired
     private CouponService couponService;
+
+    @Value("${user.rest.server}")
+    private String userRestServer;
+
+    private MockWebServer mockUserService(UserModel userModel) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserRestUserInfo userRestUserInfo = new UserRestUserInfo();
+        userRestUserInfo.setSuccess(true);
+        userRestUserInfo.setMessage("");
+        userRestUserInfo.setUserInfo(UserInfo.fromUserModel(userModel));
+
+        String userRestInfoJson = objectMapper.writeValueAsString(userRestUserInfo);
+
+        MockWebServer mockWebServer = new MockWebServer();
+        URL url = new URL(userRestServer);
+        mockWebServer.start(InetAddress.getByName(url.getHost()), url.getPort());
+
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody(userRestInfoJson);
+        mockResponse.setResponseCode(201);
+        mockWebServer.enqueue(mockResponse);
+
+        return mockWebServer;
+    }
 
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
@@ -96,9 +131,11 @@ public class ConsoleCouponServiceTest {
     }
 
     @Test
-    public void shouldRegisterUserIsSuccess() {
+    public void shouldRegisterUserIsSuccess() throws IOException {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
+
+        MockWebServer mockServer = mockUserService(userModel);
 
         RegisterUserDto registerUserDto = fakeRegisterUserDto();
 
@@ -134,6 +171,7 @@ public class ConsoleCouponServiceTest {
         //       assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
         //       assertEquals(1, couponModel1.getIssuedCount());
 
+        mockServer.shutdown();
     }
 
     @Test

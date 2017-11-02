@@ -16,6 +16,7 @@ import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;

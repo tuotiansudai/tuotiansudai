@@ -14,6 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -28,8 +29,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class HeroRankingServiceTest {
     @Autowired
     private InvestMapper investMapper;
@@ -38,7 +39,7 @@ public class HeroRankingServiceTest {
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private LoanMapper loanMapper;
     @Autowired
@@ -75,14 +76,14 @@ public class HeroRankingServiceTest {
         referrerRelationModel2.setLoginName(investor3.getLoginName());
         referrerRelationMapper.create(referrerRelationModel2);
 
-        LoanModel loanModel = createLoan(loaner.getLoginName(),IdGenerator.generate() , ActivityType.NORMAL,LoanStatus.REPAYING);
+        LoanModel loanModel = createLoan(loaner.getLoginName(), IdGenerator.generate(), ActivityType.NORMAL, LoanStatus.REPAYING);
         loanMapper.create(loanModel);
 
-        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(),loanModel.getId());
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(), loanModel.getId());
         investModel2.setAmount(1000);
         investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
         investMapper.create(investModel2);
-        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(),loanModel.getId());
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(), loanModel.getId());
         investModel3.setAmount(3000);
         investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
         investMapper.create(investModel3);
@@ -93,7 +94,7 @@ public class HeroRankingServiceTest {
     }
 
     @Ignore
-    public void shouldObtainHeroRankingIsSuccess(){
+    public void shouldObtainHeroRankingIsSuccess() {
         List<String> date = Lists.newArrayList();
         date.add(sdf.format(new DateTime(2016, 7, 1, 0, 0, 0).toDate()));
         date.add(sdf.format(new DateTime(2016, 7, 31, 23, 59, 59).toDate()));
@@ -112,21 +113,21 @@ public class HeroRankingServiceTest {
         LoanModel loanModel = createLoan(loaner.getLoginName(), IdGenerator.generate(), ActivityType.NORMAL, LoanStatus.REPAYING);
         loanMapper.create(loanModel);
 
-        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName(),loanModel.getId());
+        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName(), loanModel.getId());
         investModel1.setAmount(2000);
         investModel1.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel1);
-        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(),loanModel.getId());
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(), loanModel.getId());
         investModel2.setAmount(1000);
         investModel2.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel2);
-        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(),loanModel.getId());
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(), loanModel.getId());
         investModel3.setAmount(3000);
         investModel3.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel3);
-        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(ActivityCategory.HERO_RANKING,new DateTime(2016, 7, 7, 0, 0, 0).toDate());
+        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(ActivityCategory.HERO_RANKING, new DateTime(2016, 7, 7, 0, 0, 0).toDate());
 
-        assertEquals(3,heroRankingViews.size());
+        assertEquals(3, heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
         assertEquals(investor3.getUserName(), heroRankingViews.get(0).getUserName());
@@ -145,7 +146,7 @@ public class HeroRankingServiceTest {
     }
 
     @Test
-    public void shouldValidActivityTimeIsNotNullIsOk(){
+    public void shouldValidActivityTimeIsNotNullIsOk() {
         List<String> activityTime = heroRankingService.getActivityTime();
         assertTrue(activityTime.size() > 1);
     }
@@ -194,8 +195,8 @@ public class HeroRankingServiceTest {
         return userModelTest;
     }
 
-    private InvestModel getFakeInvestModelByLoginName(String loginName,long loanId){
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
+    private InvestModel getFakeInvestModelByLoginName(String loginName, long loanId) {
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }

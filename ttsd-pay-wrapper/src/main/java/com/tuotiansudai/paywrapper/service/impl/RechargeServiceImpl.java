@@ -22,11 +22,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargeReq
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

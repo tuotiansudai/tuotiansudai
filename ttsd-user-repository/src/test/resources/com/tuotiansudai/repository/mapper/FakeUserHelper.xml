@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.FakeUserHelper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
+        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count, experience_balance)
+        value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount}, #{experienceBalance})
+    </insert>
+
+    <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
+        update user set email = #{email},
+        mobile = #{mobile},
+        user_name = #{userName},
+        identity_number = #{identityNumber},
+        password = #{password},
+        last_modified_time = #{lastModifiedTime},
+        last_modified_user = #{lastModifiedUser},
+        status = #{status},
+        referrer = #{referrer},
+        province = #{province},
+        city = #{city},
+        sign_in_count = #{signInCount},
+        last_login_time = #{lastLoginTime},
+        last_login_source = #{lastLoginSource},
+        experience_balance = #{experienceBalance}
+        where id = #{id}
+    </update>
+</mapper>

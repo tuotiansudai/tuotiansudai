@@ -1,7 +1,9 @@
-sign-in:
+user-rest-service:
   image: "leoshi/ttsd-signin-flask"
+  environment:
+    - "TZ=Asia/Shanghai"
   volumes:
-    - ./signin_service:/app
+    - ./ttsd-user-rest-service:/app
     - /var/log/tuotian/signin:/var/log/signin
   ports:
     - "20001:80"
@@ -25,7 +27,7 @@ web:
     - "sms-wrapper"
     - "redis-server"
     - "static-server"
-    - "sign-in"
+    - "user-rest-service"
     - "anxin-wrapper"
 
 console:
@@ -44,7 +46,7 @@ console:
     - "sms-wrapper"
     - "redis-server"
     - "static-server"
-    - "sign-in"
+    - "user-rest-service"
     - "ask-rest-service"
     - "anxin-wrapper"
 
@@ -62,6 +64,7 @@ pay-wrapper:
     - /var/log/tuotian/pay-wrapper:/var/log/tomcat
   links:
     - "sms-wrapper"
+    - "user-rest-service"
     - "redis-server"
 
 sms-wrapper:
@@ -95,7 +98,7 @@ mobile-api:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
-    - "sign-in"
+    - "user-rest-service"
     - "anxin-wrapper"
 
 activity:
@@ -112,7 +115,7 @@ activity:
   links:
     - "redis-server"
     - "static-server"
-    - "sign-in"
+    - "user-rest-service"
 
 nginx-server_web:
   image: "nginx"
@@ -140,7 +143,7 @@ ask:
   links:
     - "redis-server"
     - "static-server"
-    - "sign-in"
+    - "user-rest-service"
     - "ask-rest-service"
 
 redis-server:
@@ -169,7 +172,7 @@ point:
   links:
     - "redis-server"
     - "static-server"
-    - "sign-in"
+    - "user-rest-service"
 
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
@@ -184,7 +187,7 @@ activity-console:
     - /var/log/tuotian/activity-console:/var/log/tomcat
   links:
     - "redis-server"
-    - "sign-in"
+    - "user-rest-service"
 
 static-server:
   image: "nginx"
@@ -209,6 +212,7 @@ anxin-wrapper:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 nginx-server_console:
   image: "nginx"
@@ -232,6 +236,7 @@ worker-all:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 auditLog-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -244,6 +249,7 @@ auditLog-mq-consumer:
   command: bash -c "/opt/worker/ttsd-auditLog-mq-consumer/bin/ttsd-auditLog-mq-consumer"
   links:
     - "redis-server"
+    - "user-rest-service"
 
 loan-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -259,6 +265,7 @@ loan-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
     - "anxin-wrapper"
+    - "user-rest-service"
 
 message-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -272,6 +279,7 @@ message-mq-consumer:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 email-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -284,6 +292,7 @@ email-mq-consumer:
   command: bash -c "/opt/worker/ttsd-email-mq-consumer/bin/ttsd-email-mq-consumer"
   links:
     - "redis-server"
+    - "user-rest-service"
 
 point-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -297,6 +306,7 @@ point-mq-consumer:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 activity-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -310,6 +320,7 @@ activity-mq-consumer:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 user-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -323,6 +334,7 @@ user-mq-consumer:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 amount-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
@@ -335,6 +347,7 @@ amount-mq-consumer:
   command: bash -c "/opt/worker/ttsd-amount-mq-consumer/bin/ttsd-amount-mq-consumer"
   links:
     - "redis-server"
+    - "user-rest-service"
 
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
@@ -348,6 +361,7 @@ ask-rest-service:
   links:
     - "sms-wrapper"
     - "redis-server"
+    - "user-rest-service"
 
 diagnosis:
   image: "anapsix/alpine-java:8_jdk"

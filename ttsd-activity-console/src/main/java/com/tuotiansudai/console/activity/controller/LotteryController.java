@@ -42,7 +42,7 @@ public class LotteryController {
         ModelAndView modelAndView = new ModelAndView("/activity-time-list");
         int lotteryCount = activityConsoleUserLotteryService.findUserLotteryTimeCountViews(mobile);
         modelAndView.addObject("lotteryCount", lotteryCount);
-        modelAndView.addObject("lotteryList", activityConsoleUserLotteryService.findUserLotteryTimeViews(mobile, prizeType, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("lotteryList", activityConsoleUserLotteryService.findUserLotteryTimeViews(mobile, prizeType, index, pageSize));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(lotteryCount, pageSize);

@@ -2,8 +2,8 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.console.service.ConsoleUMPayRealTimeStatusService;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.UMPayRealTimeStatusService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

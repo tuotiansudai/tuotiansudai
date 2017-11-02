@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,8 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class LoanTitleRelationMapperTest {
     @Autowired
     LoanTitleRelationMapper loanTitleRelationMapper;
@@ -32,7 +33,7 @@ public class LoanTitleRelationMapperTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
 
     private void createMockUser(String loginName) {
@@ -46,8 +47,9 @@ public class LoanTitleRelationMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
     }
+
     @Test
-    public void createLoanTitleTest(){
+    public void createLoanTitleTest() {
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = IdGenerator.generate();
@@ -98,7 +100,7 @@ public class LoanTitleRelationMapperTest {
     }
 
     @Test
-    public void findLoanTitlesTest(){
+    public void findLoanTitlesTest() {
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = IdGenerator.generate();
@@ -151,7 +153,7 @@ public class LoanTitleRelationMapperTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
         createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = IdGenerator.generate();
@@ -203,7 +205,7 @@ public class LoanTitleRelationMapperTest {
     }
 
     @Test
-    public void findLoanTitleRelationAndTitleByLoanIdText(){
+    public void findLoanTitleRelationAndTitleByLoanIdText() {
         createMockUser("xiaoming");
         LoanTitleModel loanTitleModel1 = new LoanTitleModel();
         long loanTitleModel1Id = IdGenerator.generate();
@@ -268,8 +270,8 @@ public class LoanTitleRelationMapperTest {
 
         assertEquals(LoanTitleRelationModelList.get(0).getTitle(), loanTitleModel1.getTitle());
         assertEquals(LoanTitleRelationModelList.get(0).getApplicationMaterialUrls(), loanTitleRelationModel.getApplicationMaterialUrls());
-        assertEquals(LoanTitleRelationModelList.get(1).getTitle(),loanTitleModel2.getTitle());
-        assertEquals(LoanTitleRelationModelList.get(1).getApplicationMaterialUrls(),loanTitleRelationModelT.getApplicationMaterialUrls());
+        assertEquals(LoanTitleRelationModelList.get(1).getTitle(), loanTitleModel2.getTitle());
+        assertEquals(LoanTitleRelationModelList.get(1).getApplicationMaterialUrls(), loanTitleRelationModelT.getApplicationMaterialUrls());
 
     }
 }

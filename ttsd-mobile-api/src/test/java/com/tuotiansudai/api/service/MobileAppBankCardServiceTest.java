@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppBankCardServiceImpl;
 import com.tuotiansudai.dto.AgreementDto;
@@ -9,10 +9,10 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.AgreementService;
 import com.tuotiansudai.service.BindBankCardService;
 import org.junit.Test;
@@ -47,6 +47,7 @@ public class MobileAppBankCardServiceTest extends ServiceTestBase {
 
     @Mock
     private AccountMapper accountMapper;
+
     @Test
     public void bindBankCardTest() {
         AccountModel accountModel = new AccountModel();
@@ -59,8 +60,9 @@ public class MobileAppBankCardServiceTest extends ServiceTestBase {
         assertEquals("url", responseDto.getData().getUrl());
         assertEquals("orderId=123&merDate=date", responseDto.getData().getRequestData());
     }
+
     @Test
-    public void shouldReplaceBankCardIsOk(){
+    public void shouldReplaceBankCardIsOk() {
         UserModel userModel = new UserModel();
         userModel.setLoginName("loginName");
         BankCardModel bankCardModel = new BankCardModel();
@@ -84,7 +86,7 @@ public class MobileAppBankCardServiceTest extends ServiceTestBase {
 
     @Test
     public void openFastPayTest() {
-        when(agreementService.agreement(anyString(),any(AgreementDto.class))).thenReturn(generateMockPayFormData());
+        when(agreementService.agreement(anyString(), any(AgreementDto.class))).thenReturn(generateMockPayFormData());
         BankCardRequestDto requestDto = new BankCardRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());
         BaseResponseDto<BankCardResponseDto> responseDto = mobileAppBankCardService.openFastPay(requestDto);

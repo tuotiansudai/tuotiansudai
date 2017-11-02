@@ -21,11 +21,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRe
 import com.tuotiansudai.paywrapper.service.SystemRechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemRechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.SystemRechargeModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +82,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         }
     }
 
+    @Transactional
     @Override
     public String systemRechargeCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
@@ -95,7 +96,6 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         return callbackRequest.getResponseData();
     }
 
-    @Transactional
     private void postSystemRechargeCallback(BaseCallbackRequestModel callbackRequestModel) {
         try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());

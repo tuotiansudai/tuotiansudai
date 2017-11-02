@@ -7,9 +7,9 @@ import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,7 +89,7 @@ public class ActivityConsoleNotWorkService {
         }
         for (String loginName : referrers) {
             NotWorkModel existedNotWorkModel = notWorkMapper.findByLoginName(loginName);
-            if(null != existedNotWorkModel) {
+            if (null != existedNotWorkModel) {
                 continue;
             }
             UserModel userModel = userMapper.findByLoginName(loginName);
