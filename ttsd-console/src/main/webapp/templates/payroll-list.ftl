@@ -64,7 +64,7 @@
         </div>
 
         <div class="form-group">
-            <label>发放状态:</label>
+            <label>状态:</label>
             <select class="selectpicker" name="payrollStatusType">
                 <option value="">全部</option>
                 <#list payrollStatusTypes as status>
