@@ -31,7 +31,6 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
                 processData: false
             })
                 .done(function (data) {
-                    console.log(data);
                     if (data.status) {
                         $('.payroll-totalAmount').val(data.totalAmount);
                         $('.payroll-headCount').val(data.headCount);
@@ -47,13 +46,16 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
                         });
                         table += "</table>"
                         $('#payroll-details').append(table);
+                        boolFlag = true;
                     }
                     else {
                         layer.open({
                             title: '提示',
                             content: data.message,
-                            btn: ['确定'],
+                            btn: ['确定']
+
                         });
+                        boolFlag = false;
                     }
 
                 });
@@ -80,6 +82,9 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
                 }
                 if($('.payroll-id',curform).val() == undefined && filename == ''){
                     showErrorMessage('请上传发放名单', $('#file-in', curform));
+                    return false;
+                }
+                if(!boolFlag){
                     return false;
                 }
             },
