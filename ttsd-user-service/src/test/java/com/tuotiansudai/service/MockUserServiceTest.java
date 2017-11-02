@@ -132,12 +132,14 @@ public class MockUserServiceTest {
         registerUserDto.setMobile(mobile);
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword("password");
+        UserModel newUserModel = new UserModel();
+        newUserModel.setLoginName(loginName);
         doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(WeChatBoundMessage.class));
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(prepareUserMapper.findByMobile(anyString())).thenReturn(null);
-        when(registerUserService.register(any(RegisterRequestDto.class))).thenReturn(true);
+        when(registerUserService.register(any(RegisterRequestDto.class))).thenReturn(newUserModel);
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
         membershipModel.setLevel(0);
