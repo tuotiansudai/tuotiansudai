@@ -42,7 +42,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean register(RegisterRequestDto registerDto) {
+    public UserModel register(RegisterRequestDto registerDto) {
         UserRestUserInfo registerUserInfo = userRestClient.register(registerDto);
         UserModel userModel = registerUserInfo.getUserInfo().toUserModel();
 
@@ -52,7 +52,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         this.sendMessage(userModel);
 
-        return true;
+        return userModel;
     }
 
     private void sendMessage(UserModel userModel) {

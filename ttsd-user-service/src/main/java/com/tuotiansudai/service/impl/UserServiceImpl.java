@@ -142,7 +142,12 @@ public class UserServiceImpl implements UserService {
                 referrerUserModel != null ? referrerUserModel.getLoginName() : null,
                 dto.getChannel(),
                 dto.getSource());
-        return registerUserService.register(registerDto);
+        UserModel newUserModel = registerUserService.register(registerDto);
+        if (newUserModel != null) {
+            dto.setLoginName(newUserModel.getLoginName());
+            return true;
+        }
+        return false;
     }
 
     @Transactional
