@@ -30,10 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -173,6 +170,7 @@ public class ConsolePayrollService {
         List<String> listUserAndUserNameNotMatch = new ArrayList<>();
         List<String> listUserNotAccount = new ArrayList<>();
         List<String> listUserAmountError = new ArrayList<>();
+        List<String> listUserAllMobile = new ArrayList<>();
         List<PayrollDetailModel> payrollDetailModelList = new ArrayList<>();
         long totalAmount = 0;
         long headCount = 0;
@@ -187,14 +185,15 @@ public class ConsolePayrollService {
                     listUserNotExists.add(arrayData[1].trim());
                     continue;
                 }
-                if (!userModel.getUserName().equals(arrayData[0].trim())) {
-                    listUserAndUserNameNotMatch.add(arrayData[1].trim());
-                    continue;
-                }
                 AccountModel accountModel = accountMapper.findByMobile(arrayData[1].trim());
                 if (accountModel == null) {
                     listUserNotAccount.add(arrayData[1].trim());
                     continue;
+                }else{
+                    if (!userModel.getUserName().equals(arrayData[0].trim())) {
+                        listUserAndUserNameNotMatch.add(arrayData[1].trim());
+                        continue;
+                    }
                 }
                 if (!isAmount(arrayData[2].trim())) {
                     listUserAmountError.add(arrayData[1].trim());
@@ -203,6 +202,7 @@ public class ConsolePayrollService {
                 totalAmount += AmountConverter.convertStringToCent(arrayData[2].trim());
                 headCount++;
                 payrollDetailModelList.add(new PayrollDetailModel(userModel.getLoginName(), arrayData[0].trim(), arrayData[1].trim(), AmountConverter.convertStringToCent(arrayData[2].trim())));
+                listUserAllMobile.add(arrayData[1].trim());
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             return new PayrollDataDto(false, "上传失败!请检查文件的列数");
@@ -225,21 +225,29 @@ public class ConsolePayrollService {
                 msg += StringUtils.join(listUserAndUserNameNotMatch, ",") + " 姓名与手机号不匹配<br/>";
             }
             if (CollectionUtils.isNotEmpty(listUserNotAccount)) {
-                msg += StringUtils.join(listUserNotExists, ",") + " 未实名认证";
+                msg += StringUtils.join(listUserNotAccount, ",") + " 未实名认证<br/>";
             }
             if (CollectionUtils.isNotEmpty(listUserAmountError)) {
                 msg += StringUtils.join(listUserAmountError, ",") + " 金额不正确";
             }
             payrollDataDto.setMessage(msg);
         } else {
-            payrollDataDto.setStatus(true);
-            payrollDataDto.setTotalAmount(totalAmount);
-            payrollDataDto.setHeadCount(headCount);
-            payrollDataDto.setPayrollDetailModelList(payrollDetailModelList);
-            String uuid = UUIDGenerator.generate();
-            payrollDataDto.setUuid(uuid);
-            redisWrapperClient.setex(MessageFormat.format(redisKey, uuid), LEFT_SECONDS, convertJavaListToString(payrollDetailModelList));
-            payrollDataDto.setMessage("导入发放名单成功!");
+            Set<String> set = new HashSet<>(listUserAllMobile);
+            if(listUserAllMobile.size() == set.size()){
+                payrollDataDto.setStatus(true);
+                payrollDataDto.setTotalAmount(totalAmount);
+                payrollDataDto.setHeadCount(headCount);
+                payrollDataDto.setPayrollDetailModelList(payrollDetailModelList);
+                String uuid = UUIDGenerator.generate();
+                payrollDataDto.setUuid(uuid);
+                redisWrapperClient.setex(MessageFormat.format(redisKey, uuid), LEFT_SECONDS, convertJavaListToString(payrollDetailModelList));
+                payrollDataDto.setMessage("导入发放名单成功!");
+            }
+            else{
+                payrollDataDto.setStatus(false);
+                payrollDataDto.setMessage("手机号有重复，请仔细检查！");
+            }
+
         }
         return payrollDataDto;
     }
