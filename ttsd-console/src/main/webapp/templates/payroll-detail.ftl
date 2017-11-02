@@ -41,7 +41,7 @@
     <div>
         <table class="table">
             <tr>
-                <@security.authorize access="hasAuthority('ADMIN','FINANCE_ADMIN')">
+                <@security.authorize access="hasAnyAuthority('ADMIN','FINANCE_ADMIN')">
                     <#if payrollStatus?? && payrollStatus == 'PENDING'>
                         <td>
                             <button class="btn btn-primary primary-audit"
@@ -55,7 +55,7 @@
                         </td>
                     </#if>
                 </@security.authorize>
-                <@security.authorize access="hasAuthority('ADMIN','OPERATOR_ADMIN')">
+                <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR_ADMIN')">
                     <#if payrollStatus?? && payrollStatus == 'AUDITED'>
                         <td>
                             <button class="btn btn-primary advanced-audit"
