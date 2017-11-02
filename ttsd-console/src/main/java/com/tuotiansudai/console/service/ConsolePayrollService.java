@@ -187,14 +187,15 @@ public class ConsolePayrollService {
                     listUserNotExists.add(arrayData[1].trim());
                     continue;
                 }
-                if (!userModel.getUserName().equals(arrayData[0].trim())) {
-                    listUserAndUserNameNotMatch.add(arrayData[1].trim());
-                    continue;
-                }
                 AccountModel accountModel = accountMapper.findByMobile(arrayData[1].trim());
                 if (accountModel == null) {
                     listUserNotAccount.add(arrayData[1].trim());
                     continue;
+                }else{
+                    if (!userModel.getUserName().equals(arrayData[0].trim())) {
+                        listUserAndUserNameNotMatch.add(arrayData[1].trim());
+                        continue;
+                    }
                 }
                 if (!isAmount(arrayData[2].trim())) {
                     listUserAmountError.add(arrayData[1].trim());
@@ -225,7 +226,7 @@ public class ConsolePayrollService {
                 msg += StringUtils.join(listUserAndUserNameNotMatch, ",") + " 姓名与手机号不匹配<br/>";
             }
             if (CollectionUtils.isNotEmpty(listUserNotAccount)) {
-                msg += StringUtils.join(listUserNotExists, ",") + " 未实名认证";
+                msg += StringUtils.join(listUserNotAccount, ",") + " 未实名认证<br/>";
             }
             if (CollectionUtils.isNotEmpty(listUserAmountError)) {
                 msg += StringUtils.join(listUserAmountError, ",") + " 金额不正确";
