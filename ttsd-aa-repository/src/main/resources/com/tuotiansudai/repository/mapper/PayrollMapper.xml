@@ -63,7 +63,7 @@
                 AND status = #{payrollStatusType}
             </if>
             <if test="title !=null and title !=''">
-                AND title = #{title}
+                AND title like CONCAT(CONCAT('%', #{title}), '%')
             </if>
         </where>
         ORDER BY created_time DESC
