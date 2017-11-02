@@ -18,6 +18,8 @@ require(['jquery', 'bootstrap', 'layer', 'layer-extend', 'layerWrapper', 'bootst
             var that = this,
                 tiptext = $(this).attr('data-original-title');
             layer.tips(tiptext, that, {
+                area: 'auto',
+                maxWidth: 220,
                 tips: [4, '#000000']
             });
         });
