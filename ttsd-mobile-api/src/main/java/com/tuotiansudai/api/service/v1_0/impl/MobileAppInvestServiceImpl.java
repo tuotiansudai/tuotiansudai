@@ -108,6 +108,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         investDto.setLoginName(investRequestDto.getUserId());
         investDto.setChannel(mobileAppChannelService.obtainChannelBySource(investRequestDto.getBaseParam()));
         investDto.setUserCouponIds(investRequestDto.getUserCouponIds());
+        investDto.setZeroShoppingPrize(investRequestDto.getZeroShoppingPrize());
         return investDto;
     }
 }

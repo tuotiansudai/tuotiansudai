@@ -337,6 +337,10 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
 
         loanMapper.create(fakeLoanModel);
+
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(fakeLoanModel.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel);
+
         return fakeLoanModel;
     }
 

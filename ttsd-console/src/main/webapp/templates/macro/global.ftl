@@ -126,7 +126,8 @@
                         {"name":"houseDecorate","text":"家装节活动","link":"/activity-console/activity-manage/house-decorate-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"schoolSeason","text":"开学季活动","link":"/activity-console/activity-manage/school-season-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"NationalMidAutumn","text":"国庆节活动 ","link":"/activity-console/activity-manage/national-mid-autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"iphoneX","text":"iPhoneX活动 ","link":"/activity-console/activity-manage/iphonex-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                        {"name":"iphoneX","text":"iPhoneX活动 ","link":"/activity-console/activity-manage/iphonex-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"zeroShopping","text":"0元购活动管理 ","link":"/activity-console/activity-manage/zero-shopping/user-prize-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {

@@ -29,7 +29,7 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
     public void shouldFindLotteryPrizeByMobileAndPrizeIsOk(){
         String mobile = "12312341113";
         userLotteryPrizeMapper.create(getUserLotteryPrizeModel("testUserLotteryPrize", mobile, LotteryPrize.INTEREST_COUPON_2));
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile,null,null);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile,null,null, null);
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
     }
 

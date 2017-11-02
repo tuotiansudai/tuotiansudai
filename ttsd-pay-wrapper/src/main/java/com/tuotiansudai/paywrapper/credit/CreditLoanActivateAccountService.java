@@ -167,6 +167,9 @@ public class CreditLoanActivateAccountService {
                     requestModel,
                     ProjectTransferNopwdResponseModel.class);
 
+            if(!responseModel.isSuccess()){
+                redisWrapperClient.del(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile));
+            }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()

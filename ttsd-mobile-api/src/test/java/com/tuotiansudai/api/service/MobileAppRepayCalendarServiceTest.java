@@ -56,6 +56,9 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
     @Test
     public void shouldGetYearRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
@@ -348,6 +351,9 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         loanModel.setStatus(LoanStatus.RAISING);
         loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
+
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel);
         return loanModel;
     }
 

@@ -90,12 +90,13 @@
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
         SELECT
-        *
+        temp.*
         FROM
-        loan temp
+        loan temp left join loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
+        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type = 'EXPERIENCE')
         <if test="name !=null and name!=''">
             and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -135,8 +136,9 @@
 
     <select id="findLoanListCountWeb" parameterType="map" resultType="int">
         select count(*) from (
-        select * from loan t
+        select t.* from loan t left join loan_details on t.id = loan_details.loan_id
         where 1=1
+        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or t.product_type = 'EXPERIENCE')
         <if test="name !=null and name != ''">
             and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -166,11 +168,12 @@
 
     <select id="findLoanListMobileApp" parameterType="map" resultMap="loanResultMap">
         SELECT
-        *
+        temp.*
         FROM
-        loan temp
+        loan temp left JOIN loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
+        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type = 'EXPERIENCE')
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="productType !=null">
             and temp.product_type = #{productType}
@@ -662,24 +665,24 @@
     </select>
 
     <select id="findByProductType" resultMap="loanResultMap">
-        select * from loan
-        <where>
-            <if test="productTypeList != null ">
-                and loan.product_type IN
-                <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
-                    #{productType}
-                </foreach>
-            </if>
-            <if test="loanStatus != null and loanStatus.name() == 'RAISING'">
-                and loan.status in ('RAISING','PREHEAT')
-            </if>
-            <if test="loanStatus != null and loanStatus.name() == 'COMPLETE'">
-                and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
-            </if>
-            <if test="activityType !=null ">
-                and activity_type = #{activityType}
-            </if>
-        </where>
+        select loan.* from loan left join loan_details on loan.id = loan_details.loan_id
+        where
+        (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or loan.product_type = 'EXPERIENCE')
+        <if test="productTypeList != null ">
+            and loan.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
+        <if test="loanStatus != null and loanStatus.name() == 'RAISING'">
+            and loan.status in ('RAISING','PREHEAT')
+        </if>
+        <if test="loanStatus != null and loanStatus.name() == 'COMPLETE'">
+            and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
+        </if>
+        <if test="activityType !=null ">
+            and activity_type = #{activityType}
+        </if>
         ORDER BY CASE loan.status
         WHEN 'RAISING' THEN '1'
         WHEN 'PREHEAT' THEN '2' END,
@@ -699,6 +702,13 @@
         <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE_CREDIT' or pledgeType.name() == 'ENTERPRISE_PLEDGE')">
             and pledge_type in ('ENTERPRISE_FACTORING', 'ENTERPRISE_BILL', 'ENTERPRISE_PLEDGE', 'ENTERPRISE_CREDIT')
         </if>
+    </select>
+
+    <select id="findZeroShoppingActivityByTime" resultMap="loanResultMap">
+        SELECT l.* FROM loan l join loan_details ld on l.id = ld.loan_id
+        AND ld.activity_desc = '0元购'
+        and l.status = 'RAISING'
+        AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
     </select>
 
 </mapper>
