@@ -7,6 +7,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin'); //复制文件
 var CleanWebpackPlugin = require('clean-webpack-plugin');  //清空文件夹里的文件
 
+
 var node_modules = path.resolve(__dirname, 'node_modules');
  //通过多进程模型，来加速代码构建
 var HappyPack = require('happypack');
@@ -110,6 +111,17 @@ else if(NODE_ENV=='dev') {
 	//开发环境
 	plugins.push(new webpack.HotModuleReplacementPlugin());
 
+	// 接口代理,目前用ftl-server模拟假数据
+	// var proxyList = ['/images/fonts/*'];
+	// var proxyObj = {};
+	// proxyList.forEach(function(value) {
+	// 	proxyObj[value] = {
+	// 		target: 'http://localhost:8080',
+	// 		changeOrigin: true,
+	// 		secure: false
+	// 	};
+	// });
+
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
@@ -123,13 +135,14 @@ else if(NODE_ENV=='dev') {
 			chunks: false,
 			colors: true
 		}
+		// proxy:proxyObj
 	};
 }
 
 plugins.push(new CopyWebpackPlugin([
 	{ from: packageRoute.publicPathJS+'/dllplugins',to: 'public/dllplugins'},
 	{ from: packageRoute.staticPath+'/inlineImages',to: 'images'},
-	{ from: packageRoute.publicPath+'/styles/plugins/skin',to: 'public/skin'}
+	{ from: packageRoute.publicPath+'/styles/plugins/skin',to: 'public/theme'}
 ]));
 //生成json文件的列表索引插件
 plugins.push(new AssetsPlugin({
@@ -188,11 +201,16 @@ var myObject = objectAssign(commonOptions, {
 			loader: ExtractTextPlugin.extract('style','happypack/loader?id=sass')
 		},
 		{
-			test: /\.(jpe?g|png|gif|svg)$/i,
+			test: /\.(jpe?g|png|gif)$/i,
 			loaders:['url?limit=2048&name=images/[name].[hash:8].[ext]']
 			// loaders:['happypack/loader?id=image']
 
-		}]
+		},
+		{
+			test: /\.(woff|woff2|svg|eot|ttf)\??.*$/,
+			loader: 'file?name=images/fonts/[name].[ext]'
+		}
+		]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
