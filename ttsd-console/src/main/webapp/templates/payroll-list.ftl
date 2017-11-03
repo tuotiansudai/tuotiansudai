@@ -104,7 +104,7 @@
                     <td>${payroll.title!}</td>
                     <td>
                         <#if payroll.grantTime??>
-                            ${(payroll.grantTime?string('yyyy-MM-dd HH:mm:ss'))!}
+                        ${(payroll.grantTime?string('yyyy-MM-dd HH:mm:ss'))!}
                         <#else >
                             --
                         </#if>
@@ -122,11 +122,13 @@
                         <#if payroll.remark??>
                             <span class="tooltip-list"
                                 <#if payroll.remark?length gt 20 && payroll.remark?contains('|')>
-                                    data-original-title="${payroll.remark?replace('|','—————————————————')!}">${(payroll.remark?replace('|',''))?substring(0,20)!}...
+                                  data-original-title="${payroll.remark?replace('|','—————————————————')!}">${(payroll.remark?replace('|',''))?substring(0,20)!}
+                                    ...
                                 <#elseif payroll.remark?length gt 20 && !payroll.remark?contains('|')>
                                     data-original-title="${payroll.remark!}">${payroll.remark?substring(0,20)!}...
                                 <#elseif payroll.remark?length lt 20 && payroll.remark?contains('|')>
-                                    data-original-title="${payroll.remark?replace('|','—————————————————')!}">${(payroll.remark?replace('|',' '))!}
+                                    data-original-title="${payroll.remark?replace('|','—————————————————')!}
+                                    ">${(payroll.remark?replace('|',' '))!}
                                 <#else>
                                     data-original-title="${payroll.remark!}">${payroll.remark!}
                                 </#if>
@@ -134,13 +136,19 @@
                         </#if>
                     </td>
                     <td>
-                        <#if payroll.status!='REJECTED'>
+                        <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR')">
+                            <#if payroll.status!='REJECTED'>
+                                <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
+                                   class="btn btn-sm btn-primary">详情</a>
+                            <#else >
+                                <a href="/finance-manage/payroll-manage/edit/${payroll.id?string('0')}"
+                                   class="btn btn-sm btn-primary">编辑</a>
+                            </#if>
+                        </@security.authorize>
+                        <@security.authorize access="not hasAnyAuthority('ADMIN','OPERATOR')">
                             <a href="/finance-manage/payroll-manage/${payroll.id?string('0')}/detail"
                                class="btn btn-sm btn-primary">详情</a>
-                        <#else >
-                            <a href="/finance-manage/payroll-manage/edit/${payroll.id?string('0')}"
-                               class="btn btn-sm btn-primary">编辑</a>
-                        </#if>
+                        </@security.authorize>
 
                         <button data-payroll-id="${payroll.id?string('0')}"
                                 class="btn btn-sm btn-primary btnRemark">备注
