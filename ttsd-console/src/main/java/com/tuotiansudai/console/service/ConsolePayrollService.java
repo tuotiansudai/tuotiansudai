@@ -83,7 +83,7 @@ public class ConsolePayrollService {
     public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName,String ipAddress) {
         if (!isSufficientBalance(payRollId)) {
             logger.info("system balance is not sufficient");
-            return new BaseDto<>(new BaseDataDto(false, "系统账户余额不足!"));
+            return new BaseDto<>(new BaseDataDto(false, "系统账户余额不足，请充值后再次审核!"));
         }
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         payrollModel.setUpdatedBy(loginName);

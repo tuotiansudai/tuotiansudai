@@ -157,8 +157,9 @@ public class AuditTaskAspectPayroll {
             if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
                 OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-
-                String description = String.format("运营管理员%s通过了你提交的发放现金申请。", operatorRealName);
+                PayrollModel payrollModel = payrollMapper.findById(payrollId);
+                String creator = payrollModel.getCreatedBy();
+                String description = String.format("运营管理员%s通过了你提交的发放现金申请。", userService.getRealName(creator));
                 OperationTask<Long> notify = new OperationTask(taskId, TaskType.NOTIFY, OperationType.PAYROLL, loginName,
                         task.getSender(), task.getObjId(), task.getObjName(),
                         description, null);
