@@ -88,6 +88,7 @@ public class ConsolePayrollService {
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         payrollModel.setUpdatedBy(loginName);
         payrollModel.setUpdatedTime(new Date());
+        payrollModel.setGrantTime(new Date());
         payrollModel.setStatus(PayrollStatusType.AUDITED);
         payrollMapper.update(payrollModel);
         logger.info(String.format("%s send payroll message begin ...", String.valueOf(payRollId)));
