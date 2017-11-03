@@ -7,8 +7,6 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -32,8 +30,8 @@ import com.tuotiansudai.quartz.TriggeredJobBuilder;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.umpay.api.exception.ReqDataException;
 import org.joda.time.DateTime;
@@ -46,6 +44,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.quartz.SchedulerException;
 import org.quartz.core.QuartzSchedulerResources;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,8 +68,8 @@ import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})@Transactional
 public class LoanServiceTest {
 
     @InjectMocks
@@ -93,9 +92,6 @@ public class LoanServiceTest {
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
-
-    @Mock
-    private JobManager jobManager;
 
     @Mock
     private RepayGeneratorService repayGeneratorService;

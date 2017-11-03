@@ -8,9 +8,9 @@ import com.tuotiansudai.activity.repository.dto.MysteriousPrizeDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -58,7 +58,7 @@ public class HeroRankingService {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-    public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime) {
+    public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory, Date tradingTime) {
         if (tradingTime == null) {
             logger.info("tradingTime is null");
             return null;
@@ -71,13 +71,13 @@ public class HeroRankingService {
         return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
     }
 
-    public Map obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory activityCategory,Date tradingTime, final String loginName) {
+    public Map obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory activityCategory, Date tradingTime, final String loginName) {
         if (tradingTime == null) {
             logger.info("tradingTime is null");
             return null;
         }
         List<String> activityPeriod = getActivityPeriod(activityCategory);
-        tradingTime  = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime, activityPeriod.get(0));
         if (count > 0) {
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
@@ -132,7 +132,7 @@ public class HeroRankingService {
     }
 
 
-    public Integer findHeroRankingByReferrerLoginName(ActivityCategory activityCategory,final String loginName) {
+    public Integer findHeroRankingByReferrerLoginName(ActivityCategory activityCategory, final String loginName) {
         List<String> activityPeriod = getActivityPeriod(activityCategory);
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByReferrer(new Date(), activityPeriod.get(0), activityPeriod.get(1), 0, 20);
         if (CollectionUtils.isEmpty(heroRankingViews)) {
@@ -141,23 +141,23 @@ public class HeroRankingService {
         return Iterators.indexOf(heroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1;
     }
 
-    public List<String> getActivityPeriod(ActivityCategory activityCategory){
-        switch (activityCategory){
+    public List<String> getActivityPeriod(ActivityCategory activityCategory) {
+        switch (activityCategory) {
             case HERO_RANKING:
                 return heroRankingActivityPeriod;
             case NEW_HERO_RANKING:
                 return newHeroRankingActivityPeriod;
             case LANTERN_FESTIVAL_ACTIVITY:
-                return Lists.newArrayList(lanternFestivalStartTime,lanternFestivalEndTime);
+                return Lists.newArrayList(lanternFestivalStartTime, lanternFestivalEndTime);
         }
         return null;
     }
 
-    public List<String> getActivityTime(){
+    public List<String> getActivityTime() {
         Date startTime = DateTime.parse(newHeroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(newHeroRankingActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
-        return Lists.newArrayList(sdf.format(startTime),sdf.format(endTime));
+        return Lists.newArrayList(sdf.format(startTime), sdf.format(endTime));
     }
 
     public MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate) {

@@ -1,10 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -12,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +22,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class ExperienceInvestServiceTest {
     @Autowired
     private InvestMapper investMapper;
@@ -37,7 +35,10 @@ public class ExperienceInvestServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
+
+    @Autowired
+    private UserExperienceMapper userExperienceMapper;
 
     @Autowired
     private ExperienceInvestService experienceInvestService;
@@ -58,8 +59,7 @@ public class ExperienceInvestServiceTest {
         assertThat(investRepayModels.get(0).getExpectedInterest(), is(10L));
         assertThat(investRepayModels.get(0).getExpectedFee(), is(0L));
         assertThat(investRepayModels.get(0).getRepayDate().getTime(), is(new DateTime().withTimeAtStartOfDay().plusDays(3).minusSeconds(1).getMillis()));
-        UserModel userModel = userMapper.findByLoginName(investor.getLoginName());
-        assertThat(userModel.getExperienceBalance(), is(10000L));
+        assertThat(userExperienceMapper.findExperienceByLoginName(investor.getLoginName()), is(10000L));
     }
 
     private InvestDto getFakeInvestDto(UserModel investor, LoanModel experienceLoanModel) {

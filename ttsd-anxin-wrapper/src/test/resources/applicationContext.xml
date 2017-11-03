@@ -24,7 +24,8 @@
     <aop:aspectj-autoproxy expose-proxy="true" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.cfca.contract"/>
+    <context:component-scan base-package="com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.cfca.contract,
+    com.tuotiansudai.rest.client"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>

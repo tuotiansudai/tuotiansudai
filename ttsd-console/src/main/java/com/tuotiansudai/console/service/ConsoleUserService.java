@@ -14,18 +14,25 @@ import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.request.UpdateUserInfoRequestDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +50,9 @@ public class ConsoleUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRestClient userRestClient;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -75,7 +85,7 @@ public class ConsoleUserService {
         final String loginName = editUserDto.getLoginName();
 
         String mobile = editUserDto.getMobile();
-        UserModel userModel = userMapper.lockByLoginName(loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
         String beforeUpdateUserMobile = userModel.getMobile();
 
         // update role
@@ -85,13 +95,22 @@ public class ConsoleUserService {
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
 
-        userModel.setStatus(editUserDto.getStatus());
-        userModel.setMobile(mobile);
-        userModel.setEmail(editUserDto.getEmail());
-        userModel.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? null : editUserDto.getReferrer());
-        userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(operatorLoginName);
-        userMapper.updateUser(userModel);
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
+        if (userModel.getStatus() != editUserDto.getStatus()) {
+            updateDto.setStatus(editUserDto.getStatus());
+        }
+        if (!StringUtils.equalsIgnoreCase(userModel.getMobile(), editUserDto.getMobile())) {
+            updateDto.setMobile(editUserDto.getMobile());
+        }
+        if (!StringUtils.equalsIgnoreCase(userModel.getEmail(), editUserDto.getEmail())) {
+            updateDto.setEmail(editUserDto.getEmail());
+        }
+        if (!StringUtils.equalsIgnoreCase(userModel.getReferrer(), editUserDto.getReferrer())) {
+            updateDto.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? "" : editUserDto.getReferrer());
+        }
+        updateDto.setLastModifiedTime(new Date());
+        updateDto.setLastModifiedUser(operatorLoginName);
+        userRestClient.update(updateDto);
 
         if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
@@ -131,7 +150,7 @@ public class ConsoleUserService {
     }
 
     public List<String> findAllUserChannels() {
-        return userMapper.findAllUserChannels();
+        return userMapperConsole.findAllUserChannels();
     }
 
     public UserModel findByLoginName(String loginName) {
@@ -237,22 +256,24 @@ public class ConsoleUserService {
         }
 
         String newReferrerLoginName = editUserDto.getReferrer();
-        UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
-        if (!Strings.isNullOrEmpty(newReferrerLoginName) && newReferrerModel == null) {
-            throw new EditUserException("推荐人不存在");
-        }
+        if(!Strings.isNullOrEmpty(newReferrerLoginName)) {
+            UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
+            if (newReferrerModel == null) {
+                throw new EditUserException("推荐人不存在");
+            }
 
-        if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
-            throw new EditUserException("不能将推荐人设置为自己");
+            if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
+                throw new EditUserException("不能将推荐人设置为自己");
+            }
+
+            // 是否新推荐人是该用户推荐的
+            if (this.isNewReferrerReferree(loginName, newReferrerLoginName)) {
+                throw new EditUserException("推荐人与该用户存在间接推荐关系");
+            }
         }
 
         if (editUserDto.getRoles().contains(Role.SD_STAFF) && editUserDto.getRoles().contains(Role.ZC_STAFF)) {
             throw new EditUserException("不能同时设置速贷业务员和资产业务员");
-        }
-
-        // 是否新推荐人是该用户推荐的
-        if (this.isNewReferrerReferree(loginName, newReferrerLoginName)) {
-            throw new EditUserException("推荐人与该用户存在间接推荐关系");
         }
     }
 

@@ -4,8 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.console.repository.mapper.UserMapperConsole">
 
-    <cache-ref namespace="com.tuotiansudai.repository.mapper.UserMapper"/>
-
     <resultMap id="userViewResultMap" type="UserView">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
@@ -368,7 +366,7 @@
         and exists (select 1 from account where account.login_name = user.login_name)
     </select>
 
-    <select id="findUserMicroModelCount" parameterType="map" resultType="int" useCache="false">
+    <select id="findUserMicroModelCount" parameterType="map" resultType="int">
         select
             count(1)
         from user u
@@ -488,7 +486,7 @@
         </where>
     </select>
 
-    <select id="queryUserMicroModel" parameterType="map" resultMap="userMicroModelView" useCache="false">
+    <select id="queryUserMicroModel" parameterType="map" resultMap="userMicroModelView">
         select
             u.id,
             u.user_name,
@@ -806,5 +804,9 @@
             </if>
 
         </where>
+    </select>
+
+    <select id="findAllUserChannels" resultType="string">
+        select IFNULL(channel,'其他') from user group by channel order by channel desc
     </select>
 </mapper>

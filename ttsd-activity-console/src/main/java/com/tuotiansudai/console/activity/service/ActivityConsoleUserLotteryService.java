@@ -10,9 +10,8 @@ import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.DateUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,8 +72,8 @@ public class ActivityConsoleUserLotteryService {
     @Value(value = "${activity.exercise.work.endTime}")
     private String acticityExerciseWorkEndTime;
 
-    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer index, Integer pageSize) {
-        List<UserModel> userModels = userMapper.findUserModelByMobile(mobile, index, pageSize);
+    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer page, Integer pageSize) {
+        List<UserModel> userModels = userMapper.findUserModelByMobileLike(mobile, page, pageSize);
 
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
             UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(), input.getLoginName());
@@ -84,10 +82,10 @@ public class ActivityConsoleUserLotteryService {
             if (prizeType.name().startsWith("MONEY_TREE")) {
                 int referrerLotteryChance = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType);
                 unUserCount = moneyTreeLeftLotteryTimes(mobile, referrerLotteryChance, model.getUseCount());
-            } else if(prizeType.name().startsWith("EXERCISE_WORK_ACTIVITY")){
+            } else if (prizeType.name().startsWith("EXERCISE_WORK_ACTIVITY")) {
                 int referrerLotteryChance = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType);
-                unUserCount=exerciseVSWorkTimes(model.getMobile(),prizeType)+referrerLotteryChance-model.getUseCount();
-            }else {
+                unUserCount = exerciseVSWorkTimes(model.getMobile(), prizeType) + referrerLotteryChance - model.getUseCount();
+            } else {
                 unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
             }
             model.setUnUseCount(unUserCount < 0 ? 0 : unUserCount);
@@ -98,7 +96,7 @@ public class ActivityConsoleUserLotteryService {
     }
 
     public int findUserLotteryTimeCountViews(String mobile) {
-        return userMapper.findCountByMobile(mobile);
+        return userMapper.findCountByMobileLike(mobile);
     }
 
     public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime, Integer index, Integer pageSize) {
@@ -130,7 +128,7 @@ public class ActivityConsoleUserLotteryService {
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType, startTime, endTime);
     }
 
-    private int moneyTreeLeftLotteryTimes(String mobile, int referrerLotteryTimes, int usedLotteryTimes){
+    private int moneyTreeLeftLotteryTimes(String mobile, int referrerLotteryTimes, int usedLotteryTimes) {
         int lotteryTimes = 0;
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
@@ -159,18 +157,18 @@ public class ActivityConsoleUserLotteryService {
         return lotteryTimes;
     }
 
-    private int exerciseVSWorkTimes(String mobile,ActivityCategory activityCategory){
-        final long EACH_INVEST_AMOUNT_100000=1000000L;
+    private int exerciseVSWorkTimes(String mobile, ActivityCategory activityCategory) {
+        final long EACH_INVEST_AMOUNT_100000 = 1000000L;
         DateTime startTime = DateTime.parse(acticityExerciseWorkStartTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
-        UserModel userModel=userMapper.findByMobile(mobile);
-        int count=0;
-        Date yesterdayDate=DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
-        startTime=startTime.withTimeAtStartOfDay();
-        while (startTime.toDate().before(yesterdayDate)){
-            count+=userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
-                    startTime.toDate() , startTime.plusDays(1).minusMillis(1).toDate()) == 0 ? 0 : 1;
-            startTime=startTime.plusDays(1);
+        UserModel userModel = userMapper.findByMobile(mobile);
+        int count = 0;
+        Date yesterdayDate = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
+        startTime = startTime.withTimeAtStartOfDay();
+        while (startTime.toDate().before(yesterdayDate)) {
+            count += userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
+                    startTime.toDate(), startTime.plusDays(1).minusMillis(1).toDate()) == 0 ? 0 : 1;
+            startTime = startTime.plusDays(1);
         }
-        return count+1;
+        return count + 1;
     }
 }

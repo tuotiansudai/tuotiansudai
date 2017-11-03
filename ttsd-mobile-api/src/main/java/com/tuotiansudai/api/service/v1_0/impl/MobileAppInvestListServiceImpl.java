@@ -8,13 +8,15 @@ import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestListService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
@@ -73,7 +75,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         long loanId = Long.parseLong(investListRequestDto.getLoanId());
 
         LoanModel achievementLoanModel = loanMapper.findById(loanId);
-        if(achievementLoanModel == null){
+        if (achievementLoanModel == null) {
             dto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
             dto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return dto;

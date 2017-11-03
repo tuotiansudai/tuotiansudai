@@ -14,7 +14,6 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayNoPwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.CreditLoanRepayProjectTransferNotifyMapper;
@@ -25,11 +24,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.repository.model.CreditLoanBillModel;
 import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,7 +174,7 @@ public class CreditLoanRepayService {
             return dto;
         }
 
-        if (this.isFinished(orderId)){
+        if (this.isFinished(orderId)) {
             payDataDto.setMessage("您已还款成功");
             payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
             return dto;
@@ -267,7 +266,7 @@ public class CreditLoanRepayService {
         try {
             String key = MessageFormat.format(CREDIT_LOAN_REPAY_REDIS_KEY, String.valueOf(orderId));
             return redisWrapperClient.exists(key) && SyncRequestStatus.valueOf(redisWrapperClient.get(key)) == SyncRequestStatus.SUCCESS;
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;

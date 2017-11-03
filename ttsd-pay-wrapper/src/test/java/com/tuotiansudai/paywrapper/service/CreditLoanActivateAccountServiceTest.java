@@ -16,7 +16,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
@@ -26,6 +25,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -41,14 +41,11 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class CreditLoanActivateAccountServiceTest {
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class CreditLoanActivateAccountServiceTest {
 
     @InjectMocks
     private CreditLoanActivateAccountService creditLoanActivateAccountService;
-
-    @Mock
-    private UserMapper userMapper;
 
     @Mock
     private AccountMapper accountMapper;
@@ -85,14 +82,14 @@ public class CreditLoanActivateAccountServiceTest {
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
 
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:activate:account:concurrency:{0}",mobile))).thenReturn(true);
+        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:activate:account:concurrency:{0}", mobile))).thenReturn(true);
         dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("正在激活账户, 请30分钟后查看"));
 
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:activate:account:concurrency:{0}",mobile))).thenReturn(false);
-        when(redisWrapperClient.get(MessageFormat.format("credit:loan:activate:account:{0}",mobile))).thenReturn(SyncRequestStatus.SUCCESS.name());
+        when(redisWrapperClient.exists(MessageFormat.format("credit:loan:activate:account:concurrency:{0}", mobile))).thenReturn(false);
+        when(redisWrapperClient.get(MessageFormat.format("credit:loan:activate:account:{0}", mobile))).thenReturn(SyncRequestStatus.SUCCESS.name());
         dto = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("您已经激活过账户"));
@@ -149,7 +146,7 @@ public class CreditLoanActivateAccountServiceTest {
         BaseDto<PayFormDataDto> actual = this.creditLoanActivateAccountService.passwordActivateAccount(mobile);
         verify(this.redisWrapperClient, times(0)).setex(anyString(), anyInt(), anyString());
         verify(this.redisWrapperClient, times(0)).set(anyString(), anyString());
-        verify(this.payAsyncClient,times(1))
+        verify(this.payAsyncClient, times(1))
                 .generateFormData(eq(CreditLoanActivateAccountMapper.class), requestModelCaptor.capture());
 
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
@@ -179,7 +176,7 @@ public class CreditLoanActivateAccountServiceTest {
 
         accountModel.setNoPasswordInvest(true);
         when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        when(redisWrapperClient.get(MessageFormat.format("credit:loan:activate:account:{0}",mobile))).thenReturn(SyncRequestStatus.SUCCESS.name());
+        when(redisWrapperClient.get(MessageFormat.format("credit:loan:activate:account:{0}", mobile))).thenReturn(SyncRequestStatus.SUCCESS.name());
         dto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("您已经激活过账户"));
@@ -244,7 +241,6 @@ public class CreditLoanActivateAccountServiceTest {
         assertThat(dataDtoBaseDto.getData().getMessage(), is("error"));
         assertFalse(dataDtoBaseDto.getData().getStatus());
     }
-
 
 
 }

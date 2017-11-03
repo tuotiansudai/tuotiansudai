@@ -1,27 +1,18 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.ExchangeCouponDto;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.InvestRepayDataDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,15 +25,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class RepayServiceTest {
 
     @Autowired
     private RepayService repayService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -67,17 +58,17 @@ public class RepayServiceTest {
         String loginName = "testInvestRepay";
         getUserModelTest(loginName);
         LoanModel loanModel = getFakeLoan(loginName, loginName, LoanStatus.REPAYING, ActivityType.NORMAL);
-        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,TransferStatus.NONTRANSFERABLE);
-        getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE,null,100);
-        getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING,null,100);
-        getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING,null,100);
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName, TransferStatus.NONTRANSFERABLE);
+        getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE, null, 100);
+        getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING, null, 100);
+        getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING, null, 100);
         BaseDto<InvestRepayDataDto> investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
         assertTrue(investRepayDataDtoBaseDto.getData().getRecords().size() == 3);
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getAmount(), "0.50");
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getExpectedFee(),"0.50");
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getExpectedInterest(),"1.00");
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getActualInterest(),"1.00");
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getActualFee(),"0.50");
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getExpectedFee(), "0.50");
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getExpectedInterest(), "1.00");
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getActualInterest(), "1.00");
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getActualFee(), "0.50");
     }
 
     @Test
@@ -85,19 +76,19 @@ public class RepayServiceTest {
         String loginName = "testInvestRepay";
         getUserModelTest(loginName);
         LoanModel loanModel = getFakeLoan(loginName, loginName, LoanStatus.REPAYING, ActivityType.NORMAL);
-        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,TransferStatus.NONTRANSFERABLE);
-        getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE,null,100);
-        getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING,null,100);
-        getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING,null,100);
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName, TransferStatus.NONTRANSFERABLE);
+        getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE, null, 100);
+        getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING, null, 100);
+        getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING, null, 100);
         CouponModel investCoupon = fakeCoupon(CouponType.INVEST_COUPON, UserGroup.ALL_USER, loginName);
-        CouponModel interestCoupon = fakeCoupon(CouponType.INTEREST_COUPON,UserGroup.ALL_USER,loginName);
+        CouponModel interestCoupon = fakeCoupon(CouponType.INTEREST_COUPON, UserGroup.ALL_USER, loginName);
         UserCouponModel userCouponModel = getUserCouponModel(loginName, investCoupon.getId(), investModel.getId(), loanModel.getId());
-        CouponRepayModel couponRepayModel = getCouponRepayModel(loginName,investCoupon.getId(),userCouponModel.getId(), investModel.getId(), DateTime.parse("2010-01-01").toDate());
-        BaseDto<InvestRepayDataDto>  investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().size(),3);
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getAmount(),"1.50");
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getCouponExpectedInterest(),"2.00");
-        assertEquals(investRepayDataDtoBaseDto.getData().getSumExpectedInterest(),"1.00");
+        CouponRepayModel couponRepayModel = getCouponRepayModel(loginName, investCoupon.getId(), userCouponModel.getId(), investModel.getId(), DateTime.parse("2010-01-01").toDate());
+        BaseDto<InvestRepayDataDto> investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().size(), 3);
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getAmount(), "1.50");
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getCouponExpectedInterest(), "2.00");
+        assertEquals(investRepayDataDtoBaseDto.getData().getSumExpectedInterest(), "1.00");
     }
 
     @Test
@@ -105,26 +96,26 @@ public class RepayServiceTest {
         String loginName = "testInvestRepay";
         getUserModelTest(loginName);
         LoanModel loanModel = getFakeLoan(loginName, loginName, LoanStatus.REPAYING, ActivityType.NORMAL);
-        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,TransferStatus.SUCCESS);
-        getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE,TransferStatus.SUCCESS,0l);
-        getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.COMPLETE,TransferStatus.SUCCESS,0l);
-        getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.COMPLETE,TransferStatus.SUCCESS,0l);
-        CouponModel investCoupon = fakeCoupon(CouponType.INVEST_COUPON, UserGroup.ALL_USER,loginName);
-        CouponModel interestCoupon = fakeCoupon(CouponType.INTEREST_COUPON,UserGroup.ALL_USER,loginName);
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName, TransferStatus.SUCCESS);
+        getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE, TransferStatus.SUCCESS, 0l);
+        getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.COMPLETE, TransferStatus.SUCCESS, 0l);
+        getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.COMPLETE, TransferStatus.SUCCESS, 0l);
+        CouponModel investCoupon = fakeCoupon(CouponType.INVEST_COUPON, UserGroup.ALL_USER, loginName);
+        CouponModel interestCoupon = fakeCoupon(CouponType.INTEREST_COUPON, UserGroup.ALL_USER, loginName);
         UserCouponModel userCouponModel = getUserCouponModel(loginName, investCoupon.getId(), investModel.getId(), loanModel.getId());
-        CouponRepayModel couponRepayModel = getCouponRepayModel(loginName,investCoupon.getId(),userCouponModel.getId(), investModel.getId(), DateTime.parse("2010-01-01").toDate());
-        BaseDto<InvestRepayDataDto>  investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
+        CouponRepayModel couponRepayModel = getCouponRepayModel(loginName, investCoupon.getId(), userCouponModel.getId(), investModel.getId(), DateTime.parse("2010-01-01").toDate());
+        BaseDto<InvestRepayDataDto> investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getStatus(), TransferStatus.SUCCESS.getDescription());
     }
 
-    private CouponRepayModel getCouponRepayModel(String loginName,long couponId,long userCouponId,long investId,Date date){
+    private CouponRepayModel getCouponRepayModel(String loginName, long couponId, long userCouponId, long investId, Date date) {
         CouponRepayModel couponRepayModel = new CouponRepayModel(loginName, couponId, userCouponId, investId, 200, 100, 1, date);
         couponRepayModel.setPeriod(1);
         couponRepayMapper.create(couponRepayModel);
         return couponRepayModel;
     }
 
-    private UserCouponModel getUserCouponModel(String loginName,long couponId,long investId,long loanId){
+    private UserCouponModel getUserCouponModel(String loginName, long couponId, long investId, long loanId) {
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setId(IdGenerator.generate());
         userCouponModel.setActualFee(100);
@@ -143,7 +134,7 @@ public class RepayServiceTest {
         return userCouponModel;
     }
 
-    private CouponModel fakeCoupon(CouponType couponType, UserGroup userGroup,String loginName) {
+    private CouponModel fakeCoupon(CouponType couponType, UserGroup userGroup, String loginName) {
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
         exchangeCouponDto.setAmount("1000.00");
         exchangeCouponDto.setTotalCount(100L);
@@ -165,7 +156,7 @@ public class RepayServiceTest {
         return couponModel;
     }
 
-    private InvestRepayModel getInvestRepayModel(long investId,int period,Date date,RepayStatus repayStatus,TransferStatus transferStatus,long expectedInterest){
+    private InvestRepayModel getInvestRepayModel(long investId, int period, Date date, RepayStatus repayStatus, TransferStatus transferStatus, long expectedInterest) {
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setId(IdGenerator.generate());
@@ -184,7 +175,7 @@ public class RepayServiceTest {
         return investRepayModel;
     }
 
-    private InvestModel getFakeInvestModel(long loanId,String loginName,TransferStatus transferStatus) {
+    private InvestModel getFakeInvestModel(long loanId, String loginName, TransferStatus transferStatus) {
         InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         model.setTransferStatus(transferStatus);

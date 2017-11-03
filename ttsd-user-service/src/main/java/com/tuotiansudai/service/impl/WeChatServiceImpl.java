@@ -66,7 +66,7 @@ public class WeChatServiceImpl implements WeChatService {
 
         WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openid);
         if (weChatUserModel == null) {
-            weChatUserModel = new WeChatUserModel(loginNameGenerator.generate(), openid);
+            weChatUserModel = new WeChatUserModel(loginNameGenerator.generateWxLoginName(), openid);
             weChatUserMapper.create(weChatUserModel);
         } else {
             weChatUserModel.setLatestLoginTime(new Date());

@@ -185,4 +185,6 @@ public interface UserMapperConsole {
     long sumExperienceBalance(@Param(value = "mobile") String mobile,
                               @Param(value = "balanceMin") String balanceMin,
                               @Param(value = "balanceMax") String balanceMax);
+
+    List<String> findAllUserChannels();
 }

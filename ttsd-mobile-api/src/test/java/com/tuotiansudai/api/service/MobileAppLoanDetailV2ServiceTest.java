@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service;
 
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
@@ -11,20 +10,19 @@ import com.tuotiansudai.api.dto.v2_0.LoanDetailV2ResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import net.sf.json.JSON;
 import org.joda.time.DateTime;
-import org.json.simple.JSONValue;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,15 +37,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppLoanDetailV2Service mobileAppLoanDetailV2Service;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -66,13 +64,13 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         baseParam.setAppVersion("4.2");
         baseParam.setUserId("userId");
         baseParamDto.setBaseParam(baseParam);
-        request.setAttribute("baseParam",baseParamDto);
+        request.setAttribute("baseParam", baseParamDto);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
     @Ignore
     @Test
-    public void shouldFindLoanDetailIsOk(){
+    public void shouldFindLoanDetailIsOk() {
         UserModel fakeUserModel = this.getUserModelTest();
         userMapper.create(fakeUserModel);
         LoanModel fakeLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName());
@@ -86,13 +84,13 @@ public class MobileAppLoanDetailV2ServiceTest extends ServiceTestBase{
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(fakeUserModel.getLoginName());
         loanDetailV2RequestDto.setBaseParam(baseParam);
-        BaseResponseDto<LoanDetailV2ResponseDataDto>  loanDetail = mobileAppLoanDetailV2Service.findLoanDetail(loanDetailV2RequestDto);
+        BaseResponseDto<LoanDetailV2ResponseDataDto> loanDetail = mobileAppLoanDetailV2Service.findLoanDetail(loanDetailV2RequestDto);
         assertTrue(loanDetail.getData().isNonTransferable());
-        assertEquals(loanDetail.getData().getContent(),"个人经营借款理财项目，总额10001元期限30天，年化利率28%，先到先抢！！！");
+        assertEquals(loanDetail.getData().getContent(), "个人经营借款理财项目，总额10001元期限30天，年化利率28%，先到先抢！！！");
         assertTrue(Long.parseLong(loanDetail.getData().getInterestPerTenThousands()) == 29787);
     }
 
-    private LoanDetailsModel createLoanDetails(long loanId){
+    private LoanDetailsModel createLoanDetails(long loanId) {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
         loanDetailsModel.setId(IdGenerator.generate());
         loanDetailsModel.setDeclaration("声明材料");

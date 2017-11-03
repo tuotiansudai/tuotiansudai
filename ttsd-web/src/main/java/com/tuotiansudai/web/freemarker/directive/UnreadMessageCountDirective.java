@@ -3,7 +3,7 @@ package com.tuotiansudai.web.freemarker.directive;
 
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.service.UserMessageService;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.springframework.beans.factory.annotation.Autowired;

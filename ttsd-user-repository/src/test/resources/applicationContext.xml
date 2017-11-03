@@ -14,23 +14,24 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties"/>
 
     <!-- enable autowire -->
-    <context:annotation-config />
+    <context:annotation-config/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <aop:aspectj-autoproxy expose-proxy="true" />
+    <aop:aspectj-autoproxy expose-proxy="true"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.repository,com.tuotiansudai.cache"/>
+            base-package="com.tuotiansudai.repository,com.tuotiansudai.cache,com.tuotiansudai.rest.client"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="1"/>
@@ -53,14 +54,14 @@
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="hikariCPDataSource" />
+        <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
                   value="com.tuotiansudai.repository.model,com.tuotiansudai.membership.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory" />
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
@@ -75,7 +76,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="1"/>
