@@ -8,7 +8,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">标题</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control payroll-title" name="title" value="" maxlength="50"/>
+                <input type="text" class="form-control payroll-title" name="title" value="" maxlength="20"/>
             </div>
         </div>
 
