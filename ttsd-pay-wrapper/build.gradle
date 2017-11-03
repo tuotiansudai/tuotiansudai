@@ -10,6 +10,8 @@ dependencies {
             project(':ttsd-membership')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 
 war {

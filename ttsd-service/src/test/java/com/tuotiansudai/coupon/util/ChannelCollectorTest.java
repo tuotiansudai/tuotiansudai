@@ -1,21 +1,20 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.repository.model.UserGroup;
-import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,21 +26,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class ChannelCollectorTest {
 
     @Autowired
     private UserCollector channelCollector;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
+
+    @Before
+    public void setupMock(){
+
+    }
 
     @Test
     public void shouldVerifyFalseWhenCouponOrUserOrCouponUserGroupIsNull() {
@@ -57,7 +61,7 @@ public class ChannelCollectorTest {
 
         this.fakeCouponUserGroup(couponModel, couponModel.getChannels().get(0));
 
-        assertTrue(channelCollector.contains(couponModel,  this.fakeUserModel(couponModel.getChannels().get(0))));
+        assertTrue(channelCollector.contains(couponModel, this.fakeUserModel(couponModel.getChannels().get(0))));
     }
 
     @Test
@@ -67,8 +71,8 @@ public class ChannelCollectorTest {
 
         this.fakeCouponUserGroup(couponModel, couponModel.getChannels().get(0));
 
-        assertFalse(channelCollector.contains(couponModel,  this.fakeUserModel("otherChannel")));
-        assertFalse(channelCollector.contains(couponModel,  this.fakeUserModel(null)));
+        assertFalse(channelCollector.contains(couponModel, this.fakeUserModel("otherChannel")));
+        assertFalse(channelCollector.contains(couponModel, this.fakeUserModel(null)));
     }
 
     @Test
@@ -101,7 +105,7 @@ public class ChannelCollectorTest {
         return fakeUserModel;
     }
 
-    private CouponModel fakeCouponModel(String activatedBy, CouponType couponType){
+    private CouponModel fakeCouponModel(String activatedBy, CouponType couponType) {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1L);
         couponModel.setActivatedBy(activatedBy);

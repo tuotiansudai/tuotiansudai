@@ -74,8 +74,8 @@ def mk_static_zip():
 
 def mk_signin_zip():
     for i in ('1', '2'):
-        local('cp {0}/signin_service/{1}/* ./signin_service/'.format(config_path, i))
-        local('cd ./signin_service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
+        local('cp {0}/signin_service/{1}/* ./ttsd-user-rest-service/'.format(config_path, i))
+        local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 
 def build():
@@ -218,7 +218,7 @@ def deploy_ask():
 def deploy_sign_in():
     for i in ('1', '2'):
         folder_name = 'signin_{0}'.format(i)
-        upload_project(local_dir='./signin_service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+        upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
         with cd('/workspace'):
             sudo('rm -rf {0}'.format(folder_name))
             sudo('unzip {0}.zip -d {0}'.format(folder_name))

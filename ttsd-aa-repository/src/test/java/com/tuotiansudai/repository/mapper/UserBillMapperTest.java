@@ -12,6 +12,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,17 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class UserBillMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private UserBillMapper userBillMapper;
@@ -56,38 +55,37 @@ public class UserBillMapperTest {
     }
 
     @Test
-    public void shouldFindUserBillsIsSuccess(){
+    public void shouldFindUserBillsIsSuccess() {
         UserModel fakeUser = this.getFakeUser();
         userMapper.create(fakeUser);
-        getUserBillModel(UserBillOperationType.TI_BALANCE,UserBillBusinessType.ACTIVITY_REWARD,fakeUser.getLoginName());
-        getUserBillModel(UserBillOperationType.TO_FREEZE,UserBillBusinessType.ADVANCE_REPAY,fakeUser.getLoginName());
+        getUserBillModel(UserBillOperationType.TI_BALANCE, UserBillBusinessType.ACTIVITY_REWARD, fakeUser.getLoginName());
+        getUserBillModel(UserBillOperationType.TO_FREEZE, UserBillBusinessType.ADVANCE_REPAY, fakeUser.getLoginName());
 
         List<UserBillModel> userBillModelsTi = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("loginName", fakeUser.getLoginName())
-                .put("userBillOperationTypes",Lists.newArrayList(UserBillOperationType.TI_BALANCE))
+                .put("userBillOperationTypes", Lists.newArrayList(UserBillOperationType.TI_BALANCE))
                 .put("indexPage", 0)
                 .put("pageSize", 10).build()));
 
         List<UserBillModel> userBillModelsTo = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("loginName", fakeUser.getLoginName())
-                .put("userBillOperationTypes",Lists.newArrayList(UserBillOperationType.TO_FREEZE))
+                .put("userBillOperationTypes", Lists.newArrayList(UserBillOperationType.TO_FREEZE))
                 .put("indexPage", 0)
                 .put("pageSize", 10).build()));
 
-        assertEquals(1,userBillModelsTi.size());
-        assertEquals(UserBillBusinessType.ACTIVITY_REWARD,userBillModelsTi.get(0).getBusinessType());
-        assertEquals(UserBillOperationType.TI_BALANCE,userBillModelsTi.get(0).getOperationType());
+        assertEquals(1, userBillModelsTi.size());
+        assertEquals(UserBillBusinessType.ACTIVITY_REWARD, userBillModelsTi.get(0).getBusinessType());
+        assertEquals(UserBillOperationType.TI_BALANCE, userBillModelsTi.get(0).getOperationType());
 
 
-        assertEquals(1,userBillModelsTo.size());
-        assertEquals(UserBillBusinessType.ADVANCE_REPAY,userBillModelsTo.get(0).getBusinessType());
-        assertEquals(UserBillOperationType.TO_FREEZE,userBillModelsTo.get(0).getOperationType());
-
-
+        assertEquals(1, userBillModelsTo.size());
+        assertEquals(UserBillBusinessType.ADVANCE_REPAY, userBillModelsTo.get(0).getBusinessType());
+        assertEquals(UserBillOperationType.TO_FREEZE, userBillModelsTo.get(0).getOperationType());
 
 
     }
-    private void getUserBillModel(UserBillOperationType userBillOperationType,UserBillBusinessType userBillBusinessType,String loginName){
+
+    private void getUserBillModel(UserBillOperationType userBillOperationType, UserBillBusinessType userBillBusinessType, String loginName) {
         UserBillModel userBillModel = new UserBillModel();
         userBillModel.setLoginName(loginName);
         userBillModel.setAmount(1);
@@ -98,6 +96,7 @@ public class UserBillMapperTest {
 
         userBillMapper.create(userBillModel);
     }
+
     public UserModel getFakeUser() {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName("loginName");
@@ -111,7 +110,7 @@ public class UserBillMapperTest {
     }
 
     @Test
-    public void userBillListTest(){
+    public void userBillListTest() {
         Map<String, Object> params = new HashMap<>();
         List<UserBillBusinessType> billBusinessTypes = Lists.newArrayList();
         billBusinessTypes.add(UserBillBusinessType.ACTIVITY_REWARD);

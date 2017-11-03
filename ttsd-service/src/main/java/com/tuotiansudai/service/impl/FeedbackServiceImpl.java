@@ -1,8 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.repository.mapper.FeedbackMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

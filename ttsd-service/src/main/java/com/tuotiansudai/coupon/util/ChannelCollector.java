@@ -1,22 +1,20 @@
 package com.tuotiansudai.coupon.util;
 
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ChannelCollector implements UserCollector{
+public class ChannelCollector implements UserCollector {
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
@@ -30,7 +28,7 @@ public class ChannelCollector implements UserCollector{
         if (couponUserGroupModel == null) {
             return null;
         }
-        List<UserModel> userModels = userMapper.findUsersByChannel(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("channels", couponUserGroupModel.getUserGroupItems()).build()));
+        List<UserModel> userModels = userMapper.findUsersByChannel(couponUserGroupModel.getUserGroupItems());
         return Lists.transform(userModels, UserModel::getLoginName);
     }
 
@@ -46,8 +44,7 @@ public class ChannelCollector implements UserCollector{
             return false;
         }
 
-        List<UserModel> userModels = userMapper.findUsersByChannel(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("channels",
-                couponUserGroupModel.getUserGroupItems()).build()));
+        List<UserModel> userModels = userMapper.findUsersByChannel(couponUserGroupModel.getUserGroupItems());
         return Iterators.any(userModels.iterator(),
                 input -> input.getLoginName().equalsIgnoreCase(userModel.getLoginName())
                         && (userModel.getRegisterTime().after(couponModel.getStartTime())

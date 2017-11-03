@@ -21,8 +21,8 @@ import com.tuotiansudai.enums.riskestimation.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.InvestService;
@@ -259,7 +259,7 @@ public class UserController {
     @RequestMapping(value = "/user/agents", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllAgent() {
-        return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList()).build()));
+        return userMapper.findAllByRole(Role.AGENT);
     }
 
     @RequestMapping(value = "/user/channels", method = RequestMethod.GET)

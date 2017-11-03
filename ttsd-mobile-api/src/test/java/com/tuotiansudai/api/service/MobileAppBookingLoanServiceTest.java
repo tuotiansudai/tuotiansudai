@@ -4,7 +4,7 @@ package com.tuotiansudai.api.service;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
@@ -24,7 +24,7 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase {
     @Autowired
     private MobileAppBookingLoanService mobileAppBookingLoanService;
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private AccountMapper accountMapper;
 

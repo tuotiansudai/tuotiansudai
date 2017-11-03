@@ -16,6 +16,7 @@ dependencies {
             project(':ttsd-config'),
             project(':ttsd-mybatis-extension'),
             project(':ttsd-util')
+    compile project(':ttsd-rest-client')
     testCompile project(':ttsd-client')
 }
 

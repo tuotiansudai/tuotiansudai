@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;

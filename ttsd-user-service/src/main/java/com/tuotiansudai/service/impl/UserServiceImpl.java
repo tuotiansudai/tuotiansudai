@@ -4,24 +4,30 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.request.ChangePasswordRequestDto;
+import com.tuotiansudai.dto.request.RegisterRequestDto;
+import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserExperienceMapper;
 import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.rest.support.client.exceptions.RestException;
+import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,13 +38,16 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
+    private UserExperienceMapper userExperienceMapper;
+
+    @Autowired
+    private UserRestClient userRestClient;
+
+    @Autowired
     private SmsCaptchaService smsCaptchaService;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
-    private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
@@ -48,9 +57,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserOpLogService userOpLogService;
-
-    @Autowired
-    private LoginNameGenerator loginNameGenerator;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -89,7 +95,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getRealName(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        return userModel == null ? loginNameOrMobile : userModel.getUserName();
+        if (userModel == null || Strings.isNullOrEmpty(userModel.getUserName())) {
+            return loginNameOrMobile;
+        }
+        return userModel.getUserName();
     }
 
     @Override
@@ -127,46 +136,36 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean registerUserCommon(RegisterUserDto dto, UserModel referrerUserModel) {
-        UserModel userModel = new UserModel();
-        userModel.setLoginName(loginNameGenerator.generate());
-        dto.setLoginName(userModel.getLoginName());
-        userModel.setMobile(dto.getMobile());
-        userModel.setSource(dto.getSource());
-        userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
-        userModel.setChannel(dto.getChannel());
-        String salt = myShaPasswordEncoder.generateSalt();
-        userModel.setSalt(salt);
-        userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
-        userModel.setLastModifiedTime(new Date());
-        return registerUserService.register(userModel);
+        RegisterRequestDto registerDto = new RegisterRequestDto(
+                dto.getMobile(),
+                dto.getPassword(),
+                referrerUserModel != null ? referrerUserModel.getLoginName() : null,
+                dto.getChannel(),
+                dto.getSource());
+        UserModel newUserModel = registerUserService.register(registerDto);
+        if (newUserModel != null) {
+            dto.setLoginName(newUserModel.getLoginName());
+            return true;
+        }
+        return false;
     }
 
     @Transactional
     public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
-
         boolean returnValue = false;
-
-        boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
-
-        if (correct) {
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            String mobile = userModel.getMobile();
-
-            userMapper.updatePassword(loginName, myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
-            smsWrapperClient.sendPasswordChangedNotify(mobile);
-
-            returnValue = true;
+        try {
+            UserRestUserInfo userInfoResp = userRestClient.changePassword(new ChangePasswordRequestDto(loginName, originalPassword, newPassword));
+            returnValue = userInfoResp.isSuccess();
+            if (returnValue) {
+                smsWrapperClient.sendPasswordChangedNotify(userInfoResp.getUserInfo().getMobile());
+            }
+        } catch (RestException e) {
+            logger.error("change password failed", e);
         }
 
         // 发送用户行为日志 MQ
         userOpLogService.sendUserOpLogMQ(loginName, ip, platform, deviceId, UserOpType.CHANGE_PASSWORD, returnValue ? "Success" : "Fail");
         return returnValue;
-    }
-
-    @Override
-    public boolean verifyPasswordCorrect(String loginName, String password) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
     }
 
     @Override
@@ -181,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long getExperienceBalanceByLoginName(String loginName) {
-        Long experienceBalance = userMapper.findExperienceByLoginName(loginName);
+        Long experienceBalance = userExperienceMapper.findExperienceByLoginName(loginName);
         return experienceBalance != null ? experienceBalance : 0;
     }
 }

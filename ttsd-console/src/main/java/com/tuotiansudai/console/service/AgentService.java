@@ -3,9 +3,9 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.dto.AgentDto;
 import com.tuotiansudai.exception.CreateAgentException;
 import com.tuotiansudai.repository.mapper.AgentLevelRateMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AgentLevelRateModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -53,21 +53,21 @@ public class AgentService {
         agentLevelRateMapper.delete(id);
     }
 
-    private void checkAgentDto(AgentDto agentDto) throws CreateAgentException{
+    private void checkAgentDto(AgentDto agentDto) throws CreateAgentException {
         int level = Integer.parseInt(agentDto.getLevel());
         int maxLevel = referrerStaffRoleReward.size();
         String loginName = agentDto.getLoginName();
         UserModel userModel = userMapper.findByLoginName(loginName);
-        if(userModel == null){
-            throw new CreateAgentException("代理人" + loginName+"在系统中未进行维护,不能新增层级和收益比例!");
+        if (userModel == null) {
+            throw new CreateAgentException("代理人" + loginName + "在系统中未进行维护,不能新增层级和收益比例!");
         }
-        if(level > maxLevel){
-            throw new CreateAgentException("代理人" + agentDto.getLoginName() + "增加层级不能超过系统配置最高" + maxLevel+"层级");
+        if (level > maxLevel) {
+            throw new CreateAgentException("代理人" + agentDto.getLoginName() + "增加层级不能超过系统配置最高" + maxLevel + "层级");
         }
-        AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(loginName,level);
+        AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(loginName, level);
 
-        if(agentLevelRateModel != null){
-            throw new CreateAgentException("代理人"+ loginName +"的层级" + level +"已经进行了配置!");
+        if (agentLevelRateModel != null) {
+            throw new CreateAgentException("代理人" + loginName + "的层级" + level + "已经进行了配置!");
         }
 
     }

@@ -33,8 +33,6 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId);
 
-    boolean verifyPasswordCorrect(String loginName, String password);
-
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);

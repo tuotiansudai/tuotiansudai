@@ -28,11 +28,8 @@ public class SignInClient {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${signIn.host}")
-    private String signInHost;
-
-    @Value("${signIn.port}")
-    private String signInPort;
+    @Value("${user.rest.server}")
+    private String signInService;
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -68,7 +65,7 @@ public class SignInClient {
                 .add("device_id", deviceId);
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/login/", signInHost, signInPort))
+                .url(MessageFormat.format("{0}/login/", signInService))
                 .post(formEncodingBuilder.build());
 
         try {
@@ -101,7 +98,7 @@ public class SignInClient {
         RequestBody requestBody = formEncodingBuilder.build();
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/login/nopassword/", signInHost, signInPort))
+                .url(MessageFormat.format("{0}/login/nopassword/", signInService))
                 .post(requestBody);
 
         try {
@@ -119,7 +116,7 @@ public class SignInClient {
         }
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/logout/{2}", signInHost, signInPort, token))
+                .url(MessageFormat.format("{0}/logout/{1}", signInService, token))
                 .post(RequestBody.create(null, new byte[0]));
 
         try {
@@ -141,7 +138,7 @@ public class SignInClient {
 
         RequestBody requestBody = formEncodingBuilder.build();
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/refresh/{2}", signInHost, signInPort, token))
+                .url(MessageFormat.format("{0}/refresh/{1}", signInService, token))
                 .post(requestBody);
         try {
             return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
@@ -158,7 +155,7 @@ public class SignInClient {
         }
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/session/{2}?source={3}", signInHost, signInPort, token, source))
+                .url(MessageFormat.format("{0}/session/{1}?source={2}", signInService, token, source))
                 .get();
         try {
             return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
@@ -171,11 +168,11 @@ public class SignInClient {
 
     public void unlockUser(String loginName, String mobile) {
         Request.Builder loginNameRequest = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/user/{2}/active/", signInHost, signInPort, loginName))
+                .url(MessageFormat.format("{0}/user/{1}/active/", signInService, loginName))
                 .post(RequestBody.create(null, new byte[0]));
 
         Request.Builder mobileRequest = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/user/{2}/active/", signInHost, signInPort, mobile))
+                .url(MessageFormat.format("{0}/user/{1}/active/", signInService, mobile))
                 .post(RequestBody.create(null, new byte[0]));
         try {
             this.execute(loginNameRequest);

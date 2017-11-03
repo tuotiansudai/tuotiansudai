@@ -11,8 +11,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.MoneyTreeLeftCountResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.MoneyTreeResultListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppMoneyTreeServiceImpl;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -75,9 +75,9 @@ public class MobileAppMoneyTreeServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGeneratePrizeListTop10() {
-        UserLotteryTop10PrizeView userLotteryTop10PrizeView = this.getFakeUserLotteryTop10PrizeView("testDrawMoneyTree1","100元");
-        UserLotteryTop10PrizeView userLotteryTop10PrizeView2 = this.getFakeUserLotteryTop10PrizeView("testDrawMoneyTree2","200元");
-        UserLotteryTop10PrizeView userLotteryTop10PrizeView3 = this.getFakeUserLotteryTop10PrizeView("testDrawMoneyTree3","300元");
+        UserLotteryTop10PrizeView userLotteryTop10PrizeView = this.getFakeUserLotteryTop10PrizeView("testDrawMoneyTree1", "100元");
+        UserLotteryTop10PrizeView userLotteryTop10PrizeView2 = this.getFakeUserLotteryTop10PrizeView("testDrawMoneyTree2", "200元");
+        UserLotteryTop10PrizeView userLotteryTop10PrizeView3 = this.getFakeUserLotteryTop10PrizeView("testDrawMoneyTree3", "300元");
 
         List<UserLotteryTop10PrizeView> UserLotteryTop10PrizeViewList = Lists.newArrayList(userLotteryTop10PrizeView, userLotteryTop10PrizeView2, userLotteryTop10PrizeView3);
         when(moneyTreePrizeService.findDrawLotteryPrizeRecordTop10()).thenReturn(UserLotteryTop10PrizeViewList);

@@ -2,14 +2,13 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.MyUser;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,10 +45,7 @@ public class LoanerControllerTest extends BaseControllerTest {
     private FilterChainProxy springSecurityFilter;
 
     @Autowired
-    private MyShaPasswordEncoder myShaPasswordEncoder;
-
-    @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -70,10 +66,6 @@ public class LoanerControllerTest extends BaseControllerTest {
     @Test
     public void shouldGetCompletedLoanerLoanData() throws Exception {
         UserModel fakeUser = this.getFakeUser();
-        String loginName = fakeUser.getLoginName();
-        String rawPassword = fakeUser.getPassword();
-        String encodePassword = myShaPasswordEncoder.encodePassword(rawPassword, fakeUser.getSalt());
-        fakeUser.setPassword(encodePassword);
         userMapper.create(fakeUser);
         userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.USER),
                 new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
@@ -158,10 +150,6 @@ public class LoanerControllerTest extends BaseControllerTest {
     @Test
     public void shouldGetRepayingLoanerLoanData() throws Exception {
         UserModel fakeUser = this.getFakeUser();
-        String loginName = fakeUser.getLoginName();
-        String rawPassword = fakeUser.getPassword();
-        String encodePassword = myShaPasswordEncoder.encodePassword(rawPassword, fakeUser.getSalt());
-        fakeUser.setPassword(encodePassword);
         userMapper.create(fakeUser);
         userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.USER),
                 new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
@@ -221,10 +209,6 @@ public class LoanerControllerTest extends BaseControllerTest {
     @Test
     public void shouldGetCanceledLoanerLoanData() throws Exception {
         UserModel fakeUser = this.getFakeUser();
-        String loginName = fakeUser.getLoginName();
-        String rawPassword = fakeUser.getPassword();
-        String encodePassword = myShaPasswordEncoder.encodePassword(rawPassword, fakeUser.getSalt());
-        fakeUser.setPassword(encodePassword);
         userMapper.create(fakeUser);
         userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.USER),
                 new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
