@@ -27,9 +27,8 @@ public class LoanOutMessageConsumer implements MessageConsumer {
     @Override
     public void consume(String message) {
         logger.info("trigger auto loan out after raising complete job, prepare do job");
-        long loanId;
         try {
-            loanId = Long.parseLong(message);
+            long loanId = Long.parseLong(message);
             logger.info("trigger auto loan out after raising complete job, loanId : " + String.valueOf(loanId));
 
             BaseDto<PayDataDto> dto = payWrapperClient.autoLoanOutAfterRaisingComplete(loanId);
@@ -39,7 +38,6 @@ public class LoanOutMessageConsumer implements MessageConsumer {
 
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
-            return;
         }
 
     }

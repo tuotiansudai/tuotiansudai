@@ -47,4 +47,8 @@ public class PtpMerQueryResponseModel extends BaseSyncResponseModel {
                 .put("账户状态", Strings.isNullOrEmpty(HUMAN_READABLE_ACCOUNT_STATE.get(this.accountState)) ? "" : HUMAN_READABLE_ACCOUNT_STATE.get(this.accountState))
                 .build());
     }
+
+    public String getBalance() {
+        return balance;
+    }
 }
