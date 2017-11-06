@@ -28,7 +28,7 @@
 
         <div class="form-group">
 
-            <label for="control-label">发放总金额(分):</label>
+            <label for="control-label">发放总金额:</label>
             <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin"
                    value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
                    onkeyup="this.value=this.value.replace(/\D/g,'')"
@@ -79,9 +79,11 @@
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
     </form>
 
+    <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR')">
     <div class="form-group">
         <a href="/finance-manage/payroll-manage/create" class="btn btn-sm btn-primary">创建</a>
     </div>
+    </@security.authorize>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -157,7 +159,7 @@
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="18">Empty</td>
+                    <td colspan="18">未找到相关数据</td>
                 </tr>
                 </#list>
 

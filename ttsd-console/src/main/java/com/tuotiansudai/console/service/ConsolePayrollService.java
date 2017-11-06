@@ -288,7 +288,8 @@ public class ConsolePayrollService {
     public BasePaginationDataDto<PayrollModel> list(PayrollQueryDto payrollQueryDto) {
         List<PayrollModel> payrollModels = payrollMapper.findPayroll(payrollQueryDto.getCreateStartTime(), payrollQueryDto.getCreateEndTime(),
                 payrollQueryDto.getSendStartTime(), payrollQueryDto.getSendEndTime(),
-                payrollQueryDto.getAmountMin(), payrollQueryDto.getAmountMax(),
+                payrollQueryDto.getAmountMin() == null ? null : payrollQueryDto.getAmountMin() * 100,
+                payrollQueryDto.getAmountMax() == null ? null : payrollQueryDto.getAmountMax() * 100,
                 payrollQueryDto.getPayrollStatusType(), payrollQueryDto.getTitle());
         int count = payrollModels.size();
         int index = payrollQueryDto.getIndex() == null ? 1 : payrollQueryDto.getIndex();

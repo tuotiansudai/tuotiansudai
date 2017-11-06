@@ -137,6 +137,7 @@ public class PayrollController {
         PayrollModel payrollModel = consolePayrollService.findById(id);
         if (payrollModel != null) {
             modelAndView.addObject("payrollStatus", payrollModel.getStatus());
+            modelAndView.addObject("payrollTitle", payrollModel.getTitle());
         }
         return modelAndView;
     }

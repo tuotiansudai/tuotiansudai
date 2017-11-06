@@ -32,21 +32,25 @@
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" class="form-control payroll-totalAmount" name="totalAmount" value=""/>
-        <input type="hidden" class="form-control payroll-headCount" name="headCount" value="" />
-        <input type="hidden" class="form-control payroll-uuid" name="uuid" value="" />
+        <input type="hidden" class="form-control payroll-headCount" name="headCount" value=""/>
+        <input type="hidden" class="form-control payroll-uuid" name="uuid" value=""/>
 
         <div class="form-group ">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-4 form-error">
                 <#if errorMessage?has_content>
-                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
+                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <span class="txt">创建失败：${errorMessage!}</span></div>
                 </#if>
             </div>
         </div>
         <div class="form-group">
-            <label  class="col-sm-2 control-label"></label>
+            <label class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
-                <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR')">
                     <button type="button" class="btn btn-sm btn-primary" id="btnSave">提 交</button>
                 </@security.authorize>
             </div>

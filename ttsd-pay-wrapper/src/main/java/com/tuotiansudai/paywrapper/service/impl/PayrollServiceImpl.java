@@ -202,6 +202,8 @@ public class PayrollServiceImpl implements PayrollService {
         boolean allSuccess = payrollDetailModels.stream().allMatch(p -> p.getStatus() == PayrollPayStatus.SUCCESS);
         if (allSuccess) {
             payrollMapper.updateStatus(payrollId, PayrollStatusType.SUCCESS);
+        } else {
+            payrollMapper.updateStatus(payrollId, PayrollStatusType.FAIL);
         }
     }
 
