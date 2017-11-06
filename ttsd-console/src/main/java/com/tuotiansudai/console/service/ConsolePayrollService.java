@@ -150,6 +150,7 @@ public class ConsolePayrollService {
         payrollModel.setHeadCount(payrollDataDto.getHeadCount());
         payrollModel.setUpdatedBy(loginName);
         payrollModel.setUpdatedTime(new Date());
+        payrollModel.setStatus(PayrollStatusType.PENDING);
         payrollMapper.update(payrollModel);
 
         if (!Strings.isNullOrEmpty(payrollDataDto.getUuid())) {
