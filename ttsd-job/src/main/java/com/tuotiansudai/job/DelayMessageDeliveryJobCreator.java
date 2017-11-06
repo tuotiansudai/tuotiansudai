@@ -17,6 +17,8 @@ public class DelayMessageDeliveryJobCreator {
 
     private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 60 * 10;
 
+    private final static int PAYROLL_FAIL_WAIT_SECONDS = 30 * 60;
+
     public static void createAutoLoanOutDelayJob(JobManager jobManager, long loanId) {
         String messageBody = String.valueOf(loanId);
         create(jobManager, AUTO_LOAN_OUT_DELAY_SECONDS, MessageQueue.LoanOut, messageBody, String.valueOf(loanId), true);

@@ -2,11 +2,13 @@ package com.tuotiansudai.enums;
 
 import java.io.Serializable;
 
-public enum OperationType implements Serializable{
+public enum OperationType implements Serializable {
 
     PROJECT("标的", "创建标的"),
 
     COUPON("优惠券", "创建优惠券"),
+
+    PAYROLL("代发工资", "代发工资"),
 
     USER("用户", "修改用户"),
 
