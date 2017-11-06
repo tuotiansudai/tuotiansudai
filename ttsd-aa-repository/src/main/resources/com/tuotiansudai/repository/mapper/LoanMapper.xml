@@ -480,8 +480,9 @@
     </select>
 
     <select id="findHomePreferableLoans" resultMap="loanResultMap">
-        select * from loan
-        where loan.status not in ('WAITING_VERIFY', 'CANCEL')
+        select * from loan left join loan_details on loan.id = loan_details.loan_id
+        where (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or loan.product_type = 'EXPERIENCE')
+        and loan.status not in ('WAITING_VERIFY', 'CANCEL')
         and loan.activity_type = 'NORMAL'
         and pledge_type in ('HOUSE', 'VEHICLE')
         order by
