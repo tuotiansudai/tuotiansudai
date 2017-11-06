@@ -10,6 +10,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control payroll-title" name="title" value="" maxlength="20"/>
             </div>
+            <div class="col-sm-4"><span style="color:red">若上传文件失败，须刷新页面后才能再次上传文件!</span></div>
         </div>
 
         <div class="form-group">
@@ -46,7 +47,7 @@
             <label  class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
                 <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                    <button type="button" class="btn btn-sm btn-primary" id="btnSave" disabled>提 交</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnSave">提 交</button>
                 </@security.authorize>
             </div>
         </div>

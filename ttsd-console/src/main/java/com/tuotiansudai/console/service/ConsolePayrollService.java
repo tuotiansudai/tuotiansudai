@@ -207,7 +207,7 @@ public class ConsolePayrollService {
                 listUserAllMobile.add(arrayData[1].trim());
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            return new PayrollDataDto(false, "上传失败!请检查文件的列数");
+            return new PayrollDataDto(false, "上传失败！文件中部分数据为空");
         } catch (IOException e) {
             return new PayrollDataDto(false, "上传失败!文件内容读取错误");
         } finally {

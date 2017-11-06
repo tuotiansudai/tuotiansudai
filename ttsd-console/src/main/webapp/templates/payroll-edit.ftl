@@ -10,6 +10,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control payroll-title" name="title" value="${payrollModel.title!}" maxlength="20"/>
             </div>
+            <div class="col-sm-4"><span style="color:red">若上传文件失败，须刷新页面后才能再次上传文件!</span></div>
         </div>
 
         <div class="form-group">
