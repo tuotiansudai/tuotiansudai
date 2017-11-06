@@ -46,7 +46,7 @@
             <label  class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
                 <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                    <button type="button" class="btn btn-sm btn-primary" id="btnSave">提 交</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnSave" disabled>提 交</button>
                 </@security.authorize>
             </div>
         </div>

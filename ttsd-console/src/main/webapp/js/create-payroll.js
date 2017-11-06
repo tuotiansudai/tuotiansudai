@@ -44,7 +44,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
                         var table = "<table class='table table-bordered'><tr><td>用户姓名</td><td>用户手机号</td><td>发放金额（元）</td></tr>";
                         var payrolldetailData = data.payrollDetailModelList;
                         $.each(payrolldetailData, function (i, n) {
-                            table += "<tr><td>" + n.userName + "</td><td>" + n.mobile + "</td><td>" + (n.amount/100).toFixed(2) + "</td></tr>";
+                            table += "<tr><td>"+i+"</td><td>" + n.userName + "</td><td>" + n.mobile + "</td><td>" + (n.amount/100).toFixed(2) + "</td></tr>";
                         });
                         table += "</table>"
                         $('#payroll-details').append(table);
@@ -56,6 +56,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
                             btn: ['确定']
 
                         });
+                        $('.btn-primary').attr('disabled', 'disabled');
                        return false;
                     }
 
@@ -88,6 +89,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'bootstrap', 'jquery-ui','Validform']
                 }
                 if($('.payroll-headCount',curform).val() == ''){
                     showErrorMessage('请上传正确的发放名单', $('#file-in', curform));
+
                     return false;
                 }
                 $errorDom.html('');
