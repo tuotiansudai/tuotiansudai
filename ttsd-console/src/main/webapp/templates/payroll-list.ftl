@@ -79,9 +79,11 @@
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
     </form>
 
+    <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR')">
     <div class="form-group">
         <a href="/finance-manage/payroll-manage/create" class="btn btn-sm btn-primary">创建</a>
     </div>
+    </@security.authorize>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">

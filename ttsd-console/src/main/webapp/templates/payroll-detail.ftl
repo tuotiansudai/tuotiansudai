@@ -4,6 +4,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <h4>标题:${payrollTitle!}</h4><br>
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead>
