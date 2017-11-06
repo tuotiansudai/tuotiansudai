@@ -28,7 +28,7 @@
 
         <div class="form-group">
 
-            <label for="control-label">发放总金额(分):</label>
+            <label for="control-label">发放总金额:</label>
             <input type="text" class="form-control jq-balance-min" id="amountMin" name="amountMin"
                    value="${(payrollQueryDto.amountMin?string("0"))!}" onblur="this.value=this.value.replace(/\D/g,'')"
                    onkeyup="this.value=this.value.replace(/\D/g,'')"
@@ -159,7 +159,7 @@
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="18">Empty</td>
+                    <td colspan="18">未找到相关数据</td>
                 </tr>
                 </#list>
 
