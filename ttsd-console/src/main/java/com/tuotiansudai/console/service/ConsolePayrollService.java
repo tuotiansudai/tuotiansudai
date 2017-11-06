@@ -80,7 +80,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName,String ipAddress) {
+    public BaseDto<BaseDataDto> finalAudit(long payRollId, String loginName, String ipAddress) {
         if (!isSufficientBalance(payRollId)) {
             logger.info("system balance is not sufficient");
             return new BaseDto<>(new BaseDataDto(false, "系统账户余额不足，请充值后再次审核!"));
@@ -99,7 +99,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public void reject(long payRollId, String loginName,String ipAddress) {
+    public void reject(long payRollId, String loginName, String ipAddress) {
         PayrollModel payrollModel = payrollMapper.findById(payRollId);
         if (payrollModel == null
                 || !Sets.newHashSet(PayrollStatusType.PENDING, PayrollStatusType.AUDITED).contains(payrollModel.getStatus())) {
@@ -134,7 +134,7 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public void createPayroll(String loginName, PayrollDataDto payrollDataDto,String ipAddress) {
+    public void createPayroll(String loginName, PayrollDataDto payrollDataDto, String ipAddress) {
         PayrollModel payrollModel = new PayrollModel(payrollDataDto.getTitle(), payrollDataDto.getTotalAmount(), payrollDataDto.getHeadCount());
         payrollModel.setCreatedBy(loginName);
         payrollMapper.create(payrollModel);
@@ -143,14 +143,14 @@ public class ConsolePayrollService {
     }
 
     @Transactional
-    public void updatePayroll(String loginName, PayrollDataDto payrollDataDto,String ipAddress) {
+    public void updatePayroll(String loginName, PayrollDataDto payrollDataDto, String ipAddress) {
         PayrollModel payrollModel = payrollMapper.findById(payrollDataDto.getId());
         payrollModel.setTitle(payrollDataDto.getTitle());
         payrollModel.setTotalAmount(payrollDataDto.getTotalAmount());
         payrollModel.setHeadCount(payrollDataDto.getHeadCount());
         payrollModel.setUpdatedBy(loginName);
         payrollModel.setUpdatedTime(new Date());
-        payrollModel.setStatus(PayrollStatusType.PENDING);
+        payrollModel.setStatus(payrollModel.getStatus().equals(PayrollStatusType.REJECTED) ? PayrollStatusType.PENDING : payrollModel.getStatus());
         payrollMapper.update(payrollModel);
 
         if (!Strings.isNullOrEmpty(payrollDataDto.getUuid())) {
@@ -191,7 +191,7 @@ public class ConsolePayrollService {
                 if (accountModel == null) {
                     listUserNotAccount.add(arrayData[1].trim());
                     continue;
-                }else{
+                } else {
                     if (!userModel.getUserName().equals(arrayData[0].trim())) {
                         listUserAndUserNameNotMatch.add(arrayData[1].trim());
                         continue;
@@ -235,7 +235,7 @@ public class ConsolePayrollService {
             payrollDataDto.setMessage(msg);
         } else {
             Set<String> set = new HashSet<>(listUserAllMobile);
-            if(listUserAllMobile.size() == set.size()){
+            if (listUserAllMobile.size() == set.size()) {
                 payrollDataDto.setStatus(true);
                 payrollDataDto.setTotalAmount(totalAmount);
                 payrollDataDto.setHeadCount(headCount);
@@ -244,8 +244,7 @@ public class ConsolePayrollService {
                 payrollDataDto.setUuid(uuid);
                 redisWrapperClient.setex(MessageFormat.format(redisKey, uuid), LEFT_SECONDS, convertJavaListToString(payrollDetailModelList));
                 payrollDataDto.setMessage("导入发放名单成功!");
-            }
-            else{
+            } else {
                 payrollDataDto.setStatus(false);
                 payrollDataDto.setMessage("手机号有重复，请仔细检查！");
             }
@@ -307,7 +306,7 @@ public class ConsolePayrollService {
 
     public void updateRemark(long id, String remark, String loginName) {
         PayrollModel payrollModel = payrollMapper.findById(id);
-        payrollModel.setRemark(StringUtils.isEmpty(payrollModel.getRemark())  ? remark : payrollModel.getRemark() + "|" + remark);
+        payrollModel.setRemark(StringUtils.isEmpty(payrollModel.getRemark()) ? remark : payrollModel.getRemark() + "|" + remark);
         payrollModel.setUpdatedBy(loginName);
         payrollModel.setUpdatedTime(new Date());
         payrollMapper.update(payrollModel);
