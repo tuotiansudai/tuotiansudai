@@ -605,6 +605,8 @@
           </if>
           where
             i.status='SUCCESS'
+            and i.transfer_invest_id is NULL
+            and exists(select id from loan l where i.loan_id = l.id and l.id != 1 and l.product_type !='EXPERIENCE')
             and i.created_time between #{startTime} and #{endTime}
             <if test="province != null and province !=''">
             and u.province = #{province}
@@ -629,6 +631,8 @@
         </if>
         where
         i.status='SUCCESS'
+        and i.transfer_invest_id is NULL
+        and exists(select id from loan l where i.loan_id = l.id and l.id !=1 and l.product_type !='EXPERIENCE')
         and i.created_time between #{startTime} and #{endTime}
         <if test="province != null and province !=''">
             and u.province = #{province}
