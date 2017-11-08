@@ -61,7 +61,7 @@ public class IphoneXActivitySendCashScheduler {
         }
 
         Map<String, Long> map = new HashMap<>();
-        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime);
+        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime, null);
 
         for (IphoneXActivityView iphoneXActivityView : list) {
             map.put(iphoneXActivityView.getLoginName(),

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/activity/year-end-awards")
@@ -42,17 +43,21 @@ public class YearEndAwardsActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView yearEndAwards() {
         ModelAndView modelAndView = new ModelAndView("/year-end-awards", "responsive", false);
-
-        List<NewmanTyrantView> celebrationHeroRankingViews = yearEndAwardsActivityService.obtainRank(new Date());
-        int investRanking = CollectionUtils.isNotEmpty(celebrationHeroRankingViews) ?
-                Iterators.indexOf(celebrationHeroRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(LoginUserInfo.getLoginName())) + 1 : 0;
+        String loginName = LoginUserInfo.getLoginName();
+        List<NewmanTyrantView> yearEndAwardsRankingViews = yearEndAwardsActivityService.obtainRank(new Date());
+        int investRanking = CollectionUtils.isNotEmpty(yearEndAwardsRankingViews) ?
+                Iterators.indexOf(yearEndAwardsRankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
 
         modelAndView.addObject("prizeDto", yearEndAwardsActivityService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         modelAndView.addObject("investRanking", investRanking > 10 ? 0 : investRanking);
-        modelAndView.addObject("investAmount", investRanking > 0 ? celebrationHeroRankingViews.get(investRanking - 1).getSumAmount() : 0);
+        modelAndView.addObject("investAmount", investRanking > 0 ? yearEndAwardsRankingViews.get(investRanking - 1).getSumAmount() : 0);
         modelAndView.addObject("activityStartTime", activityYearEndAwardsStartTime);
         modelAndView.addObject("activityEndTime", activityYearEndAwardsRankTime);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
+
+        Map<String, String> map = yearEndAwardsActivityService.annualizedAmountAndRewards(loginName);
+        modelAndView.addObject("sumAnnualizedAmount", map.get("sumAnnualizedAmount"));
+        modelAndView.addObject("rewards", map.get("rewards"));
         return modelAndView;
     }
 

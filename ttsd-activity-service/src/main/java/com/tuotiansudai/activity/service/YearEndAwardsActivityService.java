@@ -1,20 +1,26 @@
 package com.tuotiansudai.activity.service;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.activity.repository.mapper.InvestCelebrationHeroRankingMapper;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class YearEndAwardsActivityService {
@@ -37,16 +43,23 @@ public class YearEndAwardsActivityService {
     @Autowired
     private InvestCelebrationHeroRankingMapper investCelebrationHeroRankingMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+
+    private final List<AnnualizedAmount> annualizedAmounts = Lists.newArrayList(
+            new AnnualizedAmount(1000000000l, 1200000000l, 0.002),
+            new AnnualizedAmount(1200000000l, 1800000000l, 0.004),
+            new AnnualizedAmount(1800000000l, 2500000000l, 0.006),
+            new AnnualizedAmount(2500000000l, 3000000000l, 0.008),
+            new AnnualizedAmount(3000000000l, Long.MAX_VALUE, 0.01));
+
     public List<NewmanTyrantView> obtainRank(Date tradingTime) {
         if (tradingTime == null) {
             logger.info("tradingTime is null");
             return null;
         }
-
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        List<NewmanTyrantView> celebrationHeroRankingViews = investCelebrationHeroRankingMapper.findCelebrationHeroRankingByTradingTime(tradingTime, activityYearEndAwardsStartTime, activityYearEndAwardsRankTime);
-        return celebrationHeroRankingViews;
-
+        return investCelebrationHeroRankingMapper.findCelebrationHeroRankingByTradingTime(tradingTime, activityYearEndAwardsStartTime, activityYearEndAwardsRankTime);
     }
 
     public String encryptMobileForWeb(String loginName, String encryptLoginName, String encryptMobile) {
@@ -68,5 +81,51 @@ public class YearEndAwardsActivityService {
             }
         }
         return null;
+    }
+
+    public Map<String, String> annualizedAmountAndRewards(String loginName){
+        Map<String, Long> amountMaps = new HashMap<>();
+        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(
+                DateTime.parse(activityYearEndAwardsStartTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
+                DateTime.parse(activityYearEndAwardsEndTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), "岁末专享");
+        for (IphoneXActivityView iphoneXActivityView : list) {
+            long userAnnualizedAmount = iphoneXActivityView.getSumAmount() * iphoneXActivityView.getProductType().getDuration() / 360;
+            amountMaps.put(iphoneXActivityView.getLoginName(), amountMaps.containsKey(iphoneXActivityView.getLoginName()) ? amountMaps.get(iphoneXActivityView.getLoginName()) + userAnnualizedAmount : userAnnualizedAmount);
+        }
+        long sumAnnualizedAmount = amountMaps.values().stream().mapToLong(Long::longValue).sum();
+
+        Optional<AnnualizedAmount> reward = annualizedAmounts.stream().filter(annualizedAmount -> annualizedAmount.getMinAmount() <= sumAnnualizedAmount && sumAnnualizedAmount < annualizedAmount.getMaxAmount()).findAny();
+        long userRewards = amountMaps.containsKey(loginName) ? new Double(amountMaps.get(loginName) * (reward.isPresent() ? reward.get().getRatio() : 0)).longValue() : 0;
+
+        return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("sumAnnualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))
+                .put("rewards", AmountConverter.convertCentToString(userRewards)).build());
+    }
+
+    class AnnualizedAmount{
+        private long minAmount;
+        private long maxAmount;
+        private double ratio;
+
+        public AnnualizedAmount() {
+        }
+
+        public AnnualizedAmount(long minAmount, long maxAmount, double ratio) {
+            this.minAmount = minAmount;
+            this.maxAmount = maxAmount;
+            this.ratio = ratio;
+        }
+
+        public long getMinAmount() {
+            return minAmount;
+        }
+
+        public long getMaxAmount() {
+            return maxAmount;
+        }
+
+        public double getRatio() {
+            return ratio;
+        }
     }
 }

@@ -321,7 +321,8 @@ public interface InvestMapper {
                                          @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
 
     List<IphoneXActivityView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
-                                                                 @Param(value = "endTime") Date endTime);
+                                                                  @Param(value = "endTime") Date endTime,
+                                                                  @Param(value = "activityDesc") String activityDesc);
 
     List<InvestModel> findSuccessDoubleElevenActivityByTime(@Param(value = "loanId") Long loanId,
                                                             @Param(value="startTime") Date startTime,

@@ -73,7 +73,7 @@ public class IphoneXActivitySendCashSchedulerTest {
 
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any())).thenReturn(list);
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), null)).thenReturn(list);
 
         BaseDto<PayDataDto> baseDto = new BaseDto();
         baseDto.setSuccess(true);
@@ -111,7 +111,7 @@ public class IphoneXActivitySendCashSchedulerTest {
 
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any())).thenReturn(list);
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), null)).thenReturn(list);
 
         BaseDto<PayDataDto> baseDto = new BaseDto();
         baseDto.setSuccess(true);

@@ -28,16 +28,16 @@ public class InvestSuccessYearEndAwardsMessageConsumer implements MessageConsume
     @Autowired
     private InvestCelebrationHeroRankingMapper investCelebrationHeroRankingMapper;
 
-    @Override
-    public MessageQueue queue() {
-        return MessageQueue.InvestSuccess_YearEndAwards;
-    }
-
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.year.end.awards.startTime}\")}")
     private Date activityYearEndAwardsStartTime;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.year.end.awards.rankTime}\")}")
     private Date activityYearEndAwardsRankTime;
+
+    @Override
+    public MessageQueue queue() {
+        return MessageQueue.InvestSuccess_YearEndAwards;
+    }
 
     @Transactional
     @Override
