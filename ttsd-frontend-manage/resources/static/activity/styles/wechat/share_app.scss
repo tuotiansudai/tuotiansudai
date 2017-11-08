@@ -9,8 +9,32 @@ input[type="reset"]{
 }
 textarea {
 	-webkit-appearance: none;
-} 
+}
 
+form .error.noAgree {
+	display: none;
+}
+.recommender_item {
+	position: relative;
+}
+.recommender {
+	font-size: 16px;
+	position: absolute;
+	left: 3%;
+	top: 22%;
+}
+#recommender {
+	padding-left: 23%;
+}
+#register_btn {
+	position: absolute;
+	right: 3%;
+	top: 15px;
+	color: #fff;
+	font-size: 14px;
+	width: 50px;
+	text-align: center;
+}
 
 @mixin mobilehide () {
 	@media (max-width: $width) {
