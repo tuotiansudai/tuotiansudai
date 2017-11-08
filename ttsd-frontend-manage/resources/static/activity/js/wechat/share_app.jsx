@@ -9,7 +9,7 @@ let $shareAppContainer = $('#shareAppContainer'),
 
 let validator = new ValidatorObj.ValidatorForm();
 let referrerPerson = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')["referrerMobile"];
-$('#recommender').val(referrerPerson);
+$('#recommender').html(referrerPerson);
 
 //验证码是否正确
 validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {

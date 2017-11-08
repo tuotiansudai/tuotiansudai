@@ -14,26 +14,26 @@ textarea {
 form .error.noAgree {
 	display: none;
 }
-.recommender_item {
-	position: relative;
-}
 .recommender {
-	font-size: 16px;
-	position: absolute;
-	left: 3%;
-	top: 22%;
+	color: #fff;
+	font-size: 13px;
 }
 #recommender {
-	padding-left: 23%;
+	display: inline-block;
+	margin-bottom: 15px;
 }
 #register_btn {
+	font-size: 13px;
 	position: absolute;
 	right: 3%;
-	top: 15px;
+	top: 10px;
 	color: #fff;
-	font-size: 14px;
-	width: 50px;
+	width: 57px;
+	height: 30px;
+	line-height: 30px;
+	background: #2d2544;
 	text-align: center;
+	border-radius: 5px;
 }
 
 @mixin mobilehide () {
@@ -173,7 +173,7 @@ form .error.noAgree {
 						border:none;
 						color:#fff;
 						font-size:20px;
-						line-height:50px;
+						height:54px;
 						background:#ff635a;
 						box-sizing: border-box;
 					}
