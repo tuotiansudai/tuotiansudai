@@ -14,7 +14,7 @@
 			<div class="item-form">
 				<form action="#" method="post" id="registerForm">
 					<div class="item-int">
-						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
+						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile" maxlength="11">
 					</div>
 					<div class="item-int">
 						<input type="password" validate class="item-text" name="password" placeholder="请输入您的密码" id="password">
