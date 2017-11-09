@@ -10,7 +10,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -61,12 +62,9 @@ public class YearEndAwardsActivitySendCashScheduler {
             return;
         }
 
-        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(activityStartTime, activityEndTime, "岁末专享");
-        Map<String, Long> amountMaps = new HashMap<>();
-        for (IphoneXActivityView iphoneXActivityView : list) {
-            long userAnnualizedAmount = iphoneXActivityView.getSumAmount() * iphoneXActivityView.getProductType().getDuration() / 360;
-            amountMaps.put(iphoneXActivityView.getLoginName(), amountMaps.containsKey(iphoneXActivityView.getLoginName()) ? amountMaps.get(iphoneXActivityView.getLoginName()) + userAnnualizedAmount : userAnnualizedAmount);
-        }
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityStartTime, activityEndTime, "岁末专享");
+        Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
+
         if (amountMaps.isEmpty()){
             logger.info("[year end awards activity] send cash end, amountMaps is null");
             return;
@@ -74,7 +72,7 @@ public class YearEndAwardsActivitySendCashScheduler {
 
         long sumAnnualizedAmount = amountMaps.values().stream().mapToLong(Long::longValue).sum();
         Optional<AnnualizedAmount> optional = annualizedAmounts.stream().filter(annualizedAmount -> annualizedAmount.getMinAmount() <= sumAnnualizedAmount && sumAnnualizedAmount < annualizedAmount.getMaxAmount()).findAny();
-        double ratio = optional.isPresent() ? optional.get().getRatio() : 0;
+        double ratio = optional.map(o->o.getRatio()).orElse(0D);
         if (!optional.isPresent()) {
             logger.info("[year end awards activity] send cash end, annualizedAmount less 1000000000");
             return;

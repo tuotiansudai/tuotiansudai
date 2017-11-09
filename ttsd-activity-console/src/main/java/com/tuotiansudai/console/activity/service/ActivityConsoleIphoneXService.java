@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.IphoneXActivityDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,40 +49,40 @@ public class ActivityConsoleIphoneXService {
 
     public List<IphoneXActivityDto> getIphoneXList() {
         Map<String, IphoneXActivityDto> map = new HashMap<>();
-        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime, null);
-        for (IphoneXActivityView iphoneXActivityView : list) {
-            IphoneXActivityDto iphoneXActivityDto = map.get(iphoneXActivityView.getLoginName());
-            map.put(iphoneXActivityView.getLoginName(),
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime, null);
+        for (InvestProductTypeView investProductTypeView : list) {
+            IphoneXActivityDto iphoneXActivityDto = map.get(investProductTypeView.getLoginName());
+            map.put(investProductTypeView.getLoginName(),
                     iphoneXActivityDto == null ?
                             new IphoneXActivityDto(
-                                    iphoneXActivityView.getLoginName(),
-                                    iphoneXActivityView.getUserName(),
-                                    iphoneXActivityView.getMobile(),
-                                    iphoneXActivityView.getSumAmount(),
-                                    getAnnualizedAmount(iphoneXActivityView),
-                                    getSumCashReward(getAnnualizedAmount(iphoneXActivityView))) :
+                                    investProductTypeView.getLoginName(),
+                                    investProductTypeView.getUserName(),
+                                    investProductTypeView.getMobile(),
+                                    investProductTypeView.getSumAmount(),
+                                    getAnnualizedAmount(investProductTypeView),
+                                    getSumCashReward(getAnnualizedAmount(investProductTypeView))) :
                             new IphoneXActivityDto(
                                     iphoneXActivityDto.getLoginName(),
                                     iphoneXActivityDto.getUserName(),
                                     iphoneXActivityDto.getMobile(),
-                                    AmountConverter.convertStringToCent(iphoneXActivityDto.getSumInvestAmount()) + iphoneXActivityView.getSumAmount(),
-                                    AmountConverter.convertStringToCent(iphoneXActivityDto.getSumAnnualizedAmount()) + getAnnualizedAmount(iphoneXActivityView),
-                                    getSumCashReward(AmountConverter.convertStringToCent(iphoneXActivityDto.getSumAnnualizedAmount()) + getAnnualizedAmount(iphoneXActivityView))));
+                                    AmountConverter.convertStringToCent(iphoneXActivityDto.getSumInvestAmount()) + investProductTypeView.getSumAmount(),
+                                    AmountConverter.convertStringToCent(iphoneXActivityDto.getSumAnnualizedAmount()) + getAnnualizedAmount(investProductTypeView),
+                                    getSumCashReward(AmountConverter.convertStringToCent(iphoneXActivityDto.getSumAnnualizedAmount()) + getAnnualizedAmount(investProductTypeView))));
         }
         return new ArrayList<>(map.values());
     }
 
-    public Long getAnnualizedAmount(IphoneXActivityView iphoneXActivityView) {
+    public Long getAnnualizedAmount(InvestProductTypeView investProductTypeView) {
         long amount = 0l;
-        switch (iphoneXActivityView.getProductType()) {
+        switch (investProductTypeView.getProductType()) {
             case _90:
-                amount = (iphoneXActivityView.getSumAmount()) / 4;
+                amount = (investProductTypeView.getSumAmount()) / 4;
                 break;
             case _180:
-                amount = (iphoneXActivityView.getSumAmount()) / 2;
+                amount = (investProductTypeView.getSumAmount()) / 2;
                 break;
             case _360:
-                amount = iphoneXActivityView.getSumAmount();
+                amount = investProductTypeView.getSumAmount();
                 break;
         }
         return amount;

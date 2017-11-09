@@ -7,7 +7,7 @@ import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
 import com.tuotiansudai.activity.repository.mapper.InvestCelebrationHeroRankingMapper;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.MobileEncryptor;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class YearEndAwardsActivityService {
@@ -84,18 +85,15 @@ public class YearEndAwardsActivityService {
     }
 
     public Map<String, String> annualizedAmountAndRewards(String loginName){
-        Map<String, Long> amountMaps = new HashMap<>();
-        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(
+
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(
                 DateTime.parse(activityYearEndAwardsStartTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
                 DateTime.parse(activityYearEndAwardsEndTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), "岁末专享");
-        for (IphoneXActivityView iphoneXActivityView : list) {
-            long userAnnualizedAmount = iphoneXActivityView.getSumAmount() * iphoneXActivityView.getProductType().getDuration() / 360;
-            amountMaps.put(iphoneXActivityView.getLoginName(), amountMaps.containsKey(iphoneXActivityView.getLoginName()) ? amountMaps.get(iphoneXActivityView.getLoginName()) + userAnnualizedAmount : userAnnualizedAmount);
-        }
+        Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
         long sumAnnualizedAmount = amountMaps.values().stream().mapToLong(Long::longValue).sum();
 
         Optional<AnnualizedAmount> reward = annualizedAmounts.stream().filter(annualizedAmount -> annualizedAmount.getMinAmount() <= sumAnnualizedAmount && sumAnnualizedAmount < annualizedAmount.getMaxAmount()).findAny();
-        long userRewards = amountMaps.containsKey(loginName) ? new Double(amountMaps.get(loginName) * (reward.isPresent() ? reward.get().getRatio() : 0)).longValue() : 0;
+        long userRewards = amountMaps.containsKey(loginName) ? new Double(amountMaps.get(loginName) * (reward.map(o->o.getRatio()).orElse(0D))).longValue() : 0;
 
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("sumAnnualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))

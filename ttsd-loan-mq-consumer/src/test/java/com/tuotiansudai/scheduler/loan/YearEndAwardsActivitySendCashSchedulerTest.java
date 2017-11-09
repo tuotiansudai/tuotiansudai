@@ -8,7 +8,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -55,7 +56,7 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
         if (DateTime.now().getYear() != 2018){
             return;
         }
-        List<IphoneXActivityView> list = getMockList();
+        List<InvestProductTypeView> list = getMockList();
         when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(list);
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
         BaseDto<PayDataDto> baseDto = new BaseDto(new PayDataDto(true));
@@ -63,10 +64,11 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
         yearEndAwardsActivitySendCashScheduler.yearEndAwardsSendCash();
         verify(payWrapperClient, times(4)).transferCash(any(TransferCashDto.class));
         assertThat(requestModelCaptor.getAllValues().size(), is(4));
-        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("400000"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("3800000"));
-        assertThat(requestModelCaptor.getAllValues().get(2).getAmount(), is("100000"));
-        assertThat(requestModelCaptor.getAllValues().get(3).getAmount(), is("1600000"));
+        List<TransferCashDto> list1 = requestModelCaptor.getAllValues().stream().sorted((t1, t2)-> t1.getLoginName().compareTo(t2.getLoginName())).collect(Collectors.toList());
+        assertThat(list1.get(0).getAmount(), is("400000"));
+        assertThat(list1.get(1).getAmount(), is("3800000"));
+        assertThat(list1.get(2).getAmount(), is("100000"));
+        assertThat(list1.get(3).getAmount(), is("1600000"));
     }
 
     @Test
@@ -74,7 +76,7 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
         if (DateTime.now().getYear() != 2018){
             return;
         }
-        List<IphoneXActivityView> list = getMockList();
+        List<InvestProductTypeView> list = getMockList();
         when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(list);
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
         BaseDto<PayDataDto> baseDto = new BaseDto(new PayDataDto(false));
@@ -83,20 +85,21 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
         verify(payWrapperClient, times(4)).transferCash(any(TransferCashDto.class));
         verify(smsWrapperClient, times(4)).sendFatalNotify(any(SmsFatalNotifyDto.class));
         assertThat(requestModelCaptor.getAllValues().size(), is(4));
-        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("400000"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("3800000"));
-        assertThat(requestModelCaptor.getAllValues().get(2).getAmount(), is("100000"));
-        assertThat(requestModelCaptor.getAllValues().get(3).getAmount(), is("1600000"));
+        List<TransferCashDto> list1 = requestModelCaptor.getAllValues().stream().sorted((t1, t2)-> t1.getLoginName().compareTo(t2.getLoginName())).collect(Collectors.toList());
+        assertThat(list1.get(0).getAmount(), is("400000"));
+        assertThat(list1.get(1).getAmount(), is("3800000"));
+        assertThat(list1.get(2).getAmount(), is("100000"));
+        assertThat(list1.get(3).getAmount(), is("1600000"));
     }
 
-    public List<IphoneXActivityView> getMockList(){
-        IphoneXActivityView iphoneXActivityView1 = new IphoneXActivityView("0000", "userName0", "mobile0", 100000000, ProductType._360); //100000000
-        IphoneXActivityView iphoneXActivityView2 = new IphoneXActivityView("1111", "userName1", "mobile1", 900000000, ProductType._360);
-        IphoneXActivityView iphoneXActivityView3 = new IphoneXActivityView("1111", "userName1", "mobile1", 100000000, ProductType._180); //950000000
-        IphoneXActivityView iphoneXActivityView4 = new IphoneXActivityView("2222", "userName2", "mobile2", 50000000, ProductType._180);  //25000000
-        IphoneXActivityView iphoneXActivityView5 = new IphoneXActivityView("3333", "userName3", "mobile3", 100000000, ProductType._180);
-        IphoneXActivityView iphoneXActivityView6 = new IphoneXActivityView("3333", "userName3", "mobile3", 100000000, ProductType._180);
-        IphoneXActivityView iphoneXActivityView7 = new IphoneXActivityView("3333", "userName3", "mobile3", 300000000, ProductType._360); //400000000
-        return Lists.newArrayList(iphoneXActivityView1, iphoneXActivityView2, iphoneXActivityView3, iphoneXActivityView4, iphoneXActivityView5, iphoneXActivityView6, iphoneXActivityView7);
+    public List<InvestProductTypeView> getMockList(){
+        InvestProductTypeView investProductTypeView1 = new InvestProductTypeView("0000", "userName0", "mobile0", 100000000, ProductType._360); //100000000
+        InvestProductTypeView investProductTypeView2 = new InvestProductTypeView("1111", "userName1", "mobile1", 900000000, ProductType._360);
+        InvestProductTypeView investProductTypeView3 = new InvestProductTypeView("1111", "userName1", "mobile1", 100000000, ProductType._180); //950000000
+        InvestProductTypeView investProductTypeView4 = new InvestProductTypeView("2222", "userName2", "mobile2", 50000000, ProductType._180);  //25000000
+        InvestProductTypeView investProductTypeView5 = new InvestProductTypeView("3333", "userName3", "mobile3", 100000000, ProductType._180);
+        InvestProductTypeView investProductTypeView6 = new InvestProductTypeView("3333", "userName3", "mobile3", 100000000, ProductType._180);
+        InvestProductTypeView investProductTypeView7 = new InvestProductTypeView("3333", "userName3", "mobile3", 300000000, ProductType._360); //400000000
+        return Lists.newArrayList(investProductTypeView1, investProductTypeView2, investProductTypeView3, investProductTypeView4, investProductTypeView5, investProductTypeView6, investProductTypeView7);
     }
 }
