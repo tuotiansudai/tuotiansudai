@@ -1,4 +1,4 @@
-document.cookie="registerMobile="+18810985132;
+// document.cookie="registerMobile="+18810985132;
 
 let param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
 $('#register_btn').on('click',() => {
