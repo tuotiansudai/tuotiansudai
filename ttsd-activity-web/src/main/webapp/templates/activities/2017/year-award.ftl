@@ -126,8 +126,9 @@
             <span class="strongText">注：每档返现奖励不累计发放。</span>
         </div>
         <div class="title_ammount">
-            <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount}元</div>
-            <div class="my_ammount">我的奖励：${rewards}元</div>
+            <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}元</div>
+            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous>登录</@global.isAnonymous>
+        </div>
         </div>
         <div class="conversion_chart">
             <div class="head_title">
@@ -209,17 +210,17 @@
         <div class="rank_list_survey" id="rank_list_survey">
             <span class="date_info">日期：<span class="date_info_No" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}">${currentTime!}</span></span>
             <@global.isNotAnonymous>
-            <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking}</span></span>
+            <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking!}</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
             <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No">登录</a></span>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
-            <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${investAmount}元</span></span>
+            <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${investAmount!}元</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
             <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="today_totalAccountNo">登录</a></span>
-            <@global.isAnonymous>
+            </@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>
         <div id="tableListWrapper">
@@ -274,52 +275,52 @@
             <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
             <span class="button-small button-small-next" id="heroNext">查看后一天</span>
         </div>
-        <#--<div class="activity-page-frame page-width" id="activityPageFrame">-->
-            <#--<div class="heroes-list clearfix">-->
-                <#--<div class="title-head"></div>-->
-                <#--<dl class="sort-box" id="sortBox">-->
-                    <#--<dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>-->
-                    <#--<dd class="ranking">-->
-                        <#--<@global.isAnonymous>-->
-                            <#--我的排名： <a href="/login" target="_blank" class="get-rank">登录</a>-->
-                        <#--</@global.isAnonymous>-->
+        <div class="activity-page-frame page-width" id="activityPageFrame">
+            <div class="heroes-list clearfix">
+                <div class="title-head"></div>
+                <dl class="sort-box" id="sortBox">
+                    <dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>
+                    <dd class="ranking">
+                        <@global.isAnonymous>
+                            我的排名： <a href="/login" target="_blank" class="get-rank">登录</a>
+                        </@global.isAnonymous>
 
-                        <#--<@global.isNotAnonymous>-->
-                            <#--我的排名：<i class="ranking-order"></i>-->
-                        <#--</@global.isNotAnonymous>-->
+                        <@global.isNotAnonymous>
+                            我的排名：<i class="ranking-order"></i>
+                        </@global.isNotAnonymous>
 
-                    <#--</dd>-->
-                    <#--<dd class="fr"><span class="is-today">今日</span>投资总额：-->
-                        <#--<@global.isAnonymous>-->
-                            <#--<a href="/login" target="_blank" class="get-rank">登录</a>-->
-                        <#--</@global.isAnonymous>-->
-                        <#--<@global.isNotAnonymous>-->
-                            <#--<i class="total">${(investAmount/100)?string('0.00')}</i>元-->
-                        <#--</@global.isNotAnonymous>-->
-                    <#--</dd>-->
-                <#--</dl>-->
-                <#--<div class="nodata-invest tc" style="display: none;"></div>-->
-                <#--<table class="table-reward">-->
-                    <#--<thead>-->
-                    <#--<tr>-->
-                        <#--<th width="20%">排名</th>-->
-                        <#--<th width="25%">用户</th>-->
-                        <#--<th width="25%">投资额(元)</th>-->
-                        <#--<th >奖励</th>-->
-                    <#--</tr>-->
-                    <#--</thead>-->
-                    <#--<tbody id="investRanking-tbody">-->
-                    <#--</tbody>-->
-                <#--</table>-->
+                    </dd>
+                    <dd class="fr"><span class="is-today">今日</span>投资总额：
+                        <@global.isAnonymous>
+                            <a href="/login" target="_blank" class="get-rank">登录</a>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <i class="total">${(investAmount/100)?string('0.00')}</i>元
+                        </@global.isNotAnonymous>
+                    </dd>
+                </dl>
+                <div class="nodata-invest tc" style="display: none;"></div>
+                <table class="table-reward">
+                    <thead>
+                    <tr>
+                        <th width="20%">排名</th>
+                        <th width="25%">用户</th>
+                        <th width="25%">投资额(元)</th>
+                        <th >奖励</th>
+                    </tr>
+                    </thead>
+                    <tbody id="investRanking-tbody">
+                    </tbody>
+                </table>
 
-                <#--<div class="date-button" id="investRanking-button">-->
-                    <#--<span class="button-small" id="heroPre" style="visibility: hidden">查看前一天</span>-->
-                    <#--<span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>-->
-                    <#--<span class="button-small" id="heroNext" style="visibility: hidden">查看后一天</span>-->
-                <#--</div>-->
+                <div class="date-button" id="investRanking-button">
+                    <span class="button-small" id="heroPre" style="visibility: hidden">查看前一天</span>
+                    <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
+                    <span class="button-small" id="heroNext" style="visibility: hidden">查看后一天</span>
+                </div>
 
-            <#--</div>-->
-        <#--</div>-->
+            </div>
+        </div>
     </div>
 
     <div class="show_middle_box">
@@ -336,7 +337,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script type="text/template" id="tplTable">
@@ -362,8 +362,4 @@
     <% } %>
 </script>
 
-
-
 </@global.main>
-
-

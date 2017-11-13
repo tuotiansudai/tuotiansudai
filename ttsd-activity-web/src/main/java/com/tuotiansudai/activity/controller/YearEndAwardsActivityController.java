@@ -58,6 +58,7 @@ public class YearEndAwardsActivityController {
         Map<String, String> map = yearEndAwardsActivityService.annualizedAmountAndRewards(loginName);
         modelAndView.addObject("sumAnnualizedAmount", map.get("sumAnnualizedAmount"));
         modelAndView.addObject("rewards", map.get("rewards"));
+        modelAndView.addObject("ratio", map.get("ratio"));
         return modelAndView;
     }
 

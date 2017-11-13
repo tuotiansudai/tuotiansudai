@@ -94,10 +94,12 @@ public class YearEndAwardsActivityService {
 
         Optional<AnnualizedAmount> reward = annualizedAmounts.stream().filter(annualizedAmount -> annualizedAmount.getMinAmount() <= sumAnnualizedAmount && sumAnnualizedAmount < annualizedAmount.getMaxAmount()).findAny();
         long userRewards = amountMaps.containsKey(loginName) ? new Double(amountMaps.get(loginName) * (reward.map(o->o.getRatio()).orElse(0D))).longValue() : 0;
-
+        double ratio = sumAnnualizedAmount * 1.0 / 3000000000l;
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("sumAnnualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))
-                .put("rewards", AmountConverter.convertCentToString(userRewards)).build());
+                .put("rewards", AmountConverter.convertCentToString(userRewards))
+                .put("ratio", String.valueOf(ratio < 1 ? (int)Math.floor(ratio * 100) : 100))
+                .build());
     }
 
     class AnnualizedAmount{
