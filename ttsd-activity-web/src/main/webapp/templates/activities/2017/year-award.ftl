@@ -126,8 +126,9 @@
             <span class="strongText">注：每档返现奖励不累计发放。</span>
         </div>
         <div class="title_ammount">
-            <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount}元</div>
-            <div class="my_ammount">我的奖励：${rewards}元</div>
+            <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}元</div>
+            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous>登录</@global.isAnonymous>
+        </div>
         </div>
         <div class="conversion_chart">
             <div class="head_title">
@@ -209,7 +210,7 @@
         <div class="rank_list_survey" id="rank_list_survey">
             <span class="date_info">日期：<span class="date_info_No" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}">${currentTime?string('yyyy-MM-dd')}</span></span>
             <@global.isNotAnonymous>
-            <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking}</span></span>
+            <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking!}</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
             <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No">登录</a></span>
@@ -292,7 +293,6 @@
 </div>
 
 
-
 <script type="text/template" id="tplTable">
     <% for(var i = 0; i < records.length; i++) {
     var item = records[i];
@@ -316,8 +316,4 @@
     <% } %>
 </script>
 
-
-
 </@global.main>
-
-
