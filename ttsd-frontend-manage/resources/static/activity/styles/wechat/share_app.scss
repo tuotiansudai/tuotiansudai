@@ -9,8 +9,32 @@ input[type="reset"]{
 }
 textarea {
 	-webkit-appearance: none;
-} 
+}
 
+form .error.noAgree {
+	display: none;
+}
+.recommender {
+	color: #fff;
+	font-size: 13px;
+}
+#recommender {
+	display: inline-block;
+	margin-bottom: 15px;
+}
+#register_btn {
+	font-size: 13px;
+	position: absolute;
+	right: 3%;
+	top: 10px;
+	color: #fff;
+	width: 57px;
+	height: 30px;
+	line-height: 30px;
+	background: #2d2544;
+	text-align: center;
+	border-radius: 5px;
+}
 
 @mixin mobilehide () {
 	@media (max-width: $width) {
@@ -149,7 +173,7 @@ textarea {
 						border:none;
 						color:#fff;
 						font-size:20px;
-						line-height:50px;
+						height:54px;
 						background:#ff635a;
 						box-sizing: border-box;
 					}

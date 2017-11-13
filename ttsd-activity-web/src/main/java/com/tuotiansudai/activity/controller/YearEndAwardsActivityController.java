@@ -42,7 +42,7 @@ public class YearEndAwardsActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView yearEndAwards() {
-        ModelAndView modelAndView = new ModelAndView("/year-end-awards", "responsive", false);
+        ModelAndView modelAndView = new ModelAndView("/activities/2017/year-award", "responsive", false);
         String loginName = LoginUserInfo.getLoginName();
         List<NewmanTyrantView> yearEndAwardsRankingViews = yearEndAwardsActivityService.obtainRank(new Date());
         int investRanking = CollectionUtils.isNotEmpty(yearEndAwardsRankingViews) ?

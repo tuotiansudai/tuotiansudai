@@ -206,7 +206,7 @@ public class InvestControllerTest {
 
         //check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
-        assertThat(lm.getStatus(), is(LoanStatus.RAISING));
+        assertThat(lm.getStatus(), is(LoanStatus.RECHECK));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
         assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
@@ -385,7 +385,7 @@ public class InvestControllerTest {
 
         // check loan status
         LoanModel lm = loanMapper.findById(mockLoanId);
-        assertThat(lm.getStatus(), is(LoanStatus.RAISING));
+        assertThat(lm.getStatus(), is(LoanStatus.RECHECK));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
         assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount5);
