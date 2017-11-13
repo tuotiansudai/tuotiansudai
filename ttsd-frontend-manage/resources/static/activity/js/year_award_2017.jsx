@@ -339,7 +339,7 @@ function activityStatus(nowDay) {
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
         let $rewardPicSrc = $('.prize_icon2').data('awardSrc');
-        $('.prize_icon2').css('background','url("' +  $rewardPicSrc + 'no-repeat center center');
+        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + ') no-repeat center center');
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
