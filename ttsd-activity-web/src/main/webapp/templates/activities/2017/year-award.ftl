@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.year_award_2017}" pageJavascript="${js.year_award_2017}" activeNav="" activeLeftNav="" title="双11活动_活动中心_拓天速贷" keywords="拓天速贷,体验金,抽奖奖励,京东E卡" description="拓天速贷双11活动,活动期间投资顺序为奇数的用户,可获得投资额的1.1倍体验金奖励,投资顺序为偶数的用户可获得抽奖机会,累计投资额每满10万元获赠100元京东E卡.">
+<@global.main pageCss="${css.year_award_2017}" pageJavascript="${js.year_award_2017}" activeNav="" activeLeftNav="" title="年终奖活动_活动中心_拓天速贷" keywords="拓天速贷,年终奖,抽奖,岁末专享,实物奖励" description='拓天速贷年终奖活动,活动期间用户每日登录即可获得一次抽奖,投资"岁末专享"项目累计年化投资额可按对应比率获得返现奖励,每日24点计算当日新增投资排名,上榜者可获丰厚实物奖励.'>
 
 <div class="banner"></div>
 <div id="doubleElevenContainer">
@@ -27,7 +27,7 @@
                 <div class="lottery-btn lottery-unit"></div>
                 <div class="lottery-unit lottery-unit-3" data-unit="3">
                     <div class="prize_ty prize_icon"></div>
-                    <div class="prize_desc">120元红包</div>
+                    <div class="prize_desc">500元体验金</div>
                 </div>
                 <div class="lottery-unit lottery-unit-6" data-unit="6">
                     <div class="prize_hb prize_icon"></div>
@@ -52,21 +52,21 @@
                     </h3>
                     <div class="record-group record-list">
                         <ul class="record-item user-record my-gift" id="recordList">
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
-                            <li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
                         </ul>
                         <div class="myRecordWrapper record-item" style="display: none">
                             <ul class="own-record" id="myRecord">
@@ -207,7 +207,7 @@
             </div>
         </div>
         <div class="rank_list_survey" id="rank_list_survey">
-            <span class="date_info">日期：<span class="date_info_No" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}">${currentTime!}</span></span>
+            <span class="date_info">日期：<span class="date_info_No" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}">${currentTime?string('yyyy-MM-dd')}</span></span>
             <@global.isNotAnonymous>
             <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking}</span></span>
             </@global.isNotAnonymous>
@@ -215,11 +215,11 @@
             <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No">登录</a></span>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
-            <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${investAmount}元</span></span>
+            <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${(investAmount/100)?string('0.00')}元</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
             <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="today_totalAccountNo">登录</a></span>
-            <@global.isAnonymous>
+            </@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>
         <div id="tableListWrapper">
@@ -274,52 +274,6 @@
             <span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>
             <span class="button-small button-small-next" id="heroNext">查看后一天</span>
         </div>
-        <#--<div class="activity-page-frame page-width" id="activityPageFrame">-->
-            <#--<div class="heroes-list clearfix">-->
-                <#--<div class="title-head"></div>-->
-                <#--<dl class="sort-box" id="sortBox">-->
-                    <#--<dd class="fl">日期：<i class="date" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}"> ${currentTime?string('yyyy-MM-dd')}</i></dd>-->
-                    <#--<dd class="ranking">-->
-                        <#--<@global.isAnonymous>-->
-                            <#--我的排名： <a href="/login" target="_blank" class="get-rank">登录</a>-->
-                        <#--</@global.isAnonymous>-->
-
-                        <#--<@global.isNotAnonymous>-->
-                            <#--我的排名：<i class="ranking-order"></i>-->
-                        <#--</@global.isNotAnonymous>-->
-
-                    <#--</dd>-->
-                    <#--<dd class="fr"><span class="is-today">今日</span>投资总额：-->
-                        <#--<@global.isAnonymous>-->
-                            <#--<a href="/login" target="_blank" class="get-rank">登录</a>-->
-                        <#--</@global.isAnonymous>-->
-                        <#--<@global.isNotAnonymous>-->
-                            <#--<i class="total">${(investAmount/100)?string('0.00')}</i>元-->
-                        <#--</@global.isNotAnonymous>-->
-                    <#--</dd>-->
-                <#--</dl>-->
-                <#--<div class="nodata-invest tc" style="display: none;"></div>-->
-                <#--<table class="table-reward">-->
-                    <#--<thead>-->
-                    <#--<tr>-->
-                        <#--<th width="20%">排名</th>-->
-                        <#--<th width="25%">用户</th>-->
-                        <#--<th width="25%">投资额(元)</th>-->
-                        <#--<th >奖励</th>-->
-                    <#--</tr>-->
-                    <#--</thead>-->
-                    <#--<tbody id="investRanking-tbody">-->
-                    <#--</tbody>-->
-                <#--</table>-->
-
-                <#--<div class="date-button" id="investRanking-button">-->
-                    <#--<span class="button-small" id="heroPre" style="visibility: hidden">查看前一天</span>-->
-                    <#--<span class="btn-to-invest" id="toInvest">立即投资抢占排行榜</span>-->
-                    <#--<span class="button-small" id="heroNext" style="visibility: hidden">查看后一天</span>-->
-                <#--</div>-->
-
-            <#--</div>-->
-        <#--</div>-->
     </div>
 
     <div class="show_middle_box">

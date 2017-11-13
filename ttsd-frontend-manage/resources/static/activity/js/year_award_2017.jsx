@@ -76,12 +76,12 @@ function getPrize(obj) {
     let ifShowPageBtn = false;
     let $christmasDayFrame = $('#doubleElevenContainer'); //整个页面
     //抽奖模块
-    let $rewardGiftBox=$('.nine-lottery-group',$christmasDayFrame);
+    let $rewardGiftBox=$('.lottery-right-group',$christmasDayFrame);
     let $MobileNumber=$('#MobileNumber'),
         pointAllList='/activity/year-end-awards/all-list',  //中奖记录接口地址
         pointUserList='/activity/year-end-awards/user-list',   //我的奖品接口地址
         drawURL='/activity/year-end-awards/draw',    //抽奖的接口链接
-        $pointerImg=$('.lottery-btn',$rewardGiftBox), //抽奖按钮
+        $pointerImg=$('.lottery-btn'), //抽奖按钮
         myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
     $christmasDayFrame.find('.tip-list-frame .tip-list').each(function(key,option) {  //
@@ -133,18 +133,6 @@ function getPrize(obj) {
     $pointerImg.on('click',function() {
         drawCircle.beginLuckDraw(function(data) {
             let prizeKind;
-            if (mockData) {
-                data = {
-                    drawLotterySuccess: false,
-                    message: null,
-                    myPoint: null,
-                    prize: 'INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL', // 100元红包
-                    prizeType: null,
-                    prizeValue: null,
-                    returnCode: 3,
-                    status: false
-                }
-            };
 
             if (data.returnCode == 0) {
 
@@ -175,8 +163,8 @@ function getPrize(obj) {
                         break;
                 }
 
-                // let prizeType=data.prizeType.toLowerCase();
-                // $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                let prizeType=data.prizeType.toLowerCase();
+                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
 
                 drawCircle.lotteryRoll({
                     elementId:'drawLotteryAreaSub',

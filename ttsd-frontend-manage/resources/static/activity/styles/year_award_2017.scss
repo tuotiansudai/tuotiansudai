@@ -114,11 +114,11 @@ $width: 768px;
 }
 #drawLotteryAreaSub {
   position: absolute;
-  width: 14.5rem;
-  height: 14.5rem;
   top: 22px;
   left: 22px;
   @media screen and (max-width:768px) {
+    width: 14.5rem;
+    height: 14.5rem;
     top: 1.1rem;
     left: 1.1rem;
   }
