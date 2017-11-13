@@ -78,9 +78,9 @@ function getPrize(obj) {
     //抽奖模块
     let $rewardGiftBox=$('.nine-lottery-group',$christmasDayFrame);
     let $MobileNumber=$('#MobileNumber'),
-        pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
-        pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-        drawURL='/activity/point-draw/draw',    //抽奖的接口链接
+        pointAllList='/activity/year-end-awards/all-list',  //中奖记录接口地址
+        pointUserList='/activity/year-end-awards/user-list',   //我的奖品接口地址
+        drawURL='/activity/year-end-awards/draw',    //抽奖的接口链接
         $pointerImg=$('.lottery-btn',$rewardGiftBox), //抽奖按钮
         myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
@@ -91,7 +91,7 @@ function getPrize(obj) {
 
     let paramData={  // 拉取中奖记录及我的奖品列表接口所需数据
         "mobile":myMobileNumber,
-        "activityCategory":"CARNIVAL_ACTIVITY"
+        "activityCategory":"YEAR_END_AWARDS_ACTIVITY"
     };
 
     let drawCircle = new obj(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
@@ -291,7 +291,7 @@ pageTurn();
 function heroRank(date) {
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/hero-ranking/invest/' + date
+        url: '/activity/year-end-awards/ranking/' + date
     }, function (data) {
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
@@ -310,7 +310,7 @@ function heroRank(date) {
 
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/hero-ranking/ranking/' + date
+        url: '/activity/year-end-awards/my-ranking/' + date
     }, function (data) {
         //今日投资总额 和 排名
         let investRanking = data.investRanking;

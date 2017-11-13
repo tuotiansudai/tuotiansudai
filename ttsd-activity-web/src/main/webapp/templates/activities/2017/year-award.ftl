@@ -208,10 +208,18 @@
         </div>
         <div class="rank_list_survey" id="rank_list_survey">
             <span class="date_info">日期：<span class="date_info_No">${currentTime!}</span></span>
+            <@global.isNotAnonymous>
             <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking}</span></span>
-            <#--<span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No">登录</a></span>-->
+            </@global.isNotAnonymous>
+            <@global.isAnonymous>
+            <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No">登录</a></span>
+            </@global.isAnonymous>
+            <@global.isNotAnonymous>
             <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${investAmount}元</span></span>
-            <#--<span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="today_totalAccountNo">登录</a></span>-->
+            </@global.isNotAnonymous>
+            <@global.isAnonymous>
+            <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="today_totalAccountNo">登录</a></span>
+            <@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>
         <div id="tableListWrapper">
