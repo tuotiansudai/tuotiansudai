@@ -105,7 +105,7 @@ giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage) {
     var thisFun = this;
     lotteryUnit.init(opt);
     if (!lotteryUnit.initOpt.clicked) {
-        lotteryUnit.rollResult(function () {
+        lotteryUnit.rollResult(lotteryUnit.initOpt,function () {
             thisFun.GiftRecord();
             thisFun.MyGift();
             thisFun.tipWindowPop(tipMessage);

@@ -161,7 +161,6 @@ function getPrize(obj) {
                         prizeKind=4;
                         break;
                 }
-                drawCircle.GiftRecord();
                 let prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
 
@@ -169,7 +168,8 @@ function getPrize(obj) {
                     elementId:'drawLotteryAreaSub',
                     speed:100,
                     prize:prizeKind
-                },null); // 参数1：抽奖参数； 参数2：提示信息
+                },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
+
 
             } else if(data.returnCode == 1) {
                 //没有抽奖机会
@@ -338,6 +338,8 @@ function activityStatus(nowDay) {
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
+        let $rewardPicSrc = $('.prize_icon2').data('awardSrc');
+        $('.prize_icon2').css('background','url("' +  $rewardPicSrc + 'no-repeat center center');
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
