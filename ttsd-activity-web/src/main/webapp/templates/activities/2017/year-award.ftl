@@ -198,8 +198,8 @@
                 <div class="prize_icon_desc prize_icon_desc1"><span class="prize_icon_desc_head">2~3名</span><br/><span class="prize_icon_desc_foot">0.5%加息券</span></div>
             </div>
             <div class="middle_prize_wrapper">
-                <div class="prize_icon2"></div>
-                <div class="prize_icon_desc"><span class="prize_icon_desc_head">今日大奖</span><br/><span class="prize_icon_desc_foot">啊速度撒大的</span></div>
+                <div class="prize_icon2" data-awardSrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"></div>
+                <div class="prize_icon_desc"><span class="prize_icon_desc_head">今日大奖</span><br/><span class="prize_icon_desc_foot"><#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if></span></div>
             </div>
             <div class="right_prize_wrapper">
                 <div class="prize_icon3"></div>
@@ -207,7 +207,7 @@
             </div>
         </div>
         <div class="rank_list_survey" id="rank_list_survey">
-            <span class="date_info">日期：<span class="date_info_No">${currentTime!}</span></span>
+            <span class="date_info">日期：<span class="date_info_No" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}">${currentTime!}</span></span>
             <@global.isNotAnonymous>
             <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking}</span></span>
             </@global.isNotAnonymous>

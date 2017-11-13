@@ -47,21 +47,21 @@ function showMoreData(num) {
 
 let mockData = false; //模拟数据
 
-// let $investRankingButton = $('#investRanking-button'),
-//     $heroNext = $('#heroNext'),
-//     $heroPre = $('#heroPre');
-//
-// let $sortBox = $('#rank_list_survey'),
-//     $date = $('.date_info_No', $sortBox),
-//     $totalAmount = $('.today_totalAccountNo', $sortBox),
-//     $rankingOrder = $('.myRank_info_No', $sortBox);
-//
-// let todayDay = $.trim($date.text());
-// let startTime = Number($date.data('starttime').substring(0, 10).replace(/-/gi, '')),
-//     endTime = Number($date.data('endtime').substring(0, 10).replace(/-/gi, ''));
-//
-// let $nodataInvest = $('.nodata-invest'),
-//     $contentRanking = $('#investRanking-tbody');
+let $investRankingButton = $('#investRanking-button'),
+    $heroNext = $('#heroNext'),
+    $heroPre = $('#heroPre');
+
+let $sortBox = $('#rank_list_survey'),
+    $date = $('.date_info_No', $sortBox),
+    $totalAmount = $('.today_totalAccountNo', $sortBox),
+    $rankingOrder = $('.myRank_info_No', $sortBox);
+
+let todayDay = $.trim($date.text());
+let startTime = Number($date.data('starttime').substring(0, 10).replace(/-/gi, '')),
+    endTime = Number($date.data('endtime').substring(0, 10).replace(/-/gi, ''));
+
+let $nodataInvest = $('.nodata-invest'),
+    $contentRanking = $('#investRanking-tbody');
 
 getPrize(drawCircle);
 
@@ -149,28 +149,28 @@ function getPrize(obj) {
             if (data.returnCode == 0) {
 
                 switch (data.prize) {
-                    case 'M1_PHONE':  //200元京东E卡
+                    case 'YEAR_END_AWARDS_ACTIVITY_JD_E_CARD_200':  //200元京东E卡
                         prizeKind=0;
                         break;
-                    case 'HUMIDIFIER': //120元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_120': //120元红包
                         prizeKind=1;
                         break;
-                    case 'HAIR_DRIER':  //50元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_50':  //50元红包
                         prizeKind=2;
                         break;
-                    case 'IQIYI_MEMBERSHIP_REF_CARNIVAL':  //10元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_10':  //10元红包
                         prizeKind=7;
                         break;
-                    case 'TELEPHONE_FARE_10_REF_CARNIVAL':  //120元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_EXPERIENCE_GOLD_500':  //500元体验金
                         prizeKind=3;
                         break;
-                    case 'BAMBOO_CHARCOAL_PACKAGE':  //100元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_100':  //100元红包
                         prizeKind=6;
                         break;
-                    case 'INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL': //20元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_20': //20元红包
                         prizeKind=5;
                         break;
-                    case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL':  //200元红包
+                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_200':  //200元红包
                         prizeKind=4;
                         break;
                 }
