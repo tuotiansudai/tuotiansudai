@@ -52,37 +52,11 @@
                     </h3>
                     <div class="record-group record-list">
                         <ul class="record-item user-record my-gift" id="recordList">
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
-                            <#--<li class="record_item">恭喜 139****7148 抽中了 20元现金红包 </li>-->
+
                         </ul>
                         <div class="myRecordWrapper record-item" style="display: none">
                             <ul class="own-record" id="myRecord">
-                            <#--<li class="loginToSee" style="display: none"><span id="toGiftLogin" class="toGiftLogin">登录</span>后查看获奖记录</li>-->
-                            <#--<li class="noGiftTip">没有中奖纪录哦~</li>-->
-                                <#--<li>1100元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1200元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1300元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1400元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1500元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1600元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1700元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1800元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>1900元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>2000元京东E卡 2017-10-30 12:59:59</li>-->
-                                <#--<li>2100元京东E卡 2017-10-30 12:59:59</li>-->
+
                             </ul>
                         </div>
                         <div class="pageNo_container" id="pageNo_container" style="display: none">
@@ -159,7 +133,7 @@
         <div class="percent_chat">
             <div class="percent_chat_title">返现比率（年化）</div>
             <div class="percent_wrapper">
-                <div class="percent_wrapper_sub"></div>
+                <div class="percent_wrapper_sub" data-percent="${ratio!}"></div>
                 <div class="scaleRate scaleRate1">
                     <div class="scaleRateIcon"></div>
                     <div class="scaleRateNo" style="right: 5%">0</div>
@@ -213,13 +187,13 @@
             <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking!}</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No">登录</a></span>
+            <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No1">登录</a></span>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
             <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${(investAmount/100)?string('0.00')}元</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="today_totalAccountNo">登录</a></span>
+            <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="myRank_info_No1">登录</a></span>
             </@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>
@@ -233,37 +207,7 @@
                     <th >奖励</th>
                 </tr>
                 </thead>
-                <tbody id="investRanking-tbody">
-                <tr>
-                    <td>1</td>
-                    <td>匿名</td>
-                    <td>1,000.00</td>
-                    <td>实物大奖</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>匿名</td>
-                    <td>1,000.00</td>
-                    <td>实物大奖</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>匿名</td>
-                    <td>1,000.00</td>
-                    <td>实物大奖</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>匿名</td>
-                    <td>1,000.00</td>
-                    <td>实物大奖</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>匿名</td>
-                    <td>1,000.00</td>
-                    <td>实物大奖</td>
-                </tr>
+                <tbody id="investRanking-tbody"></tbody>
             </table>
         </div>
 

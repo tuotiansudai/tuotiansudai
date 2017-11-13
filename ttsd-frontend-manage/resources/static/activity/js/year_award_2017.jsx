@@ -45,8 +45,6 @@ function showMoreData(num) {
     })
 }
 
-let mockData = false; //模拟数据
-
 let $investRankingButton = $('#investRanking-button'),
     $heroNext = $('#heroNext'),
     $heroPre = $('#heroPre');
@@ -69,7 +67,8 @@ getPrize(drawCircle);
 
 // 设置进度条的比例
 
-$('.percent_wrapper_sub').css('width','30%');
+let $percent = $('.percent_wrapper_sub').data('percent') + '%';
+$('.percent_wrapper_sub').css('width', $percent);
 
 function getPrize(obj) {
     let tipGroupObj = {};
@@ -162,7 +161,7 @@ function getPrize(obj) {
                         prizeKind=4;
                         break;
                 }
-
+                drawCircle.GiftRecord();
                 let prizeType=data.prizeType.toLowerCase();
                 $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
 
