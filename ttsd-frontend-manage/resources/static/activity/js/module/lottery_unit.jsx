@@ -43,7 +43,7 @@ let lotteryGame = {
             initOption.clicked = false;
             callback && callback();
         } else {
-            initOption.timer = setTimeout(this.rollResult.bind(this), initOption.speed);
+            initOption.timer = setTimeout(this.rollResult.bind(this,option,callback), initOption.speed);
             initOption.clicked = true;
         }
         return false;
