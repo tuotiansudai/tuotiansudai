@@ -233,11 +233,11 @@ public class LotteryDrawActivityService {
                 return new DrawLotteryResultDto(4);//您今天的抽奖机会已用完，明天再来抽奖吧！
             }
         }
-//
-//        int drawTime = countDrawLotteryTime(mobile, activityCategory);
-//        if (drawTime <= 0) {
-//            return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
-//        }
+
+        int drawTime = countDrawLotteryTime(mobile, activityCategory);
+        if (drawTime <= 0) {
+            return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
+        }
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
         if (lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)) {
