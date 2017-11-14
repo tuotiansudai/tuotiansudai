@@ -320,6 +320,19 @@ $('#toInvest').on('click',function() {
     window.location.href = '/loan-list';
 });
 
+$investRankingButton.find('.button-small').on('click', function (event) {
+    var dateSpilt = $.trim($date.text()),
+        currDate;
+    if (/heroPre/.test(event.target.id)) {
+        currDate = commonFun.GetDateStr(dateSpilt, -1); //前一天
+    }
+    else if (/heroNext/.test(event.target.id)) {
+        currDate = commonFun.GetDateStr(dateSpilt, 1); //后一天
+    }
+    $date.text(currDate);
+    activityStatus(currDate);
+
+});
 
 function activityStatus(nowDay) {
     let nowDayStr = Number(nowDay.replace(/-/gi, '')),
@@ -333,6 +346,7 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
         $contentRanking.hide();
+        $('.prize_icon2').addClass('.prize_icon2_default');
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
@@ -340,11 +354,12 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
         $nodataInvest.show().html('活动已经结束');
+        $('.prize_icon2').addClass('.prize_icon2_default');
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
         let $rewardPicSrc = $('.prize_icon2').data('awardsrc');
-        //$('.prize_icon2').css('background','url("' +  $rewardPicSrc  + ') no-repeat center center');
+        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + ') no-repeat center center');
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();

@@ -870,7 +870,9 @@ $width: 768px;
       margin: 22px auto;
       width: 103px;
       height: 110px;
-      background: url("../images/2017/year-award/recordGift_default.png") no-repeat center center;
+      &.prize_icon2_default {
+        background: url("../images/2017/year-award/recordGift_default.png") no-repeat center center;
+      }
       @media screen and (max-width:768px) {
         margin: .65rem auto;
         width: 6.25rem;
