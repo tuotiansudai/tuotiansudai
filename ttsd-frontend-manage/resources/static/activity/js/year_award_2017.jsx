@@ -2,12 +2,10 @@ require("activityStyle/year_award_2017.scss");
 // require("activityStyle/media.scss");
 let commonFun= require('publicJs/commonFun');
 let sourceKind = globalFun.parseURL(location.href);
-console.log(globalFun)
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw_mine');
 let $ownRecord = $('#myRecord');
 
-$('.layui-layer-z').css('height', $('body').height());
 if ($(document).width() < 790) {
     (function (doc, win) {
         var docEl = doc.documentElement,
@@ -181,19 +179,13 @@ function getPrize(obj) {
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
-                $('.tip_message').html('不在活动时间范围内~');
-                $('.tip_message').show();
-                setTimeout(() => {
-                    $('.tip_message').hide();
-                },3000)
+                layer.msg('不在活动时间范围内~');
 
             } else if(data.returnCode == 4){
                 //今日没有抽奖机会了
-                $('.tip_message').html('今天没有抽奖机会了哦~，明天再来吧');
-                $('.tip_message').show();
-                setTimeout(() => {
-                    $('.tip_message').hide();
-                },3000);
+                layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
+                    time:3000
+                });
 
             }
         });
@@ -225,8 +217,13 @@ function toLogin() {
     if (sourceKind.params.source == 'app') {
         location.href = "/login";
     }else {
-       $('#loginTip').show();
-       $('.layui-layer-z').show();
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $('#loginTip')
+        });
     }
 };
 
@@ -341,10 +338,6 @@ function activityStatus(nowDay) {
 //页面初始
 activityStatus(todayDay);
 
-$('.close-btn').on('click', () => {
-    $('#loginTip').hide();
-    $('.layui-layer-z').hide();
-});
 
 
 

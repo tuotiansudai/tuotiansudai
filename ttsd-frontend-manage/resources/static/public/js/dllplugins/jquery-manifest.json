@@ -2,7 +2,7 @@
   "name": "jquery_library",
   "content": {
     "./node_modules/jquery/dist/jquery.js": 1,
-    "./node_modules/_layui-layer@3.1.0@layui-layer/src/layer.js": 2,
+    "./node_modules/layer/src/layer.js": 2,
     "./node_modules/underscore/underscore.js": 3
   }
 }
