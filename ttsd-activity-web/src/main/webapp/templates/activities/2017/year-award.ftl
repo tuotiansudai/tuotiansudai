@@ -92,7 +92,7 @@
             <div class="btn-list btn-invest"><a href="/loan-list">去投资</a></div>
         </div>
     </div>
-    <#include "../../module/login-tip.ftl" />
+
 
     <div class="show_middle_box">
         <div class="title_sign title_sign2"></div>
@@ -235,6 +235,9 @@
         </div>
     </div>
 </div>
+    <#include "../../module/login-tip.ftl" />
+    <div class="layui-layer-z" style="display: none"></div>
+    <div class="tip_message" style="display: none"></div>
 
 
 <script type="text/template" id="tplTable">

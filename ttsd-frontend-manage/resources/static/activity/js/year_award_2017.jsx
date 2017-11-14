@@ -5,8 +5,8 @@ let sourceKind = globalFun.parseURL(location.href);
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw_mine');
 let $ownRecord = $('#myRecord');
-//let $pageNumber = $('#pageNo_container');
-let $clicktTurnPage = false;
+
+$('.layui-layer-z').css('height', $('body').height());
 if ($(document).width() < 790) {
     (function (doc, win) {
         var docEl = doc.documentElement,
@@ -24,7 +24,9 @@ if ($(document).width() < 790) {
         doc.addEventListener('DOMContentLoaded', recalc, false);
     })(document, window);
 }
-
+// let $height = $('#investRanking-tbody').find('tr').height();
+// let $seenArea = $('#tableListWrapper').find('thead').height();
+// $('#tableListWrapper').css('height',$seenArea + 3 * $height);
 function showMoreData(num) {
     if (num < 4) return;
     let $height = $('#investRanking-tbody').find('tr').height();
@@ -109,10 +111,8 @@ function getPrize(obj) {
                         'textAlign':'center',
                         'textIndent':'0px'
                     });
-                    //$pageNumber.hide();
                 } else if(data.length !== 0){
                     ifShowPageBtn = true;
-                    //pageTurn();
                 }
             });
         })
@@ -183,12 +183,19 @@ function getPrize(obj) {
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
                 layer.msg('不在活动时间范围内~');
+                $('.tip_message').html('不在活动时间范围内~');
+                $('.tip_message').show();
+                setTimeout(() => {
+                    $('.tip_message').hide();
+                },3000)
 
             } else if(data.returnCode == 4){
                 //今日没有抽奖机会了
-                layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
-                    time:3000
-                });
+                $('.tip_message').html('今天没有抽奖机会了哦~，明天再来吧');
+                $('.tip_message').show();
+                setTimeout(() => {
+                    $('.tip_message').hide();
+                },3000);
 
             }
         });
@@ -220,13 +227,8 @@ function toLogin() {
     if (sourceKind.params.source == 'app') {
         location.href = "/login";
     }else {
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: ['auto', 'auto'],
-            content: $('#loginTip')
-        });
+       $('#loginTip').show();
+       $('.layui-layer-z').show();
     }
 };
 
@@ -238,46 +240,6 @@ $('.toGiftLogin').on('click',function(event){
      toLogin();
 
 });
-
-//我的奖品翻页效果
-function pageTurn() {
-    let $ownList = $('.own-record'),
-        $pageNumber = $('.page-number');
-    let totalNumber = $ownList.find('li').length,
-        pageSize = 8, //每页8条
-        pageIndex = 1,
-        totalPage = Math.ceil(totalNumber/pageSize),
-        heightContent = $('.myRecordWrapper').height();
-    $pageNumber.on('click',function() {
-        let currentPosTop = $ownList.position().top;
-        let ceilHeight = $('.myRecord_right_item').height();
-        let index = $(this).index();
-        if(index === 0) {
-            //上一页
-            if(pageIndex==1) {
-                return;
-            }
-            pageIndex = (pageIndex>1) ? (pageIndex-1) : pageIndex;
-        } else if(index === 1) {
-            //下一页
-            if(pageIndex ==totalPage) {
-                return;
-            }
-            pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
-        }
-        let TopDistance = -heightContent * (pageIndex-1);
-        if (TopDistance === currentPosTop) {
-            $clicktTurnPage = false;
-            return;
-        };
-        $ownList.animate({
-            top:TopDistance + 'px'
-        })
-    });
-}
-
-
-
 
 //英雄榜排名,今日投资排行
 function heroRank(date) {
@@ -380,6 +342,11 @@ function activityStatus(nowDay) {
 
 //页面初始
 activityStatus(todayDay);
+
+$('.close-btn').on('click', () => {
+    $('#loginTip').hide();
+    $('.layui-layer-z').hide();
+});
 
 
 
