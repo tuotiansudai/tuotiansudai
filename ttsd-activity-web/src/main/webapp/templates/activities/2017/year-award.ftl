@@ -210,9 +210,10 @@
                 <tbody id="investRanking-tbody"></tbody>
             </table>
         </div>
-
-        <div class="show_listData" id="show_more_listData" style="display: none">显示更多 ></div>
-        <div class="show_listData" id="show_less_listData" style="display: none">收起 ></div>
+        <div class="show_data_btn">
+            <div class="show_listData" id="show_more_listData" style="display: none">显示更多 ></div>
+            <div class="show_listData" id="show_less_listData" style="display: none">收起 ></div>
+        </div>
 
         <div class="date-button" id="investRanking-button">
             <span class="button-small button-small-pre" id="heroPre">查看前一天</span>
@@ -236,8 +237,7 @@
     </div>
 </div>
     <#include "../../module/login-tip.ftl" />
-    <div class="layui-layer-z" style="display: none"></div>
-    <div class="tip_message" style="display: none"></div>
+
 
 
 <script type="text/template" id="tplTable">

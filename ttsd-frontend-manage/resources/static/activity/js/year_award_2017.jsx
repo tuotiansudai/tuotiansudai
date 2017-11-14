@@ -5,6 +5,9 @@ let sourceKind = globalFun.parseURL(location.href);
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw_mine');
 let $ownRecord = $('#myRecord');
+let $showMoreData = $('#show_more_listData');
+let $showLessData = $('#show_less_listData');
+let $tableListWrapper = $('#tableListWrapper');
 
 if ($(document).width() < 790) {
     (function (doc, win) {
@@ -25,22 +28,30 @@ if ($(document).width() < 790) {
 }
 
 function showMoreData(num) {
-    if (num < 4) return;
-    let $height = $('#investRanking-tbody').find('tr').height();
+    $showLessData.hide();
+    if (num == 0) {
+        $showMoreData.hide();
+    }
     let $seenArea = $('#tableListWrapper').find('thead').height();
-    $('#tableListWrapper').css('height',$seenArea + 3 * $height);
-    $('#show_more_listData').show();
-    $('#show_more_listData').on('click',() => {
-        $('#tableListWrapper').css('height',$seenArea + num * $height);
-        $('#tableListWrapper').css('overflow','visible');
-        $('#show_more_listData').hide();
-        $('#show_less_listData').show();
+    let $height = $contentRanking.find('tr').height();
+    if (num < 4) {
+        $tableListWrapper.css('height',$seenArea + num * $height);
+    } else {
+        $tableListWrapper.css('height',$seenArea + 3 * $height);
+        $showMoreData.show();
+    }
+    $tableListWrapper.css('overflow','hidden');
+    $showMoreData.on('click',() => {
+        $tableListWrapper.css('height',$seenArea + num * $height);
+        $tableListWrapper.css('overflow','visible');
+        $showMoreData.hide();
+        $showLessData.show();
     });
-    $('#show_less_listData').on('click', () => {
-        $('#tableListWrapper').css('height',$seenArea + 3 * $height);
-        $('#tableListWrapper').css('overflow','hidden');
-        $('#show_less_listData').hide();
-        $('#show_more_listData').show();
+    $showLessData.on('click', () => {
+        $tableListWrapper.css('height',$seenArea + 3 * $height);
+        $tableListWrapper.css('overflow','hidden');
+        $showLessData.hide();
+        $showMoreData.show();
     })
 }
 
@@ -244,7 +255,8 @@ function heroRank(date) {
     }, function (data) {
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
-                $('#investRanking-tbody').html('');
+                $contentRanking.html('');
+                showMoreData(data.records.length);
                 return;
             }
             //获取模版内容
@@ -252,7 +264,7 @@ function heroRank(date) {
             // 解析模板, 返回解析后的内容
             let render = _.template(ListTpl);
             let html = render(data);
-            $('#investRanking-tbody').html(html);
+            $contentRanking.html(html);
             showMoreData(data.records.length);
         }
     });
