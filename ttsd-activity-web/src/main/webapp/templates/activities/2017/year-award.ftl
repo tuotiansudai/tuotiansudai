@@ -52,17 +52,17 @@
                     </h3>
                     <div class="record-group record-list">
                         <ul class="record-item user-record my-gift" id="recordList">
-
+                            <#--<li class="myReward_item"><div class="myReward_item_head">恭喜182****5693</div><div class="myReward_item_foot">抽中了100元红包</div></li>-->
                         </ul>
                         <div class="myRecordWrapper record-item" style="display: none">
                             <ul class="own-record" id="myRecord">
-
+                                <#--<li class="myRecord_right_item"><div class="mineReward_name">200元红包</div><div class="mineReward_year">2017-11-13</div><div class="mineReward_year_hour"> 21:15:24</div></li>-->
                             </ul>
                         </div>
-                        <div class="pageNo_container" id="pageNo_container" style="display: none">
-                            <span class="prePage page-number" id="prePage">上一页</span>
-                            <span class="nextPage page-number" id="nextPage">下一页</span>
-                        </div>
+                        <#--<div class="pageNo_container" id="pageNo_container" style="display: none">-->
+                            <#--<span class="prePage page-number" id="prePage">上一页</span>-->
+                            <#--<span class="nextPage page-number" id="nextPage">下一页</span>-->
+                        <#--</div>-->
 
                     </div>
                 </div>
@@ -101,7 +101,7 @@
         </div>
         <div class="title_ammount">
             <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}元</div>
-            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous>登录</@global.isAnonymous>
+            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a href="/login" target="_blank" class="myRank_info_No1" style="color:#fff600">登录</a></@global.isAnonymous>
         </div>
         </div>
         <div class="conversion_chart">
@@ -173,7 +173,7 @@
                 <div class="prize_icon_desc prize_icon_desc1"><span class="prize_icon_desc_head">2~3名</span><br/><span class="prize_icon_desc_foot">0.5%加息券</span></div>
             </div>
             <div class="middle_prize_wrapper">
-                <div class="prize_icon2" data-awardSrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"></div>
+                <div class="prize_icon2" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"></div>
                 <div class="prize_icon_desc"><span class="prize_icon_desc_head">今日大奖</span><br/><span class="prize_icon_desc_foot"><#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if></span></div>
             </div>
             <div class="right_prize_wrapper">
@@ -193,7 +193,7 @@
             <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${(investAmount/100)?string('0.00')}元</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="myRank_info_No1">登录</a></span>
+            <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="myRank_info_No2" style="color: #fff600">登录</a></span>
             </@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>

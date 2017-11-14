@@ -3,10 +3,10 @@ require("activityStyle/year_award_2017.scss");
 let commonFun= require('publicJs/commonFun');
 let sourceKind = globalFun.parseURL(location.href);
 require('publicJs/login_tip');
-let drawCircle = require('activityJsModule/gift_circle_draw');
+let drawCircle = require('activityJsModule/gift_circle_draw_mine');
 let $ownRecord = $('#myRecord');
-let $pageNumber = $('#pageNo_container');
-
+//let $pageNumber = $('#pageNo_container');
+let $clicktTurnPage = false;
 if ($(document).width() < 790) {
     (function (doc, win) {
         var docEl = doc.documentElement,
@@ -109,9 +109,10 @@ function getPrize(obj) {
                         'textAlign':'center',
                         'textIndent':'0px'
                     });
-                    $pageNumber.hide();
+                    //$pageNumber.hide();
                 } else if(data.length !== 0){
                     ifShowPageBtn = true;
+                    //pageTurn();
                 }
             });
         })
@@ -203,13 +204,13 @@ function getPrize(obj) {
         contentCls.eq(index).show().siblings().hide();
         if((ifShowPageBtn) && index === 1) {
             if ($(document).width() >= 790) {
-                $pageNumber.show();
+                //$pageNumber.show();
             }
             else {
                 $('.myRecordWrapper').css('overflow','scroll');
             }
         }else {
-            $pageNumber.hide();
+            //$pageNumber.hide();
         }
     });
 };
@@ -248,6 +249,8 @@ function pageTurn() {
         totalPage = Math.ceil(totalNumber/pageSize),
         heightContent = $('.myRecordWrapper').height();
     $pageNumber.on('click',function() {
+        let currentPosTop = $ownList.position().top;
+        let ceilHeight = $('.myRecord_right_item').height();
         let index = $(this).index();
         if(index === 0) {
             //上一页
@@ -263,14 +266,16 @@ function pageTurn() {
             pageIndex = (pageIndex<totalPage) ? (pageIndex+1) : pageIndex;
         }
         let TopDistance = -heightContent * (pageIndex-1);
-        let currentPosTop = $ownList.position().top;
-        if (TopDistance === currentPosTop) return;
+        if (TopDistance === currentPosTop) {
+            $clicktTurnPage = false;
+            return;
+        };
         $ownList.animate({
             top:TopDistance + 'px'
-        });
+        })
     });
 }
-pageTurn();
+
 
 
 
@@ -338,8 +343,8 @@ function activityStatus(nowDay) {
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
-        let $rewardPicSrc = $('.prize_icon2').data('awardSrc');
-        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + ') no-repeat center center');
+        let $rewardPicSrc = $('.prize_icon2').data('awardsrc');
+        //$('.prize_icon2').css('background','url("' +  $rewardPicSrc  + ') no-repeat center center');
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
