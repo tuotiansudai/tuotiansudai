@@ -605,6 +605,8 @@
           </if>
           where
             i.status='SUCCESS'
+            and i.transfer_invest_id is NULL
+            and i.loan_id > 1
             and i.created_time between #{startTime} and #{endTime}
             <if test="province != null and province !=''">
             and u.province = #{province}
@@ -629,6 +631,8 @@
         </if>
         where
         i.status='SUCCESS'
+        and i.transfer_invest_id is NULL
+        and i.loan_id > 1
         and i.created_time between #{startTime} and #{endTime}
         <if test="province != null and province !=''">
             and u.province = #{province}
@@ -676,6 +680,8 @@
             </if>
             where
                 i.status='SUCCESS'
+                and i.transfer_invest_id is NULL
+                and i.loan_id > 1
                 AND i.created_time between #{startTime} and #{endTime}
                 <if test="province != null and province !=''">
                     and uu.province = #{province}
@@ -719,6 +725,8 @@
         </if>
         where
         i.status='SUCCESS'
+        and i.transfer_invest_id is NULL
+        and i.loan_id > 1
         AND i.created_time between #{startTime} and #{endTime}
         <if test="province != null and province !=''">
             and uu.province = #{province}
@@ -751,6 +759,8 @@
                 </if>
             where
                 i.status='SUCCESS'
+                and i.transfer_invest_id is NULL
+                and i.loan_id > 1
                 AND i.created_time between #{startTime} and #{endTime}
                 <if test="province != null and province !=''">
                     and uu.province = #{province}
@@ -780,6 +790,8 @@
         </if>
         where
         i.status='SUCCESS'
+        and i.transfer_invest_id is NULL
+        and i.loan_id > 1
         AND i.created_time between #{startTime} and #{endTime}
         <if test="province != null and province !=''">
             and uu.province = #{province}
@@ -810,6 +822,8 @@
                 </if>
             where
                 i.status='SUCCESS'
+                and i.transfer_invest_id is NULL
+                and i.loan_id > 1
                 AND i.created_time between #{startTime} and #{endTime}
                 <if test="province != null and province !=''">
                     and uu.province = #{province}
@@ -840,6 +854,8 @@
         </if>
         where
         i.status='SUCCESS'
+        and i.transfer_invest_id is NULL
+        and i.loan_id > 1
         AND i.created_time between #{startTime} and #{endTime}
         <if test="province != null and province !=''">
             and uu.province = #{province}
