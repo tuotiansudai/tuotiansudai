@@ -95,19 +95,19 @@ public class CreditLoanActivateAccountService {
         AccountModel account = this.getAccount(mobile);
         if (account == null) {
             payFormDataDto.setMessage("用户未开通支付账户");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_FAILED));
             return dto;
         }
 
         if (this.isActive(mobile)) {
             payFormDataDto.setMessage("正在激活账户, 请30分钟后查看");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.LOCKED));
             return dto;
         }
 
         if (!this.checkActivateAccountStatus(mobile)) {
             payFormDataDto.setMessage("您已经激活过账户");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.FORBIDDEN));
             return dto;
         }
 
