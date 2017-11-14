@@ -2,6 +2,7 @@ require("activityStyle/year_award_2017.scss");
 // require("activityStyle/media.scss");
 let commonFun= require('publicJs/commonFun');
 let sourceKind = globalFun.parseURL(location.href);
+console.log(globalFun)
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw_mine');
 let $ownRecord = $('#myRecord');
@@ -180,7 +181,6 @@ function getPrize(obj) {
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
-                layer.msg('不在活动时间范围内~');
                 $('.tip_message').html('不在活动时间范围内~');
                 $('.tip_message').show();
                 setTimeout(() => {
