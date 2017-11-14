@@ -24,9 +24,7 @@ if ($(document).width() < 790) {
         doc.addEventListener('DOMContentLoaded', recalc, false);
     })(document, window);
 }
-// let $height = $('#investRanking-tbody').find('tr').height();
-// let $seenArea = $('#tableListWrapper').find('thead').height();
-// $('#tableListWrapper').css('height',$seenArea + 3 * $height);
+
 function showMoreData(num) {
     if (num < 4) return;
     let $height = $('#investRanking-tbody').find('tr').height();
