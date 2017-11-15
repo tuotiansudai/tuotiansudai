@@ -15,8 +15,8 @@ public class HandlerExceptionLoggingResolver implements HandlerExceptionResolver
 
     private static List<String> WARNING_EXCEPTION = Lists.newArrayList(
             "org.springframework.core.convert.ConversionFailedException",
-            "org.apache.catalina.connector.ClientAbortException",
-            "org.springframework.web.HttpRequestMethodNotSupportedException");
+            "org.springframework.web.HttpRequestMethodNotSupportedException",
+            "org.apache.catalina.connector.ClientAbortException");
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
