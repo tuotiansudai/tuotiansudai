@@ -20,8 +20,7 @@ public class RestErrorDecoder implements ErrorDecoder {
         if (response.body() != null)
             try {
                 errorResponse = objectMapper.readValue(response.body().asInputStream(), ErrorResponse.class);
-            } catch (IOException e) {
-                logger.warn("can not parse response body as ErrorResponse: " + response.body().toString());
+            } catch (IOException ignored) {
             }
 
         return new RestException(response, errorResponse);
