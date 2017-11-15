@@ -105,7 +105,16 @@ function getPrize(obj) {
 
     let drawCircle = new obj(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
 
-    drawCircle.GiftRecord();  //渲染中奖记录
+    drawCircle.GiftRecord((data) => {
+        $('#recordList').html('<li class="noGiftTip">没有中奖纪录哦~</li>');
+        $('#recordList').find('li').css({
+            'textAlign':'center',
+            'textIndent':'0px'
+        });
+        if (data.length ==0) {
+
+        }
+    });  //渲染中奖记录
 
     //通过判断是否登录显示隐藏相应的按钮
     $.when(commonFun.isUserLogin())
@@ -113,14 +122,11 @@ function getPrize(obj) {
             //渲染我的奖品
             drawCircle.MyGift(function(data){
                 if(data.length == 0){
-                    drawCircle.removeClass('show-pageNumber');
-                    drawCircle.html('<li class="noGiftTip">没有中奖纪录哦~</li>');
-                    drawCircle.find('li').css({
+                    $ownRecord.html('<li class="noGiftTip">没有中奖纪录哦~</li>');
+                    $ownRecord.find('li').css({
                         'textAlign':'center',
                         'textIndent':'0px'
                     });
-                } else if(data.length !== 0){
-                    ifShowPageBtn = true;
                 }
             });
         })
@@ -328,7 +334,7 @@ function activityStatus(nowDay) {
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
         let $rewardPicSrc = $('.prize_icon2').data('awardsrc');
-        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + ') no-repeat center center');
+        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + '") no-repeat center center');
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
