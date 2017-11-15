@@ -106,13 +106,12 @@ function getPrize(obj) {
     let drawCircle = new obj(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
 
     drawCircle.GiftRecord((data) => {
-        $('#recordList').html('<li class="noGiftTip">没有中奖纪录哦~</li>');
-        $('#recordList').find('li').css({
-            'textAlign':'center',
-            'textIndent':'0px'
-        });
-        if (data.length ==0) {
-
+        if(data.length==0){
+            $('#recordList').html('<li class="noGiftTip">没有中奖纪录哦~</li>');
+            $('#recordList').find('li').css({
+                'textAlign':'center',
+                'textIndent':'0px'
+            });
         }
     });  //渲染中奖记录
 
