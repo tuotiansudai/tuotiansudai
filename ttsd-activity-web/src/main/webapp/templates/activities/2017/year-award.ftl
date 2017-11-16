@@ -101,7 +101,7 @@
         </div>
         <div class="title_ammount">
             <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}元</div>
-            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a href="/login" target="_blank" class="myRank_info_No1" style="color:#fff600">登录</a></@global.isAnonymous>
+            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a class="myRank_info_No1 login_pop" style="color:#fff600">登录</a></@global.isAnonymous>
         </div>
         </div>
         <div class="conversion_chart">
