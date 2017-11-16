@@ -81,7 +81,15 @@
             </div>
             <div class="btn-list"><a href="/loan-list" class="go-on small-btn">去使用</a></div>
         </div>
-
+        <div class="tip-list" id="test"  data-return="experience">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text"></p>
+                <p class="icon_prize"></p>
+                <p class="reward-text"><em class="prizeValue"></em></p>
+            </div>
+            <div class="btn-list"><a href="/loan-list" class="go-on small-btn">去使用</a></div>
+        </div>
         <!--没有抽奖机会-->
         <div class="tip-list no-change-list" data-return="nochance">
             <div class="close-btn go-close"></div>
@@ -138,7 +146,7 @@
                     <div class="toHideIcon">
                         <div class="scaleRateIcon"></div>
                     </div>
-                    <div class="scaleRateNo" style="right: 5%">0</div>
+                    <div class="scaleRateNo scaleRateNo1" style="right: 5%">0</div>
                 </div>
                 <div class="scaleRate scaleRate2">
                     <div class="toHideIcon">
@@ -168,7 +176,7 @@
                     <div class="toHideIcon">
                         <div class="scaleRateIcon"></div>
                     </div>
-                    <div class="scaleRateNo">1%</div>
+                    <div class="scaleRateNo scaleRateNo6">1%</div>
                 </div>
             </div>
         </div>
@@ -259,7 +267,7 @@
     if(i==0) {
     reward='实物大奖';
     }
-    else if(i>0 && i<4) {
+    else if(i>0 && i<3) {
     reward='0.5%加息券';
     }
     else {

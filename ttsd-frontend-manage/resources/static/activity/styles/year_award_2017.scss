@@ -321,7 +321,6 @@ $width: 768px;
       }
       &.my-gift {
         height: 345px;
-        overflow-y: scroll;
         @media screen and (max-width:768px) {
           height: 6.95rem;
         }
@@ -736,10 +735,12 @@ $width: 768px;
     width: 340px;
     height: 20px;
     background: #0d0f34;
+    border-radius: 10px;
     @media screen and (max-width:768px) {
       width: 90%;
       height: .825rem;
       margin: 0 auto;
+      border-radius: .5rem;
     }
     .percent_wrapper_sub {
       height: 20px;
