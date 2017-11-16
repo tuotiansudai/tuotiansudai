@@ -260,10 +260,10 @@
     reward='实物大奖';
     }
     else if(i>0 && i<4) {
-    reward='1%加息券';
+    reward='0.5%加息券';
     }
     else {
-    reward='0.8%加息券';
+    reward='0.2%加息券';
     }
     %>
     <tr>
