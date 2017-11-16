@@ -8,6 +8,7 @@ let $ownRecord = $('#myRecord');
 let $showMoreData = $('#show_more_listData');
 let $showLessData = $('#show_less_listData');
 let $tableListWrapper = $('#tableListWrapper');
+let $indexPage;
 
 if ($(document).width() < 790) {
     (function (doc, win) {
@@ -106,13 +107,12 @@ function getPrize(obj) {
     let drawCircle = new obj(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
 
     drawCircle.GiftRecord((data) => {
-        $('#recordList').html('<li class="noGiftTip">没有中奖纪录哦~</li>');
-        $('#recordList').find('li').css({
-            'textAlign':'center',
-            'textIndent':'0px'
-        });
         if (data.length ==0) {
-
+            $('#recordList').html('<li class="noGiftTip">没有中奖纪录哦~</li>');
+            $('#recordList').find('li').css({
+                'textAlign':'center',
+                'textIndent':'0px'
+            });
         }
     });  //渲染中奖记录
 
@@ -182,6 +182,7 @@ function getPrize(obj) {
                 drawCircle.lotteryRoll({
                     elementId:'drawLotteryAreaSub',
                     speed:100,
+                    cycle: 20,
                     prize:prizeKind
                 },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
 
@@ -196,7 +197,9 @@ function getPrize(obj) {
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
-                layer.msg('不在活动时间范围内~');
+                layer.msg('不在活动时间范围内~'),{
+                    time: 3000
+                };
 
             } else if(data.returnCode == 4){
                 //今日没有抽奖机会了
@@ -355,6 +358,18 @@ function activityStatus(nowDay) {
 
 //页面初始
 activityStatus(todayDay);
+
+
+$('.login_pop').on('click',() => {
+    $indexPage = layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        area: ['auto', 'auto'],
+        content: $('#loginTip')
+    });
+});
+
 
 
 

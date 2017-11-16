@@ -508,7 +508,7 @@ $width: 768px;
   background-size:contain!important;
   z-index: 999;
   &.no-change-list {
-    background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+    background:url('../images/2017/year-award/noRewardChance.png') no-repeat center top!important;
     background-size: contain!important;
     .btn-invest {
       margin-top: 40px;
@@ -754,11 +754,14 @@ $width: 768px;
     }
     .scaleRate {
       position: absolute;
-      top: 10px;
+      top: 21px;
       width: 68px;
       height: 40px;
       z-index: 100;
       text-align: left;
+      @media screen and (max-width:768px) {
+        top: 0.8rem;
+      }
       &.scaleRate1 {
         left: 0;
       }
@@ -785,6 +788,7 @@ $width: 768px;
       }
       .scaleRateNo {
         position: relative;
+        line-height: 23px;
         right: 20%;
       }
     }
@@ -872,7 +876,8 @@ $width: 768px;
       width: 103px;
       height: 110px;
       &.prize_icon2_default {
-        background: url("../images/2017/year-award/recordGift_default.png") no-repeat center center;
+        background: url("../images/2017/year-award/recordGift_default.png") no-repeat;
+        background-size: contain;
       }
       @media screen and (max-width:768px) {
         margin: .65rem auto;
@@ -1135,12 +1140,13 @@ $width: 768px;
     line-height: 62px;
     text-align: center;
     cursor: pointer;
-    background: #ffd323;
+    background: #fff600;
     color: #b74b19;
     display: inline-block;
     margin-left: 50px;
     margin-right: 50px;
     border-radius: 28px;
+    font-size: 20px;
     @media screen and (max-width:768px) {
       position: absolute;
       margin: 0;
@@ -1209,10 +1215,108 @@ $width: 768px;
   }
 }
 
+.toHideIcon {
+  height: 12px;
+  overflow: hidden;
+}
+.show_less_icon {
+  display: inline-block;
+  margin-left: 5px;
+  width: 20px;
+  height: 12px;
+  background: url("../images/2017/year-award/show_less_icon.png") no-repeat;
+  background-size: contain;
+}
 
+.show_more_icon {
+  display: inline-block;
+  margin-left: 5px;
+  width: 20px;
+  height: 12px;
+  background: url("../images/2017/year-award/show_more_icon.png") no-repeat;
+  background-size: contain;
+}
 
+@media screen and (max-width:768px) {
+  .show_less_icon, .show_more_icon {
+    width: .5rem;
+    height: .3rem;
+    margin-left: .2rem;
+  }
 
+}
 
+@media screen and (max-width:768px) {
+  .tip-list {
+    width: 16rem !important;
+    height: 12rem !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -8rem !important;
+    margin-top: -6rem !important;
+    &.no-change-list {
+      background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+      background-size: contain!important;
+      .btn-invest {
+        margin-top: 1rem;
+      }
+    }
+    &.noTime {
+      background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+      background-size: contain!important;
+      .text-tip {
+        padding-top: 0.6rem;
+      }
+      .btn-list {
+        margin-top: 0.4rem;
+        a {
+          font-size: 0.24rem;
+        }
+      }
+    }
+
+    .text-tip {
+      height: 7rem!important;
+
+      p {
+        line-height: 1rem!important;
+        &.success-text {
+          width: 8rem;
+          height: 3rem;
+          margin-top: 1rem;
+        }
+        &.icon_prize {
+          width: 2rem;
+          height: 2rem;
+        }
+        &.reward-text {
+          font-size:1rem!important;
+        }
+        &.login-text {
+          font-size: 0.2rem;
+          padding-top: 0.7rem;
+        }
+        &.des-text {
+          font-size: 0.14rem;
+        }
+      }
+    }
+    .close-btn {
+      top: -5px!important;
+      right: -19px!important;
+      margin-left: -14px;
+    }
+    .btn-list {
+      a {
+        width: 8.5rem !important;
+        height: 2rem !important;
+        margin-top: 0.3rem;
+        font-size: 1rem !important;
+        line-height: 2rem !important;
+      }
+    }
+  }
+}
 
 
 
