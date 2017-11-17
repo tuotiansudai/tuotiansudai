@@ -164,27 +164,7 @@ public class QuestionService {
     public BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, String loginName, int index) {
         long count = questionMapper.countQuestionsByKeywords(keywords);
         List<QuestionModel> questionModels = questionMapper.findQuestionsByKeywords(keywords, PaginationUtil.calculateOffset(index, 10, count), 10);
-        List<QuestionDto> items = questionModels.stream().map(questionModel -> {
-            String mobile;
-            if (questionModel.getLoginName().equals(loginName)) {
-                if (Strings.isNullOrEmpty(questionModel.getMobile())) {
-                    mobile = questionModel.getFakeMobile();
-                } else {
-                    mobile = questionModel.getMobile();
-                }
-            } else {
-                if (Strings.isNullOrEmpty(questionModel.getMobile())) {
-                    mobile = questionModel.getFakeMobile();
-                } else {
-                    mobile = MobileEncoder.encode(questionModel.getMobile());
-                }
-            }
-            return new QuestionDto(questionModel, mobile);
-        }).collect(Collectors.toList());
-
-        BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, 10, count), 10, count, items);
-        data.setStatus(true);
-        return new BaseDto<>(data);
+        return generatePaginationData(loginName, index, 10, count, questionModels, true);
     }
 
     public BaseDto<BasePaginationDataDto> findEmbodyAllQuestions(int index) {
