@@ -8,6 +8,10 @@ let $ownRecord = $('#myRecord');
 let $showMoreData = $('#show_more_listData');
 let $showLessData = $('#show_less_listData');
 let $tableListWrapper = $('#tableListWrapper');
+let $iconPrize = $('.icon_prize','.tip-list');
+let redWareUrl = require('../images/2017/double11/red_ware.png');
+let jdeUrl = require('../images/2017/double11/icon_jd.png');
+let experienceUrl = require('../images/2017/double11/experience_icon.png');
 
 if ($(document).width() < 790) {
     (function (doc, win) {
@@ -115,6 +119,8 @@ function getPrize(obj) {
         }
     });  //渲染中奖记录
 
+    drawCircle.scrollUp($('#doubleElevenContainer').find('.user-record'),1000);
+
     //通过判断是否登录显示隐藏相应的按钮
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -152,27 +158,51 @@ function getPrize(obj) {
                 switch (data.prize) {
                     case 'YEAR_END_AWARDS_ACTIVITY_JD_E_CARD_200':  //200元京东E卡
                         prizeKind=0;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+jdeUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_120': //120元红包
                         prizeKind=1;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+redWareUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_50':  //50元红包
                         prizeKind=2;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+redWareUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_10':  //10元红包
                         prizeKind=7;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+redWareUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_EXPERIENCE_GOLD_500':  //500元体验金
                         prizeKind=3;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+experienceUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_100':  //100元红包
                         prizeKind=6;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+redWareUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_20': //20元红包
                         prizeKind=5;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+redWareUrl+')'
+                        });
                         break;
                     case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_200':  //200元红包
                         prizeKind=4;
+                        $iconPrize.css({
+                            'backgroundImage':'url('+redWareUrl+')'
+                        });
                         break;
                 }
                 let prizeType=data.prizeType.toLowerCase();
@@ -181,6 +211,7 @@ function getPrize(obj) {
                 drawCircle.lotteryRoll({
                     elementId:'drawLotteryAreaSub',
                     speed:100,
+                    cycle: 5,
                     prize:prizeKind
                 },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
 
@@ -195,7 +226,9 @@ function getPrize(obj) {
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
-                layer.msg('不在活动时间范围内~');
+                layer.msg('不在活动时间范围内~'),{
+                    time: 3000
+                };
 
             } else if(data.returnCode == 4){
                 //今日没有抽奖机会了
@@ -216,12 +249,7 @@ function getPrize(obj) {
         $this.addClass('active').siblings().removeClass('active');
         contentCls.eq(index).show().siblings().hide();
         if((ifShowPageBtn) && index === 1) {
-            if ($(document).width() >= 790) {
-                //$pageNumber.show();
-            }
-            else {
-                $('.myRecordWrapper').css('overflow','scroll');
-            }
+            $('.myRecordWrapper').css('overflow','scroll');
         }else {
             //$pageNumber.hide();
         }
@@ -333,7 +361,8 @@ function activityStatus(nowDay) {
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
         let $rewardPicSrc = $('.prize_icon2').data('awardsrc');
-        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + '") no-repeat center center');
+        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + '") no-repeat');
+        $('.prize_icon2').css('background-size','contain');
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
@@ -354,6 +383,12 @@ function activityStatus(nowDay) {
 
 //页面初始
 activityStatus(todayDay);
+
+
+$('.login_pop').on('click',() => {
+    toLogin();
+});
+
 
 
 

@@ -81,7 +81,15 @@
             </div>
             <div class="btn-list"><a href="/loan-list" class="go-on small-btn">去使用</a></div>
         </div>
-
+        <div class="tip-list" id="test"  data-return="experience">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p class="success-text"></p>
+                <p class="icon_prize"></p>
+                <p class="reward-text"><em class="prizeValue"></em></p>
+            </div>
+            <div class="btn-list"><a href="/loan-list" class="go-on small-btn">去使用</a></div>
+        </div>
         <!--没有抽奖机会-->
         <div class="tip-list no-change-list" data-return="nochance">
             <div class="close-btn go-close"></div>
@@ -89,7 +97,7 @@
                 <p class="login-text"></p>
                 <p class="des-text"></p>
             </div>
-            <div class="btn-list btn-invest"><a href="/loan-list">去投资</a></div>
+            <div class="btn-list btn-invest go-close"><a>我知道啦</a></div>
         </div>
     </div>
 
@@ -97,11 +105,11 @@
     <div class="show_middle_box">
         <div class="title_sign title_sign2"></div>
         <div class="active_desc active_desc1">12月4日-12月31日活动期间，计算平台所有“岁末专享”项目累计年化投资金额，活动结束后进行结算，每达到一定金额，即对投资“岁末专享”项目的所有用户发放与其投资额对应比率的返现奖励。用户投资“岁末专享”项目即可参与本活动，最高可得自身专享标累计投资额的年化1%返现奖励。
-            <span class="strongText">注：每档返现奖励不累计发放。</span>
+            <br/><span class="strongText">注：每档返现奖励不累计发放。</span>
         </div>
         <div class="title_ammount">
             <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}元</div>
-            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a href="/login" target="_blank" class="myRank_info_No1" style="color:#fff600">登录</a></@global.isAnonymous>
+            <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a class="myRank_info_No1 login_pop" style="color:#fff600">登录</a></@global.isAnonymous>
         </div>
         </div>
         <div class="conversion_chart">
@@ -135,28 +143,40 @@
             <div class="percent_wrapper">
                 <div class="percent_wrapper_sub" data-percent="${ratio!}"></div>
                 <div class="scaleRate scaleRate1">
-                    <div class="scaleRateIcon"></div>
-                    <div class="scaleRateNo" style="right: 5%">0</div>
+                    <div class="toHideIcon">
+                        <div class="scaleRateIcon"></div>
+                    </div>
+                    <div class="scaleRateNo scaleRateNo1" style="right: 5%">0</div>
                 </div>
                 <div class="scaleRate scaleRate2">
-                    <div class="scaleRateIcon"></div>
+                    <div class="toHideIcon">
+                        <div class="scaleRateIcon"></div>
+                    </div>
                     <div class="scaleRateNo">0.2%</div>
                 </div>
                 <div class="scaleRate scaleRate3">
-                    <div class="scaleRateIcon"></div>
+                    <div class="toHideIcon">
+                        <div class="scaleRateIcon"></div>
+                    </div>
                     <div class="scaleRateNo">0.4%</div>
                 </div>
                 <div class="scaleRate scaleRate4">
-                    <div class="scaleRateIcon"></div>
+                    <div class="toHideIcon">
+                        <div class="scaleRateIcon"></div>
+                    </div>
                     <div class="scaleRateNo">0.6%</div>
                 </div>
                 <div class="scaleRate scaleRate5">
-                    <div class="scaleRateIcon"></div>
+                    <div class="toHideIcon">
+                        <div class="scaleRateIcon"></div>
+                    </div>
                     <div class="scaleRateNo">0.8%</div>
                 </div>
                 <div class="scaleRate scaleRate6">
-                    <div class="scaleRateIcon"></div>
-                    <div class="scaleRateNo">1%</div>
+                    <div class="toHideIcon">
+                        <div class="scaleRateIcon"></div>
+                    </div>
+                    <div class="scaleRateNo scaleRateNo6">1%</div>
                 </div>
             </div>
         </div>
@@ -166,7 +186,7 @@
     </div>
     <div class="show_middle_box">
         <div class="title_sign title_sign3"></div>
-        <div class="active_desc">12月4日-12月12日活动期间，每日24点计算当日新增投资排名，上榜者可获丰厚奖励，投资者在当日24点之前 进行的多次投资，金额可累计计算。</div>
+        <div class="active_desc">12月4日-12月12日活动期间，每日24点计算当日新增投资排名，上榜者可获丰厚奖励，投资者在当日24点之前进行的多次投资，金额可累计计算。</div>
         <div class="prize_list_wrapper">
             <div class="left_prize_wrapper">
                 <div class="prize_icon1"></div>
@@ -187,13 +207,13 @@
             <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking!}</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="myRank_info">我的排名：<a href="/login" target="_blank" class="myRank_info_No1">登录</a></span>
+            <span class="myRank_info">我的排名：<a class="myRank_info_No1 login_pop">登录</a></span>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
             <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${(investAmount/100)?string('0.00')}元</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="today_totalAccount">当日累计投资：<a href="/login" target="_blank" class="myRank_info_No2" style="color: #fff600">登录</a></span>
+            <span class="today_totalAccount">当日累计投资：<a class="myRank_info_No2 login_pop" style="color: #fff600">登录</a></span>
             </@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>
@@ -211,8 +231,8 @@
             </table>
         </div>
         <div class="show_data_btn">
-            <div class="show_listData" id="show_more_listData" style="display: none">显示更多 ></div>
-            <div class="show_listData" id="show_less_listData" style="display: none">收起 ></div>
+            <div class="show_listData" id="show_more_listData" style="display: none">显示更多<span class="show_more_icon"></span></div>
+            <div class="show_listData" id="show_less_listData" style="display: none">收起<span class="show_less_icon"></span></div>
         </div>
 
         <div class="date-button" id="investRanking-button">
@@ -247,11 +267,11 @@
     if(i==0) {
     reward='实物大奖';
     }
-    else if(i>0 && i<4) {
-    reward='1%加息券';
+    else if(i>0 && i<3) {
+    reward='0.5%加息券';
     }
     else {
-    reward='0.8%加息券';
+    reward='0.2%加息券';
     }
     %>
     <tr>
