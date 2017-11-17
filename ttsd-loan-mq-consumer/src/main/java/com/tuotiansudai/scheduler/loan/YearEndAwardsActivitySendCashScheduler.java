@@ -54,7 +54,7 @@ public class YearEndAwardsActivitySendCashScheduler {
             new AnnualizedAmount(3000000000l, Long.MAX_VALUE, 0.01));
 
 //    @Scheduled(cron = "0 0 10 1 1 ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0 16 17 11 ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 17 17 11 ?", zone = "Asia/Shanghai")
     public void yearEndAwardsSendCash(){
         logger.info("[year end awards activity] send cash begin");
 
