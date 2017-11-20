@@ -108,7 +108,7 @@
             <br/><span class="strongText">注：每档返现奖励不累计发放。</span>
         </div>
         <div class="title_ammount">
-            <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}元</div>
+            <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}万元</div>
             <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a class="myRank_info_No1 login_pop" style="color:#fff600">登录</a></@global.isAnonymous>
         </div>
         </div>
