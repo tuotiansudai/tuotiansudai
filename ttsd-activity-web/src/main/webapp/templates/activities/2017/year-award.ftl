@@ -181,7 +181,7 @@
             </div>
         </div>
         <div class="for_example_desc">
-            <span class="for_example_desc_icon">举个栗子：</span>拓小天投资180天“岁末专享“项目10万元，360天“岁末专享“项目15万元万元，则拓小天投资年化金额=10万×180÷360+15万×360÷360=20万元，如活动结束后平台“岁末专享”项目累计投资额（年化）满3000万，返现比例1%，则拓小天可获返现奖励为20万×1%=2000元。
+            <span class="for_example_desc_icon">举个栗子：</span>拓小天投资180天“岁末专享“项目10万元，360天“岁末专享“项目15万元万元，则拓小天投资年化金额=10万×180÷360+15万×360÷360=20万元，如活动结束后平台“岁末专享”项目累计投资额（年化）满2000万，返现比例1%，则拓小天可获返现奖励为20万×1%=2000元。
         </div>
     </div>
     <div class="show_middle_box">
@@ -257,8 +257,6 @@
     </div>
 </div>
     <#include "../../module/login-tip.ftl" />
-
-
 
 <script type="text/template" id="tplTable">
     <% for(var i = 0; i < records.length; i++) {
