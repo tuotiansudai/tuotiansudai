@@ -357,6 +357,7 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
         $contentRanking.hide();
+        $nodataInvest.show().html('不在活动时间范围内');
         $('.prize_icon2').addClass('prize_icon2_default');
     }
     else if (nowDayStr > endTime) {
@@ -364,7 +365,7 @@ function activityStatus(nowDay) {
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
-        $nodataInvest.show().html('活动已经结束');
+        $nodataInvest.show().html('不在活动时间范围内');
         $('.prize_icon2').addClass('prize_icon2_default');
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){

@@ -861,7 +861,7 @@ $width: 768px;
 
   .middle_prize_wrapper {
     float: left;
-    margin: 30px 30px 23px 30px;
+    margin: 5px 30px 23px 30px;
     width: 260px;
     height: 230px;
     background: #fff;
@@ -1222,7 +1222,15 @@ $width: 768px;
     }
     .No_icon {
       background: none;
+      font-size: .6rem;
     }
+  }
+}
+
+@media screen and (max-width:768px) {
+  .note-box span.buxiangxin {
+    font-size: .4rem;
+    line-height: 1rem;
   }
 }
 
@@ -1266,7 +1274,7 @@ $width: 768px;
     margin-left: -8rem !important;
     margin-top: -6rem !important;
     &.no-change-list {
-      background:url('../images/2017/double11/tips_bg_noChance.png') no-repeat center top!important;
+      background:url('../images/2017/year-award/noRewardChance.png') no-repeat center top!important;
       background-size: contain!important;
       .btn-invest {
         margin-top: 1rem;
