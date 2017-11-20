@@ -229,7 +229,7 @@ import static org.mockito.Mockito.*;
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
 
         when(this.redisWrapperClient.get(anyString())).thenReturn("");
-        when(this.paySyncClient.send(eq(CreditLoanNopwdActivateAccountMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenThrow(new PayException("error"));
+        when(this.paySyncClient.send(eq(CreditLoanNopwdActivateAccountMapper.class), requestModelCaptor.capture(), eq(ProjectTransferNopwdResponseModel.class))).thenThrow(new PayException("激活账户失败"));
 
         BaseDto<PayDataDto> dataDtoBaseDto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
 
@@ -238,7 +238,7 @@ import static org.mockito.Mockito.*;
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
-        assertThat(dataDtoBaseDto.getData().getMessage(), is("error"));
+        assertThat(dataDtoBaseDto.getData().getMessage(), is("激活账户失败"));
         assertFalse(dataDtoBaseDto.getData().getStatus());
     }
 
