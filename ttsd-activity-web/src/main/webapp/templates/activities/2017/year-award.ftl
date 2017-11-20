@@ -245,14 +245,14 @@
     <div class="show_middle_box">
         <div class="note-box">
             <b><span class="square_icon"></span><span class="square_icon"></span><span class="square_icon"></span>温馨提示<span class="square_icon square_icon1"></span><span class="square_icon"></span><span class="square_icon"></span></b>
-            <span class="No_icon">1、</span> 抽奖活动所获红包及体验金奖励即时发放，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
-            <span class="No_icon">2、</span> 返现奖励将于活动结束后1个工作日内统一发放至用户账户，可直接用于提现或继续投资；<br/>
-            <span class="No_icon">3、</span> 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；<br/>
-            <span class="No_icon">4、</span> 排行榜活动加息券奖励将于获奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
-            <span class="No_icon">5、</span> 拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；<br/>
-            <span class="No_icon">6、</span> 为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；<br/>
-            <span class="No_icon">7、</span> 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；<br/>
-            <span class="No_icon">8、</span> 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。
+            <span class="No_icon">1、</span><span class="buxiangxin"> 抽奖活动所获红包及体验金奖励即时发放，实物奖品将于活动结束后七个工作日内统一安排发放；</span><br/>
+            <span class="No_icon">2、</span><span class="buxiangxin"> 返现奖励将于活动结束后1个工作日内统一发放至用户账户，可直接用于提现或继续投资；</span><br/>
+            <span class="No_icon">3、</span><span class="buxiangxin"> 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</span><br/>
+            <span class="No_icon">4、</span><span class="buxiangxin"> 排行榜活动加息券奖励将于获奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；</span><br/>
+            <span class="No_icon">5、</span><span class="buxiangxin"> 拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</span><br/>
+            <span class="No_icon">6、</span><span class="buxiangxin"> 为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</span><br/>
+            <span class="No_icon">7、</span><span class="buxiangxin"> 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</span><br/>
+            <span class="No_icon">8、</span><span class="buxiangxin"> 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</span>
         </div>
     </div>
 </div>

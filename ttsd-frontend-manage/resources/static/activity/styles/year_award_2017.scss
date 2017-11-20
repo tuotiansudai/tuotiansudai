@@ -1222,7 +1222,15 @@ $width: 768px;
     }
     .No_icon {
       background: none;
+      font-size: .6rem;
     }
+  }
+}
+
+@media screen and (max-width:768px) {
+  .note-box span.buxiangxin {
+    font-size: .4rem;
+    line-height: 1rem;
   }
 }
 
