@@ -1184,35 +1184,19 @@ $width: 768px;
     font-size:16px;
     line-height: 29px;
     text-align: left;
-    @media screen and (max-width:768px) {
-      margin: 0;
-      font-size: .6rem;
-    }
     b {
       font-size: 20px;
       display: block;
       margin-bottom:30px;
       text-align: center;
-      @media screen and (max-width:768px) {
-        margin: .7rem 0;
-        font-size: 1.03rem;
-      }
       .square_icon {
         display: inline-block;
         margin-right: 6px;
         width: 11px;
         height: 11px;
         background: #fde72b;
-        @media screen and (max-width:768px) {
-          width: .45rem;
-          height: .45rem;
-          margin-right: .55rem;
-        }
         &.square_icon1 {
           margin-left: 6px;
-          @media screen and (max-width:768px) {
-            margin-left: .55rem;
-          }
         }
       }
     }
@@ -1224,9 +1208,28 @@ $width: 768px;
       padding-left: 5px;
       text-align: center;
       background: #0d0f34;
-      @media screen and (max-width:768px) {
-        background: none;
+    }
+  }
+}
+
+@media screen and (max-width:768px) {
+  .note-box {
+    margin: 0;
+    font-size: .6rem;
+    b {
+      margin: .7rem 0;
+      font-size: 1.03rem;
+      .square_icon {
+        width: .45rem;
+        height: .45rem;
+        margin-right: .55rem;
+        &.square_icon1 {
+          margin-left: .55rem;
+        }
       }
+    }
+    .No_icon {
+      background: none;
     }
   }
 }
@@ -1307,6 +1310,7 @@ $width: 768px;
         }
         &.reward-text {
           font-size:1rem!important;
+          margin-top: .3rem;
         }
         &.login-text {
           font-size: 0.2rem;

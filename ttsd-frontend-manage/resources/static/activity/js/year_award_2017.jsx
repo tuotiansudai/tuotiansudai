@@ -220,7 +220,7 @@ function getPrize(obj) {
                 drawCircle.lotteryRoll({
                     elementId:'drawLotteryAreaSub',
                     speed:100,
-                    cycle: 5,
+                    cycle: 30,
                     prize:prizeKind
                 },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
 
