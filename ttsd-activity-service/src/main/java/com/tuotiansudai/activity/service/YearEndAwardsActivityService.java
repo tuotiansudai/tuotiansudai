@@ -48,11 +48,11 @@ public class YearEndAwardsActivityService {
     private InvestMapper investMapper;
 
     private final List<AnnualizedAmount> annualizedAmounts = Lists.newArrayList(
-            new AnnualizedAmount(1000000000l, 1200000000l, 0.002),
-            new AnnualizedAmount(1200000000l, 1800000000l, 0.004),
-            new AnnualizedAmount(1800000000l, 2500000000l, 0.006),
-            new AnnualizedAmount(2500000000l, 3000000000l, 0.008),
-            new AnnualizedAmount(3000000000l, Long.MAX_VALUE, 0.01));
+            new AnnualizedAmount(200000000l, 600000000l, 0.002),
+            new AnnualizedAmount(600000000l, 800000000l, 0.004),
+            new AnnualizedAmount(800000000l, 1500000000l, 0.006),
+            new AnnualizedAmount(1500000000l, 2000000000l, 0.008),
+            new AnnualizedAmount(2000000000l, Long.MAX_VALUE, 0.01));
 
     public List<NewmanTyrantView> obtainRank(Date tradingTime) {
         if (tradingTime == null) {
