@@ -20,6 +20,7 @@ dependencies {
             project(':ttsd-edxactivity-model')
 
     testCompile project(':ttsd-user-service')
+    testCompile project(':ttsd-spring-extension')
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 

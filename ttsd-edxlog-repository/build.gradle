@@ -17,6 +17,7 @@ dependencies {
             project(':ttsd-edxlog-model')
 
     testCompile project(':ttsd-config')
+    testCompile project(':ttsd-spring-extension')
 }
 
 processResources.outputs.upToDateWhen { false }

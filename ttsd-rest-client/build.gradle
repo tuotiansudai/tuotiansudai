@@ -13,6 +13,7 @@ dependencies {
     compile project(':ttsd-config')
     compile project(':ttsd-util')
     compile project(':ttsd-edxask-model')
+    compile project(':ttsd-spring-extension')
     compile 'log4j:log4j:1.2.17'
 
     compile 'org.slf4j:slf4j-log4j12:1.7.13'
@@ -22,4 +23,6 @@ dependencies {
     compile "io.github.openfeign:feign-okhttp:$openFeignVersion"
     compile "io.github.openfeign:feign-slf4j:$openFeignVersion"
     compile "io.github.openfeign:feign-jaxrs:$openFeignVersion"
+
+
 }

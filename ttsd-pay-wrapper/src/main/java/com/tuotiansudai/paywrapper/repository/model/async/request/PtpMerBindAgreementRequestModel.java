@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.repository.model.async.request;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.model.AgreementType;
+import com.tuotiansudai.util.ETCDConfigReader;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         AsyncUmPayService asyncUmPayService = getService(dto);
         this.service = asyncUmPayService.getServiceName();
         this.userId = userId;
-        this.setNotifyUrl(MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.back.host"), asyncUmPayService.getNotifyCallbackPath()));
+        this.setNotifyUrl(MessageFormat.format("{0}/{1}", ETCDConfigReader.getValue("pay.callback.back.host"), asyncUmPayService.getNotifyCallbackPath()));
         if (dto.isNoPasswordInvest()) {
             this.userBindAgreementList = AgreementType.ZTBB0G00;
         } else if (dto.isFastPay()) {

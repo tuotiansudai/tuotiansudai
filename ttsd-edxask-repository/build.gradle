@@ -19,6 +19,7 @@ dependencies {
             project(':ttsd-edxask-model')
 
     testCompile project(':ttsd-config')
+    testCompile project(':ttsd-spring-extension')
     testCompile "commons-collections:commons-collections:3.2.2"
 }
 

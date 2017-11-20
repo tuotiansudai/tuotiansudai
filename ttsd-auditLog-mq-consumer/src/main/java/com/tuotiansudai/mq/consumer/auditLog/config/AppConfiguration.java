@@ -1,5 +1,7 @@
 package com.tuotiansudai.mq.consumer.auditLog.config;
 
+import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -10,16 +12,11 @@ import redis.clients.jedis.JedisPoolConfig;
         "com.tuotiansudai.util",
         "com.tuotiansudai.client"
 })
-@PropertySource(
-        ignoreResourceNotFound = true, value = {
-        "classpath:ttsd-env.properties",
-        "classpath:ttsd-biz.properties"
-})
 @EnableAspectJAutoProxy(exposeProxy = true)
 public class AppConfiguration {
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+        return new ETCDPropertyPlaceholderConfigurer();
     }
 }

@@ -9,6 +9,7 @@ import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMeta;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.util.ETCDConfigReader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,20 +24,13 @@ public class MQMigration {
     private static long QUEUE_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 60 * 60;//1 hour
 
     public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
-            return;
-        }
-        String configFile = args[0];
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(configFile));
-
-        String enabled = properties.getProperty("aliyun.mns.enabled");
+        String enabled = ETCDConfigReader.getValue("aliyun.mns.enabled");
         if (!"true".equals(enabled)) {
             return;
         }
-        String endPoint = properties.getProperty("aliyun.mns.endpoint");
-        String accessKeyId = properties.getProperty("aliyun.mns.accessKeyId");
-        String accessKeySecret = properties.getProperty("aliyun.mns.accessKeySecret");
+        String endPoint = ETCDConfigReader.getValue("aliyun.mns.endpoint");
+        String accessKeyId = ETCDConfigReader.getValue("aliyun.mns.accessKeyId");
+        String accessKeySecret = ETCDConfigReader.getValue("aliyun.mns.accessKeySecret");
 
         MNSClient mnsClient = getMnsClient(endPoint, accessKeyId, accessKeySecret);
 

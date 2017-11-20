@@ -16,5 +16,7 @@ dependencies {
     compile "org.mybatis:mybatis:$mybatisVersion"
     compile "org.mybatis:mybatis-spring:$mybatisSpringVersion"
     compile 'com.zaxxer:HikariCP:2.4.7'
+
+    testCompile project(':ttsd-spring-extension')
 }
 

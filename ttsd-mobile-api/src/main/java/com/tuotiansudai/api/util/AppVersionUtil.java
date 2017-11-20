@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.security.BufferedRequestWrapper;
 import com.tuotiansudai.spring.CurrentRequest;
+import com.tuotiansudai.util.ETCDConfigReader;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
@@ -20,29 +21,13 @@ import java.util.Properties;
 public class AppVersionUtil {
     private static Logger logger = Logger.getLogger(AppVersionUtil.class);
 
-    private static String serverAppVersion;
+    private static String serverAppVersion = ETCDConfigReader.getValue("mobile.app.version");
 
     public final static int low = -1;
 
     public final static int equal = 0;
 
     public final static int high = 1;
-
-    static {
-        if (StringUtils.isEmpty(serverAppVersion)) {
-            try {
-                Resource resourceService = new ClassPathResource("/ttsd-env.properties");
-                Properties properties = PropertiesLoaderUtils.loadProperties(resourceService);
-                if (properties != null) {
-                    serverAppVersion = properties.getProperty("mobile.app.version");
-                }
-            } catch (IOException e) {
-                logger.error("ttsd-env.properties 不存在!");
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
-
-    }
 
     public static int compareVersion() {
         String clientAppVersion = getAppVersion();

@@ -5,7 +5,8 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-job'),
             project(':ttsd-util'),
-            project(':ttsd-service')
+            project(':ttsd-service'),
+            project(':ttsd-spring-extension')
 }
 
 processResources.outputs.upToDateWhen { false }

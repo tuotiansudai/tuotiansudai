@@ -1,5 +1,6 @@
 package com.tuotiansudai.worker.monitor;
 
+import com.tuotiansudai.util.ETCDConfigReader;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 
@@ -11,17 +12,10 @@ import java.util.Properties;
 
 public class MQRunningStatusCheck {
     public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
-            return;
-        }
-        String configFile = args[0];
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(configFile));
-
-        String redisHost = properties.getProperty("common.redis.host");
-        int redisPort = Integer.parseInt(properties.getProperty("common.redis.port"));
-        String redisPassword = properties.getProperty("common.redis.password");
-        int redisDB = Integer.parseInt(properties.getProperty("common.redis.db"));
+        String redisHost = ETCDConfigReader.getValue("common.redis.host");
+        int redisPort = Integer.parseInt(ETCDConfigReader.getValue("common.redis.port"));
+        String redisPassword = ETCDConfigReader.getValue("common.redis.password");
+        int redisDB = Integer.parseInt(ETCDConfigReader.getValue("common.redis.db"));
 
         Jedis jedis = new Jedis(redisHost, redisPort);
         if (!StringUtils.isEmpty(redisPassword)) {

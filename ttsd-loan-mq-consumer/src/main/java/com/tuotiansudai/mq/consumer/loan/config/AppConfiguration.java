@@ -4,9 +4,10 @@ import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.quartz.JobStoreBuilder;
 import com.tuotiansudai.quartz.SchedulerBuilder;
 import com.tuotiansudai.rest.client.UserMapperConfiguration;
+import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.sql.DataSource;
 
@@ -20,14 +21,13 @@ import javax.sql.DataSource;
         "com.tuotiansudai.membership",
         "com.tuotiansudai.log"
 })
-@PropertySource(ignoreResourceNotFound = true, value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 @EnableAspectJAutoProxy(exposeProxy = true)
 @Import(UserMapperConfiguration.class)
 public class AppConfiguration {
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+        return new ETCDPropertyPlaceholderConfigurer();
     }
 
     @Bean

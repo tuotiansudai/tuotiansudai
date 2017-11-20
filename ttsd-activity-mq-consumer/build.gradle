@@ -33,6 +33,7 @@ dependencies {
     compile project(':ttsd-client')
     compile project(':ttsd-mq-client')
     compile project(':ttsd-edxactivity-repository')
+    compile project(':ttsd-spring-extension')
 
     compile "org.springframework.boot:spring-boot-starter"
 

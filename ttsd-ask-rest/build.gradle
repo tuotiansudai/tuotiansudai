@@ -37,6 +37,7 @@ dependencies {
     compile project(':ttsd-user-repository')
     compile project(':ttsd-util')
     compile project(':ttsd-client')
+    compile project(':ttsd-spring-extension')
 
     compile 'org.springframework.boot:spring-boot-starter'
     compile 'org.springframework.boot:spring-boot-starter-web'

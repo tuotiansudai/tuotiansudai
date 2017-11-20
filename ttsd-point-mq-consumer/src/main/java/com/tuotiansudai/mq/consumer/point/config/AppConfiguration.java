@@ -4,9 +4,9 @@ import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.point.service.impl.PointLotteryServiceImpl;
 import com.tuotiansudai.rest.client.UserMapperConfiguration;
+import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -23,17 +23,12 @@ import redis.clients.jedis.JedisPoolConfig;
                 PointLotteryServiceImpl.class,
         })
 })
-@PropertySource(
-        ignoreResourceNotFound = true, value = {
-        "classpath:ttsd-env.properties",
-        "classpath:ttsd-biz.properties"
-})
 @EnableAspectJAutoProxy(exposeProxy = true)
 @Import(UserMapperConfiguration.class)
 public class AppConfiguration {
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+        return new ETCDPropertyPlaceholderConfigurer();
     }
 }

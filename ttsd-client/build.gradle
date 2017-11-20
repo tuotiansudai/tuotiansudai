@@ -15,6 +15,7 @@ sourceSets {
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
 
+    testCompile project(':ttsd-spring-extension')
     compile project(':ttsd-dependency'),
             project(':ttsd-config'),
             project(':ttsd-util'),

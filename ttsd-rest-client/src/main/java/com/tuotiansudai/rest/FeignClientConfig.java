@@ -6,15 +6,16 @@ import com.tuotiansudai.rest.databind.date.deserializer.DateDeserializer;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.factory.RestClientScannerConfigurer;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
+import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
 import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.jaxrs.JAXRSContract;
 import feign.okhttp.OkHttpClient;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +24,12 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Configuration
-@PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"}, ignoreResourceNotFound = true)
 public class FeignClientConfig {
+
+    @Bean
+    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+        return new ETCDPropertyPlaceholderConfigurer();
+    }
 
     @Bean
     public RequestHeaderInterceptor requestHeaderInterceptor() {
