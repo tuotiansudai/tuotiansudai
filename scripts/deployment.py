@@ -29,7 +29,7 @@ class Deployment(object):
         self.clean()
         self.config_file(build_params)
         self.jcversion(build_params)
-        self.migrate_db(build_params)
+        self.migrate(build_params)
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
@@ -48,45 +48,9 @@ class Deployment(object):
         print "Generate config file..."
         config_deploy.deploy(build_params, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
 
-    def migrate_db(self, env='DEV'):
-        host = ETCD_HOST.get(env)
-        port = ETCD_PORT.get(env)
-        etcd = etcd3.client(host=host, port=port)
-
-        common_environment, _ = etcd.get('common.environment')
-        common_jdbc_host, _ = etcd.get('common.jdbc.host')
-        common_jdbc_port, _ = etcd.get('common.jdbc.port')
-
-        common_jdbc_username, _ = etcd.get('common.jdbc.username')
-        common_jdbc_password, _ = etcd.get('common.jdbc.password')
-
-        ask_jdbc_username, _ = etcd.get('ask.jdbc.username')
-        ask_jdbc_password, _ = etcd.get('ask.jdbc.password')
-
-        activity_jdbc_username, _ = etcd.get('activity.jdbc.username')
-        activity_jdbc_password, _ = etcd.get('activity.jdbc.password')
-
-        point_jdbc_username, _ = etcd.get("point.jdbc.username")
-        point_jdbc_password, _ = etcd.get("point.jdbc.password")
-
-        log_jdbc_username, _ = etcd.get("log.jdbc.username")
-        log_jdbc_password, _ = etcd.get("log.jdbc.password")
-
-        anxin_jdbc_username, _ = etcd.get("anxin.jdbc.username")
-        anxin_jdbc_password, _ = etcd.get("anxin.jdbc.password")
-
-        message_jdbc_username, _ = etcd.get("message.jdbc.username")
-        message_jdbc_password, _ = etcd.get("message.jdbc.password")
-
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'aa', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'ump_operations', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'sms_operations', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'job_worker', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'edxask', common_jdbc_host, common_jdbc_port, ask_jdbc_username, ask_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'edxactivity', common_jdbc_host, common_jdbc_port, activity_jdbc_username, activity_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'edxpoint', common_jdbc_host, common_jdbc_port, point_jdbc_username, point_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'edxlog', common_jdbc_host, common_jdbc_port, log_jdbc_username, log_jdbc_password))
-        sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(self._gradle, common_environment, 'edxmessage', common_jdbc_host, common_jdbc_port, message_jdbc_username, message_jdbc_password))
+    def migrate(self, env='DEV'):
+        from scripts import migrate_db
+        migrate_db.migrate(env=env)
 
 
     def compile(self):
