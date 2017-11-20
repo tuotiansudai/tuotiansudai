@@ -67,7 +67,6 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
             if(ReferrerRewardStatus.FORBIDDEN == view.getStatus()) {
                 view.setRewardAmount(0);
                 view.setRewardAmountStr("0.00");
-                view.setRewardTime(null);
             }else{
                 view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
             }
