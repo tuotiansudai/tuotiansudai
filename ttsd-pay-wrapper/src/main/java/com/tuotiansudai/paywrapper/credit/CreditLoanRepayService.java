@@ -187,6 +187,7 @@ public class CreditLoanRepayService {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(CreditLoanRepayNoPwdMapper.class, requestModel, ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setMessage(responseModel.getRetMsg());
+            payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("callbackUrl", requestModel.getRetUrl())
                     .build()));

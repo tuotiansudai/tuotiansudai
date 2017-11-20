@@ -124,7 +124,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
                             .build()),
                     REPAY_PAY_EXPIRE_SECOND);
             redisWrapperClient.setex(String.format(RENT_REPAY_PLAN_EXPIRED_REDIS_KEY, String.valueOf(huiZuRepayDto.getRepayPlanId())), 60 * 30, SyncRequestStatus.SENT.name());
-            return payAsyncClient.generateFormData(HuiZuRepayMapper.class, requestModel);
+            dto = payAsyncClient.generateFormData(HuiZuRepayMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(String.format("[HZ Password Repay:] id:%s mobile:%s period:%s repay fail", String.valueOf(huiZuRepayDto.getRepayPlanId()), huiZuRepayDto.getMobile(), huiZuRepayDto.getPeriod()), e);
             payFormDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));

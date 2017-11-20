@@ -180,10 +180,8 @@ public class CreditLoanActivateAccountService {
         } catch (PayException e) {
             logger.error(MessageFormat.format("[慧租无密激活账户] error, mobile:{0}", mobile), e);
             this.sendFatalNotify(MessageFormat.format("慧租无密激活账户异常，mobile:{0}", mobile));
-
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setMessage("激活账户失败");
+            payDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
         }
         return baseDto;
     }
