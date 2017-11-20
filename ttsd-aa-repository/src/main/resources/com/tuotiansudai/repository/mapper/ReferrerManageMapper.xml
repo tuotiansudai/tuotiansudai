@@ -517,9 +517,8 @@
             on rr.login_name = i.login_name
             and rr.referrer_login_name = irr.referrer_login_name
         <where>
-            irr.status != 'FORBIDDEN'
             <if test="referrerLoginName != null and referrerLoginName != ''" >
-                and irr.referrer_login_name = #{referrerLoginName}
+                irr.referrer_login_name = #{referrerLoginName}
             </if>
             <if test="loginName != null and loginName != ''" >
                 and i.login_name=#{loginName}
