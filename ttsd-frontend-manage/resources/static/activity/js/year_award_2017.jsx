@@ -80,9 +80,18 @@ getPrize(drawCircle);
 
 
 // 设置进度条的比例
-
 let $percent = $('.percent_wrapper_sub').data('percent') + '%';
+// let $percent = '100%';
 $('.percent_wrapper_sub').css('width', $percent);
+let iconArr = [0,20,40,60,80,100];
+for(let i = 0;i < iconArr.length;i++) {
+    let item = iconArr[i];
+    if (item <= parseInt($percent) && item != 0) {
+        let classNames = '.scaleRate' + (i + 1);
+        $(classNames).find('.scaleRateIcon').addClass('scaleRateIconDark');
+        $(classNames).find('.scaleRateNo').addClass('scaleRateNoDark');
+    }
+}
 
 function getPrize(obj) {
     let tipGroupObj = {};
@@ -348,7 +357,7 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
         $contentRanking.hide();
-        $('.prize_icon2').addClass('.prize_icon2_default');
+        $('.prize_icon2').addClass('prize_icon2_default');
     }
     else if (nowDayStr > endTime) {
         //活动已经结束
@@ -356,7 +365,7 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
         $nodataInvest.show().html('活动已经结束');
-        $('.prize_icon2').addClass('.prize_icon2_default');
+        $('.prize_icon2').addClass('prize_icon2_default');
 
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中

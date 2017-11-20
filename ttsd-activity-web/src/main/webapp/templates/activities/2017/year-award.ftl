@@ -118,23 +118,23 @@
                 <div class="right_head_title">返现比率（年化）</div>
             </div>
             <div class="account_item">
-                <span class="accountNum">1000万元</span>
+                <span class="accountNum">200万元</span>
                 <span class="accountRate">0.2%</span>
             </div>
             <div class="account_item">
-                <span class="accountNum">1200万元</span>
+                <span class="accountNum">600万元</span>
                 <span class="accountRate">0.4%</span>
             </div>
             <div class="account_item">
-                <span class="accountNum">1800万元</span>
+                <span class="accountNum">800万元</span>
                 <span class="accountRate">0.6%</span>
             </div>
             <div class="account_item">
-                <span class="accountNum">2500万元</span>
+                <span class="accountNum">1500万元</span>
                 <span class="accountRate">0.8%</span>
             </div>
             <div class="account_item">
-                <span class="accountNum">3000万元</span>
+                <span class="accountNum">2000万元</span>
                 <span class="accountRate">1%</span>
             </div>
         </div>
@@ -181,7 +181,7 @@
             </div>
         </div>
         <div class="for_example_desc">
-            <span class="for_example_desc_icon">举个栗子：</span>拓小天投资180天 “岁末专享”项目10万元，360天 “岁末专享” 项目15万元，则拓小天投资年化金额=10万×180÷360+15万×360÷360=20万元，活动结束返现比例为1%，则拓小天可获返现奖励为20万×1%=2000元。
+            <span class="for_example_desc_icon">举个栗子：</span>拓小天投资180天“岁末专享“项目10万元，360天“岁末专享“项目15万元万元，则拓小天投资年化金额=10万×180÷360+15万×360÷360=20万元，如活动结束后平台“岁末专享”项目累计投资额（年化）满3000万，返现比例1%，则拓小天可获返现奖励为20万×1%=2000元。
         </div>
     </div>
     <div class="show_middle_box">
@@ -190,15 +190,15 @@
         <div class="prize_list_wrapper">
             <div class="left_prize_wrapper">
                 <div class="prize_icon1"></div>
-                <div class="prize_icon_desc prize_icon_desc1"><span class="prize_icon_desc_head">2~3名</span><br/><span class="prize_icon_desc_foot">0.5%加息券</span></div>
+                <div class="prize_icon_desc prize_icon_desc1"><span class="prize_icon_desc_head">2~3名</span> <span class="prize_icon_desc_foot">0.5%加息券</span></div>
             </div>
             <div class="middle_prize_wrapper">
                 <div class="prize_icon2" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"></div>
-                <div class="prize_icon_desc"><span class="prize_icon_desc_head">今日大奖</span><br/><span class="prize_icon_desc_foot"><#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if></span></div>
+                <div class="prize_icon_desc"><span class="prize_icon_desc_head">今日大奖</span> <span class="prize_icon_desc_foot"><#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if></span></div>
             </div>
             <div class="right_prize_wrapper">
                 <div class="prize_icon3"></div>
-                <div class="prize_icon_desc prize_icon_desc3"><span class="prize_icon_desc_head">4~10名</span><br/><span class="prize_icon_desc_foot">0.2%加息券</span></div>
+                <div class="prize_icon_desc prize_icon_desc3"><span class="prize_icon_desc_head">4~10名</span> <span class="prize_icon_desc_foot">0.2%加息券</span></div>
             </div>
         </div>
         <div class="rank_list_survey" id="rank_list_survey">

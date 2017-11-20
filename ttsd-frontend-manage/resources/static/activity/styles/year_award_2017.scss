@@ -784,13 +784,21 @@ $width: 768px;
       .scaleRateIcon {
         width: 2px;
         height: 19px;
-        background: url("../images/2017/year-award/percent_point_icon.png") no-repeat;
+        background: url("../images/2017/year-award/percent_point_icon_dark.png") no-repeat;
         background-size: contain;
+        &.scaleRateIconDark {
+          background: url("../images/2017/year-award/percent_point_icon.png") no-repeat;
+          background-size: contain;
+        }
       }
       .scaleRateNo {
         position: relative;
         line-height: 23px;
         right: 20%;
+        color: #7b7c7e;
+        &.scaleRateNoDark {
+          color: #fde72b;
+        }
       }
     }
   }
@@ -860,8 +868,8 @@ $width: 768px;
   .middle_prize_wrapper {
     float: left;
     margin: 30px 30px 23px 30px;
-    width: 300px;
-    height: 200px;
+    width: 260px;
+    height: 230px;
     background: #fff;
     border-radius: 13px;
     @media screen and (max-width:768px) {
@@ -873,12 +881,16 @@ $width: 768px;
       height: 10.4rem;
     }
     .prize_icon2 {
-      margin: 22px auto;
-      width: 103px;
-      height: 110px;
+      margin: 10px auto;
+      width: 170px;
+      height: 160px;
       &.prize_icon2_default {
-        background: url("../images/2017/year-award/recordGift_default.png") no-repeat;
+        background: url("../images/2017/year-award/recordGift_defaultPc.png") no-repeat;
         background-size: contain;
+        @media screen and (max-width:768px) {
+          background: url("../images/2017/year-award/recordGift_default.png") no-repeat;
+          background-size: contain;
+        }
       }
       @media screen and (max-width:768px) {
         margin: .65rem auto;
@@ -920,14 +932,15 @@ $width: 768px;
     .prize_icon_desc {
       &.prize_icon_desc1, &.prize_icon_desc3{
         height: 1.6rem;
+        line-height: 1.6rem;
         font-size: .6rem;
         .prize_icon_desc_head {
           height: .8rem;
-          line-height: 1.2rem;
+          line-height: .8rem;
         }
         .prize_icon_desc_foot {
           height: .8rem;
-          line-height: .4rem;
+          line-height: .8rem;
         }
       }
     }
@@ -935,32 +948,34 @@ $width: 768px;
   .prize_icon_desc {
     position: relative;
     width: 100%;
-    height: 47px;
+    height: 50px;
+    line-height: 50px;
     font-size: 16px;
     background: #848594;
     border-radius: 0 0 13px 13px;
     color: #d6d6db;
     @media screen and (max-width:768px) {
       height: 2.5rem;
+      line-height: 2.5rem;
       font-size: .825rem;
     }
     .prize_icon_desc_head {
-      position: absolute;
-      top: -2px;
-      left: 22px;
-      @media screen and (max-width:768px) {
-        left: 1rem;
-        top: -.1rem;
-      }
+      //position: absolute;
+      //top: -2px;
+      //left: 22px;
+      //@media screen and (max-width:768px) {
+      //  left: 1rem;
+      //  top: -.1rem;
+      //}
     }
     .prize_icon_desc_foot {
-      position: absolute;
-      bottom: -3px;
-      left: 22px;
-      @media screen and (max-width:768px) {
-        bottom: -.2rem;
-        left: 1rem;
-      }
+      //position: absolute;
+      //bottom: -3px;
+      //left: 22px;
+      //@media screen and (max-width:768px) {
+      //  bottom: -.2rem;
+      //  left: 1rem;
+      //}
     }
   }
 }
