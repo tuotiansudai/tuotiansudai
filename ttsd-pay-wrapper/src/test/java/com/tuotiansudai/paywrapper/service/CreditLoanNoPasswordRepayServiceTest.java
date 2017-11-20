@@ -155,6 +155,7 @@ import static org.mockito.Mockito.*;
         accountModel.setNoPasswordInvest(true);
 
         ProjectTransferNopwdResponseModel responseModel = new ProjectTransferNopwdResponseModel();
+        responseModel.setRetCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
         when(userMapper.lockByLoginName(anyString())).thenReturn(new UserModel());
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
 
@@ -178,7 +179,7 @@ import static org.mockito.Mockito.*;
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));
 
         assertFalse(dto.getData().getStatus());
-        assertThat(dto.getData().getCode(), is("0000"));
+        assertThat(dto.getData().getCode(), is(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR)));
         assertNotNull(dto.getData().getExtraValues());
     }
 

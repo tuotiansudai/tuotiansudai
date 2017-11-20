@@ -89,32 +89,26 @@ public class CreditLoanRepayService {
 
         if (!this.checkAmount(orderId, amount)) {
             payFormDataDto.setMessage("还款金额必须大于零");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
         }
 
         AccountModel account = this.getAccount(orderId, mobile);
         if (account == null) {
             payFormDataDto.setMessage("用户未开通支付账户");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
         }
 
         if (this.isRepaying(orderId)) {
             payFormDataDto.setMessage("还款交易进行中, 请30分钟后查看");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
-            return dto;
-        }
-
-        if (this.isRepaying(orderId)) {
-            payFormDataDto.setMessage("还款交易进行中, 请30分钟后查看");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.LOCKED));
             return dto;
         }
 
         if (this.isFinished(orderId)) {
             payFormDataDto.setMessage("还款已完成, 请勿重复还款");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.FORBIDDEN));
             return dto;
         }
 
@@ -151,32 +145,32 @@ public class CreditLoanRepayService {
 
         if (!this.checkAmount(orderId, amount)) {
             payDataDto.setMessage("还款金额必须大于零");
-            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
         }
 
         AccountModel account = this.getAccount(orderId, mobile);
         if (account == null) {
             payDataDto.setMessage("用户未开通支付账户");
-            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
         }
 
         if (!account.isNoPasswordInvest()) {
             payDataDto.setMessage("用户未开通免密支付功能");
-            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
         }
 
         if (this.isRepaying(orderId)) {
             payDataDto.setMessage("还款交易进行中, 请30分钟后查看");
-            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payDataDto.setCode(String.valueOf(HttpStatus.LOCKED));
             return dto;
         }
 
         if (this.isFinished(orderId)) {
             payDataDto.setMessage("您已还款成功");
-            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payDataDto.setCode(String.valueOf(HttpStatus.FORBIDDEN));
             return dto;
         }
 
@@ -193,6 +187,7 @@ public class CreditLoanRepayService {
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(CreditLoanRepayNoPwdMapper.class, requestModel, ProjectTransferNopwdResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setMessage(responseModel.getRetMsg());
+            payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("callbackUrl", requestModel.getRetUrl())
                     .build()));
