@@ -225,11 +225,7 @@ function getPrize(obj) {
                         speed:100,
                         cycle: 30,
                         prize:prizeKind
-                    },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
-
-                    setTimeout(() => {
-                        ifClick = false;
-                    },3000)
+                    },tipGroupObj[prizeType],() => {ifClick = false}); // 参数1：抽奖参数； 参数2：提示信息
 
                 } else if(data.returnCode == 1) {
                     //没有抽奖机会
