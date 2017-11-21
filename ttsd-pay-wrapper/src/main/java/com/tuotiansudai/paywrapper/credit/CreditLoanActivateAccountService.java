@@ -95,19 +95,19 @@ public class CreditLoanActivateAccountService {
         AccountModel account = this.getAccount(mobile);
         if (account == null) {
             payFormDataDto.setMessage("用户未开通支付账户");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_FAILED));
             return dto;
         }
 
         if (this.isActive(mobile)) {
             payFormDataDto.setMessage("正在激活账户, 请30分钟后查看");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.LOCKED));
             return dto;
         }
 
         if (!this.checkActivateAccountStatus(mobile)) {
             payFormDataDto.setMessage("您已经激活过账户");
-            payFormDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payFormDataDto.setCode(String.valueOf(HttpStatus.FORBIDDEN));
             return dto;
         }
 
@@ -180,10 +180,8 @@ public class CreditLoanActivateAccountService {
         } catch (PayException e) {
             logger.error(MessageFormat.format("[慧租无密激活账户] error, mobile:{0}", mobile), e);
             this.sendFatalNotify(MessageFormat.format("慧租无密激活账户异常，mobile:{0}", mobile));
-
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setMessage("激活账户失败");
+            payDataDto.setCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
         }
         return baseDto;
     }

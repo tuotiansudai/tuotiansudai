@@ -67,7 +67,7 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferNopwdRequestModel newHuiZuRepayNopwdRequest(String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, Source.HUI_ZU, UmPayServType.TRANSFER_IN_REPAY, UmPayParticType.INVESTOR, AsyncUmPayService.HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER);
+        return new ProjectTransferNopwdRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, Source.HUI_ZU, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, AsyncUmPayService.HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER);
     }
 
     public static ProjectTransferNopwdRequestModel newCreditLoanActivateAccountNopwdRequest(String orderId, String userId, String amount) {

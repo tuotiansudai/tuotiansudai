@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -95,8 +97,10 @@ public class YearEndAwardsActivityService {
         Optional<AnnualizedAmount> reward = annualizedAmounts.stream().filter(annualizedAmount -> annualizedAmount.getMinAmount() <= sumAnnualizedAmount && sumAnnualizedAmount < annualizedAmount.getMaxAmount()).findAny();
         long userRewards = amountMaps.containsKey(loginName) ? new Double(amountMaps.get(loginName) * (reward.map(o->o.getRatio()).orElse(0D))).longValue() : 0;
         double ratio = sumAnnualizedAmount * 1.0 / 3000000000l;
+        DecimalFormat format = new DecimalFormat("0.00");
+        format.setRoundingMode(RoundingMode.FLOOR);
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("sumAnnualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))
+                .put("sumAnnualizedAmount", format.format(sumAnnualizedAmount))
                 .put("rewards", AmountConverter.convertCentToString(userRewards))
                 .put("ratio", String.valueOf(ratio < 1 ? (int)Math.floor(ratio * 100) : 100))
                 .build());
