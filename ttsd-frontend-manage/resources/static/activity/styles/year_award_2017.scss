@@ -1215,12 +1215,14 @@ $width: 768px;
 @media screen and (max-width:768px) {
   .note-box {
     margin: 0;
+    margin-top: .5rem;
     //font-size: .6rem;
     b {
       margin: 0;
       font-size: 1.03rem;
       &.textLeft {
         font-size: .65rem;
+        line-height: 1rem;
       }
       .square_icon {
         width: .45rem;
@@ -1235,14 +1237,6 @@ $width: 768px;
       background: none;
       font-size: .6rem;
     }
-  }
-}
-
-@media screen and (max-width:768px) {
-  .note-box span.buxiangxin {
-    //display: inline-block;
-    font-size: .4rem;
-    line-height: 1rem;
   }
 }
 

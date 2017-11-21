@@ -244,7 +244,7 @@
 
     <div class="show_middle_box">
         <div class="note-box limitHeight">
-            <b><span class="square_icon"></span><span class="square_icon"></span><span class="square_icon"></span>温馨提示<span class="square_icon square_icon1"></span><span class="square_icon"></span><span class="square_icon"></span></b>
+            <b class="note-box-title"><span class="square_icon"></span><span class="square_icon"></span><span class="square_icon"></span>温馨提示<span class="square_icon square_icon1"></span><span class="square_icon"></span><span class="square_icon"></span></b>
             <b class="textLeft"><span class="No_icon">1、</span> 抽奖活动所获红包及体验金奖励即时发放，实物奖品将于活动结束后七个工作日内统一安排发放；</b>
             <b class="textLeft"><span class="No_icon">2、</span> 返现奖励将于活动结束后1个工作日内统一发放至用户账户，可直接用于提现或继续投资；</b>
             <b class="textLeft"><span class="No_icon">3、</span> 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</b>
