@@ -28,7 +28,7 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 }

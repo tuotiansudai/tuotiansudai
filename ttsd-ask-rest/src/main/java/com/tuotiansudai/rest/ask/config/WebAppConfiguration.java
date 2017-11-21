@@ -12,7 +12,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 public class WebAppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 }

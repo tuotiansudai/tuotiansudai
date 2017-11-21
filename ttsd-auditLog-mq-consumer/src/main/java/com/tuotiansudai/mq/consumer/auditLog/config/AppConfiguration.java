@@ -16,7 +16,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 }

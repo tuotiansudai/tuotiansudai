@@ -17,7 +17,7 @@ public class Application {
     }
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyOverrideConfigurer() {
+    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 }
