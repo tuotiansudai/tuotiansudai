@@ -52,7 +52,7 @@ class Deployment(object):
 
     def migrate(self, etcd):
         from scripts import migrate_db
-        migrate_db.migrate(etcd)
+        migrate_db.migrate(self._gradle, etcd)
 
     def compile(self):
         print "Compiling..."
