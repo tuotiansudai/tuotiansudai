@@ -94,7 +94,7 @@ giftCircleDraw.prototype.noRotateFn = function (tipMessage) {
 };
 
 //类似九分隔的变换效果
-giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage) {
+giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage,callback) {
 
     // opt参数的格式为
     // elementId为抽奖部分最外层dom的ID
@@ -109,7 +109,7 @@ giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage) {
         lotteryUnit.rollResult(lotteryUnit.initOpt,function () {
             thisFun.GiftRecord();
             thisFun.MyGift();
-            thisFun.tipWindowPop(tipMessage);
+            thisFun.tipWindowPop(tipMessage,callback);
         });
     }
 };
@@ -169,7 +169,9 @@ giftCircleDraw.prototype.hoverScrollList = function (domName, length) {
 giftCircleDraw.prototype.tipWindowPop = function (tipMessage, callback) {
     $(tipMessage).show();
     commonFun.popWindow(tipMessage.outerHTML);
-    callback && callback();
+    setTimeout(() => {
+        callback && callback();
+    },0);
 };
 
 //tab switch
