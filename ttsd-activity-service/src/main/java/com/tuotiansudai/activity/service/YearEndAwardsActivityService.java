@@ -100,7 +100,7 @@ public class YearEndAwardsActivityService {
         DecimalFormat format = new DecimalFormat("0.00");
         format.setRoundingMode(RoundingMode.FLOOR);
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("sumAnnualizedAmount", format.format(sumAnnualizedAmount))
+                .put("sumAnnualizedAmount", format.format(sumAnnualizedAmount / 1000000D))
                 .put("rewards", AmountConverter.convertCentToString(userRewards))
                 .put("ratio", String.valueOf(ratio < 1 ? (int)Math.floor(ratio * 100) : 100))
                 .build());
