@@ -30,7 +30,6 @@ configurations {
 }
 
 dependencies {
-    compile project(':ttsd-config')
     compile project(':ttsd-rest')
     compile project(':ttsd-edxask-repository')
     compile project(':ttsd-edxask-model')

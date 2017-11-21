@@ -1,31 +1,12 @@
 import os
 import sys
 
-import etcd3
 from paver.shell import sh
 
 sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 
-ETCD_HOST = {'DEV': '127.0.0.1',
-             'QA1': '192.168.1.139',
-             'QA2': '192.168.1.139',
-             'QA3': '192.168.1.139',
-             'QA4': '192.168.1.139',
-             'QA5': '192.168.1.139'}
 
-ETCD_PORT = {'DEV': '2379',
-             'QA1': '23791',
-             'QA2': '23791',
-             'QA3': '23791',
-             'QA4': '23791',
-             'QA5': '23791'}
-
-
-def migrate(env='DEV'):
-    host = ETCD_HOST.get(env)
-    port = ETCD_PORT.get(env)
-    etcd = etcd3.client(host=host, port=port)
-
+def migrate(etcd):
     common_environment, _ = etcd.get('common.environment')
     common_jdbc_host, _ = etcd.get('common.jdbc.host')
     common_jdbc_port, _ = etcd.get('common.jdbc.port')

@@ -4,32 +4,34 @@ from paver.shell import sh
 import config_deploy
 
 
-ETCD_HOST = {'DEV': '127.0.0.1',
-             'QA1': '192.168.1.139',
-             'QA2': '192.168.1.139',
-             'QA3': '192.168.1.139',
-             'QA4': '192.168.1.139',
-             'QA5': '192.168.1.139'}
-
-ETCD_PORT = {'DEV': '2379',
-             'QA1': '23791',
-             'QA2': '23791',
-             'QA3': '23791',
-             'QA4': '23791',
-             'QA5': '23791'}
-
 class Deployment(object):
+    etcd_host = {'DEV': '127.0.0.1',
+                 'QA1': '192.168.1.139',
+                 'QA2': '192.168.1.139',
+                 'QA3': '192.168.1.139',
+                 'QA4': '192.168.1.139',
+                 'QA5': '192.168.1.139'}
+
+    etcd_port = {'DEV': '2379',
+                 'QA1': '23791',
+                 'QA2': '23791',
+                 'QA3': '23791',
+                 'QA4': '23791',
+                 'QA5': '23791'}
 
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
-    _gradle='/opt/gradle/latest/bin/gradle'
-    _dockerCompose='/usr/local/bin/docker-compose'
-    _paver='/usr/bin/paver'
+    _gradle = '/opt/gradle/latest/bin/gradle'
+    _dockerCompose = '/usr/local/bin/docker-compose'
+    _paver = '/usr/bin/paver'
 
     def deploy(self, build_params):
+        host = self.etcd_host.get(build_params.get('env', 'DEV'))
+        port = self.ETCD_PORT.get((build_params.get('env', 'DEV')))
+        etcd = etcd3.client(host=host, port=port)
         self.clean()
-        self.config_file(build_params)
+        self.config_file(etcd, build_params)
         self.jcversion(build_params)
-        self.migrate(build_params)
+        self.migrate(etcd)
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
@@ -44,14 +46,13 @@ class Deployment(object):
         print self._gradle
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
-    def config_file(self, build_params):
+    def config_file(self, etcd, build_params):
         print "Generate config file..."
-        config_deploy.deploy(build_params, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
+        config_deploy.deploy(etcd, build_params)
 
-    def migrate(self, env='DEV'):
+    def migrate(self, etcd):
         from scripts import migrate_db
-        migrate_db.migrate(env=env)
-
+        migrate_db.migrate(etcd)
 
     def compile(self):
         print "Compiling..."
@@ -102,11 +103,9 @@ class Deployment(object):
         sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static.zip -d static')
 
-
         sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
-
 
     def init_docker(self):
         print "Initialing docker..."
@@ -118,7 +117,8 @@ class Deployment(object):
 
     def _remove_old_container(self, suoder):
         sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder, self._dockerCompose))
+        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
+                                                                                               self._dockerCompose))
 
     def _start_new_container(self, sudoer):
         sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))

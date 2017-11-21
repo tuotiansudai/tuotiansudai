@@ -51,12 +51,12 @@ dependencies {
 }
 
 
-task consumerCheck(dependsOn: ':ttsd-config:classes', type: JavaExec) {
+task consumerCheck(type: JavaExec) {
     main = 'com.tuotiansudai.worker.monitor.MQRunningStatusCheck'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task clearWorkerMonitorStatus(dependsOn: ':ttsd-config:classes', type: JavaExec) {
+task clearWorkerMonitorStatus(type: JavaExec) {
     main = 'com.tuotiansudai.worker.monitor.MQRunningStatusClear'
     classpath = sourceSets.main.runtimeClasspath
 }

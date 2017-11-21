@@ -1,6 +1,3 @@
-import org.flywaydb.gradle.FlywayExtension
-import org.flywaydb.gradle.task.FlywayMigrateTask
-
 buildscript {
     repositories {
         jcenter()
@@ -8,13 +5,11 @@ buildscript {
 
     dependencies {
         classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
-        classpath group: 'com.cdancy', name: 'gradle-etcd-rest-plugin', version: '0.0.3', changing: true
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'org.flywaydb.flyway'
-apply plugin: 'gradle-etcd-rest-plugin'
 
 version = '1.0'
 
@@ -37,35 +32,7 @@ dependencies {
 }
 
 processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = "${configPath}/ttsd-config"
-    if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}/ttsd-env.properties") {
-        filter { String line ->
-            if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
-                return "common.jdbc.host=${dbhost}"
-            }
-
-            if (project.hasProperty("dbport") && line.startsWith("common.jdbc.port=")) {
-                return "common.jdbc.port=${dbport}"
-            }
-
-            if (project.hasProperty("redishost") && line.startsWith("common.redis.host=")) {
-                return "common.redis.host=${redishost}"
-            }
-
-            if (project.hasProperty("redisport") && line.startsWith("common.redis.port=")) {
-                return "common.redis.port=${redisport}"
-            }
-            line
-        }
-        into '/'
-    }
-    from("${innerConfigPath}/ttsd-biz.properties") {
-        into '/'
-    }
+    exclude("${project.projectDir.getPath()}/src/main/resources/*.properties")
 }
 
 /**
@@ -79,11 +46,35 @@ processResources {
 flyway {
     outOfOrder = true
     validateOnMigrate = false
-    locations = ["filesystem:db_migration/${database}"]
-    schemas = ["${database}"]
+    def defaultDatabase = 'aa'
+    def defaultHost = '192.168.33.10'
+    def defaultPort = '3306'
+    def defaultEnv = 'DEV'
+    def defaultUsername = 'root'
+    def defaultPwd = 'root'
+    if (project.hasProperty('database')) {
+        defaultDatabase = database
+    }
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport
+    }
+    if (project.hasProperty('env')) {
+        defaultEnv = env
+    }
+    if (project.hasProperty('username')) {
+        defaultUsername = username
+    }
+    if (project.hasProperty('pwd')) {
+        defaultPwd = pwd
+    }
 
-    url = "${env}" == "PRODUCTION" ? "jdbc:mysql://${host}:${port}/${database}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${host}:${port}?useUnicode=true&characterEncoding=UTF-8"
-    user = "${username}"
-    password = "${pwd}"
-    println password
+    locations = ["filesystem:db_migration/${defaultDatabase}"]
+    schemas = ["${defaultDatabase}"]
+
+    url = "${defaultEnv}" == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    user = "${defaultUsername}"
+    password = "${defaultPwd}"
 }

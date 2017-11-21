@@ -29,7 +29,6 @@ configurations{
 }
 
 dependencies {
-    compile project(':ttsd-config')
     compile project(':ttsd-client')
     compile project(':ttsd-mq-client')
     compile project(':ttsd-edxactivity-repository')

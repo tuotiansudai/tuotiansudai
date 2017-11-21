@@ -16,7 +16,6 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-edxlog-model')
 
-    testCompile project(':ttsd-config')
     testCompile project(':ttsd-spring-extension')
 }
 

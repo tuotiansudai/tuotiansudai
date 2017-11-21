@@ -208,11 +208,6 @@ def only_point():
     """
     fab_command("point")
 
-@task
-def migrate():
-    from scripts import migrate_db
-    migrate_db.migrate()
-
 
 def generate_git_log_file():
     from paver.shell import sh
