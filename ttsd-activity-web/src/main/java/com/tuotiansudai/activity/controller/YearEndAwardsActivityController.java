@@ -103,6 +103,7 @@ public class YearEndAwardsActivityController {
     @ResponseBody
     @RequestMapping(value = "/all-list", method = RequestMethod.GET)
     public List<UserLotteryPrizeView> getPrizeRecordByAll(@RequestParam(value = "activityCategory", required = false) ActivityCategory activityCategory) {
-        return lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, activityCategory).subList(0, 500);
+        List<UserLotteryPrizeView> lotteryPrizeViews = lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, activityCategory);
+        return lotteryPrizeViews.size() > 500 ? lotteryPrizeViews.subList(0, 500) : lotteryPrizeViews;
     }
 }
