@@ -3,6 +3,7 @@ package com.tuotiansudai.rest.support.client.factory;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
+import com.tuotiansudai.util.ETCDConfigReader;
 import feign.*;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
@@ -39,8 +40,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
 
     private T createBean(Class<T> restClientInterface) {
         RestClient restClient = restClientInterface.getAnnotation(RestClient.class);
-        Environment environment = applicationContext.getBean(Environment.class);
-        String restClientUrl = environment.resolvePlaceholders(restClient.url());
+        String restClientUrl = ETCDConfigReader.getValue(restClient.url());
         return Feign.builder()
                 .logger(new Slf4jLogger(restClientInterface))
                 .client(client)
