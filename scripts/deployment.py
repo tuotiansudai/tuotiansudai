@@ -26,7 +26,7 @@ class Deployment(object):
 
     def deploy(self, build_params):
         host = self.etcd_host.get(build_params.get('env', 'DEV'))
-        port = self.ETCD_PORT.get((build_params.get('env', 'DEV')))
+        port = self.etcd_port.get((build_params.get('env', 'DEV')))
         etcd = etcd3.client(host=host, port=port)
         self.clean()
         self.config_file(etcd, build_params)
