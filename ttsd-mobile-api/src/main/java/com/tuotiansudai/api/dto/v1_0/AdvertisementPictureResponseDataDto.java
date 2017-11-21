@@ -11,6 +11,7 @@ public class AdvertisementPictureResponseDataDto extends BaseResponseDataDto {
     private String picture7501334;
     private String picture12422208;
     private String picture7201280;
+    private String picture11252436;
 
     public String getTitle() {
         return title;
@@ -58,6 +59,14 @@ public class AdvertisementPictureResponseDataDto extends BaseResponseDataDto {
 
     public void setPicture7201280(String picture7201280) {
         this.picture7201280 = picture7201280;
+    }
+
+    public String getPicture11252436() {
+        return picture11252436;
+    }
+
+    public void setPicture11252436(String picture11252436) {
+        this.picture11252436 = picture11252436;
     }
 
     public String getLinkedUrl() {

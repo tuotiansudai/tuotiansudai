@@ -165,7 +165,7 @@
     </select>
 
     <select id="findQuestionsByKeywords" resultMap="questionResultMap">
-        select * from question where status not in ('UNAPPROVED', 'REJECTED') and question like concat('%', #{keywords}, '%') order by last_answered_time, created_time desc limit #{index}, #{pageSize};
+        select * from question where status not in ('UNAPPROVED', 'REJECTED') and question like concat('%', #{keywords}, '%') order by last_answered_time desc, created_time desc limit #{index}, #{pageSize};
     </select>
 
     <select id="countQuestionsByKeywords" resultType="long">
