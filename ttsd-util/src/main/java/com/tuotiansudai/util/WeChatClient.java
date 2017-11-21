@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.squareup.okhttp.*;
@@ -38,18 +39,14 @@ public class WeChatClient {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap();
+    private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap(
+            ImmutableMap.<WeChatMessageType, String>builder()
+                    .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getValue("wechat.template1.id"))
+                    .build());
 
-    private static String APP_ID;
+    private static String APP_ID = ETCDConfigReader.getValue("wechat.appId");
 
-    private static String APP_SECRET;
-
-    static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        APP_ID = bundle.getString("wechat.appId");
-        APP_SECRET = bundle.getString("wechat.appSecret");
-        TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, bundle.getString("wechat.template1.id"));
-    }
+    private static String APP_SECRET = ETCDConfigReader.getValue("wechat.appSecret");
 
     public static WeChatClient getClient() {
         return instance;

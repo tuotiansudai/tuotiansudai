@@ -1,5 +1,6 @@
 package com.tuotiansudai.cache;
 
+import com.tuotiansudai.util.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -22,14 +23,13 @@ public class MybatisRedisCacheProvider {
     }
 
     private MybatisRedisCacheProvider() {
-        ResourceBundle rb = ResourceBundle.getBundle("ttsd-env");
-        this.expireSeconds = Integer.parseInt(rb.getString("common.mybatis.cache.expire.seconds"));
-        String redisHostName = rb.getString("common.redis.host");
-        int redisPort = Integer.parseInt(rb.getString("common.redis.port"));
-        String redisPassword = rb.getString("common.redis.password");
-        int redisDb = Integer.parseInt(rb.getString("common.mybatis.cache.db"));
-        int redisPoolSize = Integer.parseInt(rb.getString("common.mybatis.cache.redis.pool.maxTotal"));
-        int redisMaxWaitMills = Integer.parseInt(rb.getString("common.jedis.pool.maxWaitMillis"));
+        this.expireSeconds = Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.expire.seconds"));
+        String redisHostName = ETCDConfigReader.getValue("common.redis.host");
+        int redisPort = Integer.parseInt(ETCDConfigReader.getValue("common.redis.port"));
+        String redisPassword = ETCDConfigReader.getValue("common.redis.password");
+        int redisDb = Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.db"));
+        int redisPoolSize = Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.redis.pool.maxTotal"));
+        int redisMaxWaitMills = Integer.parseInt(ETCDConfigReader.getValue("common.jedis.pool.maxWaitMillis"));
 
         if (Objects.equals(redisPassword, "")) {
             redisPassword = null;

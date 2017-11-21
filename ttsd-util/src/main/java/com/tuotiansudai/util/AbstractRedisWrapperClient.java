@@ -25,11 +25,10 @@ public abstract class AbstractRedisWrapperClient {
     private static JedisPool JEDIS_POOL;
 
     static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        REDIS_HOST = bundle.getString("common.redis.host");
-        REDIS_PORT = Integer.parseInt(bundle.getString("common.redis.port"));
-        REDIS_PASSWORD = bundle.getString("common.redis.password");
-        MAX_WAIT_MILLIS = Integer.parseInt(bundle.getString("common.jedis.pool.maxWaitMillis"));
+        REDIS_HOST = ETCDConfigReader.getValue("common.redis.host");
+        REDIS_PORT = Integer.parseInt(ETCDConfigReader.getValue("common.redis.port"));
+        REDIS_PASSWORD = ETCDConfigReader.getValue("common.redis.password");
+        MAX_WAIT_MILLIS = Integer.parseInt(ETCDConfigReader.getValue("common.jedis.pool.maxWaitMillis"));
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(300);
         poolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);

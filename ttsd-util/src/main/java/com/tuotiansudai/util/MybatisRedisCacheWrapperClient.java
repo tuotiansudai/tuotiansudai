@@ -9,12 +9,7 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
 
     static Logger logger = Logger.getLogger(MybatisRedisCacheWrapperClient.class);
 
-    private static int MYBATIS_DB;
-
-    static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        MYBATIS_DB = Integer.parseInt(bundle.getString("common.mybatis.cache.db"));
-    }
+    private static int MYBATIS_DB= Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.db"));
 
     public String clearMybatisCache() {
         Jedis jedis = null;
