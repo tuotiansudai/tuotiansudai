@@ -36,7 +36,6 @@ dependencies {
     compile project(':ttsd-user-repository')
     compile project(':ttsd-util')
     compile project(':ttsd-client')
-    compile project(':ttsd-spring-extension')
 
     compile 'org.springframework.boot:spring-boot-starter'
     compile 'org.springframework.boot:spring-boot-starter-web'
@@ -47,6 +46,5 @@ dependencies {
 
     runtime "mysql:mysql-connector-java:5.1.39"
 
-    testCompile project(':ttsd-client')
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

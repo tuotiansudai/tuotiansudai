@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.email.config;
 
-import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new ETCDPropertyPlaceholderConfigurer();
+    public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 }

@@ -1,9 +1,9 @@
 package com.tuotiansudai.mq.consumer.user.config;
 
+import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import com.tuotiansudai.rest.client.UserMapperConfiguration;
-import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.*;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new ETCDPropertyPlaceholderConfigurer();
+    public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 }

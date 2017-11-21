@@ -1,16 +1,14 @@
 package com.tuotiansudai.console.activity;
 
+import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import com.tuotiansudai.mq.config.MQProducerConfig;
 import com.tuotiansudai.rest.client.UserMapperConfiguration;
-import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
 
 
 @SpringBootApplication
@@ -28,8 +26,8 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new ETCDPropertyPlaceholderConfigurer();
+    public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 }
 

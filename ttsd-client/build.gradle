@@ -15,7 +15,6 @@ sourceSets {
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
 
-    testCompile project(':ttsd-spring-extension')
     compile project(':ttsd-dependency'),
             project(':ttsd-util'),
             project(':ttsd-mq-client'),
@@ -23,6 +22,8 @@ dependencies {
             'commons-codec:commons-codec:1.10',
             'com.aliyun.oss:aliyun-sdk-oss:2.3.0',
             'cn.jpush.api:jpush-client:3.2.8'
+
+    testCompile project(':ttsd-spring-extension')
 }
 
 processResources.outputs.upToDateWhen { false }

@@ -1,11 +1,11 @@
 package com.tuotiansudai.mq.consumer.amount.config;
 
-import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new ETCDPropertyPlaceholderConfigurer();
+    public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 
 }

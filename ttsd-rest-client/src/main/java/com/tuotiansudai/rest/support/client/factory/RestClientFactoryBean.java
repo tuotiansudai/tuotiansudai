@@ -1,9 +1,9 @@
 package com.tuotiansudai.rest.support.client.factory;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
-import com.tuotiansudai.util.ETCDConfigReader;
 import feign.*;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
@@ -11,7 +11,6 @@ import feign.jaxrs.JAXRSContract;
 import feign.slf4j.Slf4jLogger;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 
 public class RestClientFactoryBean<T> implements FactoryBean<T> {
     private ApplicationContext applicationContext;

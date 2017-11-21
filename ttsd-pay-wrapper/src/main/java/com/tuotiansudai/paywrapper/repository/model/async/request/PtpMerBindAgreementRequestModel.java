@@ -2,8 +2,8 @@ package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.repository.model.AgreementType;
-import com.tuotiansudai.util.ETCDConfigReader;
 
 import java.text.MessageFormat;
 import java.util.Map;

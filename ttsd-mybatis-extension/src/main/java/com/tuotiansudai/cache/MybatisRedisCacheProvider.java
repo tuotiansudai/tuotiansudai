@@ -1,6 +1,6 @@
 package com.tuotiansudai.cache;
 
-import com.tuotiansudai.util.ETCDConfigReader;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -9,7 +9,6 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class MybatisRedisCacheProvider {
     private static final MybatisRedisCacheProvider instance = new MybatisRedisCacheProvider();

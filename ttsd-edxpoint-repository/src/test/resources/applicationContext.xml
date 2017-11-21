@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
 
-    <bean class="com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer"/>
+    <bean class="com.tuotiansudai.spring.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

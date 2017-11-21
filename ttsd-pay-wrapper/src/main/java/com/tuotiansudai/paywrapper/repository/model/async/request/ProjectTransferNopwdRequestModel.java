@@ -1,9 +1,9 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.paywrapper.repository.model.*;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.ETCDConfigReader;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

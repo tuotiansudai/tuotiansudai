@@ -1,11 +1,11 @@
 package com.tuotiansudai.worker.monitor.config;
 
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
+import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -45,7 +45,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new ETCDPropertyPlaceholderConfigurer();
+    public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 }

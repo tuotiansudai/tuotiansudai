@@ -1,17 +1,12 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.ETCDConfigReader;
 import org.apache.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Properties;
 
 public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 

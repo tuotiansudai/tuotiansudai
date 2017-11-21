@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 

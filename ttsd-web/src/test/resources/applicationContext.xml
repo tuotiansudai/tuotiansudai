@@ -18,7 +18,7 @@
     <context:annotation-config/>
 
 
-    <bean class="com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer"/>
+    <bean class="com.tuotiansudai.spring.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <aop:aspectj-autoproxy expose-proxy="true" />

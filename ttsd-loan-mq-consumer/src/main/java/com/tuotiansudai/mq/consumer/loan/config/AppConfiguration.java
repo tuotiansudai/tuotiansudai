@@ -1,12 +1,11 @@
 package com.tuotiansudai.mq.consumer.loan.config;
 
+import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.quartz.JobStoreBuilder;
 import com.tuotiansudai.quartz.SchedulerBuilder;
 import com.tuotiansudai.rest.client.UserMapperConfiguration;
-import com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.*;
 
 import javax.sql.DataSource;
@@ -26,8 +25,8 @@ import javax.sql.DataSource;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new ETCDPropertyPlaceholderConfigurer();
+    public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 
     @Bean

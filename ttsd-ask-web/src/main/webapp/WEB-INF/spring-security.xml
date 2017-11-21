@@ -6,7 +6,7 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
-    <beans:bean class="com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer"/>
+    <beans:bean class="com.tuotiansudai.spring.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>

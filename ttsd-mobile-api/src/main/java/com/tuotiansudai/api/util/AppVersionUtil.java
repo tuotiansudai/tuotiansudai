@@ -5,18 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.security.BufferedRequestWrapper;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.spring.CurrentRequest;
-import com.tuotiansudai.util.ETCDConfigReader;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
 public class AppVersionUtil {
     private static Logger logger = Logger.getLogger(AppVersionUtil.class);

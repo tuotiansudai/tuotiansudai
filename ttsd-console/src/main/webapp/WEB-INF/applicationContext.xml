@@ -19,7 +19,7 @@
 
     <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true"/>
 
-    <bean class="com.tuotiansudai.spring.ETCDPropertyPlaceholderConfigurer"/>
+    <bean class="com.tuotiansudai.spring.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="pointTransactionManager"/>

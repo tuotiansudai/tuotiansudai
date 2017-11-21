@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.WeChatMessageType;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 
 import java.net.URL;
