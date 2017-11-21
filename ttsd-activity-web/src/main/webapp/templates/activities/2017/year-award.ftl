@@ -104,9 +104,9 @@
 
     <div class="show_middle_box">
         <div class="title_sign title_sign2"></div>
-        <div class="active_desc active_desc1">12月4日-12月31日活动期间，计算平台所有“岁末专享”项目累计年化投资金额，活动结束后进行结算，每达到一定金额，即对投资“岁末专享”项目的所有用户发放与其投资额对应比率的返现奖励。用户投资“岁末专享”项目即可参与本活动，最高可得自身专享标累计投资额的年化1%返现奖励。
+        <b class="active_desc active_desc1">12月4日-12月31日活动期间，计算平台所有“岁末专享”项目累计年化投资金额，活动结束后进行结算，每达到一定金额，即对投资“岁末专享”项目的所有用户发放与其投资额对应比率的返现奖励。用户投资“岁末专享”项目即可参与本活动，最高可得自身专享标累计投资额的年化1%返现奖励。
             <br/><span class="strongText">注：每档返现奖励不累计发放。</span>
-        </div>
+        </b>
         <div class="title_ammount">
             <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}万元</div>
             <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a class="myRank_info_No1 login_pop" style="color:#fff600">登录</a></@global.isAnonymous>
@@ -180,13 +180,13 @@
                 </div>
             </div>
         </div>
-        <div class="for_example_desc">
+        <b class="for_example_desc">
             <span class="for_example_desc_icon">举个栗子：</span>拓小天投资180天“岁末专享“项目10万元，360天“岁末专享“项目15万元万元，则拓小天投资年化金额=10万×180÷360+15万×360÷360=20万元，如活动结束后平台“岁末专享”项目累计投资额（年化）满2000万，返现比例1%，则拓小天可获返现奖励为20万×1%=2000元。
-        </div>
+        </b>
     </div>
     <div class="show_middle_box">
         <div class="title_sign title_sign3"></div>
-        <div class="active_desc">12月4日-12月12日活动期间，每日24点计算当日新增投资排名，上榜者可获丰厚奖励，投资者在当日24点之前进行的多次投资，金额可累计计算。</div>
+        <b class="active_desc">12月4日-12月12日活动期间，每日24点计算当日新增投资排名，上榜者可获丰厚奖励，投资者在当日24点之前进行的多次投资，金额可累计计算。</b>
         <div class="prize_list_wrapper">
             <div class="left_prize_wrapper">
                 <div class="prize_icon1"></div>
@@ -245,14 +245,14 @@
     <div class="show_middle_box">
         <div class="note-box">
             <b><span class="square_icon"></span><span class="square_icon"></span><span class="square_icon"></span>温馨提示<span class="square_icon square_icon1"></span><span class="square_icon"></span><span class="square_icon"></span></b>
-            <span class="No_icon">1、</span><span class="buxiangxin"> 抽奖活动所获红包及体验金奖励即时发放，实物奖品将于活动结束后七个工作日内统一安排发放；</span><br/>
-            <span class="No_icon">2、</span><span class="buxiangxin"> 返现奖励将于活动结束后1个工作日内统一发放至用户账户，可直接用于提现或继续投资；</span><br/>
-            <span class="No_icon">3、</span><span class="buxiangxin"> 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</span><br/>
-            <span class="No_icon">4、</span><span class="buxiangxin"> 排行榜活动加息券奖励将于获奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；</span><br/>
-            <span class="No_icon">5、</span><span class="buxiangxin"> 拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</span><br/>
-            <span class="No_icon">6、</span><span class="buxiangxin"> 为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</span><br/>
-            <span class="No_icon">7、</span><span class="buxiangxin"> 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</span><br/>
-            <span class="No_icon">8、</span><span class="buxiangxin"> 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</span>
+            <b class="textLeft"><span class="No_icon">1、</span> 抽奖活动所获红包及体验金奖励即时发放，实物奖品将于活动结束后七个工作日内统一安排发放；</b>
+            <b class="textLeft"><span class="No_icon">2、</span> 返现奖励将于活动结束后1个工作日内统一发放至用户账户，可直接用于提现或继续投资；</b>
+            <b class="textLeft"><span class="No_icon">3、</span> 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</b>
+            <b class="textLeft"><span class="No_icon">4、</span> 排行榜活动加息券奖励将于获奖后三个工作日内发放，实物奖品将于活动结束后七个工作日内统一安排发放；</b>
+            <b class="textLeft"><span class="No_icon">5、</span> 拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</b>
+            <b class="textLeft"><span class="No_icon">6、</span> 为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</b>
+            <b class="textLeft"><span class="No_icon">7、</span> 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</b>
+            <b class="textLeft"><span class="No_icon">8、</span> 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</b>
         </div>
     </div>
 </div>
