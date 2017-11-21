@@ -28,6 +28,7 @@ if ($(document).width() < 790) {
         if (!doc.addEventListener) return;
         win.addEventListener(resizeEvt, recalc, false);
         doc.addEventListener('DOMContentLoaded', recalc, false);
+        $('body').css('visibility', 'visible');
     })(document, window);
 }
 

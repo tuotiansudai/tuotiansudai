@@ -1,5 +1,5 @@
 html {
-  font-size: 100px;
+  //font-size: 100px;
   body {
     font-size: 12px;
   }
@@ -1364,7 +1364,12 @@ $width: 768px;
 }
 
 
-
+@media screen and (max-width:768px) {
+  .limitHeight {
+    width: 100%;
+    max-height: 9999999999999px;
+  }
+}
 
 
 
