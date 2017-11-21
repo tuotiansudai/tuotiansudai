@@ -158,96 +158,105 @@ function getPrize(obj) {
                 'textIndent':0
             });
         });
-
+    let ifClick = false;
     $pointerImg.on('click',function() {
-        drawCircle.beginLuckDraw(function(data) {
-            let prizeKind;
+        if (!ifClick) {
+            ifClick = true;
+            drawCircle.beginLuckDraw(function(data) {
+                let prizeKind;
 
-            if (data.returnCode == 0) {
+                if (data.returnCode == 0) {
 
-                switch (data.prize) {
-                    case 'YEAR_END_AWARDS_ACTIVITY_JD_E_CARD_200':  //200元京东E卡
-                        prizeKind=0;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+jdeUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_120': //120元红包
-                        prizeKind=1;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+redWareUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_50':  //50元红包
-                        prizeKind=2;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+redWareUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_10':  //10元红包
-                        prizeKind=7;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+redWareUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_EXPERIENCE_GOLD_500':  //500元体验金
-                        prizeKind=3;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+experienceUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_100':  //100元红包
-                        prizeKind=6;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+redWareUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_20': //20元红包
-                        prizeKind=5;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+redWareUrl+')'
-                        });
-                        break;
-                    case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_200':  //200元红包
-                        prizeKind=4;
-                        $iconPrize.css({
-                            'backgroundImage':'url('+redWareUrl+')'
-                        });
-                        break;
+                    switch (data.prize) {
+                        case 'YEAR_END_AWARDS_ACTIVITY_JD_E_CARD_200':  //200元京东E卡
+                            prizeKind=0;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+jdeUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_120': //120元红包
+                            prizeKind=1;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+redWareUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_50':  //50元红包
+                            prizeKind=2;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+redWareUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_10':  //10元红包
+                            prizeKind=7;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+redWareUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_EXPERIENCE_GOLD_500':  //500元体验金
+                            prizeKind=3;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+experienceUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_100':  //100元红包
+                            prizeKind=6;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+redWareUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_20': //20元红包
+                            prizeKind=5;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+redWareUrl+')'
+                            });
+                            break;
+                        case 'YEAR_END_AWARDS_ACTIVITY_ENVELOP_200':  //200元红包
+                            prizeKind=4;
+                            $iconPrize.css({
+                                'backgroundImage':'url('+redWareUrl+')'
+                            });
+                            break;
+                    }
+                    let prizeType=data.prizeType.toLowerCase();
+                    $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+
+                    drawCircle.lotteryRoll({
+                        elementId:'drawLotteryAreaSub',
+                        speed:100,
+                        cycle: 30,
+                        prize:prizeKind
+                    },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
+
+                    setTimeout(() => {
+                        ifClick = false;
+                    },3000)
+
+                } else if(data.returnCode == 1) {
+                    //没有抽奖机会
+                    drawCircle.tipWindowPop(tipGroupObj['nochance']);
+                    ifClick = false;
                 }
-                let prizeType=data.prizeType.toLowerCase();
-                $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
+                else if (data.returnCode == 2) {
+                    //未登录
+                    toLogin();
+                    ifClick = false;
 
-                drawCircle.lotteryRoll({
-                    elementId:'drawLotteryAreaSub',
-                    speed:100,
-                    cycle: 30,
-                    prize:prizeKind
-                },tipGroupObj[prizeType]); // 参数1：抽奖参数； 参数2：提示信息
+                } else if(data.returnCode == 3){
+                    //不在活动时间范围内！
+                    layer.msg('不在活动时间范围内~'),{
+                        time: 3000
+                    };
+                    ifClick = false;
 
-
-            } else if(data.returnCode == 1) {
-                //没有抽奖机会
-                drawCircle.tipWindowPop(tipGroupObj['nochance']);
-            }
-            else if (data.returnCode == 2) {
-                //未登录
-                toLogin();
-
-            } else if(data.returnCode == 3){
-                //不在活动时间范围内！
-                layer.msg('不在活动时间范围内~'),{
-                    time: 3000
-                };
-
-            } else if(data.returnCode == 4){
-                //今日没有抽奖机会了
-                layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
-                    time:3000
-                });
-
-            }
-        });
+                } else if(data.returnCode == 4){
+                    //今日没有抽奖机会了
+                    layer.msg('今天没有抽奖机会了哦~，明天再来吧',{
+                        time:3000
+                    });
+                    ifClick = false;
+                }
+            });
+        }
     });
 
     //点击切换按钮
@@ -358,6 +367,7 @@ function activityStatus(nowDay) {
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
         $contentRanking.hide();
+        $('.table-reward').hide();
         $nodataInvest.show().html('不在活动时间范围内');
         $('.prize_icon2').addClass('prize_icon2_default');
     }
@@ -366,6 +376,7 @@ function activityStatus(nowDay) {
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.hide();
+        $('.table-reward').hide();
         $nodataInvest.show().html('不在活动时间范围内');
         $('.prize_icon2').addClass('prize_icon2_default');
 
