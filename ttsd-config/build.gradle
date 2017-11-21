@@ -55,11 +55,11 @@ flyway {
     if (project.hasProperty('database')) {
         defaultDatabase = database
     }
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost
+    if (project.hasProperty('host')) {
+        defaultHost = host
     }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport
+    if (project.hasProperty('port')) {
+        defaultPort = port
     }
     if (project.hasProperty('env')) {
         defaultEnv = env

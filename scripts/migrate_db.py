@@ -32,12 +32,66 @@ def migrate(gradle, etcd):
     message_jdbc_username, _ = etcd.get("message.jdbc.username")
     message_jdbc_password, _ = etcd.get("message.jdbc.password")
 
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'aa', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'ump_operations', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'sms_operations', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'job_worker', common_jdbc_host, common_jdbc_port, common_jdbc_username, common_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'edxask', common_jdbc_host, common_jdbc_port, ask_jdbc_username, ask_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'edxactivity', common_jdbc_host, common_jdbc_port, activity_jdbc_username, activity_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'edxpoint', common_jdbc_host, common_jdbc_port, point_jdbc_username, point_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'edxlog', common_jdbc_host, common_jdbc_port, log_jdbc_username, log_jdbc_password))
-    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle, common_environment, 'edxmessage', common_jdbc_host, common_jdbc_port, message_jdbc_username, message_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'aa',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               common_jdbc_username,
+                                                                                                               common_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'ump_operations',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               common_jdbc_username,
+                                                                                                               common_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'sms_operations',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               common_jdbc_username,
+                                                                                                               common_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'job_worker',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               common_jdbc_username,
+                                                                                                               common_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'edxask',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               ask_jdbc_username,
+                                                                                                               ask_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'edxactivity',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               activity_jdbc_username,
+                                                                                                               activity_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'edxpoint',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               point_jdbc_username,
+                                                                                                               point_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'edxlog',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               log_jdbc_username,
+                                                                                                               log_jdbc_password))
+    sh('{} ttsd-config:flywayMigrate -Penv={} -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
+                                                                                                               common_environment,
+                                                                                                               'edxmessage',
+                                                                                                               common_jdbc_host,
+                                                                                                               common_jdbc_port,
+                                                                                                               message_jdbc_username,
+                                                                                                               message_jdbc_password))
