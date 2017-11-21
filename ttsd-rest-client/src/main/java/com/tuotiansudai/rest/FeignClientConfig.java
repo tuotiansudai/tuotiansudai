@@ -27,7 +27,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class FeignClientConfig {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+    public PropertyPlaceholderConfigurer propertyConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 

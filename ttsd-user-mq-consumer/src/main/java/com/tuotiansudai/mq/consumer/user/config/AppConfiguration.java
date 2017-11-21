@@ -18,7 +18,7 @@ import org.springframework.context.annotation.*;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+    public PropertyPlaceholderConfigurer propertyConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 }

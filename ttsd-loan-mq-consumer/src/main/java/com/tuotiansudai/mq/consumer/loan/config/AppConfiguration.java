@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 public class AppConfiguration {
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+    public PropertyPlaceholderConfigurer propertyConfigurer() {
         return new ETCDPropertyPlaceholderConfigurer();
     }
 
