@@ -5,7 +5,7 @@
 <div id="doubleElevenContainer">
     <div class="show_middle_box">
         <div class="title_sign title_sign1"></div>
-        <div class="active_desc">12月4日-12月31日活动期间，每日登录可获一次免费抽奖机会，用户当日所获抽奖机会仅限当日使用。</div>
+        <div class="active_desc limitHeight">12月4日-12月31日活动期间，每日登录可获一次免费抽奖机会，用户当日所获抽奖机会仅限当日使用。</div>
         <div class="nine-lottery-group">
             <div id="drawLotteryAreaSub">
                 <div class="lottery-unit lottery-unit-0" data-unit="0">
@@ -104,7 +104,7 @@
 
     <div class="show_middle_box">
         <div class="title_sign title_sign2"></div>
-        <b class="active_desc active_desc1">12月4日-12月31日活动期间，计算平台所有“岁末专享”项目累计年化投资金额，活动结束后进行结算，每达到一定金额，即对投资“岁末专享”项目的所有用户发放与其投资额对应比率的返现奖励。用户投资“岁末专享”项目即可参与本活动，最高可得自身专享标累计投资额的年化1%返现奖励。
+        <b class="active_desc active_desc1 limitHeight">12月4日-12月31日活动期间，计算平台所有“岁末专享”项目累计年化投资金额，活动结束后进行结算，每达到一定金额，即对投资“岁末专享”项目的所有用户发放与其投资额对应比率的返现奖励。用户投资“岁末专享”项目即可参与本活动，最高可得自身专享标累计投资额的年化1%返现奖励。
             <br/><span class="strongText">注：每档返现奖励不累计发放。</span>
         </b>
         <div class="title_ammount">
@@ -180,13 +180,13 @@
                 </div>
             </div>
         </div>
-        <b class="for_example_desc">
+        <b class="for_example_desc limitHeight">
             <span class="for_example_desc_icon">举个栗子：</span>拓小天投资180天“岁末专享“项目10万元，360天“岁末专享“项目15万元万元，则拓小天投资年化金额=10万×180÷360+15万×360÷360=20万元，如活动结束后平台“岁末专享”项目累计投资额（年化）满2000万，返现比例1%，则拓小天可获返现奖励为20万×1%=2000元。
         </b>
     </div>
     <div class="show_middle_box">
         <div class="title_sign title_sign3"></div>
-        <b class="active_desc">12月4日-12月12日活动期间，每日24点计算当日新增投资排名，上榜者可获丰厚奖励，投资者在当日24点之前进行的多次投资，金额可累计计算。</b>
+        <b class="active_desc limitHeight">12月4日-12月12日活动期间，每日24点计算当日新增投资排名，上榜者可获丰厚奖励，投资者在当日24点之前进行的多次投资，金额可累计计算。</b>
         <div class="prize_list_wrapper">
             <div class="left_prize_wrapper">
                 <div class="prize_icon1"></div>
@@ -243,8 +243,8 @@
     </div>
 
     <div class="show_middle_box">
-        <div class="note-box">
-            <b><span class="square_icon"></span><span class="square_icon"></span><span class="square_icon"></span>温馨提示<span class="square_icon square_icon1"></span><span class="square_icon"></span><span class="square_icon"></span></b>
+        <div class="note-box limitHeight">
+            <b class="note-box-title"><span class="square_icon"></span><span class="square_icon"></span><span class="square_icon"></span>温馨提示<span class="square_icon square_icon1"></span><span class="square_icon"></span><span class="square_icon"></span></b>
             <b class="textLeft"><span class="No_icon">1、</span> 抽奖活动所获红包及体验金奖励即时发放，实物奖品将于活动结束后七个工作日内统一安排发放；</b>
             <b class="textLeft"><span class="No_icon">2、</span> 返现奖励将于活动结束后1个工作日内统一发放至用户账户，可直接用于提现或继续投资；</b>
             <b class="textLeft"><span class="No_icon">3、</span> 排行榜活动仅限所有直投项目，债权转让及拓天体验金项目不参与累计；每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</b>
