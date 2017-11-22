@@ -39,7 +39,7 @@ class Deployment(object):
         self.build_diagnosis()
         self.build_worker_monitor()
         self.mk_static_package()
-        self.init_docker()
+        self.init_docker(build_params)
 
     def clean(self):
         print "Cleaning..."
@@ -107,21 +107,21 @@ class Deployment(object):
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
-    def init_docker(self):
+    def init_docker(self, build_params):
         print "Initialing docker..."
         import platform
 
         sudoer = 'sudo' if 'centos' in platform.platform() else ''
         self._remove_old_container(sudoer)
-        self._start_new_container(sudoer)
+        self._start_new_container(sudoer, build_params)
 
     def _remove_old_container(self, suoder):
         sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
         sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
                                                                                                self._dockerCompose))
 
-    def _start_new_container(self, sudoer):
-        sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
+    def _start_new_container(self, sudoer, build_params):
+        sh('{0} TTSD_ETCD_ENDPOINT={1} {2} -f dev.yml up -d'.format(sudoer, build_params.get('env', 'DEV'), self._dockerCompose))
 
     def jcversion(self, build_params):
         print "Starting jcmin..."

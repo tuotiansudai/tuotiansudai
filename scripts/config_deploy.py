@@ -20,7 +20,7 @@ def deploy(etcd, build_params):
     # 依次从 build_params > sec_prop > env_prop > qa_common_prop 中读取key，
     # 如果存在就替换原值，并将结果写入到结果文件 dist_file 中。
 
-    with open("./ttsd-config/src/main/resources//ttsd-env.properties", "r") as f:
+    with open("./ttsd-config/src/main/resources/ttsd-env.properties", "r") as f:
         for line in f:
             l = line.strip()
             if l and not l.startswith("#"):

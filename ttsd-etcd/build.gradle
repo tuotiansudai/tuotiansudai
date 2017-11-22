@@ -17,6 +17,8 @@ dependencies {
     compile 'com.google.guava:guava:21.0',
             'log4j:log4j:1.2.17',
             'com.coreos:jetcd-core:0.0.1',
+            'com.fasterxml.jackson.core:jackson-databind:2.8.2',
+            'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.2',
             "org.springframework:spring-context-support:$springVersion"
 }
 

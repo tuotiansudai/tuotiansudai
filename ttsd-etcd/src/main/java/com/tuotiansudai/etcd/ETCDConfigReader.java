@@ -4,23 +4,31 @@ import com.coreos.jetcd.Client;
 import com.coreos.jetcd.KV;
 import com.coreos.jetcd.data.ByteSequence;
 import com.coreos.jetcd.kv.GetResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public class ETCDConfigReader {
 
     private static Logger logger = Logger.getLogger(ETCDConfigReader.class);
 
+    private static final String ENDPOINTS_ENV_VAR = "TTSD_ETCD_ENDPOINT";
+
     private static KV kvClient;
 
     static {
-        kvClient = Client.builder().endpoints("http://localhost:2379").build().getKVClient();
+        kvClient = Client.builder().endpoints(fetchEndpoints()).build().getKVClient();
     }
 
-    public String getProperties(String key) {
+    String getProperties(String key) {
         return getValue(key);
     }
 
@@ -48,5 +56,26 @@ public class ETCDConfigReader {
         }
 
         return null;
+    }
+
+    private static String fetchEndpoints() {
+        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        try {
+            ETCDEndPoints etcdEndPoints = objectMapper.readValue(ETCDConfigReader.class.getClassLoader().getResourceAsStream("etcd-endpoints.yml"), ETCDEndPoints.class);
+            String env = System.getenv(ENDPOINTS_ENV_VAR);
+            ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(env.toLowerCase());
+
+            String endpointUrl = MessageFormat.format("http://{0}:{1}",
+                    endpoint.getHost().get(new Random().nextInt(endpoint.getHost().size())),
+                    endpoint.getPort().get(new Random().nextInt(endpoint.getPort().size())));
+
+            logger.info(MessageFormat.format("env var is {}, ETCD endpoint is {}", env, endpointUrl));
+
+            return endpointUrl;
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return "http://127.0.0.1:2379";
     }
 }
