@@ -32,6 +32,7 @@ def deploy(etcd, build_params):
                          or (qa_common_prop[key] + ' ' if qa_common_prop.has_key(key) else False) \
                          or key_value[-1].strip()
                 etcd.put(key, value.strip())
+                print 'put etcd {0}={1}'.format(key, value.strip())
 
 
 # 读取properties 文件, 生成 dict 对象

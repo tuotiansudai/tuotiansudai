@@ -32,7 +32,7 @@ class Deployment(object):
         self.config_file(etcd, build_params)
         self.jcversion(build_params)
         self.migrate(etcd)
-        self.compile()
+        self.compile(build_params)
         self.build_and_unzip_worker()
         self.build_mq_consumer()
         self.build_rest_service()
@@ -54,9 +54,9 @@ class Deployment(object):
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, etcd)
 
-    def compile(self):
+    def compile(self, build_params):
         print "Compiling..."
-        sh('{0} clean initMQ war renameWar'.format(self._gradle))
+        sh('TTSD_ETCD_ENDPOINT={0} {1} clean initMQ war renameWar'.format(build_params.get('env'), self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):

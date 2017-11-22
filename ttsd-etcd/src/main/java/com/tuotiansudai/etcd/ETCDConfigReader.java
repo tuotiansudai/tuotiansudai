@@ -63,14 +63,14 @@ public class ETCDConfigReader {
         try {
             ETCDEndPoints etcdEndPoints = objectMapper.readValue(ETCDConfigReader.class.getClassLoader().getResourceAsStream("etcd-endpoints.yml"), ETCDEndPoints.class);
             String env = System.getenv(ENDPOINTS_ENV_VAR);
+            logger.info(MessageFormat.format("etcd env var is {0}", env));
             ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(env.toLowerCase());
 
             String endpointUrl = MessageFormat.format("http://{0}:{1}",
                     endpoint.getHost().get(new Random().nextInt(endpoint.getHost().size())),
                     endpoint.getPort().get(new Random().nextInt(endpoint.getPort().size())));
 
-            logger.info(MessageFormat.format("env var is {}, ETCD endpoint is {}", env, endpointUrl));
-
+            logger.info(MessageFormat.format("etcd endpoint is {0}", endpointUrl));
             return endpointUrl;
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
