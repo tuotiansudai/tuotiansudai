@@ -17,7 +17,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <bean class="com.tuotiansudai.spring.ETCDPropertySourcesPlaceholderConfigurer"/>
+    <bean class="com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan

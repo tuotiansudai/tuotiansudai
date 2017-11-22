@@ -30,7 +30,6 @@ configurations {
 
 dependencies {
     compile project(':ttsd-mq-client')
-    compile project(':ttsd-spring-extension')
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile 'com.sun.mail:javax.mail:1.5.5'

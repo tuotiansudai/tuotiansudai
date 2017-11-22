@@ -20,8 +20,6 @@ dependencies {
             project(':ttsd-point-service'),
             project(":ttsd-user-service")
 
-
-    testCompile project(':ttsd-spring-extension')
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 

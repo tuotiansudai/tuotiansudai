@@ -28,7 +28,6 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-log4j12"
     }
 
-    compile project(':ttsd-spring-extension')
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-mail"
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"

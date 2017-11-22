@@ -39,7 +39,6 @@ configurations {
 
 dependencies {
     compile project(':ttsd-client')
-    compile project(':ttsd-spring-extension')
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-data-redis"
     compile "org.springframework.boot:spring-boot-starter-mail"

@@ -21,6 +21,4 @@ dependencies {
     compile "io.github.openfeign:feign-okhttp:$openFeignVersion"
     compile "io.github.openfeign:feign-slf4j:$openFeignVersion"
     compile "io.github.openfeign:feign-jaxrs:$openFeignVersion"
-
-
 }

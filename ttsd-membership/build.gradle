@@ -26,7 +26,6 @@ dependencies {
             "com.jayway.jsonpath:json-path:2.0.0",
             'com.squareup.okhttp:mockwebserver:2.4.0'
 
-    testCompile project(':ttsd-spring-extension')
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 
