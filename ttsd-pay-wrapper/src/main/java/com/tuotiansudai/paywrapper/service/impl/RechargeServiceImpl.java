@@ -62,6 +62,10 @@ public class RechargeServiceImpl implements RechargeService {
 
     private final static String HTRACKING_CHANNEL = "htracking";
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private static final String HUIZU_ACTIVE_RECHARGE_KEY = "huizu_active_recharge:";
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> recharge(RechargeDto dto) {
@@ -75,11 +79,6 @@ public class RechargeServiceImpl implements RechargeService {
 
         return generateRechargeFormData(dto, accountModel, rechargeModel);
     }
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    private static final String HUIZU_ACTIVE_RECHARGE_KEY = "huizu_active_recharge:";
 
     private BaseDto<PayFormDataDto> generateRechargeFormData(RechargeDto dto, AccountModel accountModel, RechargeModel rechargeModel) {
         MerRechargePersonRequestModel requestModel = MerRechargePersonRequestModel.newRecharge(String.valueOf(rechargeModel.getId()),

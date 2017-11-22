@@ -53,8 +53,7 @@ public class MobileAppFrontCallBackController {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private static final String HUIZU_ACTIVE_RECHARGE_KEY = "huizu_active_recharge:";
 
