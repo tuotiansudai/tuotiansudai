@@ -6,7 +6,6 @@ import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.point.service.impl.PointLotteryServiceImpl;
 import com.tuotiansudai.rest.client.UserMapperConfiguration;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @ComponentScan(basePackages = {

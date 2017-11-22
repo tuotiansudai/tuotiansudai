@@ -1,21 +1,15 @@
-package com.tuotiansudai.mq.consumer.amount.config;
+package com.tuotiansudai.rest.ask.config;
 
 import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
 
 @Configuration
-@ComponentScan(basePackages = {
-        "com.tuotiansudai.mq.consumer.amount"
-        })
-@EnableAspectJAutoProxy(exposeProxy = true)
-public class AppConfiguration {
+public class WebAppConfiguration {
 
     @Bean
     public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new ETCDPropertySourcesPlaceholderConfigurer();
     }
-
 }
