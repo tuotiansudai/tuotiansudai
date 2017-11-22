@@ -409,6 +409,21 @@ $('.login_pop').on('click',() => {
 
 
 
+$('#loginInForm').find('input').on('click',() => {
+    if($(document).width() < 790) {
+        let ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        ver = parseInt(ver[1], 10);
+        if(ver>10)
+        {
+            alert(ver)
+            $("html,body").animate({"scrollTop": 300}).animate({'scrollTop': 0})
+        }
+    }
+
+});
+
+
+
 
 
 
