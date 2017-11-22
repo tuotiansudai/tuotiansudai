@@ -65,10 +65,10 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
         verify(payWrapperClient, times(4)).transferCash(any(TransferCashDto.class));
         assertThat(requestModelCaptor.getAllValues().size(), is(4));
         List<TransferCashDto> list1 = requestModelCaptor.getAllValues().stream().sorted((t1, t2)-> t1.getLoginName().compareTo(t2.getLoginName())).collect(Collectors.toList());
-        assertThat(list1.get(0).getAmount(), is("400000"));
-        assertThat(list1.get(1).getAmount(), is("3800000"));
-        assertThat(list1.get(2).getAmount(), is("100000"));
-        assertThat(list1.get(3).getAmount(), is("1600000"));
+        assertThat(list1.get(0).getAmount(), is("600000"));
+        assertThat(list1.get(1).getAmount(), is("5700000"));
+        assertThat(list1.get(2).getAmount(), is("150000"));
+        assertThat(list1.get(3).getAmount(), is("2400000"));
     }
 
     @Test
@@ -86,10 +86,10 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
         verify(smsWrapperClient, times(4)).sendFatalNotify(any(SmsFatalNotifyDto.class));
         assertThat(requestModelCaptor.getAllValues().size(), is(4));
         List<TransferCashDto> list1 = requestModelCaptor.getAllValues().stream().sorted((t1, t2)-> t1.getLoginName().compareTo(t2.getLoginName())).collect(Collectors.toList());
-        assertThat(list1.get(0).getAmount(), is("400000"));
-        assertThat(list1.get(1).getAmount(), is("3800000"));
-        assertThat(list1.get(2).getAmount(), is("100000"));
-        assertThat(list1.get(3).getAmount(), is("1600000"));
+        assertThat(list1.get(0).getAmount(), is("600000"));
+        assertThat(list1.get(1).getAmount(), is("5700000"));
+        assertThat(list1.get(2).getAmount(), is("150000"));
+        assertThat(list1.get(3).getAmount(), is("2400000"));
     }
 
     public List<InvestProductTypeView> getMockList(){

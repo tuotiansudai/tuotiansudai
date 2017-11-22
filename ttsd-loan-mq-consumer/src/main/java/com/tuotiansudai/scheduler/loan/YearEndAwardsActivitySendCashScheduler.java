@@ -47,21 +47,21 @@ public class YearEndAwardsActivitySendCashScheduler {
     private Date activityEndTime;
 
     private final List<AnnualizedAmount> annualizedAmounts = Lists.newArrayList(
-            new AnnualizedAmount(1000000000l, 1200000000l, 0.002),
-            new AnnualizedAmount(1200000000l, 1800000000l, 0.004),
-            new AnnualizedAmount(1800000000l, 2500000000l, 0.006),
-            new AnnualizedAmount(2500000000l, 3000000000l, 0.008),
-            new AnnualizedAmount(3000000000l, Long.MAX_VALUE, 0.01));
+            new AnnualizedAmount(200000000l, 600000000l, 0.002),
+            new AnnualizedAmount(600000000l, 800000000l, 0.004),
+            new AnnualizedAmount(800000000l, 1500000000l, 0.006),
+            new AnnualizedAmount(1500000000l, 2000000000l, 0.008),
+            new AnnualizedAmount(2000000000l, Long.MAX_VALUE, 0.01));
 
 //    @Scheduled(cron = "0 0 10 1 1 ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 35 17 22 11 ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 05 18 22 11 ?", zone = "Asia/Shanghai")
     public void yearEndAwardsSendCash(){
         logger.info("[year end awards activity] send cash begin");
 
-        if (DateTime.now().getYear() != 2017){
-            logger.info("[year end awards activity] send cash is over");
-            return;
-        }
+//        if (DateTime.now().getYear() != 2017){
+//            logger.info("[year end awards activity] send cash is over");
+//            return;
+//        }
 
         List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityStartTime, activityEndTime, "岁末专享");
         Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
