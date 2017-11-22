@@ -34,7 +34,7 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
         }, function (data) {
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
-                UlList.push('<li>恭喜 ' + data[i].mobile + ' 抽中了 ' + data[i].prizeValue + ' </li>');
+                UlList.push('<li class="myReward_item"><div class="myReward_item_head">恭喜' + data[i].mobile + '</div><div class="myReward_item_foot">抽中了' + data[i].prizeValue + '</div></li>');
             }
             self.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
             callback && callback(data);
@@ -51,7 +51,8 @@ function giftCircleDraw(allListURL, userListURL, drawURL, paramData, giftCircleF
         }, function (data) {
             let UlList = [];
             for (let i = 0, len = data.length; i < len; i++) {
-                UlList.push('<li> ' + data[i].prizeValue + '<time> ' + data[i].lotteryTime + ' </time></li>');
+                let $timeArr = data[i].lotteryTime.split(' ');
+                UlList.push('<li class="myRecord_right_item"><div class="mineReward_name">' + data[i].prizeValue + '</div><div class="mineReward_year">' + $timeArr[0] + '</div><div class="mineReward_year_hour">' + $timeArr[1] + '</div></li>');
             }
             self.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
             callback && callback(data);
@@ -93,7 +94,7 @@ giftCircleDraw.prototype.noRotateFn = function (tipMessage) {
 };
 
 //类似九分隔的变换效果
-giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage) {
+giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage,callback) {
 
     // opt参数的格式为
     // elementId为抽奖部分最外层dom的ID
@@ -108,7 +109,7 @@ giftCircleDraw.prototype.lotteryRoll = function (opt, tipMessage) {
         lotteryUnit.rollResult(lotteryUnit.initOpt,function () {
             thisFun.GiftRecord();
             thisFun.MyGift();
-            thisFun.tipWindowPop(tipMessage);
+            thisFun.tipWindowPop(tipMessage,callback);
         });
     }
 };
@@ -135,9 +136,9 @@ giftCircleDraw.prototype.scrollList = function (domName, length) {
 };
 //向上连续不断滚动不停顿
 giftCircleDraw.prototype.scrollUp = function (domName,time) {
-     var $self = domName,
-     time = time||200;
-     var lineHeight = $self.find("li:first").height();
+    var $self = domName,
+        time = time||200;
+    var lineHeight = $self.find("li:first").height();
     var z = 0;//向上滚动top值
     function up() {//向上滚动
         $self.animate({//中奖结果
@@ -168,7 +169,9 @@ giftCircleDraw.prototype.hoverScrollList = function (domName, length) {
 giftCircleDraw.prototype.tipWindowPop = function (tipMessage, callback) {
     $(tipMessage).show();
     commonFun.popWindow(tipMessage.outerHTML);
-    callback && callback();
+    setTimeout(() => {
+        callback && callback();
+    },0);
 };
 
 //tab switch

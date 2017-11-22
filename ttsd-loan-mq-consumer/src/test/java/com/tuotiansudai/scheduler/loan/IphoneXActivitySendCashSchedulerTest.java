@@ -7,9 +7,8 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.repository.model.ProductType;
-import org.apache.commons.lang.time.DateUtils;
 import org.assertj.core.util.Lists;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -23,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -61,19 +59,19 @@ public class IphoneXActivitySendCashSchedulerTest {
             return;
         }
 
-        IphoneXActivityView iphoneXActivityView1 = new IphoneXActivityView("0000", "userName0", "mobile0", 10000000, ProductType._360); //88
-        IphoneXActivityView iphoneXActivityView2 = new IphoneXActivityView("1111", "userName1", "mobile1", 10000000, ProductType._180);
-        IphoneXActivityView iphoneXActivityView3 = new IphoneXActivityView("1111", "userName1", "mobile1", 100000000, ProductType._90); //388
-        IphoneXActivityView iphoneXActivityView4 = new IphoneXActivityView("2222", "userName2", "mobile2", 10000000, ProductType._180); //0
-        IphoneXActivityView iphoneXActivityView5 = new IphoneXActivityView("3333", "userName3", "mobile3", 10000000, ProductType._360);
-        IphoneXActivityView iphoneXActivityView6 = new IphoneXActivityView("3333", "userName3", "mobile3", 10000000, ProductType._90);
-        IphoneXActivityView iphoneXActivityView7 = new IphoneXActivityView("3333", "userName3", "mobile3", 10000000, ProductType._180); //88
+        InvestProductTypeView investProductTypeView1 = new InvestProductTypeView("0000", "userName0", "mobile0", 10000000, ProductType._360); //88
+        InvestProductTypeView investProductTypeView2 = new InvestProductTypeView("1111", "userName1", "mobile1", 10000000, ProductType._180);
+        InvestProductTypeView investProductTypeView3 = new InvestProductTypeView("1111", "userName1", "mobile1", 100000000, ProductType._90); //388
+        InvestProductTypeView investProductTypeView4 = new InvestProductTypeView("2222", "userName2", "mobile2", 10000000, ProductType._180); //0
+        InvestProductTypeView investProductTypeView5 = new InvestProductTypeView("3333", "userName3", "mobile3", 10000000, ProductType._360);
+        InvestProductTypeView investProductTypeView6 = new InvestProductTypeView("3333", "userName3", "mobile3", 10000000, ProductType._90);
+        InvestProductTypeView investProductTypeView7 = new InvestProductTypeView("3333", "userName3", "mobile3", 10000000, ProductType._180); //88
 
-        List<IphoneXActivityView> list = Lists.newArrayList(iphoneXActivityView1, iphoneXActivityView2, iphoneXActivityView3, iphoneXActivityView4, iphoneXActivityView5, iphoneXActivityView6, iphoneXActivityView7);
+        List<InvestProductTypeView> list = Lists.newArrayList(investProductTypeView1, investProductTypeView2, investProductTypeView3, investProductTypeView4, investProductTypeView5, investProductTypeView6, investProductTypeView7);
 
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any())).thenReturn(list);
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), null)).thenReturn(list);
 
         BaseDto<PayDataDto> baseDto = new BaseDto();
         baseDto.setSuccess(true);
@@ -99,19 +97,19 @@ public class IphoneXActivitySendCashSchedulerTest {
             return;
         }
 
-        IphoneXActivityView iphoneXActivityView1 = new IphoneXActivityView("0000", "userName0", "mobile0", 10000000, ProductType._360); //88
-        IphoneXActivityView iphoneXActivityView2 = new IphoneXActivityView("1111", "userName1", "mobile1", 10000000, ProductType._180);
-        IphoneXActivityView iphoneXActivityView3 = new IphoneXActivityView("1111", "userName1", "mobile1", 100000000, ProductType._90); //388
-        IphoneXActivityView iphoneXActivityView4 = new IphoneXActivityView("2222", "userName2", "mobile2", 10000000, ProductType._180); //0
-        IphoneXActivityView iphoneXActivityView5 = new IphoneXActivityView("3333", "userName3", "mobile3", 10000000, ProductType._360);
-        IphoneXActivityView iphoneXActivityView6 = new IphoneXActivityView("3333", "userName3", "mobile3", 10000000, ProductType._90);
-        IphoneXActivityView iphoneXActivityView7 = new IphoneXActivityView("3333", "userName3", "mobile3", 10000000, ProductType._180); //88
+        InvestProductTypeView investProductTypeView1 = new InvestProductTypeView("0000", "userName0", "mobile0", 10000000, ProductType._360); //88
+        InvestProductTypeView investProductTypeView2 = new InvestProductTypeView("1111", "userName1", "mobile1", 10000000, ProductType._180);
+        InvestProductTypeView investProductTypeView3 = new InvestProductTypeView("1111", "userName1", "mobile1", 100000000, ProductType._90); //388
+        InvestProductTypeView investProductTypeView4 = new InvestProductTypeView("2222", "userName2", "mobile2", 10000000, ProductType._180); //0
+        InvestProductTypeView investProductTypeView5 = new InvestProductTypeView("3333", "userName3", "mobile3", 10000000, ProductType._360);
+        InvestProductTypeView investProductTypeView6 = new InvestProductTypeView("3333", "userName3", "mobile3", 10000000, ProductType._90);
+        InvestProductTypeView investProductTypeView7 = new InvestProductTypeView("3333", "userName3", "mobile3", 10000000, ProductType._180); //88
 
-        List<IphoneXActivityView> list = Lists.newArrayList(iphoneXActivityView1, iphoneXActivityView2, iphoneXActivityView3, iphoneXActivityView4, iphoneXActivityView5, iphoneXActivityView6, iphoneXActivityView7);
+        List<InvestProductTypeView> list = Lists.newArrayList(investProductTypeView1, investProductTypeView2, investProductTypeView3, investProductTypeView4, investProductTypeView5, investProductTypeView6, investProductTypeView7);
 
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any())).thenReturn(list);
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), null)).thenReturn(list);
 
         BaseDto<PayDataDto> baseDto = new BaseDto();
         baseDto.setSuccess(true);

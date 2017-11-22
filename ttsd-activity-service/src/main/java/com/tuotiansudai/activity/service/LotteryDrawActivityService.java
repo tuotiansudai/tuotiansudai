@@ -170,6 +170,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.double.eleven.endTime}")
     private String activityDoubleElevenEndTime;
 
+    @Value(value = "${activity.year.end.awards.startTime}")
+    private String activityYearEndAwardsStartTime;
+
+    @Value(value = "${activity.year.end.awards.endTime}")
+    private String activityYearEndAwardsEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -410,6 +416,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_ENVELOP_200, Lists.newArrayList(472L))
                 .put(LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_2, Lists.newArrayList(473L))
                 .put(LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(474L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_10, Lists.newArrayList(475L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_20, Lists.newArrayList(476L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_50, Lists.newArrayList(477L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_100, Lists.newArrayList(478L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_120, Lists.newArrayList(479L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_200, Lists.newArrayList(480L))
                 .build()).get(lotteryPrize);
     }
 
@@ -498,6 +510,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case DOUBLE_ELEVEN_ACTIVITY:
                 return getDoubleElevenDrawTimes(userModel, activityCategory);
+            case YEAR_END_AWARDS_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
         }
         return lotteryTime;
     }
@@ -645,6 +659,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.SCHOOL_SEASON_ACTIVITY, Lists.newArrayList(activitySchoolSeasonStartTime, activitySchoolSeasonEndTime))
                 .put(ActivityCategory.IPHONEX_ACTIVITY, Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime))
                 .put(ActivityCategory.DOUBLE_ELEVEN_ACTIVITY, Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime))
+                .put(ActivityCategory.YEAR_END_AWARDS_ACTIVITY, Lists.newArrayList(activityYearEndAwardsStartTime, activityYearEndAwardsEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -680,21 +695,18 @@ public class LotteryDrawActivityService {
 
     private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
         long experienceAmount = 0l;
-        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_88.equals(lotteryPrize)) {
-            experienceAmount = 8800l;
-        }
-        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
-            experienceAmount = 88800l;
-        }
         if (LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000.equals(lotteryPrize)) {
             experienceAmount = 100000l;
+        }
+        if (LotteryPrize.YEAR_END_AWARDS_ACTIVITY_EXPERIENCE_GOLD_500.equals(lotteryPrize)){
+            experienceAmount = 50000l;
         }
 
         if (experienceAmount == 0) {
             return;
         }
 
-        ExperienceBillBusinessType experienceBillBusinessType = LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000.equals(lotteryPrize) ? ExperienceBillBusinessType.DOUBLE_ELEVEN : ExperienceBillBusinessType.IPHONEX;
+        ExperienceBillBusinessType experienceBillBusinessType = LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000.equals(lotteryPrize) ? ExperienceBillBusinessType.DOUBLE_ELEVEN : ExperienceBillBusinessType.YEAR_END_AWARDS;
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, experienceBillBusinessType));

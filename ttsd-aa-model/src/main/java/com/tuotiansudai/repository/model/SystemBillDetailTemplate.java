@@ -30,6 +30,8 @@ public enum SystemBillDetailTemplate {
 
     IPHONEX_ACTIVITY_CASH_DETAIL_TEMPLATE("用户({0})在iPhoneX活动中,获取现金奖励{1}分"),
 
+    YEAR_END_AWARDS_CASH_DETAIL_TEMPLATE("用户({0})在年终奖活动中,获取现金奖励{1}分"),
+
     PAYROLL_DETAIL_TEMPLATE("为用户({0})代发工资"),
     ;
 

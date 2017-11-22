@@ -94,7 +94,7 @@
         <result column="user_name" property="userName"></result>
     </resultMap>
     
-    <resultMap id="iphoneXActivityView" type="IphoneXActivityView">
+    <resultMap id="investProductTypeView" type="InvestProductTypeView">
         <result column="user_name" property="userName"></result>
         <result column="login_name" property="loginName"></result>
         <result column="mobile" property="mobile"></result>
@@ -1156,15 +1156,18 @@
         GROUP BY loan_details.activity_desc, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
 
-    <select id="findAmountOrderByNameAndProductType" parameterType="map" resultMap="iphoneXActivityView">
+    <select id="findAmountOrderByNameAndProductType" parameterType="map" resultMap="investProductTypeView">
         SELECT temp.login_name, temp.sumAmount, temp.product_type, user.mobile, user.user_name FROM
         (SELECT i.login_name, SUM(amount) AS sumAmount, loan.product_type
-        FROM invest i JOIN loan on i.loan_id = loan.id
+        FROM invest i JOIN loan on i.loan_id = loan.id JOIN loan_details on loan.id = loan_details.loan_id
         WHERE loan.activity_type != 'NEWBIE'
         AND i.status = 'SUCCESS'
         AND i.transfer_invest_id IS NULL
         AND loan.product_type <![CDATA[ <> ]]> 'EXPERIENCE'
         AND i.trading_time BETWEEN #{startTime} AND #{endTime}
+        <if test="activityDesc != null and activityDesc !='' ">
+            and loan_details.activity_desc = #{activityDesc}
+        </if>
         GROUP BY loan.product_type, i.login_name) temp join user on temp.login_name = user.login_name
     </select>
 

@@ -47,6 +47,11 @@ public class ActivityConsoleNewmanTyrantService {
     @Value(value = "${activity.national.day.endTime}")
     private String activityNationalDayEndTime;
 
+    @Value(value = "${activity.year.end.awards.startTime}")
+    private String activityYearEndAwardsStartTime;
+
+    @Value(value = "${activity.year.end.awards.rankTime}")
+    private String activityYearEndAwardsRankTime;
 
     private int lifeSecond = 5184000;
 
@@ -173,6 +178,10 @@ public class ActivityConsoleNewmanTyrantService {
         if (!stringToDate(celebrationHeroRankingActivityPeriod.get(0)).after(tradingTime) && !tradingTime.after(stringToDate(celebrationHeroRankingActivityPeriod.get(1)))){
             list.add(celebrationHeroRankingActivityPeriod.get(0));
             list.add(celebrationHeroRankingActivityPeriod.get(1));
+        }
+        if (!stringToDate(activityYearEndAwardsStartTime).after(tradingTime) && !tradingTime.after(stringToDate(activityYearEndAwardsRankTime))){
+            list.add(activityYearEndAwardsStartTime);
+            list.add(activityYearEndAwardsRankTime);
         }
         return list;
     }
