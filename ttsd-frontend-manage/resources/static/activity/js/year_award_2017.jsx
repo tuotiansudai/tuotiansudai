@@ -379,8 +379,14 @@ function activityStatus(nowDay) {
     }  else if(nowDayStr>=startTime && nowDayStr<=endTime){
         //活动中
         let $rewardPicSrc = $('.prize_icon2').data('awardsrc');
-        $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + '") no-repeat');
-        $('.prize_icon2').css('background-size','contain');
+
+        if ($rewardPicSrc=='') {
+            $('.prize_icon2').addClass('prize_icon2_default');
+        }else{
+            $('.prize_icon2').css('background','url("' +  $rewardPicSrc  + '") no-repeat');
+            $('.prize_icon2').css('background-size','contain');
+        }
+
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
         $contentRanking.show();
