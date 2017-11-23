@@ -42,7 +42,7 @@ def migrate(gradle, etcd):
              'password': etcd.get('message.jdbc.password')},
     }
 
-    for schema, username_password in schema_username_password.item():
+    for schema, username_password in schema_username_password.items():
         username = username_password.get('username')
         password = schema_username_password.get('password')
         sh('{} ttsd-config:flywayMigrate -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
