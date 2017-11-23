@@ -7,7 +7,7 @@ sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 
 
 def migrate(gradle, etcd):
-    db_host = etcd.get('common.jdbc.host')
+    db_host, _ = etcd.get('common.jdbc.host')
     db_port = etcd.get('common.jdbc.port')
     schema_username_password = {
         'aa':
@@ -44,7 +44,7 @@ def migrate(gradle, etcd):
 
     for schema, username_password in schema_username_password.items():
         username = username_password.get('username')
-        password = schema_username_password.get('password')
+        password = username_password.get('password')
         sh('{} ttsd-config:flywayMigrate -Pdatabase={} -Phost={} -Pport={} -Pusername={} -Ppwd={}'.format(gradle,
                                                                                                           schema,
                                                                                                           db_host,
