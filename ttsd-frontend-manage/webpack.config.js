@@ -12,11 +12,13 @@ var node_modules = path.resolve(__dirname, 'node_modules');
 var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
-var commonStaticServer = require('./getStaticServer.js');
+var commonStaticServer = process.env.STATIC_SERVER || 'http://localhost:3008';
+if (!commonStaticServer.endsWith('/')) {
+    commonStaticServer += '/'
+}
 var packageRoute = require('./package.route.js');
 
-var devServerPath=commonStaticServer+'/',
-	commonOptions={},
+var commonOptions={},
 	webpackdevServer='',
 	plugins=[];
 var outFilename="[name].js";
@@ -174,7 +176,7 @@ var myObject = objectAssign(commonOptions, {
 	output: {
 		filename:outFilename,
 		path:packageRoute.outputPath,
-		publicPath:devServerPath,
+		publicPath:commonStaticServer,
 		chunkFilename:'chucks/[name].[chunkhash].js'
 	},
 	module: {

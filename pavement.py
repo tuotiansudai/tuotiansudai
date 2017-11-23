@@ -203,7 +203,7 @@ def jcversion(options):
     try:
         os.chdir('./ttsd-frontend-manage')
         sh('/usr/bin/npm install')
-        sh('PLAT={0} /usr/bin/npm run build'.format(options.env))
+        sh('STATIC_SERVER={0} /usr/bin/npm run build'.format(options.static_server))
     finally:
         os.chdir(owd)
 

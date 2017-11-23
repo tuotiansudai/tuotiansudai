@@ -111,4 +111,4 @@ class Deployment(object):
 
     def jcversion(self):
         print "Starting jcmin..."
-        sh('{0} jcversion.env={1} jcversion'.format(self._paver, self.env))
+        sh('{0} jcversion.static_server={1} jcversion'.format(self._paver, self.etcd.get('common.static.server')))
