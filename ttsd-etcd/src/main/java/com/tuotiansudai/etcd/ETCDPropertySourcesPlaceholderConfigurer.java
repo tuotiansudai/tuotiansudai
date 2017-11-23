@@ -56,9 +56,9 @@ public class ETCDPropertySourcesPlaceholderConfigurer extends PropertySourcesPla
                     }
                 });
             }
-
+            propertySourcesField.set(this, propertySources);
             this.processProperties(beanFactory, new PropertySourcesPropertyResolver(propertySources));
-            appliedPropertySources = propertySources;
+            appliedPropertySourcesField.set(this, propertySources);
         } catch (IllegalAccessException | NoSuchFieldException ignored) {
         }
 

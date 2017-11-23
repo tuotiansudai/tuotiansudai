@@ -64,18 +64,21 @@ public class ETCDConfigReader {
             ETCDEndPoints etcdEndPoints = objectMapper.readValue(ETCDConfigReader.class.getClassLoader().getResourceAsStream("etcd-endpoints.yml"), ETCDEndPoints.class);
             String env = System.getenv(ENDPOINTS_ENV_VAR);
             logger.info(MessageFormat.format("etcd env var is {0}", env));
-            ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(env.toLowerCase());
+            if (!Strings.isNullOrEmpty(env)) {
+                ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(env.toLowerCase());
 
-            String endpointUrl = MessageFormat.format("http://{0}:{1}",
-                    endpoint.getHost().get(new Random().nextInt(endpoint.getHost().size())),
-                    endpoint.getPort().get(new Random().nextInt(endpoint.getPort().size())));
+                String endpointUrl = MessageFormat.format("http://{0}:{1}",
+                        endpoint.getHost().get(new Random().nextInt(endpoint.getHost().size())),
+                        endpoint.getPort().get(new Random().nextInt(endpoint.getPort().size())));
 
-            logger.info(MessageFormat.format("etcd endpoint is {0}", endpointUrl));
-            return endpointUrl;
+                logger.info(MessageFormat.format("etcd endpoint is {0}", endpointUrl));
+                return endpointUrl;
+            }
+
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return "http://127.0.0.1:2379";
+        return "http://192.168.1.139:23791";
     }
 }
