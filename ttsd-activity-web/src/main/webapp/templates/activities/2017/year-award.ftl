@@ -193,7 +193,7 @@
                 <div class="prize_icon_desc prize_icon_desc1"><span class="prize_icon_desc_head">2~3名</span> <span class="prize_icon_desc_foot">0.5%加息券</span></div>
             </div>
             <div class="middle_prize_wrapper">
-                <div class="prize_icon2" data-awardsrc="${commonStaticServer}<#if prizeDto??>${prizeDto.goldImageUrl}</#if>"></div>
+                <div class="prize_icon2" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>"></div>
                 <div class="prize_icon_desc"><span class="prize_icon_desc_head">今日大奖</span> <span class="prize_icon_desc_foot"><#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if></span></div>
             </div>
             <div class="right_prize_wrapper">
