@@ -10,9 +10,9 @@ class Deployment(object):
     _dockerCompose = '/usr/local/bin/docker-compose'
     _paver = '/usr/bin/paver'
 
-    def __init__(self, env='DEV', fake_pay=None):
+    def __init__(self, env='DEV', pay_fake=None):
         self.env = env
-        self.fake_pay = fake_pay
+        self.pay_fake = pay_fake
         self.etcd = etcd_client.client(env)
 
     def deploy(self):
@@ -36,7 +36,7 @@ class Deployment(object):
 
     def config_file(self):
         print "Generate config file..."
-        config_deploy.deploy(self.etcd, self.env, self.fake_pay)
+        config_deploy.deploy(self.etcd, self.env, self.pay_fake)
 
     def migrate(self):
         from scripts import migrate_db
