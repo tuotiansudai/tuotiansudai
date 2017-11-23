@@ -7,7 +7,7 @@ sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 
 
 def migrate(gradle, etcd):
-    db_host, _ = etcd.get('common.jdbc.host')
+    db_host = etcd.get('common.jdbc.host')
     db_port = etcd.get('common.jdbc.port')
     schema_username_password = {
         'aa':
