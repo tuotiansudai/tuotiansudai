@@ -66,7 +66,7 @@ def qa(options):
     """
     from scripts.deployment import Deployment
 
-    deployment = Deployment(options.env)
+    deployment = Deployment(env=options.env, fake_pay=options.get('fake', {}).get('pay'))
     deployment.deploy()
 
 

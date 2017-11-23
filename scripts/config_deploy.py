@@ -2,7 +2,7 @@
 import redis
 
 
-def deploy(etcd, env):
+def deploy(etcd, env, fake_pay):
     # 读取QA环境公用配置 ttsd-env-QA-common.properties 生成一个 dict 对象 qa_common_prop
     qa_common_prop = load_properties("./ttsd-config/src/main/resources/envs/QA-common.properties")
 
@@ -29,6 +29,8 @@ def deploy(etcd, env):
                         or key_value[-1].strip()
                 etcd.put(key, value.strip())
                 print 'put etcd {0}={1}'.format(key, value.strip())
+    if fake_pay is not None:
+        etcd.put('fake.pay', fake_pay)
 
 
 # 读取properties 文件, 生成 dict 对象
