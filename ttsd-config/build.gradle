@@ -40,7 +40,7 @@ processResources {
  * dbhost default value: ttsd-env.properties common.jdbc.host
  * dbport default value: ttsd-env.properties common.jdbc.port
  * database default value: aa
- * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-config:flywayMigrate
+ * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa -Pusername=root -Ppwd=root ttsd-config:flywayMigrate
  *
  */
 flyway {
@@ -49,7 +49,6 @@ flyway {
     def defaultDatabase = 'aa'
     def defaultHost = '192.168.33.10'
     def defaultPort = '3306'
-    def defaultEnv = 'DEV'
     def defaultUsername = 'root'
     def defaultPwd = 'root'
     if (project.hasProperty('database')) {
@@ -61,9 +60,6 @@ flyway {
     if (project.hasProperty('port')) {
         defaultPort = port
     }
-    if (project.hasProperty('env')) {
-        defaultEnv = env
-    }
     if (project.hasProperty('username')) {
         defaultUsername = username
     }
@@ -74,7 +70,7 @@ flyway {
     locations = ["filesystem:db_migration/${defaultDatabase}"]
     schemas = ["${defaultDatabase}"]
 
-    url = "${defaultEnv}" == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    url = "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8"
     user = "${defaultUsername}"
     password = "${defaultPwd}"
 }

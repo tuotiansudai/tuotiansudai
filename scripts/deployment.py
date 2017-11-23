@@ -1,62 +1,49 @@
 import os
-import etcd3
 from paver.shell import sh
 import config_deploy
+import etcd_client
 
 
 class Deployment(object):
-    etcd_host = {'DEV': '127.0.0.1',
-                 'QA1': '192.168.1.139',
-                 'QA2': '192.168.1.139',
-                 'QA3': '192.168.1.139',
-                 'QA4': '192.168.1.139',
-                 'QA5': '192.168.1.139'}
-
-    etcd_port = {'DEV': '2379',
-                 'QA1': '23791',
-                 'QA2': '23791',
-                 'QA3': '23791',
-                 'QA4': '23791',
-                 'QA5': '23791'}
-
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
     _gradle = '/opt/gradle/latest/bin/gradle'
     _dockerCompose = '/usr/local/bin/docker-compose'
     _paver = '/usr/bin/paver'
 
-    def deploy(self, build_params):
-        host = self.etcd_host.get(build_params.get('env', 'DEV'))
-        port = self.etcd_port.get((build_params.get('env', 'DEV')))
-        etcd = etcd3.client(host=host, port=port)
+    def __init__(self, env='DEV'):
+        self.env = env
+        self.etcd = etcd_client.client(env)
+
+    def deploy(self):
         self.clean()
-        self.config_file(etcd, build_params)
-        self.jcversion(build_params)
-        self.migrate(etcd)
-        self.compile(build_params)
+        self.config_file()
+        self.jcversion()
+        self.migrate()
+        self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
         self.build_rest_service()
         self.build_diagnosis()
         self.build_worker_monitor()
         self.mk_static_package()
-        self.init_docker(build_params)
+        self.init_docker()
 
     def clean(self):
         print "Cleaning..."
         print self._gradle
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
-    def config_file(self, etcd, build_params):
+    def config_file(self):
         print "Generate config file..."
-        config_deploy.deploy(etcd, build_params)
+        config_deploy.deploy(self.etcd, self.env)
 
-    def migrate(self, etcd):
+    def migrate(self):
         from scripts import migrate_db
-        migrate_db.migrate(self._gradle, etcd)
+        migrate_db.migrate(self._gradle, self.etcd)
 
-    def compile(self, build_params):
+    def compile(self):
         print "Compiling..."
-        sh('TTSD_ETCD_ENDPOINT={0} {1} clean initMQ war renameWar'.format(build_params.get('env'), self._gradle))
+        sh('TTSD_ETCD_ENDPOINT={0} {1} clean initMQ war renameWar'.format(self.env, self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):
@@ -107,22 +94,21 @@ class Deployment(object):
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
-    def init_docker(self, build_params):
+    def init_docker(self):
         print "Initialing docker..."
         import platform
-
         sudoer = 'sudo' if 'centos' in platform.platform() else ''
         self._remove_old_container(sudoer)
-        self._start_new_container(sudoer, build_params)
+        self._start_new_container(sudoer)
 
     def _remove_old_container(self, suoder):
         sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
         sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
                                                                                                self._dockerCompose))
 
-    def _start_new_container(self, sudoer, build_params):
-        sh('{0} TTSD_ETCD_ENDPOINT={1} {2} -f dev.yml up -d'.format(sudoer, build_params.get('env', 'DEV'), self._dockerCompose))
+    def _start_new_container(self, sudoer):
+        sh('{0} TTSD_ETCD_ENDPOINT={1} {2} -f dev.yml up -d'.format(sudoer, self.env, self._dockerCompose))
 
-    def jcversion(self, build_params):
+    def jcversion(self):
         print "Starting jcmin..."
-        sh('{0} jcversion.env={1} jcversion'.format(self._paver, build_params.get('env')))
+        sh('{0} jcversion.env={1} jcversion'.format(self._paver, self.env))
