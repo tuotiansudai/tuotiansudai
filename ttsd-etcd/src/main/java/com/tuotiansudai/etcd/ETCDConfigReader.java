@@ -22,7 +22,7 @@ public class ETCDConfigReader {
 
     private static final String ENDPOINTS_ENV_VAR = "TTSD_ETCD_ENDPOINT";
 
-    private static final String ENV = System.getenv(ENDPOINTS_ENV_VAR);
+    private static final String ENV = Strings.isNullOrEmpty(System.getenv(ENDPOINTS_ENV_VAR)) ? "dev" : System.getenv(ENDPOINTS_ENV_VAR).toLowerCase();
 
     private static KV kvClient;
 
@@ -44,7 +44,7 @@ public class ETCDConfigReader {
             return null;
         }
 
-        key = MessageFormat.format("/{0}/{1}", ENV, key);
+        key = MessageFormat.format("/{0}/{1}", ENV.toLowerCase(), key);
 
         CompletableFuture<GetResponse> completableFuture = kvClient.get(ByteSequence.fromString(key));
 
