@@ -42,12 +42,12 @@ public class WeChatClient {
 
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap(
             ImmutableMap.<WeChatMessageType, String>builder()
-                    .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getValue("wechat.template1.id"))
+                    .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getReader().getValue("wechat.template1.id"))
                     .build());
 
-    private static String APP_ID = ETCDConfigReader.getValue("wechat.appId");
+    private static String APP_ID = ETCDConfigReader.getReader().getValue("wechat.appId");
 
-    private static String APP_SECRET = ETCDConfigReader.getValue("wechat.appSecret");
+    private static String APP_SECRET = ETCDConfigReader.getReader().getValue("wechat.appSecret");
 
     public static WeChatClient getClient() {
         return instance;

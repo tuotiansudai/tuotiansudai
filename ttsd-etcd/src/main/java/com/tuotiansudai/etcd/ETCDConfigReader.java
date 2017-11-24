@@ -22,21 +22,30 @@ public class ETCDConfigReader {
 
     private static final String ENDPOINTS_ENV_VAR = "TTSD_ETCD_ENDPOINT";
 
+    private static final String ENV = System.getenv(ENDPOINTS_ENV_VAR);
+
     private static KV kvClient;
+
+    private static ETCDConfigReader etcdConfigReader = new ETCDConfigReader();
 
     static {
         kvClient = Client.builder().endpoints(fetchEndpoints()).build().getKVClient();
     }
 
-    String getProperties(String key) {
-        return getValue(key);
+    private ETCDConfigReader() {
     }
 
+    public static ETCDConfigReader getReader() {
+        return etcdConfigReader;
+    }
 
-    public static String getValue(String key) {
+    public String getValue(String key) {
         if (Strings.isNullOrEmpty(key)) {
             return null;
         }
+
+        key = MessageFormat.format("/{0}/{1}", ENV, key);
+
         CompletableFuture<GetResponse> completableFuture = kvClient.get(ByteSequence.fromString(key));
 
         try {
@@ -62,10 +71,9 @@ public class ETCDConfigReader {
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         try {
             ETCDEndPoints etcdEndPoints = objectMapper.readValue(ETCDConfigReader.class.getClassLoader().getResourceAsStream("etcd-endpoints.yml"), ETCDEndPoints.class);
-            String env = System.getenv(ENDPOINTS_ENV_VAR);
-            logger.info(MessageFormat.format("etcd env var is {0}", env));
-            if (!Strings.isNullOrEmpty(env)) {
-                ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(env.toLowerCase());
+            logger.info(MessageFormat.format("etcd env is {0}", ENV));
+            if (!Strings.isNullOrEmpty(ENV)) {
+                ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(ENV.toLowerCase());
 
                 String endpointUrl = MessageFormat.format("http://{0}:{1}",
                         endpoint.getHost().get(new Random().nextInt(endpoint.getHost().size())),
@@ -74,7 +82,6 @@ public class ETCDConfigReader {
                 logger.info(MessageFormat.format("etcd endpoint is {0}", endpointUrl));
                 return endpointUrl;
             }
-
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

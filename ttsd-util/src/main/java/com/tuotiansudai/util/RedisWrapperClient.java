@@ -18,7 +18,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
 
     private final static RedisWrapperClient redisWrapperClient = new RedisWrapperClient();
 
-    private static int COMMON_REDIS_DB = Integer.parseInt(ETCDConfigReader.getValue("common.redis.db"));
+    private static int COMMON_REDIS_DB = Integer.parseInt(ETCDConfigReader.getReader().getValue("common.redis.db"));
 
     private RedisWrapperClient() {
     }

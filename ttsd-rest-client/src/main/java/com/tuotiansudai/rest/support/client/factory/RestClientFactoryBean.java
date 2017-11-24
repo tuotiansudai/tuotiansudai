@@ -23,6 +23,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
     private RequestHeaderInterceptor requestHeaderInterceptor;
     private JAXRSContract jaxrsContract;
     private Class<T> restClientInterface;
+    private ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
 
     public RestClientFactoryBean() {
     }
@@ -39,7 +40,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
 
     private T createBean(Class<T> restClientInterface) {
         RestClient restClient = restClientInterface.getAnnotation(RestClient.class);
-        String restClientUrl = ETCDConfigReader.getValue(restClient.url());
+        String restClientUrl = etcdConfigReader.getValue(restClient.url());
         return Feign.builder()
                 .logger(new Slf4jLogger(restClientInterface))
                 .client(client)

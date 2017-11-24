@@ -37,9 +37,9 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
     public BaseAsyncRequestModel(Source source, AsyncUmPayService service) {
         this.retUrl = Source.WEB == source ?
-                MessageFormat.format("{0}/{1}", ETCDConfigReader.getValue("pay.callback.web.host"), service.getWebRetCallbackPath())
-                : MessageFormat.format("{0}/{1}", ETCDConfigReader.getValue("pay.callback.app.web.host"), service.getMobileRetCallbackPath());
-        this.notifyUrl = MessageFormat.format("{0}/{1}", ETCDConfigReader.getValue("pay.callback.back.host"), service.getNotifyCallbackPath());
+                MessageFormat.format("{0}/{1}", PAY_CALLBACK_WEB_HOST, service.getWebRetCallbackPath())
+                : MessageFormat.format("{0}/{1}", PAY_CALLBACK_APP_WEB_HOST, service.getMobileRetCallbackPath());
+        this.notifyUrl = MessageFormat.format("{0}/{1}", PAY_CALLBACK_BACK_HOST, service.getNotifyCallbackPath());
         this.setSourceV(source == Source.WEB ? null : "HTML5");
     }
 }

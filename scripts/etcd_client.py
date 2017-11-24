@@ -13,17 +13,18 @@ def client(env):
     host = hosts[random.randint(0, len(hosts) - 1)]
     port = ports[random.randint(0, len(ports) - 1)]
 
-    return Etcd3Client(etcd3.client(host=host, port=port))
+    return Etcd3Client(etcd3.client(host=host, port=port), env)
 
 
 class Etcd3Client(object):
-    def __init__(self, etcd_client):
+    def __init__(self, etcd_client, env):
         self.etcd_client = etcd_client
+        self.env = env.lower()
 
     def get(self, key):
         if key:
-            value, _ = self.etcd_client.get(key)
+            value, _ = self.etcd_client.get('/{}/{}'.format(self.env, key))
             return value
 
     def put(self, key, value):
-        self.etcd_client.put(key, value)
+        self.etcd_client.put('/{}/{}'.format(self.env, key), value)

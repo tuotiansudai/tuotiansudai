@@ -16,7 +16,7 @@ import java.util.List;
 public class AppVersionUtil {
     private static Logger logger = Logger.getLogger(AppVersionUtil.class);
 
-    private static String serverAppVersion = ETCDConfigReader.getValue("mobile.app.version");
+    private static String serverAppVersion = ETCDConfigReader.getReader().getValue("mobile.app.version");
 
     public final static int low = -1;
 

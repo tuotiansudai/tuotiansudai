@@ -10,10 +10,11 @@ import java.util.Map;
 
 public class MQRunningStatusCheck {
     public static void main(String[] args) throws IOException {
-        String redisHost = ETCDConfigReader.getValue("common.redis.host");
-        int redisPort = Integer.parseInt(ETCDConfigReader.getValue("common.redis.port"));
-        String redisPassword = ETCDConfigReader.getValue("common.redis.password");
-        int redisDB = Integer.parseInt(ETCDConfigReader.getValue("common.redis.db"));
+        ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
+        String redisHost = etcdConfigReader.getValue("common.redis.host");
+        int redisPort = Integer.parseInt(etcdConfigReader.getValue("common.redis.port"));
+        String redisPassword = etcdConfigReader.getValue("common.redis.password");
+        int redisDB = Integer.parseInt(etcdConfigReader.getValue("common.redis.db"));
 
         Jedis jedis = new Jedis(redisHost, redisPort);
         if (!StringUtils.isEmpty(redisPassword)) {

@@ -22,13 +22,14 @@ public class MybatisRedisCacheProvider {
     }
 
     private MybatisRedisCacheProvider() {
-        this.expireSeconds = Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.expire.seconds"));
-        String redisHostName = ETCDConfigReader.getValue("common.redis.host");
-        int redisPort = Integer.parseInt(ETCDConfigReader.getValue("common.redis.port"));
-        String redisPassword = ETCDConfigReader.getValue("common.redis.password");
-        int redisDb = Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.db"));
-        int redisPoolSize = Integer.parseInt(ETCDConfigReader.getValue("common.mybatis.cache.redis.pool.maxTotal"));
-        int redisMaxWaitMills = Integer.parseInt(ETCDConfigReader.getValue("common.jedis.pool.maxWaitMillis"));
+        ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
+        this.expireSeconds = Integer.parseInt(etcdConfigReader.getValue("common.mybatis.cache.expire.seconds"));
+        String redisHostName = etcdConfigReader.getValue("common.redis.host");
+        int redisPort = Integer.parseInt(etcdConfigReader.getValue("common.redis.port"));
+        String redisPassword = etcdConfigReader.getValue("common.redis.password");
+        int redisDb = Integer.parseInt(etcdConfigReader.getValue("common.mybatis.cache.db"));
+        int redisPoolSize = Integer.parseInt(etcdConfigReader.getValue("common.mybatis.cache.redis.pool.maxTotal"));
+        int redisMaxWaitMills = Integer.parseInt(etcdConfigReader.getValue("common.jedis.pool.maxWaitMillis"));
 
         if (Objects.equals(redisPassword, "")) {
             redisPassword = null;

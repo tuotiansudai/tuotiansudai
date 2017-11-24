@@ -19,16 +19,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MQMigration {
-    private static long QUEUE_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 60 * 60;//1 hour
+    private static final long QUEUE_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 60 * 60;//1 hour
 
     public static void main(String[] args) throws IOException {
-        String enabled = ETCDConfigReader.getValue("aliyun.mns.enabled");
+        ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
+
+        String enabled = etcdConfigReader.getValue("aliyun.mns.enabled");
         if (!"true".equals(enabled)) {
             return;
         }
-        String endPoint = ETCDConfigReader.getValue("aliyun.mns.endpoint");
-        String accessKeyId = ETCDConfigReader.getValue("aliyun.mns.accessKeyId");
-        String accessKeySecret = ETCDConfigReader.getValue("aliyun.mns.accessKeySecret");
+        String endPoint = etcdConfigReader.getValue("aliyun.mns.endpoint");
+        String accessKeyId = etcdConfigReader.getValue("aliyun.mns.accessKeyId");
+        String accessKeySecret = etcdConfigReader.getValue("aliyun.mns.accessKeySecret");
 
         MNSClient mnsClient = getMnsClient(endPoint, accessKeyId, accessKeySecret);
 

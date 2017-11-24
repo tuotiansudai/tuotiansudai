@@ -11,6 +11,8 @@ import java.lang.reflect.Field;
 
 public class ETCDPropertySourcesPlaceholderConfigurer extends PropertySourcesPlaceholderConfigurer {
 
+    private ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
+
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         try {
             Field propertySourcesField = PropertySourcesPlaceholderConfigurer.class.getDeclaredField("propertySources");
@@ -49,9 +51,9 @@ public class ETCDPropertySourcesPlaceholderConfigurer extends PropertySourcesPla
                 catch (IOException ex) {
                     throw new BeanInitializationException("Could not load properties", ex);
                 }
-                propertySources.addLast(new PropertySource<ETCDConfigReader>("etcdProperties", new ETCDConfigReader()) {
+                propertySources.addLast(new PropertySource<ETCDConfigReader>("etcdProperties", etcdConfigReader) {
                     public String getProperty(String key) {
-                        return this.source.getProperties(key);
+                        return this.source.getValue(key);
                     }
                 });
             }
