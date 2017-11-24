@@ -352,4 +352,16 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资未生成合同")).collect(Collectors.toList()));
         return keyValueModels;
     }
+
+    @Override
+    public List<KeyValueModel> queryLoanOutAmountTrend(Date startTime, Date endTime, Granularity granularity) {
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryLoanOutAmountTrend(startTime, new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate(), granularity);
+        if(granularity.equals(Granularity.Weekly)){
+            for(KeyValueModel keyValueModel : keyValueModels){
+                String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1,keyValueModel.getName().length());
+                keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
+            }
+        }
+        return keyValueModels;
+    }
 }
