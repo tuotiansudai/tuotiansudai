@@ -79,21 +79,9 @@ def dev():
 
 
 @task
-@cmdopts([
-    ('dbhost=', '', 'database host'),
-    ('dbport=', '', 'database port'),
-    ('redishost=', '', 'redis host'),
-    ('redisport=', '', 'redis port'),
-])
-def ut(options):
-    """
-    Run Unit Test
-    e.g. paver ut.dbhost=127.0.0.1 ut.dbport=40020 ut.redishost=127.0.0.1 ut.redisport=40016 ut
-    """
+def ut():
     from scripts.unit_test import UTRunner
-
-    v2 = UTRunner(options.dbhost, options.dbport, options.redishost, options.redisport)
-    v2.test()
+    UTRunner().test()
 
 
 def fab_command(command):

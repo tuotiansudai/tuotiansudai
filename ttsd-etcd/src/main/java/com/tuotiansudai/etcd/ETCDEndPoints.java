@@ -11,6 +11,7 @@ public class ETCDEndPoints {
     private ETCDEndPoint qa3;
     private ETCDEndPoint qa4;
     private ETCDEndPoint qa5;
+    private ETCDEndPoint ut;
 
     public ETCDEndPoint getDev() {
         return dev;
@@ -60,6 +61,14 @@ public class ETCDEndPoints {
         this.qa5 = qa5;
     }
 
+    public ETCDEndPoint getUt() {
+        return ut;
+    }
+
+    public void setUt(ETCDEndPoint ut) {
+        this.ut = ut;
+    }
+
     ETCDEndPoint getEndpoint(String env) {
         return Maps.newHashMap(ImmutableMap.<String, ETCDEndPoint>builder()
                 .put("dev", dev)
@@ -68,6 +77,7 @@ public class ETCDEndPoints {
                 .put("qa3", qa3)
                 .put("qa4", qa4)
                 .put("qa5", qa5)
+                .put("ut", ut)
                 .build()).get(env);
     }
 }
