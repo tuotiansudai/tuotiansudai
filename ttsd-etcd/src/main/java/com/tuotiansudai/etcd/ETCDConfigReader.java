@@ -79,6 +79,6 @@ public class ETCDConfigReader {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return "http://192.168.1.139:23791";
+        return "http://localhost:2379";
     }
 }

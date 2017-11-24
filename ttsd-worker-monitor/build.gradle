@@ -59,14 +59,3 @@ task clearWorkerMonitorStatus(type: JavaExec) {
     main = 'com.tuotiansudai.worker.monitor.MQRunningStatusClear'
     classpath = sourceSets.main.runtimeClasspath
 }
-
-processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = "${configPath}/ttsd-worker-monitor"
-    if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}") {
-        into '/'
-    }
-}

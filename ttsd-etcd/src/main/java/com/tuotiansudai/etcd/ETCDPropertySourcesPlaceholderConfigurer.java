@@ -23,7 +23,6 @@ public class ETCDPropertySourcesPlaceholderConfigurer extends PropertySourcesPla
 
             Field appliedPropertySourcesField = PropertySourcesPlaceholderConfigurer.class.getDeclaredField("appliedPropertySources");
             appliedPropertySourcesField.setAccessible(true);
-            PropertySources appliedPropertySources = (PropertySources) appliedPropertySourcesField.get(this);
 
             if (propertySources == null) {
                 propertySources = new MutablePropertySources();
