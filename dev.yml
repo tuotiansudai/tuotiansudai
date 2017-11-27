@@ -6,6 +6,7 @@ user-rest-service:
   volumes:
     - ./ttsd-user-rest-service:/app
     - /var/log/tuotian/signin:/var/log/signin
+    - ./ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml
   ports:
     - "20001:80"
   links:
