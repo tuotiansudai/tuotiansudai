@@ -185,9 +185,6 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)','Lines');
 
-    /*放款金额时间分布*/
-    showReport('#formloanOutAmountReport','/bi/loan-out-amount-trend','loanOutAmountDistribution','放款金额(元)','Lines');
-
     /*用户投资次数时间分布*/
     showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资(人次)','Lines');
 
