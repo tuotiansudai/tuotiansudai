@@ -47,7 +47,6 @@ class UTRunner(object):
            ' --link test-redis-server '
            ' leoshi/ttsd-signin-flask python test.py')
         sh('TTSD_ETCD_ENV=UT {} test'.format(self._gradle))
-        # sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
     def clean_env(self):
         self._remove_old_container()
