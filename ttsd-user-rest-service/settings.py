@@ -2,7 +2,7 @@ import os
 
 from etcd_config import EtcdConfig
 
-ETCD_ENDPOINT = os.getenv('TTSD_ETCD_ENDPOINT', 'http://192.168.1.139:23793')
+ETCD_ENDPOINT = os.getenv('TTSD_ETCD_ENDPOINT', 'http://127.0.0.1:2379')
 ENV = os.getenv('TTSD_ETCD_ENV', 'dev')
 
 DEBUG = True
@@ -34,10 +34,9 @@ MYSQL_PASS = config.get('common.jdbc.password', default_value='tuotiansd')
 SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@{}:{}/aa?charset=utf8'.format(MYSQL_USER, MYSQL_PASS, MYSQL_HOST, MYSQL_PORT)
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-if not ETCD_ENDPOINT:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    SETTING_LOCAL_DIR = os.path.join(BASE_DIR, "settings_local.py")
-    if os.path.exists(SETTING_LOCAL_DIR):
-        execfile(SETTING_LOCAL_DIR)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SETTING_LOCAL_DIR = os.path.join(BASE_DIR, "settings_local.py")
+if os.path.exists(SETTING_LOCAL_DIR):
+    execfile(SETTING_LOCAL_DIR)
 
 execfile('logging_config.py')
