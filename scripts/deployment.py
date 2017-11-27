@@ -44,7 +44,7 @@ class Deployment(object):
 
     def compile(self):
         print "Compiling..."
-        sh('TTSD_ETCD_ENDPOINT={0} {1} clean initMQ war renameWar'.format(self.env, self._gradle))
+        sh('TTSD_ETCD_ENV={0} {1} clean initMQ war renameWar'.format(self.env, self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):
@@ -108,7 +108,7 @@ class Deployment(object):
                                                                                                self._dockerCompose))
 
     def _start_new_container(self, sudoer):
-        sh('{0} TTSD_ETCD_ENDPOINT={1} {2} -f dev.yml up -d'.format(sudoer, self.env, self._dockerCompose))
+        sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml up -d'.format(sudoer, self.env, self._dockerCompose))
 
     def jcversion(self):
         print "Starting jcmin..."

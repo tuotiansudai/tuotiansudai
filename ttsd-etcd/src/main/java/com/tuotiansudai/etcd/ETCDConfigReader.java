@@ -20,7 +20,7 @@ public class ETCDConfigReader {
 
     private static Logger logger = Logger.getLogger(ETCDConfigReader.class);
 
-    private static final String ENDPOINTS_ENV_VAR = "TTSD_ETCD_ENDPOINT";
+    private static final String ENDPOINTS_ENV_VAR = "TTSD_ETCD_ENV";
 
     private static final String ENV = Strings.isNullOrEmpty(System.getenv(ENDPOINTS_ENV_VAR)) ? "dev" : System.getenv(ENDPOINTS_ENV_VAR).toLowerCase();
 
