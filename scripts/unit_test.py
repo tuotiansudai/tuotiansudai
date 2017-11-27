@@ -39,13 +39,13 @@ class UTRunner(object):
         print "Starting test..."
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd)
-        sh('docker run --rm --net=bridge'
+        sh('docker run --rm --net=bridge '
            ' --env TTSD_ETCD_ENV=UT '
-           ' -v `pwd`/ttsd-user-rest-service:/app'
-           ' -v `pwd`/ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml'
-           ' --link test-db-server'
-           ' --link test-redis-server'
-           'leoshi/ttsd-signin-flask python test.py')
+           ' -v `pwd`/ttsd-user-rest-service:/app '
+           ' -v `pwd`/ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml '
+           ' --link test-db-server '
+           ' --link test-redis-server '
+           ' leoshi/ttsd-signin-flask python test.py')
         sh('TTSD_ETCD_ENV=UT {} test'.format(self._gradle))
         # sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
