@@ -27,7 +27,6 @@ processResources.outputs.upToDateWhen { false }
 
 dependencies {
     compile 'mysql:mysql-connector-java:5.1.39',
-            'com.coreos:jetcd-core:0.0.1',
             'log4j:log4j:1.2.17'
 }
 

@@ -14,6 +14,7 @@ dependencies {
     compile 'org.springframework:spring-aspects:4.2.0.RELEASE'
     compile "org.mybatis:mybatis:$mybatisVersion"
     compile "org.mybatis:mybatis-spring:$mybatisSpringVersion"
-    compile 'com.zaxxer:HikariCP:2.4.7'
+    compile 'com.zaxxer:HikariCP:2.4.7',
+    compile 'mysql:mysql-connector-java:5.1.39'
 }
 
