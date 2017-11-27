@@ -57,4 +57,4 @@ def flush(options):
             print properties_key, etcd_value
             if properties_value != etcd_value:
                 print properties_key, properties_key
-                etcd.put(properties_key, properties_value)
+                etcd.put('/dev/{}'.format(properties_key), properties_value)

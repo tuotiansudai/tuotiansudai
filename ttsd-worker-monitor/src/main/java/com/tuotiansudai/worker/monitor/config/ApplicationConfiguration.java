@@ -1,7 +1,6 @@
 package com.tuotiansudai.worker.monitor.config;
 
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
 public class ApplicationConfiguration {
+
     @Value("${common.redis.host}")
     private String redisHost;
 
@@ -43,8 +43,4 @@ public class ApplicationConfiguration {
         return new SmsWrapperClient();
     }
 
-    @Bean
-    public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
-        return new ETCDPropertySourcesPlaceholderConfigurer();
-    }
 }
