@@ -2,11 +2,11 @@ user-rest-service:
   image: "leoshi/ttsd-signin-flask"
   environment:
     - "TZ=Asia/Shanghai"
-    - "TTSD_ETCD_ENDPOINT=http://192.168.1.139:23791"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
   volumes:
     - ./ttsd-user-rest-service:/app
     - /var/log/tuotian/signin:/var/log/signin
+    - ./ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml
   ports:
     - "20001:80"
   links:

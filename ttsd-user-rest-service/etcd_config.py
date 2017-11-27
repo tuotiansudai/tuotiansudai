@@ -1,27 +1,25 @@
-import etcd
+import random
+
+import etcd3
+import yaml
 
 
 class EtcdConfig(object):
-    def __init__(self, endpoint=None, host=None, port=2379, env=None):
-        if endpoint:
-            from urlparse import urlparse
-            url = urlparse(endpoint)
-            self.host = url.hostname
-            self.port = url.port
-        else:
-            self.host = host
-            self.port = port
-        self.env = env
-        self.client = etcd.Client(host=self.host, port=self.port)
+    def __init__(self, env):
+        with open('/app/etcd-endpoints.yml', 'r') as stream:
+            yaml_data = yaml.load(stream)
 
-    def _key(self, key):
-        return '/{}/{}'.format(self.env, key) if self.env else key
+        self.env = (env or 'dev').lower()
+        endpoints = yaml_data.get(self.env)
+        hosts = endpoints.get('host')
+        ports = endpoints.get('port')
+        host = hosts[random.randint(0, len(hosts) - 1)]
+        port = ports[random.randint(0, len(ports) - 1)]
+        self.client = etcd3.client(host=host, port=port)
 
     def get(self, key, default_value=None):
-        try:
-            return self.client.get(self._key(key))
-        except etcd.EtcdKeyNotFound:
-            return default_value
+        value, _ = self.client.get('/{}/{}'.format(self.env, key))
+        return value if value else default_value
 
     def get_int(self, key, default_value=None):
         str_value = self.get(key)

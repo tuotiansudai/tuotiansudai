@@ -7,7 +7,7 @@ ENV = os.getenv('TTSD_ETCD_ENV', 'dev')
 
 DEBUG = True
 
-config = EtcdConfig(endpoint=ETCD_ENDPOINT, env=ENV)
+config = EtcdConfig(ENV)
 
 REDIS_HOST = config.get('common.redis.host', default_value='192.168.33.10')
 REDIS_PORT = config.get_int('common.redis.port', default_value=6379)
