@@ -66,6 +66,10 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         if (granularity == Granularity.Hourly) {
             return getHourKeyValueModels(keyValueModels);
         }
+        if (granularity == Granularity.Weekly){
+            return getWeeklyKeyValueModels(keyValueModels);
+
+        }
         return keyValueModels;
     }
 
@@ -102,6 +106,9 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         if (granularity == Granularity.Hourly) {
             return getHourKeyValueModels(keyValueModels);
         }
+        if (granularity == Granularity.Weekly){
+            return getWeeklyKeyValueModels(keyValueModels);
+        }
         return keyValueModels;
     }
 
@@ -115,6 +122,9 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province, role);
         if (granularity == Granularity.Hourly) {
             return getHourKeyValueModels(keyValueModels);
+        }
+        if (granularity == Granularity.Weekly){
+            return getWeeklyKeyValueModels(keyValueModels);
         }
         return keyValueModels;
     }
@@ -214,7 +224,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel, Boolean isTransfer) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().plusSeconds(-1).toDate();
-        return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage, channel, isTransfer);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage, channel, isTransfer);
+        if (granularity == Granularity.Weekly){
+            return getWeeklyKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
     }
 
     @Override
@@ -260,7 +274,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     public List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime, Granularity granularity, String role) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity, role);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity, role);
+        if (granularity == Granularity.Weekly){
+            return getWeeklyKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
     }
 
     @Override
@@ -332,10 +350,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     public List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity){
         List<KeyValueModel> keyValueModels = businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime, new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate(), granularity);
         if(granularity.equals(Granularity.Weekly)){
-            for(KeyValueModel keyValueModel : keyValueModels){
-                String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1,keyValueModel.getName().length());
-                keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
-            }
+            return getWeeklyKeyValueModels(keyValueModels);
         }
         return keyValueModels;
     }
@@ -357,10 +372,15 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     public List<KeyValueModel> queryLoanOutAmountTrend(Date startTime, Date endTime, Granularity granularity) {
         List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryLoanOutAmountTrend(startTime, new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate(), granularity);
         if (granularity.equals(Granularity.Weekly)) {
-            for (KeyValueModel keyValueModel : keyValueModels) {
-                String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1, keyValueModel.getName().length());
-                keyValueModel.setName(keyValueModel.getName().substring(0, keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
-            }
+            return getWeeklyKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
+    }
+
+    public List<KeyValueModel> getWeeklyKeyValueModels(List<KeyValueModel> keyValueModels){
+        for (KeyValueModel keyValueModel : keyValueModels) {
+            String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1, keyValueModel.getName().length());
+            keyValueModel.setName(keyValueModel.getName().substring(0, keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
         }
         return keyValueModels;
     }
