@@ -1,4 +1,4 @@
-FROM tiangolo/uwsgi-nginx-flask
+FROM tiangolo/uwsgi-nginx-flask:python2.7
 
 MAINTAINER Shi Lei <mleoshi@gmail.com>
 
