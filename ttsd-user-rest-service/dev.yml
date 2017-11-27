@@ -2,6 +2,8 @@ signin:
   image: "leoshi/ttsd-signin-flask"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENDPOINT=http://172.17.0.1:2379"
+    - "TTSD_ETCD_ENV=PRODUCT"
   volumes:
     - .:/app
     - /var/log/signin:/var/log/signin

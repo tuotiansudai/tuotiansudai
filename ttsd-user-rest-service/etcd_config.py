@@ -15,7 +15,7 @@ class EtcdConfig(object):
         self.client = etcd.Client(host=self.host, port=self.port)
 
     def _key(self, key):
-        return '/{}/{}'.format(self.env, key) if key else key
+        return '/{}/{}'.format(self.env, key) if self.env else key
 
     def get(self, key, default_value=None):
         try:
