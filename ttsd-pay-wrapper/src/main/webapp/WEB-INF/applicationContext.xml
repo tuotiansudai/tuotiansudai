@@ -29,6 +29,22 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
+
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.qiye.163.com"/>
+        <property name="port" value="994"/>
+        <property name="username" value="gaoxiduan@tuotiansudai.com"/>
+        <property name="password" value="X1du4n.G40@ttsd"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.starttls.require">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.qiye.163.com</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="payHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
