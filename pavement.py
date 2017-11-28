@@ -135,6 +135,7 @@ def only_pay():
     """
     fab_command("pay")
 
+
 @task
 def only_sms():
     """
@@ -195,6 +196,7 @@ def jcversion(options):
     finally:
         os.chdir(owd)
 
+
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
 
@@ -202,5 +204,3 @@ def get_current_dir():
 def get_base_dir():
     test_dir = get_current_dir()
     return os.path.join(test_dir, 'test', 'ump_service')
-
-

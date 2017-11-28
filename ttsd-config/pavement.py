@@ -1,60 +1,42 @@
 import os
 import sys
-
 import etcd3
 from paver.tasks import task, cmdopts
 
 sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 
-ETCD_HOST = {'DEV': '127.0.0.1',
-             'QA1': '192.168.1.139',
-             'QA2': '192.168.1.139',
-             'QA3': '192.168.1.139',
-             'QA4': '192.168.1.139',
-             'QA5': '192.168.1.139'}
-
-ETCD_PORT = {'DEV': '2379',
-             'QA1': '23791',
-             'QA2': '23791',
-             'QA3': '23791',
-             'QA4': '23791',
-             'QA5': '23791'}
-
-
 @task
 @cmdopts([
-    ('env=', 'e', 'environment, default is DEV')
+    ('host=', '', 'default is 127.0.0.1'),
+    ('port=', '', 'default is 2379')
 ])
-def flush(options):
+def flush_etcd(options):
     """
-    Import config into etcd
-    e.g. paver flush.env=DEV flush
+    Import dev config into etcd
+    e.g. paver flush_etcd.host=127.0.0.1 flush_etcd.port=2379 flush_etcd
     """
-    env = options.env if hasattr(options, 'env') else 'DEV'
+    host = options.host if hasattr(options, 'host') else '127.0.0.1'
+    port = options.port if hasattr(options, 'port') else '2379'
 
-    etcd = etcd3.client(host=ETCD_HOST.get(env), port=ETCD_PORT.get(env))
+    etcd = etcd3.client(host=host, port=port)
 
     raw_content = []
 
     with open('{}/src/main/resources/ttsd-biz.properties'.format(os.path.dirname(os.path.abspath(__file__)))) as f:
         raw_content += f.readlines()
 
-    if env != 'DEV':
-        with open('{}/src/main/resources/envs/QA-common.properties'.format(os.path.dirname(os.path.abspath(__file__)))) as f:
-            raw_content += f.readlines()
-
-        with open('{}/src/main/resources/envs/{}.properties'.format(os.path.dirname(os.path.abspath(__file__)), env)) as f:
-            raw_content += f.readlines()
-    else:
-        with open('{}/src/main/resources/ttsd-env.properties'.format(os.path.dirname(os.path.abspath(__file__)))) as f:
-            raw_content += f.readlines()
+    with open('{}/src/main/resources/ttsd-env.properties'.format(os.path.dirname(os.path.abspath(__file__)))) as f:
+        raw_content += f.readlines()
 
     for line in raw_content:
         line = line.strip()
         if line and line[0] != '#':
-            properties_key, properties_value = line.split("=")
+            key_value = line.split("=")
+            properties_key = key_value[0].strip()
+            properties_value = '='.join(key_value[1:]).strip()
             etcd_value, _ = etcd.get(properties_key)
-            print properties_key, etcd_value
             if properties_value != etcd_value:
-                print properties_key, properties_key
+                print '{}={}'.format(properties_key, properties_value)
                 etcd.put('/dev/{}'.format(properties_key), properties_value)
+            else:
+                print '{}={}'.format(properties_key, etcd_value)
