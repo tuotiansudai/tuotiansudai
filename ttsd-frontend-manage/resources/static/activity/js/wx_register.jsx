@@ -148,7 +148,7 @@ validator.newStrategy(registerForm.captcha, 'isCaptchaValid', function (errorMsg
     return getResult;
 });
 
-//推荐人是非存在
+//推荐人是否存在
 validator.newStrategy(registerForm.referrer, 'isReferrerExist', function (errorMsg, showErrorAfter) {
     var getResult = '',
         that = this,
