@@ -64,7 +64,6 @@ class UserUpdateForm(wtforms.Form):
     identity_number = wtforms.StringField('identity_number', [wtforms.validators.Length(max=18)])
     last_modified_time = wtforms.DateTimeField('last_modified_time')
     last_modified_user = wtforms.StringField('last_modified_user', [wtforms.validators.Length(max=25)])
-    avatar = wtforms.StringField('avatar', [wtforms.validators.Length(max=256)])
     referrer = wtforms.StringField('referrer', [wtforms.validators.Length(max=25)])
     status = wtforms.StringField('status', [wtforms.validators.Length(max=20)])
     channel = wtforms.StringField('channel', [wtforms.validators.Length(max=32)])
