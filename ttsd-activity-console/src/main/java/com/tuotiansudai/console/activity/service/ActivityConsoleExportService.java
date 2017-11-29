@@ -53,9 +53,6 @@ public class ActivityConsoleExportService {
     private ActivityConsoleAnnualService activityConsoleAnnualService;
 
     @Autowired
-    private ActivityWomanDayService activityWomanDayService;
-
-    @Autowired
     private ActivityConsoleMothersService activityConsoleMothersService;
 
     @Autowired
@@ -263,10 +260,6 @@ public class ActivityConsoleExportService {
         List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(index, pageSize, null).getRecords();
 
         return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
-    }
-
-    public List<List<String>> buildWomanDayCsvList() {
-        return activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 
     public List<List<String>> buildMothersDayCsvList() {

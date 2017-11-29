@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ActivityWomenDayService {
@@ -97,9 +100,7 @@ public class ActivityWomenDayService {
         if (Strings.isNullOrEmpty(loginName)) {
             return womanDayAllRecordMap;
         }
-        // List<UserRegisterInfo> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
-        // disallow query all data
-        List<UserRegisterInfo> referrerUsers = Collections.emptyList();
+        List<UserRegisterInfo> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
         referrerUsers.stream().filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
                 .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, activityWomanDayStartTime, activityWomanDayEndTime) >= 5000)
                 .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 5));

@@ -107,7 +107,7 @@ public class LotteryDrawActivityServiceTest {
         when(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(anyString(), any(LotteryPrize.class), any(ActivityCategory.class), any(Date.class), any(Date.class))).thenReturn(0);
 
         int time = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.ANNUAL_ACTIVITY);
-        assertEquals(time, 21);
+        assertEquals(time, 11);
 
     }
 
