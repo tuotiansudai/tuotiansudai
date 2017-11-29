@@ -2,6 +2,7 @@
 import json
 import time
 import uuid
+from datetime import datetime
 
 import redis
 from sqlalchemy import func
@@ -302,7 +303,16 @@ class UserService(object):
 
         def __generate_result(_data):
             select_fields = form.fields.data if form.fields.data else default_select_fields
-            return [dict(zip(select_fields, row)) for row in _data]
+            formatted_data = map(__fmt_row, _data)
+            return [dict(zip(select_fields, row)) for row in formatted_data]
+
+        def __fmt_row(user_item):
+            return map(__fmt_cell, user_item)
+
+        def __fmt_cell(value):
+            if isinstance(value, datetime):
+                return value.strftime('%Y-%m-%d %H:%M:%S')
+            return value
 
         qs = _build_query_where(User.query)
         qs = _build_query_sort(qs)
