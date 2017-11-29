@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -30,6 +31,9 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public UserModel findByLoginNameOrMobile(String loginNameOrMobile) {
+        if (StringUtils.isEmpty(loginNameOrMobile)) {
+            return null;
+        }
         try {
             UserRestUserInfo userRestUserInfo = userRestClient.findByLoginNameOrMobile(loginNameOrMobile);
             return userRestUserInfo.getUserInfo().toUserModel();
@@ -40,6 +44,9 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public UserModel findByIdentityNumber(String identityNumber) {
+        if (StringUtils.isEmpty(identityNumber)) {
+            return null;
+        }
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setIdentityNumber(identityNumber);
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
@@ -48,6 +55,9 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public UserModel findByEmail(String email) {
+        if (StringUtils.isEmpty(email)) {
+            return null;
+        }
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setEmail(email);
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
