@@ -60,7 +60,7 @@ public class UserInfo implements Serializable {
         userModel.setLastModifiedUser(lastModifiedUser);
         userModel.setAvatar(avatar);
         userModel.setReferrer(referrer);
-        userModel.setStatus(UserStatus.valueOf(status));
+        userModel.setStatus(status == null ? null : UserStatus.valueOf(status));
         userModel.setChannel(channel);
         userModel.setProvince(province);
         userModel.setCity(city);
