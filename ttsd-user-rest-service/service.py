@@ -267,6 +267,8 @@ class UserService(object):
         def _build_query_select(_qs):
             if form.fields.data:
                 _qs = _qs.with_entities(*[User.lookup_field(fn) for fn in form.fields.data])
+            else:
+                _qs = _qs.with_entities(*User.visible_fields)
             return _qs
 
         def _query_with_pagination(_qs):
