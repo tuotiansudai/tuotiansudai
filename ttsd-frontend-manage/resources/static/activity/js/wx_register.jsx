@@ -1,41 +1,40 @@
 require("activityStyle/wx_register.scss");
-let commonFun= require('publicJs/commonFun');
+let commonFun = require('publicJs/commonFun');
 require('publicJs/placeholder');
-let ValidatorObj= require('publicJs/validator');
+let ValidatorObj = require('publicJs/validator');
 
-let registerForm=globalFun.$('#registerUserForm');
-let $registerSubmit=$('input[type="submit"]',$(registerForm));
-var $registerFrame=$('#registerCommonFrame');
-var $registerForm = $('.register-user-form',$registerFrame),
-    $phoneDom = $('#mobile',$registerFrame),
-    $fetchCaptcha = $('.fetch-captcha',$registerFrame),
-    $changecode = $('.img-change',$registerFrame),
-    $appCaptcha = $('#appCaptcha',$registerFrame),
-    $registerContainer=$('#registerContainer'),
-    $getbagContainer=$('#getbagContainer'),
-    $successContainer=$('#successContainer'),
-    $getBag=$('#getBag',$getbagContainer),
-    $btnExperience=$('#btnExperience',$successContainer);
+let registerForm = globalFun.$('#registerUserForm');
+let $registerSubmit = $('input[type="submit"]', $(registerForm));
+var $registerFrame = $('#registerCommonFrame');
+var $registerForm = $('.register-user-form', $registerFrame),
+    $phoneDom = $('#mobile', $registerFrame),
+    $fetchCaptcha = $('.fetch-captcha', $registerFrame),
+    $changecode = $('.img-change', $registerFrame),
+    $appCaptcha = $('#appCaptcha', $registerFrame),
+    $registerContainer = $('#registerContainer'),
+    $getbagContainer = $('#getbagContainer'),
+    $successContainer = $('#successContainer'),
+    $getBag = $('#getBag', $getbagContainer),
+    $btnExperience = $('#btnExperience', $successContainer);
 
 
-
-require.ensure(['publicJs/placeholder'], function(require){
+require.ensure(['publicJs/placeholder'], function (require) {
     require('publicJs/placeholder');
-    $('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
-},'placeholder');
+    $('input[type="text"],input[type="password"]', $(registerForm)).placeholder();
+}, 'placeholder');
 
-$getBag.on('click', function(event) {
-	event.preventDefault();
-	$getbagContainer.hide();
-	$registerContainer.show();
+$getBag.on('click', function (event) {
+    event.preventDefault();
+    $getbagContainer.hide();
+    $registerContainer.show();
 });
-$btnExperience.on('click', function(event) {
-	event.preventDefault();
-	globalFun.toExperience(event);
+$btnExperience.on('click', function (event) {
+    event.preventDefault();
+    globalFun.toExperience(event);
 });
 
 let refreshCapt = function (flush) {
-    commonFun.refreshCaptcha(globalFun.$('#image-captcha-image'),'/register/user/image-captcha', flush);
+    commonFun.refreshCaptcha(globalFun.$('#image-captcha-image'), '/register/user/image-captcha', flush);
 };
 refreshCapt(false);
 
@@ -50,7 +49,7 @@ $('.show-agreement').on('touchstart', function (event) {
     layer.open({
         type: 1,
         title: '拓天速贷服务协议',
-        area: $(window).width()<700?['100%', '100%']:['950px', '600px'],
+        area: $(window).width() < 700 ? ['100%', '100%'] : ['950px', '600px'],
         shadeClose: true,
         move: false,
         scrollbar: true,
@@ -64,19 +63,19 @@ $('#agreementBox').find('.close-tip').on('touchstart', function () {
 })
 
 //图形验证码输入后高亮显示获取验证码
-$appCaptcha.on('keyup',function(event) {
+$appCaptcha.on('keyup', function (event) {
     if ($('#mobile').val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val()) && $('#appCaptcha').val() != '') {
         $fetchCaptcha.prop('disabled', false);
     } else {
         $fetchCaptcha.prop('disabled', true);
     }
 });
-let captchaValid=false;
+let captchaValid = false;
 // 获取手机验证码
 $fetchCaptcha.on('touchstart', function (event) {
-    var $this=$(this);
+    var $this = $(this);
     event.preventDefault();
-    if($this.prop('disabled')) {
+    if ($this.prop('disabled')) {
         return;
     }
     $fetchCaptcha.prop('disabled', true);
@@ -88,9 +87,9 @@ $fetchCaptcha.on('touchstart', function (event) {
         type: 'POST',
         dataType: 'json',
         data: {imageCaptcha: captchaVal, mobile: mobile}
-    },function(response) {
+    }, function (response) {
         var data = response.data;
-        var countdown = 60,timer;
+        var countdown = 60, timer;
         if (data.status && !data.isRestricted) {
             timer = setInterval(function () {
                 $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
@@ -113,36 +112,66 @@ $fetchCaptcha.on('touchstart', function (event) {
     });
 });
 
+
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 //验证码是否正确
-validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
-    var getResult='',
-        that=this,
-        _arguments=arguments;
+validator.newStrategy(registerForm.captcha, 'isCaptchaValid', function (errorMsg, showErrorAfter) {
+    var getResult = '',
+        that = this,
+        _arguments = arguments;
 
     var _phone = registerForm.mobile.value,
-        _captcha=registerForm.captcha.value;
+        _captcha = registerForm.captcha.value;
 
     //先判断手机号格式是否正确
-    if(!/(^1[0-9]{10}$)/.test(_phone)) {
+    if (!/(^1[0-9]{10}$)/.test(_phone)) {
         return;
     }
     commonFun.useAjax({
-        type:'GET',
+        type: 'GET',
         async: false,
-        url:`/register/user/mobile/${_phone}/captcha/${_captcha}/verify`
-    },function(response) {
-        if(response.data.status) {
+        url: `/register/user/mobile/${_phone}/captcha/${_captcha}/verify`
+    }, function (response) {
+        if (response.data.status) {
             // 如果为true说明验证码正确
-            getResult='';
-            captchaValid=true;
-            ValidatorObj.isHaveError.no.apply(that,_arguments);
+            getResult = '';
+            captchaValid = true;
+            ValidatorObj.isHaveError.no.apply(that, _arguments);
         }
         else {
-            getResult=errorMsg;
-            captchaValid=false;
-            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+            getResult = errorMsg;
+            captchaValid = false;
+            ValidatorObj.isHaveError.yes.apply(that, _arguments);
+        }
+    });
+    return getResult;
+});
+
+//推荐人是非存在
+validator.newStrategy(registerForm.referrer, 'isReferrerExist', function (errorMsg, showErrorAfter) {
+    var getResult = '',
+        that = this,
+        _arguments = arguments;
+    //只验证推荐人是否存在，不验证是否为空
+    if (this.value == '') {
+        getResult = '';
+        ValidatorObj.isHaveError.no.apply(that, _arguments);
+        return '';
+    }
+    commonFun.useAjax({
+        type: 'GET',
+        async: false,
+        url: '/register/user/referrer/' + this.value + '/is-exist'
+    }, function (response) {
+        if (response.data.status) {
+            // 如果为true说明推荐人存在
+            getResult = '';
+            ValidatorObj.isHaveError.no.apply(that, _arguments);
+        }
+        else {
+            getResult = errorMsg;
+            ValidatorObj.isHaveError.yes.apply(that, _arguments);
         }
     });
     return getResult;
@@ -154,38 +183,43 @@ validator.add(registerForm.mobile, [{
 }, {
     strategy: 'isMobile',
     errorMsg: '手机号格式不正确'
-},{
+}, {
     strategy: 'isMobileExist',
     errorMsg: '手机号已经存在'
-}],true);
+}], true);
 validator.add(registerForm.password, [{
     strategy: 'isNonEmpty',
     errorMsg: '密码不能为空'
 }, {
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能全是数字'
-}],true);
+}], true);
 validator.add(registerForm.appCaptcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
-}],true);
+}], true);
 validator.add(registerForm.captcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
-},{
+}, {
     strategy: 'isNumber:6',
     errorMsg: '验证码为6位数字'
-},{
+}, {
     strategy: 'isCaptchaValid',
     errorMsg: '验证码不正确'
-}],true);
+}], true);
+
+validator.add(registerForm.referrer, [{
+    strategy: 'isReferrerExist',
+    errorMsg: '推荐人不存在'
+}], true);
 
 
-let reInputs=$(registerForm).find('input[validate]');
+let reInputs = $(registerForm).find('input[validate]');
 
-for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i],"keyup", "focusout", function() {
-        let errorMsg=validator.start(this);
+for (let i = 0, len = reInputs.length; i < len; i++) {
+    globalFun.addEventHandler(reInputs[i], "keyup", "focusout", function () {
+        let errorMsg = validator.start(this);
         isDisabledButton();
     })
 }
@@ -193,30 +227,30 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 //用来判断获取验证码和立即注册按钮 是否可点击
 //表单验证通过会
 function isDisabledButton() {
-    let mobile=registerForm.mobile,
-        password=registerForm.password,
-        captcha=registerForm.captcha,
-        imgcaptcha=registerForm.appCaptcha;
+    let mobile = registerForm.mobile,
+        password = registerForm.password,
+        captcha = registerForm.captcha,
+        imgcaptcha = registerForm.appCaptcha;
 
     //获取验证码点亮
-    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
-    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
-    let isAppCaptchaValid=!globalFun.hasClass(imgcaptcha,'error') && imgcaptcha.value;
+    let isMobileValid = !globalFun.hasClass(mobile, 'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password, 'error') && password.value;
+    let isAppCaptchaValid = !globalFun.hasClass(imgcaptcha, 'error') && imgcaptcha.value;
 
     let isDisabledCaptcha = isMobileValid && isPwdValid && isAppCaptchaValid;
 
     //通过获取验证码按钮来判断
-    $('#getCaptchaBtn').prop('disabled',!isDisabledCaptcha);
+    $('#getCaptchaBtn').prop('disabled', !isDisabledCaptcha);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
 
-    let isDisabledSubmit= isDisabledCaptcha && captchaValid  && $('#agreementInput').val()=='true';
-    $registerSubmit.prop('disabled',!isDisabledSubmit);
+    let isDisabledSubmit = isDisabledCaptcha && captchaValid && $('#agreementInput').val() == 'true';
+    $registerSubmit.prop('disabled', !isDisabledSubmit);
 
 }
 isDisabledButton();
 //点击立即注册按钮
-registerForm.onsubmit = function(event) {
+registerForm.onsubmit = function (event) {
     event.preventDefault();
     registerForm.submit();
 }
