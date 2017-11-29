@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.activity.service;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.model.WomanDayRecordView;
@@ -92,7 +91,9 @@ public class ActivityWomanDayService {
     }
 
     private Map<String, WomanDayRecordView> setReferrerRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap) {
-        List<UserRegisterInfo> referrerUsers = userMapper.findUsersHasReferrerByRegisterTime(activityWomanDayStartTime, activityWomanDayEndTime);
+        // List<UserRegisterInfo> referrerUsers = userMapper.findUsersHasReferrerByRegisterTime(activityWomanDayStartTime, activityWomanDayEndTime);
+        // disallow query all data
+        List<UserRegisterInfo> referrerUsers = Collections.emptyList();
         referrerUsers.stream()
                 .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, activityWomanDayStartTime, activityWomanDayEndTime) >= 5000)
                 .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 5));
