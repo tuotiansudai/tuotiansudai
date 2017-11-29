@@ -32,8 +32,8 @@
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.qiye.163.com"/>
         <property name="port" value="994"/>
-        <property name="username" value="no-reply@tuotiansudai.com"/>
-        <property name="password" value="w62CQIhM6acj"/>
+        <property name="username" value="${no-reply.username}"/>
+        <property name="password" value="${no-reply.password}"/>
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
