@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
@@ -57,9 +58,9 @@ public class InviteFriendActivityService {
         }
 
         Date activityStartTime = DateTime.parse(activityStartTimeStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, DateTime.now().toDate(), loginName);
+        long referrerCount = userMapper.findUserCountByRegisterTimeOrReferrer(activityStartTime, DateTime.now().toDate(), loginName);
 
-        activityParam.put("referrerCount", String.valueOf(registerUsers.size()));
+        activityParam.put("referrerCount", String.valueOf(referrerCount));
         activityParam.put("referrerRedEnvelop", AmountConverter.convertCentToString(userCouponMapper.findSumAmountByCouponId(loginName, activityCouponIds)));
         activityParam.put("referrerAmount", findReferInvestTotalAmount(loginName, null, activityStartTime, DateTime.now().toDate()));
         return activityParam;
