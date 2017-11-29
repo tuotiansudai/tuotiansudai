@@ -1,56 +1,40 @@
 package com.tuotiansudai.paywrapper.validation;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
+import com.tuotiansudai.dto.Environment;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 
-import java.io.StringWriter;
+import java.text.MessageFormat;
 import java.util.Date;
 
 @Component
 public class ValidationReportSender {
 
-    private String template;
-
     private final JavaMailSender javaMailSender;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     public ValidationReportSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
-
-        MustacheFactory mf = new DefaultMustacheFactory();
-        Mustache compile = mf.compile("validation-report.html");
-        StringWriter writer = new StringWriter();
-//        compile.execute(writer, );
-        writer.toString();
     }
 
-    public void send() {
-//        MimeMessagePreparator preparator = mimeMessage -> {
-//            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-//            message.setSubject("New suggested podcast");
-//            message.setFrom("no-reply@tuotiansudai.com");
-//            message.setTo("gaoxiduan@tuotiansuai.com");
-//            message.setSentDate(new Date());
-//            message.setText("1", true);
-//        };
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setSubject("New suggested podcast");
-        simpleMailMessage.setFrom("no-reply@tuotiansudai.com");
-        simpleMailMessage.setTo("gaoxiduan@tuotiansuai.com");
-        simpleMailMessage.setSentDate(new Date());
-        simpleMailMessage.setText("1");
+    public void send(String emailBody) {
+        MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "utf-8");
+            message.setSubject(MessageFormat.format("{0}{1}联动优势交易状态统计", environment, new DateTime().toString("yyyy-MM-dd")));
+            message.setFrom("no-reply@tuotiansudai.com");
+            message.setTo("dev@tuotiansudai.com");
+            message.setSentDate(new Date());
+            message.setText(emailBody, true);
+        };
 
-        javaMailSender.send(simpleMailMessage);
-    }
-
-    public String getTemplate() {
-        return template;
+        javaMailSender.send(preparator);
     }
 }

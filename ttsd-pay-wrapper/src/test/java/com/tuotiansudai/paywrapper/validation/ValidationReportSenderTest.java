@@ -39,6 +39,6 @@ public class ValidationReportSenderTest {
                 .build()));
         System.out.println(writer.toString());
 
-//        validationReportSender.send();
+        validationReportSender.send(writer.toString());
     }
 }
