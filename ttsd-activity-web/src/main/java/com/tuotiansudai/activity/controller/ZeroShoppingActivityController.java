@@ -56,7 +56,7 @@ public class ZeroShoppingActivityController {
     }
 
     @RequestMapping(value = "/activity-loan-detail", method = {RequestMethod.GET})
-    public ModelAndView redirectLoanDetail(@RequestParam(value = "zeroShoppingPrize", required = true) ZeroShoppingPrize zeroShoppingPrize,
+    public ModelAndView redirectLoanDetail(@RequestParam(value = "zeroShoppingPrize", defaultValue = "Iphone_X") ZeroShoppingPrize zeroShoppingPrize,
                                            RedirectAttributes redirectAttributes){
         if (zeroShoppingActivityService.queryPrizeSurplus(zeroShoppingPrize) < 1){
             return new ModelAndView("redirect:/activity/zero-shopping");
