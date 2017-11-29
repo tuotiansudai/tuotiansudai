@@ -232,6 +232,10 @@ class UserService(object):
             raise UserNotExistedError()
 
     def query(self, form):
+
+        default_select_fields = ['login_name', 'mobile', 'email', 'user_name', 'identity_number', 'register_time',
+                                 'referrer', 'status', 'channel', 'province', 'city', 'source']
+
         def _build_query_where(_qs):
             if form.email.data:
                 _qs = _qs.filter(User.email == form.email.data)
@@ -265,11 +269,8 @@ class UserService(object):
             return _qs
 
         def _build_query_select(_qs):
-            if form.fields.data:
-                _qs = _qs.with_entities(*[User.lookup_field(fn) for fn in form.fields.data])
-            else:
-                _qs = _qs.with_entities(*User.visible_fields)
-            return _qs
+            select_fields = form.fields.data if form.fields.data else default_select_fields
+            return _qs.with_entities(*[User.lookup_field(fn) for fn in select_fields])
 
         def _query_with_pagination(_qs):
             if form.page_size.data:
@@ -300,10 +301,8 @@ class UserService(object):
                 return User.lookup_field(django_like_order_by)
 
         def __generate_result(_data):
-            if form.fields.data:  # data is a list of tuple, if given select field
-                return [dict(zip(form.fields.data, row)) for row in _data]
-            else:  # data is a list of User object, otherwise
-                return [u.as_dict() for u in _data]
+            select_fields = form.fields.data if form.fields.data else default_select_fields
+            return [dict(zip(select_fields, row)) for row in _data]
 
         qs = _build_query_where(User.query)
         qs = _build_query_sort(qs)

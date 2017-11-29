@@ -34,9 +34,6 @@ class User(db.Model):
     source = db.Column(db.String(16))
     sign_in_count = db.Column(db.BigInteger())
 
-    visible_fields = [login_name, mobile, email, user_name, identity_number, register_time, referrer, status, channel,
-                      province, city, source]
-
     def __init__(self, mobile, referrer, channel, source):
         self.login_name = self._generate_login_name()
         self.mobile = mobile
