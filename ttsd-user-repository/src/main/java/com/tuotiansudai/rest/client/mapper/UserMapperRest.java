@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.UserMapperDB;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,14 +93,37 @@ public class UserMapperRest implements UserMapper {
     }
 
     @Override
-    public List<UserModel> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+    public List<UserRegisterInfo> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setRegisterTimeGte(startTime);
         queryDto.setRegisterTimeLte(endTime);
         queryDto.setReferrer(referrer);
+        queryDto.setFields(UserRegisterInfo.fields);
         queryDto.setSort("register_time");
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
         return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime) {
+        UserRestQueryDto queryDto = new UserRestQueryDto(false);
+        queryDto.setRegisterTimeGte(startTime);
+        queryDto.setRegisterTimeLte(endTime);
+        queryDto.setHasReferrer(true);
+        queryDto.setFields(UserRegisterInfo.fields);
+        queryDto.setSort("register_time");
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public long findUserCountByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+        UserRestQueryDto queryDto = new UserRestQueryDto(1, 1);
+        queryDto.setRegisterTimeGte(startTime);
+        queryDto.setRegisterTimeLte(endTime);
+        queryDto.setReferrer(referrer);
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getTotalCount();
     }
 
     @Override

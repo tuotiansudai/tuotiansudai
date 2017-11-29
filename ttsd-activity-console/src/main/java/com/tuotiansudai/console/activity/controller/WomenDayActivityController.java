@@ -18,7 +18,7 @@ public class WomenDayActivityController {
     public ModelAndView getNotWorkList(@RequestParam(value = "index", defaultValue = "1") int index) {
         ModelAndView modelAndView = new ModelAndView("/women-day-list");
         final int pageSize = 10;
-        modelAndView.addObject("data", activityWomandayService.getWomanDayPrizeRecord(index, pageSize, null));
+        modelAndView.addObject("data", activityWomandayService.getWomanDayPrizeRecord(index, pageSize));
         return modelAndView;
     }
 }

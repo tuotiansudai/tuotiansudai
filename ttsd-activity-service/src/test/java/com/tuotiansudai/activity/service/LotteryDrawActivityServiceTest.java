@@ -94,7 +94,7 @@ public class LotteryDrawActivityServiceTest {
         referrerUserModel1.setRegisterTime(DateTime.now().toDate());
         UserModel referrerUserModel2 = new UserModel();
         referrerUserModel2.setRegisterTime(DateTime.now().toDate());
-        List<UserModel> userModels = Lists.newArrayList(referrerUserModel1, referrerUserModel2);
+        List<UserRegisterInfo> userModels = Lists.newArrayList(referrerUserModel1, referrerUserModel2);
         AccountModel accountModel = new AccountModel("test", "1", "1", DateTime.now().toDate());
 
         ReflectionTestUtils.setField(lotteryDrawActivityService, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));

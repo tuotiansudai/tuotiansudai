@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,8 @@ public class NewRegisteredUserCollector implements UserCollector {
     @Override
     public List<String> collect(long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        List<UserModel> usersByRegisterTimeOrReferrer = userMapper.findUsersByRegisterTimeOrReferrer(couponModel.getStartTime(), couponModel.getEndTime(), null);
-        return Lists.transform(usersByRegisterTimeOrReferrer, UserModel::getLoginName);
+        List<UserRegisterInfo> usersByRegisterTimeOrReferrer = userMapper.findUsersByRegisterTimeOrReferrer(couponModel.getStartTime(), couponModel.getEndTime(), null);
+        return Lists.transform(usersByRegisterTimeOrReferrer, UserRegisterInfo::getLoginName);
     }
 
     @Override

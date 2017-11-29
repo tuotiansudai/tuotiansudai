@@ -249,6 +249,12 @@ class UserService(object):
                 _qs = _qs.filter(User.register_time >= form.register_time__gte.data)
             if form.register_time__lte.data:
                 _qs = _qs.filter(User.register_time <= form.register_time__lte.data)
+            if form.referrer__hasvalue.data:
+                if 'true' == form.referrer__hasvalue.data.lower():
+                    _qs = _qs.filter(User.referrer.isnot(None)).filter(User.referrer != '')
+                else:
+                    _qs = _qs.filter((User.referrer == '') | (User.referrer.is_(None)))
+
             if form.role.data:
                 _qs = _qs.join(UserRole).filter(UserRole.role == form.role.data)
             return _qs
