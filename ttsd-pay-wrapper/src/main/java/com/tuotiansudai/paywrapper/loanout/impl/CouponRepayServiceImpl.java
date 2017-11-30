@@ -168,7 +168,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             if (transferAmount > 0) {
                 try {
-                    TransferRequestModel requestModel = TransferRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
+                    TransferRequestModel requestModel = TransferRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE,
+                            String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayAccountId(),
                             String.valueOf(transferAmount));

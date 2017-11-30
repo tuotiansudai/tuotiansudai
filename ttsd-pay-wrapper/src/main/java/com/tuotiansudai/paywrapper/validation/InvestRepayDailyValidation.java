@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.validation;
 
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.repository.mapper.DailyValidationMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillModel;
@@ -28,6 +27,7 @@ public class InvestRepayDailyValidation extends BaseDailyValidation implements D
         this.userBillMapper = userBillMapper;
     }
 
+    @Override
     public ValidationReport validate() {
         logger.info("[Invest Repay Daily Validation] starting...");
 
@@ -35,50 +35,29 @@ public class InvestRepayDailyValidation extends BaseDailyValidation implements D
 
         logger.info(MessageFormat.format("[Invest Repay Daily Validation] sum is {0}", transactions.size()));
 
-        ValidationReport report = new ValidationReport("investRepay", "还款业务统计", transactions.size());
+        ValidationReport validationReport = this.generateReport("03", transactions);
+        validationReport.setCount(transactions.size());
+        validationReport.setTitle("还款业务统计");
+        validationReport.setMustacheContext("investRepay");
 
-        for (Map<String, String> transaction : transactions) {
-            String orderId = transaction.get("order_id");
-            String amount = transaction.get("amount");
-            String merDate = transaction.get("mer_date");
-            try {
-                TransferSearchResponseModel transferStatus = umPayRealTimeStatusService.getTransferStatus(orderId, merDate, "03"/*标的转账*/);
-                this.addSummary(report, transferStatus.getRetCode());
-
-                if (transferStatus.isSuccess()) {
-                    if (!checkUserBill(orderId, amount)) {
-                        this.addIssue(report, orderId, "用户交易记录异常");
-                    }
-                } else {
-                    this.addIssue(report, orderId, transferStatus.getRetMsg());
-                }
-            } catch (Exception e) {
-                this.addIssue(report, orderId, "查询失败");
-                this.addSummary(report, "exception");
-                logger.warn(MessageFormat.format("[Invest Repay Daily Validation] query status failed, order id is {0}", orderId), e);
-            }
-        }
-        return report;
+        return validationReport;
     }
 
-    private boolean checkUserBill(String orderId, String amount) {
+    @Override
+    protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId.split("X")[0]);
-        List<UserBillModel> userBillModels = userBillMapper.findByOrderId(businessId);
+        UserBillModel normalRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.NORMAL_REPAY);
+        UserBillModel advancedRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.ADVANCE_REPAY);
+        UserBillModel investFeeRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
         long userBillAmount = 0;
-        for (UserBillModel userBillModel : userBillModels) {
-            if (userBillModel.getBusinessType() == UserBillBusinessType.NORMAL_REPAY && userBillModel.getOperationType() == UserBillOperationType.TI_BALANCE) {
-                userBillAmount += userBillModel.getAmount();
-                continue;
-            }
-            if (userBillModel.getBusinessType() == UserBillBusinessType.ADVANCE_REPAY && userBillModel.getOperationType() == UserBillOperationType.TI_BALANCE) {
-                userBillAmount += userBillModel.getAmount();
-                continue;
-            }
-            if (userBillModel.getBusinessType() == UserBillBusinessType.INVEST_FEE && userBillModel.getOperationType() == UserBillOperationType.TO_BALANCE) {
-                userBillAmount -= userBillModel.getAmount();
-                continue;
-            }
-            return false;
+        if (normalRepayUserBillModel != null) {
+            userBillAmount += normalRepayUserBillModel.getAmount();
+        }
+        if (advancedRepayUserBillModel != null) {
+            userBillAmount += advancedRepayUserBillModel.getAmount();
+        }
+        if (investFeeRepayUserBillModel != null) {
+            userBillAmount -= investFeeRepayUserBillModel.getAmount();
         }
         return userBillAmount == Long.parseLong(amount);
     }

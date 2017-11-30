@@ -1,18 +1,11 @@
 package com.tuotiansudai.paywrapper.validation;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.repository.mapper.DailyValidationMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.UserBillModel;
-import com.tuotiansudai.repository.model.UserBillOperationType;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +20,33 @@ public abstract class BaseDailyValidation {
 
     protected UserBillMapper userBillMapper;
 
+    protected ValidationReport generateReport(String businessType, List<Map<String, String>> transactions) {
+        ValidationReport report = new ValidationReport();
+
+        for (Map<String, String> transaction : transactions) {
+            String orderId = transaction.get("order_id");
+            String amount = transaction.get("amount");
+            String merDate = transaction.get("mer_date");
+            try {
+                TransferSearchResponseModel transferStatus = umPayRealTimeStatusService.getTransferStatus(orderId, merDate, businessType);
+                this.addSummary(report, transferStatus.getRetCode());
+
+                if (transferStatus.isSuccess()) {
+                    if (!checkUserBill(orderId, amount)) {
+                        this.addIssue(report, orderId, "用户交易记录异常");
+                    }
+                } else {
+                    this.addIssue(report, orderId, transferStatus.getRetMsg());
+                }
+            } catch (Exception e) {
+                this.addIssue(report, orderId, "查询失败");
+                this.addSummary(report, "exception");
+            }
+        }
+        return report;
+    }
+
+    abstract protected boolean checkUserBill(String orderId, String amount);
 
     protected void addIssue(ValidationReport report, String orderId, String issue) {
         HashMap<String, Object> newIssues = Maps.newHashMap();

@@ -22,7 +22,8 @@ public interface UserBillMapper {
 
     List<UserBillModel> findByLoginName(String loginName);
 
-    List<UserBillModel> findByOrderId(@Param("orderId") Long orderId);
+    UserBillModel findByOrderIdAndBusinessType(@Param("orderId") Long orderId,
+                                               @Param("userBillBusinessType") UserBillBusinessType userBillBusinessType);
 
     long findSumRewardByLoginName(String loginName);
 

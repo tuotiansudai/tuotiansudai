@@ -9,4 +9,6 @@ import java.util.Map;
 public interface DailyValidationMapper {
 
     List<Map<String, String>> findInvestRepayTransactions();
+
+    List<Map<String, String>> findRedEnvelopTransactions();
 }

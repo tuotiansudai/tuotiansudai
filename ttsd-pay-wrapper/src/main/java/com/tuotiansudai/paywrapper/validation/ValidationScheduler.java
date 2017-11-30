@@ -25,6 +25,9 @@ public class ValidationScheduler {
     @Resource(name = "investRepayDailyValidation")
     private DailyValidation investRepayDailyValidation;
 
+    @Resource(name = "redEnvelopDailyValidation")
+    private DailyValidation redEnvelopDailyValidation;
+
     private final ValidationReportSender validationReportSender;
 
     @Autowired
@@ -42,7 +45,7 @@ public class ValidationScheduler {
             }
 
             logger.info("[Validation Scheduler] Starting ...");
-            List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation);
+            List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation, redEnvelopDailyValidation);
 
             Map<String, Object> context = Maps.newHashMap();
 
@@ -54,7 +57,6 @@ public class ValidationScheduler {
             Mustache compile = new DefaultMustacheFactory().compile("validation-report.html");
             StringWriter writer = new StringWriter();
             compile.execute(writer, context);
-
 
             validationReportSender.send(writer.toString());
 
