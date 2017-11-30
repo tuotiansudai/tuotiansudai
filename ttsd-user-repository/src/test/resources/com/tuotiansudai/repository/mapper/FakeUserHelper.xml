@@ -7,8 +7,8 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count, experience_balance)
-        value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount}, #{experienceBalance})
+        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
+        value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount})
     </insert>
 
     <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
@@ -25,8 +25,7 @@
         city = #{city},
         sign_in_count = #{signInCount},
         last_login_time = #{lastLoginTime},
-        last_login_source = #{lastLoginSource},
-        experience_balance = #{experienceBalance}
+        last_login_source = #{lastLoginSource}
         where id = #{id}
     </update>
 </mapper>
