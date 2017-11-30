@@ -33,9 +33,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     static Logger logger = Logger.getLogger(ExperienceInvestServiceImpl.class);
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
