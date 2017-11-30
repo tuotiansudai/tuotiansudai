@@ -25,7 +25,6 @@ class User(db.Model):
     register_time = db.Column(db.DateTime(timezone=True), nullable=False)
     last_modified_time = db.Column(db.DateTime(timezone=True))
     last_modified_user = db.Column(db.String(25))
-    avatar = db.Column(db.String(256))
     referrer = db.Column(db.String(25))
     status = db.Column(db.String(20), nullable=False)
     channel = db.Column(db.String(32))

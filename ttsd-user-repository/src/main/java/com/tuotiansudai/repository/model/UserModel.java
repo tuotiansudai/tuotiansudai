@@ -25,8 +25,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     private String lastModifiedUser;
 
-    private String avatar;
-
     private String referrer;
 
     private UserStatus status = UserStatus.ACTIVE;
@@ -127,14 +125,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     public void setLastModifiedUser(String lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getReferrer() {

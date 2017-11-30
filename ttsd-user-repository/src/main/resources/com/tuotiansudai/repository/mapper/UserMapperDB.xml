@@ -15,7 +15,6 @@
         <result column="register_time" property="registerTime"/>
         <result column="last_modified_time" property="lastModifiedTime"/>
         <result column="last_modified_user" property="lastModifiedUser"/>
-        <result column="avatar" property="avatar"/>
         <result column="referrer" property="referrer"/>
         <result column="status" property="status"/>
         <result column="salt" property="salt"/>
