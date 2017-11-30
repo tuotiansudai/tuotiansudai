@@ -8,7 +8,7 @@ public interface ExperienceAccountMapper {
     int addBalance(@Param(value = "loginName") String loginName,
                    @Param(value = "experienceBalance") long experienceBalance);
 
-    int getExperienceBalance(String loginName);
+    long getExperienceBalance(String loginName);
 
     int create(@Param(value = "loginName") String loginName,
                @Param(value = "experienceBalance") long experienceBalance);
