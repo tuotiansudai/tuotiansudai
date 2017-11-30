@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <update id="addExperienceBalance" parameterType="map">
+    <update id="addBalance" parameterType="map">
         UPDATE experience_account
         SET experience_balance = experience_balance + #{experienceBalance}
         WHERE login_name = #{loginName}
