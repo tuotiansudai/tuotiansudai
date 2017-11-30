@@ -1,4 +1,5 @@
 let commonFun=require('publicJs/commonFun');
+let hasErrorText = false;
 
 function createElement(element,errorMsg) {
     let children = element.parentElement.children,
@@ -18,7 +19,9 @@ function createElement(element,errorMsg) {
     var span=document.createElement("span");
     span.className="error";
     span.innerHTML=errorMsg;
+    if (hasErrorText) return;
     element && element.parentElement.appendChild(span);
+    hasErrorText = true;
 }
 
 function removeElement(element) {
@@ -32,6 +35,7 @@ function removeElement(element) {
             lastTag.style.visibility = 'hidden';
         } else {
             element.parentElement.removeChild(lastTag);
+            hasErrorText = false;
         }
     }
 }

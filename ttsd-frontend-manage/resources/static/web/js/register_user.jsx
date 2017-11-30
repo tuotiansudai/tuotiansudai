@@ -188,10 +188,19 @@ validator.add(registerForm.referrer, [{
 let reInputs=$(registerForm).find('input[validate]');
 
 for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i],"keyup", "blur", function() {
+    globalFun.addEventHandler(reInputs[i], "blur", function() {
+        let tipName = '.' + $(this).attr('name');
+        $(tipName).siblings('.error').show();
         let errorMsg=validator.start(this);
         referrerValidBool = !(this.name == 'referrer' && errorMsg);
         isDisabledButton();
+    })
+}
+
+for(let i=0,len=reInputs.length; i<len;i++) {
+    globalFun.addEventHandler(reInputs[i], "focus", function() {
+        let tipName = '.' + $(this).attr('name');
+        $(tipName).siblings('.error').hide();
     })
 }
 
