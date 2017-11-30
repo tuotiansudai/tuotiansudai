@@ -22,6 +22,6 @@ INSERT INTO experience_account (login_name, experience_balance)
 
 
 ALTER TABLE user
-  DROP COLUMN experience_balance;
+  CHANGE experience_balance experience_balance_bak BIGINT UNSIGNED DEFAULT 0 NOT NULL;
 
 COMMIT;
