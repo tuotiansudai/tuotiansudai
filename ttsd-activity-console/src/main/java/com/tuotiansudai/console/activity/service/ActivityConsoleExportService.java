@@ -10,6 +10,7 @@ import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -50,9 +51,6 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private ActivityConsoleAnnualService activityConsoleAnnualService;
-
-    @Autowired
-    private ActivityWomanDayService activityWomanDayService;
 
     @Autowired
     private ActivityConsoleMothersService activityConsoleMothersService;
@@ -197,8 +195,8 @@ public class ActivityConsoleExportService {
         return rows;
     }
 
-    public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
+    private Map<String, List<String>> getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 
@@ -206,12 +204,12 @@ public class ActivityConsoleExportService {
             return Maps.newConcurrentMap();
         }
 
-        for (UserModel userModel : userModels) {
+        for (UserRegisterInfo userModel : userModels) {
             if (Strings.isNullOrEmpty(userModel.getReferrer())) {
                 allFamily.put(userModel.getLoginName(), Lists.newArrayList(userModel.getLoginName()));
                 continue;
             }
-            if (allFamily.values() == null || allFamily.values().size() == 0) {
+            if (allFamily.values().size() == 0) {
                 allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
                 continue;
             }
@@ -262,10 +260,6 @@ public class ActivityConsoleExportService {
         List<AnnualPrizeDto> annualPrizeDtos = activityConsoleAnnualService.findAnnualList(index, pageSize, null).getRecords();
 
         return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
-    }
-
-    public List<List<String>> buildWomanDayCsvList() {
-        return activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 
     public List<List<String>> buildMothersDayCsvList() {

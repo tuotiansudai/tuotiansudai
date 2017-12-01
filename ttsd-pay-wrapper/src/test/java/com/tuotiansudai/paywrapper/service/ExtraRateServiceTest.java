@@ -18,8 +18,7 @@ import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -143,7 +142,7 @@ public class ExtraRateServiceTest {
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        TransferNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.normalRepay(loanRepay2.getId());
@@ -166,7 +165,7 @@ public class ExtraRateServiceTest {
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        TransferNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.normalRepay(loanRepay2.getId());
@@ -255,7 +254,7 @@ public class ExtraRateServiceTest {
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
 
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        TransferNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.advanceRepay(loanRepay2.getId());
@@ -389,15 +388,14 @@ public class ExtraRateServiceTest {
         return fakeLoanModel;
     }
 
-    private ExtraRateNotifyRequestModel getFakeExtraRateNotifyRequestModel(Long orderId) {
-        ExtraRateNotifyRequestModel model = new ExtraRateNotifyRequestModel();
+    private TransferNotifyRequestModel getFakeExtraRateNotifyRequestModel(Long orderId) {
+        TransferNotifyRequestModel model = new TransferNotifyRequestModel();
         model.setSign("sign");
         model.setSignType("RSA");
         model.setMerId("mer_id");
         model.setVersion("1.0");
         model.setTradeNo("trade_no");
         model.setOrderId(String.valueOf(orderId));
-        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
         model.setService("");
         model.setRetCode("0000");

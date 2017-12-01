@@ -2,9 +2,9 @@ package com.tuotiansudai.rest.client.mapper;
 
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public interface UserMapper {
@@ -24,7 +24,11 @@ public interface UserMapper {
 
     List<UserModel> findUsersByChannel(List<String> channels);
 
-    List<UserModel> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer);
+    List<UserRegisterInfo> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer);
+
+    List<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime);
+
+    long findUserCountByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer);
 
     List<String> findAllByRole(Role role);
 

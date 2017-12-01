@@ -720,7 +720,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 var day = nowDate.getDay();
                 var time = nowDate.getTime();
                 var sub = weekDay-day;
-                if(sub <= 0){
+                if(sub < 0){
                     sub += 7;
                 }
                 time+=sub*24*3600000;

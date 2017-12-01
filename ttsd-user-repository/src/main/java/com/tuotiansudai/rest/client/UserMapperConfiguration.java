@@ -3,6 +3,7 @@ package com.tuotiansudai.rest.client;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.UserMapperDB;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.FeignClientConfig;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.rest.client.mapper.UserMapperRest;
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Configuration
@@ -81,8 +82,18 @@ class UserMapperDBShadow implements UserMapper {
     }
 
     @Override
-    public List<UserModel> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
-        return mapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, referrer);
+    public List<UserRegisterInfo> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+        return new ArrayList<>(mapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, referrer));
+    }
+
+    @Override
+    public List<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime) {
+        return new ArrayList<>(mapper.findUsersHasReferrerByRegisterTime(startTime, endTime));
+    }
+
+    @Override
+    public long findUserCountByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+        return mapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, referrer);
     }
 
     @Override

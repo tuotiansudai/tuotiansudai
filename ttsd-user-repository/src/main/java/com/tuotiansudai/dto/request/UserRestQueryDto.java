@@ -22,6 +22,7 @@ public class UserRestQueryDto implements Serializable {
     private String mobileLike;
     private Date registerTimeGte;
     private Date registerTimeLte;
+    private Boolean hasReferrer;
 
     public UserRestQueryDto(int page, int pageSize) {
         this.page = page;
@@ -147,6 +148,14 @@ public class UserRestQueryDto implements Serializable {
 
     public void setRegisterTimeLte(Date registerTimeLte) {
         this.registerTimeLte = registerTimeLte;
+    }
+
+    public Boolean getHasReferrer() {
+        return hasReferrer;
+    }
+
+    public void setHasReferrer(Boolean hasReferrer) {
+        this.hasReferrer = hasReferrer;
     }
 }
 
