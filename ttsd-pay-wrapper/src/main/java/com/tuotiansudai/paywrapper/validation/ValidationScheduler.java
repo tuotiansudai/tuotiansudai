@@ -28,6 +28,12 @@ public class ValidationScheduler {
     @Resource(name = "redEnvelopDailyValidation")
     private DailyValidation redEnvelopDailyValidation;
 
+    @Resource(name = "extraRateDailyValidation")
+    private DailyValidation extraRateDailyValidation;
+
+    @Resource(name = "investDailyValidation")
+    private DailyValidation investDailyValidation;
+
     private final ValidationReportSender validationReportSender;
 
     @Autowired
@@ -45,7 +51,10 @@ public class ValidationScheduler {
             }
 
             logger.info("[Validation Scheduler] Starting ...");
-            List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation, redEnvelopDailyValidation);
+            List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation,
+                    redEnvelopDailyValidation,
+                    extraRateDailyValidation,
+                    investDailyValidation);
 
             Map<String, Object> context = Maps.newHashMap();
 
