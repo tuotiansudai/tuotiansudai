@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.validation;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.Environment;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,11 @@ public class ValidationReportSender {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "utf-8");
             message.setSubject(MessageFormat.format("{0}{1}联动优势交易状态统计", environment, new DateTime().toString("yyyy-MM-dd")));
             message.setFrom("no-reply@tuotiansudai.com");
-            message.setTo("dev@tuotiansudai.com");
+            message.setTo(Maps.newHashMap(ImmutableMap.<Environment, String>builder()
+                    .put(Environment.PRODUCTION, "dev@tuotiansudai.com")
+                    .put(Environment.QA, "wangjia@tuotiansudai.com")
+                    .put(Environment.DEV, "gaoxiduan@tuotiansudai.com")
+                    .build()).get(environment));
             message.setSentDate(new Date());
             message.setText(emailBody, true);
         };
