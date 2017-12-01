@@ -188,14 +188,14 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncExtraRateInvestCallback(long orderId) {
+    public BaseDto<PayDataDto> asyncExtraRateInvestCallback(long investExtraRateId) {
         try {
-            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findById(orderId);
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findById(investExtraRateId);
             investRateService.updateExtraRateData(investExtraRateModel, investExtraRateModel.getActualInterest(), investExtraRateModel.getActualFee());
         } catch (Exception e) {
-            fatalLog("extra rate invest callback, processOneCallback error. orderId:" + String.valueOf(orderId), e);
+            fatalLog("extra rate invest callback, processOneCallback error. orderId:" + String.valueOf(investExtraRateId), e);
             logger.error(MessageFormat.format("[Extra Rate investExtraRateModel.id payback({1}) payback throw exception",
-                    String.valueOf(orderId)), e);
+                    String.valueOf(investExtraRateId)), e);
         }
         BaseDto<PayDataDto> asyncExtraRateNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
@@ -224,12 +224,12 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             try {
                 this.sendExtraRateAmount(loanRepayId, investExtraRateModel, actualInterest, actualFee);
             } catch (Exception e) {
-                logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={1} loginName={2} amount={3}",
                         String.valueOf(loanRepayId),
                         String.valueOf(investExtraRateModel.getInvestId()),
                         investExtraRateModel.getLoginName(),
                         String.valueOf(investExtraRateModel.getAmount())), e);
-                fatalLog(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                fatalLog(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={1} loginName={2} amount={3}",
                         String.valueOf(loanRepayId),
                         String.valueOf(investExtraRateModel.getInvestId()),
                         investExtraRateModel.getLoginName(),

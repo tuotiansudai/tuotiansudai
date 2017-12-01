@@ -14,5 +14,5 @@ public interface ExtraRateService {
 
     String extraRateInvestCallback(Map<String, String> paramsMap, String originalQueryString);
 
-    BaseDto<PayDataDto> asyncExtraRateInvestCallback(long notifyRequestId);
+    BaseDto<PayDataDto> asyncExtraRateInvestCallback(long investExtraRateId);
 }
