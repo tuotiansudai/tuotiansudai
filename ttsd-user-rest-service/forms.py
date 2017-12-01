@@ -64,7 +64,6 @@ class UserUpdateForm(wtforms.Form):
     identity_number = wtforms.StringField('identity_number', [wtforms.validators.Length(max=18)])
     last_modified_time = wtforms.DateTimeField('last_modified_time')
     last_modified_user = wtforms.StringField('last_modified_user', [wtforms.validators.Length(max=25)])
-    avatar = wtforms.StringField('avatar', [wtforms.validators.Length(max=256)])
     referrer = wtforms.StringField('referrer', [wtforms.validators.Length(max=25)])
     status = wtforms.StringField('status', [wtforms.validators.Length(max=20)])
     channel = wtforms.StringField('channel', [wtforms.validators.Length(max=32)])
@@ -140,6 +139,7 @@ class UserQueryForm(wtforms.Form):
     mobile__like = wtforms.StringField('mobile__like', [wtforms.validators.optional()])
     register_time__gte = wtforms.DateTimeField('register_time__gte', [wtforms.validators.optional()])
     register_time__lte = wtforms.DateTimeField('register_time__lte', [wtforms.validators.optional()])
+    referrer__hasvalue = wtforms.StringField('referrer__hasvalue', [wtforms.validators.optional()])
 
 
 class QueryLimitForm(wtforms.Form):

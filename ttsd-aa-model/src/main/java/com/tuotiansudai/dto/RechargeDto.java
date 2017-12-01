@@ -27,6 +27,8 @@ public class RechargeDto implements Serializable {
 
     private boolean publicPay;
 
+    private boolean huizuActive;
+
     public String getLoginName() {
         return loginName;
     }
@@ -81,5 +83,13 @@ public class RechargeDto implements Serializable {
 
     public void setPublicPay(boolean publicPay) {
         this.publicPay = publicPay;
+    }
+
+    public boolean isHuizuActive() {
+        return huizuActive;
+    }
+
+    public void setHuizuActive(boolean huizuActive) {
+        this.huizuActive = huizuActive;
     }
 }

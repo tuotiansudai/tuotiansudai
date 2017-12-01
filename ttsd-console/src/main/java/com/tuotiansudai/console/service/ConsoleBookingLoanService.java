@@ -52,7 +52,7 @@ public class ConsoleBookingLoanService {
             items = Lists.transform(bookingLoanModels, bookingLoanModel -> {
                 BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
                 UserModel userModel = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile());
-                bookingLoanPaginationItemDataDto.setUserName(userModel.getUserName());
+                bookingLoanPaginationItemDataDto.setUserName(userModel != null?userModel.getUserName():"");
                 return bookingLoanPaginationItemDataDto;
             });
 

@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class AutumnService {
     private UserMapper userMapper;
 
     public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 
@@ -29,12 +30,12 @@ public class AutumnService {
             return Maps.newConcurrentMap();
         }
 
-        for (UserModel userModel : userModels) {
+        for (UserRegisterInfo userModel : userModels) {
             if (Strings.isNullOrEmpty(userModel.getReferrer())) {
                 allFamily.put(userModel.getLoginName(), Lists.newArrayList(userModel.getLoginName()));
                 continue;
             }
-            if (allFamily.values() == null || allFamily.values().size() == 0) {
+            if (allFamily.values().size() == 0) {
                 allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
                 continue;
             }

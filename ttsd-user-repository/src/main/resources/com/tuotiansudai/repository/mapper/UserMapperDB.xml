@@ -15,7 +15,6 @@
         <result column="register_time" property="registerTime"/>
         <result column="last_modified_time" property="lastModifiedTime"/>
         <result column="last_modified_user" property="lastModifiedUser"/>
-        <result column="avatar" property="avatar"/>
         <result column="referrer" property="referrer"/>
         <result column="status" property="status"/>
         <result column="salt" property="salt"/>
@@ -81,6 +80,19 @@
             and referrer = #{referrer}
         </if>
         order by register_time
+    </select>
+
+    <select id="findUsersHasReferrerByRegisterTime" parameterType="map" resultMap="userResultMap">
+        select * from user where register_time between #{startTime} and #{endTime}
+        and referrer is not null and referrer != ''
+        order by register_time
+    </select>
+
+    <select id="findUserCountByRegisterTimeOrReferrer" parameterType="map" resultType="long">
+        select count(1) from user where register_time between #{startTime} and #{endTime}
+        <if test="referrer != null and referrer != ''">
+            and referrer = #{referrer}
+        </if>
     </select>
 
     <select id="findUsersCount" resultType="long">

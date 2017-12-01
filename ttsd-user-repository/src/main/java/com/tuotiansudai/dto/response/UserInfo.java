@@ -36,7 +36,6 @@ public class UserInfo implements Serializable {
     private Date lastModifiedTime;
     @JsonProperty("last_modified_user")
     private String lastModifiedUser;
-    private String avatar;
     private String referrer;
     private String status;
     private String channel;
@@ -58,9 +57,8 @@ public class UserInfo implements Serializable {
         userModel.setRegisterTime(registerTime);
         userModel.setLastModifiedTime(lastModifiedTime);
         userModel.setLastModifiedUser(lastModifiedUser);
-        userModel.setAvatar(avatar);
         userModel.setReferrer(referrer);
-        userModel.setStatus(UserStatus.valueOf(status));
+        userModel.setStatus(status == null ? null : UserStatus.valueOf(status));
         userModel.setChannel(channel);
         userModel.setProvince(province);
         userModel.setCity(city);
@@ -81,7 +79,6 @@ public class UserInfo implements Serializable {
         userInfo.setRegisterTime(userModel.getRegisterTime());
         userInfo.setLastModifiedTime(userModel.getLastModifiedTime());
         userInfo.setLastModifiedUser(userModel.getLastModifiedUser());
-        userInfo.setAvatar(userModel.getAvatar());
         userInfo.setReferrer(userModel.getReferrer());
         userInfo.setStatus(String.valueOf(userModel.getStatus()));
         userInfo.setChannel(userModel.getChannel());
@@ -171,14 +168,6 @@ public class UserInfo implements Serializable {
 
     public void setLastModifiedUser(String lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getReferrer() {

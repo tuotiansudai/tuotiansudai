@@ -1591,4 +1591,38 @@
         GROUP BY `name`
     </select>
 
+    <select id="queryLoanOutAmountTrend" parameterType="map" resultMap="keyValueMap">
+        SELECT
+        <if test="granularity.name() == 'Daily'">
+            DATE(recheck_time) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            DATE_FORMAT(recheck_time, '%Y-W%u') AS `name`,
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            DATE_FORMAT(recheck_time, '%Y-%m') AS `name`,
+        </if>
+        ROUND(IFNULL(SUM(loan_amount), 0)/ 100, 2) AS `value`,
+        '放款金额' AS `group`
+        FROM loan
+        WHERE status in ('REPAYING', 'OVERDUE', 'COMPLETE')
+        <if test="startTime !=null">
+            and recheck_time >= #{startTime}
+        </if>
+        <if test="endTime !=null ">
+            and recheck_time &lt;= #{endTime}
+        </if>
+        GROUP BY
+        <if test="granularity.name() == 'Daily'">
+            date(recheck_time)
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            year(recheck_time), week(recheck_time)
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            year(recheck_time), month(recheck_time)
+        </if>
+        ORDER BY recheck_time
+    </select>
+
 </mapper>
