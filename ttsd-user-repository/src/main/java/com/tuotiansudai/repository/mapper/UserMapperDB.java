@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -25,6 +24,13 @@ public interface UserMapperDB {
     List<UserModel> findUsersByRegisterTimeOrReferrer(@Param(value = "startTime") Date startTime,
                                                       @Param(value = "endTime") Date endTime,
                                                       @Param(value = "referrer") String referrer);
+
+    long findUserCountByRegisterTimeOrReferrer(@Param(value = "startTime") Date startTime,
+                                               @Param(value = "endTime") Date endTime,
+                                               @Param(value = "referrer") String referrer);
+
+    List<UserModel> findUsersHasReferrerByRegisterTime(@Param(value = "startTime") Date startTime,
+                                                      @Param(value = "endTime") Date endTime);
 
     long findUsersCount();
 

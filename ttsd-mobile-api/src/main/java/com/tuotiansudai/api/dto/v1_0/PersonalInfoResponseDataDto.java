@@ -26,9 +26,6 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "绑卡状态", example = "true")
     private boolean isBoundBankCard;
 
-    @ApiModelProperty(value = "头像", example = "url")
-    private String photo;
-
     @ApiModelProperty(value = "快捷支付状态", example = "true")
     private boolean isFastPayment;
 
@@ -131,14 +128,6 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.idCard = idCard;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public boolean getFastPayment() {
         return isFastPayment;
     }
@@ -186,6 +175,7 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     public void setDistrictCode(String districtCode) {
         this.districtCode = districtCode;
     }
+
     public boolean isAutoInvest() {
         return autoInvest;
     }

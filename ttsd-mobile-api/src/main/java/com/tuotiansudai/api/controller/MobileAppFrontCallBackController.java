@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +53,10 @@ public class MobileAppFrontCallBackController {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private static final String HUIZU_ACTIVE_RECHARGE_KEY = "huizu_active_recharge:";
+
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView callback(@PathVariable String service, HttpServletRequest request) {
         logger.info(MessageFormat.format("mobile front callback url: {0}", request.getRequestURL()));
@@ -77,8 +82,17 @@ public class MobileAppFrontCallBackController {
         }
 
         modelAndView.addObject("service", service);
-        modelAndView.addObject("values", this.generateBindValues(asyncUmPayService, Strings.isNullOrEmpty(params.get("order_id")) ? null : Long.valueOf(params.get("order_id"))));
-        modelAndView.addObject("href", MessageFormat.format(asyncUmPayService.getMobileLink(), "success"));
+        String orderId = params.get("order_id");
+        modelAndView.addObject("values", this.generateBindValues(asyncUmPayService, Strings.isNullOrEmpty(orderId) ? null : Long.valueOf(params.get("order_id"))));
+
+        String mobileLink = asyncUmPayService.getMobileLink();
+        if (AsyncUmPayService.MER_RECHARGE_PERSON.equals(asyncUmPayService)) {
+            if (redisWrapperClient.exists(HUIZU_ACTIVE_RECHARGE_KEY + orderId)) {
+                mobileLink = mobileLink.replace("recharge", "huizu_active_recharge");
+            }
+        }
+
+        modelAndView.addObject("href", MessageFormat.format(mobileLink, "success"));
         return modelAndView;
     }
 

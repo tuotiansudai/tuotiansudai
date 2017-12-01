@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserModel implements Serializable {
+public class UserModel implements UserRegisterInfo, Serializable {
 
     private long id;
 
@@ -24,8 +24,6 @@ public class UserModel implements Serializable {
     private Date lastModifiedTime;
 
     private String lastModifiedUser;
-
-    private String avatar;
 
     private String referrer;
 
@@ -127,14 +125,6 @@ public class UserModel implements Serializable {
 
     public void setLastModifiedUser(String lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getReferrer() {

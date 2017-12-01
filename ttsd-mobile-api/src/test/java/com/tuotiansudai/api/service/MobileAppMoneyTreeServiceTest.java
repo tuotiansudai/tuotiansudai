@@ -12,6 +12,7 @@ import com.tuotiansudai.api.dto.v1_0.MoneyTreeLeftCountResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.MoneyTreeResultListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppMoneyTreeServiceImpl;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -59,7 +60,7 @@ public class MobileAppMoneyTreeServiceTest extends ServiceTestBase {
         userModelReferrer3.setRegisterTime(new DateTime().plusDays(1).plusHours(11).toDate());
         userModelReferrer3.setReferrer(userModel.getLoginName());
 
-        List<UserModel> userModelList = Lists.newArrayList(userModelReferrer1, userModelReferrer2, userModelReferrer3);
+        List<UserRegisterInfo> userModelList = Lists.newArrayList(userModelReferrer1, userModelReferrer2, userModelReferrer3);
 
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(userMapper.findByMobile(anyString())).thenReturn(userModel);

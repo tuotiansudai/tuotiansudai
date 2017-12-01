@@ -93,8 +93,8 @@ public class ChristmasPrizeService {
             lotteryTime++;
         }
 
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityChristmasPrizeStartTime, activityChristmasEndTime, userModel.getLoginName());
-        for (UserModel referrerUserModel : userModels) {
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityChristmasPrizeStartTime, activityChristmasEndTime, userModel.getLoginName());
+        for (UserRegisterInfo referrerUserModel : userModels) {
             if (referrerUserModel.getRegisterTime().before(activityChristmasEndTime) && referrerUserModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
                 lotteryTime++;
                 if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime) > 0) {

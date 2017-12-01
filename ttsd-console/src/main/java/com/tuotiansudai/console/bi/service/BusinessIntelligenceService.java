@@ -45,4 +45,6 @@ public interface BusinessIntelligenceService {
     List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity);
 
     List<KeyValueModel> queryAnxinUserStatusStatistics(Date startTime, Date endTime);
+
+    List<KeyValueModel> queryLoanOutAmountTrend(Date startTime, Date endTime,Granularity granularity);
 }
