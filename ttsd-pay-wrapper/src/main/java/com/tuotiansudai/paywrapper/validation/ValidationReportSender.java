@@ -30,7 +30,7 @@ public class ValidationReportSender {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "utf-8");
             message.setSubject(MessageFormat.format("{0}{1}联动优势交易状态统计", environment, new DateTime().toString("yyyy-MM-dd")));
             message.setFrom("no-reply@tuotiansudai.com");
-            message.setTo("dev@tuotiansudai.com");
+            message.setTo("wangjia@tuotiansudai.com");
             message.setSentDate(new Date());
             message.setText(emailBody, true);
         };

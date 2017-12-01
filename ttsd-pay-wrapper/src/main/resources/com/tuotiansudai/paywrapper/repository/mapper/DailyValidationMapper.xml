@@ -10,7 +10,7 @@
         AND trans_action = '02'
         AND partic_type = '01'
 --         AND mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
-        AND mer_date = '20171020'
+        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d")
         ORDER BY ID
     </select>
 
