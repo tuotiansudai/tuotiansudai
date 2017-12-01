@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.google.common.collect.Maps;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,10 @@ public class UMPayRealTimeStatusController {
     public Map<String, String> getRealTimeTransferStatus(@PathVariable String orderId,
                                                          @PathVariable String merDate,
                                                          @PathVariable String businessType) {
-        return payRealTimeStatusService.getTransferStatus(orderId, merDate, businessType);
+        TransferSearchResponseModel transferStatus = payRealTimeStatusService.getTransferStatus(orderId, merDate, businessType);
+        if (transferStatus != null && transferStatus.isSuccess()) {
+            return transferStatus.generateHumanReadableInfo();
+        }
+        return Maps.newHashMap();
     }
 }

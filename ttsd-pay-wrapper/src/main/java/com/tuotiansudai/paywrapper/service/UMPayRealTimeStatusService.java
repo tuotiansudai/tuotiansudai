@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferSearchResponseModel;
 
 import java.util.Map;
 
@@ -17,5 +18,5 @@ public interface UMPayRealTimeStatusService {
 
     BaseDto<PayDataDto> checkLoanAmount(long loanId, long investAmountSum);
 
-    Map<String,String> getTransferStatus(String orderId, String merDate, String businessType);
+    TransferSearchResponseModel getTransferStatus(String orderId, String merDate, String businessType);
 }
