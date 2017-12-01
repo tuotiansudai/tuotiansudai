@@ -20,7 +20,7 @@
                 <li>
                     <i class="icon-password"></i>
                     <input validate type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
-                    <div class="passwordInputText" style="display:none;">请输入6-16位密码，不能为纯数字</div>
+                    <div class="passwordInputText" style="display:none;">请输入6-20位密码，不能为纯数字</div>
                 </li>
                 <li>
                     <i class="icon-captcha"></i>
