@@ -1,5 +1,4 @@
 let commonFun=require('publicJs/commonFun');
-let hasErrorText = false;
 
 function createElement(element,errorMsg) {
     let children = element.parentElement.children,
@@ -19,9 +18,7 @@ function createElement(element,errorMsg) {
     var span=document.createElement("span");
     span.className="error";
     span.innerHTML=errorMsg;
-    if (hasErrorText) return;
     element && element.parentElement.appendChild(span);
-    hasErrorText = true;
 }
 
 function removeElement(element) {
@@ -35,7 +32,6 @@ function removeElement(element) {
             lastTag.style.visibility = 'hidden';
         } else {
             element.parentElement.removeChild(lastTag);
-            hasErrorText = false;
         }
     }
 }
@@ -113,13 +109,13 @@ var strategies = {
         }
         else {
             //判断是非为数字，无需固定判断长度
-           if(/^\d+[.]{0,1}\d*$/.test(this.value)) {
-               isHaveError.no.apply(this,arguments);
-           }
-           else {
-               isHaveError.yes.apply(this,arguments);
-               return errorMsg;
-           }
+            if(/^\d+[.]{0,1}\d*$/.test(this.value)) {
+                isHaveError.no.apply(this,arguments);
+            }
+            else {
+                isHaveError.yes.apply(this,arguments);
+                return errorMsg;
+            }
 
         }
     },
@@ -311,56 +307,56 @@ var strategies = {
 // *****Validator验证类*******
 
 function ValidatorForm(cache,checkOption) {
-     this.cache = [];
-     this.checkOption = {};
-     this.newStrategy=function(dom,name,callback) {
-         strategies[name]=function(errorMsg,showErrorAfter) {
-             if(callback) {
-                 return callback.apply(dom,arguments);
-             }
-         }
-     }
-     this.add=function(dom, rules,errorAfter) {
-         var self = this;
-         self.checkOption[dom.name]=[];
-         for (var i = 0, rule; rule = rules[i++];) {
-             self.checkOption[dom.name].push(rule);
-         }
+    this.cache = [];
+    this.checkOption = {};
+    this.newStrategy=function(dom,name,callback) {
+        strategies[name]=function(errorMsg,showErrorAfter) {
+            if(callback) {
+                return callback.apply(dom,arguments);
+            }
+        }
+    }
+    this.add=function(dom, rules,errorAfter) {
+        var self = this;
+        self.checkOption[dom.name]=[];
+        for (var i = 0, rule; rule = rules[i++];) {
+            self.checkOption[dom.name].push(rule);
+        }
 
-         self.cache.push(function(thisDom) {
-             var domName=thisDom.name;
-             var domOption=self.checkOption[domName];
-             if(!domOption) {
+        self.cache.push(function(thisDom) {
+            var domName=thisDom.name;
+            var domOption=self.checkOption[domName];
+            if(!domOption) {
                 return;
-             }
-             var len=domOption.length,
-                 getErrorMsg;
+            }
+            var len=domOption.length,
+                getErrorMsg;
 
-             for(var j=0;j<len;j++) {
-                 var strategy=domOption[j].strategy.split(':').shift();
-                 var errorMsg=domOption[j].errorMsg;
-                 var optionParams=[];
-                 optionParams.push(errorMsg);
-                 var secondParam=domOption[j].strategy.split(':')[1];
+            for(var j=0;j<len;j++) {
+                var strategy=domOption[j].strategy.split(':').shift();
+                var errorMsg=domOption[j].errorMsg;
+                var optionParams=[];
+                optionParams.push(errorMsg);
+                var secondParam=domOption[j].strategy.split(':')[1];
 
-                 secondParam && optionParams.push(secondParam);
-                 errorAfter && optionParams.push(errorAfter);
-                 getErrorMsg=strategies[strategy].apply(thisDom,optionParams);
+                secondParam && optionParams.push(secondParam);
+                errorAfter && optionParams.push(errorAfter);
+                getErrorMsg=strategies[strategy].apply(thisDom,optionParams);
 
-                 if(getErrorMsg) {
-                     break;//跳出for循环
-                 }
-             }
-             return getErrorMsg;
-         });
-     }
-     this.start=function(dom) {
-         var validatorFunc = this.cache[0];
-         var errorMsg=validatorFunc(dom);
-         if (errorMsg) {
-             return errorMsg;
-         }
-     }
+                if(getErrorMsg) {
+                    break;//跳出for循环
+                }
+            }
+            return getErrorMsg;
+        });
+    }
+    this.start=function(dom) {
+        var validatorFunc = this.cache[0];
+        var errorMsg=validatorFunc(dom);
+        if (errorMsg) {
+            return errorMsg;
+        }
+    }
 }
 
 exports.ValidatorForm = ValidatorForm;
