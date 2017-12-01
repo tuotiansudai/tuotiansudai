@@ -22,4 +22,10 @@
         INSERT INTO experience_account (login_name, experience_balance)
         VALUES (#{loginName}, #{experienceBalance});
     </insert>
+
+    <select id="exists" parameterType="string" resultType="boolean">
+        SELECT exists(SELECT 1
+                      FROM experience_account
+                      WHERE login_name = #{loginName})
+    </select>
 </mapper>

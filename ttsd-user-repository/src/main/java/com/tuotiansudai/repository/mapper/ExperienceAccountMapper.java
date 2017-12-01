@@ -13,4 +13,6 @@ public interface ExperienceAccountMapper {
     int create(@Param(value = "loginName") String loginName,
                @Param(value = "experienceBalance") long experienceBalance);
 
+    boolean exists(@Param(value = "loginName") String loginName);
+
 }

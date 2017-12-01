@@ -22,6 +22,10 @@ public class ExperienceServiceImpl implements ExperienceBillService {
     @Override
     @Transactional
     public void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBusinessType, String note) {
+        if (!experienceAccountMapper.exists(loginName)) {
+            experienceAccountMapper.create(loginName, 0);
+        }
+
         if (experienceBillOperationType == ExperienceBillOperationType.OUT) {
             experienceAccountMapper.addBalance(loginName, -experienceAmount);
         } else {
