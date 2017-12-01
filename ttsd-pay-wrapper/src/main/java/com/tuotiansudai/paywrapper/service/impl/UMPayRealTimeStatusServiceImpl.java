@@ -90,16 +90,13 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     }
 
     @Override
-    public Map<String, String> getTransferStatus(String orderId, String merDate, String businessType) {
+    public TransferSearchResponseModel getTransferStatus(String orderId, String merDate, String businessType) {
         try {
-            TransferSearchResponseModel responseModel = paySyncClient.send(TransferSearchMapper.class, new TransferSearchRequestModel(orderId, merDate, businessType), TransferSearchResponseModel.class);
-            if (responseModel.isSuccess()) {
-                return responseModel.generateHumanReadableInfo();
-            }
+            return paySyncClient.send(TransferSearchMapper.class, new TransferSearchRequestModel(orderId, merDate, businessType), TransferSearchResponseModel.class);
         } catch (PayException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.warn(e.getLocalizedMessage(), e);
         }
-        return Maps.newHashMap();
+        return null;
     }
 
     @Override
