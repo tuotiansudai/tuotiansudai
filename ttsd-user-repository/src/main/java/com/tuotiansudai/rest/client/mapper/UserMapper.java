@@ -18,8 +18,6 @@ public interface UserMapper {
 
     void updateEmail(String loginName, String email);
 
-    void updateSignInCount(String loginName, int signInCount);
-
     void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber);
 
     List<UserModel> findUsersByChannel(List<String> channels);
