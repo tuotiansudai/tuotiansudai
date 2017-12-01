@@ -1,6 +1,6 @@
 require('webStyle/register.scss');
 let commonFun=require('publicJs/commonFun');
-let ValidatorObj= require('publicJs/validator');
+let ValidatorObj= require('publicJs/validator1');
 
 let registerForm=globalFun.$('#registerUserForm'); //注册的form
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm'); //获取验证码的form
@@ -9,7 +9,8 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let  $referrerOpen=$('.referrer-open',$(registerForm));
 let $referrer=$('input.referrer', $(registerForm));
 let agreementValid=true,
-    referrerValidBool=true;
+    referrerValidBool=true,
+    inputTextTip = '';
 
 require.ensure(['publicJs/placeholder'], function(require){
     require('publicJs/placeholder');
@@ -190,7 +191,9 @@ let reInputs=$(registerForm).find('input[validate]');
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i], "blur", function() {
         let tipName = '.' + $(this).attr('name');
+        let tipText = '.' + $(this).attr('name') + 'InputText';
         $(tipName).siblings('.error').show();
+        $(tipText).hide();
         let errorMsg=validator.start(this);
         referrerValidBool = !(this.name == 'referrer' && errorMsg);
         isDisabledButton();
@@ -200,7 +203,9 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i], "focus", function() {
         let tipName = '.' + $(this).attr('name');
+        let tipText = '.' + $(this).attr('name') + 'InputText';
         $(tipName).siblings('.error').hide();
+        $(tipText).show();
     })
 }
 
