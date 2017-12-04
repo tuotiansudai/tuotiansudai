@@ -2,7 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
-public class IphoneXActivityView implements Serializable{
+public class InvestProductTypeView implements Serializable{
 
     private String loginName;
     private String userName;
@@ -10,10 +10,10 @@ public class IphoneXActivityView implements Serializable{
     private long sumAmount;
     private ProductType productType;
 
-    public IphoneXActivityView() {
+    public InvestProductTypeView() {
     }
 
-    public IphoneXActivityView(String loginName, String userName, String mobile, long sumAmount, ProductType productType) {
+    public InvestProductTypeView(String loginName, String userName, String mobile, long sumAmount, ProductType productType) {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;

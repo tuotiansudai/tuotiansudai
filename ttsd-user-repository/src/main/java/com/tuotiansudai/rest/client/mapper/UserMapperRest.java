@@ -8,8 +8,10 @@ import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.UserMapperDB;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -29,6 +31,9 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public UserModel findByLoginNameOrMobile(String loginNameOrMobile) {
+        if (StringUtils.isEmpty(loginNameOrMobile)) {
+            return null;
+        }
         try {
             UserRestUserInfo userRestUserInfo = userRestClient.findByLoginNameOrMobile(loginNameOrMobile);
             return userRestUserInfo.getUserInfo().toUserModel();
@@ -39,6 +44,9 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public UserModel findByIdentityNumber(String identityNumber) {
+        if (StringUtils.isEmpty(identityNumber)) {
+            return null;
+        }
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setIdentityNumber(identityNumber);
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
@@ -47,6 +55,9 @@ public class UserMapperRest implements UserMapper {
 
     @Override
     public UserModel findByEmail(String email) {
+        if (StringUtils.isEmpty(email)) {
+            return null;
+        }
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setEmail(email);
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
@@ -92,14 +103,37 @@ public class UserMapperRest implements UserMapper {
     }
 
     @Override
-    public List<UserModel> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+    public List<UserRegisterInfo> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
         UserRestQueryDto queryDto = new UserRestQueryDto(false);
         queryDto.setRegisterTimeGte(startTime);
         queryDto.setRegisterTimeLte(endTime);
         queryDto.setReferrer(referrer);
+        queryDto.setFields(UserRegisterInfo.fields);
         queryDto.setSort("register_time");
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
         return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime) {
+        UserRestQueryDto queryDto = new UserRestQueryDto(false);
+        queryDto.setRegisterTimeGte(startTime);
+        queryDto.setRegisterTimeLte(endTime);
+        queryDto.setHasReferrer(true);
+        queryDto.setFields(UserRegisterInfo.fields);
+        queryDto.setSort("register_time");
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getItems().stream().map(UserInfo::toUserModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public long findUserCountByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+        UserRestQueryDto queryDto = new UserRestQueryDto(1, 1);
+        queryDto.setRegisterTimeGte(startTime);
+        queryDto.setRegisterTimeLte(endTime);
+        queryDto.setReferrer(referrer);
+        UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
+        return searchResult.getTotalCount();
     }
 
     @Override

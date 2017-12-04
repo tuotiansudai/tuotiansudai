@@ -55,21 +55,21 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
 
 getJsonFileList.prototype.addJqueryPlugin=function(path) {
 
-        var files = fs.readdirSync(path);//需要用到同步读取
-        files.forEach(function(file) {
-            var states = fs.statSync(path+'/'+file);
-            //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
-            if(!states.isDirectory())
-            {
-                var suffix=file.split('.'),
-                    len=suffix.length;
-                if(suffix[len-1]=='js') {
-                    suffix.length=len-1;
-                    var keyName=suffix.join('');
-                    this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
-                }
+    var files = fs.readdirSync(path);//需要用到同步读取
+    files.forEach(function(file) {
+        var states = fs.statSync(path+'/'+file);
+        //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
+        if(!states.isDirectory())
+        {
+            var suffix=file.split('.'),
+                len=suffix.length;
+            if(suffix[len-1]=='js') {
+                suffix.length=len-1;
+                var keyName=suffix.join('');
+                this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
             }
-        }.bind(this));
+        }
+    }.bind(this));
 }
 
 getJsonFileList.prototype.init=function() {
@@ -97,5 +97,3 @@ getJsonPointList.init();
 
 var getJsonMobileList=new getJsonFileList('mobile','json-mobile.json');
 getJsonMobileList.init();
-
-

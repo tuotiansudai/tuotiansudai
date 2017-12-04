@@ -10,7 +10,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.IphoneXActivityView;
+import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -61,11 +61,11 @@ public class IphoneXActivitySendCashScheduler {
         }
 
         Map<String, Long> map = new HashMap<>();
-        List<IphoneXActivityView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime);
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime, null);
 
-        for (IphoneXActivityView iphoneXActivityView : list) {
-            map.put(iphoneXActivityView.getLoginName(),
-                    map.containsKey(iphoneXActivityView.getLoginName()) ? map.get(iphoneXActivityView.getLoginName()) + getAnnualizedAmount(iphoneXActivityView) : getAnnualizedAmount(iphoneXActivityView));
+        for (InvestProductTypeView investProductTypeView : list) {
+            map.put(investProductTypeView.getLoginName(),
+                    map.containsKey(investProductTypeView.getLoginName()) ? map.get(investProductTypeView.getLoginName()) + getAnnualizedAmount(investProductTypeView) : getAnnualizedAmount(investProductTypeView));
         }
 
         if (map.isEmpty()) {
@@ -108,17 +108,17 @@ public class IphoneXActivitySendCashScheduler {
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【iPhoneX活动结束发放现金奖励】用户:{0}, 获得现金:{1}, 发送现金失败, 业务处理异常", entry.getKey(), String.valueOf(cash))));
     }
 
-    public Long getAnnualizedAmount(IphoneXActivityView iphoneXActivityView) {
+    public Long getAnnualizedAmount(InvestProductTypeView investProductTypeView) {
         long amount = 0l;
-        switch (iphoneXActivityView.getProductType()) {
+        switch (investProductTypeView.getProductType()) {
             case _90:
-                amount = (iphoneXActivityView.getSumAmount()) / 4;
+                amount = (investProductTypeView.getSumAmount()) / 4;
                 break;
             case _180:
-                amount = (iphoneXActivityView.getSumAmount()) / 2;
+                amount = (investProductTypeView.getSumAmount()) / 2;
                 break;
             case _360:
-                amount = iphoneXActivityView.getSumAmount();
+                amount = investProductTypeView.getSumAmount();
                 break;
         }
         return amount;

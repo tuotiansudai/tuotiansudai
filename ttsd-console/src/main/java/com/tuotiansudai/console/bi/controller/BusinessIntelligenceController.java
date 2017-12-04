@@ -289,4 +289,14 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         return businessIntelligenceService.queryAnxinUserStatusStatistics(startTime, endTime);
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/loan-out-amount-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryLoanOutAmountTrend(
+            @RequestParam(name = "granularity") Granularity granularity,
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+        return businessIntelligenceService.queryLoanOutAmountTrend(startTime, endTime, granularity);
+    }
 }

@@ -28,6 +28,7 @@ import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,10 @@ public class RechargeServiceImpl implements RechargeService {
 
     private final static String HTRACKING_CHANNEL = "htracking";
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private static final String HUIZU_ACTIVE_RECHARGE_KEY = "huizu_active_recharge:";
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> recharge(RechargeDto dto) {
@@ -87,6 +92,9 @@ public class RechargeServiceImpl implements RechargeService {
                     String.valueOf(rechargeModel.getAmount()), dto.getSource());
         }
         try {
+            if (dto.isHuizuActive())
+                redisWrapperClient.setex(HUIZU_ACTIVE_RECHARGE_KEY + rechargeModel.getId(), 60 * 60 * 24, "1"); // 标记此次充值是慧租激活账户充值
+
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(MerRechargePersonMapper.class, requestModel);
             rechargeMapper.create(rechargeModel);
             return baseDto;

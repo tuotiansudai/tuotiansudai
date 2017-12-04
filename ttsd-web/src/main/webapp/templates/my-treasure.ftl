@@ -116,6 +116,7 @@
                                         </#list>
                                         <#if minProductType=90>60天以上项目可用</#if>
                                         <#if minProductType=180>120天以上项目可用</#if>
+                                        <#if minProductType=360>200天以上项目可用</#if>
                                     </#if>
                                 </p>
 
@@ -204,6 +205,7 @@
                                         </#list>
                                         <#if minProductType=90>60天以上项目可用</#if>
                                         <#if minProductType=180>120天以上项目可用</#if>
+                                        <#if minProductType=360>200天以上项目可用</#if>
                                     </#if>
                                 </p>
 
@@ -283,6 +285,7 @@
                                         </#list>
                                         <#if minProductType=90>60天以上项目可用</#if>
                                         <#if minProductType=180>120天以上项目可用</#if>
+                                        <#if minProductType=360>200天以上项目可用</#if>
                                     </#if>
                                 </p>
 

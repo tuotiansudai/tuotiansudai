@@ -2,6 +2,7 @@
 import json
 import time
 import uuid
+from datetime import datetime
 
 import redis
 from sqlalchemy import func
@@ -232,6 +233,10 @@ class UserService(object):
             raise UserNotExistedError()
 
     def query(self, form):
+
+        default_select_fields = ['login_name', 'mobile', 'email', 'user_name', 'identity_number', 'register_time',
+                                 'referrer', 'status', 'channel', 'province', 'city', 'source']
+
         def _build_query_where(_qs):
             if form.email.data:
                 _qs = _qs.filter(User.email == form.email.data)
@@ -249,6 +254,12 @@ class UserService(object):
                 _qs = _qs.filter(User.register_time >= form.register_time__gte.data)
             if form.register_time__lte.data:
                 _qs = _qs.filter(User.register_time <= form.register_time__lte.data)
+            if form.referrer__hasvalue.data:
+                if 'true' == form.referrer__hasvalue.data.lower():
+                    _qs = _qs.filter(User.referrer.isnot(None)).filter(User.referrer != '')
+                else:
+                    _qs = _qs.filter((User.referrer == '') | (User.referrer.is_(None)))
+
             if form.role.data:
                 _qs = _qs.join(UserRole).filter(UserRole.role == form.role.data)
             return _qs
@@ -259,9 +270,8 @@ class UserService(object):
             return _qs
 
         def _build_query_select(_qs):
-            if form.fields.data:
-                _qs = _qs.with_entities(*[User.lookup_field(fn) for fn in form.fields.data])
-            return _qs
+            select_fields = form.fields.data if form.fields.data else default_select_fields
+            return _qs.with_entities(*[User.lookup_field(fn) for fn in select_fields])
 
         def _query_with_pagination(_qs):
             if form.page_size.data:
@@ -292,10 +302,17 @@ class UserService(object):
                 return User.lookup_field(django_like_order_by)
 
         def __generate_result(_data):
-            if form.fields.data:  # data is a list of tuple, if given select field
-                return [dict(zip(form.fields.data, row)) for row in _data]
-            else:  # data is a list of User object, otherwise
-                return [u.as_dict() for u in _data]
+            select_fields = form.fields.data if form.fields.data else default_select_fields
+            formatted_data = map(__fmt_row, _data)
+            return [dict(zip(select_fields, row)) for row in formatted_data]
+
+        def __fmt_row(user_item):
+            return map(__fmt_cell, user_item)
+
+        def __fmt_cell(value):
+            if isinstance(value, datetime):
+                return value.strftime('%Y-%m-%d %H:%M:%S')
+            return value
 
         qs = _build_query_where(User.query)
         qs = _build_query_sort(qs)

@@ -128,6 +128,12 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.endTime}\")}")
     private Date activityDoubleElevenEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.year.end.awards.startTime}\")}")
+    private Date activityYearEndAwardsStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.year.end.awards.endTime}\")}")
+    private Date activityYearEndAwardsEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -190,6 +196,8 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case DOUBLE_ELEVEN_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.DOUBLE_ELEVEN_INVEST));
+            case YEAR_END_AWARDS_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
         }
         return lotteryTime;
     }
@@ -208,7 +216,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case EACH_REFERRER:
-                    List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
                     if (activityCategory.name().startsWith("MONEY_TREE")) {
                         //根据注册时间分组
                         Map<String, Long> groupByEveryDayCounts = userModels
@@ -224,7 +232,7 @@ public class ActivityCountDrawLotteryService {
                             }
                         }
                     } else {
-                        for (UserModel referrerUserModel : userModels) {
+                        for (UserRegisterInfo referrerUserModel : userModels) {
                             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
                                 time++;
                             }
@@ -232,8 +240,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case EACH_REFERRER_INVEST:
-                    List<UserModel> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserModel referrerUserModel : referrerUserModels) {
+                    List<UserRegisterInfo> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    for (UserRegisterInfo referrerUserModel : referrerUserModels) {
                         if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
                             time++;
                         }
@@ -265,8 +273,8 @@ public class ActivityCountDrawLotteryService {
                     time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case REFERRER_USER:
-                    List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    time += referrerUsers.size() * 5;
+                    long referrerUserCount = userMapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    time += referrerUserCount * 5;
                     break;
                 case EACH_INVEST_5000:
                     long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), ACTIVITY_DESCRIPTION, startTime, endTime);
@@ -345,6 +353,8 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime);
             case DOUBLE_ELEVEN_ACTIVITY:
                 return Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime);
+            case YEAR_END_AWARDS_ACTIVITY:
+                return Lists.newArrayList(activityYearEndAwardsStartTime, activityYearEndAwardsEndTime);
         }
         return null;
     }

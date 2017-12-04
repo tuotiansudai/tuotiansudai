@@ -51,7 +51,8 @@ public interface UserRestClient {
             @QueryParam("identity_number") String identityNumber,
             @QueryParam("mobile__like") String mobileLike,
             @QueryParam("register_time__gte") String registerTimeGte,
-            @QueryParam("register_time__lte") String registerTimeLte) throws RestException;
+            @QueryParam("register_time__lte") String registerTimeLte,
+            @QueryParam("referrer__hasvalue") String referrerHasValue) throws RestException;
 
     default UserRestPagingResponse<UserInfo> search(UserRestQueryDto queryDto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -67,7 +68,8 @@ public interface UserRestClient {
                 queryDto.getIdentityNumber(),
                 queryDto.getMobileLike(),
                 queryDto.getRegisterTimeGte() == null ? null : sdf.format(queryDto.getRegisterTimeGte()),
-                queryDto.getRegisterTimeLte() == null ? null : sdf.format(queryDto.getRegisterTimeLte()));
+                queryDto.getRegisterTimeLte() == null ? null : sdf.format(queryDto.getRegisterTimeLte()),
+                queryDto.getHasReferrer() == null? null: queryDto.getHasReferrer().toString());
     }
 
     @GET

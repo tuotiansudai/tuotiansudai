@@ -9,10 +9,7 @@ import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserChannel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JsonConverter;
@@ -71,11 +68,11 @@ public class RedEnvelopSplitActivityService {
         return getReferrerCount(loginName, startTime, endTime).size();
     }
 
-    public List<UserModel> getReferrerCount(String loginName, Date startTime, Date endTime) {
+    public List<UserRegisterInfo> getReferrerCount(String loginName, Date startTime, Date endTime) {
         if (Strings.isNullOrEmpty(loginName)) {
             return Lists.newArrayList();
         }
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
         return userModels.stream().filter(userModel -> asUserChannel(userModel.getChannel())).collect(Collectors.toList());
     }
 
@@ -154,7 +151,7 @@ public class RedEnvelopSplitActivityService {
         Date startTime = DateTime.parse(weiXinPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(weiXinPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
-        List<UserModel> referrerUsers = getReferrerCount(loginName, startTime, endTime);
+        List<UserRegisterInfo> referrerUsers = getReferrerCount(loginName, startTime, endTime);
         if (referrerUsers.size() > DEFAULT_PAGE_SIZE) {
             referrerUsers.subList(0, DEFAULT_PAGE_SIZE);
         }

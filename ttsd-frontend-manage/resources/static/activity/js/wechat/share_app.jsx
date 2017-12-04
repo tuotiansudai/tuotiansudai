@@ -8,6 +8,8 @@ let $shareAppContainer = $('#shareAppContainer'),
 
 
 let validator = new ValidatorObj.ValidatorForm();
+let referrerPerson = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')["referrerMobile"];
+$('#recommender').html(referrerPerson);
 
 //验证码是否正确
 validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
@@ -119,7 +121,8 @@ let shareAppFun = {
 		surl = '/register/user/shared';
 		paramObj.password = registerForm.password.value;
 		paramObj.referrer = referrerMobile;
-		paramObj.agreement = $('#agreement').prop('checked')
+		paramObj.agreement = $('#agreement').prop('checked');
+
 
 		commonFun.useAjax({
 			url: surl,
@@ -155,7 +158,16 @@ $fetchCaptcha.on('click',function() {
 	//判断手机号 和密码都正确
 	let mobileCls = registerForm.mobile.className;
 	let passwordCls = registerForm.password.className;
-	if(/valid/.test(mobileCls) && /valid/.test(passwordCls)) {
+	// let mobileVal = registerForm.mobile.value;
+	// let passwordVal = registerForm.password.value;
+    let errorMsg;
+    for(let i=0,len=2;i<len;i++) {
+        errorMsg=validator.start(reInputs[i]);
+        if(errorMsg) {
+            return;
+        }
+    }
+    if(/valid/.test(mobileCls) && /valid/.test(passwordCls)) {
 		//手机号和密码都有效
 		shareAppFun.isRegister();
 	}
@@ -169,13 +181,18 @@ registerForm.onsubmit = function(event) {
 	for(let i=0,len=reInputs.length;i<len;i++) {
 		errorMsg=validator.start(reInputs[i]);
 		if(errorMsg) {
-			break;
+			return;
 		}
 	}
+	let ifChecked = registerForm.agreement.checked;
+	if (!ifChecked) {
+		$('.noAgree').css('display','block');
+		return;
+	};
 	if(!errorMsg) {
 		shareAppFun.submitForm();
 	}
-}
+};
 
 $('#agreeRule').on('click', function(event) {
 	event.preventDefault();
@@ -189,6 +206,12 @@ $('#agreeRule').on('click', function(event) {
 		content: $('#agreementBox')
 	});
 });
+
+$('#agreement').on('click',() => {
+	let ifChecked = registerForm.agreement.checked;
+	if(ifChecked) $('.noAgree').css('display','none');
+});
+
 
 
 

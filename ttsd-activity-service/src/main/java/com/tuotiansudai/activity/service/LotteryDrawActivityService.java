@@ -41,12 +41,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.StringValueExp;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class LotteryDrawActivityService {
@@ -170,6 +167,12 @@ public class LotteryDrawActivityService {
     @Value(value = "${activity.double.eleven.endTime}")
     private String activityDoubleElevenEndTime;
 
+    @Value(value = "${activity.year.end.awards.startTime}")
+    private String activityYearEndAwardsStartTime;
+
+    @Value(value = "${activity.year.end.awards.endTime}")
+    private String activityYearEndAwardsEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -185,9 +188,6 @@ public class LotteryDrawActivityService {
 
     //春节活动任务
     private final List springFestivalTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
-
-    //妇女节活动任务
-    private final List womanDayTasks = Lists.newArrayList(ActivityDrawLotteryTask.TODAY_ACTIVITY_SIGN_IN);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
 
@@ -410,6 +410,12 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_ENVELOP_200, Lists.newArrayList(472L))
                 .put(LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_2, Lists.newArrayList(473L))
                 .put(LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_INTEREST_COUPON_5, Lists.newArrayList(474L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_10, Lists.newArrayList(475L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_20, Lists.newArrayList(476L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_50, Lists.newArrayList(477L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_100, Lists.newArrayList(478L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_120, Lists.newArrayList(479L))
+                .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_200, Lists.newArrayList(480L))
                 .build()).get(lotteryPrize);
     }
 
@@ -482,8 +488,6 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalTasks);
-            case WOMAN_DAY_ACTIVITY:
-                return countDrawLotteryTime(userModel, activityCategory, womanDayTasks);
             case MOTHERS_DAY_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
             case CELEBRATION_SINGLE_ACTIVITY:
@@ -498,6 +502,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case DOUBLE_ELEVEN_ACTIVITY:
                 return getDoubleElevenDrawTimes(userModel, activityCategory);
+            case YEAR_END_AWARDS_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
         }
         return lotteryTime;
     }
@@ -516,16 +522,16 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case EACH_REFERRER:
-                    List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserModel referrerUserModel : userModels) {
+                    List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    for (UserRegisterInfo referrerUserModel : userModels) {
                         if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
                             time++;
                         }
                     }
                     break;
                 case EACH_REFERRER_INVEST:
-                    List<UserModel> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserModel referrerUserModel : referrerUserModels) {
+                    List<UserRegisterInfo> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    for (UserRegisterInfo referrerUserModel : referrerUserModels) {
                         if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
                             time++;
                         }
@@ -566,8 +572,8 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case REFERRER_USER:
-                    List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    time += referrerUsers.size() * 5;
+                    long referrerUserCount = userMapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    time += referrerUserCount * 5;
                     break;
                 case EACH_INVEST_5000:
                     long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), ACTIVITY_DESCRIPTION, startTime, endTime);
@@ -645,6 +651,7 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.SCHOOL_SEASON_ACTIVITY, Lists.newArrayList(activitySchoolSeasonStartTime, activitySchoolSeasonEndTime))
                 .put(ActivityCategory.IPHONEX_ACTIVITY, Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime))
                 .put(ActivityCategory.DOUBLE_ELEVEN_ACTIVITY, Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime))
+                .put(ActivityCategory.YEAR_END_AWARDS_ACTIVITY, Lists.newArrayList(activityYearEndAwardsStartTime, activityYearEndAwardsEndTime))
                 .build()).get(activityCategory);
     }
 
@@ -680,21 +687,18 @@ public class LotteryDrawActivityService {
 
     private void grantExperience(String loginName, LotteryPrize lotteryPrize) {
         long experienceAmount = 0l;
-        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_88.equals(lotteryPrize)) {
-            experienceAmount = 8800l;
-        }
-        if (LotteryPrize.IPHONEX_ACTIVITY_ENVELOP_EXPERIENCE_GOLD_888.equals(lotteryPrize)) {
-            experienceAmount = 88800l;
-        }
         if (LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000.equals(lotteryPrize)) {
             experienceAmount = 100000l;
+        }
+        if (LotteryPrize.YEAR_END_AWARDS_ACTIVITY_EXPERIENCE_GOLD_500.equals(lotteryPrize)) {
+            experienceAmount = 50000l;
         }
 
         if (experienceAmount == 0) {
             return;
         }
 
-        ExperienceBillBusinessType experienceBillBusinessType = LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000.equals(lotteryPrize) ? ExperienceBillBusinessType.DOUBLE_ELEVEN : ExperienceBillBusinessType.IPHONEX;
+        ExperienceBillBusinessType experienceBillBusinessType = LotteryPrize.DOUBLE_ELEVEN_ACTIVITY_EXPERIENCE_GOLD_1000.equals(lotteryPrize) ? ExperienceBillBusinessType.DOUBLE_ELEVEN : ExperienceBillBusinessType.YEAR_END_AWARDS;
 
         mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
                 new ExperienceAssigningMessage(loginName, experienceAmount, ExperienceBillOperationType.IN, experienceBillBusinessType));
@@ -742,9 +746,9 @@ public class LotteryDrawActivityService {
             boolean booleanEvenOfDay = redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey) != null;
             long evenCountOfDay = booleanEvenOfDay ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey)) : 0;
             if (even && evenCountOfDay < 10) {
-                if(booleanEvenOfDay){
+                if (booleanEvenOfDay) {
                     count++;
-                }else{
+                } else {
                     count = 1;
                 }
                 redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, String.valueOf(count));

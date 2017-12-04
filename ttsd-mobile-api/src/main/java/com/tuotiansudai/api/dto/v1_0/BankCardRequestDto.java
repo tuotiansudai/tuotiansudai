@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 
-public class BankCardRequestDto extends BaseParamDto{
+public class BankCardRequestDto extends BaseParamDto {
 
     //用户ID
     @ApiModelProperty(value = "用户ID", example = "abcd1234")
@@ -34,8 +34,9 @@ public class BankCardRequestDto extends BaseParamDto{
     /**
      * 查询绑卡状态：query_bind_status
      * 查询签约状态：query_sign_status
+     * 慧租账户激活：huizu_active
      */
-    @ApiModelProperty(value = "操作类型", example = "查询绑卡状态：query_bind_status,查询签约状态：query_sign_status")
+    @ApiModelProperty(value = "操作类型", example = "查询绑卡状态：query_bind_status,查询签约状态：query_sign_status,慧租账户激活：huizu_active")
     private String operationType;
 
     /**
@@ -113,16 +114,17 @@ public class BankCardRequestDto extends BaseParamDto{
         this.ip = ip;
     }
 
-    public RechargeDto convertToRechargeDto(){
+    public RechargeDto convertToRechargeDto() {
         RechargeDto rechargeDto = new RechargeDto();
         rechargeDto.setAmount(this.rechargeAmount);
         rechargeDto.setLoginName(this.userId);
         rechargeDto.setFastPay(this.isOpenFastPayment);
         rechargeDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        rechargeDto.setHuizuActive("huizu_active".equals(this.operationType));
         return rechargeDto;
     }
 
-    public BindBankCardDto convertToBindBankCardDto(){
+    public BindBankCardDto convertToBindBankCardDto() {
         BindBankCardDto bindBankCardDto = new BindBankCardDto();
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
@@ -133,7 +135,7 @@ public class BankCardRequestDto extends BaseParamDto{
         return bindBankCardDto;
     }
 
-    public AgreementDto convertToAgreementDto(){
+    public AgreementDto convertToAgreementDto() {
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         agreementDto.setLoginName(this.getUserId());
