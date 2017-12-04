@@ -84,7 +84,7 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
                     boundUser.setBound(false);
                     weChatUserMapper.update(boundUser);
                     logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sending ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, userModel.getLoginName(), openid);
-                    mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(mobile, weChatUserModel.getOpenid(), WeChatMessageType.BOUND_TO_OTHER_USER, null));
+                    mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(userModel.getLoginName(), WeChatMessageType.BOUND_TO_OTHER_USER, null));
                     logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sent ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, userModel.getLoginName(), openid);
 
                     logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", userModel.getLoginName(), openid, boundUser.getLoginName());
