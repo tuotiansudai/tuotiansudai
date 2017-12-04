@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.RedEnvelopTransferMapper">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.CouponRepayTransferMapper">
 
     <resultMap id="requestMap" type="TransferRequestModel">
         <id property="id" column="id" />
