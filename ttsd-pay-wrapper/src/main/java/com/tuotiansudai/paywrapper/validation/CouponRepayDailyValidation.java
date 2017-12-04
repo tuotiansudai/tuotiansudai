@@ -29,13 +29,13 @@ public class CouponRepayDailyValidation extends BaseDailyValidation implements D
     public ValidationReport validate() {
         logger.info("[Coupon Repay Daily Validation] starting...");
 
-        List<Map<String, String>> transactions = this.dailyValidationMapper.findRedEnvelopTransactions();
+        List<Map<String, String>> transactions = this.dailyValidationMapper.findCouponRepayTransactions();
 
         logger.info(MessageFormat.format("[Coupon Repay Daily Validation] sum is {0}", transactions.size()));
 
         ValidationReport validationReport = this.generateReport("04", transactions);
-        validationReport.setTitle("现金红包业务统计");
-        validationReport.setMustacheContext("redEnvelop");
+        validationReport.setTitle("优惠券还款业务统计");
+        validationReport.setMustacheContext("couponRepay");
 
         return validationReport;
     }
@@ -43,7 +43,10 @@ public class CouponRepayDailyValidation extends BaseDailyValidation implements D
     @Override
     protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId.split("X")[0]);
-        UserBillModel redEnvelopUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.RED_ENVELOPE);
-        return redEnvelopUserBillModel != null && redEnvelopUserBillModel.getAmount() == Long.parseLong(amount);
+        UserBillModel couponRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INTEREST_COUPON);
+        UserBillModel investFeeRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
+        return couponRepayUserBillModel != null
+                && investFeeRepayUserBillModel != null
+                && couponRepayUserBillModel.getAmount() - investFeeRepayUserBillModel.getAmount() == Long.parseLong(amount);
     }
 }

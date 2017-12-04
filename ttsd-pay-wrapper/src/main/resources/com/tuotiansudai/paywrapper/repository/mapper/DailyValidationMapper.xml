@@ -17,6 +17,11 @@
         WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
     </select>
 
+    <select id="findCouponRepayTransactions" parameterType="map" resultType="java.util.HashMap">
+        SELECT order_id, amount, mer_date FROM coupon_repay_transfer_request
+        WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+    </select>
+
     <select id="findExtraRateTransactions" parameterType="map" resultType="java.util.HashMap">
         SELECT order_id, amount, mer_date FROM extra_rate_transfer_request
         WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
