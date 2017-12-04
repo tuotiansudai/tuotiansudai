@@ -34,6 +34,7 @@ public class CouponRepayDailyValidation extends BaseDailyValidation implements D
         logger.info(MessageFormat.format("[Coupon Repay Daily Validation] sum is {0}", transactions.size()));
 
         ValidationReport validationReport = this.generateReport("04", transactions);
+        validationReport.setCount(transactions.size());
         validationReport.setTitle("优惠券还款业务统计");
         validationReport.setMustacheContext("couponRepay");
 

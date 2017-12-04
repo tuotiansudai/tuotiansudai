@@ -34,6 +34,7 @@ public class RedEnvelopDailyValidation extends BaseDailyValidation implements Da
         logger.info(MessageFormat.format("[Red Envelop Daily Validation] sum is {0}", transactions.size()));
 
         ValidationReport validationReport = this.generateReport("04", transactions);
+        validationReport.setCount(transactions.size());
         validationReport.setTitle("现金红包业务统计");
         validationReport.setMustacheContext("redEnvelop");
 

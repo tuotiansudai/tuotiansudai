@@ -34,6 +34,7 @@ public class ExtraRateDailyValidation extends BaseDailyValidation implements Dai
         logger.info(MessageFormat.format("[Extra Rate Daily Validation] sum is {0}", transactions.size()));
 
         ValidationReport validationReport = this.generateReport("04", transactions);
+        validationReport.setCount(transactions.size());
         validationReport.setTitle("阶梯加息业务统计");
         validationReport.setMustacheContext("extraRate");
 
