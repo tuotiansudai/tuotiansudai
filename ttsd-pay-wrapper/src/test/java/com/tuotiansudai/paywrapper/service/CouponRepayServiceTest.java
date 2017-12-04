@@ -2,14 +2,14 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
+import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -141,7 +141,7 @@ public class CouponRepayServiceTest {
         when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel1.getId(), couponRepayModel1.getPeriod())).thenReturn(couponRepayModel1);
         when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel2.getId(), couponRepayModel2.getPeriod())).thenReturn(couponRepayModel2);
 
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(anyString(),anyString())).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
 
@@ -188,7 +188,7 @@ public class CouponRepayServiceTest {
         when(investMapper.findById(investModel.getId())).thenReturn(investModel);
         when(accountMapper.findByLoginName(accountModel.getLoginName())).thenReturn(accountModel);
         when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), couponRepayModel.getPeriod())).thenReturn(couponRepayModel);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
 
@@ -327,7 +327,7 @@ public class CouponRepayServiceTest {
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         couponRepayService.repay(currentLoanRepay.getId(), true);
