@@ -12,6 +12,7 @@ import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserFundView;
@@ -40,7 +41,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
 
     @Autowired
-    private UserService userService;
+    private ExperienceAccountMapper experienceAccountMapper;
 
     @Autowired
     private MoneyTreePrizeService moneyTreePrizeService;
@@ -59,7 +60,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
         long balance = accountModel != null ? accountModel.getBalance() : 0;
         long point = accountModel != null ? accountModel.getPoint() : 0;
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
-        long experienceBalance = userService.getExperienceBalanceByLoginName(loginName);
+        long experienceBalance = experienceAccountMapper.getExperienceBalance(loginName);
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
         int showMoneyTree = moneyTreePrizeService.isActivity();
         Date membershipExpiredDate = userMembershipModel != null && (userMembershipModel.getType().name().equals("GIVEN") || userMembershipModel.getType().name().equals("PURCHASED")) ? userMembershipModel.getExpiredTime() : null;

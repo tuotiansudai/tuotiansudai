@@ -45,8 +45,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     private Source lastLoginSource;
 
-    private long experienceBalance;
-
     public long getId() {
         return id;
     }
@@ -205,14 +203,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     public void setLastLoginSource(Source lastLoginSource) {
         this.lastLoginSource = lastLoginSource;
-    }
-
-    public long getExperienceBalance() {
-        return experienceBalance;
-    }
-
-    public void setExperienceBalance(long experienceBalance) {
-        this.experienceBalance = experienceBalance;
     }
 
     @Override

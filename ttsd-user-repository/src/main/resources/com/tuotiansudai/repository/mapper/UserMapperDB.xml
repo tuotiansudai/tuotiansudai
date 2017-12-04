@@ -25,7 +25,6 @@
         <result column="sign_in_count" property="signInCount"/>
         <result column="last_login_time" property="lastLoginTime"/>
         <result column="last_login_source" property="lastLoginSource"/>
-        <result column="experience_balance" property="experienceBalance"/>
     </resultMap>
 
     <resultMap id="userViewResultMap" type="UserView">
