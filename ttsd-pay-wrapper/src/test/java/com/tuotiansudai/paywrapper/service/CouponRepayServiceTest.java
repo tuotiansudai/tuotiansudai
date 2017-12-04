@@ -48,7 +48,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@WebAppConfiguration
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@WebAppConfiguration
 @Transactional
 public class CouponRepayServiceTest {
 
@@ -148,10 +149,8 @@ public class CouponRepayServiceTest {
         couponRepayService.repay(loanRepay.getId(), false);
 
 
-        ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         verify(redisWrapperClient, times(1)).hget(anyString(), anyString());
     }
@@ -162,7 +161,7 @@ public class CouponRepayServiceTest {
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
         LoanRepayModel loanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
-        CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
+        CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000L);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
         InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
@@ -199,7 +198,7 @@ public class CouponRepayServiceTest {
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
         assertEquals(RepayStatus.REPAYING, couponRepayModel.getStatus());
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         syncRequestStatusArgumentCaptor.getAllValues();
@@ -337,7 +336,7 @@ public class CouponRepayServiceTest {
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
         assertEquals(RepayStatus.REPAYING,  couponRepayModel.getStatus());
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         syncRequestStatusArgumentCaptor.getAllValues();
