@@ -27,20 +27,20 @@
     </resultMap>
 
     <select id="findRequestById" resultMap="requestMap" parameterType="java.lang.Long">
-        select * from red_envelop_transfer_request where id = #{id}
+        select * from extra_rate_transfer_request where id = #{id}
     </select>
 
     <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="TransferRequestModel">
-        insert into red_envelop_transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)
+        insert into extra_rate_transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)
         values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
-        update red_envelop_transfer_request set status = #{status} where id = #{id}
+        update extra_rate_transfer_request set status = #{status} where id = #{id}
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="TransferResponseModel">
-        insert into red_envelop_transfer_response (request_id, sign_type, sign, mer_Id, version, order_id, mer_date, trade_no, mer_check_date,ret_code, ret_msg, response_data, response_time)
+        insert into extra_rate_transfer_response (request_id, sign_type, sign, mer_Id, version, order_id, mer_date, trade_no, mer_check_date,ret_code, ret_msg, response_data, response_time)
         values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo},#{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})
     </insert>
 

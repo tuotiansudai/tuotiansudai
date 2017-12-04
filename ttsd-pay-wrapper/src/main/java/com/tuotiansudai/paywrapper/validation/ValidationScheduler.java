@@ -34,6 +34,9 @@ public class ValidationScheduler {
     @Resource(name = "investDailyValidation")
     private DailyValidation investDailyValidation;
 
+    @Resource(name = "couponRepayDailyValidation")
+    private DailyValidation couponRepayDailyValidation;
+
     private final ValidationReportSender validationReportSender;
 
     @Autowired
@@ -54,7 +57,8 @@ public class ValidationScheduler {
             List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation,
                     redEnvelopDailyValidation,
                     extraRateDailyValidation,
-                    investDailyValidation);
+                    investDailyValidation,
+                    couponRepayDailyValidation);
 
             Map<String, Object> context = Maps.newHashMap();
 

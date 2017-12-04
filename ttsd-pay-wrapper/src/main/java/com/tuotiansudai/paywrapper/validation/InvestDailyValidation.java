@@ -34,7 +34,7 @@ public class InvestDailyValidation extends BaseDailyValidation implements DailyV
 
         logger.info(MessageFormat.format("[Invest Daily Validation] sum is {0}", transactions.size()));
 
-        ValidationReport validationReport = this.generateReport("04", transactions);
+        ValidationReport validationReport = this.generateReport("03", transactions);
         validationReport.setCount(transactions.size());
         validationReport.setTitle("投资业务统计");
         validationReport.setMustacheContext("invest");
