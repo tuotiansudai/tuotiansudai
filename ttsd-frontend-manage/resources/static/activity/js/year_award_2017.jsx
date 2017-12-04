@@ -389,6 +389,9 @@ function activityStatus(nowDay) {
 
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
+        if(isToday){
+            $heroNext.css({'visibility':'hidden'});
+        }
         $contentRanking.show();
         if(nowDayStr==startTime) {
             //活动第一天
