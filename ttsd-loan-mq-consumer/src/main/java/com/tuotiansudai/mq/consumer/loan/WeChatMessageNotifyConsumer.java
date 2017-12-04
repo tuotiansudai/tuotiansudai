@@ -138,6 +138,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                     weChatMessageNotify.getWeChatMessageType(),
                     weChatMessageNotify.getLoginName(),
                     openId);
+            return;
         }
         InvestModel investModel = investMapper.findById(weChatMessageNotify.getBusinessId());
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
