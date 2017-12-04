@@ -36,7 +36,7 @@ public class ValidationReportSender {
             message.setFrom("no-reply@tuotiansudai.com");
             message.setTo(Maps.newHashMap(ImmutableMap.<Environment, List<String>>builder()
                     .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
-                    .put(Environment.QA, Lists.newArrayList("chengzhonghui@tuotiansudai.com", "gaoxiduan@tuotiansudai.com"))
+                    .put(Environment.QA, Lists.newArrayList("chenzhonghui@tuotiansudai.com", "gaoxiduan@tuotiansudai.com"))
                     .put(Environment.DEV, Lists.newArrayList("gaoxiduan@tuotiansudai.com"))
                     .build()).get(environment).toArray(new String[0]));
             message.setSentDate(new Date());
