@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserSignInMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="userSignInModelMap" type="UserSignInModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="sign_in_count" property="signInCount"/>
+        <result column="last_sign_in_time" property="lastSignInTime"/>
+    </resultMap>
+
+    <update id="updateSignInCount" parameterType="map">
+        UPDATE user_sign_in
+        SET sign_in_count     = #{signInCount},
+            last_sign_in_time = NOW()
+        WHERE login_name = #{loginName}
+    </update>
+
+    <select id="getUserSignInCount" parameterType="string" resultType="int">
+        SELECT ifnull(sum(sign_in_count), 0) AS sign_in_count
+        FROM user_sign_in
+        WHERE login_name = #{loginName}
+    </select>
+
+    <insert id="create" parameterType="map">
+        INSERT INTO user_sign_in (login_name, sign_in_count, last_sign_in_time)
+        VALUES (#{loginName}, #{signInCount}, NOW());
+    </insert>
+
+    <select id="exists" parameterType="string" resultType="boolean">
+        SELECT exists(SELECT 1
+                      FROM user_sign_in
+                      WHERE login_name = #{loginName})
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="userSignInModelMap">
+        SELECT *
+        FROM user_sign_in
+        WHERE login_name = #{loginName};
+    </select>
+</mapper>

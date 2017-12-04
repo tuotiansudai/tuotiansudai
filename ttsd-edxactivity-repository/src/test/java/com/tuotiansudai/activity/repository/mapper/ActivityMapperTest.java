@@ -27,7 +27,8 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class ActivityMapperTest {
     @Autowired
     ActivityMapper activityMapper;

@@ -39,8 +39,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     private String city;
 
-    private int signInCount;
-
     private Date lastLoginTime;
 
     private Source lastLoginSource;
@@ -179,14 +177,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public int getSignInCount() {
-        return signInCount;
-    }
-
-    public void setSignInCount(int signInCount) {
-        this.signInCount = signInCount;
     }
 
     public Date getLastLoginTime() {
