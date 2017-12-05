@@ -46,18 +46,18 @@ public class InvestRepayDailyValidation extends BaseDailyValidation implements D
     @Override
     protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId.split("X")[0]);
-        UserBillModel normalRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.NORMAL_REPAY);
-        UserBillModel advancedRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.ADVANCE_REPAY);
-        UserBillModel investFeeRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
+        List<UserBillModel> normalRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.NORMAL_REPAY);
+        List<UserBillModel> advancedRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.ADVANCE_REPAY);
+        List<UserBillModel> investFeeRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
         long userBillAmount = 0;
-        if (normalRepayUserBillModel != null) {
-            userBillAmount += normalRepayUserBillModel.getAmount();
+        if (normalRepayUserBillModels.size() == 1) {
+            userBillAmount += normalRepayUserBillModels.get(0).getAmount();
         }
-        if (advancedRepayUserBillModel != null) {
-            userBillAmount += advancedRepayUserBillModel.getAmount();
+        if (advancedRepayUserBillModels.size() == 1) {
+            userBillAmount += advancedRepayUserBillModels.get(0).getAmount();
         }
-        if (investFeeRepayUserBillModel != null) {
-            userBillAmount -= investFeeRepayUserBillModel.getAmount();
+        if (investFeeRepayUserBillModels.size() == 1) {
+            userBillAmount -= investFeeRepayUserBillModels.get(0).getAmount();
         }
         return userBillAmount == Long.parseLong(amount);
     }

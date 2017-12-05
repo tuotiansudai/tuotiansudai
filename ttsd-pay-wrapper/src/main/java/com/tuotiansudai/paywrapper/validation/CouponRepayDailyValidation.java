@@ -3,7 +3,10 @@ package com.tuotiansudai.paywrapper.validation;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.repository.mapper.DailyValidationMapper;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
+import com.tuotiansudai.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +22,14 @@ public class CouponRepayDailyValidation extends BaseDailyValidation implements D
 
     private final static Logger logger = Logger.getLogger(CouponRepayDailyValidation.class);
 
+    private final CouponRepayMapper couponRepayMapper;
+
     @Autowired
-    public CouponRepayDailyValidation(DailyValidationMapper dailyValidationMapper, UMPayRealTimeStatusService umPayRealTimeStatusService, UserBillMapper userBillMapper) {
+    public CouponRepayDailyValidation(DailyValidationMapper dailyValidationMapper, UMPayRealTimeStatusService umPayRealTimeStatusService, UserBillMapper userBillMapper, CouponRepayMapper couponRepayMapper) {
         this.dailyValidationMapper = dailyValidationMapper;
         this.umPayRealTimeStatusService = umPayRealTimeStatusService;
         this.userBillMapper = userBillMapper;
+        this.couponRepayMapper = couponRepayMapper;
     }
 
     public ValidationReport validate() {
@@ -44,10 +50,12 @@ public class CouponRepayDailyValidation extends BaseDailyValidation implements D
     @Override
     protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId.split("X")[0]);
-        UserBillModel couponRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INTEREST_COUPON);
-        UserBillModel investFeeRepayUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
-        return couponRepayUserBillModel != null
-                && investFeeRepayUserBillModel != null
-                && couponRepayUserBillModel.getAmount() - investFeeRepayUserBillModel.getAmount() == Long.parseLong(amount);
+        CouponRepayModel couponRepayModel = couponRepayMapper.findById(businessId);
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(couponRepayModel.getInvestId());
+        long count = couponRepayModels.stream().filter(item -> item.getStatus() == RepayStatus.COMPLETE).count();
+        List<UserBillModel> couponRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(couponRepayModel.getUserCouponId(), UserBillBusinessType.INTEREST_COUPON);
+        List<UserBillModel> investFeeRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(couponRepayModel.getUserCouponId(), UserBillBusinessType.INVEST_FEE);
+
+        return count == couponRepayUserBillModels.size() && count == investFeeRepayUserBillModels.size();
     }
 }

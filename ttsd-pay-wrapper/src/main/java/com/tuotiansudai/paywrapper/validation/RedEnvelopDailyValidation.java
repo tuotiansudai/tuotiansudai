@@ -44,7 +44,7 @@ public class RedEnvelopDailyValidation extends BaseDailyValidation implements Da
     @Override
     protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId.split("X")[0]);
-        UserBillModel redEnvelopUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.RED_ENVELOPE);
-        return redEnvelopUserBillModel != null && redEnvelopUserBillModel.getAmount() == Long.parseLong(amount);
+        List<UserBillModel> redEnvelopUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.RED_ENVELOPE);
+        return redEnvelopUserBillModels.size() ==  1 && redEnvelopUserBillModels.get(0).getAmount() == Long.parseLong(amount);
     }
 }

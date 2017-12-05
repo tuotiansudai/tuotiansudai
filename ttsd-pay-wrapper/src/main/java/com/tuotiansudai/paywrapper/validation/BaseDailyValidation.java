@@ -32,8 +32,13 @@ public abstract class BaseDailyValidation {
                 this.addSummary(report, transferStatus.getRetCode());
 
                 if (transferStatus.isSuccess()) {
-                    if (!checkUserBill(orderId, amount)) {
-                        this.addIssue(report, orderId, "用户交易记录异常");
+                    String tranStatus = transferStatus.generateHumanReadableInfo().get("交易状态");
+                    if (tranStatus.equals("成功")) {
+                        if ( !checkUserBill(orderId, amount)) {
+                            this.addIssue(report, orderId, "用户交易记录异常");
+                        }
+                    } else {
+                        this.addIssue(report, orderId, tranStatus);
                     }
                 } else {
                     this.addIssue(report, orderId, transferStatus.getRetMsg());

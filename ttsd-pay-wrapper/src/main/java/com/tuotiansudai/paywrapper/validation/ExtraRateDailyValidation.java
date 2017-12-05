@@ -44,7 +44,7 @@ public class ExtraRateDailyValidation extends BaseDailyValidation implements Dai
     @Override
     protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId.split("X")[0]);
-        UserBillModel extraRateUserBillModel = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.RED_ENVELOPE);
-        return extraRateUserBillModel != null && extraRateUserBillModel.getAmount() == Long.parseLong(amount);
+        List<UserBillModel> extraRateUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.EXTRA_RATE);
+        return extraRateUserBillModels.size() == 1 && extraRateUserBillModels.get(0).getAmount() == Long.parseLong(amount);
     }
 }
