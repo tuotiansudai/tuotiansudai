@@ -46,6 +46,8 @@ public class InvestDailyValidation extends BaseDailyValidation implements DailyV
     protected boolean checkUserBill(String orderId, String amount) {
         long businessId = Long.parseLong(orderId);
         List<UserBillModel> investUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_SUCCESS);
-        return investUserBillModels.size() == 1 && investUserBillModels.get(0).getAmount() == Long.parseLong(amount);
+        List<UserBillModel> investTransferUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_TRANSFER_IN);
+        return (investUserBillModels.size() == 1 && investUserBillModels.get(0).getAmount() == Long.parseLong(amount)) ||
+                (investTransferUserBillModels.size() == 1 && investTransferUserBillModels.get(0).getAmount() == Long.parseLong(amount));
     }
 }

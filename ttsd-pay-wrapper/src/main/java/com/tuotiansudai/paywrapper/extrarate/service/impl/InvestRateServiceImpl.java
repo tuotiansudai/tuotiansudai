@@ -36,7 +36,8 @@ public class InvestRateServiceImpl implements InvestRateService {
 
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
                 investExtraRateModel.getLoginName(),
-                investExtraRateModel.getId(), amount,
+                investExtraRateModel.getId(),
+                amount,
                 UserBillBusinessType.EXTRA_RATE,
                 null,
                 null);
