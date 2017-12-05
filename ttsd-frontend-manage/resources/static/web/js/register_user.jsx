@@ -189,7 +189,7 @@ validator.add(registerForm.referrer, [{
 let reInputs=$(registerForm).find('input[validate]');
 
 for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i], "blur", function() {
+    globalFun.addEventHandler(reInputs[i], "input,blur", function() {
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
         $(tipName).siblings('.error').show();
@@ -260,3 +260,15 @@ registerForm.onsubmit = function(event) {
     }
 };
 
+//
+
+
+//  图形验证码刷新
+
+let isVoice = false;
+let $imageCaptcha = $('.image-captcha');
+commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
+$imageCaptcha .on('click',function() {
+    isVoice = false;
+    commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
+});

@@ -23,6 +23,11 @@
                     <div class="passwordInputText" style="display:none;">请输入6-20位密码，不能为纯数字</div>
                 </li>
                 <li>
+                    <i class="icon-password"></i>
+                    <input type="text" class="input-control img-captcha image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                    <img src="/no-password-invest/image-captcha" alt="" class="image-captcha" id="imageCaptcha" style="position: absolute; top: 8px;left: 250px"/>
+                </li>
+                <li>
                     <i class="icon-captcha"></i>
                     <span class="captcha-tag">
                          <button type="button" class="fetch-captcha" disabled="false" id="fetchCaptcha">获取验证码</button>
@@ -134,20 +139,20 @@
     <p>12.3本协议不涉及您与本网站其他用户之间因网上交易而产生的法律关系及法律纠纷，但您须在此同意将全面接受和履行与本网站其他用户通过本网站签订的任何电子法律文本，并承诺按该法律文本享有和/或放弃相应的权利、承担和/或豁免相应的义务。</p>
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
 </div>
-<div class="image-captcha-dialog" style="display: none;">
-    <form class="image-captcha-form" id="imageCaptchaForm" >
-        <div class="image-captcha-inner">
-            <img src="" alt="" class="image-captcha"/>
-            <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-            <input type="hidden" name="mobile">
+<#--<div class="image-captcha-dialog" style="display: none;">-->
+    <#--<form class="image-captcha-form" id="imageCaptchaForm" >-->
+        <#--<div class="image-captcha-inner">-->
+            <#--<img src="" alt="" class="image-captcha"/>-->
+            <#--<input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>-->
+            <#--<input type="hidden" name="mobile">-->
 
-            <div class="tc">
-                <div class="error-box tl"></div>
-                <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
-            </div>
+            <#--<div class="tc">-->
+                <#--<div class="error-box tl"></div>-->
+                <#--<input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>-->
+            <#--</div>-->
 
-        </div>
+        <#--</div>-->
 
-    </form>
-</div>
+    <#--</form>-->
+<#--</div>-->
 </@global.main>
