@@ -2,14 +2,14 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.impl.CouponRepayServiceImpl;
+import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -48,7 +48,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@WebAppConfiguration
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@WebAppConfiguration
 @Transactional
 public class CouponRepayServiceTest {
 
@@ -141,17 +142,15 @@ public class CouponRepayServiceTest {
         when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel1.getId(), couponRepayModel1.getPeriod())).thenReturn(couponRepayModel1);
         when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel2.getId(), couponRepayModel2.getPeriod())).thenReturn(couponRepayModel2);
 
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(anyString(),anyString())).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
 
         couponRepayService.repay(loanRepay.getId(), false);
 
 
-        ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         verify(redisWrapperClient, times(1)).hget(anyString(), anyString());
     }
@@ -162,7 +161,7 @@ public class CouponRepayServiceTest {
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
         LoanRepayModel loanRepay = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
-        CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
+        CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000L);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
         InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
@@ -188,7 +187,7 @@ public class CouponRepayServiceTest {
         when(investMapper.findById(investModel.getId())).thenReturn(investModel);
         when(accountMapper.findByLoginName(accountModel.getLoginName())).thenReturn(accountModel);
         when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), couponRepayModel.getPeriod())).thenReturn(couponRepayModel);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
 
@@ -199,7 +198,7 @@ public class CouponRepayServiceTest {
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
         assertEquals(RepayStatus.REPAYING, couponRepayModel.getStatus());
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         syncRequestStatusArgumentCaptor.getAllValues();
@@ -327,7 +326,7 @@ public class CouponRepayServiceTest {
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
+        when(paySyncClient.send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         couponRepayService.repay(currentLoanRepay.getId(), true);
@@ -337,7 +336,7 @@ public class CouponRepayServiceTest {
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
         assertEquals(RepayStatus.REPAYING,  couponRepayModel.getStatus());
-        verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
+        verify(paySyncClient, times(1)).send(eq(CouponRepayTransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
         syncRequestStatusArgumentCaptor.getAllValues();

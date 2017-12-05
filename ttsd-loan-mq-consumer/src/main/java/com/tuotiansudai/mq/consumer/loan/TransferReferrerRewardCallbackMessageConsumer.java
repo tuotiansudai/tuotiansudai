@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Component
 public class TransferReferrerRewardCallbackMessageConsumer implements MessageConsumer {
@@ -36,10 +37,10 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[标的放款MQ] TransferReferrerRewardCallback receive message: {}: {}.", this.queue(), message);
+        logger.info("[推荐人奖励MQ] {} receive message: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[标的放款MQ] TransferReferrerRewardCallback receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, MQ消息为空"));
+            logger.error("[推荐人奖励MQ] message is empty");
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("推荐人奖励MQ错误: 消息为空"));
             return;
         }
 
@@ -52,36 +53,29 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
                     || Strings.isNullOrEmpty(transferReferrerRewardCallbackMessage.getLoginName())
                     || Strings.isNullOrEmpty(transferReferrerRewardCallbackMessage.getReferrer())) {
 
-                logger.error("[标的放款MQ] TransferReferrerRewardCallback data is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, 消息中推荐人相关信息为空"));
+                logger.error("[推荐人奖励MQ] message is invalid, message: {}", message);
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("推荐人奖励MQ错误: 无效消息, message: {0}", message)));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[标的放款MQ] TransferReferrerRewardCallback json convert transferReferrerRewardCallbackMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, 解析消息失败"));
+            logger.error("[推荐人奖励MQ] message can not convert to transferReferrerRewardCallbackMessage, message: {}", message);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("推荐人奖励MQ错误: 消息序反列化失败, message: {0}", message)));
             return;
         }
 
-        logger.info("[标的放款MQ] TransferReferrerRewardCallback ready to consume message: loanId:{}, investId:{}, referrer:{}, loginName:{}, referrerRewardId:{}",
-                transferReferrerRewardCallbackMessage.getLoanId(), transferReferrerRewardCallbackMessage.getInvestId(),
-                transferReferrerRewardCallbackMessage.getReferrer(), transferReferrerRewardCallbackMessage.getLoginName(),
-                transferReferrerRewardCallbackMessage.getReferrerRewardId());
-
-        BaseDto<PayDataDto> result;
         try {
-            result = payWrapperClient.transferReferrerRewardCallBack(transferReferrerRewardCallbackMessage.getReferrerRewardId());
+            BaseDto<PayDataDto> result = payWrapperClient.transferReferrerRewardCallBack(transferReferrerRewardCallbackMessage.getReferrerRewardId());
+
+            if (!result.isSuccess()) {
+                logger.error("[推荐人奖励MQ] callback consume is failed. message: {}", message);
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("推荐人奖励MQ错误: 消息处理失败, message: {0}", message)));
+            }
         } catch (Exception e) {
-            logger.error("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. message: " + e);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误, 业务处理异常"));
+            logger.error(MessageFormat.format("[推荐人奖励MQ] callback consume is exception. message: {0}", message), e);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("发放推荐人奖励回调错误, message: {0}", message)));
             return;
         }
 
-        if (!result.isSuccess()) {
-            logger.error("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. notifyRequestId: " + message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发放现金红包回调错误"));
-            throw new RuntimeException("[标的放款MQ] TransferReferrerRewardCallback callback consume fail. notifyRequestId: " + message);
-        }
-
-        logger.info("[标的放款MQ] TransferReferrerRewardCallback consume message success.");
+        logger.info("[推荐人奖励MQ] consume message success. message: {}", message);
     }
 }

@@ -38,7 +38,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})@WebAppConfiguration
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
+@WebAppConfiguration
 @Transactional
 public class CouponLoanOutServiceAspectTest {
 
@@ -126,11 +127,7 @@ public class CouponLoanOutServiceAspectTest {
         couponLoanOutService.sendRedEnvelope(mockLoanId);
 
         userCouponIds.stream().forEach(userCouponId -> {
-            try {
-                couponLoanOutService.sendRedEnvelopTransferInBalanceCallBack(userCouponId);
-            } catch (AmountTransferException e) {
-                e.printStackTrace();
-            }
+            couponLoanOutService.sendRedEnvelopTransferInBalanceCallBack(userCouponId);
         });
 
         // 测试幂等性，多次调用，结果一致
