@@ -39,13 +39,9 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     private String city;
 
-    private int signInCount;
-
     private Date lastLoginTime;
 
     private Source lastLoginSource;
-
-    private long experienceBalance;
 
     public long getId() {
         return id;
@@ -183,14 +179,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
         this.city = city;
     }
 
-    public int getSignInCount() {
-        return signInCount;
-    }
-
-    public void setSignInCount(int signInCount) {
-        this.signInCount = signInCount;
-    }
-
     public Date getLastLoginTime() {
         return lastLoginTime;
     }
@@ -205,14 +193,6 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     public void setLastLoginSource(Source lastLoginSource) {
         this.lastLoginSource = lastLoginSource;
-    }
-
-    public long getExperienceBalance() {
-        return experienceBalance;
-    }
-
-    public void setExperienceBalance(long experienceBalance) {
-        this.experienceBalance = experienceBalance;
     }
 
     @Override

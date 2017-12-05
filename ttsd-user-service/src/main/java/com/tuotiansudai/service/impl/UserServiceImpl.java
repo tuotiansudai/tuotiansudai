@@ -12,8 +12,8 @@ import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.UserExperienceMapper;
 import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.UserRestClient;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
-    private UserExperienceMapper userExperienceMapper;
+    private ExperienceAccountMapper experienceAccountMapper;
 
     @Autowired
     private UserRestClient userRestClient;
@@ -180,7 +180,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long getExperienceBalanceByLoginName(String loginName) {
-        Long experienceBalance = userExperienceMapper.findExperienceByLoginName(loginName);
-        return experienceBalance != null ? experienceBalance : 0;
+        return experienceAccountMapper.getExperienceBalance(loginName);
     }
 }

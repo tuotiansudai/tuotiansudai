@@ -18,8 +18,9 @@ import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
-public class PrepareUserMapperTest{
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
+public class PrepareUserMapperTest {
 
     @Autowired
     private FakeUserHelper userMapper;

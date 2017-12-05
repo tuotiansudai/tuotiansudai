@@ -42,8 +42,6 @@ public class UserInfo implements Serializable {
     private String province;
     private String city;
     private String source;
-    @JsonProperty("sign_in_count")
-    private int signInCount;
 
     public UserModel toUserModel() {
         UserModel userModel = new UserModel();
@@ -63,7 +61,6 @@ public class UserInfo implements Serializable {
         userModel.setProvince(province);
         userModel.setCity(city);
         userModel.setSource(source == null ? null : Source.valueOf(source));
-        userModel.setSignInCount(signInCount);
         return userModel;
     }
 
@@ -85,7 +82,6 @@ public class UserInfo implements Serializable {
         userInfo.setProvince(userModel.getProvince());
         userInfo.setCity(userModel.getCity());
         userInfo.setSource(userModel.getSource() == null ? null : String.valueOf(userModel.getSource()));
-        userInfo.setSignInCount(userModel.getSignInCount());
         return userInfo;
 
     }
@@ -216,13 +212,5 @@ public class UserInfo implements Serializable {
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    public int getSignInCount() {
-        return signInCount;
-    }
-
-    public void setSignInCount(int signInCount) {
-        this.signInCount = signInCount;
     }
 }

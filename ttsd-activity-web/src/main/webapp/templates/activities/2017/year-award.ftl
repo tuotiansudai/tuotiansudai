@@ -47,7 +47,7 @@
             <div id="stateContainerTip_m">
                 <div class="lottery-right-group" id="lotteryList">
                     <h3>
-                        <span class="active switchBtn" id="tabBtn_record">中奖纪录</span>
+                        <span class="active switchBtn" id="tabBtn_record">中奖记录</span>
                         <span class="switchBtn" id="tabBtn_mine">我的奖品</span>
                     </h3>
                     <div class="record-group record-list">

@@ -32,7 +32,8 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class UserMembershipServiceTest {
 
     @Autowired
