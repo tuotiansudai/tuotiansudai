@@ -166,11 +166,6 @@ public class RechargeServiceImpl implements RechargeService {
 
             mqWrapperClient.sendMessage(MessageQueue.RechargeSuccess_CompletePointTask, rechargeModel.getLoginName());
 
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            if (!Strings.isNullOrEmpty(userModel.getChannel()) && userModel.getChannel().toLowerCase().trim().equals(HTRACKING_CHANNEL)) {
-                logger.info(MessageFormat.format("[recharge callback] send hTrackingRecharge, loginName:{0}", userModel.getLoginName()));
-                hTrackingClient.hTrackingRecharge(userModel.getLoginName());
-            }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);
