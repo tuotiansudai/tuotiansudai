@@ -227,7 +227,13 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
     private String convertCentToTenThousandString(long num) {
         BigDecimal amount = new BigDecimal(num);
-        return amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "") + "万";
+        String returnAmount;
+        if (amount.compareTo(TEN_THOUSANDS) != -1) {
+            returnAmount = amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "") + "万";
+        } else {
+            returnAmount = AmountConverter.convertCentToString(num) + "元";
+        }
+        return returnAmount;
     }
 
 }
