@@ -131,11 +131,11 @@ validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg
         _arguments=arguments;
     let captcha=$imageCaptchaText.val();
 
-    if ($('#hiddenPhone').val() == '' ) {
-        $("input[name='mobile']")[0].focus();
-        $("input[name='mobile']")[0].blur();
-        return;
-    }
+    // if ($('#hiddenPhone').val() == '' ) {
+    //     $("input[name='mobile']")[0].focus();
+    //     $("input[name='mobile']")[0].blur();
+    //     return;
+    // }
     // if ($('#hiddenCode').val() == '' ) {
     //     $("input[name='password']")[0].focus();
     //     $("input[name='password']")[0].blur();
@@ -174,6 +174,7 @@ validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg
         else if (!data.status && !data.isRestricted) {
             getResult=errorMsg;
             ValidatorObj.isHaveError.yes.apply(that,_arguments);
+            //commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
         }
     });
 });
@@ -254,13 +255,15 @@ let reInputs=$(registerForm).find('input[validate]');
 
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i], "blur", function() {
-        let tipName = '.' + $(this).attr('name');
-        let tipText = '.' + $(this).attr('name') + 'InputText';
-        $(tipName).siblings('.error').show();
-        $(tipText).hide();
-        let errorMsg=validator.start(this);
-        referrerValidBool = !(this.name == 'referrer' && errorMsg);
-        isDisabledButton();
+        if ($(this).attr('name') !== 'imageCaptcha') {
+            let tipName = '.' + $(this).attr('name');
+            let tipText = '.' + $(this).attr('name') + 'InputText';
+            $(tipName).siblings('.error').show();
+            $(tipText).hide();
+            let errorMsg=validator.start(this);
+            referrerValidBool = !(this.name == 'referrer' && errorMsg);
+            isDisabledButton();
+        }
     })
 }
 
@@ -300,6 +303,15 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         }
         else if (tipName === '.imageCaptcha') {
             $('#hiddenCode').val(reInputs[i].value);
+            if (reInputs[i].value.length == 5) {
+                let tipName = '.' + $(this).attr('name');
+                let tipText = '.' + $(this).attr('name') + 'InputText';
+                $(tipName).siblings('.error').show();
+                $(tipText).hide();
+                let errorMsg=validator.start(this);
+                referrerValidBool = !(this.name == 'referrer' && errorMsg);
+                isDisabledButton();
+            }
         }
 
 
