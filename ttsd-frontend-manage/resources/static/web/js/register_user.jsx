@@ -130,6 +130,17 @@ validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg
         that=this,
         _arguments=arguments;
     let captcha=$imageCaptchaText.val();
+
+    if ($('#hiddenPhone').val() == '' ) {
+        $("input[name='mobile']")[0].focus();
+        $("input[name='mobile']")[0].blur();
+        return;
+    }
+    // if ($('#hiddenCode').val() == '' ) {
+    //     $("input[name='password']")[0].focus();
+    //     $("input[name='password']")[0].blur();
+    //     return;
+    // }
     let ajaxOption = {
         url: '/register/user/send-register-captcha',
         type:'POST',
@@ -138,7 +149,7 @@ validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg
     };
     commonFun.useAjax(ajaxOption,function(responseData) {
         $captchaSubmit.prop('disabled',false);
-        $voiceCaptcha.hide();
+        //$voiceCaptcha.hide();
 
         let data = responseData.data;
         if (data.status && !data.isRestricted) {
@@ -221,11 +232,11 @@ validator.add(registerForm.imageCaptcha, [{
 }, {
     strategy: 'imageCaptcha',
     errorMsg: '图形验证码不正确'
+},{
+    strategy: 'isNumber:5',
+    errorMsg: '验证码只能为5位数字'
 }],true);
 validator.add(registerForm.captcha, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '验证码不能为空'
-},{
     strategy: 'isNumber:6',
     errorMsg: '验证码为6位数字'
 },{
@@ -389,5 +400,13 @@ function validate(obj){
     return reg.test(obj);
 
 };
+
+//验证是否为5位数字
+
+function CaptchaTextCheck(value) {
+   return /\d{5}/.test(value);
+}
+
+
 
 

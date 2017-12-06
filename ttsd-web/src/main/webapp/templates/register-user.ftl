@@ -26,6 +26,7 @@
                     <i class="icon-password"></i>
                     <input type="text" validate class="imageCaptcha" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                     <img src="/no-password-invest/image-captcha" alt="" class="image-captcha" id="imageCaptcha" style="position: absolute; top: 8px;left: 250px"/>
+                    <div class="imageCaptchaInputText" style="display:none;">看不清？点击图片可更换验证码</div>
                 </li>
                 <li>
                     <i class="icon-captcha"></i>
