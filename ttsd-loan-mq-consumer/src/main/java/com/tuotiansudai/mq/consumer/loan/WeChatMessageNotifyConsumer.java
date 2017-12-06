@@ -10,10 +10,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.JsonConverter;
-import com.tuotiansudai.util.MobileEncoder;
-import com.tuotiansudai.util.WeChatClient;
+import com.tuotiansudai.util.*;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -199,7 +196,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .put("openid", openId)
                 .put("first", "您的提现申请成功，请等待银行处理")
                 .put("keyword1", AmountConverter.convertCentToString(withdrawModel.getAmount()))
-                .put("keyword2", withdrawModel.getBankCard().getBankCode())
+                .put("keyword2", BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode()))
                 .put("keyword3", withdrawModel.getApplyNotifyTime() != null ? new DateTime(withdrawModel.getApplyNotifyTime()).toString("yyyy-MM-dd") : "")
                 .put("remark", "请您耐心等待，留意银行卡资金变化。如有疑问，可随时致电客服400-169-1188（客服时间：工作日9:00-20:00）。")
                 .build()));
