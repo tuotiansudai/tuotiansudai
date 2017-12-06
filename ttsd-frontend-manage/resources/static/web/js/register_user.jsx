@@ -169,6 +169,13 @@ validator.add(registerForm.password, [{
     strategy: 'checkPassword',
     errorMsg: '密码为6位至20位，不能为纯数字'
 }],true);
+validator.add(registerForm.imageCaptcha, [{
+    strategy: 'isNonEmpty',
+    errorMsg: '图形验证码不能为空'
+}, {
+    strategy: 'isCaptchaValid',
+    errorMsg: '验证码不正确'
+}],true);
 validator.add(registerForm.captcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
@@ -260,9 +267,6 @@ registerForm.onsubmit = function(event) {
     }
 };
 
-//
-
-
 //  图形验证码刷新
 
 let isVoice = false;
@@ -272,3 +276,7 @@ $imageCaptcha .on('click',function() {
     isVoice = false;
     commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
 });
+
+//
+
+
