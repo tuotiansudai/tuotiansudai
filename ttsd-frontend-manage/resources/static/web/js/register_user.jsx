@@ -196,7 +196,7 @@ validator.add(registerForm.referrer, [{
 let reInputs=$(registerForm).find('input[validate]');
 
 for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i], "input,blur", function() {
+    globalFun.addEventHandler(reInputs[i], "blur", function() {
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
         $(tipName).siblings('.error').show();
@@ -208,10 +208,62 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 }
 
 for(let i=0,len=reInputs.length; i<len;i++) {
+    let mobile=registerForm.mobile,
+        password=registerForm.password,
+        captcha=registerForm.captcha,
+        referrer=registerForm.referrer;
+
+    globalFun.addEventHandler(reInputs[i], "keyup", function() {
+        let tipName = '.' + $(this).attr('name');
+        let tipText = '.' + $(this).attr('name') + 'InputText';
+        if (tipName === '.mobile') {
+            if (reInputs[i].value.length == 11) {
+                $(tipName).siblings('.error').show();
+                $(tipText).hide();
+                let errorMsg=validator.start(this);
+                referrerValidBool = !(this.name == 'referrer' && errorMsg);
+                isDisabledButton();
+            } else {
+                $(tipName).siblings('.error').hide();
+                $(tipText).show();
+            }
+        }
+        else if (tipName === '.password') {
+            if (reInputs[i].value.length > 5) {
+                let isPwdValid = validate(reInputs[i].value);
+                if (!isPwdValid) {
+                    $(tipName).siblings('.error').hide();
+                    $(tipText).hide();
+                } else {
+                    $(tipName).siblings('.error').hide();
+                    $(tipText).show();
+                }
+            }
+        }
+
+    })
+}
+
+for(let i=0,len=reInputs.length; i<len;i++) {
+    let mobile=registerForm.mobile,
+        password=registerForm.password,
+        captcha=registerForm.captcha,
+        referrer=registerForm.referrer;
+
     globalFun.addEventHandler(reInputs[i], "focus", function() {
+        let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+        let isPwdValid = validate(reInputs[i].value);
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
         $(tipName).siblings('.error').hide();
+        if (tipName === '.mobile' && isMobileValid) {
+            $(tipText).hide();
+            return;
+        }
+        else if (tipName === '.password' && !isPwdValid) {
+            $(tipText).hide();
+            return;
+        }
         $(tipText).show();
     })
 }
@@ -222,13 +274,15 @@ function isDisabledButton() {
     let mobile=registerForm.mobile,
         password=registerForm.password,
         captcha=registerForm.captcha,
+        imageCaptcha=registerForm.imageCaptcha,
         referrer=registerForm.referrer;
 
     //获取验证码点亮
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+    let isImageCaptcha = !globalFun.hasClass(imageCaptcha,'error') && imageCaptcha.value;
 
-    let isDisabledCaptcha = isMobileValid && isPwdValid;
+    let isDisabledCaptcha = isMobileValid && isPwdValid && isImageCaptcha;
 
     //按钮上有样式名count-downing，说明正在倒计时
     if ($fetchCaptcha.hasClass('count-downing')) {
@@ -277,6 +331,12 @@ $imageCaptcha .on('click',function() {
     commonFun.refreshCaptcha($imageCaptcha[0],'/register/user/image-captcha');
 });
 
-//
+//验证是否为纯数字
+
+function validate(obj){
+    var reg = /^[0-9]*$/;
+    return reg.test(obj);
+
+};
 
 

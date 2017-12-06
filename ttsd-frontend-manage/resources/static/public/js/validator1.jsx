@@ -174,6 +174,7 @@ var strategies = {
             isHaveError.no.apply(this,arguments);
         }
     },
+
     isEmail:function(errorMsg,showErrorAfter) {
         //只验证邮箱不验证是非为空
         if(this.value=='') {
