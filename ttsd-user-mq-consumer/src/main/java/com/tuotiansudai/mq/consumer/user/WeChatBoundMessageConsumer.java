@@ -3,10 +3,8 @@ package com.tuotiansudai.mq.consumer.user;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.WeChatMessageType;
 import com.tuotiansudai.message.WeChatBoundMessage;
-import com.tuotiansudai.message.WeChatMessageNotify;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
@@ -31,17 +29,16 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(WeChatBoundMessageConsumer.class);
 
+    private final WeChatClient weChatClient = WeChatClient.getClient();
+
     private final UserMapper userMapper;
 
     private final WeChatUserMapper weChatUserMapper;
 
-    private final MQWrapperClient mqWrapperClient;
-
     @Autowired
-    public WeChatBoundMessageConsumer(UserMapper userMapper, WeChatUserMapper weChatUserMapper, MQWrapperClient mqWrapperClient) {
+    public WeChatBoundMessageConsumer(UserMapper userMapper, WeChatUserMapper weChatUserMapper) {
         this.userMapper = userMapper;
         this.weChatUserMapper = weChatUserMapper;
-        this.mqWrapperClient = mqWrapperClient;
     }
 
 
@@ -83,11 +80,14 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
                 .forEach(boundUser -> {
                     boundUser.setBound(false);
                     weChatUserMapper.update(boundUser);
-                    logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sending ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, boundUser.getLoginName(), boundUser.getOpenid());
-                    mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(boundUser.getLoginName(), WeChatMessageType.BOUND_TO_OTHER_USER, null));
-                    logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sent ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, boundUser.getLoginName(), boundUser.getOpenid());
-
-                    logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", boundUser.getLoginName(), boundUser.getOpenid(), boundUser.getLoginName());
+                    weChatClient.sendTemplateMessage(WeChatMessageType.BOUND_TO_OTHER_USER, Maps.newHashMap(ImmutableMap.<String, String>builder()
+                            .put("openid", boundUser.getOpenid())
+                            .put("first", "您的拓天速贷账号已被其他微信号绑定，请知悉")
+                            .put("keyword1", MobileEncoder.encode(mobile))
+                            .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
+                            .put("remark", "如非您本人操作，请及时联系客服：400-169-1188（客服时间：工作日9:00-20:00）。")
+                            .build()));
+                    logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", userModel.getLoginName(), openid, boundUser.getLoginName());
                 });
 
 

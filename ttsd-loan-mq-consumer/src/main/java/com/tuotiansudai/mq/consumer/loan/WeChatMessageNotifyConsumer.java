@@ -33,8 +33,6 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
     private final static String commonRemark = "如有疑问，可随时致电客服400-169-1188（客服时间：工作日9:00-20:00）。";
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private InvestMapper investMapper;
     @Autowired
     private LoanMapper loanMapper;
@@ -115,23 +113,6 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                         .build())));
     }
 
-    WeChatMessageNotifyAction<String, WeChatMessageNotify> bind = (openId, weChatMessageNotify) -> {
-
-        UserModel userModel = userMapper.findByLoginName(weChatMessageNotify.getLoginName());
-
-        weChatClient.sendTemplateMessage(WeChatMessageType.BOUND_TO_OTHER_USER, Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("openid", openId)
-                .put("first", "您的拓天速贷账号已被其他微信号绑定，请知悉")
-                .put("keyword1", MobileEncoder.encode(userModel.getMobile()))
-                .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm"))
-                .put("remark", "如非您本人操作，请及时联系客服：400-169-1188（客服时间：工作日9:00-20:00）。")
-                .build()));
-        logger.info("[MQ WeChatMessageNotify] type:{} message notify successfully. user: {}, openid: {}",
-                weChatMessageNotify.getWeChatMessageType(),
-                weChatMessageNotify.getLoginName(),
-                openId);
-
-    };
 
     WeChatMessageNotifyAction<String, WeChatMessageNotify> invest = (openId, weChatMessageNotify) -> {
         if (weChatMessageNotify.getBusinessId() == null) {
@@ -236,7 +217,6 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     };
 
     Map<WeChatMessageType, WeChatMessageNotifyAction> notifyMap = Maps.newHashMap(ImmutableMap.<WeChatMessageType, WeChatMessageNotifyAction>builder()
-            .put(WeChatMessageType.BOUND_TO_OTHER_USER, bind)
             .put(WeChatMessageType.INVEST_SUCCESS, invest)
             .put(WeChatMessageType.NORMAL_REPAY_SUCCESS, normalRepay)
             .put(WeChatMessageType.ADVANCE_REPAY_SUCCESS, advanceRepay)
