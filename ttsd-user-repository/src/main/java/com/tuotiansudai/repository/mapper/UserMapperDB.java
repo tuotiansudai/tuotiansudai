@@ -16,21 +16,26 @@ public interface UserMapperDB {
 
     UserModel findByEmail(String email);
 
-    int updateEmail(@Param(value = "loginName") String loginName,
-                    @Param(value = "email") String email);
+    int updateEmail(@Param("loginName") String loginName,
+                    @Param("email") String email);
 
-    List<UserModel> findUsersByChannel(@Param("channels") List<String> channels);
+    List<UserModel> findUsersByRegisterTimeOrReferrer(@Param("startTime") Date startTime,
+                                                      @Param("endTime") Date endTime,
+                                                      @Param("referrer") String referrer,
+                                                      @Param("rowLimit") int rowLimit,
+                                                      @Param("rowIndex") int rowIndex);
 
-    List<UserModel> findUsersByRegisterTimeOrReferrer(@Param(value = "startTime") Date startTime,
-                                                      @Param(value = "endTime") Date endTime,
-                                                      @Param(value = "referrer") String referrer);
+    long findUserCountByRegisterTimeOrReferrer(@Param("startTime") Date startTime,
+                                               @Param("endTime") Date endTime,
+                                               @Param("referrer") String referrer);
 
-    long findUserCountByRegisterTimeOrReferrer(@Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime,
-                                               @Param(value = "referrer") String referrer);
+    List<UserModel> findUsersHasReferrerByRegisterTime(@Param("startTime") Date startTime,
+                                                       @Param("endTime") Date endTime,
+                                                       @Param("rowLimit") int rowLimit,
+                                                       @Param("rowIndex") int rowIndex);
 
-    List<UserModel> findUsersHasReferrerByRegisterTime(@Param(value = "startTime") Date startTime,
-                                                      @Param(value = "endTime") Date endTime);
+    long findUserCountHasReferrerByRegisterTime(@Param("startTime") Date startTime,
+                                                @Param("endTime") Date endTime);
 
     long findUsersCount();
 

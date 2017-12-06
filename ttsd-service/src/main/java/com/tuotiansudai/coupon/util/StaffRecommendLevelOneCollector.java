@@ -21,11 +21,6 @@ public class StaffRecommendLevelOneCollector implements UserCollector {
     private UserRecommendationMapper userMapper;
 
     @Override
-    public List<String> collect(long couponId) {
-        return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build()));
-    }
-
-    @Override
     public boolean contains(CouponModel couponModel, UserModel userModel) {
         if (userModel == null) {
             return false;

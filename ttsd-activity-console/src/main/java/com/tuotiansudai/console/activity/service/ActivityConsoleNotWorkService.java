@@ -65,7 +65,7 @@ public class ActivityConsoleNotWorkService {
             if (rewardList.size() > 0) {
                 notWorkDto.setRewards(Joiner.on("、").join(rewardList));
             }
-            List<UserRegisterInfo> users = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, notWorkModel.getLoginName());
+            List<UserRegisterInfo> users = userMapper.findAllUsersByRegisterTimeAndReferrer(activityStartTime, activityEndTime, notWorkModel.getLoginName());
             notWorkDto.setRecommendedRegisterAmount(String.valueOf(users.size()));
 
             int recommendIdentifyAmount = 0;
@@ -83,7 +83,7 @@ public class ActivityConsoleNotWorkService {
     }
 
     private void insertOnlyRegisterOrIdentityData() {
-        List<UserRegisterInfo> recommendedRegisterUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, null).stream().filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer())).collect(Collectors.toList());
+        List<UserRegisterInfo> recommendedRegisterUsers = userMapper.findAllUserHasReferrerByRegisterTime(activityStartTime, activityEndTime);
         Set<String> referrers = recommendedRegisterUsers.stream().map(UserRegisterInfo::getReferrer).collect(Collectors.toSet());
         for (String loginName : referrers) {
             NotWorkModel existedNotWorkModel = notWorkMapper.findByLoginName(loginName);

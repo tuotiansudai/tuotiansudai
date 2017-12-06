@@ -2,9 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -259,7 +257,7 @@ public class UserController {
     @RequestMapping(value = "/user/agents", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllAgent() {
-        return userMapper.findAllByRole(Role.AGENT);
+        return consoleUserService.findAllAgents();
     }
 
     @RequestMapping(value = "/user/channels", method = RequestMethod.GET)

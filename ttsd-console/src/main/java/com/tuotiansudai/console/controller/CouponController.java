@@ -218,7 +218,7 @@ public class CouponController {
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
         if (couponUserGroupModel != null) {
-            modelAndView.addObject("agents", userMapper.findAllByRole(Role.AGENT));
+            modelAndView.addObject("agents", consoleUserService.findAllAgents());
             modelAndView.addObject("channels", consoleUserService.findAllUserChannels());
             modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
         }

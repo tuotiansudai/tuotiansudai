@@ -63,28 +63,13 @@
         where login_name = #{loginName}
     </update>
 
-    <select id="findUsersByChannel" parameterType="map" resultMap="userResultMap">
-        select * from user where channel is not null
-        <if test="channels != null and channels.size != 0">
-            and channel in
-            <foreach item="item" collection="channels" index="index" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-    </select>
-
     <select id="findUsersByRegisterTimeOrReferrer" parameterType="map" resultMap="userResultMap">
         select * from user where register_time between #{startTime} and #{endTime}
         <if test="referrer != null and referrer != ''">
             and referrer = #{referrer}
         </if>
         order by register_time
-    </select>
-
-    <select id="findUsersHasReferrerByRegisterTime" parameterType="map" resultMap="userResultMap">
-        select * from user where register_time between #{startTime} and #{endTime}
-        and referrer is not null and referrer != ''
-        order by register_time
+        limit #{rowLimit} offset #{rowIndex}
     </select>
 
     <select id="findUserCountByRegisterTimeOrReferrer" parameterType="map" resultType="long">
@@ -92,6 +77,18 @@
         <if test="referrer != null and referrer != ''">
             and referrer = #{referrer}
         </if>
+    </select>
+
+    <select id="findUsersHasReferrerByRegisterTime" parameterType="map" resultMap="userResultMap">
+        select * from user where register_time between #{startTime} and #{endTime}
+        and referrer is not null and referrer != ''
+        order by register_time
+        limit #{rowLimit} offset #{rowIndex}
+    </select>
+
+    <select id="findUserCountHasReferrerByRegisterTime" parameterType="map" resultType="long">
+        select count(1) from user where register_time between #{startTime} and #{endTime}
+        and referrer is not null and referrer != ''
     </select>
 
     <select id="findUsersCount" resultType="long">

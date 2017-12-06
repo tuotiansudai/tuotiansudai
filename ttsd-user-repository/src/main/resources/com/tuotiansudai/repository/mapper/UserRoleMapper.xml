@@ -38,4 +38,12 @@
     <delete id="deleteByLoginNameAndRole" parameterType="map">
         delete from user_role where login_name = #{loginName} and role = #{role};
     </delete>
+
+    <select id="findAllLoginNameByRole" parameterType="map" resultType="string">
+        select login_name from user_role where role = #{role}
+    </select>
+
+    <select id="findCountByRole" parameterType="map" resultType="long">
+        select count(*) from user_role where role = #{role}
+    </select>
 </mapper>

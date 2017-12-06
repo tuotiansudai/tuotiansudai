@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.dto.CouponDetailsDto;
 import com.tuotiansudai.dto.CouponDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
@@ -51,6 +52,9 @@ public class ConsoleCouponService {
     private UserMapper userMapper;
 
     @Autowired
+    private UserMapperConsole userMapperConsole;
+
+    @Autowired
     private UserRecommendationMapper userRecommendationMapper;
 
     @Autowired
@@ -61,6 +65,9 @@ public class ConsoleCouponService {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -179,7 +186,7 @@ public class ConsoleCouponService {
             case REGISTERED_NOT_INVESTED_USER:
                 return investMapper.findRegisteredNotInvestCount();
             case STAFF:
-                return userMapper.findCountByRole(Role.ZC_STAFF) + userMapper.findCountByRole(Role.SD_STAFF);
+                return userRoleMapper.findCountByRole(Role.ZC_STAFF) + userRoleMapper.findCountByRole(Role.SD_STAFF);
             case STAFF_RECOMMEND_LEVEL_ONE:
                 return userRecommendationMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
             case MEMBERSHIP_V0:
@@ -210,7 +217,7 @@ public class ConsoleCouponService {
             if (userCouponModel.getStatus() == InvestStatus.SUCCESS && loanModel != null) {
                 interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount(), new Date());
                 couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
-                        userCouponModel.getLoanId(), loanModel != null ? loanModel.getName() : "", loanModel != null ? loanModel.getProductType() : null, interest, userCouponModel.getEndTime()));
+                        userCouponModel.getLoanId(), loanModel.getName(), loanModel.getProductType(), interest, userCouponModel.getEndTime()));
                 continue;
             }
             couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), null, userCouponModel.getInvestAmount(),
