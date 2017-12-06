@@ -11,6 +11,8 @@ let $referrer=$('input.referrer', $(registerForm));
 let agreementValid=true,
     referrerValidBool=true,
     inputTextTip = '';
+let $captchaSubmit=$('.image-captcha-confirm'),
+    $imageCaptchaText = $('.imageCaptcha');
 
 require.ensure(['publicJs/placeholder'], function(require){
     require('publicJs/placeholder');
@@ -92,7 +94,7 @@ require.ensure(['publicJs/fetch_captcha'], function(require){
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 
-//推荐人是非存在
+//推荐人是否存在
 validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
     var getResult='',
         that=this,
@@ -119,6 +121,50 @@ validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,
         }
     });
     return getResult;
+});
+
+//验证图形验证码
+
+validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg,showErrorAfter) {
+    let getResult='',
+        that=this,
+        _arguments=arguments;
+    let captcha=$imageCaptchaText.val();
+    let ajaxOption = {
+        url: '/register/user/send-register-captcha',
+        type:'POST',
+        data:$(imageCaptchaForm).serialize()+'&voice='+isVoice
+        // data:$imageCaptchaForm.serialize()
+    };
+    commonFun.useAjax(ajaxOption,function(responseData) {
+        $captchaSubmit.prop('disabled',false);
+        $voiceCaptcha.hide();
+
+        let data = responseData.data;
+        if (data.status && !data.isRestricted) {
+
+            getResult='';
+            ValidatorObj.isHaveError.no.apply(that,_arguments);
+
+            // commonFun.countDownLoan({
+            //     btnDom:$fetchCaptcha,
+            //     isAfterText:'重新发送'
+            // },function(){
+            //     //$voiceCaptcha.show();
+            //     getResult='';
+            //     ValidatorObj.isHaveError.no.apply(that,_arguments);
+            // });
+
+        }
+        // else if (!data.status && data.isRestricted) {
+        //     $errorBox.text('短信发送频繁，请稍后再试');
+        //
+        // }
+        else if (!data.status && !data.isRestricted) {
+            getResult=errorMsg;
+            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+        }
+    });
 });
 
 //验证码是否正确
@@ -217,6 +263,7 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
         if (tipName === '.mobile') {
+            $('#hiddenPhone').val(reInputs[i].value);
             if (reInputs[i].value.length == 11) {
                 $(tipName).siblings('.error').show();
                 $(tipText).hide();
@@ -240,6 +287,10 @@ for(let i=0,len=reInputs.length; i<len;i++) {
                 }
             }
         }
+        else if (tipName === '.imageCaptcha') {
+            $('#hiddenCode').val(reInputs[i].value);
+        }
+
 
     })
 }

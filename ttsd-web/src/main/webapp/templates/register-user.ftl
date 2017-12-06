@@ -142,11 +142,8 @@
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" id="imageCaptchaForm" >
         <div class="image-captcha-inner">
-            <input type="hidden" name="mobile">
-            <#--<div class="tc">-->
-                <#--<div class="error-box tl"></div>-->
-                <#--<input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>-->
-            <#--</div>-->
+            <input type="hidden" name="mobile" id="hiddenPhone">
+            <input type="hidden" id="hiddenCode" name="imageCaptcha">
         </div>
 
     </form>
