@@ -25,6 +25,11 @@
         <result column="status" property="status"></result>
     </resultMap>
 
+    <select id="findById" parameterType="long" resultMap="investExtraRateResultMap">
+        select * from invest_extra_rate where id = #{id}
+    </select>
+
+
     <select id="findByLoanId" parameterType="long" resultMap="investExtraRateResultMap">
         select * from invest_extra_rate where loan_id = #{loanId} and is_transfer is false
     </select>

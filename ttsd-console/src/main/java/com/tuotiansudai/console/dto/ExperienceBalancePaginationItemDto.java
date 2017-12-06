@@ -18,13 +18,13 @@ public class ExperienceBalancePaginationItemDto implements Serializable {
 
     }
 
-    public ExperienceBalancePaginationItemDto(UserView userView, Date lastExchangeTime) {
+    public ExperienceBalancePaginationItemDto(UserView userView, long experienceBalance, Date lastExchangeTime) {
         this.loginName = userView.getLoginName();
         this.userName = userView.getUserName();
         this.mobile = userView.getMobile();
         this.province = userView.getProvince();
         this.lastExchangeTime = lastExchangeTime;
-        this.experienceBalance = userView.getExperienceBalance();
+        this.experienceBalance = experienceBalance;
     }
 
     public String getLoginName() {

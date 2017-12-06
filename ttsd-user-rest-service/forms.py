@@ -70,7 +70,6 @@ class UserUpdateForm(wtforms.Form):
     province = wtforms.StringField('province', [wtforms.validators.Length(max=32)])
     city = wtforms.StringField('city', [wtforms.validators.Length(max=32)])
     source = wtforms.StringField('source', [wtforms.validators.Length(max=16)])
-    sign_in_count = wtforms.IntegerField('sign_in_count')
 
     def validate_login_name(self, field):
         if field.data and not User.query.filter(User.login_name == field.data).first():

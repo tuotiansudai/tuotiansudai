@@ -23,7 +23,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class ExperienceInvestServiceTest {
     @Autowired
     private InvestMapper investMapper;
@@ -38,7 +39,7 @@ public class ExperienceInvestServiceTest {
     private FakeUserHelper userMapper;
 
     @Autowired
-    private UserExperienceMapper userExperienceMapper;
+    private ExperienceAccountMapper experienceAccountMapper;
 
     @Autowired
     private ExperienceInvestService experienceInvestService;
@@ -46,6 +47,7 @@ public class ExperienceInvestServiceTest {
     @Test
     public void shouldInvestExperienceLoan() throws Exception {
         UserModel investor = this.getFakeUser("newbieInvestor");
+        experienceAccountMapper.create("newbieInvestor", 20000);
         LoanModel fakeExperienceLoan = this.getFakeExperienceLoan();
 
         MockitoAnnotations.initMocks(this);
@@ -59,7 +61,7 @@ public class ExperienceInvestServiceTest {
         assertThat(investRepayModels.get(0).getExpectedInterest(), is(10L));
         assertThat(investRepayModels.get(0).getExpectedFee(), is(0L));
         assertThat(investRepayModels.get(0).getRepayDate().getTime(), is(new DateTime().withTimeAtStartOfDay().plusDays(3).minusSeconds(1).getMillis()));
-        assertThat(userExperienceMapper.findExperienceByLoginName(investor.getLoginName()), is(10000L));
+        assertThat(experienceAccountMapper.getExperienceBalance(investor.getLoginName()), is(10000L));
     }
 
     private InvestDto getFakeInvestDto(UserModel investor, LoanModel experienceLoanModel) {
@@ -108,7 +110,6 @@ public class ExperienceInvestServiceTest {
         fakeUser.setRegisterTime(new Date());
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        fakeUser.setExperienceBalance(20000);
         userMapper.create(fakeUser);
         return fakeUser;
     }

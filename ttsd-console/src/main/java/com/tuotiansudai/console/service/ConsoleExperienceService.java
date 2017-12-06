@@ -9,17 +9,16 @@ import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.repository.model.ExperienceBillView;
 import com.tuotiansudai.console.repository.model.InvestRepayExperienceView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.model.RepayStatus;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserView;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +31,8 @@ public class ConsoleExperienceService {
     @Autowired
     private ExperienceBillMapper experienceBillMapper;
     @Autowired
+    private ExperienceAccountMapper experienceAccountMapper;
+    @Autowired
     private InvestRepayMapperConsole investRepayMapperConsole;
     @Autowired
     private ExperienceBillMapperConsole experienceBillMapperConsole;
@@ -41,8 +42,12 @@ public class ConsoleExperienceService {
         int offset = PaginationUtil.calculateOffset(index, pageSize, count);
         List<UserView> userViews = userMapperConsole.findExperienceBalance(mobile, balanceMin, balanceMax, offset, pageSize);
         return new BasePaginationDataDto<>(index, pageSize, count,
-                userViews.stream().map(userView -> new ExperienceBalancePaginationItemDto(userView, experienceBillMapper.findLastExchangeTimeByLoginName(userView.getLoginName())))
-                        .sorted((e1, e2) -> e1.compareTo(e2)).collect(Collectors.toList()));
+                userViews.stream()
+                        .map(userView -> new ExperienceBalancePaginationItemDto(userView,
+                                experienceAccountMapper.getExperienceBalance(userView.getLoginName()),
+                                experienceBillMapper.findLastExchangeTimeByLoginName(userView.getLoginName())))
+                        .sorted(ExperienceBalancePaginationItemDto::compareTo)
+                        .collect(Collectors.toList()));
     }
 
     public long sumExperienceBalance(String mobile, String balanceMin, String balanceMax) {

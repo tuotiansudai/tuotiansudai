@@ -58,17 +58,12 @@ class UserMapperDBShadow implements UserMapper {
 
     @Override
     public List<String> findAllLoginNames() {
-        throw new NotImplementedException("updateSignInCount not support for test, please Mock UserMapper for test");
+        throw new NotImplementedException("findAllLoginNames not support for test, please Mock UserMapper for test");
     }
 
     @Override
     public void updateEmail(String loginName, String email) {
         mapper.updateEmail(loginName, email);
-    }
-
-    @Override
-    public void updateSignInCount(String loginName, int signInCount) {
-        throw new NotImplementedException("updateSignInCount not support for test, please Mock UserMapper for test");
     }
 
     @Override
