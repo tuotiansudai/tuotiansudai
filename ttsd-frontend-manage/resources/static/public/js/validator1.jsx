@@ -1,5 +1,8 @@
 let commonFun=require('publicJs/commonFun');
 let hasErrorText = false;
+let $imageCaptchaForm =$(imageCaptchaForm),
+    $captchaSubmit=$('.image-captcha-confirm',$imageCaptchaForm),
+    $imageCaptchaText = $('.imageCaptcha',$imageCaptchaForm);
 
 function createElement(element,errorMsg) {
     let children = element.parentElement.children,
@@ -279,6 +282,54 @@ var strategies = {
         });
         return getResult;
     },
+    imageCaptcha: function(errorMsg,showErrorAfter) {
+        let that = this;
+        let captcha=$imageCaptchaText.val();
+        $captchaSubmit.prop('disabled',true);
+        let ajaxOption,
+            captchaSrc;
+        // 提交手机验证表单
+        if(that.kind=="register") {
+            ajaxOption={
+                url: '/register/user/send-register-captcha',
+                type:'POST',
+                data:$imageCaptchaForm.serialize()+'&voice='+isVoice
+                // data:$imageCaptchaForm.serialize()
+            };
+            captchaSrc='/register/user/image-captcha';
+        }
+        else if(that.kind=='retrieve'){
+            ajaxOption={
+                type:'GET',
+                url: "/mobile-retrieve-password/mobile/"+that.DomContainer.mobile.value+"/imageCaptcha/"+captcha+"/send-mobile-captcha/"+isVoice,
+            };
+            captchaSrc='/mobile-retrieve-password/image-captcha';
+        }
+        commonFun.useAjax(ajaxOption,function(responseData) {
+            $captchaSubmit.prop('disabled',false);
+            $voiceCaptcha.hide();
+            //刷新验证码
+            commonFun.refreshCaptcha($imageCaptcha[0], captchaSrc);
+
+            let data = responseData.data;
+            if (data.status && !data.isRestricted) {
+                //获取手机验证码成功，关闭弹框，并开始倒计时
+                layer.closeAll();
+                commonFun.countDownLoan({
+                    btnDom:$fetchCaptcha,
+                    isAfterText:'重新发送'
+                },function(){
+                    $voiceCaptcha.show();
+                });
+
+            } else if (!data.status && data.isRestricted) {
+                $errorBox.text('短信发送频繁，请稍后再试');
+
+            } else if (!data.status && !data.isRestricted) {
+                $errorBox.text('图形验证码不正确');
+            }
+        });
+},
     isCaptchaVerify:function(errorMsg,showErrorAfter) {
         var getResult='',
             that=this,

@@ -173,8 +173,8 @@ validator.add(registerForm.imageCaptcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '图形验证码不能为空'
 }, {
-    strategy: 'isCaptchaValid',
-    errorMsg: '验证码不正确'
+    strategy: 'imageCaptcha',
+    errorMsg: '图形验证码不正确'
 }],true);
 validator.add(registerForm.captcha, [{
     strategy: 'isNonEmpty',
