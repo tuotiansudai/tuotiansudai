@@ -83,11 +83,11 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
                 .forEach(boundUser -> {
                     boundUser.setBound(false);
                     weChatUserMapper.update(boundUser);
-                    logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sending ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, userModel.getLoginName(), openid);
+                    logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sending ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, boundUser.getLoginName(), boundUser.getOpenid());
                     mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(boundUser.getLoginName(), WeChatMessageType.BOUND_TO_OTHER_USER, null));
-                    logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sent ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, userModel.getLoginName(), openid);
+                    logger.info("[MQ WeChatBoundNotify type:{} user:{} openid:{} message sent ...] ", WeChatMessageType.BOUND_TO_OTHER_USER, boundUser.getLoginName(), boundUser.getOpenid());
 
-                    logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", userModel.getLoginName(), openid, boundUser.getLoginName());
+                    logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", boundUser.getLoginName(), boundUser.getOpenid(), boundUser.getLoginName());
                 });
 
 

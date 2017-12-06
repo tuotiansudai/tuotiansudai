@@ -247,13 +247,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
     private String convertCentToTenThousandString(long num) {
         BigDecimal amount = new BigDecimal(num);
-        String returnAmount;
-        if (amount.compareTo(TEN_THOUSANDS) != -1) {
-            returnAmount = amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
-        } else {
-            returnAmount = AmountConverter.convertCentToString(num);
-        }
-        return returnAmount;
+        return amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
     }
 
 }
