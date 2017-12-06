@@ -24,7 +24,7 @@
                 </li>
                 <li>
                     <i class="icon-password"></i>
-                    <input type="text" class="input-control img-captcha image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                    <input type="text" class="imageCaptcha" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                     <img src="/no-password-invest/image-captcha" alt="" class="image-captcha" id="imageCaptcha" style="position: absolute; top: 8px;left: 250px"/>
                 </li>
                 <li>
