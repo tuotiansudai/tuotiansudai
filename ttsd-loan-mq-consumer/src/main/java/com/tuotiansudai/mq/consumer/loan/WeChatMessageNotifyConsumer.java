@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,6 +46,8 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     private WithdrawMapper withdrawMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    private static final BigDecimal TEN_THOUSANDS = new BigDecimal(1000000);
 
     @Override
     public MessageQueue queue() {
@@ -105,9 +108,9 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                         .put("openid", fetchOpenId(investModel.getLoginName()))
                         .put("first", String.format("您投资的”%s”已经满标放款了，具体详情如下：", loanModel.getName()))
                         .put("keyword1", loanModel.getName())
-                        .put("keyword2", AmountConverter.convertCentToString(loanModel.getLoanAmount()))
-                        .put("keyword3", AmountConverter.convertCentToString(investModel.getAmount()))
-                        .put("keyword4", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd HH:mm:ss"))
+                        .put("keyword2", convertCentToTenThousandString(loanModel.getLoanAmount()))
+                        .put("keyword3", convertCentToTenThousandString(investModel.getAmount()))
+                        .put("keyword4", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd HH:mm"))
                         .put("remark", commonRemark)
                         .build())));
     }
@@ -120,7 +123,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .put("openid", openId)
                 .put("first", "您的拓天速贷账号已被其他微信号绑定，请知悉")
                 .put("keyword1", MobileEncoder.encode(userModel.getMobile()))
-                .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
+                .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm"))
                 .put("remark", "如非您本人操作，请及时联系客服：400-169-1188（客服时间：工作日9:00-20:00）。")
                 .build()));
         logger.info("[MQ WeChatMessageNotify] type:{} message notify successfully. user: {}, openid: {}",
@@ -167,7 +170,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .put("openid", openId)
                 .put("first", String.format("您投资的”%s”回款已到账", loanModel.getName()))
                 .put("keyword1", loanModel.getName())
-                .put("keyword2", investRepayModel.getActualRepayDate() != null ? new DateTime(investRepayModel.getActualRepayDate()).toString("yyyy-MM-dd HH:mm:ss") : "")
+                .put("keyword2", investRepayModel.getActualRepayDate() != null ? new DateTime(investRepayModel.getActualRepayDate()).toString("yyyy-MM-dd HH:mm") : "")
                 .put("keyword3", AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getActualInterest()))
                 .put("remark", commonRemark)
                 .build()));
@@ -209,9 +212,9 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
         weChatClient.sendTemplateMessage(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("openid", openId)
                 .put("first", "您的账户发起的提现申请现已到账")
-                .put("keyword1", withdrawModel.getApplyNotifyTime() != null ? new DateTime(withdrawModel.getApplyNotifyTime()).toString("yyyy-MM-dd") : "")
+                .put("keyword1", withdrawModel.getApplyNotifyTime() != null ? new DateTime(withdrawModel.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm") : "")
                 .put("keyword2", AmountConverter.convertCentToString(withdrawModel.getAmount()))
-                .put("keyword3", withdrawModel.getNotifyTime() != null ? new DateTime(withdrawModel.getNotifyTime()).toString("yyyy-MM-dd") : "")
+                .put("keyword3", withdrawModel.getNotifyTime() != null ? new DateTime(withdrawModel.getNotifyTime()).toString("yyyy-MM-dd HH:mm") : "")
                 .put("remark", commonRemark)
                 .build()));
 
@@ -220,7 +223,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
     WeChatMessageNotifyAction<String, WeChatMessageNotify> transfer = (openId, weChatMessageNotify) -> {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(weChatMessageNotify.getBusinessId());
-        weChatClient.sendTemplateMessage(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
+        weChatClient.sendTemplateMessage(WeChatMessageType.TRANSFER_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("openid", openId)
                 .put("first", "您发起的债权转让已经转让完成。")
                 .put("keyword1", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()))
@@ -241,6 +244,17 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
             .put(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, withdrawNotify)
             .put(WeChatMessageType.TRANSFER_SUCCESS, transfer)
             .build());
+
+    private String convertCentToTenThousandString(long num) {
+        BigDecimal amount = new BigDecimal(num);
+        String returnAmount;
+        if (amount.compareTo(TEN_THOUSANDS) != -1) {
+            returnAmount = amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
+        } else {
+            returnAmount = AmountConverter.convertCentToString(num);
+        }
+        return returnAmount;
+    }
 
 }
 
