@@ -65,7 +65,10 @@
                 {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"transferBill","text":"用户联动优势交易流水","link":"/finance-manage/transfer-bill","role":"'ADMIN'"},
-                    {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                {"name":"","class":"sub-title-1","text":"信用贷标的账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"creditLoanBill","text":"信用贷标的账户查询","link":"/finance-manage/credit-loan-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
             ]
         },
         {
@@ -113,14 +116,16 @@
                     {"name":"annual","text":"元旦活动", "link":"/activity-console/activity-manage/annual-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"headlinesToday","text":"今日头条拉新抽奖活动","link":"/activity-console/activity-manage/headlines-today-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"notWork","text":"不上班活动", "link":"/activity-console/activity-manage/not-work-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"womenDay","text":"妇女节活动", "link":"/activity-console/activity-manage/women-day-list", "role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"mothersDay","text":"母亲节活动","link":"/activity-console/activity-manage/mothers-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"dragonBoat","text":"端午节活动","link":"/activity-console/activity-manage/dragon-boat","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"exerciseVSWork","text":"运动达人VS职场骄子","link":"/activity-console/activity-manage/exercise-work-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"houseDecorate","text":"家装节活动 ","link":"/activity-console/activity-manage/house-decorate-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"schoolSeason","text":"开学季活动 ","link":"/activity-console/activity-manage/school-season-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"schoolSeason","text":"开学季活动 ","link":"/activity-console/activity-manage/school-season-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"NationalMidAutumn","text":"国庆节活动 ","link":"/activity-console/activity-manage/national-mid-autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"iphoneX","text":"iPhoneX活动 ","link":"/activity-console/activity-manage/iphonex-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"zeroShopping","text":"0元购活动管理 ","link":"/activity-console/activity-manage/zero-shopping/user-prize-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
             ]
         },
         {

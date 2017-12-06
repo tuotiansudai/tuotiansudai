@@ -5,13 +5,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.InvestRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserCouponListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -24,7 +19,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
     @Autowired
     private CouponMapper couponMapper;
     @Autowired
@@ -33,6 +28,8 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
     private MobileAppInvestCouponService mobileAppInvestCouponService;
     @Autowired
     private LoanMapper loanMapper;
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Test
     public void shouldGetInvestCouponsIsSuccess() {
@@ -53,6 +50,8 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
         userCouponMapper.create(userCouponModelRedEnvelope);
         LoanModel loanModel = getFakeLoan(LoanStatus.RAISING, ActivityType.NORMAL, userModel.getLoginName());
         loanMapper.create(loanModel);
+        LoanDetailsModel loanDetailsModel = getFakeLoanDetail(loanModel.getId());
+        loanDetailsMapper.create(loanDetailsModel);
         InvestRequestDto investRequestDto = new InvestRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
@@ -95,5 +94,14 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
         return fakeLoanModel;
     }
 
+    private LoanDetailsModel getFakeLoanDetail(long loanId) {
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setId(IdGenerator.generate());
+        loanDetailsModel.setLoanId(loanId);
+        loanDetailsModel.setDisableCoupon(false);
+        loanDetailsModel.setActivity(false);
+        loanDetailsModel.setDeclaration("declaration");
+        return loanDetailsModel;
+    }
 
 }

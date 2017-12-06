@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -23,7 +24,6 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -209,8 +209,8 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
         dataModel.put("loanerUserName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()));
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()) + "元");
         dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
         dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");

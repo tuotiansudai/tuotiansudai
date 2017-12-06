@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class SmsCaptchaServiceTest {
     private MockWebServer server;
 
@@ -56,7 +57,7 @@ public class SmsCaptchaServiceTest {
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
         smsWrapperClient.setApplicationContext("");
-        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", false, "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
@@ -72,7 +73,7 @@ public class SmsCaptchaServiceTest {
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
         smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", false, "127.0.0.1");
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
         assertFalse(dto.getData().getStatus());

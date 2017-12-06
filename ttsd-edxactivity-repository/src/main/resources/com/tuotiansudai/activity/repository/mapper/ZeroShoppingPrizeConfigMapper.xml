@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ZeroShoppingPrizeConfigMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="zeroShoppingResultMap" type="com.tuotiansudai.activity.repository.model.ZeroShoppingPrizeConfigModel">
+        <result column="id" property="id"/>
+        <result column="prize" property="prize"/>
+        <result column="prize_total" property="prizeTotal"/>
+        <result column="prize_surplus" property="prizeSurplus"/>
+    </resultMap>
+
+    <update id="update" parameterType="zeroShoppingPrizeConfigModel">
+        UPDATE `edxactivity`.`zero_shopping_prize_config` SET
+        prize_total= #{prizeTotal},
+        prize_surplus= #{prizeSurplus}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findAll" resultMap="zeroShoppingResultMap">
+        SELECT * FROM `edxactivity`.`zero_shopping_prize_config`
+    </select>
+
+    <select id="prizeSurplus" parameterType="map" resultType="int">
+        SELECT prize_surplus FROM `edxactivity`.`zero_shopping_prize_config` where prize = #{zeroShoppingPrize}
+    </select>
+
+</mapper>

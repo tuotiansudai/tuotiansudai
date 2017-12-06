@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserModel implements Serializable {
+public class UserModel implements UserRegisterInfo, Serializable {
 
     private long id;
 
@@ -25,8 +25,6 @@ public class UserModel implements Serializable {
 
     private String lastModifiedUser;
 
-    private String avatar;
-
     private String referrer;
 
     private UserStatus status = UserStatus.ACTIVE;
@@ -41,13 +39,9 @@ public class UserModel implements Serializable {
 
     private String city;
 
-    private int signInCount;
-
     private Date lastLoginTime;
 
     private Source lastLoginSource;
-
-    private long experienceBalance;
 
     public long getId() {
         return id;
@@ -129,14 +123,6 @@ public class UserModel implements Serializable {
         this.lastModifiedUser = lastModifiedUser;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public String getReferrer() {
         return referrer;
     }
@@ -193,14 +179,6 @@ public class UserModel implements Serializable {
         this.city = city;
     }
 
-    public int getSignInCount() {
-        return signInCount;
-    }
-
-    public void setSignInCount(int signInCount) {
-        this.signInCount = signInCount;
-    }
-
     public Date getLastLoginTime() {
         return lastLoginTime;
     }
@@ -215,14 +193,6 @@ public class UserModel implements Serializable {
 
     public void setLastLoginSource(Source lastLoginSource) {
         this.lastLoginSource = lastLoginSource;
-    }
-
-    public long getExperienceBalance() {
-        return experienceBalance;
-    }
-
-    public void setExperienceBalance(long experienceBalance) {
-        this.experienceBalance = experienceBalance;
     }
 
     @Override

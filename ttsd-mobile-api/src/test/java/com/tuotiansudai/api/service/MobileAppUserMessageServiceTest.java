@@ -8,7 +8,7 @@ import com.tuotiansudai.enums.MessageType;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
@@ -29,7 +29,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
     private MobileAppUserMessageService mobileAppUserMessageService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private MessageMapper messageMapper;

@@ -454,11 +454,12 @@ $red: #eb4a3e;
                 }
               }
             }
+
             .skip-text{
-              float:left;
-              width:314px;
+              width:300px;
               font-size:12px;
               color:#4d4d4d;
+              display: inline-block;
               @media (max-width:700px) {
                 width:auto;
                 float:none;
@@ -921,6 +922,10 @@ $red: #eb4a3e;
 @media screen and (max-width:700px) {
   .invest-list-content .col-md-4 { width: 100%;}
   .loan-detail-content {
+    .project-model .model-content .text-list li {
+      width:100%;
+      float: none;
+    }
     .loan-model {
       display: block;
       .blank-middle {

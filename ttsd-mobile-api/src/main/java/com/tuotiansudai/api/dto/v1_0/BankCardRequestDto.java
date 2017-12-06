@@ -5,8 +5,11 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.repository.model.Source;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
-public class BankCardRequestDto extends BaseParamDto{
+import javax.validation.constraints.Pattern;
+
+public class BankCardRequestDto extends BaseParamDto {
 
     //用户ID
     @ApiModelProperty(value = "用户ID", example = "abcd1234")
@@ -31,14 +34,17 @@ public class BankCardRequestDto extends BaseParamDto{
     /**
      * 查询绑卡状态：query_bind_status
      * 查询签约状态：query_sign_status
+     * 慧租账户激活：huizu_active
      */
-    @ApiModelProperty(value = "操作类型", example = "查询绑卡状态：query_bind_status,查询签约状态：query_sign_status")
+    @ApiModelProperty(value = "操作类型", example = "查询绑卡状态：query_bind_status,查询签约状态：query_sign_status,慧租账户激活：huizu_active")
     private String operationType;
 
     /**
      * 充值金额
      */
     @ApiModelProperty(value = "充值金额", example = "11.00")
+    @NotEmpty(message = "充值金额不能为空")
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$", message = "充值金额不正确")
     private String rechargeAmount;
 
     @ApiModelProperty(value = "ip", example = "127.0.0.1")
@@ -108,16 +114,17 @@ public class BankCardRequestDto extends BaseParamDto{
         this.ip = ip;
     }
 
-    public RechargeDto convertToRechargeDto(){
+    public RechargeDto convertToRechargeDto() {
         RechargeDto rechargeDto = new RechargeDto();
         rechargeDto.setAmount(this.rechargeAmount);
         rechargeDto.setLoginName(this.userId);
         rechargeDto.setFastPay(this.isOpenFastPayment);
         rechargeDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        rechargeDto.setHuizuActive("huizu_active".equals(this.operationType));
         return rechargeDto;
     }
 
-    public BindBankCardDto convertToBindBankCardDto(){
+    public BindBankCardDto convertToBindBankCardDto() {
         BindBankCardDto bindBankCardDto = new BindBankCardDto();
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
@@ -128,7 +135,7 @@ public class BankCardRequestDto extends BaseParamDto{
         return bindBankCardDto;
     }
 
-    public AgreementDto convertToAgreementDto(){
+    public AgreementDto convertToAgreementDto() {
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         agreementDto.setLoginName(this.getUserId());

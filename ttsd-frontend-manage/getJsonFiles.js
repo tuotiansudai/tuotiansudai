@@ -54,21 +54,21 @@ getJsonFileList.prototype.formatHandler = function(textFile) {
 
 getJsonFileList.prototype.addJqueryPlugin=function(path) {
 
-        var files = fs.readdirSync(path);//需要用到同步读取
-        files.forEach(function(file) {
-            var states = fs.statSync(path+'/'+file);
-            //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
-            if(!states.isDirectory())
-            {
-                var suffix=file.split('.'),
-                    len=suffix.length;
-                if(suffix[len-1]=='js') {
-                    suffix.length=len-1;
-                    var keyName=suffix.join('');
-                    this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
-                }
+    var files = fs.readdirSync(path);//需要用到同步读取
+    files.forEach(function(file) {
+        var states = fs.statSync(path+'/'+file);
+        //isDirectory,用于判断被查看的对象是否是一个目录，如果是返回true
+        if(!states.isDirectory())
+        {
+            var suffix=file.split('.'),
+                len=suffix.length;
+            if(suffix[len-1]=='js') {
+                suffix.length=len-1;
+                var keyName=suffix.join('');
+                this.jsonFormat['jsFile'][keyName]='/public/dllplugins/'+file;
             }
-        }.bind(this));
+        }
+    }.bind(this));
 }
 
 getJsonFileList.prototype.init=function() {
@@ -79,7 +79,7 @@ getJsonFileList.prototype.init=function() {
             that.readFile();
         }
     });
-}
+};
 
 //ask,web,activity,point,mobile站点打包生成的的json文件名
 var getJsonAskList=new getJsonFileList('ask','json-ask.json');
@@ -100,5 +100,3 @@ getJsonMobileList.init();
 //m站打包生成的json文件名
 var getJsonWapSiteList=new getJsonFileList('wapSite','json-wapSite.json');
 getJsonWapSiteList.init();
-
-

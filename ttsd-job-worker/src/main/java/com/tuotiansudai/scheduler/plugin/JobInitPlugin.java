@@ -6,9 +6,12 @@ import com.tuotiansudai.job.JobType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.spi.ClassLoadHelper;
+import org.quartz.spi.MutableTrigger;
 import org.quartz.spi.SchedulerPlugin;
 
 import java.util.Date;
@@ -56,5 +59,4 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
-
 }

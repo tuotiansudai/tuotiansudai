@@ -1,10 +1,6 @@
 package com.tuotiansudai.mq.consumer.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tuotiansudai.membership.service.MembershipInvestService;
-import com.tuotiansudai.message.InvestInfo;
-import com.tuotiansudai.message.InvestSuccessMessage;
-import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.message.ObtainPointMessage;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -12,11 +8,11 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.JsonConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +24,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ObtainPointMessageConsumerTest {
 

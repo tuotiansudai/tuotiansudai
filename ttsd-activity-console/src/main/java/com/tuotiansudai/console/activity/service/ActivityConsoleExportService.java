@@ -10,7 +10,8 @@ import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
@@ -52,9 +53,6 @@ public class ActivityConsoleExportService {
     private ActivityConsoleAnnualService activityConsoleAnnualService;
 
     @Autowired
-    private ActivityWomanDayService activityWomanDayService;
-
-    @Autowired
     private ActivityConsoleMothersService activityConsoleMothersService;
 
     @Autowired
@@ -62,6 +60,12 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private ActivityConsoleHouseDecorateService activityConsoleHouseDecorateService;
+
+    @Autowired
+    private ActivityConsoleIphoneXService activityConsoleIphoneXService;
+
+    @Autowired
+    private ActivityConsoleZeroShoppingService activityConsoleZeroShoppingService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -191,8 +195,8 @@ public class ActivityConsoleExportService {
         return rows;
     }
 
-    public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
+    private Map<String, List<String>> getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 
@@ -200,12 +204,12 @@ public class ActivityConsoleExportService {
             return Maps.newConcurrentMap();
         }
 
-        for (UserModel userModel : userModels) {
+        for (UserRegisterInfo userModel : userModels) {
             if (Strings.isNullOrEmpty(userModel.getReferrer())) {
                 allFamily.put(userModel.getLoginName(), Lists.newArrayList(userModel.getLoginName()));
                 continue;
             }
-            if (allFamily.values() == null || allFamily.values().size() == 0) {
+            if (allFamily.values().size() == 0) {
                 allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
                 continue;
             }
@@ -258,10 +262,6 @@ public class ActivityConsoleExportService {
         return annualPrizeDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildWomanDayCsvList() {
-        return activityWomanDayService.getWomanDayPrizeRecord(0, Integer.MAX_VALUE, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
-    }
-
     public List<List<String>> buildMothersDayCsvList() {
         return activityConsoleMothersService.list(1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
@@ -274,5 +274,13 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildHouseDecorateCsvList(){
         return activityConsoleHouseDecorateService.list(1,Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildIphoneXCsvList(){
+        return activityConsoleIphoneXService.list(1,Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildZeroShoppingCsvList() {
+        return activityConsoleZeroShoppingService.userPrizeList(1, Integer.MAX_VALUE, null, null, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

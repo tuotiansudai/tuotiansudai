@@ -9,11 +9,11 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserSignInMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -35,7 +35,7 @@ public class SignInServiceImpl implements SignInService {
     private PointBillMapper pointBillMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserSignInMapper userSignInMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -101,7 +101,11 @@ public class SignInServiceImpl implements SignInService {
 
         if (!signInPointDto.isSignIn()) {
             signInPointDto.setStatus(true);
-            userMapper.updateSignInCount(loginName, signInPointDto.getSignInCount());
+            if (userSignInMapper.exists(loginName)) {
+                userSignInMapper.updateSignInCount(loginName, signInPointDto.getSignInCount());
+            } else {
+                userSignInMapper.create(loginName, signInPointDto.getSignInCount());
+            }
             pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
             sendSignInCoupon(loginName, signInPointDto.getSignInCount());
             logger.info(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
@@ -124,13 +128,17 @@ public class SignInServiceImpl implements SignInService {
 
     private SignInPointDto obtainCurrentSignInPointDto(String loginName) {
         PointBillModel pointBillModel = pointBillMapper.findLatestSignInPointBillByLoginName(loginName);
-        if (pointBillModel != null) {
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            return new SignInPointDto(userModel.getSignInCount(), pointBillModel.getCreatedTime(),
-                    (int) pointBillModel.getPoint(), getNextSignInPoint(userModel.getSignInCount()),
-                    Days.daysBetween(new DateTime(pointBillModel.getCreatedTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()) == Days.ZERO);
+        if (pointBillModel == null) {
+            return null;
         }
-        return null;
+        int signInCount = userSignInMapper.getUserSignInCount(loginName);
+        return new SignInPointDto(
+                signInCount,
+                pointBillModel.getCreatedTime(),
+                (int) pointBillModel.getPoint(),
+                getNextSignInPoint(signInCount),
+                DateUtils.isSameDay(pointBillModel.getCreatedTime(), new Date())
+        );
     }
 
     @Override
@@ -145,7 +153,7 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public int getSignInCount(String loginName){
+    public int getSignInCount(String loginName) {
         SignInPointDto lastSignInPointDto = getLastSignIn(loginName);
         DateTime today = new DateTime().withTimeAtStartOfDay();
         if (lastSignInPointDto != null && (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE

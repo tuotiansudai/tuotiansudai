@@ -71,10 +71,24 @@ public enum AsyncUmPayService {
      * 债权购买标的转账
      */
     INVEST_TRANSFER_PROJECT_TRANSFER("project_transfer", "callback/invest_transfer_project_transfer", "callback/invest_transfer_project_transfer", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+
+    /**
+     * 慧租信用贷验密还款
+     */
+    CREDIT_LOAN_REPAY_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/credit_loan_repay_project_transfer", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+
+    /**
+     * 慧租有密还款
+     */
+    HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/hui_zu_password_repay_project_transfer", "hz_repay_notify", "huizu://repay/{0}"),
     /**
      * 债权购买返款标的转账
      */
     INVEST_TRANSFER_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "invest_transfer_payback_notify", ""),
+    /**
+     * 慧租信用贷放款
+     */
+    CREDIT_LOAN_OUT_PROJECT_TRANSFER("project_transfer", "", "", "credit_loan_out_notify", ""),
     /**
      * 债权购买手续费标的转账
      */
@@ -89,6 +103,26 @@ public enum AsyncUmPayService {
      * 无密债权购买标的转入
      */
     INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "callback/invest_transfer_project_transfer_nopwd", "invest_transfer_notify", "tuotian://invest-transfer/{0}"),
+
+    /**
+     * 慧租有密一分钱激活账户
+     */
+    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/credit_loan_activate_account_project_transfer", "activate_account_notify", "huizu://credit_loan_activate-account/{0}"),
+
+    /**
+     * 慧租无密一分钱激活账户
+     */
+    CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "huizu/callback/credit_loan_activate_account_project_transfer_nopwd", "activate_account_notify", "huizu://credit_loan_activate-account/{0}"),
+
+    /**
+     * 慧租信用贷无密还款
+     */
+    CREDIT_LOAN_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "","huizu/callback/credit_loan_repay_project_transfer_nopwd", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+    /**
+     * 慧租无密还款
+     */
+    HUI_ZU_NO_PASSWORD_REPAY_PROJECT_TRANSFER("project_transfer_nopwd", "", "huizu/callback/hui_zu_no_password_repay_project_transfer", "hz_repay_notify", "huizu://repay/{0}"),
+
     /**
      * 无密还款标的转入
      */
@@ -137,6 +171,10 @@ public enum AsyncUmPayService {
      * 抽奖现金奖励普通转账
      */
     LOTTERY_REWARD_TRANSFER("transfer", "", "", "lottery_reward_notify", ""),
+    /**
+     * 代发工资普通转账
+     */
+    PAYROLL_TRANSFER("transfer", "", "", "payroll_notify", ""),
 
 
     /**
@@ -146,8 +184,19 @@ public enum AsyncUmPayService {
     /**
      * 平台充值普通转账验密
      */
-    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", "");
-
+    SYSTEM_RECHARGE_TRANSFER_ASYN("transfer_asyn", "finance-manage/system-bill", "", "system_recharge_notify", ""),
+    /**
+     * 信用贷标的账户充值无密
+     */
+    CREDIT_LOAN_RECHARGE_TRANSFER_NOPWD("project_transfer_nopwd", "finance-manage/credit-loan-bill", "", "credit_loan_recharge_notify", ""),
+    /**
+     * 信用贷标的账户充值验密
+     */
+    CREDIT_LOAN_RECHARGE_TRANSFER("project_transfer", "finance-manage/credit-loan-bill", "", "credit_loan_recharge_notify", ""),
+    /**
+     * 信用贷转账给代理人
+     */
+    CREDIT_LOAN_AGENT_TRANSFER("project_transfer", "", "", "credit_loan_transfer_agent_notify", "");
 
     private final String serviceName;
 
@@ -186,4 +235,4 @@ public enum AsyncUmPayService {
     public String getMobileLink() {
         return mobileLink;
     }
-    }
+}

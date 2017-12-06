@@ -14,11 +14,13 @@ public class SmsHistoryModel implements Serializable {
 
     private String content;
 
-    private SmsChannel channel;
+    private SmsChannel channel = SmsChannel.ALIDAYU;
 
     private Date sendTime;
 
     private boolean success;
+
+    private boolean isVoice;
 
     private String response;
 
@@ -27,10 +29,16 @@ public class SmsHistoryModel implements Serializable {
     public SmsHistoryModel() {
     }
 
-    public SmsHistoryModel(String mobile, String content, SmsChannel channel) {
+    public SmsHistoryModel(String mobile, String content) {
         this.mobile = mobile;
         this.content = content;
-        this.channel = channel;
+        this.sendTime = new Date();
+    }
+
+    public SmsHistoryModel(String mobile, String content, boolean isVoice) {
+        this.mobile = mobile;
+        this.content = content;
+        this.isVoice = isVoice;
         this.sendTime = new Date();
     }
 
@@ -80,6 +88,14 @@ public class SmsHistoryModel implements Serializable {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public boolean isVoice() {
+        return isVoice;
+    }
+
+    public void setVoice(boolean voice) {
+        isVoice = voice;
     }
 
     public String getResponse() {

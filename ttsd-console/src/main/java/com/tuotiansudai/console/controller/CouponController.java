@@ -15,8 +15,8 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -218,7 +218,7 @@ public class CouponController {
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
         if (couponUserGroupModel != null) {
-            modelAndView.addObject("agents", userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList()).build())));
+            modelAndView.addObject("agents", userMapper.findAllByRole(Role.AGENT));
             modelAndView.addObject("channels", consoleUserService.findAllUserChannels());
             modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
         }

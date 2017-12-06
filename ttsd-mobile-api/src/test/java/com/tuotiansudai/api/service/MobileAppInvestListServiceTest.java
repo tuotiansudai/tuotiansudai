@@ -5,16 +5,17 @@ import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
@@ -23,16 +24,13 @@ import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
@@ -187,7 +185,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investMapper.findCountByLoginNameExceptTransfer(anyString())).thenReturn((long) INVEST_COUNT);
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
-        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(INTEREST);
+        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong(), any(Date.class))).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
         when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
@@ -272,7 +270,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         UserModel userModel = new UserModel();
         userModel.setMobile("15210001111");
 
-        List<CouponModel> couponModels = Lists.newArrayList(couponModel,couponModel1);
+        List<CouponModel> couponModels = Lists.newArrayList(couponModel, couponModel1);
 
         when(investMapper.findByStatus(anyLong(), anyInt(), anyInt(), any(InvestStatus.class))).thenReturn(investModels);
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
@@ -282,7 +280,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findById(anyLong())).thenReturn(investModel1);
-        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong())).thenReturn("152**11");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong())).thenReturn("152**11");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -318,7 +316,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         assertTrue(baseResponseDto.getMessage().equals(ReturnMessage.LOAN_NOT_FOUND.getMsg()));
     }
 
-    private List getAchievement(){
+    private List getAchievement() {
         InvestModel investModel1 = new InvestModel();
         investModel1.setAmount(1000000L);
         investModel1.setInvestTime(new Date());

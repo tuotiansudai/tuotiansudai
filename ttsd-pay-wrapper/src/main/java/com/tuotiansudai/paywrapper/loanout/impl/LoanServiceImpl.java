@@ -11,7 +11,7 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -41,7 +41,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -51,10 +50,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -99,9 +95,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -348,12 +341,9 @@ public class LoanServiceImpl implements LoanService {
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                    amountTransfer.transferOutFreeze(invest.getLoginName(),
-                            invest.getId(),
-                            invest.getAmount(),
-                            UserBillBusinessType.LOAN_SUCCESS,
-                            null,
-                            null);
+                    AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, invest.getLoginName(),
+                            invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS, null, null);
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                     redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
                 }
             } catch (Exception e) {
@@ -371,7 +361,10 @@ public class LoanServiceImpl implements LoanService {
         try {
             String statusString = redisWrapperClient.hget(redisKey, TRANSFER_IN_BALANCE);
             if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                amountTransfer.transferInBalance(agentLoginName, loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, agentLoginName,
+                        loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.SUCCESS.name());
             }
         } catch (Exception e) {
@@ -426,11 +419,8 @@ public class LoanServiceImpl implements LoanService {
             if (investMapper.findById(investModel.getId()).getStatus() != InvestStatus.CANCEL_INVEST_PAYBACK) {
                 investModel.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
                 investMapper.update(investModel);
-                try {
-                    amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
-                } catch (AmountTransferException e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
             }
         }
         return callbackRequest.getResponseData();
@@ -509,12 +499,19 @@ public class LoanServiceImpl implements LoanService {
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<String> loginNames = investMapper.findSuccessInvestsByLoanId(loanId).stream().map(InvestModel::getLoginName).collect(Collectors.toList());
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         String title = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getTitleTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
         String content = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getContentTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);
 
+        List<String> loginNames = new ArrayList<>();
+        Map<Long, String> investIdLoginNames = new HashMap<>();
+        for (InvestModel investModel:investModels) {
+            loginNames.add(investModel.getLoginName());
+            investIdLoginNames.put(investModel.getId(), investModel.getLoginName());
+        }
+
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.LOAN_OUT_SUCCESS,
-                loginNames, title, content, loanId));
+                title, content, investIdLoginNames));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(loginNames, PushSource.ALL, PushType.LOAN_OUT_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
     }

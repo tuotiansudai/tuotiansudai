@@ -8,7 +8,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;

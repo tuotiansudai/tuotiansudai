@@ -4,11 +4,6 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
@@ -18,11 +13,10 @@ import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.ProductOrderModel;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -36,13 +30,14 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppPointShopService mobileAppPointShopService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private ProductOrderMapper productOrderMapper;

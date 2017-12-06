@@ -56,6 +56,7 @@
         <intercept-url pattern="/v1.0/get/transferee" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/operation-data" access="permitAll()"/>
         <intercept-url pattern="/callback/**" access="permitAll()"/>
+        <intercept-url pattern="/huizu/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
         <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>
         <intercept-url pattern="/v1.**/get/banner" access="permitAll()"/>
@@ -72,6 +73,7 @@
         <intercept-url pattern="/v1.0/get/help-center-category-list" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/help-center-search" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/activity/school-season-status" access="permitAll()"/>
+        <intercept-url pattern="/huizu/register" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

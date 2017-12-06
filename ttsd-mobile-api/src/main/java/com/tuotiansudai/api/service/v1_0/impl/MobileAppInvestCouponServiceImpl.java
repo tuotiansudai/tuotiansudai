@@ -6,16 +6,13 @@ import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +49,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
     @Override
     public BaseResponseDto getInvestCoupons(InvestRequestDto dto) {
         String loanId = dto.getLoanId();
@@ -65,7 +65,10 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
+        List<UserCouponModel> userCouponModels = new ArrayList<>();
+        if (!loanDetailsMapper.getByLoanId(Long.parseLong(loanId)).getDisableCoupon()) {
+            userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
+        }
 
         List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());
 

@@ -17,6 +17,8 @@ public interface UserService {
 
     boolean registerUser(RegisterUserDto dto);
 
+    boolean registerUserFromHuizu(RegisterUserDto dto);
+
     boolean loginNameIsExist(String loginName);
 
     boolean loginNameOrMobileIsExist(String loginNameOrMobile);
@@ -30,8 +32,6 @@ public interface UserService {
      * @return 修改成功返回 true , 修改失败返回 false
      */
     boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId);
-
-    boolean verifyPasswordCorrect(String loginName, String password);
 
     boolean mobileIsRegister(String mobile);
 

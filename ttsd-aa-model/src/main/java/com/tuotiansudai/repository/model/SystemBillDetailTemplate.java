@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import java.text.MessageFormat;
+
 public enum SystemBillDetailTemplate {
 
     BIND_BANK_CARD_DETAIL_TEMPLATE("用户({0})绑定银行({1})卡号({2})"),
@@ -22,7 +24,16 @@ public enum SystemBillDetailTemplate {
 
     EXPERIENCE_INTEREST_DETAIL_TEMPLATE("发放用户({0})新手体检金收益{1}分"),
 
-    EXTRA_RATE_DETAIL_TEMPLATE("用户({0})投资(investId={1})加息奖励");
+    EXTRA_RATE_DETAIL_TEMPLATE("用户({0})投资(investId={1})加息奖励"),
+
+    INVEST_RETURN_CASH_DETAIL_TEMPLATE("用户({0})投资逢万返百标,获取现金奖励{1}分"),
+
+    IPHONEX_ACTIVITY_CASH_DETAIL_TEMPLATE("用户({0})在iPhoneX活动中,获取现金奖励{1}分"),
+
+    YEAR_END_AWARDS_CASH_DETAIL_TEMPLATE("用户({0})在年终奖活动中,获取现金奖励{1}分"),
+
+    PAYROLL_DETAIL_TEMPLATE("为用户({0})代发工资"),
+    ;
 
     private final String template;
 
@@ -32,5 +43,9 @@ public enum SystemBillDetailTemplate {
 
     public String getTemplate() {
         return template;
+    }
+
+    public String buildDetail(Object... arguments){
+        return MessageFormat.format(template, arguments);
     }
 }

@@ -40,4 +40,5 @@ dependencies {
     compile "mysql:mysql-connector-java:5.1.39"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }

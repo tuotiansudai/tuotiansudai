@@ -2,15 +2,16 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.request.RegisterRequestDto;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.UserRestClient;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.impl.UserServiceImpl;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,6 +30,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class MockUserServiceTest {
 
@@ -41,20 +44,13 @@ public class MockUserServiceTest {
     private SmsCaptchaService smsCaptchaService;
 
     @Mock
-    private MyShaPasswordEncoder myShaPasswordEncoder;
-
-    @Mock
     private PrepareUserMapper prepareUserMapper;
-
-    @Mock
-    private LoginNameGenerator loginNameGenerator;
 
     @Mock
     private RegisterUserService registerUserService;
 
     @Mock
     private MQWrapperClient mqWrapperClient;
-
 
     @Before
     public void init() {
@@ -136,15 +132,14 @@ public class MockUserServiceTest {
         registerUserDto.setMobile(mobile);
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword("password");
-        when(userMapper.create(any(UserModel.class))).thenReturn(1);
+        UserModel newUserModel = new UserModel();
+        newUserModel.setLoginName(loginName);
         doNothing().when(mqWrapperClient).sendMessage(any(MessageQueue.class), any(WeChatBoundMessage.class));
-        when(loginNameGenerator.generate()).thenReturn(loginName);
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
-        when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         when(prepareUserMapper.findByMobile(anyString())).thenReturn(null);
-        when(registerUserService.register(any(UserModel.class))).thenReturn(true);
+        when(registerUserService.register(any(RegisterRequestDto.class))).thenReturn(newUserModel);
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
         membershipModel.setLevel(0);
@@ -152,7 +147,7 @@ public class MockUserServiceTest {
         boolean success = userService.registerUser(registerUserDto);
 
         assertTrue(success);
-        ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
+        ArgumentCaptor<RegisterRequestDto> userModelArgumentCaptor = ArgumentCaptor.forClass(RegisterRequestDto.class);
 
         verify(registerUserService, times(1)).register(userModelArgumentCaptor.capture());
 

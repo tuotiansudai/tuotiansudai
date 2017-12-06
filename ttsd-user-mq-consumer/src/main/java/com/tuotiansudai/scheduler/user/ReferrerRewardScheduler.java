@@ -5,8 +5,9 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class ReferrerRewardScheduler {
         if (registerStartTime.before(activityStartTime)) {
             registerStartTime = activityStartTime;
         }
-        List<UserModel> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, registerEndTime, null);
+        List<UserRegisterInfo> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, registerEndTime, null);
         Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
         registerUsers.stream()
                 .filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))

@@ -13,8 +13,8 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -72,47 +72,47 @@ public class ChristmasPrizeService {
 
     public int getDrawPrizeTime(String mobile) {
         int lotteryTime = 0;
-            Date activityChristmasPrizeStartTime = activityChristmasSecondStartTime;
-            UserModel userModel = userMapper.findByMobile(mobile);
-            if (userModel == null) {
-                return lotteryTime;
-            }
+        Date activityChristmasPrizeStartTime = activityChristmasSecondStartTime;
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if (userModel == null) {
+            return lotteryTime;
+        }
 
-            if (userModel.getRegisterTime().before(activityChristmasEndTime) && userModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
+        if (userModel.getRegisterTime().before(activityChristmasEndTime) && userModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
+            lotteryTime++;
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if (accountModel != null && accountModel.getRegisterTime().before(activityChristmasEndTime) && accountModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
+            lotteryTime++;
+        }
+
+        investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName());
+
+        if (this.isFinishInvest(userModel.getLoginName())) {
+            lotteryTime++;
+        }
+
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityChristmasPrizeStartTime, activityChristmasEndTime, userModel.getLoginName());
+        for (UserRegisterInfo referrerUserModel : userModels) {
+            if (referrerUserModel.getRegisterTime().before(activityChristmasEndTime) && referrerUserModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
                 lotteryTime++;
-            }
-
-            AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-            if (accountModel != null && accountModel.getRegisterTime().before(activityChristmasEndTime) && accountModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
-                lotteryTime++;
-            }
-
-            investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName());
-
-            if (this.isFinishInvest(userModel.getLoginName())) {
-                lotteryTime++;
-            }
-
-            List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityChristmasPrizeStartTime, activityChristmasEndTime, userModel.getLoginName());
-            for (UserModel referrerUserModel : userModels) {
-                if (referrerUserModel.getRegisterTime().before(activityChristmasEndTime) && referrerUserModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
+                if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime) > 0) {
                     lotteryTime++;
-                    if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime) > 0) {
-                        lotteryTime++;
-                    }
                 }
             }
+        }
 
-            //每满2000元均增加一次
-            long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
-            lotteryTime += (int) (sumAmount / 200000);
+        //每满2000元均增加一次
+        long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
+        lotteryTime += (int) (sumAmount / 200000);
 
-            lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
+        lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
-            long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.CHRISTMAS_ACTIVITY, null, null);
-            if (lotteryTime > 0) {
-                lotteryTime -= userTime;
-            }
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.CHRISTMAS_ACTIVITY, null, null);
+        if (lotteryTime > 0) {
+            lotteryTime -= userTime;
+        }
         return lotteryTime;
     }
 

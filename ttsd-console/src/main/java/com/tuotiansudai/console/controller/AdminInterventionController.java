@@ -1,14 +1,16 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.dto.AdminInterventionDto;
-import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class AdminInterventionController {
     static Logger logger = Logger.getLogger(AdminInterventionController.class);
 
     @Autowired
-    private AmountTransfer amountTransfer;
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private UserMapper userMapper;
@@ -52,35 +54,32 @@ public class AdminInterventionController {
 
         long orderId = IdGenerator.generate();
 
-        try {
-            String mobile = adminInterventionDto.getMobile();
-            UserModel userModel = userMapper.findByMobile(mobile);
-            String loginName = userModel.getLoginName();
-            long amount = AmountConverter.convertStringToCent(adminInterventionDto.getAmount());
-            String description = adminInterventionDto.getDescription();
-            switch (adminInterventionDto.getOperationType()) {
-                case TI_BALANCE:
-                    amountTransfer.transferInBalance(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
-                    break;
-                case TO_BALANCE:
-                    amountTransfer.transferOutBalance(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
-                    break;
-                case FREEZE:
-                    amountTransfer.freeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
-                    break;
-                case UNFREEZE:
-                    amountTransfer.unfreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
-                    break;
-                case TO_FREEZE:
-                    amountTransfer.transferOutFreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
-                    break;
-            }
-            redirectAttributes.addFlashAttribute("message", "修改成功");
-        } catch (AmountTransferException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            redirectAttributes.addFlashAttribute("data", adminInterventionDto);
-            redirectAttributes.addFlashAttribute("message", "金额不足");
+        String mobile = adminInterventionDto.getMobile();
+        UserModel userModel = userMapper.findByMobile(mobile);
+        String loginName = userModel.getLoginName();
+        long amount = AmountConverter.convertStringToCent(adminInterventionDto.getAmount());
+        String description = adminInterventionDto.getDescription();
+
+        AmountTransferMessage atm = new AmountTransferMessage(null, loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+        switch (adminInterventionDto.getOperationType()) {
+            case TI_BALANCE:
+                atm.setTransferType(TransferType.TRANSFER_IN_BALANCE);
+                break;
+            case TO_BALANCE:
+                atm.setTransferType(TransferType.TRANSFER_OUT_BALANCE);
+                break;
+            case FREEZE:
+                atm.setTransferType(TransferType.FREEZE);
+                break;
+            case UNFREEZE:
+                atm.setTransferType(TransferType.UNFREEZE);
+                break;
+            case TO_FREEZE:
+                atm.setTransferType(TransferType.TRANSFER_OUT_FREEZE);
+                break;
         }
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        redirectAttributes.addFlashAttribute("message", "修改成功");
 
         return modelAndView;
     }

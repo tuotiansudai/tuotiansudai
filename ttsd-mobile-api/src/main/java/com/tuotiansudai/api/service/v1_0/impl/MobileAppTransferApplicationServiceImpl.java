@@ -1,32 +1,22 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.dto.TransferApplicationDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferApplicationRecordView;
-import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
@@ -41,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -74,12 +65,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
-
-    @Autowired
-    MembershipMapper membershipMapper;
-
-    @Autowired
-    UserMembershipMapper userMembershipMapper;
+    @Value("${web.server}")
+    private String webServer;
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -287,9 +274,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     public BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationById(TransferApplicationDetailRequestDto requestDto) {
         BaseResponseDto<TransferApplicationDetailResponseDataDto> dto = new BaseResponseDto();
-        String transferApplicationId = requestDto.getTransferApplicationId();
+        long transferApplicationId = requestDto.getTransferApplicationId();
+
         String loginName = requestDto.getBaseParam().getUserId();
-        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId), loginName, 3);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationId, loginName, 3);
         TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.valueOf(transferApplicationId));
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
@@ -350,7 +338,13 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime());
         userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
         userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investModel.getInvestFeeRate()));
-        BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
+            String contractUrl =  investModel.getContractNo().equals("OLD") ?
+                    MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId()))
+                    : MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo());
+            userInvestRepayResponseDataDto.setContractLocation(contractUrl);
+        }
+        BaseResponseDto<UserInvestRepayResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(userInvestRepayResponseDataDto);
 
         return baseResponseDto;

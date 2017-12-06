@@ -237,6 +237,8 @@ public class BannerModel implements Serializable {
         this.sharedUrl = bannerDto.getSharedUrl();
         this.source = bannerDto.getSource();
         this.authenticated = bannerDto.isAuthenticated();
+        this.activatedTime = bannerDto.getActivatedTime();
+        this.deactivatedTime = bannerDto.getDeactivatedTime();
         this.order = bannerDto.getOrder();
     }
 

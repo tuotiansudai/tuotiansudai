@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v3_0.impl;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -28,10 +29,7 @@ import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -236,7 +234,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 loanResponseDataDto.setExtraSource((loanDetailsModel != null && loanDetailsModel.getExtraSource() != null) ? ((loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : "") : "");
             }
 
-            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT);
+            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT, new Date());
             loanResponseDataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
             loanDtoList.add(loanResponseDataDto);
         }

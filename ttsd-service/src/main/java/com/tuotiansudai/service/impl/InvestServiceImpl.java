@@ -16,6 +16,7 @@ import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -183,12 +184,20 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
-        this.checkUserCouponIsAvailable(investDto);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        if (CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) && loanDetailsModel.getDisableCoupon()){
+            throw new InvestException(InvestExceptionType.NOT_USE_COUPON);
+        }
+
+        if (!loanDetailsModel.getDisableCoupon()){
+            this.checkUserCouponIsAvailable(investDto);
+        }
     }
 
     // 验证优惠券是否可用
     private void checkUserCouponIsAvailable(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
+
         LoanModel loanModel = loanMapper.findById(loanId);
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
@@ -257,11 +266,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, String loginName, long amount) {
+    public long estimateInvestIncome(long loanId, String loginName, long amount, Date investTime) {
         LoanModel loanModel = loanMapper.findById(loanId);
 
         //根据loginName查询出会员的相关信息
-        List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount);
+        List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount, investTime);
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         long expectedInterest = 0L;
@@ -275,10 +284,8 @@ public class InvestServiceImpl implements InvestService {
         long extraRateInterest = 0;
         long extraRateFee = 0;
         if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
-            List<LoanStatus> soldOutLoanList = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE);
-            boolean isRealTimeInterest = soldOutLoanList.contains(loanModel.getStatus()) || loanModel.getProductType() == ProductType.EXPERIENCE ? true : false;
             //根据不同的标的状态显示不同的periodDuration
-            int periodDuration = isRealTimeInterest ? loanModel.getDuration() : LoanPeriodCalculator.calculateDuration(new Date(), loanModel.getDeadline());
+            int periodDuration = LoanPeriodCalculator.calculateDuration(investTime, loanModel.getDeadline());
             extraRateInterest = getExtraRate(loanId, amount, periodDuration);
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
@@ -478,7 +485,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long interest = 0L;
-        List<Long> perPeriodInterestList = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
+        List<Long> perPeriodInterestList = InterestCalculator.estimateExpectedInterest(loanModel, investAmount, new Date());
         for (Long perPeriodInterest : perPeriodInterestList) {
             interest += perPeriodInterest;
         }

@@ -8,9 +8,10 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -96,10 +97,10 @@ public class ActivityWomenDayService {
     }
 
     private Map<String, WomanDayRecordView> setReferrerRecord(Map<String, WomanDayRecordView> womanDayAllRecordMap, String loginName) {
-        if(Strings.isNullOrEmpty(loginName)){
+        if (Strings.isNullOrEmpty(loginName)) {
             return womanDayAllRecordMap;
         }
-        List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
+        List<UserRegisterInfo> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityWomanDayStartTime, activityWomanDayEndTime, loginName);
         referrerUsers.stream().filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
                 .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, activityWomanDayStartTime, activityWomanDayEndTime) >= 5000)
                 .forEach(userModel -> this.putParam(womanDayAllRecordMap, userModel.getReferrer(), RewardType.REFERRER_REWARD, 5));

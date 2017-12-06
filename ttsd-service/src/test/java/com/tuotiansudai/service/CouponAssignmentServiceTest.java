@@ -2,18 +2,14 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -24,6 +20,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -39,12 +36,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class CouponAssignmentServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -64,13 +61,16 @@ public class CouponAssignmentServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
     @Mock
     private MQWrapperClient mqWrapperClient;
 
 
     @Test
     public void shouldExchangeCode() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.EXCHANGER_CODE, false);
         exchangeCodeService.generateExchangeCode(fakeCoupon.getId(), 1);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(fakeCoupon.getId());
@@ -85,7 +85,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssignCoupon() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
         couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
@@ -98,7 +98,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssignMultipleCoupon() {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
 
         couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
@@ -115,7 +115,11 @@ public class CouponAssignmentServiceTest {
     @Test
     public void shouldAsyncAssignUserGroup() throws Exception {
         UserModel fakeUser = getFakeUser("fakeUser");
-        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
+        this.createMockUser("fakeUser");
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 6, new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.MEMBERSHIP_V5, false);
 
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(couponAssignmentService, "mqWrapperClient", mqWrapperClient);
@@ -123,7 +127,7 @@ public class CouponAssignmentServiceTest {
         ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
         ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
 
-        couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
+        couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.MEMBERSHIP_V5));
 
         verify(mqWrapperClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
@@ -133,7 +137,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssign() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
         couponAssignmentService.assign(fakeUser.getLoginName(), fakeCoupon.getId(), "");
@@ -151,7 +155,7 @@ public class CouponAssignmentServiceTest {
 
     @Test
     public void shouldAssignMultiple() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
+        UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
 
         couponAssignmentService.assign(fakeUser.getLoginName(), fakeCoupon.getId(), "");
@@ -168,7 +172,7 @@ public class CouponAssignmentServiceTest {
     }
 
     private CouponModel getFakeCoupon(UserGroup userGroup, boolean isMultiple) {
-        UserModel couponCreator = getFakeUser("fakeUser");
+        UserModel couponCreator = getFakeUser("fakeUser1");
         userMapper.create(couponCreator);
         return createCouponModel(userGroup, isMultiple, couponCreator.getLoginName());
     }

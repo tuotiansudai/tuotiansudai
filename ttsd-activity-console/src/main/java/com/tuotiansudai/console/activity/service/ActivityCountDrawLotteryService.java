@@ -7,14 +7,20 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +50,12 @@ public class ActivityCountDrawLotteryService {
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY = "activity:double:eleven:user:invest:count";
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -104,6 +116,24 @@ public class ActivityCountDrawLotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
     private Date acticitySchoolSeasonEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.startTime}\")}")
+    private Date activityIphoneXStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphoneX.endTime}\")}")
+    private Date activityIphoneXEndTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
+    private Date activityDoubleElevenStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.endTime}\")}")
+    private Date activityDoubleElevenEndTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.year.end.awards.startTime}\")}")
+    private Date activityYearEndAwardsStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.year.end.awards.endTime}\")}")
+    private Date activityYearEndAwardsEndTime;
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
@@ -149,7 +179,7 @@ public class ActivityCountDrawLotteryService {
             case CHRISTMAS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
             case LANTERN_FESTIVAL_ACTIVITY:
-                return countDrawLotteryTime(userModel,activityCategory,Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_1000));
             case SPRING_FESTIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, springFestivalActivityTasks);
             case MONEY_TREE:
@@ -161,6 +191,12 @@ public class ActivityCountDrawLotteryService {
             case EXERCISE_WORK_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
             case SCHOOL_SEASON_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
+            case IPHONEX_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_INVEST_10000));
+            case DOUBLE_ELEVEN_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.DOUBLE_ELEVEN_INVEST));
+            case YEAR_END_AWARDS_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, Lists.newArrayList(ActivityDrawLotteryTask.EACH_EVERY_DAY));
         }
         return lotteryTime;
@@ -180,8 +216,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case EACH_REFERRER:
-                    List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    if(activityCategory.name().startsWith("MONEY_TREE")){
+                    List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    if (activityCategory.name().startsWith("MONEY_TREE")) {
                         //根据注册时间分组
                         Map<String, Long> groupByEveryDayCounts = userModels
                                 .stream()
@@ -195,8 +231,8 @@ public class ActivityCountDrawLotteryService {
                                 time += entry.getValue();
                             }
                         }
-                    }else{
-                        for (UserModel referrerUserModel : userModels) {
+                    } else {
+                        for (UserRegisterInfo referrerUserModel : userModels) {
                             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
                                 time++;
                             }
@@ -204,8 +240,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case EACH_REFERRER_INVEST:
-                    List<UserModel> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserModel referrerUserModel : referrerUserModels) {
+                    List<UserRegisterInfo> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    for (UserRegisterInfo referrerUserModel : referrerUserModels) {
                         if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
                             time++;
                         }
@@ -237,8 +273,8 @@ public class ActivityCountDrawLotteryService {
                     time += pointBillMapper.findCountPointBillPagination(userModel.getLoginName(), null, startTime, endTime, Lists.newArrayList(PointBusinessType.SIGN_IN));
                     break;
                 case REFERRER_USER:
-                    List<UserModel> referrerUsers = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    time += referrerUsers.size() * 5;
+                    long referrerUserCount = userMapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    time += referrerUserCount * 5;
                     break;
                 case EACH_INVEST_5000:
                     long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), ACTIVITY_DESCRIPTION, startTime, endTime);
@@ -255,17 +291,20 @@ public class ActivityCountDrawLotteryService {
                     time = time >= 10 ? 10 : time;
                     break;
                 case EACH_INVEST_1000:
-                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(),startTime,endTime,100000);
+                    time = investMapper.sumDrawCountByLoginName(userModel.getLoginName(), startTime, endTime, 100000);
                     break;
                 case EACH_INVEST_10000:
-                    List<InvestModel> investModels=investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(),startTime,endTime);
-                    for (InvestModel investModel:investModels) {
-                        time+=investModel.getAmount()<EACH_INVEST_AMOUNT_100000?0:(int)(investModel.getAmount()/EACH_INVEST_AMOUNT_100000);
+                    List<InvestModel> investModels = investMapper.findSuccessByLoginNameExceptTransferAndTime(userModel.getLoginName(), startTime, endTime);
+                    for (InvestModel investModel : investModels) {
+                        time += investModel.getAmount() < EACH_INVEST_AMOUNT_100000 ? 0 : (int) (investModel.getAmount() / EACH_INVEST_AMOUNT_100000);
                     }
                     break;
                 case EACH_EVERY_DAY:
                     time = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory,
                             DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).withTimeAtStartOfDay().plusMillis(-1).toDate()) == 0 ? 1 : 0;
+                    break;
+                case DOUBLE_ELEVEN_INVEST:
+                    time = getDoubleElevenDrawTimes(userModel);
                     break;
             }
         }
@@ -286,8 +325,8 @@ public class ActivityCountDrawLotteryService {
             case CHRISTMAS_ACTIVITY:
                 return Lists.newArrayList(activityChristmasSecondStartTime, activityChristmasEndTime);
             case LANTERN_FESTIVAL_ACTIVITY:
-                return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
-                        DateTime.parse(lanternFestivalEndTime,DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+                return Lists.newArrayList(DateTime.parse(lanternFestivalStartTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
+                        DateTime.parse(lanternFestivalEndTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case MONEY_TREE:
             case MONEY_TREE_UNDER_1000_ACTIVITY:
             case MONEY_TREE_UNDER_10000_ACTIVITY:
@@ -310,8 +349,40 @@ public class ActivityCountDrawLotteryService {
                 return Lists.newArrayList(acticityExerciseWorkStartTime, acticityExerciseWorkEndTime);
             case SCHOOL_SEASON_ACTIVITY:
                 return Lists.newArrayList(acticitySchoolSeasonStartTime, acticityExerciseWorkEndTime);
+            case IPHONEX_ACTIVITY:
+                return Lists.newArrayList(activityIphoneXStartTime, activityIphoneXEndTime);
+            case DOUBLE_ELEVEN_ACTIVITY:
+                return Lists.newArrayList(activityDoubleElevenStartTime, activityDoubleElevenEndTime);
+            case YEAR_END_AWARDS_ACTIVITY:
+                return Lists.newArrayList(activityYearEndAwardsStartTime, activityYearEndAwardsEndTime);
         }
         return null;
+    }
+
+    private int getDoubleElevenDrawTimes(UserModel userModel) {
+        int investDrawTimes = 0;
+        List<InvestModel> investModels = investMapper.findSuccessDoubleElevenActivityByTime(null, activityDoubleElevenStartTime, activityDoubleElevenEndTime);
+
+        redisWrapperClient.del(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY);
+        int count = 0;
+        for (InvestModel investModel : investModels) {
+            String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), userModel.getLoginName());
+            String incrKey = MessageFormat.format("{0}:{1}", userModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+            boolean even = String.valueOf(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey)).equals("0");
+            boolean booleanEvenOfDay = redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey) != null;
+            long evenCountOfDay = booleanEvenOfDay ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey)) : 0;
+            if (even && evenCountOfDay < 10) {
+                if(booleanEvenOfDay){
+                    count++;
+                }else{
+                    count = 1;
+                }
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_USER_INVEST_COUNT_KEY, incrKey, String.valueOf(count));
+                investDrawTimes++;
+            }
+        }
+
+        return investDrawTimes;
     }
 
 }

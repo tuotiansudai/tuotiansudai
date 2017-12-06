@@ -3,20 +3,12 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -30,9 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
 
@@ -40,7 +30,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     private MobileAppRepayCalendarService mobileAppRepayCalendarService;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -65,6 +55,9 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Test
     public void shouldGetYearRepayCalendarByIsOk() {
@@ -358,6 +351,9 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         loanModel.setStatus(LoanStatus.RAISING);
         loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
+
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        loanDetailsMapper.create(loanDetailsModel);
         return loanModel;
     }
 

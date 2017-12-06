@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,11 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class PledgeHouseMapperTest {
     @Autowired
-    UserMapper userMapper;
+    FakeUserHelper userMapper;
 
     @Autowired
     LoanMapper loanMapper;
@@ -71,7 +72,7 @@ public class PledgeHouseMapperTest {
         prepareData();
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
-                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+                "square", "propertyCardId","propertyRightCertificateId", "estateRegisterId", "authenticAct");
 
         pledgeHouseMapper.create(pledgeHouseModel);
 
@@ -91,7 +92,7 @@ public class PledgeHouseMapperTest {
     public void testUpdateByLoanId() throws Exception {
         prepareData();
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
-                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+                "square", "propertyCardId", "propertyRightCertificateId", "estateRegisterId", "authenticAct");
         pledgeHouseMapper.create(pledgeHouseModel);
 
         pledgeHouseModel.setPledgeLocation("updateLocation");
@@ -119,7 +120,7 @@ public class PledgeHouseMapperTest {
     public void testDeleteByLoanId() throws Exception {
         prepareData();
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
-                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+                "square", "propertyCardId","propertyRightCertificateId",  "estateRegisterId", "authenticAct");
         pledgeHouseMapper.create(pledgeHouseModel);
         assertNotNull(pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId()));
 

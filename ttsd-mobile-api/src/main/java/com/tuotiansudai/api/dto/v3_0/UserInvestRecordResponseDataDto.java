@@ -67,6 +67,9 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否债权转让", example = "true")
     private boolean isTransferInvest;
 
+    @ApiModelProperty(value = "还款进度", example = "100")
+    private int repayProgress;
+
     public String getLoanId() {
         return loanId;
     }
@@ -211,19 +214,28 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         isTransferInvest = transferInvest;
     }
 
+    public int getRepayProgress() {
+        return repayProgress;
+    }
+
+    public void setRepayProgress(int repayProgress) {
+        this.repayProgress = repayProgress;
+    }
+
     public UserInvestRecordResponseDataDto() {
 
     }
 
-    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan) {
+    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loanModel) {
         InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
         this.loanId = String.valueOf(invest.getLoanId());
+        this.loanName = loanModel.getName();
         this.investId = String.valueOf(invest.getId());
         this.investAmount = AmountConverter.convertCentToString(invest.getAmount());
         this.investTime = new DateTime(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()).toString("yyyy-MM-dd");
         this.investStatus = investStatus;
         this.achievements = invest.getAchievements();
-        this.pledgeType = loan.getPledgeType();
+        this.pledgeType = loanModel.getPledgeType();
         this.transferStatus = invest.getTransferStatus().name();
     }
 }

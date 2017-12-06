@@ -3,9 +3,10 @@ package com.tuotiansudai.activity.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GrantWelfareActivityService {
@@ -37,13 +37,13 @@ public class GrantWelfareActivityService {
 
         Date startTime = DateTime.parse(grantWelfarePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(grantWelfarePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
 
         referrerCount = Integer.parseInt(String.valueOf(userModels.stream()
                 .filter(n -> (n.getRegisterTime().before(endTime) && n.getRegisterTime().after(startTime)))
                 .filter((n) -> {
                     InvestModel investModel = investMapper.findFirstInvestAmountByLoginName(n.getLoginName(), startTime, endTime);
-                    return investModel != null && investModel.getAmount() >=500000;
+                    return investModel != null && investModel.getAmount() >= 500000;
                 }).count()));
 
         return referrerCount;
@@ -57,8 +57,8 @@ public class GrantWelfareActivityService {
 
         Date startTime = DateTime.parse(grantWelfarePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endTime = DateTime.parse(grantWelfarePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
-        for (UserModel referrerUserModel : userModels) {
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, loginName);
+        for (UserRegisterInfo referrerUserModel : userModels) {
             if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
                 referrerSumInvestAmount += investMapper.sumSuccessActivityInvestAmount(referrerUserModel.getLoginName(), null, startTime, endTime);
             }

@@ -18,11 +18,9 @@ public class BannerService {
 
     public void create(BannerDto bannerDto, String loginName, String ip) {
         BannerModel bannerModel = new BannerModel(bannerDto);
-        bannerModel.setActive(true);
         bannerModel.setCreatedTime(new Date());
         bannerModel.setCreatedBy(loginName);
         bannerModel.setActivatedBy(loginName);
-        bannerModel.setActivatedTime(new Date());
         bannerModel.setDeleted(false);
         bannerModel.setAppUrl(bannerDto.getAppUrl().trim());
         bannerMapper.create(bannerModel);

@@ -1,9 +1,12 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
@@ -13,10 +16,10 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -24,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestRepayService {
@@ -58,6 +62,12 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private CouponService couponService;
+
+    @Value("${web.server}")
+    private String webServer;
+
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
     private final static String NEWBIE_COUPON_TEMPLATE = "{0}元新手体验金";
@@ -79,7 +89,10 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             //未放款时按照预计利息计算(拓天体验项目没有本金，所以不需要计算)
             if (loanModel.getRecheckTime() == null && loanModel.getProductType() != ProductType.EXPERIENCE) {
-                totalExpectedInterest = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount());
+                List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
+                long estimateInvestIncome = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
+                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
+                totalExpectedInterest = estimateInvestIncome + couponExpectedInterest;
             }
             UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
             if (investModel.getTransferInvestId() != null) {
@@ -153,6 +166,18 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
             List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
+            if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
+                if (investModel.getContractNo().equals("OLD")) {
+                    if (investModel.getTransferInvestId() != null) {
+                        long transferApplicationId = transferApplicationMapper.findByInvestId(investModel.getId()).getId();
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/transfer/transferApplicationId/{1}", this.webServer, String.valueOf(transferApplicationId)));
+                    } else {
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId())));
+                    }
+                } else {
+                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo()));
+                }
+            }
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
             responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());

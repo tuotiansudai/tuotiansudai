@@ -11,9 +11,10 @@ import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.MobileEncryptor;
@@ -102,7 +103,7 @@ public class MoneyTreePrizeService {
             lotteryTimes = 1;
         }
 
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
+        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(DateTime.parse(moneyTreeTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(moneyTreeTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), userModel.getLoginName());
 
         int referrerLotteryTimes = 0;
         //根据注册时间分组

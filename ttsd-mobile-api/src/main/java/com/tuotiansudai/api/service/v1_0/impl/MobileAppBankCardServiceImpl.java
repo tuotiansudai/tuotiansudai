@@ -10,10 +10,10 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.AgreementService;
 import com.tuotiansudai.service.BindBankCardService;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +42,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
     @Autowired
     private AccountMapper accountMapper;
+
     @Override
     public BaseResponseDto<BankCardResponseDto> bindBankCard(BankCardRequestDto requestDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
@@ -49,11 +50,11 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             BindBankCardDto bindBankCardDto = requestDto.convertToBindBankCardDto();
             String loginName = requestDto.getBaseParam().getUserId();
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
-            if(accountModel == null){
-                return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            if (accountModel == null) {
+                return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
             }
             BaseDto<PayFormDataDto> requestFormData = bindBankCardService.bindBankCard(bindBankCardDto);
-            if(requestFormData.isSuccess()) {
+            if (requestFormData.isSuccess()) {
                 PayFormDataDto formData = requestFormData.getData();
 
                 BankCardResponseDto dataDto = new BankCardResponseDto();
@@ -80,8 +81,8 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         BaseResponseDto baseDto = new BaseResponseDto();
         try {
             AgreementDto agreementDto = requestDto.convertToAgreementDto();
-            BaseDto<PayFormDataDto> requestFormData = agreementService.agreement(agreementDto.getLoginName(),agreementDto);
-            if(requestFormData.isSuccess()) {
+            BaseDto<PayFormDataDto> requestFormData = agreementService.agreement(agreementDto.getLoginName(), agreementDto);
+            if (requestFormData.isSuccess()) {
                 PayFormDataDto formData = requestFormData.getData();
 
                 BankCardResponseDto dataDto = new BankCardResponseDto();
@@ -108,27 +109,27 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String userId = requestDto.getUserId();
         String operationType = requestDto.getOperationType();
-        if (Strings.isNullOrEmpty(operationType) || Strings.isNullOrEmpty(userId)){
+        if (Strings.isNullOrEmpty(operationType) || Strings.isNullOrEmpty(userId)) {
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
             return baseResponseDto;
         }
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userId);
-        if (MobileAppCommonConstants.QUERY_BIND_STATUS.equals(operationType)){
+        if (MobileAppCommonConstants.QUERY_BIND_STATUS.equals(operationType)) {
             //查询绑定状态
-            if (bankCardModel != null){
+            if (bankCardModel != null) {
                 baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-            }else {
+            } else {
                 baseResponseDto.setCode(ReturnMessage.BIND_CARD_FAIL.getCode());
                 baseResponseDto.setMessage(ReturnMessage.BIND_CARD_FAIL.getMsg());
             }
-        }else if (MobileAppCommonConstants.QUERY_SIGN_STATUS.equals(operationType)){
+        } else if (MobileAppCommonConstants.QUERY_SIGN_STATUS.equals(operationType)) {
             //查询签约状态
-            if (bankCardModel != null && bankCardModel.isFastPayOn()){
+            if (bankCardModel != null && bankCardModel.isFastPayOn()) {
                 baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-            }else {
+            } else {
                 baseResponseDto.setCode(ReturnMessage.BANK_CARD_SIGN_FAIL.getCode());
                 baseResponseDto.setMessage(ReturnMessage.BANK_CARD_SIGN_FAIL.getMsg());
             }
@@ -142,31 +143,31 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         BaseResponseDto<BankCardReplaceResponseDataDto> dto = new BaseResponseDto<>();
         String newCardNo = bindBankCardDto.getCardNumber();
         if (StringUtils.isBlank(newCardNo)) {
-            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getCode(),ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getMsg());
+            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getCode(), ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getMsg());
         }
         String loginName = bindBankCardDto.getLoginName();
         UserModel loginUser = userMapper.findByLoginName(loginName);
-        if(loginUser == null){
-            return new BaseResponseDto(ReturnMessage.USER_ID_NOT_EXIST.getCode(),ReturnMessage.USER_ID_NOT_EXIST.getMsg());
+        if (loginUser == null) {
+            return new BaseResponseDto(ReturnMessage.USER_ID_NOT_EXIST.getCode(), ReturnMessage.USER_ID_NOT_EXIST.getMsg());
         }
 
         BankCardModel bankCardModelIsExist = bankCardMapper.findPassedBankCardByBankCode(newCardNo);
-        if(bankCardModelIsExist != null){
-            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getCode(),ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getMsg());
+        if (bankCardModelIsExist != null) {
+            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getCode(), ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getMsg());
         }
         BaseDto<PayFormDataDto> requestFormData = bindBankCardService.replaceBankCard(bindBankCardDto);
-        if(requestFormData.isSuccess()){
+        if (requestFormData.isSuccess()) {
             PayFormDataDto formData = requestFormData.getData();
             BankCardReplaceResponseDataDto bankCardReplaceResponseDataDto = new BankCardReplaceResponseDataDto();
             bankCardReplaceResponseDataDto.setUrl(formData.getUrl());
             try {
                 bankCardReplaceResponseDataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields()));
             } catch (UnsupportedEncodingException e) {
-                return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(),ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
+                return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
             }
 
             dto.setData(bankCardReplaceResponseDataDto);
-        }else{
+        } else {
             log.debug("mobile replace card fail, pay wrapper return fail");
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -175,10 +176,10 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     }
 
     @Override
-    public BaseResponseDto<BankCardIsReplacingResponseDto> isReplacing(BaseParamDto baseParamDto){
+    public BaseResponseDto<BankCardIsReplacingResponseDto> isReplacing(BaseParamDto baseParamDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
-        baseResponseDto.setData(new BankCardIsReplacingResponseDto(bindBankCardService.isReplacing(loginName),bindBankCardService.isManual(loginName)));
+        baseResponseDto.setData(new BankCardIsReplacingResponseDto(bindBankCardService.isReplacing(loginName), bindBankCardService.isManual(loginName)));
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;

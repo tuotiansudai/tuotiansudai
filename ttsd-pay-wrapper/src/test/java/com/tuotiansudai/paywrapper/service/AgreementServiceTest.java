@@ -13,7 +13,7 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,17 +33,15 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class AgreementServiceTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -87,7 +86,7 @@ public class AgreementServiceTest {
     }
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId,userId,"payAccountId",new Date());
+        AccountModel accountModel = new AccountModel(userId, userId, "payAccountId", new Date());
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
         accountMapper.create(accountModel);
@@ -95,7 +94,7 @@ public class AgreementServiceTest {
     }
 
     private void generateMockResponse(int times) {
-        for (int index = 0; index < times; index++){
+        for (int index = 0; index < times; index++) {
             MockResponse mockResponse = new MockResponse();
             mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
                     "<html>\n" +

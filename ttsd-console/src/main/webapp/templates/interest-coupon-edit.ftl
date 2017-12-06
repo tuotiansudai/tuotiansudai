@@ -123,6 +123,7 @@
                     <input type="radio" name="productTypes" class="productType" value="_30,_90,_180,_360" <#if coupon?? && coupon.productTypes?join(",")=="_30,_90,_180,_360">checked="checked"</#if>>全部
                     <input type="radio" name="productTypes" class="productType" value="_90,_180,_360" <#if coupon?? && coupon.productTypes?join(",")=="_90,_180,_360">checked="checked"</#if>>大于60天
                     <input type="radio" name="productTypes" class="productType" value="_180,_360" <#if coupon?? && coupon.productTypes?join(",")=="_180,_360">checked="checked"</#if>>大于120天
+                    <input type="radio" name="productTypes" class="productType" value="_360" <#if coupon?? && coupon.productTypes?join(",")=="_360">checked="checked"</#if>>大于200天
                 </label>
             </div>
         </div>

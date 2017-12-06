@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +54,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         smsDto.setData(successSmsDataDto);
         successSmsDataDto.setStatus(true);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(smsDto);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyBoolean(), anyString())).thenReturn(smsDto);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
@@ -112,6 +113,32 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         assertEquals("13900000000",((RegisterResponseDataDto)baseResponseDto.getData()).getPhoneNum());
     }
 
+    @Test
+    public void shouldRegisterHuizuUserNotExistIsOk() {
+        String fake_token = "fake_token";
+        RegisterHuizuRequestDto registerHuizuRequestDto = getFakeHuizuRegisterRequestDto();
+        when(userService.mobileIsExist(anyString())).thenReturn(false);
+        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
+        when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn(fake_token);
+        BaseResponseDto<RegisterResponseDataDto> baseResponseDto = mobileAppRegisterService.registerUserFromHuizu(registerHuizuRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
+        assertEquals(fake_token,baseResponseDto.getData().getToken());
+        assertEquals("13900000000",(baseResponseDto.getData()).getPhoneNum());
+    }
+
+    @Test
+    public void shouldRegisterHuizuUserExistIsOk() {
+        String fake_token = "fake_token";
+        RegisterHuizuRequestDto registerHuizuRequestDto = getFakeHuizuRegisterRequestDto();
+        when(userService.mobileIsExist(anyString())).thenReturn(true);
+        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
+        when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn(fake_token);
+        BaseResponseDto<RegisterResponseDataDto> baseResponseDto = mobileAppRegisterService.registerUserFromHuizu(registerHuizuRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
+        assertEquals(fake_token,baseResponseDto.getData().getToken());
+        assertEquals("13900000000",(baseResponseDto.getData()).getPhoneNum());
+    }
+
 
     public UserModel getFakeUser(String loginName) {
         UserModel userModelTest = new UserModel();
@@ -133,5 +160,11 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         registerRequestDto.setPhoneNum("13900000000");
         registerRequestDto.setBaseParam(BaseParamTest.getInstance());
         return registerRequestDto;
+    }
+    public RegisterHuizuRequestDto getFakeHuizuRegisterRequestDto(){
+        RegisterHuizuRequestDto registerHuizuRequestDto = new RegisterHuizuRequestDto();
+        registerHuizuRequestDto.setPassword("password");
+        registerHuizuRequestDto.setPhoneNum("13900000000");
+        return registerHuizuRequestDto;
     }
 }

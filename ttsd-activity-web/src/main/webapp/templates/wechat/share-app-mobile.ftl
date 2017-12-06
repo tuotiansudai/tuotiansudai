@@ -14,7 +14,7 @@
 			<div class="item-form">
 				<form action="#" method="post" id="registerForm">
 					<div class="item-int">
-						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
+						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile" maxlength="11">
 					</div>
 					<div class="item-int">
 						<input type="password" validate class="item-text" name="password" placeholder="请输入您的密码" id="password">
@@ -23,9 +23,12 @@
 						<input type="text" validate class="item-text" name="captcha" placeholder="请输入验证码" id="captcha">
 						<input type="button" class="ignore get-code" value="获取验证码" id="getCaptchaBtn">
 					</div>
+                    <span class="recommender">推荐人：</span>
+                    <span id="recommender" class="recommender"></span>
 					<div class="item-int">
 	      				<input type="checkbox" validate class="checkbox" id="agreement" name="agreement" checked>
 						<label for="agreement" class="agree">同意拓天速贷<span id="agreeRule">《服务协议》</span></label>
+                        <span class="error noAgree">请查看并同意《服务协议》</span>
 					</div>
                     <div class="item-int">
                         <input type="submit" class="item-submit" value="注册领取6888元体验金">

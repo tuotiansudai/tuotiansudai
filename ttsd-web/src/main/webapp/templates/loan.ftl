@@ -57,7 +57,7 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf" target="_blank">债权转让协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
@@ -120,6 +120,7 @@
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
+                        <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">
                         <dl class="account-list">
                             <dd class="clearfix">
                                 <span class="fl">账户余额：</span>
@@ -214,7 +215,8 @@
                                                                 </#list>
                                                                 <#if minProductType=90><#assign couponTips='[适用于60天以上项目可用]'></#if>
                                                                 <#if minProductType=180><#assign couponTips='[适用于120天以上项目可用]'></#if>
-                                                                <i class="ticket-term" title="${couponTips}">${couponTips}</i>
+                                                                <#if minProductType=360><#assign couponTips='[适用于200天以上项目可用]'></#if>
+                                                                <i class="ticket-term" title="${couponTips!}">${couponTips!}</i>
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
@@ -298,12 +300,13 @@
                             <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investor.anxinUser>
                             <dd class="skip-group">
-                                <label>
-                                    <i class="skip-icon active"></i>
-                                    <input type="hidden" id="skipCheck" value="true">
-                                </label>
+
+                                <span class="init-checkbox-style on">
+                                     <input type="checkbox" id="skipCheck" class="default-checkbox" checked>
+                                 </span>
                                 <div class="skip-text">
-                                    我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                                   我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span>
+                                    <span class="check-tip" id="checkTip">请勾选</span></a>
                                 </div>
                             </dd>
                             </#if>
@@ -367,7 +370,7 @@
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeHouseDetail??>
-                                            <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
+                                            <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
                                                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeHouseDetail[key]}</div>
                                                 </#if>

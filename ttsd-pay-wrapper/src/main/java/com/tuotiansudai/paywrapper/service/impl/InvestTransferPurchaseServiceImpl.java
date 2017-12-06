@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -13,9 +12,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.message.AnxinContractMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -28,16 +25,14 @@ import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -85,12 +80,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
-
-    @Autowired
-    private AmountTransfer amountTransfer;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -329,7 +318,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update invest status to SUCCESS", String.valueOf(investId)));
 
         // generate transferee balance
-        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferee balance and user bill", String.valueOf(investId)));
 
         // update transferrer invest transfer status
@@ -377,8 +368,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
             ProjectTransferResponseModel feeResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, feeRequestModel, ProjectTransferResponseModel.class);
             if (feeResponseModel.isSuccess()) {
-                systemBillService.transferIn(transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
+
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                        transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
+                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {
@@ -404,11 +399,13 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
-                amountTransfer.transferInBalance(transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
-                amountTransfer.transferOutBalance(transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
+                AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
+                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
+                inAtm.setNext(outAtm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
-        } catch (PayException | AmountTransferException e) {
+        } catch (PayException e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is failed", String.valueOf(transferApplicationModel.getInvestId())), e);
             //sms notify
             this.sendFatalNotify(MessageFormat.format("债权转让(0)返款转让人失败", String.valueOf(transferApplicationModel.getInvestId())));

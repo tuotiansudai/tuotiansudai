@@ -35,6 +35,10 @@
         select * from user_bill where login_name = #{loginName}
     </select>
 
+    <select id="findByOrderIdAndBusinessType" parameterType="map" resultMap="userBillResultMap">
+        select * from user_bill where order_id = #{orderId} and business_type = #{userBillBusinessType}
+    </select>
+
     <select id="findUserBillsCount" parameterType="map" resultType="int">
         select count(*) from user_bill
         <where>
@@ -116,7 +120,9 @@
             </if>
         </where>
         order by ub.created_time desc, id desc
-        limit #{startLimit} , #{endLimit}
+        <if test="startLimit !=null and endLimit !=null ">
+            limit #{startLimit} , #{endLimit}
+        </if>
     </select>
 
     <select id="findUserFundsCount" parameterType="map" resultType="int">

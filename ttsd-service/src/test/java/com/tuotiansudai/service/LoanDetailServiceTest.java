@@ -10,6 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class LoanDetailServiceTest {
 
     @Autowired
@@ -42,10 +43,10 @@ public class LoanDetailServiceTest {
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Test
-    public void shouldGetTheInvests(){
+    public void shouldGetTheInvests() {
         long loanId = createLoanService();
         createTestInvests(loanId, "loginName", 10);
         BaseDto<BasePaginationDataDto> baseDto = loanDetailService.getInvests(null, loanId, 1, 5);
@@ -53,7 +54,7 @@ public class LoanDetailServiceTest {
     }
 
     @Test
-    public void shouldGetTheInvestsAndNextPagePreviousPage(){
+    public void shouldGetTheInvestsAndNextPagePreviousPage() {
         String mockUserName = "loginUser";
         createMockUser(mockUserName);
         long loanId = createLoanService();
@@ -69,8 +70,8 @@ public class LoanDetailServiceTest {
         assertEquals(2, data.getRecords().size());
     }
 
-    private void createTestInvests(long loanId, String loginName, int count){
-        for(int i=0;i<count;i++) {
+    private void createTestInvests(long loanId, String loginName, int count) {
+        for (int i = 0; i < count; i++) {
             InvestModel investModel = this.getFakeInvestModel(IdGenerator.generate(), loginName);
             investModel.setLoanId(loanId);
             investModel.setStatus(InvestStatus.SUCCESS);
@@ -79,7 +80,7 @@ public class LoanDetailServiceTest {
         }
     }
 
-    private long createLoanService(){
+    private long createLoanService() {
         String fakeUserName = "loginName";
         String fakeUserName2 = "investorName";
         UserModel userModel = getFakeUser(fakeUserName);
@@ -148,7 +149,7 @@ public class LoanDetailServiceTest {
         return new InvestModel(IdGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
     }
 
-    private void createMockUser(String loginName){
+    private void createMockUser(String loginName) {
         UserModel um = getFakeUser(loginName);
         userMapper.create(um);
     }

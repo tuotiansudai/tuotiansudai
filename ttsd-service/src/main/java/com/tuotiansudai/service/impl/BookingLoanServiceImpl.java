@@ -1,11 +1,11 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BookingLoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BookingLoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;

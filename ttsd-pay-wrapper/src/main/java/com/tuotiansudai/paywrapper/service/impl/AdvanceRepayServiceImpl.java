@@ -11,10 +11,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobManager;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.RepaySuccessAsyncCallBackMessage;
-import com.tuotiansudai.message.RepaySuccessMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -33,11 +30,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStat
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -84,12 +79,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     protected SystemBillMapper systemBillMapper;
-
-    @Autowired
-    protected AmountTransfer amountTransfer;
-
-    @Autowired
-    protected SystemBillService systemBillService;
 
     @Autowired
     protected PayAsyncClient payAsyncClient;
@@ -214,7 +203,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId),currentLoanRepay.getStatus()));
+            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -228,7 +217,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
 
         // update agent user bill
-        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), UserBillBusinessType.ADVANCE_REPAY, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), UserBillBusinessType.ADVANCE_REPAY, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         logger.info(MessageFormat.format("[Advance Repay {0}] loan repay callback transfer out agent({1}) amount({2}) ",
                 String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(currentLoanRepay.getRepayAmount())));
 
@@ -249,8 +239,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         for (InvestModel investModel : successInvests) {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
-                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
             //实际利息
@@ -280,7 +270,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.READY.name());
         logger.info(MessageFormat.format("[Advance Repay {0}] put loan repay id into redis READY", String.valueOf(loanRepayId)));
 
-        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess,new RepaySuccessMessage(loanRepayId, true));
+        mqWrapperClient.publishMessage(MessageTopic.RepaySuccess, new RepaySuccessMessage(loanRepayId, true));
         logger.info(MessageFormat.format("[[Advance Repay {0}]: 提前还款成功,发送MQ消息", String.valueOf(loanRepayId)));
 
         return callbackRequest.getResponseData();
@@ -309,8 +299,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus()){
-                logger.info(String.format("[Advance Repay %s] investRepay %s  status is COMPLETE",String.valueOf(currentLoanRepay.getRepayAmount()),String.valueOf(investRepayModel.getId())));
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
+                logger.info(String.format("[Advance Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
@@ -343,7 +333,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                                 String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId())), e);
                     }
 
-                }else{
+                } else {
                     try {
                         this.processInvestRepay(loanRepayId, investRepayModel);
                     } catch (Exception e) {
@@ -410,8 +400,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             return null;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(),true));
-        logger.info(MessageFormat.format("[Advance Repay] 提前还款发放投资人收益回调消息发送成功,notifyRequestId:{0}",String.valueOf(callbackRequest.getId())));
+        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(), true));
+        logger.info(MessageFormat.format("[Advance Repay] 提前还款发放投资人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
@@ -512,10 +502,14 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         //平台利息管理费总和
         long feeAmount = currentLoanRepay.getActualInterest() - interestWithoutFee;
-        systemBillService.transferIn(loanRepayId,
+
+        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                loanRepayId,
                 feeAmount,
                 SystemBillBusinessType.INVEST_FEE,
                 MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(currentLoanRepay.getLoanId()), String.valueOf(loanRepayId)));
+        mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(loanRepayId), SyncRequestStatus.SUCCESS.name());
 
@@ -537,16 +531,19 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         // interest user bill
         long paybackAmount = investModel.getAmount() + currentInvestRepay.getActualInterest();
-        amountTransfer.transferInBalance(investModel.getLoginName(), investRepayId, paybackAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
-
-        logger.info(MessageFormat.format("[Advance Repay {0}] invest repay({1}) update user bill payback amount({2})",
-                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount)));
+        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
+                investRepayId, paybackAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
 
         // fee user bill
-        amountTransfer.transferOutBalance(investModel.getLoginName(), investRepayId, currentInvestRepay.getActualFee(), UserBillBusinessType.INVEST_FEE, null, null);
+        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
+                investRepayId, currentInvestRepay.getActualFee(), UserBillBusinessType.INVEST_FEE, null, null);
 
-        logger.info(MessageFormat.format("[Advance Repay {0}] invest repay({1}) update user bill fee amount({2})",
-                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(currentInvestRepay.getActualFee())));
+        inAtm.setNext(outAtm);
+
+        logger.info(MessageFormat.format("[Advance Repay {0}] send amount transfer message to update user account. invest repay({1}), payback amount({2}), fee amount({3})",
+                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount), String.valueOf(currentInvestRepay.getActualFee())));
+
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
         //update invest repay
         currentInvestRepay.setStatus(RepayStatus.COMPLETE);

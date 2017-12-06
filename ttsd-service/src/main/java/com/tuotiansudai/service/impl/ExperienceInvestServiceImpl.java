@@ -1,22 +1,19 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.message.ExperienceAssigningMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.lang3.StringUtils;
@@ -36,9 +33,6 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     static Logger logger = Logger.getLogger(ExperienceInvestServiceImpl.class);
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -48,10 +42,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
+    private ExperienceBillService experienceBillService;
 
     @Autowired
-    private ExperienceBillService experienceBillService;
+    private ExperienceAccountMapper experienceAccountMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -129,14 +123,12 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     }
 
     private boolean isEnoughExperienceBalance(InvestDto investDto) {
-        UserModel userModel = userMapper.lockByLoginName(investDto.getLoginName());
-        long experienceBalance = userModel != null ? userModel.getExperienceBalance() : 0;
+        long experienceBalance = experienceAccountMapper.getExperienceBalance(investDto.getLoginName());
         long amount = Long.parseLong(investDto.getAmount());
         if (experienceBalance < amount) {
             logger.warn(MessageFormat.format("[Experience Invest] experience_balance[0] less investAmount[1]", experienceBalance, amount));
             return false;
         }
-
         return true;
     }
 

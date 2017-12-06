@@ -1,9 +1,10 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.share_app}" pageJavascript=""  title="新手福利_拓天新手投资_拓天速贷">
+<@global.main pageCss="${css.share_app}" pageJavascript="${js.app_shareSuc}"  title="新手福利_拓天新手投资_拓天速贷">
     <#--<#include "../pageLayout/header.ftl" />-->
 <div class="share-app-container clearfix" id="shareAppContainer">
 	<div class="share-container" >
+        <div id="register_btn">注册</div>
 		<div class="share-item">
 				<#if isOldUser?? && isOldUser>
                     <!-- 老用户信息 start -->

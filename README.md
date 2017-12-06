@@ -76,14 +76,14 @@
 	4. 使用虚拟环境</br>
 	`source ~/Work/venv/bin/active #成功后终端命令行前边会出现(venv)`</br>
 	5. 在虚拟环境下安装需要的软件</br>
-	`cd ~/Work/tuotian/signin_service`</br>
+	`cd ~/Work/tuotian/ttsd-user-rest-service`</br>
 	`pip install -r requirements.txt`</br>
 	中途如果出现`mysql_config not found`的问题的话需要输入下列命令后再重新使用pip安装</br>
 	`export PATH=$PATH:/usr/local/mysql/bin`</br>
 	使用pip安装完后,向同事索要aliyun-mns-python-sdk-1.1.3安装包，解压缩后进入解压的目录中</br>
 	`sudo python setup.py install`</br>
 	安装完毕后执行以下命令，配置没有问题的话登录服务会正常开启</br>
-	`cd ~/Work/tuotian/signin_service`</br>
+	`cd ~/Work/tuotian/ttsd-user-rest-service`</br>
 	`sudo python web.py`</br>
 
 * 安装gradle

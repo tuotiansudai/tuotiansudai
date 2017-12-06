@@ -4,7 +4,7 @@ import com.tuotiansudai.activity.repository.mapper.MidSummerInvestMapper;
 import com.tuotiansudai.activity.repository.mapper.MidSummerSharedUsersMapper;
 import com.tuotiansudai.activity.repository.model.MidSummerInvestModel;
 import com.tuotiansudai.activity.repository.model.MidSummerSharedUsersModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

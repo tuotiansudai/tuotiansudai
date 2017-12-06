@@ -22,13 +22,28 @@
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
             base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.cache,
-            com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,
-            com.tuotiansudai.point, com.tuotiansudai.transfer,com.tuotiansudai.membership,
-             com.tuotiansudai.message,com.tuotiansudai.log.service"/>
+            com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util, com.tuotiansudai.point, com.tuotiansudai.transfer,
+            com.tuotiansudai.membership,com.tuotiansudai.message,com.tuotiansudai.log.service,com.tuotiansudai.rest.client"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
+
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.qiye.163.com"/>
+        <property name="port" value="994"/>
+        <property name="username" value="${no-reply.username}"/>
+        <property name="password" value="${no-reply.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.ssl.enable">true</prop>
+                <prop key="mail.smtp.ssl.required">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.qiye.163.com</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
 
     <bean id="payHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>

@@ -9,11 +9,11 @@ public class PageValidUtils {
     @Value("${mobile.app.page.size.limit}")
     private int defaultPageMaxSize;
 
-    private final int defaultPageSize = 10;
+    private final static int DEFAULT_PAGE_SIZE = 10;
 
     public int validPageSizeLimit(Integer pageSize) {
         if(pageSize == null || pageSize <= 0){
-            return defaultPageSize;
+            return DEFAULT_PAGE_SIZE;
         }
 
         if (pageSize > defaultPageMaxSize) {

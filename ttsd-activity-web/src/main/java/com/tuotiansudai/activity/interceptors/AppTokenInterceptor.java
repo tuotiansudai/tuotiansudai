@@ -39,6 +39,7 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
             }
 
             String token = request.getHeader("token");
+            token = Strings.isNullOrEmpty(token) ? request.getParameter("token") : token;
             SignInResult signInResult = signInClient.verifyToken(token, userAgentSource);
             if (signInResult != null && signInResult.isResult()) {
                 myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);

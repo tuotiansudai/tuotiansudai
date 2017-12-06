@@ -14,7 +14,6 @@ public class BankCardUtil {
             .put("CMB", "招商银行")
             .put("ABC", "中国农业银行")
             .put("CCB", "中国建设银行")
-            .put("CMBC", "中国民生银行")
             .put("SPDB", "浦东发展银行")
             .put("GDB", "广发银行")
             .put("HXB", "华夏银行")
@@ -33,7 +32,7 @@ public class BankCardUtil {
             .put("NBB", "宁波银行")
             .build());
 
-    private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB", "CMBC",
+    private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB",
             "SPDB", "GDB", "HXB", "PSBC", "BOC",
             "CEB", "BEA", "COMM", "CITIC", "BJB");
 
@@ -43,7 +42,7 @@ public class BankCardUtil {
             "CZSB", "SPAB", "BHB", "LZB", "CMB", "ICBC", "NBB");
 
     private static final List<String> FAST_PAY_BANKS = Lists.newArrayList("ICBC", "ABC", "CCB", "BOC", "CEB",
-            "CIB", "CMBC", "SPDB", "COMM", "GDB", "CITIC", "CMB", "SPAB");
+            "CIB", "SPDB", "COMM", "GDB", "CITIC", "CMB", "SPAB");
 
     public static List<String> getRechargeBanks() {
         return RECHARGE_BANKS;

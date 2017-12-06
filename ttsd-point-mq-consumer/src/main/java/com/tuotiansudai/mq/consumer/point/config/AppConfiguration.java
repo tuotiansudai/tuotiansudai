@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.consumer.point.config;
 import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.point.service.impl.PointLotteryServiceImpl;
+import com.tuotiansudai.rest.client.UserMapperConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -28,6 +29,7 @@ import redis.clients.jedis.JedisPoolConfig;
         "classpath:ttsd-biz.properties"
 })
 @EnableAspectJAutoProxy(exposeProxy = true)
+@Import(UserMapperConfiguration.class)
 public class AppConfiguration {
 
     @Bean

@@ -2,10 +2,9 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.ExperienceBillMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ExperienceBillModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.ExperienceBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExperienceServiceImpl implements ExperienceBillService {
 
     @Autowired
-    private UserMapper userMapper;
+    private ExperienceAccountMapper experienceAccountMapper;
 
     @Autowired
     private ExperienceBillMapper experienceBillMapper;
@@ -23,7 +22,15 @@ public class ExperienceServiceImpl implements ExperienceBillService {
     @Override
     @Transactional
     public void updateUserExperienceBalanceByLoginName(long experienceAmount, String loginName, ExperienceBillOperationType experienceBillOperationType, ExperienceBillBusinessType experienceBusinessType, String note) {
-        userMapper.updateExperienceBalance(loginName, experienceBillOperationType, experienceAmount);
+        if (!experienceAccountMapper.exists(loginName)) {
+            experienceAccountMapper.create(loginName, 0);
+        }
+
+        if (experienceBillOperationType == ExperienceBillOperationType.OUT) {
+            experienceAccountMapper.addBalance(loginName, -experienceAmount);
+        } else {
+            experienceAccountMapper.addBalance(loginName, experienceAmount);
+        }
 
         ExperienceBillModel experienceBillModel = new ExperienceBillModel(loginName,
                 experienceBillOperationType,

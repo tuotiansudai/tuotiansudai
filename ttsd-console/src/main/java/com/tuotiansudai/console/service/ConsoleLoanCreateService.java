@@ -163,7 +163,8 @@ public class ConsoleLoanCreateService {
             loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
         }
 
-        loanCreateRequestDto.getLoan().setName(loanCreateRequestDto.getLoan().getName() + loanNameSeq);
+        loanCreateRequestDto.getLoan().setName(loanModel.getPledgeType() == loanCreateRequestDto.getLoan().getPledgeType() ? loanCreateRequestDto.getLoan().getName() + loanNameSeq : generateLoanName(loanCreateRequestDto.getLoan().getName(), loanCreateRequestDto.getLoan().getPledgeType()));
+
         loanMapper.update(loanModel.updateLoan(loanCreateRequestDto));
 
         if (Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
@@ -263,7 +264,7 @@ public class ConsoleLoanCreateService {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             List<LoanCreatePledgeEnterpriseRequestDto> loanCreatePledgeEnterpriseRequestDtoList = pledgeEnterpriseMapper.getByLoanId(loanId).stream()
                     .map(n -> new LoanCreatePledgeEnterpriseRequestDto(n)).collect(Collectors.toList());
-             loanCreateRequestDto.setPledgeEnterprise(loanCreatePledgeEnterpriseRequestDtoList);
+            loanCreateRequestDto.setPledgeEnterprise(loanCreatePledgeEnterpriseRequestDtoList);
         }
         if (PledgeType.ENTERPRISE_CREDIT == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
@@ -374,12 +375,12 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "原借款期限不能小于1天"));
         }
 
-        if (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date())) {
+        if (!loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
 
-        if (!Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
-            return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+        if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus()) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
+                return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());

@@ -7,9 +7,9 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppReferrerInvestService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
         }
 
         String level = referrerManageService.getUserRewardDisplayLevel(referrerId);
-        List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerId, null, null, null,level, (index - 1) * pageSize, pageSize);
+        List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerId, null, null, null, level, (index - 1) * pageSize, pageSize);
         List<ReferrerInvestResponseDataDto> referrerInvestResponseDataDtos = Lists.transform(referrerManageViewList, new Function<ReferrerManageView, ReferrerInvestResponseDataDto>() {
             @Override
             public ReferrerInvestResponseDataDto apply(ReferrerManageView input) {
@@ -52,12 +52,12 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
                 return new ReferrerInvestResponseDataDto(input);
             }
         });
-        int count = referrerManageMapper.findReferInvestCount(referrerId, null, null, null,level);
+        int count = referrerManageMapper.findReferInvestCount(referrerId, null, null, null, level);
         referrerInvestListResponseDataDto = new ReferrerInvestListResponseDataDto();
         referrerInvestListResponseDataDto.setIndex(index);
         referrerInvestListResponseDataDto.setPageSize(pageSize);
         referrerInvestListResponseDataDto.setTotalCount(count);
-        referrerInvestListResponseDataDto.setRewardTotalMoney(AmountConverter.convertCentToString(referrerManageMapper.findReferInvestTotalAmount(referrerId, null, null, null,level)));
+        referrerInvestListResponseDataDto.setRewardTotalMoney(AmountConverter.convertCentToString(referrerManageMapper.findReferInvestTotalAmount(referrerId, null, null, null, level)));
         referrerInvestListResponseDataDto.setReferrerInvestList(referrerInvestResponseDataDtos);
         dto.setData(referrerInvestListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());

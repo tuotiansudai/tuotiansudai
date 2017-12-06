@@ -5,15 +5,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.UserFundResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppUserFundV2Service;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -34,7 +28,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     private MobileAppUserFundV2Service mobileAppUserFundV2Service;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -274,7 +268,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         return couponModel;
     }
 
-    private UserBillModel createFakeUserBillModel(String loginName, long amount){
+    private UserBillModel createFakeUserBillModel(String loginName, long amount) {
         UserBillModel userBillModel = new UserBillModel();
         userBillModel.setId(IdGenerator.generate());
         userBillModel.setOperationType(UserBillOperationType.TO_BALANCE);

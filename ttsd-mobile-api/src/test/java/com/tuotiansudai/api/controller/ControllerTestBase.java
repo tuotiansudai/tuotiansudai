@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,8 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
-@WebAppConfiguration
+@ActiveProfiles("test")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})@WebAppConfiguration
 @Transactional
 public abstract class ControllerTestBase {
     protected ObjectMapper objectMapper = new ObjectMapper();

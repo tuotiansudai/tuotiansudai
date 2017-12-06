@@ -1,8 +1,7 @@
 require('webStyle/about_us.scss');
 require('publicJs/pagination');
-
+require('webJsModule/touch_menu');
 let paginationElement = $('.pagination');
-
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
 
@@ -69,8 +68,14 @@ let leftMenuBox = globalFun.$('#leftMenuBox');
 }());
 
 //拓天公告
-var $noticeList=$('#noticeList'),
+let $noticeList=$('#noticeList'),
     $noticeDetail=$('#noticeDetail');
+let $leftMenuBox = $('#leftMenuBox');
+
+let redirect = globalFun.browserRedirect();
+if(redirect=='mobile') {
+    $leftMenuBox.find('li').eq(3).hide();
+}
 if($noticeList.length) {
     let noticeTpl=$('#noticeListTemplate').html();
     let ListRender = _.template(noticeTpl);

@@ -1,19 +1,14 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.ExchangeCouponView;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +20,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class CouponMapperTest {
@@ -33,9 +29,9 @@ public class CouponMapperTest {
     private CouponMapper couponMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private FakeUserHelper userMapper;
 
-    private CouponModel fakeCouponModel(){
+    private CouponModel fakeCouponModel() {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1000L);
         couponModel.setActivatedBy("couponTest");

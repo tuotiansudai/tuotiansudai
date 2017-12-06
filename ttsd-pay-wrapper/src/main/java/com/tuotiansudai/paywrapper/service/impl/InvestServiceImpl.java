@@ -12,7 +12,6 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
@@ -39,10 +38,11 @@ import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -52,6 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -84,9 +85,6 @@ public class InvestServiceImpl implements InvestService {
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
-    private AmountTransfer amountTransfer;
-
-    @Autowired
     private InvestNotifyRequestMapper investNotifyRequestMapper;
 
     @Autowired
@@ -109,6 +107,13 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserMapper userMapper;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
+    public final static String ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY = "activity:double:eleven:loanId:{0}:count";
+    public final static String ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY = "activity:double:eleven:every:day:even:count";
+    private final static int SIX_MONTH_SECOND = 60 * 60 * 24 * 30 * 6;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -152,6 +157,12 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.celebration.single.endTime}\")}")
     private Date activitySingleEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.startTime}\")}")
+    private Date activityDoubleElevenStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.double.eleven.endTime}\")}")
+    private Date activityDoubleElevenEndTime;
+
     private final List<ExperienceReward> mothersRewards = Lists.newArrayList(
             new ExperienceReward(688800l, 1000000l, 5000000l),
             new ExperienceReward(3888800l, 5000000l, 10000000l),
@@ -164,6 +175,8 @@ public class InvestServiceImpl implements InvestService {
             new ExperienceReward(3222200l, 10000000l, 20000000l),
             new ExperienceReward(6888800l, 20000000l, Long.MAX_VALUE));
 
+    private final static String ZERO_SHOPPING_ACTIVITY_PRIZE = "zero_shopping_activity_prize:{0}";
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -174,6 +187,8 @@ public class InvestServiceImpl implements InvestService {
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
+
+        saveZeroShoppingActivityPrizeRedis(investModel.getId(), investModel.getLoginName(), dto.getZeroShoppingPrize());
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
                 dto.getLoginName(),
@@ -202,7 +217,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds, String prize) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -211,6 +226,9 @@ public class InvestServiceImpl implements InvestService {
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
+
+        saveZeroShoppingActivityPrizeRedis(investModel.getId(), investModel.getLoginName(), prize);
+
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
@@ -420,7 +438,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds(), dto.getZeroShoppingPrize());
     }
 
     @Override
@@ -464,7 +482,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null, null);
                 if (!baseDto.isSuccess()) {
                     logger.info(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
@@ -519,14 +537,10 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public void investSuccess(InvestModel investModel) {
-        try {
-            // 冻结资金
-            amountTransfer.freeze(investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(investModel.getId()), investModel.getAmount(), investModel.getLoginName(), investModel.getLoanId(), e);
-            return;
-        }
+        // 冻结资金
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);
         //设置交易时间
@@ -634,16 +648,20 @@ public class InvestServiceImpl implements InvestService {
         try {
             mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, new InvestSuccessMessage(investInfo, loanDetailInfo, userInfo));
             UserInfoActivity userInfoActivity = new UserInfoActivity(userInfo, userModel.getRegisterTime());
-            mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_InvestHeroRanking, new InvestSuccessCelebrationHeroRankingMessage(investInfo, userInfoActivity));
             if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
                 mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_MidSummer, new InvestSuccessMidSummerMessage(investModel.getId(), investModel.getLoginName(), userModel.getReferrer(), investModel.getAmount(), investModel.getTradingTime()));
             }
 
-            if(DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
+            if (DateTime.now().toDate().before(activitySingleEndTime) && DateTime.now().toDate().after(activitySingleStartTime)
                     && !loanMapper.findById(investModel.getLoanId()).getActivityType().name().equals("NEWBIE")
                     && !investModel.getTransferStatus().equals("SUCCESS")
-                    && investModel.getStatus().name().equals("SUCCESS")){
-                celebrationOnePenAssignExperience(investModel.getLoginName(),investModel.getAmount());
+                    && investModel.getStatus().name().equals("SUCCESS")) {
+                celebrationOnePenAssignExperience(investModel.getLoginName(), investModel.getAmount());
+            }
+
+            //双十一活动发送站内信
+            if (DateTime.now().toDate().before(activityDoubleElevenEndTime) && DateTime.now().toDate().after(activityDoubleElevenStartTime)) {
+                this.sendUserMessageByDoubleElevenActivity(investModel, loanModel, loanDetailInfo);
             }
 
         } catch (JsonProcessingException e) {
@@ -736,7 +754,7 @@ public class InvestServiceImpl implements InvestService {
         Optional<ExperienceReward> reward = singleRewards.stream().filter(OnePenRewards -> OnePenRewards.getStartAmount() <= investAmount && investAmount < OnePenRewards.getEndAmount()).findAny();
         if (reward.isPresent()) {
             mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
-                   new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
+                    new ExperienceAssigningMessage(loginName, reward.get().getExperienceAmount(), ExperienceBillOperationType.IN, ExperienceBillBusinessType.CELEBRATION_SINGLE_ECONOMICAL));
 
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ASSIGN_EXPERIENCE_SUCCESS,
                     Lists.newArrayList(loginName),
@@ -745,6 +763,55 @@ public class InvestServiceImpl implements InvestService {
                     null));
         }
 
+    }
+
+    private void saveZeroShoppingActivityPrizeRedis(long investId, String loginName, String prize) {
+        final int lifeSecond = 180 * 24 * 60 * 60;
+        if (Strings.isNullOrEmpty(prize)) {
+            return;
+        }
+        redisWrapperClient.hset(MessageFormat.format(ZERO_SHOPPING_ACTIVITY_PRIZE, String.valueOf(investId)), loginName, prize, lifeSecond);
+    }
+
+
+    private void sendUserMessageByDoubleElevenActivity(InvestModel investModel, LoanModel loanModel, LoanDetailInfo loanDetailInfo) {
+        if (loanModel.getId() != 1 && !loanModel.getActivityType().equals(ActivityType.NEWBIE) && !loanModel.getProductType().equals(ProductType._30) && (Strings.isNullOrEmpty(loanDetailInfo.getActivityDesc()) || !loanDetailInfo.getActivityDesc().equals("0元购"))) {
+            long investSeq = redisWrapperClient.incr(MessageFormat.format(ACTIVITY_DOUBLE_ELEVEN_LOAN_INVEST_COUNT_KEY, loanModel.getId()));
+
+            String activityTitle;
+            String activityContent;
+            MessageEventType messageEventType;
+            String hkey = MessageFormat.format("{0}:{1}:{2}", investModel.getLoanId(), investModel.getId(), investModel.getLoginName());
+            String hInvestEvenKey = MessageFormat.format("{0}:{1}", investModel.getLoginName(), new DateTime(investModel.getTradingTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+            long everyDayInvestEvenCount = redisWrapperClient.hexists(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey) ? Long.parseLong(redisWrapperClient.hget(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey)) : 0;
+            if (investSeq % 2 == 0 && everyDayInvestEvenCount < 10) {
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_EVERY_DAY_INVEST_EVEN_COUNT_KEY, hInvestEvenKey, String.valueOf(everyDayInvestEvenCount + 1));
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "0", SIX_MONTH_SECOND);
+                activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getTitleTemplate();
+                activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD.getContentTemplate(), loanModel.getName());
+                messageEventType = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_ODD;
+
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(messageEventType,
+                        Lists.newArrayList(investModel.getLoginName()),
+                        activityTitle,
+                        activityContent,
+                        investModel.getId()
+                ));
+            }
+            if(investSeq % 2 == 1) {
+                redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "1", SIX_MONTH_SECOND);
+                activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getTitleTemplate();
+                activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getContentTemplate(), loanModel.getName());
+                messageEventType = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN;
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(messageEventType,
+                        Lists.newArrayList(investModel.getLoginName()),
+                        activityTitle,
+                        activityContent,
+                        investModel.getId()
+                ));
+            }
+
+        }
     }
 
     class ExperienceReward {

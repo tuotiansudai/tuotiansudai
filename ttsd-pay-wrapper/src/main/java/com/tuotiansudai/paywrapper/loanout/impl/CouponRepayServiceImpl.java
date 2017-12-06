@@ -8,25 +8,23 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
+import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.loanout.CouponRepayService;
-import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayTransferNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -84,16 +82,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private AmountTransfer amountTransfer;
-
-    @Autowired
-    private SystemBillService systemBillService;
-
-    @Autowired
     private CouponRepayMapper couponRepayMapper;
-
-    @Autowired
-    private CouponRepayNotifyRequestMapper couponRepayNotifyRequestMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -175,7 +164,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             if (transferAmount > 0) {
                 try {
-                    TransferRequestModel requestModel = TransferRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
+                    TransferRequestModel requestModel = TransferRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE,
+                            String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayAccountId(),
                             String.valueOf(transferAmount));
@@ -186,7 +176,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         logger.info(MessageFormat.format("[Coupon Repay loanRepayId {0}] couponRepayModel.id ({1}) send payback request",
                                 String.valueOf(loanRepayId), String.valueOf(couponRepayModel.getId())));
 
-                        TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                        TransferResponseModel responseModel = paySyncClient.send(CouponRepayTransferMapper.class, requestModel, TransferResponseModel.class);
                         boolean isPaySuccess = responseModel.isSuccess();
                         redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), isPaySuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
                         logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer status is {2}\n" +
@@ -228,7 +218,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        if(loanModel == null){
+        if (loanModel == null) {
             logger.error(MessageFormat.format("[Generate_Coupon_Repay:] loanId:{0} 优惠券回款计划生成失败，标的不存在", String.valueOf(loanId)));
             return false;
         }
@@ -350,77 +340,58 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 originalQueryString,
-                CouponRepayNotifyRequestMapper.class,
-                CouponRepayNotifyRequestModel.class);
+                CouponRepayTransferNotifyRequestMapper.class,
+                TransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
         }
 
-        mqWrapperClient.sendMessage(MessageQueue.RepaySuccessCouponRepayCallback, String.valueOf(callbackRequest.getId()));
+
+        long couponRepayId = Long.parseLong(callbackRequest.getOrderId().split("X")[0]);
+        try {
+            CouponRepayModel couponRepayModel = couponRepayMapper.findById(couponRepayId);
+            InvestModel investModel = investMapper.findById(couponRepayModel.getInvestId());
+            LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(investModel.getLoanId(), couponRepayModel.getPeriod());
+
+            redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId),
+                    callbackRequest.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("coupon repay callback exception {0}", String.valueOf(couponRepayId)), e);
+        }
+
+        if (callbackRequest.isSuccess()) {
+            mqWrapperClient.sendMessage(MessageQueue.RepaySuccessCouponRepayCallback, String.valueOf(couponRepayId));
+        } else {
+            sendSmsErrNotify(MessageFormat.format("{0}, 优惠券还款，联动优势回调失败 CouponRepayId = {1}", environment, String.valueOf(couponRepayId)));
+        }
 
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncCouponRepayCallback(long notifyRequestId) {
-        CouponRepayNotifyRequestModel model = couponRepayNotifyRequestMapper.findById(notifyRequestId);
-        if (updateCouponRepayNotifyRequestStatus(model)) {
-            try {
-                this.processOneCallback(model);
-            } catch (Exception e) {
-                logger.error(String.format("coupon repay call back is fail orderId:%s,id:%s", String.valueOf(model.getOrderId()), String.valueOf(model.getId())));
-                fatalLog("coupon repay call back is fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
-            }
-        }
-        BaseDto<PayDataDto> asyncCouponRepayNotifyDto = new BaseDto<>();
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
-        asyncCouponRepayNotifyDto.setData(baseDataDto);
-
-        return asyncCouponRepayNotifyDto;
-    }
-
-    private boolean updateCouponRepayNotifyRequestStatus(CouponRepayNotifyRequestModel model) {
-        try {
-            couponRepayNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
-        } catch (Exception e) {
-            fatalLog("update_coupon_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
-            return false;
-        }
-        return true;
-    }
-
-    @Transactional
-    @Override
-    public void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel) {
-        long couponRepayId = Long.parseLong(callbackRequestModel.getOrderId().split("X")[0]);
+    public BaseDto<PayDataDto> asyncCouponRepayCallback(long couponRepayId) {
         CouponRepayModel couponRepayModel = couponRepayMapper.findById(couponRepayId);
         InvestModel investModel = investMapper.findById(couponRepayModel.getInvestId());
-        LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(investModel.getLoanId(), couponRepayModel.getPeriod());
         CouponModel couponModel = couponMapper.findById(couponRepayModel.getCouponId());
 
-        if (!callbackRequestModel.isSuccess()) {
-            redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.FAILURE.name());
-            sendSmsErrNotify(MessageFormat.format("{0}, 优惠券还款，联动优势回调失败 CouponRepayId = {1}", environment, String.valueOf(couponRepayId)));
-            return;
-        }
-
         boolean isAdvanced = new DateTime(couponRepayModel.getActualRepayDate()).withTimeAtStartOfDay().isBefore(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay());
+
         try {
-            if (!couponRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
-
+            if (couponRepayModel.getStatus() != RepayStatus.COMPLETE) {
                 this.updateCouponRepayAfterCallback(investModel.getId(), couponRepayModel, isAdvanced);
-
-                amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
+                AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualInterest(),
                         couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-                amountTransfer.transferOutBalance(couponRepayModel.getLoginName(),
+                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualFee(),
                         UserBillBusinessType.INVEST_FEE, null, null);
+
+                inAtm.setNext(outAtm);
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
                 String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                         couponModel.getCouponType().getName(),
@@ -428,9 +399,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         String.valueOf(couponRepayModel.getId()),
                         String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
 
-                systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
-
-                redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
+                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
                 logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
                         String.valueOf(couponRepayModel.getId()),
@@ -443,6 +413,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             fatalLog("coupon repay processOneCallback error. currentLoanRepayModelId:" + couponRepayModel.getId(), e);
         }
 
+        BaseDto<PayDataDto> asyncCouponRepayNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+        asyncCouponRepayNotifyDto.setData(baseDataDto);
+
+        return asyncCouponRepayNotifyDto;
     }
 
     private void fatalLog(String errMsg, Throwable e) {

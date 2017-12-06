@@ -140,21 +140,6 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.HeadlinesTodayHeader, csvData, response.getOutputStream());
     }
 
-    @RequestMapping(value = "/woman-day-work", method = RequestMethod.GET)
-    public void womanDayExport(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.WomanDayHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            //logger.error(e.getLocalizedMessage(), e);
-        }
-        response.setContentType("application/csv");
-
-        List<List<String>> csvData = activityConsoleExportService.buildWomanDayCsvList();
-
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.WomanDayHeader, csvData, response.getOutputStream());
-    }
-
     @RequestMapping(value = "/mothers-day", method = RequestMethod.GET)
     public void mothersDayExport(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
@@ -198,5 +183,31 @@ public class ExportController {
         List<List<String>> csvData = activityConsoleExportService.buildHouseDecorateCsvList();
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.HouseDecorateHeader, csvData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/iphonex", method = RequestMethod.GET)
+    public void iphoneXExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.IphoneXHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildIphoneXCsvList();
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.IphoneXHeader, csvData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/zero-shopping", method = RequestMethod.GET)
+    public void zeroShoppingExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.ZeroShoppingHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildZeroShoppingCsvList();
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ZeroShoppingHeader, csvData, response.getOutputStream());
     }
 }

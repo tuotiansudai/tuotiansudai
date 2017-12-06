@@ -7,7 +7,7 @@ dependencies {
     def springVersion = '4.3.1.RELEASE'
     def springSecurityVersion = '4.1.1.RELEASE'
     def slf4jVersion = '1.7.21'
-    def mybatisVersion = '3.4.0'
+    def mybatisVersion = '3.4.2'
     def mybatisSpringVersion = '1.3.0'
     def jacksonVersion = '2.6.1'
     def freemarkerVersion = '2.3.25-incubating'

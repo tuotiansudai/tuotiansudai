@@ -1,0 +1,2 @@
+ALTER TABLE credit_loan_bill
+  ADD CONSTRAINT CREDIT_LOAN_BILL_UNIQUE_ORDER_ID_TYPE UNIQUE (order_id, business_type)

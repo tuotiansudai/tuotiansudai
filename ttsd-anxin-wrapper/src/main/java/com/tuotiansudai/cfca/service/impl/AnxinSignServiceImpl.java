@@ -17,6 +17,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.PayrollMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="payrollResultMap" type="PayrollModel">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="total_amount" property="totalAmount"></result>
+        <result column="head_count" property="headCount"></result>
+        <result column="status" property="status"></result>
+        <result column="remark" property="remark"></result>
+        <result column="grant_time" property="grantTime"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="updated_by" property="updatedBy"></result>
+        <result column="updated_time" property="updatedTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="PayrollModel" useGeneratedKeys="true" keyProperty="id">
+        insert into payroll (title, total_amount, head_count, status, remark, grant_time, created_by, created_time, updated_by, updated_time)
+        value(#{title}, #{totalAmount}, #{headCount}, #{status}, #{remark}, #{grantTime}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="PayrollModel">
+        update payroll
+        set title = #{title},
+        total_amount = #{totalAmount},
+        head_count = #{headCount},
+        status = #{status},
+        remark = #{remark},
+        grant_time = #{grantTime},
+        updated_by = #{updatedBy},
+        updated_time = #{updatedTime}
+        where id = #{id}
+    </update>
+
+    <select id="findPayroll" parameterType="map" resultMap="payrollResultMap">
+        select * from payroll
+        <where>
+            <if test="createStartTime !=null">
+                AND created_time &gt;= #{createStartTime}
+            </if>
+            <if test="createEndTime !=null">
+                AND created_time &lt;= #{createEndTime}
+            </if>
+            <if test="sendStartTime !=null">
+                AND grant_time &gt;= #{sendStartTime}
+            </if>
+            <if test="sendEndTime !=null">
+                AND grant_time &lt;= #{sendEndTime}
+            </if>
+            <if test="amountMin !=null and amountMin !=''">
+                AND total_amount &gt;= #{amountMin}
+            </if>
+            <if test="amountMax !=null and amountMax !=''">
+                AND total_amount &lt;= #{amountMax}
+            </if>
+            <if test="payrollStatusType !=null">
+                AND status = #{payrollStatusType}
+            </if>
+            <if test="title !=null and title !=''">
+                AND title like CONCAT(CONCAT('%', #{title}), '%')
+            </if>
+        </where>
+        ORDER BY created_time DESC
+    </select>
+
+    <select id="findById" parameterType="map" resultMap="payrollResultMap">
+        select * from payroll where id = #{id}
+    </select>
+
+    <update id="updateStatus" parameterType="map">
+        update payroll set status = #{status} where id=#{id}
+    </update>
+</mapper>

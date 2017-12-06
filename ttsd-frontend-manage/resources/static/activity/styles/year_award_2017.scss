@@ -1,0 +1,1374 @@
+html {
+  //font-size: 100px;
+  body {
+    font-size: 12px;
+  }
+}
+p {
+  margin: 0;
+}
+strong {
+  font-weight: normal;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+* {
+  -webkit-tap-highlight-color:transparent;
+}
+
+$width: 768px;
+
+
+
+.banner {
+  height: 350px;
+  background: url("../images/2017/year-award/year_award_bannerPc.png") no-repeat center center;
+  @media screen and (max-width:768px) {
+    width: 100%;
+    height: 9.1rem;
+    background: url("../images/2017/year-award/year_award_bannerWap.png") no-repeat;
+    background-size: contain;
+  }
+  @media screen and (max-width:750px) {
+    width: 100%;
+    height: 8.75rem;
+    background: url("../images/2017/year-award/year_award_bannerWap.png") no-repeat;
+    background-size: contain;
+  }
+}
+#doubleElevenContainer {
+  background: #090b2a;
+  width: 100%;
+  overflow: hidden;
+}
+.show_middle_box {
+  margin: 0 auto 30px auto;
+  padding: 0 70px 30px 70px;
+  width: 860px;
+  text-align: center;
+  background: #12143e;
+  overflow: hidden;
+  @media screen and (max-width:768px) {
+    margin: 0 auto .75rem auto;
+    padding: 0 .75rem .75rem .75rem;
+    width: 17.25rem;
+  }
+}
+.title_sign {
+  display: inline-block;
+  width: 477px;
+  height: 107px;
+  margin: 38px auto 50px auto;
+  @media screen and (max-width:768px) {
+    display: inline-block;
+    width: 11.925rem;
+    height: 2.675rem;
+    margin: 0.575rem auto .5rem auto;
+  }
+}
+.title_sign1 {
+  background: url("../images/2017/year-award/end_login_reward.png") no-repeat;
+  background-size: contain;
+}
+.title_sign2 {
+  background: url("../images/2017/year-award/reward_everyone.png") no-repeat;
+  background-size: contain;
+}
+.title_sign3 {
+  background: url("../images/2017/year-award/excellent_employee.png") no-repeat;
+  background-size: contain;
+}
+.active_desc {
+  display: inline-block;
+  width: 100%;
+  font-size: 18px;
+  color: #fff;
+  text-align: left;
+  @media screen and (max-width:768px) {
+    font-size: .65rem;
+  }
+  &.active_desc1 {
+    margin-bottom: 20px;
+    @media screen and (max-width:768px) {
+      margin-bottom: .2rem;
+    }
+  }
+  & .strongText {
+    color: #ec7b2b;
+  }
+}
+.nine-lottery-group {
+  position: relative;
+  float: left;
+  margin-top: 30px;
+  width: 405px;
+  height: 414px;
+  background: url("../images/2017/year-award/lottery_area_background.png") no-repeat;
+  background-size: contain;
+  @media screen and (max-width:768px) {
+    width: 16.5rem;
+    height: 17rem;
+    margin: .8rem auto 1.3rem auto;
+    float: none;
+  }
+}
+#drawLotteryAreaSub {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  @media screen and (max-width:768px) {
+    width: 14.5rem;
+    height: 14.5rem;
+    top: 1.1rem;
+    left: 1.1rem;
+  }
+}
+.lottery-unit {
+  position: relative;
+  float: left;
+  margin: 9px 0 0 9px;
+  width: 108px;
+  height: 108px;
+  background: #fff;
+  border-radius: 10px;
+  text-align: center;
+  @media screen and (max-width:768px) {
+    width: 4.5rem;
+    height: 4.5rem;
+    margin: .225rem 0 0 .225rem;
+    border-radius: .25rem;
+  }
+}
+.lottery-unit.active {
+  background: #fff0ae;
+}
+.lottery-unit.lottery-btn {
+  background: url("../images/2017/year-award/draw_lottery_btn.png") no-repeat;
+  background-size: contain;
+}
+.prize_jd {
+  display: inline-block;
+  margin-top: 22px;
+  width: 64px;
+  height: 41px;
+  background: url("../images/2017/year-award/jd_card_reward_icon.png") no-repeat;
+  background-size: contain;
+  @media screen and (max-width:768px) {
+    width: 2.5rem;
+    height: 1.575rem;
+    margin-top: .875rem;
+  }
+}
+.prize_hb {
+  display: inline-block;
+  margin-top: 18px;
+  width: 50px;
+  height: 53px;
+  background: url("../images/2017/year-award/red_pocket_icon.png") no-repeat;
+  background-size: contain;
+  @media screen and (max-width:768px) {
+    width: 1.95rem;
+    height: 2.05rem;
+    margin-top: .7rem;
+  }
+}
+.prize_ty {
+  display: inline-block;
+  margin-top: 18px;
+  width: 88px;
+  height: 38px;
+  background: url("../images/2017/year-award/cash_reward_icon.png") no-repeat;
+  background-size: contain;
+  @media screen and (max-width:768px) {
+    width: 3.45rem;
+    height: 2rem;
+    margin-top: .875rem;
+  }
+}
+.prize_desc {
+  width: 100%;
+  position: absolute;
+  bottom: 8px;
+  font-size: 14.5px;
+  color: #ac311d;
+  text-align: center;
+  @media screen and (max-width:768px) {
+    bottom: .2rem;
+    font-size: .6rem;
+  }
+}
+#stateContainerTip_b {
+  float: left;
+  margin: 39px auto auto 43px;
+  width: 405px;
+  height: 405px;
+  border-radius: 10px;
+  background: #d73820;
+  @media screen and (max-width:768px) {
+    float: none;
+    margin: 0 auto;
+    width: 16.5rem;
+    height: 9.25rem;
+    border-radius: .25rem;
+  }
+}
+#stateContainerTip_m {
+  margin-top: -9px;
+  width: 405px;
+  height: 405px;
+  border-radius: 10px;
+  background: #fb7832;
+  overflow: hidden;
+  @media screen and (max-width:768px) {
+    position: relative;
+    top: -0.3rem;
+    width: 16.5rem;
+    height: 9.075rem;
+    border-radius: .25rem;
+  }
+}
+
+.lottery-right-group {
+  display: inline-block;
+  width: 390px;
+  background: #fff361;
+  border-radius: 10px;
+  box-sizing: border-box;
+  height: 397px;
+  overflow: hidden;
+  @media screen and (max-width:768px) {
+    width: 16.5rem;
+    height: 8.65rem;
+    border-radius: .25rem;
+  }
+  h3 {
+    float: left;
+    width: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 9;
+    background: #ef803b;
+    span {
+      float: left;
+      width: 190px;
+      font-size: 18px;
+      text-align: center;
+      color: #ac311d;
+      cursor: pointer;
+      background: #fedb2e;
+      height: 37px;
+      line-height: 37px;
+      position: relative;
+      top: 8px;
+      border-radius: 10px 10px 0 0;
+      @media screen and (max-width:768px) {
+        width: 8.1rem;
+        height: 1.45rem;
+        line-height: 1.45rem;
+        font-size: .689rem;
+        border-radius: .25rem .25rem 0 0;
+      }
+      &:first-child {
+        margin-right: 5px;
+        @media screen and (max-width:768px) {
+          margin-right: .15rem;
+          top: .31rem;
+        }
+      }
+      &:last-child {
+        margin-left: 5px;
+        @media screen and (max-width:768px) {
+          margin-left: .15rem;
+          top: .31rem;
+        }
+      }
+      &.active {
+        background: #fff361;
+        line-height: 52px;
+        height: 45px;
+        top: 0;
+        @media screen and (max-width:768px) {
+          height: 1.75rem;
+          line-height: 2.1rem;
+        }
+      }
+    }
+  }
+  .record-group {
+    float: left;
+    width: 100%;
+    height: 352px;
+    box-sizing: border-box;
+    padding-top: 5px;
+    position: relative;
+    @media screen and (max-width:768px) {
+      float: none;
+      height: 6.25rem;
+    }
+    .record-item {
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 30px;
+      font-size: 16px;
+      color: #ac311d;
+      @media screen and (max-width:768px) {
+        font-size: .62rem;
+        padding: 0 1rem;
+
+      }
+      &.my-gift {
+        height: 345px;
+        @media screen and (max-width:768px) {
+          height: 6.95rem;
+        }
+      }
+      &.active {
+        display: block;
+      }
+      li {
+        float: left;
+        //margin-top: 2px;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &.myReward_item {
+          .myReward_item_head {
+            float: left;
+            width: 40%;
+            padding-left: 20px;
+            text-align: left;
+            @media screen and (max-width:768px) {
+              padding-left: 1.3rem;
+            }
+          }
+          .myReward_item_foot {
+            float: right;
+            width: 45%;
+            text-align: left;
+          }
+        }
+        @media screen and (max-width:768px) {
+          margin-top: .2rem;
+        }
+        span {
+          font-size: 14px;
+          color: #fffee0;
+          line-height: 35px;
+
+          @media (max-width:$width) {
+            font-size: 12px;
+          }
+          &.text-item {
+            float: left;
+          }
+          &.time-item {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+}
+.myRecordWrapper.record-item {
+    position: relative;
+    height: 345px;
+    overflow-y: scroll;
+    @media screen and (max-width:768px) {
+      height: 7rem;
+    }
+
+}
+.myRecordWrapper.record-item #myRecord {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  & > li {
+    .mineReward_name {
+      display: inline-block;
+      width: 30%;
+      text-align: left;
+    }
+    .mineReward_year {
+      display: inline-block;
+      width: 25%;
+      text-align: center;
+    }
+    .mineReward_year_hour {
+      display: inline-block;
+      width: 25%;
+      text-align: right;
+    }
+
+  }
+}
+
+#stateContainerTip_m .loginToSee {
+  font-size: 20px;
+  @media screen and (max-width:768px) {
+    font-size: .62rem;
+    margin-left: 0;
+  }
+}
+
+#toGiftLogin.toGiftLogin {
+  display: inline-block;
+  margin: 111px 8px 0 0;
+  width: 62px;
+  height: 37px;
+  line-height: 37px;
+  font-size: 20px;
+  text-align: center;
+  color: #fff;
+  background: #ff8a3a;
+  border-radius: 17px;
+  @media screen and (max-width:768px) {
+    margin-top: 2rem;
+    width: 3rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: .62rem;
+    border-radius: 1rem;
+  }
+}
+
+.pageNo_container {
+  position: absolute;
+  left: 47px;
+  font-size: 0;
+  margin-top: 280px;
+  @media screen and (max-width:768px) {
+    left: 0;
+    bottom: -2.5rem;
+    width: 100%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: .62rem;
+    border-radius: 1rem;
+  }
+}
+.pageNo_container .prePage, .pageNo_container .nextPage {
+  display: inline-block;
+  width: 140px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 14.5px;
+  background: #ff8a3a;
+  color: #fff;
+  border-radius: 18px;
+  @media screen and (max-width:768px) {
+    width: 2.5rem;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .62rem;
+    border-radius: 1rem;
+  }
+}
+.pageNo_container .prePage {
+   margin-right: 13px;
+}
+
+#myRecord .noGiftTip, #recordList .noGiftTip {
+  margin: 111px 8px 0 0;
+  width: 100%;
+  height: 37px;
+  line-height: 37px;
+  font-size: 20px;
+  text-align: center;
+  color: #b74b26;
+  @media screen and (max-width:768px) {
+    margin: 2rem 0 0 0;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: .62rem;
+    border-radius: 1rem;
+  }
+}
+
+.tip-list-frame {
+  display: none;
+}
+.shade-body-mask {
+  z-index: 99;
+}
+.tip-list {
+  width: 470px !important;
+  height: 347px !important;
+  top: 50% !important;
+  left: 50% !important;
+  margin-left: -235px !important;
+  margin-top: -155px !important;
+  border-radius:0px;
+  background:url('../images/2017/double11/tips_bg.png') no-repeat center top!important;
+  background-size:contain!important;
+  z-index: 999;
+  &.no-change-list {
+    background:url('../images/2017/year-award/noRewardChance.png') no-repeat center top!important;
+    background-size: contain!important;
+    .btn-invest {
+      margin-top: 40px;
+    }
+  }
+  &.noTime {
+    background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+    background-size:contain!important;
+    .text-tip {
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+    .btn-list {
+      margin-top: 40px;
+    }
+  }
+
+  .text-tip {
+    height: 184px!important;
+
+    p {
+      color: #fff;
+      &.success-text {
+        width: 200px;
+        height: 50px;//444
+        padding: 0px!important;
+        margin: 0 auto;
+        margin-top: 50px;
+        background: url('../images/2017/double11/success_text.png') no-repeat center;
+        background-size: 100%;
+      }
+      &.icon_prize {
+        width: 62px;
+        height: 64px;
+        margin: 0 auto;
+        background-image: url('../images/2017/double11/experience_icon.png');
+        background-repeat: no-repeat!important;
+        background-size: contain!important;
+      }
+      &.reward-text {
+        font-size:24px!important;
+        color:#000;
+        font-weight: bold;
+      }
+      &.login-text {
+        font-size: 20px;
+        padding-top: 70px;
+        color:#fff;
+      }
+      &.des-text {
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+  }
+  .close-btn {
+    top: -5px!important;
+    right: -19px!important;
+    margin-left: -14px;
+    background: url('../images/2017/double11/db_close_btn.png') no-repeat center;
+    background-size: 100%;
+  }
+  .btn-list {
+    a {
+      width: 260px!important;
+      height: 66px!important;
+      margin: 0 auto;
+      margin-top: 30px;
+      background:url("../images/2017/double11/small_btn_wap.png") center top no-repeat!important;
+      background-size: contain!important;
+      color: #fff!important;
+      font-size: 30px;
+      text-align: center;
+      line-height: 66px!important;
+      cursor: pointer;
+      padding: 0!important;
+      margin: 0!important;
+      margin-top: 0;
+      &.canble-btn{
+        color:#c0b67c;
+        border:1px solid #c0b67c;
+        background:none;
+      }
+
+    }
+  }
+}
+
+//第二部分
+.title_ammount {
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  color: #f04536;
+  @media screen and (max-width:768px) {
+    height: auto;
+  }
+  .current_ammount {
+    float: left;
+    width: 365px;
+    text-align: center;
+    background: #0d0f34;
+    border-radius: 5px;
+    @media screen and (max-width:768px) {
+      float: none;
+      margin: 0 auto;
+      width:15.5rem;
+      height: 2rem;
+      line-height: 2rem;
+      font-size: .75rem;
+      border-radius: .25rem;
+    }
+  }
+  .my_ammount {
+    float: right;
+    width: 212px;
+    text-align: center;
+    background: #0d0f34;
+    border-radius: 5px;
+    @media screen and (max-width:768px) {
+      float: none;
+      margin: .4rem auto 1.25rem auto;
+      width:15.5rem;
+      height: 2rem;
+      line-height: 2rem;
+      font-size: .75rem;
+      border-radius: .25rem;
+    }
+  }
+}
+
+.conversion_chart {
+  float: left;
+  margin-top: 23px;
+  width: 453px;
+  font-size: 18px;
+  color: #fde72b;
+  border-radius: 5px;
+  @media screen and (max-width:768px) {
+    float: none;
+    margin: 0 auto;
+    width:15.5rem;
+    font-size: .65rem;
+  }
+  .head_title {
+    height: 60px;
+    background: #0d0f34;
+    @media screen and (max-width:768px) {
+      height: 2rem;
+    }
+    .left_head_title {
+      float: left;
+      margin-left: 30px;
+      width: 200px;
+      text-align: center;
+      @media screen and (max-width:768px) {
+        width:8rem;
+        margin-left: 1rem;
+      }
+      .left_head_title1 {
+        position: relative;
+        left: -10px;
+      }
+      .left_head_title2 {
+        position: relative;
+        top: -11px;
+      }
+    }
+    .right_head_title {
+      float: right;
+      line-height: 60px;
+      margin-right: 10px;
+      @media screen and (max-width:768px) {
+        line-height: 2rem;
+      }
+    }
+  }
+  .account_item {
+    position: relative;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    &:nth-child(odd) {
+      background: #0d0f34;
+    }
+    .accountNum {
+      position: absolute;
+      left: 90px;
+      @media screen and (max-width:768px) {
+        left:3rem
+      }
+    }
+    .accountRate {
+      position: absolute;
+      right: 68px;
+      @media screen and (max-width:768px) {
+        right: 3rem;
+      }
+    }
+  }
+}
+.percent_chat {
+  float: left;
+  margin-top: 23px;
+  width: 405px;
+  height: 250px;
+  font-size: 16px;
+  color: #fde72b;
+  @media screen and (max-width:768px) {
+    float: none;
+    margin: 0 auto;
+    width: 100%;
+    height: 6rem;
+    font-size: .675rem;
+  }
+  .percent_chat_title {
+    margin-top: 65px;
+    @media screen and (max-width:768px) {
+      margin-top: 0;
+    }
+  }
+  .percent_wrapper {
+    position: relative;
+    margin: 20px 0 0 65px;
+    width: 340px;
+    height: 20px;
+    background: #0d0f34;
+    border-radius: 10px;
+    @media screen and (max-width:768px) {
+      width: 90%;
+      height: .825rem;
+      margin: 0 auto;
+      border-radius: .5rem;
+    }
+    .percent_wrapper_sub {
+      height: 20px;
+      position: absolute;
+      background: #fde72b;
+      border-radius: 10px;
+      z-index: 1000;
+      @media screen and (max-width:768px) {
+        height: .825rem;
+        border-radius: .5rem;
+      }
+    }
+    .scaleRate {
+      position: absolute;
+      top: 21px;
+      width: 68px;
+      height: 40px;
+      z-index: 100;
+      text-align: left;
+      @media screen and (max-width:768px) {
+        top: 0.8rem;
+      }
+      &.scaleRate1 {
+        left: 0;
+      }
+      &.scaleRate2 {
+        left: 20%;
+      }
+      &.scaleRate3 {
+        left: 40%;
+      }
+      &.scaleRate4 {
+        left: 60%;
+      }
+      &.scaleRate5 {
+        left: 80%;
+      }
+      &.scaleRate6 {
+        left: 99.5%;
+      }
+      .scaleRateIcon {
+        width: 2px;
+        height: 19px;
+        background: url("../images/2017/year-award/percent_point_icon_dark.png") no-repeat;
+        background-size: contain;
+        &.scaleRateIconDark {
+          background: url("../images/2017/year-award/percent_point_icon.png") no-repeat;
+          background-size: contain;
+        }
+      }
+      .scaleRateNo {
+        position: relative;
+        line-height: 23px;
+        right: 20%;
+        color: #7b7c7e;
+        &.scaleRateNoDark {
+          color: #fde72b;
+        }
+      }
+    }
+  }
+}
+.for_example_desc {
+  font-size: 18px;
+  color: #fff;
+  text-align: left;
+  display: inline-block;
+  .for_example_desc_icon {
+    display: inline-block;
+    padding-left: 10px;
+    margin-right: 10px;
+    width: 130px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: #f17d2b;
+  }
+}
+
+
+
+//第三部分
+.prize_list_wrapper {
+  float: left;
+  @media screen and (max-width:768px) {
+    position: relative;
+    width: 100%;
+    height: 17.5rem;
+    margin-top: 1rem;
+  }
+  .left_prize_wrapper {
+    float: left;
+    margin-top: 63px;
+    width: 250px;
+    height: 166px;
+    background: #fff;
+    border-radius: 13px;
+    @media screen and (max-width:768px) {
+      position: absolute;
+      top: 11.6rem;
+      left: 0;
+      width: 8.3rem;
+      height: 5rem;
+      margin: 0;
+    }
+    .prize_icon1 {
+      margin: 20px auto;
+      width: 155px;
+      height: 80px;
+      background: url("../images/2017/year-award/increase_coupon_1.png") no-repeat;
+      @media screen and (max-width:768px) {
+        margin: .5rem auto;
+        width: 4.625rem;
+        height: 2.425rem;
+        background-size: contain;
+      }
+    }
+  }
+
+  .middle_prize_wrapper {
+    float: left;
+    margin: 5px 30px 23px 30px;
+    width: 260px;
+    height: 230px;
+    background: #fff;
+    border-radius: 13px;
+    @media screen and (max-width:768px) {
+      position: absolute;
+      margin: 0;
+      //top: 1rem;
+      left: .15rem;
+      width: 17rem;
+      height: 10.4rem;
+    }
+    .prize_icon2 {
+      margin: 10px auto;
+      width: 170px;
+      height: 160px;
+      &.prize_icon2_default {
+        background: url("../images/2017/year-award/recordGift_defaultPc.png") no-repeat;
+        background-size: contain;
+        @media screen and (max-width:768px) {
+          background: url("../images/2017/year-award/recordGift_default.png") no-repeat;
+          background-size: contain;
+        }
+      }
+      @media screen and (max-width:768px) {
+        margin: .65rem auto;
+        width: 6.25rem;
+        height: 6.675rem;
+        background-size: contain;
+      }
+    }
+  }
+  .right_prize_wrapper {
+    float: left;
+    margin-top: 63px;
+    width: 250px;
+    height: 166px;
+    background: #fff;
+    border-radius: 13px;
+    @media screen and (max-width:768px) {
+      position: absolute;
+      top: 11.6rem;
+      right: 0;
+      width: 8.3rem;
+      height: 5rem;
+      margin: 0;
+    }
+    .prize_icon3 {
+      margin: 20px auto;
+      width: 155px;
+      height: 80px;
+      background: url("../images/2017/year-award/increase_coupon_2.png") no-repeat;
+      @media screen and (max-width:768px) {
+        margin: .5rem auto;
+        width: 4.625rem;
+        height: 2.425rem;
+        background-size: contain;
+      }
+    }
+  }
+  @media screen and (max-width:768px) {
+    .prize_icon_desc {
+      &.prize_icon_desc1, &.prize_icon_desc3{
+        height: 1.6rem;
+        line-height: 1.6rem;
+        font-size: .6rem;
+        .prize_icon_desc_head {
+          margin-right: .5rem;
+          color: #fff600;
+          height: .8rem;
+          line-height: .8rem;
+        }
+        .prize_icon_desc_foot {
+          height: .8rem;
+          line-height: .8rem;
+        }
+      }
+    }
+  }
+  .prize_icon_desc {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    background: #848594;
+    border-radius: 0 0 13px 13px;
+    color: #d6d6db;
+    @media screen and (max-width:768px) {
+      height: 2.5rem;
+      line-height: 2.5rem;
+      font-size: .825rem;
+    }
+    .prize_icon_desc_head {
+      color: #fff600;
+      margin-right: 15px;
+      //position: absolute;
+      //top: -2px;
+      //left: 22px;
+      //@media screen and (max-width:768px) {
+      //  left: 1rem;
+      //  top: -.1rem;
+      //}
+    }
+    .prize_icon_desc_foot {
+      //position: absolute;
+      //bottom: -3px;
+      //left: 22px;
+      //@media screen and (max-width:768px) {
+      //  bottom: -.2rem;
+      //  left: 1rem;
+      //}
+    }
+  }
+}
+
+.rank_list_survey {
+  float: left;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  font-size: 16px;
+  color: #fff;
+  background: #0d0f34;
+  border-radius: 5px;
+  @media screen and (max-width:768px) {
+    line-height: 1.4rem;
+    height: 4.375rem;
+    margin: 0 auto;
+    font-size: .65rem;
+    text-align: center;
+  }
+  .date_info {
+    float: left;
+    margin-left: 25px;
+    @media screen and (max-width:768px) {
+      float: none;
+      display: inline-block;
+      width: 100%;
+      margin: 0;
+    }
+    .date_info_No {
+      color: #fff600;
+    }
+  }
+  .myRank_info {
+    float: left;
+    margin-left: 215px;
+    @media screen and (max-width:768px) {
+      float: none;
+      display: inline-block;
+      width: 100%;
+      margin: 0;
+    }
+    .myRank_info_No, .myRank_info_No1 {
+      color: #fff600;
+    }
+  }
+  .today_totalAccount {
+    float: right;
+    margin-right: 15px;
+    @media screen and (max-width:768px) {
+      float: none;
+      display: inline-block;
+      width: 100%;
+      margin: 0;
+    }
+    .today_totalAccountNo {
+      color: #fff600;
+    }
+  }
+
+}
+#tableListWrapper {
+  width: 100%;
+  float: left;
+  margin-top: 26px;
+  overflow: hidden;
+  @media screen and (max-width:768px) {
+    margin-top: 1rem;
+  }
+}
+.table-reward {
+  th {
+    color: #fff;
+    background: #0d0f34;
+    font-size: 18px;
+    @media screen and (max-width:768px) {
+      color: #f8d000;
+      font-size: .69rem;
+    }
+  }
+  td {
+    color: #f8d000;
+    font-size: 16px;
+    @media screen and (max-width:768px) {
+      color: #f8d000;
+      font-size: .6rem;
+    }
+  }
+}
+
+#investRanking-tbody {
+  tr:nth-child(even) {
+    background: #0d0f34;
+  }
+}
+.show_data_btn {
+  float: left;
+  width: 100%;
+  margin: 10px auto 20px auto;
+  text-align: center;
+  font-size: 20px;
+  color: #fff;
+  @media screen and (max-width:768px) {
+    font-size: .65rem;
+    margin: .5rem .1rem auto auto;
+  }
+}
+.show_listData {
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  cursor: pointer;
+  @media screen and (max-width:768px) {
+    font-size: .65rem;
+    width: 4.5rem;
+    height: 1rem;
+    line-height: 1rem;
+  }
+}
+.nodata-invest {
+  display: inline-block;
+  margin-top: 26px;
+  font-size: 16px;
+  color: #f8d000;
+}
+
+.date-button {
+  float: left;
+  width: 100%;
+  margin: 10px auto;
+  font-size: 16px;
+  text-align: center;
+  position: relative;
+  @media screen and (max-width:768px) {
+    margin: 0;
+    height: 5rem;
+    font-size: .65rem;
+  }
+  .button-small {
+    display: inline-block;
+    width: 143px;
+    height:38px;
+    line-height: 38px;
+    text-align: center;
+    font-size: 14.5px;
+    cursor: pointer;
+    color: #fff;
+    background: #0d0f34;
+    border-radius: 18px;
+    @media screen and (max-width:768px) {
+      width: 6.125rem;
+      height: 1.6rem;
+      line-height: 1.6rem;
+      border-radius: .75rem;
+      font-size: .62rem;
+    }
+  }
+  @media screen and (max-width:768px) {
+    .button-small {
+      &.button-small-pre {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      &.button-small-next {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+
+  }
+  .btn-to-invest {
+    width: 326px;
+    height: 62px;
+    line-height: 62px;
+    text-align: center;
+    cursor: pointer;
+    background: #fff600;
+    color: #b74b19;
+    display: inline-block;
+    margin-left: 50px;
+    margin-right: 50px;
+    border-radius: 28px;
+    font-size: 20px;
+    @media screen and (max-width:768px) {
+      position: absolute;
+      margin: 0;
+      bottom: 0;
+      left: 1rem;
+      width: 15.1rem;
+      height: 2.1rem;
+      line-height: 2.1rem;
+      font-size: .75rem;
+      border-radius: 1.2rem;
+    }
+  }
+}
+
+.note-box {
+  color: #ffbb28;
+  margin-top:30px;
+  font-size:16px;
+  line-height: 29px;
+  text-align: left;
+  b {
+    display: block;
+    font-size: 20px;
+    margin-bottom:10px;
+    text-align: center;
+    &.textLeft {
+      font-size: 16px;
+      text-align: left;
+    }
+    .square_icon {
+      display: inline-block;
+      margin-right: 6px;
+      width: 11px;
+      height: 11px;
+      background: #fde72b;
+      &.square_icon1 {
+        margin-left: 6px;
+      }
+    }
+  }
+  .No_icon {
+    display: inline-block;
+    width: 16px;
+    height: 21px;
+    line-height: 21px;
+    text-align: center;
+    background: #0d0f34;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .note-box {
+    margin: 0;
+    margin-top: .5rem;
+    //font-size: .6rem;
+    b {
+      margin: 0;
+      font-size: 1.03rem;
+      &.textLeft {
+        font-size: .65rem;
+        line-height: 1rem;
+      }
+      .square_icon {
+        width: .45rem;
+        height: .45rem;
+        margin-right: .55rem;
+        &.square_icon1 {
+          margin-left: .55rem;
+        }
+      }
+    }
+    .No_icon {
+      background: none;
+      font-size: .6rem;
+    }
+  }
+}
+
+.toHideIcon {
+  height: 12px;
+  overflow: hidden;
+}
+.show_less_icon {
+  display: inline-block;
+  margin-left: 5px;
+  width: 20px;
+  height: 12px;
+  background: url("../images/2017/year-award/show_less_icon.png") no-repeat;
+  background-size: contain;
+}
+
+.show_more_icon {
+  display: inline-block;
+  margin-left: 5px;
+  width: 20px;
+  height: 12px;
+  background: url("../images/2017/year-award/show_more_icon.png") no-repeat;
+  background-size: contain;
+}
+
+@media screen and (max-width:768px) {
+  .show_less_icon, .show_more_icon {
+    width: .5rem;
+    height: .3rem;
+    margin-left: .2rem;
+  }
+
+}
+
+@media screen and (max-width:768px) {
+  .tip-list {
+    width: 16rem !important;
+    height: 12rem !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-left: -8rem !important;
+    margin-top: -6rem !important;
+    &.no-change-list {
+      background:url('../images/2017/year-award/noRewardChance.png') no-repeat center top!important;
+      background-size: contain!important;
+      .btn-invest {
+        margin-top: 1rem;
+      }
+    }
+    &.noTime {
+      background:url('../images/2017/double11/kindly_wrap.png') no-repeat center top!important;
+      background-size: contain!important;
+      .text-tip {
+        padding-top: 0.6rem;
+      }
+      .btn-list {
+        margin-top: 0.4rem;
+        a {
+          font-size: 0.24rem;
+        }
+      }
+    }
+
+    .text-tip {
+      height: 7rem!important;
+
+      p {
+        line-height: 1rem!important;
+        &.success-text {
+          width: 8rem;
+          height: 3rem;
+          margin-top: 1rem;
+        }
+        &.icon_prize {
+          width: 2rem;
+          height: 2rem;
+        }
+        &.reward-text {
+          font-size:1rem!important;
+          margin-top: .3rem;
+        }
+        &.login-text {
+          font-size: 0.2rem;
+          padding-top: 0.7rem;
+        }
+        &.des-text {
+          font-size: 0.14rem;
+        }
+      }
+    }
+    .close-btn {
+      top: -5px!important;
+      right: -19px!important;
+      margin-left: -14px;
+    }
+    .btn-list {
+      a {
+        width: 8.5rem !important;
+        height: 2rem !important;
+        margin-top: 0.3rem;
+        font-size: 1rem !important;
+        line-height: 2rem !important;
+      }
+    }
+  }
+}
+
+
+
+@media screen and (max-width:768px) {
+  .for_example_desc {
+    font-size: 0.65rem;
+    .for_example_desc_icon {
+      width: 4rem;
+      height: 1rem;
+      line-height: 1rem;
+    }
+  }
+}
+
+
+@media screen and (max-width:768px) {
+  .limitHeight {
+    width: 100%;
+    max-height: 9999999999999px;
+  }
+}
+
+
+
+
+
+
+
+

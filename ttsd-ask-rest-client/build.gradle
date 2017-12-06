@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+configurations {
+    providedCompile
+}
+sourceSets {
+    main.compileClasspath += configurations.providedCompile
+    test.compileClasspath += configurations.providedCompile
+    test.runtimeClasspath += configurations.providedCompile
+}
+
+dependencies {
+    compile project(':ttsd-rest-client')
+    compile project(':ttsd-edxask-model')
+
+    testCompile project(path: ':ttsd-rest-client', configuration: 'tests')
+}
+
+processResources.outputs.upToDateWhen { false }

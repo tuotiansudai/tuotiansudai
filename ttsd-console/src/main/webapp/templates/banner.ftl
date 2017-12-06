@@ -112,6 +112,30 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-1 control-label" style="width: 10%">生效时间:</label>
+            <div class="col-sm-2">
+                <div class='input-group date' id='datepickerBegin'>
+                    <input type='text' class="form-control" name="activatedTime" value="<#if banner??>${banner.activatedTime?string("yyyy-MM-dd HH:mm")}</#if>"/>
+                    <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" id="datepickerEnd">
+            <label class="col-sm-1 control-label" style="width: 10%">失效时间:</label>
+            <div class="col-sm-2">
+                <div class='input-group date' id='datepickerEnd'>
+                    <input type='text' class="form-control" name="deactivatedTime" value="<#if banner??>${banner.deactivatedTime?string("yyyy-MM-dd HH:mm")}</#if>"/>
+                    <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-1 control-label" style="width: 10%">终端:</label>
 
             <div class="col-sm-4">
@@ -156,7 +180,7 @@
                 <label class="col-sm-2 control-label"></label>
 
                 <div class="col-sm-4">
-                    <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave">上线</button>
+                    <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave">提交</button>
                 </div>
             </div>
         </@security.authorize>
