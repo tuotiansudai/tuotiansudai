@@ -110,6 +110,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                         .put("keyword1", loanModel.getName())
                         .put("keyword2", AmountConverter.convertCentToString(loanModel.getLoanAmount()))
                         .put("keyword3", AmountConverter.convertCentToString(investModel.getAmount()))
+                        .put("keyword4", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd HH:mm:ss"))
                         .put("remark", commonRemark)
                         .build())));
     }
