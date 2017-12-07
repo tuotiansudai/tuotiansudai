@@ -210,7 +210,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .put("keyword1", String.format("%s元", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount())))
                 .put("keyword2", String.format("%s元", AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount())))
                 .put("keyword3", String.format("%s元", AmountConverter.convertCentToString(transferApplicationModel.getTransferFee())))
-                .put("keyword4", String.format("%s元", AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount())))
+                .put("keyword4", String.format("%s元", AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount() - transferApplicationModel.getTransferFee())))
                 .put("remark", "回款金额已返还到您个人账户余额中。如有疑问，可随时致电客服400-169-1188（客服时间：工作日9:00-20:00）。")
                 .build()));
 
