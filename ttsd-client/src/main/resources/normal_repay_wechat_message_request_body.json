@@ -1,0 +1,26 @@
+{
+  "touser": "{{openid}}",
+  "template_id": "{{template_id}}",
+  "data": {
+    "first": {
+      "value": "{{first}}",
+      "color": "#173177"
+    },
+    "keyword1": {
+      "value": "{{keyword1}}",
+      "color": "#173177"
+    },
+    "keyword2": {
+      "value": "{{keyword2}}",
+      "color": "#173177"
+    },
+    "keyword3": {
+      "value": "{{keyword3}}",
+      "color": "#173177"
+    },
+    "remark": {
+      "value": "{{remark}}",
+      "color": "#173177"
+    }
+  }
+}
