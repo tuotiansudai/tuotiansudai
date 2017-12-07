@@ -761,8 +761,9 @@
         from experience_account e
         inner join user u on u.login_name = e.login_name
         <where>
+            e.experience_balance > 0
             <if test="mobile != null and mobile != ''">
-                where u.mobile = #{mobile}
+                and u.mobile = #{mobile}
             </if>
             <if test="balanceMin != null and balanceMin !=''">
                 and e.experience_balance &gt; #{balanceMin}
@@ -782,8 +783,9 @@
         inner join user u on u.login_name = e.login_name
         </if>
         <where>
+            e.experience_balance > 0
             <if test="mobile != null and mobile != ''">
-                where u.mobile = #{mobile}
+                and u.mobile = #{mobile}
             </if>
             <if test="balanceMin != null and balanceMin !=''">
                 and e.experience_balance &gt; #{balanceMin}
@@ -801,6 +803,7 @@
         inner join user u on u.login_name = e.login_name
         </if>
         <where>
+            e.experience_balance > 0
             <if test="mobile != null and mobile != ''">
                 and u.mobile = #{mobile}
             </if>
@@ -810,7 +813,6 @@
             <if test="balanceMax != null and balanceMax !=''">
                 and e.experience_balance &lt;= #{balanceMax}
             </if>
-
         </where>
     </select>
 
