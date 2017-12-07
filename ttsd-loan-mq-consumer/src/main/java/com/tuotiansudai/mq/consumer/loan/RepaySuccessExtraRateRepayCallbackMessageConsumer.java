@@ -38,12 +38,16 @@ public class RepaySuccessExtraRateRepayCallbackMessageConsumer implements Messag
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益回调MQ消息为空!"));
             return;
         }
+
         logger.info("[还款发放阶梯加息收益回调MQ] ready to consume message: extra rate callback.");
+
         BaseDto<PayDataDto> result = payWrapperClient.extraRateRepayCallbackAfterRepaySuccess(Long.parseLong(message));
         if (!result.isSuccess()) {
-            logger.error("[还款发放阶梯加息收益回调MQ] extra rate callback consume fail. notifyRequestId: " + message);
-            throw new RuntimeException("extra rate callback consume fail. notifyRequestId: " + message);
+            logger.error("[还款发放阶梯加息收益回调MQ] extra rate callback consume fail. message: " + message);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益回调MQ异常"));
+            return;
         }
+
         logger.info("[还款发放阶梯加息收益回调MQ] consume message success.");
     }
 }

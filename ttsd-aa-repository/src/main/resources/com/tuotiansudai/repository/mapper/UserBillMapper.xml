@@ -35,8 +35,8 @@
         select * from user_bill where login_name = #{loginName}
     </select>
 
-    <select id="findByOrderId" parameterType="java.lang.Long" resultMap="userBillResultMap">
-        select * from user_bill where order_id = #{orderId}
+    <select id="findByOrderIdAndBusinessType" parameterType="map" resultMap="userBillResultMap">
+        select * from user_bill where order_id = #{orderId} and business_type = #{userBillBusinessType}
     </select>
 
     <select id="findUserBillsCount" parameterType="map" resultType="int">

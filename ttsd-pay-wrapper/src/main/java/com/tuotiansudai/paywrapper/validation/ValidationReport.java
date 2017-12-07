@@ -7,21 +7,15 @@ import java.util.Map;
 
 public class ValidationReport {
 
-    private String mustacheContext;
+    private String mustacheContext = "";
 
-    private String title;
+    private String title = "";
 
     private long count;
 
     private List<Map<String, Object>> summary = Lists.newArrayList();
 
     private List<Map<String, Object>> issueOrders = Lists.newArrayList();
-
-    public ValidationReport(String mustacheContext, String title, long count) {
-        this.mustacheContext = mustacheContext;
-        this.title = title;
-        this.count = count;
-    }
 
     public String getMustacheContext() {
         return mustacheContext;
