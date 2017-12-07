@@ -1,0 +1,1 @@
+require('mWebStyle/account/personal_profile.scss');

@@ -24,6 +24,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     private String staticResourceDiscoveryUrl;
 
+    private String staticMResourceDiscoveryUrl;
+
     public FreeMarkerVariablesMap() {
         this.okHttpClient = new OkHttpClient();
         this.okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
@@ -35,7 +37,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
     protected Map<Object, Object> createInstance() {
         Map<Object, Object> map = super.createInstance();
 
-        StaticResourceDto staticResourceDto = this.discoverStaticResource(map.get("commonStaticServer"));
+        String staticServer = map.get("commonStaticServer").toString();
+        StaticResourceDto staticResourceDto = this.discoverStaticResource(staticServer, this.staticResourceDiscoveryUrl);
 
         Map<String, String> javascriptResource = staticResourceDto.getJsFile();
         Map<String, String> cssResource = staticResourceDto.getCssFile();
@@ -45,17 +48,27 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         logger.info(MessageFormat.format("js mapping: {0}", javascriptResource.toString()));
         logger.info(MessageFormat.format("css mapping: {0}", cssResource.toString()));
 
+        StaticResourceDto staticMResourceDto = this.discoverStaticResource(staticServer, this.staticMResourceDiscoveryUrl);
+
+        Map<String, String> javascriptMResource = staticMResourceDto.getJsFile();
+        Map<String, String> cssMResource = staticMResourceDto.getCssFile();
+
+        map.put("m_js", javascriptMResource);
+        map.put("m_css", cssMResource);
+        logger.info(MessageFormat.format("js mapping: {0}", javascriptMResource.toString()));
+        logger.info(MessageFormat.format("css mapping: {0}", cssMResource.toString()));
+
         return map;
     }
 
-    private StaticResourceDto discoverStaticResource(Object commonStaticServer) {
-        if (commonStaticServer == null || Strings.isNullOrEmpty(this.staticResourceDiscoveryUrl)) {
+    private StaticResourceDto discoverStaticResource(Object commonStaticServer, String discoveryUrl) {
+        if (commonStaticServer == null || Strings.isNullOrEmpty(discoveryUrl)) {
             logger.info("static resource discovery url is empty, skip discovery");
             return new StaticResourceDto();
         }
 
         Request request = new Request.Builder()
-                .url(this.staticResourceDiscoveryUrl)
+                .url(discoveryUrl)
                 .get()
                 .build();
 
@@ -68,7 +81,7 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
             String responseBody = response.body().string();
             logger.info(MessageFormat.format("static server response is {0}, request url {1}, response {2}",
                     response.code(),
-                    this.staticResourceDiscoveryUrl,
+                    discoveryUrl,
                     responseBody));
             StaticResourceDto staticResourceDto = JsonConverter.readValue(responseBody, StaticResourceDto.class);
             for (String key : staticResourceDto.getJsFile().keySet()) {
@@ -91,5 +104,9 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     public void setStaticResourceDiscoveryUrl(String staticResourceDiscoveryUrl) {
         this.staticResourceDiscoveryUrl = staticResourceDiscoveryUrl;
+    }
+
+    public void setStaticMResourceDiscoveryUrl(String staticMResourceDiscoveryUrl) {
+        this.staticMResourceDiscoveryUrl = staticMResourceDiscoveryUrl;
     }
 }

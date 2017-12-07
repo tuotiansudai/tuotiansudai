@@ -13,6 +13,10 @@
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <bean class="com.tuotiansudai.web.config.handler.MSiteWebArgumentResolver" />
+        </mvc:argument-resolvers>
+
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
                   class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -54,6 +58,7 @@
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-web.json"/>
+        <property name="staticMResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-m-web.json"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
@@ -78,7 +83,12 @@
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/templates"/>
+        <property name="templateLoaderPaths">
+            <list>
+                <value>/templates</value>
+                <value>/m-templates</value>
+            </list>
+        </property>
         <property name="defaultEncoding" value="utf-8"/>
         <property name="freemarkerVariables" ref="staticResourceVersionMap"/>
         <property name="freemarkerSettings">

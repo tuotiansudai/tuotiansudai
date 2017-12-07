@@ -8,7 +8,7 @@ var basePath = path.join(__dirname, 'resources'),
     pointPath=path.join(staticPath, 'point'),
     activityPath=path.join(staticPath, 'activity'),
     mobilePath=path.join(staticPath, 'mobile'),
-    wapSitePath = path.join(staticPath, 'wapSite');
+    mWebPath = path.join(staticPath, 'm-web');
 
 var publicPathJS=path.join(publicPath, 'js');
 var outputPath=path.join(basePath, 'develop');  //打包文件路径
@@ -38,10 +38,10 @@ var publicStyle=path.join(publicPath, 'styles'),
     mobileStyle=path.join(mobilePath, 'styles'),
     mobileImages=path.join(mobilePath, 'images'),
 
-    wapSiteJs = path.join(wapSitePath, 'js'),
-    wapSiteJsModule=path.join(wapSitePath, 'js/module'),
-    wapSiteStyle=path.join(wapSitePath, 'styles'),
-    wapSiteImages=path.join(wapSitePath, 'images');
+    mWebJs = path.join(mWebPath, 'js'),
+    mWebJsModule=path.join(mWebPath, 'js/module'),
+    mWebStyle=path.join(mWebPath, 'styles'),
+    mWebImages=path.join(mWebPath, 'images');
 
 var allPath = {
     basePath:basePath,
@@ -74,10 +74,10 @@ var allPath = {
     mobileStyle:mobileStyle,
     mobileImages:mobileImages,
 
-    wapSiteJs:wapSiteJs,
-    wapSiteJsModule:wapSiteJsModule,
-    wapSiteStyle:wapSiteStyle,
-    wapSiteImages:wapSiteImages
+    mWebJs:mWebJs,
+    mWebJsModule:mWebJsModule,
+    mWebStyle:mWebStyle,
+    mWebImages:mWebImages
 };
 
 module.exports = allPath;
