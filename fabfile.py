@@ -1,8 +1,9 @@
 from __future__ import with_statement
 import os
-import time
 from fabric.api import *
 from fabric.contrib.project import upload_project
+from scripts import migrate_db
+from scripts import etcd_client
 
 config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
@@ -27,24 +28,16 @@ env.roledefs = {
     'anxin': ['shijiazhuang']
 }
 
+etcd3 = etcd_client.client('prod')
+
 
 def migrate():
-    local('/opt/gradle/latest/bin/gradle ttsd-config:processResources')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=job_worker ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxask ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxactivity ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxpoint ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxmessage ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxlog ttsd-config:flywayMigrate')
+    migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3)
 
 
 def mk_war():
-    local('/usr/local/bin/paver jcversion.env=PROD jcversion')
-    local('/opt/gradle/latest/bin/gradle war renameWar initMQ')
+    local('/usr/local/bin/paver jcversion.static_server={0} jcversion'.format(etcd3.get('common.static.server')))
+    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar initMQ')
 
 
 def mk_worker_zip():
@@ -94,11 +87,11 @@ def compile():
 
 
 def check_worker_status():
-    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
+    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
 
 
 def clear_worker_status():
-    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:clearWorkerMonitorStatus')
+    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-worker-monitor:clearWorkerMonitorStatus')
 
 
 @roles('static')

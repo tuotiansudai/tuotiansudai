@@ -1,5 +1,4 @@
 import yaml
-import random
 import etcd3
 
 
@@ -8,18 +7,22 @@ def client(env):
         yaml_data = yaml.load(stream)
 
     endpoints = yaml_data.get((env or 'dev').lower())
-    hosts = endpoints.get('host')
-    ports = endpoints.get('port')
-    host = hosts[random.randint(0, len(hosts) - 1)]
-    port = ports[random.randint(0, len(ports) - 1)]
 
-    return Etcd3Client(etcd3.client(host=host, port=port), env)
+    return Etcd3Client(endpoints, env)
 
 
 class Etcd3Client(object):
-    def __init__(self, etcd_client, env):
-        self.etcd_client = etcd_client
+    def __init__(self, endpoints, env):
         self.env = env.lower()
+        for endpoint in endpoints:
+            host, port = endpoint.split(':')
+            self.etcd_client = etcd3.client(host=host, port=port, timeout=5)
+            try:
+                self.etcd_client.status()
+                print 'endpoint is {}:{}'.format(host, port)
+                return
+            except Exception:
+                pass
 
     def get(self, key):
         if key:

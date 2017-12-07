@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
@@ -67,25 +69,16 @@ public class ETCDConfigReader {
         return null;
     }
 
-    private static String fetchEndpoints() {
+    private static List<String> fetchEndpoints() {
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         try {
             ETCDEndPoints etcdEndPoints = objectMapper.readValue(ETCDConfigReader.class.getClassLoader().getResourceAsStream("etcd-endpoints.yml"), ETCDEndPoints.class);
             logger.info(MessageFormat.format("etcd env is {0}", ENV));
-            if (!Strings.isNullOrEmpty(ENV)) {
-                ETCDEndPoint endpoint = etcdEndPoints.getEndpoint(ENV.toLowerCase());
-
-                String endpointUrl = MessageFormat.format("http://{0}:{1}",
-                        endpoint.getHost().get(new Random().nextInt(endpoint.getHost().size())),
-                        endpoint.getPort().get(new Random().nextInt(endpoint.getPort().size())));
-
-                logger.info(MessageFormat.format("etcd endpoint is {0}", endpointUrl));
-                return endpointUrl;
-            }
+            return etcdEndPoints.getEndpoint(ENV);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return "http://localhost:2379";
+        return Lists.newArrayList();
     }
 }
