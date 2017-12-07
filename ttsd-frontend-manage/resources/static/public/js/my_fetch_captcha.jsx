@@ -5,7 +5,7 @@ let imageCaptchaForm=globalFun.$('#registerUserForm');
 let $imageCaptchaForm =$(imageCaptchaForm);
 let isVoice = false;
 let $voiceCaptcha = $('#voice_captcha');
-let ValidatorObj= require('publicJs/validator1');
+let ValidatorObj= require('publicJs/validator');
 //获取手机验证
 let $captchaSubmit=$('.image-captcha-confirm',$imageCaptchaForm),
     $imageCaptchaText=$('.image-captcha-text',$imageCaptchaForm),

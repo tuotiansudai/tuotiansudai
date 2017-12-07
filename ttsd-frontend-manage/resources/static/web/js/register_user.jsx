@@ -1,6 +1,6 @@
 require('webStyle/register.scss');
 let commonFun=require('publicJs/commonFun');
-let ValidatorObj= require('publicJs/validator1');
+let ValidatorObj= require('publicJs/validator');
 
 let registerForm=globalFun.$('#registerUserForm'); //注册的form
 let imageCaptchaForm=globalFun.$('#imageCaptchaForm'); //获取验证码的form
