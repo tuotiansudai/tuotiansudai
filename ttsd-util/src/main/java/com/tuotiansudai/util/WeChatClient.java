@@ -42,7 +42,14 @@ public class WeChatClient {
 
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap(
             ImmutableMap.<WeChatMessageType, String>builder()
-                    .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getReader().getValue("wechat.template1.id"))
+                    .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getReader().getValue("wechat.bound.to.other.user.id"))
+                    .put(WeChatMessageType.TRANSFER_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.transfer.success.id"))
+                    .put(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.withdraw.notify.success.id"))
+                    .put(WeChatMessageType.WITHDRAW_APPLY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.withdraw.apply.success.id"))
+                    .put(WeChatMessageType.ADVANCE_REPAY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.advance.repay.success.id"))
+                    .put(WeChatMessageType.NORMAL_REPAY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.normal.repay.success.id"))
+                    .put(WeChatMessageType.INVEST_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.invest.success.id"))
+                    .put(WeChatMessageType.LOAN_OUT_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.loan.out.success.id"))
                     .build());
 
     private static String APP_ID = ETCDConfigReader.getReader().getValue("wechat.appId");
