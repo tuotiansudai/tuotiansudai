@@ -31,10 +31,10 @@
                 <li>
                     <i class="icon-captcha"></i>
                     <span class="captcha-tag">
-                         <button type="button" class="fetch-captcha" disabled="false" id="fetchCaptcha">获取验证码</button>
+                         <button type="button" class="fetch-captcha" id="fetchCaptcha">获取验证码</button>
                         <input validate type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
                         <span class="voice-captcha" id="voice_captcha" style="display: none;">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
-
+                        <div class="sendOften" style="color: red;display: none">短信发送频繁，请稍后再试</div>
                     </span>
                 </li>
                 <li class="referrer-open"> <i class="icon-arrow-right"></i>请输入推荐人（此项选填）</li>
