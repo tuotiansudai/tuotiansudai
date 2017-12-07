@@ -25,6 +25,18 @@ public class ValidationScheduler {
     @Resource(name = "investRepayDailyValidation")
     private DailyValidation investRepayDailyValidation;
 
+    @Resource(name = "redEnvelopDailyValidation")
+    private DailyValidation redEnvelopDailyValidation;
+
+    @Resource(name = "extraRateDailyValidation")
+    private DailyValidation extraRateDailyValidation;
+
+    @Resource(name = "investDailyValidation")
+    private DailyValidation investDailyValidation;
+
+    @Resource(name = "couponRepayDailyValidation")
+    private DailyValidation couponRepayDailyValidation;
+
     private final ValidationReportSender validationReportSender;
 
     @Autowired
@@ -41,7 +53,11 @@ public class ValidationScheduler {
             }
 
             logger.info("[Validation Scheduler] Starting ...");
-            List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation);
+            List<DailyValidation> validators = Lists.newArrayList(investRepayDailyValidation,
+                    redEnvelopDailyValidation,
+                    extraRateDailyValidation,
+                    investDailyValidation,
+                    couponRepayDailyValidation);
 
             Map<String, Object> context = Maps.newHashMap();
 
@@ -53,7 +69,6 @@ public class ValidationScheduler {
             Mustache compile = new DefaultMustacheFactory().compile("validation-report.html");
             StringWriter writer = new StringWriter();
             compile.execute(writer, context);
-
 
             validationReportSender.send(writer.toString());
 

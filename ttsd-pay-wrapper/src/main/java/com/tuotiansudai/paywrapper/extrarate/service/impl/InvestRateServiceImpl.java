@@ -34,15 +34,26 @@ public class InvestRateServiceImpl implements InvestRateService {
     public void updateExtraRateData(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception {
         long amount = actualInterest - actualFee;
 
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investExtraRateModel.getLoginName(),
-                investExtraRateModel.getId(), amount, UserBillBusinessType.EXTRA_RATE, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                investExtraRateModel.getLoginName(),
+                investExtraRateModel.getId(), amount,
+                UserBillBusinessType.EXTRA_RATE,
+                null,
+                null);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
                 investExtraRateModel.getLoginName(), String.valueOf(investExtraRateModel.getInvestId()));
 
-        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, investExtraRateModel.getId(), amount, SystemBillBusinessType.EXTRA_RATE, detail);
+        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT,
+                investExtraRateModel.getId(),
+                amount,
+                SystemBillBusinessType.EXTRA_RATE,
+                detail);
+
         mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+
         this.updateInvestExtraRate(investExtraRateModel);
     }
 
