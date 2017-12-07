@@ -1,0 +1,363 @@
+body {
+  font-size: 12px;
+}
+html {
+  font-size: 100px;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #e51f1f;
+}
+strong,em {
+  font-weight: normal;
+}
+* {
+  -webkit-tap-highlight-color:transparent;
+}
+.page-width {
+  width: 1200px;
+}
+.my-page {
+  width: 1006px;
+  margin: 0 auto;
+}
+.invest-button {
+  display: inline-block;
+  width: 306px;
+  height: 82px;
+  text-indent: -9999px;
+  background: url("../images/2017/cash-snowball/invest_button.png") no-repeat center center;
+}
+.cash-main {
+  overflow: hidden;
+}
+.snow-banner {
+  width: 100%;
+  height: 348px;
+  background: url("../images/2017/cash-snowball/pc_banner.png") no-repeat center center;
+}
+.cash_container {
+  background: #fff7d1;
+}
+.title-top {
+  width: 892px;
+  height: 139px;
+  margin: 0 auto;
+  margin-top: 25px;
+  background: url("../images/2017/cash-snowball/title_top.png") no-repeat center center;
+}
+/*第一波*/
+.invest-wrap {
+  width: 1000px;
+  border: 3px solid #fde237;
+  background: #fffbe8;
+  border-radius: 5px;
+  text-align: center;
+  .activity-title-top {
+    padding-top: 30px;
+    text-align: center;
+    font-size: 20px;
+    color: #333;
+    line-height: 45px;
+    strong {
+      font-size: 24px;
+      color: #ed4119;
+    }
+
+  }
+  .amount-investment {
+    padding: 12px 40px;
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+    background: #ed4119;
+    display: inline-block;
+    margin: 50px auto;
+    border-radius: 8px;
+  }
+  /*雪道*/
+  .run-way {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 870px;
+    height: 220px;
+    position: relative;
+    .red-ware {
+      width: 65px;
+      height: 92px;
+      background: url("../images/2017/cash-snowball/red_ware.png") no-repeat center center;
+      position: absolute;
+      font-weight: bold;
+      font-size: 22px;
+      color: #ffe16a;
+      em {
+        position: absolute;
+        top: 36px;
+        left: 8px;
+        font-weight: bold;
+        i {
+          font-size: 14px;
+          font-weight: normal;
+        }
+      }
+      &.red-ware-top {
+       top: 0px;
+        &.red-ware-1 {
+          left: 3px;
+        }
+        &.red-ware-3 {
+          left: 403px;
+        }
+        &.red-ware-5 {
+          left: 803px;
+        }
+      }
+
+      &.red-ware-bottom {
+        bottom: 0px;
+        background: url("../images/2017/cash-snowball/red_ware_reverse.png") no-repeat center center;
+        em {
+          top: 48px;
+        }
+        &.red-ware-2 {
+          left: 203px;
+        }
+        &.red-ware-4 {
+          left: 603px;
+        }
+      }
+
+    }
+    .christmas-tree {
+      width: 44px;
+      height: 55px;
+      position: absolute;
+      top: 29px;
+      background: url("../images/2017/cash-snowball/tree.png") no-repeat center center;
+      &.christmas-tree-1 {
+        left: 275px;
+      }
+      &.christmas-tree-2 {
+        left: 534px;
+      }
+    }
+    .christmas-man {
+      width: 57px;
+      height: 70px;
+      position: absolute;
+      right: 100px;
+      top: 16px;
+      background: url("../images/2017/cash-snowball/snowman.png") no-repeat center center;
+    }
+    .way {
+      overflow: hidden;
+      margin: 0 auto;
+      margin-top: 84px;
+      width: 848px;
+      height: 50px;
+      border-radius: 25px;
+      background: #fff;
+      .progress {
+        margin: 0 auto;
+        margin-top: 22px;
+        width: 826px;
+        height: 8px;
+        position: relative;
+        >span {
+          position: absolute;
+          &.circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 18px;
+            //border:5px solid #ffd41d;
+            border:5px solid #f4f4f4;
+            background: #fff;
+            top: -10px;
+            &.circle-1 {
+              left: 0px;
+            }
+            &.circle-2 {
+              left: 200px;
+            }
+            &.circle-3 {
+              left: 400px;
+            }
+            &.circle-4 {
+              left: 600px;
+            }
+            &.circle-5 {
+              left: 800px;
+            }
+          }
+          &.thread {
+            width: 174px;
+            height: 8px;
+            //background: #ffd41d;
+            background: #f4f4f4;
+            &.thread-1 {
+              left: 27px;
+            }
+            &.thread-2 {
+              left: 227px;
+            }
+            &.thread-3 {
+              left: 427px;
+            }
+            &.thread-4 {
+              left: 627px;
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+  .already-obtained {
+    margin-top: 40px;
+    font-size: 27px;
+    color: #333;
+    text-align: center;
+    strong {
+      font-size: 30px;
+      color: #ed4119;
+      font-weight: bold;
+    }
+  }
+  .invest-btn {
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+
+}
+/*投资记录*/
+.investment-records {
+  background: #fffbe8;
+  margin-top: 34px;
+  padding: 0 126px 42px;
+  >h2 {
+    height: 70px;
+    text-align: center;
+    border-bottom:1px solid #f0ecda;
+    span {
+      width: 118px;
+      height: 28px;
+      margin-top: 20px;
+      background: url("../images/2017/cash-snowball/invest_recored.png") no-repeat center center;
+      display: inline-block;
+      text-indent: -9999px;
+
+    }
+  }
+  >ul {
+    >li {
+      height: 45px;
+      line-height: 45px;
+      font-size: 16px;
+      color: #525252;
+      border-bottom:1px solid #f0ecda;
+      padding: 0 36px;
+      em {
+        float: right;
+      }
+    }
+  }
+}
+/*备注*/
+.remarks {
+  margin-top: 25px;
+  dl {
+    width: 540px;
+    margin: 0 auto;
+    dt {
+      width: 30px;
+      float: left;
+    }
+    dd {
+      float: left;
+      &.two {
+        padding-left: 30px;
+      }
+    }
+  }
+}
+/*现金叠加模块*/
+.cash-superposition {
+  text-align: center;
+  >h2 {
+    width: 941px;
+    height: 150px;
+    margin: 0 auto;
+    margin-top: 54px;
+    margin-bottom: 60px;
+    background: url("../images/2017/cash-snowball/title_mid.png") no-repeat center center;
+  }
+  >h4 {
+    margin-top: 50px;
+    margin-bottom: 60px;
+    font-size: 24px;
+    color: #333;
+    line-height: 45px;
+    text-align: center;
+    strong {
+      font-weight: bold;
+      color: #ed4119;
+      font-size: 32px;
+    }
+    em {
+      color: #ed4119;
+    }
+  }
+  .invest-bar-graph {
+    width: 974px;
+    height: 529px;
+    margin: 0 auto;
+    background: url("../images/2017/cash-snowball/pc_graph.png") no-repeat center center;
+  }
+  .invest-btn-2 {
+    margin: 0 auto;
+    margin-top: 48px;
+    margin-bottom: 45px;
+
+  }
+  .comment {
+    font-size: 14px;
+    color: #525252;
+    text-align: center;
+  }
+}
+
+/*温馨提示*/
+.kindly-tips {
+  margin-bottom: 60px;
+  dl {
+    dt {
+      font-size: 20px;
+      color: #ed4119;
+    }
+    dd {
+      font-size: 16px;
+      color: #525252;
+      line-height: 30px;
+      &.computed {
+        table {
+          margin-top: 14px;
+          margin-bottom: 14px;
+          width: 455px;
+          height: 94px;
+          border-collapse: collapse;
+          border: 1px solid #b4b09a;
+          border-width: 1px 0 0 1px;
+
+          td {
+            border:1px solid #b4b09a;
+            border-width:0 1px 1px 0;
+            color: #525252;
+          }
+        }
+
+      }
+    }
+  }
+}
