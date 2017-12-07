@@ -49,15 +49,9 @@ public class HomeController {
     @Autowired
     private TransferService transferService;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.startTime}\")}")
-    private Date activitySchoolSeasonStartTime;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.school.season.endTime}\")}")
-    private Date activitySchoolSeasonEndTime;
-
     @RequestMapping(path = {"/", "/m"}, method = RequestMethod.GET)
-    public ModelAndView index(boolean isMSite) {
-        ModelAndView modelAndView = new ModelAndView(isMSite ? "/m_index" : "/index", "responsive", true);
+    public ModelAndView index() {
+        ModelAndView modelAndView = new ModelAndView("/index");
 
         modelAndView.addObject("bannerList", bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB,new Date())); //banner
 

@@ -13,10 +13,6 @@
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <mvc:annotation-driven>
-        <mvc:argument-resolvers>
-            <bean class="com.tuotiansudai.web.config.handler.MSiteWebArgumentResolver" />
-        </mvc:argument-resolvers>
-
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
                   class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -38,6 +34,7 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
+        <bean class="com.tuotiansudai.web.config.interceptors.MobileAccessDecisionInterceptor"/>
         <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
         <bean class="com.tuotiansudai.web.config.interceptors.WeChatJSAPISignInterceptor"/>
         <bean class="com.tuotiansudai.web.interceptors.LinkExchangeInterceptor"/>
@@ -83,12 +80,7 @@
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPaths">
-            <list>
-                <value>/templates</value>
-                <value>/m-templates</value>
-            </list>
-        </property>
+        <property name="templateLoaderPaths" value="/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
         <property name="freemarkerVariables" ref="staticResourceVersionMap"/>
         <property name="freemarkerSettings">
@@ -102,7 +94,7 @@
     View resolvers can also be configured with ResourceBundles or XML files. If you need
     different view resolving based on Locale, you have to use the resource bundle resolver.
     -->
-    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <bean id="freeMarkerViewResolver" class="com.tuotiansudai.web.config.freemarker.MobileDecisionFreeMarkerViewResolver">
         <property name="cache" value="true"/>
         <property name="prefix" value=""/>
         <property name="suffix" value=".ftl"/>

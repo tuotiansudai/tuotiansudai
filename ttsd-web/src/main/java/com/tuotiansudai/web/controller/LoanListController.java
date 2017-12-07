@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/loan-list")
 public class LoanListController {
 
     static Logger logger = Logger.getLogger(LoanListController.class);
@@ -29,7 +28,7 @@ public class LoanListController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "/loan-list", method = RequestMethod.GET)
     public ModelAndView webLoanList(@RequestParam(value = "name", required = false) String name,
                                     @RequestParam(value = "status", required = false) LoanStatus status,
                                     @RequestParam(value = "rateStart", defaultValue = "0", required = false) double rateStart,
