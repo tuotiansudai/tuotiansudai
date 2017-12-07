@@ -26,8 +26,15 @@ strong,em {
   display: inline-block;
   width: 306px;
   height: 82px;
-  text-indent: -9999px;
-  background: url("../images/2017/cash-snowball/invest_button.png") no-repeat center center;
+  font-weight: bold;
+  font-size: 30px;
+  cursor: pointer;
+  color: #fff;
+  //background: url("../images/2017/cash-snowball/invest_button.png") no-repeat center center;
+  &.login-button {
+    background: red;
+    background: url("../images/2017/cash-snowball/login_button.png") no-repeat center center;
+  }
 }
 .cash-main {
   overflow: hidden;
@@ -73,30 +80,36 @@ strong,em {
     font-weight: bold;
     background: #ed4119;
     display: inline-block;
-    margin: 50px auto;
+    margin: 0px auto;
+    margin-top: 50px;
     border-radius: 8px;
   }
   /*雪道*/
   .run-way {
-    overflow: hidden;
     margin: 0 auto;
+    margin-top: 60px;
     width: 870px;
     height: 220px;
     position: relative;
+    box-sizing: border-box;
+    padding-top: 84px;
     .red-ware {
       width: 65px;
       height: 92px;
       background: url("../images/2017/cash-snowball/red_ware.png") no-repeat center center;
+      background-size: 100%;
       position: absolute;
       font-weight: bold;
       font-size: 22px;
       color: #ffe16a;
+      opacity: 0.6;
+      z-index: 100;
       em {
         position: absolute;
         top: 36px;
         left: 8px;
         font-weight: bold;
-        i {
+        .font {
           font-size: 14px;
           font-weight: normal;
         }
@@ -151,16 +164,26 @@ strong,em {
       background: url("../images/2017/cash-snowball/snowman.png") no-repeat center center;
     }
     .way {
-      overflow: hidden;
+      box-sizing: border-box;
+      padding-top: 22px;
       margin: 0 auto;
-      margin-top: 84px;
       width: 848px;
       height: 50px;
       border-radius: 25px;
       background: #fff;
+      position: relative;
+      .money-tip {
+        position: absolute;
+        left: -9999px;
+        font-size: 17px;
+        color: #8045a3;
+        z-index: 300;
+        background: #ffd41d;
+        padding: 0 18px;
+        border-radius: 40px;
+      }
       .progress {
         margin: 0 auto;
-        margin-top: 22px;
         width: 826px;
         height: 8px;
         position: relative;
@@ -199,13 +222,13 @@ strong,em {
               left: 27px;
             }
             &.thread-2 {
-              left: 227px;
+              left: 228px;
             }
             &.thread-3 {
-              left: 427px;
+              left: 428px;
             }
             &.thread-4 {
-              left: 627px;
+              left: 628px;
             }
           }
         }
@@ -250,19 +273,25 @@ strong,em {
 
     }
   }
-  >ul {
-    >li {
-      height: 45px;
-      line-height: 45px;
-      font-size: 16px;
-      color: #525252;
-      border-bottom:1px solid #f0ecda;
-      padding: 0 36px;
-      em {
-        float: right;
+  .record-list {
+    height: 230px;
+    overflow: hidden;
+    ul {
+      >li {
+        height: 45px;
+        line-height: 45px;
+        font-size: 16px;
+        color: #525252;
+        border-bottom:1px solid #f0ecda;
+        padding: 0 36px;
+        em {
+          float: right;
+        }
       }
     }
   }
+
+
 }
 /*备注*/
 .remarks {

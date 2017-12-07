@@ -16,32 +16,35 @@
                           活动期间，投资带有<strong>“逢万返百”</strong>标签的项目，累计年化投资额每满1万元，即返<strong>100元</strong>现金;<br/>
                           如累计投资年化10万元则返1000元现金，多投多得，上不封顶。
                       </h2>
+                  <@global.isNotAnonymous>
                       <div class="amount-investment">
                           您的累计年化投资额为23000.00元
                       </div>
-                      <div class="run-way">
+                  </@global.isNotAnonymous>
+                      <div class="run-way" id="ware_DOM">
                           <span class="red-ware red-ware-top red-ware-1">
-                              <em>100<i>元</i></em>
+                              <em><i class="money">100</i><i class="font">元</i></em>
                               </span>
                           <span class="red-ware red-ware-bottom red-ware-2">
-                              <em>200<i>元</i></em>
+                              <em><i class="money">200</i><i class="font">元</i></em>
                               </span>
                           <span class="red-ware red-ware-top red-ware-3">
-                              <em>300<i>元</i></em>
+                              <em><i class="money">300</i><i class="font">元</i></em>
                               </span>
                           <span class="red-ware red-ware-bottom red-ware-4">
-                              <em>400<i>元</i></em>
+                              <em><i class="money">400</i><i class="font">元</i></em>
                               </span>
                           <span class="red-ware red-ware-top red-ware-5">
-                              <em>500<i>元</i></em>
+                              <em><i class="money">500</i><i class="font">元</i></em>
                               </span>
                           <span class="christmas-tree christmas-tree-1"></span>
                           <span class="christmas-tree christmas-tree-2"></span>
                           <span class="christmas-man"></span>
                           <div class="way">
-
-
-                              <div class="progress">
+                            <@global.isNotAnonymous>
+                              <span id="money_tip" class="money-tip"><em>0</em>元返现</span>
+                            </@global.isNotAnonymous>
+                              <div class="progress" id="progress">
                                   <span class="circle circle-1"></span>
                                   <span class="thread thread-1"></span>
                                   <span class="circle circle-2"></span>
@@ -54,21 +57,38 @@
                               </div>
                           </div>
                       </div>
-                  <div class="already-obtained">
-                      您已获得<strong>200元</strong>返现，再投<strong>7000.00元</strong>（年化）可再返<strong>100元</strong>
-                  </div>
-                  <span class="invest-btn invest-button">去投资</span>
+                  <@global.isAnonymous>
+                      <div class="already-obtained">
+                          您还没有现金奖励，快去投资吧！
+                      </div>
+                      <span class="invest-btn login-button invest-button to-login">去登录</span>
+                  </@global.isAnonymous>
+                  <@global.isNotAnonymous>
+                      <div class="already-obtained">
+                          您已获得<strong>200元</strong>返现，再投<strong>7000.00元</strong>（年化）可再返<strong>100元</strong>
+                          <span class="invest-btn invest-button to-invest">去投资</span>
+                      </div>
+                  </@global.isNotAnonymous>
+
+
 
               </div>
               <div class="investment-records">
                   <h2><span>投资记录</span></h2>
-                  <ul>
-                      <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
-                      <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
-                      <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
-                      <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
-                      <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
-                  </ul>
+                  <div class="record-list">
+                      <ul id="record_list">
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em>1570876****的用户累计投资了50000元 ，获得了500元现金奖励</li>
+                      </ul>
+                  </div>
+
               </div>
               <div class="remarks">
                   <dl class="clearfix">
@@ -87,7 +107,7 @@
                   <div class="invest-bar-graph">
 
                   </div>
-                  <span class="invest-btn-2 invest-button">去投资</span>
+                  <span class="invest-btn-2 invest-button to-invest">去投资</span>
                   <p class="comment">本活动现金奖励将于活动结束后3个工作日内统一发放至个人账户，用户可直接提现或者用于投资</p>
 
               </div>
