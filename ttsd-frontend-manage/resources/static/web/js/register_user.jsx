@@ -15,7 +15,7 @@ let agreementValid=true,
     testCaptcha = false, // 手机验证码
     receiveCodeBtn = false; //获取验证码按钮
 let $captchaSubmit=$('.image-captcha-confirm'),
-    $imageCaptchaText = $('.imageCaptcha');
+    $voiceCaptcha = $('#voice_captcha_code');
 
 require.ensure(['publicJs/placeholder'], function(require){
     require('publicJs/placeholder');
@@ -158,8 +158,9 @@ validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg
                 btnDom:$fetchCaptcha,
                 isAfterText:'重新发送'
             },function(){
-                getResult='';
-                ValidatorObj.isHaveError.no.apply(that,_arguments);
+                // getResult='';
+                // ValidatorObj.isHaveError.no.apply(that,_arguments);
+                $voiceCaptcha.show();
             });
 
         }
@@ -193,12 +194,13 @@ validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,sh
         return;
     }
 
-    if (validate(_password)) {
-        validator.start(registerForm.password);
-        return;
-    }
+    // if (validate(_password)) {
+    //     validator.start(registerForm.password);
+    //     return;
+    // }
 
     if (!testPicCode && $('#fetchCaptcha').html() != '获取验证码') {
+        testCaptcha = true;
         validator.start(registerForm.captcha);
         return;
     }
@@ -293,12 +295,11 @@ for(let i=0,len=reInputs.length; i<len;i++) {
                 $(tipText).hide();
                 let errorMsg=validator.start(this);
                 if (!errorMsg) testMobile = true;
-                referrerValidBool = !(this.name == 'referrer' && errorMsg);
-                isDisabledButton();
             } else {
                 $(tipName).siblings('.error').remove();
                 $(tipText).show();
             }
+            isDisabledButton();
         }
         else if (tipName === '.password') {
             if (reInputs[i].value.length > 5) {
@@ -310,20 +311,21 @@ for(let i=0,len=reInputs.length; i<len;i++) {
                     $(tipName).siblings('.error').remove();
                     $(tipText).show();
                 }
-                isDisabledButton();
             }
+            isDisabledButton();
         }
         else if (tipName === '.imageCaptcha') {
              $('#hiddenCode').val(reInputs[i].value);
              if (reInputs[i].value.length == 5) {
+                 $(tipText).hide();
                  isDisabledButton();
              }
         }
         else if (tipName === '.captcha') {
             if (reInputs[i].value.length == 6) {
                 validator.start(this);
-                isDisabledButton();
             }
+            isDisabledButton();
         }
         else if (tipName === '.referrer') {
             validator.start(this);
@@ -363,9 +365,10 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 //用来判断获取验证码和立即注册按钮 是否可点击
 //表单验证通过会
 function isDisabledButton() {
-    let mobile=registerForm.mobile.value,
-        password=registerForm.password.value,
-        referrer=registerForm.referrer;
+    let mobile=registerForm.mobile.value && registerForm.mobile.value.length == 11,
+        password=!validate(registerForm.password.value) && registerForm.password.value.length > 5,
+        referrer=registerForm.referrer,
+        hasError=!$('.error').length;
 
     //按钮上有样式名count-downing，说明正在倒计时
     if ($fetchCaptcha.hasClass('count-downing')) {
@@ -376,7 +379,7 @@ function isDisabledButton() {
         referrerValidBool=true;
     }
 
-    let isDisabledSubmit= mobile && password && testCaptcha  && referrerValidBool && agreementValid;
+    let isDisabledSubmit= mobile && password && testCaptcha  && referrerValidBool && agreementValid && hasError;
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
@@ -414,7 +417,19 @@ function validate(obj){
 
 };
 
+//图形验证码
 $('#fetchCaptcha').on('click',function() {
+    isVoice = false;
+    getValidateCode();
+});
+
+//语音验证码
+$('#voice_validate').on('click',function(){
+    isVoice = true;
+    getValidateCode();
+});
+
+function getValidateCode() {
     if ($("input[name='imageCaptcha']").val().length < 5) receiveCodeBtn = false;
     if (!receiveCodeBtn) {  // 防止重复点击
         receiveCodeBtn = true;
@@ -428,7 +443,9 @@ $('#fetchCaptcha').on('click',function() {
             receiveCodeBtn = false;
         }
     }
-});
+}
+
+
 
 
 
