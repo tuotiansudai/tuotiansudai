@@ -123,17 +123,12 @@ public class LoanOutSuccessController {
 
     @ResponseBody
     @RequestMapping(value = "/transfer-red-envelop-callback", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> transferRedEnvelopForCallBack(@RequestBody long userCouponId) {
-        boolean isSuccess = true;
-        try {
-            couponLoanOutService.sendRedEnvelopTransferInBalanceCallBack(userCouponId);
-        } catch (AmountTransferException e) {
-            isSuccess = false;
-        }
+    public BaseDto<PayDataDto> transferRedEnvelopForCallback(@RequestBody long userCouponId) {
+        boolean success = couponLoanOutService.sendRedEnvelopTransferInBalanceCallBack(userCouponId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
-        dataDto.setStatus(isSuccess);
+        dataDto.setStatus(success);
         return dto;
     }
 

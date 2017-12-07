@@ -389,7 +389,7 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(investReferrerRewardId), "/loan-out/transfer-referrer-reward-callback");
     }
 
-    public BaseDto<PayDataDto> transferRedEnvelopForCallBack(long userCouponId) {
+    public BaseDto<PayDataDto> transferRedEnvelopForCallback(long userCouponId) {
         return syncExecute(String.valueOf(userCouponId), "/loan-out/transfer-red-envelop-callback");
     }
 

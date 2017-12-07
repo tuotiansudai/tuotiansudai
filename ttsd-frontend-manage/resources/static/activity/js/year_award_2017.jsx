@@ -121,7 +121,7 @@ function getPrize(obj) {
 
     drawCircle.GiftRecord((data) => {
         if(data.length==0){
-            $('#recordList').html('<li class="noGiftTip">没有中奖纪录哦~</li>');
+            $('#recordList').html('<li class="noGiftTip">没有中奖记录哦~</li>');
             $('#recordList').find('li').css({
                 'textAlign':'center',
                 'textIndent':'0px'
@@ -137,7 +137,7 @@ function getPrize(obj) {
             //渲染我的奖品
             drawCircle.MyGift(function(data){
                 if(data.length == 0){
-                    $ownRecord.html('<li class="noGiftTip">没有中奖纪录哦~</li>');
+                    $ownRecord.html('<li class="noGiftTip">没有中奖记录哦~</li>');
                     $ownRecord.find('li').css({
                         'textAlign':'center',
                         'textIndent':'0px'
@@ -389,6 +389,9 @@ function activityStatus(nowDay) {
 
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
+        if(isToday){
+            $heroNext.css({'visibility':'hidden'});
+        }
         $contentRanking.show();
         if(nowDayStr==startTime) {
             //活动第一天

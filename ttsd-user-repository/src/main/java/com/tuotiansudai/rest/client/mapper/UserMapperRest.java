@@ -80,13 +80,6 @@ public class UserMapperRest implements UserMapper {
     }
 
     @Override
-    public void updateSignInCount(String loginName, int signInCount) {
-        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
-        updateDto.setSignInCount(signInCount);
-        userRestClient.update(updateDto);
-    }
-
-    @Override
     public void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber) {
         UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
         updateDto.setUserName(userName);

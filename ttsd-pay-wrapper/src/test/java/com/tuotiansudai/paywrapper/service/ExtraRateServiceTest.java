@@ -18,8 +18,7 @@ import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -142,15 +141,14 @@ public class ExtraRateServiceTest {
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        InvestExtraRateModel fakeInvestExtraRate = this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
+        TransferNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.normalRepay(loanRepay2.getId());
 
-        extraRateService.asyncExtraRateInvestCallback(extraRateNotifyRequestModel.getId());
-        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
-        assertThat(investExtraRateModel.getStatus(), is(RepayStatus.COMPLETE));
+        extraRateService.asyncExtraRateInvestCallback(fakeInvestExtraRate.getId());
+        assertThat(investExtraRateMapper.findById(fakeInvestExtraRate.getId()).getStatus(), is(RepayStatus.COMPLETE));
     }
 
     @Test
@@ -166,7 +164,7 @@ public class ExtraRateServiceTest {
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        TransferNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.normalRepay(loanRepay2.getId());
@@ -253,22 +251,22 @@ public class ExtraRateServiceTest {
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
+        InvestExtraRateModel fakeInvestExtraRate = this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName(), RepayStatus.REPAYING);
 
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        TransferNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
         extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.advanceRepay(loanRepay2.getId());
 
-        extraRateService.asyncExtraRateInvestCallback(extraRateNotifyRequestModel.getId());
-
-        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
-
-        long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(fakeLoan, investExtraRateModel.getExtraRate(), investModel, new Date());
-        assertThat(investExtraRateModel.getActualInterest(), is(actualInterest));
+        extraRateService.asyncExtraRateInvestCallback(fakeInvestExtraRate.getId());
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(investModel.getLoginName());
+
+        InvestExtraRateModel investExtraRateModel = this.investExtraRateMapper.findById(fakeInvestExtraRate.getId());
+        long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(fakeLoan, fakeInvestExtraRate.getExtraRate(), investModel, new Date());
         long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(membershipModel.getFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        assertThat(investExtraRateModel.getActualInterest(), is(actualInterest));
         assertThat(investExtraRateModel.getActualFee(), is(actualFee));
         assertThat(investExtraRateModel.getRepayAmount(), is(actualInterest - actualFee));
 
@@ -389,15 +387,14 @@ public class ExtraRateServiceTest {
         return fakeLoanModel;
     }
 
-    private ExtraRateNotifyRequestModel getFakeExtraRateNotifyRequestModel(Long orderId) {
-        ExtraRateNotifyRequestModel model = new ExtraRateNotifyRequestModel();
+    private TransferNotifyRequestModel getFakeExtraRateNotifyRequestModel(Long orderId) {
+        TransferNotifyRequestModel model = new TransferNotifyRequestModel();
         model.setSign("sign");
         model.setSignType("RSA");
         model.setMerId("mer_id");
         model.setVersion("1.0");
         model.setTradeNo("trade_no");
         model.setOrderId(String.valueOf(orderId));
-        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
         model.setService("");
         model.setRetCode("0000");

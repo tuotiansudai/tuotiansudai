@@ -10,5 +10,5 @@ public interface CouponLoanOutService {
 
     String transferRedEnvelopNotify(Map<String, String> paramsMap, String queryString);
 
-    boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) throws AmountTransferException;
+    boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId);
 }

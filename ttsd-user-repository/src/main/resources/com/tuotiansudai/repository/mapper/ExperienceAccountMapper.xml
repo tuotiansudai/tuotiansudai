@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ExperienceAccountMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <update id="addBalance" parameterType="map">
+        UPDATE experience_account
+        SET experience_balance = experience_balance + #{experienceBalance}
+        WHERE login_name = #{loginName}
+    </update>
+
+    <select id="getExperienceBalance" parameterType="string" resultType="long">
+        SELECT ifnull(sum(experience_balance), 0) AS experience_balance
+        FROM experience_account
+        WHERE login_name = #{loginName}
+    </select>
+
+    <insert id="create" parameterType="map">
+        INSERT INTO experience_account (login_name, experience_balance)
+        VALUES (#{loginName}, #{experienceBalance});
+    </insert>
+
+    <select id="exists" parameterType="string" resultType="boolean">
+        SELECT exists(SELECT 1
+                      FROM experience_account
+                      WHERE login_name = #{loginName})
+    </select>
+</mapper>
