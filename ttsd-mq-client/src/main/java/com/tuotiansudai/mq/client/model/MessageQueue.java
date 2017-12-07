@@ -32,6 +32,7 @@ public enum MessageQueue {
     InvestSuccess_ZeroShopping("InvestSuccess-ZeroShopping"),
     InvestSuccess_NationalMidAutumn("InvestSuccess-NationalMidAutumn"),
     InvestSuccess_YearEndAwards("InvestSuccess-YearEndAwards"),
+    InvestSuccess_CashSnowball("InvestSuccess-CashSnowball"),
     Celebration_Coupon("Celebration-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),

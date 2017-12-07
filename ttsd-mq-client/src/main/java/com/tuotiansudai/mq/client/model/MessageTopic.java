@@ -15,7 +15,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_SchoolSeason,
             MessageQueue.InvestSuccess_NationalMidAutumn,
             MessageQueue.InvestSuccess_ZeroShopping,
-            MessageQueue.InvestSuccess_YearEndAwards),
+            MessageQueue.InvestSuccess_YearEndAwards,
+            MessageQueue.InvestSuccess_CashSnowball),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,

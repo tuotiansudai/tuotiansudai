@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.CashSnowballActivityMapper">
+
+    <resultMap id="cashSnowballActivityResultMap" type="com.tuotiansudai.activity.repository.model.CashSnowballActivityModel">
+        <id column="id" property="id"></id>
+        <result column="invest_id" property="investId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="annualized_amount" property="annualizedAmount"></result>
+        <result column="cash_amount" property="cashAmount"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="updated_time" property="updatedTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="cashSnowballActivityModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `edxactivity`.`cash_snowball_activity`
+        (`invest_id`,
+        `login_name`,
+        `user_name`,
+        `mobile`,
+        `annualized_amount`,
+        `cash_amount`,
+        `created_time`,
+        `updated_time`)
+        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{annualized_amount},#{cash_amount}, now(), now())
+    </insert>
+
+    <update id="updated" parameterType="cashSnowballActivityModel">
+        UPDATE `edxactivity`.`cash_snowball_activity` SET
+        `annualized_amount` = #{annualizedAmount},
+        `cash_amount` = #{cashAmount}
+        `updated_time` = now()
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findByLoginName" parameterType="map" resultMap="cashSnowballActivityResultMap">
+        SELECT * from `edxactivity`.`cash_snowball_activity` where login_name=#{loginName}
+    </select>
+
+    <select id="findAll" resultMap="cashSnowballActivityResultMap" parameterType="map">
+        SELECT * from `edxactivity`.`cash_snowball_activity`
+        order by updated_time desc
+    </select>
+
+</mapper>
