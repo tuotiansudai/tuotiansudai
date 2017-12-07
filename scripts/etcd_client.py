@@ -13,7 +13,7 @@ def client(env):
 
 class Etcd3Client(object):
     def __init__(self, endpoints, env):
-        self.env = env.lower()
+        self.env = env
         for endpoint in endpoints:
             host, port = endpoint.split(':')
             self.etcd_client = etcd3.client(host=host, port=port, timeout=5)

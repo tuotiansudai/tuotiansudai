@@ -11,8 +11,9 @@ class EtcdConfig(object):
 
         if os.path.exists(ETCD_ENDPOINT_CONFIG_FILE):
             with open(ETCD_ENDPOINT_CONFIG_FILE, 'r') as stream:
-                endpoints = yaml.load(stream)
+                yaml_data = yaml.load(stream)
 
+            endpoints = yaml_data.get(self.env)
             for endpoint in endpoints:
                 host, port = endpoint.split(':')
                 self.client = etcd3.client(host=host, port=port)
