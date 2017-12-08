@@ -194,11 +194,6 @@ validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,sh
         return;
     }
 
-    // if (validate(_password)) {
-    //     validator.start(registerForm.password);
-    //     return;
-    // }
-
     if (!testPicCode && $('#fetchCaptcha').html() != '获取验证码') {
         testCaptcha = true;
         validator.start(registerForm.captcha);
@@ -368,7 +363,8 @@ function isDisabledButton() {
     let mobile=registerForm.mobile.value && registerForm.mobile.value.length == 11,
         password=!validate(registerForm.password.value) && registerForm.password.value.length > 5,
         referrer=registerForm.referrer,
-        hasError=!$('.error').length;
+        hasError=!$('.error').length,
+        captchaLength=registerForm.captcha.value.length == 6;
 
     //按钮上有样式名count-downing，说明正在倒计时
     if ($fetchCaptcha.hasClass('count-downing')) {
@@ -379,7 +375,7 @@ function isDisabledButton() {
         referrerValidBool=true;
     }
 
-    let isDisabledSubmit= mobile && password && testCaptcha  && referrerValidBool && agreementValid && hasError;
+    let isDisabledSubmit= mobile && password && testCaptcha  && referrerValidBool && agreementValid && hasError && captchaLength;
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
