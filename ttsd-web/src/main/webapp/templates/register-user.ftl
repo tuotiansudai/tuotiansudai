@@ -38,7 +38,7 @@
                     </span>
                 </li>
                 <li class="referrer-open"> <i class="icon-arrow-right"></i>请输入推荐人（此项选填）</li>
-                <li class="hide">
+                <li class="">
                     <i class="icon-referrer"></i>
                     <input validate type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
