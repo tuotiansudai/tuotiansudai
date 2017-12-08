@@ -28,7 +28,6 @@ strong,em {
   width: 306px;
   height: 82px;
   line-height: 82px;
-
   font-size: 50px;
   cursor: pointer;
   color: #fff;
@@ -425,10 +424,11 @@ strong,em {
     width: 7.11rem;
   }
 
-  .invest-button {
+  .invest-btn {
     width: 3.06rem;
     height: 0.82rem;
-    font-size: 0.3rem;
+    line-height: 0.82rem;
+    font-size: 0.44rem;
   }
   .cash-main {
     overflow: hidden;
