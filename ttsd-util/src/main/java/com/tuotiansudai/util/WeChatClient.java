@@ -44,6 +44,8 @@ public class WeChatClient {
 
     private static String APP_SECRET;
 
+    private final static String CANCELED_WE_CHAT_ATTENTION_CODE = "43004";
+
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
         APP_ID = bundle.getString("wechat.appId");
@@ -148,7 +150,7 @@ public class WeChatClient {
             });
 
             if (!"0".equals(result.get("errcode"))) {
-                if ("43004".equals(result.get("errcode"))) {
+                if (CANCELED_WE_CHAT_ATTENTION_CODE.equals(result.get("errcode"))) {
                     logger.info(MessageFormat.format("send message failed, response: {0}", responseString));
                     return;
                 }
