@@ -148,6 +148,10 @@ public class WeChatClient {
             });
 
             if (!"0".equals(result.get("errcode"))) {
+                if ("43004".equals(result.get("errcode"))) {
+                    logger.info(MessageFormat.format("send message failed, response: {0}", responseString));
+                    return;
+                }
                 logger.error(MessageFormat.format("send message failed, response: {0}", responseString));
             }
         } catch (Exception e) {
