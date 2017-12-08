@@ -9,6 +9,7 @@ import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.WeChatMessageNotify;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -121,7 +122,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE,loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
             } else {
@@ -148,6 +149,8 @@ public class WithdrawServiceImpl implements WithdrawService {
                         PushType.WITHDRAW_APPLICATION_SUCCESS,
                         title,
                         AppUrl.MESSAGE_CENTER_LIST));
+
+                mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(withdrawModel.getLoginName(), WeChatMessageType.WITHDRAW_APPLY_SUCCESS, withdrawModel.getId()));
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
@@ -170,11 +173,11 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE,loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
             } else {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE,loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.FAIL);
             }
@@ -198,6 +201,7 @@ public class WithdrawServiceImpl implements WithdrawService {
                         PushType.WITHDRAW_SUCCESS,
                         title,
                         AppUrl.MESSAGE_CENTER_LIST));
+                mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(withdrawModel.getLoginName(), WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, withdrawModel.getId()));
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
