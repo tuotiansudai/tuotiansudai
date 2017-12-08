@@ -70,7 +70,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
         }
 
-        List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());
+        List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(dto.getBaseParam().getUserId(), userCouponModels, loanModel.getProductType());
 
         userCouponModels.removeAll(unavailableCouponList);
 
@@ -103,12 +103,12 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     }
 
     //删除3元红包和项目类型不匹配的券和红包
-    private List<UserCouponModel> filterUnavailableLoanProductType(List<UserCouponModel> userCouponModels, ProductType loanProductType) {
+    private List<UserCouponModel> filterUnavailableLoanProductType(String loginName, List<UserCouponModel> userCouponModels, ProductType loanProductType) {
         List<UserCouponModel> unavailableCoupons = Lists.newArrayList();
+        UserModel userModel = userMapper.findByLoginName(loginName);
 
         for (UserCouponModel item : userCouponModels) {
             CouponModel couponModel = item.getCoupon();
-            UserModel userModel = userMapper.findByLoginName(item.getLoginName());
             if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !UserBirthdayUtil.isBirthMonth(userModel.getIdentityNumber())) {
                 unavailableCoupons.add(item);
             }
