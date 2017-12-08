@@ -257,7 +257,6 @@ let GetDateStr = function(date,AddDayCount) {
 function scrollList(domName, length,time) {
     var thisFun = this,
         scrollTimer;
-
     domName.hover(function () {
         clearInterval(scrollTimer);
     }, function () {

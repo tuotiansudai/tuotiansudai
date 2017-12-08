@@ -11,14 +11,15 @@
 
               </div>
               <div class="invest-wrap">
+                  <div class="wap-title-top"></div>
 
                       <h2 class="activity-title-top">
-                          活动期间，投资带有<strong>“逢万返百”</strong>标签的项目，累计年化投资额每满1万元，即返<strong>100元</strong>现金;<br/>
-                          如累计投资年化10万元则返1000元现金，多投多得，上不封顶。
+                          活动期间，投资带有<strong>“逢万返百”</strong>标签的项目，<span class="mobile-style">累计年化投资额每满1万元，即返<strong>100元</strong>现金;</span>
+                          <span class="font-wrap">如累计投资年化10万元则返1000元现金，<span class="mobile-style">多投多得，上不封顶。</span></span>
                       </h2>
                   <@global.isNotAnonymous>
                       <div class="amount-investment">
-                          您的累计年化投资额为23000.00元
+                          您的累计年化投资额为0元
                       </div>
                   </@global.isNotAnonymous>
                       <div class="run-way" id="ware_DOM">
@@ -41,9 +42,9 @@
                           <span class="christmas-tree christmas-tree-2"></span>
                           <span class="christmas-man"></span>
                           <div class="way">
-                            <@global.isNotAnonymous>
+                            <#--<@global.isNotAnonymous>-->
                               <span id="money_tip" class="money-tip"><em>0</em>元返现</span>
-                            </@global.isNotAnonymous>
+                            <#--</@global.isNotAnonymous>-->
                               <div class="progress" id="progress">
                                   <span class="circle circle-1"></span>
                                   <span class="thread thread-1"></span>
@@ -57,15 +58,45 @@
                               </div>
                           </div>
                       </div>
-                  <@global.isAnonymous>
-                      <div class="already-obtained">
-                          您还没有现金奖励，快去投资吧！
+                  <div class="run-way mobile-run-way" id="mobile_ware_DOM">
+                          <span class="red-ware red-ware-1">
+                              <em><i class="money">100</i><i class="font">元</i></em>
+                              </span>
+                      <span class="red-ware red-ware-2">
+                              <em><i class="money">200</i><i class="font">元</i></em>
+                              </span>
+                      <span class="red-ware red-ware-3">
+                              <em><i class="money">300</i><i class="font">元</i></em>
+                              </span>
+
+                      <span class="christmas-tree christmas-tree-1"></span>
+                      <span class="christmas-tree christmas-tree-2"></span>
+
+                      <div class="way">
+                          <@global.isNotAnonymous>
+                              <span id="mobile_money_tip" class="money-tip"><em>0</em>元返现</span>
+                          </@global.isNotAnonymous>
+                          <div class="progress" id="progress">
+                              <span class="circle circle-1"></span>
+                              <span class="thread thread-1"></span>
+                              <span class="circle circle-2"></span>
+                              <span class="thread thread-2"></span>
+                              <span class="circle circle-3"></span>
+                          </div>
                       </div>
-                      <span class="invest-btn login-button invest-button to-login">去登录</span>
-                  </@global.isAnonymous>
+                  </div>
+              <@global.isAnonymous>
+                  <div class="already-obtained">
+                      您还没有现金奖励，快去投资吧！
+                  </div>
+                  <span class="invest-btn login-button invest-button to-login">去登录</span>
+              </@global.isAnonymous>
+
                   <@global.isNotAnonymous>
                       <div class="already-obtained">
-                          您已获得<strong>200元</strong>返现，再投<strong>7000.00元</strong>（年化）可再返<strong>100元</strong>
+                          <div class="tips">
+                          您已获得<strong>200元</strong>返现，<span class="mobile-style">再投<strong>7000.00元</strong>（年化）可再返<strong>100元</strong></span>
+                          </div>
                           <span class="invest-btn invest-button to-invest">去投资</span>
                       </div>
                   </@global.isNotAnonymous>
@@ -101,8 +132,8 @@
               <div class="cash-superposition">
                   <h2 class="superposition-title"></h2>
                   <h4 class="superposition-info">
-                      活动期间，投资带有<em>“逢万返百”</em>标签的项目，累计年化投资额达10万元以上，<br/>
-                      可叠加最高<strong>2018</strong>元现金奖励。
+                      活动期间，投资带有<em>“逢万返百”</em>标签的项目，<span class="mobile-style">累计年化投资额达10万元以上，</span>
+                      <span class="wrap">可叠加最高<strong>2018</strong>元现金奖励。</span>
                   </h4>
                   <div class="invest-bar-graph">
 
