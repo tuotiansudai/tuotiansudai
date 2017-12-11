@@ -69,7 +69,7 @@ def mk_static_zip():
 def mk_signin_zip():
     for i in ('1', '2'):
         local('cp {0}/signin_service/{1}/prod.yml ./ttsd-user-rest-service/'.format(config_path, i))
-        local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
+        local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml ../ttsd-etcd/src/main/resources/etcd-endpoints.yml'.format(i))
 
 
 def build():
@@ -287,7 +287,7 @@ def pre_deploy():
 
 
 def all():
-    # pre_deploy()
+    pre_deploy()
     deploy_all()
 
 

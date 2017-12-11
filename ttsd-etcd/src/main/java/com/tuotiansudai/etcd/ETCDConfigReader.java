@@ -53,11 +53,11 @@ public class ETCDConfigReader {
         try {
             GetResponse getResponse = completableFuture.get();
             if (getResponse.getCount() > 1) {
-                logger.error(MessageFormat.format("more than one kv found by {0}", key));
+                logger.warn(MessageFormat.format("more than one kv found by {0}", key));
                 return null;
             }
             if (getResponse.getCount() == 0) {
-                logger.error(MessageFormat.format("no kv found by {0}", key));
+                logger.warn(MessageFormat.format("no kv found by {0}", key));
                 return null;
             }
 
