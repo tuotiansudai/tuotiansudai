@@ -32,7 +32,7 @@ etcd3 = etcd_client.client('prod')
 
 
 def migrate():
-    migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3)
+    migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3, local)
 
 
 def mk_war():

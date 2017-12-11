@@ -38,7 +38,7 @@ class UTRunner(object):
     def run_test(self):
         print "Starting test..."
         from scripts import migrate_db
-        migrate_db.migrate(self._gradle, self.etcd)
+        migrate_db.migrate(self._gradle, self.etcd, sh)
         sh('docker run --rm --net=bridge '
            ' --env TTSD_ETCD_ENV=UT '
            ' -v `pwd`/ttsd-user-rest-service:/app '
