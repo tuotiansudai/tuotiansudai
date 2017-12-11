@@ -1,4 +1,5 @@
 from __future__ import with_statement
+import logging
 import os
 from fabric.api import *
 from fabric.contrib.project import upload_project
@@ -66,6 +67,7 @@ def mk_static_zip():
 
 
 def mk_signin_zip():
+    local('cp ./ttsd-etcd/src/main/resources/etcd-endpoints.yml ./ttsd-user-rest-service/')
     for i in ('1', '2'):
         local('cp {0}/signin_service/{1}/prod.yml ./ttsd-user-rest-service/'.format(config_path, i))
         local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
@@ -210,8 +212,17 @@ def deploy_ask():
 @parallel
 def deploy_sign_in():
     for i in ('1', '2'):
+        local("echo sign in start...")
         folder_name = 'signin_{0}'.format(i)
-        upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+        local('echo sign in start...' + folder_name)
+        try:
+            local("echo sign in upload")
+            upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+            logging.info("sign in upload done")
+        except Exception as e:
+            local("echo " + e.message)
+            raise e
+
         with cd('/workspace'):
             sudo('rm -rf {0}'.format(folder_name))
             sudo('unzip {0}.zip -d {0}'.format(folder_name))
@@ -255,8 +266,8 @@ def deploy_anxin():
 
 
 def deploy_all():
-    execute(deploy_static)
     execute(deploy_sign_in)
+    execute(deploy_static)
     execute(deploy_sms)
     execute(deploy_console)
     execute(deploy_pay)
