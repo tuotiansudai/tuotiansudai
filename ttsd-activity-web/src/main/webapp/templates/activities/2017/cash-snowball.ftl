@@ -108,15 +108,15 @@
                   <h2><span>投资记录</span></h2>
                   <div class="record-list">
                       <ul id="record_list">
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
+                          <li><em>2018.01.02 13:20:10</em><span class="congratulations">恭喜</span>1570876****<span class="congratulations">用户</span><span class="mobile-style">累计年化投资50000元 <i>，</i></span>获得500元现金</li>
                       </ul>
                   </div>
 
