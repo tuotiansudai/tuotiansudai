@@ -28,6 +28,10 @@ class EtcdConfig(object):
         value, _ = self.client.get('/{}/{}'.format(self.env, key))
         if value is None:
             return default_value
-        if default_value is not None and type(default_value) == int:
-            return int(value)
+        if default_value is not None:
+            if type(default_value) == int:
+                return int(value)
+
+            if type(default_value) == bool:
+                return value == 'True'
         return value

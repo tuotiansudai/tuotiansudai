@@ -4,9 +4,9 @@ from etcd_config import EtcdConfig
 
 ENV = os.getenv('TTSD_ETCD_ENV', 'dev')
 
-DEBUG = True
-
 config = EtcdConfig(ENV)
+
+DEBUG = config.get('user.rest.service.debug', default_value=True)
 
 REDIS_HOST = config.get('common.redis.host', default_value='192.168.33.10')
 REDIS_PORT = config.get('common.redis.port', default_value=6379)
