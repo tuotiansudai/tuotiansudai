@@ -1,5 +1,5 @@
-import logging
 from __future__ import with_statement
+import logging
 import os
 from fabric.api import *
 from fabric.contrib.project import upload_project
