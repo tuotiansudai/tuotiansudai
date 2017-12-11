@@ -19,8 +19,7 @@
 
     <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true"/>
 
-    <context:property-placeholder
-            location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties,classpath*:ask-redis-key-template.properties"/>
+    <bean class="com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="pointTransactionManager"/>

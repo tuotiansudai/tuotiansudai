@@ -12,7 +12,7 @@ import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import javax.ws.rs.*;
 import java.util.List;
 
-@RestClient(url = "${ask.rest.server}")
+@RestClient(url = "ask.rest.server")
 public interface AskRestClient {
 
     @POST
