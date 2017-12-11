@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
-
 @Controller
 @RequestMapping(value = "/activity/cash-snowball")
 public class CashSnowballController {
@@ -22,11 +20,7 @@ public class CashSnowballController {
     public ModelAndView cashSnowBall() {
         ModelAndView modelAndView = new ModelAndView("/activities/2017/cash-snowball", "responsive", true);
         modelAndView.addObject("record", cashSnowballService.findAll());
-
-        Map<String, String> maps = cashSnowballService.userInvestAmount(LoginUserInfo.getLoginName());
-        modelAndView.addObject("annualizedAmount", maps.get("annualizedAmount"));
-        modelAndView.addObject("cashAmount", maps.get("cashAmount"));
-        modelAndView.addObject("nextAmount", maps.get("nextAmount"));
+        modelAndView.addAllObjects(cashSnowballService.userInvestAmount(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 }
