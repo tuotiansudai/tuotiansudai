@@ -210,10 +210,15 @@ def deploy_ask():
 @parallel
 def deploy_sign_in():
     for i in ('1', '2'):
+        print 'sign in start...'
         folder_name = 'signin_{0}'.format(i)
+        print 'sign in start...' + folder_name
         try:
+            print 'sign in upload...'
             upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+            print 'sign in upload finished...'
         except Exception as e:
+            print 'sign in upload exception...'
             print e.message
             raise e
 
