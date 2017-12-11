@@ -624,13 +624,20 @@ strong,em {
     border: 0.03rem solid #fde237;
     border-radius: 0.05rem;
     margin-top: 0.84rem;
-    padding: 0.2rem;
+    padding: 0.4rem 1.0rem;
     position: relative;
-    @media screen and (max-width:375px) {
-      //padding-left: 0.04rem;
-      //padding-right: 0.04rem;
-      padding-left: 0;
-      padding-right: 0;
+    @media screen and (max-width:414px) {
+      padding-left: 0.8rem;
+      padding-right: 0rem;
+      @media screen and (max-width:375px) {
+      padding-left: 0.6rem;
+      @media screen and (max-width:320px) {
+        padding-left: 0.3rem;
+
+      }
+
+    }
+
     }
     >h2 {
       position: absolute;
@@ -650,7 +657,7 @@ strong,em {
       }
     }
     .record-list {
-      height: 2.3rem;
+      height: 2.8rem;
       ul {
         >li {
           height: 0.6rem;
@@ -658,13 +665,15 @@ strong,em {
           font-size: 0.2rem;
           border-bottom:none;
           padding: 0;
+          .congratulations {
+            display: none;
+          }
           .mobile-style {
-            //padding-left: 0.2rem;
-            //padding-right: 0.1rem;
-            @media screen and (max-width:414px) {
-              padding-left: 0rem;
+            padding-left: 0.2rem;
+            padding-right: 0.1rem;
+            @media screen and (max-width:320px) {
+              padding-left: 0.06rem;
               padding-right: 0rem;
-              font-size: 12px;
             }
           }
           i {
