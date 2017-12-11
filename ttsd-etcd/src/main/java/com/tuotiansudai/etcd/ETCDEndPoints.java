@@ -19,6 +19,7 @@ public class ETCDEndPoints {
     private List<String> qa5;
     private List<String> ut;
     private List<String> prod;
+    private List<String> ft;
 
     public List<String> getDev() {
         return dev;
@@ -84,6 +85,14 @@ public class ETCDEndPoints {
         this.prod = prod;
     }
 
+    public List<String> getFt() {
+        return ft;
+    }
+
+    public void setFt(List<String> ft) {
+        this.ft = ft;
+    }
+
     List<String> getEndpoint(String env) {
         env = Strings.isNullOrEmpty(env) ? null : env.toLowerCase();
         Map<String, List<String>> endpointsMapping = Maps.newHashMap(ImmutableMap.<String, List<String>>builder()
@@ -95,6 +104,7 @@ public class ETCDEndPoints {
                 .put("qa3", qa3)
                 .put("qa4", qa4)
                 .put("qa5", qa5)
+                .put("ft", ft)
                 .build());
         List<String> endpoints = endpointsMapping.containsKey(env) ? endpointsMapping.get(env) : endpointsMapping.get("dev");
 
