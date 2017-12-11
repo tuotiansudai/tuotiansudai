@@ -49,16 +49,18 @@ public class InvestSuccessCashSnowballMessageConsumer implements MessageConsumer
             logger.error("[MQ] message is empty");
             return;
         }
-        Date date = DateTime.now().toDate();
+        Date date = new Date();
         if (date.before(activityCashSnowballStartTime) || date.after(activityCashSnowballEndTime)) {
+            logger.info("[MQ] InvestSuccess_CashSnowball, cash snowball activity not in the activity time range");
             return;
         }
 
-        InvestSuccessMessage investSuccessMessage = null;
+        InvestSuccessMessage investSuccessMessage;
         try {
             investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("[MQ] InvestSuccess_CashSnowball, json convert InvestSuccessMessage is fail, message:{}", message);
+            return;
         }
 
         UserInfo userInfo = investSuccessMessage.getUserInfo();
