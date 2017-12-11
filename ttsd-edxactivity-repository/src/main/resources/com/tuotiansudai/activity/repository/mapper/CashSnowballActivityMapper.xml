@@ -6,10 +6,10 @@
 
     <resultMap id="cashSnowballActivityResultMap" type="com.tuotiansudai.activity.repository.model.CashSnowballActivityModel">
         <id column="id" property="id"></id>
-        <result column="invest_id" property="investId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="user_name" property="userName"></result>
         <result column="mobile" property="mobile"></result>
+        <result column="invest_amount" property="investAmount"></result>
         <result column="annualized_amount" property="annualizedAmount"></result>
         <result column="cash_amount" property="cashAmount"></result>
         <result column="created_time" property="createdTime"></result>
@@ -18,21 +18,22 @@
 
     <insert id="create" parameterType="cashSnowballActivityModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`cash_snowball_activity`
-        (`invest_id`,
-        `login_name`,
+        (`login_name`,
         `user_name`,
         `mobile`,
+        `invest_amount`,
         `annualized_amount`,
         `cash_amount`,
         `created_time`,
         `updated_time`)
-        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{annualized_amount},#{cash_amount}, now(), now())
+        VALUES(#{loginName},#{userName},#{mobile},#{investAmount},#{annualizedAmount},#{cashAmount}, now(), now())
     </insert>
 
-    <update id="updated" parameterType="cashSnowballActivityModel">
+    <update id="update" parameterType="cashSnowballActivityModel">
         UPDATE `edxactivity`.`cash_snowball_activity` SET
+        `invest_amount` = #{investAmount},
         `annualized_amount` = #{annualizedAmount},
-        `cash_amount` = #{cashAmount}
+        `cash_amount` = #{cashAmount},
         `updated_time` = now()
         WHERE
         id = #{id}

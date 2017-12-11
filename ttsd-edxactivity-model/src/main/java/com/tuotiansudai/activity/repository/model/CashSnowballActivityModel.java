@@ -7,10 +7,10 @@ import java.util.Date;
 public class CashSnowballActivityModel implements Serializable{
 
     private long id;
-    private long investId;
     private String loginName;
     private String userName;
     private String mobile;
+    private long investAmount;
     private long annualizedAmount;
     private long cashAmount;
     private Date createdTime;
@@ -19,11 +19,11 @@ public class CashSnowballActivityModel implements Serializable{
     public CashSnowballActivityModel() {
     }
 
-    public CashSnowballActivityModel(long investId, String loginName, String userName, String mobile, long annualizedAmount, long cashAmount) {
-        this.investId = investId;
+    public CashSnowballActivityModel(String loginName, String userName, String mobile, long investAmount, long annualizedAmount, long cashAmount) {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
+        this.investAmount = investAmount;
         this.annualizedAmount = annualizedAmount;
         this.cashAmount = cashAmount;
     }
@@ -34,14 +34,6 @@ public class CashSnowballActivityModel implements Serializable{
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getInvestId() {
-        return investId;
-    }
-
-    public void setInvestId(long investId) {
-        this.investId = investId;
     }
 
     public String getLoginName() {
@@ -98,5 +90,13 @@ public class CashSnowballActivityModel implements Serializable{
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public long getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
     }
 }

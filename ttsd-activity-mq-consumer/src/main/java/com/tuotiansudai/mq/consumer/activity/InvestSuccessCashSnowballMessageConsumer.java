@@ -77,16 +77,17 @@ public class InvestSuccessCashSnowballMessageConsumer implements MessageConsumer
             CashSnowballActivityModel cashSnowballActivityModel = cashSnowballActivityMapper.findByLoginName(userInfo.getLoginName());
             if (cashSnowballActivityModel == null) {
                 cashSnowballActivityMapper.create(new CashSnowballActivityModel(
-                        investInfo.getInvestId(),
                         userInfo.getLoginName(),
                         userInfo.getUserName(),
                         userInfo.getMobile(),
+                        investInfo.getAmount(),
                         annualizedAmount,
-                        annualizedAmount / 100));
+                        annualizedAmount / 1000000 * 10000));
             } else {
                 annualizedAmount = cashSnowballActivityModel.getAnnualizedAmount() + annualizedAmount;
                 cashSnowballActivityModel.setAnnualizedAmount(annualizedAmount);
-                cashSnowballActivityModel.setCashAmount(annualizedAmount / 100);
+                cashSnowballActivityModel.setCashAmount(annualizedAmount / 1000000 * 10000);
+                cashSnowballActivityModel.setInvestAmount(cashSnowballActivityModel.getInvestAmount() + investInfo.getAmount());
                 cashSnowballActivityMapper.update(cashSnowballActivityModel);
             }
         }

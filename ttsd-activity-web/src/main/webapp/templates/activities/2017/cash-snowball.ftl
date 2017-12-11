@@ -19,7 +19,7 @@
                       </h2>
                   <@global.isNotAnonymous>
                       <div class="amount-investment">
-                          您的累计年化投资额为0元
+                          您的累计年化投资额为${annualizedAmount!}元
                       </div>
                   </@global.isNotAnonymous>
                       <div class="run-way" id="ware_DOM">
@@ -43,7 +43,7 @@
                           <span class="christmas-man"></span>
                           <div class="way">
                             <#--<@global.isNotAnonymous>-->
-                              <span id="money_tip" class="money-tip"><em>0</em>元返现</span>
+                              <span id="money_tip" class="money-tip"><em>${cashAmount!}</em>元返现</span>
                             <#--</@global.isNotAnonymous>-->
                               <div class="progress" id="progress">
                                   <span class="circle circle-1"></span>
@@ -74,7 +74,7 @@
 
                       <div class="way">
                           <@global.isNotAnonymous>
-                              <span id="mobile_money_tip" class="money-tip"><em>0</em>元返现</span>
+                              <span id="mobile_money_tip" class="money-tip"><em>${cashAmount!}</em>元返现</span>
                           </@global.isNotAnonymous>
                           <div class="progress" id="progress">
                               <span class="circle circle-1"></span>
@@ -95,7 +95,7 @@
                   <@global.isNotAnonymous>
                       <div class="already-obtained">
                           <div class="tips">
-                          您已获得<strong>200元</strong>返现，<span class="mobile-style">再投<strong>7000.00元</strong>（年化）可再返<strong>100元</strong></span>
+                          您已获得<strong>${cashAmount!}元</strong>返现，<span class="mobile-style">再投<strong>${nextAmount!}元</strong>（年化）可再返<strong>100元</strong></span>
                           </div>
                           <span class="invest-btn invest-button to-invest">去投资</span>
                       </div>
@@ -108,15 +108,13 @@
                   <h2><span>投资记录</span></h2>
                   <div class="record-list">
                       <ul id="record_list">
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
-                          <li><em>2018.01.02 13:20:10</em>恭喜1570876****用户<span class="mobile-style">累计投资50000元 <i>，</i></span>获得500元现金奖励</li>
+                          <#if record?has_content>
+                              <#list record as cashSnowballActivityModel>
+                                <li><em>${(cashSnowballActivityModel.updatedTime?string('yyyy-MM-dd HH:mm'))!}</em>恭喜${cashSnowballActivityModel.mobile}用户<span class="mobile-style">累计年化投资${(cashSnowballActivityModel.annualizedAmount/100)?string('0.00')}元 <i>，</i></span>获得${(cashSnowballActivityModel.cashAmount/100)?string('0.00')}元现金奖励</li>
+                              </#list>
+                          <#else>
+                              暂无投资记录
+                          </#if>
                       </ul>
                   </div>
 
