@@ -2,7 +2,7 @@ test-db-server:
   image: "ywatase/test-docker-mysql"
   container_name: test-db-server
   ports:
-    - "$UT_DB_PORT:3306"
+    - "40021:3306"
   volumes:
     - ./scripts/ut.sql:/opt/ut.sql
   command: bash -c "/etc/init.d/mysql restart && mysql < /opt/ut.sql && /etc/init.d/mysql stop && /usr/bin/mysqld_safe"
@@ -11,4 +11,4 @@ test-redis-server:
   image: "grokzen/redis-cluster"
   container_name: test-redis-server
   ports:
-    - "$UT_REDIS_PORT:7006"
+    - "40017:7006"
