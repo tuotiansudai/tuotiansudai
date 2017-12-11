@@ -19,13 +19,13 @@ def deploy(etcd, env, pay_fake):
         flush_etcd(etcd, deploy_prop, pay_fake)
         return
 
-    if re.match('^ft\d$', env, re.I):
+    if env.lower() == 'ft':
         # 读取FT环境配置 FT.properties 生成一个 dict 对象
         deploy_prop.append(load_properties("./ttsd-config/src/main/resources/envs/FT.properties"))
         # 从redis里读取 三方账号配置
         _r = redis.StrictRedis(host=('192.168.1.30' if env != 'CI1' else '127.0.0.1'), port=6379, db=2)
         deploy_prop.append(_r.hgetall('qa_common_account'))
-        
+
         flush_etcd(etcd, deploy_prop, pay_fake)
         return
 
