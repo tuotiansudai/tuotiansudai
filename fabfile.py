@@ -1,3 +1,4 @@
+import logging
 from __future__ import with_statement
 import os
 from fabric.api import *
@@ -210,16 +211,15 @@ def deploy_ask():
 @parallel
 def deploy_sign_in():
     for i in ('1', '2'):
-        print 'sign in start...'
+        logging.info("'sign in start...'")
         folder_name = 'signin_{0}'.format(i)
-        print 'sign in start...' + folder_name
+        logging.info('sign in start...' + folder_name)
         try:
-            print 'sign in upload...'
+            logging.info("sign in upload")
             upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
-            print 'sign in upload finished...'
+            logging.info("sign in upload done")
         except Exception as e:
-            print 'sign in upload exception...'
-            print e.message
+            logging.exception(e)
             raise e
 
         with cd('/workspace'):
