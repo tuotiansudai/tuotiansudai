@@ -67,9 +67,9 @@ def mk_static_zip():
 
 
 def mk_signin_zip():
+    local('cp ./ttsd-etcd/src/main/resources/etcd-endpoints.yml ./ttsd-user-rest-service/'.format(config_path, i))
     for i in ('1', '2'):
         local('cp {0}/signin_service/{1}/prod.yml ./ttsd-user-rest-service/'.format(config_path, i))
-        local('cp ./ttsd-etcd/src/main/resources/etcd-endpoints.yml ./ttsd-user-rest-service/'.format(config_path, i))
         local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 
