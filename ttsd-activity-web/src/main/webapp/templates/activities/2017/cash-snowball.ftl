@@ -87,7 +87,7 @@
                   </div>
               <@global.isAnonymous>
                   <div class="already-obtained">
-                      您还没有现金奖励，快去投资吧！
+                      您还未登录，登录看看自己的投资返现吧！
                   </div>
                   <span class="invest-btn login-button invest-button to-login">去登录</span>
               </@global.isAnonymous>
@@ -110,10 +110,10 @@
                       <ul id="record_list">
                           <#if record?has_content>
                               <#list record as cashSnowballActivityModel>
-                                <li><em>${(cashSnowballActivityModel.updatedTime?string('yyyy-MM-dd HH:mm'))!}</em>恭喜${cashSnowballActivityModel.mobile}用户<span class="mobile-style">累计年化投资${(cashSnowballActivityModel.annualizedAmount/100)?string('0.00')}元 <i>，</i></span>获得${(cashSnowballActivityModel.cashAmount/100)?string('0.00')}元现金奖励</li>
+                                  <li><em>${(cashSnowballActivityModel.updatedTime?string('yyyy-MM-dd HH:mm'))!}</em><span class="congratulations">恭喜</span>${cashSnowballActivityModel.mobile}<span class="congratulations">用户</span><span class="mobile-style">累计年化投资${(cashSnowballActivityModel.annualizedAmount/100)?string('0.00')}元 <i>，</i></span>获得${(cashSnowballActivityModel.cashAmount/100)?string('0.00')}元现金<span class="congratulations">奖励</span></li>
                               </#list>
                           <#else>
-                              暂无投资记录
+                              <div class="no-record">目前还没有人获得现金奖励，快去投资吧！</div>
                           </#if>
                       </ul>
                   </div>
@@ -136,7 +136,7 @@
                   <div class="invest-bar-graph">
 
                   </div>
-                  <span class="invest-btn-2 invest-button to-invest">去投资</span>
+                  <span class="invest-btn-2 invest-btn to-invest">去投资</span>
                   <p class="comment">本活动现金奖励将于活动结束后3个工作日内统一发放至个人账户，用户可直接提现或者用于投资</p>
 
               </div>

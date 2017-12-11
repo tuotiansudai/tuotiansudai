@@ -46,7 +46,7 @@ $.when(commonFun.isUserLogin())
                     'top':54
                 })
             }
-        }else {
+        }else if(wareIndex >=3){
             $money_tip.css({
                 'left':370,
                 'top':54
