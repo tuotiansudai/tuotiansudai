@@ -95,7 +95,7 @@
                   <@global.isNotAnonymous>
                       <div class="already-obtained">
                           <div class="tips">
-                          您已获得<strong>${cashAmount!}元</strong>返现，<span class="mobile-style">再投<strong>${nextAmount!}元</strong>（年化）可再返<strong>100元</strong></span>
+                          您已获得<strong id="returnMoney">${cashAmount!}元</strong>返现，<span class="mobile-style">再投<strong>${nextAmount!}元</strong>（年化）可再返<strong>100元</strong></span>
                           </div>
                           <span class="invest-btn invest-button to-invest">去投资</span>
                       </div>
