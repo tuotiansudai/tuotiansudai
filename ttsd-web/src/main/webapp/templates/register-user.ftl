@@ -37,7 +37,7 @@
                         <div class="sendOften" style="color: red;display: none">短信发送频繁，请稍后再试</div>
                     </span>
                 </li>
-                <li class="referrer-open"> <i class="icon-arrow-right"></i>请输入推荐人（此项选填）</li>
+                <li class="referrer-open"> <i class="icon-arrow-bottom"></i>请输入推荐人（此项选填）</li>
                 <li class="">
                     <i class="icon-referrer"></i>
                     <input validate type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>

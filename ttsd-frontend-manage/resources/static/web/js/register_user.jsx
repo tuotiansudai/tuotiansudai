@@ -39,7 +39,7 @@ require.ensure(['publicJs/my_fetch_captcha'], function(require){
             iconArrow=$this.find('i');
         $this.next('li').toggleClass('hide');
         checkOption=$this.next('li').hasClass('hide');
-        iconArrow[0].className=checkOption?'icon-arrow-bottom':'icon-arrow-right';
+        iconArrow[0].className=checkOption?'icon-arrow-right':'icon-arrow-bottom';
         if($referrer.is(':hidden')) {
             referrerValidBool=true;
         }
@@ -166,6 +166,7 @@ validator.newStrategy(registerForm.imageCaptcha,'imageCaptcha',function(errorMsg
         }
         else if (!data.status && data.isRestricted) {
             $('.sendOften').show();
+            refreshCode();
         }
         else if (!data.status && !data.isRestricted) {
             $('.sendOften').hide();
