@@ -290,6 +290,9 @@ strong,em {
         color: #525252;
         border-bottom:1px solid #f0ecda;
         padding: 0 36px;
+        .mobile-style {
+          padding-left: 0;
+        }
         em {
           float: right;
         }
@@ -416,7 +419,7 @@ strong,em {
   }
 
 }
-@media screen and (max-width:750px) {
+@media screen and (max-width:768px) {
   .page-width{
     width: 100%;
   }
@@ -498,7 +501,22 @@ strong,em {
         top: 0px;
         em {
           top: 0.5rem;
-          left: 0.12rem;
+          left: 0.11rem;
+          &.lessDis{
+            left: 0;
+          }
+          i{
+            font-size: 0.26rem;
+            &.smallFont {
+              font-size: 0.18rem;
+            }
+          }
+          @media screen and (max-width:414px) {
+            left: 0.05rem;
+            &.smallFont {
+              font-size: 12px;
+            }
+          }
           .font {
             font-size: 0.14rem;
           }
@@ -606,8 +624,14 @@ strong,em {
     border: 0.03rem solid #fde237;
     border-radius: 0.05rem;
     margin-top: 0.84rem;
-    padding: 0.42rem;
+    padding: 0.2rem;
     position: relative;
+    @media screen and (max-width:375px) {
+      //padding-left: 0.04rem;
+      //padding-right: 0.04rem;
+      padding-left: 0;
+      padding-right: 0;
+    }
     >h2 {
       position: absolute;
       left: 50%;
@@ -633,7 +657,19 @@ strong,em {
           line-height: 0.6rem;
           font-size: 0.2rem;
           border-bottom:none;
-          padding: 0 0.22rem;
+          padding: 0;
+          .mobile-style {
+            //padding-left: 0.2rem;
+            //padding-right: 0.1rem;
+            @media screen and (max-width:414px) {
+              padding-left: 0rem;
+              padding-right: 0rem;
+              font-size: 12px;
+            }
+          }
+          i {
+            display: none;
+          }
           em {
             display: none;
           }
@@ -724,6 +760,12 @@ strong,em {
             margin-bottom: 0.2rem;
             width: 5.86rem;
             height: 1.15rem;
+            @media screen and (max-width:414px) {
+              width: 7rem;
+              @media screen and (max-width:320px) {
+                font-size: 12px;
+              }
+            }
 
           }
 

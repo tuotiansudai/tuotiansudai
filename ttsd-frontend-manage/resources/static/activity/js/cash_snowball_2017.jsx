@@ -18,7 +18,7 @@ $ware_DOM.find('.red-ware').each((index,item)=>{
         'opacity':0.6
     })
 })
-let myWare = 400;
+let myWare = 100;
 let wareIndex = Math.floor(myWare/100);
 let moneyTipWidth = $money_tip.innerWidth(),
     mobileMoney_tip_width = $mobileMoney_tip.innerWidth();
@@ -114,7 +114,7 @@ $.when(commonFun.isUserLogin())
             if(item >= 1000){
                 //红包大于等于1000调整样式
                 $ware_DOM.find('.red-ware .money').eq(index).css({
-                    fontSize:'20px'
+                    fontSize:'20rem'
                 })
                 $ware_DOM.find('.red-ware em').eq(index).css({
                     left:'4px'
@@ -193,12 +193,11 @@ $.when(commonFun.isUserLogin())
         mobileWareArr.forEach((item,index)=>{
             if(item >= 1000){
                 //红包大于等于1000调整样式
-                $mobileWareDOM.find('.red-ware .money').eq(index).css({
-                    fontSize:'20px'
-                })
+                $mobileWareDOM.find('.red-ware .money i').eq(index).addClass('smallFont')
                 $mobileWareDOM.find('.red-ware em').eq(index).css({
-                    left:'0.12rem'
+                    left:'0.05rem'
                 })
+                $mobileWareDOM.find('.red-ware em').addClass('lessDis')
             }
             $mobileWareDOM.find('.red-ware .money').eq(index).text(item);
         })
