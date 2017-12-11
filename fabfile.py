@@ -211,25 +211,25 @@ def deploy_ask():
 @parallel
 def deploy_sign_in():
     for i in ('1', '2'):
-        logging.info("'sign in start...'")
+        local("echo sign in start...")
         folder_name = 'signin_{0}'.format(i)
-        logging.info('sign in start...' + folder_name)
+        local('echo sign in start...' + folder_name)
         try:
-            logging.info("sign in upload")
+            local("echo sign in upload")
             upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
             logging.info("sign in upload done")
         except Exception as e:
-            logging.exception(e)
+            local("echo " + e.message)
             raise e
 
-        with cd('/workspace'):
-            sudo('rm -rf {0}'.format(folder_name))
-            sudo('unzip {0}.zip -d {0}'.format(folder_name))
-        with cd('/workspace/{0}'.format(folder_name)):
-            sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd stop')
-            sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd rm -f')
-            sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd up -d')
-    sudo('service nginx restart')
+        # with cd('/workspace'):
+        #     sudo('rm -rf {0}'.format(folder_name))
+        #     sudo('unzip {0}.zip -d {0}'.format(folder_name))
+        # with cd('/workspace/{0}'.format(folder_name)):
+        #     sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd stop')
+        #     sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd rm -f')
+        #     sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd up -d')
+    # sudo('service nginx restart')
 
 
 @roles('point')
@@ -265,19 +265,19 @@ def deploy_anxin():
 
 
 def deploy_all():
-    execute(deploy_static)
+    # execute(deploy_static)
     execute(deploy_sign_in)
-    execute(deploy_sms)
-    execute(deploy_console)
-    execute(deploy_pay)
-    execute(deploy_worker)
-    execute(deploy_api)
-    execute(deploy_web)
-    execute(deploy_activity)
-    execute(deploy_point)
-    execute(deploy_ask_rest)
-    execute(deploy_ask)
-    execute(deploy_anxin)
+    # execute(deploy_sms)
+    # execute(deploy_console)
+    # execute(deploy_pay)
+    # execute(deploy_worker)
+    # execute(deploy_api)
+    # execute(deploy_web)
+    # execute(deploy_activity)
+    # execute(deploy_point)
+    # execute(deploy_ask_rest)
+    # execute(deploy_ask)
+    # execute(deploy_anxin)
 
 
 def pre_deploy():
