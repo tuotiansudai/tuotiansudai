@@ -757,54 +757,53 @@
     </select>
 
     <select id="findExperienceBalance" resultMap="userViewResultMap" parameterType="map">
-        select u1.* from (
-        select u.*, ifnull(e.experience_balance,0) as experience_balance
-        from (
-        select * from user
-        <if test="mobile != null and mobile != ''">
-            where mobile = #{mobile}
-        </if>
-        ) u
-        left outer join experience_account e on u.login_name = e.login_name
-        ) u1
+        select u.*, e.experience_balance
+        from experience_account e
+        inner join user u on u.login_name = e.login_name
         <where>
+            e.experience_balance > 0
+            <if test="mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
             <if test="balanceMin != null and balanceMin !=''">
-                and experience_balance >= #{balanceMin}
+                and e.experience_balance &gt; #{balanceMin}
             </if>
             <if test="balanceMax != null and balanceMax !=''">
-                and experience_balance &lt;= #{balanceMax}
+                and e.experience_balance &lt;= #{balanceMax}
             </if>
         </where>
-        order by mobile
+        order by e.experience_balance DESC
         limit #{index}, #{pageSize}
     </select>
 
     <select id="findCountExperienceBalance" resultType="int" parameterType="map">
-        select count(*) from (
-        select ifnull(e.experience_balance,0) as experience_balance
-        from (
-        select login_name from user
+        select count(*)
+        from experience_account e
         <if test="mobile != null and mobile != ''">
-            where mobile = #{mobile}
+        inner join user u on u.login_name = e.login_name
         </if>
-        ) u
-        left outer join experience_account e on u.login_name = e.login_name
-        ) u1
         <where>
+            e.experience_balance > 0
+            <if test="mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
             <if test="balanceMin != null and balanceMin !=''">
-                and experience_balance >= #{balanceMin}
+                and e.experience_balance &gt; #{balanceMin}
             </if>
             <if test="balanceMax != null and balanceMax !=''">
-                and experience_balance &lt;= #{balanceMax}
+                and e.experience_balance &lt;= #{balanceMax}
             </if>
         </where>
     </select>
 
     <select id="sumExperienceBalance" parameterType="map" resultType="long">
         select ifnull(sum(e.experience_balance),0)
-        from user u
-        inner join experience_account e on u.login_name = e.login_name
+        from experience_account e
+        <if test="mobile != null and mobile != ''">
+        inner join user u on u.login_name = e.login_name
+        </if>
         <where>
+            e.experience_balance > 0
             <if test="mobile != null and mobile != ''">
                 and u.mobile = #{mobile}
             </if>
@@ -814,7 +813,6 @@
             <if test="balanceMax != null and balanceMax !=''">
                 and e.experience_balance &lt;= #{balanceMax}
             </if>
-
         </where>
     </select>
 

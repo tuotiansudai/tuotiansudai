@@ -44,11 +44,20 @@ public class WeChatClient {
 
     private static String APP_SECRET;
 
+    private final static String CANCELED_WE_CHAT_ATTENTION_CODE = "43004";
+
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
         APP_ID = bundle.getString("wechat.appId");
         APP_SECRET = bundle.getString("wechat.appSecret");
-        TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, bundle.getString("wechat.template1.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, bundle.getString("wechat.bound.to.other.user.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.TRANSFER_SUCCESS, bundle.getString("wechat.transfer.success.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, bundle.getString("wechat.withdraw.notify.success.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.WITHDRAW_APPLY_SUCCESS, bundle.getString("wechat.withdraw.apply.success.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.ADVANCE_REPAY_SUCCESS, bundle.getString("wechat.advance.repay.success.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.NORMAL_REPAY_SUCCESS, bundle.getString("wechat.normal.repay.success.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.INVEST_SUCCESS, bundle.getString("wechat.invest.success.id"));
+        TEMPLATE_MAP.put(WeChatMessageType.LOAN_OUT_SUCCESS, bundle.getString("wechat.loan.out.success.id"));
     }
 
     public static WeChatClient getClient() {
@@ -141,6 +150,10 @@ public class WeChatClient {
             });
 
             if (!"0".equals(result.get("errcode"))) {
+                if (CANCELED_WE_CHAT_ATTENTION_CODE.equals(result.get("errcode"))) {
+                    logger.info(MessageFormat.format("send message failed, response: {0}", responseString));
+                    return;
+                }
                 logger.error(MessageFormat.format("send message failed, response: {0}", responseString));
             }
         } catch (Exception e) {

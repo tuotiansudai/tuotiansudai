@@ -253,7 +253,33 @@ let GetDateStr = function(date,AddDayCount) {
 
     return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
 }
+//中奖纪录滚动
+function scrollList(domName, length,time) {
+    var thisFun = this,
+        scrollTimer;
+    domName.hover(function () {
+        clearInterval(scrollTimer);
+    }, function () {
+        scrollTimer = setInterval(function () {
+            scrollUp(domName, length);
+        }, time?time:1500);
+    }).trigger("mouseout");
+};
+function scrollUp(domName, length) {
 
+    var $self = domName;
+    var lineHeight = $self.find("li:first").height();
+    if ($self.find('li').length > (length != '' ? length : 10)) {
+        $self.animate({
+            "margin-top": -lineHeight + "px"
+        }, 600, function () {
+            $self.css({
+                "margin-top": "0px"
+            }).find("li:first").appendTo($self);
+        });
+    }
+
+}
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -265,4 +291,5 @@ exports.countDownLoan = countDownLoan;
 exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;
 exports.GetDateStr = GetDateStr;
+exports.scrollList = scrollList;
 
