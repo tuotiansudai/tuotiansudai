@@ -40,6 +40,8 @@ public class WeChatClient {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
+    private final static String CANCELED_WE_CHAT_ATTENTION_CODE = "43004";
+
     private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap(
             ImmutableMap.<WeChatMessageType, String>builder()
                     .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getReader().getValue("wechat.bound.to.other.user.id"))
@@ -146,6 +148,10 @@ public class WeChatClient {
             });
 
             if (!"0".equals(result.get("errcode"))) {
+                if (CANCELED_WE_CHAT_ATTENTION_CODE.equals(result.get("errcode"))) {
+                    logger.info(MessageFormat.format("send message failed, response: {0}", responseString));
+                    return;
+                }
                 logger.error(MessageFormat.format("send message failed, response: {0}", responseString));
             }
         } catch (Exception e) {
