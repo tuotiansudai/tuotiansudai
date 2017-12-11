@@ -9,6 +9,7 @@ import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.message.UserInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.util.AnnualizedInvestUtil;
 import com.tuotiansudai.util.JsonConverter;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -72,8 +73,7 @@ public class InvestSuccessCashSnowballMessageConsumer implements MessageConsumer
                 && investInfo.getStatus().equals("SUCCESS")
                 && loanDetailInfo.getActivityDesc().equals("逢万返百")) {
 
-            long annualizedAmount = calculatorsAnnualizedAmount(investInfo.getAmount(), loanDetailInfo.getDuration());
-
+            long annualizedAmount = AnnualizedInvestUtil.annualizedInvestAmount(investInfo.getAmount(), loanDetailInfo.getDuration());
             CashSnowballActivityModel cashSnowballActivityModel = cashSnowballActivityMapper.findByLoginName(userInfo.getLoginName());
             if (cashSnowballActivityModel == null) {
                 cashSnowballActivityMapper.create(new CashSnowballActivityModel(
@@ -90,17 +90,5 @@ public class InvestSuccessCashSnowballMessageConsumer implements MessageConsumer
                 cashSnowballActivityMapper.update(cashSnowballActivityModel);
             }
         }
-    }
-
-    public long calculatorsAnnualizedAmount(long investAmount, int duration) {
-        switch (duration) {
-            case 90:
-                return investAmount / 4;
-            case 180:
-                return investAmount / 2;
-            case 360:
-                return investAmount;
-        }
-        return 0l;
     }
 }
