@@ -211,7 +211,12 @@ def deploy_ask():
 def deploy_sign_in():
     for i in ('1', '2'):
         folder_name = 'signin_{0}'.format(i)
-        upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+        try:
+            upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+        except Exception as e:
+            print e.message
+            raise e
+
         with cd('/workspace'):
             sudo('rm -rf {0}'.format(folder_name))
             sudo('unzip {0}.zip -d {0}'.format(folder_name))
@@ -277,7 +282,7 @@ def pre_deploy():
 
 
 def all():
-    pre_deploy()
+    # pre_deploy()
     deploy_all()
 
 
