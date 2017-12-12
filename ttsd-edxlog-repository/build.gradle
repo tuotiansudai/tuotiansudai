@@ -16,7 +16,6 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-edxlog-model')
 
-    testCompile project(':ttsd-config')
 }
 
 processResources.outputs.upToDateWhen { false }

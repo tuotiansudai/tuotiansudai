@@ -12,19 +12,22 @@ let $mobileWareDOM = $('#mobile_ware_DOM'),
     $mobileMoney_tip = $('#mobile_money_tip',$mobileWareDOM),
     $mobileProgress = $('#progress',$mobileWareDOM);
 
+let $returnMoney = $('#returnMoney');
+
 //所有红包置灰
 $ware_DOM.find('.red-ware').each((index,item)=>{
     $(item).css({
         'opacity':0.6
     })
 })
-let myWare = 100;
-let wareIndex = Math.floor(myWare/100);
-let moneyTipWidth = $money_tip.innerWidth(),
-    mobileMoney_tip_width = $mobileMoney_tip.innerWidth();
+
 
 $.when(commonFun.isUserLogin())
     .done(function () {
+        let myWare = parseInt($returnMoney.text());
+        let wareIndex = Math.floor(myWare/100);
+        let moneyTipWidth = $money_tip.innerWidth(),
+            mobileMoney_tip_width = $mobileMoney_tip.innerWidth();
         //返现红包金额提示
         $money_tip.find('em').text(myWare);
         $mobileMoney_tip.find('em').text(myWare);
@@ -43,7 +46,7 @@ $.when(commonFun.isUserLogin())
                     'top':54
                 })
             }
-        }else {
+        }else if(wareIndex >=3){
             $money_tip.css({
                 'left':370,
                 'top':54

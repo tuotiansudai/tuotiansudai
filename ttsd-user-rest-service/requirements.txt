@@ -11,3 +11,5 @@ SQLAlchemy==1.0.14
 Werkzeug==0.11.10
 WTForms==2.1
 https://github.com/ttsdzzg/python-repository/raw/master/mns-1.1.4.zip#egg=mns==1.1.4
+etcd3==0.7.0
+PyYAML==3.12

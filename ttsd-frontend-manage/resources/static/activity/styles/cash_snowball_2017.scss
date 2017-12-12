@@ -254,7 +254,7 @@ strong,em {
       font-weight: bold;
     }
   }
-  .invest-btn {
+  .invest-button {
     margin-top: 50px;
     margin-bottom: 40px;
   }
@@ -280,9 +280,16 @@ strong,em {
     }
   }
   .record-list {
-    height: 230px;
+    max-height: 230px;
     overflow: hidden;
     ul {
+      .no-record {
+        font-size: 16px;
+        color: #525252;
+        text-align: center;
+        padding-top: 40px;
+      }
+
       >li {
         height: 45px;
         line-height: 45px;
@@ -358,6 +365,14 @@ strong,em {
     background: url("../images/2017/cash-snowball/pc_graph.png") no-repeat center center;
   }
   .invest-btn-2 {
+    display: inline-block;
+    width: 306px;
+    height: 82px;
+    line-height: 82px;
+    font-size: 50px;
+    cursor: pointer;
+    color: #fff;
+    background: #ed4119;
     margin: 0 auto;
     margin-top: 48px;
     margin-bottom: 45px;
@@ -425,6 +440,9 @@ strong,em {
   }
   .my-page {
     width: 7.11rem;
+    @media screen and (max-width:320px) {
+      width: 7.21rem;
+    }
   }
 
   .invest-btn {
@@ -613,7 +631,7 @@ strong,em {
         font-size: 0.3rem;
       }
     }
-    .invest-btn {
+    .invest-button {
       margin-top: 0.44rem;
       margin-bottom: 0.38rem;
     }
@@ -624,15 +642,14 @@ strong,em {
     border: 0.03rem solid #fde237;
     border-radius: 0.05rem;
     margin-top: 0.84rem;
-    padding: 0.4rem 1.0rem;
+    padding: 0.4rem 0.8rem;
     position: relative;
     @media screen and (max-width:414px) {
-      padding-left: 0.8rem;
       padding-right: 0rem;
       @media screen and (max-width:375px) {
-      padding-left: 0.6rem;
+      padding-left: 0.3rem;
       @media screen and (max-width:320px) {
-        padding-left: 0.3rem;
+        padding-left: 0.0rem;
 
       }
 
@@ -657,8 +674,12 @@ strong,em {
       }
     }
     .record-list {
-      height: 2.8rem;
+      max-height: 2.8rem;
       ul {
+        .no-record {
+          font-size: 0.2rem;
+          padding-top: 0.2rem;
+        }
         >li {
           height: 0.6rem;
           line-height: 0.6rem;
@@ -741,6 +762,10 @@ strong,em {
       background-size: 100%;
     }
     .invest-btn-2 {
+      width: 3.06rem;
+      height: 0.82rem;
+      line-height: 0.82rem;
+      font-size: 0.44rem;
       margin-top: 0.1rem;
       margin-bottom: 0.53rem;
 

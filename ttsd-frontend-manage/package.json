@@ -4,7 +4,7 @@
   "scripts": {
     "start": "export NODE_ENV=dev && npm run json && webpack-dev-server",
     "start2": "export NODE_ENV=dev && npm run plugin && webpack --progress && node getJsonFiles.js && npm run showimage",
-    "build": "export NODE_ENV=production && npm run plugin && webpack --$PLAT && node getJsonFiles.js",
+    "build": "export NODE_ENV=production && npm run plugin && webpack --$STATIC_SERVER && node getJsonFiles.js",
     "test": "export NODE_ENV=production && npm run watchprod && npm run json",
     "watchprod": "webpack --watch --config webpack.production.js&",
     "json": "nodemon -L getJsonFiles.js&",
@@ -43,7 +43,8 @@
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-md5-hash": "0.0.5",
-    "webpack-parallel-uglify-plugin": "^0.4.0"
+    "webpack-parallel-uglify-plugin": "^0.4.0",
+    "jquery": "~2.1.4"
   },
   "dependencies": {
     "art-template": "^3.1.3",
