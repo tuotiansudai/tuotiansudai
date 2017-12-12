@@ -155,6 +155,14 @@
 	1. 向同事索要anxinsign-test.jks文件
 	2. 将anxinsign-test.jks放在`~/Work/tuotian/ttsd-anxin-sign/src/main/resources `目录下，并重命名为anxinsign.jks
 
+* 安装etcd
+	1. mac 下安装etcd: brew install etcd3
+	2. 启动etcd: sh/ etcd
+	3. 写入本地etcd: <br/> 
+	    cd ttsd-config <br/>
+	    paver flush_etcd
+	    
+
 * 启动注意事项
 	1. 确保虚拟机开启，并在redis的src目录下使用`./redis-server ../redis.conf`打开redis服务
 	2. 确保python切换到了venv的虚拟环境，并打开了web.py服务
