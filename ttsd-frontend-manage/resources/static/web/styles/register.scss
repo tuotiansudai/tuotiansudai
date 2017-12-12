@@ -8,7 +8,7 @@
   text-align: center;
 
   .step-register-head {
-    border-bottom: 1px solid #ffac2a;
+    border-bottom: 1px solid #e6e6e6;
     color: #ff752a;
     font-size: 24px;
     padding: 25px 0 3px 0;
@@ -96,6 +96,7 @@
           }
           a {
             color: #ff9c1b;
+            text-decoration: underline;
           }
         }
         .reg-title {
@@ -105,6 +106,17 @@
           color: #333;
           text-align: right;
           display: none;
+        }
+        .my-image-captcha {
+          position: absolute;
+          top: 8px;
+          right: 348px;
+          @media (min-width:701px) and (max-width:999px) {
+            right: 192px;
+          }
+          @media screen and (max-width: 700px) {
+            right: 1px;
+          }
         }
         .captcha-tag {
           position: relative;
@@ -138,7 +150,7 @@
         input[type="text"], input[type="password"] {
           color: #999;
           width: 280px;
-          border: #cecece 1px solid;
+          border: #e6e6e6 1px solid;
           padding: 14px 2px 14px 47px;
 
         }
