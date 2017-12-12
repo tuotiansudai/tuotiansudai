@@ -245,11 +245,11 @@ validator.add(registerForm.imageCaptcha, [{
     errorMsg: '图形验证码不正确'
 },{
     strategy: 'isNumber:5',
-    errorMsg: '验证码只能为5位数字'
+    errorMsg: '图形验证码不正确'
 }],true);
 validator.add(registerForm.captcha, [{
     strategy: 'isNumber:6',
-    errorMsg: '验证码为6位数字'
+    errorMsg: '验证码不正确'
 },{
     strategy: 'isCaptchaValid',
     errorMsg: '验证码不正确'
