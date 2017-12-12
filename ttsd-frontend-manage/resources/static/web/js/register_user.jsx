@@ -23,13 +23,13 @@ require.ensure(['publicJs/placeholder'], function(require){
 },'placeholder');
 
 //点击获取验证码按钮
-require.ensure(['publicJs/my_fetch_captcha'], function(require){
-    let fetchCaptchaFun=require('publicJs/my_fetch_captcha');
-    let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
-
-    fetchCaptchaRegister.init();
-
-},'fetchCaptcha');
+// require.ensure(['publicJs/my_fetch_captcha'], function(require){
+//     let fetchCaptchaFun=require('publicJs/my_fetch_captcha');
+//     let fetchCaptchaRegister=new fetchCaptchaFun('registerUserForm','register');
+//
+//     fetchCaptchaRegister.init();
+//
+// },'fetchCaptcha');
 
 //推荐人显示隐藏
 (function() {
