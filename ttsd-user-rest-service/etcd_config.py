@@ -2,15 +2,25 @@ import os
 import etcd3
 import yaml
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 ETCD_ENDPOINT_CONFIG_FILE = '/app/etcd-endpoints.yml'
+ETCD_ENDPOINT_CONFIG_FILE_DEV = os.path.join(BASE_DIR, '../ttsd-etcd/src/main/resources/etcd-endpoints.yml')
 
 
 class EtcdConfig(object):
     def __init__(self, env):
         self.env = (env or 'dev').lower()
 
+        etcd_endpoint_config_file = None
+
         if os.path.exists(ETCD_ENDPOINT_CONFIG_FILE):
-            with open(ETCD_ENDPOINT_CONFIG_FILE, 'r') as stream:
+            etcd_endpoint_config_file = ETCD_ENDPOINT_CONFIG_FILE
+        elif os.path.exists(ETCD_ENDPOINT_CONFIG_FILE_DEV):
+            etcd_endpoint_config_file = ETCD_ENDPOINT_CONFIG_FILE_DEV
+
+        if etcd_endpoint_config_file:
+            with open(etcd_endpoint_config_file, 'r') as stream:
                 yaml_data = yaml.load(stream)
 
             endpoints = yaml_data.get(self.env)
