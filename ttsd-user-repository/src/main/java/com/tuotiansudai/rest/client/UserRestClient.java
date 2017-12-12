@@ -13,7 +13,7 @@ import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import javax.ws.rs.*;
 import java.text.SimpleDateFormat;
 
-@RestClient(url = "${user.rest.server}")
+@RestClient(url = "user.rest.server")
 public interface UserRestClient {
 
     @POST

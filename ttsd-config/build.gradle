@@ -1,5 +1,12 @@
-import org.flywaydb.gradle.FlywayExtension
-import org.flywaydb.gradle.task.FlywayMigrateTask
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
+    }
+}
 
 apply plugin: 'java'
 apply plugin: 'org.flywaydb.flyway'
@@ -16,52 +23,15 @@ sourceSets {
     test.runtimeClasspath += configurations.providedCompile
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
-    }
-}
-
 processResources.outputs.upToDateWhen { false }
 
 dependencies {
-    compile 'mysql:mysql-connector-java:5.1.39'
+    compile 'mysql:mysql-connector-java:5.1.39',
+            'log4j:log4j:1.2.17'
 }
 
 processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = "${configPath}/ttsd-config"
-    if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}/ttsd-env.properties") {
-        filter { String line ->
-            if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
-                return "common.jdbc.host=${dbhost}"
-            }
-
-            if (project.hasProperty("dbport") && line.startsWith("common.jdbc.port=")) {
-                return "common.jdbc.port=${dbport}"
-            }
-
-            if (project.hasProperty("redishost") && line.startsWith("common.redis.host=")) {
-                return "common.redis.host=${redishost}"
-            }
-
-            if (project.hasProperty("redisport") && line.startsWith("common.redis.port=")) {
-                return "common.redis.port=${redisport}"
-            }
-            line
-        }
-        into '/'
-    }
-    from("${innerConfigPath}/ttsd-biz.properties") {
-        into '/'
-    }
+    exclude("${project.projectDir.getPath()}/src/main/resources/*.properties")
 }
 
 /**
@@ -69,295 +39,37 @@ processResources {
  * dbhost default value: ttsd-env.properties common.jdbc.host
  * dbport default value: ttsd-env.properties common.jdbc.port
  * database default value: aa
- * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-config:flywayMigrate
+ * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa -Pusername=root -Ppwd=root ttsd-config:flywayMigrate
  *
  */
 flyway {
-    def properties = getEnvProperties()
-
-    def defaultDatabase = 'aa'
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    if (project.hasProperty('database')) {
-        defaultDatabase = database;
-    }
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
     outOfOrder = true
     validateOnMigrate = false
+    def defaultDatabase = 'aa'
+    def defaultHost = '192.168.33.10'
+    def defaultPort = '3306'
+    def defaultUsername = 'root'
+    def defaultPwd = 'root'
+    if (project.hasProperty('database')) {
+        defaultDatabase = database
+    }
+    if (project.hasProperty('host')) {
+        defaultHost = host
+    }
+    if (project.hasProperty('port')) {
+        defaultPort = port
+    }
+    if (project.hasProperty('username')) {
+        defaultUsername = username
+    }
+    if (project.hasProperty('pwd')) {
+        defaultPwd = pwd
+    }
+
     locations = ["filesystem:db_migration/${defaultDatabase}"]
     schemas = ["${defaultDatabase}"]
 
-    url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-
-    if (['aa', 'ump_operations', 'sms_operations', 'job_worker'].contains(defaultDatabase)) {
-        user = properties.getProperty("common.jdbc.username")
-        password = properties.getProperty("common.jdbc.password")
-    }
-
-
-    if ('edxask' == defaultDatabase) {
-        user = properties.getProperty("ask.jdbc.username")
-        password = properties.getProperty("ask.jdbc.password")
-    }
-
-    if ('edxactivity' == defaultDatabase) {
-        user = properties.getProperty("activity.jdbc.username")
-        password = properties.getProperty("activity.jdbc.password")
-    }
-
-    if ('edxpoint' == defaultDatabase) {
-        user = properties.getProperty("point.jdbc.username")
-        password = properties.getProperty("point.jdbc.password")
-    }
-
-    if ('edxlog' == defaultDatabase) {
-        user = properties.getProperty("log.jdbc.username")
-        password = properties.getProperty("log.jdbc.password")
-    }
-
-    if ('anxin_operations' == defaultDatabase) {
-        user = properties.getProperty("anxin.jdbc.username")
-        password = properties.getProperty("anxin.jdbc.password")
-    }
-
-    if ('edxmessage' == defaultDatabase) {
-        user = properties.getProperty("message.jdbc.username")
-        password = properties.getProperty("message.jdbc.password")
-    }
-}
-
-task flywayAA(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/aa"]
-    extension.schemas = ["aa"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/aa?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("common.jdbc.username")
-    extension.password = properties.getProperty("common.jdbc.password")
-}
-
-task flywayUMP(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/ump_operations"]
-    extension.schemas = ["ump_operations"]
-
-    extension.url = extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/ump_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("common.jdbc.username")
-    extension.password = properties.getProperty("common.jdbc.password")
-}
-
-task flywayAnxin(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/anxin_operations"]
-    extension.schemas = ["anxin_operations"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/anxin_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("anxin.jdbc.username")
-    extension.password = properties.getProperty("anxin.jdbc.password")
-}
-
-task flywaySms(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/sms_operations"]
-    extension.schemas = ["sms_operations"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/sms_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("common.jdbc.username")
-    extension.password = properties.getProperty("common.jdbc.password")
-}
-
-task flywayWorker(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/job_worker"]
-    extension.schemas = ["job_worker"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("common.jdbc.username")
-    extension.password = properties.getProperty("common.jdbc.password")
-}
-
-task flywayAsk(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/edxask"]
-    extension.schemas = ["edxask"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("ask.jdbc.username")
-    extension.password = properties.getProperty("ask.jdbc.password")
-}
-
-task flywayActivity(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/edxactivity"]
-    extension.schemas = ["edxactivity"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxactivity?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("activity.jdbc.username")
-    extension.password = properties.getProperty("activity.jdbc.password")
-}
-
-task flywayPoint(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/edxpoint"]
-    extension.schemas = ["edxpoint"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxpoint?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("point.jdbc.username")
-    extension.password = properties.getProperty("point.jdbc.password")
-}
-
-task flywayMessage(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/edxmessage"]
-    extension.schemas = ["edxmessage"]
-
-    extension.url = properties.getProperty("common.environment") == "PRODUCTION" ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxmessage?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("message.jdbc.username")
-    extension.password = properties.getProperty("message.jdbc.password")
-}
-
-task flywayLog(type: FlywayMigrateTask) {
-    def properties = getEnvProperties()
-    def defaultHost = properties.getProperty("common.jdbc.host")
-    def defaultPort = properties.getProperty("common.jdbc.port")
-    extension = new FlywayExtension()
-    if (project.hasProperty('dbhost')) {
-        defaultHost = dbhost;
-    }
-    if (project.hasProperty('dbport')) {
-        defaultPort = dbport;
-    }
-    extension.outOfOrder = true
-    extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/edxlog"]
-    extension.schemas = ["edxlog"]
-
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxlog?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("log.jdbc.username")
-    extension.password = properties.getProperty("log.jdbc.password")
-}
-
-def getEnvProperties() {
-    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-env.properties"
-    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-env.properties"
-    def properties = new Properties()
-
-    def sourceFile = new File(sourcePropertiesFilePath)
-    if (sourceFile.isFile()) {
-        properties.load(new FileInputStream(sourceFile))
-    }
-
-    def buildFile = new File(buildPropertiesFilePath)
-    if (buildFile.isFile()) {
-        properties.load(new FileInputStream(buildFile))
-    }
-
-    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isFile()) {
-        properties.load(new FileInputStream(new File("${configPath}/ttsd-env.properties")))
-    }
-    return properties
+    url = "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8"
+    user = "${defaultUsername}"
+    password = "${defaultPwd}"
 }

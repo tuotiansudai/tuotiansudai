@@ -1,10 +1,8 @@
 apply plugin: 'war'
-apply from: 'db_migration.gradle'
 
 dependencies {
 
-    compile project(':ttsd-config'),
-            project(':ttsd-dependency'),
+    compile project(':ttsd-dependency'),
             project(':ttsd-util'),
             project(':ttsd-client'),
             "org.apache.httpcomponents:httpclient:4.5.1",

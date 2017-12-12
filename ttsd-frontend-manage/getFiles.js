@@ -34,10 +34,11 @@ function geFileList(folderPath,fileName)
 
     //写入文件utf-8格式
     this.writeFile=function(data) {
+        var fileName = this.fileName;
         fs.writeFile(this.fileName,data,'utf-8',function() {
-            console.log("文件生成成功");
+            console.log(fileName + " 文件生成成功");
         });
-    }
+    };
     this.formatHandler=function() {
         var filesList=this.filesList;
         var strJSON={
