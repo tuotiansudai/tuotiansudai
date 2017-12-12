@@ -4,6 +4,9 @@
   height: 580px;
   background: #f75d5d;
 }
+.login-submit.btn-normal {
+  width: 298px!important;
+}
 .login-container {
   height: 430px;
   margin: 75px auto;
@@ -270,4 +273,18 @@
 }
 :-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #cbcbcb!important;
+}
+
+@media screen and (max-width: 700px) {
+  .login-submit.btn-normal {
+    width: 85%!important;
+    padding: 8px 6px 8px 10px;
+  }
+}
+
+@media (min-width:701px) and (max-width:999px) {
+  .login-submit.btn-normal {
+    width: 82%!important;
+    padding: 8px 6px 8px 10px;
+  }
 }
