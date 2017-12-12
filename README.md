@@ -185,7 +185,10 @@
         ```
         # 打开命令行，执行以下命令
         cd ttsd-config
+        # 如果在 Mac 里安装的 etcd
         paver flush_etcd
+        # 如果是在虚拟机里安装的 etcd
+        paver flush_etcd.host=192.168.33.10 flush_etcd
         ```
 
 * 启动注意事项
