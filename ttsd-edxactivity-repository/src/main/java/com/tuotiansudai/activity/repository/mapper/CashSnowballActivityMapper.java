@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.CashSnowballActivityModel;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface CashSnowballActivityMapper {
 
     CashSnowballActivityModel findByLoginName(@Param("loginName") String loginName);
 
-    List<CashSnowballActivityModel> findAll();
-
+    List<CashSnowballActivityModel> findAll(@Param(value = "mobile") String mobile,
+                                            @Param(value = "startInvestAmount") Long startInvestAmount,
+                                            @Param(value = "endInvestAmount") Long endInvestAmount);
 }

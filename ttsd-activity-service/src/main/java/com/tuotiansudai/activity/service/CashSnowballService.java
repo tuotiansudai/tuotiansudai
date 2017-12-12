@@ -19,7 +19,7 @@ public class CashSnowballService {
     private CashSnowballActivityMapper cashSnowballActivityMapper;
 
     public List<CashSnowballActivityModel> findAll() {
-        List<CashSnowballActivityModel> cashSnowballActivityModelList = cashSnowballActivityMapper.findAll();
+        List<CashSnowballActivityModel> cashSnowballActivityModelList = cashSnowballActivityMapper.findAll(null, null, null);
         cashSnowballActivityModelList.stream().forEach(cashSnowballActivityModel -> cashSnowballActivityModel.setMobile(MobileEncryptor.encryptMiddleMobile(cashSnowballActivityModel.getMobile())));
         return cashSnowballActivityModelList.size() > 20 ? cashSnowballActivityModelList.subList(0, 20) : cashSnowballActivityModelList;
     }
