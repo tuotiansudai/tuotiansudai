@@ -2,9 +2,11 @@ user-rest-service:
   image: "leoshi/ttsd-signin-flask"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
   volumes:
     - ./ttsd-user-rest-service:/app
     - /var/log/tuotian/signin:/var/log/signin
+    - ./ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml
   ports:
     - "20001:80"
   links:
@@ -15,6 +17,7 @@ web:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20002:8080"
@@ -34,6 +37,7 @@ console:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20003:8080"
@@ -54,6 +58,7 @@ pay-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20004:8080"
@@ -71,6 +76,7 @@ sms-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20005:8080"
@@ -85,6 +91,7 @@ mobile-api:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
     - "spring.profiles.active=QA"
   ports:
@@ -105,6 +112,7 @@ activity:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20007:8080"
@@ -133,6 +141,7 @@ ask:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20009:8080"
@@ -162,6 +171,7 @@ point:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20018:8080"
@@ -178,6 +188,7 @@ activity-console:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20019:8080"
@@ -201,6 +212,7 @@ anxin-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20021:8080"
@@ -228,6 +240,7 @@ worker-all:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt/worker
@@ -242,6 +255,7 @@ auditLog-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-auditLog-mq-consumer/build/distributions:/opt/worker
@@ -255,6 +269,7 @@ loan-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-loan-mq-consumer/build/distributions:/opt/worker
@@ -271,6 +286,7 @@ message-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-message-mq-consumer/build/distributions:/opt/worker
@@ -285,6 +301,7 @@ email-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-email-mq-consumer/build/distributions:/opt/worker
@@ -298,6 +315,7 @@ point-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-point-mq-consumer/build/distributions:/opt/worker
@@ -312,6 +330,7 @@ activity-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-activity-mq-consumer/build/distributions:/opt/worker
@@ -326,6 +345,7 @@ user-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-user-mq-consumer/build/distributions:/opt/worker
@@ -340,6 +360,7 @@ amount-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-amount-mq-consumer/build/distributions:/opt/worker
@@ -353,6 +374,7 @@ ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-ask-rest/build/distributions:/opt/worker
@@ -367,6 +389,7 @@ diagnosis:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-diagnosis/build/distributions:/opt/worker
@@ -380,6 +403,7 @@ worker-monitor:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
     - "JAVA_OPTS=-Xmx256m"
   volumes:
     - ./ttsd-worker-monitor/build/libs:/opt/worker
