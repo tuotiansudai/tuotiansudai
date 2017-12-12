@@ -27,19 +27,9 @@ dependencies {
     compile(project(':ttsd-service')) {
         exclude group: "org.slf4j", module: "slf4j-log4j12"
     }
+
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-mail"
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
     compile "mysql:mysql-connector-java:5.1.39"
-}
-
-processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = "${configPath}/ttsd-diagnosis"
-    if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}") {
-        into '/'
-    }
 }

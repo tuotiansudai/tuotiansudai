@@ -1,18 +1,25 @@
 import os
 from paver.shell import sh
 import config_deploy
+import etcd_client
+
 
 class Deployment(object):
-
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
-    _gradle='/opt/gradle/latest/bin/gradle'
-    _dockerCompose='/usr/local/bin/docker-compose'
-    _paver='/usr/bin/paver'
+    _gradle = '/opt/gradle/latest/bin/gradle'
+    _dockerCompose = '/usr/local/bin/docker-compose'
+    _paver = '/usr/bin/paver'
 
-    def deploy(self, build_params):
+    def __init__(self, env='DEV', pay_fake=None):
+        self.env = env
+        self.pay_fake = pay_fake
+        self.etcd = etcd_client.client(env)
+
+    def deploy(self):
         self.clean()
-        self.config_file(build_params)
-        self.jcversion(build_params)
+        self.config_file()
+        self.jcversion()
+        self.migrate()
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
@@ -27,15 +34,17 @@ class Deployment(object):
         print self._gradle
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
-    def config_file(self, build_params):
+    def config_file(self):
         print "Generate config file..."
-        config_deploy.deploy(build_params, "./ttsd-config/src/main/resources/", "{0}/ttsd-config/ttsd-env.properties".format(self._config_path))
+        config_deploy.deploy(self.etcd, self.env, self.pay_fake)
+
+    def migrate(self):
+        from scripts import migrate_db
+        migrate_db.migrate(self._gradle, self.etcd, sh)
 
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker '
-           'ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint ttsd-config:flywayMessage ttsd-config:flywayLog initMQ war renameWar'.format(
-            self._gradle))
+        sh('TTSD_ETCD_ENV={0} {1} clean initMQ war renameWar'.format(self.env, self._gradle))
         sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):
@@ -82,27 +91,25 @@ class Deployment(object):
         sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static.zip -d static')
 
-
         sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
-
     def init_docker(self):
         print "Initialing docker..."
         import platform
-
         sudoer = 'sudo' if 'centos' in platform.platform() else ''
         self._remove_old_container(sudoer)
         self._start_new_container(sudoer)
 
     def _remove_old_container(self, suoder):
         sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder, self._dockerCompose))
+        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
+                                                                                               self._dockerCompose))
 
     def _start_new_container(self, sudoer):
-        sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
+        sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml up -d'.format(sudoer, self.env, self._dockerCompose))
 
-    def jcversion(self, build_params):
+    def jcversion(self):
         print "Starting jcmin..."
-        sh('{0} jcversion.env={1} jcversion'.format(self._paver, build_params.get('env')))
+        sh('{0} jcversion.static_server={1} jcversion'.format(self._paver, self.etcd.get('common.static.server')))

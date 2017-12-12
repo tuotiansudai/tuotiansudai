@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.WeChatMessageType;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 
 import java.net.URL;
@@ -38,27 +40,23 @@ public class WeChatClient {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap();
-
-    private static String APP_ID;
-
-    private static String APP_SECRET;
-
     private final static String CANCELED_WE_CHAT_ATTENTION_CODE = "43004";
 
-    static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        APP_ID = bundle.getString("wechat.appId");
-        APP_SECRET = bundle.getString("wechat.appSecret");
-        TEMPLATE_MAP.put(WeChatMessageType.BOUND_TO_OTHER_USER, bundle.getString("wechat.bound.to.other.user.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.TRANSFER_SUCCESS, bundle.getString("wechat.transfer.success.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, bundle.getString("wechat.withdraw.notify.success.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.WITHDRAW_APPLY_SUCCESS, bundle.getString("wechat.withdraw.apply.success.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.ADVANCE_REPAY_SUCCESS, bundle.getString("wechat.advance.repay.success.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.NORMAL_REPAY_SUCCESS, bundle.getString("wechat.normal.repay.success.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.INVEST_SUCCESS, bundle.getString("wechat.invest.success.id"));
-        TEMPLATE_MAP.put(WeChatMessageType.LOAN_OUT_SUCCESS, bundle.getString("wechat.loan.out.success.id"));
-    }
+    private final static Map<WeChatMessageType, String> TEMPLATE_MAP = Maps.newHashMap(
+            ImmutableMap.<WeChatMessageType, String>builder()
+                    .put(WeChatMessageType.BOUND_TO_OTHER_USER, ETCDConfigReader.getReader().getValue("wechat.bound.to.other.user.id"))
+                    .put(WeChatMessageType.TRANSFER_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.transfer.success.id"))
+                    .put(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.withdraw.notify.success.id"))
+                    .put(WeChatMessageType.WITHDRAW_APPLY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.withdraw.apply.success.id"))
+                    .put(WeChatMessageType.ADVANCE_REPAY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.advance.repay.success.id"))
+                    .put(WeChatMessageType.NORMAL_REPAY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.normal.repay.success.id"))
+                    .put(WeChatMessageType.INVEST_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.invest.success.id"))
+                    .put(WeChatMessageType.LOAN_OUT_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.loan.out.success.id"))
+                    .build());
+
+    private static String APP_ID = ETCDConfigReader.getReader().getValue("wechat.appId");
+
+    private static String APP_SECRET = ETCDConfigReader.getReader().getValue("wechat.appSecret");
 
     public static WeChatClient getClient() {
         return instance;

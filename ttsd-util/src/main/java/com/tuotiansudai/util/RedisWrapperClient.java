@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
@@ -17,12 +18,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
 
     private final static RedisWrapperClient redisWrapperClient = new RedisWrapperClient();
 
-    private static int COMMON_REDIS_DB;
-
-    static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        COMMON_REDIS_DB = Integer.parseInt(bundle.getString("common.redis.db"));
-    }
+    private static int COMMON_REDIS_DB = Integer.parseInt(ETCDConfigReader.getReader().getValue("common.redis.db"));
 
     private RedisWrapperClient() {
     }
