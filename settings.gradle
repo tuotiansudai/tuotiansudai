@@ -28,4 +28,5 @@ include 'ttsd-mybatis-extension', 'ttsd-quartz-extension'
 include 'ttsd-job'
 include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
+include 'ttsd-etcd'
 

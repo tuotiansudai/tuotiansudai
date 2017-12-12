@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
@@ -14,7 +15,17 @@ import java.util.Properties;
 
 public abstract class BaseSyncRequestModel {
 
-    static Logger logger = Logger.getLogger(BaseSyncRequestModel.class);
+    private static Logger logger = Logger.getLogger(BaseSyncRequestModel.class);
+
+    public final static String CREDIT_LOAN_ID = ETCDConfigReader.getReader().getValue("credit.loan");
+
+    public final static String PAY_CALLBACK_WEB_HOST = ETCDConfigReader.getReader().getValue("pay.callback.web.host");
+
+    public final static String PAY_CALLBACK_APP_WEB_HOST = ETCDConfigReader.getReader().getValue("pay.callback.app.web.host");
+
+    public final static String PAY_CALLBACK_BACK_HOST = ETCDConfigReader.getReader().getValue("pay.callback.back.host");
+
+    public final static String PAY_CALLBACK_CONSOLE_HOST = ETCDConfigReader.getReader().getValue("pay.callback.console.host");
 
     protected static Properties UMP_PROPS = new Properties();
 

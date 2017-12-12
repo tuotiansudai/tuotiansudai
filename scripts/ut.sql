@@ -1,4 +1,15 @@
 -- 测试环境的密码，需要在后面追加环境ip 如 tuotiansd153, sdactivity153 ...
+CREATE DATABASE `aa`;
+CREATE DATABASE `job_worker`;
+CREATE DATABASE `sms_operations`;
+CREATE DATABASE `ump_operations`;
+CREATE DATABASE `edxactivity`;
+CREATE DATABASE `edxpoint`;
+CREATE DATABASE `edxask`;
+CREATE DATABASE `anxin_operations`;
+CREATE DATABASE `edxlog`;
+CREATE DATABASE `edxmessage`;
+
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'localhost' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on job_worker.* to tuotiansd@'%' identified by 'tuotiansd';
