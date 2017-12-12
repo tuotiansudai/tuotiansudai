@@ -64,9 +64,10 @@ public class ActivityConsoleNewmanTyrantService {
         }
 
         List<NewmanTyrantView> tyrantViews=new ArrayList<>();
-        if (this.activityDate(tradingTime).size() > 0){
+        List<String> list = this.activityDate(tradingTime);
+        if (list.size() > 0){
             tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-            tyrantViews= investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, this.activityDate(tradingTime).get(0), this.activityDate(tradingTime).get(1), false);
+            tyrantViews= investNewmanTyrantMapper.findNewmanTyrantByTradingTime(tradingTime, list.get(0), list.get(1), false);
         }
         return CollectionUtils.isNotEmpty(tyrantViews) && tyrantViews.size() > 10 ? tyrantViews.subList(0, 10) : tyrantViews;
 
