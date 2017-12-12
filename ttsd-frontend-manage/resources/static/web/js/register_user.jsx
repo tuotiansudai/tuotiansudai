@@ -302,6 +302,7 @@ for(let i=0,len=reInputs.length; i<len;i++) {
                 let isPwdValid = validate(reInputs[i].value);
                 if (!isPwdValid) {
                     $(tipName).siblings('.error').remove();
+                    $(this).removeClass('error');
                     $(tipText).hide();
                 } else {
                     $(tipName).siblings('.error').remove();
