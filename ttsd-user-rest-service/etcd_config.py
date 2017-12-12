@@ -16,8 +16,7 @@ class EtcdConfig(object):
 
         if os.path.exists(ETCD_ENDPOINT_CONFIG_FILE):
             etcd_endpoint_config_file = ETCD_ENDPOINT_CONFIG_FILE
-
-        if os.path.exists(ETCD_ENDPOINT_CONFIG_FILE_DEV):
+        elif os.path.exists(ETCD_ENDPOINT_CONFIG_FILE_DEV):
             etcd_endpoint_config_file = ETCD_ENDPOINT_CONFIG_FILE_DEV
 
         if etcd_endpoint_config_file:
