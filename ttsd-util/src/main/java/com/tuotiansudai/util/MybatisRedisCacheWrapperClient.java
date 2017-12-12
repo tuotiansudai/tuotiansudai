@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 
@@ -9,12 +10,7 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
 
     static Logger logger = Logger.getLogger(MybatisRedisCacheWrapperClient.class);
 
-    private static int MYBATIS_DB;
-
-    static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        MYBATIS_DB = Integer.parseInt(bundle.getString("common.mybatis.cache.db"));
-    }
+    private static int MYBATIS_DB = Integer.parseInt(ETCDConfigReader.getReader().getValue("common.mybatis.cache.db"));
 
     public String clearMybatisCache() {
         Jedis jedis = null;

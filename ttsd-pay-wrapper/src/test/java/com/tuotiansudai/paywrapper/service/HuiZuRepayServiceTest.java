@@ -42,7 +42,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class HuiZuRepayServiceTest {
     private static final String loginName = "testHuiZuRepay";
 

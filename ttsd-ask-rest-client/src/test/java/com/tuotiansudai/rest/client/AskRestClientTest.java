@@ -6,6 +6,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.ask.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.MDC;
 import org.junit.After;
 import org.junit.Before;
@@ -27,8 +28,7 @@ import static org.junit.Assert.assertEquals;
 @ActiveProfiles("test")
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class AskRestClientTest {
-    @Value("${ask.rest.server}")
-    private String askRestServerUrl;
+    private String askRestServerUrl = ETCDConfigReader.getReader().getValue("ask.rest.server");
 
     @Autowired
     private AskRestClient askRestClient;
