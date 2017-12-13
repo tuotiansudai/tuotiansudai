@@ -52,10 +52,10 @@
                 and mobile = #{mobile}
             </if>
             <if test="startInvestAmount !=null and startInvestAmount!=''">
-                and invest_amount >= #{startInvestAmount}
+                and invest_amount >= #{startInvestAmount} * 100
             </if>
             <if test = "endInvestAmount !=null and endInvestAmount!=''">
-                and invest_amount &lt;= #{endInvestAmount}
+                and invest_amount &lt;= #{endInvestAmount} * 100
             </if>
         </where>
         order by updated_time desc

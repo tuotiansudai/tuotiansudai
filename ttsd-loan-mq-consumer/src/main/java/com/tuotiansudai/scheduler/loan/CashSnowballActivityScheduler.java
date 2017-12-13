@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.ActivityAmountGrade;
 import com.tuotiansudai.repository.model.InvestProductTypeView;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
@@ -48,13 +49,6 @@ public class CashSnowballActivityScheduler {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.cash.snowball.endTime}\")}")
     private Date activityCashSnowballEndTime;
 
-    private final List<CashSnowballActivityScheduler.AnnualizedAmount> annualizedAmounts = Lists.newArrayList(
-            new CashSnowballActivityScheduler.AnnualizedAmount(10000000l, 20000000l, 10000l),
-            new CashSnowballActivityScheduler.AnnualizedAmount(20000000l, 30000000l, 30000l),
-            new CashSnowballActivityScheduler.AnnualizedAmount(30000000l, 50000000l, 60000l),
-            new CashSnowballActivityScheduler.AnnualizedAmount(50000000l, 60000000l, 120000l),
-            new CashSnowballActivityScheduler.AnnualizedAmount(60000000l, Long.MAX_VALUE, 201800));
-
     @Scheduled(cron = "0 0 10 1 2 ?", zone = "Asia/Shanghai")
     public void cashSnowballActivityEndSendCash() {
         logger.info("[cash snowball activity] send cash begin");
@@ -76,9 +70,7 @@ public class CashSnowballActivityScheduler {
             if (entry.getValue() == 0) {
                 continue;
             }
-
-            Optional<CashSnowballActivityScheduler.AnnualizedAmount> optional = annualizedAmounts.stream().filter(annualizedAmount -> annualizedAmount.getMinAmount() <= entry.getValue() && entry.getValue() < annualizedAmount.getMaxAmount()).findAny();
-            long cash = optional.map(o -> o.getCashAmount()).orElse(0l);
+            long cash = ActivityAmountGrade.getAwardAmount("CASH_SNOWBALL", entry.getValue());
             if (cash == 0){
                 continue;
             }
@@ -106,32 +98,5 @@ public class CashSnowballActivityScheduler {
             logger.error("[cash snowball activity] send cash prize fail, loginName:{0}, cash:{1}", loginName, String.valueOf(cash));
         }
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【现金滚雪球活动结束发放现金】用户:{0}, 获得现金:{1}, 发放现金失败, 业务处理异常", loginName, String.valueOf(cash))));
-    }
-
-    class AnnualizedAmount {
-        private long minAmount;
-        private long maxAmount;
-        private long cashAmount;
-
-        public AnnualizedAmount() {
-        }
-
-        public AnnualizedAmount(long minAmount, long maxAmount, long cashAmount) {
-            this.minAmount = minAmount;
-            this.maxAmount = maxAmount;
-            this.cashAmount = cashAmount;
-        }
-
-        public long getMinAmount() {
-            return minAmount;
-        }
-
-        public long getMaxAmount() {
-            return maxAmount;
-        }
-
-        public long getCashAmount() {
-            return cashAmount;
-        }
     }
 }
