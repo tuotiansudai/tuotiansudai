@@ -59,7 +59,7 @@
     "jquery": "~2.1.4",
     "layer": "git+https://github.com/sentsin/layer.git#3.0.3",
     "moment": "^2.17.1",
-    "node-sass": "^4.7.2",
+    "node-sass": "^3.13.1",
     "radium": "^0.17.1",
     "react": "^15.0.2",
     "react-addons-shallow-compare": "^15.0.2",
