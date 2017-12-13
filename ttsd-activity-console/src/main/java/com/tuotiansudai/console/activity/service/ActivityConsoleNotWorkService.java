@@ -1,14 +1,12 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
@@ -50,8 +48,6 @@ public class ActivityConsoleNotWorkService {
     }};
 
     public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(int index, int pageSize) {
-        insertOnlyRegisterOrIdentityData();
-
         long count = notWorkMapper.findAllCount();
         List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<NotWorkDto> records = notWorkModels.stream().map(notWorkModel -> {
@@ -80,21 +76,5 @@ public class ActivityConsoleNotWorkService {
             return notWorkDto;
         }).collect(Collectors.toList());
         return new BasePaginationDataDto<>(index, pageSize, count, records);
-    }
-
-    private void insertOnlyRegisterOrIdentityData() {
-        List<UserRegisterInfo> recommendedRegisterUsers = userMapper.findAllUserHasReferrerByRegisterTime(activityStartTime, activityEndTime);
-        Set<String> referrers = recommendedRegisterUsers.stream().map(UserRegisterInfo::getReferrer).collect(Collectors.toSet());
-        for (String loginName : referrers) {
-            NotWorkModel existedNotWorkModel = notWorkMapper.findByLoginName(loginName);
-            if (null != existedNotWorkModel) {
-                continue;
-            }
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            if (null != userModel) {
-                NotWorkModel notWorkModel = new NotWorkModel(loginName, userModel.getUserName(), userModel.getMobile(), false);
-                notWorkMapper.create(notWorkModel);
-            }
-        }
     }
 }
