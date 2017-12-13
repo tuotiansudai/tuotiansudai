@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.consumer.activity;
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.mapper.CashSnowballActivityMapper;
 import com.tuotiansudai.activity.repository.model.CashSnowballActivityModel;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.message.LoanDetailInfo;
@@ -12,10 +13,10 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.AnnualizedInvestUtil;
 import com.tuotiansudai.util.JsonConverter;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +31,9 @@ public class InvestSuccessCashSnowballMessageConsumer implements MessageConsumer
     @Autowired
     private CashSnowballActivityMapper cashSnowballActivityMapper;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.cash.snowball.startTime}\")}")
-    private Date activityCashSnowballStartTime;
+    private Date activityCashSnowballStartTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.startTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.cash.snowball.endTime}\")}")
-    private Date activityCashSnowballEndTime;
+    private Date activityCashSnowballEndTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.endTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
     @Override
     public MessageQueue queue() {
