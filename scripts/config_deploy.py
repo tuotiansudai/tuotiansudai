@@ -7,7 +7,7 @@ def deploy(etcd, env, pay_fake):
     deploy_prop = [load_properties("./ttsd-config/src/main/resources/ttsd-env.properties"),
                    load_properties("./ttsd-config/src/main/resources/ttsd-biz.properties")]
 
-    if re.match('^qa\d$', env, re.I) or env.lower() == 'ft':
+    if re.match('^qa\d$', env, re.I) or env.lower() in ('ft', 'hzft'):
         # 读取QA环境公用配置 ttsd-env-QA-common.properties 生成一个 dict 对象 qa_common_prop
         deploy_prop.append(load_properties("./ttsd-config/src/main/resources/envs/QA-common.properties"))
         # 读取每个环境特有的配置 envs/${env}.properties, 生成一个 dict 对象 specified_prop
