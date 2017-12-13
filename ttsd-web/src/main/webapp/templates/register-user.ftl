@@ -23,16 +23,22 @@
                     <div class="passwordInputText" style="display:none;">请输入6-20位密码，不能为纯数字</div>
                 </li>
                 <li>
+                    <i class="icon-img-captcha"></i>
+                    <input type="text" validate class="imageCaptcha" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                    <img src="/no-password-invest/image-captcha" alt="" class="image-captcha my-image-captcha" id="imageCaptcha" />
+                    <div class="imageCaptchaInputText" style="display:none;">看不清？点击图片可更换验证码</div>
+                </li>
+                <li>
                     <i class="icon-captcha"></i>
                     <span class="captcha-tag">
-                         <button type="button" class="fetch-captcha" disabled="false" id="fetchCaptcha">获取验证码</button>
+                         <button type="button" class="fetch-captcha" id="fetchCaptcha">获取验证码</button>
                         <input validate type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <span class="voice-captcha" id="voice_captcha" style="display: none;">如收不到短信，可使用 <a href="javascript:;" id="voice_btn">语音验证</a> </span>
-
+                        <span class="voice-captcha" id="voice_captcha_code" style="display: none;">如收不到短信，可使用 <a href="javascript:;" id="voice_validate">语音验证</a> </span>
+                        <div class="sendOften" style="color: red;display: none">短信发送频繁，请稍后再试</div>
                     </span>
                 </li>
-                <li class="referrer-open"> <i class="icon-arrow-right"></i>请输入推荐人（此项选填）</li>
-                <li class="hide">
+                <li class="referrer-open"> <i class="icon-arrow-bottom"></i>请输入推荐人（此项选填）</li>
+                <li class="">
                     <i class="icon-referrer"></i>
                     <input validate type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
@@ -137,15 +143,8 @@
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" id="imageCaptchaForm" >
         <div class="image-captcha-inner">
-            <img src="" alt="" class="image-captcha"/>
-            <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-            <input type="hidden" name="mobile">
-
-            <div class="tc">
-                <div class="error-box tl"></div>
-                <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
-            </div>
-
+            <input type="hidden" name="mobile" id="hiddenPhone">
+            <input type="hidden" id="hiddenCode" name="imageCaptcha">
         </div>
 
     </form>

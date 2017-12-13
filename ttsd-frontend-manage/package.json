@@ -46,7 +46,8 @@
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-md5-hash": "0.0.5",
-    "webpack-parallel-uglify-plugin": "^0.4.0"
+    "webpack-parallel-uglify-plugin": "^0.4.0",
+    "jquery": "~2.1.4"
   },
   "dependencies": {
     "art-template": "^3.1.3",
