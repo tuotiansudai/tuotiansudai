@@ -91,6 +91,7 @@
         font-size: 16px;
         color: #420405;
         letter-spacing: 0;
+        font-weight: bold;
       }
       a {
         color: #420405;
@@ -107,4 +108,18 @@
     padding:20px;
   }
 }
+.btn-normal{
+  &.preheat-btn {
+    background: rgba(255,108,98,0.50)!important;
+    border: none;
+    padding: 8px 5px;
+  }
+}
 
+.newer-title {
+  span {
+    font-size: 9px;
+  }
+
+
+}
