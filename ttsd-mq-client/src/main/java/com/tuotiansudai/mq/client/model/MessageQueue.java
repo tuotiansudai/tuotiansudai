@@ -21,16 +21,8 @@ public enum MessageQueue {
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
-    InvestSuccess_ActivityReward("InvestSuccess-ActivityReward"),
-    InvestSuccess_MidSummer("InvestSuccess-MidSummer"),
-    InvestSuccess_WechatLottery("InvestSuccess-WechatLottery"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
-    InvestSuccess_DragonBoat("InvestSuccess-DragonBoat"),
-    InvestSuccess_HouseDecorate("InvestSuccess-HouseDecorate"),
-    InvestSuccess_SchoolSeason("InvestSuccess-SchoolSeason"),
-    InvestSuccess_ZeroShopping("InvestSuccess-ZeroShopping"),
-    InvestSuccess_NationalMidAutumn("InvestSuccess-NationalMidAutumn"),
     InvestSuccess_YearEndAwards("InvestSuccess-YearEndAwards"),
     Celebration_Coupon("Celebration-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
@@ -41,11 +33,8 @@ public enum MessageQueue {
     LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
     LoanOutSuccess_RewardReferrer("LoanOutSuccess-RewardReferrer"),
     LoanOutSuccess_AssignCoupon("LoanOutSuccess-AssignCoupon"),
-    LoanOutSuccess_AssignAchievementCelebration("LoanOutSuccess-AssignAchievementCelebration"),
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
-    LoanOutSuccess_NationalMidAutumn("LoanOutSuccess-NationalMidAutumn"),
-    LoanOutSuccess_DoubleEleven("LoanOutSuccess-DoubleEleven"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
@@ -73,9 +62,6 @@ public enum MessageQueue {
     WeChatMessageNotify("WeChatMessageNotify"),
     HuiZuRentRepayNotifyQueue("HuiZuRentRepayNotifyQueue"),
     ExperienceAssigning("ExperienceAssigning"),
-    DragonBoatShareLoginTransfer("DragonBoatShareLoginTransfer"), // 端午节活动分享落地页老用户登录后，消息中转（为了获取用户信息）
-    DragonBoatShareLogin("DragonBoatShareLogin"), // 端午节活动分享落地页老用户登录后，发放10元红包，记录老用户邀请数量
-    DragonBoatPKEndSendExperience("DragonBoatPKEndSendExperience"), // 端午节PK活动结束后，给PK用户发体验金，
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),
     CreditLoanOutQueue("CreditLoanOutQueue"), //慧租信用贷放款
