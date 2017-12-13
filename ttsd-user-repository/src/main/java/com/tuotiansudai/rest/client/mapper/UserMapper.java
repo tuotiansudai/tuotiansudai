@@ -46,7 +46,11 @@ public interface UserMapper {
         return findByLoginNameOrMobile(loginName);
     }
 
-    // 仅为兼容性考虑，新业务不允许使用该方法
+    /**
+     * 仅为兼容性考虑，新业务不允许使用该方法
+     * @see #findUsersByRegisterTimeAndReferrer(Date, Date, String, int, int)
+     * @deprecated
+     */
     @Deprecated
     default List<UserRegisterInfo> findAllUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer) {
         int page = 1;
@@ -61,7 +65,12 @@ public interface UserMapper {
         return list;
     }
 
-    // 仅为兼容性考虑，新业务不允许使用该方法
+
+    /**
+     * 仅为兼容性考虑，新业务不允许使用该方法
+     * @see #findUsersHasReferrerByRegisterTime(Date, Date, int, int)
+     * @deprecated
+     */
     @Deprecated
     default List<UserRegisterInfo> findAllUserHasReferrerByRegisterTime(Date startTime, Date endTime) {
         int page = 1;
