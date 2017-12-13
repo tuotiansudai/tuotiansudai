@@ -47,9 +47,9 @@ public interface UserMapper {
     }
 
     /**
-     * 仅为兼容性考虑，新业务不允许使用该方法
-     * @see #findUsersByRegisterTimeAndReferrer(Date, Date, String, int, int)
      * @deprecated
+     *      仅为兼容性考虑，新业务不允许使用该方法, replaced by
+     *      {@link #findUsersByRegisterTimeAndReferrer(Date, Date, String, int, int)}
      */
     @Deprecated
     default List<UserRegisterInfo> findAllUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer) {
@@ -67,9 +67,9 @@ public interface UserMapper {
 
 
     /**
-     * 仅为兼容性考虑，新业务不允许使用该方法
-     * @see #findUsersHasReferrerByRegisterTime(Date, Date, int, int)
      * @deprecated
+     *      仅为兼容性考虑，新业务不允许使用该方法, replaced by
+     *      {@link #findUsersHasReferrerByRegisterTime(Date, Date, int, int)}
      */
     @Deprecated
     default List<UserRegisterInfo> findAllUserHasReferrerByRegisterTime(Date startTime, Date endTime) {
