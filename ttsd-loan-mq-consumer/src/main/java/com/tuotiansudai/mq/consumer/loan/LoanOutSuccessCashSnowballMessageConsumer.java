@@ -65,6 +65,8 @@ public class LoanOutSuccessCashSnowballMessageConsumer implements MessageConsume
 
     private static final String HKEY = "{0}:{1}";
 
+    private static final long AMOUNT = 1000000;
+
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
     @Override
@@ -123,17 +125,15 @@ public class LoanOutSuccessCashSnowballMessageConsumer implements MessageConsume
             annualizedAmount = annualizedAmount + Long.parseLong(redisWrapperClient.hget(CASH_SNOWBALL_USER_SURPLUS_ANNUALIZED_AMOUNT, loginName));
         }
 
-        long prize = annualizedAmount / 1000000;
-
         //记录剩余的未满1万的年化金额，下次放款使用
-        redisWrapperClient.hset(CASH_SNOWBALL_USER_SURPLUS_ANNUALIZED_AMOUNT, loginName, String.valueOf(annualizedAmount - prize * 1000000), lifeSecond);
+        redisWrapperClient.hset(CASH_SNOWBALL_USER_SURPLUS_ANNUALIZED_AMOUNT, loginName, String.valueOf(annualizedAmount % AMOUNT), lifeSecond);
 
-        if (annualizedAmount < 1000000l){
+        if (annualizedAmount < AMOUNT){
             logger.info("annualized amount is less than 10000, no prize");
             return;
         }
 
-        long sendCashPrize = prize * 10000;
+        long sendCashPrize = annualizedAmount / AMOUNT * 10000;
         long orderId = IdGenerator.generate();
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(sendCashPrize),
                 UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVEST_RETURN_CASH_DETAIL_TEMPLATE);
