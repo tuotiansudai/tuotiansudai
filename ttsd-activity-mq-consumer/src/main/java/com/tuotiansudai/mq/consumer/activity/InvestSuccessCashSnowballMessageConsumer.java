@@ -70,6 +70,7 @@ public class InvestSuccessCashSnowballMessageConsumer implements MessageConsumer
         if (!loanDetailInfo.getActivityType().equals("NEWBIE")
                 && !investInfo.getTransferStatus().equals("SUCCESS")
                 && investInfo.getStatus().equals("SUCCESS")
+                && loanDetailInfo.isActivity()
                 && loanDetailInfo.getActivityDesc().equals("逢万返百")) {
 
             long annualizedAmount = AnnualizedInvestUtil.annualizedInvestAmount(investInfo.getAmount(), loanDetailInfo.getDuration());
