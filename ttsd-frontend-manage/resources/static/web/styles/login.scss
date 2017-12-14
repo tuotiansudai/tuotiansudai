@@ -1,55 +1,68 @@
 @charset "utf-8";
+.main-frame {
+  width: 100%;
+  height: 580px;
+  background: #f75d5d;
+}
+.login-submit.btn-normal {
+  width: 298px!important;
+}
 .login-container {
-  height: 358px;
-  margin: 60px auto;
+  height: 430px;
+  margin: 75px auto;
   text-align: center;
   font-size: 0;
 
    .login-app {
       display: inline-block;
-      border: #dadada 1px solid;
       border-right-width: 0;
-      background: url('../images/sign/login-app-new.png') left top no-repeat;
-      width:472px;
-      height:350px;
+      background: url('../images/sign/login_wechat_pic.png') center no-repeat;
+      width:610px;
+      height:429px;
+      background-size: contain;
       @media (min-width:701px) and (max-width:999px) {
-        display:none;
+        //display:none;
+        width: 100%;
       }
     }
     .login-box {
       display: inline-block;
       vertical-align: top;
-      width: 290px;
-      height: 308px;
-      padding: 20px;
-      border: #dadada 1px solid;
-      background: #f9fcfe;
+      width: 300px;
+      height: 349px;
+      padding: 40px 45px;
+      background: #fff;
       font-size: 13px;
       text-align: left;
       h3 {
-        font-size: 24px;
-        color: #e64d0a;
+        font-size: 16px;
+        color: #4d4d4d;
         font-weight: normal;
         line-height: 24px;
         margin-bottom:20px;
       }
       label {
         display: block;
-        margin-top: 10px;
+        margin-top: 20px;
         input {
-          border: #dadada 1px solid;
-          width: 188px;
+          border: #e5e5e5 1px solid;
+          width: 280px;
+          height: 28px;
           padding-left: 10px;
-          margin-left: 4px;
         }
         input.captcha {
-          width: 103px;
+          width: 162px;
+          margin-right: 14px;
         }
         .image-captcha {
           width: 80px;
           overflow: hidden;
           height: 28px;
           cursor: pointer;
+          #imageCaptcha {
+            width: 100px;
+            height: 40px;
+          }
         }
         .name {
           width: 60px;
@@ -61,21 +74,40 @@
           padding: 0 8px;
         }
       }
+      .bottom_tip_text {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        .error-box {
+          float: left;
+          font-size: 12px;
+          height: 30px;
+          line-height: 30px;
+          padding-top: 0;
+          visibility: hidden;
+          &::before {
+            content: ''
+          }
+        }
+        .tr {
+         float: right;
+          a {
+            font-size: 12px;
+            &.register {
+              color: #ff6900;
+            }
+          }
+        }
+      }
       .forgot-password {
         font-size: 12px;
-
         a {
           color: #545353;
-        }
-        a.register {
-          color: #e64d0a;
-          font-size: 12px;
         }
       }
       b {
         width: 298px;
         color: #797979;
-        background: url("../images/icons/login-lock.png") no-repeat 0;
         padding-left: 20px;
         margin-left: -10px;
         margin-top: 10px;
@@ -83,12 +115,6 @@
         display: inline-block;
       }
     }
-  .error-box {
-    font-size: 12px;
-    visibility: hidden;
-    margin-left: 60px;
-
-  }
 }
 
 .register-container {
@@ -104,12 +130,161 @@
 
 @media screen and (max-width: 700px) {
   .login-container {
-    margin:20px auto!important;
+    margin:0 auto!important;
     .login-app {
-      display: none!important;
+      width: 100%;
+      height: 50%;
     }
   }
   .invest-success-phone{
     display:block;
+  }
+}
+
+@media screen and (max-width: 700px){
+  .main-frame {
+    height: 575px;
+  }
+  .login-container {
+    .login-box {
+      padding: 0;
+      width: 100%;
+      height: 360px;
+      text-align: center;
+      h3 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      label {
+        display: block;
+        margin-top: 20px;
+        input {
+          width: 80%;
+          height: 28px;
+          padding-left: 10px;
+        }
+        input.captcha {
+          width: 53%;
+          margin-right: 14px;
+        }
+        .image-captcha {
+          #imageCaptcha {
+            width: 23%;
+            height: 40px;
+          }
+        }
+      }
+      .bottom_tip_text {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        .error-box {
+         margin-left: 7%;
+        }
+        .tr {
+          margin-right: 6%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width:701px) and (max-width:999px) {
+  .main-frame {
+    height: 789px;
+  }
+  .login-container {
+    margin: 0 auto;
+    .login-box {
+      padding: 0;
+      width: 100%;
+      height: 360px;
+      text-align: center;
+      h3 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      label {
+        display: block;
+        margin-top: 20px;
+        input {
+          width: 80%;
+          height: 28px;
+          padding-left: 10px;
+        }
+        input.captcha {
+          width: 55%;
+          margin-right: 14px;
+        }
+        .image-captcha {
+          #imageCaptcha {
+            width: 23%;
+            height: 40px;
+          }
+        }
+      }
+      .bottom_tip_text {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        .error-box {
+          margin-left: 9%;
+        }
+        .tr {
+          margin-right: 9%;
+        }
+      }
+    }
+  }
+}
+
+#green {
+  height: 20px;
+  .welcome_text {
+    float: left;
+    @media screen and (max-width: 700px) {
+      margin-left: 7%;
+    }
+    @media (min-width:701px) and (max-width:999px) {
+      margin-left: 9%;
+    }
+  }
+  .register {
+    float: right;
+    font-size: 12px;
+    color: #ff6900;
+    @media screen and (max-width: 700px) {
+      margin-right: 7%;
+    }
+    @media (min-width:701px) and (max-width:999px) {
+      margin-right: 9%;
+    }
+  }
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  color: #cbcbcb!important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #cbcbcb!important;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #cbcbcb!important;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color: #cbcbcb!important;
+}
+
+@media screen and (max-width: 700px) {
+  .login-submit.btn-normal {
+    width: 85%!important;
+    padding: 8px 6px 8px 10px;
+  }
+}
+
+@media (min-width:701px) and (max-width:999px) {
+  .login-submit.btn-normal {
+    width: 82%!important;
+    padding: 8px 6px 8px 10px;
   }
 }
