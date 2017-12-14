@@ -32,7 +32,7 @@ public class CashSnowballService {
 
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("annualizedAmount", AmountConverter.convertCentToString(annualizedAmount))
-                .put("cashAmount", AmountConverter.convertCentToString(cashAmount))
+                .put("cashAmount", String.valueOf(cashAmount / 100))
                 .put("nextAmount", AmountConverter.convertCentToString(nextAmount))
                 .build());
     }
