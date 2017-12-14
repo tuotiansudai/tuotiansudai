@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="${css.index!}" charset="utf-8"/>
     <style>
         .btn-color {
-            color: green;
+            color: #FFFFFF;
+            background: #48B27A;
         }
     </style>
 </head>
