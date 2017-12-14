@@ -412,7 +412,13 @@ public class ProductServiceImpl implements ProductService {
 
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount);
 
-        pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
+        PointChangingResult pointChangingResult = pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
+        if (pointChangingResult == PointChangingResult.CHANGING_FREQUENTLY) {
+            return new BaseDto<>(new BaseDataDto(false, "您操作太频繁,请稍后再试!"));
+        } else if (pointChangingResult == PointChangingResult.CHANGING_FAIL) {
+            return new BaseDto<>(new BaseDataDto(false, "积分兑换失败!"));
+        }
+
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
                 accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getGoodsType().getDescription(), amount, totalPrice));
 

@@ -176,6 +176,10 @@ require(['jquery', 'rotate', 'layerWrapper', 'template', 'jquery.validate', 'jqu
                             $('#tipList').show();
                             $('#frequentOperation').show();
                             break;
+                        case 'PointChangingFail':
+                            $('#tipList').show();
+                            $('#pointChangingFail').show();
+                            break;
                         case 'TtsdUDisk':
                             rotateFnCd(1, 80, '拓天速贷U盘');
                             break;
@@ -507,6 +511,10 @@ require(['jquery', 'rotate', 'layerWrapper', 'template', 'jquery.validate', 'jqu
                         case 'PointChangingFrequently':
                             $('#tipListPhone').show();
                             $('#frequentOperationPhone').show();
+                            break;
+                        case 'PointChangingFail':
+                            $('#tipListPhone').show();
+                            $('#pointChangingFailPhone').show();
                             break;
                         case 'TtsdUDisk':
                             rotateFnCdPhone(1, 80, '拓天速贷U盘');

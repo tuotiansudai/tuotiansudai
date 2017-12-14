@@ -4,15 +4,16 @@ import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.PointChangingResult;
 
 import java.util.Date;
 import java.util.List;
 
 public interface PointBillService {
 
-    void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point);
+    PointChangingResult createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point);
 
-    void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note);
+    PointChangingResult createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note);
 
     void createTaskPointBill(String loginName, long pointTaskId, long point, String note);
 
@@ -32,5 +33,5 @@ public interface PointBillService {
 
     int findUsersAccountPointCount(String loginName, String userName, String mobile);
 
-    boolean pointChanging(String loginName);
+    PointChangingResult pointChanging(String loginName,long point);
 }

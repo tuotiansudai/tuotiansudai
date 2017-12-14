@@ -176,6 +176,15 @@ define([], function () {
                         title: false,
                         content: $('#frequentOperation')
                     });
+                } else if (data.returnCode == 6) {
+                    layer.open({
+                        type: 1,
+                        closeBtn: 0,
+                        move: false,
+                        area: ['460px', '370px'],
+                        title: false,
+                        content: $('#pointChangingFail')
+                    });
                 }
             });
         },

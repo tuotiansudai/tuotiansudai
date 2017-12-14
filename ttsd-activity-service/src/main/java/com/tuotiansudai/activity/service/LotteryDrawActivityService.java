@@ -24,6 +24,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.PointChangingResult;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
@@ -287,16 +288,20 @@ public class LotteryDrawActivityService {
         if (accountModel.getPoint() < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
-        if (pointBillService.pointChanging(userModel.getLoginName())){
-            logger.info(String.format("loginName:%s point changing,please waiting...", userModel.getLoginName()));
-            return new DrawLotteryResultDto(5);
-        }
+
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
 
-        grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
+        PointChangingResult pointChangingResult = pointBillService.createPointBill(userModel.getLoginName(), null, activityCategory.equals(ActivityCategory.POINT_SHOP_DRAW_1000) ? PointBusinessType.POINT_LOTTERY : PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+
+        if (pointChangingResult == PointChangingResult.CHANGING_FREQUENTLY) {
+            return new DrawLotteryResultDto(5);
+        } else if (pointChangingResult == PointChangingResult.CHANGING_FAIL) {
+            return new DrawLotteryResultDto(6);
+        }
 
         try {
+            grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));
@@ -324,15 +329,6 @@ public class LotteryDrawActivityService {
                 DateTime.now().plusMonths(1).withTime(23, 59, 59, 59).toDate(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
-    }
-
-    private void createPointBillModel(String loginName, int point, LotteryPrize lotteryPrize) {
-        PointBillModel pointBillModel = new PointBillModel(loginName,
-                null,
-                point,
-                PointBusinessType.POINT_LOTTERY,
-                MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
-        pointBillMapper.create(pointBillModel);
     }
 
     private List<Long> getCouponId(LotteryPrize lotteryPrize) {
@@ -463,16 +459,11 @@ public class LotteryDrawActivityService {
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
-            createPointBillModel(loginName, 500, lotteryPrize);
-            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-            accountModel.setPoint(accountModel.getPoint() + 500);
-            accountMapper.update(accountModel);
+
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 500, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
-            createPointBillModel(loginName, 3000, lotteryPrize);
-            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-            accountModel.setPoint(accountModel.getPoint() + 3000);
-            accountMapper.update(accountModel);
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 3000, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         }
         return prizeType;
     }

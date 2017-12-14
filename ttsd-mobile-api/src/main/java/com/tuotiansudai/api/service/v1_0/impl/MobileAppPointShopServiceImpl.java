@@ -361,7 +361,6 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         int returnCode = drawLotteryResultDto.getReturnCode();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         if (drawLotteryResultDto.isDrawLotterySuccess()) {
-            pointBillService.createPointBill(LoginUserInfo.getLoginName(), null, PointBusinessType.POINT_LOTTERY, -1000, PointBusinessType.POINT_LOTTERY.getDescription());
             baseResponseDto.setData(pointDrawResultResponseDto);
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
