@@ -210,4 +210,17 @@ public class ExportController {
         List<List<String>> csvData = activityConsoleExportService.buildZeroShoppingCsvList();
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ZeroShoppingHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/cash-snowball", method = RequestMethod.GET)
+    public void cashSnowballExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.CashSnowballHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildCashSnowballCsvList();
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CashSnowballHeader, csvData, response.getOutputStream());
+    }
 }

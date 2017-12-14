@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.activity.repository.mapper.CashSnowballActivityMapper">
 
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
     <resultMap id="cashSnowballActivityResultMap" type="com.tuotiansudai.activity.repository.model.CashSnowballActivityModel">
         <id column="id" property="id"></id>
         <result column="login_name" property="loginName"></result>
@@ -45,6 +47,17 @@
 
     <select id="findAll" resultMap="cashSnowballActivityResultMap" parameterType="map">
         SELECT * from `edxactivity`.`cash_snowball_activity`
+        <where>
+            <if test="mobile !=null and mobile !=''">
+                and mobile = #{mobile}
+            </if>
+            <if test="startInvestAmount !=null and startInvestAmount!=''">
+                and invest_amount >= #{startInvestAmount} * 100
+            </if>
+            <if test = "endInvestAmount !=null and endInvestAmount!=''">
+                and invest_amount &lt;= #{endInvestAmount} * 100
+            </if>
+        </where>
         order by updated_time desc
     </select>
 
