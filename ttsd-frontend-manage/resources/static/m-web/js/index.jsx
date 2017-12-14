@@ -27,4 +27,44 @@ require.ensure(['webJsModule/image_show_slider'], function(require){
 
 },'imageSlider');
 
+//点击进入相应的标的详情
+$('[data-url]',$homePageContainer).on('click',function(event) {
+    event.preventDefault();
+    let $this=$(this),
+        url=$this.data('url');
+    location.href=url;
+});
 
+//开标倒计时
+(function() {
+    let $preheat=$('.preheat',$homePageContainer);
+
+    function countDownLoan(domElement) {
+        return $(domElement).each(function () {
+            let $this = $(this);
+            let countdown=$this.data('time');
+            if(countdown > 0) {
+                let timer= setInterval(function () {
+                    let $minuteShow=$this.find('.minute_show'),
+                        $secondShow=$this.find('.second_show'),
+                        minute=Math.floor(countdown/60),
+                        second=countdown%60;
+                    if (countdown == 0) {
+                        //结束倒计时
+                        clearInterval(timer);
+                        $this.parents('a').removeClass('preheat-btn').text('立即投资');
+                        $this.remove();
+                    }
+                    minute=(minute <= 9)?('0' + minute):minute;
+                    second=(second <= 9)?('0' + second):second;
+                    $minuteShow.text(minute);
+                    $secondShow.text(second);
+                    countdown--;
+                },1000);
+            }
+
+        });
+    };
+    countDownLoan($preheat);
+
+})();

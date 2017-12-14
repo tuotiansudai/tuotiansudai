@@ -86,18 +86,19 @@
             </#list>
 
 
-            <div class="target-category-box sold-out-box" data-url="loan-detail.ftl">
-                <b class="newer-title">房产抵押借款17070  <i class="icon-sign">五一专享</i></b>
-                <ul class="loan-info  clearfix">
-                    <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
-                    <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
-                    <li>
-                        <i class="loan-status icon-sellout"></i>
-                    </li>
-                </ul>
-                <div class="transfer-price">转让价格：10,085.00元/12,000.00元(原)</div>
-            </div>
+            <#--<div class="target-category-box sold-out-box" data-url="loan-detail.ftl">-->
+                <#--<b class="newer-title">房产抵押借款17070  <i class="icon-sign">五一专享</i></b>-->
+                <#--<ul class="loan-info  clearfix">-->
+                    <#--<li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>-->
+                    <#--<li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>-->
+                    <#--<li>-->
+                        <#--<i class="loan-status icon-sellout"></i>-->
+                    <#--</li>-->
+                <#--</ul>-->
+                <#--<div class="transfer-price">转让价格：10,085.00元/12,000.00元(原)</div>-->
+            <#--</div>-->
         </div>
     </div>
+
 </div>
 </@global.main>
