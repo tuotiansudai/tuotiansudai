@@ -20,6 +20,7 @@ public class ETCDEndPoints {
     private List<String> ut;
     private List<String> prod;
     private List<String> ft;
+    private List<String> hzft;
 
     public List<String> getDev() {
         return dev;
@@ -93,6 +94,14 @@ public class ETCDEndPoints {
         this.ft = ft;
     }
 
+    public List<String> getHzft() {
+        return hzft;
+    }
+
+    public void setHzft(List<String> hzft) {
+        this.hzft = hzft;
+    }
+
     List<String> getEndpoint(String env) {
         env = Strings.isNullOrEmpty(env) ? null : env.toLowerCase();
         Map<String, List<String>> endpointsMapping = Maps.newHashMap(ImmutableMap.<String, List<String>>builder()
@@ -105,6 +114,7 @@ public class ETCDEndPoints {
                 .put("qa4", qa4)
                 .put("qa5", qa5)
                 .put("ft", ft)
+                .put("hzft", ft)
                 .build());
         List<String> endpoints = endpointsMapping.containsKey(env) ? endpointsMapping.get(env) : endpointsMapping.get("dev");
 
