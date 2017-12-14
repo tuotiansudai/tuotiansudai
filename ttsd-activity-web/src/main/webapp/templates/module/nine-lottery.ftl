@@ -45,7 +45,7 @@
 				</li>
 			{{/each}}
 			</script>
-			
+
 			<ul class="record-item my-gift" id="myRecord"></ul>
 			<script type="text/html" id="myRecordTpl">
 			{{each list}}
@@ -55,7 +55,7 @@
 				</li>
 			{{/each}}
 			</script>
-			
+
 		</div>
 	</div>
 	<div class="lottery-tip" id="lotteryTip"></div>
@@ -79,7 +79,10 @@
 			{{else if returnCode == 3}}
                 <p class="no-time">活动已过期～</p>
                 <p class="info-text">更多活动即将登场！</p>
+            {{else if returnCode == 5}}
+                <p class="no-time">您的操作太频繁，请稍后再试！</p>
 			{{/if}}
+
 
 			</div>
 			<div class="btn-list">

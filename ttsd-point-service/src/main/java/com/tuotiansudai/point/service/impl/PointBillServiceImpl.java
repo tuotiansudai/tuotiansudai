@@ -23,9 +23,12 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,42 +63,65 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Value(value = "point.lock.seconds")
+    private int pointLockSeconds;
+
+    private static final String POINT_TRANSACTION_KEY = "POINT:HEALTH:REPORT:%s";
+
+
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
+        if (accountModel == null) {
             logger.info(String.format("createPointBill:%s no account", loginName));
             return;
         }
         String note = this.generatePointBillNote(businessType, orderId);
-        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
+        lockPointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
+        if (accountModel == null) {
             logger.info(String.format("createPointBill:%s no account", loginName));
             return;
         }
-        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
+        lockPointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
     @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
+        if (accountModel == null) {
             logger.info(String.format("createTaskPointBill: %s no account", loginName));
             return;
         }
-        pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
+        lockPointByLoginName(loginName, point, pointTaskId, PointBusinessType.TASK, note);
+    }
+
+    private void lockPointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
+        if (point < 0 && pointChanging(loginName)) {
+            logger.info(String.format("loginName:%s point changing,please waiting...", loginName));
+            return;
+        }
+        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
+        redisWrapperClient.setnx(String.format(POINT_TRANSACTION_KEY, loginName), new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
+
+    @Override
+    public boolean pointChanging(String loginName) {
+        String lockDate = redisWrapperClient.get(String.format(POINT_TRANSACTION_KEY, loginName));
+        return lockDate == null ? true : new DateTime(lockDate).plusSeconds(pointLockSeconds).isAfterNow();
+    }
+
 
     @Override
     public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,

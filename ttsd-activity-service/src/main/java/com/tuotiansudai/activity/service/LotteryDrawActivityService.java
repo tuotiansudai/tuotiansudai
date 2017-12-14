@@ -24,6 +24,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -82,6 +83,9 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private PointBillService pointBillService;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -282,6 +286,10 @@ public class LotteryDrawActivityService {
 
         if (accountModel.getPoint() < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
+        }
+        if (pointBillService.pointChanging(userModel.getLoginName())){
+            logger.info(String.format("loginName:%s point changing,please waiting...", userModel.getLoginName()));
+            return new DrawLotteryResultDto(5);
         }
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);

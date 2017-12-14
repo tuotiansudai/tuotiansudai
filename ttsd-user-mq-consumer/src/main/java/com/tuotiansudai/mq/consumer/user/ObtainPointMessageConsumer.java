@@ -6,6 +6,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ import java.io.IOException;
 public class ObtainPointMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(ObtainPointMessageConsumer.class);
 
+    private static final String POINT_TRANSACTION_KEY = "POINT:HEALTH:REPORT:%s";
+
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -33,15 +38,16 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
 
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
+            String loginName;
             ObtainPointMessage obtainPointMessage;
             try {
                 obtainPointMessage = JsonConverter.readValue(message, ObtainPointMessage.class);
+                loginName = obtainPointMessage.getLoginName();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             try {
-                String loginName = obtainPointMessage.getLoginName();
                 long point = obtainPointMessage.getPoint();
                 AccountModel accountModel = accountMapper.lockByLoginName(loginName);
                 accountModel.setPoint(accountModel.getPoint() + point);
@@ -50,6 +56,7 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
             } catch (Exception e) {
                 logger.error("consume ObtainPoint message fail", e);
             }
+            redisWrapperClient.hdel(POINT_TRANSACTION_KEY, loginName);
         }
         logger.info("[MQ] consume message success.");
     }

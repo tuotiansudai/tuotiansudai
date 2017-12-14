@@ -2,11 +2,11 @@ define([], function () {
     require('pointStyle/module/_nine_lottery.scss');
     require('pointStyle/module/_gift_circle_tip.scss');
     let tpl = require('art-template/dist/template');
-    let commonFun= require('publicJs/commonFun');
+    let commonFun = require('publicJs/commonFun');
     var $pointContainerFrame = $('#pointContainer'),
         tipGroupObj = {};
     //点击切换按钮
-    $('.lottery-right-group').find('h3 span').on('click', function() {
+    $('.lottery-right-group').find('h3 span').on('click', function () {
         var $this = $(this),
             index = $this.index(),
             contentCls = $(this).parent().siblings('.record-list').find('.record-item');
@@ -14,86 +14,89 @@ define([], function () {
         contentCls.eq(index).show().siblings('.record-item').hide();
     });
     //遍历弹框dom节点
-    $pointContainerFrame.find('.tip-list-frame .tip-list').each(function(key, option) {
+    $pointContainerFrame.find('.tip-list-frame .tip-list').each(function (key, option) {
         var kind = $(option).attr('id');
         tipGroupObj[kind] = option;
     });
-    var lottery={
-        prizeType:'',
-        prizeKind:0,
-        click:false,
-        index:-1,    //当前转动到哪个位置，起点位置
-        count:0,    //总共有多少个位置
-        timer:0,    //setTimeout的ID，用clearTimeout清除
-        speed:20,    //初始转动速度
-        times:0,    //转动次数
-        cycle:50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
-        prize:-1,    //中奖位置
-        init:function(id){
-            if ($("#"+id).find(".lottery-unit").length>0) {
-                $lottery = $("#"+id);
+    var lottery = {
+        prizeType: '',
+        prizeKind: 0,
+        click: false,
+        index: -1,    //当前转动到哪个位置，起点位置
+        count: 0,    //总共有多少个位置
+        timer: 0,    //setTimeout的ID，用clearTimeout清除
+        speed: 20,    //初始转动速度
+        times: 0,    //转动次数
+        cycle: 50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
+        prize: -1,    //中奖位置
+        init: function (id) {
+            if ($("#" + id).find(".lottery-unit").length > 0) {
+                $lottery = $("#" + id);
                 $units = $lottery.find(".lottery-unit");
                 this.obj = $lottery;
                 this.count = $units.length;
-                $lottery.find(".lottery-unit-"+this.index).addClass("active");
-            };
+                $lottery.find(".lottery-unit-" + this.index).addClass("active");
+            }
+            ;
         },
-        roll:function(){
+        roll: function () {
             var index = this.index;
             var count = this.count;
             var lottery = this.obj;
-            $(lottery).find(".lottery-unit-"+index).removeClass("active");
+            $(lottery).find(".lottery-unit-" + index).removeClass("active");
             index += 1;
-            if (index>count-1) {
+            if (index > count - 1) {
                 index = 0;
-            };
-            $(lottery).find(".lottery-unit-"+index).addClass("active");
-            this.index=index;
+            }
+            ;
+            $(lottery).find(".lottery-unit-" + index).addClass("active");
+            this.index = index;
             return false;
         },
-        stop:function(){
+        stop: function () {
             lottery.times += 1;
             lottery.roll();//转动过程调用的是lottery的roll方法，这里是第一次调用初始化
-            if (lottery.times > lottery.cycle+10 && lottery.prize==lottery.index) {
+            if (lottery.times > lottery.cycle + 10 && lottery.prize == lottery.index) {
                 clearTimeout(lottery.timer);
-                lottery.prize=-1;
-                lottery.times=0;
-                lottery.click=false;
+                lottery.prize = -1;
+                lottery.times = 0;
+                lottery.click = false;
                 layer.open({
                     type: 1,
-                    closeBtn:0,
-                    move:false,
-                    area:['460px','370px'],
-                    title:false,
+                    closeBtn: 0,
+                    move: false,
+                    area: ['460px', '370px'],
+                    title: false,
                     content: $(lottery.prizeType)
                 });
                 lottery.giftRecord();
                 lottery.myGift();
-            }else{
-                if (lottery.times<lottery.cycle) {
+            } else {
+                if (lottery.times < lottery.cycle) {
                     lottery.speed -= 10;
-                }else if(lottery.times==lottery.cycle) {
+                } else if (lottery.times == lottery.cycle) {
                     lottery.prize = lottery.prizeKind;
-                }else{
-                    if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
+                } else {
+                    if (lottery.times > lottery.cycle + 10 && ((lottery.prize == 0 && lottery.index == 7) || lottery.prize == lottery.index + 1)) {
                         lottery.speed += 110;
-                    }else{
+                    } else {
                         lottery.speed += 20;
                     }
                 }
-                if (lottery.speed<40) {
-                    lottery.speed=40;
-                };
-                lottery.timer = setTimeout(lottery.stop,lottery.speed);//循环调用
+                if (lottery.speed < 40) {
+                    lottery.speed = 40;
+                }
+                ;
+                lottery.timer = setTimeout(lottery.stop, lottery.speed);//循环调用
             }
             return false;
         },
-        getLottery:function(){
+        getLottery: function () {
             commonFun.useAjax({
                 url: '/activity/point-draw/draw',
                 data: {'activityCategory': 'POINT_SHOP_DRAW_1000'},
                 type: 'POST'
-            },function(data) {
+            }, function (data) {
                 if (data.returnCode == 0) {
 
                     switch (data.prize) {
@@ -125,108 +128,117 @@ define([], function () {
 
                     var prizeType = data.prizeType.toLowerCase();
                     $(tipGroupObj[prizeType]).find('.prizeValue').text(data.prizeValue);
-                    lottery.speed=100;
+                    lottery.speed = 100;
                     lottery.stop();
-                    lottery.click=true;
-                    lottery.prizeType=$(tipGroupObj[prizeType]);
+                    lottery.click = true;
+                    lottery.prizeType = $(tipGroupObj[prizeType]);
 
                 } else if (data.returnCode == 1) {
                     //没有抽奖机会
                     layer.open({
                         type: 1,
-                        closeBtn:0,
-                        move:false,
-                        area:['460px','370px'],
-                        title:false,
+                        closeBtn: 0,
+                        move: false,
+                        area: ['460px', '370px'],
+                        title: false,
                         content: $('#nochance')
                     });
                 } else if (data.returnCode == 2) {
                     //未登录
-                    location.href='/login';
+                    location.href = '/login';
 
                 } else if (data.returnCode == 3) {
                     //不在活动时间范围内！
                     layer.open({
                         type: 1,
-                        closeBtn:0,
-                        move:false,
-                        area:['460px','370px'],
-                        title:false,
+                        closeBtn: 0,
+                        move: false,
+                        area: ['460px', '370px'],
+                        title: false,
                         content: $('#expired')
                     });
                 } else if (data.returnCode == 4) {
                     //实名认证
                     layer.open({
                         type: 1,
-                        closeBtn:0,
-                        move:false,
-                        area:['460px','370px'],
-                        title:false,
+                        closeBtn: 0,
+                        move: false,
+                        area: ['460px', '370px'],
+                        title: false,
                         content: $('#authentication')
+                    });
+                } else if (data.returnCode == 5) {
+                    layer.open({
+                        type: 1,
+                        closeBtn: 0,
+                        move: false,
+                        area: ['460px', '370px'],
+                        title: false,
+                        content: $('#frequentOperation')
                     });
                 }
             });
         },
-        giftRecord:function(){
+        giftRecord: function () {
             commonFun.useAjax({
-                url:'/activity/point-draw/all-list',
-                data:{
+                url: '/activity/point-draw/all-list',
+                data: {
                     'activityCategory': 'POINT_SHOP_DRAW_1000'
                 },
-                type:'GET',
-            },function(data){
-                $('#recordList').html(tpl('recordListTpl',{'recordlist':data}));
+                type: 'GET',
+            }, function (data) {
+                $('#recordList').html(tpl('recordListTpl', {'recordlist': data}));
             });
         },
-        myGift:function(){
+        myGift: function () {
             commonFun.useAjax({
-                url:'/activity/point-draw/user-list',
-                data:{
+                url: '/activity/point-draw/user-list',
+                data: {
                     'activityCategory': 'POINT_SHOP_DRAW_1000'
                 },
-                type:'GET',
-            },function(data){
-                $('#myRecord').html(tpl('myRecordTpl',{'myrecord':data}));
+                type: 'GET',
+            }, function (data) {
+                $('#myRecord').html(tpl('myRecordTpl', {'myrecord': data}));
             });
         },
-        scrollList:function(domName,length) {
-            var $self=domName;
+        scrollList: function (domName, length) {
+            var $self = domName;
             var lineHeight = $self.find("li:first").height();
-            if ($self.find('li').length > (length!=''?length:10)) {
+            if ($self.find('li').length > (length != '' ? length : 10)) {
                 $self.animate({
                     "margin-top": -lineHeight + "px"
-                }, 600, function() {
+                }, 600, function () {
                     $self.css({
                         "margin-top": "0px"
                     }).find("li:first").appendTo($self);
                 });
             }
         },
-        hoverScrollList:function(domName,length) {
-            var _this=this,
+        hoverScrollList: function (domName, length) {
+            var _this = this,
                 scrollTimer;
-            domName.hover(function() {
+            domName.hover(function () {
                 clearInterval(scrollTimer);
-            }, function() {
-                scrollTimer = setInterval(function() {
-                    _this.scrollList(domName,length);
+            }, function () {
+                scrollTimer = setInterval(function () {
+                    _this.scrollList(domName, length);
                 }, 2000);
             }).trigger("mouseout");
         }
     };
 
-    $('#lotteryBox .lottery-btn').on('click', function(event) {
+    $('#lotteryBox .lottery-btn').on('click', function (event) {
         event.preventDefault();
         lottery.init('lotteryBox');
         if (lottery.click) {
             return false;
-        }else{
+        } else {
             lottery.getLottery();
             return false;
         }
     });
     //关闭弹框
-    $('.tip-list').on('click', '.go-close', function(event) {
+    $('.tip-list').on('click', '.go-close', function (event) {
         event.preventDefault();
         layer.closeAll();
         location.reload();
@@ -234,7 +246,7 @@ define([], function () {
 
     lottery.giftRecord();
     lottery.myGift();
-    lottery.hoverScrollList($('#lotteryList').find('.user-record'),10);
+    lottery.hoverScrollList($('#lotteryList').find('.user-record'), 10);
 
 });
 

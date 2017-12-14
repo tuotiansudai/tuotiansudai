@@ -60,24 +60,24 @@
                         <i class="close-cal"></i>
                     </h3>
                     <div class="td-content">
-                    <form id="countForm" action="">
-                        <p>天豆=投资金额x期数/12</p>
-                        <div class="form-text">
-                            <input type="text" placeholder="投资金额" class="int-text" name="money" id="moneyNum">
-                            <span class="unit-text">元</span>
-                        </div>
-                        <div class="form-text">
-                            <input type="text" placeholder="投资时长" class="int-text" name="month" id="monthNum">
-                            <span class="unit-text">期</span>
-                        </div>
-                        <div class="form-text">
-                            <input class="submit-btn" type="submit" value="计算">
-                            <input class="reset-btn" type="reset" value="重置" id="resetBtn">
-                        </div>
-                        <div class="form-text">
-                            <p class="result-text">天豆数： <span id="resultNum">0</span> 个</p>
-                        </div>
-                    </form>
+                        <form id="countForm" action="">
+                            <p>天豆=投资金额x期数/12</p>
+                            <div class="form-text">
+                                <input type="text" placeholder="投资金额" class="int-text" name="money" id="moneyNum">
+                                <span class="unit-text">元</span>
+                            </div>
+                            <div class="form-text">
+                                <input type="text" placeholder="投资时长" class="int-text" name="month" id="monthNum">
+                                <span class="unit-text">期</span>
+                            </div>
+                            <div class="form-text">
+                                <input class="submit-btn" type="submit" value="计算">
+                                <input class="reset-btn" type="reset" value="重置" id="resetBtn">
+                            </div>
+                            <div class="form-text">
+                                <p class="result-text">天豆数： <span id="resultNum">0</span> 个</p>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -96,13 +96,13 @@
                             <span class="bean-user">用户</span>
                         </dt>
                         <dd id="rankList">
-                        <script type="text/html" id="rankListTpl">
-                        {{each rank}}
-                            <span class="order-num"><i class="font-icon">{{$index+1}}</i></span>
-                            <span class="bean-num">{{$value.score}}</span>
-                            <span class="bean-user">{{$value.loginName}}</span>
-                        {{/each}}
-                        </script>
+                            <script type="text/html" id="rankListTpl">
+                                {{each rank}}
+                                <span class="order-num"><i class="font-icon">{{$index+1}}</i></span>
+                                <span class="bean-num">{{$value.score}}</span>
+                                <span class="bean-user">{{$value.loginName}}</span>
+                                {{/each}}
+                            </script>
                         </dd>
                     </dl>
                 </div>
@@ -135,7 +135,8 @@
             </div>
             <div class="leader-list">
                 <div class="table-gift">
-                    <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-table-newer.png" width="100%">
+                    <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-table-newer.png"
+                         width="100%">
                 </div>
             </div>
         </div>
@@ -164,12 +165,15 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <#--id="pointerTd"-->
-                        <div class="pointer-img actor-finish"data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
+                    <#--id="pointerTd"-->
+                        <div class="pointer-img actor-finish"
+                             data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png"
+                                 alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateTd" src="${commonStaticServer}/activity/images/sign/actor/ranklist/turntable.png"
+                            <img id="rotateTd"
+                                 src="${commonStaticServer}/activity/images/sign/actor/ranklist/turntable.png"
                                  alt="turntable"/>
                         </div>
                     </div>
@@ -187,28 +191,29 @@
                     <div class="record-list" id="recordList">
                         <ul class="record-model user-record active" id="TdGiftRecord">
                             <script id="TdGiftRecordTpl" type="text/html">
-                            {{each other}}
-                                <li>恭喜 {{$value.loginName}} 抽中了 
-                                {{if $value.prize=='InterestCoupon5'}}
-                                0.5%加息券
-                                {{else if $value.prize=='Cash20'}}
-                                20元现金
-                                {{else if $value.prize=='JingDong300'}}
-                                300元京东购物卡
-                                {{else if $value.prize=='Iphone6s'}}
-                                iPhone 6s Plus
-                                {{else if $value.prize=='MacBook'}}
-                                MacBook Air
-                                {{/if}}
-                                .</li>
-                            {{/each}}
+                                {{each other}}
+                                <li>恭喜 {{$value.loginName}} 抽中了
+                                    {{if $value.prize=='InterestCoupon5'}}
+                                    0.5%加息券
+                                    {{else if $value.prize=='Cash20'}}
+                                    20元现金
+                                    {{else if $value.prize=='JingDong300'}}
+                                    300元京东购物卡
+                                    {{else if $value.prize=='Iphone6s'}}
+                                    iPhone 6s Plus
+                                    {{else if $value.prize=='MacBook'}}
+                                    MacBook Air
+                                    {{/if}}
+                                    .
+                                </li>
+                                {{/each}}
                             </script>
                         </ul>
                         <ul class="record-model own-record" id="TdMyGift">
                             <script id="TdMyGiftTpl" type="text/html">
-                            {{if tdmygift}}
-                            {{each tdmygift}}
-                            <li>
+                                {{if tdmygift}}
+                                {{each tdmygift}}
+                                <li>
                                 <span class="award-name">
                                     {{if $value.prize=='InterestCoupon5'}}
                                     0.5%加息券
@@ -222,12 +227,12 @@
                                     MacBook Air
                                     {{/if}}
                                 </span>
-                                <span class="award-time">{{$value.time}}</span>
-                            </li>
-                            {{/each}}
-                            {{else}}
-                            <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
-                            {{/if}}
+                                    <span class="award-time">{{$value.time}}</span>
+                                </li>
+                                {{/each}}
+                                {{else}}
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                                {{/if}}
                             </script>
                         </ul>
                     </div>
@@ -241,12 +246,15 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <#--id="pointerCd"-->
-                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
+                    <#--id="pointerCd"-->
+                        <div class="pointer-img actor-finish"
+                             data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png"
+                                 alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateCd" src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
+                            <img id="rotateCd"
+                                 src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
                                  alt="turntable"/>
                         </div>
                     </div>
@@ -264,23 +272,23 @@
                     <div class="record-list scroll-record" id="beanList">
                         <ul class="record-model user-record  active" id="CdGiftRecord">
                             <script type="text/html" id="CdGiftRecordTpl">
-                            {{each cdgiftrecord}}
-                            <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
-                            {{/each}}
+                                {{each cdgiftrecord}}
+                                <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
+                                {{/each}}
                             </script>
                         </ul>
                         <ul class="record-model own-record" id="CdMyGift">
                             <script type="text/html" id="CdMyGiftTpl">
-                            {{if cdmygift}}
-                            {{each cdmygift}}
-                            <li>
-                                <span class="award-name">{{$value.pointPrizeName}}</span>
-                                <span class="award-time">{{$value.createTime}}</span>
-                            </li>
-                            {{/each}}
-                            {{else}}
-                            <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
-                            {{/if}}
+                                {{if cdmygift}}
+                                {{each cdmygift}}
+                                <li>
+                                    <span class="award-name">{{$value.pointPrizeName}}</span>
+                                    <span class="award-time">{{$value.createTime}}</span>
+                                </li>
+                                {{/each}}
+                                {{else}}
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                                {{/if}}
                             </script>
                         </ul>
                     </div>
@@ -302,18 +310,18 @@
             <p class="actor-sign">***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有***</p>
         </div>
     </div>
-	<div class="tip-list" id="tipList">
-		<div class="tip-dom td-tip-big" id="macbookAir">
-			<div class="close-btn go-close"></div>
-			<div class="text-tip">
-				<p>恭喜你抽中了</p>
-				<p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
-				<p>拓天客服将会在7个工作日内联系您发放奖品</p>
-			</div>
-			<div class="btn-list">
-				<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
-			</div>
-		</div>
+    <div class="tip-list" id="tipList">
+        <div class="tip-dom td-tip-big" id="macbookAir">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
+                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
         <div class="tip-dom td-tip-small" id="iphone6s">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -377,6 +385,16 @@
             </div>
             <div class="btn-list">
                 <a href="/login?redirect=/activity/rank-list" class="go-on">去登录</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-thank" id="frequentOperation">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您的操作太频繁，请稍后再试！</p>
+                <p>投资赚取更多财豆再来抽奖吧！</p>
+            </div>
+            <div class="btn-list">
+                <a href="/point" class="go-on">去赚财豆</a>
             </div>
         </div>
         <div class="tip-dom td-tip-thank" id="NoCdbean">
@@ -479,39 +497,41 @@
                 <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
             </div>
         </div>
-	</div>
+    </div>
 </div>
 <div class="rank-list-phone">
     <div class="rank-phone-model">
         <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/top-title.png" width="100%">
     </div>
     <div class="rank-phone-intro">
-        <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/actor-intro-app.png" width="100%" class="actor-intro">
+        <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/actor-intro-app.png" width="100%"
+             class="actor-intro">
     </div>
     <div class="login-btn-phone">
-    <@global.isAnonymous>
-        <p>
-            <a href="/register/user">立即注册</a>
-        </p>
-        <p>
-            <a href="/login">直接登录</a>
-        </p>
-    </@global.isAnonymous>
-    <@global.isNotAnonymous>
-        <ul class="user-info-phone">
-            <li>
-                <span class="project-name">我的天豆：<strong class="myphone-td-bean">${myTianDou?c}</strong></span>
-                <span class="btn-gift-phone" id="myTDPhone">去抽奖</span>
-            </li>
-            <li>
-                <span class="project-name">我的财豆：<strong class="myphone-cd-bean">${myPoint?string('0')!}</strong></span>
-                <span class="btn-gift-phone" id="myCDPhone">去抽奖</span>
-            </li>
-            <li>
-                <span class="project-name">我的排名：<#if myRank??>${myRank}<#else>-</#if></span>
-            </li>
-        </ul>
-    </@global.isNotAnonymous>
+        <@global.isAnonymous>
+            <p>
+                <a href="/register/user">立即注册</a>
+            </p>
+            <p>
+                <a href="/login">直接登录</a>
+            </p>
+        </@global.isAnonymous>
+        <@global.isNotAnonymous>
+            <ul class="user-info-phone">
+                <li>
+                    <span class="project-name">我的天豆：<strong class="myphone-td-bean">${myTianDou?c}</strong></span>
+                    <span class="btn-gift-phone" id="myTDPhone">去抽奖</span>
+                </li>
+                <li>
+                    <span class="project-name">我的财豆：<strong
+                            class="myphone-cd-bean">${myPoint?string('0')!}</strong></span>
+                    <span class="btn-gift-phone" id="myCDPhone">去抽奖</span>
+                </li>
+                <li>
+                    <span class="project-name">我的排名：<#if myRank??>${myRank}<#else>-</#if></span>
+                </li>
+            </ul>
+        </@global.isNotAnonymous>
     </div>
     <div class="bean-rank-list">
         <h3><i class="left-circle"></i><span>天豆排行榜</span><i class="right-circle"></i></h3>
@@ -522,19 +542,20 @@
                 <span><strong class="rank-user">用户</strong></span>
             </dt>
             <dd id="rankListPhone">
-            <script type="text/html" id="rankListPhoneTpl">
-                {{each rank}}
-                <span>{{$index+1}}</span>
-                <span>{{$value.score}}</span>
-                <span>{{$value.loginName}}</span>
-                {{/each}}
-            </script>
+                <script type="text/html" id="rankListPhoneTpl">
+                    {{each rank}}
+                    <span>{{$index+1}}</span>
+                    <span>{{$value.score}}</span>
+                    <span>{{$value.loginName}}</span>
+                    {{/each}}
+                </script>
             </dd>
         </dl>
     </div>
     <div class="change-rank-list">
         <div class="change-btn-list" id="awardBtnPhone">
-            <i class="left-circle"></i><span><strong class="active">天豆抽奖</strong><strong>财豆抽奖</strong></span><i class="right-circle"></i>
+            <i class="left-circle"></i><span><strong class="active">天豆抽奖</strong><strong>财豆抽奖</strong></span><i
+                class="right-circle"></i>
         </div>
         <div class="change-gift-com" id="changeGift">
             <div class="circle-list active">
@@ -544,12 +565,15 @@
                 </div>
                 <div class="gift-circle">
                     <div class="max-gift">
-                        <#--id="pointerTdPhone"-->
-                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                    <#--id="pointerTdPhone"-->
+                        <div class="pointer-img actor-finish"
+                             data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png"
+                                 width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateTdPhone" src="${commonStaticServer}/activity/images/sign/actor/ranklist/turntable.png"
+                            <img id="rotateTdPhone"
+                                 src="${commonStaticServer}/activity/images/sign/actor/ranklist/turntable.png"
                                  width="100%" alt="turntable"/>
                         </div>
                     </div>
@@ -557,32 +581,33 @@
                 <div class="gift-record">
                     <ul class="td-record" id="TdGiftRecordPhone">
                         <script id="TdGiftRecordPhoneTpl" type="text/html">
-                        {{each other}}
-                            <li>恭喜 {{$value.loginName}} 抽中了 
-                            {{if $value.prize=='InterestCoupon5'}}
-                            0.5%加息券
-                            {{else if $value.prize=='Cash20'}}
-                            20元现金
-                            {{else if $value.prize=='JingDong300'}}
-                            300元京东购物卡
-                            {{else if $value.prize=='Iphone6s'}}
-                            iPhone 6s Plus
-                            {{else if $value.prize=='MacBook'}}
-                            MacBook Air
-                            {{/if}}
-                            .</li>
-                        {{/each}}
+                            {{each other}}
+                            <li>恭喜 {{$value.loginName}} 抽中了
+                                {{if $value.prize=='InterestCoupon5'}}
+                                0.5%加息券
+                                {{else if $value.prize=='Cash20'}}
+                                20元现金
+                                {{else if $value.prize=='JingDong300'}}
+                                300元京东购物卡
+                                {{else if $value.prize=='Iphone6s'}}
+                                iPhone 6s Plus
+                                {{else if $value.prize=='MacBook'}}
+                                MacBook Air
+                                {{/if}}
+                                .
+                            </li>
+                            {{/each}}
                         </script>
                     </ul>
                 </div>
                 <@global.isNotAnonymous>
-                <div class="my-record">
-                    <dl id="TdMyGiftPhone"></dl>
+                    <div class="my-record">
+                        <dl id="TdMyGiftPhone"></dl>
                         <script id="TdMyGiftPhoneTpl" type="text/html">
-                        <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
-                        {{if tdmygift.length>0}}
-                        {{each tdmygift}}
-                        <dd>
+                            <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
+                            {{if tdmygift.length>0}}
+                            {{each tdmygift}}
+                            <dd>
                             <span class="gift-name">
                                 {{if $value.prize=='InterestCoupon5'}}
                                     0.5%加息券
@@ -596,15 +621,15 @@
                                     MacBook Air
                                 {{/if}}
                             </span>
-                            <span class="gift-time">{{$value.time}}</span>
-                        </dd>
-                        {{/each}}
-                        {{else}}
-                        <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
-                        {{/if}}
+                                <span class="gift-time">{{$value.time}}</span>
+                            </dd>
+                            {{/each}}
+                            {{else}}
+                            <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
+                            {{/if}}
                         </script>
-                    
-                </div>
+
+                    </div>
                 </@global.isNotAnonymous>
             </div>
             <div class="circle-list">
@@ -614,12 +639,15 @@
                 </div>
                 <div class="gift-circle">
                     <div class="max-gift">
-                        <#--id="pointerCdPhone"-->
-                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
-                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                    <#--id="pointerCdPhone"-->
+                        <div class="pointer-img actor-finish"
+                             data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/pointer.png"
+                                 width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateCdPhone" src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
+                            <img id="rotateCdPhone"
+                                 src="${commonStaticServer}/activity/images/sign/actor/ranklist/gift-list-cd-new.png"
                                  width="100%" alt="turntable"/>
                         </div>
                     </div>
@@ -634,39 +662,42 @@
                     </ul>
                 </div>
                 <@global.isNotAnonymous>
-                <div class="my-record">
-                    <dl id="CdMyGiftPhone">
-                        <script type="text/html" id="CdMyGiftPhoneTpl">
-                        <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
-                        {{if cdmygift.length>0}}
-                        {{each cdmygift}}
-                        <dd><span class="gift-name">{{$value.pointPrizeName}}</span><span class="gift-time">{{$value.createTime}}</span></dd>
-                        {{/each}}
-                        {{else}}
-                        <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
-                        {{/if}}
-                        </script>
-                    </dl>
-                </div>
+                    <div class="my-record">
+                        <dl id="CdMyGiftPhone">
+                            <script type="text/html" id="CdMyGiftPhoneTpl">
+                                <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
+                                {{if cdmygift.length>0}}
+                                {{each cdmygift}}
+                                <dd><span class="gift-name">{{$value.pointPrizeName}}</span><span class="gift-time">{{$value.createTime}}</span>
+                                </dd>
+                                {{/each}}
+                                {{else}}
+                                <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
+                                {{/if}}
+                            </script>
+                        </dl>
+                    </div>
                 </@global.isNotAnonymous>
             </div>
         </div>
     </div>
     <div class="rank-phone-intro">
-        <span class="fl" style="padding:0 30px;"><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
+        <span class="fl" style="padding:0 30px;"><img
+                src="${commonStaticServer}/activity/images/sign/actor/ranklist/share-button.png" width="100%"
+                class="fl share-btn"></span>
         <img src="${commonStaticServer}/activity/images/sign/actor/ranklist/share-intro-phone.png" width="100%">
     </div>
 
     <div class="share-list">
-    <#if !isAppSource>
-        <p class="bdsharebuttonbox">
-            <span class="share-text">分享至：</span>
-            <a href="http://www.jiathis.com/send/?webid=tsina&url=https://tuotiansudai.com/activity/rank-list&title=霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！"
-               class="share-icon icon-weibo" target="_blank" onclick="sendShare()"></a>
-            <a href="http://www.jiathis.com/send/?webid=qzone&url=https://tuotiansudai.com/activity/rank-list&title=霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！"
-               class="share-icon icon-zone" target="_blank" onclick="sendShare()"></a>
-        </p>
-    </#if>
+        <#if !isAppSource>
+            <p class="bdsharebuttonbox">
+                <span class="share-text">分享至：</span>
+                <a href="http://www.jiathis.com/send/?webid=tsina&url=https://tuotiansudai.com/activity/rank-list&title=霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！"
+                   class="share-icon icon-weibo" target="_blank" onclick="sendShare()"></a>
+                <a href="http://www.jiathis.com/send/?webid=qzone&url=https://tuotiansudai.com/activity/rank-list&title=霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！"
+                   class="share-icon icon-zone" target="_blank" onclick="sendShare()"></a>
+            </p>
+        </#if>
     </div>
 
     <div class="bean-rank-list">
@@ -699,9 +730,10 @@
         </div>
     </div>
     <#if !isAppSource>
-    <div class="rank-phone-intro">
-        <a href="/loan-list"><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/to-loan.png" width="100%" class="share-intro"></a>
-    </div>
+        <div class="rank-phone-intro">
+            <a href="/loan-list"><img src="${commonStaticServer}/activity/images/sign/actor/ranklist/to-loan.png"
+                                      width="100%" class="share-intro"></a>
+        </div>
     </#if>
     <dl class="actor-rule">
         <dt>活动规则：</dt>
@@ -714,9 +746,9 @@
     <div class="actor-write">
         <p>活动遵循拓天速贷法律声明，</p>
         <p>最终解释权归拓天速贷平台所有。</p>
-    <#if isAppSource>
-        <p>声明&nbsp;:&nbsp;本产品所有抽奖活动与苹果公司（Apple Inc）无关</p>
-    </#if>
+        <#if isAppSource>
+            <p>声明&nbsp;:&nbsp;本产品所有抽奖活动与苹果公司（Apple Inc）无关</p>
+        </#if>
     </div>
     <div class="tip-list" id="tipListPhone">
         <div class="tip-dom td-tip-big" id="macbookAirPhone">
@@ -798,6 +830,16 @@
                 <p>投资赚取更多财豆再来抽奖吧！</p>
             </div>
         </div>
+        <div class="tip-dom td-tip-thank" id="frequentOperationPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您的操作太频繁，请稍后再试！</p>
+                <p>投资赚取更多财豆再来抽奖吧！</p>
+            </div>
+            <div class="btn-list">
+                <a href="/point" class="go-on">去赚财豆</a>
+            </div>
+        </div>
         <div class="tip-dom td-tip-thank" id="oneDayPhone">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -805,9 +847,9 @@
                 <p>点击按钮分享页面还可再抽一次哦！</p>
             </div>
             <#if !isAppSource>
-            <div class="btn-list">
-                <a href="javascript:void(0)" class="go-on go-close">去分享</a>
-            </div>
+                <div class="btn-list">
+                    <a href="javascript:void(0)" class="go-on go-close">去分享</a>
+                </div>
             </#if>
         </div>
         <div class="tip-dom td-tip-thank" id="onlyTwicePhone">

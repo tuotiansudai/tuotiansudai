@@ -41,6 +41,8 @@ public class PointLotteryServiceImpl implements PointLotteryService {
 
     private final static String POINT_NOT_ENOUGH = "PointNotEnough";
 
+    private final static String POINT_CHANGING_FREQUENTLY = "PointChangingFrequently";
+
     private final static String LAST_EXPIRY_TIME = " 23:59:59";
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -97,6 +99,10 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel.getPoint() < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
+        }
+        if (pointBillService.pointChanging(loginName)) {
+            logger.info(String.format("loginName:%s point changing frequently", loginName));
+            return POINT_CHANGING_FREQUENTLY;
         }
         DateTime dateTime = new DateTime();
         List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
@@ -181,7 +187,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return (int)(end.getTime() - begin.getTime()) / 1000;
+        return (int) (end.getTime() - begin.getTime()) / 1000;
     }
 
 }
