@@ -6,6 +6,11 @@
           content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>豌豆慧租</title>
     <link rel="stylesheet" type="text/css" href="${css.index!}" charset="utf-8"/>
+    <style>
+        .btn-color {
+            color: green;
+        }
+    </style>
 </head>
 
 <body class="success-body">
@@ -42,6 +47,7 @@
             document.getElementById('Btn').innerHTML = '确定';
             document.getElementById('Btn').setAttribute('href', href);
             document.getElementById('Btn').setAttribute('class', 'btn-success');
+            document.getElementById('Btn').setAttribute('class', 'btn-success btn-color');
             clearInterval(timer);
         } else {
             document.getElementById('Btn').setAttribute('class', 'btn-disabled');
