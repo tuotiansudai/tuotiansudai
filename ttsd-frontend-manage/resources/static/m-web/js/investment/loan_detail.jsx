@@ -7,3 +7,7 @@ let $loanDetail = $('#loanDetail'),
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
 })
+
+$('#toInvest').on('click',function () {
+    location.href="/m/"
+})

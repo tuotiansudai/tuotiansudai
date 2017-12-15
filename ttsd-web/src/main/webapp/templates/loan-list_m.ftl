@@ -5,11 +5,12 @@
 <div class="my-loan-content" id="loanList">
     <div class="menu-category">
         <span class="current"><a href="#">直投项目</a></span>
-        <span><a href="#">转让项目</a></span>
+        <span><a href="/m/transfer-list">转让项目</a></span>
     </div>
 
     <div id="wrapperOut" class="loan-list-frame">
         <div class="loan-list-content">
+
             <#list loanItemList as loanItem>
 
             <div class="target-category-box <#if loanItem.productType == 'EXPERIENCE'>newer-experience</#if>"
@@ -31,6 +32,7 @@
                         <span class="percent-number">
                             <i>
                                 <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
+
                                     <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger>
                                     <@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
                                 +<@percentInteger>${loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.interestCouponRate}</@percentFraction>
@@ -85,19 +87,42 @@
             </div>
             </#list>
 
+        <div id="scroller">
 
-            <#--<div class="target-category-box sold-out-box" data-url="loan-detail.ftl">-->
-                <#--<b class="newer-title">房产抵押借款17070  <i class="icon-sign">五一专享</i></b>-->
-                <#--<ul class="loan-info  clearfix">-->
-                    <#--<li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>-->
-                    <#--<li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>-->
-                    <#--<li>-->
-                        <#--<i class="loan-status icon-sellout"></i>-->
-                    <#--</li>-->
-                <#--</ul>-->
-                <#--<div class="transfer-price">转让价格：10,085.00元/12,000.00元(原)</div>-->
-            <#--</div>-->
+                <script type="text/html" id="directInvestmentTpl">
+                    {{each loanItemList as value index}}
+                    <div class="target-category-box sold-out-box" data-url="loan-detail.ftl">
+                        <b class="newer-title">{{value.name}}
+                            {{if value.productType == 'EXPERIENCE'}}
+                                <i class="icon-sign">体验金投资</i>
+                            {{/if}}
+                            {{if value.productType == 'NEWBIE'}}
+                                <i class="icon-sign">新手专享</i>
+                            {{/if}}
+                            {{if value.activity?string("true","false") == "true"}}
+                                <i class="icon-sign">${loanItem.activityDesc!}</i>
+                           {{/if}}
+                            <i class="icon-sign">五一专享</i></b>
+                        <ul class="loan-info  clearfix">
+                            <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
+                            <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
+                            <li>
+                                <i class="loan-status icon-sellout"></i>
+                            </li>
+                        </ul>
+                        <div class="transfer-price">转让价格：10,085.00元/12,000.00元(原)</div>
+                    </div>
+                    {{/each}}
+                </script>
+            </div>
+                <div id="pullUp">
+                    <span class="pullUpLabel">上拉加载更多</span>
+                </div>
+
+
         </div>
+
+
     </div>
 
 </div>

@@ -37,7 +37,6 @@
             <#else>
                 支持债权转让
             </#if>
-
         </div>
 
     <#if extraLoanRates?? >
@@ -58,11 +57,11 @@
         <b>${loan.minInvestAmount}元</b>
         <i>起投金额</i>
     </span>
-        <span>
+    <span>
         <b>最长${loan.duration}天</b>
         <i>项目期限</i>
     </span>
-        <span>
+    <span>
         <b><@amount>${interestPerTenThousands?string.computer}</@amount>元</b>
         <i>最大万元收益</i>
     </span>
@@ -87,7 +86,6 @@
         <li>
             <label>投资上限</label>
             <span>${loan.maxInvestAmount}元</span>
-
         </li>
         <li>
             <label>计息方式</label>
@@ -114,8 +112,11 @@
             <span><i class="fa fa-angle-right"></i></span>
         </li>
     </ul>
+    <#if loan.loanStatus='RAISING'>
+    <button id="toInvest" class="to-invest-project" type="button">立即投资</button>
+    <#else>
     <button class="to-invest-project" type="button" disabled>已售罄</button>
-<#--<button class="to-invest-project" type="button">立即投资</button>-->
+    </#if>
 </div>
 
 </@global.main>
