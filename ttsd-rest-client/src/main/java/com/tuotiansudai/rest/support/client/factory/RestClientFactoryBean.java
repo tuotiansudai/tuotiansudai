@@ -1,5 +1,6 @@
 package com.tuotiansudai.rest.support.client.factory;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.codec.RestErrorDecoder;
 import com.tuotiansudai.rest.support.client.interceptors.RequestHeaderInterceptor;
@@ -10,7 +11,6 @@ import feign.jaxrs.JAXRSContract;
 import feign.slf4j.Slf4jLogger;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 
 public class RestClientFactoryBean<T> implements FactoryBean<T> {
     private ApplicationContext applicationContext;
@@ -23,6 +23,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
     private RequestHeaderInterceptor requestHeaderInterceptor;
     private JAXRSContract jaxrsContract;
     private Class<T> restClientInterface;
+    private ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
 
     public RestClientFactoryBean() {
     }
@@ -39,8 +40,7 @@ public class RestClientFactoryBean<T> implements FactoryBean<T> {
 
     private T createBean(Class<T> restClientInterface) {
         RestClient restClient = restClientInterface.getAnnotation(RestClient.class);
-        Environment environment = applicationContext.getBean(Environment.class);
-        String restClientUrl = environment.resolvePlaceholders(restClient.url());
+        String restClientUrl = etcdConfigReader.getValue(restClient.url());
         return Feign.builder()
                 .logger(new Slf4jLogger(restClientInterface))
                 .client(client)

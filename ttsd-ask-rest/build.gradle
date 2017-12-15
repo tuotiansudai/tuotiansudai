@@ -30,7 +30,6 @@ configurations {
 }
 
 dependencies {
-    compile project(':ttsd-config')
     compile project(':ttsd-rest')
     compile project(':ttsd-edxask-repository')
     compile project(':ttsd-edxask-model')
@@ -47,6 +46,5 @@ dependencies {
 
     runtime "mysql:mysql-connector-java:5.1.39"
 
-    testCompile project(':ttsd-client')
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }

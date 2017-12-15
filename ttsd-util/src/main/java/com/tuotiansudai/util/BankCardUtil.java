@@ -14,6 +14,7 @@ public class BankCardUtil {
             .put("CMB", "招商银行")
             .put("ABC", "中国农业银行")
             .put("CCB", "中国建设银行")
+            .put("CMBC", "中国民生银行")
             .put("SPDB", "浦东发展银行")
             .put("GDB", "广发银行")
             .put("HXB", "华夏银行")

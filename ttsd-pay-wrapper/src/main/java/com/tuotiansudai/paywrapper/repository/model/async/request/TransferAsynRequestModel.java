@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
@@ -35,7 +36,7 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
 
     public static TransferAsynRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String payAccountId, String amount) {
         TransferAsynRequestModel transferAsynRequestModel = new TransferAsynRequestModel(orderId, payUserId, payAccountId, amount, Source.WEB, AsyncUmPayService.SYSTEM_RECHARGE_TRANSFER_ASYN);
-        transferAsynRequestModel.setRetUrl(MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.console.host"), AsyncUmPayService.SYSTEM_RECHARGE_TRANSFER_ASYN.getWebRetCallbackPath()));
+        transferAsynRequestModel.setRetUrl(MessageFormat.format("{0}/{1}", PAY_CALLBACK_CONSOLE_HOST, AsyncUmPayService.SYSTEM_RECHARGE_TRANSFER_ASYN.getWebRetCallbackPath()));
         return transferAsynRequestModel;
     }
 

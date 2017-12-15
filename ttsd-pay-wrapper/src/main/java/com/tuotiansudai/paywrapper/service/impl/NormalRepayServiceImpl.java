@@ -620,6 +620,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REPAY_SUCCESS,
                 Lists.newArrayList(investModel.getLoginName()), title, content, investRepayId));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.REPAY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+
+        mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.NORMAL_REPAY_SUCCESS, currentInvestRepay.getId()));
     }
 
     private long calculateInvestRepayActualInterest(long investId, InvestRepayModel enabledInvestRepay) {

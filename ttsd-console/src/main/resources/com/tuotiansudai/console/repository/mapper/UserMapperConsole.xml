@@ -658,17 +658,17 @@
             </if>
             <if test="useExperienceCoupon != null">
                 <if test="useExperienceCoupon == true">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is not null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") > 0
                 </if>
                 <if test="useExperienceCoupon == false">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") = 0
                 </if>
             </if>
             <if test="experienceStartTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &gt;= #{experienceStartTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &gt;= #{experienceStartTime})
             </if>
             <if test="experienceEndTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &lt;= #{experienceEndTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &lt;= #{experienceEndTime})
             </if>
             <if test="investCountLowLimit != null">
                 AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &gt;= #{investCountLowLimit}
@@ -717,17 +717,17 @@
             </if>
             <if test="useExperienceCoupon != null">
                 <if test="useExperienceCoupon == true">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is not null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") > 0
                 </if>
                 <if test="useExperienceCoupon == false">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") = 0
                 </if>
             </if>
             <if test="experienceStartTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &gt;= #{experienceStartTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &gt;= #{experienceStartTime})
             </if>
             <if test="experienceEndTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &lt;= #{experienceEndTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &lt;= #{experienceEndTime})
             </if>
             <if test="investCountLowLimit != null">
                 AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &gt;= #{investCountLowLimit}
@@ -757,54 +757,53 @@
     </select>
 
     <select id="findExperienceBalance" resultMap="userViewResultMap" parameterType="map">
-        select u1.* from (
-        select u.*, ifnull(e.experience_balance,0) as experience_balance
-        from (
-        select * from user
-        <if test="mobile != null and mobile != ''">
-            where mobile = #{mobile}
-        </if>
-        ) u
-        left outer join experience_account e on u.login_name = e.login_name
-        ) u1
+        select u.*, e.experience_balance
+        from experience_account e
+        inner join user u on u.login_name = e.login_name
         <where>
+            e.experience_balance > 0
+            <if test="mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
             <if test="balanceMin != null and balanceMin !=''">
-                and experience_balance >= #{balanceMin}
+                and e.experience_balance &gt; #{balanceMin}
             </if>
             <if test="balanceMax != null and balanceMax !=''">
-                and experience_balance &lt;= #{balanceMax}
+                and e.experience_balance &lt;= #{balanceMax}
             </if>
         </where>
-        order by mobile
+        order by e.experience_balance DESC
         limit #{index}, #{pageSize}
     </select>
 
     <select id="findCountExperienceBalance" resultType="int" parameterType="map">
-        select count(*) from (
-        select ifnull(e.experience_balance,0) as experience_balance
-        from (
-        select login_name from user
+        select count(*)
+        from experience_account e
         <if test="mobile != null and mobile != ''">
-            where mobile = #{mobile}
+        inner join user u on u.login_name = e.login_name
         </if>
-        ) u
-        left outer join experience_account e on u.login_name = e.login_name
-        ) u1
         <where>
+            e.experience_balance > 0
+            <if test="mobile != null and mobile != ''">
+                and u.mobile = #{mobile}
+            </if>
             <if test="balanceMin != null and balanceMin !=''">
-                and experience_balance >= #{balanceMin}
+                and e.experience_balance &gt; #{balanceMin}
             </if>
             <if test="balanceMax != null and balanceMax !=''">
-                and experience_balance &lt;= #{balanceMax}
+                and e.experience_balance &lt;= #{balanceMax}
             </if>
         </where>
     </select>
 
     <select id="sumExperienceBalance" parameterType="map" resultType="long">
         select ifnull(sum(e.experience_balance),0)
-        from user u
-        inner join experience_account e on u.login_name = e.login_name
+        from experience_account e
+        <if test="mobile != null and mobile != ''">
+        inner join user u on u.login_name = e.login_name
+        </if>
         <where>
+            e.experience_balance > 0
             <if test="mobile != null and mobile != ''">
                 and u.mobile = #{mobile}
             </if>
@@ -814,7 +813,6 @@
             <if test="balanceMax != null and balanceMax !=''">
                 and e.experience_balance &lt;= #{balanceMax}
             </if>
-
         </where>
     </select>
 

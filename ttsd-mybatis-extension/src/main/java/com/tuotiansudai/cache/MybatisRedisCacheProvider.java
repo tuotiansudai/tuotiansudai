@@ -1,5 +1,6 @@
 package com.tuotiansudai.cache;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -8,7 +9,6 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class MybatisRedisCacheProvider {
     private static final MybatisRedisCacheProvider instance = new MybatisRedisCacheProvider();
@@ -22,14 +22,14 @@ public class MybatisRedisCacheProvider {
     }
 
     private MybatisRedisCacheProvider() {
-        ResourceBundle rb = ResourceBundle.getBundle("ttsd-env");
-        this.expireSeconds = Integer.parseInt(rb.getString("common.mybatis.cache.expire.seconds"));
-        String redisHostName = rb.getString("common.redis.host");
-        int redisPort = Integer.parseInt(rb.getString("common.redis.port"));
-        String redisPassword = rb.getString("common.redis.password");
-        int redisDb = Integer.parseInt(rb.getString("common.mybatis.cache.db"));
-        int redisPoolSize = Integer.parseInt(rb.getString("common.mybatis.cache.redis.pool.maxTotal"));
-        int redisMaxWaitMills = Integer.parseInt(rb.getString("common.jedis.pool.maxWaitMillis"));
+        ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
+        this.expireSeconds = Integer.parseInt(etcdConfigReader.getValue("common.mybatis.cache.expire.seconds"));
+        String redisHostName = etcdConfigReader.getValue("common.redis.host");
+        int redisPort = Integer.parseInt(etcdConfigReader.getValue("common.redis.port"));
+        String redisPassword = etcdConfigReader.getValue("common.redis.password");
+        int redisDb = Integer.parseInt(etcdConfigReader.getValue("common.mybatis.cache.db"));
+        int redisPoolSize = Integer.parseInt(etcdConfigReader.getValue("common.mybatis.cache.redis.pool.maxTotal"));
+        int redisMaxWaitMills = Integer.parseInt(etcdConfigReader.getValue("common.jedis.pool.maxWaitMillis"));
 
         if (Objects.equals(redisPassword, "")) {
             redisPassword = null;

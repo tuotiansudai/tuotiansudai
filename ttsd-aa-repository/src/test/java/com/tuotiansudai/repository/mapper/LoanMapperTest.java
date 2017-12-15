@@ -13,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import sun.dc.pr.PRError;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +23,8 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class LoanMapperTest {
 
     @Autowired

@@ -2,7 +2,6 @@ apply plugin: 'war'
 apply plugin: 'com.bmuschko.cargo'
 apply plugin: 'org.akhikhl.gretty'
 apply plugin: 'org.flywaydb.flyway'
-apply from: 'db_migration.gradle'
 
 repositories {
     mavenCentral()

@@ -42,8 +42,7 @@ public class AnswerService {
 
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @Value(value = "${newAnswerAdoptedAlert}")
-    private String newAnswerAdoptedAlertKey;
+    private static final String newAnswerAdoptedAlertKey = "ask:new-answer-adopted-alert";
 
     @Autowired
     private UserMapper userMapper;

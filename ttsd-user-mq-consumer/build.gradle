@@ -29,7 +29,6 @@ configurations{
 }
 
 dependencies {
-    compile project(':ttsd-config')
     compile project(':ttsd-service')
     compile project(':ttsd-user-repository')
     compile project(':ttsd-membership')

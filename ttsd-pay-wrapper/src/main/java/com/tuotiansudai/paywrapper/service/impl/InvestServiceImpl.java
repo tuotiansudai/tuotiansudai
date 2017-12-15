@@ -108,6 +108,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private WeChatUserMapper weChatUserMapper;
+
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     public final static String ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY = "activity:double:eleven:invest";
@@ -620,7 +623,15 @@ public class InvestServiceImpl implements InvestService {
                 PushType.INVEST_SUCCESS,
                 title,
                 AppUrl.MESSAGE_CENTER_LIST));
+        try {
 
+            mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(),
+                    WeChatMessageType.INVEST_SUCCESS,
+                    investModel.getId()
+            ));
+        } catch (Exception e) {
+            logger.error("invest success wechat message notify send fail", e);
+        }
 
         InvestInfo investInfo = new InvestInfo();
         LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
@@ -798,7 +809,7 @@ public class InvestServiceImpl implements InvestService {
                         investModel.getId()
                 ));
             }
-            if(investSeq % 2 == 1) {
+            if (investSeq % 2 == 1) {
                 redisWrapperClient.hset(ACTIVITY_DOUBLE_ELEVEN_INVEST_KEY, hkey, "1", SIX_MONTH_SECOND);
                 activityTitle = MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getTitleTemplate();
                 activityContent = MessageFormat.format(MessageEventType.DOUBLE_ELEVEN_ACTIVITY_EVEN.getContentTemplate(), loanModel.getName());

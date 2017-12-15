@@ -17,7 +17,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
+    <bean class="com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan

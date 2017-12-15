@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply from: 'db_migration.gradle'
 
 version = '1.0'
 
@@ -20,7 +19,6 @@ configurations {
 dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-util'),
-            project(':ttsd-config'),
             project(':ttsd-client'),
             project(':ttsd-user-service'),
             project(':ttsd-edxask-repository'),

@@ -46,7 +46,6 @@ public class ConsoleExperienceService {
                         .map(userView -> new ExperienceBalancePaginationItemDto(userView,
                                 experienceAccountMapper.getExperienceBalance(userView.getLoginName()),
                                 experienceBillMapper.findLastExchangeTimeByLoginName(userView.getLoginName())))
-                        .sorted(ExperienceBalancePaginationItemDto::compareTo)
                         .collect(Collectors.toList()));
     }
 

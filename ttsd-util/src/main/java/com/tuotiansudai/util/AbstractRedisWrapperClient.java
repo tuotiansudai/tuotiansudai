@@ -1,6 +1,7 @@
 package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -25,11 +26,11 @@ public abstract class AbstractRedisWrapperClient {
     private static JedisPool JEDIS_POOL;
 
     static {
-        ResourceBundle bundle = ResourceBundle.getBundle("ttsd-env");
-        REDIS_HOST = bundle.getString("common.redis.host");
-        REDIS_PORT = Integer.parseInt(bundle.getString("common.redis.port"));
-        REDIS_PASSWORD = bundle.getString("common.redis.password");
-        MAX_WAIT_MILLIS = Integer.parseInt(bundle.getString("common.jedis.pool.maxWaitMillis"));
+        ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
+        REDIS_HOST = etcdConfigReader.getValue("common.redis.host");
+        REDIS_PORT = Integer.parseInt(etcdConfigReader.getValue("common.redis.port"));
+        REDIS_PASSWORD = etcdConfigReader.getValue("common.redis.password");
+        MAX_WAIT_MILLIS = Integer.parseInt(etcdConfigReader.getValue("common.jedis.pool.maxWaitMillis"));
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(300);
         poolConfig.setMaxWaitMillis(MAX_WAIT_MILLIS);

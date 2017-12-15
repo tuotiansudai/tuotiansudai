@@ -84,7 +84,7 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
                             .put("openid", boundUser.getOpenid())
                             .put("first", "您的拓天速贷账号已被其他微信号绑定，请知悉")
                             .put("keyword1", MobileEncoder.encode(mobile))
-                            .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm:ss"))
+                            .put("keyword2", new DateTime().toString("yyyy-MM-dd HH:mm"))
                             .put("remark", "如非您本人操作，请及时联系客服：400-169-1188（客服时间：工作日9:00-20:00）。")
                             .build()));
                     logger.info("[MQ WeChatBoundNotify] wechat unbound previous use successfully. user: {}, openid: {}, previous user: {}", userModel.getLoginName(), openid, boundUser.getLoginName());

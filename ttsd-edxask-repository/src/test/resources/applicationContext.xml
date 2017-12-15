@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties"/>
+    <bean class="com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <!-- enable autowire -->
     <context:annotation-config />

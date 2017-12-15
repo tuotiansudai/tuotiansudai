@@ -12,7 +12,7 @@ var basePath = path.join(__dirname, '../../resources'),
 var outputPath=path.join(basePath, 'develop'); //默认打包路径
 
 var NODE_ENV=process.env.NODE_ENV;
-var commonStaticServer = require('../../getStaticServer.js');
+var commonStaticServer = process.env.STATIC_SERVER;
 
 if(NODE_ENV=='production') {
 	outputPath=path.join(basePath, 'prod');

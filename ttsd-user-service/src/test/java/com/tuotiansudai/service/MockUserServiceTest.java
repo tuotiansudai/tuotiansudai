@@ -9,7 +9,6 @@ import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.impl.UserServiceImpl;
 import org.junit.Before;

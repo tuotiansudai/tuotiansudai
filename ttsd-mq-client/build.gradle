@@ -10,14 +10,12 @@ dependencies {
     compile project(":ttsd-util")
     compile "org.springframework:spring-context-support:$springVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "log4j:log4j:1.2.17"
     compile "com.aliyun.mns:aliyun-sdk-mns:1.1.7.1"
 }
 
-task initMQ(dependsOn: ':ttsd-config:classes', type: JavaExec) {
+task initMQ(type: JavaExec) {
     main = 'com.tuotiansudai.mq.tools.MQMigration'
     classpath = sourceSets.main.runtimeClasspath
-
-    def propertiesFile = "${project.project(':ttsd-config').buildDir}/resources/main/ttsd-env.properties"
-    args = [propertiesFile]
 }
 

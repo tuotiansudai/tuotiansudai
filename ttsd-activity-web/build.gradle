@@ -1,5 +1,4 @@
 apply plugin: 'war'
-apply from: 'db_migration.gradle'
 
 dependencies {
     compile project(':ttsd-web-common-config'),

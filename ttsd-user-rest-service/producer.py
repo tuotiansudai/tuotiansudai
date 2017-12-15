@@ -37,5 +37,4 @@ class RedisProducer(object):
         logger.info("[MQ] push message to queue % success, message: %s" % (settings.ALIYUN_MNS_QUEUE_NAME, message))
 
 
-aliyun_mns_enabled = {'Dev': False, 'Test': False, 'Staging': True, 'Production': True}.get(settings.ENV)
-producer = AliyunProducer() if aliyun_mns_enabled else RedisProducer()
+producer = AliyunProducer() if settings.ALIYUN_MNS_ENABLED else RedisProducer()

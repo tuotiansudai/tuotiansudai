@@ -12,7 +12,6 @@ sourceSets {
 
 dependencies {
     compile project(':ttsd-dependency'),
-            project(":ttsd-config"),
             project(":ttsd-user-repository"),
             project(":ttsd-membership"),
             project(":ttsd-log-service"),

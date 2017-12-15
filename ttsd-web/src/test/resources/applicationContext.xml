@@ -18,7 +18,7 @@
     <context:annotation-config/>
 
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
+    <bean class="com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <aop:aspectj-autoproxy expose-proxy="true" />

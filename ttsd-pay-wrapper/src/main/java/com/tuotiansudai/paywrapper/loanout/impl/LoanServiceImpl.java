@@ -11,10 +11,7 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.LoanOutSuccessMessage;
-import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -505,7 +502,7 @@ public class LoanServiceImpl implements LoanService {
 
         List<String> loginNames = new ArrayList<>();
         Map<Long, String> investIdLoginNames = new HashMap<>();
-        for (InvestModel investModel:investModels) {
+        for (InvestModel investModel : investModels) {
             loginNames.add(investModel.getLoginName());
             investIdLoginNames.put(investModel.getId(), investModel.getLoginName());
         }
@@ -514,5 +511,8 @@ public class LoanServiceImpl implements LoanService {
                 title, content, investIdLoginNames));
 
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(loginNames, PushSource.ALL, PushType.LOAN_OUT_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+
+        mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_OUT_SUCCESS, loanId));
     }
+
 }

@@ -1,8 +1,10 @@
 from __future__ import with_statement
+import logging
 import os
-import time
 from fabric.api import *
 from fabric.contrib.project import upload_project
+from scripts import migrate_db
+from scripts import etcd_client
 
 config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
@@ -27,24 +29,16 @@ env.roledefs = {
     'anxin': ['shijiazhuang']
 }
 
+etcd3 = etcd_client.client('prod')
+
 
 def migrate():
-    local('/opt/gradle/latest/bin/gradle ttsd-config:processResources')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=job_worker ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxask ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxactivity ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxpoint ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxmessage ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=edxlog ttsd-config:flywayMigrate')
+    migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3, local)
 
 
 def mk_war():
-    local('/usr/local/bin/paver jcversion.env=PROD jcversion')
-    local('/opt/gradle/latest/bin/gradle war renameWar initMQ')
+    local('/usr/local/bin/paver jcversion.static_server={0} jcversion'.format(etcd3.get('common.static.server')))
+    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar initMQ')
 
 
 def mk_worker_zip():
@@ -73,8 +67,9 @@ def mk_static_zip():
 
 
 def mk_signin_zip():
+    local('cp ./ttsd-etcd/src/main/resources/etcd-endpoints.yml ./ttsd-user-rest-service/')
     for i in ('1', '2'):
-        local('cp {0}/signin_service/{1}/* ./ttsd-user-rest-service/'.format(config_path, i))
+        local('cp {0}/signin_service/{1}/prod.yml ./ttsd-user-rest-service/'.format(config_path, i))
         local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 
@@ -94,11 +89,11 @@ def compile():
 
 
 def check_worker_status():
-    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
+    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-worker-monitor:consumerCheck')
 
 
 def clear_worker_status():
-    local('/opt/gradle/latest/bin/gradle ttsd-worker-monitor:clearWorkerMonitorStatus')
+    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-worker-monitor:clearWorkerMonitorStatus')
 
 
 @roles('static')
@@ -217,8 +212,17 @@ def deploy_ask():
 @parallel
 def deploy_sign_in():
     for i in ('1', '2'):
+        local("echo sign in start...")
         folder_name = 'signin_{0}'.format(i)
-        upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+        local('echo sign in start...' + folder_name)
+        try:
+            local("echo sign in upload")
+            upload_project(local_dir='./ttsd-user-rest-service/{0}.zip'.format(folder_name), remote_dir='/workspace')
+            logging.info("sign in upload done")
+        except Exception as e:
+            local("echo " + e.message)
+            raise e
+
         with cd('/workspace'):
             sudo('rm -rf {0}'.format(folder_name))
             sudo('unzip {0}.zip -d {0}'.format(folder_name))
@@ -262,8 +266,8 @@ def deploy_anxin():
 
 
 def deploy_all():
-    execute(deploy_static)
     execute(deploy_sign_in)
+    execute(deploy_static)
     execute(deploy_sms)
     execute(deploy_console)
     execute(deploy_pay)

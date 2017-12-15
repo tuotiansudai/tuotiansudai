@@ -13,7 +13,8 @@ sourceSets {
 }
 
 dependencies {
-    compile 'com.google.guava:guava:21.0',
+    compile project(':ttsd-etcd'),
+            'com.google.guava:guava:21.0',
             'joda-time:joda-time:2.9.4',
             'log4j:log4j:1.2.17',
             "redis.clients:jedis:2.8.2",

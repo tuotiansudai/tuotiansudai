@@ -25,7 +25,7 @@ validator.add(loginForm.password, [{
     errorMsg: '密码不能为空'
 }, {
     strategy: 'checkPassword',
-    errorMsg: '密码为6位至20位，不能全是数字'
+    errorMsg: '请输入6-20位密码，不能为纯数字'
 }]);
 validator.add(loginForm.captcha, [{
     strategy: 'isNonEmpty',

@@ -14,7 +14,6 @@ import feign.jaxrs.JAXRSContract;
 import feign.okhttp.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +22,6 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Configuration
-@PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-env-test.properties"}, ignoreResourceNotFound = true)
 public class FeignClientConfig {
 
     @Bean

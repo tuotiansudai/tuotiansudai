@@ -87,6 +87,10 @@ public class SmsClient {
         List<SmsHistoryModel> smsHistoryModels = smsProvider.sendSMS(mobileList, template, paramList);
 
         data.setStatus(CollectionUtils.isNotEmpty(smsHistoryModels) && smsHistoryModels.get(0).isSuccess());
+        if(!data.getStatus()){
+            data.setIsRestricted(true);
+            data.setMessage("短信网关返回失败");
+        }
 
         this.setIntoCoolDown(restrictedIP);
 

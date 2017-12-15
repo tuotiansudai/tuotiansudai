@@ -14,12 +14,12 @@ sourceSets {
 
 dependencies {
     compile project(':ttsd-dependency'),
-            project(':ttsd-config'),
             project(':ttsd-util'),
             project(':ttsd-client'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-point-service'),
             project(":ttsd-user-service")
+
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 

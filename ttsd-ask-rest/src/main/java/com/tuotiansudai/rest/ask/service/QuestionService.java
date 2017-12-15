@@ -42,14 +42,13 @@ public class QuestionService {
 
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    private static final String newAnswerAlertKey = "ask:new-answer-alert";
+
     private final QuestionMapper questionMapper;
 
     private final UserMapper userMapper;
 
     private final AnswerMapper answerMapper;
-
-    @Value(value = "${newAnswerAlert}")
-    private String newAnswerAlertKey;
 
     private static final int PAGE_SIZE = 10;
 

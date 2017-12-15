@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayParticType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayServType;
@@ -108,7 +109,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newHuiZuRepayPasswordRequest(String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.HUI_ZU_PASSWORD_REPAY_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
@@ -132,7 +133,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newCreditLoanActivateAccountRequest(String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.CREDIT_LOAN_ACTIVATE_ACCOUNT_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
@@ -140,16 +141,16 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newCreditLoanRechargePwdRequest(String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
-        model.setRetUrl(MessageFormat.format("{0}/{1}", ENV_PROPS.get("pay.callback.console.host"), AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER.getWebRetCallbackPath()));
+        model.setRetUrl(MessageFormat.format("{0}/{1}", PAY_CALLBACK_CONSOLE_HOST, AsyncUmPayService.CREDIT_LOAN_RECHARGE_TRANSFER.getWebRetCallbackPath()));
         return model;
     }
 
     public static ProjectTransferRequestModel newCreditLoanOutRequest(String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_OUT_PROJECT_TRANSFER);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_OUT_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
@@ -157,7 +158,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newCreditLoanRepayRequest(String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.CREDIT_LOAN_REPAY_PROJECT_TRANSFER);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.CREDIT_LOAN_REPAY_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
@@ -165,7 +166,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newCreditLoanTransferAgentRequest(String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(ENV_PROPS.getProperty("credit.loan"), orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_AGENT_TRANSFER);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.WEB, AsyncUmPayService.CREDIT_LOAN_AGENT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_OUT_TRANSFER.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();

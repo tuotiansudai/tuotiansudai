@@ -74,10 +74,4 @@ public class ExperienceBalancePaginationItemDto implements Serializable {
     public void setExperienceBalance(long experienceBalance) {
         this.experienceBalance = experienceBalance;
     }
-
-    public int compareTo(ExperienceBalancePaginationItemDto itemDto) {
-        return (this.getLastExchangeTime() == null && itemDto != null)
-                || (this.getLastExchangeTime() != null && itemDto.getLastExchangeTime() != null && this.getLastExchangeTime().before(itemDto.getLastExchangeTime()))
-                ? -1 : 1;
-    }
 }

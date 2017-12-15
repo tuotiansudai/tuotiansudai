@@ -8,7 +8,6 @@ dependencies {
     def mybatisSpringVersion = '1.3.0'
 
     compile project(':ttsd-edxpoint-model')
-    compile project(':ttsd-config')
     compile project(':ttsd-mybatis-extension')
     compile "org.springframework:spring-context-support:$springVersion"
     compile "org.springframework:spring-jdbc:$springVersion"
@@ -16,5 +15,6 @@ dependencies {
     compile "org.mybatis:mybatis:$mybatisVersion"
     compile "org.mybatis:mybatis-spring:$mybatisSpringVersion"
     compile 'com.zaxxer:HikariCP:2.4.7'
+    compile 'mysql:mysql-connector-java:5.1.39'
 }
 

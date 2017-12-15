@@ -3,29 +3,30 @@
 <div class="login-container page-width" id="loginContainer">
         <div class="login-app"></div>
         <div class="login-box">
-            <h3 id="green">欢迎登录拓天速贷</h3>
-
+            <#--<div class="head_title_text">-->
+                <#--<h3 id="green">欢迎登录拓天速贷</h3>-->
+                <#--<a href="/register/user" class="register">免费注册</a>-->
+            <#--</div>-->
+                <h3 id="green"><span class="welcome_text">欢迎登录拓天速贷</span><a href="/register/user" class="register">免费注册</a></h3>
             <form class="form-login" id="formLogin"  data-redirect-url="${redirect}">
                 <label>
-                    <em class="name">账<i></i>号:</em>
                     <input validate class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
                 </label>
                 <label>
-                    <em class="name">密<i></i>码:</em>
                     <input validate class="password unlock" type="password" value="" name="password" placeholder="请输入密码"/>
                 </label>
                 <label>
-                    <em class="name">验证码:</em>
                     <input validate class="captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码" maxlength="5"/>
                     <em class="image-captcha"><img src="" id="imageCaptcha"/></em>
                 </label>
                 <input type="hidden" name="source" value="WEB" />
-                <i class="error-box fa fa-times-circle"></i>
-                <div class="forgot-password tc">
+                <div class="bottom_tip_text">
+                    <i class="error-box fa fa-times-circle"></i>
                     <div class="tr">
-                        <a href="/register/user" class="register">免费注册</a>
                         <a href="/mobile-retrieve-password">忘记密码？</a>
                     </div>
+                </div>
+                <div class="forgot-password tc">
                     <div class="clear-blank"></div>
                     <button class="login-submit btn-normal" type="submit" >立即登录</button>
                 </div>

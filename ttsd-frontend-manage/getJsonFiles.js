@@ -28,10 +28,11 @@ getJsonFileList.prototype.readFile = function() {
 
 //写入文件utf-8格式
 getJsonFileList.prototype.writeFile = function(data) {
-    fs.writeFile(this.formatName,data,'utf-8',function() {
-        console.log("文件生成成功");
+    var fileName = this.formatName;
+    fs.writeFile(this.formatName,data,'utf-8', function() {
+        console.log(fileName + " 文件生成成功");
     });
-}
+};
 
 getJsonFileList.prototype.formatHandler = function(textFile) {
     for(var key in textFile){
@@ -79,7 +80,7 @@ getJsonFileList.prototype.init=function() {
             that.readFile();
         }
     });
-}
+};
 
 //ask,web,activity,point,mobile站点打包生成的的json文件名
 var getJsonAskList=new getJsonFileList('ask','json-ask.json');

@@ -4,18 +4,13 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
-@PropertySource(
-        ignoreResourceNotFound = true, value = {
-        "classpath:ttsd-env.properties",
-        "classpath:ttsd-biz.properties"
-})
 public class ApplicationConfiguration {
+
     @Value("${common.redis.host}")
     private String redisHost;
 
@@ -47,4 +42,5 @@ public class ApplicationConfiguration {
     public SmsWrapperClient smsWrapperClient() {
         return new SmsWrapperClient();
     }
+
 }

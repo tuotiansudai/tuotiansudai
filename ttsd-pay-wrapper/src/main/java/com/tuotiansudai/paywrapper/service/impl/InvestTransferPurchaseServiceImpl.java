@@ -597,5 +597,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 PushType.TRANSFER_SUCCESS,
                 title,
                 AppUrl.MESSAGE_CENTER_LIST));
+
+        mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(transferApplicationModel.getLoginName(), WeChatMessageType.TRANSFER_SUCCESS, transferApplicationModel.getId()));
     }
 }
