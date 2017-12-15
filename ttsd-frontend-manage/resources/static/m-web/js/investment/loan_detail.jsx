@@ -125,5 +125,8 @@ $('#to_project_detail').on('click',function () {
     $projectDetail.show();
 })
 
+//转让购买详情
+
+
 
 

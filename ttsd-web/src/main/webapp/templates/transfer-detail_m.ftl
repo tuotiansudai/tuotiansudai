@@ -76,5 +76,37 @@
     </#if>
 
 </div>
+<#--回款计划-->
+<div class="my-account-content amount-detail" id="wrapperOut3" >
 
+    <div class="amount-detail-inner">
+
+        <dl class="payment-plan">
+            <dt>
+                <span>回款时间</span>
+                <span>金额</span>
+                <span>还款状态</span>
+            </dt>
+            <dd>
+                <span>2016/10/18</span>
+                <span>0.46元</span>
+                <em>已完成</em>
+            </dd>
+            <dd>
+                <span>2016/10/18</span>
+                <span>0.46元</span>
+                <em class="status">待还款</em>
+            </dd>
+            <dd>
+                <span>2016/10/18</span>
+                <span>0.46元</span>
+                <em class="status">待还款</em>
+            </dd>
+        </dl>
+
+
+    </div>
+</div>
+<#--转让购买详情-->
+    <#include 'buy-transfer_m.ftl'>
 </@global.main>
