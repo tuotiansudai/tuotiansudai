@@ -47,7 +47,7 @@
 <div class="nav-wap-container">
     <div class="img-top">
         <div class="logo">
-            <a href="/m" class="logo-bg"></a>
+            <a href="/m/" class="logo-bg"></a>
         </div>
         <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
     </div>

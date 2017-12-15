@@ -126,7 +126,10 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
-		}
+		},
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        }
 	};
 }
 
