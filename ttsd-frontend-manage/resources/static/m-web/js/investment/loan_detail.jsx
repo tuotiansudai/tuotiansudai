@@ -126,7 +126,3 @@ $('#to_project_detail').on('click',function () {
 })
 
 //转让购买详情
-
-
-
-

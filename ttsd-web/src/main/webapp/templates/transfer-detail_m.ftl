@@ -1,5 +1,4 @@
 <#import "macro/global_m.ftl" as global>
-<#assign jsName = 'loan_detail' >
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="项目详情－转让详情">
 
