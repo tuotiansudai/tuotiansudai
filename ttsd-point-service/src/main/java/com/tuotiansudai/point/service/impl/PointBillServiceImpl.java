@@ -21,10 +21,7 @@ import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.CalculateUtil;
-import com.tuotiansudai.util.PaginationUtil;
-import com.tuotiansudai.util.RedisWrapperClient;
+import com.tuotiansudai.util.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,10 +114,10 @@ public class PointBillServiceImpl implements PointBillService {
     public PointChangingResult pointChanging(String loginName, long point) {
         if (point < 0) {
             String lockDate = redisWrapperClient.get(String.format(POINT_TRANSACTION_KEY, loginName));
-            if (lockDate != null && new DateTime(lockDate).plusSeconds(pointLockSeconds).isAfterNow()) {
+            if (lockDate != null && new DateTime(DateConvertUtil.withTimeAtStartOfDay(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isAfterNow()) {
                 return PointChangingResult.CHANGING_FREQUENTLY;
             }
-            if (lockDate != null && new DateTime(lockDate).plusSeconds(pointLockSeconds).isBeforeNow()) {
+            if (lockDate != null && new DateTime(DateConvertUtil.withTimeAtStartOfDay(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isBeforeNow()) {
                 return PointChangingResult.CHANGING_FAIL;
             }
 
