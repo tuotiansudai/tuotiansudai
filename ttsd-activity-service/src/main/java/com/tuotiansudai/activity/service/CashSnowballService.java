@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.mapper.CashSnowballActivityMapper;
 import com.tuotiansudai.activity.repository.model.CashSnowballActivityModel;
+import com.tuotiansudai.repository.model.ActivityAmountGrade;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class CashSnowballService {
                 .put("annualizedAmount", AmountConverter.convertCentToString(annualizedAmount))
                 .put("cashAmount", String.valueOf(cashAmount / 100))
                 .put("nextAmount", AmountConverter.convertCentToString(nextAmount))
+                .put("againObtainCash", String.valueOf(ActivityAmountGrade.getAwardAmount("CASH_SNOWBALL", annualizedAmount)))
                 .build());
     }
 }

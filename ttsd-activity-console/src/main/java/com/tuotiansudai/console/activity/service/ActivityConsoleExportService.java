@@ -287,7 +287,7 @@ public class ActivityConsoleExportService {
         return activityConsoleZeroShoppingService.userPrizeList(1, Integer.MAX_VALUE, null, null, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildCashSnowballCsvList(){
-        return activityConsoleCashSnowballService.list(1, Integer.MAX_VALUE, null, null, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    public List<List<String>> buildCashSnowballCsvList(String mobile, Long startInvestAmount, Long endInvestAmount){
+        return activityConsoleCashSnowballService.list(1, Integer.MAX_VALUE, mobile, startInvestAmount, endInvestAmount).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

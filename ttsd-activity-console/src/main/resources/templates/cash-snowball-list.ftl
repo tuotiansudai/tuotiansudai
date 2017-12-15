@@ -5,7 +5,7 @@
 <!-- content area begin -->
 <div class="col-md-10">
 
-    <form action="/activity-console/activity-manage/cash-snowball-list" class="form-inline query-build"
+    <form action="/activity-console/activity-manage/cash-snowball-list" class="form-inline query-build" id="cashSnowballForm"
           method="get">
         <div class="form-group">
             <label for="mobile">手机号</label>
@@ -69,7 +69,8 @@
         </table>
     </div>
 
-    <a href="/activity-console/activity-manage/cash-snowball" class="form-control" style="width: 200px">请点击此处导出EXCEl</a>
+    <a href="/activity-console/activity-manage/cash-snowball?mobile=${mobile!}&startInvestAmount=${startInvestAmount!}&endInvestAmount=${endInvestAmount!}" class="form-control" style="width: 200px">请点击此处导出EXCEl</a>
+
     <br/>
     <!-- pagination  -->
     <nav>

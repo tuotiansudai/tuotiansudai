@@ -212,7 +212,10 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/cash-snowball", method = RequestMethod.GET)
-    public void cashSnowballExport(HttpServletResponse response) throws IOException {
+    public void cashSnowballExport(HttpServletResponse response,
+                                   @RequestParam(name = "mobile", required = false) String mobile,
+                                   @RequestParam(name = "startInvestAmount", required = false) Long startInvestAmount,
+                                   @RequestParam(name = "endInvestAmount", required = false) Long endInvestAmount) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
             response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.CashSnowballHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
@@ -220,7 +223,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         response.setContentType("application/csv");
-        List<List<String>> csvData = activityConsoleExportService.buildCashSnowballCsvList();
+        List<List<String>> csvData = activityConsoleExportService.buildCashSnowballCsvList(mobile, startInvestAmount, endInvestAmount);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CashSnowballHeader, csvData, response.getOutputStream());
     }
 }
