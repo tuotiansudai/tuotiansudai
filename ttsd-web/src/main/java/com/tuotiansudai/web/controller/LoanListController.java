@@ -36,7 +36,7 @@ public class LoanListController {
                                     @RequestParam(value = "durationStart", defaultValue = "0", required = false) int durationStart,
                                     @RequestParam(value = "durationEnd", defaultValue = "0", required = false) int durationEnd,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        int count = loanService.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
+         int count = loanService.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
         List<LoanItemDto> loanItemList = loanService.findLoanItems(name, status, rateStart, rateEnd,durationStart,durationEnd, index);
 
         ModelAndView modelAndView = new ModelAndView("/loan-list");
