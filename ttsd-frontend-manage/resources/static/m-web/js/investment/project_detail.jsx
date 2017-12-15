@@ -8,10 +8,10 @@ let $projectDetail = $('#projectDetail'),
 menuClick({
     pageDom:$projectDetail
 });
-let myScroll = new IScroll('#wrapperOut', {
-    probeType: 2,
-    mouseWheel: true
-});
+// let myScroll = new IScroll('#wrapperOut', {
+//     probeType: 2,
+//     mouseWheel: true
+// });
 
 $recordTop.find('span').on('click',function() {
 

@@ -113,28 +113,5 @@ function getMore() {
     }
 )
 
-    // $.ajax({
-    //     url: '/***/getPage',
-    //     data: {'currentPage':pagenum,'id':id},
-    //     type: 'get',
-    //     datatype: "json",
-    //     success: function (data) {
-    //         //alert(data);
-    //         var list = data.List;
-    //         if (list.length < 1) {
-    //             pagenum--; that.innerHTML = "已经没有更多了..."; return;
-    //         }
-    //         var ul = document.getElementById("thelist");
-    //         for (var i = 0; i < list.length; i++) {
-    //             var str = "<li>";
-    //             str += "<div class=\"panelListItemForALL\"><table class=\"allRecordTable\"><tbody><tr><td>***</td><td>"+list[i].OrderCode+"</td>";
-    //             str += "</tr><tr><td>***</td><td>"+list[i].GoodsName+"</td></tr>";
-    //             str += "<tr><td>***</td><td>"+ data.DatatimeArray[i] +"</td>";
-    //             str += "</tr></tbody></table></div>";
-    //             str += "</li>";
-    //             ul.innerHTML += str;
-    //             myScroll.refresh();
-    //         }
-    //     }
-    // });
+
 }
