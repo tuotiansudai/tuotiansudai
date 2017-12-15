@@ -32,13 +32,13 @@
         WHERE serv_type IN ('01', '02')
         AND trans_action = '01'
         AND partic_type = '01'
-        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d")
+        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d"))
         UNION
         (SELECT order_id, amount, mer_date FROM project_transfer_nopwd_request
         WHERE serv_type IN ('01', '02')
         AND trans_action = '01'
         AND partic_type = '01'
-        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d")
+        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d"))
     </select>
 
     <select id="findReferrerRewardTransactions" parameterType="map" resultType="java.util.HashMap">
