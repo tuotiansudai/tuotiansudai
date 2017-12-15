@@ -26,14 +26,21 @@ public class DateConvertUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return DateConvertUtil.dateToLocalDateTime(date).format(formatter);
     }
+
     public static Date localDateToDate(LocalDate localDate) {
 
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    public static Date withTimeAtStartOfDay(String str,String pattern){
+    public static Date withTimeAtStartOfDay(String str, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalDate dateTime = LocalDate.parse(str, formatter);
         return DateConvertUtil.localDateToDate(dateTime);
+    }
+
+    public static Date convertStringToDate(String str, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

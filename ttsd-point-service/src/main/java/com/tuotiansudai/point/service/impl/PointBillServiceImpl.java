@@ -114,10 +114,10 @@ public class PointBillServiceImpl implements PointBillService {
     public PointChangingResult pointChanging(String loginName, long point) {
         if (point < 0) {
             String lockDate = redisWrapperClient.get(String.format(POINT_TRANSACTION_KEY, loginName));
-            if (lockDate != null && new DateTime(DateConvertUtil.withTimeAtStartOfDay(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isAfterNow()) {
+            if (lockDate != null && new DateTime(DateConvertUtil.convertStringToDate(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isAfterNow()) {
                 return PointChangingResult.CHANGING_FREQUENTLY;
             }
-            if (lockDate != null && new DateTime(DateConvertUtil.withTimeAtStartOfDay(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isBeforeNow()) {
+            if (lockDate != null && new DateTime(DateConvertUtil.convertStringToDate(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isBeforeNow()) {
                 return PointChangingResult.CHANGING_FAIL;
             }
 
