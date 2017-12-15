@@ -41,10 +41,6 @@ public class NationalPrizeService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.endTime}\")}")
     private Date activityNationalEndTime;
 
-    public int getDrawPrizeTime(String mobile){
-        return lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.NATIONAL_PRIZE);
-    }
-
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
         return lotteryDrawActivityService.drawPrizeByCompleteTask(mobile, ActivityCategory.NATIONAL_PRIZE);
     }

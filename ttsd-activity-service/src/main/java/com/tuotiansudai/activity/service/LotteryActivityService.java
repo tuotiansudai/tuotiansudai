@@ -32,10 +32,6 @@ public class LotteryActivityService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
-    public int getDrawPrizeTime(String mobile){
-        return lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.AUTUMN_PRIZE);
-    }
-
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
         return lotteryDrawActivityService.drawPrizeByCompleteTask(mobile, ActivityCategory.AUTUMN_PRIZE);
     }

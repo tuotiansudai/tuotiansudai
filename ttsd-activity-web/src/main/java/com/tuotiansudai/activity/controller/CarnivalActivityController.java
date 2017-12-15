@@ -19,7 +19,7 @@ public class CarnivalActivityController {
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/double-eleven", "responsive", true);
-        modelAndView.addObject("myCount", lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.CARNIVAL_ACTIVITY));
+        modelAndView.addObject("myCount", 0);
         modelAndView.addObject("now", DateTime.now().toString("yyyy/MM/dd HH:mm:ss"));
         modelAndView.addObject("today", DateTime.now().toString("MM-dd"));
         modelAndView.addObject("steps", lotteryDrawActivityService.generateSteps(loginName));

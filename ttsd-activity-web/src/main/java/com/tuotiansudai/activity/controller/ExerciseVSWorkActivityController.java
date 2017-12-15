@@ -27,7 +27,7 @@ public class ExerciseVSWorkActivityController {
     public ModelAndView getDrawPrizeTime(){
         ModelAndView modelAndView = new ModelAndView("/activities/2017/sport-play", "responsive", true);
         String loginName=LoginUserInfo.getLoginName();
-        modelAndView.addObject("drawCount", loginName==null?0:exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile()));
+        modelAndView.addObject("drawCount", 0);
         modelAndView.addObject("investAmount",loginName==null?null: AmountConverter.convertCentToString(exerciseVSWorkActivityService.sumInvestByLoginNameExceptTransferAndTime(loginName)));
         modelAndView.addObject("exchangePrize", loginName==null ?null :
                 exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile())==null?null:exerciseVSWorkActivityService.getPrizeByMobile(LoginUserInfo.getMobile()).getPrizeName());
@@ -53,7 +53,7 @@ public class ExerciseVSWorkActivityController {
     @ResponseBody
     @RequestMapping(value = "/draw-time",method = RequestMethod.POST)
     public String getDrawTime(){
-        return String.valueOf(exerciseVSWorkActivityService.drawTimeByLoginNameAndActivityCategory(LoginUserInfo.getMobile()));
+        return "0";
     }
 
 }

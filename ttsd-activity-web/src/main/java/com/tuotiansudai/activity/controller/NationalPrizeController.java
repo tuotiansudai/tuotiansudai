@@ -45,7 +45,7 @@ public class NationalPrizeController {
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
         modelAndView.addObject("investScale", userInvestAmount >= NATIONAL_SUM_AMOUNT ? "100" : numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
         modelAndView.addObject("userCount", param.get("investCount"));
-        modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
+        modelAndView.addObject("drawTime", 0);
         modelAndView.addObject("steps", generateSteps(loginName));
         modelAndView.addObject("activityType","national");
         return modelAndView;
