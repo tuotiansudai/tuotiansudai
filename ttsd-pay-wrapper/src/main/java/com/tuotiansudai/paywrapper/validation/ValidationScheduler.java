@@ -37,6 +37,9 @@ public class ValidationScheduler {
     @Resource(name = "couponRepayDailyValidation")
     private DailyValidation couponRepayDailyValidation;
 
+    @Resource(name = "referrerRewardDailyValidation")
+    private DailyValidation referrerRewardDailyValidation;
+
     private final ValidationReportSender validationReportSender;
 
     @Autowired
@@ -44,7 +47,8 @@ public class ValidationScheduler {
         this.validationReportSender = validationReportSender;
     }
 
-    @Scheduled(cron = "0 30 0 * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 30 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(fixedDelay = 1000 * 10, initialDelay = 1000 * 10, zone = "Asia/Shanghai")
     public void run() {
         try {
             long value = redisWrapperClient.incrEx("daily-validation-lock", 12 * 60 * 60);
@@ -57,7 +61,8 @@ public class ValidationScheduler {
                     redEnvelopDailyValidation,
                     extraRateDailyValidation,
                     investDailyValidation,
-                    couponRepayDailyValidation);
+                    couponRepayDailyValidation,
+                    referrerRewardDailyValidation);
 
             Map<String, Object> context = Maps.newHashMap();
 

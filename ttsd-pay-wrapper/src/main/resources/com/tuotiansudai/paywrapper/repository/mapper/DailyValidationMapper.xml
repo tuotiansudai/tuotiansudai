@@ -9,22 +9,26 @@
         WHERE serv_type = '54'
         AND trans_action = '02'
         AND partic_type = '01'
-        AND mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+--         AND mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d")
     </select>
 
     <select id="findRedEnvelopTransactions" parameterType="map" resultType="java.util.HashMap">
         SELECT order_id, amount, mer_date FROM red_envelop_transfer_request
-        WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+        WHERE mer_date = DATE_FORMAT(current_date, "%Y%m%d")
+--         WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
     </select>
 
     <select id="findCouponRepayTransactions" parameterType="map" resultType="java.util.HashMap">
         SELECT order_id, amount, mer_date FROM coupon_repay_transfer_request
-        WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+        WHERE mer_date = DATE_FORMAT(current_date, "%Y%m%d")
+--         WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
     </select>
 
     <select id="findExtraRateTransactions" parameterType="map" resultType="java.util.HashMap">
         SELECT order_id, amount, mer_date FROM extra_rate_transfer_request
-        WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+--         WHERE mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d")
+        WHERE mer_date = DATE_FORMAT(current_date, "%Y%m%d")
     </select>
 
     <select id="findInvestTransactions" parameterType="map" resultType="java.util.HashMap">
@@ -38,7 +42,8 @@
         WHERE serv_type IN ('01', '02')
         AND trans_action = '01'
         AND partic_type = '01'
-        AND mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d"))
+--         AND mer_date = DATE_FORMAT(subdate(current_date, 1), "%Y%m%d"))
+        AND mer_date = DATE_FORMAT(current_date, "%Y%m%d")
     </select>
 
     <select id="findReferrerRewardTransactions" parameterType="map" resultType="java.util.HashMap">
