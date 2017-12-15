@@ -65,10 +65,9 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Value(value = "point.lock.seconds")
+    @Value("${point.lock.seconds}")
     private int pointLockSeconds;
 
     private static final String POINT_TRANSACTION_KEY = "POINT:HEALTH:REPORT:%s";
@@ -82,6 +81,7 @@ public class PointBillServiceImpl implements PointBillService {
             logger.info(String.format("createPointBill:%s no account", loginName));
             return PointChangingResult.NO_ACCOUNT;
         }
+
         String note = this.generatePointBillNote(businessType, orderId);
         return lockPointByLoginName(loginName, point, orderId, businessType, note);
     }
@@ -97,7 +97,7 @@ public class PointBillServiceImpl implements PointBillService {
     @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
+        if (accountModel == null) {
             logger.info(String.format("createTaskPointBill: %s no account", loginName));
             return;
         }
