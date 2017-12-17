@@ -10,9 +10,12 @@ let $loanDetail = $('#loanDetail'),
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
 })
-
+//点击立即投资进入购买详情页
 $('#toInvest').on('click',function () {
-    location.href="/m/"
+    pushHistory();
+    $loanDetail.hide();
+    $applyTransfer.show();
+    $projectDetail.hide();
 })
 //借款详情
 
@@ -25,10 +28,6 @@ let $projectDetail = $('#projectDetail'),
 menuClick({
     pageDom:$projectDetail
 });
-// let myScroll = new IScroll('#wrapperOut', {
-//     probeType: 2,
-//     mouseWheel: true
-// });
 
 $recordTop.find('span').on('click',function() {
 
@@ -113,16 +112,46 @@ $amountInputElement
     });
 if($('#investForm').length>0){
     globalFun.$('#investForm').onsubmit = function() {
-
+        $.when(commonFun.isUserLogin())
+            .done(function () {
+                alert('已經登錄')
+            })
+            .fail(function () {
+                alert('未登录')
+            })
 
     }
 }
 
 //点击项目详情去项目详情模块
+
 $('#to_project_detail').on('click',function () {
     $loanDetail.hide();
     $applyTransfer.hide();
     $projectDetail.show();
+    pushHistory();
+
+
+})
+$('#apply_materal_btn').click(function () {
+    $('#apply_material').show()
+})
+$('#btn-detail-toggle').click(function () {
+    $('#apply_material').hide();
 })
 
+//监控浏览器返回事件
+window.addEventListener("popstate", function(e) {
+        $loanDetail.show();
+        $applyTransfer.hide();
+        $projectDetail.hide();
+
+}, false);
+function pushHistory() {
+    var state = {
+        title: "title",
+        url: "#"
+    };
+    window.history.pushState(state, "title", "#");
+}
 //转让购买详情

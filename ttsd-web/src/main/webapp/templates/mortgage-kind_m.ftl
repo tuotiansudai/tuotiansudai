@@ -122,53 +122,55 @@
     </div>
 </#if>
 
-    <div class="section">
+    <div class="section wind-control">
         <div class="title">风控审核</div>
         <dl>
         <#if loan.pledgeType == 'ENTERPRISE_CREDIT' || loan.pledgeType == 'ENTERPRISE_PLEDGE' >
-            <dd><span>法人核证</span><span>法人征信</span></dd>
-            <dd><span>股东持股</span><span>验资报告</span></dd>
-            <dd><span>公司对公账单</span><span>银行流水查证</span></dd>
-            <dd><span>账务报表审计</span><span>税务缴纳</span></dd>
+            <dd><span class="span-l">法人核证</span><span class="span-r">法人征信</span></dd>
+            <dd><span class="span-l">股东持股</span><span class="span-r">验资报告</span></dd>
+            <dd><span class="span-l">公司对公账单</span><span class="span-r">银行流水查证</span></dd>
+            <dd><span class="span-l">账务报表审计</span><span class="span-r">税务缴纳</span></dd>
         <#elseif loan.pledgeType == 'ENTERPRISE_FACTORING'>
-            <dd><span>实地认证</span><span>应收账质押合同</span></dd>
-            <dd><span>企业征信报告</span><span>验资报告</span></dd>
-            <dd><span>不动产明细</span><span>企业授信余额</span></dd>
-            <dd><span>银行流水查证</span><span>税务缴纳</span></dd>
+            <dd><span class="span-l">实地认证</span><span class="span-r">应收账质押合同</span></dd>
+            <dd><span class="span-l">企业征信报告</span><span class="span-r">验资报告</span></dd>
+            <dd><span class="span-l">不动产明细</span><span class="span-r">企业授信余额</span></dd>
+            <dd><span class="span-l">银行流水查证</span><span class="span-r">税务缴纳</span></dd>
         <#elseif loan.pledgeType == 'ENTERPRISE_BILL'>
-            <dd><span>实地认证</span><span>商业汇票</span></dd>
-            <dd><span>企业征信报告</span><span>验资报告</span></dd>
-            <dd><span>不动产明细</span><span>企业授信余额</span></dd>
-            <dd><span>银行流水查证</span><span>税务缴纳</span></dd>
+            <dd><span class="span-l">实地认证</span><span class="span-r">商业汇票</span></dd>
+            <dd><span class="span-l">企业征信报告</span><span class="span-r">验资报告</span></dd>
+            <dd><span class="span-l">不动产明细</span><span class="span-r">企业授信余额</span></dd>
+            <dd><span class="span-l">银行流水查证</span><span class="span-r">税务缴纳</span></dd>
         <#else>
-            <dd><span>身份认证</span><span>手机认证</span></dd>
-            <dd><span>婚姻状况认证</span><span>房产认证</span></dd>
-            <dd><span>住址信息认证</span><span>收入证明</span></dd>
+            <dd><span class="span-l">身份认证</span><span class="span-r">手机认证</span></dd>
+            <dd><span class="span-l">婚姻状况认证</span><span class="span-r">房产认证</span></dd>
+            <dd><span class="span-l">住址信息认证</span><span class="span-r">收入证明</span></dd>
         </#if>
         </dl>
     </div>
     <div class="look-apply-material">
-        <a href="#" class="btn-look">查看申请资料</a>
+        <a href="javascript:;" id="apply_materal_btn" class="btn-look">查看申请资料</a>
     </div>
-<#list loan.loanTitles as loanTitleRelation >
-    <#list loan.loanTitleDto as loanTitle>
-        <#if loanTitle.id == loanTitleRelation.titleId>
-        <dl class="material-box">
-            <dt>${loanTitle.title}</dt>
-            <dd>
-            <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                <img src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
+    <div class="apply-material-content" id="apply_material" style="display: none">
+        <#list loan.loanTitles as loanTitleRelation >
+            <#list loan.loanTitleDto as loanTitle>
+                <#if loanTitle.id == loanTitleRelation.titleId>
+                <dl class="material-box">
+                    <dt>${loanTitle.title}</dt>
+                    <dd>
+                    <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
+                        <img src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
+                    </#list>
+                    </dd>
+                </dl>
+                </#if>
             </#list>
-            </dd>
-        </dl>
-        </#if>
-    </#list>
-</#list>
+        </#list>
 
-    <div class="notice-toggle">
-        <p>声明：${loan.declaration!}</p>
+        <div class="notice-toggle">
+            <p>声明：${loan.declaration!}</p>
 
-        <div class="btn-detail-toggle">收起详情</div>
+            <div id="btn-detail-toggle" class="btn-detail-toggle">收起详情</div>
+        </div>
     </div>
 
 </div>

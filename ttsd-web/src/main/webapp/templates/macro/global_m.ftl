@@ -70,7 +70,7 @@
         <i></i>
         <span>首页</span>
     </a>
-    <a class="menu-invest">
+    <a class="menu-invest" href="/m/loan-list">
         <i></i>
         <span>投资</span>
     </a>

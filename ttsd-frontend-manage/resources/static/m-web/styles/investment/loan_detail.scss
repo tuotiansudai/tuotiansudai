@@ -105,7 +105,19 @@
   }
 }
 //項目詳情
-.
+.project-detail {
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  height: 100%;
+  background: #fff;
+}
+.menu-category {
+  margin-bottom: 10px;
+}
+.loan-list-content {
+  background: #fff;
+}
 .account-summary {
   height:200px;
   .collection {
@@ -210,6 +222,19 @@
     display: inline-block;
     text-decoration: underline;
     color: #A2A2A2;
+  }
+}
+.wind-control {
+  dd {
+    span {
+      &.span-l {
+        padding-right: 20px;
+      }
+      &.span-r {
+        padding-left: 20px;
+      }
+
+    }
   }
 }
 //直投项目购买详情
