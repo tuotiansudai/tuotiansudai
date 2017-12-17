@@ -117,6 +117,7 @@ else if(NODE_ENV=='dev') {
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
+        disableHostCheck:true,
 		hot: true,
 		devtool: 'eval',
 		host: '0.0.0.0',

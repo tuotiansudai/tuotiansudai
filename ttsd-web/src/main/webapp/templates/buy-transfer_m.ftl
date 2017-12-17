@@ -7,11 +7,11 @@
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
             <div class="newer-title">
-                <span>ZR20161213-001</span>
+                <span>${transferApplication.name!}</span>
             </div>
             <ul class="benefit-list">
-                <li>预期收益: <span>4010</span>元</li>
-                <li>账户余额: <span>10</span>元  </li>
+                <li>预期收益: <span>${transferApplication.expecedInterest!}</span>元</li>
+                <li>账户余额: <span>${transferApplication.balance!}</span>元  </li>
             </ul>
         </div>
         <div class="bg-square-box"></div>

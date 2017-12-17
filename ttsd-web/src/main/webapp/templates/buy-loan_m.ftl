@@ -6,27 +6,27 @@
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
             <div class="newer-title">
-                <span>房产抵押借款17070</span>
-                <span class="tip-text">剩余可投 : 5,000.00元</span>
+                <span>${loan.name}</span>
+                <span class="tip-text">剩余可投 : <@amount>${loan.amountNeedRaised?string.computer}</@amount>元</span>
             </div>
             <ul class="loan-info clearfix">
                 <li>
                     <span>
-                        <i>3天</i>
+                        <i>${loan.raisingDays}天</i>
                     </span>
                     <em>项目期限</em>
                 </li>
                 <li>
                     <span>
-                        <i>15%</i>
+                        <i>${loan.baseRate}+${loan.activityRate}%</i>
                     </span>
                     <em>预期年化收益</em>
                 </li>
                 <li>
                     <span>
-                        <i>12.30元</i>
+                        <i><@amount>${interestPerTenThousands?string.computer}</@amount>元</i>
                     </span>
-                    <em>万元收益</em>
+                    <em>最大万元收益</em>
                 </li>
             </ul>
         </div>

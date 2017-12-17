@@ -106,6 +106,26 @@
 
     </div>
 </div>
+
+<!-- 承接记录 -->
+<div>
+    <#if (transferApplicationReceiver.status?string) == "true">
+        受让人:${transferApplicationReceiver.transferApplicationReceiver!}
+        转让价格(元):${transferApplicationReceiver.receiveAmount!}
+        交易方式:
+        <#if transferApplicationReceiver.source == "WEB"><i class="fa fa-internet-explorer" aria-hidden="true"></i>
+        <#elseif transferApplicationReceiver.source == "ANDROID"><i class="fa fa-android" aria-hidden="true">
+        <#elseif transferApplicationReceiver.source == "IOS"><i class="fa fa-apple" aria-hidden="true"></i>
+        <#elseif transferApplicationReceiver.source == "AUTO">自动
+        <#else>
+        </#if>
+        预期收益(元):${transferApplicationReceiver.expecedInterest!}
+        项目本金(元):${transferApplicationReceiver.investAmount!}
+        交易时间:${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}
+    <#else >
+        <p class="tc text-b">暂无承接记录</p>
+    </#if>
+</div>
 <#--转让购买详情-->
     <#include 'buy-transfer_m.ftl'>
 </@global.main>

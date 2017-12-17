@@ -19,16 +19,16 @@
                 <div class="record-top">
                     <span data-kind="xianfeng">
                         <i></i>
-                        <b>拓天先锋  <em>138****5498</em></b>
+                        <b>拓荒先锋  <em>${(loan.achievement.firstInvestAchievementMobile)!"虚以待位"}</em></b>
 
                     </span>
                     <span data-kind="biaowang">
                         <i></i>
-                        <b>拓天标王  <em>虚以待位</em></b>
+                        <b>拓天标王  <em>${(loan.achievement.maxAmountAchievementMobile)!"虚以待位"}</em></b>
                     </span>
                     <span data-kind="dingying">
                          <i></i>
-                        <b>一锤定音  <em>虚以待位</em></b>
+                        <b>一锤定音  <em>${(loan.achievement.lastInvestAchievementMobile)!"虚以待位"}</em></b>
                     </span>
                 </div>
 
