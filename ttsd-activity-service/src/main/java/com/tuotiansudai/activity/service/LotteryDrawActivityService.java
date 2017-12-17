@@ -22,9 +22,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.PointChangingResult;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
@@ -285,23 +283,16 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
 
-        if (accountModel.getPoint() < activityCategory.getConsumeCategory().getPoint()) {
+        if (accountModel.getPoint() + pointBillService.getFrozenPointByLoginName(userModel.getLoginName()) < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
 
-        PointChangingResult pointChangingResult = pointBillService.createPointBill(userModel.getLoginName(), null, activityCategory.equals(ActivityCategory.POINT_SHOP_DRAW_1000) ? PointBusinessType.POINT_LOTTERY : PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
-
-        if (pointChangingResult == PointChangingResult.CHANGING_FREQUENTLY) {
-            return new DrawLotteryResultDto(5);
-        } else if (pointChangingResult == PointChangingResult.CHANGING_FAIL) {
-            return new DrawLotteryResultDto(6);
-        }
+        grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
 
         try {
-            grantPrize(mobile, userModel.getLoginName(), lotteryPrize);
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));

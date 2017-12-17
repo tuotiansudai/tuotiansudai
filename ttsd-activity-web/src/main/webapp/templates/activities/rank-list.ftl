@@ -387,26 +387,6 @@
                 <a href="/login?redirect=/activity/rank-list" class="go-on">去登录</a>
             </div>
         </div>
-        <div class="tip-dom td-tip-thank" id="frequentOperation">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p>您的操作太频繁，请稍后再试！</p>
-                <p>投资赚取更多财豆再来抽奖吧！</p>
-            </div>
-            <div class="btn-list">
-                <a href="/point" class="go-on">去赚财豆</a>
-            </div>
-        </div>
-        <div class="tip-dom td-tip-thank" id="pointChangingFai">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p>抽奖失败，请稍后再试！</p>
-                <p>投资赚取更多财豆再来抽奖吧！</p>
-            </div>
-            <div class="btn-list">
-                <a href="/point" class="go-on">去赚财豆</a>
-            </div>
-        </div>
         <div class="tip-dom td-tip-thank" id="NoCdbean">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
@@ -838,26 +818,6 @@
             <div class="text-tip">
                 <p>您的财豆不足，</p>
                 <p>投资赚取更多财豆再来抽奖吧！</p>
-            </div>
-        </div>
-        <div class="tip-dom td-tip-thank" id="frequentOperationPhone">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p>您的操作太频繁，请稍后再试！</p>
-                <p>投资赚取更多财豆再来抽奖吧！</p>
-            </div>
-            <div class="btn-list">
-                <a href="/point" class="go-on">去赚财豆</a>
-            </div>
-        </div>
-        <div class="tip-dom td-tip-thank" id="pointChangingFailPhone">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p>抽奖失败，请稍后再试！</p>
-                <p>投资赚取更多财豆再来抽奖吧！</p>
-            </div>
-            <div class="btn-list">
-                <a href="/point" class="go-on">去赚财豆</a>
             </div>
         </div>
         <div class="tip-dom td-tip-thank" id="oneDayPhone">

@@ -5,7 +5,6 @@ import com.tuotiansudai.point.repository.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.PointChangingResult;
 import com.tuotiansudai.point.repository.model.PointPrizeModel;
 import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
@@ -41,10 +40,6 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     private final static String ALREADY_LOTTERY_SHARE = "AlreadyLotteryShare";
 
     private final static String POINT_NOT_ENOUGH = "PointNotEnough";
-
-    private final static String POINT_CHANGING_FREQUENTLY = "PointChangingFrequently";
-
-    private final static String POINT_CHANGING_FAIL = "PointChangingFail";
 
     private final static String LAST_EXPIRY_TIME = " 23:59:59";
 
@@ -99,24 +94,19 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     @Override
     @Transactional
     public String pointLottery(String loginName) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel.getPoint() < -LOTTERY_POINT) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if (accountModel.getPoint() + pointBillService.getFrozenPointByLoginName(loginName) < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
         }
-
         DateTime dateTime = new DateTime();
         List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
         if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
                 (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd"))) && userPointPrizeModelToday.size() < 2)) {
             PointPrizeModel winPointPrize = this.winLottery();
-            PointChangingResult pointChangingResult = pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
-            if (pointChangingResult == PointChangingResult.CHANGING_FAIL) {
-                return POINT_CHANGING_FAIL;
-            } else if (pointChangingResult == PointChangingResult.CHANGING_FREQUENTLY) {
-                return POINT_CHANGING_FREQUENTLY;
-            }
             UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
             userPointPrizeMapper.create(userPointPrizeModel);
+
+            pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
 
             if (winPointPrize.getCouponId() != null) {
                 couponAssignmentService.assignUserCoupon(loginName, winPointPrize.getCouponId());

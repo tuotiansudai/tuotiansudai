@@ -38,9 +38,4 @@ public class DateConvertUtil {
         return DateConvertUtil.localDateToDate(dateTime);
     }
 
-    public static Date convertStringToDate(String str, String pattern) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
 }

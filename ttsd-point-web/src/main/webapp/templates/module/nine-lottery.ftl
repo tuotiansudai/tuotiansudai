@@ -128,18 +128,4 @@
         <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
     </div>
 
-    <div class="tip-list" id="frequentOperation">
-        <div class="close-btn go-close"></div>
-        <div class="text-tip">
-            <p class="login-text">您的操作太频繁，请稍后再试！</p>
-        </div>
-        <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-    </div>
-    <div class="tip-list" id="pointChangingFail">
-        <div class="close-btn go-close"></div>
-        <div class="text-tip">
-            <p class="login-text">抽奖失败，请稍后再试！</p>
-        </div>
-        <div class="btn-list"><a href="javascript:void(0)" class="go-close">知道了</a></div>
-    </div>
 </div>

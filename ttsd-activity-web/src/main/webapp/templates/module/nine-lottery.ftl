@@ -79,10 +79,6 @@
 			{{else if returnCode == 3}}
                 <p class="no-time">活动已过期～</p>
                 <p class="info-text">更多活动即将登场！</p>
-            {{else if returnCode == 5}}
-                <p class="no-time">您的操作太频繁，请稍后再试！</p>
-			{{else if returnCode == 6}}
-                <p class="no-time">抽奖失败，请稍后再试！</p>
 			{{/if}}
 
 

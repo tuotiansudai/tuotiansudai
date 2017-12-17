@@ -10,7 +10,6 @@ import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.PointChangingResult;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
@@ -21,11 +20,13 @@ import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateUtil;
+import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,30 +63,30 @@ public class PointBillServiceImpl implements PointBillService {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Value("${point.lock.seconds}")
-    private int pointLockSeconds;
-
-    private static final String POINT_TRANSACTION_KEY = "POINT:HEALTH:REPORT:%s";
+    private static final String FROZEN_POINT_KEY = "FROZEN:POINT:%s";
 
 
     @Override
     @Transactional
-    public PointChangingResult createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
+    public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             logger.info(String.format("createPointBill:%s no account", loginName));
-            return PointChangingResult.NO_ACCOUNT;
+            return;
         }
 
         String note = this.generatePointBillNote(businessType, orderId);
-        return lockPointByLoginName(loginName, point, orderId, businessType, note);
+        lockPointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
     @Transactional
-    public PointChangingResult createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
+    public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        return accountModel == null ? PointChangingResult.NO_ACCOUNT : lockPointByLoginName(loginName, point, orderId, businessType, note);
+        if (accountModel == null) {
+            return;
+        }
+        lockPointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
@@ -100,29 +101,13 @@ public class PointBillServiceImpl implements PointBillService {
         mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
 
-    private PointChangingResult lockPointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
-        PointChangingResult pointChangingResult = pointChanging(loginName, point);
-        if (pointChangingResult.is_success()) {
-            pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-            redisWrapperClient.setnx(String.format(POINT_TRANSACTION_KEY, loginName), new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-            mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
-        }
-        return pointChangingResult;
-    }
-
-    @Override
-    public PointChangingResult pointChanging(String loginName, long point) {
+    private void lockPointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
+        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
         if (point < 0) {
-            String lockDate = redisWrapperClient.get(String.format(POINT_TRANSACTION_KEY, loginName));
-            if (lockDate != null && new DateTime(DateConvertUtil.convertStringToDate(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isAfterNow()) {
-                return PointChangingResult.CHANGING_FREQUENTLY;
-            }
-            if (lockDate != null && new DateTime(DateConvertUtil.convertStringToDate(lockDate, "yyyy-MM-dd HH:mm:ss")).plusSeconds(pointLockSeconds).isBeforeNow()) {
-                return PointChangingResult.CHANGING_FAIL;
-            }
-
+            logger.info(String.format("loginName:%s, pointBusinessType:%s, point:%s,note:%s", loginName, businessType, String.valueOf(point), note));
+            redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), point);
         }
-        return PointChangingResult.CHANGING_SUCCESS;
+        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
 
 
@@ -200,6 +185,11 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     public int findUsersAccountPointCount(String loginName, String userName, String mobile) {
         return accountMapper.findUsersAccountPointCount(loginName, userName, mobile);
+    }
+
+    @Override
+    public Long getFrozenPointByLoginName(String loginName) {
+        return redisWrapperClient.get(String.format(FROZEN_POINT_KEY, loginName)) != null ? Long.parseLong(redisWrapperClient.get(String.format(FROZEN_POINT_KEY, loginName))) : 0L;
     }
 
     private String generatePointBillNote(PointBusinessType businessType, Long orderId) {

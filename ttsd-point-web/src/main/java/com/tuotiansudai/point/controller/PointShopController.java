@@ -56,8 +56,6 @@ public class PointShopController {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
-    private static final String PRIZE_CONFIG_FILE = "pointLotteryImages.json";
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView pointSystemHome() {
         ModelAndView modelAndView = new ModelAndView("point-index");
@@ -75,7 +73,7 @@ public class PointShopController {
         boolean isLogin = userService.loginNameIsExist(loginName);
         boolean isShowDiscount = membershipModel == null ? false : membershipModel.getLevel() > 1 ? true : false;
         if (isLogin) {
-            modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName));
+            modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName) + pointBillService.getFrozenPointByLoginName(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
             modelAndView.addObject("discountShow", productService.discountShowInfo(loginName));
         }

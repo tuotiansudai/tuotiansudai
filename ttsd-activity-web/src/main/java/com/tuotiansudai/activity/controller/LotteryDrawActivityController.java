@@ -46,7 +46,11 @@ public class LotteryDrawActivityController {
     @ResponseBody
     @RequestMapping(value = "/draw", method = RequestMethod.POST)
     public DrawLotteryResultDto travelDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "POINT_DRAW_1000", required = false) ActivityCategory activityCategory) {
-        return lotteryDrawActivityService.drawPrizeByPoint(LoginUserInfo.getMobile(), activityCategory, activityCategory.equals(ActivityCategory.POINT_SHOP_DRAW_1000) ? true : false);
+        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByPoint(LoginUserInfo.getMobile(), activityCategory, activityCategory.equals(ActivityCategory.POINT_SHOP_DRAW_1000) ? true : false);
+        if (drawLotteryResultDto.isDrawLotterySuccess()) {
+            pointBillService.createPointBill(LoginUserInfo.getLoginName(), null, activityCategory.equals(ActivityCategory.POINT_SHOP_DRAW_1000) ? PointBusinessType.POINT_LOTTERY : PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", drawLotteryResultDto.getPrizeValue()));
+        }
+        return drawLotteryResultDto;
     }
 
     @ResponseBody
