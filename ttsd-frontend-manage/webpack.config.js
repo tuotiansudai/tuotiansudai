@@ -117,7 +117,7 @@ else if(NODE_ENV=='dev') {
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
-        disableHostCheck:true,
+		disableHostCheck:true,
 		hot: true,
 		devtool: 'eval',
 		host: '0.0.0.0',
@@ -128,9 +128,9 @@ else if(NODE_ENV=='dev') {
 			chunks: false,
 			colors: true
 		},
-        headers: {
-            'Access-Control-Allow-Origin': '*'
-        }
+		headers: {
+			'Access-Control-Allow-Origin': '*'
+		}
 	};
 }
 
