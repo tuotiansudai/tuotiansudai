@@ -139,6 +139,7 @@ $('#apply_materal_btn').click(function () {
 $('#btn-detail-toggle').click(function () {
     $('#apply_material').hide();
 })
+//交易记录ajax请求
 
 //监控浏览器返回事件
 window.addEventListener("popstate", function(e) {
@@ -183,6 +184,5 @@ $('#to_buy_transfer').click(function () {
 );
 //优惠券
 $('#select_coupon').on('click',function () {
-    let $this = $(this);
-    location.href = $this.data('url');
+
 })

@@ -1,11 +1,7 @@
-<#--<#import "macro/global_m.ftl" as global>-->
-
-<#--<@global.main pageCss="${m_css.project_detail}" pageJavascript="${m_js.project_detail}" title="项目详情">-->
-
-<div class="project-detail" id="projectDetail" style="display: none">
+<div class="project-detail" id="projectDetail" data-url="/loan/${loan.id?string.computer}/invests" style="display: none">
     <div class="menu-category">
-        <span class="current"><a href="#">项目材料</a></span>
-        <span><a href="#">交易记录</a></span>
+        <span class="current"><a>项目材料</a></span>
+        <span><a>交易记录</a></span>
     </div>
 
     <div id="wrapperOut" class="loan-list-frame2">
@@ -33,7 +29,7 @@
                 </div>
 
                 <div class="record-note">称号奖励将于标满放款后发放</div>
-
+            <div>
                 <div class="box-item">
                     <dl>
                         <dt><a href="#">138****5498</a> </dt>
@@ -41,7 +37,6 @@
                     </dl>
                     <em class="amount">2,000.00元</em>
                 </div>
-
                 <div class="box-item">
                     <dl>
                         <dt><a href="#">138****5498</a> </dt>
@@ -49,70 +44,7 @@
                     </dl>
                     <em class="amount">2,000.00元</em>
                 </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
+            </div>
 
             </div>
         </div>
@@ -123,5 +55,3 @@
 
 </div>
 
-
-<#--</@global.main>-->
