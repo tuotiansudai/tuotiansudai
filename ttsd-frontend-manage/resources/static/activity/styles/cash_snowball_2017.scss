@@ -16,7 +16,7 @@ strong,em {
 * {
   -webkit-tap-highlight-color:transparent;
 }
-.page-width {
+#cash_snowball .page-width {
   width: 1200px;
 }
 .my-page {
@@ -39,7 +39,7 @@ strong,em {
 .snow-banner {
   width: 100%;
   height: 348px;
-  background: url("../images/2017/cash-snowball/pc_banner.png") no-repeat center center;
+  background: url("../images/2017/cash-snowball/pc_banner.jpg") no-repeat center center;
 }
 .cash_container {
   background: #fff7d1;
@@ -110,16 +110,7 @@ strong,em {
       color: #ffe16a;
       opacity: 0.6;
       z-index: 100;
-      em {
-        position: absolute;
-        top: 36px;
-        left: 8px;
-        font-weight: bold;
-        .font {
-          font-size: 14px;
-          font-weight: normal;
-        }
-      }
+      line-height: 103px;
       &.red-ware-top {
        top: 0px;
         &.red-ware-1 {
@@ -135,10 +126,8 @@ strong,em {
 
       &.red-ware-bottom {
         bottom: 0px;
+        line-height: 125px;
         background: url("../images/2017/cash-snowball/red_ware_reverse.png") no-repeat center center;
-        em {
-          top: 48px;
-        }
         &.red-ware-2 {
           left: 203px;
         }
@@ -154,6 +143,7 @@ strong,em {
       position: absolute;
       top: 29px;
       background: url("../images/2017/cash-snowball/tree.png") no-repeat center center;
+      background-size: 100%;
       &.christmas-tree-1 {
         left: 275px;
       }
@@ -282,14 +272,13 @@ strong,em {
   .record-list {
     max-height: 230px;
     overflow: hidden;
+    .no-record {
+      font-size: 16px;
+      color: #525252;
+      text-align: center;
+      padding-top: 40px;
+    }
     ul {
-      .no-record {
-        font-size: 16px;
-        color: #525252;
-        text-align: center;
-        padding-top: 40px;
-      }
-
       >li {
         height: 45px;
         line-height: 45px;
@@ -336,11 +325,10 @@ strong,em {
     height: 150px;
     margin: 0 auto;
     margin-top: 54px;
-    margin-bottom: 60px;
     background: url("../images/2017/cash-snowball/title_mid.png") no-repeat center center;
   }
   >h4 {
-    margin-top: 50px;
+    margin-top: 35px;
     margin-bottom: 60px;
     font-size: 24px;
     color: #333;
@@ -363,6 +351,15 @@ strong,em {
     height: 529px;
     margin: 0 auto;
     background: url("../images/2017/cash-snowball/pc_graph.png") no-repeat center center;
+  }
+  .cash-font {
+    font-size: 24px;
+    margin-top: 40px;
+    strong {
+      font-size: 32px;
+      font-weight: bold;
+      color: #ed4119;
+    }
   }
   .invest-btn-2 {
     display: inline-block;
@@ -406,7 +403,7 @@ strong,em {
           border-collapse: collapse;
           border: 1px solid #b4b09a;
           border-width: 1px 0 0 1px;
-
+          margin-left: 20px;
           td {
             border:1px solid #b4b09a;
             border-width:0 1px 1px 0;
@@ -420,7 +417,7 @@ strong,em {
 }
 
 @media screen and (max-width:1200px) {
-  .page-width {
+  #cash_snowball .page-width {
     width: 96%;
   }
   .kindly-tips {
@@ -517,29 +514,7 @@ strong,em {
         font-size: 0.26rem;
         position: absolute;
         top: 0px;
-        em {
-          top: 0.5rem;
-          left: 0.11rem;
-          &.lessDis{
-            left: 0;
-          }
-          i{
-            font-size: 0.26rem;
-            &.smallFont {
-              font-size: 0.18rem;
-            }
-          }
-          @media screen and (max-width:414px) {
-            left: 0.05rem;
-            &.smallFont {
-              font-size: 12px;
-            }
-          }
-          .font {
-            font-size: 0.14rem;
-          }
-        }
-
+        line-height: 1.35rem;
         &.red-ware-1 {
           left: 0.02rem;
         }
@@ -645,7 +620,7 @@ strong,em {
     padding: 0.4rem 0.8rem;
     position: relative;
     @media screen and (max-width:414px) {
-      padding-right: 0rem;
+      padding-right: 0.0rem;
       @media screen and (max-width:375px) {
       padding-left: 0.3rem;
       @media screen and (max-width:320px) {
@@ -675,11 +650,11 @@ strong,em {
     }
     .record-list {
       max-height: 2.8rem;
+      .no-record {
+        font-size: 0.2rem;
+        padding-top: 0.2rem;
+      }
       ul {
-        .no-record {
-          font-size: 0.2rem;
-          padding-top: 0.2rem;
-        }
         >li {
           height: 0.6rem;
           line-height: 0.6rem;
@@ -761,6 +736,13 @@ strong,em {
       background: url("../images/2017/cash-snowball/wap_graph.png") no-repeat center center;
       background-size: 100%;
     }
+    .cash-font {
+      font-size: 0.3rem;
+      margin-top: 0.4rem;
+      strong {
+        font-size: 0.3rem;
+      }
+    }
     .invest-btn-2 {
       width: 3.06rem;
       height: 0.82rem;
@@ -780,7 +762,7 @@ strong,em {
   .kindly-tips {
     margin-bottom: 0.35rem;
     margin-top: 0.5rem;
-    padding-left: 0;
+    padding-left: 0.1rem;
     dl {
       dt {
         font-size: 0.26rem;
@@ -794,8 +776,13 @@ strong,em {
             margin-bottom: 0.2rem;
             width: 5.86rem;
             height: 1.15rem;
+            font-size: 10px;
+            margin-left: 0.1rem;
+            td {
+              padding-right: 0.05rem;
+            }
             @media screen and (max-width:414px) {
-              width: 7rem;
+              width: 6.6rem;
               @media screen and (max-width:320px) {
                 font-size: 12px;
               }

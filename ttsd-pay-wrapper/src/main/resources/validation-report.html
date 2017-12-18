@@ -221,6 +221,46 @@
 </table>
 {{/extraRate}}
 
+{{#referrerReward}}
+<h3>{{title}}, 共计发生交易{{count}}笔</h3>
+<table>
+    <thead>联动优势交易查询统计</thead>
+    <tbody>
+    <tr>
+        <th>联动优势查询状态码</th>
+        <th>总计订单数</th>
+    </tr>
+    {{#summary}}
+    <tr>
+        <td>{{code}}</td>
+        <td>{{count}}</td>
+    </tr>
+    {{/summary}}
+    </tbody>
+</table>
+
+<table>
+    <thead>异常订单</thead>
+    <tbody>
+    <tr>
+        <th>联动优势订单</th>
+        <th>异常原因</th>
+    </tr>
+    {{#issueOrders}}
+    <tr>
+        <td>{{orderId}}</td>
+        <td>{{issue}}</td>
+    </tr>
+    {{/issueOrders}}
+    {{^issueOrders}}
+    <tr>
+        <td colspan="2">无异常</td>
+    </tr>
+    {{/issueOrders}}
+    </tbody>
+</table>
+{{/referrerReward}}
+
 
 </body>
 </html>

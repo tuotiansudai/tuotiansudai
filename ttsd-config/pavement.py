@@ -34,7 +34,7 @@ def flush_etcd(options):
             key_value = line.split("=")
             properties_key = key_value[0].strip()
             properties_value = '='.join(key_value[1:]).strip()
-            etcd_value, _ = etcd.get(properties_key)
+            etcd_value, _ = etcd.get('/dev/{}'.format(properties_key))
             if properties_value != etcd_value:
                 print '{}={}'.format(properties_key, properties_value)
                 etcd.put('/dev/{}'.format(properties_key), properties_value)

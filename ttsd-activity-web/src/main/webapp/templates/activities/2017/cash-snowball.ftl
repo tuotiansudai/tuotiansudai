@@ -24,27 +24,27 @@
                   </@global.isNotAnonymous>
                       <div class="run-way" id="ware_DOM">
                           <span class="red-ware red-ware-top red-ware-1">
-                              <em><i class="money">100</i><i class="font">元</i></em>
+                             100
                               </span>
                           <span class="red-ware red-ware-bottom red-ware-2">
-                              <em><i class="money">200</i><i class="font">元</i></em>
+                             200
                               </span>
                           <span class="red-ware red-ware-top red-ware-3">
-                              <em><i class="money">300</i><i class="font">元</i></em>
+                             300
                               </span>
                           <span class="red-ware red-ware-bottom red-ware-4">
-                              <em><i class="money">400</i><i class="font">元</i></em>
+                            400
                               </span>
                           <span class="red-ware red-ware-top red-ware-5">
-                              <em><i class="money">500</i><i class="font">元</i></em>
+                             500
                               </span>
                           <span class="christmas-tree christmas-tree-1"></span>
                           <span class="christmas-tree christmas-tree-2"></span>
                           <span class="christmas-man"></span>
                           <div class="way">
-                            <#--<@global.isNotAnonymous>-->
+                            <@global.isNotAnonymous>
                               <span id="money_tip" class="money-tip"><em>${cashAmount!}</em>元返现</span>
-                            <#--</@global.isNotAnonymous>-->
+                            </@global.isNotAnonymous>
                               <div class="progress" id="progress">
                                   <span class="circle circle-1"></span>
                                   <span class="thread thread-1"></span>
@@ -60,13 +60,13 @@
                       </div>
                   <div class="run-way mobile-run-way" id="mobile_ware_DOM">
                           <span class="red-ware red-ware-1">
-                              <em><i class="money">100</i><i class="font">元</i></em>
+                             100
                               </span>
                       <span class="red-ware red-ware-2">
-                              <em><i class="money">200</i><i class="font">元</i></em>
+                             200
                               </span>
                       <span class="red-ware red-ware-3">
-                              <em><i class="money">300</i><i class="font">元</i></em>
+                              300
                               </span>
 
                       <span class="christmas-tree christmas-tree-1"></span>
@@ -94,7 +94,7 @@
 
                   <@global.isNotAnonymous>
                       <div class="already-obtained">
-                          <#if cashAmount == "0.00">
+                          <#if cashAmount == "0">
                               <div class="already-obtained">
                                   您还没有现金奖励，快去投资吧！
                               </div>
@@ -113,15 +113,18 @@
               <div class="investment-records">
                   <h2><span>投资记录</span></h2>
                   <div class="record-list">
-                      <ul id="record_list">
-                          <#if record?has_content>
+
+                      <#if record?has_content>
+                          <ul id="record_list">
                               <#list record as cashSnowballActivityModel>
                                   <li><em>${(cashSnowballActivityModel.updatedTime?string('yyyy-MM-dd HH:mm:ss'))!}</em><span class="congratulations">恭喜</span>${cashSnowballActivityModel.mobile}<span class="congratulations">用户</span><span class="mobile-style">累计年化投资${(cashSnowballActivityModel.annualizedAmount/100)?string('0.00')}元 <i>，</i></span>获得${(cashSnowballActivityModel.cashAmount/100)?string('0')}元现金<span class="congratulations">奖励</span></li>
                               </#list>
-                          <#else>
+                          </ul>
+                      <#else>
                               <div class="no-record">目前还没有人获得现金奖励，快去投资吧！</div>
-                          </#if>
-                      </ul>
+                      </#if>
+                      <div class="no-record">您还没有人获得现金奖励，快去投资吧！</div>
+
                   </div>
 
               </div>
@@ -130,7 +133,7 @@
                       <dt>注：</dt>
                       <dd>1、本活动现金奖励将于项目放款当日内发放到个人账户，用户可直接提现或者用于投资；</dd>
 
-                      <dd class="two">2、在同一项目中如出现不满1万元的年化投资额，均可与其他”逢万返百“项目投资额进行累计。</dd>
+                      <dd class="two">2、在同一项目中如出现不满1万元的年化投资额，均可与其他“逢万返百”项目投资额进行累计。</dd>
                   </dl>
               </div>
               <div class="cash-superposition">
@@ -142,6 +145,7 @@
                   <div class="invest-bar-graph">
 
                   </div>
+                  <p class="cash-font">恭喜您获取<strong>100</strong>元的叠加现金奖励</p>
                   <span class="invest-btn-2 invest-btn to-invest">去投资</span>
                   <p class="comment">本活动现金奖励将于活动结束后3个工作日内统一发放至个人账户，用户可直接提现或者用于投资</p>
 
