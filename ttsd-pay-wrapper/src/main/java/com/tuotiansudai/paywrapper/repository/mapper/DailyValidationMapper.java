@@ -17,4 +17,6 @@ public interface DailyValidationMapper {
     List<Map<String, String>> findExtraRateTransactions();
 
     List<Map<String, String>> findInvestTransactions();
+
+    List<Map<String, String>> findReferrerRewardTransactions();
 }

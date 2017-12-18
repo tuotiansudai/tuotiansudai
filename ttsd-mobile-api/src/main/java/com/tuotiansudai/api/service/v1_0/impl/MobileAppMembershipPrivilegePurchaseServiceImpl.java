@@ -21,12 +21,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class MobileAppMembershipPrivilegePurchaseServiceImpl implements MobileAppMembershipPrivilegePurchaseService{
+public class MobileAppMembershipPrivilegePurchaseServiceImpl implements MobileAppMembershipPrivilegePurchaseService {
 
     static Logger logger = Logger.getLogger(MobileAppMembershipPrivilegePurchaseServiceImpl.class);
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
     @Override
     public MembershipPrivilegePriceResponseDto obtainMembershipPrivilegePrices() {
         List<MembershipPrivilegePriceResponseDataDto> membershipPrivilegePriceResponseDataDtos = Arrays.stream(MembershipPrivilegePriceType.values())
@@ -42,8 +43,8 @@ public class MobileAppMembershipPrivilegePurchaseServiceImpl implements MobileAp
 
         try {
             MembershipPrivilegePriceType membershipPrivilegePriceType = MembershipPrivilegePriceType.getPriceTypeByDuration(requestDto.getDuration());
-            if(membershipPrivilegePriceType == null){
-                logger.info(String.format("[membership privilege purchase] duration%s is invalid",String.valueOf(requestDto.getDuration())));
+            if (membershipPrivilegePriceType == null) {
+                logger.info(String.format("[membership privilege purchase] duration%s is invalid", String.valueOf(requestDto.getDuration())));
                 return response;
             }
             BaseDto<PayFormDataDto> formData = membershipPrivilegePurchaseService.purchase(requestDto.getBaseParam().getUserId(), membershipPrivilegePriceType, Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase()));
@@ -55,10 +56,10 @@ public class MobileAppMembershipPrivilegePurchaseServiceImpl implements MobileAp
                 response.setData(dataDto);
             }
         } catch (MembershipPrivilegeIsPurchasedException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.warn(e.getLocalizedMessage(), e);
             response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PRIVILEGE_IS_PURCHASED);
         } catch (NotEnoughAmountException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.warn(e.getLocalizedMessage(), e);
             response = new BaseResponseDto<>(ReturnMessage.MEMBERSHIP_PRIVILEGE_PURCHASE_NO_ENOUGH_AMOUNT);
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
