@@ -1,11 +1,12 @@
-require('mWebStyle/investment/experience_detail.scss');
+require('mWebStyle/investment/experience_loan.scss');
 require('mWebStyle/investment/loan_detail.scss');
 require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
 //require('mWebJsModule/anxin_agreement_pop');
 require('webJs/plugins/autoNumeric');
 let $loanDetail = $('#loanDetail'),
-    $iconHelp = $('.icon-help',$loanDetail);
+    $iconHelp = $('.icon-help', $loanDetail);
+
 
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
@@ -167,5 +168,6 @@ $('#to_buy_transfer').click(function () {
 );
 //优惠券
 $('#select_coupon').on('click',function () {
+
 
 })

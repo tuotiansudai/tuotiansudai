@@ -385,7 +385,7 @@ class TestUserQuery(TestCase):
         db.session.commit()
 
     def test_query_by_email(self):
-        ret_get = self.app.get('/users?email=u0002@user.test')
+        ret_get = self.app.get('/users?&page_size=10&email=u0002@user.test')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
         self.assertTrue(data['result'])
@@ -394,7 +394,7 @@ class TestUserQuery(TestCase):
         self.assertEqual('u0002@user.test', data['items'][0]['email'])
 
     def test_query_by_identity_number(self):
-        ret_get = self.app.get('/users?identity_number=110110199010100011')
+        ret_get = self.app.get('/users?page_size=10&identity_number=110110199010100011')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
         self.assertTrue(data['result'])
@@ -403,23 +403,25 @@ class TestUserQuery(TestCase):
         self.assertEqual('u0011@user.test', data['items'][0]['email'])
 
     def test_query_by_role_mobile__like_and_sort(self):
-        ret_get = self.app.get('/users?role=USER&mobile__like=17799&sort=-register_time')
+        ret_get = self.app.get('/users?page_size=10&role=USER&mobile__like=17799&sort=-register_time')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
         self.assertTrue(data['result'])
-        self.assertEqual(16, len(data['items']))
+        self.assertEqual(10, len(data['items']))
+        self.assertEqual(16, data['total_count'])
         self.assertEqual('17799000016', data['items'][0]['mobile'])
         self.assertEqual('u0016@user.test', data['items'][0]['email'])
-        self.assertEqual('17799000002', data['items'][14]['mobile'])
-        self.assertEqual('u0002@user.test', data['items'][14]['email'])
+        self.assertEqual('17799000007', data['items'][9]['mobile'])
+        self.assertEqual('u0007@user.test', data['items'][9]['email'])
 
     def test_query_by_status_register_time_with_given_fields(self):
         ret_get = self.app.get(
-            '/users?status=ACTIVE&register_time__gte=2017-1-1 1:1:0&register_time__lte=2017-1-1 1:1:59&fields=login_name,mobile')
+            '/users?page_size=10&status=ACTIVE&register_time__gte=2017-1-1 1:1:0&register_time__lte=2017-1-1 1:1:59&fields=login_name,mobile')
         data = json.loads(ret_get.data)
         self.assertEqual(200, ret_get.status_code)
         self.assertTrue(data['result'])
-        self.assertEqual(13, len(data['items']))
+        self.assertEqual(10, len(data['items']))
+        self.assertEqual(13, data['total_count'])
         self.assertTrue('login_name' in data['items'][0])
         self.assertTrue('mobile' in data['items'][0])
         self.assertFalse('email' in data['items'][0])

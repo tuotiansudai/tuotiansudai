@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -30,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -95,11 +95,12 @@ public class LotteryDrawActivityServiceTest {
         UserModel referrerUserModel2 = new UserModel();
         referrerUserModel2.setRegisterTime(DateTime.now().toDate());
         List<UserRegisterInfo> userModels = Lists.newArrayList(referrerUserModel1, referrerUserModel2);
+        BasePaginationDataDto<UserRegisterInfo> pagingUserModels = new BasePaginationDataDto<>(1, 10, 2, userModels);
         AccountModel accountModel = new AccountModel("test", "1", "1", DateTime.now().toDate());
 
         ReflectionTestUtils.setField(lotteryDrawActivityService, "annualTime", Lists.newArrayList(DateTime.now().plusDays(-1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))));
         when(userMapper.findByMobile(anyString())).thenReturn(userModel);
-        when(userMapper.findUsersByRegisterTimeOrReferrer(any(Date.class), any(Date.class), anyString())).thenReturn(userModels);
+        when(userMapper.findUsersByRegisterTimeAndReferrer(any(Date.class), any(Date.class), anyString(), anyInt(), anyInt())).thenReturn(pagingUserModels);
         when(pointBillMapper.findCountPointBillPagination(anyString(), anyString(), any(Date.class), any(Date.class), anyList())).thenReturn(1l);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(investMapper.countInvestorSuccessInvestByInvestTime(anyString(), any(Date.class), any(Date.class))).thenReturn(1l);

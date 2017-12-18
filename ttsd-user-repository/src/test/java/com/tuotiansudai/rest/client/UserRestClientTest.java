@@ -14,7 +14,6 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -93,7 +91,7 @@ public class UserRestClientTest {
         UserRestPagingResponse mockResp = buildMockUserRestUserInfoPagingResponse("13800000000", "test", Source.WEB, "test@test.com");
         this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 200));
 
-        UserRestQueryDto queryDto = new UserRestQueryDto(1);
+        UserRestQueryDto queryDto = new UserRestQueryDto();
         queryDto.setFields("login_name", "register_time");
         UserRestPagingResponse<UserInfo> searchResult = userRestClient.search(queryDto);
         List<UserInfo> userModelList = searchResult.getItems();
