@@ -112,7 +112,17 @@ $.when(commonFun.isUserLogin())
                 }
             })
         }
+        //5个红包的值
+        wareArr.forEach((item,index)=>{
+            if(item >= 1000){
+                //红包大于等于1000调整样式
+                $ware_DOM.find('.red-ware').eq(index).css({
+                    fontSize:'0.2rem'
+                })
 
+            }
+            $ware_DOM.find('.red-ware').eq(index).text(item);
+        })
 
 //wap端点亮红包
         let mobileWareArr = [];
@@ -158,6 +168,7 @@ $.when(commonFun.isUserLogin())
                 }
 
             })
+
             //wap红包提示位置
             $mobileMoney_tip.css({
                 left:'2.5rem'
@@ -179,7 +190,16 @@ $.when(commonFun.isUserLogin())
                 }
             })
         }
-
+        //3个红包的值
+        mobileWareArr.forEach((item,index)=>{
+            if(item >= 1000){
+                //红包大于等于1000调整样式
+                $mobileWareDOM.find('.red-ware').eq(index).css({
+                    fontSize:'0.2rem'
+                })
+            }
+            $mobileWareDOM.find('.red-ware .money').eq(index).text(item);
+        })
 
     })
 

@@ -42,9 +42,9 @@
                           <span class="christmas-tree christmas-tree-2"></span>
                           <span class="christmas-man"></span>
                           <div class="way">
-                            <#--<@global.isNotAnonymous>-->
+                            <@global.isNotAnonymous>
                               <span id="money_tip" class="money-tip"><em>${cashAmount!}</em>元返现</span>
-                            <#--</@global.isNotAnonymous>-->
+                            </@global.isNotAnonymous>
                               <div class="progress" id="progress">
                                   <span class="circle circle-1"></span>
                                   <span class="thread thread-1"></span>
@@ -94,7 +94,7 @@
 
                   <@global.isNotAnonymous>
                       <div class="already-obtained">
-                          <#if cashAmount == "0.00">
+                          <#if cashAmount == "0">
                               <div class="already-obtained">
                                   您还没有现金奖励，快去投资吧！
                               </div>
