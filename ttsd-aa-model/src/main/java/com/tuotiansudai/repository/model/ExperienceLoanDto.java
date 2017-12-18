@@ -44,8 +44,6 @@ public class ExperienceLoanDto implements Serializable {
      */
     private long progress;
 
-    private LoanType loanType;
-
     private LoanStatus loanStatus;
 
     public ExperienceLoanDto(LoanModel loanModel, long experienceProgress, long investAmount) {
@@ -57,7 +55,6 @@ public class ExperienceLoanDto implements Serializable {
         this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount);
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
         this.minInvestAmount = loanModel.getMinInvestAmount();
-        this.loanType = loanModel.getType();
     }
 
     public long getId() {
@@ -132,11 +129,4 @@ public class ExperienceLoanDto implements Serializable {
         this.minInvestAmount = minInvestAmount;
     }
 
-    public LoanType getLoanType() {
-        return loanType;
-    }
-
-    public void setLoanType(LoanType loanType) {
-        this.loanType = loanType;
-    }
 }

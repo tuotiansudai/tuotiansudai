@@ -33,14 +33,9 @@ public class ExperienceLoanDetailController {
 
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public ModelAndView getLoanDetail() {
-        String loginName = LoginUserInfo.getLoginName();
         ExperienceLoanDto experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(1, LoginUserInfo.getLoginName());
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
-        long expectedInterest = investService.estimateInvestIncome(experienceLoanDto.getId(), loginName, 1000000L, new Date());
-        modelAndView.addObject("interestPerTenThousands", String.valueOf(expectedInterest));
-        modelAndView.addObject("verifyTime", new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd HH:mm:ss"));
-        modelAndView.addObject("interestPointName", experienceLoanDto.getLoanType().getInterestPointName());
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(LoginUserInfo.getLoginName()));
         modelAndView.addObject("isAccount", accountService.findByLoginName(LoginUserInfo.getLoginName()) == null ? "false" : "true");
         return modelAndView;

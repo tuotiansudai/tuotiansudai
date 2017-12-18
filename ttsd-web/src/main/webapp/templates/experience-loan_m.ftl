@@ -26,7 +26,7 @@
             <i>项目期限</i>
         </span>
         <span>
-            <b>${interestPerTenThousands}元</b>
+            <b>0.00元</b>
             <i>万元收益</i>
         </span>
     </div>
@@ -34,18 +34,18 @@
     <ul class="detail-list">
         <li>
             <label>计息方式</label>
-            <span>${interestPointName}</span>
+            <span>按天计息，即投即生息</span>
 
         </li>
         <li>
             <label>还款方式</label>
             <span>
-            ${loan.loanType.getRepayType()}
+            体验金收回，收益归您
             </span>
         </li>
         <li>
             <label>发布日期</label>
-            <span>${verifyTime}</span>
+            <span>${.now}</span>
         </li>
     </ul>
 
