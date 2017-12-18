@@ -1,6 +1,6 @@
 package com.tuotiansudai.rest.client;
 
-import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapperDB;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
@@ -57,11 +57,6 @@ class UserMapperDBShadow implements UserMapper {
     }
 
     @Override
-    public List<String> findAllLoginNames() {
-        throw new NotImplementedException("findAllLoginNames not support for test, please Mock UserMapper for test");
-    }
-
-    @Override
     public void updateEmail(String loginName, String email) {
         mapper.updateEmail(loginName, email);
     }
@@ -72,33 +67,24 @@ class UserMapperDBShadow implements UserMapper {
     }
 
     @Override
-    public List<UserModel> findUsersByChannel(List<String> channels) {
-        return mapper.findUsersByChannel(channels);
+    public BasePaginationDataDto<UserRegisterInfo> findUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer, int page, int pageSize) {
+        int rowIndex = (page - 1) * pageSize;
+        List<UserModel> userModels = mapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, referrer, rowIndex, pageSize);
+        long totalCount = mapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, referrer);
+        return new BasePaginationDataDto<>(page, pageSize, totalCount, new ArrayList<>(userModels));
     }
 
     @Override
-    public List<UserRegisterInfo> findUsersByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
-        return new ArrayList<>(mapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, referrer));
+    public BasePaginationDataDto<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime, int page, int pageSize) {
+        int rowIndex = (page - 1) * pageSize;
+        List<UserModel> userModels = mapper.findUsersHasReferrerByRegisterTime(startTime, endTime, pageSize, rowIndex);
+        long totalCount = mapper.findUserCountHasReferrerByRegisterTime(startTime, endTime);
+        return new BasePaginationDataDto<>(page, pageSize, totalCount, new ArrayList<>(userModels));
     }
 
     @Override
-    public List<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime) {
-        return new ArrayList<>(mapper.findUsersHasReferrerByRegisterTime(startTime, endTime));
-    }
-
-    @Override
-    public long findUserCountByRegisterTimeOrReferrer(Date startTime, Date endTime, String referrer) {
+    public long findUserCountByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer) {
         return mapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, referrer);
-    }
-
-    @Override
-    public List<String> findAllByRole(Role role) {
-        throw new NotImplementedException("findAllByRole not support for test, please Mock UserMapper for test");
-    }
-
-    @Override
-    public long findCountByRole(Role role) {
-        throw new NotImplementedException("findCountByRole not support for test, please Mock UserMapper for test");
     }
 
     @Override
