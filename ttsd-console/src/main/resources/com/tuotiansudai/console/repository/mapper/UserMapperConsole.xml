@@ -658,17 +658,17 @@
             </if>
             <if test="useExperienceCoupon != null">
                 <if test="useExperienceCoupon == true">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is not null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") > 0
                 </if>
                 <if test="useExperienceCoupon == false">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") = 0
                 </if>
             </if>
             <if test="experienceStartTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &gt;= #{experienceStartTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &gt;= #{experienceStartTime})
             </if>
             <if test="experienceEndTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &lt;= #{experienceEndTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &lt;= #{experienceEndTime})
             </if>
             <if test="investCountLowLimit != null">
                 AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &gt;= #{investCountLowLimit}
@@ -717,17 +717,17 @@
             </if>
             <if test="useExperienceCoupon != null">
                 <if test="useExperienceCoupon == true">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is not null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") > 0
                 </if>
                 <if test="useExperienceCoupon == false">
-                    AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") is null
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") = 0
                 </if>
             </if>
             <if test="experienceStartTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &gt;= #{experienceStartTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &gt;= #{experienceStartTime})
             </if>
             <if test="experienceEndTime != null">
-                AND (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") &lt;= #{experienceEndTime}
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &lt;= #{experienceEndTime})
             </if>
             <if test="investCountLowLimit != null">
                 AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &gt;= #{investCountLowLimit}

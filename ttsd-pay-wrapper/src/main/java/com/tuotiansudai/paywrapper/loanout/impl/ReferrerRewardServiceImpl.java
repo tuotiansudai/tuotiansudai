@@ -11,9 +11,12 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.loanout.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ReferrerRewardTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ReferrerRewardTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
@@ -159,7 +162,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         if (amount > 0) {
             try {
                 TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardTransferRequest(String.valueOf(orderId), accountModel.getPayUserId(), accountModel.getPayAccountId(), String.valueOf(amount));
-                TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                TransferResponseModel responseModel = paySyncClient.send(ReferrerRewardTransferMapper.class, requestModel, TransferResponseModel.class);
                 logger.info(MessageFormat.format("[标的放款] pay sync transfer referrer reward, result:{0}, investReferrerRewardId:{1}, loginName:{2}", responseModel.isSuccess(),
                         String.valueOf(orderId), accountModel.getLoginName()));
             } catch (Exception e) {
@@ -180,8 +183,8 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 queryString,
-                ProjectTransferNotifyMapper.class,
-                ProjectTransferNotifyRequestModel.class);
+                ReferrerRewardTransferNotifyMapper.class,
+                TransferNotifyRequestModel.class);
         if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId())) {
             logger.error(MessageFormat.format("[标的放款] TransferReferrerRewardCallback payback callback parse is failed (queryString = {0})", queryString));
             return null;
