@@ -2,7 +2,7 @@ require('mWebStyle/investment/experience_detail.scss');
 require('mWebStyle/investment/loan_detail.scss');
 require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
-require('mWebJsModule/anxin_agreement_pop');
+//require('mWebJsModule/anxin_agreement_pop');
 require('webJs/plugins/autoNumeric');
 let $loanDetail = $('#loanDetail'),
     $iconHelp = $('.icon-help',$loanDetail);
@@ -145,6 +145,7 @@ window.addEventListener("popstate", function(e) {
         $loanDetail.show();
         $applyTransfer.hide();
         $projectDetail.hide();
+    $('#repay_plan').hide();
 
 }, false);
 function pushHistory() {
@@ -180,3 +181,8 @@ $('#to_buy_transfer').click(function () {
 
     }
 );
+//优惠券
+$('#select_coupon').on('click',function () {
+    let $this = $(this);
+    location.href = $this.data('url');
+})

@@ -44,7 +44,7 @@
                 <label>预期收益</label>
                 <span class="number-text"><strong>0</strong>元</span>
             </li>
-            <li class="select-coupon" data-url="select-coupon.ftl">
+            <li id="select_coupon" class="select-coupon">
                 <label>优惠券</label>
                 <input type="text" value="" name="price"  placeholder="无可用优惠券" readonly="readonly">
                 <em><i class="fa fa-angle-right"></i></em>
