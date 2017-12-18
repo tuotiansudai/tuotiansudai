@@ -155,3 +155,28 @@ function pushHistory() {
     window.history.pushState(state, "title", "#");
 }
 //转让购买详情
+//承接记录
+$('#look_continue_record').click(function () {
+    pushHistory();
+    $('#loanDetail').hide();
+    $('.buy-transfer').hide();
+    $('#continue_record').show();
+})
+//回款计划
+$('#look_repay_plan').click(function () {
+    pushHistory();
+    $('.buy-transfer').hide();
+    $('#cotinue_record').hide();
+   $('#loanDetail').hide();
+   $('#repay_plan').show();
+})
+//立即投资
+$('#to_buy_transfer').click(function () {
+    pushHistory();
+    $('#cotinue_record').hide();
+    $('#loanDetail').hide();
+    $('#repay_plan').hide();
+    $('.buy-transfer').show();
+
+    }
+);

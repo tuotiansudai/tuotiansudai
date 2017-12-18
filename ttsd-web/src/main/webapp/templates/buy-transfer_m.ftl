@@ -2,7 +2,7 @@
 
 <#--<@global.main pageCss="${css.buy_transfer}" pageJavascript="${js.buy_transfer}" title="转让项目购买详情">-->
 
-<div class="my-account-content apply-transfer"  id="applyTransfer">
+<div class="my-account-content apply-transfer buy-transfer"  id="applyTransfer" style="display: none">
 
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">

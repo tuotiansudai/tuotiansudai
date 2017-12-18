@@ -48,14 +48,14 @@
             <span>${transferApplication.dueDate?string("yyyy-MM-dd")}</span>
         </li>
         <#if (transferApplication.transferStatus.name() == "TRANSFERRING")>
-        <li class="repay-plan">
+        <li class="repay-plan" id="look_repay_plan">
             <label>回款计划</label>
             <span><i class="fa fa-angle-right"></i> </span>
         </li>
         </#if>
 
         <#if (transferApplication.transferStatus.name() == "SUCCESS")>
-        <li class="repay-plan">
+        <li class="repay-plan" id="look_continue_record">
             <label>债权承接记录</label>
             <span><i class="fa fa-angle-right"></i> </span>
         </li>
@@ -71,12 +71,12 @@
     <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
         <button class="to-invest-project" type="button" disabled>已取消</button>
     <#else>
-        <button class="to-invest-project" type="button">立即投资</button>
+        <button id="to_buy_transfer" class="to-invest-project" type="button">立即投资</button>
     </#if>
 
 </div>
 <#--回款计划-->
-<div class="my-account-content amount-detail" id="wrapperOut3" >
+<div class="my-account-content amount-detail" id="repay_plan" style="display: none">
 
     <div class="amount-detail-inner">
 
@@ -106,22 +106,16 @@
 
     </div>
 </div>
-
-<!-- 承接记录 -->
-<div>
+<#--承接记录-->
+<div id="continue_record" class="amount-detail-list" style="display: none">
     <#if (transferApplicationReceiver.status?string) == "true">
-        受让人:${transferApplicationReceiver.transferApplicationReceiver!}
-        转让价格(元):${transferApplicationReceiver.receiveAmount!}
-        交易方式:
-        <#if transferApplicationReceiver.source == "WEB"><i class="fa fa-internet-explorer" aria-hidden="true"></i>
-        <#elseif transferApplicationReceiver.source == "ANDROID"><i class="fa fa-android" aria-hidden="true">
-        <#elseif transferApplicationReceiver.source == "IOS"><i class="fa fa-apple" aria-hidden="true"></i>
-        <#elseif transferApplicationReceiver.source == "AUTO">自动
-        <#else>
-        </#if>
-        预期收益(元):${transferApplicationReceiver.expecedInterest!}
-        项目本金(元):${transferApplicationReceiver.investAmount!}
-        交易时间:${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}
+    <div class="box-item">
+        <dl>
+            <dt>${transferApplicationReceiver.transferApplicationReceiver!}</dt>
+            <dd>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</dd>
+        </dl>
+        <em class="amount plus">${transferApplicationReceiver.receiveAmount!}元</em>
+    </div>
     <#else >
         <p class="tc text-b">暂无承接记录</p>
     </#if>
@@ -129,3 +123,4 @@
 <#--转让购买详情-->
     <#include 'buy-transfer_m.ftl'>
 </@global.main>
+
