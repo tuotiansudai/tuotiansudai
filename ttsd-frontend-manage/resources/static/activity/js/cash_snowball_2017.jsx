@@ -35,7 +35,7 @@ $.when(commonFun.isUserLogin())
 //返现红包提示
         if(wareIndex >0 && wareIndex < 3){
             $money_tip.css({
-                'left':-12+28*(wareIndex-1) + 174*(wareIndex-1) +28 -moneyTipWidth/2,
+                'left':-14+28*(wareIndex-1) + 174*(wareIndex-1) +28 -moneyTipWidth/2,
             })
             if(wareIndex%2 == 0){
                 $money_tip.css({
@@ -48,7 +48,7 @@ $.when(commonFun.isUserLogin())
             }
         }else if(wareIndex >=3){
             $money_tip.css({
-                'left':370,
+                'left':364,
                 'top':54
             })
         }
@@ -121,6 +121,7 @@ $.when(commonFun.isUserLogin())
                 })
 
             }
+            console.log(item)
             $ware_DOM.find('.red-ware').eq(index).text(item);
         })
 
@@ -198,7 +199,7 @@ $.when(commonFun.isUserLogin())
                     fontSize:'0.2rem'
                 })
             }
-            $mobileWareDOM.find('.red-ware .money').eq(index).text(item);
+            $mobileWareDOM.find('.red-ware').eq(index).text(item);
         })
 
     })

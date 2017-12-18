@@ -263,7 +263,10 @@ function scrollList(domName, length,time) {
         scrollTimer = setInterval(function () {
             scrollUp(domName, length);
         }, time?time:1500);
-    }).trigger("mouseout");
+   }).trigger("mouseout");
+   //  scrollTimer = setInterval(function () {
+   //      scrollUp(domName, length);
+   //  }, time?time:1500);
 };
 function scrollUp(domName, length) {
 

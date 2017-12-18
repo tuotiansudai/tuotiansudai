@@ -95,7 +95,7 @@
                   <@global.isNotAnonymous>
                       <div class="already-obtained">
                           <#if cashAmount == "0">
-                              <div class="already-obtained">
+                              <div class="tips">
                                   您还没有现金奖励，快去投资吧！
                               </div>
                           <#else>
@@ -123,7 +123,6 @@
                       <#else>
                               <div class="no-record">目前还没有人获得现金奖励，快去投资吧！</div>
                       </#if>
-                      <div class="no-record">您还没有获得现金奖励，快去投资吧！</div>
 
                   </div>
 
@@ -139,15 +138,15 @@
               <div class="cash-superposition">
                   <h2 class="superposition-title"></h2>
                   <h4 class="superposition-info">
-                      活动期间，投资带有<em>“逢万返百”</em>标签的项目，<span class="mobile-style">累计年化投资额达10万元以上，</span>
-                      <span class="wrap">可叠加最高<strong>2018</strong>元现金奖励。</span>
+                      活动期间，投资带有<strong>“逢万返百”</strong>标签的项目，<span class="mobile-style">累计年化投资额达10万元以上，</span>
+                      <span class="wrap">可叠加最高<em>2018</em>元现金奖励。</span>
                   </h4>
                   <div class="invest-bar-graph">
 
                   </div>
                   <@global.isNotAnonymous>
                         <#if againObtainCash !="0">
-                            <p class="cash-font">恭喜您获取<strong>${againObtainCash}</strong>元的叠加现金奖励</p>
+                            <p class="cash-font">恭喜您获取<strong>${againObtainCash}元</strong>的叠加现金奖励</p>
                         </#if>
                   </@global.isNotAnonymous>
                   <span class="invest-btn-2 invest-btn to-invest">去投资</span>
