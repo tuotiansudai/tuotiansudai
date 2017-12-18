@@ -232,6 +232,10 @@ public class ConsoleUserService {
         return userMapperConsole.findAccountLikeLoginName(loginName);
     }
 
+    public List<String> findAllAgents() {
+        return userRoleMapper.findAllLoginNameByRole(Role.AGENT);
+    }
+
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
         String loginName = editUserDto.getLoginName();
         UserModel editUserModel = userMapper.findByLoginName(loginName);
@@ -256,7 +260,7 @@ public class ConsoleUserService {
         }
 
         String newReferrerLoginName = editUserDto.getReferrer();
-        if(!Strings.isNullOrEmpty(newReferrerLoginName)) {
+        if (!Strings.isNullOrEmpty(newReferrerLoginName)) {
             UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
             if (newReferrerModel == null) {
                 throw new EditUserException("推荐人不存在");
