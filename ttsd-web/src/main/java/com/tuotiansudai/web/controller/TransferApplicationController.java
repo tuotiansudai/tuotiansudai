@@ -70,6 +70,7 @@ public class TransferApplicationController {
         modelAndView.addObject("anxinAuthenticationRequired", anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus());
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
+        modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
         return modelAndView;
     }
 

@@ -21,7 +21,7 @@
         <ul class="input-list">
             <li>
                 <label>转让价格</label>
-                <input type="text" value="" name="price" class="input-amount" placeholder="请输入金额">
+                <input type="text" value="${transferApplication.transferAmount}" name="price" class="input-amount" placeholder="请输入金额">
                 <em>元</em>
             </li>
         </ul>
