@@ -48,14 +48,14 @@
             <span>${transferApplication.dueDate?string("yyyy-MM-dd")}</span>
         </li>
         <#if (transferApplication.transferStatus.name() == "TRANSFERRING")>
-        <li class="repay-plan">
+        <li class="repay-plan" id="look_repay_plan">
             <label>回款计划</label>
             <span><i class="fa fa-angle-right"></i> </span>
         </li>
         </#if>
 
         <#if (transferApplication.transferStatus.name() == "SUCCESS")>
-        <li class="repay-plan">
+        <li class="repay-plan" id="look_continue_record">
             <label>债权承接记录</label>
             <span><i class="fa fa-angle-right"></i> </span>
         </li>
@@ -71,12 +71,12 @@
     <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
         <button class="to-invest-project" type="button" disabled>已取消</button>
     <#else>
-        <button class="to-invest-project" type="button">立即投资</button>
+        <button id="to_buy_transfer" class="to-invest-project" type="button">立即投资</button>
     </#if>
 
 </div>
 <#--回款计划-->
-<div class="my-account-content amount-detail" id="wrapperOut3" >
+<div class="my-account-content amount-detail" id="repay_plan" style="display: none">
 
     <div class="amount-detail-inner">
 
@@ -106,6 +106,18 @@
 
     </div>
 </div>
+<#--承接记录-->
+<div id="continue_record" class="amount-detail-list" style="display: none">
+    <div class="box-item">
+        <dl>
+            <dt>138****5498</dt>
+            <dd>2016-11-23  23:19:36</dd>
+        </dl>
+        <em class="amount plus">2000元</em>
+    </div>
+
+</div>
 <#--转让购买详情-->
     <#include 'buy-transfer_m.ftl'>
 </@global.main>
+
