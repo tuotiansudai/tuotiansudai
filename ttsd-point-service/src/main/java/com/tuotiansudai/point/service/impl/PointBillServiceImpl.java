@@ -105,7 +105,7 @@ public class PointBillServiceImpl implements PointBillService {
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
         if (point < 0) {
             logger.info(String.format("loginName:%s, pointBusinessType:%s, point:%s,note:%s", loginName, businessType, String.valueOf(point), note));
-            redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), point);
+            redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), -point);
         }
         mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }

@@ -283,7 +283,7 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
 
-        if (accountModel.getPoint() + pointBillService.getFrozenPointByLoginName(userModel.getLoginName()) < activityCategory.getConsumeCategory().getPoint()) {
+        if (accountModel.getPoint() - pointBillService.getFrozenPointByLoginName(userModel.getLoginName()) < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 

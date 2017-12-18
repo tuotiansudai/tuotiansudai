@@ -56,7 +56,7 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
                 accountMapper.update(accountModel);
                 if (point < 0) {
                     logger.info(String.format("[MQ] loginName:%s unfreeze point:%s", loginName, point));
-                    redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), -point);
+                    redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), point);
                 }
             } catch (Exception e) {
                 logger.error(String.format("consume ObtainPoint message fail loginName:%s,point:%s", loginName, String.valueOf(point)), e);

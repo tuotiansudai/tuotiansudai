@@ -46,7 +46,7 @@ public class NationalPrizeController {
         ModelAndView modelAndView = new ModelAndView("/activities/national-day", "responsive", true);
         Map param = nationalPrizeService.getNationalActivityInvestAmountAndCount();
         long userInvestAmount = (long) param.get("investAmount");
-        modelAndView.addObject("myPoint", Strings.isNullOrEmpty(loginName) ? String.valueOf(0) : accountService.getUserPointByLoginName(loginName) + pointBillService.getFrozenPointByLoginName(loginName));
+        modelAndView.addObject("myPoint", Strings.isNullOrEmpty(loginName) ? String.valueOf(0) : accountService.getUserPointByLoginName(loginName) - pointBillService.getFrozenPointByLoginName(loginName));
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
         modelAndView.addObject("investScale", userInvestAmount >= NATIONAL_SUM_AMOUNT ? "100" : numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
         modelAndView.addObject("userCount", param.get("investCount"));

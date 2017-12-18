@@ -95,7 +95,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     @Transactional
     public String pointLottery(String loginName) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel.getPoint() + pointBillService.getFrozenPointByLoginName(loginName) < -LOTTERY_POINT) {
+        if (accountModel.getPoint() - pointBillService.getFrozenPointByLoginName(loginName) < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
         }
         DateTime dateTime = new DateTime();
