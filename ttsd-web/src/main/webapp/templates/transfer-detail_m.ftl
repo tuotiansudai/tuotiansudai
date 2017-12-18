@@ -81,41 +81,31 @@
     <div class="amount-detail-inner">
 
         <dl class="payment-plan">
+        <#list investRepay as repay>
             <dt>
-                <span>回款时间</span>
-                <span>金额</span>
-                <span>还款状态</span>
+                <span>${repay.repayDate?string("yyyy-MM-dd")}</span>
+                <span><@amount>${repay.expectedInterest?string.computer}</@amount></span>
+                <#if repay.status == 'COMPLETE'>
+                    <span>已完成</span>
+                </#if>
+                <#if repay.status == 'REPAYING'>
+                    <span class="status">待还款</span>
+                </#if>
             </dt>
-            <dd>
-                <span>2016/10/18</span>
-                <span>0.46元</span>
-                <em>已完成</em>
-            </dd>
-            <dd>
-                <span>2016/10/18</span>
-                <span>0.46元</span>
-                <em class="status">待还款</em>
-            </dd>
-            <dd>
-                <span>2016/10/18</span>
-                <span>0.46元</span>
-                <em class="status">待还款</em>
-            </dd>
+        </#list>
         </dl>
-
-
     </div>
 </div>
 <#--承接记录-->
 <div id="continue_record" class="amount-detail-list" style="display: none">
     <#if (transferApplicationReceiver.status?string) == "true">
-    <div class="box-item">
-        <dl>
-            <dt>${transferApplicationReceiver.transferApplicationReceiver!}</dt>
-            <dd>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</dd>
-        </dl>
-        <em class="amount plus">${transferApplicationReceiver.receiveAmount!}元</em>
-    </div>
+        <div class="box-item">
+            <dl>
+                <dt>${transferApplicationReceiver.transferApplicationReceiver!}</dt>
+                <dd>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</dd>
+            </dl>
+            <em class="amount plus">${transferApplicationReceiver.receiveAmount!}元</em>
+        </div>
     <#else >
         <p class="tc text-b">暂无承接记录</p>
     </#if>
