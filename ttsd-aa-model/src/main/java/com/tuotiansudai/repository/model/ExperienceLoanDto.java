@@ -128,4 +128,5 @@ public class ExperienceLoanDto implements Serializable {
     public void setMinInvestAmount(long minInvestAmount) {
         this.minInvestAmount = minInvestAmount;
     }
+
 }
