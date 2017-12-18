@@ -4,7 +4,7 @@
 
 <div class="my-loan-content" id="loanList">
     <div class="menu-category">
-        <span class="current"><a href="#">直投项目</a></span>
+        <span class="current"><a>直投项目</a></span>
         <span><a href="/m/transfer-list">转让项目</a></span>
     </div>
 
