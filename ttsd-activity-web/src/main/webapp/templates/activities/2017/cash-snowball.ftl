@@ -123,7 +123,7 @@
                       <#else>
                               <div class="no-record">目前还没有人获得现金奖励，快去投资吧！</div>
                       </#if>
-                      <div class="no-record">您还没有人获得现金奖励，快去投资吧！</div>
+                      <div class="no-record">您还没有获得现金奖励，快去投资吧！</div>
 
                   </div>
 
@@ -145,7 +145,11 @@
                   <div class="invest-bar-graph">
 
                   </div>
-                  <p class="cash-font">恭喜您获取<strong>100</strong>元的叠加现金奖励</p>
+                  <@global.isNotAnonymous>
+                        <#if againObtainCash !="0">
+                            <p class="cash-font">恭喜您获取<strong>${againObtainCash}</strong>元的叠加现金奖励</p>
+                        </#if>
+                  </@global.isNotAnonymous>
                   <span class="invest-btn-2 invest-btn to-invest">去投资</span>
                   <p class="comment">本活动现金奖励将于活动结束后3个工作日内统一发放至个人账户，用户可直接提现或者用于投资</p>
 

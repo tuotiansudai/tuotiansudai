@@ -35,7 +35,7 @@ public class CashSnowballService {
                 .put("annualizedAmount", AmountConverter.convertCentToString(annualizedAmount))
                 .put("cashAmount", String.valueOf(cashAmount / 100))
                 .put("nextAmount", AmountConverter.convertCentToString(nextAmount))
-                .put("againObtainCash", String.valueOf(ActivityAmountGrade.getAwardAmount("CASH_SNOWBALL", annualizedAmount)))
+                .put("againObtainCash", String.valueOf(ActivityAmountGrade.getAwardAmount("CASH_SNOWBALL", annualizedAmount) / 100))
                 .build());
     }
 }
