@@ -76,7 +76,7 @@ public class PointBillServiceImpl implements PointBillService {
         }
 
         String note = this.generatePointBillNote(businessType, orderId);
-        lockPointByLoginName(loginName, point, orderId, businessType, note);
+        handlePointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class PointBillServiceImpl implements PointBillService {
         if (accountModel == null) {
             return;
         }
-        lockPointByLoginName(loginName, point, orderId, businessType, note);
+        handlePointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class PointBillServiceImpl implements PointBillService {
         mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
 
-    private void lockPointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
+    private void handlePointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
         if (point < 0) {
             logger.info(String.format("loginName:%s, pointBusinessType:%s, point:%s,note:%s", loginName, businessType, String.valueOf(point), note));
