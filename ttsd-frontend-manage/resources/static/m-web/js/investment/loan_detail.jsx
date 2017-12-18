@@ -35,7 +35,7 @@ $recordTop.find('span').on('click',function() {
 
     let kindObj = {
         'xianfeng':{
-            title:'拓天先锋',
+            title:'拓荒先锋',
             content:'第一位投资的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
         },
         'biaowang':{
@@ -82,18 +82,6 @@ function getInvestAmount() {
     return amount;
 }
 
-function tipNotice() {
-
-    layer.tips('建议金额:1,000,000.00~1,000,000.49元', '.input-amount', {
-        tips: [1, '#F6AA16'],
-        time: 0,
-        maxWidth : 250
-    });
-
-    let $tips = $('.layui-layer-tips');
-    $tips.css({'top':$tips.offset().top + 50});
-}
-
 $amountInputElement
     .on('keyup',function() {
 
@@ -104,20 +92,15 @@ $amountInputElement
             $btnWapNormal.prop('disabled',true);
         }
     })
-    .on('focus',function() {
-        tipNotice();
-    })
-    .on('focusout',function() {
-        layer.closeAll();
-    });
+
 if($('#investForm').length>0){
     globalFun.$('#investForm').onsubmit = function() {
         $.when(commonFun.isUserLogin())
             .done(function () {
-                alert('已經登錄')
+                //提交表单
             })
             .fail(function () {
-                alert('未登录')
+                //跳到登录页
             })
 
     }
