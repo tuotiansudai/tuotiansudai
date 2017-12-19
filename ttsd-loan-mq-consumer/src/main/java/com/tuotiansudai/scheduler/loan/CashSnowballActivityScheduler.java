@@ -54,10 +54,10 @@ public class CashSnowballActivityScheduler {
     public void cashSnowballActivityEndSendCash() {
         logger.info("[cash snowball activity] send cash begin");
 
-        if (DateTime.now().getYear() != 2018) {
-            logger.info("[cash snowball activity] send cash is over");
-            return;
-        }
+//        if (DateTime.now().getYear() != 2018) {
+//            logger.info("[cash snowball activity] send cash is over");
+//            return;
+//        }
 
         List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityCashSnowballStartTime, activityCashSnowballEndTime, "逢万返百");
         Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
