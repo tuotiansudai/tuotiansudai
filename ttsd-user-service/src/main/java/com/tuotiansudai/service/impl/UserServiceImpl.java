@@ -160,7 +160,9 @@ public class UserServiceImpl implements UserService {
                 smsWrapperClient.sendPasswordChangedNotify(userInfoResp.getUserInfo().getMobile());
             }
         } catch (RestException e) {
-            logger.error("change password failed", e);
+            if (e.getStatus() != 401) {
+                logger.error("change password failed", e);
+            }
         }
 
         // 发送用户行为日志 MQ

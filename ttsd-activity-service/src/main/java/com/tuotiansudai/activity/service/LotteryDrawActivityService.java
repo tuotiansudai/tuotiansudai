@@ -12,6 +12,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -512,15 +514,10 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case EACH_REFERRER:
-                    List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserRegisterInfo referrerUserModel : userModels) {
-                        if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                            time++;
-                        }
-                    }
+                    time += userMapper.findUserCountByRegisterTimeAndReferrer(startTime, endTime, userModel.getLoginName());
                     break;
                 case EACH_REFERRER_INVEST:
-                    List<UserRegisterInfo> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    List<UserRegisterInfo> referrerUserModels = userMapper.findAllUsersByRegisterTimeAndReferrer(startTime, endTime, userModel.getLoginName());
                     for (UserRegisterInfo referrerUserModel : referrerUserModels) {
                         if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
                             time++;
@@ -562,7 +559,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case REFERRER_USER:
-                    long referrerUserCount = userMapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    long referrerUserCount = userMapper.findUserCountByRegisterTimeAndReferrer(startTime, endTime, userModel.getLoginName());
                     time += referrerUserCount * 5;
                     break;
                 case EACH_INVEST_5000:
@@ -748,5 +745,4 @@ public class LotteryDrawActivityService {
 
         return investDrawTimes > 0 ? investDrawTimes - userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory, null, null) : investDrawTimes;
     }
-
 }
