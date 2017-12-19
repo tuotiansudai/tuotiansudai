@@ -626,6 +626,9 @@ strong,em {
     margin-top: 0.84rem;
     padding: 0.4rem 0.8rem;
     position: relative;
+    .congratulations {
+      display: none;
+    }
     @media screen and (max-width:414px) {
       padding-right: 0.0rem;
       @media screen and (max-width:375px) {

@@ -117,7 +117,7 @@
                       <#if record?has_content>
                           <ul id="record_list">
                               <#list record as cashSnowballActivityModel>
-                                  <li><em>${(cashSnowballActivityModel.updatedTime?string('yyyy-MM-dd HH:mm:ss'))!}</em><span>恭喜</span>${cashSnowballActivityModel.mobile}用户<span class="mobile-style">累计年化投资${(cashSnowballActivityModel.annualizedAmount/100)?string('0.00')}元 <i>，</i></span>获得${(cashSnowballActivityModel.cashAmount/100)?string('0')}元现金<span class="congratulations">奖励</span></li>
+                                  <li><em>${(cashSnowballActivityModel.updatedTime?string('yyyy-MM-dd HH:mm:ss'))!}</em><span class="congratulations">恭喜</span>${cashSnowballActivityModel.mobile}<span class="congratulations">用户</span><span class="mobile-style">累计年化投资${(cashSnowballActivityModel.annualizedAmount/100)?string('0.00')}元 <i>，</i></span>获得${(cashSnowballActivityModel.cashAmount/100)?string('0')}元现金<span class="congratulations">奖励</span></li>
                               </#list>
                           </ul>
                       <#else>
