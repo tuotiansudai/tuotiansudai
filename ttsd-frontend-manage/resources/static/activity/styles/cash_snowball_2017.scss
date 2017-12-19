@@ -665,19 +665,13 @@ strong,em {
         >li {
           height: 0.6rem;
           line-height: 0.6rem;
-          font-size: 0.2rem;
+          font-size: 0.24rem;
           border-bottom:none;
           padding: 0;
-          .congratulations {
-            display: none;
-          }
           .mobile-style {
             padding-left: 0.2rem;
             padding-right: 0.1rem;
-            @media screen and (max-width:320px) {
-              padding-left: 0.06rem;
-              padding-right: 0rem;
-            }
+
           }
           i {
             display: none;

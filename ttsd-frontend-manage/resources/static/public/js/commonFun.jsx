@@ -277,6 +277,46 @@ function scrollUp(domName, length) {
     }
 
 }
+//活动状态
+function activityStatus(dom) {
+    //日期格式化
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+//不在活动时间范围内时提示信息
+
+    let startTime = Number(dom.data('starttime').substring(0, 10).replace(/-/gi, '')),
+        endTime = Number(dom.data('endtime').substring(0, 10).replace(/-/gi, '')),
+        currentTime = Number(new Date().Format("yyyyMMdd"));
+
+    if (currentTime < startTime) {
+        //活动未开始
+        return 'activity-noStarted';
+    }
+    else if (currentTime > endTime) {
+        //活动已经结束
+       return 'activity-end'
+
+    }  else if(currentTime>=startTime && currentTime<=endTime){
+        //活动中
+        return 'activity-ing';
+    }
+
+
+
+}
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -289,4 +329,5 @@ exports.MathDecimal = MathDecimal;
 exports.decrypt = decrypt;
 exports.GetDateStr = GetDateStr;
 exports.scrollList = scrollList;
+exports.activityStatus = activityStatus;
 

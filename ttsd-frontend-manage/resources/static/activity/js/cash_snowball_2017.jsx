@@ -230,6 +230,8 @@ $('.to-invest').on('click',function () {
 $('.to-login').on('click',function () {
     toLogin();
 })
+//不在活动时间范围内的提示
+console.log(commonFun.activityStatus($('#activity_status')));
 
 
 
