@@ -659,7 +659,15 @@
     }
   }
 }
-
+#pullUp {
+  width: 100%;
+  position: absolute;
+  height: 40px;
+  bottom: 40px;
+  background: #F7F7F7;
+  text-align: center;
+  z-index: 2000;
+}
 
 
 

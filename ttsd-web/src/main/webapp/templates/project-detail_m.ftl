@@ -1,7 +1,7 @@
 <div class="project-detail" id="projectDetail" data-url="/loan/${loan.id?string.computer}/invests" style="display: none">
     <div class="menu-category">
         <span class="current"><a>项目材料</a></span>
-        <span><a>交易记录</a></span>
+        <span><a id="transaction_record">交易记录</a></span>
     </div>
 
     <div id="wrapperOut" class="loan-list-frame2">
@@ -29,24 +29,32 @@
                 </div>
 
                 <div class="record-note">称号奖励将于标满放款后发放</div>
-            <div>
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
+            <div id="box_content" data-url="/loan/${loan.id?string.computer}/invests"
+                 style="overflow: hidden;position: absolute;width: 100%;height: calc( 100% - 100px)">
+                <div id="scroll">
+                    <div id="content">
+                        <script type="text/html" id="recordsTpl">
+                            {{ each records}}
+                            <div class="box-item">
+                                <dl>
+                                    <dt><a href="#">{{$value.mobile}}</a> </dt>
+                                    <dd>{{$value.createdTime}}</dd>
+                                </dl>
+                                <em class="amount">{{$value.amount}}元</em>
+                            </div>
+                            {{/each}}
+                        </script>
+                    </div>
+
+
                 </div>
-                <div class="box-item">
-                    <dl>
-                        <dt><a href="#">138****5498</a> </dt>
-                        <dd>2016-11-23  23:19:36</dd>
-                    </dl>
-                    <em class="amount">2,000.00元</em>
-                </div>
-            </div>
+
 
             </div>
+                <div id="pullUp"><span class="pullUpLabel">上拉加载更多</span></div>
+
+
+
         </div>
 
 
