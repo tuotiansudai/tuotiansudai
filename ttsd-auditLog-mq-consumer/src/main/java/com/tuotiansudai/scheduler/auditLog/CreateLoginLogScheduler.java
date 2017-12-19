@@ -21,7 +21,7 @@ public class CreateLoginLogScheduler {
     private SmsWrapperClient smsWrapperClient;
 
     //    @Scheduled(cron = "0 0 0 20 * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0/5 0 19 * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/1 * 19 * ?", zone = "Asia/Shanghai")
     public void createLoginLog() {
         String newTableName = generateNewTableName();
         try {
