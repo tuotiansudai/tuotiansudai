@@ -29,17 +29,8 @@ public class UserRestQueryDto implements Serializable {
         this.pageSize = pageSize;
     }
 
-    public UserRestQueryDto(int page) {
+    public UserRestQueryDto() {
         this(1, 10);
-    }
-
-    public UserRestQueryDto(boolean pagingEnabled) {
-        if (pagingEnabled) {
-            this.page = page;
-            this.pageSize = pageSize;
-        } else {
-            this.pageSize = null;
-        }
     }
 
     public Integer getPage() {

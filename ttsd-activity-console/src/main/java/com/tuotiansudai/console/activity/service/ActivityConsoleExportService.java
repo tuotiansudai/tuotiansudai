@@ -9,6 +9,7 @@ import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -196,7 +197,7 @@ public class ActivityConsoleExportService {
     }
 
     private Map<String, List<String>> getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
+        List<UserRegisterInfo> userModels = userMapper.findAllUserHasReferrerByRegisterTime(activityMinAutumnStartTime, activityMinAutumnEndTime);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 

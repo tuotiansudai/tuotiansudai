@@ -123,8 +123,7 @@ class CommaSeparatedField(wtforms.Field):
 
 class UserQueryForm(wtforms.Form):
     page = wtforms.IntegerField('page', [wtforms.validators.number_range(min=1, max=1000)], default=1)
-    page_size = wtforms.IntegerField('page_size',
-                                     [wtforms.validators.optional(), wtforms.validators.number_range(min=1, max=1000)])
+    page_size = wtforms.IntegerField('page_size', [wtforms.validators.number_range(min=1, max=1000)])
     sort = CommaSeparatedField('sort', [wtforms.validators.optional()])
     fields = CommaSeparatedField('fields', [wtforms.validators.optional()])
 
