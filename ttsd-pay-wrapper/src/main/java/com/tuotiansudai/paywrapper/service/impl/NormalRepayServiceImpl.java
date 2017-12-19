@@ -330,11 +330,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             //投资人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
+            interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+
             if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
                 logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
                 continue;
             }
-            interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
 
             SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(investRepayModel.getId())));
 

@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.loanout.impl;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.loanout.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -75,13 +76,9 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                             .longValue();
                     investExtraRateModel.setExpectedFee(expectedFee);
 
-                    Source investSource;
-                    if ("IOS".equals(investModel.getSource().name()) || "ANDROID".equals(investModel.getSource().name()) || "MOBILE".equals(investModel.getSource().name())) {
+                    Source investSource = Source.WEB;
+                    if (Lists.newArrayList(Source.IOS, Source.ANDROID, Source.MOBILE).contains(investModel.getSource())) {
                         investSource = Source.MOBILE;
-                    } else if ("WEB".equals(investModel.getSource().name())) {
-                        investSource =  Source.WEB;
-                    } else {
-                        investSource = Source.AUTO;
                     }
 
                     if (!CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(investSource))
