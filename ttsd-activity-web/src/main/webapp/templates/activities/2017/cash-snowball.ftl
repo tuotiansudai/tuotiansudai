@@ -146,7 +146,7 @@
                   </div>
                   <@global.isNotAnonymous>
                         <#if againObtainCash !="0">
-                            <p class="cash-font">恭喜您获取<strong>${againObtainCash}元</strong>的叠加现金奖励</p>
+                            <p class="cash-font">恭喜您获得<strong>${againObtainCash}元</strong>的叠加现金奖励</p>
                         </#if>
                   </@global.isNotAnonymous>
                   <span class="invest-btn-2 invest-btn to-invest">去投资</span>

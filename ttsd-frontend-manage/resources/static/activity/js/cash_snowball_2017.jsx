@@ -172,7 +172,7 @@ $.when(commonFun.isUserLogin())
             //wap红包提示位置
             $mobileMoney_tip.css({
                 left:'50%',
-                marginLeft:-mobileMoney_tip_width/2-6
+                marginLeft:-mobileMoney_tip_width/2
             })
             //点亮圆点和轴线
             $mobileProgress.find('.circle').each((index,item)=>{
