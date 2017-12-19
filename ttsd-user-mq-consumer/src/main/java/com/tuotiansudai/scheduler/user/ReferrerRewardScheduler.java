@@ -1,11 +1,9 @@
 package com.tuotiansudai.scheduler.user;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.joda.time.DateTime;
@@ -18,9 +16,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ReferrerRewardScheduler {
@@ -51,32 +51,25 @@ public class ReferrerRewardScheduler {
         if (registerStartTime.before(activityStartTime)) {
             registerStartTime = activityStartTime;
         }
-        List<UserRegisterInfo> registerUsers = userMapper.findUsersByRegisterTimeOrReferrer(registerStartTime, registerEndTime, null);
-        Map<String, Integer> referrerMaps = Maps.newConcurrentMap();
-        registerUsers.stream()
-                .filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer()))
-                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) >= 200000l)
-                .forEach(userModel -> {
-                    if (referrerMaps.get(userModel.getReferrer()) == null) {
-                        referrerMaps.put(userModel.getReferrer(), 1);
-                    } else {
-                        referrerMaps.put(userModel.getReferrer(), referrerMaps.get(userModel.getReferrer()) + 1);
-                    }
-                });
+
+        List<UserRegisterInfo> registerUsers = userMapper.findAllUserHasReferrerByRegisterTime(registerStartTime, registerEndTime);
+        Map<String, Long> referrerMaps = registerUsers.stream()
+                .filter(userModel -> investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), null, userModel.getRegisterTime(), new DateTime(userModel.getRegisterTime()).plusDays(15).toDate()) >= 200000L)
+                .collect(Collectors.groupingBy(UserRegisterInfo::getReferrer, Collectors.counting()));
 
         referrerMaps.forEach((k, count) -> {
             if (2 <= count && count <= 4) {
-                couponAssign(k, 403l);
+                couponAssign(k, 403L);
             } else if (5 <= count && count <= 8) {
-                couponAssign(k, 404l);
+                couponAssign(k, 404L);
             } else if (9 <= count && count <= 10) {
-                couponAssign(k, 405l);
-                couponAssign(k, 406l);
+                couponAssign(k, 405L);
+                couponAssign(k, 406L);
             } else if (10 < count) {
-                couponAssign(k, 407l);
-                couponAssign(k, 407l);
-                couponAssign(k, 408l);
-                couponAssign(k, 408l);
+                couponAssign(k, 407L);
+                couponAssign(k, 407L);
+                couponAssign(k, 408L);
+                couponAssign(k, 408L);
             }
         });
 
@@ -88,7 +81,7 @@ public class ReferrerRewardScheduler {
         mqClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
     }
 
-    private DateTime getCurrentMonth(){
+    private DateTime getCurrentMonth() {
         return DateTime.parse(DateTime.now().getYear() + "-" + DateTime.now().getMonthOfYear() + "-" + "01").withTimeAtStartOfDay();
     }
 }
