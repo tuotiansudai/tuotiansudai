@@ -257,16 +257,10 @@ let GetDateStr = function(date,AddDayCount) {
 function scrollList(domName, length,time) {
     var thisFun = this,
         scrollTimer;
-    domName.hover(function () {
-        clearInterval(scrollTimer);
-    }, function () {
-        scrollTimer = setInterval(function () {
-            scrollUp(domName, length);
-        }, time?time:1500);
-   }).trigger("mouseout");
-   //  scrollTimer = setInterval(function () {
-   //      scrollUp(domName, length);
-   //  }, time?time:1500);
+
+    scrollTimer = setInterval(function () {
+        scrollUp(domName, length);
+    }, time?time:1500);
 };
 function scrollUp(domName, length) {
 

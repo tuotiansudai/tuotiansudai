@@ -121,7 +121,6 @@ $.when(commonFun.isUserLogin())
                 })
 
             }
-            console.log(item)
             $ware_DOM.find('.red-ware').eq(index).text(item);
         })
 
@@ -172,7 +171,8 @@ $.when(commonFun.isUserLogin())
 
             //wap红包提示位置
             $mobileMoney_tip.css({
-                left:'2.5rem'
+                left:'50%',
+                marginLeft:-mobileMoney_tip_width/2-6
             })
             //点亮圆点和轴线
             $mobileProgress.find('.circle').each((index,item)=>{

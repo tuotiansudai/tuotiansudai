@@ -139,7 +139,7 @@
                   <h2 class="superposition-title"></h2>
                   <h4 class="superposition-info">
                       活动期间，投资带有<strong>“逢万返百”</strong>标签的项目，<span class="mobile-style">累计年化投资额达10万元以上，</span>
-                      <span class="wrap">可叠加最高<em>2018</em>元现金奖励。</span>
+                      <span class="wrap">可叠加最高<strong>2018</strong>元现金奖励。</span>
                   </h4>
                   <div class="invest-bar-graph">
 
