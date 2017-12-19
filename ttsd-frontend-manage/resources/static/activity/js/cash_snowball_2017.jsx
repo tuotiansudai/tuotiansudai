@@ -231,7 +231,9 @@ $('.to-login').on('click',function () {
     toLogin();
 })
 //不在活动时间范围内的提示
-console.log(commonFun.activityStatus($('#activity_status')));
+if(commonFun.activityStatus($('#activity_status')) == 'activity-noStarted'){
+    $('.no-record').text('不在活动时间范围内！');
+}
 
 
 
