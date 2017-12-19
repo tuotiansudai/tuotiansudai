@@ -5,9 +5,6 @@
 <div class="home-page-container" id="homePageContainer">
     <div id="bannerBox" class="banner-box-inner">
         <ul class="banner-img-list">
-            <a href="${banner.url}" target="_blank" <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                <img src="${commonStaticServer}${banner.webImageUrl}" data-app-img="${commonStaticServer}${banner.appImageUrl}" alt="${banner.title}">
-            </a>
             <#list bannerList as banner>
             <li style="opacity: 0;" class="">
                 <a href="${banner.url}" target="_blank" <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
@@ -33,7 +30,7 @@
        <span>新手专享</span>
     </div>
 
-    <div class="target-category-box newer-experience" data-url="/loan/1">
+    <div class="target-category-box newer-experience" data-url="/m/loan/1">
         <b class="newer-title"><span>${experienceLoan.name} </span><i class="icon-sign">体验金投资</i></b>
             <ul class="loan-info clearfix">
                 <li>
@@ -52,7 +49,7 @@
     </div>
 
     <#list normalLoans as loan>
-        <div class="target-category-box" data-url="/loan/${loan.id?c}">
+        <div class="target-category-box" data-url="/m/loan/${loan.id?c}">
             <b class="newer-title">${loan.name}</b>
             <ul class="loan-info clearfix">
                 <li>

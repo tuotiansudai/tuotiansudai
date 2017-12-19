@@ -1,33 +1,32 @@
-<#import "macro/global_m.ftl" as global>
 
-<@global.main pageCss="${m_css.buy_loan}" pageJavascript="${m_js.buy_loan}" title="直投项目购买详情">
+<#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
 
-<div class="my-account-content apply-transfer"  id="applyTransfer">
+<div class="my-account-content apply-transfer"  id="applyTransfer" style="display: none">
 
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
             <div class="newer-title">
-                <span>房产抵押借款17070</span>
-                <span class="tip-text">剩余可投 : 5,000.00元</span>
+                <span>${loan.name}</span>
+                <span class="tip-text">剩余可投 : <@amount>${loan.amountNeedRaised?string.computer}</@amount>元</span>
             </div>
             <ul class="loan-info clearfix">
                 <li>
                     <span>
-                        <i>3天</i>
+                        <i>${loan.raisingDays}天</i>
                     </span>
                     <em>项目期限</em>
                 </li>
                 <li>
                     <span>
-                        <i>15%</i>
+                        <i>${loan.baseRate}+${loan.activityRate}%</i>
                     </span>
                     <em>预期年化收益</em>
                 </li>
                 <li>
                     <span>
-                        <i>12.30元</i>
+                        <i><@amount>${interestPerTenThousands?string.computer}</@amount>元</i>
                     </span>
-                    <em>万元收益</em>
+                    <em>最大万元收益</em>
                 </li>
             </ul>
         </div>
@@ -45,7 +44,7 @@
                 <label>预期收益</label>
                 <span class="number-text"><strong>0</strong>元</span>
             </li>
-            <li class="select-coupon" data-url="select-coupon.ftl">
+            <li id="select_coupon" class="select-coupon">
                 <label>优惠券</label>
                 <input type="text" value="" name="price"  placeholder="无可用优惠券" readonly="readonly">
                 <em><i class="fa fa-angle-right"></i></em>
@@ -71,4 +70,4 @@
 
 </div>
 
-</@global.main>
+<#--</@global.main>-->

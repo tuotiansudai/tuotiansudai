@@ -104,3 +104,565 @@
     color: #A2A2A2;
   }
 }
+//項目詳情
+.project-detail {
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  height: 100%;
+  background: #fff;
+}
+.menu-category {
+  margin-bottom: 10px;
+}
+.loan-list-content {
+  background: #fff;
+}
+.account-summary {
+  height:200px;
+  .collection {
+    padding-top: 5px;
+  }
+  .transfer-hack {
+    color: rgba(255, 255, 255, 1);
+    flex: 1.5;
+  }
+  .icon-help {
+    top: 61px;
+    right: 25%;
+  }
+}
+
+.experience-amount {
+  padding-bottom: 70px;
+}
+
+.invest-progress-box {
+  padding: 0 10px;
+  background: #fff;
+  height: 50px;
+  .project-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A2A2A2;
+    align-items: center;
+    height:100%;
+    i {
+      color: #222;
+    }
+  }
+}
+
+.detail-list {
+  span i {
+    font-size:20px;
+  }
+}
+.icon-sign {
+  font-size: 9px;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+}
+
+.invest-refer-box {
+  position: absolute;
+  top: 100px;
+  right: 19%;
+  i.fa {
+    position: absolute;
+    top: -13px;
+    right: 27px;
+    font-size: 25px;
+    color: #fff!important;
+  }
+  ul {
+    border-radius:10px;
+    background: #fff;
+    font-size: 10px;
+    color: #A2A2A2;
+    li {
+      display: flex;
+      justify-content: space-between;
+      line-height: 20px;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 0 6px;
+    }
+    .title {
+      font-size: 11px;
+      color: #525252;
+    }
+  }
+
+}
+
+.leave-time {
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  color: #808080;
+  text-align: center;
+}
+.repay-plan {
+  margin-top:5px;
+  label {
+    font-size: 14px;
+    color: #525252;
+  }
+}
+.history-record {
+  font-size: 14px;
+
+  padding: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    color: #A2A2A2;
+  }
+}
+.wind-control {
+  dd {
+    span {
+      &.span-l {
+        padding-right: 20px;
+      }
+      &.span-r {
+        padding-left: 20px;
+      }
+
+    }
+  }
+}
+//直投项目购买详情
+.benefit-box {
+  position: relative;
+
+  .bg-square-box {
+    position: absolute;
+    bottom:-6px;
+    left:0;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.target-category-box {
+  padding:15px 15px 25px 15px;
+  font-size: 14px;
+  color: #525252;
+  background: #fff;
+  line-height: 35px;
+  .newer-title{
+    border-left:2px solid #FF473C;
+    padding-left: 10px;
+    line-height: 18px;
+    display: flex;
+    justify-content: space-between;
+    span{
+      &.tip-text{
+        font-size: 12px;
+        color: #525252;
+        letter-spacing: -0.29px;
+        background: #F2F2F2;
+        border-radius: 4px;
+        padding: 2px 10px;
+      }
+    }
+  }
+  .loan-info{
+    li{
+      text-align:center;
+      span{
+        font-size:16px;
+        color:#222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      em{
+        font-size:12px;
+        color:#a2a2a2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.input-amount-box {
+  margin-top:15px;
+  color: #525252;
+}
+
+.input-list {
+  margin-bottom:50px;
+}
+.input-list li.mt-10{
+  margin-top: 10px;
+}
+.input-list li input {
+  text-align: left;
+  font-size: 18px;
+  color: #525252;
+}
+.input-list li span.number-text{
+  text-align: left;
+  font-size: 16px;
+  color: #525252;
+  strong{
+    font-weight: normal;
+    color: #FF473C;
+  }
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 40px 10px 40px;
+  font-weight: lighter;
+  b {
+    display: block;
+    font-weight: lighter;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+
+.apply-transfer-success {
+  background: #fff;
+  padding-top:50px;
+  text-align: center;
+  box-sizing: border-box;
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}
+
+//转让项目购买详情
+.benefit-box {
+  position: relative;
+
+  .bg-square-box {
+    position: absolute;
+    bottom:-6px;
+    left:0;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.target-category-box {
+  padding:15px 15px 25px 15px;
+  font-size: 14px;
+  color: #525252;
+  background: #fff;
+  line-height: 35px;
+  .newer-title{
+    border-left:2px solid #FF473C;
+    padding-left: 10px;
+    line-height: 18px;
+    display: flex;
+    justify-content: space-between;
+    span{
+      &.tip-text{
+        font-size: 12px;
+        color: #525252;
+        letter-spacing: -0.29px;
+        background: #F2F2F2;
+        border-radius: 4px;
+        padding: 2px 10px;
+      }
+    }
+  }
+  .benefit-list{
+    margin-top: 10px;
+    li{
+      font-size: 14px;
+      color: #525252;
+      letter-spacing: -0.34px;
+      span{
+        color: #FF635A;
+      }
+    }
+  }
+}
+
+.input-amount-box {
+  margin-top:15px;
+  color: #525252;
+}
+
+.input-list {
+  margin-bottom:50px;
+}
+.input-list li.mt-10{
+  margin-top: 10px;
+}
+.input-list li input {
+  text-align: left;
+  font-size: 18px;
+  color: #525252;
+}
+.input-list li span.number-text{
+  text-align: left;
+  font-size: 16px;
+  color: #525252;
+  strong{
+    font-weight: normal;
+    color: #FF473C;
+  }
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 40px 10px 40px;
+  font-weight: lighter;
+  b {
+    display: block;
+    font-weight: lighter;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+
+.apply-transfer-success {
+  background: #fff;
+  padding-top:50px;
+  text-align: center;
+  box-sizing: border-box;
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}
+
+//回款计划
+.amount-detail {
+  //position: absolute;
+  top: 51px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 51px - 55px);
+  .amount-detail-inner{
+    .payment-plan {
+      background: #fff;
+      padding: 10px 10px 0px 10px;
+      margin-top: 5px;
+      margin-bottom:5px;
+      dt {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        color: #525252;
+        height:40px;
+      }
+      dd {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #808080;
+        border-top:1px solid #F7F7F7;
+        line-height: 40px;
+        em{
+          color:#808080;
+          &.status {
+            color: #FF635A;
+          }
+        }
+      }
+    }
+  }
+}
+//优惠券
+.select-btn{
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  p{
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    &.to-coupon{
+      justify-content: center;
+      background: #FFFFFF;
+      border: 0 solid #E5E5E5;
+      border-radius: 4px;
+      a{
+        font-size: 14px;
+        color: #A2A2A2;
+        letter-spacing: -0.15px;
+      }
+    }
+    &.info-list{
+      margin-bottom: 0;
+      a{
+        font-size: 15px;
+        color: #FF635A;
+        letter-spacing: 0;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.coupon-list-container{
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .coupon-item{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: #FF635A;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    .left-item{
+      flex:0.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: #fff;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      position: relative;
+      border-top-left-radius:5px;
+      border-bottom-left-radius:5px;
+      .circle-line{
+        position: absolute;
+        top:-5px;
+        right:-5px;
+        width:10px;
+        height:100%;
+        li{
+          float:left;
+          width:10px;
+          height:10px;
+          margin:3px 0;
+          border-radius:50%;
+          background:#f7f7f7;
+        }
+      }
+      dl{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width:100%;
+        color:#808080;
+        dt{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          font-size:14px;
+        }
+        dd{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          font-size:12px;
+          padding-left:10px;
+          box-sizing:border-box;
+          position: relative;
+          &:before{
+            content:'';
+            display:block;
+            width:5px;
+            height:5px;
+            border-radius:50%;
+            box-sizing:border-box;
+            position: absolute;
+            top:50%;
+            margin-top: -3px;
+            left:0;
+            border:1px solid #ff635a;
+          }
+          &.coupon-line{
+            color:#a2a2a2;
+            border-top:1px dashed #a2a2a2;
+            padding-left: 0;
+            &:before{
+              display:none;
+            }
+          }
+        }
+      }
+    }
+    .right-item{
+      flex:0.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ff635a;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      p{
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        color:#fff;
+        margin-bottom: 0;
+        span{
+          font-size:15px;
+          &.price-text{
+            font-size:30px;
+          }
+        }
+        a{
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 80%;
+          color:#fff;
+          font-size:13px;
+          border:1px solid #fff;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+

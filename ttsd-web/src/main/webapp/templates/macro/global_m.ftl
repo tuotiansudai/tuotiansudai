@@ -47,7 +47,7 @@
 <div class="nav-wap-container">
     <div class="img-top">
         <div class="logo">
-            <a href="/m" class="logo-bg"></a>
+            <a href="/m/" class="logo-bg"></a>
         </div>
         <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
     </div>
@@ -70,7 +70,7 @@
         <i></i>
         <span>首页</span>
     </a>
-    <a class="menu-invest">
+    <a class="menu-invest" href="/m/loan-list">
         <i></i>
         <span>投资</span>
     </a>

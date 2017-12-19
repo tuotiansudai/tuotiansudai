@@ -26,6 +26,8 @@ public interface TransferService {
 
     TransferApplicationDetailDto getTransferApplicationDetailDto(long TransferApplicationId, String loginName, int showLoginNameLength);
 
+    List<TransferInvestRepayDataDto> getUserTransferInvestRepay(long investId);
+
     TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName);
 
     BasePaginationDataDto generateTransferableInvest(String loginName,Integer index,Integer pageSize);
