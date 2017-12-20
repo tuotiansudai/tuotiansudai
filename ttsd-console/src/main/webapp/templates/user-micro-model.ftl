@@ -14,6 +14,19 @@
             <input type="text" class="form-control ui-autocomplete-input" id="mobile" name="mobile" datatype="*"
                    autocomplete="off" value="${mobile!}"/>
         </div>
+
+        <div class="form-group">
+            <label for="project">角色</label>
+            <select class="selectpicker" name="userRole">
+                <option value="">全部</option>
+                <#list roleList as roleItem>
+                    <option value="${roleItem}"
+                            <#if (roleSelected?has_content && roleSelected.name() == roleItem.name()) >selected</#if>>${roleItem.getDescription()}
+                    </option>
+                </#list>
+            </select>
+        </div>
+
         <div class="form-group">
             <label for="number">注册时间</label>
 
