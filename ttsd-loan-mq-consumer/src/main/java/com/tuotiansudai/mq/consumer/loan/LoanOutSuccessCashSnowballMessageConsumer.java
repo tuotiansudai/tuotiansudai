@@ -9,13 +9,13 @@ import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.PayrollMapper;
 import com.tuotiansudai.repository.model.InvestAchievementView;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -23,10 +23,11 @@ import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,11 +75,9 @@ public class LoanOutSuccessCashSnowballMessageConsumer implements MessageConsume
         return MessageQueue.LoanOutSuccess_CashSnowball;
     }
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.cash.snowball.startTime}\")}")
-    private Date activityCashSnowballStartTime;
+    private Date activityCashSnowballStartTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.startTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.cash.snowball.endTime}\")}")
-    private Date activityCashSnowballEndTime;
+    private Date activityCashSnowballEndTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.endTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
     @Transactional
     @Override

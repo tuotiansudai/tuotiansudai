@@ -2,10 +2,11 @@ package com.tuotiansudai.activity.controller;
 
 
 import com.tuotiansudai.activity.service.CashSnowballService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,11 +18,9 @@ public class CashSnowballController {
     @Autowired
     private CashSnowballService cashSnowballService;
 
-    @Value(value = "${activity.cash.snowball.startTime}")
-    private String activityCashSnowballStartTime;
+    private String activityCashSnowballStartTime = ETCDConfigReader.getReader().getValue("activity.cash.snowball.startTime");
 
-    @Value(value = "${activity.cash.snowball.endTime}")
-    private String activityCashSnowballEndTime;
+    private DateTime activityCashSnowballEndTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.endTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView cashSnowBall() {
@@ -29,8 +28,7 @@ public class CashSnowballController {
         modelAndView.addObject("record", cashSnowballService.findAll());
         modelAndView.addAllObjects(cashSnowballService.userInvestAmount(LoginUserInfo.getLoginName()));
         modelAndView.addObject("activityStartTime", activityCashSnowballStartTime);
-        modelAndView.addObject("activityEndTime", activityCashSnowballEndTime);
-        modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
+        modelAndView.addObject("activityEndTime", activityCashSnowballEndTime.minusDays(7).toString("yyyy-MM-dd HH:mm:ss"));
         return modelAndView;
     }
 }
