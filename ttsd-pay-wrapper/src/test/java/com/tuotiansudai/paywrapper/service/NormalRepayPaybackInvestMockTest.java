@@ -387,4 +387,63 @@ import static org.mockito.Mockito.*;
         ArgumentCaptor<String> redisValueArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(redisKey1ArgumentCaptor.capture(), redisKey2ArgumentCaptor.capture(), redisValueArgumentCaptor.capture());
     }
+
+    @Test
+    public void shouldPaybackLastPeriodWhenLoanIsRepayingAndRetryFeeTransfer() throws Exception {
+        long loanId = 1;
+        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 30, 10, new DateTime().withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        loanRepay1.setActualInterest(10);
+        loanRepay1.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
+
+        when(loanRepayMapper.findById(loanRepay1.getId())).thenReturn(loanRepay1);
+        when(loanRepayMapper.findLastLoanRepay(loanId)).thenReturn(loanRepay1);
+
+        String investor1LoginName = "investor1";
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, 0.1);
+        List<InvestModel> successInvests = Lists.newArrayList(invest1);
+        when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
+
+        InvestRepayModel invest1InvestRepay1 = new InvestRepayModel(2, invest1.getId(), 1, 30, 10, 1, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
+        invest1InvestRepay1.setActualInterest(invest1InvestRepay1.getExpectedInterest());
+        invest1InvestRepay1.setActualFee(invest1InvestRepay1.getExpectedFee());
+        invest1InvestRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
+        invest1InvestRepay1.setRepayAmount(invest1InvestRepay1.getCorpus() + invest1InvestRepay1.getActualInterest() - invest1InvestRepay1.getActualFee());
+        when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay1.getPeriod())).thenReturn(invest1InvestRepay1);
+
+
+        AccountModel investor1Account = new AccountModel(investor1LoginName, investor1LoginName, investor1LoginName, new Date());
+        when(accountMapper.findByLoginName(invest1.getLoginName())).thenReturn(investor1Account);
+
+        ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();
+        responseModel.setRetCode(BaseSyncResponseModel.SUCCESS_CODE);
+
+        when(paySyncClient.send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class))).thenReturn(responseModel);
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        payDataDto.setStatus(true);
+
+        when(loanService.updateLoanStatus(anyLong(), any(LoanStatus.class))).thenReturn(baseDto);
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("READY");
+
+        assertTrue(normalRepayService.paybackInvest(loanRepay1.getId()));
+
+        ArgumentCaptor<ProjectTransferRequestModel> requestModelArgumentCaptor = ArgumentCaptor.forClass(ProjectTransferRequestModel.class);
+        verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), requestModelArgumentCaptor.capture(), eq(ProjectTransferResponseModel.class));
+        ProjectTransferRequestModel requestModel = requestModelArgumentCaptor.getValue();
+        assertThat(invest1InvestRepay1.getActualFee(), is(Long.parseLong(requestModel.getAmount())));
+
+        ArgumentCaptor<Long> updateLoanIdArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<LoanStatus> loanStatusArgumentCaptor = ArgumentCaptor.forClass(LoanStatus.class);
+        verify(loanService, times(1)).updateLoanStatus(updateLoanIdArgumentCaptor.capture(), loanStatusArgumentCaptor.capture());
+        assertThat(updateLoanIdArgumentCaptor.getValue(), is(loanId));
+        assertThat(loanStatusArgumentCaptor.getValue(), is(LoanStatus.COMPLETE));
+
+        ArgumentCaptor<String> redisKey1ArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisKey2ArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisValueArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(redisWrapperClient, times(2)).hset(redisKey1ArgumentCaptor.capture(), redisKey2ArgumentCaptor.capture(), redisValueArgumentCaptor.capture());
+    }
 }

@@ -6,6 +6,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.JsonConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ import java.io.IOException;
 public class ObtainPointMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(ObtainPointMessageConsumer.class);
 
+    private static final String FROZEN_POINT_KEY = "FROZEN:POINT:%s";
+
     @Autowired
     private AccountMapper accountMapper;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
     public MessageQueue queue() {
@@ -33,22 +38,28 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
 
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
+            String loginName;
+            long point;
             ObtainPointMessage obtainPointMessage;
             try {
                 obtainPointMessage = JsonConverter.readValue(message, ObtainPointMessage.class);
+                loginName = obtainPointMessage.getLoginName();
+                point = obtainPointMessage.getPoint();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             try {
-                String loginName = obtainPointMessage.getLoginName();
-                long point = obtainPointMessage.getPoint();
                 AccountModel accountModel = accountMapper.lockByLoginName(loginName);
                 accountModel.setPoint(accountModel.getPoint() + point);
                 logger.info("[MQ] ready to consume message: . loginName:{}, point:{}", loginName, point);
                 accountMapper.update(accountModel);
+                if (point < 0) {
+                    logger.info(String.format("[MQ] loginName:%s unfreeze point:%s", loginName, point));
+                    redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), point);
+                }
             } catch (Exception e) {
-                logger.error("consume ObtainPoint message fail", e);
+                logger.error(String.format("consume ObtainPoint message fail loginName:%s,point:%s", loginName, String.valueOf(point)), e);
             }
         }
         logger.info("[MQ] consume message success.");

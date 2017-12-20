@@ -62,4 +62,14 @@
         </where>
     </select>
 
+    <update id="createLoginLogTable">
+        <![CDATA[
+
+
+            CREATE TABLE IF NOT EXISTS ${newTableName} (LIKE ${originTableName})
+
+
+        ]]>
+    </update>
+
 </mapper>
