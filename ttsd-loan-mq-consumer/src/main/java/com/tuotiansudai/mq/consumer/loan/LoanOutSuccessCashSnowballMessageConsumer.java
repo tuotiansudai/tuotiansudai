@@ -77,7 +77,7 @@ public class LoanOutSuccessCashSnowballMessageConsumer implements MessageConsume
 
     private Date activityCashSnowballStartTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.startTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();;
 
-    private Date activityCashSnowballEndTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.endTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+    private Date activityCashSnowballEndTime = DateTime.parse(ETCDConfigReader.getReader().getValue("activity.cash.snowball.endTime"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).minusDays(7).toDate();
 
     @Transactional
     @Override
