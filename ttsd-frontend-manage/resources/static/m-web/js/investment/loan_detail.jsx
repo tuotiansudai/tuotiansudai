@@ -167,8 +167,22 @@ function getMoreRecords(){
             }
         },
         function (res) {
-            var html = tpl('recordsTpl', res.data);
-            $content.append(html)
+            if(pageNum == 1){
+                if(res.data.records.length > 0){
+                    var html = tpl('recordsTpl', res.data);
+                    $content.append(html)
+                }else {
+                    $content.html('<div class="no-records">暂无交易记录</div>')
+                }
+            }else {
+                if(res.data.records.length > 0){
+                    var html = tpl('recordsTpl', res.data);
+                    $content.append(html)
+                }else {
+                   $('#pullUp').find('.pullUpLabel').html('没有更多数据了');
+                }
+            }
+
 
         }
     )

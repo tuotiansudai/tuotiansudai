@@ -252,6 +252,11 @@
     justify-content: space-between;
   }
 }
+.no-records {
+  text-align: center;
+  line-height:40px;
+  height: 40px;
+}
 
 .target-category-box {
   padding:15px 15px 25px 15px;
@@ -661,14 +666,27 @@
 }
 #pullUp {
   width: 100%;
-  position: absolute;
+  //position: absolute;
   height: 40px;
+  line-height: 34px;
   bottom: 40px;
   background: #F7F7F7;
   text-align: center;
   z-index: 2000;
 }
 
+#box_content {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: calc( 100% - 165px);
+}
+#scroll {
+  height: 100%;
+}
+#content {
+  min-height: calc( 100% - 34px);
+}
 
 
 

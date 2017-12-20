@@ -29,29 +29,30 @@
                 </div>
 
                 <div class="record-note">称号奖励将于标满放款后发放</div>
-            <div id="box_content" data-url="/loan/${loan.id?string.computer}/invests"
-                 style="overflow: hidden;position: absolute;width: 100%;height: calc( 100% - 100px)">
+            <div id="box_content" data-url="/loan/${loan.id?string.computer}/invests">
                 <div id="scroll">
                     <div id="content">
                         <script type="text/html" id="recordsTpl">
-                            {{ each records}}
-                            <div class="box-item">
-                                <dl>
-                                    <dt><a href="#">{{$value.mobile}}</a> </dt>
-                                    <dd>{{$value.createdTime}}</dd>
-                                </dl>
-                                <em class="amount">{{$value.amount}}元</em>
-                            </div>
-                            {{/each}}
-                        </script>
-                    </div>
 
+                                {{ each records}}
+                                <div class="box-item">
+                                    <dl>
+                                        <dt><a href="#">{{$value.mobile}}</a> </dt>
+                                        <dd>{{$value.createdTime}}</dd>
+                                    </dl>
+                                    <em class="amount">{{$value.amount}}元</em>
+                                </div>
+                                {{/each}}
+                        </script>
+
+                    </div>
+                    <div id="pullUp"><span class="pullUpLabel">上拉加载更多</span></div>
 
                 </div>
 
 
             </div>
-                <div id="pullUp"><span class="pullUpLabel">上拉加载更多</span></div>
+
 
 
 
