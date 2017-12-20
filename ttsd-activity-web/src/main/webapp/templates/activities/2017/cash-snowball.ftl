@@ -121,7 +121,7 @@
                               </#list>
                           </ul>
                       <#else>
-                              <div class="no-record">目前还没有人获得现金奖励，快去投资吧！</div>
+                              <div class="no-record">   </div>
                       </#if>
 
                   </div>
