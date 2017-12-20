@@ -277,7 +277,7 @@ function scrollUp(domName, length) {
     }
 
 }
-//活动状态
+//活动状态,精确到前八位如2018-01-01 如果活动时间精确到时分秒，则此方法不能用
 function activityStatus(dom) {
     //日期格式化
     Date.prototype.Format = function (fmt) { //author: meizz
@@ -295,7 +295,6 @@ function activityStatus(dom) {
             if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
-//不在活动时间范围内时提示信息
 
     let startTime = Number(dom.data('starttime').substring(0, 10).replace(/-/gi, '')),
         endTime = Number(dom.data('endtime').substring(0, 10).replace(/-/gi, '')),
