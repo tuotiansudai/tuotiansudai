@@ -49,15 +49,14 @@ public class CashSnowballActivityScheduler {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.cash.snowball.endTime}\")}")
     private Date activityCashSnowballEndTime;
 
-//    @Scheduled(cron = "0 0 10 1 2 ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0/30 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 10 1 2 ?", zone = "Asia/Shanghai")
     public void cashSnowballActivityEndSendCash() {
         logger.info("[cash snowball activity] send cash begin");
 
-//        if (DateTime.now().getYear() != 2018) {
-//            logger.info("[cash snowball activity] send cash is over");
-//            return;
-//        }
+        if (DateTime.now().getYear() != 2018) {
+            logger.info("[cash snowball activity] send cash is over");
+            return;
+        }
 
         List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityCashSnowballStartTime, activityCashSnowballEndTime, "逢万返百");
         Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
