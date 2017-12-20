@@ -94,8 +94,8 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     @Override
     @Transactional
     public String pointLottery(String loginName) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel.getPoint() < -LOTTERY_POINT) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if (accountModel.getPoint() - pointBillService.getFrozenPointByLoginName(loginName) < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
         }
         DateTime dateTime = new DateTime();
@@ -119,6 +119,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
             return ALREADY_LOTTERY_SHARE;
         }
     }
+
 
     private PointPrizeModel winLottery() {
         List<PointPrizeModel> pointPrizeModels = pointPrizeMapper.findAllPossibleWin();
@@ -181,7 +182,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return (int)(end.getTime() - begin.getTime()) / 1000;
+        return (int) (end.getTime() - begin.getTime()) / 1000;
     }
 
 }
