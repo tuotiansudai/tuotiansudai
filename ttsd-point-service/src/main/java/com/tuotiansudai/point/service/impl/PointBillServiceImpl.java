@@ -2,27 +2,28 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.message.ObtainPointMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.message.ObtainPointMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,42 +61,55 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private static final String FROZEN_POINT_KEY = "FROZEN:POINT:%s";
+
+
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
+        if (accountModel == null) {
             logger.info(String.format("createPointBill:%s no account", loginName));
             return;
         }
+
         String note = this.generatePointBillNote(businessType, orderId);
-        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
+        handlePointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
-            logger.info(String.format("createPointBill:%s no account", loginName));
+        if (accountModel == null) {
             return;
         }
-        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
+        handlePointByLoginName(loginName, point, orderId, businessType, note);
     }
 
     @Override
     @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if(accountModel == null){
+        if (accountModel == null) {
             logger.info(String.format("createTaskPointBill: %s no account", loginName));
             return;
         }
         pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
         mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
     }
+
+    private void handlePointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
+        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
+        if (point < 0) {
+            logger.info(String.format("loginName:%s, pointBusinessType:%s, point:%s,note:%s", loginName, businessType, String.valueOf(point), note));
+            redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), -point);
+        }
+        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
+    }
+
 
     @Override
     public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,
@@ -171,6 +185,11 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     public int findUsersAccountPointCount(String loginName, String userName, String mobile) {
         return accountMapper.findUsersAccountPointCount(loginName, userName, mobile);
+    }
+
+    @Override
+    public Long getFrozenPointByLoginName(String loginName) {
+        return redisWrapperClient.get(String.format(FROZEN_POINT_KEY, loginName)) != null ? Long.parseLong(redisWrapperClient.get(String.format(FROZEN_POINT_KEY, loginName))) : 0L;
     }
 
     private String generatePointBillNote(PointBusinessType businessType, Long orderId) {

@@ -1,4 +1,4 @@
-require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension','endTime'], function($, rotate, layer,tpl) {
+require(['jquery', 'rotate', 'layerWrapper', 'template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension', 'endTime'], function ($, rotate, layer, tpl) {
     var bRotateTd = false,
         bRotateCd = false,
         bRotateTdPhone = false,
@@ -24,7 +24,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
 
 
     //change rank list
-    $beanBtn.on('click', function(event) {
+    $beanBtn.on('click', function (event) {
         var $self = $(this),
             index = $self.index();
         $self.addClass('active').siblings('li').removeClass('active');
@@ -33,7 +33,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     });
 
     //change award list
-    $awardBtn.on('click', function(event) {
+    $awardBtn.on('click', function (event) {
         var $self = $(this),
             index = $self.index();
         $self.addClass('active').siblings('li').removeClass('active');
@@ -42,7 +42,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     });
 
     //change award record btn
-    $tdgiftRecord.on('click', function(event) {
+    $tdgiftRecord.on('click', function (event) {
         var $self = $(this),
             index = $self.index();
         $self.addClass('active').siblings('li').removeClass('active');
@@ -50,7 +50,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             .siblings('.record-model').removeClass('active');
     });
     //change award record btn
-    $cdgiftRecord.on('click', function(event) {
+    $cdgiftRecord.on('click', function (event) {
         var $self = $(this),
             index = $self.index();
         $self.addClass('active').siblings('li').removeClass('active');
@@ -58,7 +58,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             .siblings('.record-model').removeClass('active');
     });
     //td click
-    $pointerTd.on('click', function(event) {
+    $pointerTd.on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             isLogin = $self.attr('data-is-login');
@@ -68,11 +68,11 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         } else {
             if (bRotateTd) return;
             $.ajax({
-                    url: '/activity/draw-tiandou',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(res) {
+                url: '/activity/draw-tiandou',
+                type: 'POST',
+                dataType: 'json'
+            })
+                .done(function (res) {
                     if (res.data.returnCode == 0) {
                         var item = res.data.tianDouPrize;
                         switch (item) {
@@ -100,13 +100,13 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         $('#noLogin').show();
                     }
                 })
-                .fail(function() {
+                .fail(function () {
                     layer.msg('请求失败');
                 });
         }
     });
     //close btn
-    $('body').on('click', '.go-close', function(event) {
+    $('body').on('click', '.go-close', function (event) {
         event.preventDefault();
         var $self = $(this),
             $parent = $self.parents('.tip-list'),
@@ -122,7 +122,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             angle: 0,
             animateTo: angles + 1800,
             duration: 8000,
-            callback: function() {
+            callback: function () {
                 $('#tipList').show();
                 PcDataGet();
                 switch (awards) {
@@ -143,14 +143,15 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         break;
                 }
                 bRotateTd = !bRotateTd;
-                $('.my-td-bean').each(function(index, el) {
+                $('.my-td-bean').each(function (index, el) {
                     $(this).text(Math.round($(this).text().replace(/,/gi, '')) - 1000);
                 });
             }
         })
     }
+
     //cd click
-    $pointerCd.on('click', function(event) {
+    $pointerCd.on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             isLogin = $self.attr('data-is-login');
@@ -164,44 +165,44 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 type: 'POST',
                 dataType: 'json'
             })
-            .done(function(data) {
-                if (bRotateCd) return;
-                switch (data) {
-                    case 'PointNotEnough':
-                        $('#tipList').show();
-                        $('#NoCdbean').show();
-                        break;
-                    case 'TtsdUDisk':
-                        rotateFnCd(1, 80, '拓天速贷U盘');
-                        break;
-                    case 'InsulationCup':
-                        rotateFnCd(2, 32, '青花瓷保温杯');
-                        break;
-                    case 'AlreadyLotteryNotShare':
-                        $('#tipList').show();
-                        $('#oneDay').show();
-                        break;
-                    case 'RedEnvelope2':
-                        rotateFnCd(3, 173, '现金2元');
-                        break;
-                    case 'MangoTravel100':
-                        rotateFnCd(4, 210, '100元芒果旅游卡');
-                        break;
-                    case 'InterestCoupon0.2':
-                        rotateFnCd(5, 255, '0.2%加息券');
-                        break;
-                    case 'AlreadyLotteryShare':
-                        $('#tipList').show();
-                        $('#onlyTwice').show();
-                        break;
-                    case 'InterestCoupon2':
-                        rotateFnCd(7, 355, '2%加息券');
-                        break;
-                }
-            })
-            .fail(function() {
-                layer.msg('请求失败');
-            });
+                .done(function (data) {
+                    if (bRotateCd) return;
+                    switch (data) {
+                        case 'PointNotEnough':
+                            $('#tipList').show();
+                            $('#NoCdbean').show();
+                            break;
+                        case 'TtsdUDisk':
+                            rotateFnCd(1, 80, '拓天速贷U盘');
+                            break;
+                        case 'InsulationCup':
+                            rotateFnCd(2, 32, '青花瓷保温杯');
+                            break;
+                        case 'AlreadyLotteryNotShare':
+                            $('#tipList').show();
+                            $('#oneDay').show();
+                            break;
+                        case 'RedEnvelope2':
+                            rotateFnCd(3, 173, '现金2元');
+                            break;
+                        case 'MangoTravel100':
+                            rotateFnCd(4, 210, '100元芒果旅游卡');
+                            break;
+                        case 'InterestCoupon0.2':
+                            rotateFnCd(5, 255, '0.2%加息券');
+                            break;
+                        case 'AlreadyLotteryShare':
+                            $('#tipList').show();
+                            $('#onlyTwice').show();
+                            break;
+                        case 'InterestCoupon2':
+                            rotateFnCd(7, 355, '2%加息券');
+                            break;
+                    }
+                })
+                .fail(function () {
+                    layer.msg('请求失败');
+                });
         }
     });
 
@@ -212,7 +213,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             angle: 0,
             animateTo: angles + 1800,
             duration: 8000,
-            callback: function() {
+            callback: function () {
                 $('#tipList').show();
                 PcDataGet();
                 switch (awards) {
@@ -236,7 +237,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         break;
                 }
                 bRotateCd = !bRotateCd;
-                $('.my-cd-bean').each(function(index, el) {
+                $('.my-cd-bean').each(function (index, el) {
                     $(this).text(Math.round($(this).text().replace(/,/gi, '')) - 1000);
                 });
             }
@@ -265,65 +266,65 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 number: '请输入有效的数字！'
             }
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             var moneyNum = Math.round($('#moneyNum').val()),
                 monthNum = Math.round($('#monthNum').val()),
                 $resultNum = $('#resultNum'),
                 resultNum = moneyNum * monthNum / 12;
             $resultNum.text(resultNum.toFixed(0));
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             error.insertAfter(element.parent());
         }
     });
     //close calculator
-    $('.close-cal').on('click', function(event) {
+    $('.close-cal').on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             $calDom = $self.parents('.td-calculator');
         $calDom.slideUp('fast');
     });
     //calculator show
-    $('#calBtn').on('click', function(event) {
+    $('#calBtn').on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             $calDom = $self.siblings('.td-calculator');
         $calDom.slideDown('fast');
     });
     //reset form
-    $("#resetBtn").on('click', function(event) {
+    $("#resetBtn").on('click', function (event) {
         event.preventDefault();
         $('#countForm').find('.int-text').val('');
         $('#resultNum').text('0');
     });
     //go to my TD
-    $("#myTD").on('click', function(event) {
+    $("#myTD").on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             myTdH = $('#awardBtn').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
-        }, 'fast', function() {
+        }, 'fast', function () {
             $('#awardBtn li:eq(0)').trigger('click');
         });
     });
     //go to CD
-    $("#myCD").on('click', function(event) {
+    $("#myCD").on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             myTdH = $('#awardBtn').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
-        }, 'fast', function() {
+        }, 'fast', function () {
             $('#awardBtn li:eq(1)').trigger('click');
         });
     });
     //scroll award record list
     var scrollTimer;
-    $(".scroll-record").hover(function() {
+    $(".scroll-record").hover(function () {
         clearInterval(scrollTimer);
-    }, function() {
-        scrollTimer = setInterval(function() {
+    }, function () {
+        scrollTimer = setInterval(function () {
             scrollNews($(".scroll-record"));
         }, 2000);
     }).trigger("mouseout");
@@ -334,7 +335,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         if ($self.find('li').length > 15) {
             $self.animate({
                 "margin-top": -lineHeight + "px"
-            }, 600, function() {
+            }, 600, function () {
                 $self.css({
                     "margin-top": "0px"
                 }).find("li:first").appendTo($self);
@@ -342,7 +343,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         }
     }
 
-    $('.change-btn-list').on('click', 'strong', function(event) {
+    $('.change-btn-list').on('click', 'strong', function (event) {
         event.preventDefault();
         var $self = $(this),
             index = $self.index();
@@ -356,20 +357,21 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         if ($self.find('li').length > 5) {
             $self.animate({
                 "margin-top": -lineHeight + "px"
-            }, 600, function() {
+            }, 600, function () {
                 $self.css({
                     "margin-top": "0px"
                 }).find("li:first").appendTo($self);
             })
         }
     }
-    setInterval(function() {
-        $(".gift-record").each(function(index, el) {
+
+    setInterval(function () {
+        $(".gift-record").each(function (index, el) {
             scrollGift($(this));
         });
     }, 2000);
 
-    $('#TdMyGiftPhone').on('click', function(event) {
+    $('#TdMyGiftPhone').on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             $dd = $self.find('dd');
@@ -381,7 +383,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $dd.slideUp('fast');
         }
     });
-    $('#CdMyGiftPhone').on('click', function(event) {
+    $('#CdMyGiftPhone').on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             $dd = $self.find('dd');
@@ -393,11 +395,10 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $dd.slideUp('fast');
         }
     });
-
 
 
     //td click phone
-    $pointerTdPhone.on('click', function(event) {
+    $pointerTdPhone.on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             isLogin = $self.attr('data-is-login');
@@ -407,11 +408,11 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         } else {
             if (bRotateTdPhone) return;
             $.ajax({
-                    url: '/activity/draw-tiandou',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(res) {
+                url: '/activity/draw-tiandou',
+                type: 'POST',
+                dataType: 'json'
+            })
+                .done(function (res) {
                     if (res.data.returnCode == 0) {
                         var item = res.data.tianDouPrize;
                         switch (item) {
@@ -449,7 +450,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             angle: 0,
             animateTo: angles + 1800,
             duration: 8000,
-            callback: function() {
+            callback: function () {
                 $('#tipListPhone').show();
                 PcDataGetPhone();
                 switch (awards) {
@@ -470,14 +471,15 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         break;
                 }
                 bRotateTdPhone = !bRotateTdPhone;
-                $('.myphone-td-bean').each(function(index, el) {
+                $('.myphone-td-bean').each(function (index, el) {
                     $(this).text(Math.round($(this).text().replace(/,/gi, '')) - 1000);
                 });
             }
         })
     }
+
     //cd click Phone
-    $pointerCdPhone.on('click', function(event) {
+    $pointerCdPhone.on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             isLogin = $self.attr('data-is-login');
@@ -487,11 +489,11 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         } else {
             if (bRotateCdPhone) return;
             $.ajax({
-                    url: '/activity/point-lottery',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(data) {
+                url: '/activity/point-lottery',
+                type: 'POST',
+                dataType: 'json'
+            })
+                .done(function (data) {
                     if (bRotateCdPhone) return;
                     switch (data) {
                         case 'PointNotEnough':
@@ -526,7 +528,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                             break;
                     }
                 })
-                .fail(function() {
+                .fail(function () {
                     layer.msg('请求失败');
                 });
         }
@@ -539,7 +541,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             angle: 0,
             animateTo: angles + 1800,
             duration: 8000,
-            callback: function() {
+            callback: function () {
                 $('#tipListPhone').show();
                 PcDataGetPhone();
                 switch (awards) {
@@ -563,171 +565,175 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         break;
                 }
                 bRotateCdPhone = !bRotateCdPhone;
-                $('.myphone-cd-bean').each(function(index, el) {
+                $('.myphone-cd-bean').each(function (index, el) {
                     $(this).text(Math.round($(this).text().replace(/,/gi, '')) - 1000);
                 });
             }
         })
     };
     //go to my TD Phone
-    $("#myTDPhone").on('click', function(event) {
+    $("#myTDPhone").on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             myTdH = $('#awardBtnPhone').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
-        }, 'fast', function() {
+        }, 'fast', function () {
             $('#awardBtnPhone strong:eq(0)').trigger('click');
         });
     });
     //go to CD Phone
-    $("#myCDPhone").on('click', function(event) {
+    $("#myCDPhone").on('click', function (event) {
         event.preventDefault();
         var $self = $(this),
             myTdH = $('#awardBtnPhone').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
-        }, 'fast', function() {
+        }, 'fast', function () {
             $('#awardBtnPhone strong:eq(1)').trigger('click');
         });
     });
-    function rankList(){
+    function rankList() {
         $.ajax({
             url: '/activity/getTianDouTop15',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={rank:data};
-            $('#rankList').html(tpl('rankListTpl', list));
-        });
+            .done(function (data) {
+                var list = {rank: data};
+                $('#rankList').html(tpl('rankListTpl', list));
+            });
     }
-    function TdGiftRecord(){
+
+    function TdGiftRecord() {
         $.ajax({
             url: '/activity/getTianDouPrizeList',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            $('#TdGiftRecord').html(tpl('TdGiftRecordTpl', data));
-        });
+            .done(function (data) {
+                $('#TdGiftRecord').html(tpl('TdGiftRecordTpl', data));
+            });
     }
-    
-    function TdMyGift(){
+
+    function TdMyGift() {
         $.ajax({
             url: '/activity/getMyTianDouPrize',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={tdmygift:data};
-            $('#TdMyGift').html(tpl('TdMyGiftTpl', list));
-        });
+            .done(function (data) {
+                var list = {tdmygift: data};
+                $('#TdMyGift').html(tpl('TdMyGiftTpl', list));
+            });
     }
-    
-    function CdGiftRecord(){
+
+    function CdGiftRecord() {
         $.ajax({
             url: '/activity/getPointPrizeList',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={cdgiftrecord:data};
-            $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', list));
-        });
+            .done(function (data) {
+                var list = {cdgiftrecord: data};
+                $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', list));
+            });
     }
-    
-    function CdMyGift(){
+
+    function CdMyGift() {
         $.ajax({
             url: '/activity/getMyPointPrize',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={cdmygift:data};
-            $('#CdMyGift').html(tpl('CdMyGiftTpl', list));
-        });
+            .done(function (data) {
+                var list = {cdmygift: data};
+                $('#CdMyGift').html(tpl('CdMyGiftTpl', list));
+            });
     }
-    
-    function PcDataGet(){
+
+    function PcDataGet() {
         rankList();
         TdGiftRecord();
         TdMyGift();
         CdGiftRecord();
         CdMyGift();
     }
+
     PcDataGet();
-    function rankListPhone(){
+    function rankListPhone() {
         $.ajax({
             url: '/activity/getTianDouTop15',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={rank:data};
-            $('#rankListPhone').html(tpl('rankListPhoneTpl', list));
-        });
+            .done(function (data) {
+                var list = {rank: data};
+                $('#rankListPhone').html(tpl('rankListPhoneTpl', list));
+            });
     }
-    function TdGiftRecordPhone(){
+
+    function TdGiftRecordPhone() {
         $.ajax({
             url: '/activity/getTianDouPrizeList',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            $('#TdGiftRecordPhone').html(tpl('TdGiftRecordPhoneTpl', data));
-        });
+            .done(function (data) {
+                $('#TdGiftRecordPhone').html(tpl('TdGiftRecordPhoneTpl', data));
+            });
     }
-    
-    function TdMyGiftPhone(){
+
+    function TdMyGiftPhone() {
         $.ajax({
             url: '/activity/getMyTianDouPrize',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={tdmygift:data};
-            $('#TdMyGiftPhone').length>0?$('#TdMyGiftPhone').html(tpl('TdMyGiftPhoneTpl', list)):false;
-        });
+            .done(function (data) {
+                var list = {tdmygift: data};
+                $('#TdMyGiftPhone').length > 0 ? $('#TdMyGiftPhone').html(tpl('TdMyGiftPhoneTpl', list)) : false;
+            });
     }
-    
-    function CdGiftRecordPhone(){
+
+    function CdGiftRecordPhone() {
         $.ajax({
             url: '/activity/getPointPrizeList',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={cdgiftrecord:data};
-            $('#CdGiftRecordPhone').html(tpl('CdGiftRecordPhoneTpl', list));
-        });
+            .done(function (data) {
+                var list = {cdgiftrecord: data};
+                $('#CdGiftRecordPhone').html(tpl('CdGiftRecordPhoneTpl', list));
+            });
     }
-    
-    function CdMyGiftPhone(){
+
+    function CdMyGiftPhone() {
         $.ajax({
             url: '/activity/getMyPointPrize',
             type: 'GET',
             dataType: 'json'
         })
-        .done(function(data) {
-            var list={cdmygift:data};
-            $('#CdMyGiftPhone').length>0?$('#CdMyGiftPhone').html(tpl('CdMyGiftPhoneTpl', list)):false;
-        });
+            .done(function (data) {
+                var list = {cdmygift: data};
+                $('#CdMyGiftPhone').length > 0 ? $('#CdMyGiftPhone').html(tpl('CdMyGiftPhoneTpl', list)) : false;
+            });
     }
-    
-    function PcDataGetPhone(){
+
+    function PcDataGetPhone() {
         rankListPhone();
         TdGiftRecordPhone();
         TdMyGiftPhone();
         CdGiftRecordPhone();
         CdMyGiftPhone();
     }
+
     PcDataGetPhone();
 
 });
 
 //share event
-function sendShare(){
+function sendShare() {
     $.ajax({
         url: '/activity/get-lottery-chance',
         type: 'GET',
