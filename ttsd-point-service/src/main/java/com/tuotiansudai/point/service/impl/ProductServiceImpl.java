@@ -392,7 +392,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         long totalPrice = this.discountTotalPrice(productShowItemDto.getPoints(), discount, amount);
-        if (accountModel.getPoint() < totalPrice) {
+        if (accountModel.getPoint() - pointBillService.getFrozenPointByLoginName(loginName) < totalPrice) {
             redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
@@ -413,6 +413,7 @@ public class ProductServiceImpl implements ProductService {
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount);
 
         pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
+
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
                 accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getGoodsType().getDescription(), amount, totalPrice));
 
