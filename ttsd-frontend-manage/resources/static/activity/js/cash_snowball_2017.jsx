@@ -233,6 +233,8 @@ $('.to-login').on('click',function () {
 //不在活动时间范围内的提示
 if(commonFun.activityStatus($('#activity_status')) == 'activity-noStarted'){
     $('.no-record').text('不在活动时间范围内！');
+}else {
+    $('.no-record').text('目前还没有人获得现金奖励，快去投资吧！');
 }
 
 
