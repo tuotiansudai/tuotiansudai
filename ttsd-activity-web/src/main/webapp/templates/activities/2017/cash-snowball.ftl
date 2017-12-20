@@ -150,7 +150,7 @@
                         </#if>
                   </@global.isNotAnonymous>
                   <span class="invest-btn-2 invest-btn to-invest">去投资</span>
-                  <p class="comment">本活动现金奖励将于活动结束后3个工作日内统一发放至个人账户，用户可直接提现或者用于投资</p>
+                  <p class="comment">本活动现金奖励将于活动结束后7个工作日内统一发放至个人账户，用户可直接提现或者用于投资</p>
 
               </div>
               <div class="kindly-tips">
