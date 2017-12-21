@@ -16,9 +16,9 @@
         <div class="take-red">
             <p class="red-bag">
                 <span class="money-number"><strong>10</strong>元</span>
-                <span class="money-type">现金红包</span>
+                <span class="money-type">投资红包</span>
             </p>
-            <p class="tip-text">现金红包已发放到您的账户</p>
+            <p class="tip-text">投资红包已发放到您的账户</p>
             <p class="wechat-code"></p>
             <p>关注拓天速贷服务号，<br/>参加端午节活动天天都有奖励哦~</p>
         </div>

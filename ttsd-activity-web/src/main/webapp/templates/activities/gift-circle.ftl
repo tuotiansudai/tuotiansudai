@@ -30,9 +30,9 @@
                             {{else if $value.prize=='PORCELAIN_CUP'}}
                                 青花瓷杯子
                             {{else if $value.prize=='RED_ENVELOPE_100'}}
-                                100元现金红包
+                                100元投资红包
                             {{else if $value.prize=='RED_ENVELOPE_50'}}
-                                50元现金红包
+                                50元投资红包
                             {{else if $value.prize=='INTEREST_COUPON_5'}}
                                 0.5%加息券
                             {{else if $value.prize=='INTEREST_COUPON_2'}}
@@ -72,9 +72,9 @@
                                 {{else if $value.prize=='PORCELAIN_CUP'}}
                                     青花瓷杯子
                                 {{else if $value.prize=='RED_ENVELOPE_100'}}
-                                    100元现金红包
+                                    100元投资红包
                                 {{else if $value.prize=='RED_ENVELOPE_50'}}
-                                    50元现金红包
+                                    50元投资红包
                                 {{else if $value.prize=='INTEREST_COUPON_5'}}
                                     0.5%加息券
                                 {{else if $value.prize=='INTEREST_COUPON_2'}}

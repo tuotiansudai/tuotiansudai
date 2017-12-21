@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="coupons.js" headLab="activity-manage" sideLab="statisticsCoupon" title="现金红包管理">
+<@global.main pageCss="" pageJavascript="coupons.js" headLab="activity-manage" sideLab="statisticsCoupon" title="投资红包管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -11,7 +11,7 @@
             <label>优惠券类型</label>
             <select  name="couponType" id="operationType">
                 <option value="INTEREST_COUPON" <#if couponType=="INTEREST_COUPON">selected</#if> >加息券</option>
-                <option value="RED_ENVELOPE" <#if couponType=="RED_ENVELOPE">selected</#if> >现金红包</option>
+                <option value="RED_ENVELOPE" <#if couponType=="RED_ENVELOPE">selected</#if> >投资红包</option>
                 <option value="BIRTHDAY_COUPON" <#if couponType=="BIRTHDAY_COUPON">selected</#if> >生日月</option>
                 <option value="EXPERIENCE" <#if couponType=="EXPERIENCE">selected</#if> >体验券</option>
             </select>

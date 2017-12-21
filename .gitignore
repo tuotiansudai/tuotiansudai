@@ -18,6 +18,7 @@ spike.py
 **/gradle/
 **/classes/
 **/node_modules/
+.python-version
 
 SignVerProp.properties
 anxinsign.jks

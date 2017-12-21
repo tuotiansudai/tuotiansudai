@@ -120,7 +120,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 TransferNotifyRequestModel.class);
 
         if (callbackRequest == null || Strings.isNullOrEmpty(callbackRequest.getOrderId()) || !callbackRequest.getOrderId().contains("X")) {
-            logger.error(MessageFormat.format("[标的放款:现金红包] transfer red envelop payback callback parse is failed (queryString = {0})", queryString));
+            logger.error(MessageFormat.format("[标的放款:投资红包] transfer red envelop payback callback parse is failed (queryString = {0})", queryString));
             return null;
         }
 
@@ -131,7 +131,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
         long userCouponId = Long.parseLong(callbackRequest.getOrderId().substring(0, callbackRequest.getOrderId().indexOf("X")));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         if (userCouponModel == null) {
-            logger.error(MessageFormat.format("[标的放款:现金红包] TransferRedEnvelopCallback payback callback failed, order id({0}) is not exist", callbackRequest.getOrderId()));
+            logger.error(MessageFormat.format("[标的放款:投资红包] TransferRedEnvelopCallback payback callback failed, order id({0}) is not exist", callbackRequest.getOrderId()));
             return callbackRequest.getResponseData();
         }
 
@@ -140,7 +140,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                 userCouponModel.getLoginName(),
                 userCouponId);
 
-        logger.info(MessageFormat.format("[标的放款:现金红包] send message TransferRedEnvelopCallback,loanId:{0}, investId:{1}, loginName:{2} queryString:{3}, orderId:{4}",
+        logger.info(MessageFormat.format("[标的放款:投资红包] send message TransferRedEnvelopCallback,loanId:{0}, investId:{1}, loginName:{2} queryString:{3}, orderId:{4}",
                 String.valueOf(userCouponModel.getLoanId()), String.valueOf(userCouponModel.getInvestId()), userCouponModel.getLoanName(), queryString, callbackRequest.getOrderId()));
         mqWrapperClient.sendMessage(MessageQueue.TransferRedEnvelopCallback, transferRedEnvelopCallbackMessage);
 
@@ -149,7 +149,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
     @Override
     public boolean sendRedEnvelopTransferInBalanceCallBack(long userCouponId) {
-        logger.info(MessageFormat.format("[标的放款:现金红包] send redEnvelop transfer in balance callBack, userCouponId:{0}", String.valueOf(userCouponId)));
+        logger.info(MessageFormat.format("[标的放款:投资红包] send redEnvelop transfer in balance callBack, userCouponId:{0}", String.valueOf(userCouponId)));
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         if (userCouponModel.getActualInterest() != 0) {
             return true;
@@ -175,7 +175,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
             return true;
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[标的放款:现金红包] red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
+            logger.error(MessageFormat.format("[标的放款:投资红包] red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
         }
 
         return false;
