@@ -253,8 +253,6 @@ let GetDateStr = function(date,AddDayCount) {
 
     return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
 }
-
-
 function CommonLayerTip(option,firstCallback,secondCallback) {
     layer.closeAll();
     let defaultOption = {
@@ -284,20 +282,83 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
 
 //为了添加重复的圆圈背景
 var repeatBgSquare=(number=20) => '<i></i>'.repeat(number);
+//中奖纪录滚动
+function scrollList(domName, length,time) {
+    var thisFun = this,
+        scrollTimer;
 
-module.exports =  {
-    refreshCaptcha,
-    initRadio,
-    IdentityCodeValid,
-    checkedAge,
-    popWindow,
-    isUserLogin,
-    useAjax,
-    countDownLoan,
-    MathDecimal,
-    decrypt,
-    GetDateStr,
-    CommonLayerTip,
-    repeatBgSquare
+    scrollTimer = setInterval(function () {
+        scrollUp(domName, length);
+    }, time?time:1500);
+};
+function scrollUp(domName, length) {
+
+    var $self = domName;
+    var lineHeight = $self.find("li:first").height();
+    if ($self.find('li').length > (length != '' ? length : 10)) {
+        $self.animate({
+            "margin-top": -lineHeight + "px"
+        }, 600, function () {
+            $self.css({
+                "margin-top": "0px"
+            }).find("li:first").appendTo($self);
+        });
+    }
+
 }
+//活动状态,精确到前八位如2018-01-01 如果活动时间精确到时分秒，则此方法不能用
+function activityStatus(dom) {
+    //日期格式化
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    let startTime = Number(dom.data('starttime').substring(0, 10).replace(/-/gi, '')),
+        endTime = Number(dom.data('endtime').substring(0, 10).replace(/-/gi, '')),
+        currentTime = Number(new Date().Format("yyyyMMdd"));
+
+    if (currentTime < startTime) {
+        //活动未开始
+        return 'activity-noStarted';
+    }
+    else if (currentTime > endTime) {
+        //活动已经结束
+       return 'activity-end'
+
+    }  else if(currentTime>=startTime && currentTime<=endTime){
+        //活动中
+        return 'activity-ing';
+    }
+
+
+
+}
+exports.refreshCaptcha = refreshCaptcha;
+exports.initRadio = initRadio;
+exports.IdentityCodeValid = IdentityCodeValid;
+exports.checkedAge = checkedAge;
+exports.popWindow = popWindow;
+exports.isUserLogin = isUserLogin;
+exports.useAjax = useAjax;
+exports.countDownLoan = countDownLoan;
+exports.MathDecimal = MathDecimal;
+exports.decrypt = decrypt;
+exports.GetDateStr = GetDateStr;
+exports.scrollList = scrollList;
+exports.activityStatus = activityStatus;
+exports.CommonLayerTip = CommonLayerTip;
+exports.repeatBgSquare = repeatBgSquare;
+
 
