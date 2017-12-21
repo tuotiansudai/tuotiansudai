@@ -30,6 +30,7 @@
             level_one_fee = #{levelOneFee},
             level_two_fee = #{levelTwoFee},
             level_three_fee = #{levelThreeFee},
+            discount = #{discount},
             days_limit = #{daysLimit},
             updated_by = #{updatedBy},
             updated_time = #{updatedTime},

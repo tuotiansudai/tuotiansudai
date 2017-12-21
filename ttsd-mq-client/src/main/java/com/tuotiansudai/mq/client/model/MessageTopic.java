@@ -8,7 +8,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_MembershipUpdate,
             MessageQueue.InvestSuccess_CouponUpdate,
             MessageQueue.InvestSuccess_ExperienceAssignInterestCoupon,
-            MessageQueue.InvestSuccess_YearEndAwards),
+            MessageQueue.InvestSuccess_YearEndAwards,
+            MessageQueue.InvestSuccess_CashSnowball),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,

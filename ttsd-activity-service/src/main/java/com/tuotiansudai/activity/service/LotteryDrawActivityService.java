@@ -12,6 +12,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -22,8 +23,8 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,6 +84,9 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private PointBillService pointBillService;
 
     @Value(value = "${activity.year.end.awards.startTime}")
     private String activityYearEndAwardsStartTime;
@@ -180,9 +185,10 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
 
-        if (accountModel.getPoint() < activityCategory.getConsumeCategory().getPoint()) {
+        if (accountModel.getPoint() - pointBillService.getFrozenPointByLoginName(userModel.getLoginName()) < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
+
 
         LotteryPrize lotteryPrize = drawLotteryPrize(activityCategory);
 
@@ -216,15 +222,6 @@ public class LotteryDrawActivityService {
                 DateTime.now().plusMonths(1).withTime(23, 59, 59, 59).toDate(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
-    }
-
-    private void createPointBillModel(String loginName, int point, LotteryPrize lotteryPrize) {
-        PointBillModel pointBillModel = new PointBillModel(loginName,
-                null,
-                point,
-                PointBusinessType.POINT_LOTTERY,
-                MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
-        pointBillMapper.create(pointBillModel);
     }
 
     private List<Long> getCouponId(LotteryPrize lotteryPrize) {
@@ -274,16 +271,11 @@ public class LotteryDrawActivityService {
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
-            createPointBillModel(loginName, 500, lotteryPrize);
-            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-            accountModel.setPoint(accountModel.getPoint() + 500);
-            accountMapper.update(accountModel);
+
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 500, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
-            createPointBillModel(loginName, 3000, lotteryPrize);
-            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-            accountModel.setPoint(accountModel.getPoint() + 3000);
-            accountMapper.update(accountModel);
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 3000, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         }
         return prizeType;
     }
@@ -315,15 +307,10 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case EACH_REFERRER:
-                    List<UserRegisterInfo> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
-                    for (UserRegisterInfo referrerUserModel : userModels) {
-                        if (referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)) {
-                            time++;
-                        }
-                    }
+                    time += userMapper.findUserCountByRegisterTimeAndReferrer(startTime, endTime, userModel.getLoginName());
                     break;
                 case EACH_REFERRER_INVEST:
-                    List<UserRegisterInfo> referrerUserModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    List<UserRegisterInfo> referrerUserModels = userMapper.findAllUsersByRegisterTimeAndReferrer(startTime, endTime, userModel.getLoginName());
                     for (UserRegisterInfo referrerUserModel : referrerUserModels) {
                         if (investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), startTime, endTime) > 0) {
                             time++;
@@ -365,7 +352,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case REFERRER_USER:
-                    long referrerUserCount = userMapper.findUserCountByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+                    long referrerUserCount = userMapper.findUserCountByRegisterTimeAndReferrer(startTime, endTime, userModel.getLoginName());
                     time += referrerUserCount * 5;
                     break;
                 case EACH_INVEST_5000:

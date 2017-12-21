@@ -1,13 +1,9 @@
 package com.tuotiansudai.coupon.util;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRegisterInfo;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -18,24 +14,11 @@ import java.util.List;
 public class NewRegisteredUserCollector implements UserCollector {
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     private static final long NEW_EXPERIENCE_COUPON_ID = 382L;
 
     private static final long OLD_EXPERIENCE_COUPON_ID = 100035L;
-
-    @Override
-    public List<String> collect(long couponId) {
-        CouponModel couponModel = couponMapper.findById(couponId);
-        List<UserRegisterInfo> usersByRegisterTimeOrReferrer = userMapper.findUsersByRegisterTimeOrReferrer(couponModel.getStartTime(), couponModel.getEndTime(), null);
-        return Lists.transform(usersByRegisterTimeOrReferrer, UserRegisterInfo::getLoginName);
-    }
 
     @Override
     public boolean contains(CouponModel couponModel, UserModel userModel) {

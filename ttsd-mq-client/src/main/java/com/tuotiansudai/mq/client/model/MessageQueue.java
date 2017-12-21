@@ -24,6 +24,7 @@ public enum MessageQueue {
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
     InvestSuccess_YearEndAwards("InvestSuccess-YearEndAwards"),
+    InvestSuccess_CashSnowball("InvestSuccess-CashSnowball"),
     Celebration_Coupon("Celebration-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
