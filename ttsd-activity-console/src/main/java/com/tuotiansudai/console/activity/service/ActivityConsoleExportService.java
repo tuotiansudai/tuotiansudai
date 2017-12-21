@@ -11,11 +11,11 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.UserRegisterInfo;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRegisterInfo;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -67,6 +67,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private ActivityConsoleZeroShoppingService activityConsoleZeroShoppingService;
+
+    @Autowired
+    private ActivityConsoleCashSnowballService activityConsoleCashSnowballService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -283,5 +286,9 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildZeroShoppingCsvList() {
         return activityConsoleZeroShoppingService.userPrizeList(1, Integer.MAX_VALUE, null, null, null).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildCashSnowballCsvList(String mobile, Long startInvestAmount, Long endInvestAmount){
+        return activityConsoleCashSnowballService.list(1, Integer.MAX_VALUE, mobile, startInvestAmount, endInvestAmount).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

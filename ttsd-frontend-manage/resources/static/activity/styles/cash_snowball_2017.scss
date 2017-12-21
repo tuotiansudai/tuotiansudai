@@ -1,0 +1,809 @@
+html {
+  font-size: 100px;
+}
+body {
+  font-size: 12px;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #e51f1f;
+}
+strong,em {
+  font-weight: normal;
+}
+* {
+  -webkit-tap-highlight-color:transparent;
+}
+#cash_snowball .page-width {
+  width: 1200px;
+}
+.my-page {
+  width: 1006px;
+  margin: 0 auto;
+}
+.invest-btn {
+  display: inline-block;
+  width: 306px;
+  height: 82px;
+  line-height: 82px;
+  font-size: 50px;
+  cursor: pointer;
+  color: #fff;
+  background: #ed4119;
+}
+.cash-main {
+  overflow: hidden;
+}
+.snow-banner {
+  width: 100%;
+  height: 348px;
+  background: url("../images/2017/cash-snowball/pc_banner.png") no-repeat center center;
+}
+.cash_container {
+  background: #fff7d1;
+}
+.title-top {
+  width: 892px;
+  height: 139px;
+  margin: 0 auto;
+  margin-top: 25px;
+  background: url("../images/2017/cash-snowball/title_top.png") no-repeat center center;
+}
+/*第一波*/
+.invest-wrap {
+  width: 1000px;
+  border: 3px solid #fde237;
+  background: #fffbe8;
+  border-radius: 5px;
+  text-align: center;
+  margin: 0 auto;
+  .wap-title-top {
+    display: none;
+  }
+  .activity-title-top {
+    padding-top: 30px;
+    text-align: center;
+    font-size: 20px;
+    color: #333;
+    line-height: 45px;
+    .font-wrap {
+      display: block;
+    }
+    strong {
+      font-size: 24px;
+      color: #ed4119;
+      font-weight: bold;
+    }
+
+  }
+  .amount-investment {
+    padding: 12px 40px;
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+    background: #ed4119;
+    display: inline-block;
+    margin: 0px auto;
+    margin-top: 50px;
+    border-radius: 8px;
+  }
+  /*雪道*/
+  .mobile-run-way {
+    display: none;
+  }
+  .run-way {
+    margin: 0 auto;
+    margin-top: 60px;
+    width: 870px;
+    height: 220px;
+    position: relative;
+    box-sizing: border-box;
+    padding-top: 84px;
+    .red-ware {
+      width: 65px;
+      height: 92px;
+      background: url("../images/2017/cash-snowball/red_ware.png") no-repeat center center;
+      background-size: 100%;
+      position: absolute;
+      font-weight: bold;
+      font-size: 22px;
+      color: #ffe16a;
+      opacity: 0.6;
+      z-index: 100;
+      line-height: 103px;
+      &.red-ware-top {
+       top: 0px;
+        &.red-ware-1 {
+          left: 3px;
+        }
+        &.red-ware-3 {
+          left: 403px;
+        }
+        &.red-ware-5 {
+          left: 803px;
+        }
+      }
+
+      &.red-ware-bottom {
+        bottom: 0px;
+        line-height: 125px;
+        background: url("../images/2017/cash-snowball/red_ware_reverse.png") no-repeat center center;
+        &.red-ware-2 {
+          left: 203px;
+        }
+        &.red-ware-4 {
+          left: 603px;
+        }
+      }
+
+    }
+    .christmas-tree {
+      width: 44px;
+      height: 55px;
+      position: absolute;
+      top: 29px;
+      background: url("../images/2017/cash-snowball/tree.png") no-repeat center center;
+      background-size: 100%;
+      &.christmas-tree-1 {
+        left: 275px;
+      }
+      &.christmas-tree-2 {
+        left: 534px;
+      }
+    }
+    .christmas-man {
+      width: 57px;
+      height: 70px;
+      position: absolute;
+      right: 100px;
+      top: 16px;
+      background: url("../images/2017/cash-snowball/snowman.png") no-repeat center center;
+    }
+    .way {
+      box-sizing: border-box;
+      padding-top: 22px;
+      margin: 0 auto;
+      width: 848px;
+      height: 50px;
+      border-radius: 25px;
+      background: #fff;
+      position: relative;
+      .money-tip {
+        position: absolute;
+        left: -9999px;
+        font-size: 17px;
+        color: #8045a3;
+        z-index: 300;
+        background: #ffd41d;
+        padding: 0 18px;
+        border-radius: 40px;
+      }
+      .progress {
+        margin: 0 auto;
+        width: 826px;
+        height: 8px;
+        position: relative;
+        >span {
+          position: absolute;
+          &.circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 18px;
+            //border:5px solid #ffd41d;
+            border:5px solid #f4f4f4;
+            background: #fff;
+            top: -10px;
+            &.circle-1 {
+              left: 0px;
+            }
+            &.circle-2 {
+              left: 200px;
+            }
+            &.circle-3 {
+              left: 400px;
+            }
+            &.circle-4 {
+              left: 600px;
+            }
+            &.circle-5 {
+              left: 800px;
+            }
+          }
+          &.thread {
+            width: 174px;
+            height: 8px;
+            //background: #ffd41d;
+            background: #f4f4f4;
+            &.thread-1 {
+              left: 27px;
+            }
+            &.thread-2 {
+              left: 228px;
+            }
+            &.thread-3 {
+              left: 428px;
+            }
+            &.thread-4 {
+              left: 628px;
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+  .already-obtained {
+    margin-top: 40px;
+    font-size: 27px;
+    color: #333;
+    text-align: center;
+    strong {
+      font-size: 30px;
+      color: #ed4119;
+      font-weight: bold;
+    }
+  }
+  .invest-button {
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+
+}
+/*投资记录*/
+.investment-records {
+  background: #fffbe8;
+  margin-top: 34px;
+  padding: 0 126px 42px;
+  >h2 {
+    height: 70px;
+    text-align: center;
+    border-bottom:1px solid #f0ecda;
+    span {
+      width: 118px;
+      height: 28px;
+      margin-top: 20px;
+      background: url("../images/2017/cash-snowball/invest_recored.png") no-repeat center center;
+      display: inline-block;
+      text-indent: -9999px;
+
+    }
+  }
+  .record-list {
+    max-height: 230px;
+    overflow: hidden;
+    .no-record {
+      font-size: 16px;
+      color: #525252;
+      text-align: center;
+      padding-top: 40px;
+    }
+    ul {
+      >li {
+        height: 45px;
+        line-height: 45px;
+        font-size: 16px;
+        color: #525252;
+        border-bottom:1px solid #f0ecda;
+        padding-left: 36px;
+        .mobile-style {
+          padding-left: 0;
+        }
+        em {
+          float: right;
+        }
+      }
+    }
+  }
+
+
+}
+/*备注*/
+.remarks {
+  margin-top: 25px;
+  dl {
+    width: 650px;
+    margin: 0 auto;
+    font-size: 14px;
+    dt {
+      width: 30px;
+      float: left;
+    }
+    dd {
+      float: left;
+      &.two {
+        padding-left: 30px;
+      }
+    }
+  }
+}
+/*现金叠加模块*/
+.cash-superposition {
+  text-align: center;
+  >h2 {
+    width: 941px;
+    height: 150px;
+    margin: 0 auto;
+    margin-top: 54px;
+    background: url("../images/2017/cash-snowball/title_mid.png") no-repeat center center;
+  }
+  >h4 {
+    margin-top: 35px;
+    margin-bottom: 60px;
+    font-size: 24px;
+    color: #333;
+    line-height: 45px;
+    text-align: center;
+    .wrap {
+      display: block;
+    }
+    strong {
+      font-weight: bold;
+      color: #ed4119;
+      font-size: 26px;
+    }
+    em {
+      font-weight: bold;
+      color: #ed4119;
+      font-size: 32px;
+    }
+  }
+  .invest-bar-graph {
+    width: 974px;
+    height: 529px;
+    margin: 0 auto;
+    background: url("../images/2017/cash-snowball/pc_graph.png") no-repeat center center;
+  }
+  .cash-font {
+    font-size: 24px;
+    margin-top: 40px;
+    strong {
+      font-size: 32px;
+      font-weight: bold;
+      color: #ed4119;
+    }
+  }
+  .invest-btn-2 {
+    display: inline-block;
+    width: 306px;
+    height: 82px;
+    line-height: 82px;
+    font-size: 50px;
+    cursor: pointer;
+    color: #fff;
+    background: #ed4119;
+    margin: 0 auto;
+    margin-top: 48px;
+    margin-bottom: 45px;
+
+  }
+  .comment {
+    font-size: 14px;
+    color: #525252;
+    text-align: center;
+  }
+}
+
+/*温馨提示*/
+.kindly-tips {
+  margin-bottom: 60px;
+  dl {
+    dt {
+      font-size: 20px;
+      color: #ed4119;
+    }
+    dd {
+      font-size: 16px;
+      color: #525252;
+      line-height: 30px;
+      &.computed {
+        table {
+          margin-top: 14px;
+          margin-bottom: 14px;
+          width: 455px;
+          height: 94px;
+          border-collapse: collapse;
+          border: 1px solid #b4b09a;
+          border-width: 1px 0 0 1px;
+          margin-left: 26px;
+          td {
+            border:1px solid #b4b09a;
+            border-width:0 1px 1px 0;
+            color: #525252;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+@media screen and (max-width:1200px) {
+  #cash_snowball .page-width {
+    width: 96%;
+  }
+  .kindly-tips {
+    padding-left: 40px;
+  }
+
+}
+@media screen and (max-width:1024px) {
+  .page-width {
+    width: 100%;
+  }
+
+}
+@media screen and (max-width:768px) {
+  .main-frame {
+    background: #fff7d1;
+  }
+  .page-width{
+    width: 100%;
+  }
+  .my-page {
+    width: 7.11rem;
+    @media screen and (max-width:320px) {
+      width: 7.21rem;
+    }
+  }
+
+  .invest-btn {
+    width: 3.06rem;
+    height: 0.82rem;
+    line-height: 0.82rem;
+    font-size: 0.44rem;
+  }
+  .cash-main {
+    overflow: hidden;
+    padding-top: 0.22rem;
+  }
+  .snow-banner {
+    width: 7.5rem;
+    height: 3.5rem;
+    background: url("../images/2017/cash-snowball/wap_banner.jpg") no-repeat center center;
+    background-size: 100%;
+  }
+  .cash_container {
+    background: #fff7d1;
+  }
+  .title-top {
+   display: none;
+  }
+  /*第一波*/
+  .invest-wrap {
+    width: 7rem;
+    border: 0.03rem solid #fde237;
+    background: #fffbe8;
+    border-radius: 0.05rem;
+    text-align: center;
+    .wap-title-top {
+      display: block;
+      margin: 0 auto;
+      margin-top: 0.24rem;
+      width: 6.45rem;
+      height: 1.27rem;
+      background: url("../images/2017/cash-snowball/wap_title_top.png") no-repeat center center;
+      background-size: 100%;
+    }
+    .activity-title-top {
+      padding-top: 0.3rem;
+      font-size: 0.26rem;
+      line-height: 0.5rem;
+      .mobile-style {
+        display: block;
+      }
+      strong {
+        font-size: 0.3rem;
+      }
+
+    }
+    .amount-investment {
+      padding: 0.12rem 0.38rem;
+      font-size: 0.26rem;
+      margin-top: 0.5rem;
+      border-radius: 0.08rem;
+    }
+    /*雪道*/
+    .run-way {
+      display: none;
+    }
+    .mobile-run-way {
+      display: block;
+      margin-top: 0.6rem;
+      width: 6.38rem;
+      height: 2.2rem;
+      padding-top: 1.11rem;
+      .red-ware {
+        width: 0.83rem;
+        height: 1.18rem;
+        font-size: 0.26rem;
+        position: absolute;
+        top: 0px;
+        line-height: 1.35rem;
+        &.red-ware-1 {
+          left: 0.02rem;
+        }
+        &.red-ware-2 {
+          left: 2.79rem;
+        }
+        &.red-ware-3 {
+          left: 5.58rem
+        }
+
+      }
+      .christmas-tree {
+        width: 0.44rem;
+        height: 0.55rem;
+        top: 0.55rem;
+        &.christmas-tree-1 {
+          left: 1.3rem;
+        }
+        &.christmas-tree-2 {
+          left: 4.28rem;
+        }
+      }
+      .way {
+        padding-top: 0.21rem;
+        width: 6.2rem;
+        height: 0.5rem;
+        border-radius: 0.25rem;
+        .money-tip {
+          top: 0.64rem;
+          left: -9999px;
+          font-size: 0.22rem;
+          z-index: 300;
+          padding: 0 0.22rem;
+          border-radius: 0.4rem;
+        }
+        .progress {
+          width: 5.78rem;
+          height: 0.08rem;
+          >span {
+            position: absolute;
+            &.circle {
+              width: 0.18rem;
+              height: 0.18rem;
+              border-radius: 0.18rem;
+              border:0.05rem solid #f4f4f4;
+              top: -0.1rem;
+              &.circle-1 {
+                left: 0rem;
+              }
+              &.circle-2 {
+                left: 2.78rem;
+              }
+              &.circle-3 {
+                left: 5.56rem;
+              }
+
+            }
+            &.thread {
+              width: 2.53rem;
+              height: 0.08rem;
+              &.thread-1 {
+                left: 0.27rem;
+              }
+              &.thread-2 {
+                left: 3.06rem;
+              }
+
+            }
+          }
+
+        }
+      }
+
+    }
+    .already-obtained {
+      margin-top: 0.3rem;
+      font-size: 0.3rem;
+      .tips {
+        display: inline-block;
+        padding: 0.4rem 0.2rem;
+        border: 0.03rem solid #fde237;
+        border-radius: 0.05rem;
+      }
+
+      .mobile-style {
+        display: block;
+      }
+      strong {
+        font-size: 0.3rem;
+      }
+    }
+    .invest-button {
+      margin-top: 0.44rem;
+      margin-bottom: 0.38rem;
+    }
+
+  }
+  /*投资记录*/
+  .investment-records {
+    border: 0.03rem solid #fde237;
+    border-radius: 0.05rem;
+    margin-top: 0.84rem;
+    padding: 0.4rem 0.8rem;
+    position: relative;
+    .congratulations {
+      display: none;
+    }
+    @media screen and (max-width:414px) {
+      padding-right: 0.0rem;
+      @media screen and (max-width:375px) {
+      padding-left: 0.3rem;
+      //@media screen and (max-width:320px) {
+      //  padding-left: 0.0rem;
+      //
+      //}
+
+    }
+
+    }
+    >h2 {
+      position: absolute;
+      left: 50%;
+      top: -0.44rem;
+      margin-left: -1.3rem;
+      width: 2.6rem;
+      height: 0.58rem;
+      border: 0.03rem solid #fde237;
+      border-radius: 0.05rem;
+      background: #fffbe8;
+      span {
+        width: 1.18rem;
+        height: 0.28rem;
+        margin-top: 0.15rem;
+        background-size: 100%;
+      }
+    }
+    .record-list {
+      max-height: 2.8rem;
+      .no-record {
+        font-size: 0.2rem;
+        padding-top: 0.2rem;
+      }
+      ul {
+        >li {
+          height: 0.6rem;
+          line-height: 0.6rem;
+          font-size: 0.24rem;
+          border-bottom:none;
+          padding: 0;
+          .mobile-style {
+            padding-left: 0.2rem;
+            padding-right: 0.1rem;
+
+          }
+          i {
+            display: none;
+          }
+          em {
+            display: none;
+          }
+        }
+      }
+    }
+
+
+  }
+  /*备注*/
+  .remarks {
+    margin-top: 0.2rem;
+    dl {
+      width: 7.11rem;
+      padding-left: 0.22rem;
+      font-size: 0.22rem;
+      box-sizing: border-box;
+      dt {
+        float: none;
+      }
+      dd {
+        float: none;
+        &.two {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+  /*现金叠加模块*/
+  .cash-superposition {
+    text-align: center;
+    border: 0.03rem solid #fde237;
+    border-radius: 0.05rem;
+    margin-top: 0.5rem;
+    background: #fffbe8;
+    >h2 {
+      width: 6.45rem;
+      height: 1.17rem;
+      margin-top: 0.36rem;
+      margin-bottom: 0;
+      background: url("../images/2017/cash-snowball/wap_title_cash.png") no-repeat center center;
+      background-size: 100%;
+    }
+    >h4 {
+      margin-top: 0.25rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.26rem;
+      line-height: 0.56rem;
+      .mobile-style {
+        display: block;
+      }
+      strong {
+        font-size: 0.26rem;
+      }
+      em {
+        font-size: 0.34rem;
+      }
+    }
+    .invest-bar-graph {
+      width: 6.72rem;
+      height:5.17rem;
+      background: url("../images/2017/cash-snowball/wap_graph.png") no-repeat center center;
+      background-size: 100%;
+    }
+    .cash-font {
+      font-size: 0.3rem;
+      margin-top: 0.4rem;
+      display: inline-block;
+      padding: 0.4rem 0.2rem;
+      border: 0.03rem solid #fde237;
+      border-radius: 0.05rem;
+      strong {
+        font-size: 0.3rem;
+      }
+    }
+    .invest-btn-2 {
+      width: 3.06rem;
+      height: 0.82rem;
+      line-height: 0.82rem;
+      font-size: 0.44rem;
+      margin-top: 0.1rem;
+      margin-bottom: 0.53rem;
+
+    }
+    .comment {
+      font-size: 0.22rem;
+      padding: 0 0.26rem 0.2rem;
+    }
+  }
+
+  /*温馨提示*/
+  .kindly-tips {
+    margin-bottom: 0.35rem;
+    margin-top: 0.5rem;
+    padding-left: 0.1rem;
+    dl {
+      dt {
+        font-size: 0.26rem;
+      }
+      dd {
+        font-size: 0.22rem;
+        line-height: 0.4rem;
+        &.computed {
+          table {
+            margin-top: 0.06rem;
+            margin-bottom: 0.2rem;
+            width: 5.86rem;
+            height: 1.15rem;
+            font-size: 10px;
+            margin-left: 0.1rem;
+            td {
+              padding-right: 0.05rem;
+            }
+            @media screen and (max-width:414px) {
+              width: 6.6rem;
+              @media screen and (max-width:320px) {
+                font-size: 12px;
+              }
+            }
+
+          }
+
+        }
+      }
+    }
+  }
+
+}
