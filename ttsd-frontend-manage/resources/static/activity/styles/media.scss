@@ -43,6 +43,11 @@
     font-size: 53.33px;
   }
 }
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
 @media screen and (max-width: 375px) {
   html {
     font-size: 50px;
