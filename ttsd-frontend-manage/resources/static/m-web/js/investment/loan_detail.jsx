@@ -139,8 +139,7 @@ $('#transaction_record').on('click',function () {
             probeType: 2,
             mouseWheel: true
         });
-        myScroll.on('scrollEnd', function () {
-
+        myScroll.on('scrollEnd', function () {console.log(9)
             //如果滑动到底部，则加载更多数据（距离最底部10px高度）
             if ((this.y - this.maxScrollY) <= 10) {
                 pageNum++;
@@ -166,18 +165,18 @@ function getMoreRecords(){
                 index:pageNum
             }
         },
-        function (res) {
+        function (res) {console.log(res.data.records)
             if(pageNum == 1){
                 if(res.data.records.length > 0){
                     var html = tpl('recordsTpl', res.data);
-                    $content.append(html)
+                    $content.prepend(html)
                 }else {
                     $content.html('<div class="no-records">暂无交易记录</div>')
                 }
             }else {
                 if(res.data.records.length > 0){
                     var html = tpl('recordsTpl', res.data);
-                    $content.append(html)
+                    $content.prepend(html)
                 }else {
                    $('#pullUp').find('.pullUpLabel').html('没有更多数据了');
                 }

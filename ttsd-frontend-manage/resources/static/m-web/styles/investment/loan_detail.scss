@@ -666,27 +666,25 @@
 }
 #pullUp {
   width: 100%;
-  //position: absolute;
   height: 40px;
   line-height: 34px;
-  bottom: 40px;
   background: #F7F7F7;
   text-align: center;
   z-index: 2000;
+  margin-top:-300px;
 }
 
 #box_content {
   overflow: hidden;
   position: absolute;
   width: 100%;
-  height: calc( 100% - 165px);
+  -webkit-overflow-scrolling: touch;
+  height: calc( 100% - 160px);
 }
 #scroll {
-  height: 100%;
+  min-height: calc( 100% - 40px);
 }
-#content {
-  min-height: calc( 100% - 34px);
-}
+
 
 
 

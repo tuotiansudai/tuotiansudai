@@ -21,7 +21,6 @@ let myScroll = new IScroll('#wrapperOut', {
 
 
 myScroll.on('scrollEnd', function () {
-    console.log(this.y + "|||" + this.maxScrollY);
     //如果滑动到底部，则加载更多数据（距离最底部10px高度）
     if ((this.y - this.maxScrollY) <= 10) {
             getMore();

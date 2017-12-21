@@ -44,9 +44,9 @@
                                 </div>
                                 {{/each}}
                         </script>
-
+                        <div id="pullUp"><span class="pullUpLabel">上拉加载更多</span></div>
                     </div>
-                    <div id="pullUp"><span class="pullUpLabel">上拉加载更多</span></div>
+
 
                 </div>
 
