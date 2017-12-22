@@ -109,32 +109,42 @@ public class WorkerMonitor {
 
     private void notifyOK() {
         String alertMessage = "所有Worker已恢复正常";
-        sendNotification(alertMessage);
+        sendNotification(alertMessage, alertMessage);
     }
 
     private void notifyError(Set<String> missingWorkers) {
-        String allMissingWorkers = String.join(",", missingWorkers);
-        String alertMessage = String.format("Worker[%s] 掉线", allMissingWorkers);
+        String allMissingWorkers = String.join(", ", missingWorkers);
         logger.error("[monitor] {} lost", allMissingWorkers);
-        sendNotification(alertMessage);
+
+        String smsNotifyMissingWorkers;
+        if (missingWorkers.size() <= 3) {
+            smsNotifyMissingWorkers = allMissingWorkers;
+        } else {
+            Object[] workerArray = missingWorkers.toArray();
+            smsNotifyMissingWorkers = String.format("%s, %s, %s and other %d workers",
+                    workerArray[0], workerArray[1], workerArray[2], missingWorkers.size() - 3);
+        }
+        String smsText = String.format("Worker[%s] 掉线", smsNotifyMissingWorkers);
+        String emailText = String.format("Worker[%s] 掉线", allMissingWorkers);
+        sendNotification(smsText, emailText);
     }
 
-    private void sendNotification(String text) {
+    private void sendNotification(String smsText, String emailText) {
         if (monitorConfig.isSmsNotifyEnabled()) {
-            logger.info("[monitor] send sms {}", text);
-            SmsFatalNotifyDto dto = new SmsFatalNotifyDto(text);
+            logger.info("[monitor] send sms {}", smsText);
+            SmsFatalNotifyDto dto = new SmsFatalNotifyDto(smsText);
             try {
                 smsWrapperClient.sendFatalNotify(dto);
             } catch (Exception e) {
-                logger.error("[monitor] send sms {} failed", text, e);
+                logger.error("[monitor] send sms {} failed", smsText, e);
             }
         }
         if (monitorConfig.isEmailNotifyEnabled()) {
-            logger.info("[monitor] send email {}", text);
+            logger.info("[monitor] send email {}", emailText);
             try {
-                sendNotifyEmail(text);
+                sendNotifyEmail(emailText);
             } catch (Exception e) {
-                logger.error("[monitor] send email{} failed", text, e);
+                logger.error("[monitor] send email{} failed", emailText, e);
             }
         }
     }

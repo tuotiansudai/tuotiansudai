@@ -73,7 +73,7 @@ public class WorkerMonitorTest {
         heartBeat("worker1");
         heartBeat("worker1", "worker3", "worker4");
         heartBeat("worker1", "worker2", "worker3", "worker4");
-        heartBeat("worker1", "worker2", "worker3", "worker4");
+        heartBeat("worker1", "worker2", "worker3", "worker4", "worker5");
         heartBeat("worker1");
         heartBeat("worker1");
         heartBeat("worker1");
@@ -82,15 +82,15 @@ public class WorkerMonitorTest {
         heartBeat("worker1");
         workerMonitor.stop();
         List<SmsFatalNotifyDto> smsMessages = smsFatalNotifyDtoCaptor.getAllValues();
-        assertLost(smsMessages.get(0).getErrorMessage(), "worker3,worker4");
+        assertLost(smsMessages.get(0).getErrorMessage(), "worker3, worker4");
         assertLost(smsMessages.get(1).getErrorMessage(), "worker2");
         assertOK(smsMessages.get(2).getErrorMessage());
-        assertLost(smsMessages.get(3).getErrorMessage(), "worker2,worker3,worker4");
+        assertLost(smsMessages.get(3).getErrorMessage(), "worker2, worker3, worker4 and other 1 workers");
         List<SimpleMailMessage> mailMessages = mailMessageArgumentCaptor.getAllValues();
-        assertLost(mailMessages.get(0).getText(), "worker3,worker4");
+        assertLost(mailMessages.get(0).getText(), "worker3, worker4");
         assertLost(mailMessages.get(1).getText(), "worker2");
         assertOK(mailMessages.get(2).getText());
-        assertLost(mailMessages.get(3).getText(), "worker2,worker3,worker4");
+        assertLost(mailMessages.get(3).getText(), "worker2, worker3, worker4, worker5");
     }
 
     private void assertLost(String message, String workerName) {
