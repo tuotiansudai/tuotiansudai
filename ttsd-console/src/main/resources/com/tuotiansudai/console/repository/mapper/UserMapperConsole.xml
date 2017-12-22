@@ -373,6 +373,9 @@
             <if test="mobile != null and mobile != '' ">
                 AND u.mobile = #{mobile}
             </if>
+            <if test="role != null">
+                AND exists (select 1 from user_role where u.login_name = user_role.login_name and user_role.role = #{role})
+            </if>
             <if test="registerTimeStart != null">
                 AND u.register_time >= #{registerTimeStart}
             </if>
@@ -518,6 +521,9 @@
         <where>
             <if test="mobile != null and mobile != '' ">
                 AND u.mobile = #{mobile}
+            </if>
+            <if test="role != null">
+                AND exists (select 1 from user_role where u.login_name = user_role.login_name and user_role.role = #{role})
             </if>
             <if test="registerTimeStart != null">
                 AND u.register_time >= #{registerTimeStart}

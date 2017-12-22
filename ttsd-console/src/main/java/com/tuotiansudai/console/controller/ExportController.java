@@ -469,6 +469,7 @@ public class ExportController {
     @RequestMapping(value = "/user-micro-model", method = RequestMethod.GET)
     public void exportUserMicroModel(
             @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "userRole", required = false) Role role,
             @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeStart,
             @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeEnd,
             @RequestParam(value = "hasCertify", required = false) String hasCertify,
@@ -506,6 +507,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
 
         BaseDto<BasePaginationDataDto<UserMicroModelView>> baseDto = consoleUserService.queryUserMicroView(mobile,
+                role,
                 registerTimeStart,
                 registerTimeEnd,
                 hasCertify,
