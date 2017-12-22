@@ -44,6 +44,9 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "更新时间", example = "2016-11-25 14:07:01")
     private Date updatedTime;
 
+    @ApiModelProperty(value = "商品详情图片地址", example = "/a/b/c.png")
+    private String detailImage;
+
 
     public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount, int seq, Date updatedTime) {
         this.productId = String.valueOf(productId);
@@ -60,7 +63,6 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.productId = String.valueOf(exchangeCouponView.getProductId());
         this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
-
         this.leftCount = exchangeCouponView.getCouponModel() == null ? "0" : String.valueOf(exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount());
         this.seq = exchangeCouponView.getSeq();
         this.updatedTime = exchangeCouponView.getCouponModel().getUpdatedTime();
@@ -167,4 +169,11 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.leftCount = leftCount;
     }
 
+    public String getDetailImage() {
+        return detailImage;
+    }
+
+    public void setDetailImage(String detailImage) {
+        this.detailImage = detailImage;
+    }
 }

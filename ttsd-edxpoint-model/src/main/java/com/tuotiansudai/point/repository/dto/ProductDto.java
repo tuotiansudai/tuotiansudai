@@ -18,6 +18,8 @@ public class ProductDto implements Serializable {
     private long totalCount;
     private long monthLimit;
     private long points;
+    private String webPictureUrl;
+    private String appPictureUrl;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
@@ -160,5 +162,21 @@ public class ProductDto implements Serializable {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getWebPictureUrl() {
+        return webPictureUrl;
+    }
+
+    public void setWebPictureUrl(String webPictureUrl) {
+        this.webPictureUrl = webPictureUrl;
+    }
+
+    public String getAppPictureUrl() {
+        return appPictureUrl;
+    }
+
+    public void setAppPictureUrl(String appPictureUrl) {
+        this.appPictureUrl = appPictureUrl;
     }
 }
