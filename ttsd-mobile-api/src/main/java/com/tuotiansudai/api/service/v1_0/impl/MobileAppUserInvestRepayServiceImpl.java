@@ -68,7 +68,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Value("${web.server}")
     private String webServer;
 
-    private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
+    private final static String RED_ENVELOPE_TEMPLATE = "{0}元投资红包";
 
     private final static String NEWBIE_COUPON_TEMPLATE = "{0}元新手体验金";
 

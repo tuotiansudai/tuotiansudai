@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.sign_check}" pageJavascript="${js.sign_check}" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元现金红包大奖.">
+<@global.main pageCss="${css.sign_check}" pageJavascript="${js.sign_check}" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元投资红包大奖.">
 <div class="sign-check-container">
 	<div class="top-item">
 	</div>
@@ -78,7 +78,7 @@
 			<div class="title-item title-two">
 			</div>
 			<div class="intro-text">
-				用户累计签到一定天数，即可领取惊喜现金红包。
+				用户累计签到一定天数，即可领取惊喜投资红包。
 			</div>
 			<div class="left-item center-item clearfix">
 				<div class="title-name">
@@ -126,7 +126,7 @@
 			<div class="title-item title-three">
 			</div>
 			<div class="intro-text">
-				连续签到365天，可额外获得365元现金红包。
+				连续签到365天，可额外获得365元投资红包。
 			</div>
 			<div class="gift-item">
 			</div>

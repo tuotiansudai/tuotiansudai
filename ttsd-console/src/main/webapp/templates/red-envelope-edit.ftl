@@ -7,7 +7,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">红包名称:</label>
             <div class="col-sm-4">
-                <span class="form-control">现金红包</span>
+                <span class="form-control">投资红包</span>
                 <input class="couponType" name="couponType" value="RED_ENVELOPE" type="hidden">
             </div>
         </div>

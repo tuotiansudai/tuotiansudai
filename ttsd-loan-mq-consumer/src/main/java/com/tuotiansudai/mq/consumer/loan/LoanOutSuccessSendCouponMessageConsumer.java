@@ -38,7 +38,7 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
         logger.info("[标的放款MQ] LoanOutSuccess_AssignCoupon receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[标的放款MQ] LoanOutSuccess_AssignCoupon receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送现金红包失败, MQ消息为空"));
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送投资红包失败, MQ消息为空"));
             return;
         }
 
@@ -47,12 +47,12 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
             loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             if (loanOutInfo.getLoanId() == null) {
                 logger.error("[标的放款MQ] LoanOutSuccess_AssignCoupon loanId is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送现金红包失败, 消息中loanId为空"));
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送投资红包失败, 消息中loanId为空"));
                 return;
             }
         } catch (IOException e) {
             logger.error("[标的放款MQ] LoanOutSuccess_AssignCoupon json convert LoanOutSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送现金红包失败, 解析消息失败"));
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送投资红包失败, 解析消息失败"));
             return;
         }
 
@@ -64,12 +64,12 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
             result = payWrapperClient.sendRedEnvelopeAfterLoanOut(loanId).isSuccess();
         } catch (Exception e) {
             logger.error("[标的放款MQ] LoanOutSuccess_AssignCoupon json convert LoanOutSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送现金红包失败, 业务处理异常"));
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送投资红包失败, 业务处理异常"));
             return;
         }
 
         if (!result) {
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("发送现金红包失败,标的ID:{0}", String.valueOf(loanId))));
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("发送投资红包失败,标的ID:{0}", String.valueOf(loanId))));
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignCoupon is fail. loanId:{0}", String.valueOf(loanId)));
             throw new RuntimeException("[标的放款MQ] LoanOutSuccess_AssignCoupon is fail. loanOutInfo: " + message);
         }

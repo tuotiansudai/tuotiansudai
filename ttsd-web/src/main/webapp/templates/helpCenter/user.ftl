@@ -93,7 +93,7 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">3、怎么将兑换码兑换成现金红包？</p>
+                    <p class="single-title">3、怎么将兑换码兑换成投资红包？</p>
 
                     <p class="single-answer">答：登录官方网站—我的账户—我的宝藏—输入兑换码（右上角），进行兑换。</p>
                 </li>

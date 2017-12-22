@@ -97,7 +97,7 @@
                     <img src="${commonStaticServer}/activity/images/sign/actor/loanhike/stress-intro.png">
                 </div>
                 <div class="notice-right">
-                    这次加息活动，在活动期间及范围内，不仅可以<span>无限次</span>使用，并且可以与平台其他优惠<span>一起使用</span>!包括: <span>生日月收益翻倍</span>、<span>现金红包</span>、<span>加息券</span>！
+                    这次加息活动，在活动期间及范围内，不仅可以<span>无限次</span>使用，并且可以与平台其他优惠<span>一起使用</span>!包括: <span>生日月收益翻倍</span>、<span>投资红包</span>、<span>加息券</span>！
                 </div>
             </div>
             <div class="arrow-icon"></div>

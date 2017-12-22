@@ -7,12 +7,12 @@
             <div class="invite-box">
                 <em class="message-tip">您有20.88元红包待领取！</em>
                 <span class="amount"><i>20.88</i>元</span>
-                <span class="kind">现金红包</span>
+                <span class="kind">投资红包</span>
             </div>
 
             <div class="flow-box invite-friend">
                 <span class="reward-msg">
-                    <em>邀好友注册，您将有机会领取20.88元现金红包，好友还能领取8.88元红包哦！</em>
+                    <em>邀好友注册，您将有机会领取20.88元投资红包，好友还能领取8.88元红包哦！</em>
                 </span>
                 <a href="javascript:void(0)" data-url="${referrerUrl}" class="normal-button to-invite-friend" >立即邀请赚红包</a>
             </div>

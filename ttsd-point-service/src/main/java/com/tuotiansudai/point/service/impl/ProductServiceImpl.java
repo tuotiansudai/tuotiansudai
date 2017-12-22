@@ -212,7 +212,7 @@ public class ProductServiceImpl implements ProductService {
         CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
         switch (couponModel.getCouponType()) {
             case RED_ENVELOPE:
-                productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
+                productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资红包");
                 productDto.setDescription(String.valueOf(couponModel.getAmount()));
                 break;
             case INVEST_COUPON:
