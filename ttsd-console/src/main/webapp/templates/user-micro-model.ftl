@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group">
-            <label for="project">角色</label>
+            <label for="project">用例类型</label>
             <select class="selectpicker" name="userRole">
                 <option value="">全部</option>
                 <#list roleList as roleItem>
