@@ -1,7 +1,9 @@
 package com.tuotiansudai.worker.monitor;
 
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.worker.monitor.config.MonitorConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,11 @@ import java.util.stream.Collectors;
 @Component
 public class WorkerMonitor {
     private static final Logger logger = LoggerFactory.getLogger(WorkerMonitor.class);
+
     static String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
+
+    private static final Environment enviroment = Environment.valueOf(ETCDConfigReader.getReader().getValue("common.environment"));
+
     private final Set<String> missingWorkers = new HashSet<>();
 
     private final Timer healthCheckTimer;
@@ -139,7 +145,7 @@ public class WorkerMonitor {
                 logger.error("[monitor] send sms {} failed", smsText, e);
             }
         }
-        if (monitorConfig.isEmailNotifyEnabled()) {
+        if (Environment.isProduction(enviroment) && monitorConfig.isEmailNotifyEnabled()) {
             logger.info("[monitor] send email {}", emailText);
             try {
                 sendNotifyEmail(emailText);
