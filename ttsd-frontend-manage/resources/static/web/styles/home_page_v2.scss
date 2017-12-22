@@ -549,7 +549,8 @@ $pointColor: #ff5400;
     .hot-bag {
       width: 300px;
       height: 240px;
-      background: url('../images/homepage/hot-bag-a.png') left top no-repeat;
+      background: url('../images/homepage/hot-bag-info.jpg') left top no-repeat;
+      background-size: 100%;
       display: inline-block;
       float: left;
       @media (min-width: 701px) and (max-width: 768px) {
