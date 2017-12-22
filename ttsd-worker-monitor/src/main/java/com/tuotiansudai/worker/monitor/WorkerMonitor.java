@@ -24,8 +24,6 @@ public class WorkerMonitor {
 
     static String HEALTH_REPORT_REDIS_KEY = "worker:health:report";
 
-    private static final Environment enviroment = Environment.valueOf(ETCDConfigReader.getReader().getValue("common.environment"));
-
     private final Set<String> missingWorkers = new HashSet<>();
 
     private final Timer healthCheckTimer;
@@ -145,7 +143,7 @@ public class WorkerMonitor {
                 logger.error("[monitor] send sms {} failed", smsText, e);
             }
         }
-        if (Environment.isProduction(enviroment) && monitorConfig.isEmailNotifyEnabled()) {
+        if (monitorConfig.isEmailNotifyEnabled()) {
             logger.info("[monitor] send email {}", emailText);
             try {
                 sendNotifyEmail(emailText);

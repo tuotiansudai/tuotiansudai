@@ -7,7 +7,7 @@ monitor:
   email-notify-enabled: true
   email-notify-sender: no-reply@tuotiansudai.com
   email-notify-recipients:
-    - dev@tuotiansudai.com
+    - chenzhonghui@tuotiansudai.com
 
 spring:
   mail:
