@@ -13,12 +13,12 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
-import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.AmountConverter;
@@ -31,14 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -175,7 +172,7 @@ public class ExportController {
                                 @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.UserPointHeader.getDescription());
 
-        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
+        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, response.getOutputStream());
     }

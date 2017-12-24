@@ -7,10 +7,9 @@ import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
-import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointTask;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppPointServiceImpl implements MobileAppPointService {
@@ -40,13 +40,10 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private PointTaskMapper pointTaskMapper;
-
-    @Autowired
     private PageValidUtils pageValidUtils;
 
     @Autowired
-    private UserPointTaskMapper userPointTaskMapper;
+    private PointService pointService;
 
     @Transactional
     public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
@@ -129,32 +126,25 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     private List<PointBillRecordResponseDataDto> convertPointBillRecordDto(List<PointBillModel> userBillList) {
 
-        return Lists.transform(userBillList, new Function<PointBillModel, PointBillRecordResponseDataDto>() {
-            @Override
-            public PointBillRecordResponseDataDto apply(PointBillModel input) {
-                PointBillRecordResponseDataDto pointBillRecordResponseDataDto = new PointBillRecordResponseDataDto();
-                pointBillRecordResponseDataDto.setBusinessType(input.getBusinessType().name());
-                pointBillRecordResponseDataDto.setBusinessTypeName(input.getBusinessType().getDescription());
-                pointBillRecordResponseDataDto.setPointBillId(String.valueOf(input.getId()));
-                pointBillRecordResponseDataDto.setPoint(String.valueOf(input.getPoint()));
-                pointBillRecordResponseDataDto.setCreatedDate(new DateTime(input.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
-                return pointBillRecordResponseDataDto;
-            }
-        });
+        return userBillList.stream().map(input -> {
+            PointBillRecordResponseDataDto pointBillRecordResponseDataDto = new PointBillRecordResponseDataDto();
+            pointBillRecordResponseDataDto.setBusinessType(input.getBusinessType().name());
+            pointBillRecordResponseDataDto.setBusinessTypeName(input.getBusinessType().getDescription());
+            pointBillRecordResponseDataDto.setPointBillId(String.valueOf(input.getId()));
+            pointBillRecordResponseDataDto.setPoint(String.valueOf(input.getPoint()));
+            pointBillRecordResponseDataDto.setCreatedDate(new DateTime(input.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            return pointBillRecordResponseDataDto;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public BaseResponseDto<PointResponseDataDto> queryPoint(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null) {
-            return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
-        }
 
         PointResponseDataDto dataDto = new PointResponseDataDto();
-        dataDto.setPoint(accountModel.getPoint());
+        dataDto.setPoint(pointService.getAvailablePoint(loginName));
 
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<PointResponseDataDto> dto = new BaseResponseDto<>();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(dataDto);

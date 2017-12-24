@@ -1,6 +1,6 @@
 package com.tuotiansudai.point.service;
 
-import com.tuotiansudai.dto.AccountItemDataDto;
+import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -28,7 +28,7 @@ public interface PointBillService {
 
     long getPointBillCountByLoginName(String loginName);
 
-    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, Integer currentPageNo, Integer pageSize);
+    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
 
     int findUsersAccountPointCount(String loginName, String userName, String mobile);
 

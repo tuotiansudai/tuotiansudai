@@ -13,7 +13,6 @@
         <result column="pay_account_id" property="payAccountId"/>
         <result column="balance" property="balance"/>
         <result column="freeze" property="freeze"/>
-        <result column="point" property="point"/>
         <result column="register_time" property="registerTime"/>
         <result column="auto_invest" property="autoInvest"/>
         <result column="auto_repay" property="autoRepay"/>
@@ -22,8 +21,8 @@
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, pay_user_id, pay_account_id, balance, freeze, point, register_time, membership_point)
-        value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{point}, #{registerTime}, #{membershipPoint})
+        insert into account (login_name, pay_user_id, pay_account_id, balance, freeze, register_time, membership_point)
+        value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime}, #{membershipPoint})
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="accountResultMap">
@@ -49,7 +48,6 @@
           auto_invest = #{autoInvest},
           auto_repay = #{autoRepay},
           no_password_invest = #{noPasswordInvest},
-          point = #{point},
           membership_point = #{membershipPoint}
         where login_name = #{loginName}
     </update>
@@ -72,9 +70,8 @@
                 AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
             </if>
         </where>
-        ORDER BY account.point DESC
         <if test="startLimit != null and endLimit != null">
-        limit #{startLimit}, #{endLimit}
+            limit #{startLimit}, #{endLimit}
         </if>
     </select>
 

@@ -31,6 +31,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/point-shop")
 public class PointShopController {
+    @Autowired
+    private PointService pointService;
 
     @Autowired
     private PointBillService pointBillService;
@@ -71,9 +73,9 @@ public class PointShopController {
         modelAndView.addObject("physicalProducts", physicalProducts);
 
         boolean isLogin = userService.loginNameIsExist(loginName);
-        boolean isShowDiscount = membershipModel == null ? false : membershipModel.getLevel() > 1 ? true : false;
+        boolean isShowDiscount = membershipModel != null && membershipModel.getLevel() > 1;
         if (isLogin) {
-            modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName) - pointBillService.getFrozenPointByLoginName(loginName));
+            modelAndView.addObject("userPoint", pointService.getUserPointByLoginName(loginName) - pointBillService.getFrozenPointByLoginName(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
             modelAndView.addObject("discountShow", productService.discountShowInfo(loginName));
         }

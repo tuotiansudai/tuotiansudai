@@ -108,14 +108,6 @@ public class AccountServiceTest {
         assertEquals(freeze, 1000L);
     }
 
-    @Test
-    public void testGetUserPointByLoginName() throws Exception {
-        createUserModelTest("test");
-        AccountModel accountModel = createAccountModel("test", 0);
-        long point = accountService.getUserPointByLoginName("test");
-        assertEquals(accountModel.getPoint(), point);
-    }
-
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(IdGenerator.generate());
@@ -182,7 +174,6 @@ public class AccountServiceTest {
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(1000L);
-        accountModel.setPoint(10000L);
         accountMapper.create(accountModel);
         return accountModel;
     }

@@ -4,11 +4,12 @@ import com.tuotiansudai.point.repository.model.UserPointModel;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Mapper
 public interface UserPointMapper {
 
-    @Results({
+    @Results(id = "userPointModelMap", value = {
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "login_name", property = "loginName"),
             @Result(column = "point", property = "point"),
@@ -17,6 +18,13 @@ public interface UserPointMapper {
     @Select("select * from user_point where login_name = #{loginName}")
     UserPointModel findByLoginName(
             @Param("loginName") String loginName);
+
+
+    @ResultMap("userPointModelMap")
+    @Select("select * from user_point where point > 0 order by point desc limit #{pageSize} offset #{pageIndex}")
+    List<UserPointModel> list(
+            @Param("pageIndex") int pageIndex,
+            @Param("pageSize") int pageSize);
 
 
     @Select("select exists(select 1 from user_point where login_name = #{loginName})")

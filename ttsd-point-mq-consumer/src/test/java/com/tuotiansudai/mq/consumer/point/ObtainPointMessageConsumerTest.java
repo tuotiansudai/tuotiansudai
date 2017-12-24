@@ -1,10 +1,9 @@
-package com.tuotiansudai.mq.consumer.user;
+package com.tuotiansudai.mq.consumer.point;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.message.ObtainPointMessage;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.util.JsonConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -29,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class ObtainPointMessageConsumerTest {
 
     @MockBean
-    private AccountMapper accountMapper;
+    private UserPointMapper userPointMapper;
 
     @Autowired
     @Qualifier("obtainPointMessageConsumer")
@@ -40,30 +34,17 @@ public class ObtainPointMessageConsumerTest {
     public void shouldConsume() {
 
         ObtainPointMessage obtainPointMessage = buildMockedObtainPointMessage();
-        AccountModel accountModel = buildMockedAccount();
-
-        when(accountMapper.lockByLoginName(anyString())).thenReturn(accountModel);
-        doNothing().when(accountMapper).update(accountModel);
 
         try {
             consumer.consume(JsonConverter.writeValueAsString(obtainPointMessage));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        assertEquals("loginName", accountModel.getLoginName());
-        assertEquals(200L, accountModel.getPoint());
+        assertEquals(100L, userPointMapper.getPointByLoginName(obtainPointMessage.getLoginName()));
     }
 
     private ObtainPointMessage buildMockedObtainPointMessage() {
-
-        ObtainPointMessage obtainPointMessage = new ObtainPointMessage("testAA", 100);
-        return obtainPointMessage;
-    }
-
-    private AccountModel buildMockedAccount() {
-        AccountModel accountModel = new AccountModel("loginName", "111", "111", new Date());
-        accountModel.setPoint(100);
-        return accountModel;
+        return new ObtainPointMessage("testAA", 100);
     }
 
 }

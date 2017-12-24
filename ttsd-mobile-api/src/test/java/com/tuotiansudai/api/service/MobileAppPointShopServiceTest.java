@@ -8,6 +8,7 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.ProductOrderModel;
@@ -56,6 +57,9 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private UserPointMapper userPointMapper;
 
     @Test
     public void shouldUpdateUserAddressIsOk() {
@@ -125,18 +129,19 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         String loginName = "findPointHomeUser";
         UserModel userModel = getUserModelTest(loginName);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
+
+        userPointMapper.create(loginName, 1000L, new Date());
         ProductListRequestDto baseParamDto = new ProductListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
         baseParam.setPhoneNum("13900000000");
         baseParamDto.setBaseParam(baseParam);
-        getProductModel(loginName, GoodsType.COUPON, 100, 0l);
-        getProductModel(loginName, GoodsType.PHYSICAL, 100, 0l);
-        getProductModel(loginName, GoodsType.VIRTUAL, 100, 0l);
+        getProductModel(loginName, GoodsType.COUPON, 100, 0L);
+        getProductModel(loginName, GoodsType.PHYSICAL, 100, 0L);
+        getProductModel(loginName, GoodsType.VIRTUAL, 100, 0L);
         BaseResponseDto<ProductListResponseDto> pointHome = mobileAppPointShopService.findPointHome(baseParamDto);
-        assertEquals(pointHome.getData().getMyPoints(), String.valueOf(accountModel.getPoint()));
+        assertEquals("1000", pointHome.getData().getMyPoints());
         assertTrue(pointHome.getData().getVirtuals().size() >= 2);
         assertTrue(pointHome.getData().getPhysicals().size() >= 1);
     }
@@ -208,8 +213,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountModel.setPoint(10l);
         accountMapper.create(accountModel);
+        userPointMapper.create(loginName, 10L, new Date());
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode());
     }
@@ -229,8 +234,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountModel.setPoint(100000l);
         accountMapper.create(accountModel);
+        userPointMapper.create(loginName, 100000L, new Date());
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
     }
@@ -250,8 +255,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
+        userPointMapper.create(loginName, 1000L, new Date());
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
         userAddressMapper.create(userAddressModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);

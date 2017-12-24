@@ -2,14 +2,16 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.ObtainPointMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
@@ -24,6 +26,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,9 @@ public class PointBillServiceImpl implements PointBillService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserPointMapper userPointMapper;
 
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -166,20 +172,41 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, Integer currentPageNo, Integer pageSize) {
-        List<AccountModel> accountModels = accountMapper.findUsersAccountPoint(loginName, userName, mobile,
-                currentPageNo != null ? (currentPageNo - 1) * pageSize : null,
-                pageSize);
-
-        List<AccountItemDataDto> accountItemDataDtoList = Lists.newArrayList();
-        for (AccountModel accountModel : accountModels) {
-            UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
-            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel.getLoginName(), userModel.getUserName(), accountModel.getPoint());
-            accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
-            accountItemDataDto.setMobile(userModel.getMobile());
-            accountItemDataDtoList.add(accountItemDataDto);
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize) {
+        // TODO discuss with production manager to remove userName query field
+        boolean searchSpecialUser = StringUtils.isNotEmpty(loginName) || StringUtils.isNotEmpty(mobile);
+        if (searchSpecialUser) {
+            return findUsersAccountPoint(loginName, userName, mobile);
+        } else {
+            return findUsersAccountPoint(currentPageNo, pageSize);
         }
-        return accountItemDataDtoList;
+    }
+
+    private List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile) {
+        List<AccountModel> accountModels = accountMapper.findUsersAccountPoint(loginName, userName, mobile, null, 1);
+        return accountModels.stream()
+                .map(accountModel -> userMapper.findByLoginName(accountModel.getLoginName()))
+                .map(userModel -> new AccountItemDataDto(
+                        userModel.getLoginName(),
+                        userModel.getUserName(),
+                        userModel.getMobile(),
+                        userPointMapper.getPointByLoginName(userModel.getLoginName(), 0L),
+                        pointBillMapper.findUserTotalPoint(userModel.getLoginName())))
+                .collect(Collectors.toList());
+    }
+
+    private List<AccountItemDataDto> findUsersAccountPoint(int pageNo, int pageSize) {
+        List<UserPointModel> userPointModelList = userPointMapper.list((pageNo - 1) * pageSize, pageSize);
+        return userPointModelList.stream()
+                .map(userPointModel -> {
+                    UserModel userModel = userMapper.findByLoginName(userPointModel.getLoginName());
+                    return new AccountItemDataDto(
+                            userModel.getLoginName(),
+                            userModel.getUserName(),
+                            userModel.getMobile(),
+                            userPointModel.getPoint(),
+                            pointBillMapper.findUserTotalPoint(userModel.getLoginName()));
+                }).collect(Collectors.toList());
     }
 
     @Override

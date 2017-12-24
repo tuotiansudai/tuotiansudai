@@ -1,10 +1,9 @@
-package com.tuotiansudai.mq.consumer.user;
+package com.tuotiansudai.mq.consumer.point;
 
 import com.tuotiansudai.message.ObtainPointMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Component
 public class ObtainPointMessageConsumer implements MessageConsumer {
@@ -23,7 +23,7 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
     private static final String FROZEN_POINT_KEY = "FROZEN:POINT:%s";
 
     @Autowired
-    private AccountMapper accountMapper;
+    private UserPointMapper userPointMapper;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -50,10 +50,8 @@ public class ObtainPointMessageConsumer implements MessageConsumer {
             }
 
             try {
-                AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-                accountModel.setPoint(accountModel.getPoint() + point);
                 logger.info("[MQ] ready to consume message: . loginName:{}, point:{}", loginName, point);
-                accountMapper.update(accountModel);
+                userPointMapper.increaseOrCreate(loginName, point);
                 if (point < 0) {
                     logger.info(String.format("[MQ] loginName:%s unfreeze point:%s", loginName, point));
                     redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), point);
