@@ -35,18 +35,18 @@
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if product?? && product.imageUrl??>
-                        <img style="width:100%" src="${commonStaticServer}${product.imageUrl!}" alt="缩略图" width="480"
-                             height="390"/>
+                        <img style="width:100%" src="${commonStaticServer}${product.imageUrl!}" alt="缩略图" width="750"
+                             height="450"/>
                     </#if>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="imageUrlProduct">
-                    <input type="file" imageWidth="480" imageHeight="390"/>
+                    <input type="file" imageWidth="750" imageHeight="450"/>
                 </div>
                 <div class="text-danger">
-                    (图片必须是480px * 390px)
+                    (图片必须是750px * 450px)
                 </div>
 
             </div>
