@@ -18,7 +18,7 @@ public class ChannelPointServiceImpl {
     @Autowired
     private ChannelPointMapper channelPointMapper;
 
-    public BaseDto<BasePaginationDataDto> getDetailList(int index, int pageSize) {
+    public BasePaginationDataDto getDetailList(int index, int pageSize) {
         long count = channelPointMapper.findCountByPagination();
         List<ChannelPointPaginationItemDataDto> itemDataDtos = channelPointMapper.findByPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
                 .stream()
@@ -27,12 +27,12 @@ public class ChannelPointServiceImpl {
 
         BasePaginationDataDto paginationDataDto = new BasePaginationDataDto(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, itemDataDtos);
         paginationDataDto.setStatus(true);
-        return new BaseDto<>(paginationDataDto);
+        return paginationDataDto;
 
     }
 
     public long getSumTotalPoint() {
-        return channelPointMapper.findSumTotalCount();
+        return channelPointMapper.findSumTotalPoint();
     }
 
     public long getSumHeadCount() {

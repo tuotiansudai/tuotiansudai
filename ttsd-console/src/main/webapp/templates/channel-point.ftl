@@ -7,7 +7,7 @@
     <div class="table-responsive">
         <@security.authorize access="hasAnyAuthority('ADMIN','DATA')">
 
-            <div >
+            <div>
                 <button class="btn btn-default" type="button">导入渠道积分</button>
             </div>
         </@security.authorize>
@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list data.data.records as item>
+                <#list data.records as item>
                 <tr>
                     <td>${item.serialNo}</td>
                     <td>${item.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
@@ -47,22 +47,22 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <#if data.data.count &gt; 0>
+            <#if data.count &gt; 0>
                 <div>
-                    <span class="bordern">总共${data.data.count}条,每页显示${data.data.pageSize}条</span>
+                    <span class="bordern">总共${data.count}条,每页显示${data.pageSize}条</span>
                 </div>
                 <ul class="pagination pull-left">
                     <li>
-                        <#if data.data.hasPreviousPage >
-                            <a href="?index=${data.data.index-1}" aria-label="Previous">
+                        <#if data.hasPreviousPage >
+                            <a href="?index=${data.index-1}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
                         </#if>
                     </li>
-                    <li><a>${data.data.index}</a></li>
+                    <li><a>${data.index}</a></li>
                     <li>
-                        <#if data.data.hasNextPage >
-                            <a href="?index=${data.data.index+1}" aria-label="Next">
+                        <#if data.hasNextPage >
+                            <a href="?index=${data.index+1}" aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>
                         </#if>

@@ -18,15 +18,9 @@ public interface ChannelPointMapper {
 
     List<ChannelPointModel> findAll();
 
-    default long findSumTotalCount() {
-        List<ChannelPointModel> models = findAll();
-        return models.stream().mapToLong(model -> model.getTotalPoint()).sum();
-    }
+    long findSumTotalPoint();
 
-    default long findSumHeadCount() {
-        List<ChannelPointModel> models = findAll();
-        return models.stream().mapToLong(model -> model.getHeadCount()).sum();
-    }
+    long findSumHeadCount();
 
 
 }

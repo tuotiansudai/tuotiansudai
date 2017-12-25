@@ -32,8 +32,12 @@
         select count(1) from channel_point
     </select>
 
-    <select id="findAll" resultMap="channelPointResultMap">
-        select * from channel_point
+    <select id="findSumTotalPoint" resultType="long">
+        select sum(total_point) from channel_point
+    </select>
+
+    <select id="findSumHeadCount" resultType="long">
+        select sum(head_count) from channel_point
     </select>
 
 
