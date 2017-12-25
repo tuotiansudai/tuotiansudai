@@ -6,6 +6,4 @@ public interface PointService {
     void obtainPointInvest(InvestModel investModel);
 
     long getAvailablePoint(String loginName);
-
-    long getUserPointByLoginName(String loginName);
 }

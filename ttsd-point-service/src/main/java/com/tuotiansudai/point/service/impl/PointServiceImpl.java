@@ -37,9 +37,6 @@ public class PointServiceImpl implements PointService {
     private PointBillService pointBillService;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Value("#{'${activity.concrete.period}'.split('\\~')}")
@@ -58,11 +55,6 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public long getAvailablePoint(String loginName) {
-        return userPointMapper.getPointByLoginName(loginName, 0L);
-    }
-
-    @Override
-    public long getUserPointByLoginName(String loginName) {
         return userPointMapper.getPointByLoginName(loginName, 0L);
     }
 
