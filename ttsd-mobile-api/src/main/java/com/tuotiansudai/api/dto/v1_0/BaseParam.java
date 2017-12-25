@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.google.common.base.Strings;
 import io.swagger.annotations.ApiModelProperty;
 
 public class BaseParam {
@@ -22,11 +23,11 @@ public class BaseParam {
     private String screenW;
     @ApiModelProperty(value = "客户端屏幕高度", example = "1024")
     private String screenH;
-    @ApiModelProperty(value = "渠道", example = "")
+    @ApiModelProperty(value = "渠道", example = "xiaomi")
     private String channel;
 
     public String getUserId() {
-        return userId;
+        return Strings.isNullOrEmpty(userId) ? "" : userId ;
     }
 
     public void setUserId(String userId) {
@@ -34,7 +35,7 @@ public class BaseParam {
     }
 
     public String getPhoneNum() {
-        return phoneNum;
+        return Strings.isNullOrEmpty(phoneNum) ? "" : phoneNum;
     }
 
     public void setPhoneNum(String phoneNum) {
@@ -42,7 +43,7 @@ public class BaseParam {
     }
 
     public String getToken() {
-        return token;
+        return Strings.isNullOrEmpty(token) ? "" : token;
     }
 
     public void setToken(String token) {
@@ -50,7 +51,7 @@ public class BaseParam {
     }
 
     public String getPlatform() {
-        return platform;
+        return Strings.isNullOrEmpty(platform) ? "" : platform;
     }
 
     public void setPlatform(String platform) {
@@ -58,7 +59,7 @@ public class BaseParam {
     }
 
     public String getAppVersion() {
-        return appVersion;
+        return Strings.isNullOrEmpty(appVersion) ? "" : appVersion;
     }
 
     public void setAppVersion(String appVersion) {
@@ -66,7 +67,7 @@ public class BaseParam {
     }
 
     public String getOsVersion() {
-        return osVersion;
+        return Strings.isNullOrEmpty(osVersion) ? "" : osVersion;
     }
 
     public void setOsVersion(String osVersion) {
@@ -74,7 +75,7 @@ public class BaseParam {
     }
 
     public String getDeviceId() {
-        return deviceId;
+        return Strings.isNullOrEmpty(deviceId) ? "" : deviceId;
     }
 
     public void setDeviceId(String deviceId) {
@@ -82,7 +83,7 @@ public class BaseParam {
     }
 
     public String getDeviceModel() {
-        return deviceModel;
+        return Strings.isNullOrEmpty(deviceModel) ? "" : deviceModel;
     }
 
     public void setDeviceModel(String deviceModel) {
@@ -90,7 +91,7 @@ public class BaseParam {
     }
 
     public String getScreenW() {
-        return screenW;
+        return Strings.isNullOrEmpty(screenW) ? "" : screenW;
     }
 
     public void setScreenW(String screenW) {
@@ -98,7 +99,7 @@ public class BaseParam {
     }
 
     public String getScreenH() {
-        return screenH;
+        return Strings.isNullOrEmpty(screenH) ? "" : screenH;
     }
 
     public void setScreenH(String screenH) {
@@ -106,7 +107,7 @@ public class BaseParam {
     }
 
     public String getChannel() {
-        return channel;
+        return Strings.isNullOrEmpty(channel) ? "" : channel;
     }
 
     public void setChannel(String channel) {
