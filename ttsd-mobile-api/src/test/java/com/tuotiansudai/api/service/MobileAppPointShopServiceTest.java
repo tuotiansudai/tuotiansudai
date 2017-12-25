@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -148,7 +149,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldFindProductDetailIsOk() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser1";
         getUserModelTest(loginName);
         ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
@@ -159,7 +160,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldProductIdIsNullIsFault() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser6";
         getUserModelTest(loginName);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -172,7 +173,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldProductNumIsNullIsFault() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser7";
         getUserModelTest(loginName);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -186,7 +187,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldProductCountIsZeroIsFault() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser4";
         getUserModelTest(loginName);
         ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 0l, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
@@ -202,7 +203,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldMyPointsIsZeroIsFault() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser3";
         getUserModelTest(loginName);
         ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
@@ -216,12 +217,12 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         accountMapper.create(accountModel);
         userPointMapper.increaseOrCreate(loginName, 10L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode());
+        assertEquals(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), baseResponseDto.getCode());
     }
 
     @Test
     public void shouldMyAddressIsNullIsFault() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser2";
         getUserModelTest(loginName);
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
@@ -242,7 +243,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldProductExchangeIsOk() {
-        String loginName = "findPointHomeUser";
+        String loginName = "findPointHomeUser5";
         UserModel userModel = getUserModelTest(loginName);
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);

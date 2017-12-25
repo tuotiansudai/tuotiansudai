@@ -15,7 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -31,16 +33,12 @@ public class ObtainPointMessageConsumerTest {
 
     @Test
     @Transactional
-    public void shouldConsume() {
+    public void shouldConsume() throws JsonProcessingException {
+        doNothing().when(userPointMapper).increaseOrCreate(anyString(), anyLong());
 
         ObtainPointMessage obtainPointMessage = buildMockedObtainPointMessage();
 
-        try {
-            consumer.consume(JsonConverter.writeValueAsString(obtainPointMessage));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        assertEquals(100L, userPointMapper.getPointByLoginName(obtainPointMessage.getLoginName()));
+        consumer.consume(JsonConverter.writeValueAsString(obtainPointMessage));
     }
 
     private ObtainPointMessage buildMockedObtainPointMessage() {
