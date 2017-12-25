@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.ChannelPointDetailMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="channelPointDetailResultMap" type="ChannelPointDetailModel">
+        <id column="id" property="id"></id>
+        <result column="channel_point_id" property="channelPointId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="channel" property="channel"></result>
+        <result column="point" property="point"></result>
+        <result column="success" property="success"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="ChannelPointDetailModel" useGeneratedKeys="true" keyProperty="id">
+        insert into channel_point_detail (channel_point_id, login_name, user_name, mobile, channel,point,success,created_time)
+        value(#{channelPointId}, #{loginName}, #{userName}, #{mobile}, #{channel}, #{point},#{success},#{createdTime})
+    </insert>
+
+    <select id="findById" resultMap="channelPointDetailResultMap" parameterType="long">
+        select * from channel_point_detail where id = #{id};
+    </select>
+
+
+</mapper>

@@ -4,6 +4,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.CouponActivationService;
+import com.tuotiansudai.point.service.ChannelPointServiceImpl;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
@@ -48,6 +49,9 @@ public class PointManageController {
 
     @Autowired
     private PointBillService pointBillService;
+
+    @Autowired
+    private ChannelPointServiceImpl channelPointServiceImpl;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView createProduct(@Valid @ModelAttribute ProductDto productDto) {
@@ -423,6 +427,16 @@ public class PointManageController {
         modelAndView.addObject("sideLabType", sideLabType);
         modelAndView.addObject("headLab", headLab);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/channel-point", method = RequestMethod.GET)
+    public ModelAndView getChannelPointList(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        ModelAndView modelAndView = new ModelAndView("/channel-point", "data", channelPointServiceImpl.getDetailList(index, 10));
+        modelAndView.addObject("sumHeadCount", channelPointServiceImpl.getSumHeadCount());
+        modelAndView.addObject("sumTotalPoint", channelPointServiceImpl.getSumTotalPoint());
+
+        return modelAndView;
+
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
