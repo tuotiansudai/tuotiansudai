@@ -4,7 +4,8 @@ CREATE TABLE `user_point` (
   `point`        BIGINT UNSIGNED NOT NULL,
   `updated_time` DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `USER_POINT_LOGIN_NAME` (`login_name`)
+  KEY `USER_POINT_LOGIN_NAME` (`login_name`),
+  UNIQUE (`login_name`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1001
