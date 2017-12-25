@@ -49,7 +49,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "称号", example = "FIRST_INVEST(首投),MAX_AMOUNT(标王),LAST_INVEST(尾投)")
     private List<InvestAchievement> achievements;
 
-    @ApiModelProperty(value = "红包类型", example = "RED_ENVELOPE(现金红包),NEWBIE_COUPON(新手体验券),INVEST_COUPON(投资体验券),INTEREST_COUPON(加息券),BIRTHDAY_COUPON(生日福利)")
+    @ApiModelProperty(value = "红包类型", example = "RED_ENVELOPE(投资红包),NEWBIE_COUPON(新手体验券),INVEST_COUPON(投资体验券),INTEREST_COUPON(加息券),BIRTHDAY_COUPON(生日福利)")
     private List<CouponType> userCoupons;
 
     @ApiModelProperty(value = "是否使用券", example = "true")

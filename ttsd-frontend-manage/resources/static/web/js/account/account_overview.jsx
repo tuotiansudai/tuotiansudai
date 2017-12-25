@@ -78,7 +78,7 @@ $signBtn.on('click', function (event) {
                 $tomorrowText.html("明日签到可获得" + response.data.nextSignInPoint + "积分");
                 if(response.data.full == true){
                     $introText.html('已连续签到365天，获得全勤奖！');
-                    $nextText.html('365元现金红包');
+                    $nextText.html('365元投资红包');
                 }
                 else{
                     $introText.html(response.data.currentRewardDesc);

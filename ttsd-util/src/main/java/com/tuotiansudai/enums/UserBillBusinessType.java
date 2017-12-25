@@ -23,7 +23,7 @@ public enum UserBillBusinessType {
     INVEST_COUPON("投资体验券"),
     INTEREST_COUPON("加息优惠券"),
     BIRTHDAY_COUPON("生日福利"),
-    RED_ENVELOPE("现金红包"),
+    RED_ENVELOPE("投资红包"),
     SYSTEM_RECHARGE("平台充值"),
     LOTTERY_CASH("抽奖现金"),
     EXTRA_RATE("投资奖励"),

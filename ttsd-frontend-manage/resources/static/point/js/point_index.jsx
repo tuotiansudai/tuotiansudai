@@ -34,7 +34,7 @@ let tpl = require('art-template/dist/template');
 
                     if(response.data.full){
                         $introText.html('已连续签到365天，获得全勤奖！');
-                        $nextText.html('365元现金红包');
+                        $nextText.html('365元投资红包');
                     }
                     else{
                         $introText.html(response.data.currentRewardDesc);

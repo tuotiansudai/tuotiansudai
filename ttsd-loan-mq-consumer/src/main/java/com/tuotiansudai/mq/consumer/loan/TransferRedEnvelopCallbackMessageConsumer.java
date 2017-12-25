@@ -37,10 +37,10 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[现金红包MQ] {} receive message: {}.", this.queue(), message);
+        logger.info("[投资红包MQ] {} receive message: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[现金红包MQ] receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("现金红包MQ错误: 消息为空"));
+            logger.error("[投资红包MQ] receive message is empty");
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("投资红包MQ错误: 消息为空"));
             return;
         }
 
@@ -52,13 +52,13 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
                     || Strings.isNullOrEmpty(transferRedEnvelopCallbackMessage.getLoginName())
                     || transferRedEnvelopCallbackMessage.getUserCouponId() == null) {
 
-                logger.error("[现金红包MQ] message {} is invalid ", message);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("现金红包MQ错误: 无效消息, message: {0}", message)));
+                logger.error("[投资红包MQ] message {} is invalid ", message);
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("投资红包MQ错误: 无效消息, message: {0}", message)));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[现金红包MQ] message can not convert to transferRedEnvelopCallbackMessage, message: {}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("现金红包MQ错误: 消息序反列化失败, message: {0}", message)));
+            logger.error("[投资红包MQ] message can not convert to transferRedEnvelopCallbackMessage, message: {}", message);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("投资红包MQ错误: 消息序反列化失败, message: {0}", message)));
             return;
         }
 
@@ -66,16 +66,16 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
             BaseDto<PayDataDto> result = payWrapperClient.transferRedEnvelopForCallback(transferRedEnvelopCallbackMessage.getUserCouponId());
 
             if (!result.isSuccess()) {
-                logger.error("[现金红包MQ] callback consume is failed. message: {}", message);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("现金红包MQ错误: 消息处理失败, message: {0}", message)));
+                logger.error("[投资红包MQ] callback consume is failed. message: {}", message);
+                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("投资红包MQ错误: 消息处理失败, message: {0}", message)));
                 return;
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[现金红包MQ] message consume is exception. message: {0}", message), e);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("现金红包MQ错误: 消息处理异常, message: {0}", message)));
+            logger.error(MessageFormat.format("[投资红包MQ] message consume is exception. message: {0}", message), e);
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("投资红包MQ错误: 消息处理异常, message: {0}", message)));
             return;
         }
 
-        logger.info("[现金红包MQ] consume message success, message: {}", message);
+        logger.info("[投资红包MQ] consume message success, message: {}", message);
     }
 }

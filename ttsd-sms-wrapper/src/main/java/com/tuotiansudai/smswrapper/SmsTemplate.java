@@ -40,7 +40,7 @@ public enum SmsTemplate {
             null),
 
     SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(
-            new SmsTemplateCell("SMS_45415002", "亲爱的用户，您投资的新手体验项目所得${param0}元现金红包奖励已发放，快来激活奖励吧！"),
+            new SmsTemplateCell("SMS_118645015", "亲爱的用户，您投资的新手体验项目所得${param0}元投资红包奖励已发放，快来激活奖励吧！"),
             null),
 
     SMS_CANCEL_TRANSFER_LOAN(

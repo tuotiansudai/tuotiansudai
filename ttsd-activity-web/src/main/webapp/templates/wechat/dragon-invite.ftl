@@ -5,7 +5,7 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="take-red-container container-item active">
         <div class="take-item">
-            <h3 class="title-item"><#if activityEnd>活动已结束！<#else>我送你一个现金红包，抓紧领取吧！</#if></h3>
+            <h3 class="title-item"><#if activityEnd>活动已结束！<#else>我送你一个投资红包，抓紧领取吧！</#if></h3>
             <div class="take-red">
                 <span id="takeRed" data-time="${activityEnd?c}"></span>
             </div>
@@ -36,15 +36,15 @@
         </dl>
     </div>
     <div class="red-detail-container container-item">
-        <h3 class="title-item">恭喜您获得10元现金红包</h3>
+        <h3 class="title-item">恭喜您获得10元投资红包</h3>
         <div class="take-red">
             <p>
                 <span class="money-number"><strong>10</strong>元</span>
-                <span class="money-type">现金红包</span>
+                <span class="money-type">投资红包</span>
             </p>
         </div>
         <dl class="join-item">
-            <dt>登录/注册成功后现金红包会直接发放到您的账户</dt>
+            <dt>登录/注册成功后投资红包会直接发放到您的账户</dt>
             <dd>
                 <a href="/activity/dragon/wechat/toRegister?sharerUnique=${sharerUnique!}" class="register-link">注册领取</a>
             </dd>

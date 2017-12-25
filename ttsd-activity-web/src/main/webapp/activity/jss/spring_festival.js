@@ -66,7 +66,7 @@ require(['jquery', 'layerWrapper','commonFun','jquery.ajax.extension','logintip'
                 if(data.returnCode == 1){
                     layer.msg('今日已签到，请明天再来！');
                 }else if(data.returnCode == 0){
-                    $('#numBite').text(data.prizeValue.split(':')[1]=='现金红包'?'元':'%');
+                    $('#numBite').text(data.prizeValue.split(':')[1]=='投资红包'?'元':'%');
                     $('#bagType').text(data.prizeValue.split(':')[1]);
                     $('#numText').text(data.prizeValue.split(':')[0]);
                     dom.addClass('active').text('已签到');

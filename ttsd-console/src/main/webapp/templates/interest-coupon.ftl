@@ -11,7 +11,7 @@
             <div class="col-sm-4">
                 <select class="selectpicker jq-b-type" id="businessType">
                     <option value="INTEREST_COUPON" selected>创建加息券</option>
-                    <option value="RED_ENVELOPE">创建现金红包</option>
+                    <option value="RED_ENVELOPE">创建投资红包</option>
                 </select>
             </div>
         </div>

@@ -90,14 +90,14 @@
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>5</strong>元</span>
-                    <span>现金红包</span>
+                    <span>投资红包</span>
                 </div>
                 <div class="info-name">邀请好友注册即可得</div>
             </li>
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>10</strong>元</span>
-                    <span>现金红包</span>
+                    <span>投资红包</span>
                 </div>
                 <div class="info-name">好友绑定银行卡可得</div>
             </li>
@@ -118,11 +118,11 @@
             <tbody>
                 <tr>
                     <td>注册</td>
-                    <td>5元现金红包</td>
+                    <td>5元投资红包</td>
                 </tr>
                 <tr>
                     <td>绑定银行卡</td>
-                    <td>10元现金红包</td>
+                    <td>10元投资红包</td>
                 </tr>
                 <tr>
                     <td>首次投资抵押债权</td>
@@ -146,28 +146,28 @@
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>18</strong>元</span>
-                    <span>现金红包</span>
+                    <span>投资红包</span>
                 </div>
                 <div class="info-name">有效邀请2～4人可得</div>
             </li>
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>48</strong>元</span>
-                    <span>现金红包</span>
+                    <span>投资红包</span>
                 </div>
                 <div class="info-name">有效邀请5～8人可得</div>
             </li>
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>98</strong>元</span>
-                    <span>现金红包</span>
+                    <span>投资红包</span>
                 </div>
                 <div class="info-name">有效邀请9～10人可得</div>
             </li>
             <li class="money-type">
                 <div class="info-intro">
                     <span class="number-text"><strong>288</strong>元</span>
-                    <span>现金红包</span>
+                    <span>投资红包</span>
                 </div>
                 <div class="info-name">有效邀请10人以上可得</div>
             </li>
@@ -182,19 +182,19 @@
             <tbody>
                 <tr>
                     <td>2-4人</td>
-                    <td>18元现金红包</td>
+                    <td>18元投资红包</td>
                 </tr>
                 <tr>
                     <td>5-8人</td>
-                    <td>48元现金红包</td>
+                    <td>48元投资红包</td>
                 </tr>
                 <tr>
                     <td>9-10人</td>
-                    <td>98元现金红包</td>
+                    <td>98元投资红包</td>
                 </tr>
                 <tr>
                     <td>10人以上</td>
-                    <td>288元现金红包</td>
+                    <td>288元投资红包</td>
                 </tr>
             </tbody>
         </table>
@@ -260,9 +260,9 @@
                 <li class="money-type free-type">
                     <div class="info-intro">
                         <span class="number-text"><strong>668</strong>元</span>
-                        <span>现金红包</span>
+                        <span>投资红包</span>
                     </div>
-                    <div class="info-name">现金红包668元</div>
+                    <div class="info-name">投资红包668元</div>
                 </li>
                 <li class="coupon-type">
                     <div class="info-intro">

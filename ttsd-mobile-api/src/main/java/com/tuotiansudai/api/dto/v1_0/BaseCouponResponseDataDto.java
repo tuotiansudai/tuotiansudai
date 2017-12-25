@@ -22,7 +22,7 @@ public class BaseCouponResponseDataDto {
     @ApiModelProperty(value = "优惠券类型", example = "RED_ENVELOPE")
     protected CouponType type;
 
-    @ApiModelProperty(value = "优惠券名称", example = "现金红包")
+    @ApiModelProperty(value = "优惠券名称", example = "投资红包")
     protected String name;
 
     @ApiModelProperty(value = "优惠券金额", example = "5000")

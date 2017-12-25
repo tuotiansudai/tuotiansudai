@@ -51,7 +51,7 @@ public class ProductShowItemDto {
         this.actualPoints = actualPoints;
         switch (couponType) {
             case RED_ENVELOPE:
-                this.name = String.format(" %s 元现金红包", AmountConverter.convertCentToString(amount));
+                this.name = String.format(" %s 元投资红包", AmountConverter.convertCentToString(amount));
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INVEST_COUPON:

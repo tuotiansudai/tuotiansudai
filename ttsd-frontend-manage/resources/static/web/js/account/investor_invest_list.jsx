@@ -140,7 +140,7 @@ $('body').on('click','.show-invest-repay',function (event) {
 .on('mouseenter','.money-icon',function() {//money icon event
     layer.closeAll('tips');
     var num =$(this).data('benefit');
-    layer.tips('您使用了' + num + '元红包', $(this), {
+    layer.tips('您使用了' + num + '元投资红包', $(this), {
         tips: [1, '#efbf5c'],
         time: 2000,
         tipsMore: true,
@@ -172,7 +172,7 @@ $('body').on('click','.show-invest-repay',function (event) {
 })
 .on('mouseenter','.first-icon',function() {//first icon event
     layer.closeAll('tips');
-    layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+    layer.tips('我获得了0.2%加息券和50元投资红包', $(this), {
         tips: [1, '#efbf5c'],
         time: 2000,
         tipsMore: true,
@@ -182,7 +182,7 @@ $('body').on('click','.show-invest-repay',function (event) {
 })
 .on('mouseenter','.max-icon',function() {//max icon event
     layer.closeAll('tips');
-    layer.tips('我获得了0.5%加息券和100元红包', $(this), {
+    layer.tips('我获得了0.5%加息券和100元投资红包', $(this), {
         tips: [1, '#efbf5c'],
         time: 2000,
         tipsMore: true,
@@ -192,7 +192,7 @@ $('body').on('click','.show-invest-repay',function (event) {
 })
 .on('mouseenter','.last-icon',function() {//last icon event
     layer.closeAll('tips');
-    layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+    layer.tips('我获得了0.2%加息券和50元投资红包', $(this), {
         tips: [1, '#efbf5c'],
         time: 2000,
         tipsMore: true,
