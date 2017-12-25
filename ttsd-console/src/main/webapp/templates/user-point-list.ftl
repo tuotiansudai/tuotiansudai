@@ -13,10 +13,6 @@
             <label for="control-label">投资人手机号：</label>
             <input type="text" class="form-control jq-mobile" name="mobile" value="${mobile!}">
         </div>
-        <div class="form-group">
-            <label for="control-label">真实姓名：</label>
-            <input type="text" class="form-control jq-userName" name="userName" value="${userName!}">
-        </div>
 
         <button class="btn btn-primary" type="submit">查询</button>
         <button class="btn btn-default" type="reset">重置</button>
@@ -42,7 +38,9 @@
                     <td>${userPointItem.mobile}</td>
                     <td>${userPointItem.point!''}</td>
                     <td>${userPointItem.totalPoint!''}</td>
-                    <td><a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${userPointItem.totalPoint!''}&point=${userPointItem.point!''}">查看明细</a></td>
+                    <td>
+                        <a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${userPointItem.totalPoint!''}&point=${userPointItem.point!''}">查看明细</a>
+                    </td>
                 </tr>
                 </#list>
             </tbody>
