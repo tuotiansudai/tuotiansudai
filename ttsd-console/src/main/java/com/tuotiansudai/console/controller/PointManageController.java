@@ -4,19 +4,19 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.CouponActivationService;
-import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -295,23 +295,18 @@ public class PointManageController {
     @RequestMapping(value = "/user-point-list")
     public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                               @RequestParam(value = "loginName", required = false) String loginName,
-                                              @RequestParam(value = "userName", required = false) String userName,
                                               @RequestParam(value = "mobile", required = false) String mobile) {
         int pageSize = 10;
+        BasePaginationDataDto<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, mobile, index, pageSize);
+
         ModelAndView modelAndView = new ModelAndView("/user-point-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
-        modelAndView.addObject("userPointList", accountItemDataDtoList);
-        int count = pointBillService.findUsersAccountPointCount(loginName, userName, mobile);
-        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        modelAndView.addObject("count", count);
+        modelAndView.addObject("userPointList", accountItemDataDtoList.getRecords());
+        modelAndView.addObject("hasPreviousPage", accountItemDataDtoList.isHasPreviousPage());
+        modelAndView.addObject("hasNextPage", accountItemDataDtoList.isHasNextPage());
+        modelAndView.addObject("count", accountItemDataDtoList.getCount());
         modelAndView.addObject("loginName", loginName);
-        modelAndView.addObject("userName", userName);
         modelAndView.addObject("mobile", mobile);
         return modelAndView;
     }

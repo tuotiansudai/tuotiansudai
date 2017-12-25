@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -172,20 +173,26 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize) {
-        // TODO discuss with production manager to remove userName query field
+    public BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile, int currentPageNo, int pageSize) {
         boolean searchSpecialUser = StringUtils.isNotEmpty(loginName) || StringUtils.isNotEmpty(mobile);
         if (searchSpecialUser) {
-            return findUsersAccountPoint(loginName, userName, mobile);
+            return findUsersAccountPoint(loginName, mobile);
         } else {
             return findUsersAccountPoint(currentPageNo, pageSize);
         }
     }
 
-    private List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile) {
-        List<AccountModel> accountModels = accountMapper.findUsersAccountPoint(loginName, userName, mobile, null, 1);
-        return accountModels.stream()
-                .map(accountModel -> userMapper.findByLoginName(accountModel.getLoginName()))
+    // 根据用户名查询时，最多只返回一条数据
+    private BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile) {
+        AccountModel accountModel = null;
+        if (StringUtils.isNotEmpty(loginName)) {
+            accountModel = accountMapper.findByLoginName(loginName);
+        } else if (StringUtils.isNotEmpty(mobile)) {
+            accountModel = accountMapper.findByMobile(mobile);
+        }
+        List<AccountModel> accountModels = accountModel == null ? Collections.emptyList() : Collections.singletonList(accountModel);
+        List<AccountItemDataDto> records = accountModels.stream()
+                .map(acc -> userMapper.findByLoginName(acc.getLoginName()))
                 .map(userModel -> new AccountItemDataDto(
                         userModel.getLoginName(),
                         userModel.getUserName(),
@@ -193,11 +200,12 @@ public class PointBillServiceImpl implements PointBillService {
                         userPointMapper.getPointByLoginName(userModel.getLoginName(), 0L),
                         pointBillMapper.findUserTotalPoint(userModel.getLoginName())))
                 .collect(Collectors.toList());
+        return new BasePaginationDataDto<>(1, 10, accountModels.size(), records);
     }
 
-    private List<AccountItemDataDto> findUsersAccountPoint(int pageNo, int pageSize) {
+    private BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(int pageNo, int pageSize) {
         List<UserPointModel> userPointModelList = userPointMapper.list((pageNo - 1) * pageSize, pageSize);
-        return userPointModelList.stream()
+        List<AccountItemDataDto> records = userPointModelList.stream()
                 .map(userPointModel -> {
                     UserModel userModel = userMapper.findByLoginName(userPointModel.getLoginName());
                     return new AccountItemDataDto(
@@ -207,11 +215,8 @@ public class PointBillServiceImpl implements PointBillService {
                             userPointModel.getPoint(),
                             pointBillMapper.findUserTotalPoint(userModel.getLoginName()));
                 }).collect(Collectors.toList());
-    }
-
-    @Override
-    public int findUsersAccountPointCount(String loginName, String userName, String mobile) {
-        return accountMapper.findUsersAccountPointCount(loginName, userName, mobile);
+        long count = userPointMapper.count();
+        return new BasePaginationDataDto<>(pageNo, pageSize, count, records);
     }
 
     @Override

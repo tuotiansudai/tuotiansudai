@@ -52,45 +52,6 @@
         where login_name = #{loginName}
     </update>
 
-    <select id="findLoginNames" resultType="string">
-        select login_name from account
-    </select>
-
-    <select id="findUsersAccountPoint" parameterType="map" resultMap="accountResultMap">
-        SELECT *
-        FROM account
-        <where>
-            <if test="loginName != null and loginName != '' ">
-                AND account.login_name = #{loginName}
-            </if>
-            <if test="userName != null and userName != '' ">
-                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name = #{userName})
-            </if>
-            <if test="mobile != null and mobile != '' ">
-                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
-            </if>
-        </where>
-        <if test="startLimit != null and endLimit != null">
-            limit #{startLimit}, #{endLimit}
-        </if>
-    </select>
-
-    <select id="findUsersAccountPointCount" parameterType="map" resultType="int">
-        SELECT COUNT(1)
-        FROM account
-        <where>
-            <if test="loginName != null and loginName != '' ">
-                AND account.login_name = #{loginName}
-            </if>
-            <if test="userName != null and userName != '' ">
-                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name = #{userName})
-            </if>
-            <if test="mobile != null and mobile != '' ">
-                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
-            </if>
-        </where>
-    </select>
-
     <select id="count" resultType="long">
         select count(1) from account
     </select>

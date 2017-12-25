@@ -168,12 +168,11 @@ public class ExportController {
 
     @RequestMapping(value = "/user-point", method = RequestMethod.GET)
     public void exportUserPoint(@RequestParam(value = "loginName", required = false) String loginName,
-                                @RequestParam(value = "userName", required = false) String userName,
                                 @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.UserPointHeader.getDescription());
 
-        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
-        List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
+        BasePaginationDataDto<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, mobile, 1, Integer.MAX_VALUE);
+        List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, response.getOutputStream());
     }
 
@@ -204,7 +203,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/credit-loan-bill", method = RequestMethod.GET)
-    public void exportSystemBillList(@RequestParam(value = "orderId", defaultValue = "")  String orderId,
+    public void exportSystemBillList(@RequestParam(value = "orderId", defaultValue = "") String orderId,
                                      @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                      @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                      @RequestParam(value = "operationType", required = false) CreditLoanBillOperationType operationType,

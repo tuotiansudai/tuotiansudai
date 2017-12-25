@@ -21,11 +21,14 @@ public interface UserPointMapper {
 
 
     @ResultMap("userPointModelMap")
-    @Select("select * from user_point where point > 0 order by point desc limit #{pageSize} offset #{pageIndex}")
+    @Select("select * from user_point order by point desc limit #{pageSize} offset #{pageIndex}")
     List<UserPointModel> list(
             @Param("pageIndex") int pageIndex,
             @Param("pageSize") int pageSize);
 
+
+    @Select("select count(*) from user_point")
+    long count();
 
     @Select("select exists(select 1 from user_point where login_name = #{loginName})")
     boolean exists(
