@@ -37,9 +37,6 @@ grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'%' identified by 'sdmessage';
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'localhost' identified by 'sdmessage';
 
-grant select,alter on aa.* to sdpoint@'%' identified by 'sdpoint';
-grant select,alter on aa.* to sdpoint@'localhost' identified by 'sdpoint';
-
 update mysql.user set password=password('root') where user='root';
 
 flush privileges;

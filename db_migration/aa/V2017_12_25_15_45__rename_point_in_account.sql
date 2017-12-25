@@ -1,0 +1,2 @@
+ALTER TABLE account
+  CHANGE `point` `_point` BIGINT UNSIGNED DEFAULT 0 NOT NULL;

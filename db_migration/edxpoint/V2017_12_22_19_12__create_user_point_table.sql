@@ -11,13 +11,3 @@ CREATE TABLE `user_point` (
   AUTO_INCREMENT = 1001
   DEFAULT CHARSET = utf8;
 
-# 上线时，需临时给 sdpoint 用户授权允许访问 aa 库
-INSERT INTO `user_point` (`login_name`, `point`, `updated_time`)
-  SELECT
-    `login_name`,
-    `point`,
-    now()
-  FROM `aa`.`account`;
-
-ALTER TABLE `aa`.`account`
-  CHANGE `point` `_point` BIGINT UNSIGNED DEFAULT 0 NOT NULL;
