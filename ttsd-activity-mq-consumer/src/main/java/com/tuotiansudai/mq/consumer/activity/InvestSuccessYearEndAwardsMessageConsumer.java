@@ -49,16 +49,8 @@ public class InvestSuccessYearEndAwardsMessageConsumer implements MessageConsume
             return;
         }
 
-        InvestSuccessMessage investSuccessMessage;
-
         try {
-            investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
-        } catch (IOException e) {
-            logger.error("[MQ] parse message failed: {}: '{}'.", this.queue(), message);
-            return;
-        }
-
-        try {
+            InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
             UserInfo userInfo = investSuccessMessage.getUserInfo();
             InvestInfo investInfo = investSuccessMessage.getInvestInfo();
             LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
@@ -77,7 +69,7 @@ public class InvestSuccessYearEndAwardsMessageConsumer implements MessageConsume
                 investCelebrationHeroRankingMapper.create(investNewmanTyrantModel);
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

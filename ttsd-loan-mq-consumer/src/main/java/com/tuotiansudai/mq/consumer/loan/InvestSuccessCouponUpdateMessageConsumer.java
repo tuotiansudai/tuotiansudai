@@ -35,8 +35,7 @@ public class InvestSuccessCouponUpdateMessageConsumer implements MessageConsumer
             try {
                 investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
             } catch (IOException e) {
-                logger.error("[MQ] parse message failed: {}: '{}'.", this.queue(), message);
-                return;
+                throw new RuntimeException(e);
             }
 
             logger.info("[MQ] ready to consume message: Invest Success Coupon Update. investId:{}", message);

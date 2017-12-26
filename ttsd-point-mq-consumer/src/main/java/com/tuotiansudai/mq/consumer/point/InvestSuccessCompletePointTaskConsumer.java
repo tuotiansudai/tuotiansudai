@@ -47,8 +47,7 @@ public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
             try {
                 investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
             } catch (IOException e) {
-                logger.error("[MQ] parse message failed: {}: '{}'.", this.queue(), message);
-                return;
+                throw new RuntimeException(e);
             }
 
             InvestModel investModel = investMapper.findById(investSuccessMessage.getInvestInfo().getInvestId());
