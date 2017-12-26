@@ -36,7 +36,8 @@ public class IphoneXActivityController {
     @ResponseBody
     @RequestMapping(value = "/iphonex-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto iphoneXTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "IPHONEX_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return new DrawLotteryResultDto(3);
+        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+        return drawLotteryResultDto;
     }
 
     @ResponseBody

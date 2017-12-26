@@ -52,7 +52,8 @@ public class SchoolSeasonActivityController {
     @ResponseBody
     @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "SCHOOL_SEASON_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return new DrawLotteryResultDto(3);
+        DrawLotteryResultDto drawLotteryResultDto =lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+        return drawLotteryResultDto;
     }
 
     @ResponseBody

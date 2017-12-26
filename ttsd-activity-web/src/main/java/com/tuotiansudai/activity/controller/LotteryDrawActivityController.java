@@ -56,7 +56,7 @@ public class LotteryDrawActivityController {
     @ResponseBody
     @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto taskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CARNIVAL_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return new DrawLotteryResultDto(3);
+        return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
     }
 
     @ResponseBody
