@@ -85,7 +85,7 @@ public class LanternFestivalController {
     @ResponseBody
     @RequestMapping(value = "/drawTime", method = RequestMethod.GET)
     public int getDrawTime() {
-        return lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
+        return 0;
     }
 
     @RequestMapping(value = "/user-prize-list", method = RequestMethod.GET)

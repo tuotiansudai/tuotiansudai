@@ -39,8 +39,7 @@ public class DoubleElevenActivityController {
     @ResponseBody
     @RequestMapping(value = "/left-times", method = RequestMethod.GET)
     public int leftDrawTimes() {
-        String loginName = LoginUserInfo.getLoginName();
-        return loginName == null ? 0 : doubleElevenService.leftDrawCount(LoginUserInfo.getMobile());
+        return 0;
     }
 
     @ResponseBody

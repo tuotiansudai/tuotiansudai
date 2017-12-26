@@ -148,11 +148,6 @@ public class DragonBoatFestivalController {
 
         int ret = dragonBoatFestivalService.sendCouponAfterRegisterOrLogin(loginName, unique);
         mav.addObject("fetchResult", ret);
-        if (ret == 1) {
-            // 领取成功后，给分享者记录邀请老用户领取的数量
-            logger.info("[Dragon Boat] send share login transfer message, referrer:{}, loginName:{}.", sharer, loginName);
-            mqWrapperClient.sendMessage(MessageQueue.DragonBoatShareLoginTransfer, sharer);
-        }
         return mav;
     }
 
