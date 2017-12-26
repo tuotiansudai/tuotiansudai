@@ -33,7 +33,7 @@ public class LotteryActivityService {
     private Date activityAutumnEndTime;
 
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
-        return lotteryDrawActivityService.drawPrizeByCompleteTask(mobile, ActivityCategory.AUTUMN_PRIZE);
+        return new DrawLotteryResultDto(3);
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile,LotteryPrize activityType){
