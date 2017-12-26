@@ -131,7 +131,7 @@
         <div class="summary-top clearfix">
             <span>已收回款总额 : <em><%=sumActualInterest%></em>元</span>
             <span>待收回款总额 : <em><%=sumExpectedInterest%></em>元</span>
-            <span>现金红包奖励 : <em><%=redInterest%></em>元</span>
+            <span>投资红包奖励 : <em><%=redInterest%></em>元</span>
         </div>
         <table class="table table-repay">
             <thead>

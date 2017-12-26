@@ -288,6 +288,7 @@ public class ConsoleUserService {
     }
 
     public BaseDto<BasePaginationDataDto<UserMicroModelView>> queryUserMicroView(String mobile,
+                                                                                 Role role,
                                                                                  Date registerTimeStart,
                                                                                  Date registerTimeEnd,
                                                                                  String hasCertify,
@@ -324,6 +325,7 @@ public class ConsoleUserService {
 
 
         int count = userMapperConsole.findUserMicroModelCount(mobile,
+                role,
                 registerTimeStart,
                 registerTimeEnd,
                 hasCertify,
@@ -357,6 +359,7 @@ public class ConsoleUserService {
                 lastWithdrawTimeEnd);
 
         List<UserMicroModelView> userMicroModelViewList = userMapperConsole.queryUserMicroModel(mobile,
+                role,
                 registerTimeStart,
                 registerTimeEnd,
                 hasCertify,

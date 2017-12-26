@@ -5,7 +5,7 @@
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="login-form-container">
         <input type="hidden" id="sharerUnique" value="${sharerUnique!}">
-        <h3 class="title-item">登录完成后现金红包会直接放到您的账户中哦~</h3>
+        <h3 class="title-item">登录完成后投资红包会直接放到您的账户中哦~</h3>
         <form action="/login" method="post" class="login-item" id="loginForm">
             <div class="model-item">
                 <input type="text" name="mobile"  value="" tabindex="1"  class="int-item" maxlength="11" placeholder="请输入您的手机号" validate/>

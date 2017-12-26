@@ -10,7 +10,7 @@
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
                 <select class="selectpicker jq-b-type" id="businessType">
-                    <option value="RED_ENVELOPE" selected>创建现金红包</option>
+                    <option value="RED_ENVELOPE" selected>创建投资红包</option>
                     <option value="INTEREST_COUPON">创建加息券</option>
                 </select>
             </div>
@@ -19,7 +19,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">红包名称:</label>
             <div class="col-sm-4">
-                <span class="form-control">现金红包</span>
+                <span class="form-control">投资红包</span>
                 <input class="couponType" name="couponType" value="RED_ENVELOPE" type="hidden">
             </div>
         </div>

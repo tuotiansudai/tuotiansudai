@@ -49,18 +49,6 @@ public class ExerciseVSWorkActivityService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private LotteryDrawActivityService lotteryDrawActivityService;
-
-    public int drawTimeByLoginNameAndActivityCategory(String mobile) {
-        if (new Date().before(ActivityStartTime) || new Date().after(ActivityEndTime)) {
-            return 0;
-        }
-        UserModel userModel = userMapper.findByMobile(mobile);
-        return lotteryDrawActivityService.getExerciseVSWorkDrawTime(userModel, ActivityCategory.EXERCISE_WORK_ACTIVITY) <= 0 ? 0 : lotteryDrawActivityService.getExerciseVSWorkDrawTime(userModel, ActivityCategory.EXERCISE_WORK_ACTIVITY);
-
-    }
-
     public long sumInvestByLoginNameExceptTransferAndTime(String loginName) {
         return investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName, ActivityStartTime, ActivityEndTime).stream().mapToLong(i -> i.getAmount()).sum();
     }

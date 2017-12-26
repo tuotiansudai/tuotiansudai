@@ -11,7 +11,7 @@
                     <em class="message-tip">恭喜您！您已获得</em>
                 </#if>
                 <span class="amount"><i>8.88</i>元</span>
-                <span class="kind">现金红包</span>
+                <span class="kind">投资红包</span>
             </div>
 
     <#if registerStatus=='referrer'>

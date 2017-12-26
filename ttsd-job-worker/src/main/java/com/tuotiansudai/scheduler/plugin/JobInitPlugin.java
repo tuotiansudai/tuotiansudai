@@ -35,9 +35,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.DragonBoatSendPKPrize.name().equalsIgnoreCase(schedulerName)) {
-            createDragonBoatSendPKPrizeJob();
-        }
     }
 
     @Override
@@ -46,17 +43,5 @@ public class JobInitPlugin implements SchedulerPlugin {
     }
 
     private void createDragonBoatSendPKPrizeJob() {
-        try {
-            logger.info("[Dragon Boat] DragonBoatPKSendExperienceJob.endTime:" + DragonBoatPKSendExperienceJob.endTime);
-            Date endTime = DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            if (endTime.after(new Date())) { // 如果还没到结束时间，则创建job，如果已经到结束时间了，则不创建job
-                jobManager.newJob(JobType.DragonBoatSendPKPrize, DragonBoatPKSendExperienceJob.class)
-                        .withIdentity(JobType.DragonBoatSendPKPrize.name(), JobType.DragonBoatSendPKPrize.name())
-                        .replaceExistingJob(true)
-                        .runOnceAt(DateTime.parse(DragonBoatPKSendExperienceJob.endTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()).submit();
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
     }
 }

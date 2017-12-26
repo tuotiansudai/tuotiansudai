@@ -13,7 +13,7 @@ public class InvestExperienceResponseDataDto {
     @ApiModelProperty(value = "优惠券类型", example = "RED_ENVELOPE")
     private String type;
 
-    @ApiModelProperty(value = "优惠券名称", example = "现金红包")
+    @ApiModelProperty(value = "优惠券名称", example = "投资红包")
     private String name;
 
     @ApiModelProperty(value = "优惠券金额", example = "5000")

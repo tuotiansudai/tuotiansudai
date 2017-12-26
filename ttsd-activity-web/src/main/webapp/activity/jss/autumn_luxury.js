@@ -91,13 +91,13 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
                         drawCircle.rotateFn(116, '奢侈品大奖',data.prizeType);
                         break;
                     case 'RED_ENVELOPE_100':
-                        drawCircle.rotateFn(160, '100元现金红包',data.prizeType);
+                        drawCircle.rotateFn(160, '100元投资红包',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_5':
                         drawCircle.rotateFn(230, '0.5%加息券',data.prizeType);
                         break;
                     case 'RED_ENVELOPE_50':
-                        drawCircle.rotateFn(300, '50元现金红包',data.prizeType);
+                        drawCircle.rotateFn(300, '50元投资红包',data.prizeType);
                         break;
                 }
             } else if (data.returnCode == 2) {
