@@ -45,7 +45,8 @@ public class DoubleElevenActivityController {
     @ResponseBody
     @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto drawPrize(@RequestParam(value = "activityCategory", defaultValue = "DOUBLE_ELEVEN_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return new DrawLotteryResultDto(3);
+        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
+        return drawLotteryResultDto;
     }
 
     @ResponseBody

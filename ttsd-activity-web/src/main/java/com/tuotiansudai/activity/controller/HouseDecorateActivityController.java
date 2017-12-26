@@ -36,7 +36,7 @@ public class HouseDecorateActivityController {
     @ResponseBody
     @RequestMapping(value = "/house-decorate-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto lotteryDraw(@RequestParam(value = "activityCategory", defaultValue = "HOUSE_DECORATE_ACTIVITY", required = false) ActivityCategory activityCategory){
-        return new DrawLotteryResultDto(3);
+        return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(),ActivityCategory.HOUSE_DECORATE_ACTIVITY);
     }
 
 }
