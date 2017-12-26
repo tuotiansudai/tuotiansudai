@@ -93,6 +93,7 @@ public class MQConsumerAliyunMNS extends MQConsumer {
                     e = new AliyunClientException((ClientException) e);
                 }
                 logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
+                return false;
             }
         }
         return true;
