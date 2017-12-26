@@ -81,11 +81,11 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <p class="mater-img picture-item">
-                    <img src="${commonStaticServer}/${productShowItem.webPictureUrl}"/>
-                </p>
-            </div>
+        </div>
+        <div>
+            <p class="mater-img picture-item">
+                <img src="${commonStaticServer}/${productShowItem.webPictureUrl}"/>
+            </p>
         </div>
     </div>
     <div class="container-ad">

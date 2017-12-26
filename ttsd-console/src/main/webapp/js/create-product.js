@@ -41,11 +41,11 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
         img.src = _URL.createObjectURL(file);
         img.onload = function () {
             if (width && this.width != width) {
-                defer.reject('图片宽应为' + width);
+                defer.reject('图片宽应为' + width + 'px');
                 return;
             }
             if (height && this.height != height) {
-                defer.reject('图片长应为' + height);
+                defer.reject('图片长应为' + height + 'px');
                 return;
             }
             defer.resolve(file);
