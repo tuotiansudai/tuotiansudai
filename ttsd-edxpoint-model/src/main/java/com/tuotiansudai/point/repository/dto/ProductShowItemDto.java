@@ -21,6 +21,7 @@ public class ProductShowItemDto {
     private long actualPoints;
     private String pictureDescription;
     private Date updatedTime;
+    private String webPictureUrl;
 
     public ProductShowItemDto() {
     }
@@ -38,6 +39,7 @@ public class ProductShowItemDto {
         this.actualPoints = productModel.getActualPoints();
         this.pictureDescription = pictureDescription;
         this.updatedTime = productModel.getUpdatedTime();
+        this.webPictureUrl = productModel.getWebPictureUrl();
     }
 
     public ProductShowItemDto(long totalCount, long usedCount, long monthLimit, long points, long actualPoints, Integer seq, String imageUrl, CouponType couponType, long amount, double rate, long productId) {
@@ -159,5 +161,13 @@ public class ProductShowItemDto {
 
     public void setActualPoints(long actualPoints) {
         this.actualPoints = actualPoints;
+    }
+
+    public String getWebPictureUrl() {
+        return webPictureUrl;
+    }
+
+    public void setWebPictureUrl(String webPictureUrl) {
+        this.webPictureUrl = webPictureUrl;
     }
 }

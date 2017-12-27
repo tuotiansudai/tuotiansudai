@@ -28,11 +28,13 @@
         <result column="active_time" property="activeTime"/>
         <result column="updated_by" property="updatedBy"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="web_picture_url" property="webPictureUrl"/>
+        <result column="app_picture_url" property="appPictureUrl"/>
     </resultMap>
 
     <insert id="create" parameterType="ProductModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO product(`type`,`coupon_id`, `name`, `seq`, `image_url`, `description`, `total_count`, `month_limit`, `used_count`, `points`, `start_time`, `end_time`, `active`, `created_by`, `created_time`, `active_by`, `active_time`, `updated_by`, `updated_time`)
-        VALUE(#{type}, #{couponId}, #{name}, #{seq}, #{imageUrl}, #{description}, #{totalCount}, #{monthLimit}, #{usedCount}, #{points}, #{startTime}, #{endTime}, #{active}, #{createdBy}, #{createdTime}, #{activeBy}, #{activeTime}, #{updatedBy}, #{updatedTime})
+        INSERT INTO product(`type`,`coupon_id`, `name`, `seq`, `image_url`, `description`, `total_count`, `month_limit`, `used_count`, `points`, `start_time`, `end_time`, `active`, `created_by`, `created_time`, `active_by`, `active_time`, `updated_by`, `updated_time`,`web_picture_url`,`app_picture_url`)
+        VALUE(#{type}, #{couponId}, #{name}, #{seq}, #{imageUrl}, #{description}, #{totalCount}, #{monthLimit}, #{usedCount}, #{points}, #{startTime}, #{endTime}, #{active}, #{createdBy}, #{createdTime}, #{activeBy}, #{activeTime}, #{updatedBy}, #{updatedTime},#{webPictureUrl},#{appPictureUrl})
     </insert>
 
     <update id="update" parameterType="ProductModel">
@@ -52,7 +54,9 @@
         `active_by` = #{activeBy},
         `active_time` = #{activeTime},
         `updated_by` = #{updatedBy},
-        `updated_time` = #{updatedTime}
+        `updated_time` = #{updatedTime},
+        `web_picture_url` = #{webPictureUrl},
+        `app_picture_url` = #{appPictureUrl}
         WHERE `id` = #{id}
     </update>
 
@@ -72,7 +76,7 @@
     <select id="findExchangeableProductsList" resultMap="productResultMap">
         SELECT * FROM product p
         WHERE p.active = 1
-        AND DATE_FORMAT(#{currentDate},'%Y-%m-%d') between p.start_time and  p.end_time
+        AND DATE_FORMAT(#{currentDate},'%Y-%m-%d') between p.start_time and p.end_time
         <if test="type != null">
             AND p.type = #{type}
         </if>
@@ -107,7 +111,7 @@
     <select id="findAllProductsByGoodsType" resultMap="productResultMap">
         SELECT * FROM product p
         where active = 1
-        AND DATE_FORMAT(now(),'%Y-%m-%d') between p.start_time and  p.end_time
+        AND DATE_FORMAT(now(),'%Y-%m-%d') between p.start_time and p.end_time
         <if test="goodsTypes != null ">
             and type IN
             <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">
