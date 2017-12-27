@@ -13,6 +13,9 @@ public interface UserPointMapper {
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "login_name", property = "loginName"),
             @Result(column = "point", property = "point"),
+            @Result(column = "sudai_point", property = "sudaiPoint"),
+            @Result(column = "channel_point", property = "channelPoint"),
+            @Result(column = "channel", property = "channel"),
             @Result(column = "updated_time", property = "updatedTime")
     })
     @Select("select * from user_point where login_name = #{loginName}")
@@ -21,14 +24,55 @@ public interface UserPointMapper {
 
 
     @ResultMap("userPointModelMap")
-    @Select("select * from user_point order by point desc limit #{pageSize} offset #{pageIndex}")
+    @Select({
+            "<script>",
+            " select * from user_point",
+            " <where>",
+            " <if test=\"channel != null and channel != ''\"> and channel = #{channel} </if>",
+            " <if test='minPoint != null'> and point &gt;= #{minPoint} </if>",
+            " <if test='maxPoint != null'> and point &lt;= #{maxPoint} </if>",
+            " <if test='minSudaiPoint != null'> and sudai_point &gt;= #{minSudaiPoint} </if>",
+            " <if test='maxSudaiPoint != null'> and sudai_point &lt;= #{maxSudaiPoint} </if>",
+            " <if test='minChannelPoint != null'> and channel_point &gt;= #{minChannelPoint} </if>",
+            " <if test='maxChannelPoint != null'> and channel_point &lt;= #{maxChannelPoint} </if>",
+            " </where>",
+            " order by point desc limit #{rowLimit} offset #{rowIndex}",
+            "</script>"
+    })
     List<UserPointModel> list(
-            @Param("pageIndex") int pageIndex,
-            @Param("pageSize") int pageSize);
+            @Param("channel") String channel,
+            @Param("minPoint") Integer minPoint,
+            @Param("maxPoint") Integer maxPoint,
+            @Param("minSudaiPoint") Integer minSudaiPoint,
+            @Param("maxSudaiPoint") Integer maxSudaiPoint,
+            @Param("minChannelPoint") Integer minChannelPoint,
+            @Param("maxChannelPoint") Integer maxChannelPoint,
+            @Param("rowIndex") int rowIndex,
+            @Param("rowLimit") int rowLimit);
 
 
-    @Select("select count(*) from user_point")
-    long count();
+    @Select({
+            "<script>",
+            " select count(*) from user_point",
+            " <where>",
+            " <if test=\"channel != null and channel != ''\"> and channel = #{channel} </if>",
+            " <if test='minPoint != null'> and point &gt;= #{minPoint} </if>",
+            " <if test='maxPoint != null'> and point &lt;= #{maxPoint} </if>",
+            " <if test='minSudaiPoint != null'> and sudai_point &gt;= #{minSudaiPoint} </if>",
+            " <if test='maxSudaiPoint != null'> and sudai_point &lt;= #{maxSudaiPoint} </if>",
+            " <if test='minChannelPoint != null'> and channel_point &gt;= #{minChannelPoint} </if>",
+            " <if test='maxChannelPoint != null'> and channel_point &lt;= #{maxChannelPoint} </if>",
+            " </where>",
+            "</script>"
+    })
+    long count(
+            @Param("channel") String channel,
+            @Param("minPoint") Integer minPoint,
+            @Param("maxPoint") Integer maxPoint,
+            @Param("minSudaiPoint") Integer minSudaiPoint,
+            @Param("maxSudaiPoint") Integer maxSudaiPoint,
+            @Param("minChannelPoint") Integer minChannelPoint,
+            @Param("maxChannelPoint") Integer maxChannelPoint);
 
     @Select("select exists(select 1 from user_point where login_name = #{loginName})")
     boolean exists(
@@ -36,22 +80,60 @@ public interface UserPointMapper {
 
 
     @Insert({
-            " insert into user_point(login_name, point, updated_time)",
-            " values (#{loginName}, #{point}, #{updatedTime})"
+            " insert into user_point(login_name, point, sudai_point, channel_point, channel, updated_time)",
+            " values (#{loginName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{channel}, #{updatedTime})"
     })
-    int create(@Param("loginName") String loginName,
-               @Param("point") long point,
-               @Param("updatedTime") Date updatedTime);
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    int create(UserPointModel model);
 
     @Update({
             " update user_point set",
-            " point = point + #{point},",
+            " channel = #{channel},",
             " updated_time = #{updatedTime}",
             " where login_name = #{loginName}"
     })
-    int increase(@Param("loginName") String loginName,
-                 @Param("point") long point,
-                 @Param("updatedTime") Date updatedTime);
+    int updateChannel(
+            @Param("loginName") String loginName,
+            @Param("channel") String channel,
+            @Param("updatedTime") Date updatedTime);
+
+    @Update({
+            " update user_point set",
+            " point = point + #{sudaiPoint},",
+            " sudai_point = sudai_point + #{sudaiPoint},",
+            " updated_time = #{updatedTime}",
+            " where login_name = #{loginName}"
+    })
+    int increaseSudaiPoint(
+            @Param("loginName") String loginName,
+            @Param("sudaiPoint") long sudaiPoint,
+            @Param("updatedTime") Date updatedTime);
+
+    @Update({
+            " update user_point set",
+            " point = point + #{channelPoint},",
+            " channel_point = channel_point + #{channelPoint},",
+            " updated_time = #{updatedTime}",
+            " where login_name = #{loginName}"
+    })
+    int increaseChannelPoint(
+            @Param("loginName") String loginName,
+            @Param("channelPoint") long channelPoint,
+            @Param("updatedTime") Date updatedTime);
+
+    @Update({
+            " update user_point set",
+            " point = point + #{sudaiPoint} + #{channelPoint},",
+            " sudai_point = sudai_point + #{sudaiPoint},",
+            " channel_point = channel_point + #{channelPoint},",
+            " updated_time = #{updatedTime}",
+            " where login_name = #{loginName}"
+    })
+    int increasePoint(
+            @Param("loginName") String loginName,
+            @Param("sudaiPoint") long sudaiPoint,
+            @Param("channelPoint") long channelPoint,
+            @Param("updatedTime") Date updatedTime);
 
 
     default long getPointByLoginName(String loginName) {
@@ -67,14 +149,6 @@ public interface UserPointMapper {
             throw new IllegalArgumentException(String.format("cannot find user point record with login_name = '%s'", loginName));
         } else {
             return userPointModel.getPoint();
-        }
-    }
-
-    default void increaseOrCreate(String loginName, long point) {
-        if (exists(loginName)) {
-            increase(loginName, point, new Date());
-        } else {
-            create(loginName, point, new Date());
         }
     }
 }

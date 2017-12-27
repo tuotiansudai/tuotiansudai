@@ -289,7 +289,7 @@ public class LotteryDrawActivityService {
 
         long userAvailablePoint = userPointMapper.getPointByLoginName(userModel.getLoginName(), 0L);
 
-        if (userAvailablePoint - pointBillService.getFrozenPointByLoginName(userModel.getLoginName()) < activityCategory.getConsumeCategory().getPoint()) {
+        if (userAvailablePoint < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 

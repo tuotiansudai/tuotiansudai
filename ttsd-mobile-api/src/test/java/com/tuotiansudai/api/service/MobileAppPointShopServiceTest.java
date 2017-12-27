@@ -9,10 +9,7 @@ import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
-import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.ProductModel;
-import com.tuotiansudai.point.repository.model.ProductOrderModel;
-import com.tuotiansudai.point.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
@@ -24,7 +21,6 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -110,7 +106,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     @Test
     public void shouldFindUserPointsOrdersIsOk() {
         UserModel userModel = getUserModelTest("testUserAddress");
-        ProductModel productModel = getProductModel(userModel.getLoginName(), GoodsType.VIRTUAL, 100, 0l);
+        ProductModel productModel = getProductModel(GoodsType.VIRTUAL, 100, 0l);
         ProductOrderModel productOrderModel = getProductOrderModel(productModel.getId(), userModel.getLoginName());
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
@@ -132,15 +128,15 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
 
-        userPointMapper.increaseOrCreate(loginName, 1000L);
+        increaseOrCreate(loginName, 1000L);
         ProductListRequestDto baseParamDto = new ProductListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
         baseParam.setPhoneNum("13900000000");
         baseParamDto.setBaseParam(baseParam);
-        getProductModel(loginName, GoodsType.COUPON, 100, 0L);
-        getProductModel(loginName, GoodsType.PHYSICAL, 100, 0L);
-        getProductModel(loginName, GoodsType.VIRTUAL, 100, 0L);
+        getProductModel(GoodsType.COUPON, 100, 0L);
+        getProductModel(GoodsType.PHYSICAL, 100, 0L);
+        getProductModel(GoodsType.VIRTUAL, 100, 0L);
         BaseResponseDto<ProductListResponseDto> pointHome = mobileAppPointShopService.findPointHome(baseParamDto);
         assertEquals("1000", pointHome.getData().getMyPoints());
         assertTrue(pointHome.getData().getVirtuals().size() >= 2);
@@ -151,7 +147,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     public void shouldFindProductDetailIsOk() {
         String loginName = "findPointHomeUser1";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
+        ProductModel productModel = getProductModel(GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         BaseResponseDto<ProductDetailResponseDto> baseResponseDto = mobileAppPointShopService.findProductDetail(productDetailRequestDto);
@@ -189,7 +185,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     public void shouldProductCountIsZeroIsFault() {
         String loginName = "findPointHomeUser4";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 0l, 0l);
+        ProductModel productModel = getProductModel(GoodsType.COUPON, 0l, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -205,7 +201,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     public void shouldMyPointsIsZeroIsFault() {
         String loginName = "findPointHomeUser3";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
+        ProductModel productModel = getProductModel(GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -215,7 +211,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-        userPointMapper.increaseOrCreate(loginName, 10L);
+        increaseOrCreate(loginName, 10L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), baseResponseDto.getCode());
     }
@@ -226,7 +222,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         getUserModelTest(loginName);
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, couponModel.getId());
+        ProductModel productModel = getProductModel(GoodsType.COUPON, 100, couponModel.getId());
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -236,7 +232,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-        userPointMapper.increaseOrCreate(loginName, 100000L);
+        increaseOrCreate(loginName, 100000L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
     }
@@ -247,7 +243,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         UserModel userModel = getUserModelTest(loginName);
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, couponModel.getId());
+        ProductModel productModel = getProductModel(GoodsType.COUPON, 100, couponModel.getId());
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -257,7 +253,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-        userPointMapper.increaseOrCreate(loginName, 1000L);
+        increaseOrCreate(loginName, 1000L);
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
         userAddressMapper.create(userAddressModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -290,7 +286,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         return couponModel;
     }
 
-    private ProductModel getProductModel(String loginName, GoodsType goodsType, long totalCount, long couponId) {
+    private ProductModel getProductModel(GoodsType goodsType, long totalCount, long couponId) {
         ProductModel productModel = new ProductModel("test", goodsType, 0, "50元充值卡", 1, "upload/images/11.png", "50yuan", totalCount, 0, 200, new Date(), new DateTime().plusDays(7).toDate());
 
         productModel.setCouponId(couponId);
@@ -330,5 +326,17 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
         return userModelTest;
+    }
+
+    private UserPointModel increaseOrCreate(String loginName, long sudaiPoint) {
+        UserPointModel model = new UserPointModel();
+        model.setLoginName(loginName);
+        model.setChannel(null);
+        model.setChannelPoint(0);
+        model.setSudaiPoint(sudaiPoint);
+        model.setPoint(sudaiPoint);
+        model.setUpdatedTime(new Date());
+        userPointMapper.create(model);
+        return model;
     }
 }
