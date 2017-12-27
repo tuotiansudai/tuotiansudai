@@ -7,6 +7,7 @@ import com.tuotiansudai.console.service.CouponActivationService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
 import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
@@ -26,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -447,9 +450,27 @@ public class PointManageController {
         modelAndView.addObject("channel", channel);
         modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
         modelAndView.addObject("success", success);
-        modelAndView.addObject("channelList",channelPointServiceImpl.findAllChannel());
-        modelAndView.addObject("channelPointId",channelPointId);
+        modelAndView.addObject("channelList", channelPointServiceImpl.findAllChannel());
+        modelAndView.addObject("channelPointId", channelPointId);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDataDto importCsv(HttpServletRequest httpServletRequest) throws Exception {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        BaseDataDto baseDataDto = new BaseDataDto(true);
+        try {
+            channelPointServiceImpl.checkFileName(multipartFile);
+
+
+
+        } catch (ChannelPointDataValidationException e) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage(e.getMessage());
+        }
+        return baseDataDto;
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

@@ -16,11 +16,12 @@
         <result column="point" property="point"></result>
         <result column="success" property="success"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="remark" property="remark"></result>
     </resultMap>
 
     <insert id="create" parameterType="ChannelPointDetailModel" useGeneratedKeys="true" keyProperty="id">
-        insert into channel_point_detail (channel_point_id, login_name, user_name, mobile, channel,point,success,created_time)
-        value(#{channelPointId}, #{loginName}, #{userName}, #{mobile}, #{channel}, #{point},#{success},#{createdTime})
+        insert into channel_point_detail (channel_point_id, login_name, user_name, mobile, channel,point,success,created_time,remark)
+        value(#{channelPointId}, #{loginName}, #{userName}, #{mobile}, #{channel}, #{point},#{success},#{createdTime},#{remark})
     </insert>
 
     <select id="findById" resultMap="channelPointDetailResultMap" parameterType="long">

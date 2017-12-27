@@ -40,5 +40,9 @@
         select sum(head_count) from channel_point
     </select>
 
+    <select id="findBySerialNo" resultMap="channelPointResultMap" parameterType="String">
+        select * from channel_point where serial_no = #{serialNo}
+    </select>
+
 
 </mapper>

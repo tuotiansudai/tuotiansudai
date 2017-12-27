@@ -22,6 +22,7 @@ CREATE TABLE `channel_point_detail` (
   `point`         BIGINT UNSIGNED NOT NULL,
   `success`       TINYINT(1)      NOT NULL DEFAULT FALSE ,
   `created_time`  DATETIME        NOT NULL,
+  `remark`  VARCHAR(255)        NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_CHANNEL_POINT_DETAIL_REF_CHANNEL_POINT_ID FOREIGN KEY (`channel_point_id`) REFERENCES `channel_point` (`id`)
 )

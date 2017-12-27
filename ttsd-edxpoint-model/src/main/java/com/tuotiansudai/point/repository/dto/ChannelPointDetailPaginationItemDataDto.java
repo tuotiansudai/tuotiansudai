@@ -10,6 +10,7 @@ public class ChannelPointDetailPaginationItemDataDto implements Serializable {
     private String channel;
     private boolean success;
     private long point;
+    private String remark;
 
     public ChannelPointDetailPaginationItemDataDto() {
     }

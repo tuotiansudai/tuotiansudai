@@ -13,6 +13,13 @@ public class ChannelPointDetailModel implements Serializable {
     private long point;
     private boolean success;
     private Date createdTime;
+    private String remark;
+
+    public ChannelPointDetailModel(){}
+
+    public ChannelPointDetailModel(){
+
+    }
 
     public long getId() {
         return id;
@@ -84,5 +91,13 @@ public class ChannelPointDetailModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

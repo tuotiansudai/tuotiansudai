@@ -1,15 +1,26 @@
 package com.tuotiansudai.point.service;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ChannelPointPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.ChannelPointDetailMapper;
 import com.tuotiansudai.point.repository.mapper.ChannelPointMapper;
+import com.tuotiansudai.point.repository.model.ChannelPointDetailModel;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +31,7 @@ public class ChannelPointServiceImpl {
     private ChannelPointMapper channelPointMapper;
     @Autowired
     private ChannelPointDetailMapper channelPointDetailMapper;
+
 
     public BasePaginationDataDto<ChannelPointPaginationItemDataDto> getChannelPointList(int index, int pageSize) {
         long count = channelPointMapper.findCountByPagination();
@@ -57,4 +69,47 @@ public class ChannelPointServiceImpl {
     public List<String> findAllChannel() {
         return channelPointDetailMapper.findAllChannel();
     }
+
+    public void checkFileName(MultipartFile multipartFile) throws ChannelPointDataValidationException {
+        if (null == multipartFile) {
+            throw new ChannelPointDataValidationException("请上传文件！");
+        }
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            throw new ChannelPointDataValidationException("上传失败!文件必须是csv格式");
+        }
+
+        String originalFileName = multipartFile.getOriginalFilename().substring(0, multipartFile.getOriginalFilename().indexOf(".csv"));
+
+        if (channelPointMapper.findBySerialNo(originalFileName) != null) {
+            throw new ChannelPointDataValidationException(String.format("%s文件已经导入,请知晓!", originalFileName));
+        }
+
+
+    }
+
+    public BaseDataDto importChannelPoint(InputStream inputStream) throws Exception {
+        List<ChannelPointDetailModel> details = Lists.newArrayList();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "GBK"));
+            String line;
+            while (null != (line = bufferedReader.readLine())) {
+                String[] data = line.split(",");
+                details.add(new ChannelPointDetailModel());
+
+            }
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return new BaseDataDto(false, "上传失败！文件中部分数据格式不规范");
+        } catch (IOException e) {
+            return new BaseDataDto(false, "上传失败!文件内容读取错误");
+        } finally {
+            if (null != inputStream) {
+                inputStream.close();
+            }
+        }
+    }
+
+
 }
+
+
