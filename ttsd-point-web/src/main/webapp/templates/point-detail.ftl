@@ -84,7 +84,9 @@
         </div>
         <div>
             <p class="mater-img picture-item">
-                <img src="${commonStaticServer}/${productShowItem.webPictureUrl}"/>
+                <#if productShowItem.webPictureUrl??>
+                    <img src="${commonStaticServer}/${productShowItem.webPictureUrl}"/>
+                </#if>
             </p>
         </div>
     </div>
