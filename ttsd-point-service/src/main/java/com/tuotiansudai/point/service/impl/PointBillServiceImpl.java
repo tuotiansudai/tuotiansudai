@@ -10,7 +10,6 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.point.service.UserPointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -23,7 +22,6 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -49,9 +47,6 @@ public class PointBillServiceImpl implements PointBillService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserPointService userPointService;
-
-    @Autowired
     private PointBillMapper pointBillMapper;
 
     @Autowired
@@ -65,8 +60,6 @@ public class PointBillServiceImpl implements PointBillService {
 
     @Autowired
     private LoanMapper loanMapper;
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
 
     @Override
@@ -90,7 +83,11 @@ public class PointBillServiceImpl implements PointBillService {
             logger.info(String.format("createPointBill: %s no account", loginName));
             return;
         }
-        UserPointModel userPointModel = userPointService.findOrCreateWithLock(loginName);
+
+        if (!userPointMapper.exists(loginName)) {
+            userPointMapper.createIfNotExist(new UserPointModel(loginName, 0, 0, null));
+        }
+        UserPointModel userPointModel = userPointMapper.lockByLoginName(loginName);
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
         long sudaiPoint = point - channelPoint;
