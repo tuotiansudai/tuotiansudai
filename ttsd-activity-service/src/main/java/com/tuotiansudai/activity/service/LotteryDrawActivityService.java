@@ -232,6 +232,10 @@ public class LotteryDrawActivityService {
                 .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_100, Lists.newArrayList(478L))
                 .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_120, Lists.newArrayList(479L))
                 .put(LotteryPrize.YEAR_END_AWARDS_ACTIVITY_ENVELOP_200, Lists.newArrayList(480L))
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_10, Lists.newArrayList(360L))
+                .put(LotteryPrize.POINT_SHOP_RED_ENVELOPE_50, Lists.newArrayList(361L))
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_2, Lists.newArrayList(362L))
+                .put(LotteryPrize.POINT_SHOP_INTEREST_COUPON_5, Lists.newArrayList(363L))
                 .build()).get(lotteryPrize);
     }
 
