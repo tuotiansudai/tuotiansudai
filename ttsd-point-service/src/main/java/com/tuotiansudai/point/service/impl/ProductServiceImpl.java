@@ -15,9 +15,9 @@ import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
-import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.PointBillService;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
-    private UserPointMapper userPointMapper;
+    private PointService pointService;
 
     @Autowired
     private PointBillService pointBillService;
@@ -396,7 +396,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         long totalPrice = this.discountTotalPrice(productShowItemDto.getPoints(), discount, amount);
-        if (userPointMapper.getPointByLoginName(loginName, 0L) - pointBillService.getFrozenPointByLoginName(loginName) < totalPrice) {
+        if (pointService.getAvailablePoint(loginName) < totalPrice) {
             redisWrapperClient.decrEx(key, COUNT_LIFE_TIME, amount);
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
