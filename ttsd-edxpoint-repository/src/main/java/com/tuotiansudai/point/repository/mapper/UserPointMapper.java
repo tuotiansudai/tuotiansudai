@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Mapper
+@CacheNamespace(implementation = com.tuotiansudai.cache.MybatisRedisCache.class)
 public interface UserPointMapper {
 
     @Results(id = "userPointModelMap", value = {
@@ -20,6 +21,12 @@ public interface UserPointMapper {
     })
     @Select("select * from user_point where login_name = #{loginName}")
     UserPointModel findByLoginName(
+            @Param("loginName") String loginName);
+
+
+    @Options(useCache = false)
+    @Select("select * from user_point where login_name = #{loginName} for update")
+    UserPointModel lockByLoginName(
             @Param("loginName") String loginName);
 
 
@@ -80,11 +87,11 @@ public interface UserPointMapper {
 
 
     @Insert({
-            " insert into user_point(login_name, point, sudai_point, channel_point, channel, updated_time)",
+            " insert ignore into user_point(login_name, point, sudai_point, channel_point, channel, updated_time)",
             " values (#{loginName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{channel}, #{updatedTime})"
     })
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    int create(UserPointModel model);
+    int createIfNotExist(UserPointModel model);
 
     @Update({
             " update user_point set",

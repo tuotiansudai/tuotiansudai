@@ -39,8 +39,8 @@ public class UserPointMapperTest {
 
     @Test
     public void shouldCreate() {
-        UserPointModel fakeUserPointModel = fakeUserPointModel("fakeUser", 100, 50, "北京一分");
-        int affectedCount = userPointMapper.create(fakeUserPointModel);
+        UserPointModel fakeUserPointModel = new UserPointModel("fakeUser", 100, 50, "北京一分");
+        int affectedCount = userPointMapper.createIfNotExist(fakeUserPointModel);
         assertEquals(1, affectedCount);
         boolean exist = userPointMapper.exists(fakeUserPointModel.getLoginName());
         assertTrue(exist);
@@ -55,8 +55,8 @@ public class UserPointMapperTest {
 
     @Test
     public void shoudUpdateChannel() {
-        UserPointModel fakeUserPointModel = fakeUserPointModel("fakeUser", 100);
-        userPointMapper.create(fakeUserPointModel);
+        UserPointModel fakeUserPointModel = new UserPointModel("fakeUser", 100, 0, null);
+        userPointMapper.createIfNotExist(fakeUserPointModel);
         UserPointModel model1 = userPointMapper.findByLoginName(fakeUserPointModel.getLoginName());
         assertNull(model1.getChannel());
         userPointMapper.updateChannel(fakeUserPointModel.getLoginName(), "北京1分", new Date());
@@ -66,8 +66,8 @@ public class UserPointMapperTest {
 
     @Test
     public void shouldIncreaseChannelPoint() {
-        UserPointModel fakeUserPointModel = fakeUserPointModel("fakeUser", 100, 50, "北京一分");
-        userPointMapper.create(fakeUserPointModel);
+        UserPointModel fakeUserPointModel = new UserPointModel("fakeUser", 100, 50, "北京一分");
+        userPointMapper.createIfNotExist(fakeUserPointModel);
         userPointMapper.increaseChannelPoint(fakeUserPointModel.getLoginName(), 30, new Date());
         UserPointModel dbModel = userPointMapper.findByLoginName(fakeUserPointModel.getLoginName());
         assertEquals(100, dbModel.getSudaiPoint());
@@ -77,8 +77,8 @@ public class UserPointMapperTest {
 
     @Test
     public void shouldIncreaseSudaiPoint() {
-        UserPointModel fakeUserPointModel = fakeUserPointModel("fakeUser", 100, 50, "北京一分");
-        userPointMapper.create(fakeUserPointModel);
+        UserPointModel fakeUserPointModel = new UserPointModel("fakeUser", 100, 50, "北京一分");
+        userPointMapper.createIfNotExist(fakeUserPointModel);
         userPointMapper.increaseSudaiPoint(fakeUserPointModel.getLoginName(), 20, new Date());
         UserPointModel dbModel = userPointMapper.findByLoginName(fakeUserPointModel.getLoginName());
         assertEquals(120, dbModel.getSudaiPoint());
@@ -88,8 +88,8 @@ public class UserPointMapperTest {
 
     @Test
     public void shouldIncreasePoint() {
-        UserPointModel fakeUserPointModel = fakeUserPointModel("fakeUser", 100, 50, "北京一分");
-        userPointMapper.create(fakeUserPointModel);
+        UserPointModel fakeUserPointModel = new UserPointModel("fakeUser", 100, 50, "北京一分");
+        userPointMapper.createIfNotExist(fakeUserPointModel);
         userPointMapper.increasePoint(fakeUserPointModel.getLoginName(), 20, 30, new Date());
         UserPointModel dbModel = userPointMapper.findByLoginName(fakeUserPointModel.getLoginName());
         assertEquals(120, dbModel.getSudaiPoint());
@@ -99,22 +99,22 @@ public class UserPointMapperTest {
 
     @Test
     public void shouldListAndCount() {
-        userPointMapper.create(fakeUserPointModel("fakeUser01", 1100, 1650, "北京一分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser02", 2100, 1550, "北京一分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser03", 3100, 1450, "北京一分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser04", 4100, 1350, "北京二分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser05", 5100, 1250, "北京二分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser06", 6100, 1150, "北京二分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser07", 7100, 1050, "北京三分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser08", 8100, 950, "北京三分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser09", 9100, 850, "北京三分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser10", 10100, 750, "北京四分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser11", 11100, 650, "北京四分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser12", 12100, 550, "北京四分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser13", 13100, 450, "北京四分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser14", 14100, 350, "北京四分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser15", 15100, 250, "北京四分"));
-        userPointMapper.create(fakeUserPointModel("fakeUser16", 16100, 150, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser01", 1100, 1650, "北京一分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser02", 2100, 1550, "北京一分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser03", 3100, 1450, "北京一分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser04", 4100, 1350, "北京二分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser05", 5100, 1250, "北京二分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser06", 6100, 1150, "北京二分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser07", 7100, 1050, "北京三分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser08", 8100, 950, "北京三分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser09", 9100, 850, "北京三分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser10", 10100, 750, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser11", 11100, 650, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser12", 12100, 550, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser13", 13100, 450, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser14", 14100, 350, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser15", 15100, 250, "北京四分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser16", 16100, 150, "北京四分"));
 
         List<UserPointModel> result1 = userPointMapper.list(null, 8000, 10000, null, null, null, null, 0, 10);
         long count1 = userPointMapper.count(null, 8000, 10000, null, null, null, null);
@@ -136,22 +136,5 @@ public class UserPointMapperTest {
         assertEquals("fakeUser14", result3.get(0).getLoginName());
         assertEquals("fakeUser05", result3.get(9).getLoginName());
         assertEquals(13, count3);
-    }
-
-    private UserPointModel fakeUserPointModel(String loginName, long sudaiPoint) {
-        return fakeUserPointModel(loginName, sudaiPoint, 0, null);
-    }
-
-    private UserPointModel fakeUserPointModel(String loginName, long sudaiPoint, long channelPoint, String channel) {
-        UserPointModel model = new UserPointModel();
-
-        model.setLoginName(loginName);
-        model.setPoint(sudaiPoint + channelPoint);
-        model.setSudaiPoint(sudaiPoint);
-        model.setChannel(channel);
-        model.setChannelPoint(channelPoint);
-        model.setUpdatedTime(new Date());
-
-        return model;
     }
 }

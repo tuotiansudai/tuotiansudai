@@ -128,7 +128,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
 
-        increaseOrCreate(loginName, 1000L);
+        createUserPoint(loginName, 1000L);
         ProductListRequestDto baseParamDto = new ProductListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
@@ -211,7 +211,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-        increaseOrCreate(loginName, 10L);
+        createUserPoint(loginName, 10L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), baseResponseDto.getCode());
     }
@@ -232,7 +232,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-        increaseOrCreate(loginName, 100000L);
+        createUserPoint(loginName, 100000L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
     }
@@ -253,7 +253,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-        increaseOrCreate(loginName, 1000L);
+        createUserPoint(loginName, 1000L);
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
         userAddressMapper.create(userAddressModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -328,15 +328,9 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         return userModelTest;
     }
 
-    private UserPointModel increaseOrCreate(String loginName, long sudaiPoint) {
-        UserPointModel model = new UserPointModel();
-        model.setLoginName(loginName);
-        model.setChannel(null);
-        model.setChannelPoint(0);
-        model.setSudaiPoint(sudaiPoint);
-        model.setPoint(sudaiPoint);
-        model.setUpdatedTime(new Date());
-        userPointMapper.create(model);
+    private UserPointModel createUserPoint(String loginName, long sudaiPoint) {
+        UserPointModel model = new UserPointModel(loginName, sudaiPoint, 0, null);
+        userPointMapper.createIfNotExist(model);
         return model;
     }
 }
