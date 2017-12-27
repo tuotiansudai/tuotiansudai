@@ -2,6 +2,7 @@ package com.tuotiansudai.point.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 
@@ -29,5 +30,7 @@ public interface PointBillService {
     long getPointBillCountByLoginName(String loginName);
 
     BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile, int currentPageNo, int pageSize);
+
+    void createChannelPointDetail(List<ChannelPointDetailDto> dtos);
 
 }

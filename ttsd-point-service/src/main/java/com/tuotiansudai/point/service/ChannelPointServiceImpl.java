@@ -10,6 +10,7 @@ import com.tuotiansudai.point.repository.dto.ChannelPointPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.ChannelPointDetailMapper;
 import com.tuotiansudai.point.repository.mapper.ChannelPointMapper;
 import com.tuotiansudai.point.repository.model.ChannelPointDetailModel;
+import com.tuotiansudai.point.repository.model.ChannelPointModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -18,6 +19,7 @@ import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -77,7 +79,7 @@ public class ChannelPointServiceImpl {
         return channelPointDetailMapper.findAllChannel();
     }
 
-    public void checkFileName(MultipartFile multipartFile) throws ChannelPointDataValidationException {
+    public String checkFileName(MultipartFile multipartFile) throws ChannelPointDataValidationException {
         if (null == multipartFile) {
             throw new ChannelPointDataValidationException("请上传文件！");
         }
@@ -91,10 +93,11 @@ public class ChannelPointServiceImpl {
             throw new ChannelPointDataValidationException(String.format("%s文件已经成功导入,请知晓!", originalFileName));
         }
 
-
+        return originalFileName;
     }
 
-    public BaseDataDto importChannelPoint(InputStream inputStream) throws Exception {
+    @Transactional(value = "pointTransactionManager")
+    public BaseDataDto importChannelPoint(String originalFileName, String loginName, InputStream inputStream) throws Exception {
         List<ChannelPointDetailDto> details = Lists.newArrayList();
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "GBK"));
@@ -106,8 +109,13 @@ public class ChannelPointServiceImpl {
             if (details.size() > 1000) {
                 return new BaseDataDto(false, "每次数据应该小于1000条");
             }
-            details.stream().filter(dto -> checkChannelPointDetailDto(dto));
+            ChannelPointModel channelPointModel = new ChannelPointModel(originalFileName, 0l, 0l, loginName);
+            channelPointMapper.create(channelPointModel);
+            details.stream().forEach(dto -> {
+                checkChannelPointDetailDto(dto);
 
+
+            });
 
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -121,29 +129,29 @@ public class ChannelPointServiceImpl {
         }
     }
 
-    private boolean checkChannelPointDetailDto(ChannelPointDetailDto channelPointDetailDto) {
+
+    private void checkChannelPointDetailDto(ChannelPointDetailDto channelPointDetailDto) {
         if (channelPointDetailDto.isSuccess()) {
             channelPointDetailDto.setSuccess(false);
             channelPointDetailDto.setRemark("已经导入成功!");
-            return false;
+            return;
         }
         UserModel userModel = userMapper.findByMobile(channelPointDetailDto.getMobile());
         if (userModel == null || !userModel.getUserName().equals(channelPointDetailDto.getUserName())) {
             channelPointDetailDto.setRemark("手机号与用户姓名不匹配");
-            return false;
+            return;
         }
         AccountModel accountModel = accountMapper.findByMobile(channelPointDetailDto.getMobile());
         if (accountModel == null) {
             channelPointDetailDto.setRemark("用户没有进行实名认证!");
-            return false;
+            return;
         }
-//        List<ChannelPointDetailModel> models = channelPointDetailMapper.findSuccessByMobile(channelPointDetailDto.getMobile());
-//        if (!models.stream().allMatch(model -> model.getChannel().equals(channelPointDetailDto.getChannel()))) {
-//            channelPointDetailDto.setRemark("导入积分渠道与已存在的积分渠道不一致!");
-//            return false;
-//        }
+        List<ChannelPointDetailModel> models = channelPointDetailMapper.findSuccessByMobile(channelPointDetailDto.getMobile());
+        if (!models.stream().allMatch(model -> model.getChannel().equals(channelPointDetailDto.getChannel()))) {
+            channelPointDetailDto.setRemark("导入积分渠道与已存在的积分渠道不一致!");
+            return;
+        }
         channelPointDetailDto.setLoginName(userModel.getLoginName());
-        return true;
 
     }
 

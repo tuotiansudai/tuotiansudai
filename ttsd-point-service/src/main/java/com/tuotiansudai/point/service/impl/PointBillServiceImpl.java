@@ -3,6 +3,7 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
@@ -169,6 +170,21 @@ public class PointBillServiceImpl implements PointBillService {
         } else {
             return findUsersAccountPoint(currentPageNo, pageSize);
         }
+    }
+
+    @Override
+    @Transactional
+    public void createChannelPointDetail(List<ChannelPointDetailDto> dtos) {
+
+
+        dtos.stream().forEach(dto -> {
+            try{
+
+                createPointBill();
+            }catch (Exception e){
+
+            }
+        });
     }
 
     // 根据用户名查询时，最多只返回一条数据
