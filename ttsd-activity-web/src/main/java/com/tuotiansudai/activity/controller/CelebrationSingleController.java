@@ -37,8 +37,7 @@ public class CelebrationSingleController {
     @ResponseBody
     @RequestMapping(value = "/single-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto singleTaskDrawPrize(@RequestParam(value = "activityCategory", defaultValue = "CELEBRATION_SINGLE_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        DrawLotteryResultDto drawLotteryResultDto =lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
-        return drawLotteryResultDto;
+        return new DrawLotteryResultDto(3);
     }
 
     @ResponseBody
