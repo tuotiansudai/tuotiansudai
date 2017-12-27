@@ -75,7 +75,7 @@ public class PointShopController {
         boolean isLogin = userService.loginNameIsExist(loginName);
         boolean isShowDiscount = membershipModel != null && membershipModel.getLevel() > 1;
         if (isLogin) {
-            modelAndView.addObject("userPoint", pointService.getAvailablePoint(loginName) - pointBillService.getFrozenPointByLoginName(loginName));
+            modelAndView.addObject("userPoint", pointService.getAvailablePoint(loginName));
             modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
             modelAndView.addObject("discountShow", productService.discountShowInfo(loginName));
         }

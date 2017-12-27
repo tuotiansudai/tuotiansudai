@@ -13,6 +13,10 @@ public class PointBillModel implements Serializable {
 
     private long point;
 
+    private long sudaiPoint;
+
+    private long channelPoint;
+
     private PointBusinessType businessType;
 
     private String note;
@@ -22,10 +26,12 @@ public class PointBillModel implements Serializable {
     public PointBillModel() {
     }
 
-    public PointBillModel(String loginName, Long orderId, long point, PointBusinessType businessType, String note) {
+    public PointBillModel(String loginName, Long orderId, long sudaiPoint, long channelPoint, PointBusinessType businessType, String note) {
         this.loginName = loginName;
         this.orderId = orderId;
-        this.point = point;
+        this.point = sudaiPoint + channelPoint;
+        this.sudaiPoint = sudaiPoint;
+        this.channelPoint = channelPoint;
         this.businessType = businessType;
         this.note = note;
         this.createdTime = new Date();
@@ -61,6 +67,22 @@ public class PointBillModel implements Serializable {
 
     public void setPoint(long point) {
         this.point = point;
+    }
+
+    public long getSudaiPoint() {
+        return sudaiPoint;
+    }
+
+    public void setSudaiPoint(long sudaiPoint) {
+        this.sudaiPoint = sudaiPoint;
+    }
+
+    public long getChannelPoint() {
+        return channelPoint;
+    }
+
+    public void setChannelPoint(long channelPoint) {
+        this.channelPoint = channelPoint;
     }
 
     public PointBusinessType getBusinessType() {

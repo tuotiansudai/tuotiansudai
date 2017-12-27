@@ -79,13 +79,13 @@ public class LanternFestivalController {
     @RequestMapping(value = "/prize", method = RequestMethod.POST)
     @ResponseBody
     public DrawLotteryResultDto prize() {
-        return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
+        return new DrawLotteryResultDto(3);
     }
 
     @ResponseBody
     @RequestMapping(value = "/drawTime", method = RequestMethod.GET)
     public int getDrawTime() {
-        return lotteryDrawActivityService.countDrawLotteryTime(LoginUserInfo.getMobile(), ActivityCategory.LANTERN_FESTIVAL_ACTIVITY);
+        return 0;
     }
 
     @RequestMapping(value = "/user-prize-list", method = RequestMethod.GET)

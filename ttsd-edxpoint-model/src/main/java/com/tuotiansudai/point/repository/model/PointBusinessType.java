@@ -8,7 +8,8 @@ public enum PointBusinessType {
     LOTTERY("抽奖"),
     POINT_LOTTERY("积分抽奖"),
     POINT_CLEAR("积分到期清零"),
-    ACTIVITY("活动奖励");
+    ACTIVITY("活动奖励"),
+    CHANNEL_IMPORT("渠道积分导入");
 
     private final String description;
 

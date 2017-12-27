@@ -1,10 +1,7 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.message.ObtainPointMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -25,7 +22,6 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.PaginationUtil;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -51,10 +47,10 @@ public class PointBillServiceImpl implements PointBillService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserPointMapper userPointMapper;
+    private PointBillMapper pointBillMapper;
 
     @Autowired
-    private PointBillMapper pointBillMapper;
+    private UserPointMapper userPointMapper;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -65,67 +61,60 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private LoanMapper loanMapper;
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
 
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    private static final String FROZEN_POINT_KEY = "FROZEN:POINT:%s";
-
+    @Override
+    @Transactional
+    public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
+        createPointBill(loginName, pointTaskId, PointBusinessType.TASK, point, note);
+    }
 
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            logger.info(String.format("createPointBill:%s no account", loginName));
-            return;
-        }
-
-        String note = this.generatePointBillNote(businessType, orderId);
-        handlePointByLoginName(loginName, point, orderId, businessType, note);
+        String note = generatePointBillNote(businessType, orderId);
+        createPointBill(loginName, orderId, businessType, point, note);
     }
 
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
+            logger.info(String.format("createPointBill: %s no account", loginName));
             return;
         }
-        handlePointByLoginName(loginName, point, orderId, businessType, note);
+
+        if (!userPointMapper.exists(loginName)) {
+            userPointMapper.createIfNotExist(new UserPointModel(loginName, 0, 0, null));
+        }
+        UserPointModel userPointModel = userPointMapper.lockByLoginName(loginName);
+
+        long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
+        long sudaiPoint = point - channelPoint;
+        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note));
+        userPointMapper.increasePoint(loginName, sudaiPoint, channelPoint, new Date());
     }
+
+    private long calculateChannelPoint(UserPointModel userPointModel, long point, PointBusinessType businessType) {
+        if (businessType == PointBusinessType.CHANNEL_IMPORT) {
+            return point;
+        }
+        if (point > 0) {
+            return 0;
+        }
+        double channelRate = userPointModel.getPoint() == 0 ? 0.5 : userPointModel.getChannelPoint() / userPointModel.getPoint();
+        // 分配积分时，如果产生小数，则将小数部分归到速贷积分中
+        // 此时 point < 0, 因此在计算渠道积分时，应向上取整。 如计算结果为 -2.4 时，实际渠道积分应为 -2
+        return (long) Math.ceil(point * channelRate);
+    }
+
 
     @Override
-    @Transactional
-    public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            logger.info(String.format("createTaskPointBill: %s no account", loginName));
-            return;
-        }
-        pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
-        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
-    }
-
-    private void handlePointByLoginName(String loginName, long point, Long orderId, PointBusinessType businessType, String note) {
-        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
-        if (point < 0) {
-            logger.info(String.format("loginName:%s, pointBusinessType:%s, point:%s,note:%s", loginName, businessType, String.valueOf(point), note));
-            redisWrapperClient.incr(String.format(FROZEN_POINT_KEY, loginName), -point);
-        }
-        mqWrapperClient.sendMessage(MessageQueue.ObtainPoint, new ObtainPointMessage(loginName, point));
-    }
-
-
-    @Override
-    public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,
-                                                                                        String pointType,
-                                                                                        int index,
-                                                                                        int pageSize,
-                                                                                        Date startTime,
-                                                                                        Date endTime,
-                                                                                        List<PointBusinessType> businessTypes) {
+    public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(
+            String loginName, String pointType,
+            int index, int pageSize,
+            Date startTime, Date endTime,
+            List<PointBusinessType> businessTypes) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -204,7 +193,7 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     private BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(int pageNo, int pageSize) {
-        List<UserPointModel> userPointModelList = userPointMapper.list((pageNo - 1) * pageSize, pageSize);
+        List<UserPointModel> userPointModelList = userPointMapper.list(null, null, null, null, null, null, null, (pageNo - 1) * pageSize, pageSize);
         List<AccountItemDataDto> records = userPointModelList.stream()
                 .map(userPointModel -> {
                     UserModel userModel = userMapper.findByLoginName(userPointModel.getLoginName());
@@ -215,13 +204,8 @@ public class PointBillServiceImpl implements PointBillService {
                             userPointModel.getPoint(),
                             pointBillMapper.findUserTotalPoint(userModel.getLoginName()));
                 }).collect(Collectors.toList());
-        long count = userPointMapper.count();
+        long count = userPointMapper.count(null, null, null, null, null, null, null);
         return new BasePaginationDataDto<>(pageNo, pageSize, count, records);
-    }
-
-    @Override
-    public Long getFrozenPointByLoginName(String loginName) {
-        return redisWrapperClient.get(String.format(FROZEN_POINT_KEY, loginName)) != null ? Long.parseLong(redisWrapperClient.get(String.format(FROZEN_POINT_KEY, loginName))) : 0L;
     }
 
     private String generatePointBillNote(PointBusinessType businessType, Long orderId) {

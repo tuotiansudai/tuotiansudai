@@ -3,7 +3,6 @@ package com.tuotiansudai.point.service.impl;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.repository.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
-import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointPrizeModel;
@@ -11,8 +10,6 @@ import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -54,16 +51,13 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     private UserPointPrizeMapper userPointPrizeMapper;
 
     @Autowired
-    private UserPointMapper userPointMapper;
+    private PointService pointService;
 
     @Autowired
     private PointBillService pointBillService;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private RandomUtils randomUtils;
@@ -99,7 +93,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     @Override
     @Transactional
     public String pointLottery(String loginName) {
-        if (userPointMapper.getPointByLoginName(loginName, 0L) - pointBillService.getFrozenPointByLoginName(loginName) < -LOTTERY_POINT) {
+        if (pointService.getAvailablePoint(loginName) < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
         }
         DateTime dateTime = new DateTime();

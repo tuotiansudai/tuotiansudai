@@ -11,14 +11,16 @@
         <result column="order_id" property="orderId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="point" property="point"></result>
+        <result column="sudai_point" property="sudaiPoint"></result>
+        <result column="channel_point" property="channelPoint"></result>
         <result column="business_type" property="businessType"></result>
         <result column="note" property="note"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into point_bill (order_id, login_name, point, business_type, note, created_time)
-        value(#{orderId}, #{loginName}, #{point}, #{businessType}, #{note}, #{createdTime})
+        insert into point_bill (order_id, login_name, point, sudai_point, channel_point, business_type, note, created_time)
+        value(#{orderId}, #{loginName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{businessType}, #{note}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="pointBillResultMap">

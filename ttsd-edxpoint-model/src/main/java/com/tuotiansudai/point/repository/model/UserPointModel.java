@@ -7,7 +7,22 @@ public class UserPointModel implements Serializable {
     private long id;
     private String loginName;
     private long point;
+    private long sudaiPoint;
+    private long channelPoint;
+    private String channel;
     private Date updatedTime;
+
+    public UserPointModel() {
+    }
+
+    public UserPointModel(String loginName, long sudaiPoint, long channelPoint, String channel) {
+        this.loginName = loginName;
+        this.point = sudaiPoint + channelPoint;
+        this.sudaiPoint = sudaiPoint;
+        this.channelPoint = channelPoint;
+        this.channel = channel;
+        this.updatedTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -31,6 +46,30 @@ public class UserPointModel implements Serializable {
 
     public void setPoint(long point) {
         this.point = point;
+    }
+
+    public long getSudaiPoint() {
+        return sudaiPoint;
+    }
+
+    public void setSudaiPoint(long sudaiPoint) {
+        this.sudaiPoint = sudaiPoint;
+    }
+
+    public long getChannelPoint() {
+        return channelPoint;
+    }
+
+    public void setChannelPoint(long channelPoint) {
+        this.channelPoint = channelPoint;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public Date getUpdatedTime() {
