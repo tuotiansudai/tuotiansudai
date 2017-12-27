@@ -32,7 +32,7 @@
                     <td>${item.createdBy}</td>
                     <td>${item.headCount?c}</td>
                     <td>${item.totalPoint?c}</td>
-                    <td><a href="#">查看详情</a></td>
+                    <td><a href="/point-manage/channel-point-detail/${item.id}">查看详情</a></td>
                 </tr>
                 <#else>
                 <tr>

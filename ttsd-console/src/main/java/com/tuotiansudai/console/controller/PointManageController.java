@@ -427,12 +427,29 @@ public class PointManageController {
 
     @RequestMapping(value = "/channel-point", method = RequestMethod.GET)
     public ModelAndView getChannelPointList(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        ModelAndView modelAndView = new ModelAndView("/channel-point", "data", channelPointServiceImpl.getDetailList(index, 10));
+        ModelAndView modelAndView = new ModelAndView("/channel-point", "data", channelPointServiceImpl.getChannelPointList(index, 10));
         modelAndView.addObject("sumHeadCount", channelPointServiceImpl.getSumHeadCount());
         modelAndView.addObject("sumTotalPoint", channelPointServiceImpl.getSumTotalPoint());
 
         return modelAndView;
 
+    }
+
+    @RequestMapping(value = "/channel-point-detail/{channelPointId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView getChannelPointDetailList(@PathVariable long channelPointId,
+                                                  @RequestParam(value = "channel", required = false, defaultValue = "") String channel,
+                                                  @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
+                                                  @RequestParam(value = "success", required = false) Boolean success,
+                                                  @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        BasePaginationDataDto basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, loginNameOrMobile, success, index, 10);
+        ModelAndView modelAndView = new ModelAndView("/channel-point-detail", "data", basePaginationDataDto);
+        modelAndView.addObject("sumHeadCount", basePaginationDataDto.getCount());
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
+        modelAndView.addObject("success", success);
+        modelAndView.addObject("channelList",channelPointServiceImpl.findAllChannel());
+        modelAndView.addObject("channelPointId",channelPointId);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

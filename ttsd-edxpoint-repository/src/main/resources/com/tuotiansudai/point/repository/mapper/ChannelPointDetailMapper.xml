@@ -27,5 +27,36 @@
         select * from channel_point_detail where id = #{id};
     </select>
 
+    <select id="findByPagination" resultMap="channelPointDetailResultMap" parameterType="map">
+        SELECT * from channel_point_detail where channel_point_id = #{channelPointId}
+        <if test="channel != null and channel != '' ">
+            and channel = #{channel}
+        </if>
+        <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
+            and (login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile})
+        </if>
+        <if test="success != null">
+            and success = #{success}
+        </if>
+        ORDER BY created_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountByPagination" resultType="long" parameterType="map">
+        SELECT count(1) from channel_point_detail where channel_point_id = #{channelPointId}
+        <if test="channel != null and channel != '' ">
+            and channel = #{channel}
+        </if>
+        <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
+            and (login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile})
+        </if>
+        <if test="success != null">
+            and success = #{success}
+        </if>
+    </select>
+
+    <select id="findAllChannel" resultType="string">
+        SELECT DISTINCT (channel) from channel_point_detail
+    </select>
 
 </mapper>
