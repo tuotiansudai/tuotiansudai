@@ -441,14 +441,14 @@ public class PointManageController {
     @RequestMapping(value = "/channel-point-detail/{channelPointId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getChannelPointDetailList(@PathVariable long channelPointId,
                                                   @RequestParam(value = "channel", required = false, defaultValue = "") String channel,
-                                                  @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
+                                                  @RequestParam(value = "loginNameOrMobile", required = false) String userNameOrMobile,
                                                   @RequestParam(value = "success", required = false) Boolean success,
                                                   @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        BasePaginationDataDto basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, loginNameOrMobile, success, index, 10);
+        BasePaginationDataDto basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, 10);
         ModelAndView modelAndView = new ModelAndView("/channel-point-detail", "data", basePaginationDataDto);
         modelAndView.addObject("sumHeadCount", basePaginationDataDto.getCount());
         modelAndView.addObject("channel", channel);
-        modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
+        modelAndView.addObject("userNameOrMobile", userNameOrMobile);
         modelAndView.addObject("success", success);
         modelAndView.addObject("channelList", channelPointServiceImpl.findAllChannel());
         modelAndView.addObject("channelPointId", channelPointId);

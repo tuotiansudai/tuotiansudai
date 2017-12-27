@@ -15,8 +15,8 @@
         </div>
         <div class="form-group">
             <label for="control-label">用户名/手机号：</label>
-            <input type="text" class="form-control jq-loginNameOrMobile" name="loginNameOrMobile"
-                   value="${loginNameOrMobile!}">
+            <input type="text" class="form-control jq-userNameOrMobile" name="userNameOrMobile"
+                   value="${userNameOrMobile!}">
         </div>
         <div class="form-group">
             <label for="control-label">状态：</label>
@@ -75,7 +75,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if data.hasPreviousPage >
-                            <a href="?index=${data.index-1}&channel=${channel}&loginNameOrMobile=${loginNameOrMobile}&success=${success}"
+                            <a href="?index=${data.index-1}&channel=${channel}&userNameOrMobile=${userNameOrMobile}&success=${success}"
                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
@@ -84,7 +84,7 @@
                     <li><a>${data.index}</a></li>
                     <li>
                         <#if data.hasNextPage >
-                            <a href="?index=${data.index+1}&channel=${channel}&loginNameOrMobile=${loginNameOrMobile}&success=${success}"
+                            <a href="?index=${data.index+1}&channel=${channel}&userNameOrMobile=${userNameOrMobile}&success=${success}"
                                aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>

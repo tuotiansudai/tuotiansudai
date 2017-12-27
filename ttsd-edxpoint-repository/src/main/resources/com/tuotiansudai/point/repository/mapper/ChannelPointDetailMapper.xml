@@ -33,8 +33,8 @@
         <if test="channel != null and channel != '' ">
             and channel = #{channel}
         </if>
-        <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
-            and (login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile})
+        <if test="userNameOrMobile != null and userNameOrMobile != ''">
+            and (user_name = #{userNameOrMobile} or mobile = #{userNameOrMobile})
         </if>
         <if test="success != null">
             and success = #{success}
@@ -49,7 +49,7 @@
             and channel = #{channel}
         </if>
         <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
-            and (login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile})
+            and (user_name = #{userNameOrMobile} or mobile = #{userNameOrMobile})
         </if>
         <if test="success != null">
             and success = #{success}
@@ -58,6 +58,10 @@
 
     <select id="findAllChannel" resultType="string">
         SELECT DISTINCT (channel) from channel_point_detail
+    </select>
+
+    <select id="findSuccessByMobile" resultMap="channelPointDetailResultMap" parameterType="string">
+        SELECT * from channel_point_detail where mobile = #{mobile} and success = 1
     </select>
 
 </mapper>

@@ -15,16 +15,18 @@ public interface ChannelPointDetailMapper {
 
     List<ChannelPointDetailModel> findByPagination(@Param(value = "channelPointId") long channelPointId,
                                                    @Param(value = "channel") String channel,
-                                                   @Param(value = "loginNameOrMobile") String loginNameOrMobile,
+                                                   @Param(value = "userNameOrMobile") String userNameOrMobile,
                                                    @Param(value = "success") Boolean success,
                                                    @Param(value = "index") int index,
                                                    @Param(value = "pageSize") int pageSize);
 
     long findCountByPagination(@Param(value = "channelPointId") long channelPointId,
                                @Param(value = "channel") String channel,
-                               @Param(value = "loginNameOrMobile") String loginNameOrMobile,
+                               @Param(value = "userNameOrMobile") String userNameOrMobile,
                                @Param(value = "success") Boolean success);
 
     List<String> findAllChannel();
+
+    List<ChannelPointDetailModel> findSuccessByMobile(String mobile);
 
 }

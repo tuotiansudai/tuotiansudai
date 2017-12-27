@@ -1,45 +1,27 @@
-package com.tuotiansudai.point.repository.model;
+package com.tuotiansudai.point.repository.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class ChannelPointDetailModel implements Serializable {
-    private long id;
-    private long channelPointId;
+public class ChannelPointDetailDto implements Serializable {
     private String loginName;
     private String userName;
     private String mobile;
     private String channel;
     private long point;
     private boolean success;
-    private Date createdTime;
     private String remark;
 
-    public ChannelPointDetailModel() {
+    public ChannelPointDetailDto() {
     }
 
-    public ChannelPointDetailModel(String userName, String mobile, String channel, long point) {
+    public ChannelPointDetailDto(String loginName, String userName, String mobile, String channel, long point, boolean success) {
+        this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.channel = channel;
         this.point = point;
-        this.createdTime = new Date();
-    }
+        this.success = success;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getChannelPointId() {
-        return channelPointId;
-    }
-
-    public void setChannelPointId(long channelPointId) {
-        this.channelPointId = channelPointId;
     }
 
     public String getLoginName() {
@@ -88,14 +70,6 @@ public class ChannelPointDetailModel implements Serializable {
 
     public void setSuccess(boolean success) {
         this.success = success;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
     }
 
     public String getRemark() {
