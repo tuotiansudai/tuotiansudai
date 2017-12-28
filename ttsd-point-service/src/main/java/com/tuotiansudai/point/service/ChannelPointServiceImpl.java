@@ -113,7 +113,7 @@ public class ChannelPointServiceImpl {
             String line;
             while (null != (line = bufferedReader.readLine())) {
                 String[] data = line.split(",");
-                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], Long.parseLong(data[3]), data.length >= 5 ? ("成功".equals(data[4]) ? true : false) : false));
+                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], Long.parseLong(data[3])));
             }
             if (details.size() > 1000) {
                 return new ChannelPointDataDto(false, "每次数据应该小于1000条");
@@ -159,11 +159,6 @@ public class ChannelPointServiceImpl {
         }
         channelPointDetailDto.setLoginName(userModel.getLoginName());
 
-        if (channelPointDetailDto.isSuccess()) {
-            channelPointDetailDto.setSuccess(false);
-            channelPointDetailDto.setRemark("已经导入成功!");
-            return false;
-        }
         if (userModel == null || !userModel.getUserName().equals(channelPointDetailDto.getUserName())) {
             channelPointDetailDto.setSuccess(false);
             channelPointDetailDto.setRemark("手机号与用户姓名不匹配");

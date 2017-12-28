@@ -14,14 +14,12 @@ public class ChannelPointDetailDto implements Serializable {
     public ChannelPointDetailDto() {
     }
 
-    public ChannelPointDetailDto(String loginName, String userName, String mobile, String channel, long point, boolean success) {
+    public ChannelPointDetailDto(String loginName, String userName, String mobile, String channel, long point) {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.channel = channel;
         this.point = point;
-        this.success = success;
-
     }
 
     public String getLoginName() {
