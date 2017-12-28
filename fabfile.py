@@ -274,9 +274,9 @@ def deploy_all():
     execute(deploy_worker)
     execute(deploy_api)
     execute(deploy_web)
+    execute(deploy_anxin)
     execute(deploy_activity)
     execute(deploy_point)
-    execute(deploy_anxin)
     execute(deploy_ask_rest)
     execute(deploy_ask)
 
