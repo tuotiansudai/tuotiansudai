@@ -29,4 +29,6 @@ public interface ChannelPointDetailMapper {
 
     List<ChannelPointDetailModel> findSuccessByMobile(String mobile);
 
+    List<ChannelPointDetailModel> findSuccessByChannelPointId(long channelPointId);
+
 }

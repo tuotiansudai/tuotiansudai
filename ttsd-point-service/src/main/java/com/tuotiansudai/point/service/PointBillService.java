@@ -31,6 +31,4 @@ public interface PointBillService {
 
     BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile, int currentPageNo, int pageSize);
 
-    void createChannelPointDetail(List<ChannelPointDetailDto> dtos);
-
 }

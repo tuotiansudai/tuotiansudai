@@ -24,6 +24,7 @@
         value(#{channelPointId}, #{loginName}, #{userName}, #{mobile}, #{channel}, #{point},#{success},#{createdTime},#{remark})
     </insert>
 
+
     <select id="findById" resultMap="channelPointDetailResultMap" parameterType="long">
         select * from channel_point_detail where id = #{id};
     </select>
@@ -63,5 +64,10 @@
     <select id="findSuccessByMobile" resultMap="channelPointDetailResultMap" parameterType="string">
         SELECT * from channel_point_detail where mobile = #{mobile} and success = 1
     </select>
+
+    <select id="findSuccessByChannelPointId" resultMap="channelPointDetailResultMap" parameterType="long">
+        SELECT * from channel_point_detail where channel_point_id = #{channelPointId} and success = 1
+    </select>
+
 
 </mapper>

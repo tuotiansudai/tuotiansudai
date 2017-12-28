@@ -171,22 +171,6 @@ public class PointBillServiceImpl implements PointBillService {
             return findUsersAccountPoint(currentPageNo, pageSize);
         }
     }
-
-    @Override
-    @Transactional
-    public void createChannelPointDetail(List<ChannelPointDetailDto> dtos) {
-
-
-        dtos.stream().forEach(dto -> {
-            try{
-
-                createPointBill();
-            }catch (Exception e){
-
-            }
-        });
-    }
-
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile) {
         AccountModel accountModel = null;

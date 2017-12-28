@@ -24,5 +24,7 @@ public interface ChannelPointMapper {
 
     ChannelPointModel findBySerialNo(String serialNo);
 
+    void update(ChannelPointModel channelPointModel);
+
 
 }

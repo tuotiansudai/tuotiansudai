@@ -44,5 +44,12 @@
         select * from channel_point where serial_no = #{serialNo}
     </select>
 
+    <update id="update" parameterType="ChannelPointDetailModel">
+        UPDATE channel_point_detail
+        SET total_point = #{totalPoint},
+        head_count = #{headCount}
+        WHERE id = #{id}
+    </update>
+
 
 </mapper>

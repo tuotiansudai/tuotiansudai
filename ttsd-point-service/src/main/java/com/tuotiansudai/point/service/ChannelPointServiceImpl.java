@@ -11,6 +11,7 @@ import com.tuotiansudai.point.repository.mapper.ChannelPointDetailMapper;
 import com.tuotiansudai.point.repository.mapper.ChannelPointMapper;
 import com.tuotiansudai.point.repository.model.ChannelPointDetailModel;
 import com.tuotiansudai.point.repository.model.ChannelPointModel;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -40,6 +41,8 @@ public class ChannelPointServiceImpl {
     private AccountMapper accountMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private PointBillService pointBillService;
 
 
     public BasePaginationDataDto<ChannelPointPaginationItemDataDto> getChannelPointList(int index, int pageSize) {
@@ -111,12 +114,19 @@ public class ChannelPointServiceImpl {
             }
             ChannelPointModel channelPointModel = new ChannelPointModel(originalFileName, 0l, 0l, loginName);
             channelPointMapper.create(channelPointModel);
-            details.stream().forEach(dto -> {
-                checkChannelPointDetailDto(dto);
-
+            details.stream().forEach(detail -> {
+                checkChannelPointDetailDto(detail);
+                ChannelPointDetailModel channelPointDetailModel = new ChannelPointDetailModel(channelPointModel.getId(), detail);
+                channelPointDetailMapper.create(channelPointDetailModel);
+                pointBillService.createPointBill(loginName,channelPointDetailModel.getId(), PointBusinessType.CHANNEL_IMPORT,channelPointDetailModel.getPoint());
 
             });
 
+            List<ChannelPointDetailModel> successPointDetail = channelPointDetailMapper.findSuccessByChannelPointId(channelPointModel.getId());
+            channelPointModel.setTotalPoint(successPointDetail.stream().mapToLong(detail -> detail.getPoint()).sum());
+            channelPointModel.setHeadCount(successPointDetail.size());
+            channelPointMapper.update(channelPointModel);
+            return new BaseDataDto(true);
 
         } catch (ArrayIndexOutOfBoundsException e) {
             return new BaseDataDto(false, "上传失败！文件中部分数据格式不规范");
@@ -130,28 +140,29 @@ public class ChannelPointServiceImpl {
     }
 
 
-    private void checkChannelPointDetailDto(ChannelPointDetailDto channelPointDetailDto) {
+    private boolean checkChannelPointDetailDto(ChannelPointDetailDto channelPointDetailDto) {
         if (channelPointDetailDto.isSuccess()) {
             channelPointDetailDto.setSuccess(false);
             channelPointDetailDto.setRemark("已经导入成功!");
-            return;
+            return false;
         }
         UserModel userModel = userMapper.findByMobile(channelPointDetailDto.getMobile());
         if (userModel == null || !userModel.getUserName().equals(channelPointDetailDto.getUserName())) {
             channelPointDetailDto.setRemark("手机号与用户姓名不匹配");
-            return;
+            return false;
         }
         AccountModel accountModel = accountMapper.findByMobile(channelPointDetailDto.getMobile());
         if (accountModel == null) {
             channelPointDetailDto.setRemark("用户没有进行实名认证!");
-            return;
+            return false;
         }
         List<ChannelPointDetailModel> models = channelPointDetailMapper.findSuccessByMobile(channelPointDetailDto.getMobile());
         if (!models.stream().allMatch(model -> model.getChannel().equals(channelPointDetailDto.getChannel()))) {
             channelPointDetailDto.setRemark("导入积分渠道与已存在的积分渠道不一致!");
-            return;
+            return false;
         }
         channelPointDetailDto.setLoginName(userModel.getLoginName());
+        return true;
 
     }
 
