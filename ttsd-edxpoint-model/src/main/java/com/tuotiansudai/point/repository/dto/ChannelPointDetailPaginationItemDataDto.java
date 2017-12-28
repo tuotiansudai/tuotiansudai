@@ -21,6 +21,7 @@ public class ChannelPointDetailPaginationItemDataDto implements Serializable {
         this.channel = channelPointDetailModel.getChannel();
         this.success = channelPointDetailModel.isSuccess();
         this.point = channelPointDetailModel.getPoint();
+        this.remark = channelPointDetailModel.getRemark();
     }
 
 
@@ -62,5 +63,13 @@ public class ChannelPointDetailPaginationItemDataDto implements Serializable {
 
     public void setPoint(long point) {
         this.point = point;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

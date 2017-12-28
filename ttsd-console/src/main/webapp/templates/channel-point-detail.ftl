@@ -46,11 +46,11 @@
             <tbody>
                 <#list data.records as item>
                 <tr>
-                    <td>${item.userName}</td>
-                    <td>${item.mobile}</td>
-                    <td>${item.channel}</td>
+                    <td>${item.userName!}</td>
+                    <td>${item.mobile!}</td>
+                    <td>${item.channel!}</td>
                     <td>${item.success?string("成功","失败")}</td>
-                    <td>${item.point}</td>
+                    <td>${item.point?c}</td>
                     <td>${item.remark!}</td>
                 </tr>
                 <#else>

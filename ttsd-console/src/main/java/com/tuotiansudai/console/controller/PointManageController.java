@@ -10,6 +10,7 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
 import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
@@ -445,7 +446,7 @@ public class PointManageController {
                                                   @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
                                                   @RequestParam(value = "success", required = false) Boolean success,
                                                   @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        BasePaginationDataDto basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, 10);
+        BasePaginationDataDto<ChannelPointDetailPaginationItemDataDto> basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, 10);
         ModelAndView modelAndView = new ModelAndView("/channel-point-detail", "data", basePaginationDataDto);
         modelAndView.addObject("sumHeadCount", basePaginationDataDto.getCount());
         modelAndView.addObject("channel", channel);
