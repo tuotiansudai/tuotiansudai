@@ -7,13 +7,14 @@ import com.tuotiansudai.console.service.CouponActivationService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
+import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.ChannelPointServiceImpl;
 import com.tuotiansudai.point.service.PointBillService;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ProductType;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/point-manage")
@@ -47,6 +49,9 @@ public class PointManageController {
 
     @Autowired
     private CouponActivationService couponActivationService;
+
+    @Autowired
+    private PointService pointService;
 
     @Autowired
     private PointBillService pointBillService;
@@ -298,20 +303,26 @@ public class PointManageController {
 
     @RequestMapping(value = "/user-point-list")
     public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                              @RequestParam(value = "loginName", required = false) String loginName,
-                                              @RequestParam(value = "mobile", required = false) String mobile) {
+                                              @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
+                                              @RequestParam(value = "channel", required = false) String channel,
+                                              @RequestParam(value = "minPoint", required = false) Long minPoint,
+                                              @RequestParam(value = "maxPoint", required = false) Long maxPoint) {
         int pageSize = 10;
-        BasePaginationDataDto<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, mobile, index, pageSize);
+        BasePaginationDataDto<UserPointItemDataDto> userPointItems = pointBillService.findUsersAccountPoint(loginNameOrMobile, channel, minPoint, maxPoint, index, pageSize);
+        Map<String, String> allChannels = pointService.findAllChannel();
 
         ModelAndView modelAndView = new ModelAndView("/user-point-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("userPointList", accountItemDataDtoList.getRecords());
-        modelAndView.addObject("hasPreviousPage", accountItemDataDtoList.isHasPreviousPage());
-        modelAndView.addObject("hasNextPage", accountItemDataDtoList.isHasNextPage());
-        modelAndView.addObject("count", accountItemDataDtoList.getCount());
-        modelAndView.addObject("loginName", loginName);
-        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("userPointList", userPointItems.getRecords());
+        modelAndView.addObject("hasPreviousPage", userPointItems.isHasPreviousPage());
+        modelAndView.addObject("hasNextPage", userPointItems.isHasNextPage());
+        modelAndView.addObject("count", userPointItems.getCount());
+        modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("allChannels", allChannels);
+        modelAndView.addObject("minPoint", minPoint);
+        modelAndView.addObject("maxPoint", maxPoint);
         return modelAndView;
     }
 

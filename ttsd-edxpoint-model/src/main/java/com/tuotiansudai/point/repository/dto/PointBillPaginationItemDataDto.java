@@ -13,6 +13,8 @@ public class PointBillPaginationItemDataDto implements Serializable{
 
     private String loginName;
 
+    private long sudaiPoint;
+    private long channelPoint;
     private long point;
 
     private PointBusinessType businessType;
@@ -25,6 +27,8 @@ public class PointBillPaginationItemDataDto implements Serializable{
         this.id = pointBillModel.getId();
         this.loginName = pointBillModel.getLoginName();
         this.orderId = pointBillModel.getOrderId();
+        this.sudaiPoint = pointBillModel.getSudaiPoint();
+        this.channelPoint = pointBillModel.getChannelPoint();
         this.point = pointBillModel.getPoint();
         this.businessType = pointBillModel.getBusinessType();
         this.note = pointBillModel.getNote();
@@ -53,6 +57,22 @@ public class PointBillPaginationItemDataDto implements Serializable{
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public long getSudaiPoint() {
+        return sudaiPoint;
+    }
+
+    public void setSudaiPoint(long sudaiPoint) {
+        this.sudaiPoint = sudaiPoint;
+    }
+
+    public long getChannelPoint() {
+        return channelPoint;
+    }
+
+    public void setChannelPoint(long channelPoint) {
+        this.channelPoint = channelPoint;
     }
 
     public long getPoint() {

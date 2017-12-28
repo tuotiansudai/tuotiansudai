@@ -13,8 +13,8 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.enums.WithdrawStatus;
-import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
+import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
@@ -167,11 +167,15 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/user-point", method = RequestMethod.GET)
-    public void exportUserPoint(@RequestParam(value = "loginName", required = false) String loginName,
-                                @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse response) throws IOException {
+    public void exportUserPoint(
+            @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
+            @RequestParam(value = "channel", required = false) String channel,
+            @RequestParam(value = "minPoint", required = false) Long minPoint,
+            @RequestParam(value = "maxPoint", required = false) Long maxPoint,
+            HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.UserPointHeader.getDescription());
 
-        BasePaginationDataDto<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, mobile, 1, Integer.MAX_VALUE);
+        BasePaginationDataDto<UserPointItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginNameOrMobile, channel, minPoint, maxPoint, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, response.getOutputStream());
     }

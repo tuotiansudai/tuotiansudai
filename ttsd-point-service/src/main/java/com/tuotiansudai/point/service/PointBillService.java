@@ -1,14 +1,15 @@
 package com.tuotiansudai.point.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 
 import java.util.Date;
 import java.util.List;
 
 public interface PointBillService {
+    String CHANNEL_SUDAI = "SUDAI";
 
     void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point);
 
@@ -28,6 +29,6 @@ public interface PointBillService {
 
     long getPointBillCountByLoginName(String loginName);
 
-    BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile, int currentPageNo, int pageSize);
+    BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile, String channel, Long minPoint, Long maxPoint, int currentPageNo, int pageSize);
 
 }
