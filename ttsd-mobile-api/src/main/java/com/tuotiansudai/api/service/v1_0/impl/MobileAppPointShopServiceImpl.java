@@ -187,7 +187,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), distinctPoints, productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), productModel.getMonthLimit(), couponModel);
             productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getCouponModel() != null ? (exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount()) : "0") : String.valueOf(productModel.getTotalCount()));
         }
-        productDetailResponseDto.setDetailImage(bannerServer + productModel.getAppPictureUrl());
+        if (productModel.getAppPictureUrl() != null) {
+            productDetailResponseDto.setDetailImage(bannerServer + productModel.getAppPictureUrl());
+        }
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
