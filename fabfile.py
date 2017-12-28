@@ -267,8 +267,6 @@ def deploy_anxin():
 
 def deploy_all():
     execute(deploy_sign_in)
-    execute(deploy_ask_rest)
-    execute(deploy_ask)
     execute(deploy_static)
     execute(deploy_sms)
     execute(deploy_console)
@@ -276,9 +274,9 @@ def deploy_all():
     execute(deploy_worker)
     execute(deploy_api)
     execute(deploy_web)
-    execute(deploy_anxin)
     execute(deploy_activity)
     execute(deploy_point)
+    execute(deploy_anxin)
 
 
 def pre_deploy():
