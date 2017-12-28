@@ -8,17 +8,20 @@
         <@security.authorize access="hasAnyAuthority('ADMIN','DATA')">
 
             <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <div class="file-btn">
                         <input type="file" id="file-in">
                         导入渠道积分
                     </div>
                 </div>
             </div>
+
         </@security.authorize>
-        <label for="control-label">导入总人数: ${sumHeadCount}</label>
-        <label for="control-label" style="margin-left: 20px;">导入积分总额: ${sumTotalPoint}</label>
+        <div>
+            <label for="control-label">导入总人数: ${sumHeadCount}</label>
+            <label for="control-label" style="margin-left: 20px;">导入积分总额: ${sumTotalPoint}</label>
+
+        </div>
         <table class="table table-bordered table-hover " style="width:80%;">
             <thead>
             <tr>

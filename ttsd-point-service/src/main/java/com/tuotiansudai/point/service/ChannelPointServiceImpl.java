@@ -113,10 +113,7 @@ public class ChannelPointServiceImpl {
             String line;
             while (null != (line = bufferedReader.readLine())) {
                 String[] data = line.split(",");
-                if(data.length >){
-
-                }
-                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], Long.parseLong(data[3]), data.length >= 5 ? ("成功".equals(data[4]) ? true : false) :));
+                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], Long.parseLong(data[3]), data.length >= 5 ? ("成功".equals(data[4]) ? true : false) : false));
             }
             if (details.size() > 1000) {
                 return new ChannelPointDataDto(false, "每次数据应该小于1000条");
