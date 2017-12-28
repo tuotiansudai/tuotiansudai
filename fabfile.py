@@ -266,16 +266,16 @@ def deploy_anxin():
 
 
 def deploy_all():
-    execute(deploy_sign_in)
-    execute(deploy_static)
-    execute(deploy_sms)
-    execute(deploy_console)
-    execute(deploy_pay)
-    execute(deploy_worker)
-    execute(deploy_api)
-    execute(deploy_web)
-    execute(deploy_activity)
-    execute(deploy_point)
+    # execute(deploy_sign_in)
+    # execute(deploy_static)
+    # execute(deploy_sms)
+    # execute(deploy_console)
+    # execute(deploy_pay)
+    # execute(deploy_worker)
+    # execute(deploy_api)
+    # execute(deploy_web)
+    # execute(deploy_activity)
+    # execute(deploy_point)
     execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_anxin)
@@ -288,7 +288,7 @@ def pre_deploy():
 
 
 def all():
-    pre_deploy()
+    # pre_deploy()
     deploy_all()
 
 
