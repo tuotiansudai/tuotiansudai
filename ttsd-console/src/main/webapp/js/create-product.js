@@ -40,12 +40,12 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
             img = new Image();
         img.src = _URL.createObjectURL(file);
         img.onload = function () {
-            if (this.width != width) {
-                defer.reject('图片长宽应为' + width);
+            if (width && this.width != width) {
+                defer.reject('图片宽应为' + width + 'px');
                 return;
             }
-            if (this.height != height) {
-                defer.reject('图片长宽应为' + height);
+            if (height && this.height != height) {
+                defer.reject('图片长应为' + height + 'px');
                 return;
             }
             defer.resolve(file);
@@ -53,7 +53,7 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
         return defer.promise();
     };
 
-    $('.imageUrlProduct').on('change', function () {
+    $('.imageUrlProduct,.appUrlProduct,.webUrlProduct').on('change', function () {
         var $self = $(this),
             imageWidth,
             imageHeight;
@@ -74,8 +74,19 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
                 processData: false
             }).done(function (data) {
                 if (data.state) {
-                    $('.form-imageUrl').val(data.title);
-                    $('.imageUrlImage').html('<img style="width:100%" src="' + data.title + '" >');
+                    if ($self.hasClass("imageUrlProduct")) {
+                        $('.form-imageUrl').val(data.title);
+                        $('.imageUrlImage').html('<img style="width:100%" src="' + data.title + '" >');
+                    }
+                    if ($self.hasClass("appUrlProduct")) {
+                        $('.appPictureUrl').val(data.title);
+                        $('.appThumbnail').html('<img style="width:100%" src="' + data.title + '" >');
+                    }
+                    if ($self.hasClass("webUrlProduct")) {
+                        $('.webPictureUrl').val(data.title);
+                        $('.webThumbnail').html('<img style="width:100%" src="' + data.title + '" >');
+                    }
+
                 }
             });
         }).fail(function (message) {
