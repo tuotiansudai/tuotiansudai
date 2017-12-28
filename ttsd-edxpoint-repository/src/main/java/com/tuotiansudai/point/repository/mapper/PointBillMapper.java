@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.repository.mapper;
 
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.UserTotalPointViewDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,7 @@ public interface PointBillMapper {
 
     PointBillModel findLatestSignInPointBillByLoginName(@Param(value = "loginName") String loginName);
 
-    long findUserTotalPoint(@Param(value = "loginName") String loginName);
+    UserTotalPointViewDto findUserTotalPoint(@Param(value = "loginName") String loginName);
 
     long findSumPointByLoginNameAndBusinessType(@Param(value = "loginName") String loginName,
                                                 @Param(value = "startTime") Date startTime,

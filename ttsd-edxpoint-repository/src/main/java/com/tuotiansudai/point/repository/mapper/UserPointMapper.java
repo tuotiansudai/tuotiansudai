@@ -48,12 +48,12 @@ public interface UserPointMapper {
     })
     List<UserPointModel> list(
             @Param("channel") String channel,
-            @Param("minPoint") Integer minPoint,
-            @Param("maxPoint") Integer maxPoint,
-            @Param("minSudaiPoint") Integer minSudaiPoint,
-            @Param("maxSudaiPoint") Integer maxSudaiPoint,
-            @Param("minChannelPoint") Integer minChannelPoint,
-            @Param("maxChannelPoint") Integer maxChannelPoint,
+            @Param("minPoint") Long minPoint,
+            @Param("maxPoint") Long maxPoint,
+            @Param("minSudaiPoint") Long minSudaiPoint,
+            @Param("maxSudaiPoint") Long maxSudaiPoint,
+            @Param("minChannelPoint") Long minChannelPoint,
+            @Param("maxChannelPoint") Long maxChannelPoint,
             @Param("rowIndex") int rowIndex,
             @Param("rowLimit") int rowLimit);
 
@@ -74,12 +74,12 @@ public interface UserPointMapper {
     })
     long count(
             @Param("channel") String channel,
-            @Param("minPoint") Integer minPoint,
-            @Param("maxPoint") Integer maxPoint,
-            @Param("minSudaiPoint") Integer minSudaiPoint,
-            @Param("maxSudaiPoint") Integer maxSudaiPoint,
-            @Param("minChannelPoint") Integer minChannelPoint,
-            @Param("maxChannelPoint") Integer maxChannelPoint);
+            @Param("minPoint") Long minPoint,
+            @Param("maxPoint") Long maxPoint,
+            @Param("minSudaiPoint") Long minSudaiPoint,
+            @Param("maxSudaiPoint") Long maxSudaiPoint,
+            @Param("minChannelPoint") Long minChannelPoint,
+            @Param("maxChannelPoint") Long maxChannelPoint);
 
     @Select("select exists(select 1 from user_point where login_name = #{loginName})")
     boolean exists(
@@ -142,6 +142,8 @@ public interface UserPointMapper {
             @Param("channelPoint") long channelPoint,
             @Param("updatedTime") Date updatedTime);
 
+    @Select("select distinct(channel) from user_point where channel is not null")
+    List<String> findAllChannel();
 
     default long getPointByLoginName(String loginName) {
         return getPointByLoginName(loginName, null);

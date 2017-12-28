@@ -6,7 +6,6 @@ import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -24,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PointServiceImpl implements PointService {
@@ -56,6 +57,14 @@ public class PointServiceImpl implements PointService {
     @Override
     public long getAvailablePoint(String loginName) {
         return userPointMapper.getPointByLoginName(loginName, 0L);
+    }
+
+    @Override
+    public Map<String, String> findAllChannel() {
+        Map<String, String> channelMap = new LinkedHashMap<>();
+        channelMap.put(PointBillService.CHANNEL_SUDAI, "拓天速贷");
+        userPointMapper.findAllChannel().forEach(c -> channelMap.put(c, c));
+        return channelMap;
     }
 
     private long getMaterialActivityPoint(ProductType productType, ActivityType activityType, long point, long investId) {
