@@ -22,6 +22,7 @@ import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -318,11 +319,13 @@ public class PointManageController {
         modelAndView.addObject("hasPreviousPage", userPointItems.isHasPreviousPage());
         modelAndView.addObject("hasNextPage", userPointItems.isHasNextPage());
         modelAndView.addObject("count", userPointItems.getCount());
-        modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
-        modelAndView.addObject("channel", channel);
         modelAndView.addObject("allChannels", allChannels);
-        modelAndView.addObject("minPoint", minPoint);
-        modelAndView.addObject("maxPoint", maxPoint);
+        modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
+        if (StringUtils.isBlank(loginNameOrMobile)) {
+            modelAndView.addObject("channel", channel);
+            modelAndView.addObject("minPoint", minPoint);
+            modelAndView.addObject("maxPoint", maxPoint);
+        }
         return modelAndView;
     }
 
