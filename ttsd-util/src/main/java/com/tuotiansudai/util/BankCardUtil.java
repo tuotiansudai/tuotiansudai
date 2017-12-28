@@ -33,7 +33,7 @@ public class BankCardUtil {
             .put("NBB", "宁波银行")
             .build());
 
-    private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB",
+    private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB", "CMBC",
             "SPDB", "GDB", "HXB", "PSBC", "BOC",
             "CEB", "BEA", "COMM", "CITIC", "BJB");
 

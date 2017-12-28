@@ -99,7 +99,9 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getMonthLimit(),
                 productDto.getPoints(),
                 productDto.getStartTime(),
-                productDto.getEndTime());
+                productDto.getEndTime(),
+                productDto.getWebPictureUrl(),
+                productDto.getAppPictureUrl());
         productMapper.create(productModel);
     }
 

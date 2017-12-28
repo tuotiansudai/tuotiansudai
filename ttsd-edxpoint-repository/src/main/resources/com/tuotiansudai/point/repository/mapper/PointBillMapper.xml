@@ -18,6 +18,13 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
+    <resultMap id="userTotalPointResultMap" type="UserTotalPointViewDto">
+        <result column="login_name" property="loginName"></result>
+        <result column="total_sudai_point" property="totalSudaiPoint"></result>
+        <result column="total_channel_point" property="totalChannelPoint"></result>
+        <result column="total_point" property="totalPoint"></result>
+    </resultMap>
+
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
         insert into point_bill (order_id, login_name, point, sudai_point, channel_point, business_type, note, created_time)
         value(#{orderId}, #{loginName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{businessType}, #{note}, #{createdTime})
@@ -104,8 +111,14 @@
         select * from point_bill where login_name = #{loginName} and business_type = 'SIGN_IN' order by created_time desc LIMIT 1
     </select>
 
-    <select id="findUserTotalPoint" parameterType="string" resultType="long">
-        SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE point > 0 AND login_name = #{loginName}
+    <select id="findUserTotalPoint" parameterType="string" resultMap="userTotalPointResultMap">
+        SELECT
+            #{loginName} as login_name,
+            IFNULL(SUM(point),0) as total_point,
+            IFNULL(SUM(sudai_point),0) as total_sudai_point,
+            IFNULL(SUM(channel_point),0) as total_channel_point
+        FROM point_bill
+        WHERE point > 0 AND login_name = #{loginName}
     </select>
 
     <select id="findSumPointByLoginNameAndBusinessType" parameterType="map" resultType="long">

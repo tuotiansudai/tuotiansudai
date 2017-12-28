@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -116,25 +117,39 @@ public class UserPointMapperTest {
         userPointMapper.createIfNotExist(new UserPointModel("fakeUser15", 15100, 250, "北京四分"));
         userPointMapper.createIfNotExist(new UserPointModel("fakeUser16", 16100, 150, "北京四分"));
 
-        List<UserPointModel> result1 = userPointMapper.list(null, 8000, 10000, null, null, null, null, 0, 10);
-        long count1 = userPointMapper.count(null, 8000, 10000, null, null, null, null);
+        List<UserPointModel> result1 = userPointMapper.list(null, 8000L, 10000L, null, null, null, null, 0, 10);
+        long count1 = userPointMapper.count(null, 8000L, 10000L, null, null, null, null);
         assertEquals(3, result1.size());
         assertEquals("fakeUser09", result1.get(0).getLoginName());
         assertEquals("fakeUser07", result1.get(2).getLoginName());
         assertEquals(3, count1);
 
-        List<UserPointModel> result2 = userPointMapper.list("北京四分", null, null, null, null, 300, 500, 0, 10);
-        long count2 = userPointMapper.count("北京四分", null, null, null, null, 300, 500);
+        List<UserPointModel> result2 = userPointMapper.list("北京四分", null, null, null, null, 300L, 500L, 0, 10);
+        long count2 = userPointMapper.count("北京四分", null, null, null, null, 300L, 500L);
         assertEquals(2, result2.size());
         assertEquals("fakeUser14", result2.get(0).getLoginName());
         assertEquals("fakeUser13", result2.get(1).getLoginName());
         assertEquals(2, count2);
 
-        List<UserPointModel> result3 = userPointMapper.list(null, null, null, 2000, 15000, null, null, 0, 10);
-        long count3 = userPointMapper.count(null, null, null, 2000, 15000, null, null);
+        List<UserPointModel> result3 = userPointMapper.list(null, null, null, 2000L, 15000L, null, null, 0, 10);
+        long count3 = userPointMapper.count(null, null, null, 2000L, 15000L, null, null);
         assertEquals(10, result3.size());
         assertEquals("fakeUser14", result3.get(0).getLoginName());
         assertEquals("fakeUser05", result3.get(9).getLoginName());
         assertEquals(13, count3);
+    }
+
+    @Test
+    public void shouldFindAllChannel() {
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser01", 1100, 1650, "北京一分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser04", 4100, 1350, "北京二分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser06", 6100, 1150, "北京二分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser08", 8100, 950, "北京三分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser09", 9100, 850, "北京三分"));
+        userPointMapper.createIfNotExist(new UserPointModel("fakeUser10", 10100, 750, "北京四分"));
+
+        List<String> allChannels = userPointMapper.findAllChannel();
+        assertEquals(4, allChannels.size());
+        assertTrue(allChannels.containsAll(Arrays.asList("北京一分", "北京二分", "北京三分", "北京四分")));
     }
 }

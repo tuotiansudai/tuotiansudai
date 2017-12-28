@@ -2,9 +2,8 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.repository.dto.AccountItemDataDto;
-import com.tuotiansudai.point.repository.dto.ChannelPointDetailDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
@@ -32,10 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -163,48 +159,56 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile, int currentPageNo, int pageSize) {
-        boolean searchSpecialUser = StringUtils.isNotEmpty(loginName) || StringUtils.isNotEmpty(mobile);
-        if (searchSpecialUser) {
-            return findUsersAccountPoint(loginName, mobile);
+    public BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile, String channel, Long minPoint, Long maxPoint, int currentPageNo, int pageSize) {
+        if (StringUtils.isNotEmpty(loginNameOrMobile)) {
+            return findUsersAccountPoint(loginNameOrMobile);
         } else {
-            return findUsersAccountPoint(currentPageNo, pageSize);
+            return findUsersAccountPoint(channel, minPoint, maxPoint, currentPageNo, pageSize);
         }
     }
     // 根据用户名查询时，最多只返回一条数据
-    private BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(String loginName, String mobile) {
-        AccountModel accountModel = null;
-        if (StringUtils.isNotEmpty(loginName)) {
-            accountModel = accountMapper.findByLoginName(loginName);
-        } else if (StringUtils.isNotEmpty(mobile)) {
-            accountModel = accountMapper.findByMobile(mobile);
-        }
-        List<AccountModel> accountModels = accountModel == null ? Collections.emptyList() : Collections.singletonList(accountModel);
-        List<AccountItemDataDto> records = accountModels.stream()
-                .map(acc -> userMapper.findByLoginName(acc.getLoginName()))
-                .map(userModel -> new AccountItemDataDto(
-                        userModel.getLoginName(),
-                        userModel.getUserName(),
-                        userModel.getMobile(),
-                        userPointMapper.getPointByLoginName(userModel.getLoginName(), 0L),
-                        pointBillMapper.findUserTotalPoint(userModel.getLoginName())))
+    private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        AccountModel accountModel = userModel == null ? null : accountMapper.findByLoginName(userModel.getLoginName());
+        List<UserModel> userModels = accountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
+        List<UserPointItemDataDto> records = userModels.stream()
+                .map(u -> new UserPointItemDataDto(
+                        u.getLoginName(),
+                        u.getUserName(),
+                        u.getMobile(),
+                        userPointMapper.findByLoginName(u.getLoginName()),
+                        pointBillMapper.findUserTotalPoint(u.getLoginName())))
                 .collect(Collectors.toList());
-        return new BasePaginationDataDto<>(1, 10, accountModels.size(), records);
+        return new BasePaginationDataDto<>(1, 1, userModels.size(), records);
     }
 
-    private BasePaginationDataDto<AccountItemDataDto> findUsersAccountPoint(int pageNo, int pageSize) {
-        List<UserPointModel> userPointModelList = userPointMapper.list(null, null, null, null, null, null, null, (pageNo - 1) * pageSize, pageSize);
-        List<AccountItemDataDto> records = userPointModelList.stream()
+    private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String channel, Long minPoint, Long maxPoint, int pageNo, int pageSize) {
+        Long minTotalPoint = null, maxTotalPoint = null, minSudaiPoint = null, maxSudaiPoint = null, minChannelPoint = null, maxChannelPoint = null;
+        if (StringUtils.isBlank(channel)) {
+            minTotalPoint = minPoint;
+            maxTotalPoint = maxPoint;
+        } else if (channel.equalsIgnoreCase(PointBillService.CHANNEL_SUDAI)) {
+            channel = null;
+            minSudaiPoint = minPoint;
+            maxSudaiPoint = maxPoint;
+        } else {
+            minChannelPoint = minPoint;
+            maxChannelPoint = maxPoint;
+        }
+        List<UserPointModel> userPointModelList = userPointMapper.list(channel, minTotalPoint, maxTotalPoint, minSudaiPoint, maxSudaiPoint, minChannelPoint, maxChannelPoint, (pageNo - 1) * pageSize, pageSize);
+        List<UserPointItemDataDto> records = userPointModelList.stream()
                 .map(userPointModel -> {
                     UserModel userModel = userMapper.findByLoginName(userPointModel.getLoginName());
-                    return new AccountItemDataDto(
+                    return userModel == null ? null : new UserPointItemDataDto(
                             userModel.getLoginName(),
                             userModel.getUserName(),
                             userModel.getMobile(),
-                            userPointModel.getPoint(),
+                            userPointModel,
                             pointBillMapper.findUserTotalPoint(userModel.getLoginName()));
-                }).collect(Collectors.toList());
-        long count = userPointMapper.count(null, null, null, null, null, null, null);
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        long count = userPointMapper.count(channel, minTotalPoint, maxTotalPoint, minSudaiPoint, maxSudaiPoint, minChannelPoint, maxChannelPoint);
         return new BasePaginationDataDto<>(pageNo, pageSize, count, records);
     }
 
