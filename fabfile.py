@@ -276,9 +276,9 @@ def deploy_all():
     execute(deploy_web)
     execute(deploy_activity)
     execute(deploy_point)
+    execute(deploy_anxin)
     execute(deploy_ask_rest)
     execute(deploy_ask)
-    execute(deploy_anxin)
 
 
 def pre_deploy():
@@ -288,7 +288,7 @@ def pre_deploy():
 
 
 def all():
-    pre_deploy()
+    # pre_deploy()
     deploy_all()
 
 
