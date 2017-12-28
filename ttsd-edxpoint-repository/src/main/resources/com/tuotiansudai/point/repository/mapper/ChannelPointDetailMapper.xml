@@ -16,15 +16,57 @@
         <result column="point" property="point"></result>
         <result column="success" property="success"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="remark" property="remark"></result>
     </resultMap>
 
     <insert id="create" parameterType="ChannelPointDetailModel" useGeneratedKeys="true" keyProperty="id">
-        insert into channel_point_detail (channel_point_id, login_name, user_name, mobile, channel,point,success,created_time)
-        value(#{channelPointId}, #{loginName}, #{userName}, #{mobile}, #{channel}, #{point},#{success},#{createdTime})
+        insert into channel_point_detail (channel_point_id, login_name, user_name, mobile, channel,point,success,created_time,remark)
+        value(#{channelPointId}, #{loginName}, #{userName}, #{mobile}, #{channel}, #{point},#{success},#{createdTime},#{remark})
     </insert>
+
 
     <select id="findById" resultMap="channelPointDetailResultMap" parameterType="long">
         select * from channel_point_detail where id = #{id};
+    </select>
+
+    <select id="findByPagination" resultMap="channelPointDetailResultMap" parameterType="map">
+        SELECT * from channel_point_detail where channel_point_id = #{channelPointId}
+        <if test="channel != null and channel != '' ">
+            and channel = #{channel}
+        </if>
+        <if test="userNameOrMobile != null and userNameOrMobile != ''">
+            and (user_name = #{userNameOrMobile} or mobile = #{userNameOrMobile})
+        </if>
+        <if test="success != null">
+            and success = #{success}
+        </if>
+        ORDER BY created_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountByPagination" resultType="long" parameterType="map">
+        SELECT count(1) from channel_point_detail where channel_point_id = #{channelPointId}
+        <if test="channel != null and channel != '' ">
+            and channel = #{channel}
+        </if>
+        <if test="userNameOrMobile != null and userNameOrMobile != ''">
+            and (user_name = #{userNameOrMobile} or mobile = #{userNameOrMobile})
+        </if>
+        <if test="success != null">
+            and success = #{success}
+        </if>
+    </select>
+
+    <select id="findAllChannel" resultType="string">
+        SELECT DISTINCT (channel) from channel_point_detail
+    </select>
+
+    <select id="findSuccessByMobile" resultMap="channelPointDetailResultMap" parameterType="string">
+        SELECT * from channel_point_detail where mobile = #{mobile} and success = 1
+    </select>
+
+    <select id="findSuccessByChannelPointId" resultMap="channelPointDetailResultMap" parameterType="long">
+        SELECT * from channel_point_detail where channel_point_id = #{channelPointId} and success = 1
     </select>
 
 

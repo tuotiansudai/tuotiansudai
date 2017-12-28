@@ -2,6 +2,7 @@ package com.tuotiansudai.point.repository.mapper;
 
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import org.apache.ibatis.annotations.*;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -141,6 +142,13 @@ public interface UserPointMapper {
             @Param("sudaiPoint") long sudaiPoint,
             @Param("channelPoint") long channelPoint,
             @Param("updatedTime") Date updatedTime);
+
+    default void updateChannelIfNotExist(String loginName, String channel) {
+        UserPointModel userPointModel = findByLoginName(loginName);
+        if (userPointModel != null && StringUtils.isEmpty(userPointModel.getChannel())) {
+            updateChannel(loginName, channel, new Date());
+        }
+    }
 
     @Select("select distinct(channel) from user_point where channel is not null")
     List<String> findAllChannel();

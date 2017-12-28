@@ -7,6 +7,8 @@ import com.tuotiansudai.console.service.CouponActivationService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
@@ -28,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -441,12 +445,47 @@ public class PointManageController {
 
     @RequestMapping(value = "/channel-point", method = RequestMethod.GET)
     public ModelAndView getChannelPointList(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        ModelAndView modelAndView = new ModelAndView("/channel-point", "data", channelPointServiceImpl.getDetailList(index, 10));
+        ModelAndView modelAndView = new ModelAndView("/channel-point", "data", channelPointServiceImpl.getChannelPointList(index, 10));
         modelAndView.addObject("sumHeadCount", channelPointServiceImpl.getSumHeadCount());
         modelAndView.addObject("sumTotalPoint", channelPointServiceImpl.getSumTotalPoint());
 
         return modelAndView;
 
+    }
+
+    @RequestMapping(value = "/channel-point-detail/{channelPointId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView getChannelPointDetailList(@PathVariable long channelPointId,
+                                                  @RequestParam(value = "channel", required = false, defaultValue = "") String channel,
+                                                  @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                                  @RequestParam(value = "success", required = false) Boolean success,
+                                                  @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        BasePaginationDataDto<ChannelPointDetailPaginationItemDataDto> basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, 10);
+        ModelAndView modelAndView = new ModelAndView("/channel-point-detail", "data", basePaginationDataDto);
+        modelAndView.addObject("sumHeadCount", basePaginationDataDto.getCount());
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("userNameOrMobile", userNameOrMobile);
+        modelAndView.addObject("success", success);
+        modelAndView.addObject("channelList", channelPointServiceImpl.findAllChannel());
+        modelAndView.addObject("channelPointId", channelPointId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @ResponseBody
+    public ChannelPointDataDto importCsv(HttpServletRequest httpServletRequest) throws Exception {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        try {
+            String originalFileName = channelPointServiceImpl.checkFileName(multipartFile);
+
+            return channelPointServiceImpl.importChannelPoint(originalFileName, LoginUserInfo.getLoginName(), multipartFile.getInputStream());
+
+        } catch (ChannelPointDataValidationException e) {
+            return new ChannelPointDataDto(false, e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return new ChannelPointDataDto(false, "內部程序异常");
+        }
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

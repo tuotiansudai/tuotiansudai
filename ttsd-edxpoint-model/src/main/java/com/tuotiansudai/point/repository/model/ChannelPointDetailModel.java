@@ -1,5 +1,7 @@
 package com.tuotiansudai.point.repository.model;
 
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailDto;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +15,22 @@ public class ChannelPointDetailModel implements Serializable {
     private long point;
     private boolean success;
     private Date createdTime;
+    private String remark;
+
+    public ChannelPointDetailModel() {
+    }
+
+    public ChannelPointDetailModel(long channelPointId,ChannelPointDetailDto channelPointDetailDto) {
+        this.channelPointId = channelPointId;
+        this.loginName = channelPointDetailDto.getLoginName();
+        this.userName = channelPointDetailDto.getUserName();
+        this.mobile = channelPointDetailDto.getMobile();
+        this.channel = channelPointDetailDto.getChannel();
+        this.point = channelPointDetailDto.getPoint();
+        this.success = channelPointDetailDto.isSuccess();
+        this.remark = channelPointDetailDto.getRemark();
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -84,5 +102,13 @@ public class ChannelPointDetailModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

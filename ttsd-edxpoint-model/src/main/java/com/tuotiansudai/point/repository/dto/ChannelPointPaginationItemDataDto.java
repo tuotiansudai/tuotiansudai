@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ChannelPointPaginationItemDataDto implements Serializable {
+    private long id;
     private String serialNo;
     private Date createdTime;
     private String createdBy;
@@ -16,6 +17,7 @@ public class ChannelPointPaginationItemDataDto implements Serializable {
     }
 
     public ChannelPointPaginationItemDataDto(ChannelPointModel channelPointModel) {
+        this.id = channelPointModel.getId();
         this.serialNo = channelPointModel.getSerialNo();
         this.createdTime = channelPointModel.getCreatedTime();
         this.createdBy = channelPointModel.getCreatedBy();
@@ -61,5 +63,13 @@ public class ChannelPointPaginationItemDataDto implements Serializable {
 
     public void setTotalPoint(long totalPoint) {
         this.totalPoint = totalPoint;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

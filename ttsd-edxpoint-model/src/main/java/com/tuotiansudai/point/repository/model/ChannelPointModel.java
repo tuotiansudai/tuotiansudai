@@ -11,6 +11,17 @@ public class ChannelPointModel implements Serializable {
     private String createdBy;
     private Date createdTime;
 
+    public ChannelPointModel() {
+    }
+
+    public ChannelPointModel(String serialNo, long totalPoint, long headCount, String createdBy) {
+        this.serialNo = serialNo;
+        this.totalPoint = totalPoint;
+        this.headCount = headCount;
+        this.createdBy = createdBy;
+        this.createdTime = new Date();
+    }
+
     public long getId() {
         return id;
     }

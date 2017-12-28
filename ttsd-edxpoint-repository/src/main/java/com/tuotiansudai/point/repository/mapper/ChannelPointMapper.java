@@ -22,5 +22,9 @@ public interface ChannelPointMapper {
 
     long findSumHeadCount();
 
+    ChannelPointModel findBySerialNo(String serialNo);
+
+    void update(ChannelPointModel channelPointModel);
+
 
 }

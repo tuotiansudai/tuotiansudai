@@ -166,7 +166,6 @@ public class PointBillServiceImpl implements PointBillService {
             return findUsersAccountPoint(channel, minPoint, maxPoint, currentPageNo, pageSize);
         }
     }
-
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
@@ -236,6 +235,8 @@ public class PointBillServiceImpl implements PointBillService {
                 return PointBusinessType.LOTTERY.getDescription();
             case ACTIVITY:
                 return PointBusinessType.ACTIVITY.getDescription();
+            case CHANNEL_IMPORT:
+                return PointBusinessType.CHANNEL_IMPORT.getDescription();
         }
 
         return null;

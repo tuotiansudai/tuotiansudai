@@ -1,18 +1,27 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
+<@global.main pageCss="" pageJavascript="channel-point.js" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
 
 <div class="col-md-10">
 
     <div class="table-responsive">
         <@security.authorize access="hasAnyAuthority('ADMIN','DATA')">
 
-            <div>
-                <button class="btn btn-default" type="button">导入渠道积分</button>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <div class="file-btn">
+                        <input type="file" id="file-in">
+                        导入渠道积分
+                    </div>
+                </div>
             </div>
+
         </@security.authorize>
-        <label for="control-label">导入总人数: ${sumHeadCount}</label>
-        <label for="control-label" style="margin-left: 20px;">导入积分总额: ${sumTotalPoint}</label>
+        <div>
+            <label for="control-label">导入总人数: ${sumHeadCount}</label>
+            <label for="control-label" style="margin-left: 20px;">导入积分总额: ${sumTotalPoint}</label>
+
+        </div>
         <table class="table table-bordered table-hover " style="width:80%;">
             <thead>
             <tr>
@@ -32,7 +41,7 @@
                     <td>${item.createdBy}</td>
                     <td>${item.headCount?c}</td>
                     <td>${item.totalPoint?c}</td>
-                    <td><a href="#">查看详情</a></td>
+                    <td><a href="/point-manage/channel-point-detail/${item.id}">查看详情</a></td>
                 </tr>
                 <#else>
                 <tr>
