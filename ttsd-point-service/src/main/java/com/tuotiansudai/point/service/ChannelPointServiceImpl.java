@@ -121,11 +121,15 @@ public class ChannelPointServiceImpl {
             ChannelPointModel channelPointModel = new ChannelPointModel(originalFileName, 0l, 0l, loginName);
             channelPointMapper.create(channelPointModel);
             details.stream().forEach(detail -> {
-                checkChannelPointDetailDto(detail);
+
+                boolean conform = checkChannelPointDetailDto(detail);
                 ChannelPointDetailModel channelPointDetailModel = new ChannelPointDetailModel(channelPointModel.getId(), detail);
                 channelPointDetailMapper.create(channelPointDetailModel);
-                pointBillService.createPointBill(channelPointDetailModel.getLoginName(), channelPointDetailModel.getId(), PointBusinessType.CHANNEL_IMPORT, channelPointDetailModel.getPoint());
-                userPointMapper.updateChannelIfNotExist(channelPointDetailModel.getLoginName(), channelPointDetailModel.getChannel());
+                if(conform){
+                    pointBillService.createPointBill(channelPointDetailModel.getLoginName(), channelPointDetailModel.getId(), PointBusinessType.CHANNEL_IMPORT, channelPointDetailModel.getPoint());
+                    userPointMapper.updateChannelIfNotExist(channelPointDetailModel.getLoginName(), channelPointDetailModel.getChannel());
+
+                }
             });
 
             List<ChannelPointDetailModel> successPointDetail = channelPointDetailMapper.findSuccessByChannelPointId(channelPointModel.getId());
