@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    def mybatisVersion = '3.4.0'
+    def mybatisVersion = '3.4.2'
 
     compile "org.mybatis:mybatis:$mybatisVersion"
     compile 'log4j:log4j:1.2.17'

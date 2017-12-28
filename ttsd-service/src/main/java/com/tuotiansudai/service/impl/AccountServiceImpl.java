@@ -87,12 +87,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public long getUserPointByLoginName(String loginName) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        return null == accountModel ? 0 : accountModel.getPoint();
-    }
-
-    @Override
     public boolean resetUmpayPassword(String loginName, String identityNumber) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null || !userModel.getIdentityNumber().equals(identityNumber)) {

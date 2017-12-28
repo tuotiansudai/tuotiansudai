@@ -14,10 +14,10 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.point.repository.mapper.*;
 import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.PointBillService;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ExchangeCouponView;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -67,6 +67,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PageValidUtils pageValidUtils;
+
+    @Autowired
+    private PointService pointService;
 
     @Autowired
     private UserPointTaskMapper userPointTaskMapper;
@@ -153,14 +156,15 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
                 physicalsProductsList = this.getPhysicalsProductsList();
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(productListRequestDto.getBaseParam().getUserId());
+        String loginName = productListRequestDto.getBaseParam().getUserId();
         long finishedTaskCount = userPointTaskMapper.findFinishTaskByLoginName(productListRequestDto.getBaseParam().getUserId());
         long allTaskCount = pointTaskMapper.findCountAllTask();
         long unfinishedTaskCount = allTaskCount - finishedTaskCount;
+        long userAvailablePoint = pointService.getAvailablePoint(loginName);
         ProductListResponseDto productListResponseDto = new ProductListResponseDto();
         productListResponseDto.setVirtuals(virtualProductsList);
         productListResponseDto.setPhysicals(physicalsProductsList);
-        productListResponseDto.setMyPoints(accountModel != null ? String.valueOf(accountModel.getPoint()) : "0");
+        productListResponseDto.setMyPoints(String.valueOf(userAvailablePoint));
         productListResponseDto.setUnFinishedTaskCount(unfinishedTaskCount >= 0 ? unfinishedTaskCount : 0);
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(productListResponseDto);
@@ -315,8 +319,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto(ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getMsg());
         }
 
+        String loginName = productDetailRequestDto.getBaseParam().getUserId();
+
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId().trim()));
-        AccountModel accountModel = accountMapper.findByLoginName(productDetailRequestDto.getBaseParam().getUserId());
         long leftCount = productDetailRequestDto.getNum() + productModel.getUsedCount();
         if (productModel.getType().equals(GoodsType.COUPON)) {
             CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
@@ -328,7 +333,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
         }
 
-        String buyCountStr = redisWrapperClient.get(generateCountKey(productModel.getId(), accountModel.getLoginName()));
+        String buyCountStr = redisWrapperClient.get(generateCountKey(productModel.getId(), loginName));
         int buyCount = buyCountStr == null ? 0 : Integer.parseInt(buyCountStr);
 
         if (productModel.getMonthLimit() != 0 && buyCount + productDetailRequestDto.getNum() > productModel.getMonthLimit()) {
@@ -339,19 +344,20 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         double discount = productService.discountRate(LoginUserInfo.getLoginName());
         long points = productService.discountTotalPrice(productModel.getPoints(), discount, productDetailRequestDto.getNum());
+        long userAvailablePoint = pointService.getAvailablePoint(loginName);
 
-        if (accountModel == null || accountModel.getPoint() < points) {
+        if (userAvailablePoint < points) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), points));
             return new BaseResponseDto(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
         }
 
         List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(productDetailRequestDto.getBaseParam().getUserId());
         if (CollectionUtils.isEmpty(userAddressModels) && productModel.getType().equals(GoodsType.PHYSICAL)) {
-            logger.info(MessageFormat.format("Insufficient points (userId = {0},myPoints = {1},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), accountModel.getPoint(), points));
+            logger.info(MessageFormat.format("Insufficient points (userId = {0},myPoints = {1},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), userAvailablePoint, points));
             return new BaseResponseDto(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
-        productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId());
+        productService.buyProduct(loginName, Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId());
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 
