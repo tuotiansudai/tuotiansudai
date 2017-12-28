@@ -15,14 +15,14 @@ CREATE TABLE `channel_point` (
 CREATE TABLE `channel_point_detail` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `channel_point_id`    BIGINT UNSIGNED NOT NULL,
-  `login_name`    VARCHAR(50)     NOT NULL,
-  `user_name`     VARCHAR(50) ,
+  `login_name`    VARCHAR(50)     ,
+  `user_name`     VARCHAR(50)     NOT NULL,
   `mobile`        VARCHAR(11)     NOT NULL,
   `channel`       VARCHAR(50)     NOT NULL,
   `point`         BIGINT UNSIGNED NOT NULL,
   `success`       TINYINT(1)      NOT NULL DEFAULT FALSE ,
   `created_time`  DATETIME        NOT NULL,
-  `remark`  VARCHAR(255)        NOT NULL,
+  `remark`  VARCHAR(255)        ,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_CHANNEL_POINT_DETAIL_REF_CHANNEL_POINT_ID FOREIGN KEY (`channel_point_id`) REFERENCES `channel_point` (`id`)
 )

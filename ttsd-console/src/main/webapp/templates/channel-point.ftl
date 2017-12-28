@@ -1,14 +1,20 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
+<@global.main pageCss="" pageJavascript="channel-point.js" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
 
 <div class="col-md-10">
 
     <div class="table-responsive">
         <@security.authorize access="hasAnyAuthority('ADMIN','DATA')">
 
-            <div>
-                <button class="btn btn-default" type="button">导入渠道积分</button>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-4">
+                    <div class="file-btn">
+                        <input type="file" id="file-in">
+                        导入渠道积分
+                    </div>
+                </div>
             </div>
         </@security.authorize>
         <label for="control-label">导入总人数: ${sumHeadCount}</label>

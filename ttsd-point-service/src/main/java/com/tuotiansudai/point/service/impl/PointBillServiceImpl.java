@@ -231,6 +231,8 @@ public class PointBillServiceImpl implements PointBillService {
                 return PointBusinessType.LOTTERY.getDescription();
             case ACTIVITY:
                 return PointBusinessType.ACTIVITY.getDescription();
+            case CHANNEL_IMPORT:
+                return PointBusinessType.CHANNEL_IMPORT.getDescription();
         }
 
         return null;

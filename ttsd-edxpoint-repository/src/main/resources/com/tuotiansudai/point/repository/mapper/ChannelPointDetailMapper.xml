@@ -49,7 +49,7 @@
         <if test="channel != null and channel != '' ">
             and channel = #{channel}
         </if>
-        <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
+        <if test="userNameOrMobile != null and userNameOrMobile != ''">
             and (user_name = #{userNameOrMobile} or mobile = #{userNameOrMobile})
         </if>
         <if test="success != null">

@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.ChannelPointDataDto;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.CouponActivationService;
 import com.tuotiansudai.dto.*;
@@ -441,7 +442,7 @@ public class PointManageController {
     @RequestMapping(value = "/channel-point-detail/{channelPointId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getChannelPointDetailList(@PathVariable long channelPointId,
                                                   @RequestParam(value = "channel", required = false, defaultValue = "") String channel,
-                                                  @RequestParam(value = "loginNameOrMobile", required = false) String userNameOrMobile,
+                                                  @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
                                                   @RequestParam(value = "success", required = false) Boolean success,
                                                   @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         BasePaginationDataDto basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, 10);
@@ -457,20 +458,20 @@ public class PointManageController {
 
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDataDto importCsv(HttpServletRequest httpServletRequest) throws Exception {
+    public ChannelPointDataDto importCsv(HttpServletRequest httpServletRequest) throws Exception {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
-        BaseDataDto baseDataDto = new BaseDataDto(true);
         try {
-            channelPointServiceImpl.checkFileName(multipartFile);
+            String originalFileName = channelPointServiceImpl.checkFileName(multipartFile);
 
-
+            return channelPointServiceImpl.importChannelPoint(originalFileName, LoginUserInfo.getLoginName(), multipartFile.getInputStream());
 
         } catch (ChannelPointDataValidationException e) {
-            baseDataDto.setStatus(false);
-            baseDataDto.setMessage(e.getMessage());
+            return new ChannelPointDataDto(false, e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return new ChannelPointDataDto(false, "內部程序异常");
         }
-        return baseDataDto;
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

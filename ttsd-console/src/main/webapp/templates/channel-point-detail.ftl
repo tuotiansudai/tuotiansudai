@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="channel-point-detail.js" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
+<@global.main pageCss="" pageJavascript="channel-point.js" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
 
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
@@ -40,6 +40,7 @@
                 <th>积分渠道</th>
                 <th>导入状态</th>
                 <th>渠道积分</th>
+                <th>说明</th>
             </tr>
             </thead>
             <tbody>
@@ -48,12 +49,9 @@
                     <td>${item.userName}</td>
                     <td>${item.mobile}</td>
                     <td>${item.channel}</td>
-                    <#if item.success>
-                        <td>成功</td>
-                    <#else >
-                        <td>失败</td>
-                    </#if>
+                    <td>${item.success?string("成功","失败")}</td>
                     <td>${item.point}</td>
+                    <td>${item.remark!}</td>
                 </tr>
                 <#else>
                 <tr>

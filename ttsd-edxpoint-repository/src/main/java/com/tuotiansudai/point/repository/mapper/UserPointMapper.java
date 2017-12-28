@@ -142,6 +142,12 @@ public interface UserPointMapper {
             @Param("channelPoint") long channelPoint,
             @Param("updatedTime") Date updatedTime);
 
+    default void updateChannelIfNotExist(String loginName, String channel) {
+        UserPointModel userPointModel = findByLoginName(loginName);
+        if (userPointModel != null && (userPointModel.getChannel() == null || "".equals(userPointModel.getChannel()))) {
+            updateChannel(loginName, channel, new Date());
+        }
+    }
 
     default long getPointByLoginName(String loginName) {
         return getPointByLoginName(loginName, null);
