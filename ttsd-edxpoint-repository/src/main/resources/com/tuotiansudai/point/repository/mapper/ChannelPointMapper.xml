@@ -33,11 +33,11 @@
     </select>
 
     <select id="findSumTotalPoint" resultType="long">
-        select sum(total_point) from channel_point
+        select ifnull(sum(total_point),0) from channel_point
     </select>
 
     <select id="findSumHeadCount" resultType="long">
-        select sum(head_count) from channel_point
+        select ifnull(sum(head_count),0) from channel_point
     </select>
 
     <select id="findBySerialNo" resultMap="channelPointResultMap" parameterType="String">
