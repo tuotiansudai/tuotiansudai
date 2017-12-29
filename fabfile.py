@@ -286,7 +286,7 @@ def pre_deploy():
 
 
 def all():
-    # pre_deploy()
+    pre_deploy()
     deploy_all()
 
 
