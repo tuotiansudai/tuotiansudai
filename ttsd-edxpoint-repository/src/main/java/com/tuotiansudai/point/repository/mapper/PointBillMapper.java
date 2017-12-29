@@ -30,6 +30,14 @@ public interface PointBillMapper {
                                                  @Param(value = "endTime") Date endTime,
                                                  @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
 
+    List<PointBillModel> getPointBillPaginationConosle(@Param(value = "startTime") Date startTime,
+                                                       @Param(value = "endTime") Date endTime,
+                                                       @Param(value = "pointBusinessType") PointBusinessType businessType,
+                                                       @Param(value = "channel") String channel,
+                                                       @Param("minPoint") Long minPoint,
+                                                       @Param("maxPoint") Long maxPoint,
+                                                       @Param("userNameOrMobile") String userNameOrMobile);
+
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
 
     List<PointBillModel> findPointBillByLoginName(@Param(value = "loginName") String loginName,

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.point.repository.mapper.PointBillMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="pointBillResultMap" type="PointBillModel">
         <id column="id" property="id"></id>
@@ -23,6 +23,12 @@
         <result column="total_sudai_point" property="totalSudaiPoint"></result>
         <result column="total_channel_point" property="totalChannelPoint"></result>
         <result column="total_point" property="totalPoint"></result>
+    </resultMap>
+
+    <resultMap id="pointBillViewResultMap" type="PointBillViewDto" extends="pointBillResultMap">
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="channel" property="channel"></result>
     </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
@@ -134,8 +140,33 @@
                 </foreach>
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
-                and created_time between #{startTime} and #{endTime}
+                and created_time between #{getPointBillPaginationConoslestartTime} and #{endTime}
             </if>
+        </where>
+    </select>
+
+    <select id="getPointBillPaginationConsole" parameterType="map" resultMap="pointBillViewResultMap">
+        select * from point_bill p
+        join on user_point up on p.login_name = up.login_name
+        join on user u on p.login_name = u.login_name
+        <where>
+            <if test="startTime != null and startTime != ''">
+                and p.created_time &gt;= #{startTime}
+            </if>
+
+            <if test="endTime != null and endTime != ''">
+                and p.created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType != null">
+                and p.business_type = #{businessType}
+            </if>
+            <if test="channel != null and channel != ''">
+                and up.channel = #{channel}
+            </if>
+            <if test="channel != null and channel != '' and ">
+
+            </if>
+
         </where>
     </select>
 </mapper>
