@@ -26,7 +26,7 @@ public class CreateLoginLogScheduler {
         try {
 
             logger.info(String.format("create table %s begin ...", newTableName));
-            loginLogMapper.createLoginLogTable(newTableName);
+            loginLogMapper.createLoginLogTable(newTableName, generateOriginTableName());
             logger.info(String.format("create table %s end ...", newTableName));
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -37,6 +37,10 @@ public class CreateLoginLogScheduler {
 
     private String generateNewTableName() {
         return String.format("login_log_%s", new DateTime().plusMonths(1).toString("yyyyMM"));
+    }
+
+    private String generateOriginTableName() {
+        return String.format("login_log_%s", new DateTime().toString("yyyyMM"));
     }
 
     private void sendSmsErrNotify(String errMsg) {

@@ -63,7 +63,13 @@
     </select>
 
     <update id="createLoginLogTable">
-        CREATE TABLE IF NOT EXISTS ${newTableName} (LIKE login_log_201701)
+        <![CDATA[
+
+
+            CREATE TABLE IF NOT EXISTS ${newTableName} (LIKE ${originTableName})
+
+
+        ]]>
     </update>
 
 </mapper>

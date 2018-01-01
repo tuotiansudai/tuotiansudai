@@ -27,6 +27,6 @@ public interface LoginLogMapper {
                                           @Param("pageSize") long pageSize,
                                           @Param("table") String table);
 
-    void createLoginLogTable(@Param("newTableName") String newTableName);
+    void createLoginLogTable(@Param("newTableName") String newTableName, @Param("originTableName") String originTableName);
 
 }
