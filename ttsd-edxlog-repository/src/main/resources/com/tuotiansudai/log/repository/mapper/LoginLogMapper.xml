@@ -63,7 +63,7 @@
     </select>
 
     <update id="createLoginLogTable">
-        CREATE TABLE IF NOT EXISTS ${newTableName} as select * from login_log_201701
+        CREATE TABLE IF NOT EXISTS ${newTableName} (LIKE login_log_201701)
     </update>
 
 </mapper>
