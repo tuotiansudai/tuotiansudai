@@ -21,7 +21,6 @@ let myScroll = new IScroll('#wrapperOut', {
 
 
 myScroll.on('scrollEnd', function () {
-    console.log(this.y + "|||" + this.maxScrollY);
     //如果滑动到底部，则加载更多数据（距离最底部10px高度）
     if ((this.y - this.maxScrollY) <= 10) {
             getMore();
@@ -40,9 +39,14 @@ function getMore() {
             dataType: 'html',
             type: 'get',
         },
-        function (data) {console.log(data)
-            $content.append($(data).find("#wrapperOut .loan-list-content .category-box-main").html());
-            myScroll.refresh();
+        function (data) {
+            if($(data).find("#wrapperOut .loan-list-content .category-box-main").html().trim().length > 0){
+                $content.append($(data).find("#wrapperOut .loan-list-content .category-box-main").html());
+                myScroll.refresh();
+            }else {
+                $('#pullUp').find('.pullUpLabel').html('没有更多数据了')
+            }
+
         }
     )
 }

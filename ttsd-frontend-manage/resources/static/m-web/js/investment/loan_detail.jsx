@@ -4,6 +4,7 @@ require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
 //require('mWebJsModule/anxin_agreement_pop');
 require('webJs/plugins/autoNumeric');
+var tpl = require('art-template/dist/template');
 let $loanDetail = $('#loanDetail'),
     $iconHelp = $('.icon-help', $loanDetail);
 
@@ -124,6 +125,68 @@ $('#btn-detail-toggle').click(function () {
     $('#apply_material').hide();
 })
 //交易记录ajax请求
+let $boxContent = $('#box_content');
+let ajaxUrl = $boxContent.data('url');
+let $scroll = $boxContent.find('#scroll');
+let $content = $boxContent.find('#content');
+let pageNum = 1;
+
+$('#transaction_record').on('click',function () {
+    getMoreRecords();
+    //交易记录滚动加载更多
+    setTimeout(function () {
+        var myScroll = new IScroll('#box_content', {
+            probeType: 2,
+            mouseWheel: true
+        });
+        myScroll.on('scrollEnd', function () {console.log(9)
+            //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+            if ((this.y - this.maxScrollY) <= 10) {
+                pageNum++;
+
+                getMoreRecords();
+                myScroll.refresh();
+            }
+
+        });
+    },1000)
+
+
+
+
+})
+
+function getMoreRecords(){
+    commonFun.useAjax(
+        {
+            url:ajaxUrl,
+            type:'get',
+            data:{
+                index:pageNum
+            }
+        },
+        function (res) {console.log(res.data.records)
+            if(pageNum == 1){
+                if(res.data.records.length > 0){
+                    var html = tpl('recordsTpl', res.data);
+                    $content.prepend(html)
+                }else {
+                    $content.html('<div class="no-records">暂无交易记录</div>')
+                }
+            }else {
+                if(res.data.records.length > 0){
+                    var html = tpl('recordsTpl', res.data);
+                    $content.prepend(html)
+                }else {
+                   $('#pullUp').find('.pullUpLabel').html('没有更多数据了');
+                }
+            }
+
+
+        }
+    )
+}
+
 
 //监控浏览器返回事件
 window.addEventListener("popstate", function(e) {
