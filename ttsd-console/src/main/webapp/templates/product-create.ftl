@@ -124,7 +124,7 @@
             <label class="col-sm-2 control-label">商品详情(移动端):</label>
             <div class="col-sm-4 ">
                 <input type="text" name="appPictureUrl" class="form-control appPictureUrl" readonly placeholder=""
-                       datatype="*" errormsg="请上传商品详情图片">
+                       errormsg="请上传商品详情图片">
 
                 <div class="appThumbnail" style="margin-top: 10px">
                     <#if product?? && product.appPictureUrl??>
@@ -149,7 +149,7 @@
             <label class="col-sm-2 control-label">商品详情(PC端):</label>
             <div class="col-sm-4 ">
                 <input type="text" name="webPictureUrl" class="form-control webPictureUrl" readonly placeholder=""
-                       datatype="*" errormsg="请上传商品详情图片">
+                       errormsg="请上传商品详情图片">
 
                 <div class="webThumbnail" style="margin-top: 10px">
                     <#if product?? && product.webPictureUrl??>
