@@ -1,4 +1,4 @@
-<div class="project-detail" id="projectDetail" data-url="/loan/${loan.id?string.computer}/invests" style="display: none">
+<div class="project-detail" id="projectDetail" data-url="/loan/${loan.id?string.computer}/invests" style="display: block">
     <div class="menu-category">
         <span class="current"><a>项目材料</a></span>
         <span><a id="transaction_record">交易记录</a></span>
