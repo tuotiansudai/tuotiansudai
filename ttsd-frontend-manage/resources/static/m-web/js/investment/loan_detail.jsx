@@ -14,10 +14,10 @@ $iconHelp.on('click',function() {
 })
 //点击立即投资进入购买详情页
 $('#toInvest').on('click',function () {
-    pushHistory();
-    $loanDetail.hide();
-    $applyTransfer.show();
-    $projectDetail.hide();
+    // pushHistory();
+    // $loanDetail.hide();
+    // $applyTransfer.show();
+    // $projectDetail.hide();
 })
 //借款详情
 
@@ -111,18 +111,18 @@ if($('#investForm').length>0){
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
-    $loanDetail.hide();
-    $applyTransfer.hide();
-    $projectDetail.show();
-    pushHistory();
+    // $loanDetail.hide();
+    // $applyTransfer.hide();
+    // $projectDetail.show();
+    // pushHistory();
 
 
 })
 $('#apply_materal_btn').click(function () {
-    $('#apply_material').show()
+   // $('#apply_material').show()
 })
 $('#btn-detail-toggle').click(function () {
-    $('#apply_material').hide();
+   // $('#apply_material').hide();
 })
 //交易记录ajax请求
 let $boxContent = $('#box_content');
@@ -206,26 +206,26 @@ function pushHistory() {
 //转让购买详情
 //承接记录
 $('#look_continue_record').click(function () {
-    pushHistory();
-    $('#loanDetail').hide();
-    $('.buy-transfer').hide();
-    $('#continue_record').show();
+    // pushHistory();
+    // $('#loanDetail').hide();
+    // $('.buy-transfer').hide();
+    // $('#continue_record').show();
 })
 //回款计划
 $('#look_repay_plan').click(function () {
-    pushHistory();
-    $('.buy-transfer').hide();
-    $('#cotinue_record').hide();
-   $('#loanDetail').hide();
-   $('#repay_plan').show();
+   //  pushHistory();
+   //  $('.buy-transfer').hide();
+   //  $('#cotinue_record').hide();
+   // $('#loanDetail').hide();
+   // $('#repay_plan').show();
 })
 //立即投资
 $('#to_buy_transfer').click(function () {
-    pushHistory();
-    $('#cotinue_record').hide();
-    $('#loanDetail').hide();
-    $('#repay_plan').hide();
-    $('.buy-transfer').show();
+    // pushHistory();
+    // $('#cotinue_record').hide();
+    // $('#loanDetail').hide();
+    // $('#repay_plan').hide();
+    // $('.buy-transfer').show();
 
     }
 );
