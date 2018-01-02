@@ -51,7 +51,7 @@ import java.util.Map;
 @Service
 public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchaseService {
 
-    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
+    static Logger logger = Logger.getLogger(InvestTransferPurchaseServiceImpl.class);
 
     private final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
@@ -226,13 +226,16 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Override
     public BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId) {
         InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(notifyRequestId);
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
 
         if (model == null) {
-            logger.error(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
-            sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1} not found", environment, String.valueOf(notifyRequestId)));
+            logger.error(MessageFormat.format("债权转让投资回调处理错误。{0},{1} 发送请求记录不存在", environment, String.valueOf(notifyRequestId)));
+            sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1} 发送请求记录不存在", environment, String.valueOf(notifyRequestId)));
+            return new BaseDto<>(baseDataDto);
         }
 
-        if (model != null && NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
+        if (NotifyProcessStatus.NOT_DONE.name().equals(model.getStatus())) {
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
             if (updateInvestTransferNotifyRequestStatus(model)) {
                 try {
@@ -244,12 +247,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 }
             }
         }
-        BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
-        asyncInvestNotifyDto.setData(baseDataDto);
 
-        return asyncInvestNotifyDto;
+        return new BaseDto<>(baseDataDto);
     }
 
     /**
@@ -472,61 +471,66 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         try {
             investTransferNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] decrease request count and update request status to DONE", model.getOrderId()));
+            return true;
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update request status is failed", model.getOrderId()), e);
             this.sendFatalNotify(MessageFormat.format("债权转让投资({0})回调状态更新错误", model.getOrderId()));
-            return false;
         }
-        return true;
+
+        return false;
     }
 
     private void processOneCallback(InvestNotifyRequestModel callbackRequestModel) throws AmountTransferException {
         long investId = Long.parseLong(callbackRequestModel.getOrderId());
         InvestModel investModel = investMapper.findById(investId);
+
         if (investModel == null) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer callback order is not exist", callbackRequestModel.getOrderId()));
             return;
         }
+
         if (investModel.getStatus() != InvestStatus.WAIT_PAY) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer status({1}) is not WAIT_PAY", callbackRequestModel.getOrderId(), investModel.getStatus()));
             return;
         }
 
-        if (callbackRequestModel.isSuccess()) {
-            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
-            if (CollectionUtils.isEmpty(transferApplicationModels)) {
-                logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer application is not exist", String.valueOf(investId)));
-                return;
-            }
-
-            TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
-
-            if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
-                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
-                this.overInvestPaybackProcess(investId);
-            } else {
-                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
-                ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
-
-                logger.info("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
-                mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
-            }
-        } else {
+        if (!callbackRequestModel.isSuccess()) {
             // 失败的话：更新 invest 状态为投资失败
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer callback is failed", String.valueOf(investId)));
             investModel.setStatus(InvestStatus.FAIL);
             investMapper.update(investModel);
+            return;
         }
+
+        List<TransferApplicationModel> transferredTransferApplications = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS));
+        if (!transferredTransferApplications.isEmpty() && transferredTransferApplications.get(0).getInvestId() != investId) {
+            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
+            this.overInvestPaybackProcess(transferredTransferApplications.get(0), investId);
+            return;
+        }
+
+        List<TransferApplicationModel> transferringTransferApplications = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
+        if (CollectionUtils.isEmpty(transferringTransferApplications)) {
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer(transferring) is not exist", String.valueOf(investId)));
+            return;
+        }
+
+        TransferApplicationModel transferringTransferApplication = transferringTransferApplications.get(0);
+        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
+        ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
+
+        logger.info("债权转让：生成合同，转让ID:" + transferringTransferApplication.getId());
+        mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferringTransferApplication.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
     }
 
 
     /**
      * 超投处理：返款、更新投资状态为失败
      *
+     * @param transferApplicationModel
      * @param investId
      */
-    private void overInvestPaybackProcess(long investId) {
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
+    private void overInvestPaybackProcess(TransferApplicationModel transferApplicationModel, long investId) {
         long transferAmount = transferApplicationModel.getTransferAmount();
         InvestModel investModel = investMapper.findById(investId);
 

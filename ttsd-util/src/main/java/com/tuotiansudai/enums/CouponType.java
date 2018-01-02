@@ -1,12 +1,8 @@
 package com.tuotiansudai.enums;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
-
 public enum CouponType {
 
-    RED_ENVELOPE("现金红包", "红包", 1),
+    RED_ENVELOPE("投资红包", "红包", 1),
     NEWBIE_COUPON("新手体验金", "新手", 2),
     INVEST_COUPON("投资体验券", "投资", 3),
     INTEREST_COUPON("加息券", "加息", 4),

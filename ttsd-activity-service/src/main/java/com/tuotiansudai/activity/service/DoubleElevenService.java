@@ -35,11 +35,4 @@ public class DoubleElevenService {
     public int calculateJDCardAmountByInvestAmount(String amount) {
         return (int) (Math.floor(Double.parseDouble(amount) / 100000) * 100);
     }
-
-    public int leftDrawCount(String mobile) {
-        int leftDrawCount = lotteryDrawActivityService.countDrawLotteryTime(mobile, ActivityCategory.DOUBLE_ELEVEN_ACTIVITY);
-        return leftDrawCount > 0 ? leftDrawCount : 0;
-    }
-
-
 }

@@ -39,15 +39,13 @@ public class DoubleElevenActivityController {
     @ResponseBody
     @RequestMapping(value = "/left-times", method = RequestMethod.GET)
     public int leftDrawTimes() {
-        String loginName = LoginUserInfo.getLoginName();
-        return loginName == null ? 0 : doubleElevenService.leftDrawCount(LoginUserInfo.getMobile());
+        return 0;
     }
 
     @ResponseBody
     @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto drawPrize(@RequestParam(value = "activityCategory", defaultValue = "DOUBLE_ELEVEN_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        DrawLotteryResultDto drawLotteryResultDto = lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
-        return drawLotteryResultDto;
+        return new DrawLotteryResultDto(3);
     }
 
     @ResponseBody

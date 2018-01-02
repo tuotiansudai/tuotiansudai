@@ -5,7 +5,8 @@
 <div class="col-md-10">
     <div class="col-md-12" style="margin-bottom: 40px">
         <a href="/point-manage/coupon-exchange" class="btn btn-default" style="margin-right: 60px">添加优惠券</a>
-        <a href="/point-manage/create?type=VIRTUAL" class="btn btn-default <#if type == 'VIRTUAL'>btn-warning</#if>" style="margin-right: 60px">添加虚拟商品</a>
+        <a href="/point-manage/create?type=VIRTUAL" class="btn btn-default <#if type == 'VIRTUAL'>btn-warning</#if>"
+           style="margin-right: 60px">添加虚拟商品</a>
         <a href="/point-manage/create?type=PHYSICAL" class="btn btn-default <#if type == 'PHYSICAL'>btn-warning</#if>">添加实物商品</a>
     </div>
     <form action="/point-manage/create" method="post" class="form-horizontal form-list">
@@ -34,17 +35,18 @@
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if product?? && product.imageUrl??>
-                        <img style="width:100%" src="${commonStaticServer}${product.imageUrl!}" alt="缩略图" width="480" height="390"/>
+                        <img style="width:100%" src="${commonStaticServer}${product.imageUrl!}" alt="缩略图" width="750"
+                             height="450"/>
                     </#if>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="imageUrlProduct">
-                    <input type="file" imageWidth="480" imageHeight="390"/>
+                    <input type="file" imageWidth="750" imageHeight="450"/>
                 </div>
                 <div class="text-danger">
-                    (图片必须是480px * 390px)
+                    (图片必须是750px * 450px)
                 </div>
 
             </div>
@@ -91,7 +93,7 @@
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control product-start" name="startTime" datatype="date"
                            errormsg="请选择商品有效开始时间"/>
-					<span class="input-group-addon">
+                    <span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
                 </div>
@@ -101,7 +103,7 @@
                 <div class='input-group date' id='endTime'>
                     <input type='text' class="form-control product-end" name="endTime" datatype="date"
                            errormsg="请选择商品有效结束时间"/>
-					<span class="input-group-addon">
+                    <span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
                 </div>
@@ -116,6 +118,57 @@
                        errormsg="商品价格只能为数字">
             </div>
             <div class="col-sm-1"><span style="line-height: 34px">积分</span></div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品详情(移动端):</label>
+            <div class="col-sm-4 ">
+                <input type="text" name="appPictureUrl" class="form-control appPictureUrl" readonly placeholder=""
+                       errormsg="请上传商品详情图片">
+
+                <div class="appThumbnail" style="margin-top: 10px">
+                    <#if product?? && product.appPictureUrl??>
+                        <img style="width:100%" src="${commonStaticServer}${product.appPictureUrl!}" alt="缩略图"
+                             width="750"/>
+                    </#if>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="appUrlProduct">
+                    <input type="file" imageWidth="750"/>
+                </div>
+                <div class="text-danger">
+                    (图片大小:宽度为750px,长度不限制)
+                </div>
+
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品详情(PC端):</label>
+            <div class="col-sm-4 ">
+                <input type="text" name="webPictureUrl" class="form-control webPictureUrl" readonly placeholder=""
+                       errormsg="请上传商品详情图片">
+
+                <div class="webThumbnail" style="margin-top: 10px">
+                    <#if product?? && product.webPictureUrl??>
+                        <img style="width:100%" src="${commonStaticServer}${product.webPictureUrl!}" alt="缩略图"
+                             width="1000"/>
+                    </#if>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="webUrlProduct">
+                    <input type="file" imageWidth="1000"/>
+                </div>
+                <div class="text-danger">
+                    (图片大小:宽度为1000px,长度不限制)
+                </div>
+
+            </div>
+
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

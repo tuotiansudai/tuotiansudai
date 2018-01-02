@@ -26,11 +26,18 @@ public class ProductModel implements Serializable {
     private Date activeTime;
     private String updatedBy;
     private Date updatedTime;
+    private String webPictureUrl;
+    private String appPictureUrl;
+
 
     public ProductModel() {
     }
 
-    public ProductModel(String loginName, GoodsType type, long couponId, String name, Integer seq, String imageUrl, String description, long totalCount, long monthLimit, long points, Date startTime, Date endTime) {
+    public ProductModel(String loginName, GoodsType type, long couponId,
+                        String name, Integer seq, String imageUrl,
+                        String description, long totalCount, long monthLimit,
+                        long points, Date startTime, Date endTime,
+                        String webPictureUrl, String appPictureUrl) {
         this.type = type;
         this.name = name;
         this.couponId = couponId;
@@ -44,6 +51,8 @@ public class ProductModel implements Serializable {
         this.endTime = endTime;
         this.createdBy = loginName;
         this.createdTime = new Date();
+        this.webPictureUrl = webPictureUrl;
+        this.appPictureUrl = appPictureUrl;
     }
 
     public long getId() {
@@ -212,5 +221,21 @@ public class ProductModel implements Serializable {
 
     public void setCouponId(long couponId) {
         this.couponId = couponId;
+    }
+
+    public String getWebPictureUrl() {
+        return webPictureUrl;
+    }
+
+    public void setWebPictureUrl(String webPictureUrl) {
+        this.webPictureUrl = webPictureUrl;
+    }
+
+    public String getAppPictureUrl() {
+        return appPictureUrl;
+    }
+
+    public void setAppPictureUrl(String appPictureUrl) {
+        this.appPictureUrl = appPictureUrl;
     }
 }

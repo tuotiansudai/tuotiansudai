@@ -69,7 +69,7 @@
             <dd><strong>答：</strong>自发放日起30天。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>22.怎么使用红包、加息券？ </span></dt>
             <dd><strong>答：</strong>登录官方网站—选择标的进行投资—输入投资金额—勾选优惠劵（投资金额下方）—勾选红色优惠劵（红色为您可使用优惠劵）。</dd>
-            <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>23.怎么将兑换码兑换成现金红包？ </span></dt>
+            <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>23.怎么将兑换码兑换成投资红包？ </span></dt>
             <dd><strong>答：</strong>登录官方网站—我的账户—我的宝藏—输入兑换码（右上角），进行兑换。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>24.使用后的优惠券（红包、体验券、加息券），我在哪里可以看到？ </span></dt>
             <dd><strong>答：</strong>登录官方网站—我的账户—我的宝藏—未使用/已使用/已过期，点击“已使用”即可。</dd>

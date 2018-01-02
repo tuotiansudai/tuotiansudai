@@ -4,7 +4,7 @@
 
 <div class="wechat-invite-container" id="wechatInvite">
     <div class="register-form-container">
-        <h3 class="title-item">注册完成后现金红包会直接放到您的账户中哦~</h3>
+        <h3 class="title-item">注册完成后投资红包会直接放到您的账户中哦~</h3>
         <form action="/activity/dragon/wechat/register" method="post" class="register-item" id="registerForm">
             <div class="model-item">
                 <input type="text" name="mobile" value="" tabindex="1"  class="int-item" maxlength="11" placeholder="请输入您的手机号" validate/>

@@ -15,7 +15,7 @@
                         <span>${referrerInfo!}</span>
                     </div>
                     <div class="item-intro">
-                        送你<span>6888元</span>体验金+<span>668元</span>现金红包
+                        送你<span>6888元</span>体验金+<span>668元</span>投资红包
                     </div>
 				</#if>
 

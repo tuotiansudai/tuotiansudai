@@ -212,7 +212,7 @@
                     感恩豪礼滚滚来</a>
                     <time>2016-03-14</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元现金红包</a>
+                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元投资红包</a>
                     <time>2016-01-20</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>

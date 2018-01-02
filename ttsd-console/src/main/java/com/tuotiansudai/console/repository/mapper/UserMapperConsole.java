@@ -4,6 +4,7 @@ import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
@@ -72,6 +73,7 @@ public interface UserMapperConsole {
     List<String> findAccountLikeLoginName(String loginName);
 
     int findUserMicroModelCount(@Param(value = "mobile") String mobile,
+                                @Param(value = "role") Role role,
                                 @Param(value = "registerTimeStart") Date registerTimeStart,
                                 @Param(value = "registerTimeEnd") Date registerTimeEnd,
                                 @Param(value = "hasCertify") String hasCertify,
@@ -105,6 +107,7 @@ public interface UserMapperConsole {
                                 @Param(value = "lastWithdrawTimeEnd") Date lastWithdrawTimeEnd);
 
     List<UserMicroModelView> queryUserMicroModel(@Param(value = "mobile") String mobile,
+                                                 @Param(value = "role") Role role,
                                                  @Param(value = "registerTimeStart") Date registerTimeStart,
                                                  @Param(value = "registerTimeEnd") Date registerTimeEnd,
                                                  @Param(value = "hasCertify") String hasCertify,

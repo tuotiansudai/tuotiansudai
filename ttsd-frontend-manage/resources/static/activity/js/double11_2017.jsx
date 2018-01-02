@@ -1,5 +1,4 @@
 require("activityStyle/double11_2017.scss");
-require("activityStyle/media.scss");
 let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let drawCircle = require('activityJsModule/gift_circle_draw');

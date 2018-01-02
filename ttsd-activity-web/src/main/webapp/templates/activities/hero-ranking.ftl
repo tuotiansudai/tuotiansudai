@@ -116,7 +116,7 @@
                 </div>
                 <div class="box-square-out">
                     <div class="square-title"><img src="${commonStaticServer}/activity/images/sign/actor/anniver/head-title02.png" alt="投资抢排行，赢取每日神秘大奖"></div>
-                    <p class="description clearfix">推荐好友投资，拿1%奖金。活动期间，每日直接推荐进行投资的前三名，还可获得现金红包奖励！</p>
+                    <p class="description clearfix">推荐好友投资，拿1%奖金。活动期间，每日直接推荐进行投资的前三名，还可获得投资红包奖励！</p>
                     <div class="clearfix">
                         <div class="fl">
                             <div class="dotted-normal-box">

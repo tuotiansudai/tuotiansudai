@@ -293,6 +293,7 @@ public class UserController {
     @RequestMapping(value = "/user-micro-model", method = RequestMethod.GET)
     public ModelAndView userMicroModel(
             @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "userRole", required = false) Role role,
             @RequestParam(value = "registerTimeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeStart,
             @RequestParam(value = "registerTimeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerTimeEnd,
             @RequestParam(value = "hasCertify", required = false) String hasCertify,
@@ -328,6 +329,7 @@ public class UserController {
 
         int pageSize = 10;
         BaseDto<BasePaginationDataDto<UserMicroModelView>> baseDto = consoleUserService.queryUserMicroView(mobile,
+                role,
                 registerTimeStart,
                 registerTimeEnd,
                 hasCertify,
@@ -365,6 +367,7 @@ public class UserController {
         ModelAndView mv = new ModelAndView("/user-micro-model");
         mv.addObject("baseDto", baseDto);
         mv.addObject("mobile", mobile);
+        mv.addObject("roleSelected", role);
         mv.addObject("registerTimeStart", registerTimeStart);
         mv.addObject("registerTimeEnd", registerTimeEnd);
         mv.addObject("hasCertify", hasCertify);
@@ -400,6 +403,7 @@ public class UserController {
         mv.addObject("pageSize", pageSize);
 
         mv.addObject("sourceList", Source.values());
+        mv.addObject("roleList", Role.values());
         return mv;
     }
 
