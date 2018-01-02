@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.repository.mapper;
 
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBillViewDto;
 import com.tuotiansudai.point.repository.model.UserTotalPointViewDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import org.apache.ibatis.annotations.Param;
@@ -30,13 +31,23 @@ public interface PointBillMapper {
                                                  @Param(value = "endTime") Date endTime,
                                                  @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
 
-    List<PointBillModel> getPointBillPaginationConosle(@Param(value = "startTime") Date startTime,
-                                                       @Param(value = "endTime") Date endTime,
-                                                       @Param(value = "pointBusinessType") PointBusinessType businessType,
-                                                       @Param(value = "channel") String channel,
-                                                       @Param("minPoint") Long minPoint,
-                                                       @Param("maxPoint") Long maxPoint,
-                                                       @Param("userNameOrMobile") String userNameOrMobile);
+    List<PointBillViewDto> getPointBillPaginationConsole(@Param(value = "startTime") Date startTime,
+                                                         @Param(value = "endTime") Date endTime,
+                                                         @Param(value = "pointBusinessType") PointBusinessType businessType,
+                                                         @Param(value = "channel") String channel,
+                                                         @Param("minPoint") Long minPoint,
+                                                         @Param("maxPoint") Long maxPoint,
+                                                         @Param("userNameOrMobile") String userNameOrMobile,
+                                                         @Param("index") int index,
+                                                         @Param("pageSize") int pageSize);
+
+    long getCountPointBillPaginationConsole(@Param(value = "startTime") Date startTime,
+                                            @Param(value = "endTime") Date endTime,
+                                            @Param(value = "pointBusinessType") PointBusinessType businessType,
+                                            @Param(value = "channel") String channel,
+                                            @Param("minPoint") Long minPoint,
+                                            @Param("maxPoint") Long maxPoint,
+                                            @Param("userNameOrMobile") String userNameOrMobile);
 
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
 

@@ -26,7 +26,15 @@ public interface PointBillService {
                                                                                  Date endTime,
                                                                                  List<PointBusinessType> businessTypes);
 
-//    BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPaginationConosle(Date startTime,Date endTime,PointBusinessType businessType);
+    BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPaginationConsole(Date startTime,
+                                                                                        Date endTime,
+                                                                                        PointBusinessType businessType,
+                                                                                        String channel,
+                                                                                        Long minPoint,
+                                                                                        Long maxPoint,
+                                                                                        String userNameOrMobile,
+                                                                                        int index,
+                                                                                        int pageSize);
 
     List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize);
 

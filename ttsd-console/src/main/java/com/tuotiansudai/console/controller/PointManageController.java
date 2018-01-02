@@ -13,6 +13,7 @@ import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.ChannelPointServiceImpl;
 import com.tuotiansudai.point.service.PointBillService;
@@ -486,6 +487,23 @@ public class PointManageController {
             logger.error(e.getLocalizedMessage(), e);
             return new ChannelPointDataDto(false, "內部程序异常");
         }
+    }
+
+    @RequestMapping(value = "/point-consume", method = RequestMethod.GET)
+    public ModelAndView getPointConsumeList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                            @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                            @RequestParam(value = "pointBusinessType") PointBusinessType businessType,
+                                            @RequestParam(value = "channel") String channel,
+                                            @RequestParam(value = "minPoint") Long minPoint,
+                                            @RequestParam(value = "maxPoint") Long maxPoint,
+                                            @RequestParam(value = "userNameOrMobile") String userNameOrMobile,
+                                            @RequestParam(value = "index") int index) {
+        BasePaginationDataDto<PointBillPaginationItemDataDto> itemData = pointBillService.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, index, 10);
+        ModelAndView modelAndView = new ModelAndView("/point-bill-consume", "data", itemData);
+        modelAndView.addObject("sumSudaiPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getSudaiPoint()).sum());
+        modelAndView.addObject("sumChannelPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getChannelPoint()).sum());
+        return modelAndView;
+
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

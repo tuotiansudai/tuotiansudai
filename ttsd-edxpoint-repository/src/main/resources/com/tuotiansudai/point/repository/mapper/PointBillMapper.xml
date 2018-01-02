@@ -146,7 +146,7 @@
     </select>
 
     <select id="getPointBillPaginationConsole" parameterType="map" resultMap="pointBillViewResultMap">
-        select * from point_bill p
+        select p.*,u.user_name,u.mobile,up.channel from point_bill p
         join on user_point up on p.login_name = up.login_name
         join on user u on p.login_name = u.login_name
         <where>
@@ -163,8 +163,61 @@
             <if test="channel != null and channel != ''">
                 and up.channel = #{channel}
             </if>
-            <if test="channel != null and channel != '' and ">
+            <if test="channel != null and channel == '' and minPoint != null">
+                and p.point >= #{minPoint}
+            </if>
+            <if test="channel != null and channel == '' and maxPoint != null">
+                and p.point &lt;= #{maxPoint}
+            </if>
 
+            <if test="channel != null and channel != '' and minPoint != null">
+                and p.point >= #{minPoint}
+            </if>
+            <if test="channel != null and channel != '' and maxPoint != null">
+                and p.point >= #{maxPoint}
+            </if>
+            <if test="userNameOrMobile != null and userNameOrMobile != ''">
+                and (u.mobile = #{userNameOrMobile} or u.user_name = #{userNameOrMobile})
+            </if>
+
+        </where>
+        ORDER BY p.created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="getCountPointBillPaginationConsole" resultType="long" parameterType="map">
+        select count(1) from point_bill p
+        join on user_point up on p.login_name = up.login_name
+        join on user u on p.login_name = u.login_name
+        <where>
+            <if test="startTime != null and startTime != ''">
+                and p.created_time &gt;= #{startTime}
+            </if>
+
+            <if test="endTime != null and endTime != ''">
+                and p.created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType != null">
+                and p.business_type = #{businessType}
+            </if>
+            <if test="channel != null and channel != ''">
+                and up.channel = #{channel}
+            </if>
+            <if test="channel != null and channel == '' and minPoint != null">
+                and p.point >= #{minPoint}
+            </if>
+            <if test="channel != null and channel == '' and maxPoint != null">
+                and p.point &lt;= #{maxPoint}
+            </if>
+
+            <if test="channel != null and channel != '' and minPoint != null">
+                and p.point >= #{minPoint}
+            </if>
+            <if test="channel != null and channel != '' and maxPoint != null">
+                and p.point >= #{maxPoint}
+            </if>
+            <if test="userNameOrMobile != null and userNameOrMobile != ''">
+                and (u.mobile = #{userNameOrMobile} or u.user_name = #{userNameOrMobile})
             </if>
 
         </where>
