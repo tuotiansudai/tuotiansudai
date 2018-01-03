@@ -6,25 +6,23 @@ require('mWebStyle/investment/buy_loan.scss');
 require('webJs/plugins/autoNumeric');
 var tpl = require('art-template/dist/template');
 let $loanDetail = $('#loanDetail'),
+    $buyDetail = $('#buyDetail'),
     $iconHelp = $('.icon-help', $loanDetail);
-
 
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
 })
 //点击立即投资进入购买详情页
 $('#toInvest').on('click',function () {
-    // pushHistory();
-    // $loanDetail.hide();
-    // $applyTransfer.show();
-    // $projectDetail.hide();
+    pushHistory('#buyDetail');
+
 })
 //借款详情
 
 let commonFun = require('publicJs/commonFun');
 let menuClick = require('mWebJsModule/menuClick');
 
-let $projectDetail = $('#projectDetail'),
+let $projectDetail = $('#projectDetail'),//项目详情模块
     $recordTop = $('.record-top',$projectDetail);
 
 menuClick({
@@ -111,97 +109,95 @@ if($('#investForm').length>0){
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
-    // $loanDetail.hide();
-    // $applyTransfer.hide();
-    // $projectDetail.show();
-    // pushHistory();
-
-
+    pushHistory('#projectDetail');
 })
+
 $('#apply_materal_btn').click(function () {
+    //pushHistory('#applyMaterial');
    // $('#apply_material').show()
 })
 $('#btn-detail-toggle').click(function () {
-   // $('#apply_material').hide();
-})
-//交易记录ajax请求
-let $boxContent = $('#box_content');
-let ajaxUrl = $boxContent.data('url');
-let $scroll = $boxContent.find('#scroll');
-let $content = $boxContent.find('#content');
-let pageNum = 1;
-
-$('#transaction_record').on('click',function () {
-    getMoreRecords();
-    //交易记录滚动加载更多
-    setTimeout(function () {
-        var myScroll = new IScroll('#box_content', {
-            probeType: 2,
-            mouseWheel: true
-        });
-        myScroll.on('scrollEnd', function () {console.log(9)
-            //如果滑动到底部，则加载更多数据（距离最底部10px高度）
-            if ((this.y - this.maxScrollY) <= 10) {
-                pageNum++;
-
-                getMoreRecords();
-                myScroll.refresh();
-            }
-
-        });
-    },1000)
-
-
-
-
+    //$('#apply_material').hide();
 })
 
-function getMoreRecords(){
-    commonFun.useAjax(
-        {
-            url:ajaxUrl,
-            type:'get',
-            data:{
-                index:pageNum
-            }
-        },
-        function (res) {console.log(res.data.records)
-            if(pageNum == 1){
-                if(res.data.records.length > 0){
-                    var html = tpl('recordsTpl', res.data);
-                    $content.prepend(html)
-                }else {
-                    $content.html('<div class="no-records">暂无交易记录</div>')
+    //交易记录ajax请求
+    let $boxContent = $('#box_content');
+    let ajaxUrl = $boxContent.data('url');
+    let $scroll = $boxContent.find('#scroll');
+    let $content = $boxContent.find('#content');
+    let pageNum = 1;
+
+    $('#transaction_record').on('click',function () {
+        getMoreRecords();
+        //交易记录滚动加载更多
+        setTimeout(function () {
+            var myScroll = new IScroll('#box_content', {
+                probeType: 2,
+                mouseWheel: true
+            });
+            myScroll.on('scrollEnd', function () {console.log(9)
+                //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+                if ((this.y - this.maxScrollY) <= 10) {
+                    pageNum++;
+
+                    getMoreRecords();
+                    myScroll.refresh();
                 }
-            }else {
-                if(res.data.records.length > 0){
-                    var html = tpl('recordsTpl', res.data);
-                    $content.prepend(html)
-                }else {
-                   $('#pullUp').find('.pullUpLabel').html('没有更多数据了');
-                }
-            }
+
+            });
+        },1000)
 
 
-        }
-    )
-}
+
+
+    })
+
+    function getMoreRecords(){
+        commonFun.useAjax(
+            {
+                url:ajaxUrl,
+                type:'get',
+                data:{
+                    index:pageNum
+                }
+            },
+            function (res) {console.log(res.data.records)
+                if(pageNum == 1){
+                    if(res.data.records.length > 0){
+                        var html = tpl('recordsTpl', res.data);
+                        $content.prepend(html)
+                    }else {
+                        $content.html('<div class="no-records">暂无交易记录</div>')
+                    }
+                }else {
+                    if(res.data.records.length > 0){
+                        var html = tpl('recordsTpl', res.data);
+                        $content.prepend(html)
+                    }else {
+                        $('#pullUp').find('.pullUpLabel').html('没有更多数据了');
+                    }
+                }
+
+
+            }
+        )
+    }
+
+
 
 
 //监控浏览器返回事件
 window.addEventListener("popstate", function(e) {
-        $loanDetail.show();
-        $applyTransfer.hide();
-        $projectDetail.hide();
-    $('#repay_plan').hide();
+   location.reload();
 
 }, false);
-function pushHistory() {
+function pushHistory(hash) {
     var state = {
         title: "title",
-        url: "#"
+        url: 'hash'
     };
-    window.history.pushState(state, "title", "#");
+    window.history.pushState(state, "", hash);
+    location.reload()
 }
 //转让购买详情
 //承接记录
@@ -217,20 +213,28 @@ $('#look_repay_plan').click(function () {
    //  $('.buy-transfer').hide();
    //  $('#cotinue_record').hide();
    // $('#loanDetail').hide();
-   // $('#repay_plan').show();
+   //  $('#repay_plan').show();
 })
 //立即投资
-$('#to_buy_transfer').click(function () {
-    // pushHistory();
-    // $('#cotinue_record').hide();
-    // $('#loanDetail').hide();
-    // $('#repay_plan').hide();
-    // $('.buy-transfer').show();
-
-    }
-);
+// $('#to_buy_transfer').click(function () {
+//    pushHistory('#buyDetail');
+//
+//     }
+// );
 //优惠券
 $('#select_coupon').on('click',function () {
-
+pushHistory('#selectCoupon');
 
 })
+if(location.hash == ''){
+    $loanDetail.show().siblings('.show-page').hide();
+}else if(location.hash == '#projectDetail'){
+
+ $projectDetail.show().siblings('.show-page').hide();
+
+}else if(location.hash == '#buyDetail'){
+   $buyDetail.show().siblings('.show-page').hide();
+
+}else if(location.hash == '#selectCoupon'){
+    $('#couponList').show().siblings('.show-page').hide();
+}
