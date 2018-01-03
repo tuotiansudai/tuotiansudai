@@ -45,10 +45,10 @@
         <div class="form-group">
             <label for="control-label">积分花费：</label>
             <input type="text" class="form-control jq-minPoint" name="minPoint"
-                   value="${minPoint!}">
+                   value="${(minPoint?c)!}">
             -
             <input type="text" class="form-control jq-maxPoint" name="maxPoint"
-                   value="${maxPoint!}">
+                   value="${(maxPoint?c)!}">
         </div>
         <div class="form-group">
             <label for="control-label">用户名/手机号：</label>
@@ -83,11 +83,11 @@
                     <td>${(item.orderId?c)!}</td>
                     <td>${item.userName!}</td>
                     <td>${item.mobile!}</td>
-                    <td>${(item.point?c)!}</td>
+                    <td>${(item.point * -1)?c}</td>
 
                     <td>${item.channel!}</td>
-                    <td>${(item.channelPoint?c)!}</td>
-                    <td>${(item.sudaiPoint?c)!}</td>
+                    <td>${(item.channelPoint * -1)?c}</td>
+                    <td>${(item.sudaiPoint * -1)?c}</td>
                     <td>${item.businessType.description!}</td>
                 </tr>
                 <#else>
