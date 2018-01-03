@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -113,19 +114,19 @@ public class ChannelPointServiceImpl {
             String line;
             while (null != (line = bufferedReader.readLine())) {
                 String[] data = line.split(",");
-                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], Long.parseLong(data[3])));
+                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], StringUtils.isEmpty(data[3])?0L:Long.parseLong(data[3])));
             }
             if (details.size() > 1000) {
                 return new ChannelPointDataDto(false, "每次数据应该小于1000条");
             }
-            ChannelPointModel channelPointModel = new ChannelPointModel(originalFileName, 0l, 0l, loginName);
+            ChannelPointModel channelPointModel = new ChannelPointModel(originalFileName, 0L, 0L, loginName);
             channelPointMapper.create(channelPointModel);
             details.stream().forEach(detail -> {
 
                 boolean conform = checkChannelPointDetailDto(detail);
                 ChannelPointDetailModel channelPointDetailModel = new ChannelPointDetailModel(channelPointModel.getId(), detail);
                 channelPointDetailMapper.create(channelPointDetailModel);
-                if(conform){
+                if (conform) {
                     pointBillService.createPointBill(channelPointDetailModel.getLoginName(), channelPointDetailModel.getId(), PointBusinessType.CHANNEL_IMPORT, channelPointDetailModel.getPoint());
                     userPointMapper.updateChannelIfNotExist(channelPointDetailModel.getLoginName(), channelPointDetailModel.getChannel());
 
