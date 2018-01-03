@@ -26,8 +26,6 @@
     </resultMap>
 
     <resultMap id="pointBillViewResultMap" type="PointBillViewDto" extends="pointBillResultMap">
-        <result column="user_name" property="userName"></result>
-        <result column="mobile" property="mobile"></result>
         <result column="channel" property="channel"></result>
     </resultMap>
 
@@ -146,38 +144,59 @@
     </select>
 
     <select id="getPointBillPaginationConsole" parameterType="map" resultMap="pointBillViewResultMap">
-        select p.*,u.user_name,u.mobile,up.channel from point_bill p
-        join on user_point up on p.login_name = up.login_name
-        join on user u on p.login_name = u.login_name
+        select p.*,up.channel from point_bill p
+        join user_point up on p.login_name = up.login_name
         <where>
-            <if test="startTime != null and startTime != ''">
+            <if test="startTime != null">
                 and p.created_time &gt;= #{startTime}
             </if>
 
-            <if test="endTime != null and endTime != ''">
+            <if test="endTime != null ">
                 and p.created_time &lt;= #{endTime}
             </if>
             <if test="businessType != null">
                 and p.business_type = #{businessType}
             </if>
-            <if test="channel != null and channel != ''">
-                and up.channel = #{channel}
-            </if>
-            <if test="channel != null and channel == '' and minPoint != null">
-                and p.point >= #{minPoint}
-            </if>
-            <if test="channel != null and channel == '' and maxPoint != null">
-                and p.point &lt;= #{maxPoint}
+            <if test="channel != null and channel == ''">
+                and abs(p.point) >= 0
             </if>
 
-            <if test="channel != null and channel != '' and minPoint != null">
-                and p.point >= #{minPoint}
+            <if test="channel != null and channel == '' and minPoint != null">
+                and abs(p.point) >= #{minPoint}
             </if>
-            <if test="channel != null and channel != '' and maxPoint != null">
-                and p.point >= #{maxPoint}
+            <if test="channel != null and channel == '' and maxPoint != null">
+                and abs(p.point) &lt;= #{maxPoint}
             </if>
-            <if test="userNameOrMobile != null and userNameOrMobile != ''">
-                and (u.mobile = #{userNameOrMobile} or u.user_name = #{userNameOrMobile})
+
+            <if test="channel != null and channel == 'SUDAI' ">
+                and abs(p.sudai_point) >= 0
+            </if>
+
+            <if test="channel != null and channel == 'SUDAI' and minPoint != null">
+                and abs(p.sudai_point) >= #{minPoint}
+            </if>
+            <if test="channel != null and channel == 'SUDAI' and maxPoint != null">
+                and abs(p.sudai_point) &lt;= #{maxPoint}
+            </if>
+
+            <if test="channel != null and channel != 'SUDAI' and channel != ''">
+                and abs(p.channel_point) >= 0 and up.channel = #{channel}
+            </if>
+
+            <if test="channel != null and channel != 'SUDAI' and channel !='' and minPoint != null">
+                and abs(p.channel_point) >= #{minPoint}
+            </if>
+            <if test="channel != null and channel != 'SUDAI' and channel !='' and maxPoint != null">
+                and abs(p.channel_point) &lt;= #{maxPoint}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and p.login_name = #{loginName}
+            </if>
+            <if test="pointConsumeBusinessType != null and pointConsumeBusinessType.size() > 0 ">
+                and business_type IN
+                <foreach collection="pointConsumeBusinessType" item="businessTypeTemp" open="(" separator="," close=")">
+                    #{businessTypeTemp}
+                </foreach>
             </if>
 
         </where>
@@ -187,37 +206,58 @@
 
     <select id="getCountPointBillPaginationConsole" resultType="long" parameterType="map">
         select count(1) from point_bill p
-        join on user_point up on p.login_name = up.login_name
-        join on user u on p.login_name = u.login_name
+        join user_point up on p.login_name = up.login_name
         <where>
-            <if test="startTime != null and startTime != ''">
+            <if test="startTime != null">
                 and p.created_time &gt;= #{startTime}
             </if>
 
-            <if test="endTime != null and endTime != ''">
+            <if test="endTime != null ">
                 and p.created_time &lt;= #{endTime}
             </if>
             <if test="businessType != null">
                 and p.business_type = #{businessType}
             </if>
-            <if test="channel != null and channel != ''">
-                and up.channel = #{channel}
-            </if>
-            <if test="channel != null and channel == '' and minPoint != null">
-                and p.point >= #{minPoint}
-            </if>
-            <if test="channel != null and channel == '' and maxPoint != null">
-                and p.point &lt;= #{maxPoint}
+            <if test="channel != null and channel == ''">
+                and abs(p.point) >= 0
             </if>
 
-            <if test="channel != null and channel != '' and minPoint != null">
-                and p.point >= #{minPoint}
+            <if test="channel != null and channel == '' and minPoint != null">
+                and abs(p.point) >= #{minPoint}
             </if>
-            <if test="channel != null and channel != '' and maxPoint != null">
-                and p.point >= #{maxPoint}
+            <if test="channel != null and channel == '' and maxPoint != null">
+                and abs(p.point) &lt;= #{maxPoint}
             </if>
-            <if test="userNameOrMobile != null and userNameOrMobile != ''">
-                and (u.mobile = #{userNameOrMobile} or u.user_name = #{userNameOrMobile})
+
+            <if test="channel != null and channel == 'SUDAI' ">
+                and abs(p.sudai_point) >= 0
+            </if>
+
+            <if test="channel != null and channel == 'SUDAI' and minPoint != null">
+                and abs(p.sudai_point) >= #{minPoint}
+            </if>
+            <if test="channel != null and channel == 'SUDAI' and maxPoint != null">
+                and abs(p.sudai_point) &lt;= #{maxPoint}
+            </if>
+
+            <if test="channel != null and channel != 'SUDAI' and channel != ''">
+                and abs(p.channel_point) >= 0 and up.channel = #{channel}
+            </if>
+
+            <if test="channel != null and channel != 'SUDAI' and channel !='' and minPoint != null">
+                and abs(p.channel_point) >= #{minPoint}
+            </if>
+            <if test="channel != null and channel != 'SUDAI' and channel !='' and maxPoint != null">
+                and abs(p.channel_point) &lt;= #{maxPoint}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and p.login_name = #{loginName}
+            </if>
+            <if test="pointConsumeBusinessType != null and pointConsumeBusinessType.size() > 0 ">
+                and business_type IN
+                <foreach collection="pointConsumeBusinessType" item="businessTypeTemp" open="(" separator="," close=")">
+                    #{businessTypeTemp}
+                </foreach>
             </if>
 
         </where>

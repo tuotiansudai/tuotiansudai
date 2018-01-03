@@ -33,21 +33,23 @@ public interface PointBillMapper {
 
     List<PointBillViewDto> getPointBillPaginationConsole(@Param(value = "startTime") Date startTime,
                                                          @Param(value = "endTime") Date endTime,
-                                                         @Param(value = "pointBusinessType") PointBusinessType businessType,
+                                                         @Param(value = "businessType") PointBusinessType businessType,
                                                          @Param(value = "channel") String channel,
-                                                         @Param("minPoint") Long minPoint,
-                                                         @Param("maxPoint") Long maxPoint,
-                                                         @Param("userNameOrMobile") String userNameOrMobile,
-                                                         @Param("index") int index,
-                                                         @Param("pageSize") int pageSize);
+                                                         @Param(value = "minPoint") Long minPoint,
+                                                         @Param(value = "maxPoint") Long maxPoint,
+                                                         @Param(value = "loginName") String loginName,
+                                                         @Param(value = "pointConsumeBusinessType") List<Enum> pointConsumeBusinessType,
+                                                         @Param(value = "index") int index,
+                                                         @Param(value = "pageSize") int pageSize);
 
     long getCountPointBillPaginationConsole(@Param(value = "startTime") Date startTime,
                                             @Param(value = "endTime") Date endTime,
-                                            @Param(value = "pointBusinessType") PointBusinessType businessType,
+                                            @Param(value = "businessType") PointBusinessType businessType,
                                             @Param(value = "channel") String channel,
-                                            @Param("minPoint") Long minPoint,
-                                            @Param("maxPoint") Long maxPoint,
-                                            @Param("userNameOrMobile") String userNameOrMobile);
+                                            @Param(value = "minPoint") Long minPoint,
+                                            @Param(value = "maxPoint") Long maxPoint,
+                                            @Param(value = "loginName") String loginName,
+                                            @Param(value = "pointConsumeBusinessType") List<Enum> pointConsumeBusinessType);
 
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
 

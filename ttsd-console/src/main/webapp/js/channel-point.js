@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap', 'layer','layer-extend', 'layerWrapper'], function ($) {
+require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap', 'layer', 'layer-extend', 'layerWrapper'], function ($) {
     $('#status').selectpicker();
     $('#channel').selectpicker();
     $('.file-btn').on('change', function () {
@@ -28,6 +28,12 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap', 'layer',
                 }
 
             });
+    });
+
+    $('.channel-point-detail').click(function (e) {
+        e.preventDefault();
+        var $self = $(this);
+        location.href = $self.attr('data-url') + $(".query-build").serialize();
     });
 
 });

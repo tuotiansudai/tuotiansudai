@@ -492,16 +492,25 @@ public class PointManageController {
     @RequestMapping(value = "/point-consume", method = RequestMethod.GET)
     public ModelAndView getPointConsumeList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                             @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                            @RequestParam(value = "pointBusinessType") PointBusinessType businessType,
-                                            @RequestParam(value = "channel") String channel,
-                                            @RequestParam(value = "minPoint") Long minPoint,
-                                            @RequestParam(value = "maxPoint") Long maxPoint,
-                                            @RequestParam(value = "userNameOrMobile") String userNameOrMobile,
-                                            @RequestParam(value = "index") int index) {
+                                            @RequestParam(value = "pointBusinessType", required = false) PointBusinessType businessType,
+                                            @RequestParam(value = "channel", required = false) String channel,
+                                            @RequestParam(value = "minPoint", required = false) Long minPoint,
+                                            @RequestParam(value = "maxPoint", required = false) Long maxPoint,
+                                            @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                            @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         BasePaginationDataDto<PointBillPaginationItemDataDto> itemData = pointBillService.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, index, 10);
         ModelAndView modelAndView = new ModelAndView("/point-bill-consume", "data", itemData);
+        modelAndView.addObject("pointBusinessTypeList", PointBusinessType.getPointConsumeBusinessType());
+        modelAndView.addObject("channelMap", pointService.findAllChannel());
         modelAndView.addObject("sumSudaiPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getSudaiPoint()).sum());
         modelAndView.addObject("sumChannelPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getChannelPoint()).sum());
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("businessType", businessType);
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("minPoint", minPoint);
+        modelAndView.addObject("maxPoint", maxPoint);
+        modelAndView.addObject("userNameOrMobile", userNameOrMobile);
         return modelAndView;
 
     }

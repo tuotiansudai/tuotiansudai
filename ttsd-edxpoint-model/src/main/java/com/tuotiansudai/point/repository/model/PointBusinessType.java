@@ -1,5 +1,9 @@
 package com.tuotiansudai.point.repository.model;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public enum PointBusinessType {
     SIGN_IN("签到奖励"),
     TASK("任务奖励"),
@@ -19,5 +23,9 @@ public enum PointBusinessType {
 
     public String getDescription() {
         return description;
+    }
+
+    public static List<Enum> getPointConsumeBusinessType() {
+        return Lists.newArrayList(EXCHANGE, LOTTERY, POINT_LOTTERY, POINT_CLEAR);
     }
 }

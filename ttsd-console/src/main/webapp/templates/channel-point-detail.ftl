@@ -73,7 +73,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if data.hasPreviousPage >
-                            <a href="?index=${data.index-1}&channel=${channel}&userNameOrMobile=${userNameOrMobile}&success=${success}"
+                            <a href="?index=${data.index-1}&channel=${channel!}&userNameOrMobile=${userNameOrMobile!}&success=${success!}"
                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
@@ -82,13 +82,19 @@
                     <li><a>${data.index}</a></li>
                     <li>
                         <#if data.hasNextPage >
-                            <a href="?index=${data.index+1}&channel=${channel}&userNameOrMobile=${userNameOrMobile}&success=${success}"
+                            <a href="?index=${data.index+1}&channel=${channel!}&userNameOrMobile=${userNameOrMobile!}&success=${success!}"
                                aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>
                         </#if>
                     </li>
                 </ul>
+                <@security.authorize access="hasAnyAuthority('ADMIN','DATA')">
+                    <button class="btn btn-default pull-left channel-point-detail"
+                            type="button" data-url="/export/channel-point-detail/${channelPointId?string('0')}?">
+                        导出Excel
+                    </button>
+                </@security.authorize>
             </#if>
         </nav>
     </div>
