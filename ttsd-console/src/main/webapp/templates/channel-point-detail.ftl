@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="channel-point.js" headLab="point-manage" sideLab="channelPoint" title="渠道积分导入记录">
+<@global.main pageCss="" pageJavascript="channel-point.js" headLab="point-manage" sideLab="channelPoint" title="导入渠道积分记录">
 
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
@@ -31,7 +31,7 @@
         <a href="/point-manage/channel-point-detail/${channelPointId}" class="btn btn-sm btn-default">重置</a>
     </form>
     <div class="table-responsive">
-        <label for="control-label">导入总人数: ${sumHeadCount}</label>
+        <label for="control-label">导入人数: ${sumHeadCount}</label>
         <table class="table table-bordered table-hover " style="width:80%;">
             <thead>
             <tr>
@@ -40,7 +40,7 @@
                 <th>积分渠道</th>
                 <th>导入状态</th>
                 <th>渠道积分</th>
-                <th>说明</th>
+                <th>备注</th>
             </tr>
             </thead>
             <tbody>

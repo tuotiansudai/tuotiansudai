@@ -18,8 +18,8 @@
 
         </@security.authorize>
         <div>
-            <label for="control-label">导入总人数: ${sumHeadCount}</label>
-            <label for="control-label" style="margin-left: 20px;">导入积分总额: ${sumTotalPoint}</label>
+            <label for="control-label">成功导入人数: ${sumHeadCount}</label>
+            <label for="control-label" style="margin-left: 20px;">成功导入积分总额: ${sumTotalPoint}</label>
 
         </div>
         <table class="table table-bordered table-hover " style="width:80%;">
@@ -41,7 +41,7 @@
                     <td>${item.createdBy}</td>
                     <td>${item.headCount?c}</td>
                     <td>${item.totalPoint?c}</td>
-                    <td><a href="/point-manage/channel-point-detail/${item.id}">查看详情</a></td>
+                    <td><a href="/point-manage/channel-point-detail/${item.id?c}">查看详情</a></td>
                 </tr>
                 <#else>
                 <tr>

@@ -100,7 +100,7 @@ public class ChannelPointServiceImpl {
         String originalFileName = multipartFile.getOriginalFilename().substring(0, multipartFile.getOriginalFilename().indexOf(".csv"));
 
         if (channelPointMapper.findBySerialNo(originalFileName) != null) {
-            throw new ChannelPointDataValidationException(String.format("%s文件已经成功导入,请知晓!", originalFileName));
+            throw new ChannelPointDataValidationException("文件名称相同，请检查数据是否重复导入！");
         }
 
         return originalFileName;
@@ -114,7 +114,7 @@ public class ChannelPointServiceImpl {
             String line;
             while (null != (line = bufferedReader.readLine())) {
                 String[] data = line.split(",");
-                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], StringUtils.isEmpty(data[3])?0L:Long.parseLong(data[3])));
+                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], StringUtils.isEmpty(data[3]) ? 0L : Long.parseLong(data[3])));
             }
             if (details.size() > 1000) {
                 return new ChannelPointDataDto(false, "每次数据应该小于1000条");
@@ -176,7 +176,7 @@ public class ChannelPointServiceImpl {
                 && StringUtils.isNotEmpty(userPointModel.getChannel())
                 && !userPointModel.getChannel().equals(channelPointDetailDto.getChannel())) {
             channelPointDetailDto.setSuccess(false);
-            channelPointDetailDto.setRemark("导入积分渠道与已存在的积分渠道不一致!");
+            channelPointDetailDto.setRemark("渠道名称不符合!");
             return false;
         }
         channelPointDetailDto.setSuccess(true);

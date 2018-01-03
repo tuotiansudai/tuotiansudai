@@ -177,7 +177,7 @@
                 "sidebar":[
                     {"name":"","class":"sub-title-1","text":"用户积分管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"userPointList","text":"用户积分查询","link":"/point-manage/user-point-list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"channelPoint","text":"渠道积分导入记录","link":"/point-manage/channel-point","role":"'ADMIN','DATA'"},
+                        {"name":"channelPoint","text":"导入渠道积分记录","link":"/point-manage/channel-point","role":"'ADMIN','DATA'"},
                         {"name":"pointBillConsume","text":"积分消耗记录","link":"/point-manage/point-consume","role":"'ADMIN','DATA'"},
                     {"name":"","class":"sub-title-1","text":"积分商品管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"productCreate","text":"添加商品","link":"/point-manage/coupon-exchange","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
