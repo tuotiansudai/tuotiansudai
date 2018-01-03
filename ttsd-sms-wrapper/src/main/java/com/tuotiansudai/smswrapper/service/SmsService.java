@@ -86,7 +86,7 @@ public class SmsService {
             case RED_ENVELOPE:
                 return notifyDto.getAmount() + "元" + notifyDto.getCouponType().getName();
             case INTEREST_COUPON:
-                return notifyDto.getRate() + "%" + notifyDto.getCouponType().getName();
+                return notifyDto.getRate() + "%优惠券";
             default:
                 return null;
         }
