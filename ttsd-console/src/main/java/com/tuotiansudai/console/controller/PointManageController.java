@@ -13,6 +13,7 @@ import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.ChannelPointServiceImpl;
 import com.tuotiansudai.point.service.PointBillService;
@@ -486,6 +487,32 @@ public class PointManageController {
             logger.error(e.getLocalizedMessage(), e);
             return new ChannelPointDataDto(false, "內部程序异常");
         }
+    }
+
+    @RequestMapping(value = "/point-consume", method = RequestMethod.GET)
+    public ModelAndView getPointConsumeList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                            @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                            @RequestParam(value = "pointBusinessType", required = false) PointBusinessType businessType,
+                                            @RequestParam(value = "channel", required = false) String channel,
+                                            @RequestParam(value = "minPoint", required = false) Long minPoint,
+                                            @RequestParam(value = "maxPoint", required = false) Long maxPoint,
+                                            @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                            @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        BasePaginationDataDto<PointBillPaginationItemDataDto> itemData = pointBillService.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, index, 10);
+        ModelAndView modelAndView = new ModelAndView("/point-bill-consume", "data", itemData);
+        modelAndView.addObject("pointBusinessTypeList", PointBusinessType.getPointConsumeBusinessType());
+        modelAndView.addObject("channelMap", pointService.findAllChannel());
+        modelAndView.addObject("sumSudaiPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getSudaiPoint()).sum());
+        modelAndView.addObject("sumChannelPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getChannelPoint()).sum());
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("businessType", businessType);
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("minPoint", minPoint);
+        modelAndView.addObject("maxPoint", maxPoint);
+        modelAndView.addObject("userNameOrMobile", userNameOrMobile);
+        return modelAndView;
+
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

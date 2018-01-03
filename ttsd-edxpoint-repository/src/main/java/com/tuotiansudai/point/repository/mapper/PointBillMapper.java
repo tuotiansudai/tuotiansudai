@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.repository.mapper;
 
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBillViewDto;
 import com.tuotiansudai.point.repository.model.UserTotalPointViewDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import org.apache.ibatis.annotations.Param;
@@ -29,6 +30,26 @@ public interface PointBillMapper {
                                                  @Param(value = "startTime") Date startTime,
                                                  @Param(value = "endTime") Date endTime,
                                                  @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
+
+    List<PointBillViewDto> getPointBillPaginationConsole(@Param(value = "startTime") Date startTime,
+                                                         @Param(value = "endTime") Date endTime,
+                                                         @Param(value = "businessType") PointBusinessType businessType,
+                                                         @Param(value = "channel") String channel,
+                                                         @Param(value = "minPoint") Long minPoint,
+                                                         @Param(value = "maxPoint") Long maxPoint,
+                                                         @Param(value = "loginName") String loginName,
+                                                         @Param(value = "pointConsumeBusinessType") List<PointBusinessType> pointConsumeBusinessType,
+                                                         @Param(value = "index") int index,
+                                                         @Param(value = "pageSize") int pageSize);
+
+    long getCountPointBillPaginationConsole(@Param(value = "startTime") Date startTime,
+                                            @Param(value = "endTime") Date endTime,
+                                            @Param(value = "businessType") PointBusinessType businessType,
+                                            @Param(value = "channel") String channel,
+                                            @Param(value = "minPoint") Long minPoint,
+                                            @Param(value = "maxPoint") Long maxPoint,
+                                            @Param(value = "loginName") String loginName,
+                                            @Param(value = "pointConsumeBusinessType") List<PointBusinessType> pointConsumeBusinessType);
 
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
 

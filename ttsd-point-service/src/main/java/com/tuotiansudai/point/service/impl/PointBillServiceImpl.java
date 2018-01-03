@@ -7,6 +7,7 @@ import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBillViewDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
@@ -142,6 +143,33 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
+    public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPaginationConsole(Date startTime,
+                                                                                               Date endTime,
+                                                                                               PointBusinessType businessType,
+                                                                                               String channel, Long minPoint,
+                                                                                               Long maxPoint,
+                                                                                               String loginNameOrMobile, int index, int pageSize) {
+
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        String loginName = userModel != null ? userModel.getLoginName() : null;
+
+        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginName,PointBusinessType.getPointConsumeBusinessType());
+        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginName, PointBusinessType.getPointConsumeBusinessType(),PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
+                .stream()
+                .map(dto -> {
+                    UserModel userModelTemp = userModel != null ? userModel : userMapper.findByLoginName(dto.getLoginName());
+                    dto.setMobile(userModelTemp.getMobile());
+                    dto.setUserName(userModelTemp.getUserName());
+                    return new PointBillPaginationItemDataDto(dto);
+                }).collect(Collectors.toList());
+
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, dataDtos);
+        dto.setStatus(true);
+        return dto;
+    }
+
+
+    @Override
     public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int index, int pageSize) {
         List<PointBillModel> pointBillModels = pointBillMapper.findPointBillByLoginName(loginName, (index - 1) * pageSize, pageSize);
 
@@ -166,6 +194,7 @@ public class PointBillServiceImpl implements PointBillService {
             return findUsersAccountPoint(channel, minPoint, maxPoint, currentPageNo, pageSize);
         }
     }
+
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);

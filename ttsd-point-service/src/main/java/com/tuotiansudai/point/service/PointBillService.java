@@ -5,6 +5,7 @@ import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 
+import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,16 @@ public interface PointBillService {
                                                                                  Date startTime,
                                                                                  Date endTime,
                                                                                  List<PointBusinessType> businessTypes);
+
+    BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPaginationConsole(Date startTime,
+                                                                                        Date endTime,
+                                                                                        PointBusinessType businessType,
+                                                                                        String channel,
+                                                                                        Long minPoint,
+                                                                                        Long maxPoint,
+                                                                                        String userNameOrMobile,
+                                                                                        int index,
+                                                                                        int pageSize);
 
     List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize);
 
