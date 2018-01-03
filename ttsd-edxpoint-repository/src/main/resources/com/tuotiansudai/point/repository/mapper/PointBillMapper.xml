@@ -138,7 +138,7 @@
                 </foreach>
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
-                and created_time between #{getPointBillPaginationConoslestartTime} and #{endTime}
+                and created_time between #{startTime} and #{endTime}
             </if>
         </where>
     </select>
