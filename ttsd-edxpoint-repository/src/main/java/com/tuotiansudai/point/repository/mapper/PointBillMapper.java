@@ -38,7 +38,7 @@ public interface PointBillMapper {
                                                          @Param(value = "minPoint") Long minPoint,
                                                          @Param(value = "maxPoint") Long maxPoint,
                                                          @Param(value = "loginName") String loginName,
-                                                         @Param(value = "pointConsumeBusinessType") List<Enum> pointConsumeBusinessType,
+                                                         @Param(value = "pointConsumeBusinessType") List<PointBusinessType> pointConsumeBusinessType,
                                                          @Param(value = "index") int index,
                                                          @Param(value = "pageSize") int pageSize);
 
@@ -49,7 +49,7 @@ public interface PointBillMapper {
                                             @Param(value = "minPoint") Long minPoint,
                                             @Param(value = "maxPoint") Long maxPoint,
                                             @Param(value = "loginName") String loginName,
-                                            @Param(value = "pointConsumeBusinessType") List<Enum> pointConsumeBusinessType);
+                                            @Param(value = "pointConsumeBusinessType") List<PointBusinessType> pointConsumeBusinessType);
 
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
 
