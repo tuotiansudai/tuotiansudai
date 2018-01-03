@@ -1,4 +1,4 @@
-<div class="my-account-content amount-overview" id="couponList" style="display: block;">
+<div class="my-account-content amount-overview show-page" id="couponList" style="display: none;">
     <div class="select-btn">
         <p class="to-coupon">
             <a href="exchange-coupon.ftl">

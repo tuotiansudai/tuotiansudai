@@ -1,7 +1,7 @@
 
 <#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
 
-<div class="my-account-content apply-transfer"  id="applyTransfer" style="display: block">
+<div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none">
 
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">

@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="直投借款详情">
 
-<div class="my-account-content experience-amount" id="loanDetail">
+<div class="my-account-content experience-amount show-page" id="loanDetail" style="display: none">
 
     <div class="account-summary">
 
@@ -139,8 +139,8 @@
 
 </div>
     <#include 'project-detail_m.ftl'>
-
     <#include 'buy-loan_m.ftl'>
+
     <#include 'select-coupon_m.ftl'>
 
 
