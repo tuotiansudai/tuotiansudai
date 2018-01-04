@@ -136,7 +136,7 @@ function getAmount() {
 $('#submitBtn').on('click',(event) => {
     event.preventDefault();
     let getInvestAmount = getAmount();
-    if (getInvestAmount >  experience_balance) {
+    if (getInvestAmount >  experience_balance * 100) {
         let $freeSuccess=$('#freeSuccess');
         commonFun.CommonLayerTip({
             btn: ['确定'],
