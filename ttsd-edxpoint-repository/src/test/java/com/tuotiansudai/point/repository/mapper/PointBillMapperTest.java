@@ -34,7 +34,7 @@ public class PointBillMapperTest {
     public void shouldCreatePointBillModel() throws Exception {
         String fakeLoginName = "fakeUser";
 
-        PointBillModel pointBillModel = new PointBillModel(fakeLoginName, null, 1, 1, PointBusinessType.EXCHANGE, "note");
+        PointBillModel pointBillModel = new PointBillModel(fakeLoginName, null, 1, 1, PointBusinessType.EXCHANGE, "note","mobile","userName");
 
         pointBillMapper.create(pointBillModel);
 
@@ -46,9 +46,9 @@ public class PointBillMapperTest {
     @Test
     public void shouldFindPointBillPaginationIsOk() {
         String fakeLoginName = "fakeUser";
-        PointBillModel pointBillModel = new PointBillModel(fakeLoginName, null, 1, 0, PointBusinessType.LOTTERY, "note");
+        PointBillModel pointBillModel = new PointBillModel(fakeLoginName, null, 1, 0, PointBusinessType.LOTTERY, "note","mobile","userName");
         pointBillMapper.create(pointBillModel);
-        PointBillModel pointBillModel1 = new PointBillModel(fakeLoginName, null, 1, 0, PointBusinessType.EXCHANGE, "note");
+        PointBillModel pointBillModel1 = new PointBillModel(fakeLoginName, null, 1, 0, PointBusinessType.EXCHANGE, "note","mobile","userName");
         pointBillMapper.create(pointBillModel1);
         List<PointBillModel> pointBillModelList = pointBillMapper.findPointBillPagination(fakeLoginName, null, 0, 10, null, null, Arrays.asList(PointBusinessType.EXCHANGE, PointBusinessType.LOTTERY));
         assertThat(pointBillModelList.size(), is(2));
@@ -57,9 +57,9 @@ public class PointBillMapperTest {
     @Test
     public void shouldFindSumPointByLoginNameAndBusinessTypeIsOk() {
         String fakeLoginName = "fakeUser";
-        PointBillModel pointBillModel = new PointBillModel(fakeLoginName, null, 10, 0, PointBusinessType.ACTIVITY, "note");
+        PointBillModel pointBillModel = new PointBillModel(fakeLoginName, null, 10, 0, PointBusinessType.ACTIVITY, "note","mobile","userName");
         pointBillMapper.create(pointBillModel);
-        PointBillModel pointBillModel1 = new PointBillModel(fakeLoginName, null, 200, 0, PointBusinessType.ACTIVITY, "note");
+        PointBillModel pointBillModel1 = new PointBillModel(fakeLoginName, null, 200, 0, PointBusinessType.ACTIVITY, "note","mobile","userName");
         pointBillMapper.create(pointBillModel1);
         Date startDate = Date.from(Instant.now().minus(1, ChronoUnit.DAYS));
         Date endDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
