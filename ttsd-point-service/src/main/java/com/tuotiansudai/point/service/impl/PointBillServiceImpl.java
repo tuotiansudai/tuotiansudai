@@ -152,18 +152,11 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                                Long maxPoint,
                                                                                                String loginNameOrMobile, int index, int pageSize) {
 
-        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        String loginName = userModel != null ? userModel.getLoginName() : null;
 
-        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginName,PointBusinessType.getPointConsumeBusinessType());
-        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginName, PointBusinessType.getPointConsumeBusinessType(),PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
+        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile,PointBusinessType.getPointConsumeBusinessType());
+        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile, PointBusinessType.getPointConsumeBusinessType(),PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
                 .stream()
-                .map(dto -> {
-                    UserModel userModelTemp = userModel != null ? userModel : userMapper.findByLoginName(dto.getLoginName());
-                    dto.setMobile(userModelTemp.getMobile());
-                    dto.setUserName(userModelTemp.getUserName());
-                    return new PointBillPaginationItemDataDto(dto);
-                }).collect(Collectors.toList());
+                .map(dto -> new PointBillPaginationItemDataDto(dto)).collect(Collectors.toList());
 
         BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, dataDtos);
         dto.setStatus(true);

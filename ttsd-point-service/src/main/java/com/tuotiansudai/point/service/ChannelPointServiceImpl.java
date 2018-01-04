@@ -112,9 +112,13 @@ public class ChannelPointServiceImpl {
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "GBK"));
             String line;
+            int index = 0;
             while (null != (line = bufferedReader.readLine())) {
-                String[] data = line.split(",");
-                details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], StringUtils.isEmpty(data[3]) ? 0L : Long.parseLong(data[3])));
+                if (index != 0) {
+                    String[] data = line.split(",");
+                    details.add(new ChannelPointDetailDto(null, data[0], data[1], data[2], StringUtils.isEmpty(data[3]) ? 0L : Long.parseLong(data[3])));
+                }
+                index++;
             }
             if (details.size() > 1000) {
                 return new ChannelPointDataDto(false, "每次数据应该小于1000条");
@@ -123,10 +127,10 @@ public class ChannelPointServiceImpl {
             channelPointMapper.create(channelPointModel);
             details.stream().forEach(detail -> {
 
-                boolean conform = checkChannelPointDetailDto(detail);
+                boolean confirm = checkChannelPointDetailDto(detail);
                 ChannelPointDetailModel channelPointDetailModel = new ChannelPointDetailModel(channelPointModel.getId(), detail);
                 channelPointDetailMapper.create(channelPointDetailModel);
-                if (conform) {
+                if (confirm) {
                     pointBillService.createPointBill(channelPointDetailModel.getLoginName(), channelPointDetailModel.getId(), PointBusinessType.CHANNEL_IMPORT, channelPointDetailModel.getPoint());
                     userPointMapper.updateChannelIfNotExist(channelPointDetailModel.getLoginName(), channelPointDetailModel.getChannel());
 

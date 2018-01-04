@@ -544,6 +544,7 @@ public class ExportService {
             row.add(itemData.getUserName());
             row.add(itemData.getMobile());
             row.add(itemData.getChannel());
+            row.add(String.valueOf(itemData.getPoint()));
             row.add(itemData.isSuccess() ? "成功" : "失败");
             row.add(StringUtils.isEmpty(itemData.getRemark()) ? "" : itemData.getRemark());
             rows.add(row);

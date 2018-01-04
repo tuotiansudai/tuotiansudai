@@ -40,7 +40,7 @@ public class PointBillPaginationItemDataDto implements Serializable {
         this.createdTime = pointBillModel.getCreatedTime();
     }
 
-    public PointBillPaginationItemDataDto(PointBillViewDto dto){
+    public PointBillPaginationItemDataDto(PointBillViewDto dto) {
         this.id = dto.getId();
         this.businessType = dto.getBusinessType();
         this.channelPoint = dto.getChannelPoint();
@@ -53,6 +53,8 @@ public class PointBillPaginationItemDataDto implements Serializable {
         this.point = dto.getPoint();
         this.orderId = dto.getOrderId();
         this.channel = dto.getChannel();
+        this.userName = dto.getUserName();
+        this.mobile = dto.getMobile();
 
     }
 
