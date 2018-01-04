@@ -65,6 +65,7 @@
     <div class="benefit-box">
         <div class="target-category-box" data-url="">
             <div class="newer-title">
+                <span class="line_icon"></span>
                 <span>${loan.name}</span>
             </div>
             <ul class="loan-info clearfix">
@@ -100,7 +101,7 @@
                     <em>元</em>
                 </li>
                 <li class="mt-10">
-                    <label>预期收益</label>
+                    <label style="font-family: PingFangSC-Light;">预期收益</label>
                     <span class="number-text"><strong id="expect-amount">0.00</strong>元</span>
                 </li>
             </ul>
@@ -108,7 +109,7 @@
 
         <button type="submit" class="btn-wap-normal" id="submitBtn">立即体验</button>
     </form>
-    <div class="transfer-notice">
+    <div class="transfer-notice" style="font-family: PingFangSC-Light;">
 
         <b>温馨提示:</b>
         用户首次提现体验金投资所产生的收益时，需要投资其他定期项目（债权转让项目除外）累计满1000元才可以提现。
@@ -116,7 +117,7 @@
     <div id="freeSuccess"  style="display: none">
         <div class="success-info-tip">
             <div class="pop_title">温馨提示</div>
-            <div class="pop_content">体验金余额不足，快去参与活动赢取体验金吧！</div>
+            <div class="pop_content">体验金余额不足，<br/>快去参与活动赢取体验金吧！</div>
         </div>
     </div>
 </div>
@@ -137,7 +138,7 @@
                 </li>
                 <li class="item">
                     <label>所投项目</label>
-                    <em>拓天体验金项目</em>
+                    <em>${loan.name}</em>
                 </li>
             </ul>
         </div>

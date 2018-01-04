@@ -40,6 +40,7 @@ $experience_balance.on('keyup',() => {
     if (value == "") {
         buttonDisabled();
         $('#submitBtn').html('请输入正确的金额');
+        $close_btn.hide();
     } else if (value < start_investment) {
         $close_btn.show();
         buttonDisabled();
