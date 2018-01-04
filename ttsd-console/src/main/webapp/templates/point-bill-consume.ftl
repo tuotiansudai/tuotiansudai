@@ -115,7 +115,7 @@
                             </a>
                         </#if>
                     </li>
-                    <li><a>${data.index}</a></li>
+                    <li><a>${data.index?c}</a></li>
                     <li>
                         <#if data.hasNextPage >
                             <a href="?index=${data.index+1}&startTime=${startTime!}&endTime=${endTime!}&pointBusinessType=${pointBusinessType!}&channel=${channel!}&minPoint=${minPoint!}&maxPoint=${maxPoint!}&userNameOrMobile=${userNameOrMobile!}"

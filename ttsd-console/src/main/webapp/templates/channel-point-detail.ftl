@@ -79,7 +79,7 @@
                             </a>
                         </#if>
                     </li>
-                    <li><a>${data.index}</a></li>
+                    <li><a>${data.index?c}</a></li>
                     <li>
                         <#if data.hasNextPage >
                             <a href="?index=${data.index+1}&channel=${channel!}&userNameOrMobile=${userNameOrMobile!}&success=${success!}"
