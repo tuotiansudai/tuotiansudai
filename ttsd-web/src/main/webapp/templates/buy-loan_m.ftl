@@ -5,6 +5,24 @@
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <input id="leftInvest" type="hidden" value="${loan.amountNeedRaised?string.computer}">
     <input type="hidden" id="minAmount" value="${interestPerTenThousands?string.computer}">
+    <#if coupons?has_content>
+        <#if maxBenefitUserCoupon??>
+            <#switch maxBenefitUserCoupon.couponType>
+                <#case "INTEREST_COUPON">
+                    <#assign maxBenefitCouponDesc =(maxBenefitUserCoupon.rate * 100)+'%'+maxBenefitUserCoupon.name >
+                    <#break>
+                <#case "BIRTHDAY_COUPON">
+                    <#assign maxBenefitCouponDesc =maxBenefitUserCoupon.name >
+                    <#break>
+                <#default>
+                    <#assign maxBenefitCouponDesc =(maxBenefitUserCoupon.amount / 100)+'元'+maxBenefitUserCoupon.name >
+            </#switch>
+        <#else>
+            <#assign maxBenefitCouponDesc ='请选择优惠券'>
+        </#if>
+    <#else>
+        <#assign maxBenefitCouponDesc ='无可用优惠券'>
+    </#if>
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
             <div class="newer-title">
@@ -49,8 +67,8 @@
             </li>
             <li id="select_coupon" class="select-coupon" data-user-coupon-id="-1">
                 <label>优惠券</label>
-                <input id="couponText" type="text" value=""  placeholder="无可用优惠券" readonly="readonly">
-                <input id="couponId" type="hidden" value="" name="userCouponIds">
+                <input id="couponText" type="text" value="${maxBenefitCouponDesc}" placeholder="无可用优惠券" readonly="readonly">
+                <input id="couponId" type="hidden" value="${(maxBenefitUserCoupon.id?string.computer)!}" name="userCouponIds">
                 <em><i class="fa fa-angle-right"></i></em>
             </li>
 
