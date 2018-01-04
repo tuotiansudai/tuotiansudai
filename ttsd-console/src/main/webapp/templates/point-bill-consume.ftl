@@ -59,8 +59,8 @@
         <a href="/point-manage/point-consume" class="btn btn-sm btn-default">重置</a>
     </form>
     <div class="table-responsive">
-        <label for="control-label">速贷积分消费总额: ${sumSudaiPoint}</label>
-        <label for="control-label">消费渠道积分总额: ${sumChannelPoint}</label>
+        <label for="control-label">速贷积分消费总额: ${(sumSudaiPoint * -1)?c}</label>
+        <label for="control-label">消费渠道积分总额: ${(sumChannelPoint * -1)?c}</label>
         <table class="table table-bordered table-hover " style="width:80%;">
             <thead>
             <tr>
