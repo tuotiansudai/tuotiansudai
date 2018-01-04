@@ -23,7 +23,6 @@ public enum CsvHeaderType {
     PointConsumeHeader("时间, 流水号, 用户姓名, 手机号, 消费总积分, 渠道来源, 消费渠道积分, 花费速贷积分, 业务类型", "积分消耗记录"),
     ChannelPointDetailHeader("用户名, 手机号, 积分渠道, 导入状态, 渠道积分, 备注", "渠道积分导入记录"),
     PointPrizeHeader("奖品, 中奖人数, 状态", "财豆奖品管理"),
-    UserPointHeader("用户名,真实姓名,手机号,可用积分总额,综合积分总额,速贷可用积分,速贷累计积分,积分渠道名称,可用渠道积分,累计渠道积分", "用户积分查询"),
     CouponExchangeHeader("名称,券额(元),利率,总数量,已兑换数量,所需财豆,有效期限,有效天数,可投标的,使用条件", "优惠券兑换管理"),
     SystemBillHeader("时间,费用类型,操作类型,金额(元),费用详情", "系统账户查询"),
     CreditLoanBillHeader("时间,订单号,费用类型,操作类型,金额(元)", "信用贷账户查询"),
