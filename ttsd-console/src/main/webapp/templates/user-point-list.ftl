@@ -79,16 +79,16 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/point-manage/user-point-list?minPoint=${minPoint!}&maxPoint=${maxPoint!}&channel=${channel!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-list?minPoint=${(minPoint?string.computer)!}&maxPoint=${(maxPoint?string.computer)!}&channel=${channel!}&index=${(index-1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span></a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${index?string.computer}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-list?minPoint=${minPoint!}&maxPoint=${maxPoint!}&channel=${channel!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-list?minPoint=${(minPoint?string.computer)!}&maxPoint=${(maxPoint?string.computer)!}&channel=${channel!}&index=${(index+1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
