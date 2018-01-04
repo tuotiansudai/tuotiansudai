@@ -14,7 +14,7 @@
             <ul class="loan-info clearfix">
                 <li>
                     <span>
-                        <i>${loan.raisingDays}天</i>
+                        <i>最长${loan.raisingDays}天</i>
                     </span>
                     <em>项目期限</em>
                 </li>
@@ -22,11 +22,11 @@
                     <span>
                         <i>${loan.baseRate}+${loan.activityRate}%</i>
                     </span>
-                    <em>预期年化收益</em>
+                    <em>预计年化收益</em>
                 </li>
                 <li>
                     <span>
-                        <i><@amount>${interestPerTenThousands?string.computer}</@amount></i>元
+                        <i>${loan.minInvestAmount}元</i>
                     </span>
                     <em>起投金额</em>
                 </li>
@@ -34,12 +34,13 @@
         </div>
         <div class="bg-square-box"></div>
     </div>
-    <form id="investForm" action="/m/invest" method="post">
+    <form id="investForm" action="/invest" method="post">
+        <input type="hidden" name="source" value="M">
     <div class="input-amount-box">
         <ul class="input-list">
             <li>
                 <label>投资金额</label>
-                <input type="text" value="" name="price" class="input-amount" placeholder="50.00起投">
+                <input type="text" value="" name="price" class="input-amount" placeholder="${loan.minInvestAmount}元起投">
                 <em>元</em>
             </li>
             <li class="mt-10">

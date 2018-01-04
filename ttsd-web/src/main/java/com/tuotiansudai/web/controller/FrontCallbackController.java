@@ -6,7 +6,10 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +34,13 @@ public class FrontCallbackController {
 
     private final InvestService investService;
 
+    private final LoanService loanService;
+
     @Autowired
-    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService) {
+    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService, LoanService loanService) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
+        this.loanService = loanService;
     }
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
@@ -61,7 +67,11 @@ public class FrontCallbackController {
             modelAndView.addObject("error", data.getStatus() ? null : data.getMessage());
             modelAndView.addObject("service", asyncUmPayService.name());
             if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
-                modelAndView.addObject("amount", AmountConverter.convertCentToString(investService.findById(Long.valueOf(params.get("order_id"))).getAmount()));
+                InvestModel investModel = investService.findById(Long.valueOf(params.get("order_id")));
+                LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
+                modelAndView.addObject("loan", loanModel.getName());
+                modelAndView.addObject("loanId", loanModel.getId());
             }
 
             return modelAndView;
