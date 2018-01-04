@@ -549,6 +549,21 @@
     background: #FF635A;
     margin-bottom: 10px;
     border-radius: 5px;
+    position: relative;
+    &.disabled {
+      opacity: 0.7;
+    }
+    &.selected {
+      .selected-status {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        background: url("../../images/investment/icon_trangle.png") no-repeat;
+        background-size: contain;
+      }
+    }
     .left-item{
       flex:0.7;
       display: flex;

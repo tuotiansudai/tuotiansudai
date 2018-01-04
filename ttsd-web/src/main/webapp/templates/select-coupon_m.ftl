@@ -36,13 +36,15 @@
                     <#assign couponDesc =(coupon.amount / 100)+'元'+coupon.name >
             </#switch>
 
-        <li class="coupon-item"
+        <li class="coupon-item to-use_coupon selected"
             data-coupon-id="${coupon.couponId?string.computer}"
             data-user-coupon-id="${coupon.id?string.computer}"
+            data-min-invest-amount="${(coupon.investLowerLimit / 100)?string.computer}"
             data-coupon-type="${coupon.couponType}"
             data-coupon-desc="${couponDesc}"
             data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
             data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}">
+            <div class="selected-status"></div>
             <div class="left-item">
                 <dl>
                     <dt>${coupon.name}</dt>
@@ -81,7 +83,7 @@
                     </#switch>
                 </p>
                 <p>
-                    <a href="">立即使用</a>
+                    <a href="javascript:;">立即使用</a>
                 </p>
             </div>
         </li>

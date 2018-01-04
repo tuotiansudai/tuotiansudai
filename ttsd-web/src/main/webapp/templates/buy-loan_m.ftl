@@ -1,8 +1,10 @@
 
 <#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
 
-<div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none">
-
+<div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+    <input id="leftInvest" type="hidden" value="${loan.amountNeedRaised?string.computer}">
+    <input type="hidden" id="minAmount" value="${interestPerTenThousands?string.computer}">
     <div class="benefit-box">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
             <div class="newer-title">
@@ -24,15 +26,15 @@
                 </li>
                 <li>
                     <span>
-                        <i><@amount>${interestPerTenThousands?string.computer}</@amount>元</i>
+                        <i><@amount>${interestPerTenThousands?string.computer}</@amount></i>元
                     </span>
-                    <em>最大万元收益</em>
+                    <em>起投金额</em>
                 </li>
             </ul>
         </div>
         <div class="bg-square-box"></div>
     </div>
-    <form id="investForm">
+    <form id="investForm" action="/invest" method="post">
     <div class="input-amount-box">
         <ul class="input-list">
             <li>
@@ -44,11 +46,13 @@
                 <label>预期收益</label>
                 <span class="number-text"><strong>0</strong>元</span>
             </li>
-            <li id="select_coupon" class="select-coupon">
+            <li id="select_coupon" class="select-coupon" data-user-coupon-id="-1">
                 <label>优惠券</label>
-                <input type="text" value="" name="price"  placeholder="无可用优惠券" readonly="readonly">
+                <input id="couponText" type="text" value=""  placeholder="无可用优惠券" readonly="readonly">
+                <input id="couponId" type="hidden" value="" name="userCouponIds"  placeholder="无可用优惠券" readonly="readonly">
                 <em><i class="fa fa-angle-right"></i></em>
             </li>
+
         </ul>
     </div>
 

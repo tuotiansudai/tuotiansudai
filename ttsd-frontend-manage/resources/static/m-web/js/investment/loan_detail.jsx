@@ -14,7 +14,8 @@ $iconHelp.on('click',function() {
 })
 //点击立即投资进入购买详情页
 $('#toInvest').on('click',function () {
-    pushHistory('#buyDetail');
+    //pushHistory('#buyDetail');
+    location.hash='buyDetail';
 
 })
 //借款详情
@@ -60,18 +61,17 @@ $recordTop.find('span').on('click',function() {
 //直投项目购买详情
 
 
-let $applyTransfer = $('#applyTransfer'),
-    $btnWapNormal = $('.btn-wap-normal',$applyTransfer),
-    $amountInputElement = $('.input-amount',$applyTransfer);
+let $btnWapNormal = $('.btn-wap-normal',$buyDetail),
+    $amountInputElement = $('.input-amount',$buyDetail),
+    $minAmount = $('#minAmount',$buyDetail),//起投金额
+    $leftInvest = $('#leftInvest');//剩余可投
+let minAmount = Number($minAmount.val());
+let leftInvest = Number($leftInvest.val()/100);//剩余可投金额
 
-$applyTransfer.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
+$buyDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
 $amountInputElement.autoNumeric('init');
 
-$applyTransfer.find('.select-coupon').on('click',  function(event) {
-    event.preventDefault();
-    location.href=$(this).attr('data-url');
-});
 
 function getInvestAmount() {
     var amount = 0;
@@ -82,34 +82,12 @@ function getInvestAmount() {
     return amount;
 }
 
-$amountInputElement
-    .on('keyup',function() {
-
-        let value = getInvestAmount();
-        if(/^(\d){4,}$/.test(value)) {
-            $btnWapNormal.prop('disabled',false);
-        } else {
-            $btnWapNormal.prop('disabled',true);
-        }
-    })
-
-if($('#investForm').length>0){
-    globalFun.$('#investForm').onsubmit = function() {
-        $.when(commonFun.isUserLogin())
-            .done(function () {
-                //提交表单
-            })
-            .fail(function () {
-                //跳到登录页
-            })
-
-    }
-}
 
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
-    pushHistory('#projectDetail');
+   // pushHistory('#projectDetail');
+    location.hash='projectDetail'
 })
 
 $('#apply_materal_btn').click(function () {
@@ -187,18 +165,18 @@ $('#btn-detail-toggle').click(function () {
 
 
 //监控浏览器返回事件
-window.addEventListener("popstate", function(e) {
-   location.reload();
-
-}, false);
-function pushHistory(hash) {
-    var state = {
-        title: "title",
-        url: 'hash'
-    };
-    window.history.pushState(state, "", hash);
-    location.reload()
-}
+// window.addEventListener("popstate", function(e) {
+//    location.reload();
+//
+// }, false);
+// function pushHistory(hash) {
+//     var state = {
+//         title: "title",
+//         url: 'hash'
+//     };
+//     window.history.pushState(state, "", hash);
+//     location.reload()
+// }
 //转让购买详情
 //承接记录
 $('#look_continue_record').click(function () {
@@ -222,19 +200,90 @@ $('#look_repay_plan').click(function () {
 //     }
 // );
 //优惠券
-$('#select_coupon').on('click',function () {
-pushHistory('#selectCoupon');
+let $selectCoupon = $('#select_coupon');
+$selectCoupon.on('click',function () {
+
+    location.hash='selectCoupon'
 
 })
 if(location.hash == ''){
     $loanDetail.show().siblings('.show-page').hide();
+
 }else if(location.hash == '#projectDetail'){
 
- $projectDetail.show().siblings('.show-page').hide();
+    $projectDetail.show().siblings('.show-page').hide();
 
 }else if(location.hash == '#buyDetail'){
-   $buyDetail.show().siblings('.show-page').hide();
+    $buyDetail.show().siblings('.show-page').hide();
 
 }else if(location.hash == '#selectCoupon'){
     $('#couponList').show().siblings('.show-page').hide();
+}
+$(window).on('hashchange',function () {
+    if(location.hash == ''){
+        $loanDetail.show().siblings('.show-page').hide();
+
+    }else if(location.hash == '#projectDetail'){
+
+        $projectDetail.show().siblings('.show-page').hide();
+
+    }else if(location.hash == '#buyDetail'){
+        $buyDetail.show().siblings('.show-page').hide();
+
+    }else if(location.hash == '#selectCoupon'){
+        $('#couponList').show().siblings('.show-page').hide();
+    }
+})
+
+
+
+//立即使用优惠券
+let $couponInfo = $('#couponInfo');
+let userCouponId,
+    minInvestAmount,
+    couponType,
+    productTypeUsable,
+    couponEndTime,
+    dataCouponDesc;
+$('.to-use_coupon').click(function () {
+    let _self = $(this);
+    $('#couponId').val(_self.data('user-coupon-id'));
+    $couponInfo.attr('min-invest-amount',_self.data('min-invest-amount'));
+
+    $couponInfo.attr('coupon-desc',_self.data('coupon-desc'));
+    location.hash='buyDetail';
+    userCouponId = $couponInfo.attr('user-coupon-id'),
+        minInvestAmount = $couponInfo.attr('min-invest-amount'),
+        dataCouponDesc = $couponInfo.attr('coupon-desc');
+
+    $('#couponText').val(dataCouponDesc).css('color','#FF473C');
+
+})
+//输入金额判断
+$amountInputElement
+    .on('keyup',function() {
+        let value = getInvestAmount();
+        console.log(value/100 >leftInvest)
+         if(value/100 <minAmount){
+            $btnWapNormal.prop('disabled',true).text('输入金额应大于起投金额');
+        }else if(value/100 >leftInvest){
+            $btnWapNormal.prop('disabled',true).text('输入金额应小于项目可投金额');
+        }
+        else {
+            $btnWapNormal.prop('disabled',false).text('立即投资');
+        }
+
+    })
+
+if($('#investForm').length>0){
+    globalFun.$('#investForm').onsubmit = function() {
+        $.when(commonFun.isUserLogin())
+            .done(function () {
+                //提交表单
+            })
+            .fail(function () {
+                //跳到登录页
+            })
+
+    }
 }
