@@ -280,10 +280,10 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
 
-            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 500, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY_AWARD, 500, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
-            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 3000, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY_AWARD, 3000, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         }
         return prizeType;
     }
