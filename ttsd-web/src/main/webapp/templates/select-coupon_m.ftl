@@ -36,7 +36,7 @@
                     <#assign couponDesc =(coupon.amount / 100)+'元'+coupon.name >
             </#switch>
 
-        <li class="coupon-item to-use_coupon selected"
+        <li class="coupon-item to-use_coupon"
             data-coupon-id="${coupon.couponId?string.computer}"
             data-user-coupon-id="${coupon.id?string.computer}"
             data-min-invest-amount="${(coupon.investLowerLimit / 100)?string.computer}"

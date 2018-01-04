@@ -245,8 +245,20 @@ let userCouponId,
     productTypeUsable,
     couponEndTime,
     dataCouponDesc;
+//默认选择的优惠券
+let id = '219776';
+$('.to-use_coupon').each(function (index,item) {
+    if($(item).data('user-coupon-id') == id){
+        $(item).addClass('selected');
+        return;
+    }
+})
 $('.to-use_coupon').click(function () {
     let _self = $(this);
+    $('.to-use_coupon').each(function (index,item) {
+        $(item).removeClass('selected');
+    })
+    _self.addClass('selected');
     $('#couponId').val(_self.data('user-coupon-id'));
     $couponInfo.attr('min-invest-amount',_self.data('min-invest-amount'));
 

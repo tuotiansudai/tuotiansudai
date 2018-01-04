@@ -34,7 +34,7 @@
         </div>
         <div class="bg-square-box"></div>
     </div>
-    <form id="investForm" action="/invest" method="post">
+    <form id="investForm" action="/m/invest" method="post">
     <div class="input-amount-box">
         <ul class="input-list">
             <li>
@@ -49,7 +49,7 @@
             <li id="select_coupon" class="select-coupon" data-user-coupon-id="-1">
                 <label>优惠券</label>
                 <input id="couponText" type="text" value=""  placeholder="无可用优惠券" readonly="readonly">
-                <input id="couponId" type="hidden" value="" name="userCouponIds"  placeholder="无可用优惠券" readonly="readonly">
+                <input id="couponId" type="hidden" value="" name="userCouponIds">
                 <em><i class="fa fa-angle-right"></i></em>
             </li>
 
