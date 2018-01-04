@@ -82,6 +82,8 @@ public class PointBillServiceImpl implements PointBillService {
             return;
         }
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
+
         if (!userPointMapper.exists(loginName)) {
             userPointMapper.createIfNotExist(new UserPointModel(loginName, 0, 0, null));
         }
@@ -89,7 +91,7 @@ public class PointBillServiceImpl implements PointBillService {
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
         long sudaiPoint = point - channelPoint;
-        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note));
+        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note,userModel.getMobile(),userModel.getUserName()));
         userPointMapper.increasePoint(loginName, sudaiPoint, channelPoint, new Date());
     }
 

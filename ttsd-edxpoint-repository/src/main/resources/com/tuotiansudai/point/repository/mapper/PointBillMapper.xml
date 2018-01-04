@@ -16,6 +16,9 @@
         <result column="business_type" property="businessType"></result>
         <result column="note" property="note"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="user_name" property="userName"></result>
+
     </resultMap>
 
     <resultMap id="userTotalPointResultMap" type="UserTotalPointViewDto">
@@ -30,8 +33,8 @@
     </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into point_bill (order_id, login_name, point, sudai_point, channel_point, business_type, note, created_time)
-        value(#{orderId}, #{loginName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{businessType}, #{note}, #{createdTime})
+        insert into point_bill (order_id, login_name,mobile,user_name ,point, sudai_point, channel_point, business_type, note, created_time)
+        value(#{orderId}, #{loginName},#{mobile},#{userName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{businessType}, #{note}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="pointBillResultMap">
