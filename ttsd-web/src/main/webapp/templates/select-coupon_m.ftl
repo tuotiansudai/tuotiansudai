@@ -14,21 +14,33 @@
 <#if coupons?has_content>
     <#list coupons as coupon>
         <#if !coupon.shared>
-        <#assign minProductType=361>
-        <#list coupon.productTypeList as productType>
-            <#if productType.getDuration() < minProductType>
-                <#assign minProductType=productType.getDuration()>
-            </#if>
-        </#list>
-        <#if minProductType=30><#assign couponTips='可用于任意期限标的'></#if>
-        <#if minProductType=90><#assign couponTips='可用于60天及以上标的'></#if>
-        <#if minProductType=180><#assign couponTips='可用于120天及以上标的'></#if>
-        <#if minProductType=360><#assign couponTips='可用于200天及以上标的'></#if>
+            <#assign minProductType=361>
+            <#list coupon.productTypeList as productType>
+                <#if productType.getDuration() < minProductType>
+                    <#assign minProductType=productType.getDuration()>
+                </#if>
+            </#list>
+            <#if minProductType=30><#assign couponTips='可用于任意期限标的'></#if>
+            <#if minProductType=90><#assign couponTips='可用于60天及以上标的'></#if>
+            <#if minProductType=180><#assign couponTips='可用于120天及以上标的'></#if>
+            <#if minProductType=360><#assign couponTips='可用于200天及以上标的'></#if>
+
+            <#switch coupon.couponType>
+                <#case "INTEREST_COUPON">
+                    <#assign couponDesc =(coupon.rate * 100)+'%'+coupon.name >
+                    <#break>
+                <#case "BIRTHDAY_COUPON">
+                    <#assign couponDesc =coupon.name >
+                    <#break>
+                <#default>
+                    <#assign couponDesc =(coupon.amount / 100)+'元'+coupon.name >
+            </#switch>
 
         <li class="coupon-item"
             data-coupon-id="${coupon.couponId?string.computer}"
             data-user-coupon-id="${coupon.id?string.computer}"
             data-coupon-type="${coupon.couponType}"
+            data-coupon-desc="${couponDesc}"
             data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
             data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}">
             <div class="left-item">
