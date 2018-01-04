@@ -16,7 +16,8 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})public class SmsProviderTest {
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+public class SmsProviderTest {
 
     @Autowired
     @Qualifier("smsProviderAlidayuText")

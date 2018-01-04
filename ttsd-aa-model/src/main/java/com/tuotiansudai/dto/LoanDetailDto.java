@@ -83,6 +83,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String activityDesc;
 
+    private boolean nonTransferable;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
@@ -109,8 +111,9 @@ public class LoanDetailDto extends BaseDataDto {
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
         this.extraSource = loanDetails == null ? null : (loanDetails.getExtraSource() != null && loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
-        this.activity = loanDetails == null ? false : loanDetails.isActivity();
+        this.activity = loanDetails != null && loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
+        this.nonTransferable = loanDetails != null && loanDetails.getNonTransferable();
         this.pledgeType = loanModel.getPledgeType();
     }
 
@@ -307,5 +310,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public boolean isNonTransferable() {
+        return nonTransferable;
+    }
+
+    public void setNonTransferable(boolean nonTransferable) {
+        this.nonTransferable = nonTransferable;
     }
 }

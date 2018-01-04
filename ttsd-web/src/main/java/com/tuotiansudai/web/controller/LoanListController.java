@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/loan-list")
 public class LoanListController {
 
     static Logger logger = Logger.getLogger(LoanListController.class);
@@ -29,7 +28,7 @@ public class LoanListController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "/loan-list", method = RequestMethod.GET)
     public ModelAndView webLoanList(@RequestParam(value = "name", required = false) String name,
                                     @RequestParam(value = "status", required = false) LoanStatus status,
                                     @RequestParam(value = "rateStart", defaultValue = "0", required = false) double rateStart,
@@ -37,7 +36,7 @@ public class LoanListController {
                                     @RequestParam(value = "durationStart", defaultValue = "0", required = false) int durationStart,
                                     @RequestParam(value = "durationEnd", defaultValue = "0", required = false) int durationEnd,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        int count = loanService.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
+         int count = loanService.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
         List<LoanItemDto> loanItemList = loanService.findLoanItems(name, status, rateStart, rateEnd,durationStart,durationEnd, index);
 
         ModelAndView modelAndView = new ModelAndView("/loan-list");

@@ -51,6 +51,7 @@
             <map>
                 <entry key="webServer" value="${web.server}"/>
                 <entry key="pointServer" value="${point.server}"/>
+                <entry key="commonStaticServer" value="${common.static.server}"/>
                 <entry key="percentFraction">
                     <bean class="com.tuotiansudai.point.freemarker.directive.PercentFractionDirective"/>
                 </entry>

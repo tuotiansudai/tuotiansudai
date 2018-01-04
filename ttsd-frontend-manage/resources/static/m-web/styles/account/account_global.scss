@@ -1,0 +1,161 @@
+.account-summary {
+  height:170px;
+  background:#FF473C;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  line-height: 33px;
+  font-size:12px;
+  .fa {
+    font-size: 17px;
+    line-height: 15px;
+    color: rgba(255,255,255,0.5);
+  }
+  .summary-box {
+    text-align: center;
+    b {
+      font-size: 16px;
+      display: block;
+      font-weight: lighter;
+    }
+  }
+  .collection {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    b {
+      font-size: 36px;
+    }
+  }
+  .amount-balance {
+    background: #FB3D31;
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    line-height: 20px;
+    font-weight: lighter;
+    .summary-box {
+      flex: 1;
+      &:nth-child(1) {
+        position: relative;
+        &:after {
+          display: inline-block;
+          content: '|';
+          color: #fff;
+          position: absolute;
+          right: 0;
+          top: 10px;
+        }
+      }
+    }
+  }
+}
+
+//我的体验金，资金明细
+
+.amount-detail-box {
+  position: absolute;
+  top: 100px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 100px);
+}
+
+.amount-detail-list {
+  font-weight: lighter;
+}
+.box-item {
+  margin-top:1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  background: #fff;
+  padding: 10px 12px;
+  line-height: 24px;
+  color: #A2A2A2;
+  dl {
+    font-weight: lighter;
+    dt {
+      color: #525252;
+    }
+    dd {
+      color: #A2A2A2;
+    }
+  }
+  .more {
+    font-size: 25px;
+  }
+  .amount {
+    color: #000;
+    font-size: 14px;
+    &.plus {
+      color: #FF473C;
+    }
+  }
+
+}
+
+//form input list
+.input-list {
+  li {
+    height:55px;
+    line-height: 55px;
+    background: #fff;
+    margin-bottom:1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #64646D;
+    font-weight: lighter;
+    overflow: hidden;
+    input {
+      width: 64%;
+      height:100%;
+      text-align: right;
+      border:0;
+      font-size: 13px;
+      color: #A2A2A2;
+    }
+    span {
+      width:66%;
+      text-align: right;
+      font-size:14px;
+      color: #A2A2A2;
+      input {
+        width:80%;
+      }
+    }
+    i {
+      font-size: 25px;
+      vertical-align: middle;
+      color: #A2A2A2;
+    }
+  }
+
+  &.align-flex-start {
+    li {
+      justify-content: flex-start;
+      input {
+        text-align: left;
+        flex: 3;
+        font-size: 16px;
+      }
+      label {
+        flex:1;
+      }
+
+    }
+  }
+}
+
