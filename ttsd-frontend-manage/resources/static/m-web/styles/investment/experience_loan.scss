@@ -1,4 +1,47 @@
+.goBack_applyTransfer {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-size: 17px;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: 2px;
+    top: 7px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
 .account-summary {
+  position: relative;
+  .go-back-container {
+    position: absolute;
+    left: 2px;
+    top: 16px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    .go-back {
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
   .collection {
     display: flex;
     flex-direction: column;
@@ -92,4 +135,232 @@
   &:disabled {
     background: #C9C9C9;
   }
+}
+.detail-list {
+  span i {
+    font-size:20px;
+  }
+}
+.icon-sign {
+  font-size: 9px;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+}
+
+.invest-refer-box {
+  position: absolute;
+  top: 100px;
+  right: 19%;
+  i.fa {
+    position: absolute;
+    top: -13px;
+    right: 27px;
+    font-size: 25px;
+    color: #fff!important;
+  }
+  ul {
+    border-radius:10px;
+    background: #fff;
+    font-size: 10px;
+    color: #A2A2A2;
+    li {
+      display: flex;
+      justify-content: space-between;
+      line-height: 20px;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 0 6px;
+    }
+    .title {
+      font-size: 11px;
+      color: #525252;
+    }
+  }
+
+}
+
+.leave-time {
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  color: #808080;
+  text-align: center;
+}
+.repay-plan {
+  margin-top:5px;
+  label {
+    font-size: 14px;
+    color: #525252;
+  }
+}
+.history-record {
+  font-size: 14px;
+
+  padding: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    color: #A2A2A2;
+  }
+}
+//項目詳情
+.project-detail {
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  height: 100%;
+  background: #fff;
+}
+.menu-category {
+  margin-bottom: 10px;
+}
+.loan-list-content {
+  background: #fff;
+}
+.account-summary {
+  height:200px;
+  .collection {
+    padding-top: 5px;
+  }
+  .transfer-hack {
+    color: rgba(255, 255, 255, 1);
+    flex: 1.5;
+  }
+  .icon-help {
+    top: 61px;
+    right: 25%;
+  }
+}
+
+.experience-amount {
+  padding-bottom: 70px;
+}
+
+.invest-progress-box {
+  padding: 0 10px;
+  background: #fff;
+  height: 50px;
+  .project-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A2A2A2;
+    align-items: center;
+    height:100%;
+    i {
+      color: #222;
+    }
+  }
+}
+.input-list li input {
+  width: 65%;
+  font-size: 18px;
+  color: #525252;
+  text-align: left;
+}
+.input-list li span {
+  width: 75%;
+  font-size: 16px;
+  text-align: left;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+  　color: #C9C9C9;
+}
+:-moz-placeholder {
+  color: #C9C9C9;
+}
+
+::-moz-placeholder {
+  color: #C9C9C9;
+}
+
+:-ms-input-placeholder {
+  　color: #C9C9C9;
+}
+
+.input-list {
+  .investmentAmount {
+    margin-bottom: 9px;
+    font-size: 18px;
+  }
+}
+.number-text {
+  strong {
+    color: #FF473C
+  }
+}
+.btn-wap-normal {
+  margin-top: 105px;
+  border: 1px solid #FF635A;
+  background: #FF635A;
+}
+
+.btn-wap-normal.disabled {
+
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 12px 10px 12px;
+  font-weight: lighter;
+  b {
+    display: block;
+    font-weight: lighter;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+.target-category-box .loan-info {
+  padding: 0 10px;
+}
+
+.bg-square-box {
+  height: 9px;
+}
+.input-list li .close_btn {
+  display: none;
+  width: 12px;
+  height: 12px;
+  background: url("../../images/close_btn.png") no-repeat;
+  background-size: contain;
+}
+
+.pop_title {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+}
+.icon-success-wrapper {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+  height: 135px;
+  background: #fff;
+  overflow: hidden;
+  .icon-success {
+    display: block;
+    margin: 30px auto 15px auto;
+  }
+  .investment-success-text {
+    width: 100%;
+    font-size: 15px;
+    text-align: center;
+  }
+}
+.input-list .item {
+  height: 45px;
+  line-height: 45px;
+  font-size: 13px;
 }
