@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
+import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -40,6 +42,9 @@ public class LoanDetailController {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private InvestService investService;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -57,6 +62,7 @@ public class LoanDetailController {
                 this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
+        modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId, LoginUserInfo.getLoginName(), 1000000, new Date()));
         int membershipLevel = 0;
         if (null != membershipModel) {
             membershipLevel = membershipModel.getLevel();

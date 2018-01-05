@@ -13,6 +13,7 @@ spike.py
 **/*.crt
 **/war/
 .gradle
+.python-version
 **/gradlew.bat
 **/gradlew
 **/gradle/

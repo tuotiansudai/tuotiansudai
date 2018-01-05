@@ -1,0 +1,206 @@
+.bank-show {
+  font-size: 12px;
+  color: #808080;
+  line-height: 20px;
+  em {
+    font-size: 14px;
+    color: #525252;
+    display: block;
+  }
+}
+.input-list {
+  &.align-flex-start {
+    span.bank-info {
+      text-align: left;
+      width: auto;
+      flex: 3;
+
+      &.key {
+        color: #FF635A;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+
+.bank-list {
+  .icon-bank {
+    width:30px;
+    height:30px;
+    background: url('../../images/bank/bankdefault.png') left top no-repeat;
+    background-size: 100%;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 10px;
+    background: #fff;
+    border-bottom:1px solid #f4f4f4;
+    span {
+      width: 77%;
+    }
+    &.checked {
+      span.bank-show {
+        color: #FF635A;
+        em {
+          color: #FF635A;
+        }
+      }
+    }
+  }
+}
+.text-item{
+  font-size: 12px;
+  color: #FF635A;
+  line-height: 34px;
+  padding:0 10px;
+}
+.form-cash{
+  .int-item{
+    background: #fff;
+    padding:10px;
+    position: relative;
+    &:after{
+      content:'￥';
+      display:block;
+      position: absolute;
+      bottom:20px;
+      left:10px;
+      font-size:24px;
+      color:#525252;
+      line-height: 30px;
+    }
+    label{
+      display: flex;
+      width: 100%;
+      font-size:16px;
+      color:#525252;
+    }
+    .money-item{
+      display: inline-block;
+      width:100%;
+      border:none;
+      line-height: 50px;
+      padding:0 0 0 30px;
+      border-bottom:1px solid #e5e5e5;
+      box-sizing:border-box;
+    }
+  }
+  .user-money{
+    background:#fff;
+    padding:10px;
+    p{
+      margin-bottom: 0;
+      font-size:12px;
+      color:#808080;
+      span{
+        color:#FF6C63;
+      }
+    }
+  }
+}
+
+.rule-list{
+  margin-top: 20px;
+  padding:0 10px;
+  dt{
+    font-size:13px;
+    color:#525252;
+  }
+  dd{
+    font-size:12px;
+    color:#a2a2a2;
+    span{
+      color:#222;
+    }
+  }
+}
+.to-record{
+  font-size: 14px;
+  color: #FF635A;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+}
+
+//成功页面
+.bank-card-success {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  height:100%;
+  .info {
+    height: 300px;
+    background: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding-top: 26px;
+  }
+  .button-note {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: calc( 100% - 300px);
+    .btn-wap-normal {
+      width:100%;
+    }
+    span {
+      font-size: 12px;
+      color: #A2A2A2;
+      padding-bottom:30px;
+    }
+  }
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+
+  .input-list {
+    width:100%;
+    border-top:1px solid #F7F7F7;
+    margin-top: 20px;
+    li {
+      font-size:13px;
+      height: 50px;
+      line-height: 50px;
+      color: #525252;
+      label {
+        color: #808080;
+      }
+    }
+
+  }
+}
+
+// 提现记录
+.amount-detail-list{
+  margin-top: 10px;
+}
+.amount-detail-list .box-item dl dt{
+  font-size:18px;
+  color:#525252;
+}
+.amount-detail-list .box-item dl dd{
+  font-size:12px;
+  color:#a2a2a2;
+}
+.amount-detail-list .box-item dl .tip-text{
+  font-size: 12px;
+  color: #F6AA16;
+}
+.amount-detail-list .box-item dl .info-text{
+  font-size: 12px;
+  color: #525252;
+}

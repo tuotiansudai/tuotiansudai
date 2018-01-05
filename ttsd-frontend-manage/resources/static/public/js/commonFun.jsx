@@ -253,6 +253,35 @@ let GetDateStr = function(date,AddDayCount) {
 
     return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
 }
+function CommonLayerTip(option,firstCallback,secondCallback) {
+    layer.closeAll();
+    let defaultOption = {
+        btn:['确定', '取消'],
+        content:$('#turnOnSendCaptcha'),
+        area:['280px', '230px']
+    };
+
+    let optionOk = $.extend({},defaultOption,option);
+    layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        area: optionOk.area,
+        shadeClose: false,
+        skin: 'tip-square-box',
+        btn: optionOk.btn,
+        content: optionOk.content,
+        btn1: function () {
+            firstCallback && firstCallback();
+        },
+        btn2: function () {
+            secondCallback && secondCallback();
+        }
+    });
+}
+
+//为了添加重复的圆圈背景
+var repeatBgSquare=(number=20) => '<i></i>'.repeat(number);
 //中奖纪录滚动
 function scrollList(domName, length,time) {
     var thisFun = this,
@@ -329,4 +358,7 @@ exports.decrypt = decrypt;
 exports.GetDateStr = GetDateStr;
 exports.scrollList = scrollList;
 exports.activityStatus = activityStatus;
+exports.CommonLayerTip = CommonLayerTip;
+exports.repeatBgSquare = repeatBgSquare;
+
 

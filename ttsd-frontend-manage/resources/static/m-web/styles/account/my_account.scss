@@ -1,0 +1,70 @@
+.footer-wap-container {
+  display: flex;
+}
+.account-overview {
+  font-weight: lighter;
+
+  .menu-quick {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height:55px;
+    background: #fff;
+    a {
+      font-size: 16px;
+      color: #525252;
+      position: relative;
+      flex: 1;
+      text-align: center;
+      &:after {
+        display: inline-block;
+        content: '|';
+        color: #C7C7CC;
+        position: absolute;
+        right: 0;
+        top: 3px;
+        font-size: 12px;
+        font-weight: lighter;
+      }
+      &:nth-last-child(1) {
+        &:after {
+          content:''
+        }
+      }
+    }
+  }
+
+  .menu-list {
+    font-size: 16px;
+    color: #525252;
+    li {
+      margin-top:1px;
+      height:55px;
+      background: #fff;
+      a {
+        display: block;
+        line-height: 55px;
+        padding-left: 10px;
+        position: relative;
+        .experience-amount {
+          position: absolute;
+          right: 33px;
+          font-size: 14px;
+          color: #F6AA16;
+        }
+        .fa {
+          position: absolute;
+          right: 10px;
+          top: 13px;
+          color: #C9C9C9;
+          font-size: 25px;
+        }
+      }
+      &:nth-last-child(1) {
+        margin-top:10px;
+        margin-bottom:10px;
+      }
+    }
+  }
+
+}
