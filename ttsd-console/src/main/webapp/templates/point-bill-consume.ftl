@@ -109,7 +109,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if data.hasPreviousPage >
-                            <a href="?index=${data.index-1}&startTime=${startTime!}&endTime=${endTime!}&pointBusinessType=${pointBusinessType!}&channel=${channel!}&minPoint=${minPoint!}&maxPoint=${maxPoint!}&userNameOrMobile=${userNameOrMobile!}"
+                            <a href="?index=${data.index-1}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pointBusinessType=${pointBusinessType!}&channel=${channel!}&minPoint=${(minPoint?c)!}&maxPoint=${(maxPoint?c)!}&userNameOrMobile=${userNameOrMobile!}"
                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
@@ -118,7 +118,7 @@
                     <li><a>${data.index?c}</a></li>
                     <li>
                         <#if data.hasNextPage >
-                            <a href="?index=${data.index+1}&startTime=${startTime!}&endTime=${endTime!}&pointBusinessType=${pointBusinessType!}&channel=${channel!}&minPoint=${minPoint!}&maxPoint=${maxPoint!}&userNameOrMobile=${userNameOrMobile!}"
+                            <a href="?index=${data.index+1}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pointBusinessType=${pointBusinessType!}&channel=${channel!}&minPoint=${(minPoint?c)!}&maxPoint=${(maxPoint?c)!}&userNameOrMobile=${userNameOrMobile!}"
                                aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>

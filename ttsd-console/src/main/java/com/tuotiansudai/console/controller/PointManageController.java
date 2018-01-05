@@ -506,7 +506,7 @@ public class PointManageController {
         modelAndView.addObject("sumChannelPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getChannelPoint()).sum());
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("businessType", businessType);
+        modelAndView.addObject("pointBusinessType", businessType);
         modelAndView.addObject("channel", channel);
         modelAndView.addObject("minPoint", minPoint);
         modelAndView.addObject("maxPoint", maxPoint);

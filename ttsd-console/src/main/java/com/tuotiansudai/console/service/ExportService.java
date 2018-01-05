@@ -560,11 +560,11 @@ public class ExportService {
             row.add(new DateTime(itemData.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(itemData.getOrderId() == null ? "" : String.valueOf(itemData.getOrderId()));
             row.add(StringUtils.isEmpty(itemData.getUserName()) ? "" : itemData.getUserName());
-            row.add(itemData.getMobile());
-            row.add(String.valueOf(itemData.getPoint()));
-            row.add(itemData.getChannel());
-            row.add(String.valueOf(itemData.getChannelPoint()));
-            row.add(String.valueOf(itemData.getSudaiPoint()));
+            row.add(StringUtils.isEmpty(itemData.getMobile()) ? "" : itemData.getMobile());
+            row.add(String.valueOf(itemData.getPoint() * -1));
+            row.add(StringUtils.isEmpty(itemData.getChannel()) ? "" : itemData.getChannel());
+            row.add(String.valueOf(itemData.getChannelPoint() * -1));
+            row.add(String.valueOf(itemData.getSudaiPoint() * -1));
             row.add(itemData.getBusinessType().getDescription());
             rows.add(row);
         }
