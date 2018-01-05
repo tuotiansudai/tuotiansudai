@@ -10,6 +10,21 @@ import java.util.List;
 @Mapper
 @CacheNamespace(implementation = com.tuotiansudai.cache.MybatisRedisCache.class)
 public interface UserPointMapper {
+    enum UserPointSortField {
+        POINT_FIELD_NAME("point"),
+        SUDAI_POINT_FIELD_NAME("sudai_point"),
+        CHANNEL_POINT_FIELD_NAME("channel_point");
+
+        private final String fieldName;
+
+        UserPointSortField(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+    }
 
     @Results(id = "userPointModelMap", value = {
             @Result(id = true, column = "id", property = "id"),
@@ -44,7 +59,8 @@ public interface UserPointMapper {
             " <if test='minChannelPoint != null'> and channel_point &gt;= #{minChannelPoint} </if>",
             " <if test='maxChannelPoint != null'> and channel_point &lt;= #{maxChannelPoint} </if>",
             " </where>",
-            " order by point desc limit #{rowLimit} offset #{rowIndex}",
+            " <if test='sortField != null'> order by ${sortField.fieldName} desc </if>",
+            " limit #{rowLimit} offset #{rowIndex}",
             "</script>"
     })
     List<UserPointModel> list(
@@ -55,9 +71,9 @@ public interface UserPointMapper {
             @Param("maxSudaiPoint") Long maxSudaiPoint,
             @Param("minChannelPoint") Long minChannelPoint,
             @Param("maxChannelPoint") Long maxChannelPoint,
+            @Param("sortField") UserPointSortField sortField,
             @Param("rowIndex") int rowIndex,
             @Param("rowLimit") int rowLimit);
-
 
     @Select({
             "<script>",

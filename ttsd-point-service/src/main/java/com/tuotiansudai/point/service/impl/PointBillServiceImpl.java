@@ -7,7 +7,6 @@ import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.repository.model.PointBillViewDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
@@ -91,7 +90,7 @@ public class PointBillServiceImpl implements PointBillService {
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
         long sudaiPoint = point - channelPoint;
-        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note,userModel.getMobile(),userModel.getUserName()));
+        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note, userModel.getMobile(), userModel.getUserName()));
         userPointMapper.increasePoint(loginName, sudaiPoint, channelPoint, new Date());
     }
 
@@ -153,8 +152,8 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                                String loginNameOrMobile, int index, int pageSize) {
 
 
-        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile,PointBusinessType.getPointConsumeBusinessType());
-        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile, PointBusinessType.getPointConsumeBusinessType(),PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
+        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile, PointBusinessType.getPointConsumeBusinessType());
+        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile, PointBusinessType.getPointConsumeBusinessType(), PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
                 .stream()
                 .map(dto -> new PointBillPaginationItemDataDto(dto)).collect(Collectors.toList());
 
@@ -208,18 +207,22 @@ public class PointBillServiceImpl implements PointBillService {
 
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String channel, Long minPoint, Long maxPoint, int pageNo, int pageSize) {
         Long minTotalPoint = null, maxTotalPoint = null, minSudaiPoint = null, maxSudaiPoint = null, minChannelPoint = null, maxChannelPoint = null;
+        UserPointMapper.UserPointSortField sortField;
         if (StringUtils.isBlank(channel)) {
             minTotalPoint = minPoint;
             maxTotalPoint = maxPoint;
+            sortField = UserPointMapper.UserPointSortField.POINT_FIELD_NAME;
         } else if (channel.equalsIgnoreCase(PointBillService.CHANNEL_SUDAI)) {
             channel = null;
             minSudaiPoint = minPoint;
             maxSudaiPoint = maxPoint;
+            sortField = UserPointMapper.UserPointSortField.SUDAI_POINT_FIELD_NAME;
         } else {
             minChannelPoint = minPoint;
             maxChannelPoint = maxPoint;
+            sortField = UserPointMapper.UserPointSortField.CHANNEL_POINT_FIELD_NAME;
         }
-        List<UserPointModel> userPointModelList = userPointMapper.list(channel, minTotalPoint, maxTotalPoint, minSudaiPoint, maxSudaiPoint, minChannelPoint, maxChannelPoint, (pageNo - 1) * pageSize, pageSize);
+        List<UserPointModel> userPointModelList = userPointMapper.list(channel, minTotalPoint, maxTotalPoint, minSudaiPoint, maxSudaiPoint, minChannelPoint, maxChannelPoint, sortField, (pageNo - 1) * pageSize, pageSize);
         List<UserPointItemDataDto> records = userPointModelList.stream()
                 .map(userPointModel -> {
                     UserModel userModel = userMapper.findByLoginName(userPointModel.getLoginName());
