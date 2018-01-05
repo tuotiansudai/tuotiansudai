@@ -29,7 +29,7 @@
                 <option value="">全部</option>
                 <#list pointBusinessTypeList as item>
                     <option value="${item}"
-                            <#if businessType?? && item = businessType>selected</#if>>${item.description}</option>
+                            <#if pointBusinessType?? && item = pointBusinessType>selected</#if>>${item.description}</option>
                 </#list>
             </select>
         </div>
@@ -51,7 +51,7 @@
                    value="${(maxPoint?c)!}">
         </div>
         <div class="form-group">
-            <label for="control-label">用户名/手机号：</label>
+            <label for="control-label">用户姓名/手机号：</label>
             <input type="text" class="form-control jq-userNameOrMobile" name="userNameOrMobile"
                    value="${userNameOrMobile!}">
         </div>

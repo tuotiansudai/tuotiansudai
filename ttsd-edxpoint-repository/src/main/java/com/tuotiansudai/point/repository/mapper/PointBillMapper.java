@@ -37,7 +37,7 @@ public interface PointBillMapper {
                                                          @Param(value = "channel") String channel,
                                                          @Param(value = "minPoint") Long minPoint,
                                                          @Param(value = "maxPoint") Long maxPoint,
-                                                         @Param(value = "loginNameOrMobile") String loginNameOrMobile,
+                                                         @Param(value = "userNameOrMobile") String userNameOrMobile,
                                                          @Param(value = "pointConsumeBusinessType") List<PointBusinessType> pointConsumeBusinessType,
                                                          @Param(value = "index") int index,
                                                          @Param(value = "pageSize") int pageSize);
@@ -48,7 +48,7 @@ public interface PointBillMapper {
                                             @Param(value = "channel") String channel,
                                             @Param(value = "minPoint") Long minPoint,
                                             @Param(value = "maxPoint") Long maxPoint,
-                                            @Param(value = "loginNameOrMobile") String loginNameOrMobile,
+                                            @Param(value = "userNameOrMobile") String userNameOrMobile,
                                             @Param(value = "pointConsumeBusinessType") List<PointBusinessType> pointConsumeBusinessType);
 
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);

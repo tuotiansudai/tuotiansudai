@@ -192,8 +192,8 @@
             <if test="channel != null and channel != 'SUDAI' and channel !='' and maxPoint != null">
                 and abs(p.channel_point) &lt;= #{maxPoint}
             </if>
-            <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
-                and (p.login_name = #{loginNameOrMobile} or p.mobile = #{loginNameOrMobile})
+            <if test="userNameOrMobile != null and userNameOrMobile != ''">
+                and (p.user_name = #{userNameOrMobile} or p.mobile = #{userNameOrMobile})
             </if>
             <if test="pointConsumeBusinessType != null and pointConsumeBusinessType.size() > 0 ">
                 and business_type IN
@@ -253,8 +253,8 @@
             <if test="channel != null and channel != 'SUDAI' and channel !='' and maxPoint != null">
                 and abs(p.channel_point) &lt;= #{maxPoint}
             </if>
-            <if test="loginNameOrMobile != null and loginNameOrMobile != ''">
-                and (p.login_name = #{loginNameOrMobile} or p.mobile = #{loginNameOrMobile})
+            <if test="userNameOrMobile != null and userNameOrMobile != ''">
+                and (p.user_name = #{userNameOrMobile} or p.mobile = #{userNameOrMobile})
             </if>
             <if test="pointConsumeBusinessType != null and pointConsumeBusinessType.size() > 0 ">
                 and business_type IN

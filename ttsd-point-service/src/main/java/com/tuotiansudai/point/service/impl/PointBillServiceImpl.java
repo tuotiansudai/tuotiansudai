@@ -149,11 +149,11 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                                PointBusinessType businessType,
                                                                                                String channel, Long minPoint,
                                                                                                Long maxPoint,
-                                                                                               String loginNameOrMobile, int index, int pageSize) {
+                                                                                               String userNameOrMobile, int index, int pageSize) {
 
 
-        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile, PointBusinessType.getPointConsumeBusinessType());
-        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, loginNameOrMobile, PointBusinessType.getPointConsumeBusinessType(), PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
+        long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType());
+        List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType(), PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
                 .stream()
                 .map(dto -> new PointBillPaginationItemDataDto(dto)).collect(Collectors.toList());
 
