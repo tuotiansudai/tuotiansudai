@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.dto.OperationDataAgeDataDto;
 import io.swagger.annotations.ApiModelProperty;
 
 public class OperationDataAgeResponseDataDto extends BaseResponseDataDto {
@@ -8,6 +9,14 @@ public class OperationDataAgeResponseDataDto extends BaseResponseDataDto {
     private String name;
     @ApiModelProperty(value = "所占比例", example = "39%")
     private String scale;
+
+    public OperationDataAgeResponseDataDto() {
+    }
+
+    public OperationDataAgeResponseDataDto(OperationDataAgeDataDto operationDataAgeDataDto) {
+        this.name = operationDataAgeDataDto.getName();
+        this.scale = operationDataAgeDataDto.getScale();
+    }
 
     public String getName() {
         return name;
