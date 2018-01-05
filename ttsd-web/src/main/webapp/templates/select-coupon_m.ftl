@@ -1,14 +1,12 @@
 <div class="my-account-content amount-overview show-page" id="couponList" style="display: none;">
+    <div class="m-header"><em id="iconCoupon" class="icon-left"><i class="fa fa-angle-left"></i></em>优惠券 <em id="noUse">不使用</em></div>
     <div class="select-btn">
         <p class="to-coupon">
             <a href="exchange-coupon.ftl">
                 <i class="fa fa-plus-circle"></i>兑换码兑换
             </a>
         </p>
-        <p class="info-list">
-            <a href="use-rule.ftl">使用规则？</a>
-            <a href="buy-loan.ftl">暂时不使用</a>
-        </p>
+
     </div>
     <ul class="coupon-list-container">
 <#if coupons?has_content>

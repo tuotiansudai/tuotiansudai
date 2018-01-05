@@ -1,5 +1,15 @@
 .account-summary {
   height:200px;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    i{
+      font-size: 30px;
+      color: #fff;
+    }
+  }
   .collection {
     padding-top: 5px;
   }
@@ -106,9 +116,7 @@
 }
 //項目詳情
 .project-detail {
-  position: absolute;
   width: 100%;
-  top: 50px;
   height: 100%;
   background: #fff;
 }
@@ -701,7 +709,38 @@
 }
 
 
-
+.input-list #couponText{
+  font-size: 16px;
+  color: #FF473C;
+}
+.to-coupon {
+  margin-bottom: 0;
+}
+.select-btn {
+  padding-bottom: 0;
+}
+.m-header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  background: #FF473C;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: 2px;
+    i{
+      font-size: 30px;
+    }
+  }
+  #noUse {
+    float: right;
+    padding-right: 10px;
+    font-size: 14px;
+  }
+}
 
 
 

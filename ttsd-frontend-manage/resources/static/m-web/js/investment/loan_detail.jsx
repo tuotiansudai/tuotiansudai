@@ -4,6 +4,7 @@ require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
 //require('mWebJsModule/anxin_agreement_pop');
 require('webJs/plugins/autoNumeric');
+let loanId = $('input[name="loanId"]',$buyDetail).val();
 var tpl = require('art-template/dist/template');
 let $loanDetail = $('#loanDetail'),
     $buyDetail = $('#buyDetail'),
@@ -63,10 +64,8 @@ $recordTop.find('span').on('click',function() {
 
 let $btnWapNormal = $('.btn-wap-normal',$buyDetail),
     $amountInputElement = $('.input-amount',$buyDetail),
-    $minAmount = $('#minAmount',$buyDetail),//起投金额
-    $leftInvest = $('#leftInvest');//剩余可投
-let minAmount = Number($minAmount.val());
-let leftInvest = Number($leftInvest.val()/100);//剩余可投金额
+    minAmount = parseInt($amountInputElement.data('min-invest-amount')),//起投金额
+    leftInvest = parseInt($amountInputElement.data('amount-need-raised'));//剩余可投
 
 $buyDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
@@ -86,16 +85,14 @@ function getInvestAmount() {
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
-   // pushHistory('#projectDetail');
     location.hash='projectDetail'
 })
 
 $('#apply_materal_btn').click(function () {
-    //pushHistory('#applyMaterial');
-   // $('#apply_material').show()
+    $('#apply_material').show()
 })
 $('#btn-detail-toggle').click(function () {
-    //$('#apply_material').hide();
+    $('#apply_material').hide();
 })
 
     //交易记录ajax请求
@@ -161,65 +158,43 @@ $('#btn-detail-toggle').click(function () {
         )
     }
 
-
-
-
-//监控浏览器返回事件
-// window.addEventListener("popstate", function(e) {
-//    location.reload();
-//
-// }, false);
-// function pushHistory(hash) {
-//     var state = {
-//         title: "title",
-//         url: 'hash'
-//     };
-//     window.history.pushState(state, "", hash);
-//     location.reload()
-// }
 //转让购买详情
 //承接记录
 $('#look_continue_record').click(function () {
-    // pushHistory();
-    // $('#loanDetail').hide();
-    // $('.buy-transfer').hide();
-    // $('#continue_record').show();
+    $('#loanDetail').hide();
+    $('.buy-transfer').hide();
+    $('#continue_record').show();
 })
 //回款计划
 $('#look_repay_plan').click(function () {
-   //  pushHistory();
-   //  $('.buy-transfer').hide();
-   //  $('#cotinue_record').hide();
-   // $('#loanDetail').hide();
-   //  $('#repay_plan').show();
+    $('.buy-transfer').hide();
+    $('#cotinue_record').hide();
+   $('#loanDetail').hide();
+    $('#repay_plan').show();
 })
-//立即投资
-// $('#to_buy_transfer').click(function () {
-//    pushHistory('#buyDetail');
-//
-//     }
-// );
+
 //优惠券
+if($('#couponText').val() == '无可用优惠券'){
+    $('#couponText').css('color','#64646D')
+}
 let $selectCoupon = $('#select_coupon');
 $selectCoupon.on('click',function () {
+    if($('#couponText').val() == '无可用优惠券'){
+        return;
+    }
+    let value = getInvestAmount()/100;
+    $('.to-use_coupon').each(function (index,item) {
+        $(item).addClass('disabled');
+      if($(item).data('min-invest-amount') <= value){
+          $(item).removeClass('disabled');
+      }
+
+    })
 
     location.hash='selectCoupon'
 
 })
-if(location.hash == ''){
-    $loanDetail.show().siblings('.show-page').hide();
-
-}else if(location.hash == '#projectDetail'){
-
-    $projectDetail.show().siblings('.show-page').hide();
-
-}else if(location.hash == '#buyDetail'){
-    $buyDetail.show().siblings('.show-page').hide();
-
-}else if(location.hash == '#selectCoupon'){
-    $('#couponList').show().siblings('.show-page').hide();
-}
-$(window).on('hashchange',function () {
+function validateHash() {
     if(location.hash == ''){
         $loanDetail.show().siblings('.show-page').hide();
 
@@ -233,8 +208,20 @@ $(window).on('hashchange',function () {
     }else if(location.hash == '#selectCoupon'){
         $('#couponList').show().siblings('.show-page').hide();
     }
+}
+validateHash();//根据hash值让对应页面显示隐藏
+$(window).on('hashchange',function () {
+    validateHash();
 })
-
+//判断预期收益
+var calExpectedInterest = function() {
+    commonFun.useAjax({
+        url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+        type: 'GET',
+    },function(amount) {
+        $("#expectedEarnings").text(amount);
+    });
+};
 
 
 //立即使用优惠券
@@ -246,37 +233,57 @@ let userCouponId,
     couponEndTime,
     dataCouponDesc;
 //默认选择的优惠券
-let id = '219776';
+let couponId = $('#couponId').val();
 $('.to-use_coupon').each(function (index,item) {
-    if($(item).data('user-coupon-id') == id){
+    if($(item).data('user-coupon-id') == couponId){
         $(item).addClass('selected');
         return;
     }
 })
 $('.to-use_coupon').click(function () {
     let _self = $(this);
+    if(_self.hasClass('disabled')){
+        return;
+    }else if(_self.hasClass('selected')){
+        _self.removeClass('selected');//如果已经选择，则取消选择
+        $('#couponId').val('');
+        return;
+    }
     $('.to-use_coupon').each(function (index,item) {
         $(item).removeClass('selected');
+
     })
+
+
     _self.addClass('selected');
     $('#couponId').val(_self.data('user-coupon-id'));
-    $couponInfo.attr('min-invest-amount',_self.data('min-invest-amount'));
-
-    $couponInfo.attr('coupon-desc',_self.data('coupon-desc'));
     location.hash='buyDetail';
-    userCouponId = $couponInfo.attr('user-coupon-id'),
-        minInvestAmount = $couponInfo.attr('min-invest-amount'),
-        dataCouponDesc = $couponInfo.attr('coupon-desc');
 
-    $('#couponText').val(dataCouponDesc).css('color','#FF473C');
+    $('#couponText').val(_self.data('coupon-desc'));
 
+})
+//优惠券后退按钮
+$('#iconCoupon').click(function () {
+    location.hash='buyDetail';
+})
+//不使用优惠券
+$('#noUse').click(function () {
+    $('.to-use_coupon').each(function (index,item) {
+        $(item).removeClass('selected');
+        $('#couponText').val('请选择优惠券');
+        $('#couponId').val('');
+
+    })
+    location.hash='buyDetail';
 })
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
         let value = getInvestAmount();
-        console.log(value/100 >leftInvest)
-         if(value/100 <minAmount){
+        calExpectedInterest();
+        if(value/100  == 0){
+            $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
+        } else if(value/100 <minAmount){
             $btnWapNormal.prop('disabled',true).text('输入金额应大于起投金额');
         }else if(value/100 >leftInvest){
             $btnWapNormal.prop('disabled',true).text('输入金额应小于项目可投金额');
@@ -285,17 +292,71 @@ $amountInputElement
             $btnWapNormal.prop('disabled',false).text('立即投资');
         }
 
+
     })
+//立即投资提交表单
+let noPasswordInvest = $amountInputElement.data('no-password-invest');//是否开通免密支付
+let isInvestor = 'INVESTOR' === $buyDetail.data('user-role');
+let isAuthentication = 'USER' === $buyDetail.data('authentication');
+let $investForm = $('#investForm');//立即投资表单
 
-if($('#investForm').length>0){
-    globalFun.$('#investForm').onsubmit = function() {
-        $.when(commonFun.isUserLogin())
-            .done(function () {
-                //提交表单
-            })
-            .fail(function () {
-                //跳到登录页
-            })
+$('#investSubmit').on('click', function(event) {
+    event.preventDefault();
+    let investAmount = getInvestAmount()/100;
+    $.when(commonFun.isUserLogin())
+        .done(function() {
+            if (isInvestor) {
+                let accountAmount = parseInt($amountInputElement.data("user-balance")) || 0;
+                if (investAmount > accountAmount) {
+                    commonFun.CommonLayerTip({
+                        btn: ['确定','取消'],
+                        area:['280px', '160px'],
+                        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
+                    },function() {
+                        location.href = '/recharge';//去充值
+                    })
+                     return false;
+                }
+                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                return;
+            }
+            if (isAuthentication) {
+                location.href = '/m/register/account';//去实名认证
+            }
+        })
+        .fail(function() {
+            //判断是否需要弹框登陆
+            location.href='/m/login'
+        });
+});
 
-    }
+//发送投资提交请求
+function sendSubmitRequest(){
+    $amountInputElement.val($amountInputElement.autoNumeric("get"));//格式化还原金额
+    commonFun.useAjax({
+        url: '/no-password-invest',
+        data: $investForm.serialize(),
+        type: 'POST'
+    },function(response) {
+
+        let data = response.data;
+        if (data.status) {
+            console.log(data)
+            location.href = "/m/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
+        }  else {
+            showInputErrorTips(data.message);
+        }
+    });
 }
+//点击购买详情后退按钮
+$('#iconBuy',$buyDetail).click(function () {
+    location.hash='';
+});
+//点击直投详情页后退按钮进入列表页
+$('#iconDetail',$loanDetail).click(function () {
+    location.href='/m/loan-list';
+});
+//点击项目详情进入直投项目详情页
+$('#iconProjectDetail',$projectDetail).click(function () {
+    location.hash='';
+});

@@ -68,7 +68,7 @@ function getInvestAmount() {
 
 function validateInvestAmount() {
     var amount = getInvestAmount();
-    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
+    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;//可投金额
     return amount > 0 && amountNeedRaised >= amount;
 };
 //投资表单请求以及校验
@@ -136,10 +136,8 @@ function investSubmit(){
         return false;
     }
 }
-
 //发送投资提交请求
 function sendSubmitRequest(){
-
     commonFun.useAjax({
         url: '/no-password-invest',
         data: $investForm.serialize(),
@@ -160,9 +158,8 @@ function sendSubmitRequest(){
         }
     });
 }
-
 //is tip B1 or tip B2?
-function markNoPasswordRemind(){
+function markNoPasswordRemind(){debugger
     if (!noPasswordRemind) {
         commonFun.useAjax({
             url: '/no-password-invest/mark-remind',
