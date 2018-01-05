@@ -35,7 +35,7 @@
         <table class="table table-bordered table-hover " style="width:80%;">
             <thead>
             <tr>
-                <th>用户名</th>
+                <th>用户姓名</th>
                 <th>手机号</th>
                 <th>积分渠道</th>
                 <th>导入状态</th>

@@ -121,7 +121,7 @@ public class ChannelPointServiceImpl {
                 index++;
             }
             if (details.size() > 1000) {
-                return new ChannelPointDataDto(false, "每次数据应该小于1000条");
+                return new ChannelPointDataDto(false, "每次数据应该小于等于1000条");
             }
             ChannelPointModel channelPointModel = new ChannelPointModel(originalFileName, 0L, 0L, loginName);
             channelPointMapper.create(channelPointModel);

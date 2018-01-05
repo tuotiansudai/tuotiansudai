@@ -485,7 +485,7 @@ public class PointManageController {
             return new ChannelPointDataDto(false, e.getMessage());
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
-            return new ChannelPointDataDto(false, "內部程序异常");
+            return new ChannelPointDataDto(false, "文件导入失败，请重新尝试");
         }
     }
 
