@@ -11,6 +11,7 @@ spike.py
 **/.DS_Store
 **/*.key.p8
 **/*.crt
+**/*.bak
 **/war/
 .gradle
 .python-version
