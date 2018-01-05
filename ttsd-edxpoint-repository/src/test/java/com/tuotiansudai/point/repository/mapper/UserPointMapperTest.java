@@ -52,6 +52,12 @@ public class UserPointMapperTest {
         assertEquals(fakeUserPointModel.getChannelPoint(), userPointModel.getChannelPoint());
         assertEquals(fakeUserPointModel.getChannel(), userPointModel.getChannel());
         assertEquals(fakeUserPointModel.getLoginName(), userPointModel.getLoginName());
+        UserPointModel userPointModel1 = userPointMapper.lockByLoginName(fakeUserPointModel.getLoginName());
+        assertEquals(fakeUserPointModel.getPoint(), userPointModel1.getPoint());
+        assertEquals(fakeUserPointModel.getSudaiPoint(), userPointModel1.getSudaiPoint());
+        assertEquals(fakeUserPointModel.getChannelPoint(), userPointModel1.getChannelPoint());
+        assertEquals(fakeUserPointModel.getChannel(), userPointModel1.getChannel());
+        assertEquals(fakeUserPointModel.getLoginName(), userPointModel1.getLoginName());
     }
 
     @Test
