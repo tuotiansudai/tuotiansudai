@@ -40,6 +40,7 @@ public interface UserPointMapper {
             @Param("loginName") String loginName);
 
 
+    @ResultMap("userPointModelMap")
     @Options(useCache = false)
     @Select("select * from user_point where login_name = #{loginName} for update")
     UserPointModel lockByLoginName(
