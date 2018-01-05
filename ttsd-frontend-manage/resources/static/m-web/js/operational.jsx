@@ -1,0 +1,1 @@
+require('mWebStyle/operational.scss');
