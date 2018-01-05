@@ -56,7 +56,7 @@
         <li><a href="/m">首页</a></li>
         <li><a href="/m/loan-list">投资</a></li>
         <li><a href="/account">我的账户</a></li>
-        <li><a href="/register">登录/注册</a></li>
+        <li><a href="/login/entry">登录/注册</a></li>
         <li><a href="/register">下载APP</a></li>
     </ul>
 </div>
