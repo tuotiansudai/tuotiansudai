@@ -70,7 +70,7 @@ public class FrontCallbackController {
                 InvestModel investModel = investService.findById(Long.valueOf(params.get("order_id")));
                 LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
-                modelAndView.addObject("loan", loanModel.getName());
+                modelAndView.addObject("loanName", loanModel.getName());
                 modelAndView.addObject("loanId", loanModel.getId());
             }
 
