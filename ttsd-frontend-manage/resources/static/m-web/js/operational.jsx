@@ -18,11 +18,21 @@ import Swiper from 'swiper';
     doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
 
-
-var mySwiper = new Swiper('.swiper-container', {
+let mySwiper = new Swiper('.swiper-container', {
     direction : 'vertical',
-})
+    width: window.screen.width,
+    height: document.body.clientHeight - 44,
+});
 
-var mySwiper = new Swiper('.swiper-container', {
-    direction : 'vertical',
-})
+
+$('#goBack_experienceAmount').on('click',() => {
+    history.go(-1);
+});
+
+
+$('.side_to_page').click(function(e){
+    let index = e.currentTarget.dataset.index;
+    index = index == 4 ? 0 : index;
+    mySwiper.slideTo(index, 500, false);//切换到第一个slide，速度为1秒
+});
+
