@@ -27,9 +27,18 @@
 .swiper-slide {
   position: relative;
   width: 100%;
+  .data_dealine {
+    position: absolute;
+    top: .2rem;
+    right: .4rem;
+    margin-right: .2rem;
+    font-size: .6rem;
+    line-height: .3rem;
+    color: #fff;
+  }
   .safe_operational_text {
     position: absolute;
-    top: .5rem;
+    top: 1rem;
     left: 4.55rem;
     width: 9.1rem;
     font-size: 1rem;
@@ -38,33 +47,37 @@
     color: #fff;
     font-weight: normal;
   }
-  .safe_day_wrapper {
+  .safe_day_wrapper_center {
     position: absolute;
     top: 2.65rem;
-    left: 5rem;
+    width: 100%;
+    text-align: center;
     font-size: 0;
-    .safe_day {
+    .safe_day_wrapper {
       display: inline-block;
-      margin-right: .4rem;
-      width: 1.5rem;
-      height: 1.9rem;
-      line-height: 1.9rem;
-      text-align: center;
-      font-size: 1.5rem;
-      color: #ff473c;
-      background: #fff;
-      border-radius: .1rem;
-    }
-    .safe_day_unit {
-      display: inline-block;
-      width: 1.5rem;
-      height: 1.9rem;
-      line-height: 1.9rem;
-      margin-left: .2rem;
-      font-size: 1.5rem;
-      color: #fff;
-      font-weight: normal;
-      vertical-align: top;
+      .safe_day {
+        display: inline-block;
+        margin-right: .4rem;
+        width: 1.5rem;
+        height: 1.9rem;
+        line-height: 1.9rem;
+        text-align: center;
+        font-size: 1.5rem;
+        color: #ff473c;
+        background: #fff;
+        border-radius: .1rem;
+      }
+      .safe_day_unit {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.9rem;
+        line-height: 1.9rem;
+        margin-left: .2rem;
+        font-size: 1.5rem;
+        color: #fff;
+        font-weight: normal;
+        vertical-align: top;
+      }
     }
   }
   .grand_total {
@@ -228,7 +241,7 @@
     color: #41b4e3;
     font-weight: normal;
   }
-  #main {
+  #main_part1 {
     width: 100%;
     height: 5rem;
   }
@@ -241,5 +254,10 @@
     .chart1_title_strong {
       color: #ff5400;
     }
+  }
+  #main_part2 {
+    width: 100%;
+    height: 5rem;
+    margin-top: 1rem;
   }
 }
