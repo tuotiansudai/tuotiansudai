@@ -7,6 +7,16 @@
     </div>
     <div class="swiper-container">
         <div class="swiper-wrapper">
+            <div class="swiper-item swiper-slide2 swiper-slide">
+                <div class="part-2-topBar"></div>
+                <div class="total_trade_text">累计交易笔数</div>
+                <div class="text_underLine_blue"></div>
+                <div class="total_trade_count">11,111笔</div>
+                <div class="unit_symbol">[单位:万元]</div>
+                <div id="main"></div>
+                <div class="chart1_title">近半年<span class="chart1_title_strong">标的投资数据</span>统计</div>
+                <#--<div id="main_part2"></div>-->
+            </div>
             <div class="swiper-item swiper-slide1 swiper-slide">
                 <div class="safe_operational_text">拓天速贷已安全运营</div>
                 <div class="safe_day_wrapper">
@@ -38,7 +48,6 @@
                     <div>互联网金融信息服务平台</div>
                 </div>
             </div>
-            <div class="swiper-item swiper-slide" style="background: yellow;height: 30.2rem;width: 100%">slider3</div>
         </div>
     </div>
 </div>

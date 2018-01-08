@@ -27,11 +27,9 @@
 .swiper-slide {
   position: relative;
   width: 100%;
-  background: url("../images/operational_bg1.png") no-repeat;
-  background-size: cover;
   .safe_operational_text {
     position: absolute;
-    top: 2.6rem;
+    top: .5rem;
     left: 4.55rem;
     width: 9.1rem;
     font-size: 1rem;
@@ -42,8 +40,7 @@
   }
   .safe_day_wrapper {
     position: absolute;
-    width: 100%;
-    top: 4.75rem;
+    top: 2.65rem;
     left: 5rem;
     font-size: 0;
     .safe_day {
@@ -72,7 +69,7 @@
   }
   .grand_total {
     position: absolute;
-    top: 7rem;
+    top: 4.9rem;
     width: 100%;
     .grand_total_icon {
       margin-left: 1.5rem;
@@ -108,7 +105,7 @@
   }
   .earn_total {
     position: absolute;
-    top: 17.85rem;
+    top: 15.2rem;
     width: 100%;
     text-align: center;
     .earn_total_icon {
@@ -153,11 +150,16 @@
     background-size: contain;
   }
 }
-
+.swiper-slide1 {
+  background: url("../images/operational_bg1.png") no-repeat;
+  background-size: cover;
+}
 .swiper-slide5 {
+  background: url("../images/operational_bg1.png") no-repeat;
+  background-size: cover;
   .tuotian_logo {
     position: absolute;
-    top: 7.675rem;
+    top: 6rem;
     left: 1.6rem;
     width: 17.3rem;
     height: 10.425rem;
@@ -182,5 +184,62 @@
     height: 1.5rem;
     background: url("../images/button_up_arrow.png") no-repeat;
     background-size: contain;
+  }
+}
+
+.swiper-slide2 {
+  width: 100%;
+  background: #fff;
+  .part-2-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-2-topBar.png") no-repeat;
+    background-size: contain;
+  }
+  .total_trade_text {
+    margin-top: 1.25rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #019bd9;
+    font-weight: normal;
+  }
+  .text_underLine_blue {
+    margin: .25rem auto .1rem auto;
+    width: 4.525rem;
+    height: .2rem;
+    background: url("../images/text_underLine_blue.png") no-repeat;
+    background-size: contain;
+  }
+  .total_trade_count {
+    width: 100%;
+    line-height: 1rem;
+    font-size: 1rem;
+    color: #ff5400;
+    font-weight: normal;
+    text-align: center;
+  }
+  .unit_symbol {
+    text-align: right;
+    margin-right: 1.3rem;
+    margin-bottom: 1rem;
+    font-size: .5rem;
+    color: #41b4e3;
+    font-weight: normal;
+  }
+  #main {
+    width: 100%;
+    height: 5rem;
+  }
+  .chart1_title {
+    margin-top: -1em;
+    text-align: center;
+    font-size: .6rem;
+    color: #1691e8;
+    font-weight: normal;
+    .chart1_title_strong {
+      color: #ff5400;
+    }
   }
 }
