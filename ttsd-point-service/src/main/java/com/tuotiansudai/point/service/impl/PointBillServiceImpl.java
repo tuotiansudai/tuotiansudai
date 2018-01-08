@@ -151,6 +151,17 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                                Long maxPoint,
                                                                                                String userNameOrMobile, int index, int pageSize) {
 
+        if (startTime == null) {
+            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+        } else {
+            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        }
+
+        if (endTime == null) {
+            endTime = CalculateUtil.calculateMaxDate();
+        } else {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
 
         long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType());
         List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType(), PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
