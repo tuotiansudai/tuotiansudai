@@ -101,4 +101,20 @@
     </div>
 
 </div>
+<div class="loan-list">
+<div class="footer-wap-container">
+    <a class="menu-home" href="/m">
+        <i></i>
+        <span>首页</span>
+    </a>
+    <a class="menu-invest current" href="/m/loan-list">
+        <i></i>
+        <span>投资</span>
+    </a>
+    <a class="menu-my">
+        <i></i>
+        <span>我的</span>
+    </a>
+</div>
+</div>
 </@global.main>

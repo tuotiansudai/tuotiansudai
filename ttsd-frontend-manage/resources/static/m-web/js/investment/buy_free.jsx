@@ -1,13 +1,6 @@
 require('mWebStyle/investment/buy_free.scss');
-require('mWebJsModule/anxin_agreement_pop');
 let commonFun = require('publicJs/commonFun');
 require('webJs/plugins/autoNumeric');
-
-let $applyTransfer = $('#applyTransfer'),
-    $btnWapNormal = $('.btn-wap-normal',$applyTransfer),
-    $amountInputElement = $('.input-amount',$applyTransfer);
-
-$applyTransfer.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
 $amountInputElement.autoNumeric('init');
 
@@ -22,41 +15,17 @@ function getInvestAmount() {
     return amount;
 }
 
-function tipNotice() {
-
-    layer.tips('建议金额:1,000,000.00~1,000,000.49元', '.input-amount', {
-        tips: [1, '#F6AA16'],
-        time: 0,
-        maxWidth : 250
-    });
-
-    let $tips = $('.layui-layer-tips');
-    $tips.css({'top':$tips.offset().top + 50});
-}
-
-$amountInputElement
-    .on('keyup',function() {
-
-        let value = getInvestAmount();
-        if(/^(\d){4,}$/.test(value)) {
-            $btnWapNormal.prop('disabled',false);
-        } else {
-            $btnWapNormal.prop('disabled',true);
-        }
+let $confirmInvest = $('#countDownBtn');
+commonFun.countDownLoan({
+    btnDom:$confirmInvest,
+    time:3,
+    textCounting:'S',
+    isAfterText:'确定'
+},function () {
+    $confirmInvest.on('click',function () {
+        location.href='/m'
     })
-    .on('focus',function() {
-        tipNotice();
-    })
-    .on('focusout',function() {
-        layer.closeAll();
-    });
-if($('#investForm').length>0){
-    globalFun.$('#investForm').onsubmit = function() {
-
-
-    }
-}
-
+})
 
 
 
