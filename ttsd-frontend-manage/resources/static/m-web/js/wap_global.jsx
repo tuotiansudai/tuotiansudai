@@ -12,9 +12,6 @@ $('.footer-wap-container').on('click', function () {
     let $this = $(this);
     location.href = $this.data('url');
 });
-$('.menu-invest').on('click',function () {
-    alert(9)
-});
 
 (function (doc, win) {
     var docEl = doc.documentElement,

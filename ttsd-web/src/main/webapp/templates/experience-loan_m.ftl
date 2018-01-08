@@ -144,7 +144,7 @@
         </div>
     </div>
     <div class="button-note">
-        <a href="/m" class="btn-wap-normal next-step">确定</a>
+        <a href="/m/" class="btn-wap-normal next-step">确定</a>
     </div>
 </div>
 </@global.main>
