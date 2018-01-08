@@ -171,8 +171,18 @@ commonFun.useAjax({
         dom += `<div class="safe_day">${dataStr.charAt(i)}</div>`
     }
     $('.safe_day_wrapper').prepend(dom);
-    $('#grand_total_amount').html(data.tradeAmount);
-    $('#earn_total_amount').html(data.totalInterest);
+    $('#grand_total_amount').html(fmoney(data.tradeAmount,2));
+    $('#earn_total_amount').html(fmoney(data.totalInterest,2));
 });
 
 
+function fmoney(s, n) {
+    n = n > 0 && n <= 20 ? n : 2;
+    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+    let t = "";
+    for (let i = 0; i < l.length; i++) {
+        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+    }
+    return t.split("").reverse().join("") + "." + r;
+}
