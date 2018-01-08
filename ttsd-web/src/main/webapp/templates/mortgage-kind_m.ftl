@@ -158,8 +158,12 @@
                     <dt>${loanTitle.title}</dt>
                     <dd>
                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                        <img src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
+                        <a href="${commonStaticServer}${title}" data-group="animal" class="js-img-viwer" data-group="0">
+                            <img src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
+                        </a>
+
                     </#list>
+
                     </dd>
                 </dl>
                 </#if>

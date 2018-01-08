@@ -44,22 +44,22 @@
 </head>
 <body>
 
-<div class="nav-wap-container">
-    <div class="img-top">
-        <div class="logo">
-            <a href="/m/" class="logo-bg"></a>
-        </div>
-        <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
-    </div>
+<#--<div class="nav-wap-container">-->
+    <#--<div class="img-top">-->
+        <#--<div class="logo">-->
+            <#--<a href="/m/" class="logo-bg"></a>-->
+        <#--</div>-->
+        <#--<i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>-->
+    <#--</div>-->
 
-    <ul id="TopMainMenuList" class="nav-menu">
-        <li><a href="/m">首页</a></li>
-        <li><a href="/m/loan-list">投资</a></li>
-        <li><a href="/account">我的账户</a></li>
-        <li><a href="/login/entry">登录/注册</a></li>
-        <li><a href="/register">下载APP</a></li>
-    </ul>
-</div>
+    <#--<ul id="TopMainMenuList" class="nav-menu">-->
+        <#--<li><a href="/m">首页</a></li>-->
+        <#--<li><a href="/m/loan-list">投资</a></li>-->
+        <#--<li><a href="/account">我的账户</a></li>-->
+        <#--<li><a href="/register">登录/注册</a></li>-->
+        <#--<li><a href="/register">下载APP</a></li>-->
+    <#--</ul>-->
+<#--</div>-->
 
 <div class="main-frame-wap" id="mainFrameWap">
     <#nested>
