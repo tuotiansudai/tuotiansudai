@@ -2,6 +2,8 @@ require('mWebStyle/investment/experience_loan.scss');
 require('mWebStyle/investment/loan_detail.scss');
 require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
+require('mWebJs/plugins/smartphoto/smartphoto.min.css');
+let smartPhoto = require('mWebJs/plugins/smartphoto/jquery-smartphoto.min.js');
 //require('mWebJsModule/anxin_agreement_pop');
 require('webJs/plugins/autoNumeric');
 let loanId = $('input[name="loanId"]',$buyDetail).val();
@@ -89,7 +91,7 @@ $('#to_project_detail').on('click',function () {
 })
 
 $('#apply_materal_btn').click(function () {
-    $('#apply_material').show()
+    $('#apply_material').show();
 })
 $('#btn-detail-toggle').click(function () {
     $('#apply_material').hide();
@@ -362,4 +364,10 @@ $('#iconProjectDetail',$projectDetail).click(function () {
 });
 $('#clearFont').click(function () {
     $amountInputElement.val('');
+});
+//项目材料图片预览
+$(function(){
+    $(".js-img-viwer").smartPhoto({
+        nav:false
+    });
 });
