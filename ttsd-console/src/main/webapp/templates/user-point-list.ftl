@@ -64,7 +64,7 @@
                     <td>${userPointItem.point!''}</td>
                     <td>${userPointItem.totalPoint!''}</td>
                     <td>
-                        <a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${userPointItem.totalPoint!''}&point=${userPointItem.point!''}">查看明细</a>
+                        <a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${(userPointItem.totalPoint?string.computer)!''}&point=${(userPointItem.point?string.computer)!''}">查看明细</a>
                     </td>
                 </tr>
                 </#list>
@@ -75,7 +75,7 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <div><span class="bordern">总共${count}条,每页显示${pageSize}条</span></div>
+            <div><span class="bordern">总共${count?string.computer}条,每页显示${pageSize?string.computer}条</span></div>
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >

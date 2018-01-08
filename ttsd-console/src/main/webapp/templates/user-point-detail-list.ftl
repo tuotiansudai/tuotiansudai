@@ -42,20 +42,20 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <div><span class="bordern">总共${count}条,每页显示${pageSize}条</span></div>
+            <div><span class="bordern">总共${count?string.computer}条,每页显示${pageSize?string.computer}条</span></div>
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point}&totalPoint=${totalPoint}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${(point?string.computer)!}&totalPoint=${(totalPoint?string.computer)!}&index=${(index-1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span></a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${index?string.computer}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point}&totalPoint=${totalPoint}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${(point?string.computer)!}&totalPoint=${!totalPoint?string.computer)!}&index=${(index+1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
