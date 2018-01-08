@@ -31,7 +31,6 @@
         <a href="/point-manage/channel-point-detail/${channelPointId}" class="btn btn-sm btn-default">重置</a>
     </form>
     <div class="table-responsive">
-        <label for="control-label">导入人数: ${sumHeadCount}</label>
         <table class="table table-bordered table-hover " style="width:80%;">
             <thead>
             <tr>
