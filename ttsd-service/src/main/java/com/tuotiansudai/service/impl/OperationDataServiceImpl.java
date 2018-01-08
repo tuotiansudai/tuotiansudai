@@ -51,10 +51,6 @@ public class OperationDataServiceImpl implements OperationDataService {
     @Autowired
     private LoanRepayMapper loanRepayMapper;
 
-    @Autowired
-    private OperationDataService operationDataService;
-
-
     private static final String CHART_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:chart:{0}";
     private static final String TABLE_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:table:{0}";
     private static final String SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:scale:gender:{0}";
@@ -106,7 +102,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
         operationDataDto.setUsersCount(userMapper.findUsersCount());
 
-        operationDataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest(new Date())));
+        operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(new Date())));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         operationDataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityDataDto());
@@ -137,7 +133,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                 REDIS_OPERATION_DATA_MONTH)));
         operationDataDto.setMoney(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
                 REDIS_OPERATION_DATA_MONTH_AMOUNT)));
-        operationDataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest(endDate)));
+        operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
         operationDataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
@@ -268,7 +264,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Override
     public List<OperationDataAgeDataDto> convertMapToOperationDataAgeDataDto() {
-        Map<String, String> ageDistributionMap = operationDataService.findAgeDistributionByAge(new Date());
+        Map<String, String> ageDistributionMap = findAgeDistributionByAge(new Date());
         Set<Map.Entry<String, String>> ageDistributionEntries = ageDistributionMap.entrySet();
         List<OperationDataAgeDataDto> operationDataAgeDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> ageDistributionEntry : ageDistributionEntries) {
@@ -282,7 +278,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Override
     public List<OperationDataInvestCityDataDto> convertMapToOperationDataInvestCityDataDto() {
-        Map<String, String> investCityListMap = operationDataService.findCountInvestCityScaleTop3(new Date());
+        Map<String, String> investCityListMap = findCountInvestCityScaleTop3(new Date());
         Set<Map.Entry<String, String>> investCityEntries = investCityListMap.entrySet();
         List<OperationDataInvestCityDataDto> operationDataInvestCityDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> investCityEntry : investCityEntries) {
@@ -297,7 +293,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Override
     public List<OperationDataInvestAmountDataDto> convertMapToOperationDataInvestAmountDataDto() {
-        Map<String, String> investAmountMap = operationDataService.findInvestAmountScaleTop3(new Date());
+        Map<String, String> investAmountMap = findInvestAmountScaleTop3(new Date());
         Set<Map.Entry<String, String>> investAmountEntries = investAmountMap.entrySet();
         List<OperationDataInvestAmountDataDto> operationDataInvestAmountDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> investAmountEntry : investAmountEntries) {
