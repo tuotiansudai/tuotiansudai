@@ -43,4 +43,9 @@ public class LoginController {
         Captcha captcha = this.captchaHelper.getCaptcha(request.getSession().getId(), captchaHeight, captchaWidth, flush);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
     }
+
+    @RequestMapping(value = "/entry", method = RequestMethod.GET)
+    public ModelAndView userEntry(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+        return new ModelAndView("/login_m", "redirect", redirect);
+    }
 }
