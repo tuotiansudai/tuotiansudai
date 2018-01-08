@@ -360,3 +360,6 @@ $('#iconDetail',$loanDetail).click(function () {
 $('#iconProjectDetail',$projectDetail).click(function () {
     location.hash='';
 });
+$('#clearFont').click(function () {
+    $amountInputElement.val('');
+});

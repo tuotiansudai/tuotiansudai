@@ -741,6 +741,17 @@
     font-size: 14px;
   }
 }
-
+.button-note {
+  a {
+    &.count-downing {
+      background: #C9C9C9;
+      border: 1px solid #C9C9C9;
+    }
+  }
+}
+.clear-font i {
+  font-weight: normal!important;
+  font-size: 16px!important;
+}
 
 

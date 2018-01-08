@@ -67,6 +67,7 @@
                        data-auto-invest-on="${loan.investor.autoInvest?c}"
                        data-user-balance="${(loan.investor.balance/100)?string.computer}"
                        data-amount-need-raised="${(loan.amountNeedRaised/100)?string.computer}" name="price" class="input-amount" placeholder="${loan.minInvestAmount}元起投">
+                <em class="clear-font"><i id="clearFont" class="fa fa-times" aria-hidden="true"></i></em>
                 <em>元</em>
             </li>
             <li class="mt-10">
@@ -84,7 +85,6 @@
     </div>
 
     <button id="investSubmit" type="submit" class="btn-wap-normal" disabled>立即投资</button>
-
     </form>
 
 
