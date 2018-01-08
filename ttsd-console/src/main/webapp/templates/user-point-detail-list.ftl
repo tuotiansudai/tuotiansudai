@@ -46,7 +46,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${(point?string.computer)!}&totalPoint=${(totalPoint?string.computer)!}&index=${(index-1)?string.computer}&pageSize=${pageSize?string.computer}">
+                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point!}&totalPoint=${totalPoint!}&index=${(index-1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -55,7 +55,7 @@
                 <li><a>${index?string.computer}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${(point?string.computer)!}&totalPoint=${!totalPoint?string.computer)!}&index=${(index+1)?string.computer}&pageSize=${pageSize?string.computer}">
+                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point!}&totalPoint=${totalPoint!}&index=${(index+1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
