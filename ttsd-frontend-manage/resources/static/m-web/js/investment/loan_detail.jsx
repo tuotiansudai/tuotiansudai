@@ -343,10 +343,13 @@ function sendSubmitRequest(){
 
         let data = response.data;
         if (data.status) {
-            console.log(data)
             location.href = "/m/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
         }  else {
-            showInputErrorTips(data.message);
+            commonFun.CommonLayerTip({
+                btn: ['我知道了','取消'],
+                area:['280px', '160px'],
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${data.message}</span></div> `,
+            })
         }
     });
 }
