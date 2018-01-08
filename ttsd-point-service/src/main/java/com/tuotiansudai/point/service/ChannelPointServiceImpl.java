@@ -33,6 +33,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -139,8 +143,10 @@ public class ChannelPointServiceImpl {
 
             List<ChannelPointDetailModel> successPointDetail = channelPointDetailMapper.findSuccessByChannelPointId(channelPointModel.getId());
             channelPointModel.setTotalPoint(successPointDetail.stream().mapToLong(detail -> detail.getPoint()).sum());
-            channelPointModel.setHeadCount(successPointDetail.size());
+            List<ChannelPointDetailModel> distinctModelList = successPointDetail.stream().filter(distinctByKey(ChannelPointDetailModel::getMapKey)).collect(Collectors.toList());
+            channelPointModel.setHeadCount(distinctModelList == null ? 0 : distinctModelList.size());
             channelPointMapper.update(channelPointModel);
+
             return new ChannelPointDataDto(true, channelPointModel.getId());
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -152,6 +158,11 @@ public class ChannelPointServiceImpl {
                 inputStream.close();
             }
         }
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return object -> seen.putIfAbsent(keyExtractor.apply(object), Boolean.TRUE) == null;
     }
 
 

@@ -111,4 +111,9 @@ public class ChannelPointDetailModel implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public String getMapKey() {
+        return String.format("%s:%s", this.mobile, this.userName);
+    }
+
 }

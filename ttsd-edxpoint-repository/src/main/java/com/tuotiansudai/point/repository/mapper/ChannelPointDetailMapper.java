@@ -27,8 +27,8 @@ public interface ChannelPointDetailMapper {
 
     List<String> findAllChannel();
 
-    List<ChannelPointDetailModel> findSuccessByMobile(String mobile);
-
     List<ChannelPointDetailModel> findSuccessByChannelPointId(long channelPointId);
+
+
 
 }
