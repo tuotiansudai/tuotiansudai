@@ -1,17 +1,24 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.point.repository.dto;
 
 import java.io.Serializable;
 
-public class AccountItemDataDto implements Serializable {
+public class ChannelPointDetailDto implements Serializable {
     private String loginName;
     private String userName;
     private String mobile;
+    private String channel;
     private long point;
-    private long totalPoint;
+    private boolean success;
+    private String remark;
 
-    public AccountItemDataDto(String loginName, String userName, long point) {
+    public ChannelPointDetailDto() {
+    }
+
+    public ChannelPointDetailDto(String loginName, String userName, String mobile, String channel, long point) {
         this.loginName = loginName;
         this.userName = userName;
+        this.mobile = mobile;
+        this.channel = channel;
         this.point = point;
     }
 
@@ -39,6 +46,14 @@ public class AccountItemDataDto implements Serializable {
         this.mobile = mobile;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
     public long getPoint() {
         return point;
     }
@@ -47,12 +62,19 @@ public class AccountItemDataDto implements Serializable {
         this.point = point;
     }
 
-    public long getTotalPoint() {
-        return totalPoint;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setTotalPoint(long totalPoint) {
-        this.totalPoint = totalPoint;
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
-

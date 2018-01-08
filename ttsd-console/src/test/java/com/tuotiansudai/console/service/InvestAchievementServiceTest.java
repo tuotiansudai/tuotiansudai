@@ -25,7 +25,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
+@Transactional
 public class InvestAchievementServiceTest {
 
     @Autowired

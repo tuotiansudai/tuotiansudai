@@ -17,7 +17,6 @@ public enum MessageQueue {
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
     GenerateReferrerRelation("GenerateReferrerRelation"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
-    ObtainPoint("ObtainPoint"),
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
     InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),

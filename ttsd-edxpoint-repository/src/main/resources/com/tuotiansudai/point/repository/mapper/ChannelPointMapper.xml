@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.ChannelPointMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="channelPointResultMap" type="ChannelPointModel">
+        <id column="id" property="id"></id>
+        <result column="serial_no" property="serialNo"></result>
+        <result column="total_point" property="totalPoint"></result>
+        <result column="head_count" property="headCount"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="ChannelPointModel" useGeneratedKeys="true" keyProperty="id">
+        insert into channel_point (serial_no, total_point, head_count, created_by, created_time)
+        value(#{serialNo}, #{totalPoint}, #{headCount}, #{createdBy}, #{createdTime})
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="channelPointResultMap">
+        select * from channel_point where id = #{id}
+    </select>
+
+    <select id="findByPagination" parameterType="map" resultMap="channelPointResultMap">
+        select * from channel_point ORDER By created_time desc limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountByPagination" resultType="long">
+        select count(1) from channel_point
+    </select>
+
+    <select id="findSumTotalPoint" resultType="long">
+        select ifnull(sum(total_point),0) from channel_point
+    </select>
+
+    <select id="findSumHeadCount" resultType="long">
+        select ifnull(sum(head_count),0) from channel_point
+    </select>
+
+    <select id="findBySerialNo" resultMap="channelPointResultMap" parameterType="String">
+        select * from channel_point where serial_no = #{serialNo}
+    </select>
+
+    <update id="update" parameterType="ChannelPointDetailModel">
+        UPDATE channel_point
+        SET total_point = #{totalPoint},
+        head_count = #{headCount}
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>
