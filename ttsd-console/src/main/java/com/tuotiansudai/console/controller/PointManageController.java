@@ -4,26 +4,35 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.CouponActivationService;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductDto;
+import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.service.ChannelPointServiceImpl;
 import com.tuotiansudai.point.service.PointBillService;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.ProductService;
+import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/point-manage")
@@ -47,7 +57,13 @@ public class PointManageController {
     private CouponActivationService couponActivationService;
 
     @Autowired
+    private PointService pointService;
+
+    @Autowired
     private PointBillService pointBillService;
+
+    @Autowired
+    private ChannelPointServiceImpl channelPointServiceImpl;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView createProduct(@Valid @ModelAttribute ProductDto productDto) {
@@ -293,25 +309,28 @@ public class PointManageController {
 
     @RequestMapping(value = "/user-point-list")
     public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                              @RequestParam(value = "loginName", required = false) String loginName,
-                                              @RequestParam(value = "userName", required = false) String userName,
-                                              @RequestParam(value = "mobile", required = false) String mobile) {
+                                              @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
+                                              @RequestParam(value = "channel", required = false) String channel,
+                                              @RequestParam(value = "minPoint", required = false) Long minPoint,
+                                              @RequestParam(value = "maxPoint", required = false) Long maxPoint) {
         int pageSize = 10;
+        BasePaginationDataDto<UserPointItemDataDto> userPointItems = pointBillService.findUsersAccountPoint(loginNameOrMobile, channel, minPoint, maxPoint, index, pageSize);
+        Map<String, String> allChannels = pointService.findAllChannel();
+
         ModelAndView modelAndView = new ModelAndView("/user-point-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
-        modelAndView.addObject("userPointList", accountItemDataDtoList);
-        int count = pointBillService.findUsersAccountPointCount(loginName, userName, mobile);
-        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        modelAndView.addObject("count", count);
-        modelAndView.addObject("loginName", loginName);
-        modelAndView.addObject("userName", userName);
-        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("userPointList", userPointItems.getRecords());
+        modelAndView.addObject("hasPreviousPage", userPointItems.isHasPreviousPage());
+        modelAndView.addObject("hasNextPage", userPointItems.isHasNextPage());
+        modelAndView.addObject("count", userPointItems.getCount());
+        modelAndView.addObject("allChannels", allChannels);
+        modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
+        if (StringUtils.isBlank(loginNameOrMobile)) {
+            modelAndView.addObject("channel", channel);
+            modelAndView.addObject("minPoint", minPoint);
+            modelAndView.addObject("maxPoint", maxPoint);
+        }
         return modelAndView;
     }
 
@@ -423,6 +442,77 @@ public class PointManageController {
         modelAndView.addObject("sideLabType", sideLabType);
         modelAndView.addObject("headLab", headLab);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/channel-point", method = RequestMethod.GET)
+    public ModelAndView getChannelPointList(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        ModelAndView modelAndView = new ModelAndView("/channel-point", "data", channelPointServiceImpl.getChannelPointList(index, 10));
+        modelAndView.addObject("sumHeadCount", channelPointServiceImpl.getSumHeadCount());
+        modelAndView.addObject("sumTotalPoint", channelPointServiceImpl.getSumTotalPoint());
+
+        return modelAndView;
+
+    }
+
+    @RequestMapping(value = "/channel-point-detail/{channelPointId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView getChannelPointDetailList(@PathVariable long channelPointId,
+                                                  @RequestParam(value = "channel", required = false, defaultValue = "") String channel,
+                                                  @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                                  @RequestParam(value = "success", required = false) Boolean success,
+                                                  @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        BasePaginationDataDto<ChannelPointDetailPaginationItemDataDto> basePaginationDataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, 10);
+        ModelAndView modelAndView = new ModelAndView("/channel-point-detail", "data", basePaginationDataDto);
+        modelAndView.addObject("sumHeadCount", basePaginationDataDto.getCount());
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("userNameOrMobile", userNameOrMobile);
+        modelAndView.addObject("success", success);
+        modelAndView.addObject("channelList", channelPointServiceImpl.findAllChannel());
+        modelAndView.addObject("channelPointId", channelPointId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @ResponseBody
+    public ChannelPointDataDto importCsv(HttpServletRequest httpServletRequest) throws Exception {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        try {
+            String originalFileName = channelPointServiceImpl.checkFileName(multipartFile);
+
+            return channelPointServiceImpl.importChannelPoint(originalFileName, LoginUserInfo.getLoginName(), multipartFile.getInputStream());
+
+        } catch (ChannelPointDataValidationException e) {
+            return new ChannelPointDataDto(false, e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return new ChannelPointDataDto(false, "文件导入失败，请重新尝试");
+        }
+    }
+
+    @RequestMapping(value = "/point-consume", method = RequestMethod.GET)
+    public ModelAndView getPointConsumeList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                            @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                            @RequestParam(value = "pointBusinessType", required = false) PointBusinessType businessType,
+                                            @RequestParam(value = "channel", required = false) String channel,
+                                            @RequestParam(value = "minPoint", required = false) Long minPoint,
+                                            @RequestParam(value = "maxPoint", required = false) Long maxPoint,
+                                            @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                            @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        BasePaginationDataDto<PointBillPaginationItemDataDto> itemData = pointBillService.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, index, 10);
+        ModelAndView modelAndView = new ModelAndView("/point-bill-consume", "data", itemData);
+        modelAndView.addObject("pointBusinessTypeList", PointBusinessType.getPointConsumeBusinessType());
+        modelAndView.addObject("channelMap", pointService.findAllChannel());
+        modelAndView.addObject("sumSudaiPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getSudaiPoint()).sum());
+        modelAndView.addObject("sumChannelPoint", itemData.getRecords().stream().mapToLong(dto -> dto.getChannelPoint()).sum());
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("pointBusinessType", businessType);
+        modelAndView.addObject("channel", channel);
+        modelAndView.addObject("minPoint", minPoint);
+        modelAndView.addObject("maxPoint", maxPoint);
+        modelAndView.addObject("userNameOrMobile", userNameOrMobile);
+        return modelAndView;
+
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)

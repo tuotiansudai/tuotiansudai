@@ -9,6 +9,8 @@ import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.*;
@@ -534,6 +536,41 @@ public class ExportService {
         return rows;
     }
 
+    public List<List<String>> buildChannelPointDetailList(List<ChannelPointDetailPaginationItemDataDto> itemDatas) {
+        List<List<String>> rows = Lists.newArrayList();
+
+        for (ChannelPointDetailPaginationItemDataDto itemData : itemDatas) {
+            List<String> row = Lists.newArrayList();
+            row.add(itemData.getUserName());
+            row.add(itemData.getMobile());
+            row.add(itemData.getChannel());
+            row.add(String.valueOf(itemData.getPoint()));
+            row.add(itemData.isSuccess() ? "成功" : "失败");
+            row.add(StringUtils.isEmpty(itemData.getRemark()) ? "" : itemData.getRemark());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    public List<List<String>> buildPointConsumeList(List<PointBillPaginationItemDataDto> itemDatas) {
+        List<List<String>> rows = Lists.newArrayList();
+
+        for (PointBillPaginationItemDataDto itemData : itemDatas) {
+            List<String> row = Lists.newArrayList();
+            row.add(new DateTime(itemData.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(itemData.getOrderId() == null ? "" : String.valueOf(itemData.getOrderId()));
+            row.add(StringUtils.isEmpty(itemData.getUserName()) ? "" : itemData.getUserName());
+            row.add(StringUtils.isEmpty(itemData.getMobile()) ? "" : itemData.getMobile());
+            row.add(String.valueOf(itemData.getPoint() * -1));
+            row.add(StringUtils.isEmpty(itemData.getChannel()) ? "" : itemData.getChannel());
+            row.add(String.valueOf(itemData.getChannelPoint() * -1));
+            row.add(String.valueOf(itemData.getSudaiPoint() * -1));
+            row.add(itemData.getBusinessType().getDescription());
+            rows.add(row);
+        }
+        return rows;
+    }
+
     public List<List<String>> buildCouponDetailsDtoList(List<CouponDetailsDto> couponDetailsDtoList) {
         List<List<String>> rows = Lists.newArrayList();
         int index = 1;
@@ -603,7 +640,7 @@ public class ExportService {
         for (QuestionModel record : records) {
             List<String> row = Lists.newArrayList();
             row.add(record.getQuestion());
-            row.add("http://ask.tuotiansudai.com/question/"+record.getId());
+            row.add("http://ask.tuotiansudai.com/question/" + record.getId());
             rows.add(row);
         }
         return rows;

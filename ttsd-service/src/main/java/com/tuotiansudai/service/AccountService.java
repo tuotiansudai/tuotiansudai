@@ -16,6 +16,4 @@ public interface AccountService {
     long getBalance(String loginName);
 
     long getFreeze(String loginName);
-
-    long getUserPointByLoginName(String loginName);
 }

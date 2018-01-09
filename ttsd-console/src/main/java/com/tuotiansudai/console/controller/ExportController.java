@@ -13,12 +13,15 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.point.service.ChannelPointServiceImpl;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
-import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.util.AmountConverter;
@@ -31,14 +34,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -109,6 +110,9 @@ public class ExportController {
     @Autowired
     private CreditLoanBillService creditLoanBillService;
 
+    @Autowired
+    private ChannelPointServiceImpl channelPointServiceImpl;
+
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response,
                               @RequestParam(value = "couponType", required = false) String couponType,
@@ -169,17 +173,6 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader, pointPrize, response.getOutputStream());
     }
 
-    @RequestMapping(value = "/user-point", method = RequestMethod.GET)
-    public void exportUserPoint(@RequestParam(value = "loginName", required = false) String loginName,
-                                @RequestParam(value = "userName", required = false) String userName,
-                                @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse response) throws IOException {
-        fillExportResponse(response, CsvHeaderType.UserPointHeader.getDescription());
-
-        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
-        List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, response.getOutputStream());
-    }
-
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
     public void exportCouponExchange(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponExchangeHeader.getDescription());
@@ -207,7 +200,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/credit-loan-bill", method = RequestMethod.GET)
-    public void exportSystemBillList(@RequestParam(value = "orderId", defaultValue = "")  String orderId,
+    public void exportSystemBillList(@RequestParam(value = "orderId", defaultValue = "") String orderId,
                                      @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                      @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                      @RequestParam(value = "operationType", required = false) CreditLoanBillOperationType operationType,
@@ -448,6 +441,37 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
+    }
+
+    @RequestMapping(value = "/channel-point-detail/{channelPointId:^\\d+$}", method = RequestMethod.GET)
+    public void exportChannelPointDetail(@PathVariable long channelPointId,
+                                         @RequestParam(value = "channel", required = false, defaultValue = "") String channel,
+                                         @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                         @RequestParam(value = "success", required = false) Boolean success,
+                                         HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ChannelPointDetailHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        BasePaginationDataDto<ChannelPointDetailPaginationItemDataDto> dataDto = channelPointServiceImpl.getChannelPointDetailList(channelPointId, channel, userNameOrMobile, success, index, pageSize);
+        List<List<String>> channelPointDetailList = exportService.buildChannelPointDetailList(dataDto.getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ChannelPointDetailHeader, channelPointDetailList, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/point-consume", method = RequestMethod.GET)
+    public void exportCouponDetails(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                    @RequestParam(value = "pointBusinessType", required = false) PointBusinessType businessType,
+                                    @RequestParam(value = "channel", required = false) String channel,
+                                    @RequestParam(value = "minPoint", required = false) Long minPoint,
+                                    @RequestParam(value = "maxPoint", required = false) Long maxPoint,
+                                    @RequestParam(value = "userNameOrMobile", required = false) String userNameOrMobile,
+                                    HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.PointConsumeHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, index, pageSize);
+        List<List<String>> pointBillList = exportService.buildPointConsumeList(dataDto.getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointConsumeHeader, pointBillList, response.getOutputStream());
     }
 
     @RequestMapping(value = "/coupons-details", method = RequestMethod.GET)

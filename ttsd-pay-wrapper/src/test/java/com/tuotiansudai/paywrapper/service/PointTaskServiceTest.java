@@ -32,7 +32,8 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
+@Transactional
 public class PointTaskServiceTest {
 
     @Autowired
@@ -325,6 +326,7 @@ public class PointTaskServiceTest {
         fakeUser.setEmail("12345@abc.com");
         fakeUser.setMobile(RandomStringUtils.randomNumeric(11));
         fakeUser.setRegisterTime(new Date());
+        fakeUser.setUserName("userName1");
         if (!Strings.isNullOrEmpty(referrer)) {
             fakeUser.setReferrer(referrer);
         }

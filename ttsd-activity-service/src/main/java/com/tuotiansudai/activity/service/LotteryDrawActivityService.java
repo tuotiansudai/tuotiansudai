@@ -12,7 +12,6 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -23,6 +22,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -43,7 +43,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +77,9 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
+
+    @Autowired
+    private UserPointMapper userPointMapper;
 
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -185,7 +187,9 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
 
-        if (accountModel.getPoint() - pointBillService.getFrozenPointByLoginName(userModel.getLoginName()) < activityCategory.getConsumeCategory().getPoint()) {
+        long userAvailablePoint = userPointMapper.getPointByLoginName(userModel.getLoginName(), 0L);
+
+        if (userAvailablePoint < activityCategory.getConsumeCategory().getPoint()) {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
@@ -200,7 +204,7 @@ public class LotteryDrawActivityService {
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));
         }
 
-        return new DrawLotteryResultDto(0, lotteryPrize.name(), lotteryPrize.getPrizeType().name(), lotteryPrize.getDescription(), String.valueOf(accountModel.getPoint()));
+        return new DrawLotteryResultDto(0, lotteryPrize.name(), lotteryPrize.getPrizeType().name(), lotteryPrize.getDescription(), String.valueOf(userAvailablePoint));
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile, ActivityCategory activityCategory) {
@@ -276,10 +280,10 @@ public class LotteryDrawActivityService {
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_500)) {
             prizeType = PrizeType.POINT;
 
-            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 500, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY_AWARD, 500, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         } else if (lotteryPrize.equals(LotteryPrize.POINT_SHOP_POINT_3000)) {
             prizeType = PrizeType.POINT;
-            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY, 3000, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
+            pointBillService.createPointBill(loginName, null, PointBusinessType.POINT_LOTTERY_AWARD, 3000, MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         }
         return prizeType;
     }
