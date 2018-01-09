@@ -28,8 +28,6 @@ public class ExperienceLoanDetailController {
     private UserService userService;
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private InvestService investService;
 
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public ModelAndView getLoanDetail() {

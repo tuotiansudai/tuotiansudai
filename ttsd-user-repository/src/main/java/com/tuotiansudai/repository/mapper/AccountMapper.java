@@ -21,18 +21,6 @@ public interface AccountMapper {
 
     void update(AccountModel model);
 
-    List<String> findLoginNames();
-
-    List<AccountModel> findUsersAccountPoint(@Param(value = "loginName") String loginName,
-                                             @Param(value = "userName") String userName,
-                                             @Param(value = "mobile") String mobile,
-                                             @Param(value = "startLimit") Integer startLimit,
-                                             @Param(value = "endLimit") Integer endLimit);
-
-    int findUsersAccountPointCount(@Param(value = "loginName") String loginName,
-                                   @Param(value = "userName") String userName,
-                                   @Param(value = "mobile") String mobile);
-
     long count();
 
     List<AccountModel> findAccountWithBalance(@Param(value = "startTime") String startTime,

@@ -1,14 +1,19 @@
 .menu-category span a {
   width:60%;
+  opacity: 0.7;
 }
-
+.menu-category span.current a{
+  color: #fff;
+ opacity: 1;
+  border-bottom: 2px solid #fff;
+}
 .target-category-box {
   margin-bottom:10px;
 }
 
 .loan-list-frame {
   position: absolute;
-  top: 100px;
+  top: 56px;
   bottom: 0px;
   width: 100%;
   overflow: hidden;
@@ -30,4 +35,25 @@
 .p-title .price {
   color: #FF473C;
 }
+.loan-list {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
 
+.loan-list .footer-wap-container {
+
+  display: flex;
+  background: #fff;
+}
+.menu-category {
+  background: #FF473C;
+  height: 44px;
+ span {
+   a {
+     color: #fff;
+     font-size: 16px;
+     line-height: 42px;
+   }
+ }
+}

@@ -5,21 +5,32 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
-        <div class="form-group">
-            <label for="control-label">投资人用户名：</label>
-            <input type="text" class="form-control jq-loginName" name="loginName" value="${loginName!}">
+        <div>
+            <div class="form-group">
+                <label>积分渠道：</label>
+                <select class="form-control" id="channel" name="channel">
+                    <option value="">全部</option>
+                <#list allChannels as channel_name, channel_desc>
+                    <option value="${channel_name}"
+                            <#if channel?has_content && channel == channel_name>selected</#if> >${channel_desc}</option>
+                </#list>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="control-label">积分范围：</label>
+                <input type="text" class="form-control" name="minPoint" value="${(minPoint?string.computer)!}">
+                -
+                <input type="text" class="form-control" name="maxPoint" value="${(maxPoint?string.computer)!}">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="control-label">投资人手机号：</label>
-            <input type="text" class="form-control jq-mobile" name="mobile" value="${mobile!}">
+        <div>
+            <div class="form-group">
+                <label for="control-label">投资人用户名/手机号：</label>
+                <input type="text" class="form-control" name="loginNameOrMobile" value="${loginNameOrMobile!}">
+            </div>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn btn-default" type="reset">重置</button>
         </div>
-        <div class="form-group">
-            <label for="control-label">真实姓名：</label>
-            <input type="text" class="form-control jq-userName" name="userName" value="${userName!}">
-        </div>
-
-        <button class="btn btn-primary" type="submit">查询</button>
-        <button class="btn btn-default" type="reset">重置</button>
     </form>
 
     <div class="row">
@@ -29,8 +40,13 @@
                 <th>用户名</th>
                 <th>真实姓名</th>
                 <th>手机号</th>
-                <th>可用积分</th>
-                <th>累计积分</th>
+                <th>积分渠道名称</th>
+                <th>可用渠道积分</th>
+                <th>累计渠道积分</th>
+                <th>速贷可用积分</th>
+                <th>速贷累计积分</th>
+                <th>可用积分总额</th>
+                <th>综合积分总额</th>
                 <th>明细记录</th>
             </tr>
             </thead>
@@ -40,9 +56,16 @@
                     <td>${userPointItem.loginName!''}</td>
                     <td>${userPointItem.userName!''}</td>
                     <td>${userPointItem.mobile}</td>
+                    <td>${userPointItem.channel!''}</td>
+                    <td>${userPointItem.channelPoint!''}</td>
+                    <td>${userPointItem.totalChannelPoint!''}</td>
+                    <td>${userPointItem.sudaiPoint!''}</td>
+                    <td>${userPointItem.totalSudaiPoint!''}</td>
                     <td>${userPointItem.point!''}</td>
                     <td>${userPointItem.totalPoint!''}</td>
-                    <td><a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${userPointItem.totalPoint!''}&point=${userPointItem.point!''}">查看明细</a></td>
+                    <td>
+                        <a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${(userPointItem.totalPoint?string.computer)!''}&point=${(userPointItem.point?string.computer)!''}">查看明细</a>
+                    </td>
                 </tr>
                 </#list>
             </tbody>
@@ -52,29 +75,26 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <div><span class="bordern">总共${count}条,每页显示${pageSize}条</span></div>
+            <div><span class="bordern">总共${count?string.computer}条,每页显示${pageSize?string.computer}条</span></div>
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-list?minPoint=${(minPoint?string.computer)!}&maxPoint=${(maxPoint?string.computer)!}&channel=${channel!}&index=${(index-1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span></a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${index?string.computer}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-list?minPoint=${(minPoint?string.computer)!}&maxPoint=${(maxPoint?string.computer)!}&channel=${channel!}&index=${(index+1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>Next »</span></a>
                 </li>
             </ul>
-            <@security.authorize access="hasAnyAuthority('DATA')">
-                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-            </@security.authorize>
         </nav>
     </div>
 </div>

@@ -1,11 +1,9 @@
 <#import "macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="直投借款详情">
-
-<div class="my-account-content experience-amount" id="loanDetail">
-
+<div class="my-account-content experience-amount show-page" id="loanDetail" >
     <div class="account-summary">
-
+        <em id="iconDetail" class="icon-left"><i class="fa fa-angle-left"></i></em>
         <#if extraLoanRates?? >
             <a href="javascript:void(0);"><i class="icon-help"></i></a>
         </#if>
@@ -130,6 +128,9 @@
             <span><i class="fa fa-angle-right"></i></span>
         </li>
     </ul>
+    <#if loan.loanStatus == "PREHEAT">
+        <button id="toInvest" class="to-invest-project" type="button" disabled>预热中</button>
+    </#if>
 
     <#if loan.loanStatus='RAISING'>
         <button id="toInvest" class="to-invest-project" type="button">立即投资</button>
@@ -139,8 +140,8 @@
 
 </div>
     <#include 'project-detail_m.ftl'>
-
     <#include 'buy-loan_m.ftl'>
+
     <#include 'select-coupon_m.ftl'>
 
 

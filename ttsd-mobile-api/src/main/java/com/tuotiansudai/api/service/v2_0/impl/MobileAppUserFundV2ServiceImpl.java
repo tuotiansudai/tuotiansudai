@@ -10,6 +10,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
@@ -36,6 +37,9 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     private UserCouponService userCouponService;
 
     @Autowired
+    private PointService pointService;
+
+    @Autowired
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
 
     @Autowired
@@ -53,7 +57,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
 
         int membershipLevel = evaluate != null ? evaluate.getLevel() : 0;
         long balance = accountModel != null ? accountModel.getBalance() : 0;
-        long point = accountModel != null ? accountModel.getPoint() : 0;
+        long point = pointService.getAvailablePoint(loginName);
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
         long experienceBalance = experienceAccountMapper.getExperienceBalance(loginName);
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
