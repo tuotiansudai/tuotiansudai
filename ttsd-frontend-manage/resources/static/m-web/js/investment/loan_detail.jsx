@@ -346,7 +346,7 @@ function sendSubmitRequest(){
             location.href = "/m/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
         }  else {
             commonFun.CommonLayerTip({
-                btn: ['我知道了','取消'],
+                btn: ['我知道了'],
                 area:['280px', '160px'],
                 content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${data.message}</span></div> `,
             })
