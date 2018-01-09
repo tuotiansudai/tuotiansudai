@@ -224,9 +224,12 @@ public class OperationDataServiceImpl implements OperationDataService {
             long totalScaleCount = operationDataMapper.findCountInvestCityScale(endDate);
             List<Map<String, String>> investCityList = operationDataMapper.findCountInvestCityScaleTop3(endDate);
             for (Map<String, String> investCityMap : investCityList) {
-                redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                        investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
-                resultMap.put(investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                if (StringUtils.isNotEmpty(investCityMap.get("city"))) {
+                    redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                            investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
+                    resultMap.put(investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                }
+
             }
         }
         return resultMap;
@@ -243,9 +246,11 @@ public class OperationDataServiceImpl implements OperationDataService {
             long totalScaleAmount = investMapper.findInvestAmountScale(endDate);
             List<Map<String, String>> investCityAmountScaleList = investMapper.findInvestAmountScaleTop3(endDate);
             for (Map<String, String> investCityAmountMap : investCityAmountScaleList) {
-                redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                        investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)), timeout);
-                resultMap.put(investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)));
+                if (StringUtils.isNotEmpty(investCityAmountMap.get("city"))) {
+                    redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                            investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)), timeout);
+                    resultMap.put(investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)));
+                }
             }
         }
         return resultMap;
