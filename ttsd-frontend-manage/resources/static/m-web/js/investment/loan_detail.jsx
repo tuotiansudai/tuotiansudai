@@ -374,3 +374,7 @@ $(function(){
         nav:false
     });
 });
+//优惠券兑换
+$('#exchangeCoupon').on('click',function () {
+    location.href = '/m/my-treasure/coupon-exchange'
+})

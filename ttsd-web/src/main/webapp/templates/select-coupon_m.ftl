@@ -2,7 +2,7 @@
     <div class="m-header"><em id="iconCoupon" class="icon-left"><i class="fa fa-angle-left"></i></em>优惠券 <em id="noUse">不使用</em></div>
     <div class="select-btn">
         <p class="to-coupon">
-            <a href="exchange-coupon.ftl">
+            <a href="javascript:;" id="exchangeCoupon">
                 <i class="fa fa-plus-circle"></i>兑换码兑换
             </a>
         </p>
