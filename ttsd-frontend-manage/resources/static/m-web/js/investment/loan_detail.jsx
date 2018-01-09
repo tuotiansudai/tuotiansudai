@@ -295,6 +295,7 @@ let calExpectedCouponInterest = function() {
 };
 //页面加载判断预期收益
 calExpectedCouponInterest();
+maxBenifitUserCoupon();
 function maxBenifitUserCoupon() {
     commonFun.useAjax({
         url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
