@@ -1,14 +1,13 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.model.UserCouponView;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,10 +50,7 @@ public class MyTreasureController {
     @RequestMapping(value = "/{exchangeCode}/exchange", method = RequestMethod.POST)
     @ResponseBody
     public BaseDataDto exchange(@PathVariable String exchangeCode) {
-        BaseDataDto couponExchangeStatus = exchangeCodeService.exchange(LoginUserInfo.getLoginName(), exchangeCode);
-        if(MobileAccessDecision.isMobileAccess()){
-        }
-        return couponExchangeStatus;
+        return exchangeCodeService.exchange(LoginUserInfo.getLoginName(), exchangeCode);
     }
 
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
