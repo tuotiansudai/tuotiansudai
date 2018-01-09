@@ -19,6 +19,7 @@ import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -223,9 +224,12 @@ public class OperationDataServiceImpl implements OperationDataService {
             long totalScaleCount = operationDataMapper.findCountInvestCityScale(endDate);
             List<Map<String, String>> investCityList = operationDataMapper.findCountInvestCityScaleTop3(endDate);
             for (Map<String, String> investCityMap : investCityList) {
-                redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                        investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
-                resultMap.put(investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                if (StringUtils.isNotEmpty(investCityMap.get("city"))) {
+                    redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                            investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
+                    resultMap.put(investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                }
+
             }
         }
         return resultMap;
@@ -242,9 +246,11 @@ public class OperationDataServiceImpl implements OperationDataService {
             long totalScaleAmount = investMapper.findInvestAmountScale(endDate);
             List<Map<String, String>> investCityAmountScaleList = investMapper.findInvestAmountScaleTop3(endDate);
             for (Map<String, String> investCityAmountMap : investCityAmountScaleList) {
-                redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                        investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)), timeout);
-                resultMap.put(investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)));
+                if (StringUtils.isNotEmpty(investCityAmountMap.get("city"))) {
+                    redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                            investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)), timeout);
+                    resultMap.put(investCityAmountMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityAmountMap.get("sumAmount"))), totalScaleAmount, 1)));
+                }
             }
         }
         return resultMap;
@@ -318,7 +324,10 @@ public class OperationDataServiceImpl implements OperationDataService {
             Map<String, String> resultMap = new LinkedHashMap<>();
 
             for (Map<String, String> AgeDistributionMap : AgeDistributionList) {
-                resultMap.put(String.valueOf(Integer.parseInt(String.valueOf(AgeDistributionMap.get("age")).replace(".0", ""))), String.valueOf(AgeDistributionMap.get("totalCount")));
+                String age = String.valueOf(AgeDistributionMap.get("age"));
+                if (StringUtils.isNotEmpty(age) && !"null".equals(age)) {
+                    resultMap.put(String.valueOf(Integer.parseInt(String.valueOf(AgeDistributionMap.get("age")).replace(".0", ""))), String.valueOf(AgeDistributionMap.get("totalCount")));
+                }
             }
 
             Set<Map.Entry<String, String>> ageGroupDistributionEntries = resultMap.entrySet();
