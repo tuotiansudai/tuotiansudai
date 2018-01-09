@@ -72,7 +72,9 @@
             </li>
             <li class="mt-10">
                 <label>预期收益</label>
-                <span class="number-text"><strong id="expectedEarnings">0.00</strong>元</span>
+                <span class="number-text"><strong id="expectedEarnings">0.00</strong>
+                    <strong class="experience-income"></strong>
+                    元</span>
             </li>
             <li id="select_coupon" class="select-coupon">
                 <label>优惠券</label>

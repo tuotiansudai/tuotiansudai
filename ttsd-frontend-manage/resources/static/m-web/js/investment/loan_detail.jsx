@@ -181,9 +181,7 @@ if($('#couponText').val() == '无可用优惠券'){
 }
 let $selectCoupon = $('#select_coupon');
 $selectCoupon.on('click',function () {
-    if($('#couponText').val() == '无可用优惠券'){
-        return;
-    }
+
     let value = getInvestAmount()/100;
     $('.to-use_coupon').each(function (index,item) {
         $(item).addClass('disabled');
@@ -278,11 +276,74 @@ $('#noUse').click(function () {
     })
     location.hash='buyDetail';
 })
+let $couponExpectedInterest = $(".experience-income");
+//计算加息券或者投资红包的预期收益
+let calExpectedCouponInterest = function() {
+    // var queryParams = [];
+    //
+    // $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
+    //     queryParams.push({
+    //         'name': 'couponIds',
+    //         'value': $(item).data("coupon-id")
+    //     })
+    // });
+    //
+    // $ticketList.find('li').each(function(index, item) {
+    //     if ($(item).find('input[type="radio"]:checked').length > 0) {
+    //         queryParams.push({
+    //             'name': 'couponIds',
+    //             'value': $(item).data("coupon-id")
+    //         });
+    //     }
+    // });
+
+    // if (queryParams.length == 0) {
+    //     $couponExpectedInterest.text("");
+    //     return;
+    // }
+    if(couponId == ''){
+        $couponExpectedInterest.text("");
+        return;
+    }else {
+        commonFun.useAjax({
+            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+            data: 'couponIds='+$('#couponId').val(),
+            type: 'GET'
+        },function(amount) {
+            console.log(amount)
+            $couponExpectedInterest.text("+" + amount);
+        });
+    }
+
+};
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
         let value = getInvestAmount();
         calExpectedInterest();
+        calExpectedCouponInterest();
+        commonFun.useAjax({
+            url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
+            type: 'GET',
+        },function(maxBenefitUserCouponId) {
+
+            console.log(maxBenefitUserCouponId);
+            if (!isNaN(parseInt(maxBenefitUserCouponId))) {
+                $('.to-use_coupon').each(function (index,item) {
+                    $(item).removeClass('selected');
+                    if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
+                        $(item).addClass('selected');
+                        $('#couponText').val($(item).data('coupon-desc'));
+                    }
+
+
+                })
+            } else {
+                // if (!$useExperienceTicket.hasClass("disabled")) {
+                //     $useExperienceTicket.find('span').text('请选择优惠券');
+                // }
+            }
+        })
         if(value/100  == 0){
             $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
         } else if(value/100 <minAmount){
