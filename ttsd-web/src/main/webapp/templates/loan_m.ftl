@@ -1,7 +1,7 @@
 <#import "macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="直投借款详情">
-<div class="my-account-content experience-amount show-page" id="loanDetail" >
+<div class="my-account-content experience-amount show-page" id="loanDetail">
     <div class="account-summary">
         <em id="iconDetail" class="icon-left"><i class="fa fa-angle-left"></i></em>
         <#if extraLoanRates?? >
@@ -19,13 +19,12 @@
             </span>
             <span class="summary-box">
                 <b>
-                    <@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
-                    <i><#if loan.activityRate != 0>
-                        +<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction>
-                    </#if></i>
+                    <@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                    <#if extraLoanRates??>
+                        ~ <@percentInteger>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentFraction>
+                    </#if>
                     <i>%</i>
                 </b>
-
                 <em>预期年化收益</em>
             </span>
         </div>
@@ -116,6 +115,10 @@
         <li>
             <label>募集期限</label>
             <span>${loan.raisingDays}天</span>
+        </li>
+        <li>
+            <label>最后回款</label>
+            <span>${(loan.deadline?string("yyyy-MM-dd"))!}</span>
         </li>
         <li>
             <label>借款协议</label>

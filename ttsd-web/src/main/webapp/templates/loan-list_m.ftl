@@ -13,10 +13,10 @@
             <div class="category-box-main">
                 <#list loanItemList as loanItem>
 
-                <div class="target-category-box <#if loanItem.productType == 'EXPERIENCE'>newer-experience</#if>"
-                     data-url="/m/loan/${loanItem.id?c}">
+                    <div class="target-category-box <#if loanItem.productType == 'EXPERIENCE'>newer-experience</#if>"
+                         data-url="/m/loan/${loanItem.id?c}">
 
-                    <b class="newer-title">${loanItem.name}
+                        <b class="newer-title">${loanItem.name}
                         <#if loanItem.productType == 'EXPERIENCE'>
                             <i class="icon-sign">体验金投资</i>
                         </#if>
@@ -26,43 +26,36 @@
                         <#if loanItem.activity?string("true","false") == "true">
                             <i class="icon-sign">${loanItem.activityDesc!}</i>
                         </#if>
-                    </b>
-                    <ul class="loan-info clearfix">
-                        <li>
+                        </b>
+                        <ul class="loan-info clearfix">
+                            <li>
                         <span class="percent-number">
                             <i>
                                 <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
-
-                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger>
-                                    <@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
-                                    +<@percentInteger>${loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.interestCouponRate}</@percentFraction>
+                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentFraction>
                                 <#else>
-                                    <@percentInteger>${loanItem.baseRate}</@percentInteger>
-                                    <@percentFraction>${loanItem.baseRate}</@percentFraction>
+                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
                                     <#if (loanItem.extraRate > 0)>
-                                        ~ <@percentInteger>${loanItem.baseRate + loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.extraRate}</@percentFraction>
-                                    </#if>
-                                    <#if (loanItem.activityRate > 0)>
-                                        +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
+                                        ~ <@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
                                     </#if>
                                 </#if>
                             </i>%
                         </span>
-                            <em class="note">预期年化收益</em>
-                        </li>
-                        <li>
+                                <em class="note">预期年化收益</em>
+                            </li>
+                            <li>
                             <#if loanItem.productType != 'EXPERIENCE'>最长 </#if><em
-                                class="duration-day">${loanItem.duration}</em> 天
-                            <em class="note">项目期限</em>
-                        </li>
-                        <li>
+                                    class="duration-day">${loanItem.duration}</em> 天
+                                <em class="note">项目期限</em>
+                            </li>
+                            <li>
                             <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
                                 <a href="/m/loan/1" class="btn-invest btn-normal">立即投资</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
                             </#if>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
                     <#if loanItem.productType != 'EXPERIENCE'>
                         <div class="table-row progress-column">
                             <div class="progress-bar">
@@ -86,8 +79,8 @@
                             </#if>
                         </div>
                     </#if>
-                </div>
-            </#list>
+                    </div>
+                </#list>
             </div>
 
             <div id="pullUp">
@@ -102,19 +95,19 @@
 
 </div>
 <div class="loan-list">
-<div class="footer-wap-container">
-    <a class="menu-home" href="/m">
-        <i></i>
-        <span>首页</span>
-    </a>
-    <a class="menu-invest current" href="/m/loan-list">
-        <i></i>
-        <span>投资</span>
-    </a>
-    <a class="menu-my">
-        <i></i>
-        <span>我的</span>
-    </a>
-</div>
+    <div class="footer-wap-container">
+        <a class="menu-home" href="/m">
+            <i></i>
+            <span>首页</span>
+        </a>
+        <a class="menu-invest current" href="/m/loan-list">
+            <i></i>
+            <span>投资</span>
+        </a>
+        <a class="menu-my">
+            <i></i>
+            <span>我的</span>
+        </a>
+    </div>
 </div>
 </@global.main>
