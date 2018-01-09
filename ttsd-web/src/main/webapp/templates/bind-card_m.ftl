@@ -4,7 +4,7 @@
 
 <div class="my-account-content bank-card-manage" id="bankCardManage">
     <div class="info-note">请绑定持卡人本人的银行储蓄卡</div>
-    <form method="post" id="bankForm">
+    <form method="post" id="bankForm" action="/bind-card">
         <ul class="input-list align-flex-start">
             <li>
                 <label for="perName">持卡人</label>
@@ -20,11 +20,11 @@
             </li>
             <li>
                 <label for="cardNumber">银行卡号</label>
-                <input type="text" name="cardNumber" id="cardNumber" placeholder="请输入银行卡号">
+                <input type="number" name="cardNumber" id="cardNumber" placeholder="请输入银行卡号">
                 <i></i>
             </li>
         </ul>
-        <input type="hidden" name="source" value="WEB">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal next-step" disabled>确认提交</button>
     </form>
 
@@ -41,7 +41,7 @@
     <ul class="bank-list">
         <#list bankList as bank>
             <li>
-                <i class="icon-bank"></i>
+                <i class="icon-bank ${bank.bankCode}"></i>
                 <span class="bank-show">
                     <em>${bank.name}</em>
                     单笔限额${(bank.singleAmount?number)}元，单日限额${(bank.singleDayAmount?number)}元

@@ -34,19 +34,13 @@ if ($bankCardManage.length) {
     !function () {
         cardNumberDom.onkeyup = function (event) {
             isDisabledButton();
-            if ((event.which >= 48 && event.which <= 57) || (event.which >= 96 && event.which <= 105 )) {
-                var v = this.value;
-                if (/\S{5}/.test(v)) {
-                    this.value = v.replace(/\s/g, '').replace(/(.{4})/g, "$1 ");
-                }
-            }
         }
     }();
 
     //按钮是否点亮
     function isDisabledButton() {
         let bankName = $bankCardManage.find('.bank-show').html().trim() !== '请选择银行',
-            bankNumber = bankForm.cardNumber.value.replace(/ /g, '');
+            bankNumber = bankForm.cardNumber.value;
         let isDisableBtn = bankName && /^(\d{15,})$/.test(bankNumber);
 
         $submitBtn.prop('disabled', !isDisableBtn);
