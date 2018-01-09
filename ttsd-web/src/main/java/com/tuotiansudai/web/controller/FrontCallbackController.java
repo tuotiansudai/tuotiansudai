@@ -6,11 +6,13 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.BankCardUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,11 +38,21 @@ public class FrontCallbackController {
 
     private final LoanService loanService;
 
+    private final WithdrawService withdrawService;
+
+    private final BindBankCardService bindBankCardService;
+
     @Autowired
-    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService, LoanService loanService) {
+    public FrontCallbackController(PayWrapperClient payWrapperClient,
+                                   InvestService investService,
+                                   LoanService loanService,
+                                   WithdrawService withdrawService,
+                                   BindBankCardService bindBankCardService) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
         this.loanService = loanService;
+        this.withdrawService = withdrawService;
+        this.bindBankCardService = bindBankCardService;
     }
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
@@ -55,7 +67,9 @@ public class FrontCallbackController {
         try {
             AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service.toUpperCase());
 
-            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.CUST_WITHDRAWALS).contains(asyncUmPayService)) {
                 data = payWrapperClient.validateFrontCallback(params).getData();
             }
 
@@ -72,6 +86,16 @@ public class FrontCallbackController {
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
                 modelAndView.addObject("loanName", loanModel.getName());
                 modelAndView.addObject("loanId", loanModel.getId());
+                modelAndView.addObject("serviceName", "投资成功");
+            }
+            if (AsyncUmPayService.CUST_WITHDRAWALS == asyncUmPayService) {
+                WithdrawModel withdrawModel = withdrawService.findById(Long.valueOf(params.get("order_id")));
+                BankCardModel bankCardModel = bindBankCardService.getBankCardById(withdrawModel.getBankCardId());
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(withdrawModel.getAmount()));
+                modelAndView.addObject("cardNumber", bankCardModel.getCardNumber());
+                modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCardModel.getBankCode()));
+                modelAndView.addObject("orderId", params.get("order_id"));
+                modelAndView.addObject("serviceName", "申请提现成功");
             }
 
             return modelAndView;

@@ -2,10 +2,10 @@ require('mWebStyle/account/withdraw.scss');
 
 
 let $withdrawContainer = $('#withdrawContainer'),
-    $cashMoney = $('#cashMoney');
+    $amount = $('#amount');
 
 
-$cashMoney.on('focusout', function (event) {
+$amount.on('focusout', function (event) {
     event.preventDefault();
     let $self = $(this),
         isMoney = /^\d+(?=\.{0,1}\d+$|$)/;

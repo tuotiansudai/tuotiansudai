@@ -35,6 +35,12 @@
                     <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续购买</a>
                 </p>
             </#if>
+            <#if "cust_withdrawals" == service>
+                <p class="pay-tip">申请提现成功</p>
+                <p class="pay-text">
+                    <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/personal-info">点击这里</a>
+                </p>
+            </#if>
         </#if>
 
         <p class="pay-problem">如有其他疑问请致电客服 400-169-1188（服务时间：9:00－20:00）</p>

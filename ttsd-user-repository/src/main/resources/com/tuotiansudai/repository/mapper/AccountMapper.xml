@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.AccountMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="accountResultMap" type="AccountModel">
         <id column="id" property="id"/>
@@ -43,12 +43,12 @@
 
     <update id="update" parameterType="AccountModel">
         update account set
-          balance = #{balance},
-          freeze = #{freeze},
-          auto_invest = #{autoInvest},
-          auto_repay = #{autoRepay},
-          no_password_invest = #{noPasswordInvest},
-          membership_point = #{membershipPoint}
+        balance = #{balance},
+        freeze = #{freeze},
+        auto_invest = #{autoInvest},
+        auto_repay = #{autoRepay},
+        no_password_invest = #{noPasswordInvest},
+        membership_point = #{membershipPoint}
         where login_name = #{loginName}
     </update>
 

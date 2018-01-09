@@ -12,16 +12,18 @@
             </span>
         </li>
     </ul>
-    <form action="#" method="post" class="form-cash">
+    <form action="/withdraw" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">提现金额</label>
-            <input type="text" name="cashMoney" class="money-item" id="cashMoney" value=""/>
+            <input type="text" name="amount" class="money-item" id="amount" value=""/>
+            <input name="source" type="hidden" value="M"/>
         </div>
 
         <div class="user-money">
             <p>账户可提取现金:<span>${balance!}</span>元</p>
             <p>单笔手续费收取${withdrawFee!}元</p>
         </div>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>
     </form>
     <dl class="rule-list">
