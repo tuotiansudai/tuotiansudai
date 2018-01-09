@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +51,15 @@ public class MyTreasureController {
     @RequestMapping(value = "/{exchangeCode}/exchange", method = RequestMethod.POST)
     @ResponseBody
     public BaseDataDto exchange(@PathVariable String exchangeCode) {
-        return exchangeCodeService.exchange(LoginUserInfo.getLoginName(), exchangeCode);
+        BaseDataDto couponExchangeStatus = exchangeCodeService.exchange(LoginUserInfo.getLoginName(), exchangeCode);
+        if(MobileAccessDecision.isMobileAccess()){
+        }
+        return couponExchangeStatus;
     }
 
+    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView exchange() {
+        return new ModelAndView("/coupon-exchange");
+    }
 }
