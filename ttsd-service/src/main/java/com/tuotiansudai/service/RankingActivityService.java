@@ -16,8 +16,6 @@ public interface RankingActivityService {
 
     Long getUserRank(String loginName);
 
-    List<UserScoreDto> getTianDouTop15(String loginName);
-
     Map<String, List<UserTianDouRecordDto>> getTianDouWinnerList();
 
     List<UserTianDouRecordDto> getPrizeByLoginName(String loginName);
@@ -35,6 +33,4 @@ public interface RankingActivityService {
     long getPrizeWinnerCount(TianDouPrize prize);
 
     List<PrizeWinnerDto> getPrizeWinnerList(String prize);
-
-    long getTotalInvestAmountInActivityPeriod();
 }

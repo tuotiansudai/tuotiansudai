@@ -19,8 +19,6 @@ public class AccountModel implements Serializable {
 
     private long freeze;
 
-    private long point;
-
     private Date registerTime;
 
     private boolean autoInvest;
@@ -71,14 +69,6 @@ public class AccountModel implements Serializable {
 
     public void setFreeze(long freeze) {
         this.freeze = freeze;
-    }
-
-    public long getPoint() {
-        return point;
-    }
-
-    public void setPoint(long point) {
-        this.point = point;
     }
 
     public Date getRegisterTime() {
