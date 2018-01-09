@@ -13,22 +13,34 @@ public class PointBillModel implements Serializable {
 
     private long point;
 
+    private long sudaiPoint;
+
+    private long channelPoint;
+
     private PointBusinessType businessType;
 
     private String note;
 
     private Date createdTime;
 
+    private String mobile;
+
+    private String userName;
+
     public PointBillModel() {
     }
 
-    public PointBillModel(String loginName, Long orderId, long point, PointBusinessType businessType, String note) {
+    public PointBillModel(String loginName, Long orderId, long sudaiPoint, long channelPoint, PointBusinessType businessType, String note,String mobile,String userName) {
         this.loginName = loginName;
         this.orderId = orderId;
-        this.point = point;
+        this.point = sudaiPoint + channelPoint;
+        this.sudaiPoint = sudaiPoint;
+        this.channelPoint = channelPoint;
         this.businessType = businessType;
         this.note = note;
         this.createdTime = new Date();
+        this.mobile = mobile;
+        this.userName = userName;
     }
 
     public long getId() {
@@ -63,6 +75,22 @@ public class PointBillModel implements Serializable {
         this.point = point;
     }
 
+    public long getSudaiPoint() {
+        return sudaiPoint;
+    }
+
+    public void setSudaiPoint(long sudaiPoint) {
+        this.sudaiPoint = sudaiPoint;
+    }
+
+    public long getChannelPoint() {
+        return channelPoint;
+    }
+
+    public void setChannelPoint(long channelPoint) {
+        this.channelPoint = channelPoint;
+    }
+
     public PointBusinessType getBusinessType() {
         return businessType;
     }
@@ -85,5 +113,21 @@ public class PointBillModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -110,6 +110,8 @@ public class OperationDataServiceTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setUserName("userName");
         userModelTest.setIdentityNumber("11100419900512000");
+        userModelTest.setCity("北京");
+        userModelTest.setProvince("北京");
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
 
         fakeUserHelper.create(userModelTest);

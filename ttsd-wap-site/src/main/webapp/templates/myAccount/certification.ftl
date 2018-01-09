@@ -25,9 +25,6 @@
             <div class="status"></div>
             <input type="submit" class="btn-wap-normal next-step" value="认证" disabled/>
         </div>
-
-        <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-    <#--<button type="submit" class="btn-wap-normal next-step" disabled="">认证</button>-->
     </form>
 </div>
 </@global.main>

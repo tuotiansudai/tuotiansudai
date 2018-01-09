@@ -20,10 +20,6 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
             }
         }
     });
-    $('.down-load').click(function () {
-        location.href = "/export/user-point?" + $('form').serialize();
-    });
-
     $('form button[type="reset"]').click(function () {
         window.location.href = "/point-manage/user-point-list";
     });

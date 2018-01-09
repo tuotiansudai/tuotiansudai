@@ -16,7 +16,9 @@
             <tr>
                 <th>时间</th>
                 <th>行为</th>
-                <th>积分</th>
+                <th>渠道积分</th>
+                <th>速贷积分</th>
+                <th>总积分</th>
                 <th>备注</th>
             </tr>
             </thead>
@@ -27,6 +29,8 @@
                     <td>
                         ${userPointDetailItem.businessType.getDescription()}
                     </td>
+                    <td>${userPointDetailItem.channelPoint!''}</td>
+                    <td>${userPointDetailItem.sudaiPoint!''}</td>
                     <td>${userPointDetailItem.point!''}</td>
                     <td>${userPointDetailItem.note!''}</td>
                 </tr>
@@ -38,20 +42,20 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <div><span class="bordern">总共${count}条,每页显示${pageSize}条</span></div>
+            <div><span class="bordern">总共${count?string.computer}条,每页显示${pageSize?string.computer}条</span></div>
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point}&totalPoint=${totalPoint}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point!}&totalPoint=${totalPoint!}&index=${(index-1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span></a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${index?string.computer}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point}&totalPoint=${totalPoint}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-detail-list?loginName=${loginName}&point=${point!}&totalPoint=${totalPoint!}&index=${(index+1)?string.computer}&pageSize=${pageSize?string.computer}">
                     <#else>
                     <a href="#">
                     </#if>
