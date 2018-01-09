@@ -22,7 +22,7 @@ dependencies {
             fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile 'com.fasterxml.jackson.core:jackson-databind:2.8.2',
-            'org.mybatis:mybatis:3.4.0',
+            'org.mybatis:mybatis:3.4.2',
             "javax.servlet:javax.servlet-api:3.1.0"
 }
 

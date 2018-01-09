@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
 import com.tuotiansudai.activity.repository.dto.PrizeWinnerDto;
-import com.tuotiansudai.activity.repository.dto.UserScoreDto;
 import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -26,10 +25,8 @@ import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Tuple;
 
 import java.util.*;
 
@@ -196,18 +193,6 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         return rank == null ? null : rank + 1;
     }
 
-    @Override
-    public List<UserScoreDto> getTianDouTop15(String loginName) {
-        List<UserScoreDto> userScoreDtoTop15 = Lists.newArrayList();
-
-        Set<Tuple> top15 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
-        for (Tuple tuple : top15) {
-            userScoreDtoTop15.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement()), (long) tuple.getScore()));
-        }
-
-        return userScoreDtoTop15;
-    }
-
     // 2 MacBook + 4 iPhone + others
     @Override
     public Map<String, List<UserTianDouRecordDto>> getTianDouWinnerList() {
@@ -363,14 +348,6 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             prizeWinnerDtoList.add(new PrizeWinnerDto(ss[0], ss[1], ss[2], ss[3], ss[4]));
         }
         return prizeWinnerDtoList;
-    }
-
-    @Override
-    public long getTotalInvestAmountInActivityPeriod() {
-        Date startTime = new DateTime(2016, 4, 1, 0, 0, 0).toDate(); // from 2016-04-01 00:00:00
-        Date endTime = new DateTime(2016, 8, 1, 0, 0, 0).toDate(); // to 2016-08-01 00:00:00
-
-        return investMapper.sumInvestAmountRanking(startTime, endTime);
     }
 
 }

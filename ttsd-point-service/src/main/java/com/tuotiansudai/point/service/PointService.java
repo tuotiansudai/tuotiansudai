@@ -1,14 +1,13 @@
 package com.tuotiansudai.point.service;
 
-import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.repository.model.InvestModel;
 
-public interface PointService {
-    void createCouponAndExchange(String loginName, ExchangeCouponDto exchangeCouponDto);
+import java.util.Map;
 
+public interface PointService {
     void obtainPointInvest(InvestModel investModel);
 
     long getAvailablePoint(String loginName);
 
-
+    Map<String, String> findAllChannel();
 }
