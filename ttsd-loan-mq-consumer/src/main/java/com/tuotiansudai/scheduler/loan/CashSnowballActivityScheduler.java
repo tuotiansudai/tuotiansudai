@@ -55,7 +55,7 @@ public class CashSnowballActivityScheduler {
             return;
         }
 
-        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityCashSnowballStartTime, activityCashSnowballEndTime, "逢万返百");
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityCashSnowballStartTime, activityCashSnowballEndTime, "逢万返百", null);
         Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
 
         if (amountMaps.isEmpty()) {

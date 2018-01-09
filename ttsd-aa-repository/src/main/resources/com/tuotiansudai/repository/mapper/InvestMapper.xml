@@ -1169,6 +1169,11 @@
             and loan_details.activity_desc = #{activityDesc}
         </if>
         GROUP BY loan.product_type, i.login_name) temp join user on temp.login_name = user.login_name
+        <where>
+            <if test="mobile != null and mobile !='' ">
+                and user.mobile = #{mobile}
+            </if>
+        </where>
     </select>
 
     <select id="findSuccessDoubleElevenActivityByTime" parameterType="map" resultMap="investResultMap">

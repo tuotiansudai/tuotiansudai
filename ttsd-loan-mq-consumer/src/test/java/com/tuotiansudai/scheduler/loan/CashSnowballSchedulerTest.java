@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -60,7 +61,7 @@ public class CashSnowballSchedulerTest {
         if (DateTime.now().getYear() != 2018){
             return;
         }
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(getMockList());
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any(), anyString())).thenReturn(getMockList());
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
         when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(true)));
         cashSnowballActivityScheduler.cashSnowballActivityEndSendCash();
@@ -78,7 +79,7 @@ public class CashSnowballSchedulerTest {
         if (DateTime.now().getYear() != 2018){
             return;
         }
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(getMockList());
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any(), anyString())).thenReturn(getMockList());
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
         when(payWrapperClient.transferCash(requestModelCaptor.capture())).thenThrow(Exception.class);

@@ -57,7 +57,7 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
             return;
         }
         List<InvestProductTypeView> list = getMockList();
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(list);
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any(), anyString())).thenReturn(list);
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
         BaseDto<PayDataDto> baseDto = new BaseDto(new PayDataDto(true));
         when(payWrapperClient.transferCash(requestModelCaptor.capture())).thenReturn(baseDto);
@@ -77,7 +77,7 @@ public class YearEndAwardsActivitySendCashSchedulerTest {
             return;
         }
         List<InvestProductTypeView> list = getMockList();
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(list);
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any(), anyString())).thenReturn(list);
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
         BaseDto<PayDataDto> baseDto = new BaseDto(new PayDataDto(false));
         when(payWrapperClient.transferCash(requestModelCaptor.capture())).thenReturn(baseDto);

@@ -90,7 +90,7 @@ public class YearEndAwardsActivityService {
 
         List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(
                 DateTime.parse(activityYearEndAwardsStartTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(),
-                DateTime.parse(activityYearEndAwardsEndTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), "岁末专享");
+                DateTime.parse(activityYearEndAwardsEndTime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), "岁末专享", null);
         Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
         long sumAnnualizedAmount = amountMaps.values().stream().mapToLong(Long::longValue).sum();
 

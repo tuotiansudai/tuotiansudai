@@ -71,6 +71,9 @@ public class ActivityConsoleExportService {
     @Autowired
     private ActivityConsoleCashSnowballService activityConsoleCashSnowballService;
 
+    @Autowired
+    private ActivityConsoleInvestAnnualizedService activityConsoleInvestAnnualizedService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -290,5 +293,9 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildCashSnowballCsvList(String mobile, Long startInvestAmount, Long endInvestAmount){
         return activityConsoleCashSnowballService.list(1, Integer.MAX_VALUE, mobile, startInvestAmount, endInvestAmount).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildInvestAnnualizedCsvList(ActivityInvestAnnualized activityInvestAnnualized, String mobile, Date startTime, Date endTime){
+        return activityConsoleInvestAnnualizedService.list( activityInvestAnnualized, mobile, startTime, endTime, 1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }
