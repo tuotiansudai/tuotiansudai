@@ -1,5 +1,5 @@
 .tip-user-info {
-  padding:20px;
+  padding: 20px;
   em {
     font-size: 18px;
     color: #A2A2A2;
@@ -13,9 +13,10 @@
 
   font-size: 14px;
   color: #808080;
-  padding:20px;
+  padding: 20px;
   text-align: center;
 }
+
 .bank-show {
   font-size: 12px;
   color: #808080;
@@ -26,6 +27,7 @@
     display: block;
   }
 }
+
 .input-list {
   &.align-flex-start {
     span.bank-info {
@@ -41,17 +43,16 @@
   }
 }
 
-
 .bank-list {
   .icon-bank {
-    width:30px;
-    height:30px;
+    width: 30px;
+    height: 30px;
     background: url('../../images/bank/bankdefault.png') left top no-repeat;
     background-size: 100%;
   }
   .icon-radio {
-    width:18px;
-    height:18px;
+    width: 18px;
+    height: 18px;
     background: url('../../images/form/icon-radio.png') left top no-repeat;
     background-size: contain;
   }
@@ -82,16 +83,13 @@
   }
 }
 
-
-
-
 //成功页面
 .bank-card-success {
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  height:100%;
+  height: 100%;
   .info {
     height: 250px;
     background: #fff;
@@ -108,29 +106,29 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: calc( 100% - 250px);
+    height: calc(100% - 250px);
     .btn-wap-normal {
-      width:100%;
+      width: 100%;
     }
     span {
       font-size: 12px;
       color: #A2A2A2;
-      padding-bottom:30px;
+      padding-bottom: 30px;
     }
   }
   em {
     display: block;
-    padding-top:20px;
+    padding-top: 20px;
     font-size: 15px;
     color: #808080;
   }
 
   .input-list {
-    width:100%;
-    border-top:1px solid #F7F7F7;
+    width: 100%;
+    border-top: 1px solid #F7F7F7;
     margin-top: 20px;
     li {
-      font-size:13px;
+      font-size: 13px;
       height: 50px;
       line-height: 50px;
       color: #525252;
@@ -138,6 +136,5 @@
         color: #808080;
       }
     }
-
   }
 }
