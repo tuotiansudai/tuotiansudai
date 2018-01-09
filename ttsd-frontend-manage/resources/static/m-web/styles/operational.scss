@@ -261,3 +261,141 @@
     margin-top: 1rem;
   }
 }
+
+.swiper-slide3 {
+  width: 100%;
+  background: #fff;
+  .part-3-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-3-topBar.png") no-repeat;
+    background-size: contain;
+    overflow: hidden;
+    .user-statistics {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .total_trade_text {
+    margin-top: 1.25rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #019bd9;
+    font-weight: normal;
+  }
+  .text_underLine_blue {
+    margin: .25rem auto .1rem auto;
+    width: 4.525rem;
+    height: .2rem;
+    background: url("../images/text_underLine_blue_long.png") no-repeat;
+    background-size: contain;
+  }
+  .total_trade_count {
+    width: 100%;
+    line-height: 1rem;
+    font-size: 1rem;
+    color: #ff5400;
+    font-weight: normal;
+    text-align: center;
+  }
+  .unit_symbol {
+    text-align: right;
+    margin-right: 1.3rem;
+    margin-bottom: 1rem;
+    font-size: .5rem;
+    color: #41b4e3;
+    font-weight: normal;
+  }
+  #main_part3 {
+    width: 100%;
+    height: 11rem;
+  }
+  #main_part4 {
+    width: 100%;
+    height: 11rem;
+  }
+}
+
+.swiper-slide4 {
+  width: 100%;
+  background: #fff;
+  .part-4-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-4-topBar.png") no-repeat;
+    background-size: contain;
+    overflow: hidden;
+    .user-area {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .count_proportion, .amount_proportion {
+    position: absolute;
+    left: 10%;
+    top: 18%;
+    font-size: 0;
+    font-weight: normal;
+    .symbol_line {
+      position: relative;
+      top: .1rem;
+      margin-right: .25rem;
+      display: inline-block;
+      width: .1rem;
+      height: .74rem;
+      background: #019bd9;
+    }
+    .count_title {
+      display: inline-block;
+      font-size: .75rem;
+      line-height: .75rem;
+      color: #ff5400;
+      .title_strong {
+        color: #019bd9;
+      }
+    }
+    .amount_title {
+      display: inline-block;
+      font-size: .75rem;
+      line-height: .75rem;
+      color: #ffc601;
+      .title_strong {
+        color: #019bd9;
+      }
+    }
+  }
+  .amount_proportion {
+    top: 65%;
+  }
+  .total_trade_text {
+    margin-top: 1.25rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #019bd9;
+    font-weight: normal;
+  }
+  #main_part5 {
+    width: 100%;
+    height: 12rem;
+  }
+  #main_part6 {
+    width: 100%;
+    height: 12rem;
+  }
+}
+
+
