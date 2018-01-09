@@ -78,7 +78,7 @@
             </li>
             <li id="select_coupon" class="select-coupon">
                 <label>优惠券</label>
-                <input id="couponText" type="text" value="${maxBenefitCouponDesc}" readonly="readonly">
+                <span id="couponText" type="text">${maxBenefitCouponDesc}</span>
                 <input id="couponId" type="hidden" value="${(maxBenefitCouponId?string.computer)!}" name="userCouponIds">
                 <em><i class="fa fa-angle-right"></i></em>
             </li>

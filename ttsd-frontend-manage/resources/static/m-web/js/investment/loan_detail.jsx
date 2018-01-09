@@ -176,21 +176,11 @@ $('#look_repay_plan').click(function () {
 })
 
 //优惠券
-if($('#couponText').val() == '无可用优惠券'){
+if($('#couponText').text() == '无可用优惠券'){
     $('#couponText').css('color','#64646D')
 }
 let $selectCoupon = $('#select_coupon');
 $selectCoupon.on('click',function () {
-
-    let value = getInvestAmount()/100;
-    $('.to-use_coupon').each(function (index,item) {
-        $(item).addClass('disabled');
-      if($(item).data('min-invest-amount') <= value){
-          $(item).removeClass('disabled');
-      }
-
-    })
-
     location.hash='selectCoupon'
 
 })
@@ -259,7 +249,7 @@ $('.to-use_coupon').click(function () {
     $('#couponId').val(_self.data('user-coupon-id'));
     location.hash='buyDetail';
 
-    $('#couponText').val(_self.data('coupon-desc'));
+    $('#couponText').text(_self.data('coupon-desc'));
 
 })
 //优惠券后退按钮
@@ -270,7 +260,7 @@ $('#iconCoupon').click(function () {
 $('#noUse').click(function () {
     $('.to-use_coupon').each(function (index,item) {
         $(item).removeClass('selected');
-        $('#couponText').val('请选择优惠券');
+        $('#couponText').text('请选择优惠券');
         $('#couponId').val('');
 
     })
@@ -301,19 +291,23 @@ function maxBenifitUserCoupon() {
         url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
         type: 'GET',
     },function(maxBenefitUserCouponId) {
-
+        $('#couponText').css('color','#FF473C')
         if (!isNaN(parseInt(maxBenefitUserCouponId))) {
             $('.to-use_coupon').each(function (index,item) {
                 $(item).removeClass('selected');
                 if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
                     $(item).addClass('selected');
-                    $('#couponText').val($(item).data('coupon-desc'));
+                    $('#couponText').text($(item).data('coupon-desc'));
                 }
 
 
             })
         } else {
-            $('#couponText').val('无可用优惠券');
+            $('#couponText').text('无可用优惠券');
+            $('#couponText').css('color','#64646D');
+            $('.to-use_coupon').each(function (index,item) {
+                $(item).addClass('disabled');
+            })
         }
     })
 }
@@ -324,6 +318,13 @@ $amountInputElement
         calExpectedInterest();
         calExpectedCouponInterest();
         maxBenifitUserCoupon();
+        $('.to-use_coupon').each(function (index,item) {
+            $(item).addClass('disabled');
+            if($(item).data('min-invest-amount') <= value/100){
+                $(item).removeClass('disabled');
+            }
+
+        })
         if(value/100  == 0){
             $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
         } else if(value/100 <minAmount){
