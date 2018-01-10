@@ -10,7 +10,6 @@
             <input type="text" id="couponByCode" maxlength="14" value="" placeholder="请输入兑换码">
         </li>
     </ul>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="button" class="btn-wap-normal next-step" id="submitCode" disabled>兑换</button>
         </form>
 
