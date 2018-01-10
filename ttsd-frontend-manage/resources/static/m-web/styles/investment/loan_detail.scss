@@ -263,8 +263,14 @@
 }
 .no-records {
   text-align: center;
-  line-height:40px;
-  height: 40px;
+  padding-top: 100px;
+  .icon {
+    display: inline-block;
+    width: 100px;
+    height: 90px;
+    background: url("../../images/investment/icon_noRecord.png") no-repeat;
+    background-size: 100%;
+  }
 }
 
 .target-category-box {
@@ -773,4 +779,7 @@
     background-size: 100%;
   }
 }
-
+#pullUp {
+  position: absolute;
+  bottom: 0;
+}

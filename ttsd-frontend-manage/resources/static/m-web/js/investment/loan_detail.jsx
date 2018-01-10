@@ -103,7 +103,7 @@ $('#btn-detail-toggle').click(function () {
     let $scroll = $boxContent.find('#scroll');
     let $content = $boxContent.find('#content');
     let pageNum = 1;
-
+    let $pullUpDOM = $('#pullUp');
     $('#transaction_record').on('click',function () {
         getMoreRecords();
         //交易记录滚动加载更多
@@ -112,8 +112,9 @@ $('#btn-detail-toggle').click(function () {
                 probeType: 2,
                 mouseWheel: true
             });
-            myScroll.on('scrollEnd', function () {console.log(9)
+            myScroll.on('scrollEnd', function () {
                 //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+                $pullUpDOM.show();
                 if ((this.y - this.maxScrollY) <= 10) {
                     pageNum++;
 
@@ -138,13 +139,14 @@ $('#btn-detail-toggle').click(function () {
                     index:pageNum
                 }
             },
-            function (res) {console.log(res.data.records)
+            function (res) {
+                $pullUpDOM.hide();
                 if(pageNum == 1){
                     if(res.data.records.length > 0){
                         var html = tpl('recordsTpl', res.data);
                         $content.prepend(html)
                     }else {
-                        $content.html('<div class="no-records">暂无交易记录</div>')
+                        $content.html('<div class="no-records"><div class="icon"></div><p>暂无交易记录</p></div>')
                     }
                 }else {
                     if(res.data.records.length > 0){
@@ -275,7 +277,6 @@ let $couponExpectedInterest = $(".experience-income");
 let calExpectedCouponInterest = function() {
     if(couponId == ''){
         $couponExpectedInterest.text("");
-        return;
     }else {
         commonFun.useAjax({
             url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
@@ -297,6 +298,7 @@ function maxBenifitUserCoupon() {
     },function(maxBenefitUserCouponId) {
         $('#couponText').css('color','#FF473C')
         if (!isNaN(parseInt(maxBenefitUserCouponId))) {
+            $('#couponId').val(maxBenefitUserCouponId);
             $('.to-use_coupon').each(function (index,item) {
                 $(item).removeClass('selected');
                 if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
