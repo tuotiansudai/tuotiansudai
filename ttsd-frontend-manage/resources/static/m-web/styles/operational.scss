@@ -1,7 +1,13 @@
 .swiper-container {
+  position: relative;
   width: 100%;
-  height: 30.2rem;
-  overflow: hidden
+  height: 25.9rem;
+  overflow: hidden;
+}
+.swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 .go-back-container {
   position: relative;
@@ -28,6 +34,7 @@
 .swiper-slide {
   position: relative;
   width: 100%;
+  overflow: hidden;
   .data_dealine {
     position: absolute;
     top: .2rem;

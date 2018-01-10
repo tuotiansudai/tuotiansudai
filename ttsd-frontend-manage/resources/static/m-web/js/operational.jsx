@@ -22,7 +22,7 @@ let commonFun=require('publicJs/commonFun');
 let mySwiper = new Swiper('.swiper-container', {
     direction : 'vertical',
     width: window.screen.width,
-    height: document.body.clientHeight - 44,
+    height: document.body.clientHeight - 48,
 });
 
 $('#goBack_experienceAmount').on('click',() => {
