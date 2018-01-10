@@ -32,6 +32,5 @@
         <dd>2、<span>工作日16:00</span>后提现第二个工作日到账，节假日则推迟至下一个工作日。</dd>
         <dd>3、若您在<span>周五16:00</span>后或<span>非工作日</span>进行提现，待工作日后方能到账。</dd>
     </dl>
-    <a href="cash-money-record.ftl" class="to-record">提现记录</a>
 </div>
 </@global.main>
