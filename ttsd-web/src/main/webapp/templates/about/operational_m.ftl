@@ -8,7 +8,6 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-item swiper-slide1 swiper-slide">
-                <div class="data_dealine">数据截止到<span class="currentMonth"></span>月<span class="currentDay"></span>日</div>
                 <div class="safe_operational_text">拓天速贷已安全运营</div>
                 <div class="safe_day_wrapper_center">
                     <div class="safe_day_wrapper">

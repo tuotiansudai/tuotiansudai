@@ -266,14 +266,6 @@ let getPartOnePage = (data,dataStr) => {
     $('.safe_day_wrapper').prepend(dom);
     $('#grand_total_amount').html(formatNumber(data.tradeAmount,2));
     $('#earn_total_amount').html(formatNumber(data.totalInterest,2));
-
-    let myDate = new Date();
-    let currentMonth = myDate.getMonth() + 1;
-    let currentDay = myDate.getDate();
-    currentMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
-    currentDay = currentDay < 10 ? '0' + currentDay : currentDay;
-    $('.currentMonth').html(currentMonth);
-    $('.currentDay').html(currentDay);
 };
 
 let getPartTwoPage = (data) => {
