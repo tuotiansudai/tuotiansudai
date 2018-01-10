@@ -208,7 +208,17 @@
     width: 100%;
     height: 4rem;
     background: url("../images/part-2-topBar.png") no-repeat;
-    background-size: contain;
+    background-size: cover;
+    overflow: hidden;
+    .trade-detail {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
   }
   .total_trade_text {
     margin-top: 1.25rem;
@@ -270,7 +280,7 @@
     width: 100%;
     height: 4rem;
     background: url("../images/part-3-topBar.png") no-repeat;
-    background-size: contain;
+    background-size: cover;
     overflow: hidden;
     .user-statistics {
       margin-top: 1.5rem;
@@ -293,7 +303,7 @@
   }
   .text_underLine_blue {
     margin: .25rem auto .1rem auto;
-    width: 4.525rem;
+    width: 6rem;
     height: .2rem;
     background: url("../images/text_underLine_blue_long.png") no-repeat;
     background-size: contain;
@@ -333,7 +343,7 @@
     width: 100%;
     height: 4rem;
     background: url("../images/part-4-topBar.png") no-repeat;
-    background-size: contain;
+    background-size: cover;
     overflow: hidden;
     .user-area {
       margin-top: 1.5rem;
