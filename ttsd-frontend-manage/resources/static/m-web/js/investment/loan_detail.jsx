@@ -275,7 +275,7 @@ $('#noUse').click(function () {
 let $couponExpectedInterest = $(".experience-income");
 //计算加息券或者投资红包的预期收益
 let calExpectedCouponInterest = function() {
-    if(couponId == ''){
+    if($('#couponId').val() == ''){
         $couponExpectedInterest.text("");
     }else {
         commonFun.useAjax({
