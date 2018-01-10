@@ -155,12 +155,12 @@ let drawLineChart = (data,monthArr) => {  // 折线图
     }
 };
 
-let circularChart = (data,legendData,color,rightPosition) => { // 环形图
+let circularChart = (data,legendData,color) => { // 环形图
     return {
         legend: {
             orient: 'vertical',
             selectedMode:false,
-            right: rightPosition,
+            left: '10%',
             y: 'middle',
             data:legendData
         },
@@ -168,7 +168,7 @@ let circularChart = (data,legendData,color,rightPosition) => { // 环形图
             {
                 type:'pie',
                 radius: ['40%', '70%'],
-                center: ['30%','50%'],
+                center: ['70%','50%'],
                 legendHoverLink: false,
                 hoverAnimation: false,
                 label: {
@@ -319,9 +319,9 @@ let getPartThreePage = (data) => {
     myChart3.setOption(circularChart([
         {value: `${femaleScale}`, name:`女性 ${femaleScale * 100}%`},
         {value: `${maleScale}`, name:`男性 ${maleScale * 100}%`},
-    ],[`男性 ${maleScale * 100}%`,`女性 ${femaleScale * 100}%`],['#fdb560','#74bbf3'],'18%'));
+    ],[`男性 ${maleScale * 100}%`,`女性 ${femaleScale * 100}%`],['#fdb560','#74bbf3']));
 
-    myChart4.setOption(circularChart(ageArr,ageLegendArr,['#a47cf3','#fdb560','#fcee74','#87e376','#69e2ab'],'10%'));
+    myChart4.setOption(circularChart(ageArr,ageLegendArr,['#a47cf3','#fdb560','#fcee74','#87e376','#69e2ab']));
 };
 
 let getPartFourPage = (data) => {
