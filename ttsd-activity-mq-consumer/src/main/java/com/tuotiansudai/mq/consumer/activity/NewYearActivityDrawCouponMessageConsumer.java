@@ -2,6 +2,8 @@ package com.tuotiansudai.mq.consumer.activity;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -28,6 +30,9 @@ public class NewYearActivityDrawCouponMessageConsumer implements MessageConsumer
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -64,9 +69,14 @@ public class NewYearActivityDrawCouponMessageConsumer implements MessageConsumer
             }
             List<Long> coupons = Arrays.asList(481L, 481L, 481L, 482L, 482L, 482L, 482L, 482L);
             coupons.stream().forEach(couponId -> {
-                logger.info(MessageFormat.format("[NewYearActivity_Coupon] loginName:{0},couponId:{1} send message begin", loginName, couponId));
-                mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
-                logger.info(MessageFormat.format("[NewYearActivity_Coupon] loginName:{0},couponId:{1} send message end", loginName, couponId));
+                try {
+                    logger.info(MessageFormat.format("[NewYearActivity_Coupon] loginName:{0},couponId:{1} send message begin", loginName, couponId));
+                    mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+                    logger.info(MessageFormat.format("[NewYearActivity_Coupon] loginName:{0},couponId:{1} send message end", loginName, couponId));
+                }catch (Exception e){
+                    logger.error(MessageFormat.format("[NewYearActivity_Coupon] loginName:{0},couponId:{1} send message fail", loginName, couponId));
+                    smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【新年更有钱活动】用户:{0}, 优惠券:{1}, 发送优惠券失败, 业务处理异常", loginName, couponId)));
+                }
             });
             redisWrapperClient.setex(key, lifeSecond,"SUCCESS");
 
