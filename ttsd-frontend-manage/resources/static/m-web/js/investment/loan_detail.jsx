@@ -182,7 +182,11 @@ if($('#couponText').text() == '无可用优惠券'){
 let $selectCoupon = $('#select_coupon');
 $selectCoupon.on('click',function () {
     location.hash='selectCoupon'
-
+//无优惠券列表是显示缺省
+    if($('.coupon-list-container').find('>li').length == 0){
+        let $noCouponDOM = $('<div class="noCoupon"><div class="noCouponIcon"></div><p>暂无可用的优惠券</p></div>')
+        $('.coupon-list-container').html($noCouponDOM)
+    }
 })
 function validateHash() {
     if(location.hash == ''){
@@ -416,3 +420,4 @@ $(function(){
         nav:false
     });
 });
+
