@@ -34,7 +34,21 @@ $('#submitCode').on('click', function() {
 
                     $couponExchange.hide();
                     data.data.exchangeCode = exchangeCode;
-                    data.data.minDay = minValue(data.data.productTypeList);
+                    let minDay = minValue(data.data.productTypeList);
+                    if(data.data.couponType == 'RED_ENVELOPE'){
+                        data.data.amountRate = data.data.amount;
+                        data.data.unit = '元';
+                    }else if(data.data.couponType == 'INTEREST_COUPON'){
+                        data.data.amountRate = data.data.rate*100;
+                        data.data.unit = '%';
+                    }
+                    if(minDay == 30){
+                        data.data.minDay = '可用于任意期限标的';
+                    }else{
+                        data.data.minDay = '可用于'+minValue(data.data.productTypeList)+'天以上标的';
+                    }
+                    data.data.endTime = dateFormat(data.data.endTime);
+
                     let html = tpl('exchangeSuccessData', data);
                     $couponSuccess.html(html);
                     $couponSuccess.show();
@@ -106,8 +120,7 @@ $couponSuccess.on('click','#iconExchangeSuccess',function () {
 $couponSuccess.on('click','.to-use-btn',function () {
     location.href='/m/loan-list'
 })
-// let data = {status:true,message:'陈工',data:{amount:'1000'}}
-// $couponExchange.hide();
-// let html = tpl('exchangeSuccessData', data);
-// $couponSuccess.html(html);
-// $couponSuccess.show();
+
+function dateFormat(date) {
+    return date.substr(0,11)
+}

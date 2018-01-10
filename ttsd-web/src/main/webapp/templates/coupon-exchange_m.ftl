@@ -30,7 +30,7 @@
                     <dl>
                         <dt>{{data.name}}</dt>
                         <dd>单笔满{{data.investLowerLimit}}元可用</dd>
-                        <dd>可用于{{data.minDay}}天以上标的</dd>
+                        <dd>{{data.minDay}}</dd>
                         <dd>请在{{data.endTime}}日之前使用</dd>
                         <dd class="coupon-line">{{data.couponSource}}</dd>
                     </dl>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="right-item">
                     <p>
-                        <span class="price-text">{{data.amount}}</span><span>元</span>
+                        <span class="price-text">{{data.amountRate}}</span><span>{{data.unit}}</span>
                     </p>
                     <p>
                         <a class="to-use-btn" href="javascript:;">立即使用</a>
