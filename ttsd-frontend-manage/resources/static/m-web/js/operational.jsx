@@ -25,6 +25,8 @@ let mySwiper = new Swiper('.swiper-container', {
     height: document.body.clientHeight - 48,
 });
 
+document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 48 + 'PX';
+
 $('#goBack_experienceAmount').on('click',() => {
     history.go(-1);
 });
