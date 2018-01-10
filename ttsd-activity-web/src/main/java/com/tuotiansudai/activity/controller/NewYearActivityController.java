@@ -35,7 +35,6 @@ public class NewYearActivityController {
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
         modelAndView.addObject("duringActivities", newYearActivityService.duringActivities());
-        modelAndView.addObject("duringActivities", true);
         return modelAndView;
     }
 
@@ -59,7 +58,6 @@ public class NewYearActivityController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
-        modelAndView.addObject("duringActivities", duringActivities);
         boolean drewCoupon = newYearActivityService.drewCoupon(loginName);
         modelAndView.addObject("drewCoupon", drewCoupon);
         if (!drewCoupon) {

@@ -33,7 +33,7 @@ public class NewYearActivityDrawCouponMessageConsumer implements MessageConsumer
 
     private static final String KEY = "NEW_YEAR_ACTIVITY_DRAW_COUPON:{0}";
 
-    private int lifeSecond = 60 * 60 * 24 * 180;
+    private static final int lifeSecond = 60 * 60 * 24 * 180;
 
     @Override
     public MessageQueue queue() {
