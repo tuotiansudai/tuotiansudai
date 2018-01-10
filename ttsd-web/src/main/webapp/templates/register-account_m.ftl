@@ -23,8 +23,7 @@
 
         <div class="button-layer">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="status"></div>
-            <input type="submit" class="btn-wap-normal next-step" value="认证" disabled/>
+            <input type="submit" class="btn-wap-normal next-step" value="立即认证" disabled/>
         </div>
     </form>
 </div>
