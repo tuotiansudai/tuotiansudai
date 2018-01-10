@@ -26,7 +26,7 @@ import java.util.List;
 
 
 @Service
-public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
+public class MobileAppExchangeServiceImpl implements MobileAppExchangeService {
 
     static Logger logger = Logger.getLogger(MobileAppExchangeServiceImpl.class);
 
@@ -52,27 +52,27 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         long couponId = exchangeCodeService.getValueBase31(exchangeCode);
         final CouponModel couponModel = couponMapper.findById(couponId);
         if (!exchangeCodeService.checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
-           return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_INVALID.getCode(),ReturnMessage.EXCHANGE_CODE_IS_INVALID.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_INVALID.getCode(), ReturnMessage.EXCHANGE_CODE_IS_INVALID.getMsg());
         }
         if (exchangeCodeService.checkExchangeCodeExpire(couponModel)) {
-            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getCode(),ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getCode(), ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getMsg());
         }
-        if (exchangeCodeService.checkExchangeCodeUsed(couponId, exchangeCode)){
-            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_USED.getCode(),ReturnMessage.EXCHANGE_CODE_IS_USED.getMsg());
+        if (exchangeCodeService.checkExchangeCodeUsed(couponId, exchangeCode)) {
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_USED.getCode(), ReturnMessage.EXCHANGE_CODE_IS_USED.getMsg());
         }
         if (exchangeCodeService.checkExchangeCodeDailyCount(loginName)) {
-            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getCode(),ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getCode(), ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getMsg());
         }
-        boolean exchangeResult = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
-        if(!exchangeResult){
-            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_FAIL.getCode(),ReturnMessage.EXCHANGE_CODE_IS_FAIL.getMsg());
+        UserCouponModel userCouponModel = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
+        if (userCouponModel == null) {
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_FAIL.getCode(), ReturnMessage.EXCHANGE_CODE_IS_FAIL.getMsg());
         }
         String isUsed = "1";
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, isUsed);
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(loginName, null);
-        if(CollectionUtils.isEmpty(userCouponModels)){
-            return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
+        if (CollectionUtils.isEmpty(userCouponModels)) {
+            return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         }
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
 
