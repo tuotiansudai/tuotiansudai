@@ -54,7 +54,6 @@ public class MyTreasureController {
     }
 
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView exchange() {
         return new ModelAndView("/coupon-exchange");
     }
