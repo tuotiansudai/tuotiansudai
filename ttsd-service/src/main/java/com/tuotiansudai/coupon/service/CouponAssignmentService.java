@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CouponAssignmentService {
 
-    boolean assignUserCoupon(String loginNameOrMobile, String exchangeCode);
+    UserCouponModel assignUserCoupon(String loginNameOrMobile, String exchangeCode);
 
     void assignUserCoupon(String loginNameOrMobile, long couponId);
 

@@ -1,12 +1,12 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.model.UserCouponView;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,4 +53,9 @@ public class MyTreasureController {
         return exchangeCodeService.exchange(LoginUserInfo.getLoginName(), exchangeCode);
     }
 
+    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView exchange() {
+        return new ModelAndView("/coupon-exchange");
+    }
 }
