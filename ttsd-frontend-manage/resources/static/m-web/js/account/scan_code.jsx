@@ -1,0 +1,1 @@
+require('mWebStyle/account/scan_code.scss');

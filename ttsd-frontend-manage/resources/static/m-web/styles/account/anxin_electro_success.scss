@@ -1,0 +1,32 @@
+
+body {
+  background: #fff;
+}
+.anxin-electro-success {
+  color: #525252;
+  padding: 0 10px 20px 10px;
+  text-align: center;
+
+  .success-section {
+    height: 230px;
+
+      h2 {
+        font-size: 20px;
+      }
+    .electro-logo {
+      width:120px;
+      height:100px;
+      background: url('../../images/anxin/electro-sign.png') center center no-repeat;
+      background-size: 100%;
+      margin: 30px auto 10px auto;
+    }
+  }
+
+  .open-SMS-free {
+    font-size: 14px;
+    .btn-wap-normal {
+      margin-top:10px;
+    }
+  }
+
+}

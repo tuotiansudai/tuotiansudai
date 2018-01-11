@@ -1,0 +1,33 @@
+.menu-category span a {
+  width:60%;
+}
+
+.target-category-box {
+  margin-bottom:10px;
+}
+
+.loan-list-frame {
+  position: absolute;
+  top: 100px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 100px);
+
+}
+#pullUp {
+  text-align: center;
+}
+.percent-number {
+  em {
+    font-size: 26px;
+  }
+  i {
+    font-size: 16px;
+  }
+}
+//转让价格
+.p-title .price {
+  color: #FF473C;
+}
+
