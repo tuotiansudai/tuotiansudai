@@ -275,12 +275,12 @@ $('#noUse').click(function () {
 let $couponExpectedInterest = $(".experience-income");
 //计算加息券或者投资红包的预期收益
 let calExpectedCouponInterest = function() {
-    if($('#couponId').val() == ''){
+    if($('#maxBenifit').val() == ''){
         $couponExpectedInterest.text("");
     }else {
         commonFun.useAjax({
             url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
-            data: 'couponIds='+$('#couponId').val(),
+            data: 'couponIds='+$('#maxBenifit').val(),
             type: 'GET'
         },function(amount) {
             $couponExpectedInterest.text("+" + amount);
@@ -289,7 +289,6 @@ let calExpectedCouponInterest = function() {
 
 };
 //页面加载判断预期收益
-calExpectedCouponInterest();
 maxBenifitUserCoupon();
 function maxBenifitUserCoupon() {
     commonFun.useAjax({
@@ -303,14 +302,17 @@ function maxBenifitUserCoupon() {
                 $(item).removeClass('selected');
                 if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
                     $(item).addClass('selected');
+                    $('#maxBenifit').val($(item).data('coupon-id'));
                     $('#couponText').text($(item).data('coupon-desc'));
                 }
 
 
             })
+            calExpectedCouponInterest();
         } else {
             $('#couponText').text('无可用优惠券');
             $('#couponText').css('color','#64646D');
+            $couponExpectedInterest.text("");
             $('.to-use_coupon').each(function (index,item) {
                 $(item).addClass('disabled');
             })
@@ -322,7 +324,6 @@ $amountInputElement
     .on('keyup',function() {
         let value = getInvestAmount();
         calExpectedInterest();
-        calExpectedCouponInterest();
         maxBenifitUserCoupon();
         $('.to-use_coupon').each(function (index,item) {
             $(item).addClass('disabled');

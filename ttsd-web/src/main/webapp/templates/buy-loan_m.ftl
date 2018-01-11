@@ -38,7 +38,10 @@
                 </li>
                 <li>
                     <span>
-                        <i>${loan.baseRate}+${loan.activityRate}%</i>
+                        <i><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                        <#if extraLoanRates??>
+                            ~ <@percentInteger>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentFraction>
+                        </#if>%</i>
                     </span>
                     <em>预计年化收益</em>
                 </li>
@@ -52,6 +55,9 @@
         </div>
         <div class="bg-square-box"></div>
     </div>
+
+
+
     <form id="investForm" action="/invest" method="post">
         <input type="hidden" name="source" value="M">
         <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
@@ -80,6 +86,7 @@
                 <label>优惠券</label>
                 <span id="couponText" type="text">${maxBenefitCouponDesc}</span>
                 <input id="couponId" type="hidden" value="${(maxBenefitCouponId?string.computer)!}" name="userCouponIds">
+                <input type="hidden" id="maxBenifit" value="${(maxBenefitUserCoupon.couponId?string.computer)!}">
                 <em><i class="fa fa-angle-right"></i></em>
             </li>
 
