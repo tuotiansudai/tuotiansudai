@@ -35,15 +35,6 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  .data_dealine {
-    position: absolute;
-    top: .3rem;
-    right: .4rem;
-    margin-right: .2rem;
-    font-size: .6rem;
-    line-height: .3rem;
-    color: #fff;
-  }
   .safe_operational_text {
     position: absolute;
     top: 1.1rem;
@@ -252,28 +243,36 @@
     text-align: center;
   }
   .unit_symbol {
-    text-align: right;
-    margin-right: 1.3rem;
+    position: absolute;
+    top: 7rem;
+    right: 1.3rem;
     margin-bottom: 1rem;
     font-size: .5rem;
     color: #41b4e3;
     font-weight: normal;
   }
   #main_part1 {
+    position: absolute;
+    top: 9rem;
     width: 100%;
     height: 5rem;
   }
   .chart1_title {
-    margin-top: -1em;
+    width: 100%;
+    position: absolute;
+    top: 13.5rem;
     text-align: center;
     font-size: .6rem;
     color: #1691e8;
     font-weight: normal;
+    text-align: center;
     .chart1_title_strong {
       color: #ff5400;
     }
   }
   #main_part2 {
+    position: absolute;
+    top: 17rem;
     width: 100%;
     height: 5rem;
     margin-top: 1rem;
@@ -421,5 +420,11 @@
     height: 12rem;
   }
 }
+.chart1_title.chart1_title_m {
+  top: 22.5rem;
+}
 
+.unit_symbol.unit_symbol_m {
+  top: 16rem;
+}
 
