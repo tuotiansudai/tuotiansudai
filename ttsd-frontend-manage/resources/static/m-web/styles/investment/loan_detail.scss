@@ -280,17 +280,18 @@ body {
 
 .target-category-box {
   padding:15px 15px 25px 15px;
-  font-size: 14px;
+  font-size: 16px!important;
   color: #808080!important;
   background: #fff;
   line-height: 35px;
   .newer-title{
     border-left:2px solid #FF473C;
     padding-left: 10px;
-    line-height: 18px;
+    line-height: 16px!important;
     display: flex;
     justify-content: space-between;
     span{
+      vertical-align: middle;
       &.tip-text{
         font-size: 12px;
         color: #525252!important;
@@ -341,6 +342,7 @@ body {
   text-align: left;
   font-size: 18px;
   color: #525252;
+  font-weight: lighter!important;
 }
 .input-list li span.number-text{
   text-align: left;
@@ -791,4 +793,14 @@ body {
 #pullUp {
   position: absolute;
   bottom: 0;
+}
+.icon-close {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  background: url("../../images/close_btn.png") no-repeat;
+  background-size: contain;
+}
+.immediate-investment {
+  margin-top: 50px!important;
 }

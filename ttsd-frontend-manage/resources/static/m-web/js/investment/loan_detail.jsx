@@ -67,7 +67,8 @@ $recordTop.find('span').on('click',function() {
 let $btnWapNormal = $('.btn-wap-normal',$buyDetail),
     $amountInputElement = $('.input-amount',$buyDetail),
     minAmount = parseInt($amountInputElement.data('min-invest-amount')),//起投金额
-    leftInvest = parseInt($amountInputElement.data('amount-need-raised'));//剩余可投
+    leftInvest = parseInt($amountInputElement.data('amount-need-raised')),//剩余可投
+    duration = parseInt($amountInputElement.data('duration')) ;//项目最长期限
 
 $buyDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
@@ -215,6 +216,8 @@ var calExpectedInterest = function() {
         url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
         type: 'GET',
     },function(amount) {
+        console.log(getInvestAmount())
+        console.log(amount)
         $("#expectedEarnings").text(amount);
     });
 };
@@ -282,7 +285,7 @@ let calExpectedCouponInterest = function() {
             url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
             data: 'couponIds='+$('#maxBenifit').val(),
             type: 'GET'
-        },function(amount) {
+        },function(amount) {console.log(amount)
             $couponExpectedInterest.text("+" + amount);
         });
     }
@@ -319,19 +322,25 @@ function maxBenifitUserCoupon() {
         }
     })
 }
+couponSelect();
+//优惠券显示的判断
+function couponSelect() {
+    let value = getInvestAmount();
+    $('.to-use_coupon').each(function (index,item) {
+        $(item).addClass('disabled');
+        if($(item).data('min-invest-amount') <= value/100 && parseInt($(item).data('min-product-type'))  <= duration){
+            $(item).removeClass('disabled');
+        }
+
+    })
+}
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
         let value = getInvestAmount();
         calExpectedInterest();
         maxBenifitUserCoupon();
-        $('.to-use_coupon').each(function (index,item) {
-            $(item).addClass('disabled');
-            if($(item).data('min-invest-amount') <= value/100){
-                $(item).removeClass('disabled');
-            }
-
-        })
+        couponSelect();
         if(value/100  == 0){
             $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
         } else if(value/100 <minAmount){

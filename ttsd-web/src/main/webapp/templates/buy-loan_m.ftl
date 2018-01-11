@@ -1,6 +1,5 @@
 
 <#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
-
 <div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="m-header"><em id="iconBuy" class="icon-left"><i class="fa fa-angle-left"></i></em>购买详情 </div>
@@ -32,7 +31,7 @@
             <ul class="loan-info clearfix">
                 <li>
                     <span>
-                        <i>最长${loan.raisingDays}天</i>
+                        <i>最长${loan.duration}天</i>
                     </span>
                     <em>项目期限</em>
                 </li>
@@ -66,6 +65,7 @@
             <li>
                 <label>投资金额</label>
                 <input type="text"
+                       data-duration="${loan.duration}"
                        data-min-invest-amount="${loan.minInvestAmount}"
                        data-max-invest-amount="${loan.maxInvestAmount}"
                        data-no-password-remind="${loan.investor.remindNoPassword?c}"
@@ -73,13 +73,12 @@
                        data-auto-invest-on="${loan.investor.autoInvest?c}"
                        data-user-balance="${(loan.investor.balance/100)?string.computer}"
                        data-amount-need-raised="${(loan.amountNeedRaised/100)?string.computer}" value="${loan.investor.maxAvailableInvestAmount}" name="amount" class="input-amount" placeholder="${loan.minInvestAmount}元起投">
-                <em class="clear-font"><i id="clearFont" class="fa fa-times" aria-hidden="true"></i></em>
+                <em class="clear-font"><i id="clearFont" class="icon-close"></i></em>
                 <em>元</em>
             </li>
             <li class="mt-10">
                 <label>预期收益</label>
-                <span class="number-text"><strong id="expectedEarnings">0.00</strong>
-                    <strong class="experience-income"></strong>
+                <span class="number-text"><strong id="expectedEarnings">0.00</strong><strong class="experience-income"></strong>
                     元</span>
             </li>
             <li id="select_coupon" class="select-coupon">
@@ -93,7 +92,7 @@
         </ul>
     </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <button id="investSubmit" type="submit" class="btn-wap-normal" disabled>立即投资</button>
+    <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" disabled>立即投资</button>
     </form>
 
 

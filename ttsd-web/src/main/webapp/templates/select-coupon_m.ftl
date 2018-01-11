@@ -41,7 +41,8 @@
             data-coupon-type="${coupon.couponType}"
             data-coupon-desc="${couponDesc}"
             data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
-            data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}">
+            data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}"
+            data-min-product-type = "${minProductType}">
             <div class="selected-status"></div>
             <div class="left-item">
                 <dl>
