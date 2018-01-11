@@ -310,9 +310,10 @@ let getPartThreePage = (data) => {
         ageLegendArr[i] = item.name + ' ' + item.scale + '%';
     }
     myChart3.setOption(circularChart([
-        {value: `${femaleScale}`, name:`女性 ${femaleScale}%`},
-        {value: `${maleScale}`, name:`男性 ${maleScale}%`},
-    ],[`男性 ${maleScale}%`,`女性 ${femaleScale}%`],['#fdb560','#74bbf3']));
+        {value: `${femaleScale}`, name:`女性 ${femaleScale }%`},
+        {value: `${maleScale}`, name:`男性 ${maleScale }%`},
+    ],[`男性 ${maleScale }%`,`女性 ${femaleScale }%`],['#fdb560','#74bbf3']));
+
 
     myChart4.setOption(circularChart(ageArr,ageLegendArr,['#a47cf3','#fdb560','#fcee74','#87e376','#69e2ab']));
 };
