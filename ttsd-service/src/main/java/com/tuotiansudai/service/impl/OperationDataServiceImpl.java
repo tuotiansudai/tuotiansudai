@@ -103,8 +103,10 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setUsersCount(userMapper.findUsersCount());
 
         List<Integer> sexList = findScaleByGender(new Date());
-        operationDataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
-        operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        if (sexList.size() > 0) {
+            operationDataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+            operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        }
 
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(new Date())));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
@@ -142,8 +144,10 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         List<Integer> sexList = findScaleByGender(new Date());
-        operationDataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
-        operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        if (sexList.size() > 0) {
+            operationDataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+            operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        }
 
     }
 
