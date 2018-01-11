@@ -52,7 +52,10 @@ public class InvestSuccessAnnualizedMessageConsumer implements MessageConsumer {
             LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
 
             ActivityInvestAnnualized activityInvestAnnualized = ActivityInvestAnnualized.getActivityByDesc(loanDetailInfo.getActivityDesc());
-            if (activityInvestAnnualized != null) {
+            if (!loanDetailInfo.getActivityType().equals("NEWBIE")
+                    && !investInfo.getTransferStatus().equals("SUCCESS")
+                    && investInfo.getStatus().equals("SUCCESS")
+                    && activityInvestAnnualized != null) {
                 ActivityInvestAnnualizedModel activityInvestAnnualizedModel = activityInvestAnnualizedMapper.findByActivityAndLoginName(activityInvestAnnualized, userInfo.getLoginName());
                 if (activityInvestAnnualizedModel == null) {
                     activityInvestAnnualizedMapper.create(

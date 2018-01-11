@@ -229,7 +229,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/invest-annualized", method = RequestMethod.GET)
-    public void cashSnowballExport(HttpServletResponse response,
+    public void investAnnualizedExport(HttpServletResponse response,
                                    @RequestParam(value = "activityInvestAnnualized", defaultValue = "NEW_YEAR_ACTIVITY") ActivityInvestAnnualized activityInvestAnnualized,
                                    @RequestParam(value = "mobile", required = false) String mobile) throws IOException {
         response.setCharacterEncoding("UTF-8");
