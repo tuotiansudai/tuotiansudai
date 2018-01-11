@@ -95,18 +95,8 @@
                             <i class="hot-icon">
                                 <span>${discountShow!}</span>
                             </i>
-                            <p class="num-text pad">剩余${virtualProduct.leftCount?c!"0"}件
-                                <#if virtualProduct.monthLimit!=0>
-                                    /每人每月最多可兑换${virtualProduct.monthLimit}个
-                                </#if>
-                            </p>
-                        <#else>
-                            <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件
-                                <#if virtualProduct.monthLimit!=0>
-                                    /每人每月最多可兑换${virtualProduct.monthLimit}个
-                                </#if>
-                            </p>
                         </#if>
+                        <p class="num-text"></p>
                         <p><img src="${commonStaticServer}/${virtualProduct.imageUrl}" width="160" height="100"></p>
                         <p class="convert-btn">
                             <span class="name-text">${virtualProduct.name}</span>
@@ -151,11 +141,7 @@
                             </i>
                         </#if>
 
-                        <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件
-                            <#if physicalProduct.monthLimit!=0>
-                                /每人每月最多可兑换${physicalProduct.monthLimit}个
-                            </#if>
-                        </p>
+                        <p class="num-text"></p>
 
                         <p class="mater-img picture-item">
                             <img src="${commonStaticServer}/${physicalProduct.imageUrl}" width="160" height="100"/>
