@@ -36,9 +36,27 @@
                 </li>
             </ul>
         </#if>
+        <#if "PTP_MER_BIND_CARD" == service>
+            <div class="my-account-content apply-transfer-success">
+                <div class="info">
+                    <i class="icon-success"></i>
+                    <em>银行卡绑定成功</em>
+                    <ul class="input-list">
+                        <li>
+                            <label>银行卡号</label>
+                            <span>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="button-note">
+                <a id="countDownBtn" href="/m/personal-info" class="btn-wap-normal next-step">确定</a>
+            </div>
+        </#if>
     </div>
 </div>
 <div class="button-note">
     <a id="countDownBtn" href="javascript:;" class="btn-wap-normal next-step">确定</a>
 </div>
+
 </@global.main>

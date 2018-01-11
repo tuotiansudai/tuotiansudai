@@ -25,7 +25,7 @@
         value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime}, #{membershipPoint})
     </insert>
 
-    <select id="findByLoginName" parameterType="string" resultMap="accountResultMap">
+    <select id="findByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
         select * from account where login_name = #{loginName}
     </select>
 

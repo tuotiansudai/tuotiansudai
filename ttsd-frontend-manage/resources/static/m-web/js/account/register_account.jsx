@@ -56,7 +56,6 @@ function isDisabledButton() {
 //点击立即注册按钮
 registerAccountForm.onsubmit = function(event) {
     event.preventDefault();
-    $buttonLayer.find('.status').removeClass('error').html('请耐心等待');
     $btnSubmit.prop('disabled', true).val('认证中');
     commonFun.useAjax({
         url:"/register/account",
@@ -64,11 +63,11 @@ registerAccountForm.onsubmit = function(event) {
         data:$(registerAccountForm).serialize()
     },function(response) {
         if(response.data.status) {
-            $buttonLayer.find('.status').removeClass('error').html('认证成功');
-            location.href = '/account/success';
+            $btnSubmit.prop('disabled', true).val('认证成功');
+            location.href = '/m/register/account/success';
         } else {
             let errorMsg = (response.data.code === '1002') ? '实名认证超时，请重试' : '认证失败，请检查您的信息';
-            $buttonLayer.find('.status').addClass('error').html(errorMsg);
+            $errorBox.text(errorMsg);
             $btnSubmit.prop('disabled', false).val('认证');
         }
     });

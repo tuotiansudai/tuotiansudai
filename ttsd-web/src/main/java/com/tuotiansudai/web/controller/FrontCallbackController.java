@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -42,18 +43,22 @@ public class FrontCallbackController {
 
     private final BindBankCardService bindBankCardService;
 
+    private final BankCardMapper bankCardMapper;
+
     @Autowired
     public FrontCallbackController(PayWrapperClient payWrapperClient,
                                    InvestService investService,
                                    LoanService loanService,
                                    WithdrawService withdrawService,
-                                   BindBankCardService bindBankCardService) {
+                                   BindBankCardService bindBankCardService,BankCardMapper bankCardMapper) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
         this.loanService = loanService;
         this.withdrawService = withdrawService;
         this.bindBankCardService = bindBankCardService;
+        this.bankCardMapper = bankCardMapper;
     }
+
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView parseCallback(@PathVariable String service, HttpServletRequest request) {
@@ -80,6 +85,13 @@ public class FrontCallbackController {
             ModelAndView modelAndView = new ModelAndView("/front-callback-success");
             modelAndView.addObject("error", data.getStatus() ? null : data.getMessage());
             modelAndView.addObject("service", asyncUmPayService.name());
+
+            if (AsyncUmPayService.PTP_MER_BIND_CARD == asyncUmPayService) {
+                Long orderId = Long.valueOf(params.get("order_id"));
+                BankCardModel bankCardModel = bankCardMapper.findById(orderId);
+                modelAndView.addObject("cardNumber", bankCardModel != null ? bankCardModel.getCardNumber() : "");
+            }
+
             if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
                 InvestModel investModel = investService.findById(Long.valueOf(params.get("order_id")));
                 LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
