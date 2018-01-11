@@ -2,8 +2,6 @@ require('mWebStyle/investment/buy_free.scss');
 let commonFun = require('publicJs/commonFun');
 require('webJs/plugins/autoNumeric');
 
-$amountInputElement.autoNumeric('init');
-
 
 let $confirmInvest = $('#countDownBtn');
 commonFun.countDownLoan({

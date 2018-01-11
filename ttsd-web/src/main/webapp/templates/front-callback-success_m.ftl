@@ -24,7 +24,7 @@
             <ul class="input-list">
                 <li>
                     <label>到账卡号</label>
-                    <span>${bankName!} ${cardNumber!}元</span>
+                    <span style="white-space: nowrap">${bankName!} ${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</span>
                 </li>
                 <li>
                     <label>提现金额</label>
@@ -32,7 +32,7 @@
                 </li>
                 <li>
                     <label>订单号</label>
-                    <span>${orderId?string.computer}</span>
+                    <span>${orderId}</span>
                 </li>
             </ul>
         </#if>

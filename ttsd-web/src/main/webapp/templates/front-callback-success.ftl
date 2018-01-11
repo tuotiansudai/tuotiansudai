@@ -38,9 +38,9 @@
                 </p>
             </#if>
             <#if "CUST_WITHDRAWALS" == service>
-                <p class="pay-tip">申请提现成功</p>
+                <p class="pay-tip">申请提现成功,申请提现金额${amount!} 元</p>
                 <p class="pay-text">
-                    <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/personal-info">点击这里</a>
+                    <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/account">点击这里</a>
                 </p>
             </#if>
         </#if>
