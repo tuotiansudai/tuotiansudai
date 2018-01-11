@@ -25,20 +25,16 @@ public class InvestAnnualizedController {
     @RequestMapping(value = "/invest-annualized-list", method = RequestMethod.GET)
     public ModelAndView investAnnualizedList(@RequestParam(value = "activityInvestAnnualized", defaultValue = "NEW_YEAR_ACTIVITY") ActivityInvestAnnualized activityInvestAnnualized,
                                              @RequestParam(value = "mobile", required = false) String mobile,
-                                             @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                             @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                              @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/invest-annualized-list");
-        BasePaginationDataDto<ActivityInvestAnnualizedView> data = activityConsoleInvestAnnualizedService.list(activityInvestAnnualized, mobile, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<ActivityInvestAnnualizedView> data = activityConsoleInvestAnnualizedService.list(activityInvestAnnualized, mobile, index, pageSize);
         modelAndView.addObject("data", data);
-        modelAndView.addObject("sumInvestAmount", data.getRecords().stream().mapToLong(i->i.getInvestAmount()).sum());
-        modelAndView.addObject("sumAnnualizedAmount", data.getRecords().stream().mapToLong(i->i.getAnnualizedAmount()).sum());
+        modelAndView.addObject("sumInvestAmount", data.getRecords().stream().mapToLong(i->i.getSumInvestAmount()).sum());
+        modelAndView.addObject("sumAnnualizedAmount", data.getRecords().stream().mapToLong(i->i.getSumAnnualizedAmount()).sum());
         modelAndView.addObject("activityInvestAnnualizeds", Arrays.asList(ActivityInvestAnnualized.values()));
         modelAndView.addObject("selectType", activityInvestAnnualized);
         modelAndView.addObject("mobile", mobile);
-        modelAndView.addObject("startTime", startTime);
-        modelAndView.addObject("endTime", endTime);
         return modelAndView;
     }
 }

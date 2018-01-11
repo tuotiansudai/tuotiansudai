@@ -231,9 +231,7 @@ public class ExportController {
     @RequestMapping(value = "/invest-annualized", method = RequestMethod.GET)
     public void cashSnowballExport(HttpServletResponse response,
                                    @RequestParam(value = "activityInvestAnnualized", defaultValue = "NEW_YEAR_ACTIVITY") ActivityInvestAnnualized activityInvestAnnualized,
-                                   @RequestParam(value = "mobile", required = false) String mobile,
-                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) throws IOException {
+                                   @RequestParam(value = "mobile", required = false) String mobile) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
             response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.InvestAnnualizedHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
@@ -241,7 +239,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         response.setContentType("application/csv");
-        List<List<String>> csvData = activityConsoleExportService.buildInvestAnnualizedCsvList(activityInvestAnnualized, mobile, startTime, endTime);
+        List<List<String>> csvData = activityConsoleExportService.buildInvestAnnualizedCsvList(activityInvestAnnualized, mobile);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAnnualizedHeader, csvData, response.getOutputStream());
     }
 }

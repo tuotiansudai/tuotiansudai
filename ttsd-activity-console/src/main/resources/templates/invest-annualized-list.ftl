@@ -25,24 +25,6 @@
                    autocomplete="off" value="${mobile!}">
         </div>
 
-        <div class="form-group">
-            <label>日期</label>
-            <div class='input-group date' id='startTime'>
-                <input type='text' class="form-control" name="startTime"
-                       value="${(startTime?string('yyyy-MM-dd'))!}"/>
-                <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-            </div>
-            -
-            <div class='input-group date' id='endTime'>
-                <input type='text' class="form-control" name="endTime"
-                       value="${(endTime?string('yyyy-MM-dd'))!}"/>
-                <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-            </div>
-        </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
     </form>
 
@@ -85,10 +67,10 @@
                     ${item.mobile!}
                     </td>
                     <td>
-                    ${(item.investAmount/100)?string('0.00')!}
+                    ${(item.sumInvestAmount/100)?string('0.00')!}
                     </td>
                     <td>
-                    ${(item.annualizedAmount/100)?string('0.00')!}
+                    ${(item.sumAnnualizedAmount/100)?string('0.00')!}
                     </td>
                 </tr>
                 </#list>

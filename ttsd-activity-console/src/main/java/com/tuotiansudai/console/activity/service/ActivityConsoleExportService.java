@@ -295,7 +295,7 @@ public class ActivityConsoleExportService {
         return activityConsoleCashSnowballService.list(1, Integer.MAX_VALUE, mobile, startInvestAmount, endInvestAmount).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildInvestAnnualizedCsvList(ActivityInvestAnnualized activityInvestAnnualized, String mobile, Date startTime, Date endTime){
-        return activityConsoleInvestAnnualizedService.list( activityInvestAnnualized, mobile, startTime, endTime, 1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    public List<List<String>> buildInvestAnnualizedCsvList(ActivityInvestAnnualized activityInvestAnnualized, String mobile){
+        return activityConsoleInvestAnnualizedService.list( activityInvestAnnualized, mobile, 1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

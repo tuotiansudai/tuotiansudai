@@ -322,8 +322,7 @@ public interface InvestMapper {
 
     List<InvestProductTypeView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
                                                                     @Param(value = "endTime") Date endTime,
-                                                                    @Param(value = "activityDesc") String activityDesc,
-                                                                    @Param(value = "mobile") String mobile);
+                                                                    @Param(value = "activityDesc") String activityDesc);
 
     List<InvestModel> findSuccessDoubleElevenActivityByTime(@Param(value = "loanId") Long loanId,
                                                             @Param(value="startTime") Date startTime,

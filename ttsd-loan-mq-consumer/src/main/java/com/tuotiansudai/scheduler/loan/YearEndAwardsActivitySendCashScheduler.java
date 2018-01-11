@@ -62,7 +62,7 @@ public class YearEndAwardsActivitySendCashScheduler {
             return;
         }
 
-        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityStartTime, activityEndTime, "岁末专享", null);
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityStartTime, activityEndTime, "岁末专享");
         Map<String, Long> amountMaps = list.stream().collect(Collectors.toMap(k -> k.getLoginName(), v -> v.getSumAmount() * v.getProductType().getDuration() / 360, (v, newV) -> v + newV));
 
         if (amountMaps.isEmpty()){

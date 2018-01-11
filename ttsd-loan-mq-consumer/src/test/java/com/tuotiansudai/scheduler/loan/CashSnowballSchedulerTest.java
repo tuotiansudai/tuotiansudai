@@ -61,7 +61,7 @@ public class CashSnowballSchedulerTest {
         if (DateTime.now().getYear() != 2018){
             return;
         }
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any(), anyString())).thenReturn(getMockList());
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(getMockList());
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
         when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(true)));
         cashSnowballActivityScheduler.cashSnowballActivityEndSendCash();
@@ -79,7 +79,7 @@ public class CashSnowballSchedulerTest {
         if (DateTime.now().getYear() != 2018){
             return;
         }
-        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any(), anyString())).thenReturn(getMockList());
+        when(investMapper.findAmountOrderByNameAndProductType(any(), any(), any())).thenReturn(getMockList());
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
         when(payWrapperClient.transferCash(requestModelCaptor.capture())).thenThrow(Exception.class);

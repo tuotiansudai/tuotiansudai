@@ -49,7 +49,7 @@ public class ActivityConsoleIphoneXService {
 
     public List<IphoneXActivityDto> getIphoneXList() {
         Map<String, IphoneXActivityDto> map = new HashMap<>();
-        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime, null, null);
+        List<InvestProductTypeView> list = investMapper.findAmountOrderByNameAndProductType(activityIphoneXStartTime, activityIphoneXEndTime, null);
         for (InvestProductTypeView investProductTypeView : list) {
             IphoneXActivityDto iphoneXActivityDto = map.get(investProductTypeView.getLoginName());
             map.put(investProductTypeView.getLoginName(),

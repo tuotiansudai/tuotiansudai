@@ -2,23 +2,36 @@ package com.tuotiansudai.activity.repository.model;
 
 import java.io.Serializable;
 
-public class ActivityInvestAnnualizedView implements Serializable {
+public class ActivityInvestAnnualizedModel implements Serializable {
 
+    private long id;
     private String userName;
     private String loginName;
     private String mobile;
     private long sumInvestAmount;
     private long sumAnnualizedAmount;
+    private ActivityInvestAnnualized activityInvestAnnualized;
+    private String activityLoanDesc;
 
-    public ActivityInvestAnnualizedView() {
+    public ActivityInvestAnnualizedModel() {
     }
 
-    public ActivityInvestAnnualizedView(String userName, String loginName, String mobile, Long sumInvestAmount, Long sumAnnualizedAmount) {
+    public ActivityInvestAnnualizedModel(String userName, String loginName, String mobile, long sumInvestAmount, long sumAnnualizedAmount, ActivityInvestAnnualized activityName, String activityLoanDesc) {
         this.userName = userName;
         this.loginName = loginName;
         this.mobile = mobile;
         this.sumInvestAmount = sumInvestAmount;
         this.sumAnnualizedAmount = sumAnnualizedAmount;
+        this.activityInvestAnnualized = activityName;
+        this.activityLoanDesc = activityLoanDesc;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUserName() {
@@ -59,5 +72,21 @@ public class ActivityInvestAnnualizedView implements Serializable {
 
     public void setSumAnnualizedAmount(long sumAnnualizedAmount) {
         this.sumAnnualizedAmount = sumAnnualizedAmount;
+    }
+
+    public ActivityInvestAnnualized getActivityInvestAnnualized() {
+        return activityInvestAnnualized;
+    }
+
+    public void setActivityInvestAnnualized(ActivityInvestAnnualized activityInvestAnnualized) {
+        this.activityInvestAnnualized = activityInvestAnnualized;
+    }
+
+    public String getActivityLoanDesc() {
+        return activityLoanDesc;
+    }
+
+    public void setActivityLoanDesc(String activityLoanDesc) {
+        this.activityLoanDesc = activityLoanDesc;
     }
 }
