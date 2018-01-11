@@ -72,7 +72,7 @@ public class RegisterAccountController {
     @RequestMapping(path = "/success", method = RequestMethod.GET)
     public ModelAndView registerAccountSuccess() {
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        if (Seconds.secondsBetween(new DateTime(accountModel.getRegisterTime()), new DateTime()).getSeconds() > 10) {
+        if (accountModel == null) {
             return new ModelAndView("/error/404");
         }
         return new ModelAndView("/register-account-success");
