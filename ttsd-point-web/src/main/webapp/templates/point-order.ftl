@@ -107,6 +107,11 @@
 					</div>
 				</div>
 			</div>
+
+            <div class="order-info">
+				备注：<input type="text" id="comment"/>
+			</div>
+
 			<div class="order-total">
 				<p>
                     <span>共需支付：<i class="count-num"

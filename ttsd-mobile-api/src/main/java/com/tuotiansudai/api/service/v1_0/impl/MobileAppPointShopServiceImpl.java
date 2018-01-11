@@ -360,7 +360,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
-        productService.buyProduct(loginName, Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId());
+        productService.buyProduct(loginName, Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId(), productDetailRequestDto.getComment());
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 

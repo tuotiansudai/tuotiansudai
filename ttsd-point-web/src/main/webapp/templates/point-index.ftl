@@ -109,7 +109,7 @@
                             <#if virtualProduct?? && virtualProduct.leftCount ==0 >
                                 <span class="get-btn">已售罄</span>
                             <#else>
-                                <a href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
+                                <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail"><span
                                         class="get-btn active">立即兑换</span></a>
                             </#if>
                         </p>
@@ -157,7 +157,7 @@
                             <#if physicalProduct?? && physicalProduct.leftCount ==0 >
                                 <span class="get-btn">已售罄</span>
                             <#else>
-                                <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
+                                <a href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail"><span
                                         class="get-btn active">立即兑换</span></a>
                             </#if>
                         </p>
