@@ -41,6 +41,5 @@
     <div class="info-more-bank">
         更多银行努力接入中…
     </div>
-
 </div>
 </@global.main>
