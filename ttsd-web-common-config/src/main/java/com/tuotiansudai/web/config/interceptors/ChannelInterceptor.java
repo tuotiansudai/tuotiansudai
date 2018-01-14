@@ -15,12 +15,17 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
 
     private final static String APP_SOURCE_FLAG = "app";
 
+    private final static int CHANNEL_MAX_LENGTH = 32;
+
     @Value("${common.environment}")
     private Environment environment;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         String channel = request.getParameter("channel");
+        if (channel.length() > CHANNEL_MAX_LENGTH) {
+            channel = channel.substring(0, CHANNEL_MAX_LENGTH);
+        }
         if (!Strings.isNullOrEmpty(channel) && request.getSession().getAttribute("channel") == null) {
             request.getSession().setAttribute("channel", channel);
         }
