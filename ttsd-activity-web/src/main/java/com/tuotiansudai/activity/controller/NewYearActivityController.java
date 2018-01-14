@@ -11,7 +11,7 @@ public class NewYearActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView home() {
-        ModelAndView modelAndView = new ModelAndView("/activities/2017/new-year-increase-interest", "responsive", false);
+        ModelAndView modelAndView = new ModelAndView("/activities/2018/new-year-increase-interest", "responsive", false);
         return modelAndView;
     }
 }

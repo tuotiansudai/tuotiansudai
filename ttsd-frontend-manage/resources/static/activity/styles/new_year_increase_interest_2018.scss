@@ -1,0 +1,233 @@
+h2,h4 {
+  font-weight: normal;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+strong,em {
+  font-weight: normal;
+}
+
+.activity-page {
+  width: 1000px;
+  margin: 0 auto;
+}
+.increase-rate-banner {
+  height: 350px;
+  background: url("../images/2018/new-year-increase-interest/increase_rate_banner_pc.png") no-repeat center center;
+}
+.activity-wrap-main {
+background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repeat-y center center;
+}
+.increase_container {
+  padding-top: 120px;
+  font-family: PingFangSC-Regular, sans-serif;
+}
+
+.activity-wrap {
+  background: rgba(110,91,255,0.6);
+  text-align: center;
+  position: relative;
+  .activity-title {
+    position: absolute;
+    left: 50%;
+    margin-left: -271px;
+    top: -60px;
+    width: 542px;
+    height: 100px;
+    background: url("../images/2018/new-year-increase-interest/icon_scan_code.png") no-repeat;
+    background-size: 100%;
+    text-indent: -9999px;
+  }
+  .activity-time {
+    margin-top: 75px;
+    font-size: 30px;
+    color: #fff600;
+    display: inline-block;
+    em {
+      width: 31px;
+      height: 31px;
+      display: inline-block;
+      vertical-align: middle;
+      background: url("../images/2018/new-year-increase-interest/clock.png") no-repeat;
+      background-size: contain;
+    }
+    span {
+      vertical-align: middle;
+    }
+
+  }
+  .activity-desc {
+    width: 743px;
+    margin: 0 auto;
+    margin-top: 40px;
+    line-height: 44px;
+    color: #fff;
+    .top-bg {
+      height: 13px;
+      background: url("../images/2018/new-year-increase-interest/bg_top.png") no-repeat;
+      background-size: 100%;
+    }
+    .bottom-bg {
+      height: 13px;
+      background: url("../images/2018/new-year-increase-interest/bg_bottom.png") no-repeat;
+      background-size: 100%;
+    }
+    .desc-body {
+      background: url("../images/2018/new-year-increase-interest/bg_middle.png") repeat-y;
+      background-size: 100%;
+    }
+    h4 {
+      padding-top: 20px;
+      font-size: 24px;
+    }
+    .look-btn {
+      color: #fff603;
+      font-size: 24px;
+      padding-bottom:4px;
+      border-bottom: 1px solid #fff603;
+      cursor: pointer;
+    }
+  }
+  .desc-tips {
+    position: relative;
+    top: -2px;
+    margin: 0 auto;
+    width: 560px;
+    color: #fff600;
+    text-align: center;
+    .icon-trangle {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      margin-left: -24px;
+      width: 48px;
+      height: 14px;
+      background: url("../images/2018/new-year-increase-interest/trangle_up.png") no-repeat;
+      background-size: contain;
+    }
+    .desc-content{
+      background: #574ada;
+      padding: 1px;
+      table {
+        thead {
+          th {
+            font-size: 18px;
+            background: #574ada;
+            font-weight: normal;
+          }
+          border-bottom: 1px solid rgba(255,246,0,0.4);
+        }
+        tbody {
+          tr {
+            td {
+              font-size: 18px;
+              color: #fff600;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.scan-code-wrap {
+  padding-bottom: 76px;
+  .icon-scan-code {
+    margin: 0 auto;
+    margin-top: 40px;
+    width: 407px;
+    height: 409px;
+    background: url("../images/2018/new-year-increase-interest/icon_scan.png") no-repeat;
+    background-size: 100%;
+  }
+}
+.skill-subject-wrap {
+  margin-top: 200px;
+  .activity-title {
+    margin-left: -300px;
+    width: 589px;
+    background: url("../images/2018/new-year-increase-interest/kill_title.png") no-repeat;
+  }
+  h4 {
+    padding-bottom: 20px;
+  }
+  .increase-rate {
+    margin: 0 auto;
+    margin-top: 55px;
+    margin-bottom: 86px;
+    width: 952px;
+    height: 163px;
+    background: url("../images/2018/new-year-increase-interest/increase_rate_pc.png") no-repeat;
+    background-size: 100%;
+  }
+  .tips {
+    background: #675ae9;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    font-size: 24px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+}
+.spring-gift-wrap {
+  margin-top: 140px;
+  .activity-title {
+    margin-left: -305px;
+    width: 609px;
+    background: url("../images/2018/new-year-increase-interest/spring_gift_title.png") no-repeat;
+  }
+  .desc-content{
+    background: #574ada;
+    padding: 1px;
+    table {
+      tbody {
+        tr {
+
+          td {
+            border-bottom: 1px solid rgba(255,246,0,0.4);
+            &.leftTd {
+              border-right: 1px solid rgba(255,246,0,0.4);
+            }
+          }
+
+        }
+      }
+    }
+
+  }
+  .product-list {
+    margin-top: -60px;
+    ul {
+      margin-left: -22px;
+      li {
+        float: left;
+        width: 318px;
+        height: 313px;
+        margin-left: 22px;
+        margin-bottom: 60px;
+        img {
+          width: 100%;
+        }
+        &.last {
+          margin-left: 200px;
+        }
+      }
+    }
+  }
+}
+.kindly-tips {
+  margin-top: 56px;
+  box-sizing: border-box;
+  background: #6e5bff;
+  padding: 25px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+@media screen and (max-width:768px) {
+
+}
