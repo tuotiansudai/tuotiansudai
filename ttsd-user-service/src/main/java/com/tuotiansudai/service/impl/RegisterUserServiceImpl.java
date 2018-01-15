@@ -43,6 +43,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserModel register(RegisterRequestDto registerDto) {
+        if (!Strings.isNullOrEmpty(registerDto.getChannel()) && registerDto.getChannel().length() > 32) {
+            registerDto.setChannel(registerDto.getChannel().substring(0, 32));
+        }
         UserRestUserInfo registerUserInfo = userRestClient.register(registerDto);
         UserModel userModel = registerUserInfo.getUserInfo().toUserModel();
 

@@ -21,6 +21,7 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         String channel = request.getParameter("channel");
+        
         if (!Strings.isNullOrEmpty(channel) && request.getSession().getAttribute("channel") == null) {
             request.getSession().setAttribute("channel", channel);
         }
