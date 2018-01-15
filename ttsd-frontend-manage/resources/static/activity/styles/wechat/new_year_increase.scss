@@ -1,6 +1,9 @@
 html {
   font-size: 100px;
 }
+button {
+  border: none!important;
+}
 .new-year-container {
   background: url("../../images/2018/new-year-increase-interest/bg_repeat_wechat.png") repeat-y;
   background-size: 100%;
@@ -69,6 +72,10 @@ html {
       background: url("../../images/2018/new-year-increase-interest/wechat_button.png") no-repeat;
       background-size: 100%;
       margin-bottom: 1.1rem;
+      &.btn-end {
+        background: url("../../images/2018/new-year-increase-interest/button_end.png") no-repeat;
+        background-size: 100%;
+      }
     }
   }
 
