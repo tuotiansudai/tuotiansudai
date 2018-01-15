@@ -107,11 +107,11 @@
 					</div>
 				</div>
 			</div>
-
+		<#if productShowItem.goodsType.name() == 'PHYSICAL'>
             <div class="order-info my-order-info">
 				备注：<textarea id="comment" placeholder="请您填写备注信息，比如颜色、规格等。如无备注则随机发货" maxlength="50"></textarea>
 			</div>
-
+		</#if>
 			<div class="order-total">
 				<p>
                     <span>共需支付：<i class="count-num"
