@@ -24,21 +24,21 @@ public class NewYearActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView newYearActivity() {
-        return new ModelAndView("/activities/2017/new-year");
+        return new ModelAndView("/activities/2018/new-year-increase-interest");
     }
 
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)
     public ModelAndView newYearActivityWechat(HttpServletRequest request) {
-        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activity/new-year");
-        }
-        ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
+//        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+//        if (Strings.isNullOrEmpty(openId)) {
+//            return new ModelAndView("redirect:/activity/new-year");
+//        }
+        ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
         modelAndView.addObject("duringActivities", newYearActivityService.duringActivities());
         return modelAndView;
     }
 
-    @RequestMapping(path = "/draw", method = RequestMethod.GET)
+    @RequestMapping(path = "/draw", method = RequestMethod.POST)
     public ModelAndView newYearActivityDrawCoupon(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
@@ -57,7 +57,7 @@ public class NewYearActivityController {
             return new ModelAndView("/error/404");
         }
 
-        ModelAndView modelAndView = new ModelAndView("/wechat/coupon-special-receive");
+        ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
         boolean drewCoupon = newYearActivityService.drewCoupon(loginName);
         modelAndView.addObject("drewCoupon", drewCoupon);
         if (!drewCoupon) {
