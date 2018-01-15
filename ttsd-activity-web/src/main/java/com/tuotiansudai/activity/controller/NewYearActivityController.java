@@ -62,7 +62,7 @@ public class NewYearActivityController {
         modelAndView.addObject("duringActivities", duringActivities);
         modelAndView.addObject("drewCoupon", drewCoupon);
         if (!drewCoupon) {
-            newYearActivityService.sendDrawCouponMessage("chenzhonghui");
+            newYearActivityService.sendDrawCouponMessage(loginName);
             modelAndView.addObject("drawSuccess", true);
         }
         return modelAndView;
