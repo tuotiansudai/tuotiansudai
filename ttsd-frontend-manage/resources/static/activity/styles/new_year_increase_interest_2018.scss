@@ -1,3 +1,6 @@
+body {
+  font-size: 12px;
+}
 h2,h4 {
   font-weight: normal;
 }
@@ -18,7 +21,8 @@ strong,em {
   background: url("../images/2018/new-year-increase-interest/increase_rate_banner_pc.png") no-repeat center center;
 }
 .activity-wrap-main {
-background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repeat-y center center;
+  padding-bottom: 136px;
+  background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repeat-y center center;
 }
 .increase_container {
   padding-top: 120px;
@@ -125,6 +129,11 @@ background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repea
               font-size: 18px;
               color: #fff600;
             }
+            &.lastTR {
+              td {
+                border-bottom: none;
+              }
+            }
           }
         }
       }
@@ -134,9 +143,12 @@ background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repea
 
 .scan-code-wrap {
   padding-bottom: 76px;
+  .desc-tips {
+    height: 143px;
+  }
   .icon-scan-code {
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: -100px;
     width: 407px;
     height: 409px;
     background: url("../images/2018/new-year-increase-interest/icon_scan.png") no-repeat;
@@ -217,6 +229,9 @@ background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repea
       }
     }
   }
+  .product-list-wap {
+    display: none;
+  }
 }
 .kindly-tips {
   margin-top: 56px;
@@ -230,4 +245,281 @@ background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repea
 
 @media screen and (max-width:768px) {
 
+  .activity-page {
+    width: 7.28rem;
+    margin: 0 auto;
+  }
+  .increase-rate-banner {
+    height: 3.5rem;
+    background: url("../images/2018/new-year-increase-interest/increase_rate_banner_wap.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .activity-wrap-main {
+    padding-bottom: 0.98rem;
+  }
+  .increase_container {
+    padding-top: 1.28rem;
+  }
+
+  .activity-wrap {
+    background: rgba(110,91,255,0.6);
+    text-align: center;
+    position: relative;
+    .activity-title {
+      margin-left: -2.71rem;
+      top: -0.61rem;
+      width: 5.42rem;
+      height: 1.02rem;
+      background-size: contain;
+    }
+    .activity-time {
+      margin-top: 0.75rem;
+      font-size: 0.3rem;
+      em {
+        width: 0.31rem;
+        height: 0.31rem;
+      }
+
+    }
+    .activity-desc {
+      width: 7.04rem;
+      margin-top: 0.4rem;
+      line-height: 0.44rem;
+      .top-bg {
+        height: 0.12rem;
+      }
+      .bottom-bg {
+        height: 0.13rem;
+      }
+      h4 {
+        padding-top: 0.2rem;
+        font-size: 0.24rem;
+      }
+      .look-btn {
+        font-size: 0.24rem;
+        padding-bottom:0.04rem;
+      }
+    }
+    .desc-tips {
+      top: -0.23rem;
+      width: 5.6rem;
+      @media screen and (max-width: 320px) {
+        width: 6.3rem;
+      }
+      .icon-trangle {
+        top: -0.13rem;
+        margin-left: -24px;
+        width: 0.48rem;
+        height: 0.14rem;
+      }
+      .desc-content{
+        table {
+          thead {
+            th {
+              font-size: 0.18rem;
+            }
+          }
+          tbody {
+            tr {
+              td {
+                font-size: 0.18rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .scan-code-wrap {
+    padding-bottom: 0.76rem;
+    .desc-tips {
+      height: 1.43rem;
+    }
+    .icon-scan-code {
+      margin-top: -1rem;
+      width: 4.07rem;
+      height: 4.09rem;
+    }
+  }
+  .skill-subject-wrap {
+    margin-top: 1.3rem;
+    .activity-title {
+      margin-left: -3rem;
+      width: 5.89rem;
+    }
+    .increase-rate {
+      margin-top: 0.75rem;
+      margin-bottom: 0.55rem;
+      width: 6.33rem;
+      height: 3.96rem;
+      background: url("../images/2018/new-year-increase-interest/increase_rate_wap.png") no-repeat;
+      background-size: contain;
+    }
+    .tips {
+      line-height: 0.4rem;
+      font-size: 0.24rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+  .spring-gift-wrap {
+    margin-top: 1.3rem;
+    padding-bottom: .96rem;
+    .activity-title {
+      margin-left: -3.05rem;
+      width: 6.09rem;
+    }
+    .desc-tips {
+      height: 1.43rem;
+      .desc-content{
+        background: #574ada;
+        padding: 1px;
+      }
+    }
+
+    .product-list {
+      display: none;
+
+    }
+    .product-list-wap {
+      display: block;
+      position: relative;
+      .controlsBtn {
+        width: 0.7rem;
+        height: 0.7rem;
+        position: absolute;
+        top: 50%;
+        margin-top: -0.35rem;
+        background: #604cf9;
+        border-radius: 0.35rem;
+        z-index: 3000;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 30%;
+        cursor: pointer;
+        &.prevBtn {
+          left: -0.08rem;
+          background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
+        }
+        &.nextBtn {
+          right:-0.08rem;
+          background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
+        }
+      }
+
+      .swiper-container {
+        width: 7rem;
+        height: 5.3rem;
+        overflow: visible!important;
+        .swiper-wrapper {
+          .swiper-slide{
+            width: 5.44rem;
+            img{
+              width: 100%;
+              height: 5.3rem;
+            }
+          }
+          .swiper-slide-prev {
+            margin-top: 0.3rem;
+            height: 4.35rem!important;
+            img{
+              height: 4.35rem!important;
+            }
+          }
+          .swiper-slide-next{
+            margin-top: 0.3rem;
+            height: 4.35rem!important;
+            img{
+              height: 4.35rem!important;
+            }
+          }
+          .swiper-slide-active{
+            width: 5.44rem;
+          }
+
+        }
+      }
+
+    }
+  }
+  .kindly-tips {
+    margin-top: 0.92rem;
+    padding: 0.3rem 0.2rem;
+    font-size: 0.2rem;
+    line-height: 0.36rem;
+  }
+
+
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
 }

@@ -86,7 +86,7 @@
                                 <tr>
                                     <td class="leftTd">120天-180天项目</td><td>年化投资额=实际投资额／2</td>
                                 </tr>
-                                <tr>
+                                <tr class="lastTR">
                                     <td class="leftTd">330天-360天项目</td><td>年化投资额=实际投资额</td>
                                 </tr>
                                 </tbody>
@@ -106,6 +106,23 @@
 
                         </ul>
                     </div>
+                    <div id="productListWap" class="clearfix product-list-wap">
+                        <div class="controlsBtn prevBtn"></div>
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                                <div class="swiper-slide"></div>
+                            </div>
+                        </div>
+                        <div class="controlsBtn nextBtn"></div>
+                    </div>
+
 
                 </div>
             <#--年货礼 1万起拿实物 end-->
@@ -125,7 +142,6 @@
             <#--温馨提示 end-->
 
         </div>
-        kldkfldkf
     </div>
     <#include "../../module/login-tip.ftl" />
 

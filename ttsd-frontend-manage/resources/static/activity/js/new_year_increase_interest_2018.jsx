@@ -1,9 +1,12 @@
 require("activityStyle/new_year_increase_interest_2018.scss");
 let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
+require('swiper/dist/css/swiper.css')
+let Swiper = require('swiper/dist/js/swiper.jquery.min');
 
 let $increase_interest = $('#increase_interest');
-let $productList = $('#productList',$increase_interest);
+let $productList = $('#productList',$increase_interest),
+    $productListWap = $('#productListWap',$increase_interest);
 
 let descObj = {
     0:'蒙顶山春茶云雾茶礼盒装125g',
@@ -32,4 +35,34 @@ $lookBtn.hover(function () {
    $(this).parents('.activity-desc').next().css('visibility','visible');
 },function () {
     $(this).parents('.activity-desc').next().css('visibility','hidden');
+})
+//移动端
+$productListWap.find('.swiper-slide').each(function (index,item) {
+    let  _self = $(this);
+    let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
+    let img = new Image();
+    img.src = imgUrl;
+    img.alt=descObj[index];
+    img.title = descObj[index];
+    _self.append(img);
+})
+
+
+    let mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+        autoplay: 5000,
+        slidesPerView: '1.4',
+        centeredSlides:true,
+        spaceBetween: 20,
+    })
+
+let $prevBtn = $('.prevBtn'),
+    $nextBtn = $('.nextBtn');
+
+$prevBtn.on('click',function () {
+    mySwiper.slidePrev();
+})
+$nextBtn.on('click',function () {
+    mySwiper.slideNext();
 })
