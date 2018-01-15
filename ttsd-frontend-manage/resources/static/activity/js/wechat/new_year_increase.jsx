@@ -12,13 +12,16 @@ $toGet.on('click',function() {
         layer.msg('每个用户只能领取一次哦！');
         $toGet.prop('disabled',true);
     }
-    commonFun.useAjax({
-        url:'/activity/celebration-coupon/draw',
-    },
-        function (draw) {
-            if(draw) {
-                layer.msg('领取成功');
-            }
+    window.onload = function() {
+        let drew = $wechatCoupon.data('drew');
+        if(drew) {
+            layer.msg('每个用户只能领取一次哦！');
+            $('.btn-receive',$wechatCoupon).prop('disabled',true);
         }
-        )
+
+        let isSuccess = $wechatCoupon.data('isSuccess');
+        if(isSuccess) {
+            layer.msg('领取成功');
+        }
+    }
 });
