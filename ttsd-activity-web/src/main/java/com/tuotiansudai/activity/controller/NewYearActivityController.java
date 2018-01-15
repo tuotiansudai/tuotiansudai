@@ -29,10 +29,10 @@ public class NewYearActivityController {
 
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)
     public ModelAndView newYearActivityWechat(HttpServletRequest request) {
-//        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-//        if (Strings.isNullOrEmpty(openId)) {
-//            return new ModelAndView("redirect:/activity/new-year");
-//        }
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)) {
+            return new ModelAndView("redirect:/activity/new-year");
+        }
         ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
         modelAndView.addObject("duringActivities", newYearActivityService.duringActivities());
         return modelAndView;

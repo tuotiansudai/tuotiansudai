@@ -13,7 +13,7 @@ $toGet.on('click',function() {
         $toGet.prop('disabled',true);
     }
     commonFun.useAjax({
-        url:'/activity/celebration-coupon/draw',
+        url:'/activity/new-year/draw',
     },
         function (draw) {
             if(draw) {
