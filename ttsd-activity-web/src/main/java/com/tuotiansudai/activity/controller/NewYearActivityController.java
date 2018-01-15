@@ -38,7 +38,7 @@ public class NewYearActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/draw", method = RequestMethod.POST)
+    @RequestMapping(path = "/draw", method = RequestMethod.GET)
     public ModelAndView newYearActivityDrawCoupon(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
@@ -59,9 +59,10 @@ public class NewYearActivityController {
 
         ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
         boolean drewCoupon = newYearActivityService.drewCoupon(loginName);
+        modelAndView.addObject("duringActivities", duringActivities);
         modelAndView.addObject("drewCoupon", drewCoupon);
         if (!drewCoupon) {
-            newYearActivityService.sendDrawCouponMessage(loginName);
+            newYearActivityService.sendDrawCouponMessage("chenzhonghui");
             modelAndView.addObject("drawSuccess", true);
         }
         return modelAndView;

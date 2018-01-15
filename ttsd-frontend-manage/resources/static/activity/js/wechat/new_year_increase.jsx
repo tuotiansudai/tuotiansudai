@@ -7,18 +7,17 @@ let $newYearIncrease = $('#newYearIncrease'),
 
 //领取加息券
 $toGet.on('click',function() {
+    location.href='/activity/new-year/draw';
+});
+
+window.onload = function() {
     let drew = $newYearIncrease.data('drew');
     if(drew) {
         layer.msg('每个用户只能领取一次哦！');
-        $toGet.prop('disabled',true);
+        $('.btn-receive',$newYearIncrease).prop('disabled',true);
     }
-    commonFun.useAjax({
-        url:'/activity/new-year/draw',
-    },
-        function (draw) {
-            if(draw) {
-                layer.msg('领取成功');
-            }
-        }
-        )
-});
+    let isSuccess = $newYearIncrease.data('success');
+    if(isSuccess) {
+        layer.msg('领取成功');
+    }
+};
