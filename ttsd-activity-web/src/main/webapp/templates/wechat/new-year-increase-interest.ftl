@@ -11,11 +11,11 @@
             <h4 class="activity-time"><em></em> <span>活动时间：2月1日-2月28日</span></h4>
             <div class="coupon coupon3"></div>
             <div class="coupon coupon5"></div>
-    <#--<#if duringActivities>-->
+    <#if duringActivities>
             <button id="toGet" class="get-coupon-btn"></button>
-    <#--<#else>-->
+    <#else>
         <button id="hasEnd" class="get-coupon-btn btn-end"></button>
-    <#--</#if>-->
+    </#if>
         </div>
     </div>
 
