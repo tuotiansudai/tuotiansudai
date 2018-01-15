@@ -13,13 +13,13 @@ $toGet.on('click',function() {
         $toGet.prop('disabled',true);
     }
     window.onload = function() {
-        let drew = $wechatCoupon.data('drew');
+        let drew = $newYearIncrease.data('drew');
         if(drew) {
             layer.msg('每个用户只能领取一次哦！');
-            $('.btn-receive',$wechatCoupon).prop('disabled',true);
+            $('$toGet',$newYearIncrease).prop('disabled',true);
         }
 
-        let isSuccess = $wechatCoupon.data('isSuccess');
+        let isSuccess = $newYearIncrease.data('isSuccess');
         if(isSuccess) {
             layer.msg('领取成功');
         }
