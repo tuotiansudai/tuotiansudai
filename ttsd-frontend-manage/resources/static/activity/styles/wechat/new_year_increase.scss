@@ -1,0 +1,146 @@
+html {
+  font-size: 100px;
+}
+.new-year-container {
+  background: url("../../images/2018/new-year-increase-interest/bg_repeat_wechat.png") repeat-y;
+  background-size: 100%;
+}
+
+.new-banner {
+  height: 3.5rem;
+  background: url("../../images/2018/new-year-increase-interest/increase_rate_banner_wap.png") no-repeat;
+  background-size: 100%;
+}
+.activity-page {
+  width: 7.28rem;
+  margin: 0 auto;
+}
+.main-content {
+  .content {
+    background: rgba(110,91,255,0.6);
+    padding-top: .4rem;
+    text-align: center;
+    .interest-rate-coupons {
+      margin: 0 auto;
+      width: 5.4rem;
+      height: 1rem;
+      background: url("../../images/2018/new-year-increase-interest/icon_scan_code.png") no-repeat;
+      background-size: 100%;
+    }
+    .activity-time {
+      margin-top: .38rem;
+      font-size: .3rem;
+      color: #fff600;
+      display: inline-block;
+      em {
+        width: .31rem;
+        height: .31rem;
+        display: inline-block;
+        vertical-align: middle;
+        background: url("../../images/2018/new-year-increase-interest/clock.png") no-repeat;
+        background-size: contain;
+      }
+      span {
+        vertical-align: middle;
+      }
+
+    }
+    .coupon {
+      margin: 0 auto;
+      margin-top: .4rem;
+      width: 6.19rem;
+      height: 1.97rem;
+      background: rgba(255,255,255,0.1);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      &.coupon3 {
+        background-image: url("../../images/2018/new-year-increase-interest/coupon3.png");
+      }
+      &.coupon5 {
+        background-image: url("../../images/2018/new-year-increase-interest/coupon5.png");
+      }
+    }
+    .get-coupon-btn {
+      display: inline-block;
+      cursor: pointer;
+      margin-top: .65rem;
+      width: 5.37rem;
+      height: 1.21rem;
+      background: url("../../images/2018/new-year-increase-interest/wechat_button.png") no-repeat;
+      background-size: 100%;
+      margin-bottom: 1.1rem;
+    }
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
