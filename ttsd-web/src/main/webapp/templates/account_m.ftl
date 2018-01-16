@@ -10,17 +10,17 @@
         <div class="collection">
             <span class="summary-box">
                 <b>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string(',##0.00'))!}</b>
-                <em>待收回款（元）</em>
+                <em>待收回款 (<i>元</i>)</em>
             </span>
         </div>
         <div class="amount-balance">
             <span class="summary-box">
                 <b>${((balance/100)?string(',##0.00'))!}</b>
-                <em>可用余额（元）</em>
+                <em>可用余额 (<i>元</i>)</em>
             </span>
             <span class="summary-box">
                 <b>${(((totalIncome)/100)?string(',##0.00'))!}</b>
-                <em>累积收益（元）</em>
+                <em>累积收益 (<i>元</i>)</em>
             </span>
         </div>
     </div>
