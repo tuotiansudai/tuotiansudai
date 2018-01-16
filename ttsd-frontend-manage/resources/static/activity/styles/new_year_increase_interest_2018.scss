@@ -88,9 +88,6 @@ strong,em {
     h4 {
       padding-top: 20px;
       font-size: 24px;
-      &.wap-style {
-        display: none;
-      }
     }
     .look-btn {
       color: #fff603;
@@ -188,9 +185,6 @@ strong,em {
     font-size: 24px;
     padding-top: 50px;
     padding-bottom: 50px;
-    &.wap-style {
-      display: none;
-    }
   }
 }
 .spring-gift-wrap {
@@ -306,12 +300,6 @@ strong,em {
       h4 {
         padding-top: 0.2rem;
         font-size: 0.24rem;
-        &.pc-style {
-          display: none;
-        }
-        &.wap-style {
-          display: block;
-        }
       }
       .look-btn {
         font-size: 0.24rem;
@@ -379,12 +367,6 @@ strong,em {
       font-size: 0.24rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      &.pc-style {
-        display: none;
-      }
-      &.wap-style {
-        display: block;
-      }
     }
   }
   .spring-gift-wrap {

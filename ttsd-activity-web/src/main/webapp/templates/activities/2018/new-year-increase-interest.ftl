@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="扫码送八张优惠券_活动中心_拓天速贷" keywords="拓天速贷,优惠券,扫码,2018" description="018元现金奖励。">
+<@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description="拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.">
 <div class="increase-rate-banner">
 </div>
 <div class="activity-wrap-main" id="increase_interest">
@@ -12,10 +12,9 @@
                 <div class="activity-desc">
                     <div class="top-bg"></div>
                     <div class="desc-body">
-                        <h4 class="pc-style"> 活动期间，微信扫描下方二维码关注“拓天速贷服务号”，<br/>
+                        <h4> 活动期间，微信扫描下方二维码关注“拓天速贷服务号”，<br/>
                             回复“我要更有钱”， 即可领取8张加息券，每人限领1次。</h4>
-                        <h4 class="wap-style"> 活动期间，微信扫描下方二维码关注“拓天速贷服务<br/>号”，
-                            回复“我要更有钱”，即可领取8张<br/>加息券， 每人限领1次。</h4>
+
                         <span class="look-btn">查看加息券详情></span>
                     </div>
                     <div class="bottom-bg"></div>
@@ -49,21 +48,15 @@
                     <div class="activity-desc">
                         <div class="top-bg"></div>
                         <div class="desc-body">
-                            <h4 class="pc-style"> 2月1日-2月5日活动期间，每日随机上线带有“新年秒杀”标签的项目，<br/>
+                            <h4> 2月1日-2月5日活动期间，每日随机上线带有“新年秒杀”<br/>标签的项目，
                                 投资该项目，预期年化收益在原收益基础上增加1%。</h4>
-                            <h4 class="wap-style"> 2月1日-2月5日活动期间，每日随机上线带有“新年秒<br/>杀”标签的项目，
-                                投资该项目，预期年化收益在原收益<br/>基础上增加1%。</h4>
                         </div>
 
                         <div class="bottom-bg"></div>
                     </div>
                     <div class="increase-rate"></div>
-                    <div class="tips pc-style">
+                    <div class="tips">
                         小贴士：“新年秒杀”项目可与优惠券同享，最高可加息1.5%；<br/>
-                        “新年秒杀”项目不与阶梯加息活动同享。
-                    </div>
-                    <div class="tips wap-style">
-                        小贴士：“新年秒杀”项目可与优惠券同享，最高可加息<br/>1.5%；
                         “新年秒杀”项目不与阶梯加息活动同享。
                     </div>
                 </div>
@@ -76,8 +69,6 @@
                     <div class="activity-desc">
                         <div class="top-bg"></div>
                         <div class="desc-body">
-                            <h4 class=""> 活动期间，用户累计投资年化1万元以上即可获得实物奖，<br/>
-                                奖品不可累计获得。</h4>
                             <h4> 活动期间，用户累计投资年化1万元以上即可获得实物奖，<br/>
                                 奖品不可累计获得。</h4>
                             <span class="look-btn">查看年化投资额计算公式></span>
