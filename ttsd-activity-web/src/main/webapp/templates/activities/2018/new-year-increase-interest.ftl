@@ -23,7 +23,7 @@
                     <div class="desc-content">
                         <table>
                             <thead>
-                            <th>加息券面额</th><th>起投金额(元)</th><th>限投项目</th><th>发放数量</th>
+                            <th>加息券面额</th><th>起投金额(元)</th><th>限投项目</th><th>发放数量(张)</th>
                             </thead>
                             <tbody>
                             <tr>
