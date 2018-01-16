@@ -1,14 +1,23 @@
 .footer-wap-container {
   display: flex;
 }
+
 .account-overview {
   font-weight: lighter;
+
+  .title {
+    padding-top: 10px;
+
+    span{
+      font-size: 16px;
+    }
+  }
 
   .menu-quick {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height:55px;
+    height: 55px;
     background: #fff;
     a {
       font-size: 16px;
@@ -28,7 +37,7 @@
       }
       &:nth-last-child(1) {
         &:after {
-          content:''
+          content: ''
         }
       }
     }
@@ -38,8 +47,8 @@
     font-size: 16px;
     color: #525252;
     li {
-      margin-top:1px;
-      height:55px;
+      margin-top: 1px;
+      height: 55px;
       background: #fff;
       a {
         display: block;
@@ -48,7 +57,7 @@
         position: relative;
         .experience-amount {
           position: absolute;
-          right: 33px;
+          right: 20px;
           font-size: 14px;
           color: #F6AA16;
         }
@@ -60,10 +69,9 @@
           font-size: 25px;
         }
       }
-      &:nth-last-child(1) {
-        margin-top:10px;
-        margin-bottom:10px;
-      }
+    }
+    .top-distance {
+      margin-top: 10px;
     }
   }
 
