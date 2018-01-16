@@ -2,7 +2,7 @@
     <div class="m-header"><em id="iconCoupon" class="icon-left"><i class="fa fa-angle-left"></i></em>优惠券 <em id="noUse">不使用</em></div>
     <div class="select-btn">
         <p class="to-coupon">
-            <a href="exchange-coupon.ftl">
+            <a href="javascript:;" id="exchangeCoupon">
                 <i class="fa fa-plus-circle"></i>兑换码兑换
             </a>
         </p>
@@ -41,7 +41,8 @@
             data-coupon-type="${coupon.couponType}"
             data-coupon-desc="${couponDesc}"
             data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
-            data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}">
+            data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}"
+            data-min-product-type = "${minProductType}">
             <div class="selected-status"></div>
             <div class="left-item">
                 <dl>

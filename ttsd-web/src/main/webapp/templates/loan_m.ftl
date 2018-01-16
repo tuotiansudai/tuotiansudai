@@ -126,7 +126,7 @@
                     class="fa fa-angle-right"></i></a></span>
 
         </li>
-        <li id="to_project_detail">
+        <li id="to_project_detail" style="margin-top: 10px;">
             <label>项目详情</label>
             <span><i class="fa fa-angle-right"></i></span>
         </li>

@@ -155,6 +155,9 @@ public class UserCouponServiceImpl implements UserCouponService {
         if (loanModel == null || amount < loanModel.getMinInvestAmount() || amount > loanModel.getMaxInvestAmount()) {
             return null;
         }
+        if (loanDetailsMapper.getByLoanId(loanId).getDisableCoupon()){
+            return null;
+        }
 
         List<UserCouponModel> usableUserCoupons = Lists.newArrayList(Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override

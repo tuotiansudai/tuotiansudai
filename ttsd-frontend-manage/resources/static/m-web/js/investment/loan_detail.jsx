@@ -67,7 +67,8 @@ $recordTop.find('span').on('click',function() {
 let $btnWapNormal = $('.btn-wap-normal',$buyDetail),
     $amountInputElement = $('.input-amount',$buyDetail),
     minAmount = parseInt($amountInputElement.data('min-invest-amount')),//起投金额
-    leftInvest = parseInt($amountInputElement.data('amount-need-raised'));//剩余可投
+    leftInvest = parseInt($amountInputElement.data('amount-need-raised')),//剩余可投
+    duration = parseInt($amountInputElement.data('duration')) ;//项目最长期限
 
 $buyDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
@@ -103,7 +104,7 @@ $('#btn-detail-toggle').click(function () {
     let $scroll = $boxContent.find('#scroll');
     let $content = $boxContent.find('#content');
     let pageNum = 1;
-
+    let $pullUpDOM = $('#pullUp');
     $('#transaction_record').on('click',function () {
         getMoreRecords();
         //交易记录滚动加载更多
@@ -112,8 +113,9 @@ $('#btn-detail-toggle').click(function () {
                 probeType: 2,
                 mouseWheel: true
             });
-            myScroll.on('scrollEnd', function () {console.log(9)
+            myScroll.on('scrollEnd', function () {
                 //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+                $pullUpDOM.show();
                 if ((this.y - this.maxScrollY) <= 10) {
                     pageNum++;
 
@@ -138,13 +140,14 @@ $('#btn-detail-toggle').click(function () {
                     index:pageNum
                 }
             },
-            function (res) {console.log(res.data.records)
+            function (res) {
+                $pullUpDOM.hide();
                 if(pageNum == 1){
                     if(res.data.records.length > 0){
                         var html = tpl('recordsTpl', res.data);
                         $content.prepend(html)
                     }else {
-                        $content.html('<div class="no-records">暂无交易记录</div>')
+                        $content.html('<div class="no-records"><div class="icon"></div><p>暂无交易记录</p></div>')
                     }
                 }else {
                     if(res.data.records.length > 0){
@@ -176,25 +179,17 @@ $('#look_repay_plan').click(function () {
 })
 
 //优惠券
-if($('#couponText').val() == '无可用优惠券'){
+if($('#couponText').text() == '无可用优惠券'){
     $('#couponText').css('color','#64646D')
 }
 let $selectCoupon = $('#select_coupon');
 $selectCoupon.on('click',function () {
-    if($('#couponText').val() == '无可用优惠券'){
-        return;
-    }
-    let value = getInvestAmount()/100;
-    $('.to-use_coupon').each(function (index,item) {
-        $(item).addClass('disabled');
-      if($(item).data('min-invest-amount') <= value){
-          $(item).removeClass('disabled');
-      }
-
-    })
-
     location.hash='selectCoupon'
-
+//无优惠券列表是显示缺省
+    if($('.coupon-list-container').find('>li').length == 0){
+        let $noCouponDOM = $('<div class="noCoupon"><div class="noCouponIcon"></div><p>暂无可用的优惠券</p></div>')
+        $('.coupon-list-container').html($noCouponDOM)
+    }
 })
 function validateHash() {
     if(location.hash == ''){
@@ -221,6 +216,8 @@ var calExpectedInterest = function() {
         url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
         type: 'GET',
     },function(amount) {
+        console.log(getInvestAmount())
+        console.log(amount)
         $("#expectedEarnings").text(amount);
     });
 };
@@ -261,7 +258,7 @@ $('.to-use_coupon').click(function () {
     $('#couponId').val(_self.data('user-coupon-id'));
     location.hash='buyDetail';
 
-    $('#couponText').val(_self.data('coupon-desc'));
+    $('#couponText').text(_self.data('coupon-desc'));
 
 })
 //优惠券后退按钮
@@ -272,17 +269,78 @@ $('#iconCoupon').click(function () {
 $('#noUse').click(function () {
     $('.to-use_coupon').each(function (index,item) {
         $(item).removeClass('selected');
-        $('#couponText').val('请选择优惠券');
+        $('#couponText').text('请选择优惠券');
         $('#couponId').val('');
 
     })
     location.hash='buyDetail';
 })
+let $couponExpectedInterest = $(".experience-income");
+//计算加息券或者投资红包的预期收益
+let calExpectedCouponInterest = function() {
+    if($('#maxBenifit').val() == ''){
+        $couponExpectedInterest.text("");
+    }else {
+        commonFun.useAjax({
+            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+            data: 'couponIds='+$('#maxBenifit').val(),
+            type: 'GET'
+        },function(amount) {console.log(amount)
+            $couponExpectedInterest.text("+" + amount);
+        });
+    }
+
+};
+//页面加载判断预期收益
+maxBenifitUserCoupon();
+function maxBenifitUserCoupon() {
+    commonFun.useAjax({
+        url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
+        type: 'GET',
+    },function(maxBenefitUserCouponId) {
+        $('#couponText').css('color','#FF473C')
+        if (!isNaN(parseInt(maxBenefitUserCouponId))) {
+            $('#couponId').val(maxBenefitUserCouponId);
+            $('.to-use_coupon').each(function (index,item) {
+                $(item).removeClass('selected');
+                if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
+                    $(item).addClass('selected');
+                    $('#maxBenifit').val($(item).data('coupon-id'));
+                    $('#couponText').text($(item).data('coupon-desc'));
+                }
+
+
+            })
+            calExpectedCouponInterest();
+        } else {
+            $('#couponText').text('无可用优惠券');
+            $('#couponText').css('color','#64646D');
+            $couponExpectedInterest.text("");
+            $('.to-use_coupon').each(function (index,item) {
+                $(item).addClass('disabled');
+            })
+        }
+    })
+}
+couponSelect();
+//优惠券显示的判断
+function couponSelect() {
+    let value = getInvestAmount();
+    $('.to-use_coupon').each(function (index,item) {
+        $(item).addClass('disabled');
+        if($(item).data('min-invest-amount') <= value/100 && parseInt($(item).data('min-product-type'))  <= duration){
+            $(item).removeClass('disabled');
+        }
+
+    })
+}
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
         let value = getInvestAmount();
         calExpectedInterest();
+        maxBenifitUserCoupon();
+        couponSelect();
         if(value/100  == 0){
             $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
         } else if(value/100 <minAmount){
@@ -374,3 +432,9 @@ $(function(){
         nav:false
     });
 });
+
+//优惠券兑换
+$('#exchangeCoupon').on('click',function () {
+    location.href = '/m/my-treasure/coupon-exchange'
+})
+
