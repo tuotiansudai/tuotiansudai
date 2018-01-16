@@ -31,7 +31,7 @@
     </div>
 
     <ul class="menu-list">
-        <li class="top-distance"><a href="experience-amount.ftl">我的体验金<em class="experience-amount">1</em></a> </li>
+        <li class="top-distance"><a href="experience-amount.ftl">我的体验金<em class="experience-amount">${((experienceBalance/100)?string.computer)!}</em></a> </li>
         <li><a href="/investment/my-invest.ftl">我的投资<i class="fa fa-angle-right"></i></a> </li>
         <li><a href="coupon.ftl">优惠券<i class="fa fa-angle-right"></i></a> </li>
         <li class="top-distance"><a href="personal-profile.ftl">个人资料<i class="fa fa-angle-right"></i></a> </li>
