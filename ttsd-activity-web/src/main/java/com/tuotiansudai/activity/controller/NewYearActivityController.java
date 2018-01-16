@@ -23,6 +23,7 @@ public class NewYearActivityController {
     private NewYearActivityService newYearActivityService;
 
     @RequestMapping(method = RequestMethod.GET)
+
     public ModelAndView newYearActivity() {
         return new ModelAndView("/activities/2018/new-year-increase-interest");
     }

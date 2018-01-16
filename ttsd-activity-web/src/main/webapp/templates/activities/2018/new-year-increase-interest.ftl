@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="2018现金滚雪球活动_活动中心_拓天速贷" keywords="拓天速贷,逢万返百,现金奖励,2018" description="拓天速贷现金滚雪球活动，活动期间投资“逢万返百”标签项目，累计年化投资额每满1万返100元现金，多投多得，上不封顶；累计年化投资额达10万以上最多可得2018元现金奖励。">
+<@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="扫码送八张优惠券_活动中心_拓天速贷" keywords="拓天速贷,优惠券,扫码,2018" description="018元现金奖励。">
 <div class="increase-rate-banner">
 </div>
 <div class="activity-wrap-main" id="increase_interest">
@@ -12,8 +12,10 @@
                 <div class="activity-desc">
                     <div class="top-bg"></div>
                     <div class="desc-body">
-                        <h4> 活动期间，微信扫描下方二维码关注“拓天速贷服务号”，<br/>
+                        <h4 class="pc-style"> 活动期间，微信扫描下方二维码关注“拓天速贷服务号”，<br/>
                             回复“我要更有钱”， 即可领取8张加息券，每人限领1次。</h4>
+                        <h4 class="wap-style"> 活动期间，微信扫描下方二维码关注“拓天速贷服务<br/>号”，
+                            回复“我要更有钱”，即可领取8张<br/>加息券， 每人限领1次。</h4>
                         <span class="look-btn">查看加息券详情></span>
                     </div>
                     <div class="bottom-bg"></div>
@@ -47,15 +49,21 @@
                     <div class="activity-desc">
                         <div class="top-bg"></div>
                         <div class="desc-body">
-                            <h4> 2月1日-2月5日活动期间，每日随机上线“新年秒杀”标识的项目，<br/>
+                            <h4 class="pc-style"> 2月1日-2月5日活动期间，每日随机上线带有“新年秒杀”标签的项目，<br/>
                                 投资该项目，预期年化收益在原收益基础上增加1%。</h4>
+                            <h4 class="wap-style"> 2月1日-2月5日活动期间，每日随机上线带有“新年秒<br/>杀”标签的项目，
+                                投资该项目，预期年化收益在原收益<br/>基础上增加1%。</h4>
                         </div>
 
                         <div class="bottom-bg"></div>
                     </div>
                     <div class="increase-rate"></div>
-                    <div class="tips">
+                    <div class="tips pc-style">
                         小贴士：“新年秒杀”项目可与优惠券同享，最高可加息1.5%；<br/>
+                        “新年秒杀”项目不与阶梯加息活动同享。
+                    </div>
+                    <div class="tips wap-style">
+                        小贴士：“新年秒杀”项目可与优惠券同享，最高可加息<br/>1.5%；
                         “新年秒杀”项目不与阶梯加息活动同享。
                     </div>
                 </div>
@@ -68,6 +76,8 @@
                     <div class="activity-desc">
                         <div class="top-bg"></div>
                         <div class="desc-body">
+                            <h4 class=""> 活动期间，用户累计投资年化1万元以上即可获得实物奖，<br/>
+                                奖品不可累计获得。</h4>
                             <h4> 活动期间，用户累计投资年化1万元以上即可获得实物奖，<br/>
                                 奖品不可累计获得。</h4>
                             <span class="look-btn">查看年化投资额计算公式></span>
@@ -132,7 +142,7 @@
                         <dt>温馨提示</dt>
                         <dd>1. 本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
                         <dd>2. 用户扫码所获8张加息券即时发放，可在PC端“我的账户”或App端“我的”中进行查看；</dd>
-                        <dd>3. 加息1%仅限2月1日-2月5日发放的带有“新年秒杀”标识的项目，该项目不与阶梯加息活动同享；</dd>
+                        <dd>3. 加息1%仅限2月1日-2月5日发放的带有“新年秒杀”标签的项目，该项目不与阶梯加息活动同享；</dd>
                         <dd>4. 实物奖品将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
                         <dd>5. 为了保证获奖结果的公平性，实物奖品的获奖用户在活动期间所进行的投标不允许债权转让；</dd>
                         <dd>6. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>

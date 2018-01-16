@@ -4,6 +4,9 @@ body {
 h2,h4 {
   font-weight: normal;
 }
+table th {
+  padding: 10px;
+}
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -63,7 +66,7 @@ strong,em {
 
   }
   .activity-desc {
-    width: 743px;
+    width: 780px;
     margin: 0 auto;
     margin-top: 40px;
     line-height: 44px;
@@ -85,6 +88,9 @@ strong,em {
     h4 {
       padding-top: 20px;
       font-size: 24px;
+      &.wap-style {
+        display: none;
+      }
     }
     .look-btn {
       color: #fff603;
@@ -121,7 +127,7 @@ strong,em {
             background: #574ada;
             font-weight: normal;
           }
-          border-bottom: 1px solid rgba(255,246,0,0.4);
+          border-bottom: 1px solid rgba(255,246,0,0.1);
         }
         tbody {
           tr {
@@ -182,6 +188,9 @@ strong,em {
     font-size: 24px;
     padding-top: 50px;
     padding-bottom: 50px;
+    &.wap-style {
+      display: none;
+    }
   }
 }
 .spring-gift-wrap {
@@ -244,7 +253,9 @@ strong,em {
 }
 
 @media screen and (max-width:768px) {
-
+  table th {
+    padding: 0.1rem;
+  }
   .activity-page {
     width: 7.28rem;
     margin: 0 auto;
@@ -295,6 +306,12 @@ strong,em {
       h4 {
         padding-top: 0.2rem;
         font-size: 0.24rem;
+        &.pc-style {
+          display: none;
+        }
+        &.wap-style {
+          display: block;
+        }
       }
       .look-btn {
         font-size: 0.24rem;
@@ -302,14 +319,14 @@ strong,em {
       }
     }
     .desc-tips {
-      top: -0.23rem;
-      width: 5.6rem;
+      top: 0rem;
+      width: 6.3rem;
       @media screen and (max-width: 320px) {
-        width: 6.3rem;
+        width: 6.7rem;
       }
       .icon-trangle {
         top: -0.13rem;
-        margin-left: -24px;
+        margin-left: -0.24rem;
         width: 0.48rem;
         height: 0.14rem;
       }
@@ -362,6 +379,12 @@ strong,em {
       font-size: 0.24rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
+      &.pc-style {
+        display: none;
+      }
+      &.wap-style {
+        display: block;
+      }
     }
   }
   .spring-gift-wrap {
