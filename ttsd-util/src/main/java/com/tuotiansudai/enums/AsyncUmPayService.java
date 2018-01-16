@@ -144,7 +144,7 @@ public enum AsyncUmPayService {
     /**
      * 个人账户提现
      */
-    CUST_WITHDRAWALS("cust_withdrawals", "account", "callback/cust_withdrawals", "withdraw_notify", "tuotian://withdraw/{0}"),
+    CUST_WITHDRAWALS("cust_withdrawals", "callback/cust_withdrawals", "callback/cust_withdrawals", "withdraw_notify", "tuotian://withdraw/{0}"),
 
 
     /**
