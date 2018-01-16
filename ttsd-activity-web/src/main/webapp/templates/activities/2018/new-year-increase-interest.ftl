@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description="拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.">
+<@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description='拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.'>
 <div class="increase-rate-banner">
 </div>
 <div class="activity-wrap-main" id="increase_interest">
@@ -15,11 +15,12 @@
                         <h4> 活动期间，微信扫描下方二维码关注“拓天速贷服务号”，<br/>
                             回复“我要更有钱”， 即可领取8张加息券，每人限领1次。</h4>
 
-                        <span class="look-btn">查看加息券详情></span>
+                        <span class="look-btn pc-look-btn">查看加息券详情></span>
+                        <span id="aaa" class="look-btn wap-look-btn">查看加息券详情></span>
                     </div>
                     <div class="bottom-bg"></div>
                 </div>
-                <div class="desc-tips" style="visibility: hidden">
+                <div class="desc-tips toggleHidden">
                     <span class="icon-trangle"></span>
                     <div class="desc-content">
                         <table>
@@ -71,12 +72,13 @@
                         <div class="desc-body">
                             <h4> 活动期间，用户累计投资年化1万元以上即可获得实物奖，<br/>
                                 奖品不可累计获得。</h4>
-                            <span class="look-btn">查看年化投资额计算公式></span>
+                            <span class="look-btn pc-look-btn">查看年化投资额计算公式></span>
+                            <span class="look-btn wap-look-btn">查看年化投资额计算公式></span>
                         </div>
 
                         <div class="bottom-bg"></div>
                     </div>
-                    <div class="desc-tips" style="visibility: hidden">
+                    <div class="desc-tips toggleHidden">
                         <span class="icon-trangle"></span>
                         <div class="desc-content">
                             <table>

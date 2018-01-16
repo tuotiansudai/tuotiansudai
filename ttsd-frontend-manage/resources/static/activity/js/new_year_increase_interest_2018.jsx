@@ -30,11 +30,27 @@ $productList.find('li').each(function (index,item) {
 
 //鼠标悬停效果
 let $descTip = $('.desc-tips'),
-    $lookBtn = $('.look-btn');
-$lookBtn.hover(function () {
+    $pcLookBtn = $('.pc-look-btn'),
+    $wapLookBtn = $('.wap-look-btn'),
+    $body = $('body');
+$pcLookBtn.hover(function () {
    $(this).parents('.activity-desc').next().css('visibility','visible');
 },function () {
     $(this).parents('.activity-desc').next().css('visibility','hidden');
+})
+//移动端点击效果
+$wapLookBtn.on('click',function () {
+    $(this).parents('.activity-desc').next().toggleClass('toggleShow');
+})
+
+$(document).bind("click",function(e) {
+
+    if($(e.target).hasClass('wap-look-btn')) {
+        return;
+    }
+    $('.desc-tips').removeClass('toggleShow');
+
+
 })
 //移动端
 $productListWap.find('.swiper-slide').each(function (index,item) {
@@ -51,10 +67,12 @@ $productListWap.find('.swiper-slide').each(function (index,item) {
     let mySwiper = new Swiper ('.swiper-container', {
         direction: 'horizontal',
         loop: true,
-        autoplay: 5000,
+        autoplay:3000,
+        autoplayDisableOnInteraction:false,
         slidesPerView: '1.4',
         centeredSlides:true,
         spaceBetween: 20,
+        loopAdditionalSlides:1
     })
 
 let $prevBtn = $('.prevBtn'),
