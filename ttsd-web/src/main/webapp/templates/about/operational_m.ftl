@@ -7,19 +7,6 @@
     </div>
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-item swiper-slide2 swiper-slide">
-                <div class="part-2-topBar"><div class="trade-detail">平台交易明细</div></div>
-                <div class="total_trade_text">累计交易笔数</div>
-                <div class="text_underLine_blue"></div>
-                <div class="total_trade_count"><span id="total_trade_count"></span>笔</div>
-                <div class="unit_symbol">[单位:万元]</div>
-                <div id="main_part1"></div>
-                <div class="chart1_title">近半年<span class="chart1_title_strong">标的投资数据</span>统计</div>
-                <div class="unit_symbol unit_symbol_m">[单位:万元]</div>
-                <div id="main_part2"></div>
-                <div class="chart1_title chart1_title_m">近半年<span class="chart1_title_strong">交易金额数据</span>统计</div>
-                <div class="button_under_arrow side_to_page" data-index="2"></div>
-            </div>
             <div class="swiper-item swiper-slide1 swiper-slide">
                 <div class="safe_operational_text">拓天速贷已安全运营</div>
                 <div class="safe_day_wrapper_center">
@@ -42,7 +29,19 @@
                 <div class="button_under_arrow side_to_page" data-index="1"></div>
             </div>
 
-
+            <div class="swiper-item swiper-slide2 swiper-slide">
+                <div class="part-2-topBar"><div class="trade-detail">平台交易明细</div></div>
+                <div class="total_trade_text">累计交易笔数</div>
+                <div class="text_underLine_blue"></div>
+                <div class="total_trade_count"><span id="total_trade_count"></span>笔</div>
+                <div class="unit_symbol">[单位:万元]</div>
+                <div id="main_part1"></div>
+                <div class="chart1_title">近半年<span class="chart1_title_strong">标的投资数据</span>统计</div>
+                <div class="unit_symbol unit_symbol_m">[单位:万元]</div>
+                <div id="main_part2"></div>
+                <div class="chart1_title chart1_title_m">近半年<span class="chart1_title_strong">交易金额数据</span>统计</div>
+                <div class="button_under_arrow side_to_page" data-index="2"></div>
+            </div>
 
             <div class="swiper-item swiper-slide3 swiper-slide">
                 <div class="part-3-topBar"><div class="user-statistics">平台用户统计</div></div>
