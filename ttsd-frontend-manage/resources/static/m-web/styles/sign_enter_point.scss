@@ -88,14 +88,14 @@ body {
       width:80%;
       text-align: right;
 
-      margin: 5px auto;
+      margin: .25rem auto;
       a {
         color: #808080;
       }
     }
 
     .form-register {
-      font-size: 14px;
+      font-size: .7rem;
       .get-captcha {
 
       }
@@ -143,12 +143,12 @@ body {
     }
 
     .btn-ok-update {
-      margin-top:30px;
+      margin-top:.75rem;
     }
   }
 
   &.register-success {
-    font-size: 15px;
+    font-size: .75rem;
     color: #808080;
     text-align: center;
     display: flex;
@@ -161,7 +161,7 @@ body {
       justify-content: flex-end;
       flex-direction: column;
       .success-text {
-        font-size: 20px;
+        font-size: 1rem;
         color: #525252;
       }
     }
@@ -174,23 +174,24 @@ body {
         background: url('../images/sign-reward.png') center center no-repeat;
         background-size: contain;
         flex: 5;
-        width:80%;
+        width: 12.5rem;
+        height: 7.5rem;
       }
       .note {
-        font-size: 10px;
-        padding-bottom: 30px;
+        font-size: .5rem;
+        padding-bottom: 1.5rem;
         flex: 1;
       }
     }
     .success-button {
       flex: 1.5;
       .note2 {
-        font-size: 12px;
-        padding-top: 10px;
+        font-size: .6rem;
+        padding-top: .5rem;
         display: block;
       }
       .only-border {
-        margin-top:20px;
+        margin-top:1rem;
       }
     }
   }
@@ -199,24 +200,24 @@ body {
 .goBack_wrapper {
   position: relative;
   width: 100%;
-  height: 44px;
-  line-height: 44px;
+  height: 2.2rem;
+  line-height: 2.2rem;
   text-align: center;
-  font-size: 17px;
+  font-size: .85rem;
   color: #fff;
   background: #FF473C;
   .go-back-container {
     position: absolute;
-    left: 2px;
-    top: 7px;
-    width: 30px;
-    height: 30px;
+    left: .1rem;
+    top: .35rem;
+    width: 1.5rem;
+    height: 1.5rem;
     overflow: hidden;
     .go-back{
       display: block;
-      margin: 8px 0 0 10px;
-      width: 9px;
-      height: 14px;
+      margin: .4rem 0 0 .5rem;
+      width: .45rem;
+      height: .7rem;
       background: url("../images/go_back.png") no-repeat;
       background-size: contain;
     }
