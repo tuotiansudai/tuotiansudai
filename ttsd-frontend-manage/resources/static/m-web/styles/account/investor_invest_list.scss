@@ -91,7 +91,23 @@ em {
     }
   }
 }
-
+.m-header {
+  height: .88rem;
+  line-height: .88rem;
+  text-align: center;
+  color: #fff;
+  font-size: .36rem;
+  background: #FF473C;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: .2rem;
+    top: .04rem;
+    i{
+      font-size: .6rem;
+    }
+  }
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;
