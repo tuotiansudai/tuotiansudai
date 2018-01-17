@@ -320,7 +320,7 @@ public class ProductServiceImpl implements ProductService {
         return productShowItemDto;
     }
 
-    private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel, double discount) {
+    private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel, double discount, String comment) {
         long actualPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         long totalPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (productShowItemDto.getGoodsType().equals(GoodsType.PHYSICAL)) {
@@ -333,6 +333,7 @@ public class ProductServiceImpl implements ProductService {
                     userAddressModel.getContact(),
                     userAddressModel.getMobile(),
                     userAddressModel.getAddress(),
+                    comment,
                     false,
                     null,
                     accountModel.getLoginName());
@@ -347,6 +348,7 @@ public class ProductServiceImpl implements ProductService {
                     userModel.getUserName(),
                     userModel.getMobile(),
                     "",
+                    null,
                     false,
                     null,
                     accountModel.getLoginName());
@@ -362,6 +364,7 @@ public class ProductServiceImpl implements ProductService {
                     userModel.getUserName(),
                     userModel.getMobile(),
                     "",
+                    null,
                     false,
                     null,
                     accountModel.getLoginName());
@@ -370,7 +373,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
+    public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId, String comment) {
         ProductModel productModel = productMapper.lockById(id);
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 
@@ -416,7 +419,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount);
+        ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel, discount, comment);
 
         pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
 

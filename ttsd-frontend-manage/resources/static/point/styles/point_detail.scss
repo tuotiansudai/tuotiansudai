@@ -156,8 +156,8 @@
                 float:left;
                 width:360px;
                 p{
-                  font-size:12px;
-                  color:#4c4c4c;
+                  font-size:16px;
+                  color:#999;
                   margin-bottom:0;
                 }
                 .price-text{
@@ -167,12 +167,16 @@
                   color:#4c4c4c;
                   line-height:30px;
                   span{
-                    font-size:26px;
+                    font-size:23px;
                     color:#fc4a52;
                     &.old-price{
-                      font-size:16px;
+                      font-size:14px;
                       color:#999;
                       text-decoration:line-through;
+                    }
+                    &.point-unit{
+                      font-size:16px;
+                      color:#999;
                     }
                   }
                 }

@@ -51,6 +51,7 @@
                 <th>手机号码</th>
                 <#if product.type != 'COUPON'>
                     <th>收货地址</th>
+                    <th>备注</th>
                     <th>操作</th>
                     <th>发货时间</th>
                 <#else>
@@ -69,6 +70,7 @@
                     <td>${order.mobile}</td>
                     <#if product.type != 'COUPON'>
                         <td>${order.address!}</td>
+                        <td>${order.comment!}</td>
                         <td>
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                 <#if order.consignment>

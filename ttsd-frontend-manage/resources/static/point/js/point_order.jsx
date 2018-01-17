@@ -70,7 +70,8 @@ $orderBtn.on('click', function(event) { //立即兑换
             id: idString,
             goodsType: typeString,
             number: $numText.val(),
-            userAddressId: $('#updatePlace').attr('data-id')
+            userAddressId: $('#updatePlace').attr('data-id'),
+			comment:$('#comment').val()
         },
         type:'POST',
     },function(data){
