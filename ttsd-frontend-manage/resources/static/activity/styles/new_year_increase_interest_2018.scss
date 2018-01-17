@@ -11,6 +11,12 @@ table th {
   width: 100%;
   margin: 0 auto;
 }
+.toggleHidden {
+  visibility: hidden;
+}
+.toggleShow {
+  visibility: visible;
+}
 strong,em {
   font-weight: normal;
 }
@@ -95,6 +101,9 @@ strong,em {
       padding-bottom:4px;
       border-bottom: 1px solid #fff603;
       cursor: pointer;
+      &.wap-look-btn {
+        display: none;
+      }
     }
   }
   .desc-tips {
@@ -304,9 +313,16 @@ strong,em {
       .look-btn {
         font-size: 0.24rem;
         padding-bottom:0.04rem;
+        &.pc-look-btn {
+          display: none;
+        }
+        &.wap-look-btn {
+          display: inline-block;
+        }
       }
     }
     .desc-tips {
+      z-index:999;
       top: 0rem;
       width: 6.3rem;
       @media screen and (max-width: 320px) {
