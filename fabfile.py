@@ -265,6 +265,13 @@ def deploy_anxin():
         sudo('/usr/local/bin/docker-compose -f anxin.yml up -d')
 
 
+def pre_deploy(skip_package):
+    if skip_package == 'False':
+        compile()
+        migrate()
+        build()
+
+
 def deploy_all():
     execute(deploy_sign_in)
     execute(deploy_static)
@@ -279,70 +286,69 @@ def deploy_all():
     execute(deploy_anxin)
 
 
-def pre_deploy():
-    compile()
-    migrate()
-    build()
-
-
-def all():
-    pre_deploy()
+def all(skip_package):
+    pre_deploy(skip_package)
     deploy_all()
 
 
-def web():
-    pre_deploy()
+def package(skip_package):
+    pre_deploy('False')
+
+
+def web(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_web)
     execute(deploy_static)
 
 
-def activity():
-    pre_deploy()
+def activity(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_activity)
     execute(deploy_static)
 
 
-def ask():
-    pre_deploy()
+def ask(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_static)
 
 
-def console():
-    pre_deploy()
+def console(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_console)
 
 
-def api():
-    pre_deploy()
+def api(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_api)
 
 
-def sms():
-    pre_deploy()
+def sms(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_sms)
 
 
-def worker():
-    pre_deploy()
+def worker(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_worker)
 
 
-def pay():
-    pre_deploy()
+def pay(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_pay)
 
 
-def signin():
-    mk_signin_zip()
-    execute(deploy_sign_in)
-
-
-def point():
-    pre_deploy()
+def point(skip_package):
+    pre_deploy(skip_package)
     execute(deploy_point)
     execute(deploy_static)
+
+
+def signin(skip_package):
+    if skip_package == 'False':
+        mk_signin_zip()
+    execute(deploy_sign_in)
 
 
 def get_7days_before(date_format="%Y-%m-%d"):
