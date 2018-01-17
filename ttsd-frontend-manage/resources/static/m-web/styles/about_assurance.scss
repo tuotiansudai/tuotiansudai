@@ -146,12 +146,18 @@ body {
     position: relative;
     margin: 0 auto;
     margin-top: .4rem;
+    @media screen and (max-width: 320px) {
+      width: 7rem;
+    }
     .desc {
       position: absolute;
       right: 0;
       width: 6rem;
+      @media screen and (max-width: 320px) {
+        width: 6.3rem;
+      }
       height: 1.6rem;
-      border: .01rem solid #ef7069;
+      border: 1px solid #ef7069;
       border-radius: .15rem;
       padding-right: .45rem;
       padding-left: .9rem;
@@ -160,6 +166,11 @@ body {
       line-height: .44rem;
       box-sizing: border-box;
       padding-top: .16rem;
+      @media screen and (max-width: 320px) {
+        font-size: 0.08rem;
+        padding-right: .05rem;
+        padding-left: .8rem;
+      }
     }
     .img {
       width: 1.53rem;
@@ -261,6 +272,17 @@ body {
           font-size: .22rem;
           color: #4c4c4c;
           line-height: .3rem;
+          padding-right: .05rem;
+          @media screen and (max-width: 320px) {
+            font-size: .16rem;
+            line-height: .4rem;
+          }
+          .wap-style {
+
+            @media screen and (min-width: 414px) {
+              display: block;
+            }
+          }
         }
       }
     }

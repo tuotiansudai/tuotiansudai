@@ -83,32 +83,28 @@
                 <i class="trangle trangle-l"></i>
                 <dl>
                     <dt>网络安全</dt>
-                    <dd>使用高端软硬件防火墙
-                        技术</dd>
+                    <dd>使用高端软硬件防火墙<em class="wap-style">技术</em></dd>
                 </dl>
             </div>
             <div class="desc-info desc-info-encryption">
                 <i class="trangle trangle-r"></i>
                 <dl>
                     <dt>加密技术</dt>
-                    <dd>采用256位实时数据传输
-                        加密技术</dd>
+                    <dd>采用256位实时数据传输<em class="wap-style">加密技术</em></dd>
                 </dl>
             </div>
             <div class="desc-info desc-info-disaster-recovery">
                 <i class="trangle trangle-l"></i>
                 <dl>
                     <dt>容灾备份</dt>
-                    <dd>同城和异地均建立灾备
-                        设备，避免用户信息丢失</dd>
+                    <dd>同城和异地均建立灾备设备，避免用户信息丢失</dd>
                 </dl>
             </div>
             <div class="desc-info desc-info-internal-control">
                 <i class="trangle trangle-r"></i>
                 <dl>
                     <dt>内控流程</dt>
-                    <dd>建立了完善的内部权限
-                        审核流程</dd>
+                    <dd>建立了完善的内部权限<em class="wap-style">审核流程</em></dd>
                 </dl>
             </div>
 
