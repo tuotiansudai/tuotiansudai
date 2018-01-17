@@ -1,9 +1,9 @@
-
+require('mWebStyle/account/investor_invest_list.scss');
 let menuClick = require('mWebJsModule/menuClick');
 let $myInvest = $('#myInvest');
 
 menuClick({
-    pageDom:$myInvest
+    pageDom: $myInvest
 });
 
 let myScroll = new IScroll('#wrapperOut', {
@@ -11,8 +11,8 @@ let myScroll = new IScroll('#wrapperOut', {
     mouseWheel: true
 });
 
-$('.box-item',$myInvest).on('click',function() {
+$('.box-item', $myInvest).on('click', function () {
 
-    location.href='invest-detail.ftl'
+    location.href = 'invest-detail.ftl'
 });
 
