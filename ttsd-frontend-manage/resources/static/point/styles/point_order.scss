@@ -417,18 +417,15 @@
 .order-info.my-order-info {
   margin-top: 20px;
 }
+
 #comment {
-  padding: 10px;
+  padding: 5px;
   width: 850px;
   height: 60px;
   vertical-align: top;
   border: 1px solid #e6e6e6;
 }
 
-
-
-
-
-
-
-
+textarea::-webkit-input-placeholder {
+  color: #808080;
+}
