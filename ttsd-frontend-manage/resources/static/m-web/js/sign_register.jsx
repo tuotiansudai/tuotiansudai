@@ -36,6 +36,35 @@ $(function () {
     },false);
 });
 
+let contentInput = (id,content,length) => {
+    $(id).find('input').on('keyup',(e) => {
+        if (!e.currentTarget.value.length) {
+            $(id).find('.close_btn').hide();
+        } else {
+            $(id).find('.close_btn').show();
+            // if (e.currentTarget.value.length < 5) {
+            //     $('.register_next_step').prop('disabled',true);
+            // }
+        }
+    })
+};
+
+let clearInputOneVal = (id,className) => {
+    $(id).find('.close_btn').on('click',() => {
+        $(id).find(className).val('');
+        $(id).find('.close_btn').hide();
+        if (className === '.short-message-captcha') {
+            $('.register_next_step').prop('disabled',true);
+        }
+    })
+};
+
+contentInput('#formCaptcha');
+clearInputOneVal('#formCaptcha','.captcha');
+
+contentInput('#formRegister');
+clearInputOneVal('#formRegister','.short-message-captcha');
+
 let entryEv = () => {
     $('.form-captcha').show();
     $('.step_container').show();
@@ -128,14 +157,16 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
 
             let data = responseData.data;
             if (data.status && !data.isRestricted) {
+                localStorage.setItem('imageCaptcha',formCaptcha.imageCaptcha.value);
                 //获取手机验证码成功，，并开始倒计时
                 commonFun.countDownLoan({
                     btnDom: $getCaptcha,
                     isAfterText: '获取验证码',
-                    textCounting: 's后重发'
+                    textCounting: 's重新获取'
                 },function() {
                     //倒计时结束后刷新验证码
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
+                    $getCaptcha.prop('disabled', false);
                 });
             } else if (!data.status && data.isRestricted) {
                 commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
@@ -241,13 +272,14 @@ function isDisabledButton() {
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
 
     let isDisabledCaptcha = isMobileValid && isPwdValid;
+    let getCaptcha = isMobileValid;
 
     //按钮上有样式名count-downing，说明正在倒计时
     if ($getCaptcha.hasClass('count-downing')) {
         $getCaptcha.prop('disabled',true);
     }
     else {
-        $getCaptcha.prop('disabled',!isDisabledCaptcha);
+        $getCaptcha.prop('disabled',!getCaptcha);
     }
     //给验证码弹框中的mobile隐藏域赋值
     isDisabledCaptcha && (globalFun.$('#formCaptcha').mobile.value = mobile.value);
@@ -292,14 +324,13 @@ $('#submitBtn').on('click',function (event) {
         async: false,
     },function(response) {
         if(response.success) {
-          location.href = '/m/'
+          location.href = '/m/register/success'
         }
     });
 });
 
 $('.register_next_step').on('click',() => {
     pushHistory('#register_next');
-    localStorage.setItem('imageCaptcha',formCaptcha.imageCaptcha.value);
     localStorage.setItem('captcha',formRegister.captcha.value);
 });
 
@@ -333,5 +364,22 @@ validator.newStrategy(formRegister.referrer,'isReferrerExist',function(errorMsg,
         }
     });
     return getResult;
+});
+// 密码明文
+$('.see_password').on('click',() => {
+    let input = $('.see_password').siblings('input');
+    if (input.attr('type') == 'text') {
+        input.attr('type','password');
+        $('.see_password').removeClass('open_eye');
+    }
+    else if (input.attr('type') == 'password') {
+        input.attr('type','text');
+        $('.see_password').addClass('open_eye');
+    }
+});
+
+//查看服务协议
+$('.serviceAgreement').on('click',() => {
+
 });
 

@@ -232,7 +232,7 @@ body {
   display: none;
 }
 
-#formLogin {
+#formLogin, #formCaptcha,#formRegister{
   .captcha_container {
     position: relative;
     .close_btn {
@@ -320,4 +320,28 @@ body {
 }
 .next_step_container {
   margin-top: 3rem;
+  position: relative;
+  .close_btn {
+    display: none;
+    position: absolute;
+    top: .7rem;
+    left: 14.9rem;
+    width: .6rem;
+    height: .6rem;
+    background: url("../images/close_btn.png") no-repeat;
+    background-size: contain;
+  }
+  .see_password {
+    position: absolute;
+    top: .7rem;
+    left: 17rem;
+    width: 1.1rem;
+    height: .6rem;
+    background: url("../images/close_password.png") no-repeat;
+    background-size: contain;
+    &.open_eye {
+      background: url("../images/open_password.png") no-repeat;
+      background-size: contain;
+    }
+  }
 }

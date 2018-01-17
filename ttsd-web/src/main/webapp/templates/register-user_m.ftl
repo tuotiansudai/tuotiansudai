@@ -10,9 +10,12 @@
 </div>
  <div class="show-mobile show-mobile-register"></div>
     <form id="formCaptcha" class="form-captcha">
-        <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5"/>
-        <input type="hidden" name="mobile" class="mobile" value="${mobile!}">
-        <img src="/register/user/image-captcha?${.now?long?c}" class="image-captcha" id="imageCaptcha"/>
+        <div class="captcha_container">
+            <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5"/>
+            <div class="close_btn"></div>
+            <input type="hidden" name="mobile" class="mobile" value="${mobile!}">
+            <img src="/register/user/image-captcha?${.now?long?c}" class="image-captcha" id="imageCaptcha"/>
+        </div>
     </form>
 
     <form id="formRegister" class="form-register">
@@ -25,6 +28,7 @@
         <div class="step_container">
             <div class="captcha_container">
                 <input validate name="captcha" class="short-message-captcha" type="text" placeholder="请输入短信验证码" maxlength="6"/>
+                <div class="close_btn"></div>
                 <button class="get-captcha">获取验证码</button>
             </div>
             <button type="button" class="btn-wap-normal next-step register_next_step" disabled>下一步</button>
@@ -35,17 +39,18 @@
         </div>
         <div class="next_step_container" style="display: none">
             <input validate name="password" type="password" placeholder="请设置登录密码" maxlength="20"/>
-
+            <div class="close_btn"></div>
+            <div class="see_password"></div>
             <span class="invite-mobile closed">邀请人手机号码(可不填写)<i></i></span>
             <input validate type="text" name="referrer" maxlength="25" class="referrer closed" placeholder="邀请人手机号码">
         <#--<div class="error-box"></div>-->
 
             <button id="submitBtn" type="submit" class="btn-wap-normal next-step register_btn" disabled>注册</button>
-            <span class="show-agreement">点击“注册”即视为您同意《拓天速贷服务协议》</span>
+            <span class="show-agreement">点击“注册”即视为您同意<span class="serviceAgreement">《拓天速贷服务协议》</span></span>
         </div>
     </form>
 </div>
 
-    <#--<#include '../module/register-agreement.ftl' />-->
+    <#include './register-agreement_m.ftl' />
 </@global.main>
 
