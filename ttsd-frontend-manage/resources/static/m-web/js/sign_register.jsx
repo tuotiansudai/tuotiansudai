@@ -7,10 +7,73 @@ let validator = new ValidatorObj.ValidatorForm();
 let $errorBox = $('.error-box', $(formRegister));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let captchaSrc = '/register/user/image-captcha';
-let $getCaptcha = $(formRegister).find('.get-captcha');
+let $getCaptcha = $('.get-captcha');
 let $registerSubmit=$('button[type="submit"]',$(formRegister));
 let referrerValidBool=true;
 let $referrer=$('input.referrer', $(formRegister));
+
+(function (doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 20 * (clientWidth /375);
+            fSize > 40 && (fSize = 39.36);
+            docEl.style.fontSize = fSize + 'px';
+        };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+$(function () {
+    let bool=false;
+    setTimeout(function(){ bool=true;},300);
+    window.addEventListener("popstate", function(e) {
+        if(bool) location.reload();
+    },false);
+});
+
+let entryEv = () => {
+    $('.form-captcha').show();
+    $('.step_container').show();
+    $('.show-mobile-register').show();
+    $('.next_step_container').hide();
+};
+
+let registerEv = () => {
+    $('.form-captcha').hide();
+    $('.show-mobile-register').hide();
+    $('.step_container').hide();
+    $('.next_step_container').show();
+};
+
+let hash_key = location.hash;
+
+switch (hash_key) {
+    case '':
+        entryEv();
+        break;
+    case '#register_next':
+        registerEv();
+        break;
+    default:
+        entryEv();
+        break;
+}
+
+let pushHistory = (url) => {
+    let state = {title: "title", url: url};
+    window.history.pushState(state, "title", url);
+    location.reload();
+};
+
+//获取手机号
+let telephoneNum = localStorage.getItem('login_telephone') || '';
+$('.show-mobile-register').html(telephoneNum);
+$('.mobile').val(telephoneNum);
 
 //刷新验证码
 $('#imageCaptcha').on('click', function () {
@@ -69,7 +132,7 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
                 commonFun.countDownLoan({
                     btnDom: $getCaptcha,
                     isAfterText: '获取验证码',
-                    textCounting: 's'
+                    textCounting: 's后重发'
                 },function() {
                     //倒计时结束后刷新验证码
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
@@ -150,6 +213,11 @@ validator.add(formRegister.captcha, [{
     errorMsg: '验证码不正确'
 }]);
 
+validator.add(formRegister.referrer, [{
+    strategy: 'isReferrerExist',
+    errorMsg: '推荐人不存在'
+}]);
+
 let reInputs = $(formRegister).find('input[validate]');
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i],"keyup",function () {
@@ -187,27 +255,83 @@ function isDisabledButton() {
     !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    $('.register_next_step').prop('disabled', !captchaValid);
 
     if($(referrer).is(':hidden')) {
         referrerValidBool=true;
     }
 
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && referrerValidBool;
+    let isDisabledSubmit= isMobileValid && isPwdValid  && referrerValidBool;
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
 
 //点击立即注册按钮
-formRegister.onsubmit = function (event) {
+$('#submitBtn').on('click',function (event) {
     event.preventDefault();
-
+    formRegister.captcha.value = localStorage.getItem('captcha');
     for (let i = 0, len = reInputs.length; i < len; i++) {
         let errorMsg = validator.start(reInputs[i]);
         if (errorMsg) {
             layer.msg(errorMsg);
             return;
         }
-    }
+    };
+    let data = {
+        mobile: localStorage.getItem('login_telephone'),
+        password: formRegister.password.value,
+        imageCaptcha: localStorage.getItem('imageCaptcha'),
+        captcha: localStorage.getItem('captcha'),
+        referrer: formRegister.referrer.value,
+        agreement: 'on'
+    };
+    commonFun.useAjax({
+        url:'/register/user/m',
+        type:'POST',
+        data: data,
+        async: false,
+    },function(response) {
+        if(response.success) {
+          location.href = '/m/'
+        }
+    });
+});
 
-    formRegister.submit();
-};
+$('.register_next_step').on('click',() => {
+    pushHistory('#register_next');
+    localStorage.setItem('imageCaptcha',formCaptcha.imageCaptcha.value);
+    localStorage.setItem('captcha',formRegister.captcha.value);
+});
+
+//推荐人是否存在
+validator.newStrategy(formRegister.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
+    var getResult='',
+        that=this,
+        _arguments=arguments;
+    //只验证推荐人是否存在，不验证是否为空
+    if(this.value=='') {
+        referrerValidBool=true;
+        getResult='';
+        ValidatorObj.isHaveError.no.apply(that,_arguments);
+        return '';
+    }
+    commonFun.useAjax({
+        type:'GET',
+        async: false,
+        url:'/register/user/referrer/'+this.value+'/is-exist'
+    },function(response) {
+        if(response.data.status) {
+            // 如果为true说明推荐人存在
+            referrerValidBool=true;
+            getResult='';
+            ValidatorObj.isHaveError.no.apply(that,_arguments);
+        }
+        else {
+            referrerValidBool=false;
+            getResult=errorMsg;
+            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+        }
+    });
+    return getResult;
+});
+

@@ -1,6 +1,6 @@
 let ValidatorObj = require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
-
+let isVoice = false;
 let formLogin = globalFun.$('#formLogin');
 
 //用户注册表单校验
@@ -26,16 +26,22 @@ let telephoneNum = '';
     doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
 
+$(function () {
+    let bool=false;
+    setTimeout(function(){ bool=true;},300);
+    window.addEventListener("popstate", function(e) {
+        if(bool) location.reload();
+    },false);
+});
+
 let entryEv = () => {
     $('.entry_container').show();
     $('.login_container').hide();
-    $('.register_container').hide();
 };
 
 let loginEv = () => {
     $('.entry_container').hide();
     $('.login_container').show();
-    $('.register_container').hide();
     let telephoneNum = localStorage.getItem('login_telephone') || '';
     $('.show-mobile-login').html(telephoneNum);
     $('#username').val(telephoneNum);
@@ -44,7 +50,8 @@ let loginEv = () => {
 let registerEv = () => {
     $('.entry_container').hide();
     $('.login_container').hide();
-    $('.register_container').show();
+    let telephoneNum = localStorage.getItem('login_telephone') || '';
+    $('.show-mobile-register').html(telephoneNum);
 };
 
 let hash_key = location.hash;
@@ -56,7 +63,7 @@ switch (hash_key) {
     case '#login':
         loginEv();
         break;
-    case '#register':
+    case '#register-one':
         registerEv();
         break;
     default:
@@ -111,7 +118,18 @@ let clearInputTwoVal = (id) => {
 let stepOneEv = () => {
     $('.step_one').on('click',() => {  // todo ajax
         localStorage.setItem('login_telephone',telephoneNum);
-        pushHistory('#login');
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/register/user/mobile/'+telephoneNum+'/is-exist'
+        },function(response) {
+            if(response.data.status) {
+                pushHistory('#login'); // 登录
+            }
+            else {
+                location.href = '/m/register/user'; // 注册
+            }
+        });
     })
 };
 
@@ -226,4 +244,5 @@ $('.step_two').on('click', function (event) {
     //提交之前得先执行validateLogin验证表单是否通过验证
     formSubmit.before(validateLogin)();
 });
+
 
