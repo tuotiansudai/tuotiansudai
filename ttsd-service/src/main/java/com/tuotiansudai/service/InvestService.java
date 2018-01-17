@@ -48,4 +48,8 @@ public interface InvestService {
     boolean isNewUserForWechatLottery(String loginName);
 
     boolean isFirstInvest(String loginName, Date investTime);
+
+    BasePaginationDataDto<UserInvestRecordDataDto> generateUserInvestList(String loginName, int index,
+                                                                          int pageSize,
+                                                                          LoanStatus loanStatus);
 }
