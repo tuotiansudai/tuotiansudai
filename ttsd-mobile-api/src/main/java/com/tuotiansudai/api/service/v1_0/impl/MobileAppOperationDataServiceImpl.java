@@ -4,7 +4,10 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppOperationDataService;
+import com.tuotiansudai.dto.OperationDataAgeDataDto;
 import com.tuotiansudai.dto.OperationDataDto;
+import com.tuotiansudai.dto.OperationDataInvestAmountDataDto;
+import com.tuotiansudai.dto.OperationDataInvestCityDataDto;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.service.OperationDataService;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppOperationDataServiceImpl implements MobileAppOperationDataService {
@@ -67,17 +71,8 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto(){
-        Date currentDate = new Date();
-        Map<String,String> ageDistributionMap = operationDataService.findAgeDistributionByAge(currentDate);
-        Set<Map.Entry<String, String>> ageDistributionEntries = ageDistributionMap.entrySet();
-        List<OperationDataAgeResponseDataDto> operationDataAgeResponseDataDtoList = Lists.newArrayList();
-        for (Map.Entry<String, String> ageDistributionEntry : ageDistributionEntries) {
-            OperationDataAgeResponseDataDto operationDataAgeResponseDataDto = new OperationDataAgeResponseDataDto();
-            operationDataAgeResponseDataDto.setName(AgeDistributionType.getNameByAgeStage(Integer.parseInt(ageDistributionEntry.getKey())));
-            operationDataAgeResponseDataDto.setScale(ageDistributionEntry.getValue());
-            operationDataAgeResponseDataDtoList.add(operationDataAgeResponseDataDto);
-        }
-        return operationDataAgeResponseDataDtoList;
+        List<OperationDataAgeDataDto> operationDataAgeDataDtos = operationDataService.convertMapToOperationDataAgeDataDto();
+        return operationDataAgeDataDtos.stream().map(operationDataAgeDataDto -> new OperationDataAgeResponseDataDto(operationDataAgeDataDto)).collect(Collectors.toList());
     }
 
     private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto){
@@ -94,32 +89,19 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataInvestCityResponseDataDto> convertMapToOperationDataInvestCityResponseDataDto(){
-        Date currentDate = new Date();
-        Map<String,String> investCityListMap = operationDataService.findCountInvestCityScaleTop3(currentDate);
-        Set<Map.Entry<String, String>> investCityEntries = investCityListMap.entrySet();
-        List<OperationDataInvestCityResponseDataDto> operationDataInvestCityResponseDataDtoList = Lists.newArrayList();
-        for(Map.Entry<String, String> investCityEntry : investCityEntries){
-            OperationDataInvestCityResponseDataDto operationDataInvestCityResponseDataDto = new OperationDataInvestCityResponseDataDto();
-            operationDataInvestCityResponseDataDto.setCity(investCityEntry.getKey());
-            operationDataInvestCityResponseDataDto.setScale(investCityEntry.getValue());
-            operationDataInvestCityResponseDataDtoList.add(operationDataInvestCityResponseDataDto);
-        }
-        Collections.sort(operationDataInvestCityResponseDataDtoList, (o1, o2) -> Double.compare(Double.parseDouble(o2.getScale()), Double.parseDouble(o1.getScale())));
-        return operationDataInvestCityResponseDataDtoList;
+        List<OperationDataInvestCityDataDto> operationDataInvestCityDataDtos = operationDataService.convertMapToOperationDataInvestCityDataDto();
+        return operationDataInvestCityDataDtos.
+                stream()
+                .map(operationDataInvestCityDataDto -> new OperationDataInvestCityResponseDataDto(operationDataInvestCityDataDto))
+                .collect(Collectors.toList());
     }
 
     private List<OperationDataInvestAmountResponseDataDto> convertMapToOperationDataInvestAmountResponseDataDto(){
-        Date currentDate = new Date();
-        Map<String,String> investAmountMap = operationDataService.findInvestAmountScaleTop3(currentDate);
-        Set<Map.Entry<String, String>> investAmountEntries = investAmountMap.entrySet();
-        List<OperationDataInvestAmountResponseDataDto> operationDataInvestAmountResponseDataDtoList = Lists.newArrayList();
-        for(Map.Entry<String, String> investAmountEntry : investAmountEntries){
-            OperationDataInvestAmountResponseDataDto operationDataInvestAmountResponseDataDto = new OperationDataInvestAmountResponseDataDto();
-            operationDataInvestAmountResponseDataDto.setCity(investAmountEntry.getKey());
-            operationDataInvestAmountResponseDataDto.setScale(investAmountEntry.getValue());
-            operationDataInvestAmountResponseDataDtoList.add(operationDataInvestAmountResponseDataDto);
-        }
-        Collections.sort(operationDataInvestAmountResponseDataDtoList, (o1, o2) -> Double.compare(Double.parseDouble(o2.getScale()), Double.parseDouble(o1.getScale())));
-        return operationDataInvestAmountResponseDataDtoList;
+        List<OperationDataInvestAmountDataDto> operationDataInvestAmountDataDtos = operationDataService.convertMapToOperationDataInvestAmountDataDto();
+
+        return operationDataInvestAmountDataDtos
+                .stream()
+                .map(operationDataInvestAmountDataDto -> new OperationDataInvestAmountResponseDataDto(operationDataInvestAmountDataDto))
+                .collect(Collectors.toList());
     }
 }

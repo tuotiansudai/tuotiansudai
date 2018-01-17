@@ -1,0 +1,73 @@
+.bank-show {
+  font-size: 12px;
+  color: #808080;
+  line-height: 20px;
+  em {
+    font-size: 14px;
+    color: #525252;
+    display: block;
+  }
+}
+.input-list {
+  &.align-flex-start {
+    span.bank-info {
+      text-align: left;
+      width: auto;
+      flex: 3;
+
+      &.key {
+        color: #FF635A;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+
+.bank-list {
+  margin-top: 10px;
+  .icon-bank {
+    width:30px;
+    height:30px;
+    background: url('../../images/bank/bankdefault.png') left top no-repeat;
+    background-size: 100%;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 10px;
+    background: #fff;
+    border-bottom:1px solid #f4f4f4;
+    span {
+      width: 77%;
+    }
+    &.checked {
+      span.bank-show {
+        color: #FF635A;
+        em {
+          color: #FF635A;
+        }
+      }
+    }
+  }
+}
+
+.tip-text{
+  font-size: 12px;
+  color: #FF635A;
+  padding:0 10px;
+  line-height: 35px;
+  margin-bottom: 0;
+}
+.tip-info{
+  font-size: 12px;
+  color: #A2A2A2;
+  line-height: 40px;
+  text-align:center;
+  margin: 80px 0 0;
+}
+.to-open{
+  margin-top:0;
+}

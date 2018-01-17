@@ -55,6 +55,8 @@ public class InvestController {
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
             investDto.setSource(Source.WE_CHAT);
+        } else if (Source.M.equals(investDto.getSource())) {
+            investDto.setSource(Source.M);
         } else {
             investDto.setSource(Source.WEB);
         }

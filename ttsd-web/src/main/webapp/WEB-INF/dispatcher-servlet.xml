@@ -34,6 +34,7 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
+        <bean class="com.tuotiansudai.web.config.interceptors.MobileAccessDecisionInterceptor"/>
         <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
         <bean class="com.tuotiansudai.web.config.interceptors.WeChatJSAPISignInterceptor"/>
         <bean class="com.tuotiansudai.web.interceptors.LinkExchangeInterceptor"/>
@@ -54,6 +55,7 @@
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-web.json"/>
+        <property name="staticMResourceDiscoveryUrl" value="${static.resource.discovery.url}/json-m-web.json"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
@@ -78,7 +80,7 @@
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/templates"/>
+        <property name="templateLoaderPaths" value="/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
         <property name="freemarkerVariables" ref="staticResourceVersionMap"/>
         <property name="freemarkerSettings">
@@ -92,7 +94,7 @@
     View resolvers can also be configured with ResourceBundles or XML files. If you need
     different view resolving based on Locale, you have to use the resource bundle resolver.
     -->
-    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <bean id="freeMarkerViewResolver" class="com.tuotiansudai.web.config.freemarker.MobileDecisionFreeMarkerViewResolver">
         <property name="cache" value="true"/>
         <property name="prefix" value=""/>
         <property name="suffix" value=".ftl"/>

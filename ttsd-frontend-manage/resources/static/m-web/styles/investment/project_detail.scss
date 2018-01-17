@@ -1,0 +1,202 @@
+
+.loan-list-frame {
+  position: absolute;
+  top: 100px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 100px);
+  background: #fff;
+  padding-top:20px;
+}
+
+.notice-toggle {
+  padding:10px;
+  height:150px;
+  .btn-detail-toggle {
+    border: 1px solid #C9C9C9;
+    color: #808080;
+    width:50%;
+    text-align: center;
+    margin:0 auto;
+    padding: 2px;
+  }
+  p {
+    color: #A2A2A2;
+  }
+}
+
+.pledge-box {
+  display: none;
+
+  &:nth-child(1) {
+    display: block;
+  }
+
+  .section {
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 22px;
+    .title {
+      color: #525252;
+      line-height: 22px;
+      text-align: center;
+    }
+    dl {
+      color: #808080;
+
+      dd {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        line-height: 27px;
+        span {
+          flex: 1;
+          &:nth-child(1) {
+            text-align: right;
+          }
+          &:nth-child(2) {
+            text-align: left;
+          }
+        }
+      }
+
+    }
+
+  }
+
+  &.factoring {
+
+    .company-info {
+      dl dd span:nth-child(1) {
+        flex: 0.3;
+      }
+    }
+  }
+}
+
+.material-box {
+  padding: 10px;
+  dt {
+    font-size: 14px;
+    color: #525252;
+    padding-bottom:10px;
+  }
+  dd {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    img {
+      width:48%;
+      height: 100%;
+    }
+  }
+}
+
+.look-apply-material {
+  text-align: center;
+  margin-top:20px;
+  .btn-look {
+    border: 1px solid #C9C9C9;
+    border-radius: 100px;
+    padding:6px 20px;
+    color: #808080;
+  }
+
+}
+
+.transaction-record {
+
+  .record-top {
+    height:95px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -20px;
+    span {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      font-size: 13px;
+      color: #808080;
+      width:33%;
+      align-items: center;
+      line-height: 20px;
+      i {
+        width:40px;
+        height:40px;
+
+      }
+      b {
+        font-weight: lighter;
+
+        em {
+          color: #A2A2A2;
+          display: block;
+        }
+      }
+      &:nth-child(1) {
+        i {
+          background: url('../../images/investment/xianfeng-off.png') no-repeat left top;
+          background-size: 100%;
+        }
+      }
+      &:nth-child(2) {
+        i {
+          background: url('../../images/investment/biaowang-off.png') no-repeat left top;
+          background-size: 100%;
+        }
+      }
+      &:nth-child(3) {
+        i {
+          background: url('../../images/investment/dingying-off.png') no-repeat left top;
+          background-size: 100%;
+        }
+      }
+
+    }
+
+  }
+
+  .record-note {
+    background: #F7F7F7;
+    height:40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: #A2A2A2;
+  }
+
+}
+
+.layui-layer-page .layui-layer-content {
+  overflow: inherit!important;
+}
+.record-tip-box {
+  padding:10px;
+  text-align: center;
+  position: relative;
+
+  .kaola {
+
+    display: inline-block;
+    width:100px;
+    height:60px;
+    background: url('../../images/account/kaola.png') left top no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left:50%;
+    top: -44px;
+    transform: translate(-50%);
+  }
+  .pop-title {
+    font-size: 18px;
+    color: #A2A2A2;
+    font-weight: lighter;
+  }
+  span i {
+    color: #fc5745;
+
+
+  }
+}

@@ -2,8 +2,7 @@ require('webStyle/membership.scss');
 
 let moment = require('moment');
 let commonFun= require('publicJs/commonFun');
-require('publicJs/plugins/daterangepicker.scss');
-require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
+require('webJsModule/daterangepicker');
 
 let $instructions = $('#instructions'),
     $dateTimePicker=$('#date-time-picker');

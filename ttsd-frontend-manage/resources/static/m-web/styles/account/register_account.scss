@@ -1,0 +1,36 @@
+
+.certification-box {
+  h3 {
+    padding:20px;
+    font-size: 14px;
+    color: #808080;
+    line-height: 22px;
+    font-weight: lighter;
+    text-align: center;
+  }
+
+  .input-list li {
+    justify-content: flex-start;
+    input {
+      text-align: left;
+      font-size: 16px;
+      margin-left: 10px;
+      color: #525252;
+    }
+  }
+}
+
+.certification-success {
+  background: #fff;
+  height: 100%;
+  overflow: hidden;
+  padding-top:50px;
+  text-align: center;
+  box-sizing: border-box;
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}

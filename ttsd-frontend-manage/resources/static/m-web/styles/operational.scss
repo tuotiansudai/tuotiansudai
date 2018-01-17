@@ -1,0 +1,430 @@
+.swiper-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.go-back-container {
+  position: relative;
+  width: 100%;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  font-size: .9rem;
+  color: #fff;
+  background: #ff473c;
+  overflow: hidden;
+  .go-back{
+    position: absolute;
+    left: .4rem;
+    top: .6rem;
+    width: .575rem;
+    height: 1rem;
+    background: url("../images/operational_goBack.png") no-repeat;
+    background-size: contain;
+    vertical-align: top;
+  }
+}
+
+.swiper-slide {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  .safe_operational_text {
+    position: absolute;
+    top: 1.1rem;
+    left: 4.55rem;
+    width: 9.1rem;
+    font-size: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    color: #fff;
+    font-weight: normal;
+  }
+  .safe_day_wrapper_center {
+    position: absolute;
+    top: 2.65rem;
+    width: 100%;
+    text-align: center;
+    font-size: 0;
+    .safe_day_wrapper {
+      display: inline-block;
+      .safe_day {
+        display: inline-block;
+        margin-right: .4rem;
+        width: 1.5rem;
+        height: 1.9rem;
+        line-height: 1.9rem;
+        text-align: center;
+        font-size: 1.5rem;
+        color: #ff473c;
+        background: #fff;
+        border-radius: .1rem;
+      }
+      .safe_day_unit {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.9rem;
+        line-height: 1.9rem;
+        margin-left: .2rem;
+        font-size: 1.5rem;
+        color: #fff;
+        font-weight: normal;
+        vertical-align: top;
+      }
+    }
+  }
+  .grand_total {
+    position: absolute;
+    top: 4.9rem;
+    width: 100%;
+    .grand_total_icon {
+      margin-left: 1.5rem;
+      width: 17.3rem;
+      height: 5.625rem;
+      background: url("../images/grand_total_icon.png") no-repeat;
+      background-size: contain;
+    }
+    .grand_total_text {
+      width: 100%;
+      text-align: center;
+      margin-top: .575rem;
+      font-size: .875rem;
+      color: #fff;
+      font-weight: normal;
+    }
+    .text_underLine {
+      margin-left: 6.65rem;
+      width: 5.325rem;
+      height: .275rem;
+      background: url("../images/text_underLine.png") no-repeat;
+      background-size: contain;
+    }
+    .grand_total_amount {
+      margin-top: .125rem;
+      line-height: 1.15rem;
+      width: 100%;
+      text-align: center;
+      font-size: 1.15rem;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .earn_total {
+    position: absolute;
+    top: 15.2rem;
+    width: 100%;
+    text-align: center;
+    .earn_total_icon {
+      margin: 0 auto;
+      width: 12.525rem;
+      height: 4.675rem;
+      background: url("../images/earn_total_icon.png") no-repeat;
+      background-size: contain;
+    }
+    .earn_total_text {
+      width: 100%;
+      text-align: center;
+      margin-top: .575rem;
+      font-size: .875rem;
+      color: #fff;
+      font-weight: normal;
+    }
+    .text_underLine {
+      margin-left: 6.65rem;
+      width: 5.325rem;
+      height: .275rem;
+      background: url("../images/text_underLine.png") no-repeat;
+      background-size: contain;
+    }
+    .earn_total_amount {
+      margin-top: .125rem;
+      line-height: 1.15rem;
+      width: 100%;
+      text-align: center;
+      font-size: 1.15rem;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .button_under_arrow {
+    position: absolute;
+    bottom: 0;
+    left: 7.4rem;
+    width: 4.5rem;
+    height: 1.5rem;
+    background: url("../images/button_under_arrow.png") no-repeat;
+    background-size: contain;
+  }
+}
+.swiper-slide1 {
+  background: url("../images/operational_bg1.png") no-repeat;
+  background-size: cover;
+}
+.swiper-slide5 {
+  background: url("../images/operational_bg1.png") no-repeat;
+  background-size: cover;
+  .tuotian_logo {
+    position: absolute;
+    top: 6rem;
+    left: 1.6rem;
+    width: 17.3rem;
+    height: 10.425rem;
+    background: url("../images/logo_tuotian.png") no-repeat;
+    background-size: contain;
+  }
+  .company_desc_text {
+    position: absolute;
+    bottom: 2.5rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #fff;
+    font-weight: normal;
+  }
+  .button_up_arrow {
+    position: absolute;
+    bottom: 0;
+    left: 7.4rem;
+    width: 4.5rem;
+    height: 1.5rem;
+    background: url("../images/button_up_arrow.png") no-repeat;
+    background-size: contain;
+  }
+}
+
+.swiper-slide2 {
+  width: 100%;
+  background: #fff;
+  .part-2-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-2-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .trade-detail {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .total_trade_text {
+    margin-top: 1.25rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #019bd9;
+    font-weight: normal;
+  }
+  .text_underLine_blue {
+    margin: .25rem auto .1rem auto;
+    width: 4.525rem;
+    height: .2rem;
+    background: url("../images/text_underLine_blue.png") no-repeat;
+    background-size: contain;
+  }
+  .total_trade_count {
+    width: 100%;
+    line-height: 1rem;
+    font-size: 1rem;
+    color: #ff5400;
+    font-weight: normal;
+    text-align: center;
+  }
+  .unit_symbol {
+    position: absolute;
+    top: 7rem;
+    right: 1.3rem;
+    margin-bottom: 1rem;
+    font-size: .5rem;
+    color: #41b4e3;
+    font-weight: normal;
+  }
+  #main_part1 {
+    position: absolute;
+    top: 9rem;
+    width: 100%;
+    height: 5rem;
+  }
+  .chart1_title {
+    width: 100%;
+    position: absolute;
+    top: 13.5rem;
+    text-align: center;
+    font-size: .6rem;
+    color: #1691e8;
+    font-weight: normal;
+    text-align: center;
+    .chart1_title_strong {
+      color: #ff5400;
+    }
+  }
+  #main_part2 {
+    position: absolute;
+    top: 17rem;
+    width: 100%;
+    height: 5rem;
+    margin-top: 1rem;
+  }
+}
+
+.swiper-slide3 {
+  width: 100%;
+  background: #fff;
+  .part-3-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-3-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .user-statistics {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .total_trade_text {
+    margin-top: 1.25rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #019bd9;
+    font-weight: normal;
+  }
+  .text_underLine_blue {
+    margin: .25rem auto .1rem auto;
+    width: 6rem;
+    height: .2rem;
+    background: url("../images/text_underLine_blue_long.png") no-repeat;
+    background-size: contain;
+  }
+  .total_trade_count {
+    width: 100%;
+    line-height: 1rem;
+    font-size: 1rem;
+    color: #ff5400;
+    font-weight: normal;
+    text-align: center;
+  }
+  .unit_symbol {
+    text-align: right;
+    margin-right: 1.3rem;
+    margin-bottom: 1rem;
+    font-size: .5rem;
+    color: #41b4e3;
+    font-weight: normal;
+  }
+  #main_part3 {
+    width: 100%;
+    height: 11rem;
+  }
+  #main_part4 {
+    position: absolute;
+    top: 15rem;
+    width: 100%;
+    height: 11rem;
+  }
+}
+
+.swiper-slide4 {
+  width: 100%;
+  background: #fff;
+  .part-4-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-4-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .user-area {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .count_proportion, .amount_proportion {
+    position: absolute;
+    left: 10%;
+    top: 7rem;
+    font-size: 0;
+    font-weight: normal;
+    .symbol_line {
+      position: relative;
+      top: .1rem;
+      margin-right: .25rem;
+      display: inline-block;
+      width: .1rem;
+      height: .74rem;
+      background: #019bd9;
+    }
+    .count_title {
+      display: inline-block;
+      font-size: .75rem;
+      line-height: .75rem;
+      color: #ff5400;
+      .title_strong {
+        color: #019bd9;
+      }
+    }
+    .amount_title {
+      display: inline-block;
+      font-size: .75rem;
+      line-height: .75rem;
+      color: #ffc601;
+      .title_strong {
+        color: #019bd9;
+      }
+    }
+  }
+  .amount_proportion {
+    top: 16rem;
+  }
+  .total_trade_text {
+    margin-top: 1.25rem;
+    width: 100%;
+    line-height: .75rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #019bd9;
+    font-weight: normal;
+  }
+  #main_part5 {
+    position: absolute;
+    top: 6.3rem;
+    width: 100%;
+    height: 13rem;
+  }
+  #main_part6 {
+    position: absolute;
+    top: 15.3rem;
+    width: 100%;
+    height: 12rem;
+  }
+}
+.chart1_title.chart1_title_m {
+  top: 22.5rem;
+}
+
+.unit_symbol.unit_symbol_m {
+  top: 16rem;
+}
+

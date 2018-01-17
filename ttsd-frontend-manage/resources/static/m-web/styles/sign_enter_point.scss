@@ -1,0 +1,209 @@
+.layui-layer-msg {
+  width:70%;
+}
+
+.sign-container {
+  padding-top: 30px;
+  text-align: center;
+  height: 92vh;
+  background: #fff;
+  box-sizing: border-box;
+  input {
+    width:100%;
+    box-sizing: border-box;
+    padding: 10px 6px;
+    border-width: 0;
+    border-bottom:1px solid #F2F2F2;
+    color: #525252;
+    margin-bottom:10px;
+  }
+  .error {
+    color: #525252;
+  }
+  .logo-note {
+    color: #FF473C;
+    font-size: 13px;
+    text-align: center;
+    padding-top:20px;
+    margin-bottom: 40px;
+    .logo {
+      width:147px;
+      height:36px;
+      margin: 20px auto;
+      display: block;
+      background: url('../images/logo-re.png') center center no-repeat;
+      background-size: 100%;
+
+    }
+  }
+  .show-mobile {
+    background: #F2F2F2;
+    color: #FF473B;
+    font-size: 24px;
+    padding: 0px;
+    display: block;
+    text-align: center;
+    line-height: 40px;
+  }
+  .next-step {
+    margin-top:30px;
+  }
+
+  &.sign-login {
+
+    text-align: center;
+    .show-mobile {
+      background: transparent;
+      padding-bottom: 8px;
+    }
+    .captcha,.short-message-captcha {
+      width:70%;
+    }
+    .image-captcha {
+      width:28%;
+      margin-bottom: 10px;
+    }
+    .get-password {
+      display: inline-block;
+      width:80%;
+      text-align: right;
+
+      margin: 5px auto;
+      a {
+        color: #808080;
+      }
+    }
+
+    .form-register {
+      font-size: 14px;
+      .short-message-captcha {
+        float: left;
+      }
+      .get-captcha {
+        float: left;
+        width: 30%;
+        color: #525252;
+        box-sizing: border-box;
+        padding: 5px 0px;
+        border-bottom: 1px solid #F2F2F2;
+        margin-bottom: 10px;
+        line-height: 26px;
+        font-size:13px;
+
+        &:before {
+          display: inline-block;
+          height:20px;
+          width:1px;
+          background: #E5E5E5;
+          content:'';
+          margin-right: 20px;
+          vertical-align: middle;
+        }
+      }
+
+      .invite-mobile {
+        display: block;
+        text-align: left;
+        color: #FF473C;
+        line-height: 20px;
+        margin-top: 10px;
+        padding-left: 6px;
+        position: relative;
+        cursor: pointer;
+        i {
+          width:15px;
+          height:15px;
+          background: url('../images/icon-up.png') right center no-repeat;
+          background-size: 100%;
+          position: absolute;
+          right: 15px;
+          top:0;
+        }
+
+        &.closed {
+          i {
+            background: url('../images/icon-down.png') right center no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+
+      .referrer {
+        &.closed {
+          height: 1px;
+          padding: 0;
+        }
+      }
+      .show-agreement {
+        color: #808080;
+        font-size: 12px;
+        text-align: left;
+        width:80%;
+        margin:5px auto;
+        display: block;
+      }
+
+    }
+
+    .btn-ok-update {
+      margin-top:30px;
+    }
+  }
+
+  &.register-success {
+    font-size: 15px;
+    color: #808080;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    .success-tip {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+      .success-text {
+        font-size: 20px;
+        color: #525252;
+      }
+    }
+    .success-img {
+      flex: 2.1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .experience-gold {
+        background: url('../images/sign-reward.png') center center no-repeat;
+        background-size: contain;
+        flex: 5;
+        width:80%;
+      }
+      .note {
+        font-size: 10px;
+        padding-bottom: 30px;
+        flex: 1;
+      }
+    }
+    .success-button {
+      flex: 1.5;
+      .note2 {
+        font-size: 12px;
+        padding-top: 10px;
+        display: block;
+      }
+      .only-border {
+        margin-top:20px;
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 350px) {
+  .sign-container.sign-login .form-register .show-agreement {
+    width:100%;
+  }
+
+}
+
