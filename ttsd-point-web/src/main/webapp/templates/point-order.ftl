@@ -109,7 +109,7 @@
 			</div>
 		<#if productShowItem.goodsType.name() == 'PHYSICAL'>
             <div class="order-info my-order-info">
-				<span>备注：</span><textarea id="comment" placeholder="请您填写备注信息，比如颜色、规格等。如无备注则随机发货" maxlength="50"></textarea>
+				<span>备注：</span><textarea id="comment" placeholder="请您填写备注信息，比如颜色、规格等；如无备注则随机发货。" maxlength="50"></textarea>
 			</div>
 		</#if>
 			<div class="order-total">
