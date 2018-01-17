@@ -1,35 +1,51 @@
 .layui-layer-msg {
   width:70%;
 }
-
+body {
+  background: #fff;
+}
 .sign-container {
-  padding-top: 30px;
+  width: 100%;
+  height: 100%;
   text-align: center;
-  height: 92vh;
   background: #fff;
   box-sizing: border-box;
+  #EntryPointForm {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      right: .65rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+  }
   input {
-    width:100%;
+    width:17.5rem;
+    height: 2rem;
+    margin: 0 auto;
     box-sizing: border-box;
-    padding: 10px 6px;
+    padding: .5rem .3rem;
     border-width: 0;
-    border-bottom:1px solid #F2F2F2;
+    border-bottom:.05rem solid #F2F2F2;
     color: #525252;
-    margin-bottom:10px;
   }
   .error {
     color: #525252;
   }
   .logo-note {
     color: #FF473C;
-    font-size: 13px;
+    font-size: .65rem;
     text-align: center;
-    padding-top:20px;
-    margin-bottom: 40px;
+    margin-bottom: 2rem;
+    overflow: hidden;
     .logo {
-      width:147px;
-      height:36px;
-      margin: 20px auto;
+      width:7.35rem;
+      height:1.8rem;
+      margin: 3.25rem auto .8rem auto;
       display: block;
       background: url('../images/logo-re.png') center center no-repeat;
       background-size: 100%;
@@ -37,31 +53,35 @@
     }
   }
   .show-mobile {
+    margin: 0 auto;
+    width: 17.55rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
     background: #F2F2F2;
     color: #FF473B;
-    font-size: 24px;
-    padding: 0px;
-    display: block;
-    text-align: center;
-    line-height: 40px;
+    &.show-mobile-entry {
+      display: none;
+    }
   }
   .next-step {
-    margin-top:30px;
+    margin-top:1.5rem;
   }
 
   &.sign-login {
-
     text-align: center;
     .show-mobile {
+      margin: 2.5rem auto .5rem auto;
       background: transparent;
-      padding-bottom: 8px;
     }
     .captcha,.short-message-captcha {
-      width:70%;
+      width: 12.55rem;
+      margin-right: .3rem;
     }
     .image-captcha {
-      width:28%;
-      margin-bottom: 10px;
+      width: 4.5rem;
+      height: 1.8rem;
     }
     .get-password {
       display: inline-block;
@@ -197,13 +217,84 @@
       }
     }
   }
-
 }
 
-@media screen and (max-width: 350px) {
-  .sign-container.sign-login .form-register .show-agreement {
-    width:100%;
+.goBack_wrapper {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-size: 17px;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: 2px;
+    top: 7px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
   }
-
 }
+
+.login_container {
+  display: none;
+}
+
+.register_container {
+  display: none;
+}
+
+#formLogin {
+  .captcha_container {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      left: 11.8rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .password_container {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      left: 14.9rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+    .see_password {
+      position: absolute;
+      top: .7rem;
+      left: 17rem;
+      width: 1.1rem;
+      height: .6rem;
+      background: url("../images/close_password.png") no-repeat;
+      background-size: contain;
+      &.open_eye {
+        background: url("../images/open_password.png") no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+}
+
+
 
