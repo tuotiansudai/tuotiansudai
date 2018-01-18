@@ -1,6 +1,6 @@
 let commonFun = require('publicJs/commonFun');
 let ValidatorObj = require('publicJs/validator');
-
+let isVoice = false;
 let formRegister = globalFun.$('#formRegister');
 
 let validator = new ValidatorObj.ValidatorForm();
@@ -10,6 +10,7 @@ let captchaSrc = '/register/user/image-captcha';
 let $getCaptcha = $('.get-captcha');
 let $registerSubmit=$('button[type="submit"]',$(formRegister));
 let referrerValidBool=true;
+let isSendingCaptcha = false;
 let $referrer=$('input.referrer', $(formRegister));
 
 (function (doc, win) {
@@ -42,9 +43,6 @@ let contentInput = (id,content,length) => {
             $(id).find('.close_btn').hide();
         } else {
             $(id).find('.close_btn').show();
-            // if (e.currentTarget.value.length < 5) {
-            //     $('.register_next_step').prop('disabled',true);
-            // }
         }
     })
 };
@@ -147,10 +145,11 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
 (function () {
     let formCaptcha = globalFun.$('#formCaptcha');
     function sendCaptcha() {
+        isSendingCaptcha = true;
         let ajaxOption = {
             url: '/register/user/send-register-captcha',
             type: 'POST',
-            data: $(formCaptcha).serialize()
+            data: $(formCaptcha).serialize()+'&voice='+isVoice
         };
         commonFun.useAjax(ajaxOption, function (responseData) {
             $getCaptcha.prop('disabled', false);
@@ -167,16 +166,19 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
                     //倒计时结束后刷新验证码
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                     $getCaptcha.prop('disabled', false);
+                    isSendingCaptcha = false;
                 });
             } else if (!data.status && data.isRestricted) {
                 commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 formRegister.captcha.value = '';
                 layer.msg('短信发送频繁，请稍后再试');
+                isSendingCaptcha = false;
 
             } else if (!data.status && !data.isRestricted) {
                 commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 formRegister.captcha.value = '';
                 layer.msg('图形验证码不正确');
+                isSendingCaptcha = false;
             }
         });
     }
@@ -186,6 +188,7 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
         let imageCaptcha = formCaptcha.imageCaptcha.value;
 
         if (/\d{5}/.test(imageCaptcha)) {
+            if (isSendingCaptcha) return;
             sendCaptcha();
         } else {
             layer.msg('请输入正确的图形验证码');

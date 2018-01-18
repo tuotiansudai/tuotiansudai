@@ -29,7 +29,7 @@
             <div class="captcha_container">
                 <input validate name="captcha" class="short-message-captcha" type="text" placeholder="请输入短信验证码" maxlength="6"/>
                 <div class="close_btn"></div>
-                <button class="get-captcha">获取验证码</button>
+                <div class="get-captcha">获取验证码</div>
             </div>
             <button type="button" class="btn-wap-normal next-step register_next_step" disabled>下一步</button>
             <div class="bottom_button_text">

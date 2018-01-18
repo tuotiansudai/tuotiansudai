@@ -79,8 +79,10 @@ let pushHistory = (url) => {
 
 let contentInput = (id,content,length) => {
     $(id).find('input').on('keyup',(e) => {
-       if (!e.currentTarget.value.length) {
+       if (!e.currentTarget.value) {
            $(id).find('.close_btn').hide();
+           $(id).find(content).html('');
+           $(id).find(content).hide();
        } else {
            $(id).find('.close_btn').show();
            $(id).find(content).html(e.currentTarget.value);
@@ -116,7 +118,11 @@ let clearInputTwoVal = (id) => {
 };
 
 let stepOneEv = () => {
-    $('.step_one').on('click',() => {  // todo ajax
+    $('.step_one').on('click',() => {
+        if (!/(^1[0-9]{10}$)/.test(telephoneNum))  { // 入口处验证手机格式
+            layer.msg('手机号格式不正确');
+            return;
+        }  
         localStorage.setItem('login_telephone',telephoneNum);
         commonFun.useAjax({
             type:'GET',

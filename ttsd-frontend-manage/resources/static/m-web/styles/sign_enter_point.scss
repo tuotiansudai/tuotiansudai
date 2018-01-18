@@ -232,7 +232,7 @@ body {
   display: none;
 }
 
-#formLogin, #formCaptcha,#formRegister{
+#formLogin, #formCaptcha,#formRegister,#retrieveForm,#inputPasswordForm{
   .captcha_container {
     position: relative;
     .close_btn {
@@ -273,10 +273,10 @@ body {
     }
   }
 }
-#formRegister .captcha_container {
+#formRegister .captcha_container, #retrieveForm .captcha_container {
   position: relative;
 }
-#formRegister .captcha_container .get-captcha {
+#formRegister .captcha_container .get-captcha, #retrieveForm .captcha_container .get-captcha{
   position: absolute;
   right: 0;
   top: .5rem;
@@ -290,7 +290,7 @@ body {
   background: #fff;
   outline: none;
 }
-#formRegister .captcha_container .get-captcha.count-downing {
+#formRegister .captcha_container .get-captcha.count-downing, #retrieveForm .captcha_container .get-captcha.count-downing{
   color: #C9C9C9;
 }
 
@@ -344,4 +344,12 @@ body {
       background-size: contain;
     }
   }
+}
+
+.reset_two {
+  display: none;
+}
+
+#inputPasswordForm {
+  margin-top: 4rem;
 }

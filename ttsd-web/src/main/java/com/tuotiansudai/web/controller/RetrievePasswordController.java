@@ -93,9 +93,9 @@ public class RetrievePasswordController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         try {
-            retrievePasswordService.mobileRetrievePassword(retrievePasswordDto);
-            dataDto.setStatus(true);
-            dataDto.setMessage("OK");
+            boolean success = retrievePasswordService.mobileRetrievePassword(retrievePasswordDto);
+            dataDto.setStatus(success);
+            dataDto.setMessage(success?"OK":"短信验证码不正确");
         } catch (Exception e) {
             dataDto.setStatus(false);
             dataDto.setMessage(e.getMessage());
