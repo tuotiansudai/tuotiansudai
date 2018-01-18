@@ -550,7 +550,7 @@ public class InvestServiceImpl implements InvestService {
                 convertResponseData(loanStatus,
                         investMapper.findInvestorInvestAndTransferPagination(loginName,
                                 loanStatus,
-                                PaginationUtil.calculateOffset(index, pageSize, count),
+                                (index - 1) * pageSize,
                                 pageSize)));
         dto.setStatus(true);
         return dto;
