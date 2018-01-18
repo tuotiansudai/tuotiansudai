@@ -94,25 +94,25 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
 
         if (redis.setnx(key, "1")) {
             if (now.isAfter(startTime) && now.isBefore(endTime)) {
-                logger.debug("[MQ] send credit loan balance alert immediately.");
+                logger.info("[MQ] send credit loan balance alert immediately.");
                 smsWrapperClient.sendCreditLoanBalanceAlert();
             } else {
-                logger.debug("[MQ] send credit loan balance alert delay.");
+                logger.info("[MQ] send credit loan balance alert delay.");
                 DelayMessageDeliveryJobCreator.createOrReplaceCreditLoanBalanceAlertDelayJob(jobManager, getNextSendTime());
             }
         }
         redis.expire(key, 3600 * 25);
-        logger.debug("[MQ] left sendCreditLoanBalanceAlert.");
+        logger.info("[MQ] left sendCreditLoanBalanceAlert.");
     }
 
     private Date getNextSendTime() {
         DateTime d = new DateTime();
 
-        if (d.getHourOfDay() >= 20)
+        if (d.getHourOfDay() >= sendHour)
             d.plusDays(1);
 
-        DateTime nextSendTime = d.withTimeAtStartOfDay().withHourOfDay(19).withMinuteOfHour(55);
-        logger.debug("[MQ] get next send time : {}", nextSendTime.toString("yyyy-MM-dd HH:mm:ss"));
+        DateTime nextSendTime = d.withTimeAtStartOfDay().withHourOfDay(sendHour);
+        logger.info("[MQ] get next send time : {}", nextSendTime.toString("yyyy-MM-dd HH:mm:ss"));
         return nextSendTime.toDate();
     }
 }
