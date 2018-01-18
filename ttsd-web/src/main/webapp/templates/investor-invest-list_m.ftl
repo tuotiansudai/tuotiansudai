@@ -2,109 +2,206 @@
 
 <@global.main pageCss="${m_css.investor_invest_list}" pageJavascript="${m_js.investor_invest_list}" title="我的投资">
 
-<div class="my-account-content invest-detail" id="myInvest">
 
+<div class="my-account-content" id="myInvest">
+    <div class="m-header"><em id="iconMyInvest" class="icon-left"><i class="fa fa-angle-left"></i></em>我的投资 </div>
     <div class="menu-category">
-        <span class="current"><a href="#">回款中</a></span>
-        <span><a href="#">投标中</a></span>
-        <span><a href="#">已完成</a></span>
+        <span class="current" id="repayingBtn"><a href="javascript:;">回款中</a></span>
+        <span id="raisingBtn"><a href="javascript:;">投标中</a></span>
     </div>
-    <div id="wrapperOut" class="amount-detail-box">
-        <div class="amount-detail-list">
-            <div class="box-item">
-                <dl>
-                    <dt>ZR20161121-001</dt>
-                    <dd>投资金额：100000.00元 <br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
+    <div id="wrapperOut" class="invest-list-wrap">
+        <div class="invest-list-box">
+            <div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
             </div>
 
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款 <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
-                    </dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
+        </div>
 
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款 <i class="icon-sign">转让中</i></dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
 
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款</dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
 
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款</dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款</dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
+            <script type="text/html" id="investListTpl">
+                {{if records.length}}
+                {{each records}}
+                <div class="invest-item">
+                    <div class="top clearfix">
+                        <dl class="dl-l clearfix">
+                            <dt><em>128.05</em>元</dt>
+                            <dd>预期收益</dd>
+                        </dl>
+                        <dl class="dl-r clearfix">
+                            <dt><em></em> <i>2017-10-24到期</i></dt>
+                            <dd>投资金额 <em>100,000.00</em>元
+                            </dd>
+                        </dl>
+                    </div>
+                    <dl class="bottom clearfix">
+                        <dt>2房产抵押借款17118</dt>
+                        <dd>
+                            <i class="icon-sign">可转让</i> <i class="icon-sign">红包</i> <i class="icon-sign">拓天标王</i>
+                        </dd>
+                    </dl>
 
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款</dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
-
-            <div class="box-item">
-                <dl>
-                    <dt>房产抵押借款</dt>
-                    <dd>
-                        投资金额：100000.00元<br/>
-                        到期日：2016-12-21
-                    </dd>
-                </dl>
-                <span>预期收益：100000.00元</span>
-                <i class="fa fa-angle-right more"></i>
-            </div>
+                </div>
+                {{/each}}
+                {{/if}}
+            </script>
 
 
         </div>
