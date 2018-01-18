@@ -7,7 +7,12 @@ let $newYearIncrease = $('#newYearIncrease'),
 
 //领取加息券
 $toGet.on('click',function() {
-    location.href='/activity/new-year/draw';
+    let drew = $newYearIncrease.data('activitystatus');
+    if (drew === 'NOT_START'){
+        layer.msg('活动未开始');
+    }else{
+        location.href='/activity/new-year/draw';
+    }
 });
 
 window.onload = function() {
