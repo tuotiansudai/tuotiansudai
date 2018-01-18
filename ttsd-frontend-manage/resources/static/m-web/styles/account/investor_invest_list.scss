@@ -40,17 +40,20 @@ em {
   }
 }
 .invest-list-wrap {
-  position: relative;
   font-size: .24rem;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  top: 100px;
+  overflow: hidden;
+  bottom: 0;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
   .invest-list-box {
     background: #f2f2f2;
     box-sizing: border-box;
-    position: absolute;
     width: 100%;
-    top: 1.8rem;
+    z-index: 1;
     overflow: hidden;
-    z-index: -100;
     .invest-item {
       padding-left: .17rem;
       padding-right: .17rem;
