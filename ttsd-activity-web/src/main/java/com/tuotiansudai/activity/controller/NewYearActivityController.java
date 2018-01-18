@@ -34,7 +34,7 @@ public class NewYearActivityController {
             return new ModelAndView("redirect:/activity/new-year");
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
-        modelAndView.addObject("duringActivities", newYearActivityService.duringActivities());
+        modelAndView.addObject("activityStatus", newYearActivityService.duringActivities());
         return modelAndView;
     }
 
@@ -44,8 +44,8 @@ public class NewYearActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/new-year");
         }
-        boolean duringActivities = newYearActivityService.duringActivities();
-        if (!duringActivities) {
+        String duringActivities = newYearActivityService.duringActivities();
+        if (!"START".equals(duringActivities)) {
             return new ModelAndView("redirect:/activity/new-year/wechat");
         }
 
@@ -59,7 +59,7 @@ public class NewYearActivityController {
 
         ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
         boolean drewCoupon = newYearActivityService.drewCoupon(loginName);
-        modelAndView.addObject("duringActivities", duringActivities);
+        modelAndView.addObject("activityStatus", duringActivities);
         modelAndView.addObject("drewCoupon", drewCoupon);
         if (!drewCoupon) {
             newYearActivityService.sendDrawCouponMessage(loginName);

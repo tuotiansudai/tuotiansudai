@@ -26,8 +26,14 @@ public class NewYearActivityService {
 
     private static final String KEY = "NEW_YEAR_ACTIVITY_DRAW_COUPON:{0}";
 
-    public boolean duringActivities() {
-        return activityStartTime.before(new Date()) && activityEndTime.after(new Date());
+    public String duringActivities() {
+        if (new Date().before(activityStartTime)){
+            return "NOT_START";
+        }
+        if (new Date().after(activityEndTime)){
+            return "END";
+        }
+        return "START";
     }
 
     public boolean drewCoupon(String loginName) {
@@ -35,7 +41,7 @@ public class NewYearActivityService {
     }
 
     public void sendDrawCouponMessage(String loginName) {
-        if (duringActivities()) {
+        if ("START".equals(duringActivities())) {
             mqWrapperClient.sendMessage(MessageQueue.NewYearActivity_Coupon, loginName);
         }
     }
