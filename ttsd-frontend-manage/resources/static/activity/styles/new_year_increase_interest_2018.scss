@@ -255,6 +255,53 @@ strong,em {
 }
 
 @media screen and (max-width:768px) {
+  .activity-page {
+    width: 100%;
+  }
+  .increase-rate-banner {
+    height: 355px;
+    background: url("../images/2018/new-year-increase-interest/increase_rate_banner_wap.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .activity-wrap {
+    .activity-desc {
+      width: 720px;
+      .top-bg {
+        height: 12px;
+      }
+    }
+  }
+  .skill-subject-wrap {
+    margin-top: 140px;
+    .increase-rate {
+      width: 720px;
+    }
+  }
+  .spring-gift-wrap {
+    .product-list {
+      padding-left: 10px;
+      padding-right: 10px;
+      ul {
+        margin-left: -22px;
+        li {
+          float: left;
+          width:30%;
+          height: 280px;
+          margin-left: 22px;
+          margin-bottom: 30px;
+          img {
+            width: 100%;
+          }
+          &.last {
+            margin-left: 140px;
+          }
+        }
+      }
+    }
+  }
+
+}
+@media screen and (max-width:760px) {
   table th {
     padding: 0.1rem;
   }
