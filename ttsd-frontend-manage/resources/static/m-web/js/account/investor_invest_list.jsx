@@ -29,20 +29,7 @@ function isPassive() {
     return supportsPassiveOption;
 }
 var myScroll;
-function loaded () {
-    myScroll = new IScroll('#wrapperOut', { mouseWheel: true });
-    myScroll.on('scrollEnd', function () {
-        index++;
-        //如果滑动到底部，则加载更多数据（距离最底部10px高度）
-        if ((this.y - this.maxScrollY) <= 10) {
-            if($repayingBtn.hasClass('current')){
-                getList(2,'REPAYING')
-            }else if($raisingBtn.hasClass('current')){
-                getList(2,'RAISING')
-            }
-        }
-    });
-}
+
 $(window).load(function () {
     let myScroll = new IScroll('#wrapperOut', { mouseWheel: true });
     myScroll.on('scrollEnd', function () {
@@ -58,6 +45,9 @@ $(window).load(function () {
             }
         }
     });
+    myScroll.on('touchEnd',function () {
+        alert(9)
+    })
 })
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
@@ -75,8 +65,7 @@ function getList(index,status) {
             }
         },
         function (res) {
-            console.log('success')
-            console.log(res)
+
             if(res.success == true){
                 if(res.data.records.length){
                    $investListBox.append(tpl('investListTpl', res.data));
@@ -98,11 +87,13 @@ let index = 1;
 getList(1,'REPAYING');
 
 $repayingBtn.on('click',function () {
+    index = 1;
     $investListBox.html('');
     getList(1,'REPAYING');
 
 })
 $raisingBtn.on('click',function () {
+    index = 1;
     $investListBox.html('');
     getList(1,'RAISING');
 
