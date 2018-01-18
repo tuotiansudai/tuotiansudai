@@ -111,7 +111,7 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
         if (d.getHourOfDay() >= 20)
             d.plusDays(1);
 
-        DateTime nextSendTime = d.withTimeAtStartOfDay().withHourOfDay(19).withMinuteOfHour(50);
+        DateTime nextSendTime = d.withTimeAtStartOfDay().withHourOfDay(19).withMinuteOfHour(55);
         logger.debug("[MQ] get next send time : {}", nextSendTime.toString("yyyy-MM-dd HH:mm:ss"));
         return nextSendTime.toDate();
     }
