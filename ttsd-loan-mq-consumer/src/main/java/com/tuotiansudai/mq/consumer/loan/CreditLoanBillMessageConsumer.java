@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.CreditLoanBillModel;
 import com.tuotiansudai.repository.model.CreditLoanBillOperationType;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 @Component
@@ -40,13 +39,16 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
 
     private RedisWrapperClient redis = RedisWrapperClient.getInstance();
 
-    private static final String CREDIT_LOAN_BALANCE_ALERT_KEY = "CREDIT_LOAN_BALANCE_ALERT_KEY:{}";
+    private static final String CREDIT_LOAN_BALANCE_ALERT_KEY_FORMAT = "CREDIT_LOAN_BALANCE_ALERT_KEY:{0}";
 
-    @Value(value = "${credit.loan.balance.alert.startTime}")
-    private String startTimeStr;
+    @Value(value = "${credit.loan.balance.alert.start.hour}")
+    private int startHour;
 
-    @Value(value = "${credit.loan.balance.alert.endTime}")
-    private String endTimeStr;
+    @Value(value = "${credit.loan.balance.alert.end.hour}")
+    private int endHour;
+
+    @Value(value = "${credit.loan.balance.alert.send.hour}")
+    private int sendHour;
 
 
     @Override
@@ -83,42 +85,29 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
 
     private void sendCreditLoanBalanceAlert() {
 
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
-        Date now = new Date();
-        String today = sdfDate.format(now);
-        String key = MessageFormat.format(CREDIT_LOAN_BALANCE_ALERT_KEY, today);
+        DateTime now = new DateTime();
+        String today = now.toString("yyyy-MM-dd");
+        String key = MessageFormat.format(CREDIT_LOAN_BALANCE_ALERT_KEY_FORMAT, today);
 
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTimeStr.split(":")[0]));
-        startTime.set(Calendar.MINUTE, Integer.parseInt(startTimeStr.split(":")[1]));
-        startTime.set(Calendar.SECOND, 0);
-
-        Calendar endTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endTimeStr.split(":")[0]));
-        startTime.set(Calendar.MINUTE, Integer.parseInt(endTimeStr.split(":")[1]));
-        startTime.set(Calendar.SECOND, 0);
+        DateTime startTime = new DateTime().withTimeAtStartOfDay().withHourOfDay(startHour);
+        DateTime endTime = new DateTime().withTimeAtStartOfDay().withHourOfDay(endHour);
 
         if (redis.setnx(key, "1")) {
-            if (now.after(startTime.getTime()) && now.before(endTime.getTime())) {
+            if (now.isAfter(startTime) && now.isBefore(endTime)) {
                 smsWrapperClient.sendCreditLoanBalanceAlert();
             } else {
-                DelayMessageDeliveryJobCreator.createOrReplaceCreditLoanBalanceAlertDelayJob(jobManager, getNext9am(now));
+                DelayMessageDeliveryJobCreator.createOrReplaceCreditLoanBalanceAlertDelayJob(jobManager, getNextSendTime());
             }
         }
         redis.expire(key, 3600 * 25);
     }
 
-    private Date getNext9am(Date now) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(now);
+    private Date getNextSendTime() {
+        DateTime d = new DateTime();
 
-        if (c.get(Calendar.HOUR_OF_DAY) >= 9) {
-            c.add(Calendar.DATE, 1);
-        }
+        if (d.getHourOfDay() >= sendHour)
+            d.plusDays(1);
 
-        c.set(Calendar.HOUR_OF_DAY, 9);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        return c.getTime();
+        return d.withTimeAtStartOfDay().withHourOfDay(sendHour).toDate();
     }
 }
