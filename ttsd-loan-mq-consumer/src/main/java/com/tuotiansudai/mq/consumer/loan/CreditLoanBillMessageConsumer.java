@@ -94,8 +94,10 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
 
         if (redis.setnx(key, "1")) {
             if (now.isAfter(startTime) && now.isBefore(endTime)) {
+                logger.debug("send credit loan balance alert immediately.");
                 smsWrapperClient.sendCreditLoanBalanceAlert();
             } else {
+                logger.debug("send credit loan balance alert delay.");
                 DelayMessageDeliveryJobCreator.createOrReplaceCreditLoanBalanceAlertDelayJob(jobManager, getNextSendTime());
             }
         }
@@ -108,6 +110,8 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
         if (d.getHourOfDay() >= sendHour)
             d.plusDays(1);
 
-        return d.withTimeAtStartOfDay().withHourOfDay(sendHour).toDate();
+        DateTime nextSendTime = d.withTimeAtStartOfDay().withHourOfDay(19).withMinuteOfHour(15);
+        logger.debug("get next send time : {}", nextSendTime.toString("yyyy-MM-dd HH:mm:ss"));
+        return nextSendTime.toDate();
     }
 }
