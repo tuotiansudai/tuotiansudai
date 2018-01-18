@@ -2,15 +2,55 @@ $color333:#333;
 $color8080:#808080;
 $colora2a2:#A2A2A2;
 $colorYellow:#F6AA16;
+body {
+  background: #f2f2f2;
+}
 em {
   font-weight: normal;
 }
+.icon-sign {
+  font-size: .18rem;
+  padding: .02rem .05rem;
+}
+
+.noList {
+  margin-top: 1.48rem;
+  margin-bottom: .7rem;
+  width: 4.2rem;
+  margin: 0 auto;
+  text-align: center;
+  .img {
+    margin-top: 1.5rem;
+    width: 4.2rem;
+    height: 4.2rem;
+    background: url("../../images/account/noInvestList.png") no-repeat;
+    background-size: contain;
+  }
+  button {
+    width: 3rem;
+    height: .9rem;
+    margin-top: .7rem;
+    color:#fff;
+    background: #FF635A;
+    line-height: .9rem;
+    text-align: center;
+    border: none;
+    border-radius: .5rem;
+    font-size: .4rem;
+  }
+}
 .invest-list-wrap {
+  position: relative;
   font-size: .24rem;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
   .invest-list-box {
     background: #f2f2f2;
     box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    top: 1.8rem;
+    overflow: hidden;
+    z-index: -100;
     .invest-item {
       padding-left: .17rem;
       padding-right: .17rem;
@@ -34,6 +74,7 @@ em {
           dd {
             font-size: .24rem;
             color: $color8080;
+            padding-left: .2rem;
           }
         }
         &.dl-r {
@@ -77,6 +118,7 @@ em {
           border-top: 1px solid #E5E5E5;
           height: .6rem;
           line-height: .6rem;
+          padding-right: 0;
           dt {
             width: 50%;
             float: left;
@@ -84,6 +126,7 @@ em {
           dd {
             width: 50%;
             float: right;
+            text-align: right;
           }
         }
 
