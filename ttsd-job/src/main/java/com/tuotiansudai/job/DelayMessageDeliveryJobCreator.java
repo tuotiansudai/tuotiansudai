@@ -66,7 +66,7 @@ public class DelayMessageDeliveryJobCreator {
 
     public static void createOrReplaceCreditLoanBalanceAlertDelayJob(JobManager jobManager, Date sendingTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        create(jobManager, sendingTime, MessageQueue.CreditLoanBalanceAlert, null, "CreditLoanBalanceAlert_" + sdf.format(sendingTime), true);
+        create(jobManager, sendingTime, MessageQueue.CreditLoanBalanceAlert, "", "CreditLoanBalanceAlert_" + sdf.format(sendingTime), true);
     }
 
     public static void create(JobManager jobManager, Date fireTime, MessageQueue messageQueue, String messageBody,
