@@ -210,9 +210,9 @@ strong,em {
         tr {
 
           td {
-            border-bottom: 1px solid rgba(255,246,0,0.4);
+            border-bottom: 1px solid rgba(255,246,0,0.1);
             &.leftTd {
-              border-right: 1px solid rgba(255,246,0,0.4);
+              border-right: 1px solid rgba(255,246,0,0.1);
             }
           }
 
@@ -266,6 +266,14 @@ strong,em {
   .activity-wrap {
     .activity-desc {
       width: 720px;
+      .look-btn {
+        &.pc-look-btn {
+          display: none;
+        }
+        &.wap-look-btn {
+          display: inline-block;
+        }
+      }
       .top-bg {
         height: 12px;
       }
@@ -299,6 +307,7 @@ strong,em {
       }
     }
   }
+
 
 }
 @media screen and (max-width:760px) {
@@ -478,14 +487,13 @@ strong,em {
 
       .swiper-container {
         width: 7rem;
-        height: 5.3rem;
+        height: 5.01rem;
         overflow: visible!important;
         .swiper-wrapper {
           .swiper-slide{
             width: 5.44rem;
             img{
               width: 100%;
-              height: 5.3rem;
             }
           }
           .swiper-slide-prev {

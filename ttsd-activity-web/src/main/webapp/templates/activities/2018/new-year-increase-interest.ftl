@@ -29,10 +29,10 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>0.5%加息券</td><td>50</td><td>60天以上</td><td>3张</td>
+                                <td>0.5%加息券</td><td>50</td><td>60天以上</td><td>3</td>
                             </tr>
                             <tr>
-                                <td>0.2%加息券</td><td>50</td><td>60天以上</td><td>5张</td>
+                                <td>0.2%加息券</td><td>50</td><td>60天以上</td><td>5</td>
                             </tr>
                             </tbody>
                         </table>
