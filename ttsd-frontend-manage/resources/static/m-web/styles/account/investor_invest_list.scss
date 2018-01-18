@@ -12,7 +12,13 @@ em {
   font-size: .18rem;
   padding: .02rem .05rem;
 }
-
+#noData {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background: #f2f2f2;
+}
 .noList {
   margin-top: 1.48rem;
   margin-bottom: .7rem;
