@@ -84,7 +84,3 @@ $prevBtn.on('click',function () {
 $nextBtn.on('click',function () {
     mySwiper.slideNext();
 })
-
-layer.msg('每个用户只能领取一次哦！',{
-    time:40000000
-})

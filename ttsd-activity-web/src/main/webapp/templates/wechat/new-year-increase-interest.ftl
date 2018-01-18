@@ -18,6 +18,7 @@
     </#if>
         </div>
     </div>
+    <div class="my-layer" style="display: none">每个用户只能领取一次哦！</div>
 
 </div>
 </@global.main>

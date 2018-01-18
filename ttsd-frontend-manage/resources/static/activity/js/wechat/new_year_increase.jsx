@@ -13,7 +13,10 @@ $toGet.on('click',function() {
 window.onload = function() {
     let drew = $newYearIncrease.data('drew');
     if(drew) {
-        layer.msg('每个用户只能领取一次哦！');
+        $('.my-layer').show();
+        setTimeout(function () {
+            $('.my-layer').hide();
+        },3000)
         $('.btn-receive',$newYearIncrease).prop('disabled',true);
     }
     let isSuccess = $newYearIncrease.data('success');

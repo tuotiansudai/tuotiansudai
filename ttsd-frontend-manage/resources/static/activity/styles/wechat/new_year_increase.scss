@@ -8,7 +8,22 @@ button {
   background: url("../../images/2018/new-year-increase-interest/bg_repeat_wechat.png") repeat-y;
   background-size: 100%;
 }
-
+.my-layer {
+  color: #fff;
+  background: rgba(0,0,0,.6);
+  text-align: center;
+  height: .8rem;
+  line-height: .8rem;
+  display: block;
+  width: 3.8rem;
+  margin: 0 auto;
+  font-size: 14px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -1.9rem;
+  border-radius: 2px;
+}
 .new-banner {
   height: 3.5rem;
   background: url("../../images/2018/new-year-increase-interest/increase_rate_banner_wap.png") no-repeat;
