@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DelayMessageDeliveryJobCreator {
@@ -61,6 +62,11 @@ public class DelayMessageDeliveryJobCreator {
                               String jobKey, boolean replaceExistingJob) {
         Date fireTime = new DateTime().plusSeconds(delaySeconds).toDate();
         create(jobManager, fireTime, messageQueue, messageBody, jobKey, replaceExistingJob);
+    }
+
+    public static void createOrReplaceCreditLoanBalanceAlertDelayJob(JobManager jobManager, Date sendingTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        create(jobManager, sendingTime, MessageQueue.CreditLoanBalanceAlert, null, sdf.format(sendingTime), true);
     }
 
     public static void create(JobManager jobManager, Date fireTime, MessageQueue messageQueue, String messageBody,
