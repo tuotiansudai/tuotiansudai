@@ -36,7 +36,7 @@ public class AnxinSignController {
             return new ModelAndView("/myAccount/anxin-sign-list", "anxinProp", anxinProp);
         } else {
             // 否则进入开通安心签账户的初始页面
-            return new ModelAndView("/myAccount/anxin-sign-init", "anxinProp", anxinProp);
+            return new ModelAndView("/myAccount/anxin-electro-sign", "anxinProp", anxinProp);
         }
     }
 
