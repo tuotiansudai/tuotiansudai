@@ -556,6 +556,15 @@ public class InvestServiceImpl implements InvestService {
         return dto;
     }
 
+    @Override
+    public InvestorInvestDetailDto getInvestDetailById(long investId) {
+        InvestModel investModel = investMapper.findById(investId);
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+        long[] interests = calculateInvestInterest(investModel);
+        return new InvestorInvestDetailDto(investModel, loanModel, investRepayModels, interests[0]);
+    }
+
     private List<UserInvestRecordDataDto> convertResponseData(LoanStatus loanStatus, List<InvestModel> investModels) {
         List<UserInvestRecordDataDto> list = Lists.newArrayList();
 
@@ -564,51 +573,18 @@ public class InvestServiceImpl implements InvestService {
             UserInvestRecordDataDto dto = new UserInvestRecordDataDto(investModel, loanModel);
 
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+
             if (investModel.getTransferInvestId() != null) {
                 dto.setLoanName(transferApplicationModel.getName());
                 dto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
                 dto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
                 dto.setTransferInvest(true);
             }
+            long[] interests = calculateInvestInterest(investModel);
 
-            long actualInterest = 0;
-            long expectedInterest = 0;
-
-            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-            for (InvestRepayModel investRepayModel : investRepayModels) {
-                expectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
-                CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
-                if (couponRepayModel != null) {
-                    actualInterest += couponRepayModel.getActualInterest() - couponRepayModel.getActualFee();
-                    expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
-                }
-            }
-
-            //阶梯加息的利息计算
-            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
-            if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
-                long expectedExtraInterest = investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
-                expectedInterest += expectedExtraInterest;
-                actualInterest += investExtraRateModel.getStatus() == RepayStatus.COMPLETE ? investExtraRateModel.getActualInterest() - investExtraRateModel.getActualFee() : 0;
-            }
-
-            //债权转让折扣计算
-            if (transferApplicationModel != null) {
-                long discount = transferApplicationModel.getInvestAmount() - transferApplicationModel.getTransferAmount();
-                expectedInterest += discount;
-                actualInterest += loanModel.getStatus() == LoanStatus.COMPLETE ? discount : 0;
-            }
-
-            dto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
-            dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
-            if (Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK).contains(loanModel.getStatus())) {
-                List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
-                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
-                long investIncome = estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
-                dto.setExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investIncome));
-            }
-
+            dto.setActualInterest(AmountConverter.convertCentToString(interests[1]));
+            dto.setExpectedInterest(AmountConverter.convertCentToString(interests[0]));
             dto.setTransferStatus(investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()));
 
             List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId());
@@ -631,6 +607,50 @@ public class InvestServiceImpl implements InvestService {
         return list;
     }
 
+    // return long[]{expectedInterest, actualInterest}
+    private long[] calculateInvestInterest(InvestModel investModel) {
+
+        long actualInterest = 0;
+        long expectedInterest = 0;
+
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            expectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+            actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+            CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
+            if (couponRepayModel != null) {
+                actualInterest += couponRepayModel.getActualInterest() - couponRepayModel.getActualFee();
+                expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+            }
+        }
+
+        //阶梯加息的利息计算
+        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+        if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+            long expectedExtraInterest = investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+            expectedInterest += expectedExtraInterest;
+            actualInterest += investExtraRateModel.getStatus() == RepayStatus.COMPLETE ? investExtraRateModel.getActualInterest() - investExtraRateModel.getActualFee() : 0;
+        }
+
+        //债权转让折扣计算
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+        if (transferApplicationModel != null) {
+            long discount = transferApplicationModel.getInvestAmount() - transferApplicationModel.getTransferAmount();
+            expectedInterest += discount;
+            actualInterest += loanModel.getStatus() == LoanStatus.COMPLETE ? discount : 0;
+        }
+
+        if (Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK).contains(loanModel.getStatus())) {
+            List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
+            long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
+            long investIncome = estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
+            expectedInterest = couponExpectedInterest + investIncome;
+        }
+        return new long[]{expectedInterest, actualInterest};
+    }
+
+
     private int generateRepayProgress(LoanStatus loanStatus, LoanModel loanModel) {
         if (loanStatus == LoanStatus.COMPLETE) {
             return 100;
@@ -644,6 +664,5 @@ public class InvestServiceImpl implements InvestService {
 
         return 0;
     }
-
 
 }
