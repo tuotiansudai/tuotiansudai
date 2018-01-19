@@ -14,10 +14,9 @@ em {
 }
 #noData {
   text-align: center;
-  position: absolute;
   width: 100%;
-  bottom: 0;
   background: #f2f2f2;
+  clear: both;
 }
 .noList {
   margin-top: 1.48rem;
@@ -50,7 +49,7 @@ em {
   position: absolute;
   z-index: 1;
   width: 100%;
-  top: 1.7rem;
+  top: 1.8rem;
   overflow: hidden;
   bottom: 0;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;

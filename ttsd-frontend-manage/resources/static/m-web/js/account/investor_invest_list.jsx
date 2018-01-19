@@ -7,7 +7,8 @@ let $myInvest = $('#myInvest'),
     $iconMyInvest = $('#iconMyInvest',$myInvest),
     $repayingBtn = $('#repayingBtn',$myInvest),
     $raisingBtn = $('#raisingBtn',$myInvest),
-    $investListBox = $('.invest-list-box',$myInvest);
+    $investListBox = $('.invest-list-box',$myInvest),
+    $main = $('.main',$myInvest);
 
 menuClick({
     pageDom: $myInvest
@@ -45,8 +46,22 @@ $(window).load(function () {
             }
         }
     });
-    myScroll.on('touchEnd',function () {
-        alert(9)
+
+    $repayingBtn.on('click',function () {
+        $('#noData').hide();
+        index = 1;
+        myScroll.refresh();
+        $main.html('');
+        getList(1,'REPAYING');
+
+    })
+    $raisingBtn.on('click',function () {
+        $('#noData').hide();
+        index = 1;
+        $main.html('');
+        myScroll.refresh();
+        getList(1,'RAISING');
+
     })
 })
 
@@ -65,14 +80,13 @@ function getList(index,status) {
             }
         },
         function (res) {
-
             if(res.success == true){
                 if(res.data.records.length){
-                   $investListBox.append(tpl('investListTpl', res.data));
+                    $main.append(tpl('investListTpl', res.data));
                 }else {
                     if(index == 1){
                         let $noListDOM = $('<div class="noList"><div class="img"></div><button>立即投资</button>');
-                        $investListBox.append($noListDOM);
+                        $main.append($noListDOM);
                     }else {
                         $('#noData').show();
                     }
@@ -86,18 +100,7 @@ function getList(index,status) {
 let index = 1;
 getList(1,'REPAYING');
 
-$repayingBtn.on('click',function () {
-    index = 1;
-    $investListBox.html('');
-    getList(1,'REPAYING');
 
-})
-$raisingBtn.on('click',function () {
-    index = 1;
-    $investListBox.html('');
-    getList(1,'RAISING');
-
-})
 
 $(document).on('click','#toInvest',function () {
     location.href = '/m/loan-list'

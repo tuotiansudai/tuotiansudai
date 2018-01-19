@@ -12,50 +12,52 @@
     <div id="wrapperOut" class="invest-list-wrap">
         <div class="invest-list-box">
 
-            <script type="text/html" id="investListTpl">
-                {{if records.length}}
-                {{each records as value index}}
-                <div class="invest-item" data-loanid="{{value.loanId}}">
-                    <div class="top clearfix">
-                        <dl class="dl-l clearfix">
-                            <dt><em>{{value.expectedInterest}}</em>元</dt>
-                            <dd>预期收益</dd>
-                        </dl>
-                        <dl class="dl-r clearfix">
-                            <dt><em></em> <i>{{value.lastRepayDate}}到期</i></dt>
-                            <dd>投资金额 <em>{{value.investAmount}}</em>元
+            <div class="main">
+                <script type="text/html" id="investListTpl">
+                    {{if records.length}}
+                    {{each records as value index}}
+                    <div class="invest-item" data-loanid="{{value.loanId}}">
+                        <div class="top clearfix">
+                            <dl class="dl-l clearfix">
+                                <dt><em>{{value.expectedInterest}}</em>元</dt>
+                                <dd>预期收益</dd>
+                            </dl>
+                            <dl class="dl-r clearfix">
+                                <dt><em></em> <i>{{value.lastRepayDate}}到期</i></dt>
+                                <dd>投资金额 <em>{{value.investAmount}}</em>元
+                                </dd>
+                            </dl>
+                        </div>
+                        <dl class="bottom clearfix">
+                            <dt>{{value.loanName}}</dt>
+                            <dd>
+
+                                {{if value.isTransferInvest}} <i class="icon-sign">可转让</i>{{/if}} {{if value.usedRedEnvelope}}<i class="icon-sign">红包</i> {{/if}}{{if value.usedCoupon}}<i class="icon-sign">券</i>{{/if}}
+                                {{if value.achievements.length}}
+                                {{each value.achievements as achiveItem achiveIndex}}
+                                {{if achiveItem == 'FIRST_INVEST'}}
+                                <i class="icon-sign">拓荒先锋</i>
+                                {{/if}}
+                                {{if achiveItem == 'MAX_AMOUNT'}}
+                                <i class="icon-sign">拓天标王</i>
+                                {{/if}}
+                                {{if achiveItem == 'LAST_INVEST'}}
+                                <i class="icon-sign">一锤定音</i>
+                                {{/if}}
+                                {{/each}}
+                                {{/if}}
                             </dd>
                         </dl>
+
                     </div>
-                    <dl class="bottom clearfix">
-                        <dt>{{value.loanName}}</dt>
-                        <dd>
-
-                           {{if value.isTransferInvest}} <i class="icon-sign">可转让</i>{{/if}} {{if value.usedRedEnvelope}}<i class="icon-sign">红包</i> {{/if}}{{if value.usedCoupon}}<i class="icon-sign">券</i>{{/if}}
-                            {{if value.achievements.length}}
-                            {{each value.achievements as achiveItem achiveIndex}}
-                            {{if achiveItem == 'FIRST_INVEST'}}
-                            <i class="icon-sign">拓荒先锋</i>
-                            {{/if}}
-                            {{if achiveItem == 'MAX_AMOUNT'}}
-                            <i class="icon-sign">拓天标王</i>
-                            {{/if}}
-                            {{if achiveItem == 'LAST_INVEST'}}
-                            <i class="icon-sign">一锤定音</i>
-                            {{/if}}
-                            {{/each}}
-                            {{/if}}
-                        </dd>
-                    </dl>
-
-                </div>
-                {{/each}}
-                {{/if}}
-            </script>
-
+                    {{/each}}
+                    {{/if}}
+                </script>
+            </div>
+            <div id="noData" style="display: none">没有更多数据了</div>
 
         </div>
-        <div id="noData" style="display: none">没有更多数据了</div>
+
     </div>
 
 
