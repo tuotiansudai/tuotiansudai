@@ -1,10 +1,6 @@
 <#import "../macro/global-dev.ftl" as global>
 
-<#assign jsName = 'anxin_electro_success' >
-<#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.js"} >
-<#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/account/${jsName}.css"}>
-
-<@global.main pageCss="${css.anxin_electro_success}" pageJavascript="${js.anxin_electro_success}" title="安心签电子签章服务已开启">
+<@global.main pageCss="${m_css.anxin_electro_success}" pageJavascript="${m_js.anxin_electro_success}" title="安心签电子签章服务已开启">
 
 
 <div class="my-account-content anxin-electro-success" id="anxinElectroSign">

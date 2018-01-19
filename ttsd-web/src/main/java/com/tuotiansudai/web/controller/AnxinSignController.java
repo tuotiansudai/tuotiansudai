@@ -68,4 +68,10 @@ public class AnxinSignController {
         String loginName = LoginUserInfo.getLoginName();
         return anxinWrapperClient.switchSkipAuth(new AnxinSwitchSkipAuthDto(loginName, open));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/createAccountSuccess", method = RequestMethod.GET)
+    public ModelAndView createAccountSuccess() {
+        return new ModelAndView("/myAccount/anxin-electro-success");
+    }
 }
