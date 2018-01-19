@@ -3,6 +3,7 @@ package com.tuotiansudai.console.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.ActivityInvestAnnualized;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.console.activity.service.ActivityConsoleExportService;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -225,5 +226,20 @@ public class ExportController {
         response.setContentType("application/csv");
         List<List<String>> csvData = activityConsoleExportService.buildCashSnowballCsvList(mobile, startInvestAmount, endInvestAmount);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CashSnowballHeader, csvData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/invest-annualized", method = RequestMethod.GET)
+    public void investAnnualizedExport(HttpServletResponse response,
+                                   @RequestParam(value = "activityInvestAnnualized", defaultValue = "NEW_YEAR_ACTIVITY") ActivityInvestAnnualized activityInvestAnnualized,
+                                   @RequestParam(value = "mobile", required = false) String mobile) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.InvestAnnualizedHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildInvestAnnualizedCsvList(activityInvestAnnualized, mobile);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAnnualizedHeader, csvData, response.getOutputStream());
     }
 }

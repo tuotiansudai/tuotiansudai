@@ -1,0 +1,601 @@
+body {
+  font-size: 12px;
+}
+h2,h4 {
+  font-weight: normal;
+}
+table th {
+  padding: 10px;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.toggleHidden {
+  visibility: hidden;
+}
+.toggleShow {
+  visibility: visible;
+}
+strong,em {
+  font-weight: normal;
+}
+.activity-page {
+  width: 1000px;
+  margin: 0 auto;
+}
+.increase-rate-banner {
+  height: 350px;
+  background: url("../images/2018/new-year-increase-interest/increase_rate_banner_pc.png") no-repeat center center;
+}
+.activity-wrap-main {
+  padding-bottom: 136px;
+  background: url("../images/2018/new-year-increase-interest/bg_repeat.png") repeat-y center center;
+}
+.increase_container {
+  padding-top: 120px;
+  font-family: PingFangSC-Regular, sans-serif;
+}
+
+.activity-wrap {
+  background: rgba(110,91,255,0.6);
+  text-align: center;
+  position: relative;
+  .activity-title {
+    position: absolute;
+    left: 50%;
+    margin-left: -271px;
+    top: -60px;
+    width: 542px;
+    height: 100px;
+    background: url("../images/2018/new-year-increase-interest/icon_scan_code.png") no-repeat;
+    background-size: 100%;
+    text-indent: -9999px;
+  }
+  .activity-time {
+    margin-top: 75px;
+    font-size: 30px;
+    color: #fff600;
+    display: inline-block;
+    em {
+      width: 31px;
+      height: 31px;
+      display: inline-block;
+      vertical-align: middle;
+      background: url("../images/2018/new-year-increase-interest/clock.png") no-repeat;
+      background-size: contain;
+    }
+    span {
+      vertical-align: middle;
+    }
+
+  }
+  .activity-desc {
+    width: 780px;
+    margin: 0 auto;
+    margin-top: 40px;
+    line-height: 44px;
+    color: #fff;
+    .top-bg {
+      height: 13px;
+      background: url("../images/2018/new-year-increase-interest/bg_top.png") no-repeat;
+      background-size: 100%;
+    }
+    .bottom-bg {
+      height: 13px;
+      background: url("../images/2018/new-year-increase-interest/bg_bottom.png") no-repeat;
+      background-size: 100%;
+    }
+    .desc-body {
+      background: url("../images/2018/new-year-increase-interest/bg_middle.png") repeat-y;
+      background-size: 100%;
+    }
+    h4 {
+      padding-top: 20px;
+      font-size: 24px;
+    }
+    .look-btn {
+      color: #fff603;
+      font-size: 24px;
+      padding-bottom:4px;
+      border-bottom: 1px solid #fff603;
+      cursor: pointer;
+      &.wap-look-btn {
+        display: none;
+      }
+    }
+  }
+  .desc-tips {
+    position: relative;
+    top: -2px;
+    margin: 0 auto;
+    width: 560px;
+    color: #fff600;
+    text-align: center;
+    .icon-trangle {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      margin-left: -24px;
+      width: 48px;
+      height: 14px;
+      background: url("../images/2018/new-year-increase-interest/trangle_up.png") no-repeat;
+      background-size: contain;
+    }
+    .desc-content{
+      background: #574ada;
+      padding: 1px;
+      table {
+        thead {
+          th {
+            font-size: 18px;
+            background: #574ada;
+            font-weight: normal;
+          }
+          border-bottom: 1px solid rgba(255,246,0,0.1);
+        }
+        tbody {
+          tr {
+            td {
+              font-size: 18px;
+              color: #fff600;
+            }
+            &.lastTR {
+              td {
+                border-bottom: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.scan-code-wrap {
+  padding-bottom: 76px;
+  .desc-tips {
+    height: 143px;
+  }
+  .icon-scan-code {
+    margin: 0 auto;
+    margin-top: -100px;
+    width: 407px;
+    height: 409px;
+    background: url("../images/2018/new-year-increase-interest/icon_scan.png") no-repeat;
+    background-size: 100%;
+  }
+}
+.skill-subject-wrap {
+  margin-top: 200px;
+  .activity-title {
+    margin-left: -300px;
+    width: 589px;
+    background: url("../images/2018/new-year-increase-interest/kill_title.png") no-repeat;
+  }
+  h4 {
+    padding-bottom: 20px;
+  }
+  .increase-rate {
+    margin: 0 auto;
+    margin-top: 55px;
+    margin-bottom: 86px;
+    width: 952px;
+    height: 163px;
+    background: url("../images/2018/new-year-increase-interest/increase_rate_pc.png") no-repeat;
+    background-size: 100%;
+  }
+  .tips {
+    background: #675ae9;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    font-size: 24px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+}
+.spring-gift-wrap {
+  margin-top: 140px;
+  .activity-title {
+    margin-left: -305px;
+    width: 609px;
+    background: url("../images/2018/new-year-increase-interest/spring_gift_title.png") no-repeat;
+  }
+  .desc-content{
+    background: #574ada;
+    padding: 1px;
+    table {
+      tbody {
+        tr {
+
+          td {
+            border-bottom: 1px solid rgba(255,246,0,0.1);
+            &.leftTd {
+              border-right: 1px solid rgba(255,246,0,0.1);
+            }
+          }
+
+        }
+      }
+    }
+
+  }
+  .product-list {
+    margin-top: -60px;
+    ul {
+      margin-left: -22px;
+      li {
+        float: left;
+        width: 318px;
+        height: 313px;
+        margin-left: 22px;
+        margin-bottom: 60px;
+        img {
+          width: 100%;
+        }
+        &.last {
+          margin-left: 200px;
+        }
+      }
+    }
+  }
+  .product-list-wap {
+    display: none;
+  }
+}
+.kindly-tips {
+  margin-top: 56px;
+  box-sizing: border-box;
+  background: #6e5bff;
+  padding: 25px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+@media screen and (max-width:768px) {
+  .activity-page {
+    width: 100%;
+  }
+  .increase-rate-banner {
+    height: 355px;
+    background: url("../images/2018/new-year-increase-interest/increase_rate_banner_wap.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .activity-wrap {
+    .activity-desc {
+      width: 720px;
+      .look-btn {
+        &.pc-look-btn {
+          display: none;
+        }
+        &.wap-look-btn {
+          display: inline-block;
+        }
+      }
+      .top-bg {
+        height: 12px;
+      }
+    }
+  }
+  .skill-subject-wrap {
+    margin-top: 140px;
+    .increase-rate {
+      width: 720px;
+    }
+  }
+  .spring-gift-wrap {
+    .product-list {
+      padding-left: 10px;
+      padding-right: 10px;
+      ul {
+        margin-left: -22px;
+        li {
+          float: left;
+          width:30%;
+          height: 280px;
+          margin-left: 22px;
+          margin-bottom: 30px;
+          img {
+            width: 100%;
+          }
+          &.last {
+            margin-left: 140px;
+          }
+        }
+      }
+    }
+  }
+
+
+}
+@media screen and (max-width:760px) {
+  table th {
+    padding: 0.1rem;
+  }
+  .activity-page {
+    width: 7.28rem;
+    margin: 0 auto;
+  }
+  .increase-rate-banner {
+    height: 3.5rem;
+    background: url("../images/2018/new-year-increase-interest/increase_rate_banner_wap.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .activity-wrap-main {
+    padding-bottom: 0.98rem;
+    background: url("../images/2018/new-year-increase-interest/bg_repeat_wap.png") repeat-y center center;
+  }
+  .increase_container {
+    padding-top: 1.28rem;
+  }
+
+  .activity-wrap {
+    background: rgba(110,91,255,0.6);
+    text-align: center;
+    position: relative;
+    .activity-title {
+      margin-left: -2.71rem;
+      top: -0.61rem;
+      width: 5.42rem;
+      height: 1.02rem;
+      background-size: contain;
+    }
+    .activity-time {
+      margin-top: 0.75rem;
+      font-size: 0.3rem;
+      em {
+        width: 0.31rem;
+        height: 0.31rem;
+      }
+
+    }
+    .activity-desc {
+      width: 7.04rem;
+      margin-top: 0.4rem;
+      line-height: 0.44rem;
+      .top-bg {
+        height: 0.12rem;
+      }
+      .bottom-bg {
+        height: 0.13rem;
+      }
+      h4 {
+        padding-top: 0.2rem;
+        font-size: 0.24rem;
+      }
+      .look-btn {
+        font-size: 0.24rem;
+        padding-bottom:0.04rem;
+        &.pc-look-btn {
+          display: none;
+        }
+        &.wap-look-btn {
+          display: inline-block;
+        }
+      }
+    }
+    .desc-tips {
+      z-index:999;
+      top: 0rem;
+      width: 6.3rem;
+      @media screen and (max-width: 320px) {
+        width: 6.7rem;
+      }
+      .icon-trangle {
+        top: -0.13rem;
+        margin-left: -0.24rem;
+        width: 0.48rem;
+        height: 0.14rem;
+      }
+      .desc-content{
+        table {
+          thead {
+            th {
+              font-size: 0.18rem;
+            }
+          }
+          tbody {
+            tr {
+              td {
+                font-size: 0.18rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .scan-code-wrap {
+    padding-bottom: 0.76rem;
+    .desc-tips {
+      height: 1.43rem;
+    }
+    .icon-scan-code {
+      margin-top: -1rem;
+      width: 4.07rem;
+      height: 4.09rem;
+    }
+  }
+  .skill-subject-wrap {
+    margin-top: 1.3rem;
+    .activity-title {
+      margin-left: -3rem;
+      width: 5.89rem;
+    }
+    .increase-rate {
+      margin-top: 0.75rem;
+      margin-bottom: 0.55rem;
+      width: 6.33rem;
+      height: 3.96rem;
+      background: url("../images/2018/new-year-increase-interest/increase_rate_wap.png") no-repeat;
+      background-size: contain;
+    }
+    .tips {
+      line-height: 0.4rem;
+      font-size: 0.24rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+  .spring-gift-wrap {
+    margin-top: 1.3rem;
+    padding-bottom: .96rem;
+    .activity-title {
+      margin-left: -3.05rem;
+      width: 6.09rem;
+    }
+    .desc-tips {
+      height: 1.43rem;
+      .desc-content{
+        background: #574ada;
+        padding: 1px;
+      }
+    }
+
+    .product-list {
+      display: none;
+
+    }
+    .product-list-wap {
+      display: block;
+      position: relative;
+      .controlsBtn {
+        width: 0.7rem;
+        height: 0.7rem;
+        position: absolute;
+        top: 50%;
+        margin-top: -0.35rem;
+        background: #604cf9;
+        border-radius: 0.35rem;
+        z-index: 3000;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 30%;
+        cursor: pointer;
+        &.prevBtn {
+          left: -0.08rem;
+          background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
+        }
+        &.nextBtn {
+          right:-0.08rem;
+          background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
+        }
+      }
+
+      .swiper-container {
+        width: 7rem;
+        height: 5.01rem;
+        overflow: visible!important;
+        .swiper-wrapper {
+          .swiper-slide{
+            width: 5.44rem;
+            img{
+              width: 100%;
+            }
+          }
+          .swiper-slide-prev {
+            margin-top: 0.3rem;
+            height: 4.35rem!important;
+            img{
+              height: 4.35rem!important;
+            }
+          }
+          .swiper-slide-next{
+            margin-top: 0.3rem;
+            height: 4.35rem!important;
+            img{
+              height: 4.35rem!important;
+            }
+          }
+          .swiper-slide-active{
+            width: 5.44rem;
+          }
+
+        }
+      }
+
+    }
+  }
+  .kindly-tips {
+    margin-top: 0.92rem;
+    padding: 0.3rem 0.2rem;
+    font-size: 0.2rem;
+    line-height: 0.36rem;
+  }
+
+
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}

@@ -115,6 +115,7 @@ textarea::-webkit-input-placeholder {
 }
 .success-box {
   padding-top:100px;
+  text-align: center;
   .icon-sucess {
     width:40px;
     height:40px;
@@ -135,6 +136,7 @@ textarea::-webkit-input-placeholder {
   }
 
   .down-time {
+    display: inline-block;
     i {
       color: #ff635a;
     }
