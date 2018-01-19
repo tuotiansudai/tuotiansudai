@@ -62,7 +62,7 @@
                 </li>
                 <li>
                     <label>充值金额</label>
-                    <span>${amount!}元</span>
+                    <span>${(amount/100)!}元</span>
                 </li>
                 <li>
                     <label>订单号</label>

@@ -10,14 +10,9 @@
     position: absolute;
     left: 10px;
     top: 2px;
-    i{
+    i {
       font-size: 30px;
     }
-  }
-  #noUse {
-    float: right;
-    padding-right: 10px;
-    font-size: 14px;
   }
 }
 
@@ -31,6 +26,7 @@
     display: block;
   }
 }
+
 .input-list {
   &.align-flex-start {
     span.bank-info {
@@ -46,14 +42,14 @@
   }
 }
 
-
 .bank-list {
+  margin-top: 10px;
   .icon-bank {
-    width:30px;
-    height:30px;
+    width: 30px;
+    height: 30px;
     background: url('../../images/bank/bankdefault.png') left center no-repeat;
     background-size: 100%;
-    margin-right:20px;
+    margin-right: 20px;
   }
 
   li {
@@ -62,7 +58,7 @@
     align-items: center;
     padding: 18px 10px;
     background: #fff;
-    border-bottom:1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;
     span {
       width: 77%;
     }
@@ -76,73 +72,103 @@
     }
   }
 }
-.text-item{
+
+.text-item {
   font-size: 12px;
   color: #FF635A;
   line-height: 34px;
-  padding:0 10px;
+  padding: 0 10px;
 }
-.form-cash{
-  .int-item{
+
+.form-cash {
+  .int-item {
     background: #fff;
-    padding:10px;
+    padding: 10px;
     position: relative;
-    &:after{
-      content:'￥';
-      display:block;
+    &:after {
+      content: '￥';
+      display: block;
       position: absolute;
-      bottom:20px;
-      left:10px;
-      font-size:24px;
-      color:#525252;
+      bottom: 20px;
+      left: 10px;
+      font-size: 24px;
+      color: #525252;
       line-height: 30px;
     }
-    label{
+    label {
       display: flex;
       width: 100%;
-      font-size:16px;
-      color:#525252;
+      font-size: 16px;
+      color: #525252;
     }
-    .money-item{
+    .money-item {
       display: inline-block;
-      width:100%;
-      border:none;
+      width: 100%;
+      border: none;
       line-height: 50px;
-      padding:0 0 0 30px;
-      border-bottom:1px solid #e5e5e5;
-      box-sizing:border-box;
+      padding: 0 0 0 30px;
+      border-bottom: 1px solid #e5e5e5;
+      box-sizing: border-box;
+      font-size: 16px;
     }
   }
-  .user-money{
-    background:#fff;
-    padding:10px;
-    p{
+  .user-money {
+    background: #fff;
+    padding: 10px;
+    p {
       margin-bottom: 0;
-      font-size:12px;
-      color:#808080;
-      span{
-        color:#FF6C63;
+      font-size: 12px;
+      color: #808080;
+      span {
+        color: #FF6C63;
       }
     }
   }
 }
 
-.rule-list{
-  margin-top: 20px;
-  padding:0 10px;
-  dt{
-    font-size:13px;
-    color:#525252;
+.manage-note {
+  margin-top: 50px;
+  width: 100%;
+  p {
+    line-height: 1.4;
+    margin-bottom: 0;
+    color: #A2A2A2;
+    text-align: center;
   }
-  dd{
-    font-size:12px;
-    color:#a2a2a2;
-    span{
-      color:#222;
+
+  .btn-app-link {
+    border: 1px solid #FF6C63;
+    background: #FF6C63;
+    border-radius: 30px;
+    color: #fff;
+    display: block;
+    padding: 8px 5px;
+    font-size: 20px;
+    width: 80%;
+    margin: 0 auto;
+    line-height: 25px;
+    margin-top: 120px;
+    text-align: center;
+  }
+}
+
+.rule-list {
+  margin-top: 20px;
+  padding: 0 10px;
+  dt {
+    font-size: 13px;
+    color: #525252;
+  }
+  dd {
+    font-size: 12px;
+    color: #a2a2a2;
+    span {
+      color: #222;
     }
   }
 }
-.to-record{
+
+.to-record {
   font-size: 14px;
   color: #FF635A;
   display: inline-block;
@@ -157,7 +183,7 @@
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  height:100%;
+  height: 100%;
   .info {
     height: 300px;
     background: #fff;
@@ -174,29 +200,29 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: calc( 100% - 300px);
+    height: calc(100% - 300px);
     .btn-wap-normal {
-      width:100%;
+      width: 100%;
     }
     span {
       font-size: 12px;
       color: #A2A2A2;
-      padding-bottom:30px;
+      padding-bottom: 30px;
     }
   }
   em {
     display: block;
-    padding-top:20px;
+    padding-top: 20px;
     font-size: 15px;
     color: #808080;
   }
 
   .input-list {
-    width:100%;
-    border-top:1px solid #F7F7F7;
+    width: 100%;
+    border-top: 1px solid #F7F7F7;
     margin-top: 20px;
     li {
-      font-size:13px;
+      font-size: 13px;
       height: 50px;
       line-height: 50px;
       color: #525252;
@@ -209,22 +235,26 @@
 }
 
 // 提现记录
-.amount-detail-list{
+.amount-detail-list {
   margin-top: 10px;
 }
-.amount-detail-list .box-item dl dt{
-  font-size:18px;
-  color:#525252;
+
+.amount-detail-list .box-item dl dt {
+  font-size: 18px;
+  color: #525252;
 }
-.amount-detail-list .box-item dl dd{
-  font-size:12px;
-  color:#a2a2a2;
+
+.amount-detail-list .box-item dl dd {
+  font-size: 12px;
+  color: #a2a2a2;
 }
-.amount-detail-list .box-item dl .tip-text{
+
+.amount-detail-list .box-item dl .tip-text {
   font-size: 12px;
   color: #F6AA16;
 }
-.amount-detail-list .box-item dl .info-text{
+
+.amount-detail-list .box-item dl .info-text {
   font-size: 12px;
   color: #525252;
 }

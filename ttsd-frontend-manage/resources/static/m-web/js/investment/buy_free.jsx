@@ -7,7 +7,7 @@ let $confirmInvest = $('#countDownBtn');
 commonFun.countDownLoan({
     btnDom: $confirmInvest,
     time: 3,
-    textCounting: 'S',
+    textCounting: 's',
     isAfterText: '确定'
 }, function () {
     $confirmInvest.on('click', function () {

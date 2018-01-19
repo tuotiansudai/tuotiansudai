@@ -26,16 +26,25 @@
     </div>
 
     <div class="menu-quick">
+        <#if hasAccount>
+            <#if hasBankCard>
         <a href="/m/recharge">充值</a>
+            <#else>
+        <a href="/m/bind-card">充值</a>
+            </#if>
+        <#else>
+        <a href="/m/register/account">充值</a>
+        </#if>
         <a href="/m/withdraw">提现</a>
     </div>
 
     <ul class="menu-list">
-        <li class="top-distance"><a href="#">我的体验金<em class="experience-amount">${((experienceBalance/100)?string.computer)!}</em></a> </li>
-        <li><a href="/m/investor/invest-list">我的投资<i class="fa fa-angle-right"></i></a> </li>
-        <li><a href="coupon.ftl">优惠券<i class="fa fa-angle-right"></i></a> </li>
-        <li class="top-distance"><a href="/m/personal-info">个人资料<i class="fa fa-angle-right"></i></a> </li>
-        <li class="top-distance"><a href="settings.ftl">设置<i class="fa fa-angle-right"></i></a> </li>
+        <li class="top-distance"><a href="#">我的体验金<em
+                class="experience-amount">${((experienceBalance/100)?string.computer)!}</em></a></li>
+        <li><a href="/m/investor/invest-list">我的投资<i class="fa fa-angle-right"></i></a></li>
+        <li><a href="coupon.ftl">优惠券<i class="fa fa-angle-right"></i></a></li>
+        <li class="top-distance"><a href="/m/personal-info">个人资料<i class="fa fa-angle-right"></i></a></li>
+        <li class="top-distance"><a href="settings.ftl">设置<i class="fa fa-angle-right"></i></a></li>
     </ul>
 </div>
 </@global.main>

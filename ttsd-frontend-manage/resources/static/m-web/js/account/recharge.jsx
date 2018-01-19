@@ -1,5 +1,6 @@
 require('mWebStyle/account/recharge.scss');
 require('mWebStyle/bank_icons.scss');
+require('webJs/plugins/autoNumeric');
 
 
 let $cashMoneyConatiner = $('#cashMoneyConatiner'),
@@ -11,14 +12,13 @@ $goBackIcon.on('click', function (event) {
     location.href="/m/account";
 });
 
-$cashMoney.on('focusout', function(event) {
-	event.preventDefault();
-	let $self=$(this),
-		isMoney=/^\d+(?=\.{0,1}\d+$|$)/;
-	if($self.val()!='' && isMoney.test($self.val())){
-		$('#toCash').prop('disabled',false);
-	}else{
-		$('#toCash').prop('disabled',true);
-		$self.val('');
-	}
+$cashMoney.autoNumeric("init");
+$cashMoney.keyup(function () {
+    var amount = parseFloat($cashMoney.autoNumeric("get"));
+    if (isNaN(amount) || amount < 1) {
+        $('#toCash').prop('disabled',true);
+    } else {
+        $('form input[name="amount"]').val(amount);
+        $('#toCash').prop('disabled',false);
+    }
 });

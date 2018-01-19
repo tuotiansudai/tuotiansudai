@@ -30,7 +30,7 @@
 
     </ul>
 
-    <span class="manage-note">换卡操作请前往手机端或者电脑端进行操作</span>
+    <span class="manage-note">换卡操作请前往APP或者PC端进行操作</span>
 </div>
 
 </@global.main>
