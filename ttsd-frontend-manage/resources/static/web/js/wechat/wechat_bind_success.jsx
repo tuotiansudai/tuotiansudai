@@ -8,6 +8,7 @@ commonFun.countDownLoan({
     isAfterText:'',
     textCounting: 's'
 }, function () {
+    $('#after').hide();
     window.location = $downTime.data('redirect');
 });
 
