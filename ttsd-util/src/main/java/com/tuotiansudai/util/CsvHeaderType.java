@@ -47,7 +47,9 @@ public enum CsvHeaderType {
     HouseDecorateHeader("用户名, 姓名, 手机号, 活动期内投资金额, 获得奖励, 获得体验金", "家装节详情导出"),
     IphoneXHeader("用户名, 姓名, 手机号, 活动期内投资金额, 累计年化投资额, 现金奖励", "iPhoneX活动导出"),
     ZeroShoppingHeader("姓名, 手机号, 投资金额, 选择的奖品, 日期", "0元购获奖记录导出"),
-    CashSnowballHeader("姓名, 手机号, 活动期限内投资金额, 累计年化投资额, 获得现金奖励", "现金滚雪球活动导出"),;
+    CashSnowballHeader("姓名, 手机号, 活动期限内投资金额, 累计年化投资额, 获得现金奖励", "现金滚雪球活动导出"),
+    InvestAnnualizedHeader("姓名, 用户名,手机号, 活动期限内投资金额, 累计年化投资额", "投资金额统计导出"),
+    ;
 
     private String header;
 
