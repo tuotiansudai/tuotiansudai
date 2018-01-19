@@ -102,4 +102,10 @@ public class PersonalInfoController {
         dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
         return baseDto;
     }
+
+    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView resetUmpayPasswordPage() {
+        return new ModelAndView("reset-password");
+    }
 }
