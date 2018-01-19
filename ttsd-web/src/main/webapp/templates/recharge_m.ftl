@@ -49,9 +49,9 @@
     </form>
         <#else>
     <div class="manage-note">
+        <a class="btn-app-link" href="https://tuotiansudai.com/app/download" target="_blank">下载APP</a>
         <p>手机端仅支持快捷支付</p>
         <p>请前往app开通快捷支付后再进行充值</p>
-        <a class="btn-app-link" href="https://tuotiansudai.com/app/download" target="_blank">下载app</a>
     </div>
         </#if>
     </#if>
