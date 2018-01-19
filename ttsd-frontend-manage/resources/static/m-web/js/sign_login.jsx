@@ -30,10 +30,19 @@ $(function () {
     let bool=false;
     setTimeout(function(){ bool=true;},300);
     window.addEventListener("popstate", function(e) {
-        if(bool) location.reload();
+        if(bool) hashFun();
     },false);
 });
 
+let backStatus = () => {  // 返回此页面判断手机号长度，确定是否需要点亮按钮
+    if ($('.telephoneInput').val().length == 11) {
+        $('.show-mobile-entry').html($('.telephoneInput').val());
+        $('.show-mobile-entry').show();
+        telephoneNum = $('.telephoneInput').val();
+        $('.step_one').prop('disabled',false);
+    }
+};
+backStatus();
 let entryEv = () => {
     $('.entry_container').show();
     $('.login_container').hide();
@@ -53,28 +62,30 @@ let registerEv = () => {
     let telephoneNum = localStorage.getItem('login_telephone') || '';
     $('.show-mobile-register').html(telephoneNum);
 };
+function hashFun() {
+    let hash_key = location.hash;
 
-let hash_key = location.hash;
-
-switch (hash_key) {
-    case '':
-        entryEv();
-        break;
-    case '#login':
-        loginEv();
-        break;
-    case '#register-one':
-        registerEv();
-        break;
-    default:
-        entryEv();
-        break;
-}
+    switch (hash_key) {
+        case '':
+            entryEv();
+            break;
+        case '#login':
+            loginEv();
+            break;
+        case '#register-one':
+            registerEv();
+            break;
+        default:
+            entryEv();
+            break;
+    }
+};
+hashFun();
 
 let pushHistory = (url) => {
     let state = {title: "title", url: url};
     window.history.pushState(state, "title", url);
-    location.reload();
+    // location.reload();
 };
 
 let contentInput = (id,content,length) => {
@@ -119,10 +130,10 @@ let clearInputTwoVal = (id) => {
 
 let stepOneEv = () => {
     $('.step_one').on('click',() => {
-        if (!/(^1[0-9]{10}$)/.test(telephoneNum))  { // 入口处验证手机格式
+        if (!/(^1[0-9]{10}$)/.test(telephoneNum))  { // 入口手机号码校验
             layer.msg('手机号格式不正确');
             return;
-        }  
+        }
         localStorage.setItem('login_telephone',telephoneNum);
         commonFun.useAjax({
             type:'GET',
@@ -131,6 +142,7 @@ let stepOneEv = () => {
         },function(response) {
             if(response.data.status) {
                 pushHistory('#login'); // 登录
+                hashFun();
             }
             else {
                 location.href = '/m/register/user'; // 注册
@@ -164,7 +176,7 @@ contentInput('.password_container','.show-mobile-login');
 clearInputTwoVal('.captcha_container');
 clearInputTwoVal('.password_container');
 
-$('.go-back').on('click',() => {
+$('.go-back-container').on('click',() => {
     history.go(-1);
 });
 
@@ -250,5 +262,6 @@ $('.step_two').on('click', function (event) {
     //提交之前得先执行validateLogin验证表单是否通过验证
     formSubmit.before(validateLogin)();
 });
+
 
 

@@ -28,8 +28,11 @@
         <div class="step_container">
             <div class="captcha_container">
                 <input validate name="captcha" class="short-message-captcha" type="text" placeholder="请输入短信验证码" maxlength="6"/>
-                <div class="close_btn"></div>
-                <div class="get-captcha">获取验证码</div>
+                <div class="close_btn close_btn1"></div>
+                <div class="get-captcha">
+                    <div class="get-captcha-icon"></div>
+                    <div class="get-captcha-text">获取短信验证码</div>
+                </div>
             </div>
             <button type="button" class="btn-wap-normal next-step register_next_step" disabled>下一步</button>
             <div class="bottom_button_text">
@@ -42,13 +45,19 @@
             <div class="close_btn"></div>
             <div class="see_password"></div>
             <span class="invite-mobile closed">邀请人手机号码(可不填写)<i></i></span>
-            <input validate type="text" name="referrer" maxlength="25" class="referrer closed" placeholder="邀请人手机号码">
+            <input validate type="text" name="referrer" maxlength="11" class="referrer closed" placeholder="邀请人手机号码">
         <#--<div class="error-box"></div>-->
 
             <button id="submitBtn" type="submit" class="btn-wap-normal next-step register_btn" disabled>注册</button>
             <span class="show-agreement">点击“注册”即视为您同意<span class="serviceAgreement">《拓天速贷服务协议》</span></span>
         </div>
     </form>
+    <div id="freeSuccess"  style="display: none">
+        <div class="success-info-tip">
+            <div class="pop_title">获取语音验证码</div>
+            <div class="pop_content">我们将以电话的形式将验证码发送<br/>给您，请注意接听</div>
+        </div>
+    </div>
 </div>
 
     <#include './register-agreement_m.ftl' />

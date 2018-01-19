@@ -96,9 +96,6 @@ body {
 
     .form-register {
       font-size: .7rem;
-      .get-captcha {
-
-      }
       .invite-mobile {
         display: block;
         text-align: left;
@@ -244,6 +241,9 @@ body {
       height: .6rem;
       background: url("../images/close_btn.png") no-repeat;
       background-size: contain;
+      &.close_btn1 {
+        left: 9.8rem;
+      }
     }
   }
   .password_container {
@@ -280,7 +280,7 @@ body {
   position: absolute;
   right: 0;
   top: .5rem;
-  width: 5.5rem;
+  width: 7.5rem;
   height: 1rem;
   line-height: 1rem;
   font-size: .7rem;
@@ -352,4 +352,50 @@ body {
 
 #inputPasswordForm {
   margin-top: 4rem;
+}
+
+.get-captcha-icon {
+  position: relative;
+  top: -.05rem;
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: url("../images/message_get.png") no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+.get-captcha-icon.message_send {
+  background: url("../images/message_send.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-icon.voice_get {
+  background: url("../images/voice_get.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-icon.voice_send {
+  background: url("../images/voice_send.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-text {
+  display: inline-block;
+}
+.get-captcha-text.count-downing {
+  color: #C9C9C9;
+}
+.success-info-tip {
+  padding: 0;
+}
+.pop_title {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #525252;
 }

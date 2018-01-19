@@ -129,6 +129,7 @@ function forgetPassword() {
     (function () {
         let formCaptcha = globalFun.$('#formCaptcha');
         function sendCaptcha() {
+            layer.closeAll();
             isSendingCaptcha = true;
             let ajaxOption = {
                 url: `/mobile-retrieve-password/mobile/${localStorage.getItem('login_telephone')}/imageCaptcha/${$('.captcha').val()}/send-mobile-captcha/${isVoice}`,
@@ -139,17 +140,32 @@ function forgetPassword() {
 
                 let data = responseData.data;
                 if (data.status && !data.isRestricted) {
+                    if (!isVoice) {
+                        $('.get-captcha-icon').addClass('message_send');
+                    }
+                    else {
+                        $('.get-captcha-icon').removeClass('voice_get');
+                        $('.get-captcha-icon').addClass('voice_send');
+                    }
                     localStorage.setItem('imageCaptcha',formCaptcha.imageCaptcha.value);
                     //获取手机验证码成功，，并开始倒计时
                     commonFun.countDownLoan({
-                        btnDom: $getCaptcha,
-                        isAfterText: '获取验证码',
-                        textCounting: 's重新获取'
+                        btnDom: $('.get-captcha-text'),
+                        isAfterText: '获取语音验证码',
+                        textCounting: 's后重新获取'
                     },function() {
                         //倒计时结束后刷新验证码
                         commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                         $getCaptcha.prop('disabled', false);
                         isSendingCaptcha = false;
+                        if (!isVoice) {
+                            $('.get-captcha-icon').removeClass('message_send');
+                        }
+                        else {
+                            $('.get-captcha-icon').removeClass('voice_send');
+                        }
+                        $('.get-captcha-icon').addClass('voice_get');
+                        isVoice = true;
                     });
                 } else if (!data.status && data.isRestricted) {
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
@@ -171,9 +187,19 @@ function forgetPassword() {
 
             if (/\d{5}/.test(imageCaptcha)) {
                 if (isSendingCaptcha) return;
-                sendCaptcha();
+                if (isVoice) {
+                    commonFun.CommonLayerTip({
+                        btn: ['知道了','不发送'],
+                        area:['280px', '160px'],
+                        content: $('#freeSuccess'),
+                    },() => {
+                        sendCaptcha();
+                    });
+                } else {
+                    sendCaptcha();
+                }
             } else {
-                layer.msg('请输入正确的图形验证码');
+                layer.msg('图形验证码不正确');
                 $getCaptcha.prop('disabled', false);
             }
         });
@@ -308,4 +334,8 @@ $('.see_password').on('click',() => {
         input.attr('type','text');
         $('.see_password').addClass('open_eye');
     }
+});
+
+$('.go-back-container').on('click',() => {
+    history.go(-1);
 });

@@ -30,8 +30,11 @@
 
             <div class="captcha_container">
                 <input validate name="captcha" class="short-message-captcha" type="text" placeholder="请输入短信验证码" maxlength="6"/>
-                <div class="close_btn"></div>
-                <div class="get-captcha">获取验证码</div>
+                <div class="close_btn close_btn1"></div>
+                <div class="get-captcha">
+                    <div class="get-captcha-icon"></div>
+                    <div class="get-captcha-text">获取短信验证码</div>
+                </div>
             </div>
 
             <div class="clearfix"></div>
@@ -57,6 +60,12 @@
         </form>
     </div>
 
+    <div id="freeSuccess"  style="display: none">
+        <div class="success-info-tip">
+            <div class="pop_title">获取语音验证码</div>
+            <div class="pop_content">我们将以电话的形式将验证码发送<br/>给您，请注意接听</div>
+        </div>
+    </div>
 </div>
 
 </@global.main>
