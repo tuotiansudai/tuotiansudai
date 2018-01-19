@@ -39,7 +39,7 @@ function getMore() {
             dataType: 'html',
             type: 'get',
         },
-        function (data) {console.log(data)
+        function (data) {
             if($(data).find("#wrapperOut .loan-list-content .category-box-main").html().trim().length > 0){
                 $content.append($(data).find("#wrapperOut .loan-list-content .category-box-main").html());
                 myScroll.refresh();

@@ -64,7 +64,7 @@
                             </li>
                             <li>
                             <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
-                                <a href="/m/loan/1" class="btn-invest btn-normal">立即投资</a>
+                                <a class="btn-invest btn-normal">立即投资</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
                             </#if>
