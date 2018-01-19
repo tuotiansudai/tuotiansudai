@@ -8,9 +8,18 @@
         <span><a href="/m/transfer-list">转让项目</a></span>
     </div>
 
-    <div id="wrapperOut" class="loan-list-frame">
+    <div id="wrapperOut"  class="loan-list-frame">
         <div class="loan-list-content">
             <div class="category-box-main">
+                <#--<div class="target-category-box" data-url="loan-detail.ftl">-->
+                    <#--<b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>-->
+                    <#--<ul class="transferArea loan-info clearfix">-->
+                        <#--<li><span class="max-benifit"> 最高<i>13</i>%</span><em class="note">预期年化收益</em></li>-->
+                        <#--<li style="position: relative"><em class="duration-day">10</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>-->
+                        <#--<li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>-->
+                    <#--</ul>-->
+
+                <#--</div>-->
                 <#list loanItemList as loanItem>
 
                     <div class="target-category-box <#if loanItem.productType == 'EXPERIENCE'>newer-experience</#if>"
@@ -29,7 +38,7 @@
                         </b>
                         <ul class="loan-info clearfix">
                             <li>
-                        <span class="percent-number">
+                        <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if> ">
                             <i>
                                 <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
                                     <@percentInteger>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentFraction>
@@ -60,7 +69,7 @@
                         <div class="table-row progress-column">
                             <div class="progress-bar">
                                 <div class="process-percent">
-                                    <div class="percent" style="width:${loanItem.progress}%">
+                                    <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if>" style="width:${loanItem.progress}%">
                                     </div>
                                 </div>
                             </div>
@@ -73,9 +82,9 @@
                                             放标</span>
                                     </#if>
                                 </#if>
-                                <span class="p-title">可投金额：<i>${loanItem.alert}</i></span>
+                                <span class="p-title">剩余金额：<i>${loanItem.alert}</i></span>
                             <#else>
-                                <span class="p-title"><i>${loanItem.alert}</i></span>
+                                <span class="p-title">剩余金额：<i>0元</i></span>
                             </#if>
                         </div>
                     </#if>

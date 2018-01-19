@@ -10,25 +10,28 @@
 .target-category-box {
   margin-bottom:10px;
 }
-
+body {
+  font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
+}
 .loan-list-frame {
   position: absolute;
   top: 56px;
   bottom: 0px;
   width: 100%;
   overflow: hidden;
-  height: calc( 100% - 100px);
-
+  height: calc(100% - 110px)
 }
 #pullUp {
   text-align: center;
+  height: 26px;
+  line-height: 20px;
 }
 .percent-number {
   em {
     font-size: 26px;
   }
   i {
-    font-size: 20px!important;
+    font-size: 28px!important;
   }
 }
 //转让价格
@@ -56,4 +59,63 @@
      line-height: 42px;
    }
  }
+}
+
+.target-category-box .loan-info li a.tranfered{
+  display: inline-block;
+  width: 54px;
+  height: 58px;
+  background: url("../../images/status/icon-transferred.png") no-repeat;
+  background-size: contain;
+}
+.target-category-box .loan-info {
+  padding-left: 0;
+  padding-right: 0;
+}
+.target-category-box .loan-info li .percent-number {
+
+  font-size: 20px;
+  i {
+    font-size: 20px;
+  }
+}
+.target-category-box .loan-info li .percent-number.colorChange {
+  color: #a2a2a2;
+}
+.progress-bar .process-percent .percent.colorChange {
+  background: #a2a2a2;
+}
+.target-category-box .progress-column span .price.colorChange {
+  color: #a2a2a2;
+}
+.transferArea {
+  border-top: 1px solid #E5E5E5;
+}
+.transferAreaTitle {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.target-category-box .loan-info li {
+  color: #525252;
+}
+.max-benifit {
+  color: #FF473C;
+  font-size: 14px;
+  i {
+    font-size: 28px;
+  }
+}
+.icon-first-get {
+  position: absolute;
+  top: -14px;
+  right: -22px;
+  display: inline-block;
+  width: 69px;
+  height: 28px;
+  text-align: center;
+  line-height: 23px;
+  background: url("../../images/share/first_get.png") no-repeat;
+  background-size: contain;
+  transform:scale(0.8);
+  color: #F6AA16;
 }
