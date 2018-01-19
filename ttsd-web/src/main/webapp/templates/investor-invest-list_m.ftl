@@ -19,7 +19,7 @@
                     <div class="invest-item" data-loanid="{{value.loanId}}">
                         <div class="top clearfix">
                             <dl class="dl-l clearfix">
-                                <dt><em>{{value.expectedInterest}}</em>元</dt>
+                                <dt><em class="money">{{value.expectedInterest}}</em>元</dt>
                                 <dd>预期收益</dd>
                             </dl>
                             <dl class="dl-r clearfix">

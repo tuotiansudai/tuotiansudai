@@ -1,6 +1,7 @@
 require('mWebStyle/account/investor_invest_list.scss');
 let tpl = require('art-template/dist/template');
 let commonFun = require('publicJs/commonFun');
+require('webJs/plugins/autoNumeric');
 
 let menuClick = require('mWebJsModule/menuClick');
 let $myInvest = $('#myInvest'),
@@ -83,6 +84,7 @@ function getList(index,status) {
             if(res.success == true){
                 if(res.data.records.length){
                     $main.append(tpl('investListTpl', res.data));
+                    $('.money').autoNumeric('init');
                 }else {
                     if(index == 1){
                         let $noListDOM = $('<div class="noList"><div class="img"></div><button>立即投资</button>');
@@ -105,4 +107,6 @@ getList(1,'REPAYING');
 $(document).on('click','#toInvest',function () {
     location.href = '/m/loan-list'
 })
+
+
 

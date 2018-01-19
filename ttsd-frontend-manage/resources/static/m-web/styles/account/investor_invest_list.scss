@@ -44,12 +44,15 @@ em {
     font-size: .4rem;
   }
 }
+.menu-category span a{
+  line-height: 26px;
+}
 .invest-list-wrap {
   font-size: .24rem;
   position: absolute;
   z-index: 1;
   width: 100%;
-  top: 1.8rem;
+  top: 1.6rem;
   overflow: hidden;
   bottom: 0;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
@@ -65,6 +68,9 @@ em {
       padding-top: .44rem;
       margin-top: .2rem;
       background: #fff;
+      .top {
+        padding-bottom: .2rem;
+      }
       dl {
         line-height: .44rem;
         padding-left: .3rem;
@@ -74,6 +80,7 @@ em {
           width: 50%;
           float: left;
           dt {
+            font-weight: normal;
             em {
               font-size: .5rem;
             }
@@ -95,17 +102,17 @@ em {
             padding-right: .34rem;
             font-size: .24rem;
             color: #fff;
-            background: #facc72;
-            border-radius: .5rem;
+            background: rgba(246,170,22,0.6);
+            border-radius: .7rem;
             position: relative;
             em {
               position: absolute;
               left: 0;
               display: inline-block;
-              width: 1.22rem;
+              width: 1.3rem;
               height: .44rem;
-              background: #F6AA16;
-              border-radius: .5rem;
+              background: $colorYellow;
+              border-radius: .7rem;
               z-index: 2;
 
             }
@@ -116,6 +123,7 @@ em {
           }
           dd {
             color: $color8080;
+            line-height: 0.6rem;
             em {
               color: $colorYellow;
               font-size: .24rem;
