@@ -7,11 +7,9 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
 import org.apache.log4j.Logger;
@@ -41,6 +39,8 @@ public class FrontCallbackController {
 
     private final WithdrawService withdrawService;
 
+    private final RechargeService rechargeService;
+
     private final BindBankCardService bindBankCardService;
 
     private final BankCardMapper bankCardMapper;
@@ -50,11 +50,14 @@ public class FrontCallbackController {
                                    InvestService investService,
                                    LoanService loanService,
                                    WithdrawService withdrawService,
-                                   BindBankCardService bindBankCardService,BankCardMapper bankCardMapper) {
+                                   RechargeService rechargeService,
+                                   BindBankCardService bindBankCardService,
+                                   BankCardMapper bankCardMapper) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
         this.loanService = loanService;
         this.withdrawService = withdrawService;
+        this.rechargeService = rechargeService;
         this.bindBankCardService = bindBankCardService;
         this.bankCardMapper = bankCardMapper;
     }
@@ -108,6 +111,15 @@ public class FrontCallbackController {
                 modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCardModel.getBankCode()));
                 modelAndView.addObject("orderId", params.get("order_id"));
                 modelAndView.addObject("serviceName", "申请提现成功");
+            }
+            if (AsyncUmPayService.MER_RECHARGE_PERSON == asyncUmPayService) {
+                RechargeModel rechargeModel = rechargeService.findRechargeById(Long.valueOf(params.get("order_id")));
+                BankCardModel bankCard = bindBankCardService.getPassedBankCard(rechargeModel.getLoginName());
+                modelAndView.addObject("amount", rechargeModel.getAmount());
+                modelAndView.addObject("cardNumber", bankCard.getCardNumber());
+                modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCard.getBankCode()));
+                modelAndView.addObject("orderId", params.get("order_id"));
+                modelAndView.addObject("serviceName", "充值成功");
             }
 
             return modelAndView;

@@ -1,15 +1,16 @@
 <#import "macro/global_m.ftl" as global>
 
-<@global.main pageCss="${m_css.personal_profile}" pageJavascript="${m_js.personal_profile}" activeNav="我的账户" activeLeftNav="" title="个人资料">
+<@global.main pageCss="${m_css.personal_profile}" pageJavascript="${m_js.personal_profile}" title="个人资料">
 
 <div class="my-account-content personal-profile">
+    <div class="m-header"><em class="icon-left" id="goBackIcon"><i class="fa fa-angle-left"></i></em>个人资料</div>
     <ul class="input-list">
         <li>
             <label for="perMobile">手机号码</label> <input type="text" id="perMobile" value="${mobile}">
         </li>
         <li>
             <#if userName??>
-                <label for="perName">实名认证</label> <input type="text" id="perName" value="${userName}(${identityNumber[(identityNumber?length - 4)..]})" >
+                <label for="perName">实名认证</label> <input type="text" id="perName" value="${userName}(${identityNumber?replace("^(\\d{6}).*(\\d{3}.)$","$1***$2","r")})" >
             <#else>
                 <label for="perName">实名认证</label> <input type="text" id="perName" value="未认证" >
             </#if>
@@ -29,7 +30,7 @@
 
     </ul>
 
-    <span class="manage-note">换卡操作请前往手机端或者电脑端进行操作</span>
+    <span class="manage-note">换卡操作请前往APP或者PC端进行操作</span>
 </div>
 
 </@global.main>
