@@ -86,6 +86,23 @@ public class RetrievePasswordController {
         return new ModelAndView("/input-password").addObject("mobile", retrievePasswordDto.getMobile()).addObject("captcha", retrievePasswordDto.getCaptcha());
     }
 
+    @RequestMapping(value = "/m", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> mobileRetrievePasswordForMobileSite(@Valid @ModelAttribute RetrievePasswordDto retrievePasswordDto) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        baseDto.setData(dataDto);
+        try {
+            retrievePasswordService.mobileRetrievePassword(retrievePasswordDto);
+            dataDto.setStatus(true);
+            dataDto.setMessage("OK");
+        } catch (Exception e) {
+            dataDto.setStatus(false);
+            dataDto.setMessage(e.getMessage());
+        }
+        return baseDto;
+    }
+
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/imageCaptcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha/{isVoice}", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<SmsDataDto> mobileCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile, @PathVariable String imageCaptcha, @PathVariable boolean isVoice) {

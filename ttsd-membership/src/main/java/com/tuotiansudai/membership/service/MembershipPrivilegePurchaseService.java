@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +79,9 @@ public class MembershipPrivilegePurchaseService {
     }
 
     public double obtainServiceFee(String loginName) {
+        if (StringUtils.isEmpty(loginName)) {
+            return defaultFee;
+        }
         MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
         if (membershipPrivilegeModel != null) {
             return MEMBERSHIP_PRIVILEGE_SERVICE_FEE;

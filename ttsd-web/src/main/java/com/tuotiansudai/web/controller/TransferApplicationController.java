@@ -12,6 +12,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +70,7 @@ public class TransferApplicationController {
         modelAndView.addObject("anxinAuthenticationRequired", anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus());
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
+        modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
         return modelAndView;
     }
 

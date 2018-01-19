@@ -5,6 +5,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -18,10 +19,12 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -98,6 +102,18 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserOpLogService userOpLogService;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private CouponService couponService;
+
+    @Autowired
+    private InvestTransferService investTransferService;
 
     @Override
     @Transactional
@@ -185,11 +201,11 @@ public class InvestServiceImpl implements InvestService {
         }
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
-        if (CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) && loanDetailsModel.getDisableCoupon()){
+        if (CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) && loanDetailsModel.getDisableCoupon()) {
             throw new InvestException(InvestExceptionType.NOT_USE_COUPON);
         }
 
-        if (!loanDetailsModel.getDisableCoupon()){
+        if (!loanDetailsModel.getDisableCoupon()) {
             this.checkUserCouponIsAvailable(investDto);
         }
     }
@@ -523,5 +539,111 @@ public class InvestServiceImpl implements InvestService {
         int count = investMapper.countInvestBeforeDate(loginName, investTime);
         return count == 1;
     }
+
+    @Override
+    public BasePaginationDataDto<UserInvestRecordDataDto> generateUserInvestList(String loginName, int index, int pageSize, LoanStatus loanStatus) {
+        long count = investMapper.countInvestorInvestAndTransferPagination(loginName, loanStatus);
+
+        BasePaginationDataDto<UserInvestRecordDataDto> dto = new BasePaginationDataDto<>(index,
+                pageSize,
+                count,
+                convertResponseData(loanStatus,
+                        investMapper.findInvestorInvestAndTransferPagination(loginName,
+                                loanStatus,
+                                (index - 1) * pageSize,
+                                pageSize)));
+        dto.setStatus(true);
+        return dto;
+    }
+
+    private List<UserInvestRecordDataDto> convertResponseData(LoanStatus loanStatus, List<InvestModel> investModels) {
+        List<UserInvestRecordDataDto> list = Lists.newArrayList();
+
+        for (InvestModel investModel : investModels) {
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            UserInvestRecordDataDto dto = new UserInvestRecordDataDto(investModel, loanModel);
+
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            if (investModel.getTransferInvestId() != null) {
+                dto.setLoanName(transferApplicationModel.getName());
+                dto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
+                dto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
+                dto.setTransferInvest(true);
+            }
+
+            long actualInterest = 0;
+            long expectedInterest = 0;
+
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+            for (InvestRepayModel investRepayModel : investRepayModels) {
+                expectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+                CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
+                if (couponRepayModel != null) {
+                    actualInterest += couponRepayModel.getActualInterest() - couponRepayModel.getActualFee();
+                    expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+                }
+            }
+
+            //阶梯加息的利息计算
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+            if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+                long expectedExtraInterest = investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                expectedInterest += expectedExtraInterest;
+                actualInterest += investExtraRateModel.getStatus() == RepayStatus.COMPLETE ? investExtraRateModel.getActualInterest() - investExtraRateModel.getActualFee() : 0;
+            }
+
+            //债权转让折扣计算
+            if (transferApplicationModel != null) {
+                long discount = transferApplicationModel.getInvestAmount() - transferApplicationModel.getTransferAmount();
+                expectedInterest += discount;
+                actualInterest += loanModel.getStatus() == LoanStatus.COMPLETE ? discount : 0;
+            }
+
+            dto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
+            dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
+            if (Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK).contains(loanModel.getStatus())) {
+                List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
+                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
+                long investIncome = estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
+                dto.setExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investIncome));
+            }
+
+            dto.setTransferStatus(investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()));
+
+            List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId());
+            List<CouponType> couponTypes = Lists.newArrayList();
+            for (UserCouponModel userCouponModel : userCouponModels) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                couponTypes.add(couponModel.getCouponType());
+            }
+
+            dto.setLastRepayDate(org.apache.commons.lang3.StringUtils.trimToEmpty(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModels.get(investRepayModels.size() - 1).getActualRepayDate() : loanModel.getDeadline()).toString("yyyy-MM-dd")));
+            dto.setUsedCoupon(CollectionUtils.isNotEmpty(couponTypes) && !couponTypes.contains(CouponType.RED_ENVELOPE));
+            dto.setUsedRedEnvelope(couponTypes.contains(CouponType.RED_ENVELOPE));
+            dto.setProductNewType(loanModel.getProductType().name());
+
+            dto.setRepayProgress(generateRepayProgress(loanStatus, loanModel));
+
+            list.add(dto);
+        }
+
+        return list;
+    }
+
+    private int generateRepayProgress(LoanStatus loanStatus, LoanModel loanModel) {
+        if (loanStatus == LoanStatus.COMPLETE) {
+            return 100;
+        }
+        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())) {
+            int passedDays = Days.daysBetween(new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays() + 1;
+            int totalRepayDays = Days.daysBetween(new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay(), new DateTime(loanModel.getDeadline()).withTimeAtStartOfDay()).getDays() + 1;
+            int progress = passedDays * 100 / totalRepayDays;
+            return progress > 100 ? 100 : (progress == 0 ? 1 : progress);
+        }
+
+        return 0;
+    }
+
 
 }

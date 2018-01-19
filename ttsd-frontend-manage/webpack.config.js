@@ -32,8 +32,10 @@ var NODE_ENV=process.env.NODE_ENV;
 var files = glob.sync(path.join(packageRoute.staticPath, '*/js/*.jsx'));
 
 var Accountfiles = glob.sync(path.join(packageRoute.staticPath, '*/js/account/*.jsx'));
+var Investmentfiles = glob.sync(path.join(packageRoute.staticPath, '*/js/investment/*.jsx'));
 var wechatfiles = glob.sync(path.join(packageRoute.staticPath, '*/js/wechat/*.jsx'));
-files=files.concat(Accountfiles).concat(wechatfiles);
+files=files.concat(Accountfiles).concat(wechatfiles).concat(Investmentfiles);
+
 var newEntries = {};
 
 files.forEach(function(file){
@@ -115,6 +117,7 @@ else if(NODE_ENV=='dev') {
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
+		disableHostCheck:true,
 		hot: true,
 		devtool: 'eval',
 		host: '0.0.0.0',
@@ -124,6 +127,9 @@ else if(NODE_ENV=='dev') {
 		stats: {
 			chunks: false,
 			colors: true
+		},
+		headers: {
+			'Access-Control-Allow-Origin': '*'
 		}
 	};
 }
@@ -222,7 +228,13 @@ var myObject = objectAssign(commonOptions, {
 			mobileJs:packageRoute.mobileJs,
 			mobileJsModule:packageRoute.mobileJsModule,
 			mobileStyle:packageRoute.mobileStyle,
-			mobileImages:packageRoute.mobileImages
+			mobileImages:packageRoute.mobileImages,
+
+            mWebJs:packageRoute.mWebJs,
+            mWebJsModule:packageRoute.mWebJsModule,
+            mWebStyle:packageRoute.mWebStyle,
+            mWebImages:packageRoute.mWebImages
+
 		}
 	},
 
