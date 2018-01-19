@@ -3,8 +3,7 @@ let commonFun = require('publicJs/commonFun');
 require('webJs/plugins/autoNumeric');
 
 
-let $confirmInvest = $('#countDownBtn'),
-    $goBackIcon = $('#goBackIcon');
+let $confirmInvest = $('#countDownBtn');
 commonFun.countDownLoan({
     btnDom: $confirmInvest,
     time: 3,
