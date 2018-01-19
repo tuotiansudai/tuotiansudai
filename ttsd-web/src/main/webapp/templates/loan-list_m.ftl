@@ -11,16 +11,21 @@
     <div id="wrapperOut"  class="loan-list-frame">
         <div class="loan-list-content">
             <div class="category-box-main">
-                <#--<div class="target-category-box" data-url="loan-detail.ftl">-->
-                    <#--<b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>-->
-                    <#--<ul class="transferArea loan-info clearfix">-->
-                        <#--<li><span class="max-benifit"> 最高<i>13</i>%</span><em class="note">预期年化收益</em></li>-->
-                        <#--<li style="position: relative"><em class="duration-day">10</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>-->
-                        <#--<li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>-->
-                    <#--</ul>-->
-
-                <#--</div>-->
+                <#assign isInserted = false>
                 <#list loanItemList as loanItem>
+                    <#if transferringCount?? && transferringCount != 0 && !isInserted>
+                        <#if !(['PREHEAT', 'RAISING']?seq_contains(loanItem.status))>
+                            <#assign isInserted = true>
+                            <div class="target-category-box" data-url="loan-detail.ftl">
+                                <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
+                                <ul class="transferArea loan-info clearfix">
+                                    <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
+                                    <li style="position: relative"><em class="duration-day">${transferringCount}</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>
+                                    <li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>
+                                </ul>
+                            </div>
+                        </#if>
+                    </#if>
 
                     <div class="target-category-box <#if loanItem.productType == 'EXPERIENCE'>newer-experience</#if>"
                          data-url="/m/loan/${loanItem.id?c}">
@@ -90,6 +95,17 @@
                     </#if>
                     </div>
                 </#list>
+                <#if transferringCount?? && transferringCount != 0 && !isInserted>
+                    <#assign isInserted = true>
+                    <div class="target-category-box" data-url="loan-detail.ftl">
+                        <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
+                        <ul class="transferArea loan-info clearfix">
+                            <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
+                            <li style="position: relative"><em class="duration-day">${transferringCount}</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>
+                            <li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>
+                        </ul>
+                    </div>
+                </#if>
             </div>
 
             <div id="pullUp">
