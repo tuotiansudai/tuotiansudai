@@ -166,7 +166,7 @@ function useAjax(opt,callbackDone,callbackAlways) {
 function countDownLoan(option,callback) {
     let defaultOpt={
         btnDom:'',
-        time:10,
+        time:60,
         textCounting:'秒后重新发送',
         isAfterText:'重新发送'
     };
