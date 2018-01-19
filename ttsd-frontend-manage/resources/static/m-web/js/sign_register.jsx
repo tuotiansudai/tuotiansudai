@@ -407,11 +407,6 @@ $('.see_password').on('click',() => {
     }
 });
 
-//查看服务协议
-$('.serviceAgreement').on('click',() => {
-
-});
-
 $('.go-back-container').on('click',() => {
     history.go(-1);
 });

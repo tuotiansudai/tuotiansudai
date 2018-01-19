@@ -311,9 +311,8 @@ function inputPassword() {
             url: '/mobile-retrieve-password/m',
             data: data,
         }, function (response) {
-            console.log(response);
             if (response.data.status) {
-                // location.href = '/m/';
+                location.href = '/m';
             }
             else {
                 layer.msg(response.data.message);
