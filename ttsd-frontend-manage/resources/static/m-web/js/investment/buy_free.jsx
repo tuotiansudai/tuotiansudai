@@ -5,15 +5,15 @@ require('webJs/plugins/autoNumeric');
 
 let $confirmInvest = $('#countDownBtn');
 commonFun.countDownLoan({
-    btnDom:$confirmInvest,
-    time:3,
-    textCounting:'S',
-    isAfterText:'确定'
-},function () {
-    $confirmInvest.on('click',function () {
-        location.href='/m'
+    btnDom: $confirmInvest,
+    time: 3,
+    textCounting: 'S',
+    isAfterText: '确定'
+}, function () {
+    $confirmInvest.on('click', function () {
+        location.href = '/m'
     })
-})
+});
 
 
 

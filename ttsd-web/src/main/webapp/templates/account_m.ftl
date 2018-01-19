@@ -26,8 +26,8 @@
     </div>
 
     <div class="menu-quick">
-        <a href="recharge.ftl">充值</a>
-        <a href="cash-money.ftl">提现</a>
+        <a href="/m/recharge">充值</a>
+        <a href="/m/withdraw">提现</a>
     </div>
 
     <ul class="menu-list">
