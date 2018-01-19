@@ -338,3 +338,7 @@ $('.see_password').on('click',() => {
 $('.go-back-container').on('click',() => {
     history.go(-1);
 });
+
+$('.show-agreement').on('click',() => {
+    location.href = '/m/'
+})
