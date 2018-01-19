@@ -71,7 +71,8 @@ public enum MessageQueue {
     CreditLoanRepayQueue("CreditLoanRepayQueue"), //慧租信用贷还款
     CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
     CreditLoanBill("CreditLoanBill"),
-    Payroll("Payroll");
+    Payroll("Payroll"),
+    CreditLoanBalanceAlert("CreditLoanBalanceAlert"); // 信用贷账户余额不足，短信提醒（延时job）
 
     private final String queueName;
 
