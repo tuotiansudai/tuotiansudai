@@ -1,3 +1,26 @@
+.m-header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  background: #FF473C;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: 2px;
+    i{
+      font-size: 30px;
+    }
+  }
+  #noUse {
+    float: right;
+    padding-right: 10px;
+    font-size: 14px;
+  }
+}
+
 .bank-show {
   font-size: 12px;
   color: #808080;
@@ -28,13 +51,14 @@
   .icon-bank {
     width:30px;
     height:30px;
-    background: url('../../images/bank/bankdefault.png') left top no-repeat;
+    background: url('../../images/bank/bankdefault.png') left center no-repeat;
     background-size: 100%;
+    margin-right:20px;
   }
 
   li {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 18px 10px;
     background: #fff;

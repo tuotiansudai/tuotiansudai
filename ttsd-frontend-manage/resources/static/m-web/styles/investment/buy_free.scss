@@ -50,7 +50,17 @@
 }
 
 .input-list {
+  margin-top:20px;
   margin-bottom:50px;
+
+  li{
+    height: 45px;
+    line-height: 45px;
+  }
+
+  label, li span{
+    font-size:13px;
+  }
 }
 .input-list li.mt-10{
   margin-top: 10px;
@@ -86,12 +96,11 @@
 
 .apply-transfer-success {
   background: #fff;
-  padding-top:50px;
   text-align: center;
   box-sizing: border-box;
   em {
     display: block;
-    padding-top:20px;
+    padding-top:5px;
     font-size: 15px;
     color: #808080;
   }
@@ -108,9 +117,19 @@
   .icon-left {
     position: absolute;
     left: 10px;
-    top: 2px;
     i{
       font-size: 30px;
+      color: #fff;
     }
   }
+}
+.info{
+  padding-top:50px;
+}
+.footer{
+  position:absolute;
+  bottom:10px;
+  width:100%;
+  text-align:center;
+  font-size: 12px;
 }

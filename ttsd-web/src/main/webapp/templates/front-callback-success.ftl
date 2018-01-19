@@ -43,6 +43,12 @@
                     <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/account">点击这里</a>
                 </p>
             </#if>
+            <#if "MER_RECHARGE_PERSON" == service>
+                <p class="pay-tip">充值成功,充值金额${amount!} 元</p>
+                <p class="pay-text">
+                    <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/account">点击这里</a>
+                </p>
+            </#if>
         </#if>
 
         <p class="pay-problem">如有其他疑问请致电客服 400-169-1188（服务时间：9:00－20:00）</p>
