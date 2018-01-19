@@ -1,0 +1,125 @@
+.footer-wap-container {
+  display: flex;
+}
+.btn-look {
+  background: #ffea42;
+  border-radius: 16px;
+  border-bottom: 2px solid #fcaf2b;
+  width: 100px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+}
+
+.footer-wap-container {
+  position: relative;
+}
+.home-page-container {
+  .banner-box-inner {
+    height:170px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    .banner-img-list {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      margin:0;
+      li{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 1;
+        &:nth-child(1) {
+          z-index: 2;
+        }
+        a {
+          width:100%;
+          height:100%;
+          display: block;
+          img {
+            width:100%;
+          }
+        }
+        &.active {
+          z-index:10;
+        }
+      }
+
+    }
+    .countNum{
+      position:absolute;
+      bottom: 14px;
+      z-index: 20;
+      li{
+        width: 6px;
+        height: 6px;
+        float:left;
+        color:#fff;
+        border-radius:50%;
+        background:#fff;
+        text-align:center;
+        margin-right:8px;
+        cursor:pointer;
+        &.current{
+          background:#ff7a2a;
+          font-weight:bold;
+        }
+      }
+    }
+
+  }
+  .gift-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    text-align: right;
+    background: #fff;
+    .gift-img {
+      background: url('../images/home-gift.png') left center no-repeat;
+      background-size: 100%;
+      width:89px;
+      height:68px;
+    }
+    .gift-to-detail {
+      span {
+        display: block;
+        font-size: 16px;
+        color: #420405;
+        letter-spacing: 0;
+        font-weight: bold;
+      }
+      a {
+        color: #420405;
+      }
+    }
+  }
+
+  .company-info {
+    font-size: 12px;
+    color: #A2A2A2;
+    line-height: 20px;
+    text-align: center;
+    background: #f5f5f5;
+    padding:20px;
+  }
+}
+.btn-normal{
+  &.preheat-btn {
+    background: rgba(255,108,98,0.50)!important;
+    border: none;
+    padding: 8px 5px;
+  }
+}
+
+.newer-title {
+  span {
+    font-size: 9px;
+  }
+
+
+}

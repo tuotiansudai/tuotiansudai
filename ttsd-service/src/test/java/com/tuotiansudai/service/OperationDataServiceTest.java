@@ -35,7 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class OperationDataServiceTest {
 
     @Autowired
@@ -107,7 +108,12 @@ public class OperationDataServiceTest {
         userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setUserName("userName");
+        userModelTest.setIdentityNumber("11100419900512000");
+        userModelTest.setCity("北京");
+        userModelTest.setProvince("北京");
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+
         fakeUserHelper.create(userModelTest);
         return userModelTest;
     }

@@ -6,8 +6,12 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.BankCardUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,11 +35,33 @@ public class FrontCallbackController {
 
     private final InvestService investService;
 
+    private final LoanService loanService;
+
+    private final WithdrawService withdrawService;
+
+    private final RechargeService rechargeService;
+
+    private final BindBankCardService bindBankCardService;
+
+    private final BankCardMapper bankCardMapper;
+
     @Autowired
-    public FrontCallbackController(PayWrapperClient payWrapperClient, InvestService investService) {
+    public FrontCallbackController(PayWrapperClient payWrapperClient,
+                                   InvestService investService,
+                                   LoanService loanService,
+                                   WithdrawService withdrawService,
+                                   RechargeService rechargeService,
+                                   BindBankCardService bindBankCardService,
+                                   BankCardMapper bankCardMapper) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
+        this.loanService = loanService;
+        this.withdrawService = withdrawService;
+        this.rechargeService = rechargeService;
+        this.bindBankCardService = bindBankCardService;
+        this.bankCardMapper = bankCardMapper;
     }
+
 
     @RequestMapping(value = "/{service}", method = RequestMethod.GET)
     public ModelAndView parseCallback(@PathVariable String service, HttpServletRequest request) {
@@ -49,7 +75,9 @@ public class FrontCallbackController {
         try {
             AsyncUmPayService asyncUmPayService = AsyncUmPayService.valueOf(service.toUpperCase());
 
-            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+            if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.CUST_WITHDRAWALS).contains(asyncUmPayService)) {
                 data = payWrapperClient.validateFrontCallback(params).getData();
             }
 
@@ -60,8 +88,38 @@ public class FrontCallbackController {
             ModelAndView modelAndView = new ModelAndView("/front-callback-success");
             modelAndView.addObject("error", data.getStatus() ? null : data.getMessage());
             modelAndView.addObject("service", asyncUmPayService.name());
+
+            if (AsyncUmPayService.PTP_MER_BIND_CARD == asyncUmPayService) {
+                Long orderId = Long.valueOf(params.get("order_id"));
+                BankCardModel bankCardModel = bankCardMapper.findById(orderId);
+                modelAndView.addObject("cardNumber", bankCardModel != null ? bankCardModel.getCardNumber() : "");
+            }
+
             if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
-                modelAndView.addObject("amount", AmountConverter.convertCentToString(investService.findById(Long.valueOf(params.get("order_id"))).getAmount()));
+                InvestModel investModel = investService.findById(Long.valueOf(params.get("order_id")));
+                LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
+                modelAndView.addObject("loanName", loanModel.getName());
+                modelAndView.addObject("loanId", loanModel.getId());
+                modelAndView.addObject("serviceName", "投资成功");
+            }
+            if (AsyncUmPayService.CUST_WITHDRAWALS == asyncUmPayService) {
+                WithdrawModel withdrawModel = withdrawService.findById(Long.valueOf(params.get("order_id")));
+                BankCardModel bankCardModel = bindBankCardService.getBankCardById(withdrawModel.getBankCardId());
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(withdrawModel.getAmount()));
+                modelAndView.addObject("cardNumber", bankCardModel.getCardNumber());
+                modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCardModel.getBankCode()));
+                modelAndView.addObject("orderId", params.get("order_id"));
+                modelAndView.addObject("serviceName", "申请提现成功");
+            }
+            if (AsyncUmPayService.MER_RECHARGE_PERSON == asyncUmPayService) {
+                RechargeModel rechargeModel = rechargeService.findRechargeById(Long.valueOf(params.get("order_id")));
+                BankCardModel bankCard = bindBankCardService.getPassedBankCard(rechargeModel.getLoginName());
+                modelAndView.addObject("amount", rechargeModel.getAmount());
+                modelAndView.addObject("cardNumber", bankCard.getCardNumber());
+                modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCard.getBankCode()));
+                modelAndView.addObject("orderId", params.get("order_id"));
+                modelAndView.addObject("serviceName", "充值成功");
             }
 
             return modelAndView;

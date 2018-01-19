@@ -4,12 +4,10 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.RiskEstimateService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,9 @@ public class PersonalInfoController {
     @Autowired
     private RiskEstimateService riskEstimateService;
 
+    @Autowired
+    private BankService bankService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
@@ -61,6 +62,8 @@ public class PersonalInfoController {
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
             if (bankCard != null) {
                 mv.addObject("bankCard", bankCard.getCardNumber());
+                BankModel bankModel = bankService.findByBankCode(bankCard.getBankCode());
+                mv.addObject("bankName", bankModel.getName());
             }
         }
         return mv;
@@ -98,5 +101,11 @@ public class PersonalInfoController {
         baseDto.setData(dataDto);
         dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
         return baseDto;
+    }
+
+    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView resetUmpayPasswordPage(){
+        return new ModelAndView("reset-password");
     }
 }

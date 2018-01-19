@@ -1,0 +1,193 @@
+.tip-user-info {
+  padding: 20px;
+  em {
+    font-size: 18px;
+    color: #A2A2A2;
+    display: block;
+    text-align: center;
+    padding-bottom: 20px;
+  }
+}
+
+.info-more-bank {
+
+  font-size: 14px;
+  color: #808080;
+  padding: 20px;
+  text-align: center;
+}
+
+.bank-show {
+  font-size: 12px;
+  color: #808080;
+  line-height: 20px;
+  em {
+    font-size: 14px;
+    color: #525252;
+    display: block;
+  }
+}
+
+.input-list {
+  &.align-flex-start {
+    span.bank-info {
+      text-align: left;
+      width: auto;
+      flex: 3;
+
+      &.key {
+        color: #FF635A;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.bank-list {
+  .icon-bank {
+    width: 30px;
+    height: 30px;
+    background: url('../../images/bank/bankdefault.png') left top no-repeat;
+    background-size: 100%;
+    &.ICBC {
+      background: url('../../images/bank/ICBC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CCB {
+      background: url('../../images/bank/CCB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.ABC {
+      background: url('../../images/bank/ABC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.BOC {
+      background: url('../../images/bank/BOC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CMBC {
+      background: url('../../images/bank/CMBC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CEB {
+      background: url('../../images/bank/CEB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.COMM {
+      background: url('../../images/bank/COMM.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CIB {
+      background: url('../../images/bank/CIB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CITIC {
+      background: url('../../images/bank/CITIC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.SPDB {
+      background: url('../../images/bank/SPDB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.SPAB {
+      background: url('../../images/bank/SPAB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.GDB {
+      background: url('../../images/bank/GDB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CMB {
+      background: url('../../images/bank/CMB.png') left top no-repeat;
+      background-size: 100%;
+    }
+
+  }
+  .icon-radio {
+    width: 18px;
+    height: 18px;
+    background: url('../../images/form/icon-radio.png') left top no-repeat;
+    background-size: contain;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 10px;
+    &:nth-child(2n+1) {
+      background: #fff;
+    }
+    span {
+      width: 77%;
+    }
+    &.checked {
+      .icon-radio {
+        background: url('../../images/form/icon-radio-checked.png') left top no-repeat;
+        background-size: contain;
+      }
+      span.bank-show {
+        color: #FF635A;
+        em {
+          color: #FF635A;
+        }
+      }
+    }
+  }
+}
+
+//成功页面
+.bank-card-success {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  .info {
+    height: 250px;
+    background: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding-top: 26px;
+  }
+  .button-note {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: calc(100% - 250px);
+    .btn-wap-normal {
+      width: 100%;
+    }
+    span {
+      font-size: 12px;
+      color: #A2A2A2;
+      padding-bottom: 30px;
+    }
+  }
+  em {
+    display: block;
+    padding-top: 20px;
+    font-size: 15px;
+    color: #808080;
+  }
+
+  .input-list {
+    width: 100%;
+    border-top: 1px solid #F7F7F7;
+    margin-top: 20px;
+    li {
+      font-size: 13px;
+      height: 50px;
+      line-height: 50px;
+      color: #525252;
+      label {
+        color: #808080;
+      }
+    }
+  }
+}
