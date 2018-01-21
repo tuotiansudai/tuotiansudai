@@ -3,6 +3,7 @@
 }
 body {
   background: #fff;
+  font-weight: normal!important;
 }
 .sign-container {
   width: 100%;
@@ -24,6 +25,7 @@ body {
     }
   }
   input {
+    font-size: .7rem!important;
     width:17.5rem;
     height: 2rem;
     margin: 0 auto;
@@ -32,6 +34,9 @@ body {
     border-width: 0;
     border-bottom:.05rem solid #F2F2F2;
     color: #525252;
+    &.next_input {
+      margin-top: 1rem;
+    }
   }
   .error {
     color: #525252;
@@ -61,6 +66,7 @@ body {
     font-size: 1.2rem;
     background: #F2F2F2;
     color: #FF473B;
+    font-weight: normal;
     &.show-mobile-entry {
       display: none;
     }
@@ -101,7 +107,7 @@ body {
         text-align: left;
         color: #FF473C;
         line-height: 1rem;
-        margin-top: .5rem;
+        margin-top: 1.5rem;
         padding-left: .9rem;
         position: relative;
         cursor: pointer;
@@ -124,9 +130,11 @@ body {
       }
 
       .referrer {
+        margin-top: .6rem;
         &.closed {
           height: 1px;
           padding: 0;
+          margin-top: 0;
         }
       }
       .show-agreement {
@@ -158,6 +166,7 @@ body {
       display: flex;
       justify-content: flex-end;
       flex-direction: column;
+      margin-top: 3.5rem;
       .success-text {
         font-size: 1rem;
         color: #525252;
@@ -244,6 +253,7 @@ body {
       background-size: contain;
       &.close_btn1 {
         left: 9.8rem;
+        top: 1.7rem;
       }
     }
   }
@@ -252,7 +262,7 @@ body {
     .close_btn {
       display: none;
       position: absolute;
-      top: .7rem;
+      top: 1.7rem;
       left: 14.9rem;
       width: .6rem;
       height: .6rem;
@@ -261,12 +271,15 @@ body {
     }
     .see_password {
       position: absolute;
-      top: .7rem;
+      top: 1.7rem;
       left: 17rem;
       width: 1.1rem;
       height: .6rem;
       background: url("../images/close_password.png") no-repeat;
       background-size: contain;
+      &.see_password1 {
+        top: .7rem;
+      }
       &.open_eye {
         background: url("../images/open_password.png") no-repeat;
         background-size: contain;
@@ -280,7 +293,7 @@ body {
 #formRegister .captcha_container .get-captcha, #retrieveForm .captcha_container .get-captcha{
   position: absolute;
   right: 0;
-  top: .5rem;
+  top: 1.5rem;
   width: 7.5rem;
   height: 1rem;
   line-height: 1rem;
@@ -399,4 +412,13 @@ body {
   text-align: center;
   font-size: 16px;
   color: #525252;
+}
+.shade_mine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.70);
 }

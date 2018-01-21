@@ -146,6 +146,7 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
 (function () {
     let formCaptcha = globalFun.$('#formCaptcha');
     function sendCaptcha() {
+        $('.shade_mine').hide();
         layer.closeAll();
         isSendingCaptcha = true;
         let ajaxOption = {
@@ -207,10 +208,12 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
         if (/\d{5}/.test(imageCaptcha)) {
             if (isSendingCaptcha) return;
             if (isVoice) {
+                $('.shade_mine').show(); // hack ios shade
                 commonFun.CommonLayerTip({
                     btn: ['知道了','不发送'],
                     area:['280px', '160px'],
                     content: $('#freeSuccess'),
+                    shade: false  // hack ios shade
                 },() => {
                     sendCaptcha();
                 });

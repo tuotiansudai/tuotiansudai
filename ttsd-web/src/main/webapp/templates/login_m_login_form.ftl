@@ -16,7 +16,7 @@
             <img src="https://tuotiansudai.com/login/captcha??1498029727557" class="image-captcha" id="imageCaptcha"/>
         </div>
         <div class="password_container">
-            <input validate class="password" type="password" name="password" placeholder="请输入登录密码" maxlength="20"/>
+            <input validate class="password next_input" type="password" name="password" placeholder="请输入登录密码" maxlength="20"/>
             <div class="see_password"></div>
             <div class="close_btn"></div>
         </div>

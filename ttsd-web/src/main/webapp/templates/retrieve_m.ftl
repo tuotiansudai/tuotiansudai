@@ -29,7 +29,7 @@
             <input type="hidden" name="redirectToAfterRegisterSuccess" value="/bind-success?redirect=${redirect!('/')}">
 
             <div class="captcha_container">
-                <input validate name="captcha" class="short-message-captcha" type="text" placeholder="请输入短信验证码" maxlength="6"/>
+                <input validate name="captcha" class="short-message-captcha next_input" type="text" placeholder="请输入短信验证码" maxlength="6"/>
                 <div class="close_btn close_btn1"></div>
                 <div class="get-captcha">
                     <div class="get-captcha-icon"></div>
@@ -51,7 +51,7 @@
         </div>
         <form id="inputPasswordForm">
             <div class="password_container">
-                <div class="see_password"></div>
+                <div class="see_password see_password1"></div>
                 <div class="close_btn"></div>
                 <input name="password" type="password" id="newPassword" class="password" maxlength="20" placeholder="重设登录密码（6-16位字母数字组合）"/>
             </div>
