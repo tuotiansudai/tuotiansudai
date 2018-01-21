@@ -11,25 +11,46 @@
     <div id="wrapperOut" class="loan-list-frame">
         <div class="loan-list-content">
             <div class="category-box-main">
-                <div class="target-category-box" data-url="loan-transfer-detail.ftl">
-                    <b class="newer-title">ZR20161121-001</b>
+                <#list transferApplicationItemList as transferApplicationItem>
+                <div class="target-category-box transferLi" data-url="/m/transfer/${(transferApplicationItem.transferApplicationId)!}">
+                    <b class="newer-title">${transferApplicationItem.name!}</b>
                     <ul class="loan-info clearfix">
-                        <li><span class="percent-number"> <i>10.5</i>%</span><em class="note">预期年化收益</em></li>
-                        <li><em class="duration-day">30</em> 天 <em class="note">剩余天数</em></li>
-                        <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
+                        <li><span class="percent-number <#if (transferApplicationItem.transferStatus == "SUCCESS")>colorChange</#if>"> <i>${transferApplicationItem.baseRate!}</i><b class="percentSmall">%</b></span><em class="note">预期年化收益</em></li>
+                        <li><em class="duration-day">${transferApplicationItem.leftDays!}</em> 天 <em class="note">剩余天数</em></li>
+                        <#if (transferApplicationItem.transferStatus == "SUCCESS")>
+                            <li><a href="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="tranfered"></a></li>
+                        <#else>
+                            <li><a href="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="btn-invest btn-normal">立即投资</a></li>
+                        </#if>
+
                     </ul>
                     <div class="table-row progress-column">
-
-                        <span class="p-title"><i class="price">转让价格：10,085.00元</i>/12,000.00元(原)</span>
+                        <span class="p-title">
+                            <i class="price <#if (transferApplicationItem.transferStatus == "SUCCESS")>colorChange</#if>">转让价格：<@percentInteger>${transferApplicationItem.transferAmount!}</@percentInteger><@percentFraction>${transferApplicationItem.transferAmount!}</@percentFraction>元</i>/<@percentInteger>${transferApplicationItem.investAmount!}</@percentInteger><@percentFraction>${transferApplicationItem.investAmount!}</@percentFraction>元(原)
+                        </span>
                     </div>
                 </div>
+                </#list>
             </div>
             <div id="pullUp">
                 <span class="pullUpLabel">上拉加载更多</span>
             </div>
-
-
     </div>
-
+        <div class="loan-list">
+            <div class="footer-wap-container">
+                <a class="menu-home" href="/m">
+                    <i></i>
+                    <span>首页</span>
+                </a>
+                <a class="menu-invest current" href="/m/loan-list">
+                    <i></i>
+                    <span>投资</span>
+                </a>
+                <a class="menu-my">
+                    <i></i>
+                    <span>我的</span>
+                </a>
+            </div>
+        </div>
 </div>
 </@global.main>
