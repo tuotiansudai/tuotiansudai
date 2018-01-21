@@ -53,7 +53,7 @@
                                         ~ <@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
                                     </#if>
                                 </#if>
-                            </i>%
+                            </i><em>%</em>
                         </span>
                                 <em class="note">预期年化收益</em>
                             </li>
@@ -87,9 +87,9 @@
                                             放标</span>
                                     </#if>
                                 </#if>
-                                <span class="p-title">剩余金额：<i>${loanItem.alert}</i></span>
+                                <span class="p-title">剩余金额：<span class="amontDom"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                             <#else>
-                                <span class="p-title">剩余金额：<i>0元</i></span>
+                                <span class="p-title allReady"><i>${loanItem.alert}</i></span>
                             </#if>
                         </div>
                     </#if>
