@@ -1,4 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
+<#import "../macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.anxin_electro_success}" pageJavascript="${m_js.anxin_electro_success}" title="安心签电子签章服务已开启">
 

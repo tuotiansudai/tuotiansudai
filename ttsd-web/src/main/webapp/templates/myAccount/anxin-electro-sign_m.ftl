@@ -1,4 +1,4 @@
-<#import "../macro/global-dev.ftl" as global>
+<#import "../macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.anxin_electro_sign}" pageJavascript="${m_js.anxin_electro_sign}" title="安心签电子签章服务">
 
@@ -26,7 +26,9 @@
         </span>
     </div>
 
-    <button type="button" class="btn-wap-normal next-step" id="openSafetySigned">立即开启</button>
+    <@global.role hasRole="'INVESTOR'">
+        <button type="button" class="btn-wap-normal next-step" id="openSafetySigned">立即开启</button>
+    </@global.role>
 
     <div class="agreement-box">
         <span class="init-checkbox-style on">
