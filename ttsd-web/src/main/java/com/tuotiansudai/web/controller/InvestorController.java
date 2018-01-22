@@ -90,8 +90,11 @@ public class InvestorController {
     @RequestMapping(path = "/invest/{investId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView investDetail(@PathVariable long investId) {
         InvestorInvestDetailDto investDetail = investService.getInvestDetailById(investId);
+        if (investDetail == null) {
+            return new ModelAndView("/error/404");
+        }
         ModelAndView mv = new ModelAndView("/investor-invest-detail");
-        mv.addObject("investDetail", investDetail);
+        mv.addObject("invest", investDetail);
         return mv;
     }
 }

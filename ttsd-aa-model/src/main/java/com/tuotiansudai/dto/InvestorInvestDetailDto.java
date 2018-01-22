@@ -1,151 +1,270 @@
 package com.tuotiansudai.dto;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.*;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InvestorInvestDetailDto implements Serializable {
 
-    private long investId;
-
+    //标的ID
     private long loanId;
 
+    //标的名称
     private String loanName;
 
-    private long amount;
+    //基本利率
+    private double baseRate;
 
-    private long expectInterest;
+    //活动利率
+    private double activityRate;
 
-    private long repayAmount;
-
-    private long unRepayAmount;
-
-    private Date interestBeginTime;
-
-    private Date deadline;
-
-    private double annualizedRate;
-    /**
-     * 借款天数
-     */
+    //借款天数
     private int duration;
 
+    //生息类别
+    private InterestInitiateType interestInitiateType;
+
+    //标的类型
+    private ProductType productNewType;
+
+    //投资ID
+    private long investId;
+
+    //投资金额
+    private long investAmount;
+
+    //预计收益
+    private long expectedInterest;
+
+    //已收收益
+    private long actualInterest;
+
+    //投资时间
     private Date investTime;
 
-    private ProductType productType;
+    //放款时间
+    private Date recheckTime;
 
-    private String contractNo;
+    //起息日
+    private Date interestBeginDate;
 
+    //到期日
+    private Date lastRepayDate;
+
+    //待收回款
+    private long unPaidRepay;
+
+    //会员等级
+    private int membershipLevel;
+
+    //服务费折扣描述
+    private String serviceFeeDesc;
+
+    //所用优惠券
+    private List<String> usedCoupons = new ArrayList<>();
+
+    //回款记录
+    private List<InvestorInvestRepayDto> investRepays = new ArrayList<>();
+
+    //合同地址
     private String contractUrl;
 
-//    coupons;
-//    membership;
-
-    private List<InvestorInvestRepayDto> repayList;
-
-    public InvestorInvestDetailDto(
-            InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModelList,
-            long expectInterest) {
-        this.investId = investModel.getId();
-        this.loanId = loanModel.getId();
-        this.loanName = loanModel.getName();
-        this.amount = investModel.getAmount();
-        this.expectInterest = expectInterest;
-
-        if (Arrays.asList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanModel.getType())) {
-            this.interestBeginTime = investModel.getInvestTime();
-        } else {
-            this.interestBeginTime = loanModel.getRecheckTime();
-        }
-        this.deadline = loanModel.getDeadline();
-        this.annualizedRate = loanModel.getBaseRate() + loanModel.getActivityRate();
+    public InvestorInvestDetailDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
+        this.loanId = transferApplicationModel.getLoanId();
+        this.loanName = transferApplicationModel.getName();
+        this.baseRate = loanModel.getBaseRate();
+        this.activityRate = loanModel.getActivityRate();
         this.duration = loanModel.getDuration();
-        this.investTime = investModel.getInvestTime();
-
-        this.repayAmount = investRepayModelList.stream()
-                .filter(r -> r.getStatus().equals(RepayStatus.COMPLETE))
-                .map(InvestRepayModel::getRepayAmount)
-                .reduce((a, b) -> a + b)
-                .orElse(0L);
-        this.unRepayAmount = investModel.getAmount() + this.expectInterest - this.repayAmount;
-        this.repayList = investRepayModelList.stream().map(InvestorInvestRepayDto::new).collect(Collectors.toList());
-        this.productType = loanModel.getProductType();
-        this.contractNo = investModel.getContractNo();
-        if (!Strings.isNullOrEmpty(contractNo) && !ProductType.EXPERIENCE.equals(loanModel.getProductType())) {
-            if ("OLD".equalsIgnoreCase(investModel.getContractNo())) {
-                this.contractUrl = String.format("/contract/investor/loanId/%d/investId/%d", loanId, investId);
-            } else {
-                this.contractUrl = String.format("/contract/invest/contractNo/%s", contractNo);
-            }
-        }
+        this.interestInitiateType = loanModel.getType().getInterestInitiateType();
+        this.productNewType = loanModel.getProductType();
+        this.investId = transferApplicationModel.getInvestId();
+        this.investAmount = transferApplicationModel.getInvestAmount();
+        this.investTime = transferApplicationModel.getTransferTime();
+        this.recheckTime = loanModel.getRecheckTime();
+        this.interestBeginDate = loanModel.getRecheckTime();
     }
 
-    public long getInvestId() {
-        return investId;
+    public InvestorInvestDetailDto(LoanModel loanModel, InvestModel investModel) {
+        this.loanId = loanModel.getId();
+        this.loanName = loanModel.getName();
+        this.baseRate = loanModel.getBaseRate();
+        this.activityRate = loanModel.getActivityRate();
+        this.duration = loanModel.getDuration();
+        this.interestInitiateType = loanModel.getType().getInterestInitiateType();
+        this.productNewType = loanModel.getProductType();
+        this.investId = investModel.getId();
+        this.investAmount = investModel.getAmount();
+        this.investTime = investModel.getInvestTime();
     }
 
     public long getLoanId() {
         return loanId;
     }
 
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
+
     public String getLoanName() {
         return loanName;
     }
 
-    public long getAmount() {
-        return amount;
+    public void setLoanName(String loanName) {
+        this.loanName = loanName;
     }
 
-    public long getExpectInterest() {
-        return expectInterest;
+    public double getBaseRate() {
+        return baseRate;
     }
 
-    public long getRepayAmount() {
-        return repayAmount;
+    public void setBaseRate(double baseRate) {
+        this.baseRate = baseRate;
     }
 
-    public long getUnRepayAmount() {
-        return unRepayAmount;
+    public double getActivityRate() {
+        return activityRate;
     }
 
-    public Date getInterestBeginTime() {
-        return interestBeginTime;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public double getAnnualizedRate() {
-        return annualizedRate;
+    public void setActivityRate(double activityRate) {
+        this.activityRate = activityRate;
     }
 
     public int getDuration() {
         return duration;
     }
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public InterestInitiateType getInterestInitiateType() {
+        return interestInitiateType;
+    }
+
+    public void setInterestInitiateType(InterestInitiateType interestInitiateType) {
+        this.interestInitiateType = interestInitiateType;
+    }
+
+    public ProductType getProductNewType() {
+        return productNewType;
+    }
+
+    public void setProductNewType(ProductType productNewType) {
+        this.productNewType = productNewType;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
+    }
+
+    public long getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
+    }
+
+    public long getExpectedInterest() {
+        return expectedInterest;
+    }
+
+    public void setExpectedInterest(long expectedInterest) {
+        this.expectedInterest = expectedInterest;
+    }
+
+    public long getActualInterest() {
+        return actualInterest;
+    }
+
+    public void setActualInterest(long actualInterest) {
+        this.actualInterest = actualInterest;
+    }
+
     public Date getInvestTime() {
         return investTime;
     }
 
-    public List<InvestorInvestRepayDto> getRepayList() {
-        return repayList;
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
     }
 
-    public ProductType getProductType() {
-        return productType;
+    public Date getRecheckTime() {
+        return recheckTime;
     }
 
-    public String getContractNo() {
-        return contractNo;
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
+    }
+
+    public Date getInterestBeginDate() {
+        return interestBeginDate;
+    }
+
+    public void setInterestBeginDate(Date interestBeginDate) {
+        this.interestBeginDate = interestBeginDate;
+    }
+
+    public Date getLastRepayDate() {
+        return lastRepayDate;
+    }
+
+    public void setLastRepayDate(Date lastRepayDate) {
+        this.lastRepayDate = lastRepayDate;
+    }
+
+    public long getUnPaidRepay() {
+        return unPaidRepay;
+    }
+
+    public void setUnPaidRepay(long unPaidRepay) {
+        this.unPaidRepay = unPaidRepay;
+    }
+
+    public int getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(int membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
+
+    public String getServiceFeeDesc() {
+        return serviceFeeDesc;
+    }
+
+    public void setServiceFeeDesc(String serviceFeeDesc) {
+        this.serviceFeeDesc = serviceFeeDesc;
+    }
+
+    public List<String> getUsedCoupons() {
+        return usedCoupons;
+    }
+
+    public void setUsedCoupons(List<String> usedCoupons) {
+        this.usedCoupons = usedCoupons;
+    }
+
+    public List<InvestorInvestRepayDto> getInvestRepays() {
+        return investRepays;
+    }
+
+    public void setInvestRepays(List<InvestorInvestRepayDto> investRepays) {
+        this.investRepays = investRepays;
     }
 
     public String getContractUrl() {
         return contractUrl;
+    }
+
+    public void setContractUrl(String contractUrl) {
+        this.contractUrl = contractUrl;
     }
 }
