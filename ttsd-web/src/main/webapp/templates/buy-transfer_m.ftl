@@ -19,7 +19,7 @@
             <ul class="input-list">
                 <li>
                     <label class="transfer-lable">转让价格</label>
-                    <input class="transfer-price" type="text" value="${transferApplication.transferAmount}" name="amount" readonly>
+                    <input class="transfer-price" type="text" value="${transferApplication.transferAmount}" readonly>
                     <em class="transfer-lable">元</em>
                 </li>
             </ul>
