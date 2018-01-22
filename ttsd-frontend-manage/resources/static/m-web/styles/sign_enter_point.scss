@@ -1,35 +1,56 @@
 .layui-layer-msg {
   width:70%;
 }
-
+body {
+  background: #fff;
+  font-weight: normal!important;
+}
 .sign-container {
-  padding-top: 30px;
+  width: 100%;
+  height: 100%;
   text-align: center;
-  height: 92vh;
   background: #fff;
   box-sizing: border-box;
+  #EntryPointForm {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      right: .65rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+  }
   input {
-    width:100%;
+    font-size: .7rem!important;
+    width:17.5rem;
+    height: 2rem;
+    margin: 0 auto;
     box-sizing: border-box;
-    padding: 10px 6px;
+    padding: .5rem .3rem;
     border-width: 0;
-    border-bottom:1px solid #F2F2F2;
+    border-bottom:.05rem solid #F2F2F2;
     color: #525252;
-    margin-bottom:10px;
+    &.next_input {
+      margin-top: 1rem;
+    }
   }
   .error {
     color: #525252;
   }
   .logo-note {
     color: #FF473C;
-    font-size: 13px;
+    font-size: .65rem;
     text-align: center;
-    padding-top:20px;
-    margin-bottom: 40px;
+    margin-bottom: 2rem;
+    overflow: hidden;
     .logo {
-      width:147px;
-      height:36px;
-      margin: 20px auto;
+      width:7.35rem;
+      height:1.8rem;
+      margin: 3.25rem auto .8rem auto;
       display: block;
       background: url('../images/logo-re.png') center center no-repeat;
       background-size: 100%;
@@ -37,86 +58,66 @@
     }
   }
   .show-mobile {
+    margin: 0 auto;
+    width: 17.55rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
     background: #F2F2F2;
     color: #FF473B;
-    font-size: 24px;
-    padding: 0px;
-    display: block;
-    text-align: center;
-    line-height: 40px;
+    font-weight: normal;
+    &.show-mobile-entry {
+      display: none;
+    }
   }
   .next-step {
-    margin-top:30px;
+    margin-top:1.5rem;
   }
 
   &.sign-login {
-
     text-align: center;
     .show-mobile {
+      margin: 2.5rem auto .5rem auto;
       background: transparent;
-      padding-bottom: 8px;
     }
-    .captcha,.short-message-captcha {
-      width:70%;
+    .captcha {
+      width: 12.55rem;
+      margin-right: .3rem;
     }
     .image-captcha {
-      width:28%;
-      margin-bottom: 10px;
+      width: 4.5rem;
+      height: 1.8rem;
     }
     .get-password {
       display: inline-block;
       width:80%;
       text-align: right;
 
-      margin: 5px auto;
+      margin: .25rem auto;
       a {
         color: #808080;
       }
     }
 
     .form-register {
-      font-size: 14px;
-      .short-message-captcha {
-        float: left;
-      }
-      .get-captcha {
-        float: left;
-        width: 30%;
-        color: #525252;
-        box-sizing: border-box;
-        padding: 5px 0px;
-        border-bottom: 1px solid #F2F2F2;
-        margin-bottom: 10px;
-        line-height: 26px;
-        font-size:13px;
-
-        &:before {
-          display: inline-block;
-          height:20px;
-          width:1px;
-          background: #E5E5E5;
-          content:'';
-          margin-right: 20px;
-          vertical-align: middle;
-        }
-      }
-
+      font-size: .7rem;
       .invite-mobile {
         display: block;
         text-align: left;
         color: #FF473C;
-        line-height: 20px;
-        margin-top: 10px;
-        padding-left: 6px;
+        line-height: 1rem;
+        margin-top: 1.5rem;
+        padding-left: .9rem;
         position: relative;
         cursor: pointer;
         i {
-          width:15px;
-          height:15px;
+          width: .75rem;
+          height: .75rem;
           background: url('../images/icon-up.png') right center no-repeat;
           background-size: 100%;
           position: absolute;
-          right: 15px;
+          right: .75rem;
           top:0;
         }
 
@@ -129,29 +130,31 @@
       }
 
       .referrer {
+        margin-top: .6rem;
         &.closed {
           height: 1px;
           padding: 0;
+          margin-top: 0;
         }
       }
       .show-agreement {
         color: #808080;
-        font-size: 12px;
-        text-align: left;
-        width:80%;
-        margin:5px auto;
+        font-size: .6rem;
+        text-align: center;
+        width:100%;
         display: block;
+        margin-top: .2rem;
       }
 
     }
 
     .btn-ok-update {
-      margin-top:30px;
+      margin-top:.75rem;
     }
   }
 
   &.register-success {
-    font-size: 15px;
+    font-size: .75rem;
     color: #808080;
     text-align: center;
     display: flex;
@@ -163,8 +166,9 @@
       display: flex;
       justify-content: flex-end;
       flex-direction: column;
+      margin-top: 3.5rem;
       .success-text {
-        font-size: 20px;
+        font-size: 1rem;
         color: #525252;
       }
     }
@@ -177,33 +181,244 @@
         background: url('../images/sign-reward.png') center center no-repeat;
         background-size: contain;
         flex: 5;
-        width:80%;
+        width: 12.5rem;
+        height: 7.5rem;
       }
       .note {
-        font-size: 10px;
-        padding-bottom: 30px;
+        font-size: .5rem;
+        padding-bottom: 1.5rem;
         flex: 1;
       }
     }
     .success-button {
       flex: 1.5;
       .note2 {
-        font-size: 12px;
-        padding-top: 10px;
+        font-size: .6rem;
+        padding-top: .5rem;
         display: block;
       }
       .only-border {
-        margin-top:20px;
+        margin-top:1rem;
       }
     }
   }
-
 }
 
-@media screen and (max-width: 350px) {
-  .sign-container.sign-login .form-register .show-agreement {
-    width:100%;
+.goBack_wrapper {
+  position: relative;
+  width: 100%;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  font-size: .85rem;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: .1rem;
+    top: .35rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: .4rem 0 0 .5rem;
+      width: .45rem;
+      height: .7rem;
+      background: url("../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
   }
-
 }
 
+.login_container {
+  display: none;
+}
+
+.register_container {
+  display: none;
+}
+
+#formLogin, #formCaptcha,#formRegister,#retrieveForm,#inputPasswordForm{
+  .captcha_container {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      left: 11.8rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+      &.close_btn1 {
+        left: 9.8rem;
+        top: 1.7rem;
+      }
+    }
+  }
+  .password_container {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: 1.7rem;
+      left: 14.9rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+    .see_password {
+      position: absolute;
+      top: 1.7rem;
+      left: 17rem;
+      width: 1.1rem;
+      height: .6rem;
+      background: url("../images/close_password.png") no-repeat;
+      background-size: contain;
+      &.see_password1 {
+        top: .7rem;
+      }
+      &.open_eye {
+        background: url("../images/open_password.png") no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+}
+#formRegister .captcha_container, #retrieveForm .captcha_container {
+  position: relative;
+}
+#formRegister .captcha_container .get-captcha, #retrieveForm .captcha_container .get-captcha{
+  position: absolute;
+  right: 0;
+  top: 1.5rem;
+  width: 7.5rem;
+  height: 1rem;
+  line-height: 1rem;
+  font-size: .7rem;
+  color: #525252;
+  border: none;
+  border-left: .05rem solid #E5E5E5;
+  background: #fff;
+  outline: none;
+}
+#formRegister .captcha_container .get-captcha.count-downing, #retrieveForm .captcha_container .get-captcha.count-downing{
+  color: #C9C9C9;
+}
+
+.show-mobile-register {
+  margin: 2.5rem auto .5rem auto;
+  background: transparent;
+}
+
+.bottom_button_text {
+  margin-top: .3rem;
+  width: 100%;
+  height: .85rem;
+  line-height: .85rem;
+  font-size: .6rem;
+  color: #808080;
+  text-align: center;
+}
+.bottom_button_text .bottom_icon {
+  position: relative;
+  top: -.1rem;
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  background: url("../images/safe_promise.png") no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+.next_step_container {
+  margin-top: 3rem;
+  position: relative;
+  .close_btn {
+    display: none;
+    position: absolute;
+    top: .7rem;
+    left: 14.9rem;
+    width: .6rem;
+    height: .6rem;
+    background: url("../images/close_btn.png") no-repeat;
+    background-size: contain;
+  }
+  .see_password {
+    position: absolute;
+    top: .7rem;
+    left: 17rem;
+    width: 1.1rem;
+    height: .6rem;
+    background: url("../images/close_password.png") no-repeat;
+    background-size: contain;
+    &.open_eye {
+      background: url("../images/open_password.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
+
+.reset_two {
+  display: none;
+}
+
+#inputPasswordForm {
+  margin-top: 4rem;
+}
+
+.get-captcha-icon {
+  position: relative;
+  top: -.05rem;
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: url("../images/message_get.png") no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+.get-captcha-icon.message_send {
+  background: url("../images/message_send.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-icon.voice_get {
+  background: url("../images/voice_get.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-icon.voice_send {
+  background: url("../images/voice_send.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-text {
+  display: inline-block;
+}
+.get-captcha-text.count-downing {
+  color: #C9C9C9;
+}
+.success-info-tip {
+  padding: 0;
+}
+.pop_title {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #525252;
+}
+.shade_mine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.70);
+}
