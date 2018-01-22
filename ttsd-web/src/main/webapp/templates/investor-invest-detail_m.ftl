@@ -79,13 +79,14 @@
                 <label>购买日期</label>
                 <em>${invest.investTime?string("yyyy/MM/dd HH:mm:ss")}</em>
             </li>
+            <#if !invest.experience>
             <li class="loan-detail-link" data-url="/m/loan/${invest.loanId?string.computer}">
                 <label>产品详情</label>
                 <a href="/m/loan/${invest.loanId?string.computer}">
                     <i class="fa fa-angle-right"></i>
                 </a>
             </li>
-
+            </#if>
             <#if invest.contractUrl??>
             <li class="invest-contract-link" data-url="${invest.contractUrl}">
                 <label>查看合同</label>
