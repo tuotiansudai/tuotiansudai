@@ -95,7 +95,10 @@ public class FrontCallbackController {
                 modelAndView.addObject("cardNumber", bankCardModel != null ? bankCardModel.getCardNumber() : "");
             }
 
-            if (Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
+            if (Lists.newArrayList(
+                    AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD,
+                    AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD
+                    ).contains(asyncUmPayService)) {
                 InvestModel investModel = investService.findById(Long.valueOf(params.get("order_id")));
                 LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
