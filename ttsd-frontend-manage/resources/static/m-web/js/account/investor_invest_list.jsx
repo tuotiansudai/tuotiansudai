@@ -16,8 +16,13 @@ menuClick({
 });
 
 $iconMyInvest.on('click',function () {
-    location.href='/m'
-})
+    location.href='/m/account'
+});
+
+$(document).on('click', '.invest-item', function (e) {
+   let investId = $(this).data('invest-id');
+   location.href=`/m/investor/invest/${investId}/detail`;
+});
 
 function isPassive() {
     var supportsPassiveOption = false;

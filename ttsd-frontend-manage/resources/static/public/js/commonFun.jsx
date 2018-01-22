@@ -258,7 +258,7 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
     let defaultOption = {
         btn:['确定', '取消'],
         content:$('#turnOnSendCaptcha'),
-        area:['280px', '230px']
+        area:['280px', '230px'],
     };
 
     let optionOk = $.extend({},defaultOption,option);
@@ -270,6 +270,7 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
         shadeClose: false,
         skin: 'tip-square-box',
         btn: optionOk.btn,
+        shade: optionOk.shade,
         content: optionOk.content,
         btn1: function () {
             firstCallback && firstCallback();
