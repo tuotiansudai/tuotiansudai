@@ -1,7 +1,9 @@
 require('mWebStyle/investment/loan_list.scss');
 let commonFun = require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
-
+require('webJs/plugins/autoNumeric');
+let $amontDom = $('.amontDom');
+$amontDom.autoNumeric('init');
 let $content = $('.loan-list-content .category-box-main');
 
 
@@ -42,6 +44,7 @@ function getMore() {
         function (data) {
             if($(data).find("#wrapperOut .loan-list-content .category-box-main").html().trim().length > 0){
                 $content.append($(data).find("#wrapperOut .loan-list-content .category-box-main").html());
+
                 myScroll.refresh();
             }else {
                 $('#pullUp').find('.pullUpLabel').html('没有更多数据了')

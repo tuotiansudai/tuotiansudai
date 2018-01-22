@@ -3,7 +3,7 @@
     <div class="select-btn">
         <p class="to-coupon">
             <a href="javascript:;" id="exchangeCoupon">
-                <i class="fa fa-plus-circle"></i>兑换码兑换
+                <i class="icon"></i>兑换码兑换
             </a>
         </p>
 
