@@ -60,3 +60,31 @@ body {
     }
   }
 }
+
+
+.goBack_wrapper {
+  position: relative;
+  width: 100%;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  font-size: .85rem;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: .1rem;
+    top: .35rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: .4rem 0 0 .5rem;
+      width: .45rem;
+      height: .7rem;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}

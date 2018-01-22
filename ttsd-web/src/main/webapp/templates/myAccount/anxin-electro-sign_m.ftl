@@ -3,6 +3,13 @@
 <@global.main pageCss="${m_css.anxin_electro_sign}" pageJavascript="${m_js.anxin_electro_sign}" title="安心签电子签章服务">
 
 
+<div class="goBack_wrapper">
+    安心签电子签章服务
+    <div class="go-back-container" id="goBack_applyTransfer">
+        <span class="go-back"></span>
+    </div>
+</div>
+
 <div class="my-account-content anxin-electro-sign" id="anxinElectroSign">
     <div class="cfca-logo">
 

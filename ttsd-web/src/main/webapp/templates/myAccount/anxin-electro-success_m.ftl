@@ -2,6 +2,12 @@
 
 <@global.main pageCss="${m_css.anxin_electro_success}" pageJavascript="${m_js.anxin_electro_success}" title="安心签电子签章服务已开启">
 
+<div class="goBack_wrapper">
+    安心签电子签章服务
+    <div class="go-back-container" id="goBack_applyTransfer">
+        <span class="go-back"></span>
+    </div>
+</div>
 
 <div class="my-account-content anxin-electro-success" id="anxinElectroSign">
 
