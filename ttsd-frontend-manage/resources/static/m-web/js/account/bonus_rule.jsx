@@ -16,25 +16,25 @@ if($recommendRule.length) {
         $scanCode.show();
         $rewardRules.hide();
         $recommendRule.hide();
-        $iconScanCode.on('click',function () {
-            $scanCode.hide();
-            $rewardRules.hide();
-            $recommendRule.show();
-        })
+
     })
     $toRewardRules.on('click',function () {
         $scanCode.hide();
         $rewardRules.show();
         $recommendRule.hide();
-        $iconRewardRules.on('click',function () {
-            $rewardRules.hide();
-            $recommendRule.show();
-        })
+
     })
 
     $iconRecomend.on('click',function () {
        location.href = '/m'
     })
-
-
+$scanCode.on('click','#iconScanCode',function () {
+    $scanCode.hide();
+    $rewardRules.hide();
+    $recommendRule.show();
+})
+$rewardRules.on('click','#iconRewardRules',function () {
+    $rewardRules.hide();
+    $recommendRule.show();
+})
 }
