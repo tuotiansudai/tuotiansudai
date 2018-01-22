@@ -89,11 +89,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean resetUmpayPassword(String loginName, String identityNumber) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null || identityNumber == null || !userModel.getIdentityNumber().endsWith(identityNumber)
-                || identityNumber.length() < 4) {
+        if (userModel == null || identityNumber == null || identityNumber.length() < 4
+                || !userModel.getIdentityNumber().endsWith(identityNumber)) {
             return false;
         }
-        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
+        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, userModel.getIdentityNumber());
         return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
 
