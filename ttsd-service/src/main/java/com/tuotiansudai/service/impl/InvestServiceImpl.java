@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -797,7 +798,7 @@ public class InvestServiceImpl implements InvestService {
             return "";
         }
         if (CouponType.INTEREST_COUPON.equals(couponModel.getCouponType())) {
-            return String.format("%f%s加息券", (couponModel.getRate() * 100), "%");
+            return String.format("%s%s加息券", new DecimalFormat("#.##").format(couponModel.getRate() * 100), "%");
         }
         if (CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) {
             return CouponType.BIRTHDAY_COUPON.getName();
