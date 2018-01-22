@@ -216,6 +216,8 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
                     shade: false  // hack ios shade
                 },() => {
                     sendCaptcha();
+                },() => {
+                    $('.shade_mine').hide(); // hack ios shade
                 });
             } else {
                 sendCaptcha();
