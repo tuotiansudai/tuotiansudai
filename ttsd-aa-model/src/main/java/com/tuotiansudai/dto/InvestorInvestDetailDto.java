@@ -72,7 +72,13 @@ public class InvestorInvestDetailDto implements Serializable {
     //合同地址
     private String contractUrl;
 
-    public InvestorInvestDetailDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
+    //体验金投资
+    private boolean experience;
+
+    //用户累计直投项目
+    private long userInvestAmountTotal;
+
+    public InvestorInvestDetailDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel, long userInvestAmountTotal) {
         this.loanId = transferApplicationModel.getLoanId();
         this.loanName = transferApplicationModel.getName();
         this.baseRate = loanModel.getBaseRate();
@@ -85,9 +91,11 @@ public class InvestorInvestDetailDto implements Serializable {
         this.investTime = transferApplicationModel.getTransferTime();
         this.recheckTime = loanModel.getRecheckTime();
         this.interestBeginDate = loanModel.getRecheckTime();
+        this.experience = ProductType.EXPERIENCE.equals(loanModel.getProductType());
+        this.userInvestAmountTotal = userInvestAmountTotal;
     }
 
-    public InvestorInvestDetailDto(LoanModel loanModel, InvestModel investModel) {
+    public InvestorInvestDetailDto(LoanModel loanModel, InvestModel investModel, long userInvestAmountTotal) {
         this.loanId = loanModel.getId();
         this.loanName = loanModel.getName();
         this.baseRate = loanModel.getBaseRate();
@@ -98,6 +106,8 @@ public class InvestorInvestDetailDto implements Serializable {
         this.investId = investModel.getId();
         this.investAmount = investModel.getAmount();
         this.investTime = investModel.getInvestTime();
+        this.experience = ProductType.EXPERIENCE.equals(loanModel.getProductType());
+        this.userInvestAmountTotal = userInvestAmountTotal;
     }
 
     public long getLoanId() {
@@ -266,5 +276,21 @@ public class InvestorInvestDetailDto implements Serializable {
 
     public void setContractUrl(String contractUrl) {
         this.contractUrl = contractUrl;
+    }
+
+    public boolean isExperience() {
+        return experience;
+    }
+
+    public void setExperience(boolean experience) {
+        this.experience = experience;
+    }
+
+    public long getUserInvestAmountTotal() {
+        return userInvestAmountTotal;
+    }
+
+    public void setUserInvestAmountTotal(long userInvestAmountTotal) {
+        this.userInvestAmountTotal = userInvestAmountTotal;
     }
 }

@@ -669,7 +669,8 @@ public class InvestServiceImpl implements InvestService {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getTransferInvestId());
         InvestModel originInvestModel = investMapper.findById(investModel.getTransferInvestId());
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        InvestorInvestDetailDto investorInvestDetailDto = new InvestorInvestDetailDto(loanModel, transferApplicationModel);
+        long userInvestAmountTotal = investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName(), false);
+        InvestorInvestDetailDto investorInvestDetailDto = new InvestorInvestDetailDto(loanModel, transferApplicationModel, userInvestAmountTotal);
 
         long totalExpectedInterest = 0;
         long totalActualInterest = 0;
@@ -703,7 +704,6 @@ public class InvestServiceImpl implements InvestService {
         long totalExpectedInterest = 0;
         long completeTotalActualInterest = 0;
         long unPaidTotalRepay = 0;
-
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         //未放款时按照预计利息计算(拓天体验项目没有本金，所以不需要计算)
         if (loanModel.getRecheckTime() == null && loanModel.getProductType() != ProductType.EXPERIENCE) {
@@ -712,7 +712,8 @@ public class InvestServiceImpl implements InvestService {
             long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
             totalExpectedInterest = estimateInvestIncome + couponExpectedInterest;
         }
-        InvestorInvestDetailDto investorInvestDetailDto = new InvestorInvestDetailDto(loanModel, investModel);
+        long userInvestAmountTotal = investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName(), false);
+        InvestorInvestDetailDto investorInvestDetailDto = new InvestorInvestDetailDto(loanModel, investModel, userInvestAmountTotal);
         if (investModel.getTransferInvestId() != null) {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
             investorInvestDetailDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
