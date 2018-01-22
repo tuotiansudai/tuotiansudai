@@ -800,9 +800,9 @@ public class InvestServiceImpl implements InvestService {
             return String.format("%f%s加息券", (couponModel.getRate() * 100), "%");
         }
         if (CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) {
-            return CouponType.BIRTHDAY_COUPON.name();
+            return CouponType.BIRTHDAY_COUPON.getName();
         }
-        return String.format("%s元%s", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().name());
+        return String.format("%s元%s", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
     }
 
     private Date getInterestBeginDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels) {
