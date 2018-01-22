@@ -1,12 +1,186 @@
 let ValidatorObj = require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
-
+let isVoice = false;
 let formLogin = globalFun.$('#formLogin');
+
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 let $errorBox = $('.error-box', $(formLogin));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let loginSubmit = $('button[type="submit"]', $(formLogin));
+let telephoneNum = '';
+
+(function (doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 20 * (clientWidth /375);
+            fSize > 40 && (fSize = 39.36);
+            docEl.style.fontSize = fSize + 'px';
+        };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+$(function () {
+    let bool=false;
+    setTimeout(function(){ bool=true;},300);
+    window.addEventListener("popstate", function(e) {
+        if(bool) hashFun();
+    },false);
+});
+
+let backStatus = () => {  // 返回此页面判断手机号长度，确定是否需要点亮按钮
+    if ($('.telephoneInput').val().length == 11) {
+        $('.show-mobile-entry').html($('.telephoneInput').val());
+        $('.show-mobile-entry').show();
+        telephoneNum = $('.telephoneInput').val();
+        $('.step_one').prop('disabled',false);
+    }
+};
+backStatus();
+let entryEv = () => {
+    $('.entry_container').show();
+    $('.login_container').hide();
+};
+
+let loginEv = () => {
+    $('.entry_container').hide();
+    $('.login_container').show();
+    let telephoneNum = localStorage.getItem('login_telephone') || '';
+    $('.show-mobile-login').html(telephoneNum);
+    $('#username').val(telephoneNum);
+};
+
+let registerEv = () => {
+    $('.entry_container').hide();
+    $('.login_container').hide();
+    let telephoneNum = localStorage.getItem('login_telephone') || '';
+    $('.show-mobile-register').html(telephoneNum);
+};
+function hashFun() {
+    let hash_key = location.hash;
+
+    switch (hash_key) {
+        case '':
+            entryEv();
+            break;
+        case '#login':
+            loginEv();
+            break;
+        case '#register-one':
+            registerEv();
+            break;
+        default:
+            entryEv();
+            break;
+    }
+};
+hashFun();
+
+let pushHistory = (url) => {
+    let state = {title: "title", url: url};
+    window.history.pushState(state, "title", url);
+    // location.reload();
+};
+
+let contentInput = (id,content,length) => {
+    $(id).find('input').on('keyup',(e) => {
+       if (!e.currentTarget.value) {
+           $(id).find('.close_btn').hide();
+           $(id).find(content).html('');
+           $(id).find(content).hide();
+       } else {
+           $(id).find('.close_btn').show();
+           $(id).find(content).html(e.currentTarget.value);
+           $(id).find(content).show();
+           if (!!length) {
+               if (e.currentTarget.value.length === length) {
+                   telephoneNum = e.currentTarget.value;
+                   $('.step_one').attr("disabled",false);
+               } else {
+                   $('.step_one').attr("disabled",true);
+               }
+           }
+       }
+    })
+};
+
+let clearInputOneVal = (id,content,submitBtn) => {
+    $(id).find('.close_btn').on('click',() => {
+        $(id).find('input').val('');
+        $(id).find(content).html('');
+        $(id).find(content).hide();
+        $(id).find('.close_btn').hide();
+        $(submitBtn).attr("disabled",true);
+    })
+};
+
+let clearInputTwoVal = (id) => {
+    $(id).find('.close_btn').on('click',() => {
+        $(id).find('input').val('');
+        $(id).find('.close_btn').hide();
+        $('.step_two').attr("disabled",true);
+    })
+};
+
+let stepOneEv = () => {
+    $('.step_one').on('click',() => {
+        if (!/(^1[0-9]{10}$)/.test(telephoneNum))  { // 入口手机号码校验
+            layer.msg('手机号格式不正确');
+            return;
+        }
+        localStorage.setItem('login_telephone',telephoneNum);
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:'/register/user/mobile/'+telephoneNum+'/is-exist'
+        },function(response) {
+            if(response.data.status) {
+                pushHistory('#login'); // 登录
+                hashFun();
+            }
+            else {
+                location.href = '/m/register/user'; // 注册
+            }
+        });
+    })
+};
+
+let seePassword = () => {
+    $('.see_password').on('click',() => {
+        let input = $('.see_password').siblings('input');
+        if (input.attr('type') == 'text') {
+            input.attr('type','password');
+            $('.see_password').removeClass('open_eye');
+        }
+        else if (input.attr('type') == 'password') {
+            input.attr('type','text');
+            $('.see_password').addClass('open_eye');
+        }
+    })
+};
+
+// 登录注册第一步入口
+contentInput('#EntryPointForm','.show-mobile-entry',11);
+clearInputOneVal('#EntryPointForm','.show-mobile-entry','.step_one');
+stepOneEv();
+
+// 登录
+contentInput('.captcha_container','.show-mobile-login');
+contentInput('.password_container','.show-mobile-login');
+clearInputTwoVal('.captcha_container');
+clearInputTwoVal('.password_container');
+
+$('.go-back-container').on('click',() => {
+    history.go(-1);
+});
+
+seePassword();
 
 commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
 //刷新验证码
@@ -27,7 +201,7 @@ validator.add(formLogin.captcha, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
 }, {
-    strategy: 'equalLength:5',
+    strategy: 'isNumber:5',
     errorMsg: '验证码必须为5位数字'
 }]);
 
@@ -69,21 +243,25 @@ let formSubmit = function () {
             type: 'POST',
             data: $(formLogin).serialize()
         }, function (data) {
-            loginSubmit.prop('disabled', false);
             if (data.status) {
-                location.href = '/bind-success?redirect=' + $('#formLogin').data('redirect');
+                // location.href = '/bind-success?redirect=' + $('#formLogin').data('redirect');
+                location.href = '/m/';
             } else {
+                loginSubmit.prop('disabled', false);
                 commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
                 $errorBox.text(data.message);
             }
+        },function () {
+            loginSubmit.prop('disabled', false);
         }
     );
 };
 
-formLogin.onsubmit = function (event) {
+$('.step_two').on('click', function (event) {
     event.preventDefault();
-
     //提交之前得先执行validateLogin验证表单是否通过验证
     formSubmit.before(validateLogin)();
-};
+});
+
+
 

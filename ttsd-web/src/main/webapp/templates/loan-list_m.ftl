@@ -8,10 +8,24 @@
         <span><a href="/m/transfer-list">转让项目</a></span>
     </div>
 
-    <div id="wrapperOut" class="loan-list-frame">
+    <div id="wrapperOut"  class="loan-list-frame">
         <div class="loan-list-content">
             <div class="category-box-main">
+                <#assign isInserted = false>
                 <#list loanItemList as loanItem>
+                    <#if transferringCount?? && transferringCount != 0 && !isInserted>
+                        <#if !(['PREHEAT', 'RAISING']?seq_contains(loanItem.status))>
+                            <#assign isInserted = true>
+                            <div class="target-category-box" data-url="loan-detail.ftl">
+                                <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
+                                <ul class="transferArea loan-info clearfix">
+                                    <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
+                                    <li style="position: relative"><em class="duration-day">${transferringCount}</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>
+                                    <li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>
+                                </ul>
+                            </div>
+                        </#if>
+                    </#if>
 
                     <div class="target-category-box <#if loanItem.productType == 'EXPERIENCE'>newer-experience</#if>"
                          data-url="/m/loan/${loanItem.id?c}">
@@ -29,7 +43,7 @@
                         </b>
                         <ul class="loan-info clearfix">
                             <li>
-                        <span class="percent-number">
+                        <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if> ">
                             <i>
                                 <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
                                     <@percentInteger>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentFraction>
@@ -39,7 +53,7 @@
                                         ~ <@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
                                     </#if>
                                 </#if>
-                            </i>%
+                            </i><em>%</em>
                         </span>
                                 <em class="note">预期年化收益</em>
                             </li>
@@ -50,7 +64,7 @@
                             </li>
                             <li>
                             <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
-                                <a href="/m/loan/1" class="btn-invest btn-normal">立即投资</a>
+                                <a class="btn-invest btn-normal">立即投资</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
                             </#if>
@@ -60,7 +74,7 @@
                         <div class="table-row progress-column">
                             <div class="progress-bar">
                                 <div class="process-percent">
-                                    <div class="percent" style="width:${loanItem.progress}%">
+                                    <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if>" style="width:${loanItem.progress}%">
                                     </div>
                                 </div>
                             </div>
@@ -73,14 +87,25 @@
                                             放标</span>
                                     </#if>
                                 </#if>
-                                <span class="p-title">可投金额：<i>${loanItem.alert}</i></span>
+                                <span class="p-title">剩余金额：<span class="amontDom"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                             <#else>
-                                <span class="p-title"><i>${loanItem.alert}</i></span>
+                                <span class="p-title allReady"><i>${loanItem.alert}</i></span>
                             </#if>
                         </div>
                     </#if>
                     </div>
                 </#list>
+                <#if transferringCount?? && transferringCount != 0 && !isInserted>
+                    <#assign isInserted = true>
+                    <div class="target-category-box" data-url="loan-detail.ftl">
+                        <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
+                        <ul class="transferArea loan-info clearfix">
+                            <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
+                            <li style="position: relative"><em class="duration-day">${transferringCount}</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>
+                            <li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>
+                        </ul>
+                    </div>
+                </#if>
             </div>
 
             <div id="pullUp">
