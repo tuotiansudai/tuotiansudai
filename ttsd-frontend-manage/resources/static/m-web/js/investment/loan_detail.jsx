@@ -472,6 +472,16 @@ function submitData() {
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'
     },function(data) {
+        // let data = response.data;
+        // if (data.status) {
+        //     location.href = "/m/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
+        // }  else {
+        //     commonFun.CommonLayerTip({
+        //         btn: ['我知道了'],
+        //         area:['280px', '160px'],
+        //         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${data.message}</span></div> `,
+        //     })
+        // }
         if (data.message == "SUCCESS") {
             layer.open({
                 title: '温馨提示',
