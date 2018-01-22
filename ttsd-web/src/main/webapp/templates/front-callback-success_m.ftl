@@ -70,6 +70,27 @@
                 </li>
             </ul>
         </#if>
+        <#if ['INVEST_TRANSFER_PROJECT_TRANSFER', 'INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
+            <div class="my-account-content apply-transfer-success" >
+
+                <ul class="input-list">
+                    <li>
+                        <label>投资金额</label>
+                        <span>${amount}元</span>
+                    </li>
+                    <li>
+                        <label>所投项目</label>
+                        <span>${loanName}</span>
+                    </li>
+                    <li>
+                        <label>项目编号</label>
+                        <span>${loanId?string.computer}</span>
+                    </li>
+                </ul>
+
+
+            </div>
+        </#if>
     </div>
 </div>
 <div class="button-note">

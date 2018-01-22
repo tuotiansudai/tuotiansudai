@@ -133,3 +133,18 @@
   text-align:center;
   font-size: 12px;
 }
+
+.apply-transfer-success {
+  background: #fff;
+  height: 100%;
+  overflow: hidden;
+  padding-top:50px;
+  text-align: center;
+  box-sizing: border-box;
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}
