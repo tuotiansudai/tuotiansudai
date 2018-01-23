@@ -14,7 +14,7 @@
         </div>
         <div class="bg-square-box"></div>
     </div>
-    <form action="/transfer/purchase" method="post" id="transferForm">
+    <form action="/m/transfer/purchase" method="post" id="transferForm">
         <div class="input-amount-box">
             <ul class="input-list">
                 <li>

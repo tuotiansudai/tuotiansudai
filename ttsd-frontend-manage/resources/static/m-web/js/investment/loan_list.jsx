@@ -12,6 +12,7 @@ let $loanList = $('#loanList'),
 
 
 $targetCategoryBox.on('click', function () {
+    alert(9)
     let $this = $(this);
     location.href = $this.data('url');
 });

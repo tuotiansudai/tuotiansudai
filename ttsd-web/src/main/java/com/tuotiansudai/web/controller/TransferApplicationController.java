@@ -13,6 +13,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -103,7 +104,11 @@ public class TransferApplicationController {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
-                    return new ModelAndView(MessageFormat.format("redirect:/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    if(MobileAccessDecision.isMobileAccess()) {
+                        return new ModelAndView(MessageFormat.format("redirect:/m/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    }else{
+                        return new ModelAndView(MessageFormat.format("redirect:/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    }
                 }
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
@@ -111,7 +116,11 @@ public class TransferApplicationController {
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            if(MobileAccessDecision.isMobileAccess()) {
+                modelAndView.setViewName(MessageFormat.format("redirect:/m/transfer/{0}", investDto.getTransferApplicationId()));
+            }else{
+                modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            }
         } else {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
