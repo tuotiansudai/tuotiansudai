@@ -40,6 +40,12 @@ public class AnxinSignController {
         }
     }
 
+    @RequestMapping(value = "/authorization", method = RequestMethod.GET)
+    public ModelAndView anxinAuthorization() {
+        return new ModelAndView("/anxin-authorization");
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
     public BaseDto createAccount() throws Exception {
