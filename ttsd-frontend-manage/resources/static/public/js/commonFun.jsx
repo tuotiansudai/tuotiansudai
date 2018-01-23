@@ -343,6 +343,7 @@ function activityStatus(dom) {
         return 'activity-ing';
     }
 };
+
 // rem
 function calculationFun(doc, win) {
     let docEl = doc.documentElement,
