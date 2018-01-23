@@ -12,7 +12,7 @@
     <ul class="input-list">
         <li>
             <label for="perName">支付密码</label>
-            <a href="edit-payment-password.ftl" class="update-payment-pwd">
+            <a href="./personal-info/reset-umpay-password" class="update-payment-pwd">
                 修改 <i class="fa fa-angle-right"></i>
             </a>
         </li>
