@@ -1,6 +1,7 @@
 let ValidatorObj= require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
 require('mWebStyle/account/settings.scss');
+commonFun.calculationFun(document, window);
 
 let $settingBox = $('#settingBox');
 let $turnOnSendCaptcha = $('#turnOnSendCaptcha'),
@@ -220,3 +221,18 @@ function closeNoPasswordCheck() {
     });
 
 }
+
+$('#logout').on('click',() => {
+    commonFun.useAjax({
+        url:"/m/logout",
+        type:'POST',
+    },function(response) {
+        let data = response.data;
+        if (data.status) {
+            // location.href = '/m/';
+            location.href = '/m/'
+        } else {
+            layer.msg(data.message);
+        }
+    });
+});
