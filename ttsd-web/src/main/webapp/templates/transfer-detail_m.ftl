@@ -5,6 +5,7 @@
 <div class="my-account-content experience-amount" id="loanDetail">
 
     <div class="account-summary">
+        <em id="iconTransferM" class="icon-left"><i class="fa fa-angle-left"></i></em>
         <div class="collection">
             <span class="title">
                 ${transferApplication.name!}
@@ -77,27 +78,31 @@
 </div>
 <#--回款计划-->
 <div class="my-account-content amount-detail" id="repay_plan" style="display: none">
-
+    <div class="m-header"><em id="iconReplay" class="icon-left"><i class="fa fa-angle-left"></i></em>回款计划 </div>
     <div class="amount-detail-inner">
 
-        <dl class="payment-plan">
+        <dl class="payment-plan title">
+
+
+                <dd class="font-left">回款时间</dd>
+                <dd class="font-center">金额</dd>
+                <dd class="font-right">还款状态</dd>
+        </dl>
+
         <#list investRepay as repay>
-            <dt>
-                <span>${repay.repayDate?string("yyyy-MM-dd")}</span>
-                <span><@amount>${repay.expectedInterest?string.computer}</@amount></span>
-                <#if repay.status == 'COMPLETE'>
-                    <span>已完成</span>
-                </#if>
-                <#if repay.status == 'REPAYING'>
-                    <span class="status">待还款</span>
-                </#if>
-            </dt>
+            <dl class="payment-plan">
+                <dd class="font-left">${repay.repayDate?string("yyyy-MM-dd")}</dd>
+                <dd class="font-center"><@amount>${repay.expectedInterest?string.computer}</@amount></dd>
+
+                <dd class="status font-right">${repay.status.getDescription()}</dd>
+            </dl>
         </#list>
         </dl>
     </div>
 </div>
 <#--承接记录-->
 <div id="continue_record" class="amount-detail-list" style="display: none">
+    <div class="m-header"><em id="iconContinue" class="icon-left"><i class="fa fa-angle-left"></i></em>债权承接记录 </div>
     <#if (transferApplicationReceiver.status?string) == "true">
         <div class="box-item">
             <dl>

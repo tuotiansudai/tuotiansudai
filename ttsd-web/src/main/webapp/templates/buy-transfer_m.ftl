@@ -3,7 +3,7 @@
 <div class="my-account-content apply-transfer buy-transfer" id="transfer_details" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" style="display: none">
     <div class="m-header"><em id="iconTransferDetail" class="icon-left"><i class="fa fa-angle-left"></i></em>立即投资 </div>
     <div class="benefit-box transfer-box">
-        <div class="target-category-box" data-url="loan-transfer-detail.ftl">
+        <div class="target-category-box transfer" data-url="loan-transfer-detail.ftl">
             <div class="newer-title transfer-title">
                 <span>${transferApplication.name!}</span>
             </div>

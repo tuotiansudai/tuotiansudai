@@ -379,7 +379,7 @@ $('#investSubmit').on('click', function(event) {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
-                        location.href = '/recharge';//去充值
+                        location.href = '/m/recharge';//去充值
                     })
                      return false;
                 }
@@ -483,35 +483,35 @@ function submitData() {
         //     })
         // }
         if (data.message == "SUCCESS") {
-            layer.open({
-                title: '温馨提示',
-                btn: ['确定'],
-                content: '该项目已被承接，请选择其他项目。',
-                btn1: function(index, layero) {
-                    layer.closeAll();
-                    location.href = "/m/transfer-list";
-                }
-            });
+            commonFun.CommonLayerTip({
+                        btn: ['确定'],
+                        area:['280px', '160px'],
+                        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被承接，请选择其他项目</span></div> `,
+                    },function () {
+                layer.closeAll();
+                location.href = "/m/transfer-list";
+            })
+
         } else if (data.message == "CANCEL") {
-            layer.open({
-                title: '温馨提示',
+            commonFun.CommonLayerTip({
                 btn: ['确定'],
-                content: '该项目已被取消，请选择其他项目。',
-                btn1: function(index, layero) {
-                    layer.closeAll();
-                    location.href = "/m/transfer-list";
-                }
-            });
+                area:['280px', '160px'],
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被取消，请选择其他项目。</span></div> `,
+            },function () {
+                layer.closeAll();
+                location.href = "/m/transfer-list";
+            })
+
         } else if (data.message == "MULTITERM") {
-            layer.open({
-                title: '温馨提示',
+            commonFun.CommonLayerTip({
                 btn: ['确定'],
-                content: '该项目已被承接或已取消，请选择其他项目。',
-                btn1: function(index, layero) {
-                    layer.closeAll();
-                    location.href = "/m/transfer-list";
-                }
-            });
+                area:['280px', '160px'],
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被承接或已取消，请选择其他项目</span></div> `,
+            },function () {
+                layer.closeAll();
+                location.href = "/m/transfer-list";
+            })
+
         } else {
             var $transferForm = $('#transferForm');
             if ($transferForm.attr('action') === '/transfer/purchase') {
@@ -560,5 +560,17 @@ $('.init-checkbox-style').initCheckbox(function(event) {
         $transferSubmit.prop('disabled',!checkBool);
     }
 });
+//转让详情页回退按钮
+$('#iconTransferM').on('click',function () {
+    location.href = '/m/transfer-list'
+})
+//回款计划回退按钮
+$('#iconReplay').on('click',function () {
+    location.href = '/m/transfer/'+transferApplicationId;
+})
+//债权承接记录
+$('#iconContinue').on('click',function () {
+    location.href = '/m/transfer/'+transferApplicationId;
+})
 
 

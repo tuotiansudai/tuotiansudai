@@ -6,12 +6,10 @@ body {
   flex-direction: column;
   background: #F7F7F7;
   box-sizing: border-box;
-  font-weight: lighter;
   font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
 }
 
 button, input {
-  font-weight: lighter;
   font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
 }
 
@@ -391,7 +389,6 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   position: relative;
 
   .newer-title {
-    font-weight: lighter;
     color: #525252;
   }
   .loan-info {
@@ -405,7 +402,6 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       line-height: 25px;
       color: #A2A2A2;
       font-size: 14px;
-      font-weight: lighter;
       em.note {
         font-size: 10px;
         display: block;

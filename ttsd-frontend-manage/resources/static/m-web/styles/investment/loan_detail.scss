@@ -22,7 +22,10 @@
     right: 25%;
   }
 }
-
+.account-summary .amount-balance {
+  font-size: 14px;
+  text-align: center;
+}
 .experience-amount {
   padding-bottom: 70px;
 }
@@ -95,6 +98,7 @@
   font-size: 14px;
   color: #808080;
   text-align: center;
+  background: #fff;
 }
 .repay-plan {
   margin-top:5px;
@@ -165,6 +169,7 @@
 }
 
 .detail-list {
+  margin-top: 5px;
   span i {
     font-size:20px;
   }
@@ -277,6 +282,9 @@
 
 .target-category-box {
   padding:15px 15px 25px 15px;
+  &.transfer {
+    padding-bottom: 22px;
+  }
   font-size: 16px!important;
   color: #808080!important;
   background: #fff;
@@ -487,37 +495,44 @@
 
 //回款计划
 .amount-detail {
-  //position: absolute;
   top: 51px;
   bottom: 0px;
   width: 100%;
   overflow: hidden;
   height: calc( 100% - 51px - 55px);
   .amount-detail-inner{
+    margin-top: 10px;
     .payment-plan {
       background: #fff;
       padding: 10px 10px 0px 10px;
-      margin-top: 5px;
-      margin-bottom:5px;
-      dt {
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
-        color: #525252;
-        height:40px;
-      }
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      color: #525252;
+      height:40px;
+      border-top:1px solid #F7F7F7;
       dd {
-        display: flex;
-        justify-content: space-between;
+        flex: 1;
         font-size: 14px;
         color: #808080;
-        border-top:1px solid #F7F7F7;
         line-height: 40px;
-        em{
-          color:#808080;
           &.status {
             color: #FF635A;
           }
+        &.font-left {
+          text-align: left;
+        }
+        &.font-center {
+          text-align: center;
+        }
+        &.font-right {
+          text-align: right;
+        }
+
+      }
+      &.title {
+        dd {
+          color: #525252;
         }
       }
     }
@@ -744,7 +759,7 @@
   line-height: 44px;
   text-align: center;
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   background: #FF473C;
   position: relative;
   .icon-left {
@@ -777,7 +792,11 @@
   background-color:rgba(0,0,0,0.7)!important;
 }
 .summary-box b {
-  font-size: 34px!important;
+  font-size: 42px!important;
+}
+.summary-box i {
+  font-size: 22px!important;
+  font-weight: normal!important;
 }
 #couponText {
   width: 60%;
@@ -822,7 +841,7 @@
   font-weight: normal!important;
 }
 .benefit-box.transfer-box .bg-square-box {
-  bottom: -12px;
+  bottom: 8px;
 }
 #transferSubmit {
   margin-top: 50px;
@@ -855,4 +874,10 @@
 }
 .init-checkbox-style {
   width: 24px!important;
+}
+.box-item {
+  margin-top: 10px;
+  dl {
+    font-weight: normal;
+  }
 }
