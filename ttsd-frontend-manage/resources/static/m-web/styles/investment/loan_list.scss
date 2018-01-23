@@ -1,0 +1,157 @@
+.menu-category span a {
+  width:60%;
+  opacity: 0.7;
+}
+.menu-category span.current a{
+  color: #fff;
+ opacity: 1;
+  border-bottom: 2px solid #fff;
+}
+.target-category-box {
+  margin-bottom:10px;
+}
+
+.loan-list-frame {
+  position: absolute;
+  top: 56px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc(100% - 110px)
+}
+#pullUp {
+  text-align: center;
+  height: 26px;
+  line-height: 20px;
+}
+.percent-number {
+  em {
+    font-size: 26px;
+  }
+  i {
+    font-size: 28px!important;
+  }
+}
+//转让价格
+.p-title .price {
+  color: #FF473C;
+}
+.loan-list {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.loan-list .footer-wap-container {
+
+  display: flex;
+  background: #fff;
+}
+.menu-category {
+  background: #FF473C;
+  height: 44px;
+ span {
+   a {
+     color: #fff;
+     font-size: 16px;
+     line-height: 42px;
+   }
+ }
+}
+
+.target-category-box .loan-info li a.tranfered{
+  display: inline-block;
+  width: 54px;
+  height: 58px;
+  background: url("../../images/status/icon-transferred.png") no-repeat;
+  background-size: contain;
+}
+.target-category-box .loan-info {
+  padding: 16px 10px 3px 10px;
+}
+ .target-category-box.transferLi .loan-info {
+   padding: 12px 10px 3px 10px;
+ }
+.target-category-box .newer-title {
+  font-size: 11px;
+}
+
+.target-category-box {
+  padding: 2px 10px 5px 10px;
+}
+.target-category-box .loan-info li .percent-number {
+  font-weight: 350;
+  font-size: 20px;
+  i {
+    font-size: 20px;
+  }
+  em {
+    font-weight: lighter;
+    font-size: 14px;
+    position: relative;
+    left: -10px;
+  }
+}
+.target-category-box .loan-info li .percent-number.colorChange {
+  color: #a2a2a2;
+}
+.progress-bar .process-percent .percent.colorChange {
+  background: #a2a2a2;
+}
+.target-category-box .progress-column span .price.colorChange {
+  color: #a2a2a2;
+}
+.transferArea {
+  border-top: 1px solid #E5E5E5;
+}
+.transferAreaTitle {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.target-category-box .loan-info li {
+  color: #525252;
+}
+.max-benifit {
+  color: #FF473C;
+  font-size: 14px;
+  i {
+    font-size: 28px;
+    font-weight:350;
+  }
+}
+.icon-first-get {
+  position: absolute;
+  top: -14px;
+  right: -22px;
+  display: inline-block;
+  width: 69px;
+  height: 28px;
+  text-align: center;
+  line-height: 23px;
+  background: url("../../images/share/first_get.png") no-repeat;
+  background-size: contain;
+  transform:scale(0.8);
+  color: #F6AA16;
+}
+.target-category-box .loan-info li .duration-day {
+  font-weight:350;
+  color: #a2a2a2;
+}
+.target-category-box .loan-status {
+  margin-right: 10px;
+}
+.allReady {
+  padding-right: 16px;
+}
+.percentSmall {
+  font-size: 10px!important;
+  position: relative;
+  left: 0px;
+  font-weight:lighter;
+}
+.target-category-box .loan-info li {
+  line-height: 1.3;
+}
+.menu-category span a {
+  width: 45%;
+}

@@ -1,0 +1,60 @@
+
+body {
+  background: #fff;
+}
+.anxin-electro-success {
+  color: #525252;
+  padding: 0 10px 20px 10px;
+  text-align: center;
+
+  .success-section {
+    height: 230px;
+
+      h2 {
+        font-size: 20px;
+      }
+    .electro-logo {
+      width:120px;
+      height:100px;
+      background: url('../../images/anxin/electro-sign.png') center center no-repeat;
+      background-size: 100%;
+      margin: 30px auto 10px auto;
+    }
+  }
+
+  .open-SMS-free {
+    font-size: 14px;
+    .btn-wap-normal {
+      margin-top:10px;
+    }
+  }
+
+}
+
+
+.goBack_wrapper {
+  position: relative;
+  width: 100%;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  font-size: .85rem;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: .1rem;
+    top: .35rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: .4rem 0 0 .5rem;
+      width: .45rem;
+      height: .7rem;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}

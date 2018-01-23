@@ -40,6 +40,7 @@ function removeElement(element) {
 
 var isHaveError ={
     yes(errorMsg) {
+        globalFun.removeClass(this,'valid');
         globalFun.addClass(this,'error');
         arguments[arguments.length-1]==true && createElement(this,errorMsg);
     },

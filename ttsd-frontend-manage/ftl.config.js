@@ -4,6 +4,8 @@ var activityTemplatePath='../ttsd-activity-web/src/main/webapp/templates/'; //ac
 var askTemplatePath='../ttsd-ask-web/src/main/webapp/ask/templates/'; //ask站点ftl目录
 var pointTemplatePath='../ttsd-point-web/src/main/webapp/templates/'; //point站点ftl目录
 
+var wapTemplatePath='../ttsd-wap-site/src/main/webapp/templates/';
+
 var basePath = path.join(__dirname, 'resources'),
     outputPath=path.join(basePath, 'develop'); //默认打包路径
 
@@ -15,8 +17,7 @@ module.exports = {
     hot: true,
     //配置freemarker的解析
     ftl: {
-        base: activityTemplatePath,
-        // dataFiles: ['testdata.ftl'],
+        base: wapTemplatePath,
         global: { }
 
     },

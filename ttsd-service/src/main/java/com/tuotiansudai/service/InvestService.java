@@ -3,7 +3,10 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +36,7 @@ public interface InvestService {
 
     InvestModel findById(long investId);
 
+
     InvestModel findLatestSuccessInvest(String loginName);
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
@@ -48,4 +52,10 @@ public interface InvestService {
     boolean isNewUserForWechatLottery(String loginName);
 
     boolean isFirstInvest(String loginName, Date investTime);
+
+    BasePaginationDataDto<UserInvestRecordDataDto> generateUserInvestList(String loginName, int index,
+                                                                          int pageSize,
+                                                                          LoanStatus loanStatus);
+
+    InvestorInvestDetailDto getInvestDetailById(long investId);
 }

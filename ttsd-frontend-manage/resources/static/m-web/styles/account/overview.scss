@@ -1,0 +1,274 @@
+.amount-overview {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.overview-content {
+  flex: 1;
+  background: #fff;
+}
+
+.balance-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #525252;
+  dl {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    border-bottom: 1px solid #E5E5E5;
+    dd {
+      position: relative;
+      i {
+        width:80px;
+        height:80px;
+        display: inline-block;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+      }
+      em {
+        display: inline-block;
+        position: absolute;
+        left: 75px;
+        top: -20px;
+        width: 150px;
+        &:before {
+          width:10px;
+          height:10px;
+          background: rgba(249,220,23,1);
+          border-radius: 50%;
+          content: '';
+          display: inline-block;
+          box-shadow: 0px 0px 0px 3px rgba(249,220,23,0.2);
+          margin-right: 10px;
+        }
+
+      }
+      .one {
+        background-image: url('../../images/account/balance-one.png');
+        background-size: 100%;
+      }
+      .two {
+        background-image: url('../../images/account/balance-two.png');
+        background-size: 100%;
+      }
+      .three {
+        background-image: url('../../images/account/balance-three.png');
+        background-size: 100%;
+      }
+    }
+  &.balance-two {
+    em {
+      &:before {
+      background: rgba(255,99,90,1);
+
+      box-shadow: 0px 0px 0px 3px rgba(255,99,90,0.2);
+
+      }
+    }
+  }
+    &.balance-three {
+      em {
+        &:before {
+          background: rgba(82,196,255,1);
+          box-shadow: 0px 0px 0px 3px rgba(82,196,255,0.2);
+
+        }
+      }
+    }
+  }
+}
+
+.accumulate-income,.payment-received {
+
+  font-size: 14px;
+  color: #525252;
+  font-weight: lighter;
+  .amount-report {
+    height: 160px;
+    width:100%;
+    text-align: center;
+    line-height: 30px;
+    .income-report {
+      width:80px;
+      height:80px;
+      border-radius: 50%;
+      margin:20px auto 10px auto;
+    }
+    .total {
+      font-size: 20px;
+      color: #FF635A;
+    }
+
+  }
+  .amount-detail-show {
+    height: 432px;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+
+    .column {
+      flex: 1;
+      position: relative;
+      span {
+        display: inline-block;
+        position: absolute;
+        text-align: right;
+        color: #808080;
+        line-height: 25px;
+        font-size:12px;
+        em {
+          color: #525252;
+          font-size:16px;
+          display: block;
+        }
+        i {
+          width:12px;
+          height:12px;
+          display: inline-block;
+          background: #FF635A;
+          border-radius:50%;
+          vertical-align: middle;
+          margin-left: 4px;
+          position: relative;
+
+        }
+      }
+      &:nth-child(1) {
+        border-right:1px solid #A2A2A2;
+        position: relative;
+        &:after {
+          width:30px;
+          height:30px;
+          background: #fff url('../../images/account/icon-bag.png') left top no-repeat;
+          background-size: 100%;
+          display: inline-block;
+          content: '';
+          bottom: 0;
+          position: absolute;
+          left: calc(100% - 15px);
+        }
+        i:after {
+          width:50px;
+          height:1px;
+          background:#A2A2A2;
+          display: inline-block;
+          content: '';
+          position: absolute;
+          top: 6px;
+        }
+        span {
+          right: 50px;
+          &:nth-child(1) {
+            top: 4%;
+          }
+
+          &:nth-child(2) {
+            top: 34%;
+            i {
+              background: #50CEFE;
+            }
+          }
+
+          &:nth-child(3) {
+            top: 70%;
+            i {
+              background: #FFD761;
+            }
+          }
+        }
+      }
+      &:nth-child(2) {
+        i {
+          transform: rotate(180deg);
+          margin-left: 0;
+          margin-right: 4px;
+          &:before {
+            width:50px;
+            height:1px;
+            background:#A2A2A2;
+            display: inline-block;
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 12px;
+
+          }
+        }
+
+        span {
+          left: 50px;
+          text-align: left;
+          &:nth-child(1) {
+            top: 19%;
+            i {
+              background: #FFB761;
+            }
+          }
+
+          &:nth-child(2) {
+            top: 53%;
+            i {
+              background: #727ACB;
+            }
+          }
+          }
+        }
+
+    }
+  }
+}
+.payment-received .amount-detail-show {
+  .column:nth-child(1) span:nth-child(2) i {
+    background: #FFB761;
+  }
+  .column:nth-child(2) span:nth-child(1) i {
+    background: #727ACB;
+  }
+  .column:nth-child(2) span:nth-child(2) i {
+    background: #FFD761;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .accumulate-income .amount-detail-show {
+    height:365px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .balance-box dl dd i {
+    width:50px;
+    height:50px;
+  }
+
+  .balance-box dl dd em {
+    top: -8px;
+    left: 65px;
+  }
+
+  .accumulate-income .amount-detail-show {
+    height:305px;
+    .column:nth-child(1) span {
+      right: 30px;
+    }
+    .column:nth-child(2) span {
+      left:30px;
+    }
+    .column:nth-child(1) i:after,.column:nth-child(2) i:before {
+      width:30px;
+    }
+  }
+
+}
+
+

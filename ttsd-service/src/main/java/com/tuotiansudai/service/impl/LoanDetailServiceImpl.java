@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Doubles;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -158,6 +159,14 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         return baseDto;
     }
 
+    private double getMaxExtraLoanRate(long loanId) {
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
+        return extraLoanRateModels.stream()
+                .max((left, right) -> Doubles.compare(left.getRate(), right.getRate()))
+                .map(ExtraLoanRateModel::getRate)
+                .orElse(0D);
+    }
+
     private boolean isRemindNoPassword(String loginName) {
         return !Strings.isNullOrEmpty(loginName) && redisWrapperClient.hexists(INVEST_NO_PASSWORD_REMIND_MAP, loginName);
     }
@@ -184,7 +193,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 investedAmount,
                 loanTitleMapper.findAll(),
                 loanTitleRelationMapper.findByLoanId(loanModel.getId()),
-                investorDto);
+                investorDto,
+                getMaxExtraLoanRate(loanModel.getId()));
 
         LoanerDetailsModel loanerDetail = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetail != null) {

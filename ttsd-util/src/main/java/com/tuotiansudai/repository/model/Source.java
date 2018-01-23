@@ -9,6 +9,10 @@ public enum Source {
      */
     WEB,
     /**
+     * M站专用
+     */
+    M,
+    /**
      * 不能区分Android及iOS时使用 MOBILE
      */
     MOBILE,

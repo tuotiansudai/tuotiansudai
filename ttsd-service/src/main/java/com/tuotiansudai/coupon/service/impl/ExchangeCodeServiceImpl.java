@@ -5,13 +5,14 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.coupon.service.ExchangeCodeService;
+import com.tuotiansudai.dto.BaseWrapperDataDto;
+import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
@@ -141,8 +142,8 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     }
 
     @Override
-    public BaseDataDto exchange(String loginName, String exchangeCode) {
-        BaseDataDto baseDataDto = new BaseDataDto();
+    public BaseWrapperDataDto<UserCouponDto> exchange(String loginName, String exchangeCode) {
+        BaseWrapperDataDto<UserCouponDto> baseDataDto = new BaseWrapperDataDto<>();
         long couponId = getValueBase31(exchangeCode);
         CouponModel couponModel = couponMapper.findById(couponId);
         if (!checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
@@ -161,14 +162,15 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             baseDataDto.setMessage("当天兑换次数达到上限");
             return baseDataDto;
         }
-        boolean exchangeResult = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
-        if (!exchangeResult) {
+        UserCouponModel userCouponModel = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
+        if (userCouponModel == null) {
             baseDataDto.setMessage("兑换码兑换失败");
             return baseDataDto;
         }
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, "1");
         baseDataDto.setStatus(true);
         baseDataDto.setMessage("恭喜您兑换成功");
+        baseDataDto.setData(new UserCouponDto(couponModel, userCouponModel, 0));
         return baseDataDto;
     }
 

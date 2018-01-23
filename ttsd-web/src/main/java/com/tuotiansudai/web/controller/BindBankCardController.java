@@ -36,9 +36,6 @@ public class BindBankCardController {
     private BankService bankService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
