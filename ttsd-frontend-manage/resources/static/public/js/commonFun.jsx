@@ -258,7 +258,7 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
     let defaultOption = {
         btn:['确定', '取消'],
         content:$('#turnOnSendCaptcha'),
-        area:['280px', '230px']
+        area:['280px', '230px'],
     };
 
     let optionOk = $.extend({},defaultOption,option);
@@ -270,6 +270,7 @@ function CommonLayerTip(option,firstCallback,secondCallback) {
         shadeClose: false,
         skin: 'tip-square-box',
         btn: optionOk.btn,
+        shade: optionOk.shade,
         content: optionOk.content,
         btn1: function () {
             firstCallback && firstCallback();
@@ -341,10 +342,23 @@ function activityStatus(dom) {
         //活动中
         return 'activity-ing';
     }
+};
+// rem
+function calculationFun(doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 20 * (clientWidth /375);
+            fSize > 40 && (fSize = 39.36);
+            docEl.style.fontSize = fSize + 'px';
+        };
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+};
 
-
-
-}
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -360,5 +374,6 @@ exports.scrollList = scrollList;
 exports.activityStatus = activityStatus;
 exports.CommonLayerTip = CommonLayerTip;
 exports.repeatBgSquare = repeatBgSquare;
+exports.calculationFun = calculationFun;
 
 

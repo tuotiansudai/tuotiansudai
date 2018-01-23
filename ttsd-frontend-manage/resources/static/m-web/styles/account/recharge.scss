@@ -127,15 +127,8 @@
 }
 
 .manage-note {
-  margin-top: 50px;
+  margin-top: 80px;
   width: 100%;
-  p {
-    line-height: 1.4;
-    margin-bottom: 0;
-    color: #A2A2A2;
-    text-align: center;
-  }
-
   .btn-app-link {
     border: 1px solid #FF6C63;
     background: #FF6C63;
@@ -147,9 +140,16 @@
     width: 80%;
     margin: 0 auto;
     line-height: 25px;
-    margin-top: 120px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  p {
+    margin:0;
+    line-height: 1.4;
+    color: #A2A2A2;
     text-align: center;
   }
+
 }
 
 .rule-list {

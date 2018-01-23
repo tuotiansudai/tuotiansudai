@@ -1,16 +1,21 @@
 <#--jsName: sign_enter_point-->
 <div class="sign-container" id="weChatStartContainer">
+    <div class="goBack_wrapper">
+        登录/注册
+        <div class="go-back-container" id="goBack_applyTransfer">
+            <span class="go-back"></span>
+        </div>
+    </div>
     <div class="logo-note" id="logoNote">
         <i class="logo"></i>
        <span>注册即拿6888元体验金+668元现金红包！</span>
     </div>
 
-    <form id="EntryPointForm" action="/entry-point?redirect=${redirect!('/')}" method="post">
-        <input validate type="text" name="mobile" value="${mobile!}" placeholder="请输入手机号" maxlength="11"/>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <span class="show-mobile"></span>
-
-        <button type="submit" class="btn-wap-normal next-step" disabled>下一步</button>
-    </form>
+    <div id="EntryPointForm">
+        <input validate type="text" name="mobile" value="${mobile!}" placeholder="请输入手机号" maxlength="11" class="telephoneInput"/>
+        <div class="close_btn" id="close_btn"></div>
+        <div class="show-mobile show-mobile-entry"></div>
+        <button type="submit" class="btn-wap-normal next-step step_one" disabled>下一步</button>
+    </div>
 
 </div>

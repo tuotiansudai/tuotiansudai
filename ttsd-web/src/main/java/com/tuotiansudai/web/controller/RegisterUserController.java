@@ -134,6 +134,12 @@ public class RegisterUserController {
         return result;
     }
 
+    @RequestMapping(path = "/success", method = RequestMethod.GET)
+    public ModelAndView registerUserSuccess(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("/register-success");
+        return modelAndView;
+    }
+
     private boolean registerUser(RegisterUserDto registerUserDto, Object channel) {
         boolean isRegisterSuccess;
         if (channel != null) {
