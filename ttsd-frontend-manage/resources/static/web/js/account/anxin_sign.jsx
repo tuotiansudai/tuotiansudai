@@ -119,7 +119,7 @@ $('body').on('click','a',function(event) {
         });
     });
 
-    //
+
     $('.init-checkbox-style',$safetyFrame).initCheckbox(function(element) {
         var $parentBox=$(element).parents('.safety-status-box');
         //点击我已阅读并同意是否disable按钮
