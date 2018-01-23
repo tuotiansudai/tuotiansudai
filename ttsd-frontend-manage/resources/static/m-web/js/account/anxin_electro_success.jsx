@@ -22,3 +22,9 @@ $('#openAuthorization').on('click',function() {
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
+
+
+// 点击返回btn
+$('.go-back-container').on('click',() => {
+    history.go(-1);
+});

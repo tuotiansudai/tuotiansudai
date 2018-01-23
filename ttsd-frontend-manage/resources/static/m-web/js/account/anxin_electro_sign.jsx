@@ -21,12 +21,9 @@ $('#openSafetySigned').on('click',function() {
         $this.prop('disabled',false);
 
         if(!response.success){
-            layer.msg('<span class="layer-msg-tip"><i></i>开启失败：'+response.data.message+'</span>',{
-                skin:'msg-tip-box',
-                time: 1500,
-                area:['370px','90px']
-            });
+            layer.msg('开启失败');
         } else {
+            layer.msg('开启成功！');
             location.href='/m/anxinSign/createAccountSuccess';
         }
     });
@@ -47,3 +44,23 @@ $('#openSafetySigned').on('click',function() {
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
+
+// 点击返回btn
+$('.go-back-container').on('click',() => {
+    history.go(-1);
+});
+
+
+
+$('.init-checkbox-style').initCheckbox(function(element) {
+    //点击我已阅读并同意是否disable按钮
+    var isCheck=$(element).hasClass('on'),
+        $btnNormal=$('#openSafetySigned');
+
+    if(isCheck) {
+        $btnNormal.prop('disabled',false);
+    }
+    else {
+        $btnNormal.prop('disabled',true);
+    }
+});
