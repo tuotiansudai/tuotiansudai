@@ -15,7 +15,9 @@
                 <div class="target-category-box transferLi" data-url="/m/transfer/${(transferApplicationItem.transferApplicationId)!}">
                     <b class="newer-title">${transferApplicationItem.name!}</b>
                     <ul class="loan-info clearfix">
-                        <li><span class="percent-number <#if (transferApplicationItem.transferStatus == "SUCCESS")>colorChange</#if>"> <i>${transferApplicationItem.baseRate!}</i><b class="percentSmall">%</b></span><em class="note">预期年化收益</em></li>
+                        <li><span class="percent-number <#if (transferApplicationItem.transferStatus == "SUCCESS")>colorChange</#if>"> <i>
+                    <@percentInteger>${transferApplicationItem.baseRate+transferApplicationItem.activityRate}</@percentInteger><@percentFraction>${transferApplicationItem.baseRate+transferApplicationItem.activityRate}</@percentFraction>
+                        </i><b class="percentSmall">%</b></span><em class="note">预期年化收益</em></li>
                         <li><em class="duration-day">${transferApplicationItem.leftDays!}</em> 天 <em class="note">剩余天数</em></li>
                         <#if (transferApplicationItem.transferStatus == "SUCCESS")>
                             <li><a href="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="tranfered"></a></li>

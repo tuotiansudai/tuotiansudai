@@ -57,9 +57,7 @@
                     <#if loan.extraRate != 0>
                         <i>${loan.baseRate + loan.activityRate}</i>% ~ <i>${loan.baseRate + loan.activityRate + loan.extraRate * 100}</i>%
                     <#else>
-                        <i><@percentInteger>${loan.baseRate}</@percentInteger></i>%
-                        <#if loan.activityRate != 0>+<i>${loan.activityRate!}</i>%
-                        </#if>
+                        <i><@percentInteger>${loan.baseRate + loan.activityRate}</@percentInteger></i>%
                     </#if>
                     </span>
                     <em class="note">预期年化收益</em>

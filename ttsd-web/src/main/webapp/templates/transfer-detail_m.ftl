@@ -11,10 +11,12 @@
                 ${transferApplication.name!}
             </span>
             <span class="summary-box">
-                <b>${transferApplication.baseRate!}
-                        <#if loanDto.activityRate != '0.0'>
-                            <i class="data-extra-rate">+ ${100 * loanDto.activityRate?number}</i>
-                        </#if><i>%</i></b>
+                 <b>
+                    <@percentInteger>${transferApplication.baseRate+transferApplication.activityRate}</@percentInteger><@percentFraction>${transferApplication.baseRate+transferApplication.activityRate}</@percentFraction>
+                     <#if extraLoanRates??>~<@percentInteger>${transferApplication.baseRate+transferApplication.activityRate+transferApplication.maxExtraLoanRate}</@percentInteger><@percentFraction>${transferApplication.baseRate+transferApplication.activityRate+transferApplication.maxExtraLoanRate}</@percentFraction></#if>
+                     <i>%</i>
+                </b>
+
                 <em>预期年化收益</em>
             </span>
         </div>

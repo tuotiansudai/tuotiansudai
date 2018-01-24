@@ -48,9 +48,7 @@
                                 <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
                                     <@percentInteger>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentFraction>
                                 <#else>
-                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
-                                    <#if (loanItem.extraRate > 0)>
-                                        ~ <@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
+                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction><#if (loanItem.extraRate > 0)>~<@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
                                     </#if>
                                 </#if>
                             </i><em>%</em>
