@@ -128,7 +128,7 @@
 
       }
       b {
-        font-weight: lighter;
+        font-weight: normal;
 
         em {
           color: #A2A2A2;
@@ -169,9 +169,6 @@
 
 }
 
-//.layui-layer-page .layui-layer-content {
-//  overflow: inherit!important;
-//}
 .record-tip-box {
   padding:10px;
   text-align: center;
@@ -192,7 +189,6 @@
   .pop-title {
     font-size: 18px;
     color: #A2A2A2;
-    font-weight: lighter;
   }
   span i {
     color: #fc5745;

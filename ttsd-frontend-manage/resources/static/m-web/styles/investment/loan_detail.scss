@@ -761,9 +761,15 @@
   .icon-left {
     position: absolute;
     left: 10px;
-    top: 2px;
+    top: 7px;
+    letter-spacing: 0;
     i{
-      font-size: 30px;
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
     }
   }
   #noUse {
@@ -882,4 +888,7 @@
 }
 layui-layer .layui-layer-page .layui-layer-content {
   overflow-y: scroll!important;
+}
+.box-item .amount {
+  color: #525252;
 }

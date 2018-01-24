@@ -169,7 +169,7 @@ $('#btn-detail-toggle').click(function () {
 //转让购买详情
 //承接记录
 $('#look_continue_record').click(function () {
-    $('#loanDetail').hide();
+    $('#transferingDetail').hide();
     $('.buy-transfer').hide();
     $('#continue_record').show();
 })
@@ -177,7 +177,7 @@ $('#look_continue_record').click(function () {
 $('#look_repay_plan').click(function () {
     $('.buy-transfer').hide();
     $('#cotinue_record').hide();
-   $('#loanDetail').hide();
+   $('#transferingDetail').hide();
     $('#repay_plan').show();
 })
 
@@ -423,7 +423,7 @@ $('#iconBuy',$buyDetail).click(function () {
 });
 //点击直投详情页后退按钮进入列表页
 $('#iconDetail',$loanDetail).click(function () {
-    history.back();
+    location.href = '/m/loan-list'
 });
 //点击项目详情进入直投项目详情页
 $('#iconProjectDetail',$projectDetail).click(function () {
@@ -563,5 +563,9 @@ $('#iconReplay').on('click',function () {
 $('#iconContinue').on('click',function () {
     location.href = '/m/transfer/'+transferApplicationId;
 })
+//转让详情
+if($('.money').length){
+    $('.money').autoNumeric('init');
+}
 
 

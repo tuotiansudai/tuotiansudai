@@ -8,11 +8,35 @@ body {
   box-sizing: border-box;
   font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
 }
-
+b {
+  font-weight: normal;
+}
 button, input {
   font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
 }
-
+.m-header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  background: #FF473C;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: 7px;
+    letter-spacing: 0;
+    i{
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
 a:hover {
   color: #666;
 }
@@ -403,7 +427,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       color: #A2A2A2;
       font-size: 14px;
       em.note {
-        font-size: 10px;
+        font-size: 11px;
         display: block;
       }
       .percent-number {
