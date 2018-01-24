@@ -25,6 +25,7 @@ public class BankCardRequestDto extends BaseParamDto {
 
     //银行卡号
     @ApiModelProperty(value = "银行卡号", example = "6222600001111111111")
+    @Pattern(regexp = "\\d+")
     private String cardNo;
 
     //是否开通快捷支付
