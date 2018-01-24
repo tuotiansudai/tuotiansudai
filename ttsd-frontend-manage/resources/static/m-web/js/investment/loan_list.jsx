@@ -8,11 +8,11 @@ let $content = $('.loan-list-content .category-box-main');
 
 
 let $loanList = $('#loanList'),
-    $targetCategoryBox = $('.target-category-box', $loanList);
+    $targetCategoryBox = $('.target-category-box', $loanList),
+    $categoryBoxMain = $('.category-box-main',$loanList);
 
 
-$targetCategoryBox.on('click', function () {
-    alert(9)
+$categoryBoxMain.on('click', '.target-category-box',function () {
     let $this = $(this);
     location.href = $this.data('url');
 });
@@ -54,3 +54,4 @@ function getMore() {
         }
     )
 }
+

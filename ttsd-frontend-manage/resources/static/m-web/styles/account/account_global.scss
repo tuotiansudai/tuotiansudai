@@ -18,7 +18,7 @@
     b {
       font-size: 16px;
       display: block;
-      font-weight: lighter;
+      font-weight: normal;
     }
   }
   .collection {
@@ -39,7 +39,6 @@
     flex-direction: row;
     width: 100%;
     line-height: 20px;
-    font-weight: lighter;
     .summary-box {
       flex: 1;
       &:nth-child(1) {
@@ -80,7 +79,6 @@
   line-height: 24px;
   color: #A2A2A2;
   dl {
-    font-weight: lighter;
     dt {
       color: #525252;
     }
@@ -115,7 +113,6 @@
     padding: 0 15px;
     font-size: 16px;
     color: #64646D;
-    font-weight: lighter;
     overflow: hidden;
     input {
       width: 64%;

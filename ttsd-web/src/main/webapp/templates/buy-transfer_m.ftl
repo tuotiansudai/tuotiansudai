@@ -44,9 +44,8 @@
              </span>
             <lable for="agreement">我已阅读并同意<a href="javascript:void(0)" class="link-agree-service">《安心签服务协议》</a>、<a
                     href="javascript:void(0)" class="link-agree-privacy">《隐私条款》</a>、<a href="javascript:void(0)"
-                                                                                       class="link-agree-number">《CFCA数字证书服务协议》</a>、<a
-                    href="javascript:void(0)" class="link-agree-number-authorize">《CFCA数字证书授权协议》</a> 和<a
-                    href="javascript:void(0)" class="link-agree-number"> 《债权转让协议》</a></lable>
+                                                                                       class="link-agree-number">《CFCA数字证书服务协议》</a>和<a
+                    href="javascript:void(0)" class="link-agree-number-authorize">《CFCA数字证书授权协议》</a> </lable>
         </div>
     </div>
 </#if>

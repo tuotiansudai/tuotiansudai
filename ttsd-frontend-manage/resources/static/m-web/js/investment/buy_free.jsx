@@ -3,18 +3,18 @@ let commonFun = require('publicJs/commonFun');
 require('webJs/plugins/autoNumeric');
 
 
-let $confirmInvest = $('#countDownBtn');
+let $confirmInvest = $('.count-btn');
 commonFun.countDownLoan({
     btnDom: $confirmInvest,
     time: 3,
     textCounting: 's',
     isAfterText: '确定'
 }, function () {
-    $confirmInvest.on('click', function () {
-        location.href = '/m'
-    })
-});
 
+});
+$confirmInvest.on('click', function () {
+    location.href = $(this).data('url');
+})
 
 
 

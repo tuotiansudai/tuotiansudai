@@ -84,10 +84,8 @@
   font-size: 12px;
   color: #A2A2A2;
   padding: 0px 40px 10px 40px;
-  font-weight: lighter;
   b {
     display: block;
-    font-weight: lighter;
     font-size: 13px;
     color: #525252;
     margin-top:20px;
@@ -136,9 +134,7 @@
 
 .apply-transfer-success {
   background: #fff;
-  height: 100%;
   overflow: hidden;
-  padding-top:50px;
   text-align: center;
   box-sizing: border-box;
   em {
@@ -148,3 +144,10 @@
     color: #808080;
   }
 }
+.count-btn {
+  &.count-downing {
+    background: #ccc;
+    border: 1px solid #ccc;
+  }
+}
+
