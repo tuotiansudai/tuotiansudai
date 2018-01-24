@@ -2,7 +2,6 @@
 
 <@global.main pageCss="${m_css.investor_invest_list}" pageJavascript="${m_js.investor_invest_list}" title="我的投资">
 
-
 <div class="my-account-content" id="myInvest">
     <div class="m-header"><em id="iconMyInvest" class="icon-left"><i class="fa fa-angle-left"></i></em>我的投资 </div>
     <div class="menu-category">
@@ -16,7 +15,7 @@
                 <script type="text/html" id="investListTpl">
                     {{if records.length}}
                     {{each records as value index}}
-                    <div class="invest-item" data-loanid="{{value.loanId}}">
+                    <div class="invest-item" data-loan-id="{{value.loanId}}" data-invest-id="{{value.investId}}">
                         <div class="top clearfix">
                             <dl class="dl-l clearfix">
                                 <dt><em class="money">{{value.expectedInterest}}</em>元</dt>

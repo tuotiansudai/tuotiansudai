@@ -2,7 +2,14 @@ require('mWebStyle/account/edit_payment_password.scss');
 
 let editPasswordForm = globalFun.$('#editPasswordForm');
 let resetPassword = globalFun.$('#resetPassword');
+let commonFun= require('publicJs/commonFun');
 
+commonFun.calculationFun(document, window);
+
+if (isAndroid_ios()) {
+    $('.input-box').addClass('androd_border');
+    $('.input_border').addClass('androd_border');
+}
 // 修改支付密码
 if(editPasswordForm) {
     let $input = $(editPasswordForm).find('input:visible');
@@ -46,18 +53,46 @@ if(resetPassword) {
         if(target.value.length==1) {
             $(target).next() && $(target).next().focus();
         }
+        if (event.keyCode == 8) {
+            $(target).prev() && $(target).prev('').focus();
+        }
     });
 
     $sendShortMsg.on('click',function(event) {
         event.preventDefault();
-
         let paramObj = $(resetPassword).serializeArray();
-        let lastCardNum = _.pluck(paramObj, 'value').join('')
-
+        let lastCardNum = _.pluck(paramObj, 'value').join('');
+        let data = { identityNumber: lastCardNum };
         if(lastCardNum.length==4) {
-            window.location.href = 'sms:10690569687?body=CSMM#'+lastCardNum
+            commonFun.useAjax({
+                url:"/m/personal-info/reset-umpay-password",
+                type:'POST',
+                data:data
+            },function(response) {
+                let data = response.data;
+                if (data.status) {
+                    location.href = '/m/';
+                } else {
+                    $('.num').val('');
+                    $('#num1').focus();
+                    layer.msg('身份证号输入错误');
+                }
+            });
+        } else {
+
+            layer.msg('请输入身份证后四位');
         }
     })
 
 }
 
+// 点击返回btn
+$('.go-back-container').on('click',() => {
+    history.go(-1);
+});
+
+function isAndroid_ios() {
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+    return isAndroid == true ? true : false;
+}

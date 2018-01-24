@@ -1,3 +1,6 @@
+body {
+  font-weight: normal;
+}
 .period {
   position: relative;
   top: -11px;
@@ -14,9 +17,10 @@
     line-height: 20px;
   }
 }
-
-.bonus-rule {
+.main-content {
   padding: 0 10px 20px 10px;
+}
+.bonus-rule {
   background: #fff;
   em.key {
     color: #FF473C;
@@ -105,6 +109,7 @@
       display: block;
       text-align: center;
       font-size:14px;
+      font-weight: normal;
     }
 
   }
@@ -177,6 +182,7 @@
       color: #FF473C;
       text-align: center;
       padding:10px;
+      font-weight: normal;
     }
   }
 
@@ -191,7 +197,7 @@
       padding: 20px;
     }
     .share-box-inner {
-      height:80px;
+
       width: 100%;
       overflow: hidden;
     }
@@ -207,8 +213,7 @@
       span {
         font-size: 11px;
         color: #525252;
-        height:80px;
-        width: 25%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -227,26 +232,6 @@
           }
         }
 
-        &.share-wechat {
-          i {
-            background-image: url('../../images/share/wechat.png');
-            background-size: 100%;
-          }
-        }
-
-        &.share-quan {
-          i {
-            background-image: url('../../images/share/quan.png');
-            background-size: 100%;
-          }
-        }
-
-        &.share-qq {
-          i {
-            background-image: url('../../images/share/qq.png');
-            background-size: 100%;
-          }
-        }
 
       }
     }
@@ -296,4 +281,60 @@
     padding: 0px;
     border-width: 0;
   }
+}
+.m-header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  background: #FF473C;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: 2px;
+    cursor: pointer;
+    i{
+      font-size: 30px;
+    }
+  }
+  #noUse {
+    float: right;
+    padding-right: 10px;
+    font-size: 14px;
+  }
+}
+.code-item{
+  margin-top:60px;
+  p{
+    text-align:center;
+    font-size: 15px;
+    color: #525252;
+    letter-spacing: -0.36px;
+    margin-bottom: 0;
+    span{
+      display:inline-block;
+      width:200px;
+      height:200px;
+      background:url('../../images/account/scan-code.png') no-repeat center;
+      background-size:100%;
+    }
+  }
+}
+.info-item{
+  padding:0 20px;
+  margin-top: 50px;
+  box-sizing:border-box;
+  dt{
+    font-size: 13px;
+    color: #525252;
+  }
+  dd{
+    font-size: 12px;
+    color: #525252;
+  }
+}
+.my-account-content {
+  min-height: 100%;
 }

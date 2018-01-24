@@ -3,13 +3,14 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestRepayDataDto;
-import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
+import com.tuotiansudai.dto.InvestorInvestDetailDto;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.repository.model.TransferInvestDetailView;
-import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +33,9 @@ public class InvestorController {
 
     @Autowired
     private RepayService repayService;
+
+    @Autowired
+    private LoanService loanService;
 
     @RequestMapping(value = "/invest-list", method = RequestMethod.GET)
     public ModelAndView investList() {
@@ -81,5 +85,16 @@ public class InvestorController {
     @ResponseBody
     public BaseDto<InvestRepayDataDto> getInvestRepayData(@PathVariable long investId) {
         return repayService.findInvestorInvestRepay(LoginUserInfo.getLoginName(), investId);
+    }
+
+    @RequestMapping(path = "/invest/{investId:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView investDetail(@PathVariable long investId) {
+        InvestorInvestDetailDto investDetail = investService.getInvestDetailById(investId);
+        if (investDetail == null) {
+            return new ModelAndView("/error/404");
+        }
+        ModelAndView mv = new ModelAndView("/investor-invest-detail");
+        mv.addObject("invest", investDetail);
+        return mv;
     }
 }

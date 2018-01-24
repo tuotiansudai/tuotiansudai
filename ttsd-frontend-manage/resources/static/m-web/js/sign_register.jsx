@@ -1,16 +1,106 @@
 let commonFun = require('publicJs/commonFun');
 let ValidatorObj = require('publicJs/validator');
-
+let isVoice = false;
 let formRegister = globalFun.$('#formRegister');
 
 let validator = new ValidatorObj.ValidatorForm();
 let $errorBox = $('.error-box', $(formRegister));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let captchaSrc = '/register/user/image-captcha';
-let $getCaptcha = $(formRegister).find('.get-captcha');
+let $getCaptcha = $('.get-captcha');
 let $registerSubmit=$('button[type="submit"]',$(formRegister));
 let referrerValidBool=true;
+let isSendingCaptcha = false;
 let $referrer=$('input.referrer', $(formRegister));
+
+(function (doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 20 * (clientWidth /375);
+            fSize > 40 && (fSize = 39.36);
+            docEl.style.fontSize = fSize + 'px';
+        };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+$(function () {
+    let bool=false;
+    setTimeout(function(){ bool=true;},300);
+    window.addEventListener("popstate", function(e) {
+        if(bool) location.reload();
+    },false);
+});
+
+let contentInput = (id,content,length) => {
+    $(id).find('input').on('keyup',(e) => {
+        if (!e.currentTarget.value.length) {
+            $(id).find('.close_btn').hide();
+        } else {
+            $(id).find('.close_btn').show();
+        }
+    })
+};
+
+let clearInputOneVal = (id,className) => {
+    $(id).find('.close_btn').on('click',() => {
+        $(id).find(className).val('');
+        $(id).find('.close_btn').hide();
+        if (className === '.short-message-captcha') {
+            $('.register_next_step').prop('disabled',true);
+        }
+    })
+};
+
+contentInput('#formCaptcha');
+clearInputOneVal('#formCaptcha','.captcha');
+
+contentInput('#formRegister');
+clearInputOneVal('#formRegister','.short-message-captcha');
+
+let entryEv = () => {
+    $('.form-captcha').show();
+    $('.step_container').show();
+    $('.show-mobile-register').show();
+    $('.next_step_container').hide();
+};
+
+let registerEv = () => {
+    $('.form-captcha').hide();
+    $('.show-mobile-register').hide();
+    $('.step_container').hide();
+    $('.next_step_container').show();
+};
+
+let hash_key = location.hash;
+
+switch (hash_key) {
+    case '':
+        entryEv();
+        break;
+    case '#register_next':
+        registerEv();
+        break;
+    default:
+        entryEv();
+        break;
+}
+
+let pushHistory = (url) => {
+    let state = {title: "title", url: url};
+    window.history.pushState(state, "title", url);
+    location.reload();
+};
+
+//获取手机号
+let telephoneNum = localStorage.getItem('login_telephone') || '';
+$('.show-mobile-register').html(telephoneNum);
+$('.mobile').val(telephoneNum);
 
 //刷新验证码
 $('#imageCaptcha').on('click', function () {
@@ -42,7 +132,8 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
         type: 1,
         title: '拓天速贷服务协议',
         area: $(window).width()<700?['100%', '100%']:['950px', '600px'],
-        shadeClose: true,
+        shadeClose: false,
+        shade: 0,
         move: false,
         scrollbar: true,
         skin: 'register-skin',
@@ -55,34 +146,57 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
 (function () {
     let formCaptcha = globalFun.$('#formCaptcha');
     function sendCaptcha() {
+        $('.shade_mine').hide();
+        layer.closeAll();
+        isSendingCaptcha = true;
         let ajaxOption = {
             url: '/register/user/send-register-captcha',
             type: 'POST',
-            data: $(formCaptcha).serialize()
+            data: $(formCaptcha).serialize()+'&voice='+isVoice
         };
         commonFun.useAjax(ajaxOption, function (responseData) {
             $getCaptcha.prop('disabled', false);
 
             let data = responseData.data;
             if (data.status && !data.isRestricted) {
+                if (!isVoice) {
+                    $('.get-captcha-icon').addClass('message_send');
+                }
+                else {
+                    $('.get-captcha-icon').removeClass('voice_get');
+                    $('.get-captcha-icon').addClass('voice_send');
+                }
+                localStorage.setItem('imageCaptcha',formCaptcha.imageCaptcha.value);
                 //获取手机验证码成功，，并开始倒计时
                 commonFun.countDownLoan({
-                    btnDom: $getCaptcha,
-                    isAfterText: '获取验证码',
-                    textCounting: 's'
+                    btnDom: $('.get-captcha-text'),
+                    isAfterText: '获取语音验证码',
+                    textCounting: 's后重新获取'
                 },function() {
                     //倒计时结束后刷新验证码
                     commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
+                    $getCaptcha.prop('disabled', false);
+                    isSendingCaptcha = false;
+                    if (!isVoice) {
+                        $('.get-captcha-icon').removeClass('message_send');
+                    }
+                    else {
+                        $('.get-captcha-icon').removeClass('voice_send');
+                    }
+                    $('.get-captcha-icon').addClass('voice_get');
+                    isVoice = true;
                 });
             } else if (!data.status && data.isRestricted) {
                 commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 formRegister.captcha.value = '';
                 layer.msg('短信发送频繁，请稍后再试');
+                isSendingCaptcha = false;
 
             } else if (!data.status && !data.isRestricted) {
                 commonFun.refreshCaptcha(imageCaptcha, captchaSrc);
                 formRegister.captcha.value = '';
                 layer.msg('图形验证码不正确');
+                isSendingCaptcha = false;
             }
         });
     }
@@ -92,9 +206,24 @@ $(formRegister).find('.show-agreement').on('touchstart', function (event) {
         let imageCaptcha = formCaptcha.imageCaptcha.value;
 
         if (/\d{5}/.test(imageCaptcha)) {
-            sendCaptcha();
+            if (isSendingCaptcha) return;
+            if (isVoice) {
+                $('.shade_mine').show(); // hack ios shade
+                commonFun.CommonLayerTip({
+                    btn: ['知道了','不发送'],
+                    area:['280px', '160px'],
+                    content: $('#freeSuccess'),
+                    shade: false  // hack ios shade
+                },() => {
+                    sendCaptcha();
+                },() => {
+                    $('.shade_mine').hide(); // hack ios shade
+                });
+            } else {
+                sendCaptcha();
+            }
         } else {
-            layer.msg('请输入正确的图形验证码');
+            layer.msg('图形验证码不正确');
             $getCaptcha.prop('disabled', false);
         }
     });
@@ -150,6 +279,11 @@ validator.add(formRegister.captcha, [{
     errorMsg: '验证码不正确'
 }]);
 
+validator.add(formRegister.referrer, [{
+    strategy: 'isReferrerExist',
+    errorMsg: '推荐人不存在'
+}]);
+
 let reInputs = $(formRegister).find('input[validate]');
 for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i],"keyup",function () {
@@ -173,13 +307,14 @@ function isDisabledButton() {
     let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
 
     let isDisabledCaptcha = isMobileValid && isPwdValid;
+    let getCaptcha = isMobileValid;
 
     //按钮上有样式名count-downing，说明正在倒计时
     if ($getCaptcha.hasClass('count-downing')) {
         $getCaptcha.prop('disabled',true);
     }
     else {
-        $getCaptcha.prop('disabled',!isDisabledCaptcha);
+        $getCaptcha.prop('disabled',!getCaptcha);
     }
     //给验证码弹框中的mobile隐藏域赋值
     isDisabledCaptcha && (globalFun.$('#formCaptcha').mobile.value = mobile.value);
@@ -187,27 +322,98 @@ function isDisabledButton() {
     !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    $('.register_next_step').prop('disabled', !captchaValid);
 
     if($(referrer).is(':hidden')) {
         referrerValidBool=true;
     }
 
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && referrerValidBool;
+    let isDisabledSubmit= isMobileValid && isPwdValid  && referrerValidBool;
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
 
 //点击立即注册按钮
-formRegister.onsubmit = function (event) {
+$('#submitBtn').on('click',function (event) {
     event.preventDefault();
-
+    formRegister.captcha.value = localStorage.getItem('captcha');
     for (let i = 0, len = reInputs.length; i < len; i++) {
         let errorMsg = validator.start(reInputs[i]);
         if (errorMsg) {
             layer.msg(errorMsg);
             return;
         }
-    }
+    };
+    let data = {
+        mobile: localStorage.getItem('login_telephone'),
+        password: formRegister.password.value,
+        imageCaptcha: localStorage.getItem('imageCaptcha'),
+        captcha: localStorage.getItem('captcha'),
+        referrer: formRegister.referrer.value,
+        agreement: 'on'
+    };
+    commonFun.useAjax({
+        url:'/register/user/m',
+        type:'POST',
+        data: data,
+        async: false,
+    },function(response) {
+        if(response.success) {
+          location.href = '/m/register/success'
+        }
+    });
+});
 
-    formRegister.submit();
-};
+$('.register_next_step').on('click',() => {
+    pushHistory('#register_next');
+    localStorage.setItem('captcha',formRegister.captcha.value);
+});
+
+//推荐人是否存在
+validator.newStrategy(formRegister.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
+    var getResult='',
+        that=this,
+        _arguments=arguments;
+    //只验证推荐人是否存在，不验证是否为空
+    if(this.value=='') {
+        referrerValidBool=true;
+        getResult='';
+        ValidatorObj.isHaveError.no.apply(that,_arguments);
+        return '';
+    }
+    commonFun.useAjax({
+        type:'GET',
+        async: false,
+        url:'/register/user/referrer/'+this.value+'/is-exist'
+    },function(response) {
+        if(response.data.status) {
+            // 如果为true说明推荐人存在
+            referrerValidBool=true;
+            getResult='';
+            ValidatorObj.isHaveError.no.apply(that,_arguments);
+        }
+        else {
+            referrerValidBool=false;
+            getResult=errorMsg;
+            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+        }
+    });
+    return getResult;
+});
+// 密码明文
+$('.see_password').on('click',() => {
+    let input = $('.see_password').siblings('input');
+    if (input.attr('type') == 'text') {
+        input.attr('type','password');
+        $('.see_password').removeClass('open_eye');
+    }
+    else if (input.attr('type') == 'password') {
+        input.attr('type','text');
+        $('.see_password').addClass('open_eye');
+    }
+});
+
+$('.go-back-container').on('click',() => {
+    history.go(-1);
+});
+

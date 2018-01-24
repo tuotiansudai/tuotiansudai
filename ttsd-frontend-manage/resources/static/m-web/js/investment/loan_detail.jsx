@@ -423,7 +423,7 @@ $('#iconBuy',$buyDetail).click(function () {
 });
 //点击直投详情页后退按钮进入列表页
 $('#iconDetail',$loanDetail).click(function () {
-    location.href='/m/loan-list';
+    history.back();
 });
 //点击项目详情进入直投项目详情页
 $('#iconProjectDetail',$projectDetail).click(function () {

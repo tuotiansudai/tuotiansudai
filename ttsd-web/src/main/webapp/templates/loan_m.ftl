@@ -122,7 +122,7 @@
         </li>
         <li>
             <label>借款协议</label>
-            <span><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">借款转让协议（样本）<i
+            <span><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）<i
                     class="fa fa-angle-right"></i></a></span>
 
         </li>

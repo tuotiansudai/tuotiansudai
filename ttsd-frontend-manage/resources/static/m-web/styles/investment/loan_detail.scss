@@ -19,7 +19,7 @@
   }
   .icon-help {
     top: 61px;
-    right: 25%;
+    right: 20%;
   }
 }
 .account-summary .amount-balance {
@@ -142,7 +142,7 @@
   }
   .icon-help {
     top: 61px;
-    right: 25%;
+    right: 20%;
   }
 }
 
@@ -795,6 +795,7 @@
   font-weight: normal!important;
   position: relative;
   left: -10px;
+  margin-left: 0!important;
 }
 #couponText {
   width: 60%;
@@ -878,4 +879,7 @@
   dl {
     font-weight: normal;
   }
+}
+layui-layer .layui-layer-page .layui-layer-content {
+  overflow-y: scroll!important;
 }
