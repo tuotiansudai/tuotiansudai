@@ -93,7 +93,6 @@
 }
 
 .apply-transfer-success {
-  background: #fff;
   text-align: center;
   box-sizing: border-box;
   em {
@@ -107,6 +106,7 @@
 
 .info{
   padding-top:50px;
+  background: #fff;
 }
 .footer{
   position:absolute;
@@ -117,7 +117,6 @@
 }
 
 .apply-transfer-success {
-  background: #fff;
   overflow: hidden;
   text-align: center;
   box-sizing: border-box;
@@ -133,5 +132,8 @@
     background: #ccc;
     border: 1px solid #ccc;
   }
+}
+.button-note {
+  padding-top: 50px;
 }
 
