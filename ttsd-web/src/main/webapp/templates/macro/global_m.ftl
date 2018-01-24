@@ -49,7 +49,7 @@
 </div>
 
 <div class="footer-wap-container">
-    <a class="menu-home current">
+    <a class="menu-home current" href="/m">
         <i></i>
         <span>首页</span>
     </a>
@@ -57,7 +57,7 @@
         <i></i>
         <span>投资</span>
     </a>
-    <a class="menu-my">
+    <a class="menu-my" href="/m/account">
         <i></i>
         <span>我的</span>
     </a>

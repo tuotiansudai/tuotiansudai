@@ -4,24 +4,27 @@
 
         <#if ["INVEST_PROJECT_TRANSFER", 'INVEST_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
             <div class="m-header">投资成功</div>
-        <div class="info">
-            <i class="icon-success"></i>
-            <em>投资成功</em>
-            <ul class="input-list">
-                <li>
-                    <label>投资金额</label>
-                    <span>${amount}元</span>
-                </li>
-                <li>
-                    <label>所投项目</label>
-                    <span>${loanName}</span>
-                </li>
-                <li>
-                    <label>项目编号</label>
-                    <span>${loanId?string.computer}</span>
-                </li>
-            </ul>
-        </div>
+            <div class="info">
+                <i class="icon-success"></i>
+                <em>投资成功</em>
+                <ul class="input-list">
+                    <li>
+                        <label>投资金额</label>
+                        <span>${amount}元</span>
+                    </li>
+                    <li>
+                        <label>所投项目</label>
+                        <span>${loanName}</span>
+                    </li>
+                    <li>
+                        <label>项目编号</label>
+                        <span>${loanId?string.computer}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="button-note">
+                <a data-url="/m/loan-list" class="count-btn btn-wap-normal next-step">确定</a>
+            </div>
         </#if>
         <#if "CUST_WITHDRAWALS" == service>
             <div class="m-header">提现成功</div>
