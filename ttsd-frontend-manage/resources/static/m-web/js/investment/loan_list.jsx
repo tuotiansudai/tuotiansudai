@@ -27,8 +27,7 @@ $('[data-url]',$categoryBoxMain).on('click',function(event) {
     event.preventDefault();
     let $this=$(this),
         url=$this.data('url');
-   // location.href=url;
-    location.href='/m/loan/1';
+    location.href=url;
 });
 
 myScroll.on('scrollEnd', function () {
