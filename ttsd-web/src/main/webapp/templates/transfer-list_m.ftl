@@ -46,7 +46,7 @@
                     <i></i>
                     <span>投资</span>
                 </a>
-                <a class="menu-my">
+                <a class="menu-my" href="/m/account">
                     <i></i>
                     <span>我的</span>
                 </a>

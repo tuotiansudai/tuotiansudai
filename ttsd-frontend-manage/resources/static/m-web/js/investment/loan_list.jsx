@@ -12,9 +12,11 @@ let $loanList = $('#loanList'),
     $categoryBoxMain = $('.category-box-main',$loanList);
 
 
-$categoryBoxMain.on('click', '.target-category-box',function () {
-    let $this = $(this);
-    location.href = $this.data('url');
+$('[data-url]',$categoryBoxMain).on('click',function(event) {
+    event.preventDefault();
+    let $this=$(this),
+        url=$this.data('url');
+    location.href=url;
 });
 
 let myScroll = new IScroll('#wrapperOut', {
