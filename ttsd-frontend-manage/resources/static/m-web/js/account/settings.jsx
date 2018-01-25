@@ -223,17 +223,13 @@ function closeNoPasswordCheck() {
 }
 
 $('#logout').on('click',() => {
-    commonFun.useAjax({
-        url:"/m/logout",
+    commonFun.useAjax('',{
+        url:"/logout",
         type:'POST',
     },function(response) {
-        let data = response.data;
-        if (data.status) {
-            // location.href = '/m/';
-            location.href = '/m/'
-        } else {
-            layer.msg(data.message);
-        }
+        location.href = '/m/'
+    },function () {
+        location.href = '/m/'
     });
 });
 

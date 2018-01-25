@@ -1,6 +1,6 @@
 <#import "../macro/global_m.ftl" as global>
 <@global.main pageCss="${m_css.anxin_sign}" pageJavascript="${m_js.anxin_sign}" title="安心签电子签章服务已开启">
-<div class="bind-data" style="display: none"  data-is-anxin-user="${anxinProp.anxinUser?c}"></div>
+<div class="bind-data" style="display: none" data-is-anxin-user="${anxinProp.anxinUser?c}"></div>
 <div id="signature" style="display: none">
     <div class="goBack_wrapper">
         安心签电子签章服务
@@ -31,12 +31,18 @@
         <@global.role hasRole="'INVESTOR'">
             <button type="button" class="btn-wap-normal next-step" id="openSafetySigned">立即开启</button>
         </@global.role>
-        <button type="button" class="btn-wap-normal next-step" id="authentication_identity" <@global.role hasRole="'INVESTOR'">display: none</@global.role>">立即开启</button>
+        <button type="button" class="btn-wap-normal next-step" id="authentication_identity"
+                style="<@global.role hasRole="'INVESTOR'">display: none</@global.role>">立即开启
+        </button>
         <div class="agreement-box">
         <span class="init-checkbox-style on">
              <input type="checkbox" id="readOk" class="default-checkbox" checked>
          </span>
-            <lable for="agreement">我已阅读并同意<a href="javascript:void(0)" class="link-agree-service">《安心签服务协议》</a>、<a href="javascript:void(0)" class="link-agree-privacy">《隐私条款》</a>、<br/><a href="javascript:void(0)" class="link-agree-number"> 《CFCA数字证书服务协议》</a>和<a href="javascript:void(0)" class="link-agree-number-authorize"> 《CFCA数字证书授权协议》</a></lable>
+            <lable for="agreement">我已阅读并同意<a href="javascript:void(0)" class="link-agree-service">《安心签服务协议》</a>、<a
+                    href="javascript:void(0)" class="link-agree-privacy">《隐私条款》</a>、<br/><a href="javascript:void(0)"
+                                                                                            class="link-agree-number">
+                《CFCA数字证书服务协议》</a>和<a href="javascript:void(0)" class="link-agree-number-authorize"> 《CFCA数字证书授权协议》</a>
+            </lable>
         </div>
     </div>
 
@@ -81,11 +87,11 @@
                 <i></i>
                 保密性
             </span>
-                    <span>
+            <span>
                 <i></i>
                 不可篡改性
             </span>
-                    <span>
+            <span>
                 <i></i>
                 可校验性
             </span>

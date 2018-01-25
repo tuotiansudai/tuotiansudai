@@ -56,7 +56,7 @@ honeySwitch.init = function() {
             },function(data) {
                 if(data.success) {
                     layer.msg('已开启安心签免短信服务');
-                    $(this).removeClass("switch-off").addClass("switch-on");
+                    $('#switch').removeClass("switch-off").addClass("switch-on");
                     if (honeySwitch.themeColor) {
                         var c = honeySwitch.themeColor;
                         $('#switch').css({
