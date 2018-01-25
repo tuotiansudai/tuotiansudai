@@ -5,6 +5,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppBankCardService;
 import com.tuotiansudai.util.RequestIPParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,9 @@ public class MobileAppBankCardController extends MobileAppBaseController {
     @RequestMapping(value = "/bankcard/bind", method = RequestMethod.POST)
     @ApiOperation("绑卡")
     public BaseResponseDto<BankCardResponseDto> bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto, HttpServletRequest request) {
+        if (!StringUtils.isNumeric(bankCardRequestDto.getCardNo())) {
+            return new BaseResponseDto<>(ReturnMessage.BIND_CARD_FAIL);
+        }
         bankCardRequestDto.setUserId(getLoginName());
         bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         bankCardRequestDto.setIp(RequestIPParser.parse(request));

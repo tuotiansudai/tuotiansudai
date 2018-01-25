@@ -16,6 +16,7 @@
         <result column="contact" property="contact"/>
         <result column="mobile" property="mobile"/>
         <result column="address" property="address"/>
+        <result column="comment" property="comment"/>
         <result column="consignment" property="consignment"/>
         <result column="consignment_time" property="consignmentTime"/>
         <result column="created_by" property="createdBy"/>
@@ -35,8 +36,8 @@
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO product_order (`product_id`, `points`, `actual_points`, `num`, `total_points`, `contact`,
-        `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        VALUE(#{productId}, #{points} ,#{actualPoints}, #{num}, #{totalPoints}, #{contact}, #{mobile}, #{address},
+        `mobile`, `address`, `comment`, `consignment`, `consignment_time`, `created_by`, `created_time`)
+        VALUE(#{productId}, #{points} ,#{actualPoints}, #{num}, #{totalPoints}, #{contact}, #{mobile}, #{address}, #{comment},
         #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 

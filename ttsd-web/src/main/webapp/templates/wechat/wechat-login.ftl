@@ -13,7 +13,7 @@
 
         <div class="error-box"></div>
         <button type="submit" class="btn-normal">下一步</button>
-        <span class="get-password"> <a href="/mobile-retrieve-password">忘记密码</a></span>
+        <#--<span class="get-password"> <a href="/mobile-retrieve-password">忘记密码</a></span>-->
 
     </form>
 

@@ -14,6 +14,7 @@ public class ProductOrderDto {
     private String contact;
     private String mobile;
     private String address;
+    private String comment;
     private Date consignmentTime;
     private boolean consignment;
     private long actualPoints;
@@ -29,6 +30,7 @@ public class ProductOrderDto {
         this.mobile = productOrderModel.getMobile();
         this.consignmentTime = productOrderModel.getConsignmentTime();
         this.address = productOrderModel.getAddress();
+        this.comment = productOrderModel.getComment();
         this.consignment = productOrderModel.isConsignment();
         this.actualPoints = productOrderModel.getActualPoints();
     }
@@ -96,6 +98,14 @@ public class ProductOrderDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Date getConsignmentTime() {

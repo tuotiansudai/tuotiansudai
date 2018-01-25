@@ -156,9 +156,10 @@ public class PointShopController {
     public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
                                            @RequestParam(value = "goodsType", required = true) GoodsType goodsType,
                                            @RequestParam(value = "number", required = true) int number,
-                                           @RequestParam(value = "userAddressId", required = false) Long addressId) {
+                                           @RequestParam(value = "userAddressId", required = false) Long addressId,
+                                           @RequestParam(value = "comment", required = false) String comment) {
         String loginName = LoginUserInfo.getLoginName();
-        return productService.buyProduct(loginName, id, goodsType, number, addressId);
+        return productService.buyProduct(loginName, id, goodsType, number, addressId, comment);
     }
 
     @RequestMapping(value = "/add-address", method = RequestMethod.POST)

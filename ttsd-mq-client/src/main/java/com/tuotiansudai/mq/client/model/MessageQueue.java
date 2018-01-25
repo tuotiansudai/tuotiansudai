@@ -24,7 +24,9 @@ public enum MessageQueue {
     InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
     InvestSuccess_YearEndAwards("InvestSuccess-YearEndAwards"),
     InvestSuccess_CashSnowball("InvestSuccess-CashSnowball"),
+    InvestSuccess_ActivityAnnualized("InvestSuccess-ActivityAnnualized"),
     Celebration_Coupon("Celebration-Coupon"),
+    NewYearActivity_Coupon("NewYearActivity-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
@@ -69,7 +71,8 @@ public enum MessageQueue {
     CreditLoanRepayQueue("CreditLoanRepayQueue"), //慧租信用贷还款
     CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
     CreditLoanBill("CreditLoanBill"),
-    Payroll("Payroll");
+    Payroll("Payroll"),
+    CreditLoanBalanceAlert("CreditLoanBalanceAlert"); // 信用贷账户余额不足，短信提醒（延时job）
 
     private final String queueName;
 
