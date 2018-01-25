@@ -150,7 +150,7 @@ $toOpenSMS.on('click',function() {
     }
 
     $this.prop('disabled',true);
-
+    $this.html('授权中...');
     commonFun.useAjax({
         type:'POST',
         url:'/anxinSign/verifyCaptcha',
@@ -165,6 +165,7 @@ $toOpenSMS.on('click',function() {
         }
         else {
             $this.prop('disabled',false);
+            $this.html('立即授权');
             $('.error').show();
         }
     });
