@@ -10,17 +10,15 @@
 </div>
 <div class="my-account-content" id="settingBox">
     <ul class="input-list">
-        <li>
+        <li id="reset-password">
             <label for="perName">支付密码</label>
-            <a href="./personal-info/reset-umpay-password" class="update-payment-pwd">
+            <a class="update-payment-pwd">
                 修改 <i class="fa fa-angle-right"></i>
             </a>
         </li>
-        <li>
+        <li id="anxinSign">
             <label for="perName">安心签</label>
-            <a href="anxin-electro-sign.ftl">
-                <i class="fa fa-angle-right"></i>
-            </a>
+            <a><i class="fa fa-angle-right"></i></a>
         </li>
     </ul>
 
