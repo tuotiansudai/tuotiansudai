@@ -238,7 +238,7 @@ $('#logout').on('click',() => {
 });
 
 $('#reset-password').on('click',() => {
-   location.href = './personal-info/reset-umpay-password'
+   location.href = './personal-info/reset-umpay-password';
 });
 
 $('#anxinSign').on('click',() => {

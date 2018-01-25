@@ -27,8 +27,8 @@ honeySwitch.init = function() {
                     if(data.success) {
                         layer.closeAll();
                         $('.shade_mine').hide();
-                        $(this).removeClass("switch-on").addClass("switch-off");
-                        $(".switch-off").css({
+                        $('#switch').removeClass("switch-on").addClass("switch-off");
+                        $('#switch').css({
                             'border-color' : '#dfdfdf',
                             'box-shadow' : 'rgb(223, 223, 223) 0px 0px 0px 0px inset',
                             'background-color' : 'rgb(255, 255, 255)'
@@ -59,15 +59,15 @@ honeySwitch.init = function() {
                     $(this).removeClass("switch-off").addClass("switch-on");
                     if (honeySwitch.themeColor) {
                         var c = honeySwitch.themeColor;
-                        $(this).css({
+                        $('#switch').css({
                             'border-color' : c,
                             'box-shadow' : c + ' 0px 0px 0px 16px inset',
                             'background-color' : c
                         });
                     }
-                    if ($(this).attr('themeColor')) {
-                        var c2 = $(this).attr('themeColor');
-                        $(this).css({
+                    if ($('#switch').attr('themeColor')) {
+                        var c2 = $('#switch').attr('themeColor');
+                        $('#switch').css({
                             'border-color' : c2,
                             'box-shadow' : c2 + ' 0px 0px 0px 16px inset',
                             'background-color' : c2
