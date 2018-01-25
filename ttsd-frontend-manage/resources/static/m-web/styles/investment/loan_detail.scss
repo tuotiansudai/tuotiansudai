@@ -22,7 +22,10 @@
     right: 20%;
   }
 }
-
+.account-summary .amount-balance {
+  font-size: 14px;
+  text-align: center;
+}
 .experience-amount {
   padding-bottom: 70px;
 }
@@ -58,43 +61,13 @@
   border-bottom-left-radius: 0;
 }
 
-.invest-refer-box {
-  position: absolute;
-  top: 100px;
-  right: 19%;
-  i.fa {
-    position: absolute;
-    top: -13px;
-    right: 27px;
-    font-size: 25px;
-    color: #fff!important;
-  }
-  ul {
-    border-radius:10px;
-    background: #fff;
-    font-size: 10px;
-    color: #A2A2A2;
-    li {
-      display: flex;
-      justify-content: space-between;
-      line-height: 20px;
-      border-bottom: 1px solid #f2f2f2;
-      padding: 0 6px;
-    }
-    .title {
-      font-size: 11px;
-      color: #525252;
-    }
-  }
-
-}
-
 .leave-time {
   height:45px;
   line-height: 45px;
   font-size: 14px;
   color: #808080;
   text-align: center;
+  background: #fff;
 }
 .repay-plan {
   margin-top:5px;
@@ -165,6 +138,7 @@
 }
 
 .detail-list {
+  margin-top: 5px;
   span i {
     font-size:20px;
   }
@@ -178,13 +152,14 @@
 }
 
 .invest-refer-box {
+  width: 200px;
   position: absolute;
   top: 100px;
-  right: 19%;
+  right: 5%;
   i.fa {
     position: absolute;
     top: -13px;
-    right: 27px;
+    right: 60px;
     font-size: 25px;
     color: #fff!important;
   }
@@ -198,11 +173,21 @@
       justify-content: space-between;
       line-height: 20px;
       border-bottom: 1px solid #f2f2f2;
-      padding: 0 6px;
+      padding: 0;
+      span {
+        text-align: center;
+        width: 30%;
+      }
+      .left-title {
+        border-right: 1px solid #f2f2f2;
+        padding-right: 5px;
+        width: 70%;
+      }
     }
     .title {
       font-size: 11px;
       color: #525252;
+
     }
   }
 
@@ -277,6 +262,9 @@
 
 .target-category-box {
   padding:15px 15px 25px 15px;
+  &.transfer {
+    padding-bottom: 22px;
+  }
   font-size: 16px!important;
   color: #808080!important;
   background: #fff;
@@ -310,7 +298,6 @@
         align-items: center;
         i {
           color: #525252;
-          font-weight: lighter!important;
         }
       }
       em{
@@ -339,7 +326,7 @@
   text-align: left;
   font-size: 18px;
   color: #525252;
-  font-weight: lighter!important;
+
 }
 .input-list li span.number-text{
   text-align: left;
@@ -355,10 +342,9 @@
   font-size: 12px;
   color: #A2A2A2;
   padding: 0px 40px 10px 40px;
-  font-weight: lighter;
   b {
     display: block;
-    font-weight: lighter;
+    font-weight: normal;
     font-size: 13px;
     color: #525252;
     margin-top:20px;
@@ -461,10 +447,9 @@
   font-size: 12px;
   color: #A2A2A2;
   padding: 0px 40px 10px 40px;
-  font-weight: lighter;
   b {
     display: block;
-    font-weight: lighter;
+    font-weight: normal;
     font-size: 13px;
     color: #525252;
     margin-top:20px;
@@ -486,37 +471,44 @@
 
 //回款计划
 .amount-detail {
-  //position: absolute;
   top: 51px;
   bottom: 0px;
   width: 100%;
   overflow: hidden;
   height: calc( 100% - 51px - 55px);
   .amount-detail-inner{
+    margin-top: 10px;
     .payment-plan {
       background: #fff;
       padding: 10px 10px 0px 10px;
-      margin-top: 5px;
-      margin-bottom:5px;
-      dt {
-        display: flex;
-        justify-content: space-between;
-        font-size: 16px;
-        color: #525252;
-        height:40px;
-      }
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      color: #525252;
+      height:40px;
+      border-top:1px solid #F7F7F7;
       dd {
-        display: flex;
-        justify-content: space-between;
+        flex: 1;
         font-size: 14px;
         color: #808080;
-        border-top:1px solid #F7F7F7;
         line-height: 40px;
-        em{
-          color:#808080;
           &.status {
             color: #FF635A;
           }
+        &.font-left {
+          text-align: left;
+        }
+        &.font-center {
+          text-align: center;
+        }
+        &.font-right {
+          text-align: right;
+        }
+
+      }
+      &.title {
+        dd {
+          color: #525252;
         }
       }
     }
@@ -743,15 +735,21 @@
   line-height: 44px;
   text-align: center;
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   background: #FF473C;
   position: relative;
   .icon-left {
     position: absolute;
     left: 10px;
-    top: 2px;
+    top: 7px;
+    letter-spacing: 0;
     i{
-      font-size: 30px;
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
     }
   }
   #noUse {
@@ -776,7 +774,14 @@
   background-color:rgba(0,0,0,0.7)!important;
 }
 .summary-box b {
-  font-size: 34px!important;
+  font-size: 50px!important;
+}
+.summary-box i {
+  font-size: 22px!important;
+  font-weight: normal!important;
+  position: relative;
+  left: -10px;
+  margin-left: 0!important;
 }
 #couponText {
   width: 60%;
@@ -803,4 +808,67 @@
 }
 .immediate-investment {
   margin-top: 50px!important;
+}
+.transfer-title {
+  font-size: 14px;
+  font-weight: normal!important;
+}
+.benefit-list span {
+  font-weight: normal!important;
+}
+.input-list li input.transfer-price {
+  font-weight: normal!important;
+}
+#transfer_details {
+  font-weight: normal!important;
+}
+.transfer-lable {
+  font-weight: normal!important;
+}
+.benefit-box.transfer-box .bg-square-box {
+  bottom: 8px;
+}
+#transferSubmit {
+  margin-top: 50px;
+}
+
+.layui-layer-title {
+  background: #FF473C!important;
+  color: #fff!important;
+  text-align: center;
+}
+.layui-layer-setwin {
+  left: 15px;
+  right: 300px;
+}
+.layui-layer-title {
+  padding: 0!important;
+  font-size: 16px!important;
+}
+.layui-layer-setwin {
+  top: 8px!important;
+}
+.layui-layer-setwin a {
+  width: 15px!important;
+  height: 24px!important;
+  margin-left: -4px!important;
+}
+.layui-layer-ico {
+  background: url("../../images/share/goback.png") no-repeat!important;
+  background-size: contain!important;
+}
+.init-checkbox-style {
+  width: 24px!important;
+}
+.box-item {
+  margin-top: 10px;
+  dl {
+    font-weight: normal;
+  }
+}
+layui-layer .layui-layer-page .layui-layer-content {
+  overflow-y: scroll!important;
+}
+.box-item .amount {
+  color: #525252;
 }

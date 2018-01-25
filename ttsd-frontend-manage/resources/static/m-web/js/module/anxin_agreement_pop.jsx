@@ -10,7 +10,7 @@ $('body').on('click','a',function(event) {
             type:1,
             title:title,
             area:['100%','100%'],
-
+            shade:0,
             shadeClose: false,
             content: content
         });

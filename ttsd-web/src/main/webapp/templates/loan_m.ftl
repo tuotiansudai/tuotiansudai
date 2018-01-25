@@ -19,9 +19,7 @@
             </span>
             <span class="summary-box">
                 <b>
-                    <@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
-                    <#if extraLoanRates??>
-                        ~ <@percentInteger>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentFraction>
+                    <@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction><#if extraLoanRates??>~<@percentInteger>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentFraction>
                     </#if>
                     <i>%</i>
                 </b>
@@ -45,10 +43,10 @@
             <div class="invest-refer-box" style="display: none">
                 <i class="fa fa-caret-up"></i>
                 <ul>
-                    <li><span class="title">投资金额</span><span class="title">投资奖励</span></li>
+                    <li><span class="title left-title">投资金额</span><span class="title">投资奖励</span></li>
 
                     <#list extraLoanRates.items as extraLoanRate>
-                        <li><span>投资金额>${extraLoanRate.amountLower?string}元</span><span>${extraLoanRate.rate}%</span>
+                        <li><span class="left-title">投资金额>${extraLoanRate.amountLower?string}元</span><span>${extraLoanRate.rate}%</span>
                         </li>
                     </#list>
                 </ul>

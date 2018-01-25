@@ -6,15 +6,37 @@ body {
   flex-direction: column;
   background: #F7F7F7;
   box-sizing: border-box;
-  font-weight: lighter;
-  font-family: 'PingFangSC-Regular', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
+  font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
 }
-
+b {
+  font-weight: normal;
+}
 button, input {
-  font-weight: lighter;
-  font-family: 'PingFangSC-Regular', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
+  font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
 }
-
+.m-header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  background: #FF473C;
+  position: relative;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: 7px;
+    letter-spacing: 0;
+    i{
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
 a:hover {
   color: #666;
 }
@@ -391,7 +413,6 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   position: relative;
 
   .newer-title {
-    font-weight: lighter;
     color: #525252;
   }
   .loan-info {
@@ -405,9 +426,8 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       line-height: 25px;
       color: #A2A2A2;
       font-size: 14px;
-      font-weight: lighter;
       em.note {
-        font-size: 10px;
+        font-size: 11px;
         display: block;
       }
       .percent-number {

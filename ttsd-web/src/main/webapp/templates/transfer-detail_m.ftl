@@ -2,25 +2,28 @@
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="项目详情－转让详情">
 
-<div class="my-account-content experience-amount" id="loanDetail">
+<div class="my-account-content experience-amount" id="transferingDetail">
 
     <div class="account-summary">
+        <em id="iconTransferM" class="icon-left"><i class="fa fa-angle-left"></i></em>
         <div class="collection">
             <span class="title">
                 ${transferApplication.name!}
             </span>
             <span class="summary-box">
-                <b>${transferApplication.baseRate!}
-                        <#if loanDto.activityRate != '0.0'>
-                            <i class="data-extra-rate">+ ${100 * loanDto.activityRate?number}</i>
-                        </#if><i>%</i></b>
+                 <b>
+                    <@percentInteger>${transferApplication.baseRate+transferApplication.activityRate}</@percentInteger><@percentFraction>${transferApplication.baseRate+transferApplication.activityRate}</@percentFraction>
+                     <#if extraLoanRates??>~<@percentInteger>${transferApplication.baseRate+transferApplication.activityRate+transferApplication.maxExtraLoanRate}</@percentInteger><@percentFraction>${transferApplication.baseRate+transferApplication.activityRate+transferApplication.maxExtraLoanRate}</@percentFraction></#if>
+                     <i>%</i>
+                </b>
+
                 <em>预期年化收益</em>
             </span>
         </div>
 
         <div class="amount-balance transfer-hack">
             <span>剩余期限<br/>${transferApplication.leftDays!}天</span>
-            <span>转让价格(元)<br/>${transferApplication.transferAmount!}</span>
+            <span>转让价格(元)<br/><em class="money">${transferApplication.transferAmount!}</em></span>
         </div>
 
     </div>
@@ -34,13 +37,13 @@
     <ul class="detail-list">
         <li>
             <label>项目本金</label>
-            <span>${transferApplication.investAmount!}元</span>
+            <span><em class="money">${transferApplication.investAmount!}</em>元</span>
 
         </li>
         <li>
             <label>预期收益</label>
             <span>
-               ${transferApplication.expecedInterest!}元
+               <em class="money">${transferApplication.expecedInterest!}</em>元
             </span>
         </li>
         <li>
@@ -77,34 +80,38 @@
 </div>
 <#--回款计划-->
 <div class="my-account-content amount-detail" id="repay_plan" style="display: none">
-
+    <div class="m-header"><em id="iconReplay" class="icon-left"><i></i></em>回款计划 </div>
     <div class="amount-detail-inner">
 
-        <dl class="payment-plan">
+        <dl class="payment-plan title">
+
+
+                <dd class="font-left">回款时间</dd>
+                <dd class="font-center">金额</dd>
+                <dd class="font-right">还款状态</dd>
+        </dl>
+
         <#list investRepay as repay>
-            <dt>
-                <span>${repay.repayDate?string("yyyy-MM-dd")}</span>
-                <span><@amount>${repay.expectedInterest?string.computer}</@amount></span>
-                <#if repay.status == 'COMPLETE'>
-                    <span>已完成</span>
-                </#if>
-                <#if repay.status == 'REPAYING'>
-                    <span class="status">待还款</span>
-                </#if>
-            </dt>
+            <dl class="payment-plan">
+                <dd class="font-left">${repay.repayDate?string("yyyy-MM-dd")}</dd>
+                <dd class="font-center"><@amount>${repay.expectedInterest?string.computer}</@amount></dd>
+
+                <dd class="status font-right">${repay.status.getDescription()}</dd>
+            </dl>
         </#list>
         </dl>
     </div>
 </div>
 <#--承接记录-->
 <div id="continue_record" class="amount-detail-list" style="display: none">
+    <div class="m-header"><em id="iconContinue" class="icon-left"><i></i></em>债权承接记录 </div>
     <#if (transferApplicationReceiver.status?string) == "true">
         <div class="box-item">
             <dl>
                 <dt>${transferApplicationReceiver.transferApplicationReceiver!}</dt>
                 <dd>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</dd>
             </dl>
-            <em class="amount plus">${transferApplicationReceiver.receiveAmount!}元</em>
+            <span class="amount"><em class="money">${transferApplicationReceiver.receiveAmount!}</em>元</span>
         </div>
     <#else >
         <p class="tc text-b">暂无承接记录</p>

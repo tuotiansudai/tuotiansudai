@@ -2,7 +2,7 @@
 <#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
 <div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
-    <div class="m-header"><em id="iconBuy" class="icon-left"><i class="fa fa-angle-left"></i></em>购买详情 </div>
+    <div class="m-header"><em id="iconBuy" class="icon-left"><i></i></em>购买详情 </div>
     <#if coupons?has_content>
         <#if maxBenefitUserCoupon??>
             <#switch maxBenefitUserCoupon.couponType>

@@ -4,7 +4,7 @@
 
 <div class="my-loan-content" id="loanList">
     <div class="menu-category">
-        <span class="current"><a>直投项目</a></span>
+        <span class="current"><a id="aaa">直投项目</a></span>
         <span><a href="/m/transfer-list">转让项目</a></span>
     </div>
 
@@ -16,7 +16,7 @@
                     <#if transferringCount?? && transferringCount != 0 && !isInserted>
                         <#if !(['PREHEAT', 'RAISING']?seq_contains(loanItem.status))>
                             <#assign isInserted = true>
-                            <div class="target-category-box" data-url="loan-detail.ftl">
+                            <div class="target-category-box" data-url="/m/transfer-list">
                                 <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
                                 <ul class="transferArea loan-info clearfix">
                                     <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
@@ -43,14 +43,12 @@
                         </b>
                         <ul class="loan-info clearfix">
                             <li>
-                        <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if> ">
+                        <span class="percent-number  <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if> ">
                             <i>
                                 <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
                                     <@percentInteger>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate+loanItem.interestCouponRate}</@percentFraction>
                                 <#else>
-                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
-                                    <#if (loanItem.extraRate > 0)>
-                                        ~ <@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
+                                    <@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction><#if (loanItem.extraRate > 0)>~<@percentInteger>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.baseRate + loanItem.activityRate+ loanItem.extraRate}</@percentFraction>
                                     </#if>
                                 </#if>
                             </i><em>%</em>
@@ -97,7 +95,7 @@
                 </#list>
                 <#if transferringCount?? && transferringCount != 0 && !isInserted>
                     <#assign isInserted = true>
-                    <div class="target-category-box" data-url="loan-detail.ftl">
+                    <div class="target-category-box" data-url="/m/transfer-list">
                         <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
                         <ul class="transferArea loan-info clearfix">
                             <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
@@ -129,7 +127,7 @@
             <i></i>
             <span>投资</span>
         </a>
-        <a class="menu-my">
+        <a class="menu-my" href="/m/account">
             <i></i>
             <span>我的</span>
         </a>

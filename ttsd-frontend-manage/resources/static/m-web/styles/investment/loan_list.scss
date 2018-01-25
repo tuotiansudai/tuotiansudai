@@ -67,7 +67,7 @@
   background-size: contain;
 }
 .target-category-box .loan-info {
-  padding: 16px 10px 3px 10px;
+  padding: 16px 0px 3px 0px;
 }
  .target-category-box.transferLi .loan-info {
    padding: 12px 10px 3px 10px;
@@ -78,18 +78,18 @@
 
 .target-category-box {
   padding: 2px 10px 5px 10px;
+  cursor: pointer;
 }
 .target-category-box .loan-info li .percent-number {
-  font-weight: 350;
+  font-weight: normal;
   font-size: 20px;
   i {
     font-size: 20px;
   }
   em {
-    font-weight: lighter;
-    font-size: 14px;
+    font-size: 16px;
     position: relative;
-    left: -10px;
+    left: -7px;
   }
 }
 .target-category-box .loan-info li .percent-number.colorChange {
@@ -108,33 +108,31 @@
   display: inline-block;
   margin-bottom: 5px;
 }
-.target-category-box .loan-info li {
-  color: #525252;
-}
+
 .max-benifit {
   color: #FF473C;
   font-size: 14px;
   i {
     font-size: 28px;
-    font-weight:350;
+    font-weight:normal;
   }
 }
 .icon-first-get {
   position: absolute;
+  font-size: 12px;
   top: -14px;
-  right: -22px;
+  right: -15px;
   display: inline-block;
-  width: 69px;
-  height: 28px;
+  width: 52px;
+  height: 22px;
   text-align: center;
-  line-height: 23px;
+  line-height: 18px;
   background: url("../../images/share/first_get.png") no-repeat;
   background-size: contain;
   transform:scale(0.8);
   color: #F6AA16;
 }
 .target-category-box .loan-info li .duration-day {
-  font-weight:350;
   color: #a2a2a2;
 }
 .target-category-box .loan-status {
@@ -144,14 +142,27 @@
   padding-right: 16px;
 }
 .percentSmall {
-  font-size: 10px!important;
+  font-size: 16px!important;
   position: relative;
-  left: 0px;
-  font-weight:lighter;
+  left: -7px;
 }
 .target-category-box .loan-info li {
   line-height: 1.3;
 }
 .menu-category span a {
   width: 45%;
+}
+
+.target-category-box .loan-info li {
+
+    &:nth-child(1){
+      flex: 3.5;
+    }
+    &:nth-child(2){
+      flex: 2;
+    }
+    &:nth-child(3){
+      flex: 3;
+    }
+
 }

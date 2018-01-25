@@ -4,7 +4,8 @@ require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
 require('mWebJs/plugins/smartphoto/smartphoto.min.css');
 let smartPhoto = require('mWebJs/plugins/smartphoto/jquery-smartphoto.min.js');
-//require('mWebJsModule/anxin_agreement_pop');
+require('mWebJsModule/anxin_agreement_pop');
+let anxinModule = require('webJsModule/anxin_signed');
 require('webJs/plugins/autoNumeric');
 let loanId = $('input[name="loanId"]',$buyDetail).val();
 var tpl = require('art-template/dist/template');
@@ -74,9 +75,11 @@ $buyDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
 $amountInputElement.autoNumeric('init');
 
-
 function getInvestAmount() {
     var amount = 0;
+    if($amountInputElement.length == 0){
+        return;
+    }
     if (!isNaN($amountInputElement.autoNumeric("get"))) {
         amount = parseInt(($amountInputElement.autoNumeric("get") * 100).toFixed(0));
     }
@@ -166,7 +169,7 @@ $('#btn-detail-toggle').click(function () {
 //转让购买详情
 //承接记录
 $('#look_continue_record').click(function () {
-    $('#loanDetail').hide();
+    $('#transferingDetail').hide();
     $('.buy-transfer').hide();
     $('#continue_record').show();
 })
@@ -174,7 +177,7 @@ $('#look_continue_record').click(function () {
 $('#look_repay_plan').click(function () {
     $('.buy-transfer').hide();
     $('#cotinue_record').hide();
-   $('#loanDetail').hide();
+   $('#transferingDetail').hide();
     $('#repay_plan').show();
 })
 
@@ -292,7 +295,10 @@ let calExpectedCouponInterest = function() {
 
 };
 //页面加载判断预期收益
-maxBenifitUserCoupon();
+if($buyDetail.length !==0){
+    maxBenifitUserCoupon();
+}
+
 function maxBenifitUserCoupon() {
     commonFun.useAjax({
         url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
@@ -373,7 +379,7 @@ $('#investSubmit').on('click', function(event) {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
-                        location.href = '/recharge';//去充值
+                        location.href = '/m/recharge';//去充值
                     })
                      return false;
                 }
@@ -417,7 +423,7 @@ $('#iconBuy',$buyDetail).click(function () {
 });
 //点击直投详情页后退按钮进入列表页
 $('#iconDetail',$loanDetail).click(function () {
-    history.back();
+    location.href = '/m/loan-list'
 });
 //点击项目详情进入直投项目详情页
 $('#iconProjectDetail',$projectDetail).click(function () {
@@ -437,4 +443,129 @@ $(function(){
 $('#exchangeCoupon').on('click',function () {
     location.href = '/m/my-treasure/coupon-exchange'
 })
+
+//转让购买
+let $transferDetail = $('#transfer_details'),//转让购买页
+    $toBuyTransfer = $('#to_buy_transfer'),//立即投资
+    $transferSubmit = $('#transferSubmit'),//转让按钮
+    $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
+
+$toBuyTransfer.on('click',function () {
+    $transferDetail.show().siblings().hide();
+})
+$transferSubmit.on('click',function (e) {
+    e.preventDefault();
+    $.when(commonFun.isUserLogin())
+        .fail(function() {
+            //判断是否需要弹框登陆
+            location.href = '/m/login'
+        })
+        .done(function() {
+            submitData();
+        });
+})
+function submitData() {
+    var transferApplicationId = parseInt($("#transferApplicationId").val()),
+        transferAmount = $("#amount").val(),
+        userBalance = $("#userBalance").val();
+    commonFun.useAjax({
+        url: '/transfer/' + transferApplicationId + '/purchase-check',
+        type: 'GET'
+    },function(data) {
+
+        if (data.message == "SUCCESS") {
+            commonFun.CommonLayerTip({
+                        btn: ['确定'],
+                        area:['280px', '160px'],
+                        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被承接，请选择其他项目</span></div> `,
+                    },function () {
+                layer.closeAll();
+                location.href = "/m/transfer-list";
+            })
+
+        } else if (data.message == "CANCEL") {
+            commonFun.CommonLayerTip({
+                btn: ['确定'],
+                area:['280px', '160px'],
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被取消，请选择其他项目。</span></div> `,
+            },function () {
+                layer.closeAll();
+                location.href = "/m/transfer-list";
+            })
+
+        } else if (data.message == "MULTITERM") {
+            commonFun.CommonLayerTip({
+                btn: ['确定'],
+                area:['280px', '160px'],
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被承接或已取消，请选择其他项目</span></div> `,
+            },function () {
+                layer.closeAll();
+                location.href = "/m/transfer-list";
+            })
+
+        } else {
+            var $transferForm = $('#transferForm');
+            if ($transferForm.attr('action') === '/transfer/purchase') {
+
+                var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
+                if (!isInvestor) {
+                    location.href = '/m/login?redirect=' + encodeURIComponent(location.href);
+                    return false;
+                }
+
+                var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
+                if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
+                    commonFun.CommonLayerTip({
+                        btn: ['确定','取消'],
+                        area:['280px', '160px'],
+                        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
+                    },function() {
+                        location.href = '/m/recharge';//去充值
+                    })
+                    return false;
+                }
+            }
+            if($isAnxinAuthenticationRequired.val()=='false'){
+                $transferForm.submit();
+            }else{
+                anxinModule.getSkipPhoneTip();
+                return false;
+            }
+
+        }
+    });
+}
+$transferDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
+//回退按钮
+let transferApplicationId = $("#transferApplicationId").val();
+$('#iconTransferDetail').on('click',function () {
+    location.href = '/m/transfer/'+transferApplicationId;
+
+})
+//协议
+$('.init-checkbox-style').initCheckbox(function(event) {
+    //如果安心签协议未勾选，马上投资按钮需要置灰
+    let checkboxBtn = event.children[0];
+    let checkBool = $(checkboxBtn).prop('checked');
+    if(checkboxBtn.id=='skipCheck') {
+        $transferSubmit.prop('disabled',!checkBool);
+    }
+});
+//转让详情页回退按钮
+$('#iconTransferM').on('click',function () {
+    location.href = '/m/transfer-list'
+})
+//回款计划回退按钮
+$('#iconReplay').on('click',function () {
+    location.href = '/m/transfer/'+transferApplicationId;
+})
+//债权承接记录
+$('#iconContinue').on('click',function () {
+    location.href = '/m/transfer/'+transferApplicationId;
+})
+//转让详情
+if($('.money').length){
+    $('.money').autoNumeric('init');
+}
+
 

@@ -47,4 +47,5 @@
         <li class="top-distance"><a href="settings.ftl">设置<i class="fa fa-angle-right"></i></a></li>
     </ul>
 </div>
+
 </@global.main>
