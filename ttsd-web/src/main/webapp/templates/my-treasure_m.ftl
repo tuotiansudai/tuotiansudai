@@ -2,7 +2,7 @@
 <@global.main pageCss="${m_css.coupon}" pageJavascript="${m_js.coupon}" title="优惠券">
 
 <div class="my-account-content amount-overview" id="couponList">
-    <div class="m-header"><em class="icon-left" id="goBackIcon"><i class="fa fa-angle-left"></i></em>优惠券</div>
+    <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>优惠券</div>
     <div class="select-btn">
         <p class="to-coupon">
             <a href="/m/my-treasure/coupon-exchange">

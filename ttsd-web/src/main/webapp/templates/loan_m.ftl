@@ -46,7 +46,7 @@
                     <li><span class="title left-title">投资金额</span><span class="title">投资奖励</span></li>
 
                     <#list extraLoanRates.items as extraLoanRate>
-                        <li><span class="left-title">投资金额>${extraLoanRate.amountLower?string}元</span><span>${extraLoanRate.rate}%</span>
+                        <li><span class="left-title">投资金额><em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
                         </li>
                     </#list>
                 </ul>
@@ -58,7 +58,7 @@
     <span>
 
 
-        <b>${loan.minInvestAmount}元</b>
+        <b><em class="money">${loan.minInvestAmount}</em>元</b>
         <i>起投金额</i>
     </span>
         <span>
@@ -66,7 +66,7 @@
         <i>项目期限</i>
     </span>
         <span>
-        <b><@amount>${interestPerTenThousands?string.computer}</@amount>元</b>
+        <b><em class="money"><@amount>${interestPerTenThousands?string.computer}</@amount></em>元</b>
 
         <i>最大万元收益</i>
     </span>
@@ -83,8 +83,8 @@
         </div>
 
         <div class="project-info">
-            <span>项目总额：<i><@amount>${loan.loanAmount?string.computer}</@amount>元</i></span>
-            <span>剩余金额：<i><@amount>${loan.amountNeedRaised?string.computer}</@amount>元</i></span>
+            <span>项目总额：<i><em class="money"><@amount>${loan.loanAmount?string.computer}</@amount></em>元</i></span>
+            <span>剩余金额：<i><em class="money"><@amount>${loan.amountNeedRaised?string.computer}</@amount></em>元</i></span>
         </div>
     </div>
 
@@ -93,7 +93,7 @@
         <li>
             <label>投资上限</label>
 
-            <span>${loan.maxInvestAmount}元</span>
+            <span><em class="money">${loan.maxInvestAmount}</em>元</span>
 
 
         </li>
@@ -120,7 +120,7 @@
         </li>
         <li>
             <label>借款协议</label>
-            <span><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）<i
+            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）<i
                     class="fa fa-angle-right"></i></a></span>
 
         </li>
@@ -130,7 +130,7 @@
         </li>
     </ul>
     <#if loan.loanStatus == "PREHEAT">
-        <button id="toInvest" class="to-invest-project" type="button" disabled>预热中</button>
+        <button class="to-invest-project" type="button" disabled>预热中</button>
     </#if>
 
     <#if loan.loanStatus='RAISING'>

@@ -1,5 +1,5 @@
 <div class="project-detail show-page" id="projectDetail" data-url="/loan/${loan.id?string.computer}/invests" style="display: none">
-    <div class="m-header"><em id="iconProjectDetail" class="icon-left"><i class="fa fa-angle-left"></i></em>项目详情 </div>
+    <div class="m-header"><em id="iconProjectDetail" class="icon-left"><i></i></em>项目详情 </div>
     <div class="menu-category">
         <span class="current"><a>项目材料</a></span>
         <span><a id="transaction_record">交易记录</a></span>

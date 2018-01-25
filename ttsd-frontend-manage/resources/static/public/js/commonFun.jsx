@@ -360,6 +360,19 @@ function calculationFun(doc, win) {
     doc.addEventListener('DOMContentLoaded', recalc, false);
 };
 
+function phoneModal() {
+    var u = navigator.userAgent, app = navigator.appVersion;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (isAndroid) {
+        return 'android';
+    }
+    if (isIOS) {
+        //这个是ios操作系统
+        return 'ios';
+    }
+}
+
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -376,5 +389,6 @@ exports.activityStatus = activityStatus;
 exports.CommonLayerTip = CommonLayerTip;
 exports.repeatBgSquare = repeatBgSquare;
 exports.calculationFun = calculationFun;
+exports.phoneModal = phoneModal;
 
 

@@ -36,6 +36,11 @@ button, input {
       background-size: contain;
     }
   }
+  #noUse {
+    float: right;
+    padding-right: 10px;
+    font-size: 14px;
+  }
 }
 a:hover {
   color: #666;

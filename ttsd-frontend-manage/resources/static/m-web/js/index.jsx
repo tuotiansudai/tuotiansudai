@@ -1,5 +1,5 @@
 require('mWebStyle/home_page.scss');
-
+let commonFun = require('publicJs/commonFun');
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
@@ -68,3 +68,15 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
     countDownLoan($preheat);
 
 })();
+
+let $appContainer = $('.app-container')
+$('.close-app').on('click',function () {
+    $appContainer.hide();
+})
+$('.open-app').on('click',function () {
+    if(commonFun.phoneModal() == 'android'){
+        location.href = 'http://tuotiansudai.com/app/tuotiansudai.apk';
+    }else if(commonFun.phoneModal() == 'ios'){
+       location.href = 'https://itunes.apple.com/cn/app/id1039233966';
+    }
+})

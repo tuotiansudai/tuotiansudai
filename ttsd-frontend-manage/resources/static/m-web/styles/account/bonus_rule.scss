@@ -282,29 +282,6 @@ body {
     border-width: 0;
   }
 }
-.m-header {
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  color: #fff;
-  font-size: 16px;
-  background: #FF473C;
-  position: relative;
-  .icon-left {
-    position: absolute;
-    left: 10px;
-    top: 2px;
-    cursor: pointer;
-    i{
-      font-size: 30px;
-    }
-  }
-  #noUse {
-    float: right;
-    padding-right: 10px;
-    font-size: 14px;
-  }
-}
 .code-item{
   margin-top:60px;
   p{

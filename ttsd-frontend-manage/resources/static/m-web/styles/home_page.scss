@@ -76,27 +76,36 @@
   .gift-box {
     display: flex;
     justify-content: space-between;
-    padding: 15px;
-    text-align: right;
+    padding: 5px;
+    text-align: center;
     background: #fff;
-    .gift-img {
-      background: url('../images/home-gift.png') left center no-repeat;
-      background-size: 100%;
-      width:89px;
-      height:68px;
-    }
-    .gift-to-detail {
-      span {
-        display: block;
-        font-size: 16px;
-        color: #420405;
-        letter-spacing: 0;
-        font-weight: bold;
+    dl {
+      flex: 1;
+      text-align: center;
+      dt {
+        width: 100%;
+        text-align: center;
+        a {
+          margin: 0 auto;
+          display: block;
+          width: 40px;
+          height: 40px;
+          &.operational-data {
+             background: url("../images/share/operational_data.png") no-repeat;
+             background-size: contain;
+           }
+          &.inviting-friend {
+            background: url("../images/share/inviting_friends.png") no-repeat;
+            background-size: contain;
+          }
+          &.assurance {
+            background: url("../images/share/icon_assurance.png") no-repeat;
+            background-size: contain;
+          }
+        }
       }
-      a {
-        color: #420405;
-      }
     }
+
   }
 
   .company-info {
@@ -122,4 +131,51 @@
   }
 
 
+}
+.target-category-box .loan-info {
+  padding-left: 0;
+  padding-right: 0;
+}
+.app-container {
+  height: 70px;
+  background: rgba(0,0,0,0.6);
+  .logo {
+    width: 50px;
+    height: 50px;
+    float: left;
+    background: url("../images/share/logo.png") no-repeat;
+    background-size: contain;
+    margin-left: 16px;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  .app-detail {
+    float: left;
+    color: #fff;
+    line-height: 20px;
+    font-size: 13px;
+    margin-top: 15px;
+  }
+  .open-app {
+    float: right;
+    width: 87px;
+    height: 30px;
+    background: #FF473C;
+    color: #fff;
+    font-size: 15px;
+    margin-right: 30px;
+    margin-top: 20px;
+    text-align: center;
+    line-height: 30px;
+  }
+  .close-app {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: url("../images/share/icon_close.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  }
 }

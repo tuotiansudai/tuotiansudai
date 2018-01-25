@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${m_css.bonus_rule}" pageJavascript="${m_js.bonus_rule}" title="推荐送奖金">
 <div class="my-account-content bonus-rule recommend-rule" id="recommendRule">
-    <div class="m-header"><em id="iconRecomend" class="icon-left"><i class="fa fa-angle-left"></i></em>推荐送奖金 </div>
+    <div class="m-header"><em id="iconRecomend" class="icon-left"><i></i></em>推荐送奖金 </div>
     <div class="main-content">
         <div class="box-column">
             <h2>
