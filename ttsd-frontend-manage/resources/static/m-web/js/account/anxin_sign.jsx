@@ -9,11 +9,13 @@ let $openMessage = $('#openMessage');
 let $authorization_message = $('#authorization_message');
 let isAnxinUser=$('.bind-data').data('is-anxin-user');
 let switchStatus = $('#switchStatus').data('skip-auth');
+let fromPage = getQueryString('fromPage');
 
 commonFun.calculationFun(document,window);
 
 if (!isAnxinUser) {
-    $signature.show();
+    $openMessage.show();
+    //$signature.show();
 }
 else {
     $openMessage.show();
@@ -45,7 +47,6 @@ $('#openSafetySigned').on('click',function() {
         if(!response.success){
             layer.msg('开启失败');
         } else {
-            layer.msg('开启成功！');
             $signature.hide();
             $openMessage.show();
         }
@@ -171,6 +172,13 @@ $toOpenSMS.on('click',function() {
     });
 });
 
+function getQueryString(name){
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null)
+        return unescape(r[2]);
+    return null;
+};
 if (switchStatus) {  // 开关为开启状态
     $('#switch').addClass('switch-on');
 }
@@ -183,12 +191,25 @@ $('#goPage_1').on('click',() => {
 });
 
 $('#goPage_2').on('click',() => {
-    $('#openMessage').hide();
-    $('#authorization_message').hide();
-    $('#signature').show();
+    location.href = `./${fromPage}`;
 });
 $('#goPage_3').on('click',() => {
     $('#openMessage').show();
     $('#authorization_message').hide();
     $('#signature').hide();
+});
+$('#lastPage').on('click',() => {
+    location.href = `./${fromPage}`;
+});
+$('#skipPhoneCode').on('keyup',(e) => {
+   if (!e.currentTarget.value.length) {
+       $('.close_btn').hide();
+       return;
+   }
+    $('.close_btn').show();
+});
+$('.close_btn').on('click',() => {
+    $('#skipPhoneCode').val('');
+    $('#toOpenSMS').attr('disabled',true);
+    $('.close_btn').hide();
 });

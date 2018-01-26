@@ -13,12 +13,12 @@
         <li id="reset-password">
             <label for="perName">支付密码</label>
             <a class="update-payment-pwd">
-                修改 <i class="fa fa-angle-right"></i>
+                修改 <i class="icon-more"></i>
             </a>
         </li>
         <li id="anxinSign">
             <label for="perName">安心签</label>
-            <a><i class="fa fa-angle-right"></i></a>
+            <a><i class="icon-more"></i></a>
         </li>
     </ul>
 

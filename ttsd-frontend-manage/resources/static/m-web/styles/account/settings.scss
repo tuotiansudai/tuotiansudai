@@ -148,3 +148,12 @@
   }
 }
 
+.icon-more {
+  display: inline-block;
+  content: '';
+  width: .7rem;
+  height: .7rem;
+  background: url('../../images/icon-more.png') no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}

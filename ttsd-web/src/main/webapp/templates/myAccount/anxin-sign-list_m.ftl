@@ -3,7 +3,7 @@
 <input type="hidden" data-skip-auth="${anxinProp.skipAuth?c}" id="switchStatus">
 <div class="goBack_wrapper">
     安心签
-    <div class="go-back-container" id="goBack_applyTransfer">
+    <div class="go-back-container" id="lastPage">
         <span class="go-back"></span>
     </div>
 </div>

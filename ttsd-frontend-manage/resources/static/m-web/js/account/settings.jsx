@@ -238,5 +238,5 @@ $('#reset-password').on('click',() => {
 });
 
 $('#anxinSign').on('click',() => {
-   location.href = './anxinSign';
+   location.href = './anxinSign?fromPage=settings';
 });
