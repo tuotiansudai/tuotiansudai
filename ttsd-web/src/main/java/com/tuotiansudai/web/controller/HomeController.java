@@ -85,4 +85,9 @@ public class HomeController {
         }
     }
 
+    @RequestMapping(value = "/settings")
+    public ModelAndView settings(){
+        return new ModelAndView("/settings");
+    }
+
 }

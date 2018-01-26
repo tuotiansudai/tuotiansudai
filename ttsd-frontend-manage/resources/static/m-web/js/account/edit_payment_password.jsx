@@ -71,7 +71,7 @@ if(resetPassword) {
             },function(response) {
                 let data = response.data;
                 if (data.status) {
-                    location.href = '/m/';
+                    location.href = '/m/settings';
                 } else {
                     $('.num').val('');
                     $('#num1').focus();
