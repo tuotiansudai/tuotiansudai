@@ -1,6 +1,7 @@
 let ValidatorObj= require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
 require('mWebStyle/account/settings.scss');
+commonFun.calculationFun(document, window);
 
 let $settingBox = $('#settingBox');
 let $turnOnSendCaptcha = $('#turnOnSendCaptcha'),
@@ -220,3 +221,22 @@ function closeNoPasswordCheck() {
     });
 
 }
+
+$('#logout').on('click',() => {
+    commonFun.useAjax('',{
+        url:"/logout",
+        type:'POST',
+    },function(response) {
+        location.href = '/m/'
+    },function () {
+        location.href = '/m/'
+    });
+});
+
+$('#reset-password').on('click',() => {
+   location.href = './personal-info/reset-umpay-password';
+});
+
+$('#anxinSign').on('click',() => {
+   location.href = './anxinSign?fromPage=settings';
+});

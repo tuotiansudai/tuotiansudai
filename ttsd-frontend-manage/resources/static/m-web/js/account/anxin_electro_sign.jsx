@@ -19,24 +19,48 @@ $('#openSafetySigned').on('click',function() {
         url:'/anxinSign/createAccount'
     },function(response) {
         $this.prop('disabled',false);
-        if(!response.success){
-            layer.msg('<span class="layer-msg-tip"><i></i>开启失败：'+response.data.message+'</span>',{
-                skin:'msg-tip-box',
-                time: 1500,
-                area:['370px','90px']
-            });
-        } else {
-            layer.msg('<span class="layer-msg-tip"><i></i>开启成功!</span>', {
-                skin: 'msg-tip-box',
-                time: 1500,
-                area: ['290px', '90px']
-            }, function () {
-                //done
-                location.href='anxin-electro-success.ftl';
 
-            });
+        if(!response.success){
+            layer.msg('开启失败');
+        } else {
+            layer.msg('开启成功！');
+            location.href='/m/anxinSign/createAccountSuccess';
         }
     });
 });
 
+(function (doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 20 * (clientWidth /375);
+            fSize > 40 && (fSize = 39.36);
+            docEl.style.fontSize = fSize + 'px';
+        };
 
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+// 点击返回btn
+$('.go-back-container').on('click',() => {
+    history.go(-1);
+});
+
+
+
+$('.init-checkbox-style').initCheckbox(function(element) {
+    //点击我已阅读并同意是否disable按钮
+    var isCheck=$(element).hasClass('on'),
+        $btnNormal=$('#openSafetySigned');
+
+    if(isCheck) {
+        $btnNormal.prop('disabled',false);
+    }
+    else {
+        $btnNormal.prop('disabled',true);
+    }
+});
