@@ -439,6 +439,12 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
         color: #FF473C;
         display: block;
         text-align: left;
+        &.colorChange {
+          color: #A2A2A2;
+          i {
+            color: #A2A2A2;
+          }
+        }
 
         .sign-plus {
           margin: 0px 3px;

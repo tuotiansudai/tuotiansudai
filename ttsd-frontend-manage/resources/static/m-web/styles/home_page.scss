@@ -95,7 +95,7 @@
              background-size: contain;
            }
           &.inviting-friend {
-            //background: url("../images/share/inviting_friends.png") no-repeat;
+            background: url("../images/share/inviting_friends.png") no-repeat;
             background-size: contain;
           }
           &.assurance {
@@ -132,6 +132,25 @@
 
 
 }
+
+  .target-category-box.you{
+    margin-top: 10px;
+    &:first-child {
+      margin-top: 0px;
+      color: red!important;
+    }
+  }
+.target-category-box.trans{
+  margin-top: 10px;
+  &:first-child {
+    margin-top: 0px;
+    color: red!important;
+  }
+}
+
+
+
+
 
 .target-category-box .loan-info {
   padding-left: 0;
@@ -184,4 +203,11 @@
     background-size: contain;
     cursor: pointer;
   }
+}
+
+.exper-title {
+  font-size: 13px!important;
+}
+.progress-bar .process-percent .percent.colorChange{
+  background: #a2a2a2;
 }

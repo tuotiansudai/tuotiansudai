@@ -3,16 +3,17 @@
 <@global.main pageCss="${m_css.index}" pageJavascript="${m_js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 
 <div class="home-page-container" id="homePageContainer">
-    <div class="app-container clearfix">
-        <div class="logo"></div>
-        <div class="app-detail">
-            打开拓天速贷APP<br/>
-            超低门槛  稳健收益
-        </div>
-        <div class="open-app">打开APP</div>
-        <div class="close-app"></div>
-    </div>
+
     <div id="bannerBox" class="banner-box-inner">
+        <div class="app-container clearfix">
+            <div class="logo"></div>
+            <div class="app-detail">
+                打开拓天速贷APP<br/>
+                超低门槛  稳健收益
+            </div>
+            <div class="open-app">打开APP</div>
+            <div class="close-app"></div>
+        </div>
         <ul class="banner-img-list">
             <#list bannerList as banner>
             <li style="opacity: 0;" class="">
@@ -48,7 +49,7 @@
     </div>
 
     <div class="target-category-box newer-experience" data-url="/m/loan/1">
-        <b class="newer-title"><span>${experienceLoan.name} </span><i class="icon-sign">体验金投资</i></b>
+        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign">体验金投资</i></b>
             <ul class="loan-info clearfix">
                 <li>
                     <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
@@ -64,13 +65,13 @@
         <span>优选债权</span>
         <a href="/m/loan-list"  class="hot-more">更多</a>
     </div>
-
+<div>
     <#list normalLoans as loan>
-        <div class="target-category-box" data-url="/m/loan/${loan.id?c}">
+        <div class="target-category-box you" data-url="/m/loan/${loan.id?c}">
             <b class="newer-title">${loan.name}</b>
             <ul class="loan-info clearfix">
                 <li>
-                    <span class="percent-number">
+                    <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>colorChange</#if>">
                     <#if loan.extraRate != 0>
                         <i>${loan.baseRate + loan.activityRate}</i>% ~ <i>${loan.baseRate + loan.activityRate + loan.extraRate * 100}</i>%
                     <#else>
@@ -103,27 +104,27 @@
             </ul>
             <div class="table-row progress-column">
                 <div class="progress-bar">
-                    <div class="process-percent">
-                        <div class="percent" style="width:${loan.progress}%">
+                    <div class="process-percent ">
+                        <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>colorChange</#if>" style="width:${loan.progress}%">
                         </div>
                     </div>
                 </div>
-                <span class="p-title">剩余金额：<i>${loan.availableInvestAmount}元</i></span>
+                <span class="p-title">剩余金额：<i><em class="money">${loan.availableInvestAmount}</em>元</i></span>
             </div>
         </div>
     </#list>
-
+</div>
     <div class="main-column-title" data-url="/m/transfer-list">
         <span>转让项目</span>
         <a href="/m/transfer-list" class="hot-more">更多</a>
     </div>
-
+<div>
     <#list transferApplications as loan>
-        <div class="target-category-box sold-out-box" data-url="/m/transfer/${loan.transferApplicationId}">
+        <div class="target-category-box trans" data-url="/m/transfer/${loan.transferApplicationId}">
             <b class="newer-title">${loan.name}</b>
             <ul class="loan-info  clearfix">
                 <li>
-                    <span class="percent-number">
+                    <span class="percent-number <#if (loan.transferStatus == "SUCCESS")>colorChange</#if>">
                         <i><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction></i>%
                     </span>
                     <em class="note">预期年化收益</em>
@@ -133,17 +134,17 @@
                     <#if loan.transferStatus=='TRANSFERRING'>
                         <a href="/transfer/${loan.transferApplicationId}" class="btn-invest btn-normal">立即购买</a>
                     <#else>
-                        <i class="loan-status icon-sellout"></i>
+                        <i class="loan-status icon-transferred"></i>
                     </#if>
                 </li>
             </ul>
-            <div class="transfer-price">转让价格：<@percentInteger>${loan.transferAmount}</@percentInteger>
-                <@percentFraction>${loan.transferAmount}</@percentFraction>元/<@percentInteger>${loan.investAmount}</@percentInteger>
-                <@percentFraction>${loan.investAmount}</@percentFraction>元(原)
+            <div class="transfer-price">转让价格：<em class="money"><@percentInteger>${loan.transferAmount}</@percentInteger>
+                <@percentFraction>${loan.transferAmount}</@percentFraction></em>元/<em class="money"><@percentInteger>${loan.investAmount}</@percentInteger>
+                <@percentFraction>${loan.investAmount}</@percentFraction></em>元(原)
             </div>
         </div>
     </#list>
-
+</div>
     <div class="company-info">
         客服电话：400-169-1188（服务时间：9:00-20:00）<br/>
         拓天伟业（北京）金融信息服务有限公司    版权所有

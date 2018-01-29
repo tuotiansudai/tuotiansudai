@@ -1,4 +1,5 @@
 require('mWebStyle/home_page.scss');
+require('webJs/plugins/autoNumeric');
 let commonFun = require('publicJs/commonFun');
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
@@ -80,3 +81,5 @@ $('.open-app').on('click',function () {
        location.href = 'https://itunes.apple.com/cn/app/id1039233966';
     }
 })
+let $amontDom = $('.money');
+$amontDom.autoNumeric('init');
