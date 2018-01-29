@@ -129,19 +129,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       margin-top: 10px;
       line-height: 40px;
       text-align: center;
-      &.active {
-        color: #ff7200;
-        border-bottom-width: 0px;
-        border-top-width: 0px;
-        background: #ff7200;
-      }
-      &:hover {
-        color: #4d4d4d;
-        border-top-width: 0;
-        ul.sub-menu-list {
-          display: none;
-        }
-      }
+
       a {
         text-align: left;
         display: block;
@@ -589,5 +577,9 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     }
   }
 
+}
+
+.btn-normal:hover {
+  background: #FF6C63;
 }
 
