@@ -132,9 +132,7 @@
 
 
 }
-.target-category-box {
-  margin-top: 10px;
-}
+
 .target-category-box .loan-info {
   padding-left: 0;
   padding-right: 0;
@@ -146,6 +144,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 9999;
   .logo {
     width: 50px;
     height: 50px;
