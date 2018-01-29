@@ -82,14 +82,16 @@ def build():
     mk_signin_zip()
 
 
-def compile(targets=()):
-    for target in targets:
-        local('/opt/gradle/latest/bin/gradle {}clean'.format(target + ':' if target != 'all' else ''))
-
+def compile(targets):
+    local('/opt/gradle/latest/bin/gradle clean')
     local('/usr/bin/git clean -fd')
 
+    if not targets:
+        local('/opt/gradle/latest/bin/gradle compileJava')
+        return
+
     for target in targets:
-        local('/opt/gradle/latest/bin/gradle {}compileJava'.format(target + ':' if target != 'all' else ''))
+        local('/opt/gradle/latest/bin/gradle {}:compileJava'.format(target))
 
 
 def check_worker_status():
@@ -269,7 +271,7 @@ def deploy_anxin():
         sudo('/usr/local/bin/docker-compose -f anxin.yml up -d')
 
 
-def pre_deploy(skip_package, target=('all',)):
+def pre_deploy(skip_package, target=None):
     if skip_package == 'False':
         compile(target)
         migrate()
