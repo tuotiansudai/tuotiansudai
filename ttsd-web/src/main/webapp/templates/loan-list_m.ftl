@@ -85,7 +85,7 @@
                                             放标</span>
                                     </#if>
                                 </#if>
-                                <span class="p-title">剩余金额：<span class="amontDom"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
+                                <span class="p-title">剩余金额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                             <#else>
                                 <span class="p-title allReady"><i>${loanItem.alert}</i></span>
                             </#if>

@@ -1,7 +1,7 @@
 <#import "macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.bank_card_manage}" pageJavascript="${m_js.bank_card_manage}" title="绑定银行卡">
-
+<div class="m-header"><em id="iconBindcard" class="icon-left"><i></i></em>绑定银行卡 </div>
 <div class="my-account-content bank-card-manage" id="bankCardManage">
     <div class="info-note">请绑定持卡人本人的银行储蓄卡</div>
     <form method="post" id="bankForm" action="/bind-card">

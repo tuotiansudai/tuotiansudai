@@ -33,7 +33,14 @@ let $projectDetail = $('#projectDetail'),//项目详情模块
 menuClick({
     pageDom:$projectDetail
 });
-
+//虚以待位显示灰色图标，否则显示有色图标
+$recordTop.find('i').each(function (index,item) {
+    if($(item).next().find('em').text() !== '虚以待位'){
+        $(item).addClass('on');
+    }else {
+        $(item).removeClass('on');
+    }
+})
 $recordTop.find('span').on('click',function() {
 
     let kind = $(this).data('kind');

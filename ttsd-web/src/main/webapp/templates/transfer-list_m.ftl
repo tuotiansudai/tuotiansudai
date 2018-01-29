@@ -28,7 +28,7 @@
                     </ul>
                     <div class="table-row progress-column">
                         <span class="p-title">
-                            <i class="price <#if (transferApplicationItem.transferStatus == "SUCCESS")>colorChange</#if>">转让价格：<@percentInteger>${transferApplicationItem.transferAmount!}</@percentInteger><@percentFraction>${transferApplicationItem.transferAmount!}</@percentFraction>元</i>/<@percentInteger>${transferApplicationItem.investAmount!}</@percentInteger><@percentFraction>${transferApplicationItem.investAmount!}</@percentFraction>元(原)
+                            <i class="price <#if (transferApplicationItem.transferStatus == "SUCCESS")>colorChange</#if>">转让价格：<em class="money"><@percentInteger>${transferApplicationItem.transferAmount!}</@percentInteger><@percentFraction>${transferApplicationItem.transferAmount!}</@percentFraction></em>元</i>/<em class="money"><@percentInteger>${transferApplicationItem.investAmount!}</@percentInteger><@percentFraction>${transferApplicationItem.investAmount!}</@percentFraction></em>元(原)
                         </span>
                     </div>
                 </div>

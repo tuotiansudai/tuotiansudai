@@ -155,20 +155,33 @@
       }
       &:nth-child(1) {
         i {
-          background: url('../../images/investment/xianfeng-on.png') no-repeat left top;
+          background: url('../../images/investment/xianfeng-off.png') no-repeat left top;
           background-size: 100%;
+          &.on{
+            background: url('../../images/investment/xianfeng-on.png') no-repeat left top;
+            background-size: 100%;
+          }
         }
       }
       &:nth-child(2) {
         i {
-          background: url('../../images/investment/biaowang-on.png') no-repeat left top;
+          background: url('../../images/investment/biaowang-off.png') no-repeat left top;
           background-size: 100%;
+          &.on{
+            background: url('../../images/investment/biaowang-on.png') no-repeat left top;
+            background-size: 100%;
+          }
+
         }
       }
       &:nth-child(3) {
         i {
-          background: url('../../images/investment/dingying-on.png') no-repeat left top;
+          background: url('../../images/investment/dingying-off.png') no-repeat left top;
           background-size: 100%;
+          &.on{
+            background: url('../../images/investment/dingying-on.png') no-repeat left top;
+            background-size: 100%;
+          }
         }
       }
 
