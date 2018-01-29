@@ -49,7 +49,7 @@
     </div>
 
     <div class="target-category-box newer-experience" data-url="/m/loan/1">
-        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign">体验金投资</i></b>
+        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign exper">体验金投资</i></b>
             <ul class="loan-info clearfix">
                 <li>
                     <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>

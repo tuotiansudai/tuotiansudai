@@ -159,7 +159,7 @@
 .app-container {
   height: 70px;
   background: rgba(0,0,0,0.6);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -210,4 +210,8 @@
 }
 .progress-bar .process-percent .percent.colorChange{
   background: #a2a2a2;
+}
+
+.exper{
+  padding: 2px 3px;
 }
