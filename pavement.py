@@ -84,104 +84,112 @@ def ut():
     UTRunner().test()
 
 
-def fab_command(command):
+def fab_command(command, skip_package):
     from paver.shell import sh
 
     try:
         ci_file = open('/workspace/ci/def', 'rb')
         pwd = ci_file.readline().strip()
-        sh("/usr/local/bin/fab {1} -p {0} --show=debug".format(pwd, command))
+        sh("/usr/local/bin/fab {1}:skip_package={2} -p {0} --show=debug".format(pwd, command, skip_package))
         ci_file.close()
     except IOError as e:
         print e
 
 
 @task
-def prod():
+def prod(options):
     """
     Deploy all components to PROD from CI
     """
-    fab_command('all')
+    fab_command('all', parse_options(options))
 
 
 @task
-def only_web():
+def only_package(options):
+    """
+    compile and package
+    """
+    fab_command('package', 'False')
+
+
+@task
+def only_web(options):
     """
     Deploy web component to PROD from CI
     """
-    fab_command("web")
+    fab_command("web", parse_options(options))
 
 
 @task
-def only_console():
+def only_console(options):
     """
     Deploy console component to PROD from CI
     """
-    fab_command("console")
+    fab_command("console", parse_options(options))
 
 
 @task
-def only_api():
+def only_api(options):
     """
     Deploy api component to PROD from CI
     """
-    fab_command("api")
+    fab_command("api", parse_options(options))
 
 
 @task
-def only_pay():
+def only_pay(options):
     """
     Deploy pay component to PROD from CI
     """
-    fab_command("pay")
+    fab_command("pay", parse_options(options))
 
 
 @task
-def only_sms():
+def only_sms(options):
     """
     Deploy sms component to PROD from CI
     """
-    fab_command("sms")
+    fab_command("sms", parse_options(options))
 
 
 @task
-def only_activity():
+def only_activity(options):
     """
     Deploy activity component to PROD from CI
     """
-    fab_command("activity")
+    fab_command("activity", parse_options(options))
 
 
 @task
-def only_ask():
+def only_ask(options):
     """
     Deploy ask component to PROD from CI
     """
-    fab_command("ask")
+    fab_command("ask", parse_options(options))
 
 
 @task
-def only_worker():
+def only_worker(options):
     """
     Deploy worker component to PROD from CI
     """
-    fab_command("worker")
+    fab_command("worker", parse_options(options))
 
 
 @task
-def only_sign_in():
+def only_sign_in(options):
     """
     Deploy worker component to PROD from CI
     """
-    fab_command("signin")
+    fab_command("signin", parse_options(options))
 
 
 @task
-def only_point():
+def only_point(options):
     """
     Deploy worker component to PROD from CI
     """
-    fab_command("point")
+    fab_command("point", parse_options(options))
 
 
 @task
@@ -195,6 +203,12 @@ def jcversion(options):
         sh('STATIC_SERVER={0} /usr/bin/npm run build'.format(options.static_server))
     finally:
         os.chdir(owd)
+
+
+def parse_options(options):
+    skip_package = options.skip_package == 'True' if hasattr(options, 'skip_package') else False
+    print 'skip packege is {0}'.format(skip_package)
+    return skip_package
 
 
 def get_current_dir():
