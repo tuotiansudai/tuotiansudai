@@ -49,6 +49,7 @@
             <div class="button-note">
                 <a data-url="/m/account" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
+            <div class="service">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
         </#if>
         <#if "PTP_MER_BIND_CARD" == service>
             <div class="my-account-content apply-transfer-success">
@@ -91,6 +92,7 @@
             <div class="button-note">
                 <a data-url="/m/account" href="javascript:;" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
+            <div class="service">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
         </#if>
         <#if ['INVEST_TRANSFER_PROJECT_TRANSFER', 'INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
             <div class="my-account-content apply-transfer-success" >

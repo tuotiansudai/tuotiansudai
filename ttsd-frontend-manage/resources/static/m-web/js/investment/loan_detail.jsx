@@ -94,7 +94,7 @@ function getInvestAmount() {
     return amount;
 }
 
-
+let $transferDetail = $('#transfer_details');
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
@@ -214,6 +214,8 @@ function validateHash() {
 
     }else if(location.hash == '#selectCoupon'){
         $('#couponList').show().siblings('.show-page').hide();
+    }else if(location.hash == '#transferDetail'){
+        $transferDetail.show().siblings().hide();
     }
 }
 validateHash();//根据hash值让对应页面显示隐藏
@@ -448,8 +450,8 @@ $('#exchangeCoupon').on('click',function () {
 })
 
 //转让购买
-let $transferDetail = $('#transfer_details'),//转让购买页
-    $toBuyTransfer = $('#to_buy_transfer'),//立即投资
+//转让购买页
+  let $toBuyTransfer = $('#to_buy_transfer'),//立即投资
     $transferSubmit = $('#transferSubmit'),//转让按钮
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
@@ -584,6 +586,10 @@ $(function(){
 });
 
 $('#agrement').on('click',function () {
+    location.href = $(this).data('url');
+})
+
+$('#lookOld').on('click',function () {
     location.href = $(this).data('url');
 })
 

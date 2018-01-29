@@ -56,7 +56,7 @@
                     <em class="note">预期年化收益</em>
                 </li>
                 <li><em class="duration-day">${experienceLoan.duration}</em> 天 <em class="note">项目期限</em></li>
-                <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
+                <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
             </ul>
     </div>
 
@@ -83,7 +83,7 @@
                 <li>最长<em class="duration-day">${loan.duration}</em> 天 <em class="note">项目期限</em></li>
                 <li>
                     <#if loan.status== 'RAISING'>
-                        <a href="javascript:void(0)" class="btn-invest btn-normal">立即投资</a>
+                        <a href="javascript:void(0)" data-url="/m/loan/${loan.id?c}" class="btn-invest btn-normal goToDetail">立即投资</a>
 
                     <#elseif loan.status == 'PREHEAT'>
                         <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">
@@ -129,10 +129,10 @@
                     </span>
                     <em class="note">预期年化收益</em>
                 </li>
-                <li>剩余天数<em class="duration-day">${loan.leftDays}</em> 天 <em class="note">项目期限</em></li>
+                <li><em class="duration-day">${loan.leftDays}</em> 天 <em class="note">剩余天数</em></li>
                 <li>
                     <#if loan.transferStatus=='TRANSFERRING'>
-                        <a href="/transfer/${loan.transferApplicationId}" class="btn-invest btn-normal">立即购买</a>
+                        <a data-url="/m/transfer/${loan.transferApplicationId}" class="btn-invest btn-normal goToTranDetail">立即购买</a>
                     <#else>
                         <i class="loan-status icon-transferred"></i>
                     </#if>

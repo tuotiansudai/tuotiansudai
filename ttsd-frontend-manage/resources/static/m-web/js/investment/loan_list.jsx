@@ -57,4 +57,45 @@ function getMore() {
         }
     )
 }
+//点击btn跳转到购买
+$('.goToDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log($(this).parent('.target-category-box'))
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#buyDetail';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
 
+})
+
+$('.goToExDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log($(this).parent('.target-category-box'))
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#applyTransfer';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})
+
+$('.goToTranDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#transferDetail';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})
