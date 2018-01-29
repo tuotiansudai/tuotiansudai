@@ -668,7 +668,7 @@ public class InvestServiceImpl implements InvestService {
             if (beginSendTime.isBeforeNow() && endSendTime.isAfterNow()) {
                 smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
             } else {
-                DateTime nextSendTime = beginSendTime.isBeforeNow() ? beginSendTime : beginSendTime.plusDays(1);
+                DateTime nextSendTime = beginSendTime.isAfterNow() ? beginSendTime : beginSendTime.plusDays(1);
                 DelayMessageDeliveryJobCreator.createLoanRaisingCompleteNotifyDelayJob(jobManager,
                         nextSendTime.toDate(), JsonConverter.writeValueAsString(dto));
             }
