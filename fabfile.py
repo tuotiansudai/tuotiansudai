@@ -82,10 +82,14 @@ def build():
     mk_signin_zip()
 
 
-def compile():
-    local('/opt/gradle/latest/bin/gradle clean')
+def compile(targets=()):
+    for target in targets:
+        local('/opt/gradle/latest/bin/gradle {}clean'.format(target + ':' if target != 'all' else ''))
+
     local('/usr/bin/git clean -fd')
-    local('/opt/gradle/latest/bin/gradle compileJava')
+
+    for target in targets:
+        local('/opt/gradle/latest/bin/gradle {}compileJava'.format(target + ':' if target != 'all' else ''))
 
 
 def check_worker_status():
@@ -265,9 +269,9 @@ def deploy_anxin():
         sudo('/usr/local/bin/docker-compose -f anxin.yml up -d')
 
 
-def pre_deploy(skip_package):
+def pre_deploy(skip_package, target=('all',)):
     if skip_package == 'False':
-        compile()
+        compile(target)
         migrate()
         build()
 
@@ -296,51 +300,59 @@ def package(skip_package):
 
 
 def web(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-web',))
     execute(deploy_web)
     execute(deploy_static)
 
 
 def activity(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-activity-web',))
     execute(deploy_activity)
     execute(deploy_static)
 
 
 def ask(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-ask-web', 'ttsd-ask-rest'))
     execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_static)
 
 
 def console(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-console', 'ttsd-activity-console'))
     execute(deploy_console)
 
 
 def api(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-mobile-api',))
     execute(deploy_api)
 
 
 def sms(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-sms-wrapper',))
     execute(deploy_sms)
 
 
 def worker(skip_package):
-    pre_deploy(skip_package)
-    execute(deploy_worker)
+    pre_deploy(skip_package, ('ttsd-job-worker',
+                              'ttsd-loan-mq-consumer',
+                              'ttsd-message-mq-consumer',
+                              'ttsd-point-mq-consumer',
+                              'ttsd-activity-mq-consumer',
+                              'ttsd-user-mq-consumer',
+                              'ttsd-auditLog-mq-consumer',
+                              'ttsd-email-mq-consumer',
+                              'ttsd-amount-mq-consumer',
+                              'ttsd-diagnosis'))
 
 
 def pay(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-pay-wrapper',))
     execute(deploy_pay)
 
 
 def point(skip_package):
-    pre_deploy(skip_package)
+    pre_deploy(skip_package, ('ttsd-piont-web',))
     execute(deploy_point)
     execute(deploy_static)
 
