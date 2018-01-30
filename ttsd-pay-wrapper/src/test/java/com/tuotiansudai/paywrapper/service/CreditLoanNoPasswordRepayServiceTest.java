@@ -76,27 +76,27 @@ import static org.mockito.Mockito.*;
     public void shouldLoanNoPwdRepayFailedWhenInvalidParameters() {
         int orderId = 1;
         String mobile = "13900000000";
-        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 0);
+        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 0, false);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("还款金额必须大于零"));
         when(userMapper.lockByLoginName(anyString())).thenReturn(new UserModel());
 
         when(accountMapper.findByMobile(mobile)).thenReturn(null);
-        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1);
+        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1, false);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
 
         AccountModel accountModel = new AccountModel();
         accountModel.setNoPasswordInvest(false);
         when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1);
+        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1, false);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("用户未开通免密支付功能"));
 
         accountModel.setNoPasswordInvest(true);
         when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
         when(redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(true);
-        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1);
+        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1, false);
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("还款交易进行中, 请30分钟后查看"));
     }
@@ -122,7 +122,7 @@ import static org.mockito.Mockito.*;
         when(this.redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(false);
         when(this.redisWrapperClient.exists(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(false);
 
-        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, amount);
+        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, amount, false);
 
         verify(this.redisWrapperClient, times(2))
                 .set(redisKeyCaptor.capture(), statusCaptor.capture());
@@ -163,7 +163,7 @@ import static org.mockito.Mockito.*;
         when(this.redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(false);
         when(this.redisWrapperClient.exists(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(false);
 
-        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, amount);
+        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, amount, false);
 
         verify(this.redisWrapperClient, times(2))
                 .set(redisKeyCaptor.capture(), statusCaptor.capture());
@@ -203,7 +203,7 @@ import static org.mockito.Mockito.*;
         when(this.redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(false);
         when(this.redisWrapperClient.exists(MessageFormat.format("credit:loan:repay:{0}", String.valueOf(orderId)))).thenReturn(false);
 
-        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, amount);
+        BaseDto<PayDataDto> dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, amount, false);
 
         verify(this.redisWrapperClient, times(2))
                 .set(redisKeyCaptor.capture(), statusCaptor.capture());

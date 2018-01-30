@@ -137,7 +137,7 @@ public class CreditLoanRepayService {
     }
 
     @Transactional
-    public BaseDto<PayDataDto> noPasswordRepay(long orderId, String mobile, long amount) {
+    public BaseDto<PayDataDto> noPasswordRepay(long orderId, String mobile, long amount, boolean autoRepay) {
         logger.info(MessageFormat.format("[credit loan no password repay {0}] starting, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
 
         PayDataDto payDataDto = new PayDataDto(false, "", "0000");
@@ -156,7 +156,13 @@ public class CreditLoanRepayService {
             return dto;
         }
 
-        if (!account.isNoPasswordInvest()) {
+        if (autoRepay && !account.isAutoInvest()) {
+            payDataDto.setMessage("用户未签署免密协议");
+            payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
+            return dto;
+        }
+
+        if (!autoRepay && !account.isNoPasswordInvest()) {
             payDataDto.setMessage("用户未开通免密支付功能");
             payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
