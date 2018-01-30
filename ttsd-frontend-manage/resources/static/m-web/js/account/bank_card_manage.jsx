@@ -2,7 +2,9 @@ require('mWebStyle/account/bank_card_manage.scss');
 
 let $bankCardManage = $('#bankCardManage'),
     $bankCardSelect = $('#bankCardSelect');
-
+$('#iconBindcard').on('click',function () {
+    location.href = '/m/account'
+})
 if ($bankCardManage.length) {
     let $bankColumn = $('.bank-column', $bankCardManage),
         bankForm = globalFun.$('#bankForm'),

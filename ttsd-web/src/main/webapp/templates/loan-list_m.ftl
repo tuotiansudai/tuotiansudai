@@ -62,7 +62,7 @@
                             </li>
                             <li>
                             <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
-                                <a class="btn-invest btn-normal">立即投资</a>
+                                <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">立即投资</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
                             </#if>
@@ -85,7 +85,7 @@
                                             放标</span>
                                     </#if>
                                 </#if>
-                                <span class="p-title">剩余金额：<span class="amontDom"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
+                                <span class="p-title">剩余金额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                             <#else>
                                 <span class="p-title allReady"><i>${loanItem.alert}</i></span>
                             </#if>

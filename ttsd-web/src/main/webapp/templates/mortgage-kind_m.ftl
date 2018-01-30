@@ -158,7 +158,7 @@
                     <dt>${loanTitle.title}</dt>
                     <dd>
                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                        <a href="${commonStaticServer}${title}" data-group="animal" class="js-img-viwer" data-group="0">
+                        <a href="${commonStaticServer}${title}" class="js-img-viwer" data-group="0">
                             <img src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
                         </a>
 
@@ -173,7 +173,7 @@
         <div class="notice-toggle">
             <p>声明：${loan.declaration!}</p>
 
-            <div id="btn-detail-toggle" class="btn-detail-toggle">收起详情</div>
+            <div id="btn-detail-toggle" class="btn-detail-toggle">收起详情 <i class="fa fa-caret-up"></i></div>
         </div>
     </div>
 

@@ -33,7 +33,14 @@ let $projectDetail = $('#projectDetail'),//项目详情模块
 menuClick({
     pageDom:$projectDetail
 });
-
+//虚以待位显示灰色图标，否则显示有色图标
+$recordTop.find('i').each(function (index,item) {
+    if($(item).next().find('em').text() !== '虚以待位'){
+        $(item).addClass('on');
+    }else {
+        $(item).removeClass('on');
+    }
+})
 $recordTop.find('span').on('click',function() {
 
     let kind = $(this).data('kind');
@@ -87,7 +94,7 @@ function getInvestAmount() {
     return amount;
 }
 
-
+let $transferDetail = $('#transfer_details');
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
@@ -207,6 +214,8 @@ function validateHash() {
 
     }else if(location.hash == '#selectCoupon'){
         $('#couponList').show().siblings('.show-page').hide();
+    }else if(location.hash == '#transferDetail'){
+        $transferDetail.show().siblings().hide();
     }
 }
 validateHash();//根据hash值让对应页面显示隐藏
@@ -219,8 +228,6 @@ var calExpectedInterest = function() {
         url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
         type: 'GET',
     },function(amount) {
-        console.log(getInvestAmount())
-        console.log(amount)
         $("#expectedEarnings").text(amount);
     });
 };
@@ -340,25 +347,27 @@ function couponSelect() {
 
     })
 }
+function testAmount() {
+    let value = getInvestAmount();
+    calExpectedInterest();
+    maxBenifitUserCoupon();
+    couponSelect();
+    if(value/100  == 0){
+        $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
+    } else if(value/100 <minAmount){
+        $btnWapNormal.prop('disabled',true).text('输入金额应大于起投金额');
+    }else if(value/100 >leftInvest){
+        $btnWapNormal.prop('disabled',true).text('输入金额应小于项目可投金额');
+    }
+    else {
+        $btnWapNormal.prop('disabled',false).text('立即投资');
+    }
+
+}
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
-        let value = getInvestAmount();
-        calExpectedInterest();
-        maxBenifitUserCoupon();
-        couponSelect();
-        if(value/100  == 0){
-            $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
-        } else if(value/100 <minAmount){
-            $btnWapNormal.prop('disabled',true).text('输入金额应大于起投金额');
-        }else if(value/100 >leftInvest){
-            $btnWapNormal.prop('disabled',true).text('输入金额应小于项目可投金额');
-        }
-        else {
-            $btnWapNormal.prop('disabled',false).text('立即投资');
-        }
-
-
+        testAmount();
     })
 //立即投资提交表单
 let noPasswordInvest = $amountInputElement.data('no-password-invest');//是否开通免密支付
@@ -413,13 +422,15 @@ function sendSubmitRequest(){
                 btn: ['我知道了'],
                 area:['280px', '160px'],
                 content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${data.message}</span></div> `,
+            },function() {
+                layer.closeAll();
             })
         }
     });
 }
 //点击购买详情后退按钮
 $('#iconBuy',$buyDetail).click(function () {
-    location.hash='';
+    location.href='/m/loan/'+loanId;
 });
 //点击直投详情页后退按钮进入列表页
 $('#iconDetail',$loanDetail).click(function () {
@@ -427,16 +438,10 @@ $('#iconDetail',$loanDetail).click(function () {
 });
 //点击项目详情进入直投项目详情页
 $('#iconProjectDetail',$projectDetail).click(function () {
-    location.hash='';
+    location.href='/m/loan/'+loanId;
 });
 $('#clearFont').click(function () {
     $amountInputElement.val('');
-});
-//项目材料图片预览
-$(function(){
-    $(".js-img-viwer").smartPhoto({
-        nav:false
-    });
 });
 
 //优惠券兑换
@@ -445,8 +450,8 @@ $('#exchangeCoupon').on('click',function () {
 })
 
 //转让购买
-let $transferDetail = $('#transfer_details'),//转让购买页
-    $toBuyTransfer = $('#to_buy_transfer'),//立即投资
+//转让购买页
+  let $toBuyTransfer = $('#to_buy_transfer'),//立即投资
     $transferSubmit = $('#transferSubmit'),//转让按钮
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
@@ -548,7 +553,7 @@ $('.init-checkbox-style').initCheckbox(function(event) {
     let checkboxBtn = event.children[0];
     let checkBool = $(checkboxBtn).prop('checked');
     if(checkboxBtn.id=='skipCheck') {
-        $transferSubmit.prop('disabled',!checkBool);
+        $('.btn-wap-normal').prop('disabled',!checkBool);
     }
 });
 //转让详情页回退按钮
@@ -567,5 +572,24 @@ $('#iconContinue').on('click',function () {
 if($('.money').length){
     $('.money').autoNumeric('init');
 }
+//收起详情
 
+
+//项目材料图片预览
+$(function(){
+
+    $(".js-img-viwer").smartPhoto({
+        nav:false,
+        resizeStyle:'fit'
+    });
+
+});
+
+$('#agrement').on('click',function () {
+    location.href = $(this).data('url');
+})
+
+$('#lookOld').on('click',function () {
+    location.href = $(this).data('url');
+})
 

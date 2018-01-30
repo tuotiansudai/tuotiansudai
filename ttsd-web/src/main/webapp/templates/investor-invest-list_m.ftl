@@ -3,7 +3,7 @@
 <@global.main pageCss="${m_css.investor_invest_list}" pageJavascript="${m_js.investor_invest_list}" title="我的投资">
 
 <div class="my-account-content" id="myInvest">
-    <div class="m-header"><em id="iconMyInvest" class="icon-left"><i class="fa fa-angle-left"></i></em>我的投资 </div>
+    <div class="m-header"><em id="iconMyInvest" class="icon-left"><i></i></em>我的投资 </div>
     <div class="menu-category">
         <span class="current" id="repayingBtn"><a href="javascript:;">回款中</a></span>
         <span id="raisingBtn"><a href="javascript:;">投标中</a></span>

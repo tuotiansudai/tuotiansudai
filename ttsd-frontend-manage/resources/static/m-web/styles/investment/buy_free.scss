@@ -56,19 +56,24 @@
   li{
     height: 45px;
     line-height: 45px;
+    font-size: 13px;
+    label {
+      color: #808080!important;
+    }
+    span {
+      color: #525252!important;
+    }
   }
 
-  label, li span{
-    font-size:13px;
-  }
 }
+
 .input-list li.mt-10{
   margin-top: 10px;
 }
 .input-list li input {
   text-align: left;
   font-size: 18px;
-  color: #525252;
+  color: #808080;
 }
 .input-list li span.number-text{
   text-align: left;
@@ -135,5 +140,16 @@
 }
 .button-note {
   padding-top: 50px;
+  &.cash {
+    margin-top: 0;
+  }
 }
+.service{
+  color: #a2a2a2;
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
+}
+
+
 

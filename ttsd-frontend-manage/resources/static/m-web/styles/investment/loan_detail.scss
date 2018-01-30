@@ -25,6 +25,8 @@
 .account-summary .amount-balance {
   font-size: 14px;
   text-align: center;
+  position: relative;
+  top: -10px;
 }
 .experience-amount {
   padding-bottom: 70px;
@@ -730,34 +732,7 @@
 .select-btn {
   padding-bottom: 0;
 }
-.m-header {
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  color: #fff;
-  font-size: 20px;
-  background: #FF473C;
-  position: relative;
-  .icon-left {
-    position: absolute;
-    left: 10px;
-    top: 7px;
-    letter-spacing: 0;
-    i{
-      display: block;
-      margin: 8px 0 0 10px;
-      width: 9px;
-      height: 14px;
-      background: url("../../images/go_back.png") no-repeat;
-      background-size: contain;
-    }
-  }
-  #noUse {
-    float: right;
-    padding-right: 10px;
-    font-size: 14px;
-  }
-}
+
 .button-note {
   a {
     &.count-downing {
@@ -871,4 +846,7 @@ layui-layer .layui-layer-page .layui-layer-content {
 }
 .box-item .amount {
   color: #525252;
+}
+.layui-layer-page .layui-layer-content {
+  overflow: visible!important;
 }

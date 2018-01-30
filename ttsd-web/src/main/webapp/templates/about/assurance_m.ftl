@@ -3,7 +3,7 @@
 <@global.main pageCss="${m_css.about_assurance}" pageJavascript="${m_js.about_assurance}" title="安全保障">
 
 <div class="assurance" id="assurance">
-    <div class="m-header"><em id="iconAssurance" class="icon-left"><i class="fa fa-angle-left"></i></em>安全保障 </div>
+    <div class="m-header"><em id="iconAssurance" class="icon-left"><i></i></em>安全保障 </div>
   <div class="one-step">
       <div class="assurance-title">
       </div>

@@ -3,8 +3,7 @@
 <@global.main pageCss="${m_css.invest_detail}" pageJavascript="${m_js.invest_detail}" title="${invest.loanName}">
 
 <div class="my-account-content amount-detail" id="wrapperOut">
-    <div class="m-header"><em class="icon-left" id="goBackIcon"><i
-            class="fa fa-angle-left"></i></em>${invest.loanName}</div>
+    <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>${invest.loanName}</div>
     <div class="amount-detail-inner">
         <ul class="input-list">
             <li>

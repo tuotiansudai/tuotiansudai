@@ -3,19 +3,15 @@ let commonFun = require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
 require('webJs/plugins/autoNumeric');
 
-let $amontDom = $('.amontDom');
+let $amontDom = $('.money');
 $amontDom.autoNumeric('init');
+
 let $content = $('.loan-list-content .category-box-main');
 
 
 let $loanList = $('#loanList'),
     $targetCategoryBox = $('.target-category-box', $loanList),
     $categoryBoxMain = $('.category-box-main',$loanList);
-
-
-$('.abc').on('click',function () {
-    location.href='/m/loan/1';
-})
 
 let myScroll = new IScroll('#wrapperOut', {
     probeType: 2,
@@ -61,4 +57,45 @@ function getMore() {
         }
     )
 }
+//点击btn跳转到购买
+$('.goToDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log($(this).parent('.target-category-box'))
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#buyDetail';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
 
+})
+
+$('.goToExDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log($(this).parent('.target-category-box'))
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#applyTransfer';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})
+
+$('.goToTranDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#transferDetail';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})

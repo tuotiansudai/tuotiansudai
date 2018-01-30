@@ -1,5 +1,6 @@
 require('mWebStyle/home_page.scss');
-
+require('webJs/plugins/autoNumeric');
+let commonFun = require('publicJs/commonFun');
 let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
@@ -68,3 +69,59 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
     countDownLoan($preheat);
 
 })();
+
+let $appContainer = $('.app-container')
+$('.close-app').on('click',function () {
+    $appContainer.hide();
+})
+$('.open-app').on('click',function () {
+    if(commonFun.phoneModal() == 'android'){
+        location.href = 'http://tuotiansudai.com/app/tuotiansudai.apk';
+    }else if(commonFun.phoneModal() == 'ios'){
+       location.href = 'https://itunes.apple.com/cn/app/id1039233966';
+    }
+})
+let $amontDom = $('.money');
+$amontDom.autoNumeric('init');
+
+//点击btn跳转到购买
+$('.goToDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log($(this).parent('.target-category-box'))
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#buyDetail';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})
+
+$('.goToExDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#applyTransfer';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})
+
+$('.goToTranDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = url+'#transferDetail';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})

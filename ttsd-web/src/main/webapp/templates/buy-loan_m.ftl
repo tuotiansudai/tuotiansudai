@@ -92,8 +92,23 @@
         </ul>
     </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" disabled>立即投资</button>
+    <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" >立即投资</button>
     </form>
+
+<#--<#if anxinUser != true>-->
+    <div class="transfer-notice">
+        <div class="agreement-box">
+            <span class="init-checkbox-style on">
+                 <input type="checkbox" id="skipCheck" class="default-checkbox" checked>
+             </span>
+            <lable for="agreement">我已阅读并同意<a href="javascript:void(0)" class="link-agree-service">《安心签服务协议》</a>、<a
+                    href="javascript:void(0)" class="link-agree-privacy">《隐私条款》</a>、<a href="javascript:void(0)"
+                                                                                       class="link-agree-number">《CFCA数字证书服务协议》</a>和<a
+                    href="javascript:void(0)" class="link-agree-number-authorize">《CFCA数字证书授权协议》</a> </lable>
+        </div>
+    </div>
+<#--</#if>-->
+<#include "component/anxin-agreement.ftl" />
 
 
 

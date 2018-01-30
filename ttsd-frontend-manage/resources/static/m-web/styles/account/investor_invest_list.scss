@@ -45,14 +45,14 @@ em {
   }
 }
 .menu-category span a{
-  line-height: 26px;
+  line-height: 32px;
 }
 .invest-list-wrap {
   font-size: .24rem;
   position: absolute;
   z-index: 1;
   width: 100%;
-  top: 1.6rem;
+  top: 1.7rem;
   overflow: hidden;
   bottom: 0;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
@@ -214,6 +214,9 @@ em {
 @media screen and (max-width: 320px) {
   html {
     font-size: 42.66px;
+  }
+  .invest-list-wrap {
+    top: 2rem;
   }
 }
 @media screen and (max-width: 240px) {

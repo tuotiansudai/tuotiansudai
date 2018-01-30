@@ -3,7 +3,7 @@
 <@global.main pageCss="${m_css.personal_profile}" pageJavascript="${m_js.personal_profile}" title="个人资料">
 
 <div class="my-account-content personal-profile">
-    <div class="m-header"><em class="icon-left" id="goBackIcon"><i class="fa fa-angle-left"></i></em>个人资料</div>
+    <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>个人资料</div>
     <ul class="input-list">
         <li>
             <label for="perMobile">手机号码</label> <input type="text" id="perMobile" value="${mobile}">

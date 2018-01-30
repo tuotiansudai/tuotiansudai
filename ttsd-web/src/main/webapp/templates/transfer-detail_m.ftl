@@ -66,7 +66,7 @@
     </ul>
 
     <div class="history-record">
-        <a href="/m/loan/${transferApplication.loanId?string.computer}">查看原始项目</a>
+        <a id="lookOld" data-url="/m/loan/${transferApplication.loanId?string.computer}">查看原始项目</a>
     </div>
 
     <#if (transferApplication.transferStatus.name() == "SUCCESS")>
