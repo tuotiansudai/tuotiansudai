@@ -37,6 +37,7 @@ def migrate():
 
 
 def mk_war(targets=None):
+    mk_static_zip()
     if not targets:
         local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
 
