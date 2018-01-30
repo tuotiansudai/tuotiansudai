@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppAgreementService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -29,6 +30,9 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public BaseResponseDto<AgreementOperateResponseDataDto> generateAgreementRequest(AgreementOperateRequestDto requestDto) {

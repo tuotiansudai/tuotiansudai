@@ -25,6 +25,7 @@ public class AgreementOperateRequestDto extends BaseParamDto {
         agreementDto.setLoginName(this.getBaseParam().getUserId());
         agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         agreementDto.setDeviceId(this.getBaseParam().getDeviceId());
+        agreementDto.setHuizuAutoRepay(type !=null && type == AgreementBusinessType.HUIZU_AUTO_REPAY);
         return agreementDto;
     }
 

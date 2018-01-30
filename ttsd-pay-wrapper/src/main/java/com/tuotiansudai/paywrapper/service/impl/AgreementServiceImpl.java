@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
@@ -78,6 +80,8 @@ public class AgreementServiceImpl implements AgreementService {
             return UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
         } else if (dto.isFastPay()) {
             return UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
+        }else if(dto.isHuizuAutoRepay()){
+            return UserOpType.HUIZU_AUTO_REPAY;  //开通慧租自动还款
         }
         return null;
     }
@@ -118,6 +122,14 @@ public class AgreementServiceImpl implements AgreementService {
 
         if (AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType) {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
+        }
+
+        if (AgreementBusinessType.HUIZU_AUTO_REPAY == agreementBusinessType) {
+            mqWrapperClient.sendMessage(MessageQueue.huiZuAutoRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    .put("loginName", loginName)
+                    .put("success", true)
+                    .put("order_type", agreementBusinessType.name())
+                    .build()));
         }
     }
 }
