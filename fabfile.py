@@ -36,9 +36,12 @@ def migrate():
     migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3, local)
 
 
-def mk_war():
-    local('/usr/local/bin/paver jcversion.static_server={0} jcversion'.format(etcd3.get('common.static.server')))
-    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar initMQ')
+def mk_war(targets=None):
+    if not targets:
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
+
+    for target in targets:
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
 
 
 def mk_worker_zip():
@@ -63,6 +66,7 @@ def mk_rest_service():
 
 
 def mk_static_zip():
+    local('/usr/local/bin/paver jcversion.static_server={0} jcversion'.format(etcd3.get('common.static.server')))
     local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
 
 
@@ -71,15 +75,6 @@ def mk_signin_zip():
     for i in ('1', '2'):
         local('cp {0}/signin_service/{1}/prod.yml ./ttsd-user-rest-service/'.format(config_path, i))
         local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
-
-
-def build():
-    mk_war()
-    mk_worker_zip()
-    mk_mq_consumer()
-    mk_rest_service()
-    mk_static_zip()
-    mk_signin_zip()
 
 
 def compile(targets):
@@ -275,7 +270,7 @@ def pre_deploy(skip_package, target=None):
     if skip_package == 'False':
         compile(target)
         migrate()
-        build()
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-mq-client:initMQ')
 
 
 def deploy_all():
@@ -294,6 +289,7 @@ def deploy_all():
 
 def all(skip_package):
     pre_deploy(skip_package)
+    mk_war()
     deploy_all()
 
 
@@ -303,18 +299,22 @@ def package(skip_package):
 
 def web(skip_package):
     pre_deploy(skip_package, ('ttsd-web',))
+    mk_war(('ttsd-web',))
     execute(deploy_web)
     execute(deploy_static)
 
 
 def activity(skip_package):
     pre_deploy(skip_package, ('ttsd-activity-web',))
+    mk_war(('ttsd-activity-web',))
     execute(deploy_activity)
     execute(deploy_static)
 
 
 def ask(skip_package):
     pre_deploy(skip_package, ('ttsd-ask-web', 'ttsd-ask-rest'))
+    mk_war('ttsd-ask-web')
+    mk_rest_service()
     execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_static)
@@ -322,16 +322,19 @@ def ask(skip_package):
 
 def console(skip_package):
     pre_deploy(skip_package, ('ttsd-console', 'ttsd-activity-console'))
+    mk_war(('ttsd-console', 'ttsd-activity-console'))
     execute(deploy_console)
 
 
 def api(skip_package):
     pre_deploy(skip_package, ('ttsd-mobile-api',))
+    mk_war(('ttsd-mobile-api',))
     execute(deploy_api)
 
 
 def sms(skip_package):
     pre_deploy(skip_package, ('ttsd-sms-wrapper',))
+    mk_war(('ttsd-sms-wrapper',))
     execute(deploy_sms)
 
 
@@ -346,15 +349,20 @@ def worker(skip_package):
                               'ttsd-email-mq-consumer',
                               'ttsd-amount-mq-consumer',
                               'ttsd-diagnosis'))
+    mk_worker_zip()
+    mk_mq_consumer()
+    execute(deploy_worker)
 
 
 def pay(skip_package):
     pre_deploy(skip_package, ('ttsd-pay-wrapper',))
+    mk_war(('ttsd-pay-wrapper',))
     execute(deploy_pay)
 
 
 def point(skip_package):
     pre_deploy(skip_package, ('ttsd-piont-web',))
+    mk_war(('ttsd-piont-web',))
     execute(deploy_point)
     execute(deploy_static)
 
