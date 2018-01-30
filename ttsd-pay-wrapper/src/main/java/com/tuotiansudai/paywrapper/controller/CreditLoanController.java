@@ -74,7 +74,7 @@ public class CreditLoanController {
         return creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
     }
 
-    @RequestMapping(value = "/no-password-repay/{orderId}/mobile/{mobile}/amount/{amount}/autoRepay/{autoRepay}", method = RequestMethod.POST)
+    @RequestMapping(value = "/no-password-repay/{orderId}/mobile/{mobile}/amount/{amount}/auto-repay/{autoRepay}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> creditLoanRepayNoPwd(@PathVariable long orderId,
                                                     @PathVariable String mobile,

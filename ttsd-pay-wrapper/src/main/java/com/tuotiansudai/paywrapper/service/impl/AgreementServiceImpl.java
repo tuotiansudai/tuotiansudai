@@ -127,8 +127,6 @@ public class AgreementServiceImpl implements AgreementService {
         if (AgreementBusinessType.HUIZU_AUTO_REPAY == agreementBusinessType) {
             mqWrapperClient.sendMessage(MessageQueue.huiZuAutoRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
                     .put("loginName", loginName)
-                    .put("success", true)
-                    .put("order_type", agreementBusinessType.name())
                     .build()));
         }
     }
