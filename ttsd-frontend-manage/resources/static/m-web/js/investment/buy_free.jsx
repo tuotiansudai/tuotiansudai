@@ -16,5 +16,7 @@ $confirmInvest.on('click', function () {
     location.href = $(this).data('url');
 })
 
+$('.money').autoNumeric('init');
+
 
 

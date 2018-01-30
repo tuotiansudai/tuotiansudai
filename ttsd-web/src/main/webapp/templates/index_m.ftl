@@ -49,14 +49,14 @@
     </div>
 
     <div class="target-category-box newer-experience" data-url="/m/loan/1">
-        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign">体验金投资</i></b>
+        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign exper">体验金投资</i></b>
             <ul class="loan-info clearfix">
                 <li>
                     <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
                     <em class="note">预期年化收益</em>
                 </li>
                 <li><em class="duration-day">${experienceLoan.duration}</em> 天 <em class="note">项目期限</em></li>
-                <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
+                <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
             </ul>
     </div>
 
@@ -129,10 +129,10 @@
                     </span>
                     <em class="note">预期年化收益</em>
                 </li>
-                <li>剩余天数<em class="duration-day">${loan.leftDays}</em> 天 <em class="note">项目期限</em></li>
+                <li><em class="duration-day">${loan.leftDays}</em> 天 <em class="note">剩余天数</em></li>
                 <li>
                     <#if loan.transferStatus=='TRANSFERRING'>
-                        <a href="/transfer/${loan.transferApplicationId}" class="btn-invest btn-normal">立即购买</a>
+                        <a data-url="/transfer/${loan.transferApplicationId}" class="btn-invest btn-normal goToTranDetail">立即购买</a>
                     <#else>
                         <i class="loan-status icon-transferred"></i>
                     </#if>

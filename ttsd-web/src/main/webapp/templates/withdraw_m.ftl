@@ -3,6 +3,7 @@
 <@global.main pageCss="${m_css.withdraw}" pageJavascript="${m_js.withdraw}" title="提现">
 
 <div class="my-account-content bank-card-manage" id="withdrawContainer">
+    <div class="m-header"><em id="iconBack" class="icon-left"><i></i></em>提现 </div>
     <ul class="bank-list">
         <li>
             <i class="icon-bank"></i>
@@ -12,7 +13,7 @@
             </span>
         </li>
     </ul>
-    <form action="/withdraw" method="post" class="form-cash">
+    <form action="/withdraw" id="cashForm" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">提现金额</label>
             <input type="text" name="amount" class="money-item" id="amount" value=""/>
@@ -20,8 +21,8 @@
         </div>
 
         <div class="user-money">
-            <p>账户可提取现金:<span>${balance!}</span>元</p>
-            <p>单笔手续费收取${withdrawFee!}元</p>
+            <p>账户可提取现金:<span id="cash_money">${balance!}</span>元</p>
+            <p>单笔手续费收取<em id="service_charge">${withdrawFee!}</em>元</p>
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>

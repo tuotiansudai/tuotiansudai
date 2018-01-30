@@ -22,7 +22,7 @@
                         <#if (transferApplicationItem.transferStatus == "SUCCESS")>
                             <li><a href="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="tranfered"></a></li>
                         <#else>
-                            <li><a href="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="btn-invest btn-normal">立即投资</a></li>
+                            <li><a data-url="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="btn-invest btn-normal goToTranDetail">立即投资</a></li>
                         </#if>
 
                     </ul>
