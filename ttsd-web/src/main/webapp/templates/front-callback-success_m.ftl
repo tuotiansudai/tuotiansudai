@@ -10,7 +10,7 @@
                 <ul class="input-list">
                     <li>
                         <label>投资金额</label>
-                        <span>${amount}元</span>
+                        <span class="money">${amount}元</span>
                     </li>
                     <li>
                         <label>所投项目</label>
@@ -38,7 +38,7 @@
                     </li>
                     <li>
                         <label>提现金额</label>
-                        <span>${amount!}元</span>
+                        <span class="money">${amount!}元</span>
                     </li>
                     <li>
                         <label>订单号</label>
@@ -46,7 +46,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="button-note">
+            <div class="button-note cash">
                 <a data-url="/m/account" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
             <div class="service">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
@@ -81,7 +81,7 @@
                     </li>
                     <li>
                         <label>充值金额</label>
-                        <span>${(amount/100)!}元</span>
+                        <span><em class="money">${(amount/100)!}</em>元</span>
                     </li>
                     <li>
                         <label>订单号</label>
@@ -103,7 +103,7 @@
                     <ul class="input-list">
                         <li>
                             <label>投资金额</label>
-                            <span>${amount}元</span>
+                            <span class="money">${amount}元</span>
                         </li>
                         <li>
                             <label>所投项目</label>

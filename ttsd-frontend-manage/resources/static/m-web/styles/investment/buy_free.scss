@@ -140,6 +140,15 @@
 }
 .button-note {
   padding-top: 50px;
+  &.cash {
+    margin-top: 0;
+  }
+}
+.service{
+  color: #a2a2a2;
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
 }
 
 
