@@ -669,6 +669,28 @@ function anxinService() {
     });
 }
 
+let $anxinAuthorization = $('#anxinAuthorization'),
+    $buttonIdentify = $('.button-identify',$anxinAuthorization);
 
+//获取验证码
+$buttonIdentify.on('click',function (event) {
+    let target = event.target;
+    let isVoice = $(target).data('voice');
+    commonFun.useAjax({
+        type:'POST',
+        url:'/anxinSign/sendCaptcha',
+        data:{
+            isVoice:isVoice
+        }
+    },function(data) {
+        //请求成功开始倒计时
+        if(data.success) {
+            countDownTime();
+        }
+        else {
+            layer.msg('请求失败，请重试或联系客服！');
+        }
+    });
+});
 
 
