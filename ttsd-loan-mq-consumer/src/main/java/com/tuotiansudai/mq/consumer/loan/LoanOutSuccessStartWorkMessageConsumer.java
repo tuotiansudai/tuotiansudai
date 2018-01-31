@@ -87,38 +87,40 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
 
         for(InvestModel investModel : list){
-            String key = MessageFormat.format(START_WORK_CASH_KEY, investModel.getLoginName(), String.valueOf(investModel.getId()));
+            String key = MessageFormat.format(START_WORK_CASH_KEY, investModel.getLoginName(), String.valueOf(loanModel.getId()));
             String tradingTime = new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd");
             if (FRIDAY_TIME.contains(tradingTime) && !redisWrapperClient.exists(key)){
+
+
                 long sendCash = investModel.getAmount() * loanModel.getProductType().getDuration() / 360;
                 try {
-                    sendCashPrize(investModel.getLoginName(), investModel.getId(), sendCash);
+                    sendCashPrize(investModel.getLoginName(), loanModel.getId(), sendCash);
                 } catch (Exception e) {
-                    logger.error("[LoanOutSuccess_StartWorkActivity] user:{}, investId:{}, sendCash:{} is send fail.",
-                            investModel.getLoginName(), investModel.getId(), sendCash);
+                    logger.error("[LoanOutSuccess_StartWorkActivity] user:{}, loanId:{}, sendCash:{} is send fail.",
+                            investModel.getLoginName(), loanModel.getId(), sendCash);
                 }
             }
         }
     }
 
-    public void sendCashPrize(String loginName, long investId, long sendCash){
-        logger.info("send start work activity prize begin, loginName:{}, investId:{}, sendCash:{}", loginName, investId, sendCash);
-        String key = MessageFormat.format(START_WORK_CASH_KEY, loginName, String.valueOf(investId));
+    public void sendCashPrize(String loginName, long loanId, long sendCash){
+        logger.info("send start work activity prize begin, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, sendCash);
+        String key = MessageFormat.format(START_WORK_CASH_KEY, loginName, String.valueOf(loanId));
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(IdGenerator.generate()), String.valueOf(sendCash),
                 UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.CASH_START_WORK_DETAIL_TEMPLATE);
         try {
             BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
             if (response.getData().getStatus()) {
-                logger.info("send start work activity prize success, loginName:{}, investId:{}, cash:{}", loginName, investId, sendCash);
+                logger.info("send start work activity prize success, loginName:{}, loanId:{}, cash:{}", loginName, loanId, sendCash);
                 redisWrapperClient.setex(key, lifeSecond, "success");
                 return;
             }
         } catch (Exception e) {
-            logger.error("send start work activity prize fail, loginName:{}, investId:{}, cash{}", loginName, investId, sendCash);
+            logger.error("send start work activity prize fail, loginName:{}, loanId:{}, cash{}", loginName, loanId, sendCash);
         }
         redisWrapperClient.setex(key,  lifeSecond, "fail");
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【惊喜不重样加息不打烊活动放款】用户:{0}, 投资id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(sendCash))));
-        logger.info("send cash snowball activity prize end, loginName:{}, invest:{}, sendCash:{}", loginName, investId, sendCash);
+        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【惊喜不重样加息不打烊活动放款】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(sendCash))));
+        logger.info("send cash snowball activity prize end, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, sendCash);
     }
 
 }
