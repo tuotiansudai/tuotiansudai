@@ -36,9 +36,13 @@ def migrate():
     migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3, local)
 
 
-def mk_war():
-    local('/usr/local/bin/paver jcversion.static_server={0} jcversion'.format(etcd3.get('common.static.server')))
-    local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar initMQ')
+def mk_war(targets=None):
+    mk_static_zip()
+    if not targets:
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
+
+    for target in targets:
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
 
 
 def mk_worker_zip():
@@ -63,6 +67,7 @@ def mk_rest_service():
 
 
 def mk_static_zip():
+    local('/usr/local/bin/paver jcversion.static_server={0} jcversion'.format(etcd3.get('common.static.server')))
     local('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
 
 
@@ -73,19 +78,16 @@ def mk_signin_zip():
         local('cd ./ttsd-user-rest-service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 
-def build():
-    mk_war()
-    mk_worker_zip()
-    mk_mq_consumer()
-    mk_rest_service()
-    mk_static_zip()
-    mk_signin_zip()
-
-
-def compile():
+def compile(targets):
     local('/opt/gradle/latest/bin/gradle clean')
     local('/usr/bin/git clean -fd')
-    local('/opt/gradle/latest/bin/gradle compileJava')
+
+    if not targets:
+        local('/opt/gradle/latest/bin/gradle compileJava')
+        return
+
+    for target in targets:
+        local('/opt/gradle/latest/bin/gradle {}:compileJava'.format(target))
 
 
 def check_worker_status():
@@ -265,6 +267,13 @@ def deploy_anxin():
         sudo('/usr/local/bin/docker-compose -f anxin.yml up -d')
 
 
+def pre_deploy(skip_package, target=None):
+    if skip_package == 'False':
+        compile(target)
+        migrate()
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-mq-client:initMQ')
+
+
 def deploy_all():
     execute(deploy_sign_in)
     execute(deploy_static)
@@ -279,70 +288,90 @@ def deploy_all():
     execute(deploy_anxin)
 
 
-def pre_deploy():
-    compile()
-    migrate()
-    build()
-
-
-def all():
-    pre_deploy()
+def all(skip_package):
+    pre_deploy(skip_package)
+    mk_war()
     deploy_all()
 
 
-def web():
-    pre_deploy()
+def package(skip_package):
+    pre_deploy('False')
+
+
+def web(skip_package):
+    pre_deploy(skip_package, ('ttsd-web',))
+    mk_war(('ttsd-web',))
     execute(deploy_web)
     execute(deploy_static)
 
 
-def activity():
-    pre_deploy()
+def activity(skip_package):
+    pre_deploy(skip_package, ('ttsd-activity-web',))
+    mk_war(('ttsd-activity-web',))
     execute(deploy_activity)
     execute(deploy_static)
 
 
-def ask():
-    pre_deploy()
+def ask(skip_package):
+    pre_deploy(skip_package, ('ttsd-ask-web', 'ttsd-ask-rest'))
+    mk_war('ttsd-ask-web')
+    mk_rest_service()
     execute(deploy_ask_rest)
     execute(deploy_ask)
     execute(deploy_static)
 
 
-def console():
-    pre_deploy()
+def console(skip_package):
+    pre_deploy(skip_package, ('ttsd-console', 'ttsd-activity-console'))
+    mk_war(('ttsd-console', 'ttsd-activity-console'))
     execute(deploy_console)
 
 
-def api():
-    pre_deploy()
+def api(skip_package):
+    pre_deploy(skip_package, ('ttsd-mobile-api',))
+    mk_war(('ttsd-mobile-api',))
     execute(deploy_api)
 
 
-def sms():
-    pre_deploy()
+def sms(skip_package):
+    pre_deploy(skip_package, ('ttsd-sms-wrapper',))
+    mk_war(('ttsd-sms-wrapper',))
     execute(deploy_sms)
 
 
-def worker():
-    pre_deploy()
+def worker(skip_package):
+    pre_deploy(skip_package, ('ttsd-job-worker',
+                              'ttsd-loan-mq-consumer',
+                              'ttsd-message-mq-consumer',
+                              'ttsd-point-mq-consumer',
+                              'ttsd-activity-mq-consumer',
+                              'ttsd-user-mq-consumer',
+                              'ttsd-auditLog-mq-consumer',
+                              'ttsd-email-mq-consumer',
+                              'ttsd-amount-mq-consumer',
+                              'ttsd-diagnosis'))
+    mk_worker_zip()
+    mk_mq_consumer()
     execute(deploy_worker)
 
 
-def pay():
-    pre_deploy()
+def pay(skip_package):
+    pre_deploy(skip_package, ('ttsd-pay-wrapper',))
+    mk_war(('ttsd-pay-wrapper',))
     execute(deploy_pay)
 
 
-def signin():
-    mk_signin_zip()
-    execute(deploy_sign_in)
-
-
-def point():
-    pre_deploy()
+def point(skip_package):
+    pre_deploy(skip_package, ('ttsd-piont-web',))
+    mk_war(('ttsd-piont-web',))
     execute(deploy_point)
     execute(deploy_static)
+
+
+def signin(skip_package):
+    if skip_package == 'False':
+        mk_signin_zip()
+    execute(deploy_sign_in)
 
 
 def get_7days_before(date_format="%Y-%m-%d"):

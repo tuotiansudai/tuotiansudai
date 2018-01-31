@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ActivityInvestAnnualizedMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="activityInvestAnnualizedModel" type="com.tuotiansudai.activity.repository.model.ActivityInvestAnnualizedModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="sum_invest_amount" property="sumInvestAmount"/>
+        <result column="sum_annualized_amount" property="sumAnnualizedAmount"/>
+        <result column="activity_name" property="activityInvestAnnualized"/>
+        <result column="activity_loan_desc" property="activityLoanDesc"/>
+    </resultMap>
+
+    <resultMap id="activityInvestAnnualizedResultMap" type="com.tuotiansudai.activity.repository.model.ActivityInvestAnnualizedView">
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="sum_invest_amount" property="sumInvestAmount"/>
+        <result column="sum_annualized_amount" property="sumAnnualizedAmount"/>
+    </resultMap>
+
+    <insert id="create" parameterType="activityInvestAnnualizedModel" useGeneratedKeys="true" keyProperty="id">
+        insert into activity_invest_annualized(login_name, mobile, user_name,sum_invest_amount,sum_annualized_amount,activity_name, activity_loan_desc, created_time, updated_time)
+               VALUES (#{loginName},#{mobile},#{userName},#{sumInvestAmount},#{sumAnnualizedAmount},#{activityInvestAnnualized},#{activityLoanDesc}, now(), now())
+    </insert>
+
+    <update id="update" parameterType="activityInvestAnnualizedModel">
+        update activity_invest_annualized set
+        `sum_invest_amount` = #{sumInvestAmount},
+        `sum_annualized_amount` = #{sumAnnualizedAmount},
+        `updated_time` = now()
+        where id = #{id}
+    </update>
+
+    <select id="findByActivityAndLoginName" parameterType="map" resultMap="activityInvestAnnualizedModel">
+        SELECT * FROM activity_invest_annualized WHERE login_name=#{loginName} and activity_name=#{activityInvestAnnualized}
+    </select>
+
+    <select id="findByActivityAndMobile" parameterType="map" resultMap="activityInvestAnnualizedResultMap">
+        SELECT * FROM activity_invest_annualized
+        <where>
+            <if test="mobile !=null and mobile !=''">
+                and mobile = #{mobile}
+            </if>
+            <if test="activityInvestAnnualized !=null">
+                and activity_name=#{activityInvestAnnualized}
+            </if>
+        </where>
+    </select>
+</mapper>

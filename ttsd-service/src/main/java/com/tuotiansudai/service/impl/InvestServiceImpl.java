@@ -666,7 +666,7 @@ public class InvestServiceImpl implements InvestService {
 
 
     private InvestorInvestDetailDto userTransferInvestDetail(InvestModel investModel) {
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getTransferInvestId());
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
         InvestModel originInvestModel = investMapper.findById(investModel.getTransferInvestId());
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         long userInvestAmountTotal = investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName(), false);
@@ -675,7 +675,7 @@ public class InvestServiceImpl implements InvestService {
         long totalExpectedInterest = 0;
         long totalActualInterest = 0;
         long corpus = 0;
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(investModel.getLoginName(), investModel.getTransferInvestId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(investModel.getLoginName(), investModel.getId());
         for (InvestRepayModel investRepayModel : investRepayModels) {
             totalExpectedInterest += investRepayModel.getExpectedInterest();
             totalActualInterest += investRepayModel.getRepayAmount();

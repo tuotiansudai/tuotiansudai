@@ -34,8 +34,6 @@ public class InvestorController {
     @Autowired
     private RepayService repayService;
 
-    @Autowired
-    private LoanService loanService;
 
     @RequestMapping(value = "/invest-list", method = RequestMethod.GET)
     public ModelAndView investList() {

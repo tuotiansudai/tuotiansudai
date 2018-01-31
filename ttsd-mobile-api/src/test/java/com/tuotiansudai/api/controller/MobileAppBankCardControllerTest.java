@@ -33,10 +33,11 @@ public class MobileAppBankCardControllerTest extends ControllerTestBase {
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         baseDto.setData(dataDto);
+        BankCardRequestDto requestDto = new BankCardRequestDto();
+        requestDto.setCardNo("11111111111111111");
 
         when(service.bindBankCard(any(BankCardRequestDto.class))).thenReturn(baseDto);
-        doRequestWithServiceMockedTest("/bankcard/bind",
-                new BankCardRequestDto())
+        doRequestWithServiceMockedTest("/bankcard/bind", requestDto)
                 .andExpect(jsonPath("$.data.url").value("url"))
                 .andExpect(jsonPath("$.data.requestData").value("requestData"));
     }
