@@ -50,6 +50,16 @@ public class DelayMessageDeliveryJobCreator {
         create(jobManager, deadline, MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
     }
 
+    public static void createOrReplaceCreditLoanBalanceAlertDelayJob(JobManager jobManager, Date sendingTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        create(jobManager, sendingTime, MessageQueue.CreditLoanBalanceAlert, "", "CreditLoanBalanceAlert_" + sdf.format(sendingTime), true);
+    }
+
+    public static void createLoanRaisingCompleteNotifyDelayJob(JobManager jobManager, Date sendingTime, String message) {
+        create(jobManager, sendingTime, MessageQueue.LoanRaisingCompleteNotify, message);
+    }
+
+
     public static void create(JobManager jobManager, int delaySeconds, MessageQueue messageQueue, String messageBody) {
         create(jobManager, delaySeconds, messageQueue, messageBody, String.valueOf(System.currentTimeMillis()), true);
     }
@@ -62,11 +72,6 @@ public class DelayMessageDeliveryJobCreator {
                               String jobKey, boolean replaceExistingJob) {
         Date fireTime = new DateTime().plusSeconds(delaySeconds).toDate();
         create(jobManager, fireTime, messageQueue, messageBody, jobKey, replaceExistingJob);
-    }
-
-    public static void createOrReplaceCreditLoanBalanceAlertDelayJob(JobManager jobManager, Date sendingTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        create(jobManager, sendingTime, MessageQueue.CreditLoanBalanceAlert, "", "CreditLoanBalanceAlert_" + sdf.format(sendingTime), true);
     }
 
     public static void create(JobManager jobManager, Date fireTime, MessageQueue messageQueue, String messageBody,

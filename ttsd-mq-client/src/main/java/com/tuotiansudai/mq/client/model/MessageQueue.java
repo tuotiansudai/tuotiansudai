@@ -72,7 +72,9 @@ public enum MessageQueue {
     CreditLoanActivateAccountQueue("CreditLoanActivateAccountQueue"),
     CreditLoanBill("CreditLoanBill"),
     Payroll("Payroll"),
-    CreditLoanBalanceAlert("CreditLoanBalanceAlert"); // 信用贷账户余额不足，短信提醒（延时job）
+    CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
+    LoanRaisingCompleteNotify("LoanRaisingCompleteNotify"), // 满标提醒短信
+    ;
 
     private final String queueName;
 
