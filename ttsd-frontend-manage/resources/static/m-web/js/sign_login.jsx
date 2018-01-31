@@ -44,16 +44,18 @@ let backStatus = () => {  // 返回此页面判断手机号长度，确定是否
 };
 backStatus();
 let entryEv = () => {
-    $('.entry_container').show();
-    $('.login_container').hide();
+    // $('.entry_container').show();
+    // $('.login_container').hide();
+    $('.entry_container').hide();
+    $('.login_container').show();
 };
 
 let loginEv = () => {
     $('.entry_container').hide();
     $('.login_container').show();
-    let telephoneNum = localStorage.getItem('login_telephone') || '';
-    $('.show-mobile-login').html(telephoneNum);
-    $('#username').val(telephoneNum);
+    // let telephoneNum = localStorage.getItem('login_telephone') || '';
+    // $('.show-mobile-login').html(telephoneNum);
+    // $('#username').val(telephoneNum);
 };
 
 let registerEv = () => {
@@ -85,7 +87,7 @@ hashFun();
 let pushHistory = (url) => {
     let state = {title: "title", url: url};
     window.history.pushState(state, "title", url);
-    location.reload();
+    // location.reload();
 };
 
 let contentInput = (id,content,length) => {

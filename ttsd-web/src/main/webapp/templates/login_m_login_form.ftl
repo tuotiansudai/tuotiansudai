@@ -20,7 +20,7 @@
             <div class="see_password"></div>
             <div class="close_btn"></div>
         </div>
-        <input type="hidden" id="username" name="username"/>
+        <input type="hidden" id="username" name="username" value="18245135693"/>
         <input type="hidden" name="source" value="WEB"/>
         <div class="error-box"></div>
         <button type="submit" class="btn-wap-normal next-step step_two" disabled>登录</button>
