@@ -12,6 +12,12 @@ var tpl = require('art-template/dist/template');
 let $loanDetail = $('#loanDetail'),
     $buyDetail = $('#buyDetail'),
     $iconHelp = $('.icon-help', $loanDetail);
+let isAnxinUser=$('.bind-data').data('is-anxin-user');
+let $authorization_message = $('#authorization_message');
+let $toOpenSMS = $('#toOpenSMS');
+let dataPage = $('.bind-data').data('page');
+let $transferDetail = $('#transfer_details');
+
 
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
@@ -22,9 +28,36 @@ $('#toInvest').on('click',function () {
     location.hash='buyDetail';
 
 })
+
+//验证验证码并开通短信服务
+$('#skipPhoneCode').on('keyup',function() {
+
+    var $skipPhoneCode=$('#skipPhoneCode'),
+        phoneCode=$skipPhoneCode.val();
+
+    if(/^\d{6}$/.test(phoneCode)) {
+        $toOpenSMS.prop('disabled',false);
+    } else {
+        $toOpenSMS.prop('disabled',true);
+    }
+});
+
+$('#skipPhoneCode').on('keyup',(e) => {
+    if (!e.currentTarget.value.length) {
+        $('.close_btn').hide();
+        return;
+    }
+    $('.close_btn').show();
+});
+$('.close_btn').on('click',() => {
+    $('#skipPhoneCode').val('');
+    $('#toOpenSMS').attr('disabled',true);
+    $('.close_btn').hide();
+});
 //借款详情
 
 let commonFun = require('publicJs/commonFun');
+commonFun.calculationFun(document,window);
 let menuClick = require('mWebJsModule/menuClick');
 
 let $projectDetail = $('#projectDetail'),//项目详情模块
@@ -94,7 +127,7 @@ function getInvestAmount() {
     return amount;
 }
 
-let $transferDetail = $('#transfer_details');
+
 //点击项目详情去项目详情模块
 
 $('#to_project_detail').on('click',function () {
@@ -135,10 +168,6 @@ $('#btn-detail-toggle').click(function () {
 
             });
         },1000)
-
-
-
-
     })
 
     function getMoreRecords(){
@@ -392,7 +421,19 @@ $('#investSubmit').on('click', function(event) {
                     })
                      return false;
                 }
-                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                if (!isAnxinUser) {
+                    if (dataPage == 'buy') {
+                        $buyDetail.hide();
+                        $authorization_message.show();
+                        anxinService();
+                    }
+                    else if (dataPage == 'transfer') {
+                        $transferDetail.hide();
+                        $authorization_message.show();
+                        anxinService();
+                    }
+                }
+                // noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                 return;
             }
             if (isAuthentication) {
@@ -592,4 +633,42 @@ $('#agrement').on('click',function () {
 $('#lookOld').on('click',function () {
     location.href = $(this).data('url');
 })
+
+function anxinService() {
+    $toOpenSMS.on('click',function() {
+        var $this=$(this),
+            $skipPhoneCode=$('#skipPhoneCode'),
+            phoneCode=$skipPhoneCode.val();
+        var skipAuth = $('#readOk1').is(':checked');
+
+        if(!/^\d{6}$/.test(phoneCode)) {
+            $('.error').show();
+            return;
+        }
+
+        $this.prop('disabled',true);
+        $this.html('授权中...');
+        commonFun.useAjax({
+            type:'POST',
+            url:'/anxinSign/verifyCaptcha',
+            data:{
+                captcha: phoneCode,
+                skipAuth:skipAuth
+            }
+        },function(data) {
+            if(data.success) {
+                layer.closeAll();
+                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+            }
+            else {
+                $this.prop('disabled',false);
+                $this.html('立即授权');
+                $('.error').show();
+            }
+        });
+    });
+}
+
+
+
 
