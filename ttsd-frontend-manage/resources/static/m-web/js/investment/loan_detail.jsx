@@ -401,6 +401,8 @@ function testAmount() {
     }
 
 }
+//页面加载判断
+testAmount();
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
