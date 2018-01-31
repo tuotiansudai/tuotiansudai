@@ -644,10 +644,10 @@
         (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" order by invest_time desc limit 1) as experience_time,
         (select count(1) from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS") as invest_count,
         (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") as invest_sum,
-        (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by invest_time limit 1) as first_invest_time,
-        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1) as first_invest_amount,
-        (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1) as second_invest_time,
-        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1) as second_invest_amount
+        (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1) as first_invest_time,
+        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1) as first_invest_amount,
+        (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1, 1) as second_invest_time,
+        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1, 1) as second_invest_amount
         FROM aa.user
         <where>
             <if test="loginName != null and loginName != ''">
@@ -689,16 +689,16 @@
                 AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &lt;= #{investSumHighLimit}
             </if>
             <if test="firstInvestStartTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by invest_time limit 1 ) &gt;= #{firstInvestStartTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by trade_time limit 1 ) &gt;= #{firstInvestStartTime}
             </if>
             <if test="firstInvestEndTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1 ) &lt;= #{firstInvestEndTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1 ) &lt;= #{firstInvestEndTime}
             </if>
             <if test="secondInvestStartTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
             </if>
             <if test="secondInvestEndTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
             </if>
         </where>
         ORDER BY register_time DESC
@@ -748,16 +748,16 @@
                 AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &lt;= #{investSumHighLimit}
             </if>
             <if test="firstInvestStartTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by invest_time limit 1 ) &gt;= #{firstInvestStartTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by trade_time limit 1 ) &gt;= #{firstInvestStartTime}
             </if>
             <if test="firstInvestEndTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1 ) &lt;= #{firstInvestEndTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1 ) &lt;= #{firstInvestEndTime}
             </if>
             <if test="secondInvestStartTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
             </if>
             <if test="secondInvestEndTime != null">
-                AND (select invest_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by invest_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
+                AND (select trade_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trade_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
             </if>
         </where>
     </select>
