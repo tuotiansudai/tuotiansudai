@@ -2,7 +2,7 @@
 
 <div class="my-account-content apply-transfer buy-transfer" id="transfer_details" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" style="display: none">
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinUser?c}">
-    <input type="hidden" data-is-authentication-required="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
+    <input type="hidden" data-is-authentication-required="${anxinAuthenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
     <div class="m-header"><em id="iconTransferDetail" class="icon-left"><i></i></em>立即投资 </div>
     <div class="benefit-box transfer-box">
         <div class="target-category-box transfer" data-url="loan-transfer-detail.ftl">
