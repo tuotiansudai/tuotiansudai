@@ -12,8 +12,6 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.InterestCalculator;
-import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -104,9 +102,9 @@ public class TransferApplicationController {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
-                    if(MobileAccessDecision.isMobileAccess()) {
+                    if (Source.M.equals(investDto.getSource())) {
                         return new ModelAndView(MessageFormat.format("redirect:/m/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
-                    }else{
+                    } else {
                         return new ModelAndView(MessageFormat.format("redirect:/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
                     }
                 }
@@ -116,9 +114,9 @@ public class TransferApplicationController {
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            if(MobileAccessDecision.isMobileAccess()) {
+            if (Source.M.equals(investDto.getSource())) {
                 modelAndView.setViewName(MessageFormat.format("redirect:/m/transfer/{0}", investDto.getTransferApplicationId()));
-            }else{
+            } else {
                 modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
             }
         } else {
