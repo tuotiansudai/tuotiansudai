@@ -97,7 +97,7 @@
     <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" >立即投资</button>
     </form>
 
-<#--<#if anxinUser != true>-->
+<#if anxinUser != true>
     <div class="transfer-notice">
         <div class="agreement-box">
             <span class="init-checkbox-style on">
@@ -109,12 +109,8 @@
                     href="javascript:void(0)" class="link-agree-number-authorize">《CFCA数字证书授权协议》</a> </lable>
         </div>
     </div>
-<#--</#if>-->
-<@global.role hasRole="'INVESTOR'">
-    <#if !loan.investor.anxinUser>
+</#if>
 <#include "component/anxin-agreement.ftl" />
-    </#if>
-</@global.role>
 </div>
 
 

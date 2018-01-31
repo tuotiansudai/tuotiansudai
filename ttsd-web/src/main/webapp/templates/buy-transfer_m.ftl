@@ -51,11 +51,8 @@
         </div>
     </div>
 </#if>
-<@global.role hasRole="'INVESTOR'">
-    <#if !loan.investor.anxinUser>
-        <#include "component/anxin-agreement.ftl" />
-    </#if>
-</@global.role>
+
+<#include "component/anxin-agreement.ftl" />
 
 </div>
 

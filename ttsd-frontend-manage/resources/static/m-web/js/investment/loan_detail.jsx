@@ -700,4 +700,20 @@ $('#goPage_3').on('click',() => {
    location.reload();
 });
 
+function countDownTime() {
+    let seconds = 60;
+    $('.seconds').html(seconds);
+    $('.button-identify').hide();
+    $('.countDownTime').show();
+    let countDown = setInterval(() => {
+        seconds--;
+        $('.seconds').html(seconds);
+        if (seconds == 0 ) {
+            clearInterval(countDown);
+            $('.button-identify').show();
+            $('.countDownTime').hide();
+        }
+    },1000)
+}
+
 
