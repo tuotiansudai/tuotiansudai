@@ -109,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <span class="p-title">剩余金额：<i><em class="money">${loan.availableInvestAmount}</em>元</i></span>
+                <span class="p-title">剩余金额：<i><em class="money"><@amount>${loan.availableInvestAmountCent?c}</@amount></em>元</i></span>
             </div>
         </div>
     </#list>
