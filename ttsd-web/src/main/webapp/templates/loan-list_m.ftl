@@ -34,7 +34,7 @@
                         <#if loanItem.productType == 'EXPERIENCE'>
                             <i class="icon-sign">体验金投资</i>
                         </#if>
-                        <#if loanItem.productType == 'NEWBIE'>
+                        <#if loanItem.activityType == 'NEWBIE'>
                             <i class="icon-sign">新手专享</i>
                         </#if>
                         <#if loanItem.activity?string("true","false") == "true">
