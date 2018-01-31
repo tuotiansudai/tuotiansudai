@@ -244,7 +244,6 @@ let formSubmit = function () {
             data: $(formLogin).serialize()
         }, function (data) {
             if (data.status) {
-                // location.href = '/bind-success?redirect=' + $('#formLogin').data('redirect');
                 location.href = '/m/';
             } else {
                 loginSubmit.prop('disabled', false);
