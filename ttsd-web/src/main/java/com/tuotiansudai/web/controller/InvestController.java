@@ -14,6 +14,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RequestIPParser;
+import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,9 @@ public class InvestController {
         redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         redirectAttributes.addFlashAttribute("errorType", errorType);
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
+        if(MobileAccessDecision.isMobileAccess()){
+            return new ModelAndView(MessageFormat.format("redirect:/m/loan/{0}#buyDetail", investDto.getLoanId()));
+        }
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 
