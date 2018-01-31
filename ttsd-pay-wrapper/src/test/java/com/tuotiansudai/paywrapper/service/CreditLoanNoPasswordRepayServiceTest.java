@@ -93,6 +93,12 @@ import static org.mockito.Mockito.*;
         assertFalse(dto.getData().getStatus());
         assertThat(dto.getData().getMessage(), is("用户未开通免密支付功能"));
 
+        accountModel.setAutoInvest(false);
+        when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
+        dto = this.creditLoanRepayService.noPasswordRepay(orderId, mobile, 1, true);
+        assertFalse(dto.getData().getStatus());
+        assertThat(dto.getData().getMessage(), is("用户未签署免密协议"));
+
         accountModel.setNoPasswordInvest(true);
         when(accountMapper.findByMobile(mobile)).thenReturn(accountModel);
         when(redisWrapperClient.exists(MessageFormat.format("credit:loan:password:repay:expired:{0}", String.valueOf(orderId)))).thenReturn(true);
