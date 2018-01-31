@@ -135,13 +135,11 @@ function useAjax(opt,callbackDone,callbackAlways) {
     let option=$.extend(defaultOpt,opt);
 
     //防止跨域，只有post请求需要，get请求不需要
-    if (option.type == 'POST' || option.type == 'post') {
-        $(document).ajaxSend(function(e, xhr, options) {
-            let token = $("meta[name='_csrf']").attr("content");
-            let header = $("meta[name='_csrf_header']").attr("content");
-            xhr.setRequestHeader(header, token);
-        });
-    }
+    $(document).ajaxSend(function(e, xhr, options) {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        xhr.setRequestHeader(header, token);
+    });
     //当ajax请求失败的时候重定向页面
     $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
         if (jqXHR.status == 403) {

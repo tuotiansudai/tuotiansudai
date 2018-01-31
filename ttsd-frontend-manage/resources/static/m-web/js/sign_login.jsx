@@ -85,7 +85,7 @@ hashFun();
 let pushHistory = (url) => {
     let state = {title: "title", url: url};
     window.history.pushState(state, "title", url);
-    // location.reload();
+    location.reload();
 };
 
 let contentInput = (id,content,length) => {
