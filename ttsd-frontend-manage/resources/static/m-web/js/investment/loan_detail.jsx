@@ -505,6 +505,7 @@ $('#exchangeCoupon').on('click',function () {
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
 $toBuyTransfer.on('click',function () {
+    location.hash='transferDetail'
     $.when(commonFun.isUserLogin())
         .fail(function() {
             //判断是否需要弹框登陆
@@ -574,7 +575,6 @@ function submitData() {
                     location.href = '/m/login?redirect=' + encodeURIComponent(location.href);
                     return false;
                 }
-
                 var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
                 if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
                     commonFun.CommonLayerTip({
@@ -597,6 +597,8 @@ function submitData() {
             }
 
         }
+    },function () {
+        location.href = '/m/transfer/'+transferApplicationId+'#transferDetail';
     });
 }
 $transferDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
