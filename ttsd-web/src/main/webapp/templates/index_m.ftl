@@ -119,7 +119,7 @@
 
 
             <#if loan.preheatSeconds lte 1800>
-                <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">-->
+                <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
                 <i class="minute_show"></i>分
                 <i class="second_show"></i>秒后开标
                 </span>

@@ -23,8 +23,8 @@ if ($bankCardManage.length) {
             skin: 'tip-square-box',
             btn: ['我知道了'],
             content: $('.tip-user-info')
-        }, function (index, layero) {
-            // alert('pp');
+        }, function () {
+            layer.closeAll();
         });
     });
 

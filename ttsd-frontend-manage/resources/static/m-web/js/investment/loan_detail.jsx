@@ -364,6 +364,7 @@ function maxBenifitUserCoupon() {
             calExpectedCouponInterest();
         } else {
             $('#couponText').text('无可用优惠券');
+            $('#couponId').val('');
             $('#couponText').css('color','#64646D');
             $couponExpectedInterest.text("");
             $('.to-use_coupon').each(function (index,item) {
@@ -389,6 +390,7 @@ function testAmount() {
     calExpectedInterest();
     maxBenifitUserCoupon();
     couponSelect();
+
     if(value/100  == 0){
         $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
     } else if(value/100 <minAmount){

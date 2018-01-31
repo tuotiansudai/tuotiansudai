@@ -61,8 +61,10 @@
                                 <em class="note">项目期限</em>
                             </li>
                             <li>
-                            <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
+                            <#if ['RAISING']?seq_contains(loanItem.status)>
                                 <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">立即投资</a>
+                            <#elseif ['RAISING']?seq_contains(loanItem.status)>
+                                <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">预热中</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
                             </#if>
@@ -70,22 +72,28 @@
                         </ul>
                     <#if loanItem.productType != 'EXPERIENCE'>
                         <div class="table-row progress-column">
+                        <#if loanItem.status != 'PREHEAT'>
                             <div class="progress-bar">
                                 <div class="process-percent">
                                     <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>colorChange</#if>" style="width:${loanItem.progress}%">
                                     </div>
                                 </div>
                             </div>
+                        </#if>
                             <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
                                 <#if loanItem.status == 'PREHEAT'>
                                     <#if loanItem.preheatSeconds lte 1800>
-                                        <span class="time">${loanItem.preheatSeconds?string.computer}以后可投资</span>
+                                    <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
+                                        <i class="minute_show"></i>分
+                                        <i class="second_show"></i>秒后开标
                                     <#else>
                                         <span class="time">${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}
-                                            放标</span>
+                                            开标</span>
                                     </#if>
                                 </#if>
-                                <span class="p-title">剩余金额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
+                                <#if loanItem.status != 'PREHEAT'>
+                                <span class="p-title">项目总额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
+                                </#if>
                             <#else>
                                 <span class="p-title allReady"><i>${loanItem.alert}</i></span>
                             </#if>
