@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class UserAgentFilter implements Filter {
     private static final String webRriRegex = "^/(loan-list|transfer-list|loan/\\d+|transfer/\\d+)?$";
-    private static final String mSiteRriRegex = "^(/m|/m/)(loan-list|transfer-list|loan/\\d+|transfer/\\d+)?$";
+    private static final String mSiteRriRegex = "^(/m|((/m/)(loan-list|transfer-list|loan/\\d+|transfer/\\d+)?))$";
 
     FilterConfig filterConfig = null;
 
@@ -57,9 +57,7 @@ public class UserAgentFilter implements Filter {
 
         return !Strings.isNullOrEmpty(userAgent)
                 && (userAgent.toLowerCase().contains("iphone")
-                || userAgent.toLowerCase().contains("android")
-                || userAgent.toLowerCase().contains("ipod")
-                || userAgent.toLowerCase().contains("ipad"));
+                || userAgent.toLowerCase().contains("android"));
 
 
     }
