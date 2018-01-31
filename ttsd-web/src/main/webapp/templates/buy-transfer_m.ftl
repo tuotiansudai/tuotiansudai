@@ -1,7 +1,8 @@
 <#--<@global.main pageCss="${css.buy_transfer}" pageJavascript="${js.buy_transfer}" title="转让项目购买详情">-->
 
 <div class="my-account-content apply-transfer buy-transfer" id="transfer_details" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" style="display: none">
-    <input type="hidden" class="bind-data" data-is-anxin-user="${loan.investor.anxinUser?c}" data-page="transfer">
+    <input type="hidden" class="bind-data" data-is-anxin-user="${loan.investor.anxinUser?c}">
+    <input type="hidden" data-is-authentication-required="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
     <div class="m-header"><em id="iconTransferDetail" class="icon-left"><i></i></em>立即投资 </div>
     <div class="benefit-box transfer-box">
         <div class="target-category-box transfer" data-url="loan-transfer-detail.ftl">
@@ -50,13 +51,17 @@
         </div>
     </div>
 </#if>
-<#include "component/anxin-agreement.ftl" />
+<@global.role hasRole="'INVESTOR'">
+    <#if !loan.investor.anxinUser>
+        <#include "component/anxin-agreement.ftl" />
+    </#if>
+</@global.role>
 
 </div>
 
 <div id="authorization_message" style="display: none">
     <div class="goBack_wrapper">
-        安心签
+        安心签代签署授权
         <div class="go-back-container" id="goPage_3">
             <span class="go-back"></span>
         </div>

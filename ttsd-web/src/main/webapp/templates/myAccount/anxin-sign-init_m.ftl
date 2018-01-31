@@ -72,7 +72,7 @@
 
 <div id="authorization_message" style="display: none">
     <div class="goBack_wrapper">
-        安心签
+        安心签代签署授权
         <div class="go-back-container" id="goPage_3">
             <span class="go-back"></span>
         </div>

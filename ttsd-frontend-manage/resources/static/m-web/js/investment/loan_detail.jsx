@@ -15,8 +15,10 @@ let $loanDetail = $('#loanDetail'),
 let isAnxinUser=$('.bind-data').data('is-anxin-user');
 let $authorization_message = $('#authorization_message');
 let $toOpenSMS = $('#toOpenSMS');
-let dataPage = $('.bind-data').data('page');
 let $transferDetail = $('#transfer_details');
+let $isAuthenticationRequired=$('#isAuthenticationRequired');
+let isAuthenticationRequired = $isAuthenticationRequired.data('is-authentication-required');
+let dataPage = $isAuthenticationRequired.data('page');
 
 
 $iconHelp.on('click',function() {
@@ -421,7 +423,7 @@ $('#investSubmit').on('click', function(event) {
                     })
                      return false;
                 }
-                if (!isAnxinUser) {
+                if (isAuthenticationRequired) {
                     if (dataPage == 'buy') {
                         $buyDetail.hide();
                         $authorization_message.show();
@@ -432,8 +434,9 @@ $('#investSubmit').on('click', function(event) {
                         $authorization_message.show();
                         anxinService();
                     }
+                } else {
+                    noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                 }
-                // noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                 return;
             }
             if (isAuthentication) {
@@ -691,6 +694,10 @@ $buttonIdentify.on('click',function (event) {
             layer.msg('请求失败，请重试或联系客服！');
         }
     });
+});
+
+$('#goPage_3').on('click',() => {
+   location.reload();
 });
 
 

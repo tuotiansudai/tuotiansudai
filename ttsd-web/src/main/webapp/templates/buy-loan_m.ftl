@@ -23,7 +23,8 @@
         <#assign maxBenefitCouponDesc ='无可用优惠券'>
     </#if>
     <div class="benefit-box">
-        <input type="hidden" class="bind-data" data-is-anxin-user="${loan.investor.anxinUser?c}" data-page="buy">
+        <input type="hidden" class="bind-data" data-is-anxin-user="${loan.investor.anxinUser?c}">
+        <input type="hidden" data-is-authentication-required="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired" data-page="buy">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
             <div class="newer-title">
                 <span>${loan.name}</span>
@@ -109,13 +110,17 @@
         </div>
     </div>
 <#--</#if>-->
+<@global.role hasRole="'INVESTOR'">
+    <#if !loan.investor.anxinUser>
 <#include "component/anxin-agreement.ftl" />
+    </#if>
+</@global.role>
 </div>
 
 
 <div id="authorization_message" style="display: none">
     <div class="goBack_wrapper">
-        安心签
+        安心签代签署授权
         <div class="go-back-container" id="goPage_3">
             <span class="go-back"></span>
         </div>
