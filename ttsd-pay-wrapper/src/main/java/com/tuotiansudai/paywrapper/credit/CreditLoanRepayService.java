@@ -197,7 +197,14 @@ public class CreditLoanRepayService {
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("callbackUrl", requestModel.getRetUrl())
                     .build()));
-            logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+
+            if (responseModel.isSuccess()) {
+                logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+            } else {
+                logger.error(MessageFormat.format("[credit loan no password repay {0} is auto:{1}] call umpay fail , mobile{2}, amount:{3}, code:{4}, message:{5}",
+                        String.valueOf(orderId), autoRepay, mobile, String.valueOf(amount), responseModel.getRetCode(), responseModel.getRetMsg()));
+            }
+
         } catch (Exception e) {
             logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay exception, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
             this.sendFatalNotify(MessageFormat.format("慧租信用贷无密还款异常，orderId:{0}, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
