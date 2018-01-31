@@ -39,6 +39,8 @@ public class HomeLoanDto {
 
     private String availableInvestAmount;
 
+    private long availableInvestAmountCent;
+
     private int completedPeriods;
 
     private int duration;
@@ -70,6 +72,7 @@ public class HomeLoanDto {
         if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(loan.getProductType())) {
             this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         }
+        this.availableInvestAmountCent = loan.getLoanAmount() - investAmount;
         this.availableInvestAmount = AmountConverter.convertCentToString(loan.getLoanAmount() - investAmount);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
@@ -138,6 +141,10 @@ public class HomeLoanDto {
 
     public String getAvailableInvestAmount() {
         return availableInvestAmount;
+    }
+
+    public long getAvailableInvestAmountCent() {
+        return availableInvestAmountCent;
     }
 
     public int getCompletedPeriods() {
