@@ -129,12 +129,11 @@
             <span><i class="fa fa-angle-right"></i></span>
         </li>
     </ul>
-    <#if loan.loanStatus == "PREHEAT">
-        <button class="to-invest-project" type="button" disabled>预热中</button>
-    </#if>
 
-    <#if loan.loanStatus='RAISING'>
+    <#if loan.loanStatus=='RAISING'>
         <button id="toInvest" class="to-invest-project" type="button">立即投资</button>
+    <#elseif loan.loanStatus == "PREHEAT">
+        <button class="to-invest-project" type="button" disabled>预热中</button>
     <#else>
         <button class="to-invest-project" type="button" disabled>已售罄</button>
     </#if>
