@@ -51,7 +51,7 @@ public class TransferCashServiceImpl implements TransferCashService {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
                         transferCashDto.getUserBillBusinessType(), null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-                String detail = MessageFormat.format(SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
+                String detail = MessageFormat.format(transferCashDto.getSystemBillDetailTemplate().getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), transferCashDto.getSystemBillBusinessType(), detail);
                 mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
