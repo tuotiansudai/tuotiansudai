@@ -419,6 +419,7 @@ let $investForm = $('#investForm');//立即投资表单
 $('#investSubmit').on('click', function(event) {
     event.preventDefault();
     let investAmount = getInvestAmount()/100;
+    $amountInputElement.val($amountInputElement.autoNumeric("get"))//格式化还原金额
     $.when(commonFun.isUserLogin())
         .done(function() {
             if (isInvestor) {

@@ -94,7 +94,9 @@
         </ul>
     </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" >立即投资</button>
+    <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" ><#if errorMessage?has_content>
+        ${errorMessage!}
+   <#else> 立即投资</#if></button>
     </form>
 
 <@global.role hasRole="'INVESTOR'">

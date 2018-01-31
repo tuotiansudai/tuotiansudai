@@ -63,7 +63,7 @@
                             <li>
                             <#if ['RAISING']?seq_contains(loanItem.status)>
                                 <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">立即投资</a>
-                            <#elseif ['RAISING']?seq_contains(loanItem.status)>
+                            <#elseif ['PREHEAT']?seq_contains(loanItem.status)>
                                 <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">预热中</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
