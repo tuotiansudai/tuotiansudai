@@ -26,7 +26,7 @@ if($recommendRule.length) {
     })
 
     $iconRecomend.on('click',function () {
-       location.href = '/m'
+       history.go(-1);
     })
 $scanCode.on('click','#iconScanCode',function () {
     $scanCode.hide();

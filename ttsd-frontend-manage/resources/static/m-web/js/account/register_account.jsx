@@ -72,3 +72,7 @@ registerAccountForm.onsubmit = function(event) {
         }
     });
 };
+
+$('#iconRegister').on('click',function () {
+    history.go(-1);
+})

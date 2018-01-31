@@ -39,7 +39,7 @@
     </div>
 
     <ul class="menu-list">
-        <li class="top-distance"><a href="#">我的体验金<em
+        <li class="top-distance"><a>我的体验金<em
                 class="experience-amount">${((experienceBalance/100)?string.computer)!}</em></a></li>
         <li><a href="/m/investor/invest-list">我的投资<i class="fa fa-angle-right"></i></a></li>
         <li><a href="/m/my-treasure">优惠券<i class="fa fa-angle-right"></i></a></li>
