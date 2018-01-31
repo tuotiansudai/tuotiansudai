@@ -84,24 +84,26 @@
                 <li>
                     <#if loan.status== 'RAISING'>
                         <a href="javascript:void(0)" class="btn-invest btn-normal">立即投资</a>
-
                     <#elseif loan.status == 'PREHEAT'>
-                        <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">
-                            <#if loan.preheatSeconds lte 1800>
+                        <a href="javascript:void(0)" class="btn-invest btn-normal" style="opacity: 0.6">预热中</a>
+                    <#--<#elseif loan.status == 'PREHEAT'>-->
+                        <#--<a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">-->
+                            <#--<#if loan.preheatSeconds lte 1800>-->
 
-                                <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
-                                        <i class="minute_show"></i>分
-                                        <i class="second_show"></i>秒后开标
-                                    </span>
-                            <#else>
-                            ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
-                            </#if>
-                        </a>
+                                <#--<span class="preheat" data-time="${loan.preheatSeconds?string.computer}">-->
+                                        <#--<i class="minute_show"></i>分-->
+                                        <#--<i class="second_show"></i>秒后开标-->
+                                    <#--</span>-->
+                            <#--<#else>-->
+                            <#--${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标-->
+                            <#--</#if>-->
+                        <#--</a>-->
                     <#else>
                         <i class="loan-status icon-sellout"></i>
                     </#if>
                 </li>
             </ul>
+        <#if loan.status!= 'PREHEAT'>
             <div class="table-row progress-column">
                 <div class="progress-bar">
                     <div class="process-percent ">
@@ -111,6 +113,24 @@
                 </div>
                 <span class="p-title">剩余金额：<i><em class="money"><@amount>${loan.availableInvestAmountCent?c}</@amount></em>元</i></span>
             </div>
+        <#else>
+            <div class="table-row progress-column">
+                <div class="progress-bar">
+
+
+            <#if loan.preheatSeconds lte 1800>
+                <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">-->
+                <i class="minute_show"></i>分
+                <i class="second_show"></i>秒后开标
+                </span>
+                <#else>
+                       <span style="color: #FF473C"> ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}开标</span>
+
+            </#if>
+                </div>
+                <span class="p-title">项目总额：<i><em class="money"><@amount>${loan.availableInvestAmountCent?c}</@amount></em>元</i></span>
+            </div>
+        </#if>
         </div>
     </#list>
 </div>
