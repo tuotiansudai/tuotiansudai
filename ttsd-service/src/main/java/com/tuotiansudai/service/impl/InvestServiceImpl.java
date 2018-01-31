@@ -723,10 +723,7 @@ public class InvestServiceImpl implements InvestService {
         List<InvestorInvestRepayDto> investRepayList = new ArrayList<>();
 
         investorInvestDetailDto.setInterestBeginDate(getInterestBeginDate(investModel, loanModel, investRepayModels));
-        if (investRepayModels.size() > 0) {
-            InvestRepayModel lastRepayModel = investRepayModels.get(investRepayModels.size() - 1);
-            investorInvestDetailDto.setLastRepayDate(loanModel.getStatus() == LoanStatus.COMPLETE ? lastRepayModel.getActualRepayDate() : lastRepayModel.getRepayDate());
-        }
+        investorInvestDetailDto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModels.get(investRepayModels.size() - 1).getActualRepayDate() : loanModel.getDeadline()).toDate());
         List<TransferApplicationModel> transferApplicationModels;
         for (InvestRepayModel investRepayModel : investRepayModels) {
             if (investRepayModel.isTransferred()) {
@@ -808,6 +805,9 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private Date getInterestBeginDate(InvestModel investModel, LoanModel loanModel, List<InvestRepayModel> investRepayModels) {
+        if (InterestInitiateType.INTEREST_START_AT_INVEST.equals(loanModel.getType().getInterestInitiateType())) {
+            return investModel.getInvestTime();
+        }
         if (investRepayModels.size() == 0) {
             return null;
         }
