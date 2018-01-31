@@ -660,7 +660,7 @@ function anxinService() {
                 if (dataPage == 'buy') {
                     noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                 } else {
-                    $transferForm.submit();
+                    $('#transferForm').submit();
                 }
             }
             else {
