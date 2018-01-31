@@ -424,16 +424,10 @@ $('#investSubmit').on('click', function(event) {
                      return false;
                 }
                 if (isAuthenticationRequired) {
-                    if (dataPage == 'buy') {
-                        $buyDetail.hide();
-                        $authorization_message.show();
-                        anxinService();
-                    }
-                    else if (dataPage == 'transfer') {
-                        $transferDetail.hide();
-                        $authorization_message.show();
-                        anxinService();
-                    }
+                    $buyDetail.hide();
+                    $authorization_message.show();
+                    anxinService();
+
                 } else {
                     noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                 }
@@ -577,7 +571,9 @@ function submitData() {
             if($isAnxinAuthenticationRequired.val()=='false'){
                 $transferForm.submit();
             }else{
-                anxinModule.getSkipPhoneTip();
+                $transferDetail.hide();
+                $authorization_message.show();
+                anxinService();
                 return false;
             }
 
@@ -661,7 +657,11 @@ function anxinService() {
         },function(data) {
             if(data.success) {
                 layer.closeAll();
-                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                if (dataPage == 'buy') {
+                    noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                } else {
+                    $transferForm.submit();
+                }
             }
             else {
                 $this.prop('disabled',false);
