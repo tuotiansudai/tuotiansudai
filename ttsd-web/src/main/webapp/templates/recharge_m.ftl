@@ -3,7 +3,7 @@
 <@global.main pageCss="${m_css.recharge}" pageJavascript="${m_js.recharge}" title="充值">
 
 <div class="my-account-content bank-card-manage" id="cashMoneyConatiner">
-    <div class="m-header"><em class="icon-left" id="goBackIcon"><i class="fa fa-angle-left"></i></em>充值</div>
+    <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>充值</div>
     <#if isBindCard>
     <ul class="bank-list">
         <li>

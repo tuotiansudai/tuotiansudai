@@ -69,7 +69,7 @@
 </div>
 
 <div class="my-account-content bonus-rule" style="display: none" id="rewardRules">
-    <div class="m-header"><em id="iconRewardRules" class="icon-left"><i class="fa fa-angle-left"></i></em>奖励规则 </div>
+    <div class="m-header"><em id="iconRewardRules" class="icon-left"><i></i></em>奖励规则 </div>
     <div class="main-content">
         <div class="box-column">
             <h2>
@@ -175,7 +175,7 @@
 </div>
 
 <div class="my-account-content bonus-rule recommend-rule" id="scanCode" style="display: none">
-    <div class="m-header"><em id="iconScanCode" class="icon-left"><i class="fa fa-angle-left"></i></em>我的二维码 </div>
+    <div class="m-header"><em id="iconScanCode" class="icon-left"><i></i></em>我的二维码 </div>
     <div class="main-content">
         <div class="code-item">
             <p>

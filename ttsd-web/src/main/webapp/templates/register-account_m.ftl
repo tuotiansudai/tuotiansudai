@@ -3,7 +3,7 @@
 <@global.main pageCss="${m_css.register_account}" pageJavascript="${m_js.register_account}" title="实名认证">
 
 <div class="my-account-content certification-box" id="certificationBox">
-
+    <div class="m-header"><em id="iconRegister" class="icon-left"><i></i></em>实名认证 </div>
     <h3>完成实名认证，即可开通联动优势个人资金管理账户资金安全有保障</h3>
 
     <form class="register-account-form" id="registerAccountForm" method="post">

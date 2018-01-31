@@ -223,14 +223,14 @@ function closeNoPasswordCheck() {
 }
 
 $('#logout').on('click',() => {
-    commonFun.useAjax('',{
+    commonFun.useAjax({
         url:"/logout",
         type:'POST',
+    },function() {
+
     },function(response) {
         location.href = '/m/'
-    },function () {
-        location.href = '/m/'
-    });
+    })
 });
 
 $('#reset-password').on('click',() => {
@@ -240,3 +240,7 @@ $('#reset-password').on('click',() => {
 $('#anxinSign').on('click',() => {
    location.href = './anxinSign?fromPage=settings';
 });
+
+$('.go-back').on('click',function () {
+    location.href = '/m/account'
+})

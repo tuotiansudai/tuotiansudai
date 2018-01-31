@@ -18,8 +18,14 @@ $iconHelp.on('click',function() {
 })
 //点击立即投资进入购买详情页
 $('#toInvest').on('click',function () {
-    //pushHistory('#buyDetail');
-    location.hash='buyDetail';
+    $.when(commonFun.isUserLogin())
+        .done(function() {
+            location.hash='buyDetail';
+        })
+        .fail(function () {
+            location.href = '/m/login'
+        })
+
 
 })
 //借款详情
@@ -456,7 +462,15 @@ $('#exchangeCoupon').on('click',function () {
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
 $toBuyTransfer.on('click',function () {
-    $transferDetail.show().siblings().hide();
+    $.when(commonFun.isUserLogin())
+        .fail(function() {
+            //判断是否需要弹框登陆
+            location.href = '/m/login'
+        })
+        .done(function() {
+            $transferDetail.show().siblings().hide();
+        });
+
 })
 $transferSubmit.on('click',function (e) {
     e.preventDefault();
