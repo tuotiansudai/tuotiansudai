@@ -6,7 +6,7 @@
         <em>登录成功</em>
     </span>
 
-    <span class="down-time"><i id="downTime" data-redirect="${redirect!('/')}"></i>后自动跳转</span>
+    <span class="down-time"><i id="downTime" data-redirect="${redirect!('/')}"></i><em id="after">后自动跳转</em></span>
     <button type="button" class="btn-normal" id="okButton">确认</button>
 </div>
 </@global.main>

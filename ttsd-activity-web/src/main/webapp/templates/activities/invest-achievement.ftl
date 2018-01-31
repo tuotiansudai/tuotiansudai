@@ -23,14 +23,14 @@
                 </div>
             </div>
             <div class="actor-model mt-50">
-                <h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>
+                <#--<h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>-->
                 <div class="actor-content mt-30">
                     <div class="icon-list"></div>
                 </div>
             </div>
             <div class="actor-model mt-50">
-                <h3><span><i class="left-icon"></i>进入<strong>标的详情</strong>可查看当前战况<i class="right-icon"></i></span></h3>
-                <div class="actor-content mt-30">
+                <#--<h3><span><i class="left-icon"></i>进入<strong>标的详情</strong>可查看当前战况<i class="right-icon"></i></span></h3>-->
+                <div class="actor-content mt-40">
                     <div class="loan-detail"></div>
                 </div>
             </div>
@@ -80,7 +80,7 @@
     </div>
     <div class="phone-model">
         <div class="actor-model mt-25">
-            <h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>
+            <#--<h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>-->
             <div class="actor-content mt-30 tc">
                 <div class="icon-list"></div>
             </div>
