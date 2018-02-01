@@ -37,7 +37,7 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 });
 
 //开标倒计时
-(function() {
+
     let $preheat=$('.preheat',$homePageContainer);
 
     function countDownLoan(domElement) {
@@ -53,7 +53,7 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
                     if (countdown == 0) {
                         //结束倒计时
                         clearInterval(timer);
-                        $this.parents('a').removeClass('preheat-btn').text('立即投资');
+                        $('.preheat-status').removeClass('preheat-btn').text('立即投资');
                         $this.remove();
                     }
                     minute=(minute <= 9)?('0' + minute):minute;
@@ -68,7 +68,6 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
     };
     countDownLoan($preheat);
 
-})();
 
 let $appContainer = $('.app-container')
 $('.close-app').on('click',function () {

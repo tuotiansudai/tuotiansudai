@@ -34,7 +34,7 @@
                         <#if loanItem.productType == 'EXPERIENCE'>
                             <i class="icon-sign">体验金投资</i>
                         </#if>
-                        <#if loanItem.activityType == 'NEWBIE'>
+                        <#if loanItem.productType != 'EXPERIENCE' && loanItem.activityType == 'NEWBIE'>
                             <i class="icon-sign">新手专享</i>
                         </#if>
                         <#if loanItem.activity?string("true","false") == "true">
@@ -64,7 +64,7 @@
                             <#if ['RAISING']?seq_contains(loanItem.status)>
                                 <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">立即投资</a>
                             <#elseif ['PREHEAT']?seq_contains(loanItem.status)>
-                                <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}" style="opacity: 0.6">预热中</a>
+                                <a class="btn-invest btn-normal preheat-status preheat-btn <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}" >预热中</a>
                             <#else>
                                 <i class="loan-status icon-sellout"></i>
                             </#if>
@@ -91,8 +91,11 @@
                                             开标</span>
                                     </#if>
                                 </#if>
-                                <#if loanItem.status != 'PREHEAT'>
+                                <#if loanItem.status == 'PREHEAT'>
                                 <span class="p-title">项目总额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
+                                </#if>
+                                <#if loanItem.status != 'PREHEAT'>
+                                    <span class="p-title">剩余金额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                                 </#if>
                             <#else>
                                 <span class="p-title allReady"><i>${loanItem.alert}</i></span>
