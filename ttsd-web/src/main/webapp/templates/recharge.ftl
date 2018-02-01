@@ -54,7 +54,7 @@
 
                     <#if isFastPayOn>
                         <div class="fast-recharge-form">
-                            <form action="/recharge" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                            <form action="/recharge" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_self"</@global.role>>
                                 账户可用余额：<i>${balance}</i> 元 <br/>
                                 输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                                 <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
