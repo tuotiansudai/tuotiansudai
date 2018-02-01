@@ -41,11 +41,11 @@
             </div>
         </div>
         <div class="next_step_container" style="display: none">
-            <input validate name="password" type="password" placeholder="6到20位数字和密码组合" maxlength="20"/>
+            <input validate name="password" type="password" placeholder="6到20位数字和字母组合" maxlength="20" class="short-message-captcha1"/>
             <div class="close_btn"></div>
             <div class="see_password"></div>
             <span class="invite-mobile closed">邀请人手机号码(可不填写)<i></i></span>
-            <input validate type="text" name="referrer" maxlength="11" class="referrer closed" placeholder="邀请人手机号码">
+            <input validate type="text" name="referrer" maxlength="11" class="referrer closed" placeholder="邀请人手机号码" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         <#--<div class="error-box"></div>-->
 
             <button id="submitBtn" type="submit" class="btn-wap-normal next-step register_btn" disabled>注册</button>

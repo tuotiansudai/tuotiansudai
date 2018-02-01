@@ -262,7 +262,7 @@
   color: #525252;
 }
 .input-list li input {
-  width: 65%;
+  width: 60%;
   font-size: 18px;
   color: #525252;
   text-align: left;
@@ -396,4 +396,15 @@
 
 .success-info-tip {
   padding: 0;
+}
+
+
+.shade_mine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.70);
 }
