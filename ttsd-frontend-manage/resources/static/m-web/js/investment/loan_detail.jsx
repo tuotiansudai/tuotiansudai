@@ -341,6 +341,24 @@ let calExpectedCouponInterest = function() {
 //页面加载判断预期收益
 if($buyDetail.length !==0){
     maxBenifitUserCoupon();
+    if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''){
+        commonFun.CommonLayerTip({
+            btn: ['我知道了'],
+            area:['280px', '160px'],
+            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>$('#errorMassage').val()</span></div> `,
+        },function() {
+            location.href = '/m/loan-list';//去充值
+        })
+    }
+    if($('#errorMassageTransfer').length!==0&&$('#errorMassageTransfer').val()!==''){
+        commonFun.CommonLayerTip({
+            btn: ['我知道了'],
+            area:['280px', '160px'],
+            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>$('#errorMassage').val()</span></div> `,
+        },function() {
+            location.href = '/m/transfer-list';//去充值
+        })
+    }
 }
 
 function maxBenifitUserCoupon() {

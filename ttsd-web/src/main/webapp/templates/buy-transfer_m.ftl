@@ -37,6 +37,7 @@
 
         <button id="transferSubmit" type="submit" class="btn-wap-normal">立即投资</button>
     </form>
+    <input id="errorMassageTransfer" type="hidden" value="<#if errorMessage?has_content>${errorMessage!}</#if>">
 
 <#if anxinUser != true>
     <div class="transfer-notice">
