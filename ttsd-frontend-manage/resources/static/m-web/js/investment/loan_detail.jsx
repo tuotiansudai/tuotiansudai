@@ -354,7 +354,7 @@ if($buyDetail.length !==0){
         commonFun.CommonLayerTip({
             btn: ['我知道了'],
             area:['280px', '160px'],
-            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>$('#errorMassage').val()</span></div> `,
+            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>$('#errorMassageTransfer').val()</span></div> `,
         },function() {
             location.href = '/m/transfer-list';//去充值
         })
