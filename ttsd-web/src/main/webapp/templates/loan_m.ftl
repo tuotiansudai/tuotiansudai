@@ -13,6 +13,9 @@
                     <#if loan.activity?string("true","false") == "true">
                         <i class="icon-sign">${loan.activityDesc!}</i>
                     </#if>
+                    <#if loan.productType != 'EXPERIENCE' && loan.activityType == 'NEWBIE'>
+                        <i class="icon-sign">新手专享</i>
+                    </#if>
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <i class="icon-sign">APP专享</i>
                     </#if>

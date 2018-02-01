@@ -59,7 +59,58 @@
                 <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
             </ul>
     </div>
-
+    <#--新手专享-->
+    <#if newbieLoan??>
+    <div class="target-category-box you" data-url="/m/loan/${newbieLoan.id?c}">
+        <b class="newer-title"> <span class="exper-title">${newbieLoan.name} </span><i class="icon-sign">新手专享</i></b>
+        <ul class="loan-info clearfix">
+            <li>
+                    <span class="percent-number">
+                        <#if newbieLoan.extraRate != 0>
+                            <i>${newbieLoan.baseRate + newbieLoan.activityRate}</i>% ~ <i>${newbieLoan.baseRate + newbieLoan.activityRate + newbieLoan.extraRate * 100}</i>%
+                        <#else>
+                            <i><@percentInteger>${newbieLoan.baseRate + newbieLoan.activityRate}</@percentInteger></i>%
+                        </#if>
+                    </span>
+                <em class="note">预期年化收益</em>
+            </li>
+            <li>最长<em class="duration-day">${newbieLoan.duration}</em> 天 <em class="note">项目期限</em></li>
+            <li>
+                <#if newbieLoan.status== 'RAISING'>
+                    <a href="javascript:void(0)" class="btn-invest btn-normal">立即投资</a>
+                <#elseif newbieLoan.status == 'PREHEAT'>
+                    <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>
+                </#if>
+            </li>
+        </ul>
+        <#if newbieLoan.status != 'PREHEAT'>
+            <div class="table-row progress-column">
+                <div class="progress-bar">
+                    <div class="process-percent ">
+                        <div class="percent" style="width:${newbieLoan.progress}%">
+                        </div>
+                    </div>
+                </div>
+                <span class="p-title">剩余金额：<i><em class="money"><@amount>${newbieLoan.availableInvestAmountCent?c}</@amount></em>元</i></span>
+            </div>
+        <#else>
+            <div class="table-row progress-column">
+                <div class="progress-bar">
+                    <#if newbieLoan.preheatSeconds lte 1800>
+                        <span class="preheat" data-time="${newbieLoan.preheatSeconds?string.computer}">
+                <i class="minute_show"></i>分
+                <i class="second_show"></i>秒后开标
+                </span>
+                    <#else>
+                        <span style="color: #FF473C"> ${(newbieLoan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}开标</span>
+                    </#if>
+                </div>
+                <span class="p-title">项目总额：<i><em class="money"><@amount>${newbieLoan.availableInvestAmountCent?c}</@amount></em>元</i></span>
+            </div>
+        </#if>
+    </div>
+    </#if>
+    <#--新手专享 end-->
     <#--优选债权-->
     <div class="main-column-title" data-url="/m/loan-list">
         <span>优选债权</span>
@@ -86,18 +137,7 @@
                         <a href="javascript:void(0)" class="btn-invest btn-normal">立即投资</a>
                     <#elseif loan.status == 'PREHEAT'>
                         <a href="javascript:void(0)" class="btn-invest btn-normal" style="opacity: 0.6">预热中</a>
-                    <#--<#elseif loan.status == 'PREHEAT'>-->
-                        <#--<a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">-->
-                            <#--<#if loan.preheatSeconds lte 1800>-->
 
-                                <#--<span class="preheat" data-time="${loan.preheatSeconds?string.computer}">-->
-                                        <#--<i class="minute_show"></i>分-->
-                                        <#--<i class="second_show"></i>秒后开标-->
-                                    <#--</span>-->
-                            <#--<#else>-->
-                            <#--${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标-->
-                            <#--</#if>-->
-                        <#--</a>-->
                     <#else>
                         <i class="loan-status icon-sellout"></i>
                     </#if>
