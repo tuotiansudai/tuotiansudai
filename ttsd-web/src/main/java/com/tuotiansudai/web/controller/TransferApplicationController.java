@@ -133,7 +133,11 @@ public class TransferApplicationController {
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            if (Source.M.equals(investDto.getSource())) {
+                modelAndView.setViewName(MessageFormat.format("redirect:/m/transfer/{0}", investDto.getTransferApplicationId()));
+            } else {
+                modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            }
 
         }
         return modelAndView;
