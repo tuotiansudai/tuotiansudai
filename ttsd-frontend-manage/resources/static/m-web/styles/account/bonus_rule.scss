@@ -3,7 +3,7 @@ body {
 }
 .period {
   position: relative;
-  top: -11px;
+  top: -6px;
   &:after {
     display: inline-block;
     content: '365';
@@ -49,7 +49,7 @@ body {
         flex-direction: column;
         justify-content:center;
         align-items: center;
-        flex:3;
+        flex:4;
       }
       i.man {
         width:65px;

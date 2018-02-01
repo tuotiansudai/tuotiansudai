@@ -293,6 +293,7 @@ $('.to-use_coupon').click(function () {
     }else if(_self.hasClass('selected')){
         _self.removeClass('selected');//如果已经选择，则取消选择
         $('#couponId').val('');
+        $('#couponText').text('请选择优惠券');
         return;
     }
     $('.to-use_coupon').each(function (index,item) {
@@ -303,10 +304,11 @@ $('.to-use_coupon').click(function () {
 
     _self.addClass('selected');
     $('#couponId').val(_self.data('user-coupon-id'));
-    $couponExpectedInterest.text("+" + amount);
+    $('#couponText').text(_self.data('coupon-desc'));
+
     location.hash='buyDetail';
 
-    $('#couponText').text(_self.data('coupon-desc'));
+
 
 })
 //优惠券后退按钮
@@ -337,6 +339,18 @@ let calExpectedCouponInterest = function() {
             $couponExpectedInterest.text("+" + amount);
         });
     }
+
+};
+//根据选择优惠券计算红包或加息券的预期收益
+let calExpectedSelectCouponInterest = function(dom) {
+    var couponIds = dom.data('coupon-id');
+        commonFun.useAjax({
+            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+            data: 'couponIds='+couponIds,
+            type: 'GET'
+        },function(amount) {
+            $couponExpectedInterest.text("+" + amount);
+        });
 
 };
 
@@ -374,6 +388,7 @@ function maxBenifitUserCoupon() {
             $('.to-use_coupon').each(function (index,item) {
                 $(item).removeClass('selected');
                 if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
+                    $(item).removeClass('disabled');
                     $(item).addClass('selected');
                     $('#maxBenifit').val($(item).data('coupon-id'));
                     $('#couponText').text($(item).data('coupon-desc'));
