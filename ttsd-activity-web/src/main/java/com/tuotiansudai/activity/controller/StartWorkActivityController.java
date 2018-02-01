@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
 import com.tuotiansudai.activity.service.StartWorkActivityService;
+import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class StartWorkActivityController {
 
     @Autowired
     private StartWorkActivityService startWorkActivityService;
+
+    @Autowired
+    private WeChatService weChatService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView newYearActivity() {
@@ -49,7 +53,7 @@ public class StartWorkActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/start-work");
         }
-        ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
+        ModelAndView modelAndView = new ModelAndView("/wechat");
         return modelAndView;
     }
 
@@ -59,27 +63,27 @@ public class StartWorkActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/start-work");
         }
-//        String duringActivities = newYearActivityService.duringActivities();
-//        if (!"START".equals(duringActivities)) {
-//            return new ModelAndView("redirect:/activity/start-work/wechat");
-//        }
+        String duringActivities = startWorkActivityService.duringActivities();
+        if (!"START".equals(duringActivities)) {
+            return new ModelAndView("redirect:/activity/start-work/wechat");
+        }
 
-//        String loginName = LoginUserInfo.getLoginName();
-//        if (Strings.isNullOrEmpty(loginName)) {
-//            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/start-work/draw");
-//        }
-//        if (!weChatService.isBound(loginName)) {
-//            return new ModelAndView("/error/404");
-//        }
-//
-//        ModelAndView modelAndView = new ModelAndView("/wechat/new-year-increase-interest");
-//        boolean drewCoupon = newYearActivityService.drewCoupon(loginName);
-//        modelAndView.addObject("activityStatus", duringActivities);
-//        modelAndView.addObject("drewCoupon", drewCoupon);
-//        if (!drewCoupon) {
-//            newYearActivityService.sendDrawCouponMessage(loginName);
-//            modelAndView.addObject("drawSuccess", true);
-//        }
+        String loginName = LoginUserInfo.getLoginName();
+        if (Strings.isNullOrEmpty(loginName)) {
+            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/start-work/draw");
+        }
+        if (!weChatService.isBound(loginName)) {
+            return new ModelAndView("/error/404");
+        }
+
+        ModelAndView modelAndView = new ModelAndView("/wechat");
+        boolean drewCoupon = startWorkActivityService.drewCoupon(loginName);
+        modelAndView.addObject("activityStatus", duringActivities);
+        modelAndView.addObject("drewCoupon", drewCoupon);
+        if (!drewCoupon) {
+            startWorkActivityService.sendDrawCouponMessage(loginName);
+            modelAndView.addObject("drawSuccess", true);
+        }
         return new ModelAndView("/wechat/new-year-increase-interest");
     }
 

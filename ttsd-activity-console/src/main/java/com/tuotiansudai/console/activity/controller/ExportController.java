@@ -242,4 +242,21 @@ public class ExportController {
         List<List<String>> csvData = activityConsoleExportService.buildInvestAnnualizedCsvList(activityInvestAnnualized, mobile);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAnnualizedHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/start-work", method = RequestMethod.GET)
+    public void investAnnualizedExport(HttpServletResponse response,
+                                       @RequestParam(value = "mobile", required = false) String mobile,
+                                       @RequestParam(value = "userName", required = false) String userName,
+                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.StartWorkActivityHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildStartWorkActivityCsvList(mobile, userName, startTime, endTime);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.StartWorkActivityHeader, csvData, response.getOutputStream());
+    }
 }

@@ -43,6 +43,8 @@ public class StartWorkActivityService {
 
     private static final String KEY = "START_WORK_ACTIVITY_DRAW_COUPON:{0}";
 
+    private static final long PRICE = 5000000;
+
     public String duringActivities() {
         if (new Date().before(activityStartTime)){
             return "NOT_START";
@@ -66,19 +68,19 @@ public class StartWorkActivityService {
     public Map<String, Object> exchangePrize(String mobile, ExchangePrize exchangePrize){
         Map<String, Object> map = new HashMap<>();
         int unUseCount = getCount(mobile);
-        if (exchangePrize.getExchangeMoney() / 5000000 > unUseCount){
+        if (exchangePrize.getExchangeMoney() / PRICE > unUseCount){
             map.put("status", false);
             return map;
         }
         UserModel userModel =userMapper.findByMobile(mobile);
         userExchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), exchangePrize, new Date(), ActivityCategory.START_WORK_ACTIVITY));
         map.put("status",true);
-        map.put("count", unUseCount - (exchangePrize.getExchangeMoney() / 5000000));
+        map.put("count", unUseCount - (exchangePrize.getExchangeMoney() / PRICE));
         return map;
     }
 
     public List<UserExchangePrizeModel> getUserPrizeByMobile(String mobile){
-        return userExchangePrizeMapper.findUserExchangePrizeViews(mobile,null, ActivityCategory.START_WORK_ACTIVITY,activityStartTime,activityEndTime,null,null);
+        return userExchangePrizeMapper.findUserExchangePrizeViews(mobile, null, null, ActivityCategory.START_WORK_ACTIVITY, activityStartTime, activityEndTime, null, null);
     }
 
     public int getCount(String mobile){
@@ -87,8 +89,8 @@ public class StartWorkActivityService {
         }
         List<UserExchangePrizeModel> exchangePrizes = getUserPrizeByMobile(mobile);
         List<ActivityInvestAnnualizedView> activityInvestAnnualizedViews = activityInvestAnnualizedMapper.findByActivityAndMobile(ActivityInvestAnnualized.START_WORK_ACTIVITY, mobile);
-        long sumAnnualizedAmount = activityInvestAnnualizedViews.stream().mapToLong(i->i.getSumAnnualizedAmount()).sum();
+        long sumAnnualizedAmount = activityInvestAnnualizedViews.stream().mapToLong(ActivityInvestAnnualizedView::getSumAnnualizedAmount).sum();
         long sumUseAnnualizedAmount = exchangePrizes.stream().mapToLong(i->i.getPrize().getExchangeMoney()).sum();
-        return (int) ((sumAnnualizedAmount - sumUseAnnualizedAmount) / 5000000);
+        return (int) ((sumAnnualizedAmount - sumUseAnnualizedAmount) / PRICE);
     }
 }

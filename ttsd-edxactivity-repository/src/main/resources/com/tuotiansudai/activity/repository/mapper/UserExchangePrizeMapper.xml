@@ -49,8 +49,11 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
+            <if test="userName !=null and userName !='' ">
+                and p.user_name like '${userName}%'
+            </if>
             <if test="exchangePrize !=null ">
-                and p.prize = '${exchangePrize}'
+                and p.prize = #{exchangePrize}
             </if>
             <if test="startTime != null">
                 and p.exchange_time >= #{startTime}
@@ -59,7 +62,7 @@
                 <![CDATA[ and p.exchange_time <= #{endTime} ]]>
             </if>
             <if test="activityCategory != null">
-                and activity_category like '${activityCategory}%'
+                and activity_category = #{activityCategory}
             </if>
         </where>
         order by p.exchange_time DESC
