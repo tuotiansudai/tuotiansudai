@@ -31,7 +31,7 @@
                             <dt>{{value.loanName}}</dt>
                             <dd>
 
-                                {{if value.isTransferInvest}} <i class="icon-sign">可转让</i>{{/if}} {{if value.usedRedEnvelope}}<i class="icon-sign">红包</i> {{/if}}{{if value.usedCoupon}}<i class="icon-sign">券</i>{{/if}}
+                                {{if value.transferStatus == 'TRANSFERABLE'}} <i class="icon-sign">可转让</i>{{else if value.transferStatus == 'TRANSFERRING'}}<i class="icon-sign">转让中</i>{{else if value.transferStatus == 'SUCCESS'}}<i class="icon-sign">已转让</i>{{/if}} {{if value.usedRedEnvelope}}<i class="icon-sign">红包</i> {{/if}}{{if value.usedCoupon}}<i class="icon-sign">券</i>{{/if}}
                                 {{if value.achievements.length}}
                                 {{each value.achievements as achiveItem achiveIndex}}
                                 {{if achiveItem == 'FIRST_INVEST'}}
