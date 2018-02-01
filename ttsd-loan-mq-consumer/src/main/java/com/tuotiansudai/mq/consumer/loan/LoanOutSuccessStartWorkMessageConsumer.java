@@ -32,6 +32,11 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingLong;
 
 @Component
 public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
@@ -85,19 +90,17 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
 
         List<InvestModel> list = investMapper.findSuccessInvestsByLoanId(loanOutInfo.getLoanId());
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
+        Map<String, Long> map = list.stream().filter(i->FRIDAY_TIME.contains(new DateTime(i.getTradingTime()).toString("yyyy-MM-dd"))).collect(groupingBy(InvestModel::getLoginName, summingLong(InvestModel::getAmount)));
 
-        for(InvestModel investModel : list){
-            String key = MessageFormat.format(START_WORK_CASH_KEY, investModel.getLoginName(), String.valueOf(loanModel.getId()));
-            String tradingTime = new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd");
-            if (FRIDAY_TIME.contains(tradingTime) && !redisWrapperClient.exists(key)){
-
-
-                long sendCash = investModel.getAmount() * loanModel.getProductType().getDuration() / 360;
+        for(Map.Entry<String, Long>  entry: map.entrySet()){
+            String key = MessageFormat.format(START_WORK_CASH_KEY, entry.getKey(), String.valueOf(loanModel.getId()));
+            if (!redisWrapperClient.exists(key)){
+                long sendCash = entry.getValue() * loanModel.getProductType().getDuration() / 360;
                 try {
-                    sendCashPrize(investModel.getLoginName(), loanModel.getId(), sendCash);
+                    sendCashPrize(entry.getKey(), loanModel.getId(), sendCash);
                 } catch (Exception e) {
                     logger.error("[LoanOutSuccess_StartWorkActivity] user:{}, loanId:{}, sendCash:{} is send fail.",
-                            investModel.getLoginName(), loanModel.getId(), sendCash);
+                            entry.getKey(), loanModel.getId(), sendCash);
                 }
             }
         }

@@ -75,11 +75,14 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     }
 
     @Test
-    public void consumerIsSuccess() throws JsonProcessingException {
+    public void consumerTwoUserIsSuccess() throws JsonProcessingException {
         List<InvestModel> investModels = Lists.newArrayList(
-                mockInvestModel(1,"2018-03-02 11:00:00", 1000),
-                mockInvestModel(2,"2018-03-03 11:00:00",1000),
-                mockInvestModel(3,"2018-03-09 11:00:00", 1234));
+                mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
+                mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
+                mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
+                mockInvestModel(4,"2018-03-09 11:00:00", 1234, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 4321, "loginName2")
+        );
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(loanMapper.findById(anyLong())).thenReturn(mockLoanModel());
@@ -95,23 +98,57 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
                 .setex(redisKeyCaptor.capture(),  anyInt(), valueCaptor.capture());
         verify(this.payWrapperClient, times(2)).transferCash(requestModelCaptor.capture());
 
-        assertThat(redisKeyCaptor.getAllValues().get(0), is("START_WORK_CASH_KEY:loginName1:1"));
+        assertThat(redisKeyCaptor.getAllValues().get(0), is("START_WORK_CASH_KEY:loginName1:1234"));
         assertThat(valueCaptor.getAllValues().get(0), is("success"));
-        assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName1:3"));
+        assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName2:1234"));
         assertThat(valueCaptor.getAllValues().get(1), is("success"));
         assertThat(requestModelCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("1000"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("1234"));
+        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("2234"));
+        assertThat(requestModelCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
+        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("5555"));
+    }
+
+    @Test
+    public void consumerOneUserIsSuccess() throws JsonProcessingException {
+        List<InvestModel> investModels = Lists.newArrayList(
+                mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
+                mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
+                mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
+                mockInvestModel(4,"2018-03-09 11:00:00", 1234, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 4321, "loginName2")
+        );
+
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
+        when(loanMapper.findById(anyLong())).thenReturn(mockLoanModel());
+
+        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> valueCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+        when(this.redisWrapperClient.exists("START_WORK_CASH_KEY:loginName2:1234")).thenReturn(true);
+        when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(true)));
+
+        loanOutSuccessStartWorkMessageConsumer.consume(JsonConverter.writeValueAsString(buildMockedLoanOutSuccessMessage()));
+
+        verify(this.redisWrapperClient, times(1))
+                .setex(redisKeyCaptor.capture(),  anyInt(), valueCaptor.capture());
+        verify(this.payWrapperClient, times(1)).transferCash(requestModelCaptor.capture());
+
+        assertThat(redisKeyCaptor.getValue(), is("START_WORK_CASH_KEY:loginName1:1234"));
+        assertThat(valueCaptor.getValue(), is("success"));
+        assertThat(requestModelCaptor.getValue().getLoginName(), is("loginName1"));
+        assertThat(requestModelCaptor.getValue().getAmount(), is("2234"));
     }
 
     @Test
     @Transactional
     public void consumerIsFail() throws JsonProcessingException {
         List<InvestModel> investModels = Lists.newArrayList(
-                mockInvestModel(1,"2018-03-02 11:00:00", 1000),
-                mockInvestModel(2,"2018-03-03 11:00:00",1000),
-                mockInvestModel(3,"2018-03-09 11:00:00", 1234));
+                mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
+                mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
+                mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
+                mockInvestModel(4,"2018-03-09 11:00:00", 1234, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 4321, "loginName2")
+        );
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(loanMapper.findById(anyLong())).thenReturn(mockLoanModel());
@@ -128,14 +165,14 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         verify(this.payWrapperClient, times(2)).transferCash(requestModelCaptor.capture());
         verify(this.smsWrapperClient, times(2)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
-        assertThat(redisKeyCaptor.getAllValues().get(0), is("START_WORK_CASH_KEY:loginName1:1"));
+        assertThat(redisKeyCaptor.getAllValues().get(0), is("START_WORK_CASH_KEY:loginName1:1234"));
         assertThat(valueCaptor.getAllValues().get(0), is("fail"));
-        assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName1:3"));
+        assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName2:1234"));
         assertThat(valueCaptor.getAllValues().get(1), is("fail"));
         assertThat(requestModelCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("1000"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("1234"));
+        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("2234"));
+        assertThat(requestModelCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
+        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("5555"));
     }
 
     private LoanOutSuccessMessage buildMockedLoanOutSuccessMessage() {
@@ -151,8 +188,8 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         return loanModel;
     }
 
-    public InvestModel mockInvestModel(long investId, String date, long amount) {
-        InvestModel investModel = new InvestModel(investId, 1234l, null, amount, "loginName1", DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), Source.WEB, "channel", 0.01);
+    public InvestModel mockInvestModel(long investId, String date, long amount, String loginName) {
+        InvestModel investModel = new InvestModel(investId, 1234l, null, amount, loginName, DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), Source.WEB, "channel", 0.01);
         investModel.setTradingTime(DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         return investModel;
     }
