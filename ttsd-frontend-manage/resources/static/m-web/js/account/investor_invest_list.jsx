@@ -38,7 +38,7 @@ function isPassive() {
 var myScroll;
 
 $(window).load(function () {
-    let myScroll = new IScroll('#wrapperOut', { mouseWheel: true });
+    let myScroll = new IScroll('#wrapperOut', { mouseWheel: true ,click:true});
     myScroll.on('scrollEnd', function () {
         index++;
         //如果滑动到底部，则加载更多数据（距离最底部10px高度）

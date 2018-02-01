@@ -303,6 +303,7 @@ $('.to-use_coupon').click(function () {
 
     _self.addClass('selected');
     $('#couponId').val(_self.data('user-coupon-id'));
+    $couponExpectedInterest.text("+" + amount);
     location.hash='buyDetail';
 
     $('#couponText').text(_self.data('coupon-desc'));
@@ -338,6 +339,7 @@ let calExpectedCouponInterest = function() {
     }
 
 };
+
 //页面加载判断预期收益
 if($buyDetail.length !==0){
     maxBenifitUserCoupon();
