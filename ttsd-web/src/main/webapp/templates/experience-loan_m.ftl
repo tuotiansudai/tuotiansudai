@@ -108,6 +108,7 @@
         </div>
 
         <button type="submit" class="btn-wap-normal" id="submitBtn">立即体验</button>
+        <div class="shade_mine" style="display: none"></div>
     </form>
     <div class="transfer-notice" style="font-family: PingFangSC-Light;">
 

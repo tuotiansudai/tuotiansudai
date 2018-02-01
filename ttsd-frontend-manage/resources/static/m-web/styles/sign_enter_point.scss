@@ -32,7 +32,7 @@ body {
     box-sizing: border-box;
     padding: .5rem .3rem;
     border-width: 0;
-    border-bottom:.05rem solid #F2F2F2;
+    border-bottom: 1px solid #F2F2F2;
     color: #525252;
     &.next_input {
       margin-top: 1rem;
@@ -166,7 +166,7 @@ body {
       display: flex;
       justify-content: flex-end;
       flex-direction: column;
-      margin-top: 3.5rem;
+      margin-top: 2rem;
       .success-text {
         font-size: 1rem;
         color: #525252;
@@ -191,7 +191,7 @@ body {
       }
     }
     .success-button {
-      flex: 1.5;
+      flex: 2.5;
       .note2 {
         font-size: .6rem;
         padding-top: .5rem;
@@ -262,7 +262,7 @@ body {
     .close_btn {
       display: none;
       position: absolute;
-      top: 1.7rem;
+      top: 0.7rem;
       left: 14.9rem;
       width: .6rem;
       height: .6rem;
@@ -300,7 +300,7 @@ body {
   font-size: .7rem;
   color: #525252;
   border: none;
-  border-left: .05rem solid #E5E5E5;
+  border-left: 1px solid #E5E5E5;
   background: #fff;
   outline: none;
 }
