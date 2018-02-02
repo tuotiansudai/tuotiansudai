@@ -12,10 +12,10 @@
     <h2>请输入身份证后四位</h2>
     <form id="resetPassword">
         <div class="input-box">
-            <input type="tel" name='num1' maxlength="1" class="num num1" id="num1">
-            <input type="tel" name='num2' maxlength="1" class="num num2 input_border">
-            <input type="tel" name='num3' maxlength="1" class="num num3 input_border">
-            <input type="tel" name='num4' maxlength="1" class="num num4 input_border">
+            <input type="text" name='num1' maxlength="1" class="num num1" id="num1" onKeyUp="value=value.replace(/[＼W]/g,'')">
+            <input type="text" name='num2' maxlength="1" class="num num2 input_border" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
+            <input type="text" name='num3' maxlength="1" class="num num3 input_border" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
+            <input type="text" name='num4' maxlength="1" class="num num4 input_border" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
         </div>
         <a class="btn-wap-normal next-step" id="sendShortMsg">发送短信修改密码</a>
     </form>

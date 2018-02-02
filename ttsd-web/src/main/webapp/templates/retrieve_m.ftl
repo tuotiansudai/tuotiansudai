@@ -13,7 +13,7 @@
         <div class="show-mobile show-mobile-register"></div>
         <form id="formCaptcha" class="form-captcha">
             <div class="captcha_container">
-                <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5"/>
+                <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
                 <div class="close_btn"></div>
                 <input type="hidden" name="mobile" class="mobile" value="${mobile!}">
                 <img src="/register/user/image-captcha?${.now?long?c}" class="image-captcha" id="imageCaptcha"/>
@@ -29,7 +29,7 @@
             <input type="hidden" name="redirectToAfterRegisterSuccess" value="/bind-success?redirect=${redirect!('/')}">
 
             <div class="captcha_container">
-                <input validate name="captcha" class="short-message-captcha next_input" type="text" placeholder="请输入短信验证码" maxlength="6"/>
+                <input validate name="captcha" class="short-message-captcha next_input" type="text" placeholder="请输入短信验证码" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
                 <div class="close_btn close_btn1"></div>
                 <div class="get-captcha">
                     <div class="get-captcha-icon"></div>
