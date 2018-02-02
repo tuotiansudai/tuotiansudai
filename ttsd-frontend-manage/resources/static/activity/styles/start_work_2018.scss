@@ -1,0 +1,81 @@
+body {
+  font-size: 12px;
+}
+h2,h4 {
+  font-weight: normal;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+  background: #e94144;
+}
+.start-work-banner {
+  height: 350px;
+  background: url("../images/2018/start-work/pc_start_work_banner.png") no-repeat center center;
+}
+.activity-wrap-main {
+  margin-top: 17px;
+  background: #e94144;
+  overflow: hidden;
+}
+.activity-page {
+  width: 1008px;
+  margin: 0 auto;
+  overflow: hidden;
+  .red_pocket_container {
+    position: relative;
+    width: 100%;
+    height: 532px;
+    background:  url("../images/2018/start-work/get_red_pocket.png") no-repeat;
+    background-size: contain;
+    .text_wrapper {
+      position: absolute;
+      top: 190px;
+      width: 100%;
+      font-size: 16px;
+      line-height: 32px;
+      color: #333;
+      text-align: center;
+    }
+    .wechat_wrapper {
+      position: absolute;
+      top: 270px;
+      left: 397px;
+      width: 205px;
+      height: 211px;
+      background: url("../images/2018/start-work/red_pocket_wechat.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .gold-person-container {
+    width: 1008px;
+    margin: 30px auto auto auto;
+    .header {
+      width: 100%;
+      height: 193px;
+      background: url("../images/2018/start-work/gold_person_header.png") no-repeat;
+      background-size: contain;
+    }
+    .main {
+      position: relative;
+      width: 100%;
+      background: url("../images/2018/start-work/gold_person_bgLine.png") repeat-y center center;
+      .text_wrapper  {
+        width: 100%;
+        font-size: 16px;
+        line-height: 32px;
+        color: #333;
+        text-align: center;
+      }
+      .title_wrapper {
+        margin: 20px auto 30px auto;
+        width: 353px;
+        height: 93px;
+        text-align: center;
+        background: url("../images/2018/start-work/gold_person_title.png") no-repeat;
+        background-size: contain;
+      }
+    }
+
+  }
+}
