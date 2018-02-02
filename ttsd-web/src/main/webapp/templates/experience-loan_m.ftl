@@ -48,7 +48,7 @@
         </li>
         <li>
             <label>发布日期</label>
-            <span>${.now}</span>
+            <span>${.now?string('yyyy-MM-dd')} 00:00:00</span>
         </li>
     </ul>
 
@@ -77,7 +77,8 @@
                 </li>
                 <li class="experience-total">
                     <span>
-                        <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>%</b>
+                        <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
+                            %</b>
                          <i>预期年化收益</i>
                     </span>
                 </li>
@@ -97,7 +98,10 @@
                 <li class="investmentAmount">
                     <span style="display: none" id="my_experience_balance">${(experienceBalance / 100)}</span>
                     <label>投资金额</label>
-                    <input id="experience_balance" type="text" data-start_investment="${loan.minInvestAmount / 100}" data-experience_balance="${(experienceBalance / 100)}" value="${(experienceBalance / 100)?string("0.00")}" name="price" class="" placeholder=${(loan.minInvestAmount / 100)?string("0.00")}元起投>
+                    <input id="experience_balance" type="text" data-start_investment="${loan.minInvestAmount / 100}"
+                           data-experience_balance="${(experienceBalance / 100)}"
+                           value="${(experienceBalance / 100)?string("0.00")}" name="price" class=""
+                           placeholder=${(loan.minInvestAmount / 100)?string("0.00")}元起投>
                     <span class="close_btn" id="close_btn"></span>
                     <em>元</em>
                 </li>
@@ -116,7 +120,7 @@
         <b>温馨提示:</b>
         用户首次提现体验金投资所产生的收益时，需要投资其他定期项目（债权转让项目除外）累计满1000元才可以提现。
     </div>
-    <div id="freeSuccess"  style="display: none">
+    <div id="freeSuccess" style="display: none">
         <div class="success-info-tip">
             <div class="pop_title">温馨提示</div>
             <div class="pop_content">体验金余额不足，<br/>快去参与活动赢取体验金吧！</div>

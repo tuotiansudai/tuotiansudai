@@ -149,7 +149,7 @@
             </span>
         </div>
         <div class="identifying-code">
-            <input type="text" maxlength="6" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码">
+            <input type="text" maxlength="6" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
             <div class="close_btn"></div>
             <span class="button-identify">
                  <button type="button" class="get-skip-code" id="getSkipCode" data-voice="false">获取验证码</button>
