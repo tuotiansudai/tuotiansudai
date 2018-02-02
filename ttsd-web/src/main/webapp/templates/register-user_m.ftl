@@ -11,7 +11,7 @@
  <div class="show-mobile show-mobile-register"></div>
     <form id="formCaptcha" class="form-captcha">
         <div class="captcha_container">
-            <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5"/>
+            <input class="captcha" type="text" name="imageCaptcha" placeholder="请输入图形验证码" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
             <div class="close_btn"></div>
             <input type="hidden" name="mobile" class="mobile" value="${mobile!}">
             <img src="/register/user/image-captcha?${.now?long?c}" class="image-captcha" id="imageCaptcha"/>

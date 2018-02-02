@@ -18,7 +18,7 @@
         <div class="password_container">
             <input validate class="password next_input" type="password" name="password" placeholder="请输入登录密码" maxlength="20"/>
             <div class="see_password"></div>
-            <div class="close_btn"></div>
+            <div class="close_btn" style="top: 1.7rem;"></div>
         </div>
         <input type="hidden" id="username" name="username"/>
         <input type="hidden" name="source" value="WEB"/>

@@ -95,6 +95,7 @@
         <div class="input-amount-box">
             <ul class="input-list">
                 <li class="investmentAmount">
+                    <span style="display: none" id="my_experience_balance">${(experienceBalance / 100)}</span>
                     <label>投资金额</label>
                     <input id="experience_balance" type="text" data-start_investment="${loan.minInvestAmount / 100}" data-experience_balance="${(experienceBalance / 100)}" value="${(experienceBalance / 100)?string("0.00")}" name="price" class="" placeholder=${(loan.minInvestAmount / 100)?string("0.00")}元起投>
                     <span class="close_btn" id="close_btn"></span>

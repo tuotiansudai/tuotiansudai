@@ -149,7 +149,7 @@ function getAmount() {
 $('#submitBtn').on('click',(event) => {
     event.preventDefault();
     let getInvestAmount = getAmount();
-    if (getInvestAmount >  experience_balance * 100) {
+    if (getInvestAmount >  experience_balance.replace(/,/g, "") * 100) {
         $('.shade_mine').show(); // hack ios shade
         let $freeSuccess=$('#freeSuccess');
         commonFun.CommonLayerTip({
