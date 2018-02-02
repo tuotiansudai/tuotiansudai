@@ -110,7 +110,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
         }
 
         if (membershipPrivilegePurchaseModel.getStatus() != MembershipPrivilegePurchaseStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[membership privilege purchase] status is not WAIT_PAY (orderId = {0})", callbackRequestModel.getOrderId()));
+            logger.warn(MessageFormat.format("[membership privilege purchase] status is not WAIT_PAY (orderId = {0})", callbackRequestModel.getOrderId()));
             return;
         }
 

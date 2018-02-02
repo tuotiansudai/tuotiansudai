@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -42,7 +41,7 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.RedisWrapperClient;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -52,11 +51,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -119,6 +120,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Value("#{'${loan.raising.complete.notify.mobiles}'.split('\\|')}")
     private List<String> loanRaisingCompleteNotifyMobileList;
+
+    @Value("${loan.raising.complete.notify.start.hour}")
+    private int loanRaisingCompleteNotifyStartHour;
+
+    @Value("${loan.raising.complete.notify.end.hour}")
+    private int loanRaisingCompleteNotifyEndHour;
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
@@ -284,7 +291,7 @@ public class InvestServiceImpl implements InvestService {
             return;
         }
         if (investModel.getStatus() == InvestStatus.SUCCESS) {
-            logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
+            logger.warn(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
             return;
         }
 
@@ -650,7 +657,24 @@ public class InvestServiceImpl implements InvestService {
         LoanRaisingCompleteNotifyDto dto = new LoanRaisingCompleteNotifyDto(loanRaisingCompleteNotifyMobileList, loanRaisingStartDate, loanName, loanAmountStr,
                 loanDuration, loanerName, agentUserName, loanRaisingCompleteTime);
         logger.info("will send loan raising complete notify, loanId:" + loanId);
-        smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
+
+        sendLoanRaisingCompleteNotification(dto);
+    }
+
+    private void sendLoanRaisingCompleteNotification(LoanRaisingCompleteNotifyDto dto) {
+        try {
+            DateTime beginSendTime = new DateTime().withTimeAtStartOfDay().withHourOfDay(loanRaisingCompleteNotifyStartHour);
+            DateTime endSendTime = new DateTime().withTimeAtStartOfDay().withHourOfDay(loanRaisingCompleteNotifyEndHour);
+            if (beginSendTime.isBeforeNow() && endSendTime.isAfterNow()) {
+                smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
+            } else {
+                DateTime nextSendTime = beginSendTime.isAfterNow() ? beginSendTime : beginSendTime.plusDays(1);
+                DelayMessageDeliveryJobCreator.createLoanRaisingCompleteNotifyDelayJob(jobManager,
+                        nextSendTime.toDate(), JsonConverter.writeValueAsString(dto));
+            }
+        } catch (JsonProcessingException e) {
+            logger.info("can not send loan raising complete notify", e);
+        }
     }
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
