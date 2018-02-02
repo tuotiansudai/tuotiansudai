@@ -5,7 +5,7 @@
 <div class="my-account-content experience-amount" id="transferingDetail">
 
     <div class="account-summary">
-        <em id="iconTransferM" class="icon-left"><i class="fa fa-angle-left"></i></em>
+        <em id="iconTransferM" class="icon-left"><i class="iconRight"></i></em>
         <div class="collection">
             <span class="title">
                 ${transferApplication.name!}

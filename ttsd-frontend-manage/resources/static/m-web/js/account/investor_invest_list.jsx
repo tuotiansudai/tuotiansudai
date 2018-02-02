@@ -36,22 +36,28 @@ function isPassive() {
     return supportsPassiveOption;
 }
 var myScroll;
-
+var flagScroll=true;
+console.log(flagScroll)
 $(window).load(function () {
     let myScroll = new IScroll('#wrapperOut', { mouseWheel: true ,click:true});
-    myScroll.on('scrollEnd', function () {
-        index++;
-        //如果滑动到底部，则加载更多数据（距离最底部10px高度）
-        if ((this.y - this.maxScrollY) <= 10) {
-            if($repayingBtn.hasClass('current')){
-                getList(index,'REPAYING');
-                myScroll.refresh();
-            }else if($raisingBtn.hasClass('current')){
-                getList(index,'RAISING');
-                myScroll.refresh();
+
+        myScroll.on('scrollEnd', function () {
+            if(flagScroll){
+            index++;
+            //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+            if ((this.y - this.maxScrollY) <= 10) {
+                if($repayingBtn.hasClass('current')){
+                    getList(index,'REPAYING');
+                    myScroll.refresh();
+                }else if($raisingBtn.hasClass('current')){
+                    getList(index,'RAISING');
+                    myScroll.refresh();
+                }
             }
-        }
-    });
+            }
+        });
+
+
 
     $repayingBtn.on('click',function () {
         $('#noData').hide();
@@ -91,11 +97,14 @@ function getList(index,status) {
                     $main.append(tpl('investListTpl', res.data));
                     $('.money').autoNumeric('init');
                 }else {
+                    flagScroll = false;
                     if(index == 1){
                         let $noListDOM = $('<div class="noList"><div class="img"></div><button>立即投资</button>');
                         $main.append($noListDOM);
+
                     }else {
                         $('#noData').show();
+
                     }
 
 

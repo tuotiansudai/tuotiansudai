@@ -23,7 +23,7 @@
                 </ul>
             </div>
             <div class="button-note">
-                <a data-url="/m/loan-list" class="count-btn btn-wap-normal next-step">确定</a>
+                <a data-url="/m/m/investor/invest-list" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
         </#if>
         <#if "CUST_WITHDRAWALS" == service>
@@ -49,11 +49,11 @@
             <div class="button-note cash">
                 <a data-url="/m/account" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
-            <div class="service">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
+            <div class="service recharge">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
         </#if>
         <#if "PTP_MER_BIND_CARD" == service>
             <div class="my-account-content apply-transfer-success">
-                <div class="m-header">银行卡绑定成功</div>
+                <div class="m-header">绑卡成功</div>
                 <div class="info">
                     <i class="icon-success"></i>
                     <em>银行卡绑定成功</em>

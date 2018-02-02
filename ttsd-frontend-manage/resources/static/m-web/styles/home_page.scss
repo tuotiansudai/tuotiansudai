@@ -213,5 +213,32 @@
 }
 
 .exper{
-  padding: 2px 4px;
+  padding: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.percent-number i {
+  font-size: 28px!important;
+}
+.percent-number em {
+  font-size: 16px!important;
+  position: relative;
+  left: -6px;
+}
+.target-category-box .loan-info li {
+
+  &:nth-child(1){
+    flex: 3.2;
+    @media screen and (max-width:320px) {
+      flex: 3.5;
+    }
+  }
+  &:nth-child(2){
+    flex: 2.4;
+
+  }
+  &:nth-child(3){
+    flex: 2.6;
+  }
+
 }
