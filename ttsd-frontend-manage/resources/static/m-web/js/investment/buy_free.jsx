@@ -17,6 +17,7 @@ $confirmInvest.on('click', function () {
 })
 
 $('.money').autoNumeric('init');
+commonFun.calculationFun(document,window);
 
 
 

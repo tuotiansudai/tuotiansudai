@@ -138,4 +138,4 @@ $('.inviting-friend').click(function () {
     })
 })
 //
-commonFun.calculationFun();
+commonFun.calculationFun(document,window);

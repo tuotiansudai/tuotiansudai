@@ -282,7 +282,7 @@ let getPartTwoPage = (data) => {
     let num = 0;
     for (let i = 0; i < 4; i++) {
         let $item = $('#investItem' + i);
-        let amount = parseInt(Math.round($item.data('amount') / 10000));
+        let amount = parseInt(Math.ceil($item.data('amount') / 10000));
         barChartArr.push(amount);
         let count = Number($item.data('count')) || 0;
         num += count;
@@ -293,7 +293,7 @@ let getPartTwoPage = (data) => {
         return item.split('.')[1] + '月';
     });
     let amountArr = data.money.slice(-6).map(item => {
-        return parseInt(Math.round(item / 10000));
+        return parseInt(Math.ceil(item / 10000));
     });
     myChart2.setOption(drawLineChart(amountArr, monthArr));
 };

@@ -1,50 +1,48 @@
 require('mWebStyle/account/anxin_sign.scss');
 require('mWebJsModule/anxin_agreement_pop');
-let commonFun= require('publicJs/commonFun');
+let commonFun = require('publicJs/commonFun');
 require('publicJs/honeySwitch');
 require('publicStyle/honeySwitch.scss');
 let $anxinElectronicsSign = $('.anxinElectronicsSign');
 let $signature = $('#signature');
 let $openMessage = $('#openMessage');
-let $authorization_message = $('#authorization_message');
-let isAnxinUser=$('.bind-data').data('is-anxin-user');
+let isAnxinUser = $('.bind-data').data('is-anxin-user');
 let switchStatus = $('#switchStatus').data('skip-auth');
 let fromPage = getQueryString('fromPage');
 
-commonFun.calculationFun(document,window);
+commonFun.calculationFun(document, window);
 
 if (!isAnxinUser) {
-    $openMessage.show();
-    //$signature.show();
+    $signature.show();
 }
 else {
     $openMessage.show();
 }
 
 /*
-* 安心签电子签章服务
-*/
-$('#authentication_identity').on('click',() => {  // 未实名认证则进行跳转
+ * 安心签电子签章服务
+ */
+$('#authentication_identity').on('click', () => {  // 未实名认证则进行跳转
     location.href = './register/account';
 });
 
 $('.init-checkbox-style',$anxinElectronicsSign).initCheckbox(function(element) {
-    var $parentBox=$(element).parents('.safety-status-box');
+    var $parentBox = $(element).parents('.safety-status-box');
     //点击我已阅读并同意是否disable按钮
     $(element).hasClass('on');
 });
 
 // 开启安心签服务
-$('#openSafetySigned').on('click',function() {
-    var $this=$(this);
-    $this.prop('disabled',true);
+$('#openSafetySigned').on('click', function () {
+    var $this = $(this);
+    $this.prop('disabled', true);
     commonFun.useAjax({
-        type:'POST',
-        url:'/anxinSign/createAccount'
-    },function(response) {
-        $this.prop('disabled',false);
+        type: 'POST',
+        url: '/anxinSign/createAccount'
+    }, function (response) {
+        $this.prop('disabled', false);
 
-        if(!response.success){
+        if (!response.success) {
             layer.msg('开启失败');
         } else {
             $signature.hide();
@@ -54,56 +52,56 @@ $('#openSafetySigned').on('click',function() {
 });
 
 // 点击返回btn
-$('.go-back-container').on('click',() => {
+$('.go-back-container').on('click', () => {
     history.go(-1);
 });
 
-$('.init-checkbox-style').initCheckbox(function(element) {
+$('.init-checkbox-style').initCheckbox(function (element) {
     //点击我已阅读并同意是否disable按钮
-    var isCheck=$(element).hasClass('on');
+    var isCheck = $(element).hasClass('on');
     var $btnNormal;
     if ($('#signature').css('display') == 'block') {
-        $btnNormal=$('#openSafetySigned');
+        $btnNormal = $('#openSafetySigned');
     }
     else {
-        $btnNormal=$('#toOpenSMS');
+        $btnNormal = $('#toOpenSMS');
     }
 
-    if(isCheck) {
-        $btnNormal.prop('disabled',false);
+    if (isCheck) {
+        $btnNormal.prop('disabled', false);
     }
     else {
-        $btnNormal.prop('disabled',true);
+        $btnNormal.prop('disabled', true);
     }
 });
 
-$('#openAuthorization').on('click',function() {
+$('#openAuthorization').on('click', function () {
     $('#openMessage').hide();
     $('#authorization_message').show();
 });
 
 /*
-* 短信授权服务
-*/
+ * 短信授权服务
+ */
 
 let $anxinAuthorization = $('#anxinAuthorization'),
-    $buttonIdentify = $('.button-identify',$anxinAuthorization);
+    $buttonIdentify = $('.button-identify', $anxinAuthorization);
 
 let $toOpenSMS = $('#toOpenSMS');
 
 //获取验证码
-$buttonIdentify.on('click',function (event) {
+$buttonIdentify.on('click', function (event) {
     let target = event.target;
     let isVoice = $(target).data('voice');
     commonFun.useAjax({
-        type:'POST',
-        url:'/anxinSign/sendCaptcha',
-        data:{
-            isVoice:isVoice
+        type: 'POST',
+        url: '/anxinSign/sendCaptcha',
+        data: {
+            isVoice: isVoice
         }
-    },function(data) {
+    }, function (data) {
         //请求成功开始倒计时
-        if(data.success) {
+        if (data.success) {
             countDownTime();
         }
         else {
@@ -120,59 +118,59 @@ function countDownTime() {
     let countDown = setInterval(() => {
         seconds--;
         $('.seconds').html(seconds);
-        if (seconds == 0 ) {
+        if (seconds == 0) {
             clearInterval(countDown);
             $('.button-identify').show();
             $('.countDownTime').hide();
         }
-    },1000)
+    }, 1000)
 }
 //验证验证码并开通短信服务
-$('#skipPhoneCode').on('keyup',function() {
+$('#skipPhoneCode').on('keyup', function () {
 
-    var $skipPhoneCode=$('#skipPhoneCode'),
-        phoneCode=$skipPhoneCode.val();
+    var $skipPhoneCode = $('#skipPhoneCode'),
+        phoneCode = $skipPhoneCode.val();
 
-    if(/^\d{6}$/.test(phoneCode) && $('#readOk1').is(':checked')) {
-        $toOpenSMS.prop('disabled',false);
+    if (/^\d{6}$/.test(phoneCode) && $('#readOk1').is(':checked')) {
+        $toOpenSMS.prop('disabled', false);
     } else {
-        $toOpenSMS.prop('disabled',true);
+        $toOpenSMS.prop('disabled', true);
     }
 });
 
-$toOpenSMS.on('click',function() {
-    var $this=$(this),
-        $skipPhoneCode=$('#skipPhoneCode'),
-        phoneCode=$skipPhoneCode.val();
+$toOpenSMS.on('click', function () {
+    var $this = $(this),
+        $skipPhoneCode = $('#skipPhoneCode'),
+        phoneCode = $skipPhoneCode.val();
 
-    if(!/^\d{6}$/.test(phoneCode)) {
+    if (!/^\d{6}$/.test(phoneCode)) {
         $('.error').show();
         return;
     }
 
-    $this.prop('disabled',true);
+    $this.prop('disabled', true);
     $this.html('授权中...');
     commonFun.useAjax({
-        type:'POST',
-        url:'/anxinSign/verifyCaptcha',
-        data:{
+        type: 'POST',
+        url: '/anxinSign/verifyCaptcha',
+        data: {
             captcha: phoneCode,
-            skipAuth:true
+            skipAuth: true
         }
-    },function(data) {
-        if(data.success) {
+    }, function (data) {
+        if (data.success) {
             layer.closeAll();
-            location.href='';
+            location.href = '';
         }
         else {
-            $this.prop('disabled',false);
+            $this.prop('disabled', false);
             $this.html('立即授权');
             $('.error').show();
         }
     });
 });
 
-function getQueryString(name){
+function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null)
@@ -186,30 +184,30 @@ else {
     $('#switch').addClass('switch-off'); // 开关为关闭状态
 }
 
-$('#goPage_1').on('click',() => {
+$('#goPage_1').on('click', () => {
     history.go(-1);
 });
 
-$('#goPage_2').on('click',() => {
+$('#goPage_2').on('click', () => {
     location.href = `./${fromPage}`;
 });
-$('#goPage_3').on('click',() => {
+$('#goPage_3').on('click', () => {
     $('#openMessage').show();
     $('#authorization_message').hide();
     $('#signature').hide();
 });
-$('#lastPage').on('click',() => {
+$('#lastPage').on('click', () => {
     location.href = `./${fromPage}`;
 });
-$('#skipPhoneCode').on('keyup',(e) => {
-   if (!e.currentTarget.value.length) {
-       $('.close_btn').hide();
-       return;
-   }
+$('#skipPhoneCode').on('keyup', (e) => {
+    if (!e.currentTarget.value.length) {
+        $('.close_btn').hide();
+        return;
+    }
     $('.close_btn').show();
 });
-$('.close_btn').on('click',() => {
+$('.close_btn').on('click', () => {
     $('#skipPhoneCode').val('');
-    $('#toOpenSMS').attr('disabled',true);
+    $('#toOpenSMS').attr('disabled', true);
     $('.close_btn').hide();
 });

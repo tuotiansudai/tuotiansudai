@@ -52,7 +52,7 @@ em {
   position: absolute;
   z-index: 1;
   width: 100%;
-  top: 1.7rem;
+  top: 1.8rem;
   overflow: hidden;
   bottom: 0;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
@@ -225,3 +225,13 @@ em {
     font-size: 32px;
   }
 }
+.menu-category{
+  height: 41px;
+  span {
+    line-height: 44px;
+    a {
+      width: 65%;
+    }
+  }
+}
+

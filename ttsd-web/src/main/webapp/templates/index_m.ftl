@@ -51,7 +51,7 @@
     <div class="target-category-box newer-experience" data-url="/m/loan/1">
         <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign exper">体验金投资</i></b>
             <ul class="loan-info clearfix">
-                <li
+                <li>
                     <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
                     <em class="note">预期年化收益</em>
                 </li>
@@ -123,16 +123,19 @@
             <ul class="loan-info clearfix">
                 <li>
                     <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>colorChange</#if>">
-                        <i>
+                    <i>
                     <#if loan.extraRate != 0>
-                        ${loan.baseRate + loan.activityRate}~<i>${loan.baseRate + loan.activityRate + loan.extraRate * 100}
+                        ${loan.baseRate + loan.activityRate}~${loan.baseRate + loan.activityRate + loan.extraRate * 100}
                     <#else>
                         <@percentInteger>${loan.baseRate + loan.activityRate}</@percentInteger>
                     </#if>
-                        </i><i class="per" style="position: relative;left: -10px;font-size: 16px">%</i>
+
+                    </i><em>%</em>
+
                     </span>
                     <em class="note">预期年化收益</em>
                 </li>
+
                 <li>最长<em class="duration-day">${loan.duration}</em> 天 <em class="note">项目期限</em></li>
                 <li>
                     <#if loan.status== 'RAISING'>

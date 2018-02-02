@@ -80,8 +80,10 @@
                                 </div>
                             </div>
                         </#if>
+
                             <#if ['PREHEAT', 'RAISING']?seq_contains(loanItem.status)>
                                 <#if loanItem.status == 'PREHEAT'>
+                                <div class="progress-bar">
                                     <#if loanItem.preheatSeconds lte 1800>
                                     <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
                                         <i class="minute_show"></i>分
@@ -90,6 +92,7 @@
                                         <span class="time">${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}
                                             开标</span>
                                     </#if>
+                                </div>
                                 </#if>
                                 <#if loanItem.status == 'PREHEAT'>
                                 <span class="p-title">项目总额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>

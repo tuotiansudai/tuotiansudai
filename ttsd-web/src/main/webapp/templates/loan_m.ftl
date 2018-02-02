@@ -2,8 +2,9 @@
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="直投借款详情">
 <div class="my-account-content experience-amount show-page" id="loanDetail">
+
     <div class="account-summary">
-        <em id="iconDetail" class="icon-left"><i class="fa fa-angle-left"></i></em>
+        <em id="iconDetail" class="icon-left"><i></i></em>
         <#if extraLoanRates?? >
             <a href="javascript:void(0);"><i class="icon-help"></i></a>
         </#if>
@@ -123,13 +124,13 @@
         </li>
         <li>
             <label>借款协议</label>
-            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）<i
-                    class="fa fa-angle-right"></i></a></span>
+            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）</a><em class="pdf"><i
+                    class="iconRight" ></i></em></span>
 
         </li>
         <li id="to_project_detail" style="margin-top: 10px;">
             <label>项目详情</label>
-            <span><i class="fa fa-angle-right"></i></span>
+            <span><em class="pdf"><i class="iconRgihtt"></i></em></span>
         </li>
     </ul>
 
