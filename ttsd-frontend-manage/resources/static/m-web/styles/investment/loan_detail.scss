@@ -94,13 +94,28 @@
   position: static;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: #f2f2f2;
 }
 .menu-category {
   margin-bottom: 10px;
 }
 .loan-list-content {
   background: #fff;
+}
+.loan-list-frame2{
+  background: #fff;
+  padding-top: 0.2rem;
+  min-height: 28.6rem;
+}
+.menu-category{
+  height: 2.1rem;
+  line-height: 2rem;
+  span {
+    line-height: 2rem;
+    a {
+      line-height: 2rem;
+    }
+  }
 }
 .account-summary {
   height:200px;
@@ -750,12 +765,13 @@
 }
 .summary-box b {
   font-size: 50px!important;
+  font-weight: normal!important;
 }
 .summary-box i {
   font-size: 22px!important;
   font-weight: normal!important;
   position: relative;
-  left: -10px;
+  left: -0.7rem!important;
   margin-left: 0!important;
 }
 #couponText {
