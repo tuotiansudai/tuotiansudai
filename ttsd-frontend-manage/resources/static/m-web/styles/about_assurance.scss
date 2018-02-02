@@ -167,7 +167,7 @@ body {
       box-sizing: border-box;
       padding-top: .16rem;
       @media screen and (max-width: 320px) {
-        font-size: 0.08rem;
+        font-size: 11px;
         padding-right: .05rem;
         padding-left: .8rem;
       }
@@ -274,7 +274,7 @@ body {
           line-height: .3rem;
           padding-right: .05rem;
           @media screen and (max-width: 320px) {
-            font-size: .16rem;
+            font-size: 11px;
             line-height: .4rem;
           }
           .wap-style {

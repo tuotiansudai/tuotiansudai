@@ -156,13 +156,17 @@
 .target-category-box .loan-info li {
 
     &:nth-child(1){
-      flex: 3.5;
+      flex: 3.2;
+      @media screen and (max-width:320px) {
+        flex: 3.5;
+      }
     }
     &:nth-child(2){
-      flex: 2;
+      flex: 2.4;
+
     }
     &:nth-child(3){
-      flex: 3;
+      flex: 2.6;
     }
 
 }

@@ -116,7 +116,9 @@
     </#if>
 </@global.role>
 
+
 <#include "component/anxin-agreement.ftl" />
+    <div class="sectionNone"></div>
 </div>
 
 
