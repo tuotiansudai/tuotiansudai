@@ -46,7 +46,7 @@
             <dd>
                 <span>${repay.repayDate?string("yyyy/MM/dd")}</span>
                 <span>${repay.amount/100}元</span>
-                <em class="status">${repay.status.getDescription()}</em>
+                <em class="status">${repay.statusDesc}</em>
             </dd>
             </#list>
         </dl>
