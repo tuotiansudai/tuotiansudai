@@ -11,6 +11,7 @@ public class InvestorInvestRepayDto implements Serializable {
     private Date repayDate;
     private long amount;
     private RepayStatus status;
+    private String statusDesc;
     private boolean isTransferred;
 
     public InvestorInvestRepayDto(InvestRepayModel investRepayModel, CouponRepayModel couponRepayModel) {
@@ -28,6 +29,23 @@ public class InvestorInvestRepayDto implements Serializable {
         this.amount = expectedInterest + investRepayModel.getCorpus();
         this.status = investRepayModel.getStatus();
         this.isTransferred = investRepayModel.isTransferred();
+        this.statusDesc = convertStatusDesc(investRepayModel.getStatus());
+    }
+
+    private String convertStatusDesc(RepayStatus status) {
+        if (RepayStatus.REPAYING.equals(status)) {
+            return "待还款";
+        }
+        if (RepayStatus.WAIT_PAY.equals(status)) {
+            return "待支付";
+        }
+        if (RepayStatus.COMPLETE.equals(status)) {
+            return "已还款";
+        }
+        if (RepayStatus.OVERDUE.equals(status)) {
+            return "已逾期";
+        }
+        return "";
     }
 
     public Date getRepayDate() {
@@ -44,5 +62,9 @@ public class InvestorInvestRepayDto implements Serializable {
 
     public boolean isTransferred() {
         return isTransferred;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
     }
 }

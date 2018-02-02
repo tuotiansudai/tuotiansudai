@@ -62,6 +62,7 @@ clearInputOneVal('#formCaptcha','.captcha');
 
 contentInput('#formRegister');
 clearInputOneVal('#formRegister','.short-message-captcha');
+clearInputOneVal('#formRegister','.short-message-captcha1');
 
 let entryEv = () => {
     $('.form-captcha').show();

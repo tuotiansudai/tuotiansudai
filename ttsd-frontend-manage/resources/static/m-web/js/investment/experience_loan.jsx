@@ -22,6 +22,18 @@ if (experience_balance==0) {
     $experience_balance.val('');
     buttonDisabled();
     $('#submitBtn').html('请输入正确的金额');
+} else {
+    let value =  $experience_balance.val();
+    // 计算预期收益
+    let getInvestAmount = getAmount();
+    commonFun.useAjax({
+        url: '/calculate-expected-coupon-interest/loan/1/amount/' + getInvestAmount,
+        type: 'GET',
+        data: {"loanId":'1',"amount":getInvestAmount,"couponIds":''}
+    },(amount) => {
+        $("#expect-amount").html(amount);
+
+    });
 }
 
 // 输入投资金额按钮底部button状态变化
@@ -137,13 +149,16 @@ function getAmount() {
 $('#submitBtn').on('click',(event) => {
     event.preventDefault();
     let getInvestAmount = getAmount();
-    if (getInvestAmount >  experience_balance * 100) {
+    if (getInvestAmount >  experience_balance.replace(/,/g, "") * 100) {
+        $('.shade_mine').show(); // hack ios shade
         let $freeSuccess=$('#freeSuccess');
         commonFun.CommonLayerTip({
             btn: ['确定'],
             area:['280px', '160px'],
+            shade: false,
             content: $freeSuccess,
         },() => {
+            $('.shade_mine').hide(); // hack ios shade
             layer.closeAll();
         });
         return;
