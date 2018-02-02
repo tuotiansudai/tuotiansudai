@@ -109,7 +109,7 @@ getList(1,'REPAYING');
 
 
 
-$(document).on('click','#toInvest',function () {
+$(document).on('click','.noList',function () {
     location.href = '/m/loan-list'
 })
 

@@ -33,7 +33,7 @@
             <dd>运营数据</dd>
         </dl>
         <dl>
-            <dt><a class="inviting-friend" href="/m/about/refer-reward"></a></dt>
+            <dt><a class="inviting-friend" href="javascript:;"></a></dt>
             <dd>邀请好友</dd>
         </dl>
         <dl>
@@ -77,7 +77,7 @@
             <li>最长<em class="duration-day">${newbieLoan.duration}</em> 天 <em class="note">项目期限</em></li>
             <li>
                 <#if newbieLoan.status== 'RAISING'>
-                    <a href="javascript:void(0)" class="btn-invest btn-normal">立即投资</a>
+                    <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail">立即投资</a>
                 <#elseif newbieLoan.status == 'PREHEAT'>
                     <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>
                 </#if>
@@ -134,9 +134,9 @@
                 <li>最长<em class="duration-day">${loan.duration}</em> 天 <em class="note">项目期限</em></li>
                 <li>
                     <#if loan.status== 'RAISING'>
-                        <a href="javascript:void(0)" class="btn-invest btn-normal">立即投资</a>
+                        <a href="javascript:void(0)" data-url="/m/loan/${loan.id?c}" class="btn-invest btn-normal goToDetail">立即投资</a>
                     <#elseif loan.status == 'PREHEAT'>
-                        <a href="javascript:void(0)" class="btn-invest btn-normal" style="opacity: 0.6">预热中</a>
+                        <a href="javascript:void(0)" data-url="/m/loan/${loan.id?c}" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>
 
                     <#else>
                         <i class="loan-status icon-sellout"></i>
