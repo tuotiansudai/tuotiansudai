@@ -35,7 +35,7 @@
 
                     <#if !isFastPayOn && isBindCard>
                         <div class="turn-on-fast-form pad-s">
-                            <form action="/agreement" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_self"</@global.role>>
+                            <form id="form" action="/agreement" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                                 <p><label>姓名：</label><span>${userName}</span></p>
                                 <p><label>身份证：</label><span>${identityNumber}</span></p>
                                 <p><label>开户行：</label><span>${bank}</span></p>
