@@ -3,7 +3,7 @@ require('mWebJsModule/anxin_agreement_pop');
 let commonFun= require('publicJs/commonFun');
 require('publicJs/honeySwitch');
 require('publicStyle/honeySwitch.scss');
-let $anxinElectroSign = $('#anxinElectroSign');
+let $anxinElectronicsSign = $('.anxinElectronicsSign');
 let $signature = $('#signature');
 let $openMessage = $('#openMessage');
 let $authorization_message = $('#authorization_message');
@@ -28,7 +28,7 @@ $('#authentication_identity').on('click',() => {  // 未实名认证则进行跳
     location.href = './register/account';
 });
 
-$('.init-checkbox-style',$anxinElectroSign).initCheckbox(function(element) {
+$('.init-checkbox-style',$anxinElectronicsSign).initCheckbox(function(element) {
     var $parentBox=$(element).parents('.safety-status-box');
     //点击我已阅读并同意是否disable按钮
     $(element).hasClass('on');
