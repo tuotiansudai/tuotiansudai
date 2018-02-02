@@ -33,7 +33,7 @@ public class StartWorkActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView newYearActivity() {
         ModelAndView modelAndView = new ModelAndView("/activities/2018/start-work");
-        modelAndView.addObject("count", LoginUserInfo.getMobile() == null ? null: startWorkActivityService.getCount(LoginUserInfo.getMobile()));
+        modelAndView.addObject("count", LoginUserInfo.getMobile() == null ? null : startWorkActivityService.getCount(LoginUserInfo.getMobile()));
         return modelAndView;
     }
 

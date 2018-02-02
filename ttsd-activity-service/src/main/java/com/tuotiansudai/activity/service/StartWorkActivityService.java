@@ -46,10 +46,10 @@ public class StartWorkActivityService {
     private static final long PRICE = 5000000;
 
     public String duringActivities() {
-        if (new Date().before(activityStartTime)){
+        if (new Date().before(activityStartTime)) {
             return "NOT_START";
         }
-        if (new Date().after(activityEndTime)){
+        if (new Date().after(activityEndTime)) {
             return "END";
         }
         return "START";
@@ -65,32 +65,32 @@ public class StartWorkActivityService {
         }
     }
 
-    public Map<String, Object> exchangePrize(String mobile, ExchangePrize exchangePrize){
+    public Map<String, Object> exchangePrize(String mobile, ExchangePrize exchangePrize) {
         Map<String, Object> map = new HashMap<>();
         int unUseCount = getCount(mobile);
-        if (exchangePrize.getExchangeMoney() / PRICE > unUseCount){
+        if (exchangePrize.getExchangeMoney() / PRICE > unUseCount) {
             map.put("success", false);
             return map;
         }
-        UserModel userModel =userMapper.findByMobile(mobile);
+        UserModel userModel = userMapper.findByMobile(mobile);
         userExchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), exchangePrize, new Date(), ActivityCategory.START_WORK_ACTIVITY));
         map.put("success", true);
         map.put("count", unUseCount - (exchangePrize.getExchangeMoney() / PRICE));
         return map;
     }
 
-    public List<UserExchangePrizeModel> getUserPrizeByMobile(String mobile){
+    public List<UserExchangePrizeModel> getUserPrizeByMobile(String mobile) {
         return userExchangePrizeMapper.findUserExchangePrizeViews(mobile, null, null, ActivityCategory.START_WORK_ACTIVITY, activityStartTime, activityEndTime, null, null);
     }
 
-    public int getCount(String mobile){
-        if (!"START".equals(duringActivities())){
+    public int getCount(String mobile) {
+        if (!"START".equals(duringActivities())) {
             return 0;
         }
         List<UserExchangePrizeModel> exchangePrizes = getUserPrizeByMobile(mobile);
         List<ActivityInvestAnnualizedView> activityInvestAnnualizedViews = activityInvestAnnualizedMapper.findByActivityAndMobile(ActivityInvestAnnualized.START_WORK_ACTIVITY, mobile);
         long sumAnnualizedAmount = activityInvestAnnualizedViews.stream().mapToLong(ActivityInvestAnnualizedView::getSumAnnualizedAmount).sum();
-        long sumUseAnnualizedAmount = exchangePrizes.stream().mapToLong(i->i.getPrize().getExchangeMoney()).sum();
+        long sumUseAnnualizedAmount = exchangePrizes.stream().mapToLong(i -> i.getPrize().getExchangeMoney()).sum();
         return (int) ((sumAnnualizedAmount - sumUseAnnualizedAmount) / PRICE);
     }
 }
