@@ -28,7 +28,7 @@ public enum MessageQueue {
     InvestSuccess_StartWork("InvestSuccess-StartWork"),
     Celebration_Coupon("Celebration-Coupon"),
     NewYearActivity_Coupon("NewYearActivity-Coupon"),
-    StartWorkActivity_Coupon("NewYearActivity-Coupon"),
+    StartWorkActivity_Coupon("StartWorkActivity-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),

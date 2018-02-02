@@ -75,7 +75,7 @@ public class StartWorkActivityDrawCouponMessageConsumer implements MessageConsum
                     logger.info(MessageFormat.format("[StartWorkActivity_Coupon] loginName:{0},couponId:{1} send message end", loginName, couponId));
                 }catch (Exception e){
                     logger.error(MessageFormat.format("[StartWorkActivity_Coupon] loginName:{0},couponId:{1} send message fail", loginName, couponId));
-                    smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【惊喜不重样加息不打样活动】用户:{0}, 优惠券:{1}, 发送优惠券失败, 业务处理异常", loginName, couponId)));
+                    smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【惊喜不重样加息不打烊活动】用户:{0}, 优惠券:{1}, 发送优惠券失败, 业务处理异常", loginName, couponId)));
                 }
             });
             redisWrapperClient.setex(key, lifeSecond,"SUCCESS");

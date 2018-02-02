@@ -1,8 +1,8 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.activity.repository.dto.StartWorkPrizeDto;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
-import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
 import com.tuotiansudai.activity.service.StartWorkActivityService;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -11,12 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/activity/start-work")
@@ -36,14 +38,16 @@ public class StartWorkActivityController {
     }
 
     @RequestMapping(path = "/exchange", method = RequestMethod.POST)
+    @ResponseBody
     public Map<String, Object> exchange(@RequestParam(value = "exchangePrize") ExchangePrize exchangePrize) {
         return LoginUserInfo.getMobile() == null ? null : startWorkActivityService.exchangePrize(LoginUserInfo.getMobile(), exchangePrize);
     }
 
     @RequestMapping(path = "/prize", method = RequestMethod.GET)
-    public Map<String, List<UserExchangePrizeModel>> exchangePrizeList() {
-        Map<String, List<UserExchangePrizeModel>> map = new HashMap<>();
-        map.put("prize", LoginUserInfo.getLoginName() == null ? null : startWorkActivityService.getUserPrizeByMobile(LoginUserInfo.getMobile()));
+    @ResponseBody
+    public Map<String, List<StartWorkPrizeDto>> exchangePrizeList() {
+        Map<String, List<StartWorkPrizeDto>> map = new HashMap<>();
+        map.put("prize", LoginUserInfo.getMobile() == null ? null : startWorkActivityService.getUserPrizeByMobile(LoginUserInfo.getMobile()).stream().map(StartWorkPrizeDto::new).collect(Collectors.toList()));
         return map;
     }
 

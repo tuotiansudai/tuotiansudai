@@ -69,12 +69,12 @@ public class StartWorkActivityService {
         Map<String, Object> map = new HashMap<>();
         int unUseCount = getCount(mobile);
         if (exchangePrize.getExchangeMoney() / PRICE > unUseCount){
-            map.put("status", false);
+            map.put("success", false);
             return map;
         }
         UserModel userModel =userMapper.findByMobile(mobile);
         userExchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), exchangePrize, new Date(), ActivityCategory.START_WORK_ACTIVITY));
-        map.put("status",true);
+        map.put("success", true);
         map.put("count", unUseCount - (exchangePrize.getExchangeMoney() / PRICE));
         return map;
     }
