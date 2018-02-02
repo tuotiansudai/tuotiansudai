@@ -78,6 +78,9 @@ public class InvestorInvestDetailDto implements Serializable {
     //用户累计直投项目
     private long userInvestAmountTotal;
 
+    //标的状态
+    private LoanStatus loanStatus;
+
     public InvestorInvestDetailDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel, long userInvestAmountTotal) {
         this.loanId = transferApplicationModel.getLoanId();
         this.loanName = transferApplicationModel.getName();
@@ -93,6 +96,7 @@ public class InvestorInvestDetailDto implements Serializable {
         this.interestBeginDate = loanModel.getRecheckTime();
         this.experience = ProductType.EXPERIENCE.equals(loanModel.getProductType());
         this.userInvestAmountTotal = userInvestAmountTotal;
+        this.loanStatus = loanModel.getStatus();
     }
 
     public InvestorInvestDetailDto(LoanModel loanModel, InvestModel investModel, long userInvestAmountTotal) {
@@ -108,6 +112,7 @@ public class InvestorInvestDetailDto implements Serializable {
         this.investTime = investModel.getInvestTime();
         this.experience = ProductType.EXPERIENCE.equals(loanModel.getProductType());
         this.userInvestAmountTotal = userInvestAmountTotal;
+        this.loanStatus = loanModel.getStatus();
     }
 
     public long getLoanId() {
@@ -292,5 +297,13 @@ public class InvestorInvestDetailDto implements Serializable {
 
     public void setUserInvestAmountTotal(long userInvestAmountTotal) {
         this.userInvestAmountTotal = userInvestAmountTotal;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 }
