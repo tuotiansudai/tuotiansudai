@@ -29,11 +29,15 @@ require.ensure(['webJsModule/image_show_slider'], function(require){
 },'imageSlider');
 
 //点击进入相应的标的详情
-$('[data-url]',$homePageContainer).on('click',function(event) {
+$('[data-url]').on('click',function(event) {
     event.preventDefault();
-    let $this=$(this),
-        url=$this.data('url');
-    location.href=url;
+    event.stopPropagation();
+   if(!$(this).hasClass('btn-invest')&&!$(this).hasClass('btn-normal')||$(this).hasClass('preheat-btn')){
+        let $this=$(this),
+            url=$this.data('url');
+        location.href=url;
+   }
+
 });
 
 //开标倒计时
@@ -70,7 +74,8 @@ $('[data-url]',$homePageContainer).on('click',function(event) {
 
 
 let $appContainer = $('.app-container')
-$('.close-app').on('click',function () {
+$('.close-app').click(function (e) {
+    e.stopPropagation();
     $appContainer.hide();
 })
 $('.open-app').on('click',function () {
@@ -87,7 +92,6 @@ $amontDom.autoNumeric('init');
 $('.goToDetail').on('click',function (e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log($(this).parent('.target-category-box'))
     var url = $(this).data('url')
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -124,3 +128,14 @@ $('.goToTranDetail').on('click',function (e) {
     })
 
 })
+//邀请好友判断是否登录
+$('.inviting-friend').click(function () {
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            location.href = '/m/about/refer-reward';
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+})
+//
+commonFun.calculationFun();

@@ -18,12 +18,32 @@ let myScroll = new IScroll('#wrapperOut', {
     mouseWheel: true,
     click: true
 });
+//点击btn跳转到购买
+$('.goToDetail').on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
 
+    var url = $(this).data('url')
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            if(!$(this).hasClass('preheat-btn')){
+                location.href = url+'#buyDetail';
+            }
+
+        }).fail(function () {
+        location.href = '/m/login'
+    })
+
+})
 $('[data-url]',$categoryBoxMain).on('click',function(event) {
     event.preventDefault();
-    let $this=$(this),
-        url=$this.data('url');
-    location.href=url;
+    event.stopPropagation();
+    if(!$(this).hasClass('btn-invest')&&!$(this).hasClass('btn-normal')||$(this).hasClass('preheat-btn')){
+        let $this=$(this),
+            url=$this.data('url');
+        location.href=url;
+    }
+
 });
 
 myScroll.on('scrollEnd', function () {
@@ -57,20 +77,7 @@ function getMore() {
         }
     )
 }
-//点击btn跳转到购买
-$('.goToDetail').on('click',function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log($(this).parent('.target-category-box'))
-    var url = $(this).data('url')
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-            location.href = url+'#buyDetail';
-        }).fail(function () {
-        location.href = '/m/login'
-    })
 
-})
 
 $('.goToExDetail').on('click',function (e) {
     e.preventDefault();

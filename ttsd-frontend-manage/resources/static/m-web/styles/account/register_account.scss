@@ -5,7 +5,7 @@
     font-size: 14px;
     color: #808080;
     line-height: 22px;
-    font-weight: lighter;
+    font-weight: normal;
     text-align: center;
   }
 
@@ -19,17 +19,18 @@
     }
   }
 }
-
+.icon-success{
+  margin-top: 100px;
+}
 .certification-success {
   background: #fff;
   height: 100%;
   overflow: hidden;
-  padding-top:50px;
   text-align: center;
   box-sizing: border-box;
   em {
     display: block;
-    padding-top:20px;
+    padding-top:10px;
     font-size: 15px;
     color: #808080;
   }

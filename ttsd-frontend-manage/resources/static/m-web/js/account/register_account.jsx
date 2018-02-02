@@ -10,7 +10,11 @@ let validator = new ValidatorObj.ValidatorForm();
 validator.add(registerAccountForm.userName, [{
     strategy: 'isNonEmpty',
     errorMsg: '请输入姓名',
-}]);
+},
+    {
+        strategy: 'isChinese',
+        errorMsg: '请输入汉字',
+    }]);
 
 validator.add(registerAccountForm.identityNumber, [{
     strategy: 'isNonEmpty',

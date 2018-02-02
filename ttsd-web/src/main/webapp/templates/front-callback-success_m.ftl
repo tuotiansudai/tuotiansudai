@@ -10,7 +10,7 @@
                 <ul class="input-list">
                     <li>
                         <label>投资金额</label>
-                        <span class="money">${amount}元</span>
+                        <span><em class="money">${amount}</em>元</span>
                     </li>
                     <li>
                         <label>所投项目</label>
@@ -38,7 +38,7 @@
                     </li>
                     <li>
                         <label>提现金额</label>
-                        <span class="money">${amount!}元</span>
+                        <span><em class="money">${amount!}</em>元</span>
                     </li>
                     <li>
                         <label>订单号</label>
@@ -103,7 +103,7 @@
                     <ul class="input-list">
                         <li>
                             <label>投资金额</label>
-                            <span class="money">${amount}元</span>
+                            <span><em class="money">${amount}</em>元</span>
                         </li>
                         <li>
                             <label>所投项目</label>

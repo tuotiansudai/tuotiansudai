@@ -772,4 +772,4 @@ function countDownTime() {
     },1000)
 }
 
-
+commonFun.calculationFun()
