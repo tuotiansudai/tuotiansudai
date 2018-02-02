@@ -302,7 +302,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void postPurchase(long investId) throws AmountTransferException {
+    public void postPurchase(long investId) {
         InvestModel investModel = investMapper.findById(investId);
         InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));

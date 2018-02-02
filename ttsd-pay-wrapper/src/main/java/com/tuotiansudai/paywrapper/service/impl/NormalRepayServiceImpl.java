@@ -111,7 +111,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
 
         if (RepayStatus.REPAYING != loanRepayModel.getStatus()) {
-            logger.error(MessageFormat.format("can not auto repay (loanRepayId = {0}), due to loan repay status is {1}", String.valueOf(loanRepayId), loanRepayModel.getStatus().name()));
+            logger.warn(MessageFormat.format("can not auto repay (loanRepayId = {0}), due to loan repay status is {1}", String.valueOf(loanRepayId), loanRepayModel.getStatus().name()));
             return false;
         }
 
@@ -235,7 +235,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
+            logger.warn(MessageFormat.format("[Normal Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -483,9 +483,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         if (currentInvestRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) status({2}) is not WAIT_PAY",
+            logger.warn(MessageFormat.format("[Normal Repay {0}] invest payback({1}) status({2}) is not WAIT_PAY",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
-            return false;
+            return true;
         }
 
         try {
@@ -516,7 +516,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         if (systemBillMapper.findByOrderId(loanRepayId, SystemBillBusinessType.INVEST_FEE) != null) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] invest fee callback system bill is exist", String.valueOf(loanRepayId)));
+            logger.warn(MessageFormat.format("[Normal Repay {0}] invest fee callback system bill is exist", String.valueOf(loanRepayId)));
             return callbackRequest.getResponseData();
         }
 
