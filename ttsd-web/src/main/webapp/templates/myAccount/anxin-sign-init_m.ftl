@@ -8,7 +8,7 @@
             <span class="go-back"></span>
         </div>
     </div>
-    <div class="my-account-content anxin-electro-sign" id="anxinElectroSign">
+    <div class="my-account-content anxin-electro-sign anxinElectronicsSign">
         <div class="cfca-logo"></div>
         <div class="cfca-info">
             安心签是由中国金融认证中心（CFCA）为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。它形成的电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div id="shortMessage">
-        <div class="my-account-content anxin-electro-success" id="anxinElectroSign">
+        <div class="my-account-content anxin-electro-success anxinElectronicsSign">
             <div class="success-section">
                 <div class="electro-logo"></div>
 
