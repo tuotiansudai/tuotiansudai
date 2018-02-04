@@ -12,8 +12,8 @@
         </div>
         <div class="national-content-top desc">
             <p>
-                北京天美润成投资管理有限公司，成立于2005年，主要从事投资管理、资产管理、企业管理等业务。<br/>
-                在企业多元化发展的大环境下，天美润成也在积极响应时代发展趋势，进军互联网金融行业，成为拓天伟业（北京）金融信息服务有限公司股东。
+                北京天美润成投资管理有限公司，成立于2005年，主要从事投资管理、资产管理、企业管理等业务。
+                <span class="pc-style"> 在企业多元化发展的大环境下，天美润成也在积极响应时代发展趋势，进军互联网金融行业，<em class="wap1024">成为拓天伟业（北京）金融信息服务有限公司股东。</em></span>
             </p>
         </div>
         <div class="management-imgs clearfix">
@@ -75,17 +75,48 @@
             </h2>
         </div>
         <ul class="clearfix">
-            <li class="sec1">
-                <div class="title">新浪</div>
-                <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+            <li>
+                <a href="">
+                    <dl class="clearfix">
+                        <dt class="sec1">
+                            <div class="title">新浪</div>
+                            <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+                        </dt>
+                        <dd>
+                            <h3>国资入股拓天&nbsp;共创美好蓝图</h3>
+                            <p>升级为国资背景平台，拓天速贷多了一份国资系保障之外，风控能力也将再上一个台阶，综合实力更雄厚。</p>
+                        </dd>
+                    </dl>
+
+                </a>
             </li>
-            <li class="sec2">
-                <div class="title">新浪</div>
-                <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+            <li>
+                <a href="">
+                    <dl class="clearfix">
+                        <dt class="sec2">
+                            <div class="title">新浪</div>
+                            <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+                        </dt>
+                        <dd>
+                            <h3>国资入股拓天&nbsp;共创美好蓝图</h3>
+                            <p>升级为国资背景平台，拓天速贷多了一份国资系保障之外，风控能力也将再上一个台阶，综合实力更雄厚。</p>
+                        </dd>
+                    </dl>
+                </a>
             </li>
-            <li class="sec3">
-                <div class="title">新浪</div>
-                <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+            <li>
+                <a href="">
+                    <dl class="clearfix">
+                        <dt class="sec3">
+                            <div class="title">新浪</div>
+                            <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+                        </dt>
+                        <dd>
+                            <h3>国资入股拓天&nbsp;共创美好蓝图</h3>
+                            <p>升级为国资背景平台，拓天速贷多了一份国资系保障之外，风控能力也将再上一个台阶，综合实力更雄厚。</p>
+                        </dd>
+                    </dl>
+                </a>
             </li>
         </ul>
     </div>

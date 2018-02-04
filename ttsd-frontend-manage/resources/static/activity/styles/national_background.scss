@@ -1,5 +1,12 @@
 $color1:#222222;
 $color2:#333333;
+$color3:#808080;
+html {
+  font-size: 100px;
+}
+body {
+  font-size: 12px;
+}
 .main-frame {
   width: 100%;
 }
@@ -42,6 +49,9 @@ $color2:#333333;
       text-align: center;
       font-size: 16px;
       line-height: 39px;
+      .pc-style {
+        display: block;
+      }
     }
   }
   .management-imgs {
@@ -129,41 +139,334 @@ $color2:#333333;
       width: 380px;
       height: 240px;
       float: left;
-      position: relative;
       margin-left: 30px;
-      .title {
-        width: 62px;
-        height: 30px;
-        background: rgba(0,0,0,0.30);
-        border-radius: 15px;
-        color: #fff;
-        text-align: center;
-        line-height: 30px;
-        margin-top: 30px;
-        margin-left: 26px;
-        font-size: 12px;
-      }
-      h4 {
-        font-size: 21px;
-        color: #fff;
-        position: absolute;
-        bottom: 30px;
-        padding-left: 26px;
-        box-sizing: border-box;
-      }
-      &.sec1 {
-        background: url("../images/national-background/image1.png") no-repeat;
-        background-size: contain;
-      }
-      &.sec2 {
-        background: url("../images/national-background/image2.png") no-repeat;
-        background-size: contain;
-      }
-      &.sec3 {
-        background: url("../images/national-background/image3.png") no-repeat;
-        background-size: contain;
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        dl {
+          height: 100%;
+          position: relative;
+          dt {
+            width: 100%;
+            height: 100%;
+            float: left;
+            .title {
+              width: 62px;
+              height: 30px;
+              background: rgba(0,0,0,0.30);
+              border-radius: 15px;
+              color: #fff;
+              text-align: center;
+              line-height: 30px;
+              margin-top: 30px;
+              margin-left: 26px;
+              font-size: 12px;
+            }
+            h4 {
+              font-size: 21px;
+              color: #fff;
+              position: absolute;
+              bottom: 30px;
+              padding-left: 26px;
+              box-sizing: border-box;
+            }
+            &.sec1 {
+              background: url("../images/national-background/image1.png") no-repeat;
+              background-size: contain;
+            }
+            &.sec2 {
+              background: url("../images/national-background/image2.png") no-repeat;
+              background-size: contain;
+            }
+            &.sec3 {
+              background: url("../images/national-background/image3.png") no-repeat;
+              background-size: contain;
+            }
+
+
+
+          }
+          dd {
+            display: none;
+            float: right;
+          }
+        }
       }
 
     }
+  }
+}
+//响应式
+//@media screen and(max-width: 1024px) {
+//  .my-page {
+//    width: 10rem;
+//  }
+//  .wap1024 {
+//    display: block;
+//  }
+//  .management-imgs {
+//    dl {
+//      dd {
+//        &.invest {
+//          margin-left: .2rem;
+//        }
+//        &.enterprise {
+//          margin-right: .2rem;
+//        }
+//      }
+//    }
+//  }
+//  .security-upgrade {
+//    .management-imgs {
+//      margin-left: .12rem;
+//      dl {
+//        margin-left: .6rem;
+//      }
+//    }
+//  }
+//  .media-coverage {
+//    ul {
+//      margin-left: .1rem;
+//      li {
+//        width: 3rem;
+//        height: 2rem;
+//        margin-left: .2rem;
+//      }
+//    }
+//  }
+//
+//
+//}
+@media screen and(max-width: 1024px) {
+  .national-banner {
+    height: 3.5rem;
+    background: url("../images/national-background/wap_banner.png") no-repeat center center;
+    background-size: 100%;
+    .wap1024 {
+      display: inline;
+    }
+  }
+  .my-page {
+    width: 7.1rem;
+  }
+  .national-title {
+    text-align: center;
+    padding-top: .2rem;
+    h2 {
+      color: $color1;
+      font-size: .34rem;
+      border-bottom: 1px solid #C9C9C9;
+      padding-bottom: .05rem;
+      .line {
+        width: .87rem;
+        height: .07rem;
+        margin-left: -.44rem;
+        bottom: -0.04rem;
+      }
+    }
+  }
+
+  .desc {
+    margin-top: .3rem;
+    p {
+      font-size: .26rem;
+      line-height: .44rem;
+      text-align: left;
+      .pc-style {
+        display: inline;
+      }
+      .wap1024 {
+        display: inline;
+      }
+    }
+  }
+  .management-imgs {
+    padding-top: .4rem;
+    padding-bottom: .2rem;
+    dl {
+      overflow: hidden;
+      dd {
+        width: 2.98rem;
+        height: 2.98rem;
+        &.invest {
+          margin-left: .3rem;
+        }
+        &.assets {
+          margin-top: 1.6rem;
+        }
+        &.enterprise {
+          margin-right: .3rem;
+        }
+      }
+    }
+  }
+  .security-upgrade {
+    background: url("../images/national-background/bg.png") repeat-x;
+    background-size: contain;
+    padding-bottom: .2rem;
+    padding-top: .1rem;
+    .management-imgs {
+      padding-top: .2rem;
+      padding-bottom: .2rem;
+      margin-left: .65rem;
+      margin-top: -0.7rem;
+      dl {
+        width: 2.19rem;
+        height: 2.19rem;
+        margin-left: .35rem;
+        margin-right: .35rem;
+        margin-top: .7rem;
+        dt {
+          height: .7rem;
+          margin-top: .45rem;
+        }
+        dd {
+          height: .4rem;
+          font-size: .28rem;
+          margin-top: .3rem;
+        }
+      }
+    }
+
+  }
+  .media-coverage {
+    h2 {
+      width: 3.21rem;
+    }
+    ul {
+      margin-left: 0;
+      margin-top: .1rem;
+      padding-bottom: .3rem;
+      li {
+        width: 100%;
+        height: auto;
+        float: none;
+        margin-left: 0;
+        a {
+          dl {
+            height: 100%;
+            position: relative;
+            border-bottom:1px solid #E5E5E5;
+            padding-top: .47rem;
+            padding-bottom: .3rem;
+            dt {
+              width: 2.2rem;
+              height: 1.39rem;
+              float: left;
+              .title {
+                width: .65rem;
+                height: .3rem;
+                border-radius: .15rem;
+                line-height: .3rem;
+                margin-top: .2rem;
+                margin-left: .2rem;
+                font-size: .16rem;
+                @media screen and(max-width: 320px){
+                  width: .9rem;
+                  height: .4rem;
+                  border-radius: .2rem;
+                  line-height: .4rem;
+                }
+              }
+              h4 {
+                display: none;
+              }
+
+            }
+            dd {
+              display: block;
+              width: 4.7rem;
+              float: right;
+              h3 {
+                font-size: .32rem;
+                color: $color2;
+                line-height: .48rem;
+              }
+              p {
+                font-size: .22rem;
+                color: $color3;
+                line-height: .28rem;
+                @media screen and(max-width: 320px){
+                  line-height: .34rem;
+                }
+
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
   }
 }
