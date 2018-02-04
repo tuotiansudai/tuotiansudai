@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.national_background}" pageJavascript="${js.national_background}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description='拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.'>
+<@global.main pageCss="${css.national_background}" pageJavascript="${js.national_background}" activeNav="" activeLeftNav="" title="" keywords="" description=''>
 <div class="national-banner">
 </div>
 
