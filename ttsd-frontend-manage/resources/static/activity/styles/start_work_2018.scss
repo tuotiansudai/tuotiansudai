@@ -59,6 +59,7 @@ h2,h4 {
     .main {
       position: relative;
       width: 100%;
+      font-size: 0;
       background: url("../images/2018/start-work/gold_person_bgLine.png") repeat-y center center;
       .text_wrapper  {
         width: 100%;
@@ -71,11 +72,142 @@ h2,h4 {
         margin: 20px auto 30px auto;
         width: 353px;
         height: 93px;
+        line-height: 93px;
         text-align: center;
+        font-size: 18px;
         background: url("../images/2018/start-work/gold_person_title.png") no-repeat;
         background-size: contain;
       }
+      .prize_list_container {
+        position: relative;
+        display: inline-block;
+        margin: 0 auto 20px 21px;
+        width: 207px;
+        height: 316px;
+        background: #fff0d1;
+        border: 2px solid #d52122;
+        border-radius: 7px;
+        &:first-child, &:nth-child(5) {
+          margin-left: 51px;
+        }
+        &:nth-child(5), &:nth-child(6), &:nth-child(7), &:nth-child(8) {
+          height: 331px;
+        }
+        .prize_item {
+          width: 207px;
+          height: 316px;
+          text-align: center;
+          font-size: 15.5px;
+          line-height: 15.5px;
+          color: #333;
+          overflow: hidden;
+          .prize_jd_card {
+            margin: 42px auto 55px auto;
+            width: 181px;
+            height: 115px;
+            background: url("../images/2018/start-work/prize_jd_card.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_toothbrush {
+            margin: 13px auto 32px auto;
+            width: 191px;
+            height: 167px;
+            background: url("../images/2018/start-work/prize_toothbrush.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_wash_face {
+            margin: 18px auto 38px auto;
+            width: 200px;
+            height: 156px;
+            background: url("../images/2018/start-work/prize_wash_face.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_note {
+            margin: 12px auto 31px auto;
+            width: 133px;
+            height: 169px;
+            background: url("../images/2018/start-work/prize_note.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_kitchen_ware {
+            margin: 14px auto 44px auto;
+            width: 185px;
+            height: 141px;
+            background: url("../images/2018/start-work/prize_kitchen_ware.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_TV {
+            margin: 28px auto 55px auto;
+            width: 182px;
+            height: 115px;
+            background: url("../images/2018/start-work/prize_TV.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_apple_air {
+            margin: 37px auto 62px auto;
+            width: 189px;
+            height: 98px;
+            background: url("../images/2018/start-work/prize_apple_air.png") no-repeat;
+            background-size: contain;
+          }
+          .prize_iphoneX {
+            margin: 14px auto 40px auto;
+            width: 134px;
+            height: 156px;
+            background: url("../images/2018/start-work/prize_iphoneX.png") no-repeat;
+            background-size: contain;
+          }
+          .get_prize_btn {
+            margin: 29px auto auto auto;
+            width: 152px;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            font-size: 16px;
+            color: #fcf488;
+            background: #eb312d;
+            border-radius: 5px;
+          }
+        }
+      }
     }
-
+    .footer {
+      position: relative;
+      right: 1px;
+      width: 100%;
+      height: 97px;
+      background: url("../images/2018/start-work/gold_person_footer.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .cash_back_container {
+    position: relative;
+    margin-top: 33px;
+    text-align: center;
+    width: 1008px;
+    height: 554px;
+    background:  url("../images/2018/start-work/cash_back_container.png") no-repeat;
+    background-size: contain;
+    overflow: hidden;
+    .desc {
+      margin-top: 183px;
+      font-size: 16px;
+      color: #333;
+    }
+    .example {
+      margin-top: 183px;
+      font-size: 16px;
+      color: #333;
+      .example_text {
+        display: inline-block;
+        margin-right: 3px;
+        width: 85px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        color: #fcee77;
+        background: #ec192c;
+      }
+    }
   }
 }
