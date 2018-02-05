@@ -77,7 +77,7 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     @Test
     public void consumerTwoUserIsSuccess() throws JsonProcessingException {
         List<InvestModel> investModels = Lists.newArrayList(
-                mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
+                mockInvestModel(1,"2018-03-09 11:00:00", 1000, "loginName1"),
                 mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
                 mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
                 mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
@@ -111,7 +111,7 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     @Test
     public void consumerOneUserIsSuccess() throws JsonProcessingException {
         List<InvestModel> investModels = Lists.newArrayList(
-                mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
+                mockInvestModel(1,"2018-03-09 11:00:00", 1000, "loginName1"),
                 mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
                 mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
                 mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
@@ -143,7 +143,7 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     @Transactional
     public void consumerIsFail() throws JsonProcessingException {
         List<InvestModel> investModels = Lists.newArrayList(
-                mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
+                mockInvestModel(1,"2018-03-09 11:00:00", 1000, "loginName1"),
                 mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
                 mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
                 mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
