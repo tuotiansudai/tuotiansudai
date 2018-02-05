@@ -37,7 +37,7 @@ public class ExperienceRepayScheduler {
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(1);
             investRepayModels.stream()
                     .filter(investRepayModel -> new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().plusDays(1).withTimeAtStartOfDay())
-                            && investRepayModel.getStatus() != RepayStatus.COMPLETE)
+                            && investRepayModel.getStatus() == RepayStatus.REPAYING)
                     .collect(Collectors.toList())
                     .forEach(investRepayModel -> {
                         InvestInfo investInfo = new InvestInfo();
