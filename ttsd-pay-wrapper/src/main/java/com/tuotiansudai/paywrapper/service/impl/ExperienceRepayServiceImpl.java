@@ -73,28 +73,28 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
         InvestModel investModel = investMapper.findById(investId);
         if (investModel == null) {
-            logger.error("[Experience Repay] {} investId  is not exist ", investId);
+            logger.warn("[Experience Repay] {} investId  is not exist ", investId);
             return false;
         }
         if (investModel.getLoanId() != 1) {
-            logger.error("[Experience Repay] {} investId  is not NEWBIE ", investId);
+            logger.warn("[Experience Repay] {} investId  is not NEWBIE ", investId);
             return false;
         }
         String loginName = investModel.getLoginName();
         if (investModel.getStatus() != InvestStatus.SUCCESS) {
-            logger.error("[Experience Repay {}] invest is not existed or status is not SUCCESS", investModel.getId());
+            logger.warn("[Experience Repay {}] invest is not existed or status is not SUCCESS", investModel.getId());
             return false;
         }
 
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (loanModel == null || loanModel.getProductType() != ProductType.EXPERIENCE) {
-            logger.error("[Experience Repay {}] loan is not existed or loan is not EXPERIENCE", investModel.getId());
+            logger.warn("[Experience Repay {}] loan is not existed or loan is not EXPERIENCE", investModel.getId());
             return false;
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
-            logger.error("[Experience Repay {}] user {} has no account", investModel.getId(), loginName);
+            logger.warn("[Experience Repay {}] user {} has no account", investModel.getId(), loginName);
             return false;
         }
 
@@ -162,8 +162,18 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> postCallback(long investRepayId) throws AmountTransferException {
+    public BaseDto<PayDataDto> postCallback(long investRepayId) {
         InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
+
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+
+        if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
+            logger.warn(MessageFormat.format("[Experience Repay {0}] status is COMPLETE, ignore", String.valueOf(investRepayId)));
+            return new BaseDto<>(baseDataDto);
+        }
+
+
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
         redisWrapperClient.hset(EXPERIENCE_INTEREST_REDIS_KEY, String.valueOf(investModel.getId()), SyncRequestStatus.SUCCESS.name());
 
@@ -180,8 +190,6 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, investRepayModel.getId(), investRepayModel.getRepayAmount(), SystemBillBusinessType.EXPERIENCE_INTEREST, detail);
         mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
         return new BaseDto<>(baseDataDto);
     }
 }

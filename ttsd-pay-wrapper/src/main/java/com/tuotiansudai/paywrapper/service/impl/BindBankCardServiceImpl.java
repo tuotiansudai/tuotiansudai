@@ -157,7 +157,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         long orderId = Long.parseLong(callbackRequest.getOrderId());
         BankCardModel bankCardModel = bankCardMapper.findById(orderId);
         if (bankCardModel == null) {
-            logger.error(MessageFormat.format("replace bank card order id {0} is not found", String.valueOf(orderId)));
+            logger.warn(MessageFormat.format("replace bank card order id {0} is not found", String.valueOf(orderId)));
             return null;
         }
         if (callbackRequest.isSuccess()) {
@@ -175,7 +175,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
             if (bankCardModel == null) {
-                logger.error(MessageFormat.format("replace bank card order id {0} is not found", String.valueOf(orderId)));
+                logger.warn(MessageFormat.format("replace bank card order id {0} is not found", String.valueOf(orderId)));
                 return;
             }
             if (callbackRequestModel.isSuccess()) {
@@ -201,7 +201,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
             if (bankCardModel == null) {
-                logger.error(MessageFormat.format("bind bank card order id {0} is not found", String.valueOf(orderId)));
+                logger.warn(MessageFormat.format("bind bank card order id {0} is not found", String.valueOf(orderId)));
                 return;
             }
             if (callbackRequestModel.isSuccess()) {
