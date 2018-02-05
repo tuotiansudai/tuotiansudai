@@ -63,6 +63,8 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
 
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
+    private final double ratio = 0.005D;
+
     @Override
     public MessageQueue queue() {
         return MessageQueue.LoanOutSuccess_StartWorkActivity;
@@ -95,7 +97,7 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
         for(Map.Entry<String, Long>  entry: map.entrySet()){
             String key = MessageFormat.format(START_WORK_CASH_KEY, entry.getKey(), String.valueOf(loanModel.getId()));
             if (!redisWrapperClient.exists(key)){
-                long sendCash = entry.getValue() * loanModel.getProductType().getDuration() / 360;
+                long sendCash = (long) (entry.getValue() * loanModel.getProductType().getDuration() / 360 * ratio);
                 try {
                     sendCashPrize(entry.getKey(), loanModel.getId(), sendCash);
                 } catch (Exception e) {

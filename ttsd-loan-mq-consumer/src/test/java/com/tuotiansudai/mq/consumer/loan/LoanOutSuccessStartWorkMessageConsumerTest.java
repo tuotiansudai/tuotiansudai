@@ -80,8 +80,8 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
                 mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
                 mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
                 mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
-                mockInvestModel(4,"2018-03-09 11:00:00", 1234, "loginName2"),
-                mockInvestModel(5,"2018-03-09 11:00:00", 4321, "loginName2")
+                mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 3000, "loginName2")
         );
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
@@ -103,9 +103,9 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName2:1234"));
         assertThat(valueCaptor.getAllValues().get(1), is("success"));
         assertThat(requestModelCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("2234"));
+        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("11"));
         assertThat(requestModelCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("5555"));
+        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("25"));
     }
 
     @Test
@@ -114,8 +114,8 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
                 mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
                 mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
                 mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
-                mockInvestModel(4,"2018-03-09 11:00:00", 1234, "loginName2"),
-                mockInvestModel(5,"2018-03-09 11:00:00", 4321, "loginName2")
+                mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 3000, "loginName2")
         );
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
@@ -136,7 +136,7 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         assertThat(redisKeyCaptor.getValue(), is("START_WORK_CASH_KEY:loginName1:1234"));
         assertThat(valueCaptor.getValue(), is("success"));
         assertThat(requestModelCaptor.getValue().getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getValue().getAmount(), is("2234"));
+        assertThat(requestModelCaptor.getValue().getAmount(), is("11"));
     }
 
     @Test
@@ -146,8 +146,8 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
                 mockInvestModel(1,"2018-03-02 11:00:00", 1000, "loginName1"),
                 mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
                 mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
-                mockInvestModel(4,"2018-03-09 11:00:00", 1234, "loginName2"),
-                mockInvestModel(5,"2018-03-09 11:00:00", 4321, "loginName2")
+                mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 3000, "loginName2")
         );
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
@@ -170,9 +170,9 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName2:1234"));
         assertThat(valueCaptor.getAllValues().get(1), is("fail"));
         assertThat(requestModelCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("2234"));
+        assertThat(requestModelCaptor.getAllValues().get(0).getAmount(), is("11"));
         assertThat(requestModelCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
-        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("5555"));
+        assertThat(requestModelCaptor.getAllValues().get(1).getAmount(), is("25"));
     }
 
     private LoanOutSuccessMessage buildMockedLoanOutSuccessMessage() {
