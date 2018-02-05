@@ -125,7 +125,7 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
         }
         redisWrapperClient.setex(key,  lifeSecond, "fail");
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【惊喜不重样加息不打烊活动放款】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(sendCash))));
-        logger.info("send cash snowball activity prize end, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, sendCash);
+        logger.info("send start work activity prize end, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, sendCash);
     }
 
 }
