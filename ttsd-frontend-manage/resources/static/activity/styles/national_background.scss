@@ -95,6 +95,9 @@ body {
       }
 
     }
+    .desc {
+      padding-bottom: 20px;
+    }
   }
 .security-upgrade {
   background: url("../images/national-background/bg.png") repeat-x;
@@ -266,7 +269,7 @@ body {
   }
   .national-title {
     text-align: center;
-    padding-top: .1rem;
+    padding-top: .2rem;
     h2 {
       color: $color1;
       font-size: .34rem;
@@ -316,6 +319,12 @@ body {
     }
   }
   .national-shares {
+    .national-title {
+      padding-top: .2rem;
+    }
+    .desc {
+      padding-bottom: .2rem;
+    }
     .management-imgs {
       dl {
         dd {
