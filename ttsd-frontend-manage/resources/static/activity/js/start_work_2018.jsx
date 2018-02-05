@@ -1,16 +1,13 @@
 require("activityStyle/start_work_2018.scss");
 let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
-require('swiper/dist/css/swiper.css')
+require('swiper/dist/css/swiper.css');
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let sourceKind = globalFun.parseURL(location.href);
+let switchLock = false;
 
 
-$.when(commonFun.isUserLogin())
-    .done(function () {
-        recordList();
-        $('.title_wrapper').show();
-    });
+recordList();
 
 $('.close_btn1').on('click',() => {
     $('#flex_content').hide();
@@ -27,29 +24,35 @@ $('.invest_btn').on('click',() => {
 });
 
 $('.get_prize_btn').on('click',(e) => {
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-            let exchangePrize = e.currentTarget.dataset.index;
-            commonFun.useAjax({
-                type: 'POST',
-                dataType: 'json',
-                url:'/activity/start-work/exchange',
-                data: {exchangePrize}
-            },function(data) {
-                if (data.success) {
-                    $('#flex_content').show();
-                    $('#pop_modal_container1').show();
-                    $('#gold_count').html(data.count);
-                }
-                else {
-                    $('#flex_content').show();
-                    $('#pop_modal_container2').show();
-                }
-            });
-    }).fail(function () {
-        toLogin();
-    });
-
+    if (!switchLock) {
+        switchLock = true;
+        $.when(commonFun.isUserLogin())
+            .done(function () {
+                let exchangePrize = e.currentTarget.dataset.index;
+                commonFun.useAjax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url:'/activity/start-work/exchange',
+                    data: {exchangePrize}
+                },function(data) {
+                    if (data.success) {
+                        $('#flex_content').show();
+                        $('#pop_modal_container1').show();
+                        $('#gold_count').html(data.count);
+                        recordList();
+                        switchLock = false;
+                    }
+                    else {
+                        $('#flex_content').show();
+                        $('#pop_modal_container2').show();
+                        switchLock = false;
+                    }
+                });
+            }).fail(function () {
+            toLogin();
+            switchLock = false;
+        });
+    }
 });
 
 
@@ -74,7 +77,7 @@ function recordList() {
         dataType: 'json',
         url:'/activity/start-work/prize',
     },function(data) {
-        let domStr = '';
+        let domStr = '<tr><th>物品</th><th>时间</th><th>消耗小金人个数</th></tr>';
         let list = data.prize;
         list.forEach((item) => {
             domStr += `<tr>
@@ -83,8 +86,6 @@ function recordList() {
                           <td>${item.count}</td>
                         </tr>`
         });
-        $('.hover_table').append(domStr);
+        $('.hover_table').html(domStr);
     });
 }
-
-recordList();

@@ -12,16 +12,14 @@
             <div class="main">
                 <div class="text_wrapper">活动期间，用户累计年化投资额每满<span class="text_strong">5万元</span>即可获赠<span class="text_strong">1个“小金人”</span>，<br/>用户使用“小金人”，可在活动页面兑换相应奖励。</div>
                 <@global.isNotAnonymous>
-                <div class="title_wrapper" style="display: block"><span style="margin-left: 10px">我的小金人<span style="color: #c4050d;font-size: 20px" id="gold_count">${count!}</span>个</span><span class="record_text">我的兑换记录</span>
+                <div class="title_wrapper"><span style="margin-left: 10px">我的小金人<span style="color: #c4050d;font-size: 20px" id="gold_count">${count!}</span>个</span><span class="record_text">我的兑换记录</span>
                     <div class="hover_icon">
                         <div class="triangle_icon"></div>
-                        <table class="hover_table">
-                            <tr>
-                                <th>物品</th>
-                                <th>时间</th>
-                                <th>消耗小金人个数</th>
-                            </tr>
-                        </table>
+                        <div class="hover_table_container">
+                            <table class="hover_table">
+
+                            </table>
+                        </div>
                     </div>
                 </div>
                 </@global.isNotAnonymous>
