@@ -61,7 +61,8 @@ body {
       dd {
         width: 298px;
         height: 298px;
-        text-indent:-9999px;
+        text-align: center;
+        box-sizing: border-box;
         &.invest {
           float: left;
           margin-left: 70px;
@@ -80,6 +81,19 @@ body {
           background-size: contain;
         }
       }
+    }
+  }
+  .national-shares {
+    .management-imgs {
+      dl {
+        dd {
+          color: #fff;
+          font-size: 30px;
+          padding-top: 110px;
+          line-height: 40px;
+        }
+      }
+
     }
   }
 .security-upgrade {
@@ -290,15 +304,27 @@ body {
         width: 2.98rem;
         height: 2.98rem;
         &.invest {
-          margin-left: .3rem;
+          margin-left: .25rem;
         }
         &.assets {
           margin-top: 1.6rem;
         }
         &.enterprise {
-          margin-right: .3rem;
+          margin-right: .25rem;
         }
       }
+    }
+  }
+  .national-shares {
+    .management-imgs {
+      dl {
+        dd {
+          font-size: .3rem;
+          padding-top: 1.1rem;
+          line-height: .4rem;
+        }
+      }
+
     }
   }
   .security-upgrade {

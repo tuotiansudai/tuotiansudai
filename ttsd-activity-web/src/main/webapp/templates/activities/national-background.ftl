@@ -18,9 +18,9 @@
         </div>
         <div class="management-imgs clearfix">
             <dl>
-                <dd class="invest">投资管理</dd>
-                <dd class="enterprise">企业管理</dd>
-                <dd class="assets">资产管理</dd>
+                <dd class="invest">投资<br/>管理</dd>
+                <dd class="enterprise">企业<br/>管理</dd>
+                <dd class="assets">资产<br/>管理</dd>
 
             </dl>
         </div>
