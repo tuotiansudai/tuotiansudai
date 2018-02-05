@@ -67,8 +67,8 @@ public class StartWorkActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/start-work");
         }
-        String duringActivities = startWorkActivityService.duringActivities();
-        if (!"START".equals(duringActivities)) {
+        boolean duringActivities = startWorkActivityService.duringActivities();
+        if (!duringActivities) {
             return new ModelAndView("redirect:/activity/start-work/wechat");
         }
 
@@ -88,7 +88,7 @@ public class StartWorkActivityController {
             startWorkActivityService.sendDrawCouponMessage(loginName);
             modelAndView.addObject("drawSuccess", true);
         }
-        return new ModelAndView("/wechat/new-year-increase-interest");
+        return new ModelAndView("/wechat/start-work");
     }
 
 }

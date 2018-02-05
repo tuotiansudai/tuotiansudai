@@ -45,14 +45,8 @@ public class StartWorkActivityService {
 
     private static final long PRICE = 5000000;
 
-    public String duringActivities() {
-        if (new Date().before(activityStartTime)) {
-            return "NOT_START";
-        }
-        if (new Date().after(activityEndTime)) {
-            return "END";
-        }
-        return "START";
+    public boolean duringActivities() {
+        return activityStartTime.before(new Date()) && activityEndTime.after(new Date());
     }
 
     public boolean drewCoupon(String loginName) {
@@ -60,7 +54,7 @@ public class StartWorkActivityService {
     }
 
     public void sendDrawCouponMessage(String loginName) {
-        if ("START".equals(duringActivities())) {
+        if (duringActivities()) {
             mqWrapperClient.sendMessage(MessageQueue.StartWorkActivity_Coupon, loginName);
         }
     }
@@ -84,7 +78,7 @@ public class StartWorkActivityService {
     }
 
     public int getCount(String mobile) {
-        if (!"START".equals(duringActivities())) {
+        if (!duringActivities()) {
             return 0;
         }
         List<UserExchangePrizeModel> exchangePrizes = getUserPrizeByMobile(mobile);
