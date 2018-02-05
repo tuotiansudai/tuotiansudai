@@ -2,8 +2,6 @@ package com.tuotiansudai.mq.consumer.activity;
 
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.repository.model.InvestNewmanTyrantModel;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
