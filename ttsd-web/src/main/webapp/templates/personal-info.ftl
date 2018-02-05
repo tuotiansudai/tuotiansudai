@@ -155,7 +155,7 @@
 </div>
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
-    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post"  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+    <form id="get_authorization" name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post"  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
         <div class="tc text-m">推荐您开通免密投资功能，简化投资过程，投资快人一步。</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
