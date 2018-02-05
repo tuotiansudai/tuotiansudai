@@ -36,6 +36,11 @@ h2,h4 {
       line-height: 32px;
       color: #333;
       text-align: center;
+      .text_strong {
+        font-size: 18px;
+        color: #ec192c;
+        font-weight: bold;
+      }
     }
     .wechat_wrapper {
       position: absolute;
@@ -67,9 +72,14 @@ h2,h4 {
         line-height: 32px;
         color: #333;
         text-align: center;
+        .text_strong {
+          font-size: 18px;
+          color: #ec192c;
+          font-weight: bold;
+        }
       }
       .title_wrapper {
-        margin: 20px auto 30px auto;
+        margin: 20px auto auto auto;
         width: 353px;
         height: 93px;
         line-height: 93px;
@@ -77,6 +87,48 @@ h2,h4 {
         font-size: 18px;
         background: url("../images/2018/start-work/gold_person_title.png") no-repeat;
         background-size: contain;
+        .record_text {
+          margin-left: 15px;
+          color: #c4050d;
+          text-decoration: underline;
+          cursor: pointer;
+          &:hover +.hover_icon {
+            display: block;
+          }
+        }
+      }
+      .hover_icon {
+        display: none;
+        position: relative;
+        top: -20px;
+        left: 20px;
+        z-index: 999;
+        width: 469px;
+        background: #e94144;
+        .triangle_icon {
+          position: absolute;
+          top: -13px;
+          left: 205px;
+          width: 48px;
+          height: 13px;
+          background: url("../images/2018/start-work/triangle_icon.png") no-repeat;
+          background-size: contain;
+        }
+        .hover_table {
+          font-size: 14px;
+          color: #f7fecd;
+          tr {
+            th {
+              color: #f7fecd;
+              background: #e94144;
+              border-bottom: 1px solid #f2877c;
+            }
+            td {
+              font-size: 14px;
+              color: #f7fecd;
+            }
+          }
+        }
       }
       .prize_list_container {
         position: relative;
@@ -100,6 +152,7 @@ h2,h4 {
           font-size: 15.5px;
           line-height: 15.5px;
           color: #333;
+          cursor: pointer;
           overflow: hidden;
           .prize_jd_card {
             margin: 42px auto 55px auto;
@@ -193,6 +246,11 @@ h2,h4 {
       margin-top: 183px;
       font-size: 16px;
       color: #333;
+      .text_strong {
+        font-size: 18px;
+        color: #ec192c;
+        font-weight: bold;
+      }
     }
     .example {
       margin-top: 183px;
@@ -210,4 +268,129 @@ h2,h4 {
       }
     }
   }
+  .experience_cash_container {
+    position: relative;
+    margin-top: 33px;
+    width: 1008px;
+    height: 602px;
+    background: url("../images/2018/start-work/experience_cash_container.png") no-repeat;
+    background-size: contain;
+    text-align: center;
+    overflow: hidden;
+    .desc {
+      margin-top: 190px;
+      font-size: 16px;
+      color: #333;
+      .text_strong {
+        font-size: 18px;
+        color: #ec192c;
+        font-weight: bold;
+      }
+    }
+    .title_text {
+      display: inline-block;
+      width: 273px;
+      margin-top: 10px;
+      font-size: 18px;
+      line-height: 18px;
+      color: #333;
+      text-align: center;
+    }
+    .invest_btn {
+      margin: 242px auto auto auto;
+      width: 226px;
+      height: 61px;
+      line-height: 61px;
+      text-align: center;
+      background: #eb312d;
+      border-radius: 8px;
+      font-size: 23.6px;
+      color: #fcf488;
+      cursor: pointer;
+    }
+  }
+  .tip_text_container {
+    margin-top: 33px;
+    overflow: hidden;
+    color: #ffefc4;
+    .title_tip {
+      font-size: 20px;
+    }
+    p {
+      margin-bottom: 0;
+      line-height: 29px;
+      font-size: 16px;
+      color: #ffefc4;
+    }
+    table {
+      margin: auto auto 13px 25px;
+      width: 486px;
+      td {
+        font-size: 16px;
+        border: 1px solid #f28c7b;
+        color: #ffefc4;
+      }
+    }
+  }
+}
+.pop_modal_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  width: 395px;
+  height: 195px;
+  text-align: center;
+  overflow: hidden;
+  z-index: 998;
+}
+.pop_modal_bg {
+  position: relative;
+  padding-top: 37px;
+  width: 395px;
+  height: 158px;
+  .pop_modal {
+    width: 351px;
+    height: 160px;
+    color: #e13841;
+    background: url("../images/2018/start-work/modal_pop_bg.png") no-repeat;
+    background-size: contain;
+    position: relative;
+    overflow: hidden;
+  }
+  .close_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    background: url("../images/2018/start-work/close_btn.png") no-repeat;
+    background-size: contain;
+  }
+  &.not_enough {
+    font-size: 18px;
+    font-weight: bold;
+    .text {
+      margin-top: 65px;
+    }
+  }
+  &.get_it {
+    .text {
+      margin-top: 50px;
+    }
+  }
+}
+.flex_content {
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 997;
 }

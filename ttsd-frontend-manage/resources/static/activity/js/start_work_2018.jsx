@@ -3,83 +3,88 @@ let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 require('swiper/dist/css/swiper.css')
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
-let $increase_interest = $('#increase_interest');
-let $productList = $('#productList',$increase_interest),
-    $productListWap = $('#productListWap',$increase_interest);
+let sourceKind = globalFun.parseURL(location.href);
 
-let descObj = {
-    0:'蒙顶山春茶云雾茶礼盒装125g',
-    1:'江小白45度清香型白酒125ml*12瓶',
-    2:'小米 红米5A 全网通版 2GB+16GB',
-    3:'周生生黄金羽毛吊坠计价2.31克',
-    4:'AOSHIMSIT 按摩椅家用太空舱',
-    5:'立久佳家用静音折叠跑步机',
-    6:'海尔模卡55英寸 4K曲面液晶电视',
-    7:'Apple iPhone8（64GB'
-}
-$productList.find('li').each(function (index,item) {
-    let  _self = $(this);
-    let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
-    let img = new Image();
-    img.src = imgUrl;
-    img.alt=descObj[index];
-    img.title = descObj[index];
-    _self.append(img);
-})
 
-//鼠标悬停效果
-let $descTip = $('.desc-tips'),
-    $pcLookBtn = $('.pc-look-btn'),
-    $wapLookBtn = $('.wap-look-btn'),
-    $body = $('body');
-$pcLookBtn.hover(function () {
-    $(this).parents('.activity-desc').next().css('visibility','visible');
-},function () {
-    $(this).parents('.activity-desc').next().css('visibility','hidden');
-})
-//移动端点击效果
-$wapLookBtn.on('click',function () {
-    $(this).parents('.activity-desc').next().toggleClass('toggleShow');
-})
+$.when(commonFun.isUserLogin())
+    .done(function () {
+        recordList();
+        $('.title_wrapper').show();
+    });
 
-$(document).bind("click",function(e) {
+$('.close_btn1').on('click',() => {
+    $('#flex_content').hide();
+   $('#pop_modal_container1').hide();
+});
 
-    if($(e.target).hasClass('wap-look-btn')) {
-        return;
+$('.close_btn2').on('click',() => {
+    $('#flex_content').hide();
+    $('#pop_modal_container2').hide();
+});
+
+$('.invest_btn').on('click',() => {
+    window.location.href = '/loan-list';
+});
+
+$('.get_prize_btn').on('click',(e) => {
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            let exchangePrize = e.currentTarget.dataset.index;
+            commonFun.useAjax({
+                type: 'POST',
+                dataType: 'json',
+                url:'/activity/start-work/exchange',
+                data: {exchangePrize}
+            },function(data) {
+                if (data.success) {
+                    $('#flex_content').show();
+                    $('#pop_modal_container1').show();
+                    $('#gold_count').html(data.count);
+                }
+                else {
+                    $('#flex_content').show();
+                    $('#pop_modal_container2').show();
+                }
+            });
+    }).fail(function () {
+        toLogin();
+    });
+
+});
+
+
+//去登录
+function toLogin() {
+    if (sourceKind.params.source == 'app') {
+        location.href = "/login";
+    }else {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto', 'auto'],
+            content: $('#loginTip')
+        });
     }
-    $('.desc-tips').removeClass('toggleShow');
+}
 
+function recordList() {
+    commonFun.useAjax({
+        type: 'GET',
+        dataType: 'json',
+        url:'/activity/start-work/prize',
+    },function(data) {
+        let domStr = '';
+        let list = data.prize;
+        list.forEach((item) => {
+            domStr += `<tr>
+                          <td>${item.prize}</td>
+                          <td>${item.exchangeTime}</td>
+                          <td>${item.count}</td>
+                        </tr>`
+        });
+        $('.hover_table').append(domStr);
+    });
+}
 
-})
-//移动端
-$productListWap.find('.swiper-slide').each(function (index,item) {
-    let  _self = $(this);
-    let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
-    let img = new Image();
-    img.src = imgUrl;
-    img.alt=descObj[index];
-    img.title = descObj[index];
-    _self.append(img);
-})
-
-
-let mySwiper = new Swiper ('.swiper-container', {
-    direction: 'horizontal',
-    loop: true,
-    autoplay:3000,
-    autoplayDisableOnInteraction:false,
-    slidesPerView: '1.4',
-    centeredSlides:true,
-    spaceBetween: 20,
-    loopAdditionalSlides:1
-})
-
-let $prevBtn = $('.prevBtn'),
-    $nextBtn = $('.nextBtn');
-
-$prevBtn.on('click',function () {
-    mySwiper.slidePrev();
-})
-$nextBtn.on('click',function () {
-    mySwiper.slideNext();
-})
+recordList();
