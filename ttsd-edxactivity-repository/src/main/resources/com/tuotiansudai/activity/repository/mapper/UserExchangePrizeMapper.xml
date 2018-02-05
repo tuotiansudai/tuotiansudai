@@ -47,13 +47,10 @@
         select p.exchange_time,p.mobile,p.user_name,p.prize,p.login_name from `edxactivity`.`user_exchange_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
-                and p.mobile like '${mobile}%'
+                and p.mobile like CONCAT(CONCAT('%', #{mobile}), '%')
             </if>
             <if test="userName !=null and userName !='' ">
-                and p.user_name like '${userName}%'
-            </if>
-            <if test="exchangePrize !=null ">
-                and p.prize = #{exchangePrize}
+                and p.user_name like CONCAT(CONCAT('%', #{userName}), '%')
             </if>
             <if test="startTime != null">
                 and p.exchange_time >= #{startTime}
@@ -66,22 +63,11 @@
             </if>
         </where>
         order by p.exchange_time DESC
-        <if test="index != null and pageSize != null">
-            limit #{index}, #{pageSize}
-        </if>
     </select>
 
     <select id="findUserExchangePrizeByMobile" parameterType="map" resultMap="userExchangePrizeModel">
         select `id`,`mobile`,`login_name`,`user_name`,`prize`,`exchange_time`,`activity_category` from `edxactivity`.`user_exchange_prize`
-        <where>
-            <if test="mobile !=null and mobile !='' ">
-                and mobile = '${mobile}'
-            </if>
-            <if test="activityCategory != null">
-                and activity_category like '${activityCategory}%'
-            </if>
-        </where>
-        order by exchange_time DESC
+        where mobile = #{mobile} and activity_category = #{activityCategory}
     </select>
 
 </mapper>

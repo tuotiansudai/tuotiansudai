@@ -26,7 +26,7 @@ public class ActivityConsoleStartWorkService {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-        List<UserExchangePrizeModel> userExchangePrizeModels = userExchangePrizeMapper.findUserExchangePrizeViews(mobile, userName, null, ActivityCategory.START_WORK_ACTIVITY, startTime, endTime, null, null);
+        List<UserExchangePrizeModel> userExchangePrizeModels = userExchangePrizeMapper.findUserExchangePrizeViews(mobile, userName, ActivityCategory.START_WORK_ACTIVITY, startTime, endTime);
         List<StartWorkPrizeDto> list = userExchangePrizeModels.stream().map(StartWorkPrizeDto::new).collect(Collectors.toList());
         int count=list.size();
         int endIndex = pageSize * index;

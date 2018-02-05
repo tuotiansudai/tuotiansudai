@@ -74,7 +74,7 @@ public class StartWorkActivityService {
     }
 
     public List<UserExchangePrizeModel> getUserPrizeByMobile(String mobile) {
-        return userExchangePrizeMapper.findUserExchangePrizeViews(mobile, null, null, ActivityCategory.START_WORK_ACTIVITY, activityStartTime, activityEndTime, null, null);
+        return userExchangePrizeMapper.findUserExchangePrizeViews(mobile,null, ActivityCategory.START_WORK_ACTIVITY, activityStartTime, activityEndTime);
     }
 
     public int getCount(String mobile) {

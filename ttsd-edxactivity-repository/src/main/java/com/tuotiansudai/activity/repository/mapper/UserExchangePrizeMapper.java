@@ -19,15 +19,12 @@ public interface UserExchangePrizeMapper {
 
     List<UserExchangePrizeModel> findUserExchangePrizeViews(@Param(value = "mobile") String mobile,
                                                             @Param(value = "userName") String userName,
-                                                            @Param(value = "exchangePrize") ExchangePrize exchangePrize,
                                                             @Param(value = "activityCategory") ActivityCategory activityCategory,
                                                             @Param(value = "startTime") Date startTime,
-                                                            @Param(value = "endTime") Date endTime,
-                                                            @Param(value = "index") Integer index,
-                                                            @Param(value = "pageSize") Integer pageSize);
+                                                            @Param(value = "endTime") Date endTime);
 
-    UserExchangePrizeModel findUserExchangePrizeByMobile(@Param(value = "mobile") String mobile,
-                                                         @Param(value = "activityCategory") ActivityCategory activityCategory);
+    List<UserExchangePrizeModel> findUserExchangePrizeByMobile(@Param(value = "mobile") String mobile,
+                                                               @Param(value = "activityCategory") ActivityCategory activityCategory);
 
 
 }
