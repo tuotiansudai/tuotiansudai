@@ -57,7 +57,7 @@ public class StartWorkActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/start-work");
         }
-        ModelAndView modelAndView = new ModelAndView("/wechat");
+        ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
         return modelAndView;
     }
 
@@ -80,7 +80,7 @@ public class StartWorkActivityController {
             return new ModelAndView("/error/404");
         }
 
-        ModelAndView modelAndView = new ModelAndView("/wechat");
+        ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
         boolean drewCoupon = startWorkActivityService.drewCoupon(loginName);
         modelAndView.addObject("activityStatus", duringActivities);
         modelAndView.addObject("drewCoupon", drewCoupon);
@@ -88,7 +88,7 @@ public class StartWorkActivityController {
             startWorkActivityService.sendDrawCouponMessage(loginName);
             modelAndView.addObject("drawSuccess", true);
         }
-        return new ModelAndView("/wechat/start-work");
+        return modelAndView;
     }
 
 }
