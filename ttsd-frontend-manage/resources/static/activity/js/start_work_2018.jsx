@@ -40,6 +40,7 @@ $('.get_prize_btn').on('click',(e) => {
                     $('#flex_content').show();
                     $('#pop_modal_container1').show();
                     $('#gold_count').html(data.count);
+                    recordList();
                 }
                 else {
                     $('#flex_content').show();
@@ -74,7 +75,7 @@ function recordList() {
         dataType: 'json',
         url:'/activity/start-work/prize',
     },function(data) {
-        let domStr = '';
+        let domStr = '<tr><th>物品</th><th>时间</th><th>消耗小金人个数</th></tr>';
         let list = data.prize;
         list.forEach((item) => {
             domStr += `<tr>
@@ -83,8 +84,6 @@ function recordList() {
                           <td>${item.count}</td>
                         </tr>`
         });
-        $('.hover_table').append(domStr);
+        $('.hover_table').html(domStr);
     });
 }
-
-recordList();
