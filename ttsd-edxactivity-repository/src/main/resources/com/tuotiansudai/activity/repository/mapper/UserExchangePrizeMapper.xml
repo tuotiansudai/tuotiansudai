@@ -47,10 +47,10 @@
         select p.exchange_time,p.mobile,p.user_name,p.prize,p.login_name from `edxactivity`.`user_exchange_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
-                and p.mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+                and p.mobile like CONCAT('%', #{mobile}, '%')
             </if>
             <if test="userName !=null and userName !='' ">
-                and p.user_name like CONCAT(CONCAT('%', #{userName}), '%')
+                and p.user_name like CONCAT('%', #{userName}, '%')
             </if>
             <if test="startTime != null">
                 and p.exchange_time >= #{startTime}
