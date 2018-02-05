@@ -110,7 +110,7 @@ public class AgreementServiceImpl implements AgreementService {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 
         accountModel.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType || accountModel.isNoPasswordInvest());
-        accountModel.setAutoInvest(Lists.newArrayList(AgreementBusinessType.NO_PASSWORD_INVEST, AgreementBusinessType.AUTO_INVEST).contains(agreementBusinessType) || accountModel.isAutoInvest());
+        accountModel.setAutoInvest(Lists.newArrayList(AgreementBusinessType.NO_PASSWORD_INVEST, AgreementBusinessType.AUTO_INVEST, AgreementBusinessType.HUIZU_AUTO_REPAY).contains(agreementBusinessType) || accountModel.isAutoInvest());
         accountModel.setAutoRepay(AgreementBusinessType.AUTO_REPAY == agreementBusinessType || accountModel.isAutoRepay());
         accountMapper.update(accountModel);
 
