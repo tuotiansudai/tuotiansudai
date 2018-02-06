@@ -52,7 +52,7 @@
 .input-list {
   margin-top:20px;
   margin-bottom:50px;
-  border-bottom: 1px solid #f2f2f2;
+  border-top: 1px solid #f2f2f2;
 
   li{
     height: 45px;
@@ -98,17 +98,6 @@
   }
 }
 
-.apply-transfer-success {
-  text-align: center;
-  box-sizing: border-box;
-  em {
-    display: block;
-    padding-top:5px;
-    font-size: 15px;
-    color: #808080;
-  }
-}
-
 
 .info{
   padding-top:50px;
@@ -126,7 +115,7 @@
   overflow: hidden;
   text-align: center;
   box-sizing: border-box;
-  em {
+  .success-tips {
     display: block;
     padding-top:20px;
     font-size: 15px;

@@ -6,7 +6,7 @@
             <div class="m-header">投资成功</div>
             <div class="info">
                 <i class="icon-success"></i>
-                <em>投资成功</em>
+                <em class="success-tips">投资成功</em>
                 <ul class="input-list">
                     <li>
                         <label>投资金额</label>
@@ -30,7 +30,7 @@
             <div class="m-header">提现成功</div>
             <div class="info">
                 <i class="icon-success"></i>
-                <em>提现成功</em>
+                <em class="success-tips">提现成功</em>
                 <ul class="input-list">
                     <li>
                         <label>到账卡号</label>
@@ -56,7 +56,7 @@
                 <div class="m-header">绑卡成功</div>
                 <div class="info">
                     <i class="icon-success"></i>
-                    <em>银行卡绑定成功</em>
+                    <em class="success-tips">银行卡绑定成功</em>
                     <ul class="input-list">
                         <li>
                             <label>银行卡号</label>
@@ -73,14 +73,14 @@
             <div class="m-header">充值成功</div>
             <div class="info">
                 <i class="icon-success"></i>
-                <em>充值成功</em>
+                <em class="success-tips">充值成功</em>
                 <ul class="input-list">
                     <li>
                         <label>充值卡号</label>
                         <span style="white-space: nowrap">${bankName!} ${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1 **** $2","r")}</span>
                     </li>
                     <li>
-                        <label>充值金额</label>
+                        <label>充值金额${(amount/100)!}</label>
                         <span><em class="money">${(amount/100)!}</em>元</span>
                     </li>
                     <li>
@@ -99,7 +99,7 @@
                 <div class="m-header">转让成功</div>
                 <div class="info">
                     <i class="icon-success"></i>
-                    <em>转让成功</em>
+                    <em class="success-tips">转让成功</em>
                     <ul class="input-list">
                         <li>
                             <label>投资金额</label>
