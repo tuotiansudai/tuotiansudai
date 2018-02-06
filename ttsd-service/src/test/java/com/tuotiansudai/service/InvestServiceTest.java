@@ -170,11 +170,11 @@ public class InvestServiceTest {
 
         loanDetailsMapper.create(createLoanDetails(loanId));
 
-        long amount = investService.estimateInvestIncome(loanId, loginName, 100000, new Date());
+        long amount = investService.estimateInvestIncome(loanId, 0.1, loginName, 100000, new Date());
         assertNotNull(amount);
-        amount = investService.estimateInvestIncome(loanId, loginName, 1000000, new Date());
+        amount = investService.estimateInvestIncome(loanId, 0.1, loginName, 1000000, new Date());
         assertNotNull(amount);
-        amount = investService.estimateInvestIncome(loanId, loginName, 5000000, new Date());
+        amount = investService.estimateInvestIncome(loanId, 0.1, loginName, 5000000, new Date());
         assertNotNull(amount);
     }
 

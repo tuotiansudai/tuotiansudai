@@ -56,7 +56,7 @@ public class UserMembershipEvaluator {
             return null;
         }
 
-        Optional<UserMembershipModel> max = userMembershipModels.stream().filter(input -> input.getExpiredTime().after(date)).
+        Optional<UserMembershipModel> max = userMembershipModels.stream().filter(input -> input.getCreatedTime().before(date) && input.getExpiredTime().after(date)).
                 max((left, right) -> left.getMembershipId() == right.getMembershipId() ?
                         Long.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Long.compare(left.getMembershipId(), right.getMembershipId()));
 

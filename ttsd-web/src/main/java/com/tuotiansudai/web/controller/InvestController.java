@@ -172,7 +172,8 @@ public class InvestController {
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = investService.estimateInvestIncome(loanId, loginName, amount, new Date());
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        long expectedInterest = investService.estimateInvestIncome(loanId, investFeeRate, loginName, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
@@ -182,7 +183,9 @@ public class InvestController {
                                                   @PathVariable long amount,
                                                   @RequestParam List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount, new Date());
+        //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, investFeeRate, loanId, couponIds, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
