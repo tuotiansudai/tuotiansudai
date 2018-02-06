@@ -23,7 +23,7 @@
                 </ul>
             </div>
             <div class="button-note">
-                <a data-url="/m/m/investor/invest-list" class="count-btn btn-wap-normal next-step">确定</a>
+                <a data-url="/m/investor/invest-list" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
         </#if>
         <#if "CUST_WITHDRAWALS" == service>

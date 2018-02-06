@@ -60,6 +60,7 @@ $(window).load(function () {
 
 
     $repayingBtn.on('click',function () {
+        flagScroll = true;
         $('#noData').hide();
         index = 1;
         myScroll.refresh();
@@ -68,6 +69,7 @@ $(window).load(function () {
 
     })
     $raisingBtn.on('click',function () {
+        flagScroll = true;
         $('#noData').hide();
         index = 1;
         $main.html('');
