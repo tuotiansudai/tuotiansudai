@@ -19,7 +19,16 @@ let $transferDetail = $('#transfer_details');
 let $isAuthenticationRequired=$('#isAuthenticationRequired');
 let isAuthenticationRequired = $isAuthenticationRequired.data('is-authentication-required');
 let dataPage = $isAuthenticationRequired.data('page');
-
+let commonFun = require('publicJs/commonFun');
+//领优惠券
+$.when(commonFun.isUserLogin())
+    .done(function () {
+        commonFun.useAjax({
+            url: '/assign-coupon',
+            type: 'POST',
+            contentType: 'application/json; charset=UTF-8'
+        });
+    })
 
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
@@ -64,7 +73,7 @@ $('.close_btn').on('click',() => {
 });
 //借款详情
 
-let commonFun = require('publicJs/commonFun');
+
 commonFun.calculationFun(document,window);
 let menuClick = require('mWebJsModule/menuClick');
 
@@ -356,6 +365,8 @@ let calExpectedSelectCouponInterest = function(dom) {
 
 //页面加载判断预期收益
 if($buyDetail.length !==0){
+    //页面加载判断
+    testAmount();
     maxBenifitUserCoupon();
     if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''){
         commonFun.CommonLayerTip({
@@ -438,8 +449,7 @@ function testAmount() {
     }
 
 }
-//页面加载判断
-testAmount();
+
 //输入金额判断
 $amountInputElement
     .on('keyup',function() {
@@ -654,7 +664,7 @@ $('.init-checkbox-style').initCheckbox(function(event) {
 });
 //转让详情页回退按钮
 $('#iconTransferM').on('click',function () {
-    location.href = '/m/transfer-list'
+    history.go(-1);
 })
 //回款计划回退按钮
 $('#iconReplay').on('click',function () {
