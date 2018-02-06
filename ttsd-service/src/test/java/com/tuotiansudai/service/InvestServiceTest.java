@@ -219,26 +219,32 @@ public class InvestServiceTest {
     @Test
     public void testCalculateMembershipPreference() throws Exception {
         UserMembershipModel userMembershipModel0 = new UserMembershipModel("testUser", membershipMapper.findByLevel(0).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipModel0.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel0);
         assertEquals(0, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel1 = new UserMembershipModel("testUser", membershipMapper.findByLevel(1).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipModel1.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel1);
         assertEquals(0, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel2 = new UserMembershipModel("testUser", membershipMapper.findByLevel(2).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipModel2.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel2);
         assertEquals(1, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel3 = new UserMembershipModel("testUser", membershipMapper.findByLevel(3).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipModel3.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel3);
         assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel4 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipModel4.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel4);
         assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
 
         UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(5).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipModel5.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel5);
         extraLoanRateMapper.create(createExtraLoanRate(LOAN_ID));
         loanDetailsMapper.create(createLoanDetails(LOAN_ID));

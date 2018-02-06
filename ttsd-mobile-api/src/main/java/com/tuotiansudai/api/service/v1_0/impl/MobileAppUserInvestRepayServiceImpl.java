@@ -164,7 +164,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investModel.getInvestFeeRate()));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
-            List<String> usedCoupons = userCouponModels.stream().map(input -> generateUsedCouponName(couponMapper.findById(input.getCouponId()))).collect(Collectors.toList());
+            List<String> usedCoupons = Lists.transform(userCouponModels, input -> generateUsedCouponName(couponMapper.findById(input.getCouponId())));
             userInvestRepayResponseDataDto.setUsedCoupons(usedCoupons);
             if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
                 if (investModel.getContractNo().equals("OLD")) {

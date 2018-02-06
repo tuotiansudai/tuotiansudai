@@ -53,12 +53,15 @@ public class UserMembershipEvaluatorTest {
     }
 
     @Test
-    public void shouldEvaluateWhenUserMembershipIsMoreThanOne() throws Exception {
+    public void shouldEvaluateWhenUserMembershipIsMoreThanOne() {
         UserModel fakeUser = this.getFakeUser("fakeUser");
 
         UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 5, new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel1.setCreatedTime(new DateTime().minusDays(11).toDate());
         UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel2.setCreatedTime(new DateTime().minusDays(11).toDate());
         UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), 4, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel3.setCreatedTime(new DateTime().minusDays(11).toDate());
 
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);

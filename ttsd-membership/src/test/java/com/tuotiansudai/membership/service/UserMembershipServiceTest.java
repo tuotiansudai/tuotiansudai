@@ -71,22 +71,6 @@ public class UserMembershipServiceTest {
     }
 
     @Test
-    public void shouldEvaluateWhenUserMembershipIsMoreThanOne() throws Exception {
-        UserModel fakeUser = this.getFakeUser("fakeUser");
-
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 5, new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), 4, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
-
-        userMembershipMapper.create(userMembershipModel1);
-        userMembershipMapper.create(userMembershipModel2);
-        userMembershipMapper.create(userMembershipModel3);
-
-        assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(3));
-    }
-
-
-    @Test
     public void shouldGetMembershipByLevel() {
         MembershipModel membershipModel = userMembershipService.getMembershipByLevel(createMembership(1).getLevel());
 
