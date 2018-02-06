@@ -249,7 +249,11 @@ $selectCoupon.on('click',function () {
 })
 function validateHash() {
     if(location.hash == ''){
-        $loanDetail.show().siblings('.show-page').hide();
+        if($('#whichPage').data('page') == 'invest'){
+            $loanDetail.show().siblings('.show-page').hide();
+        }else {
+            $('#transferingDetail').show().siblings().hide();
+        }
 
     }else if(location.hash == '#projectDetail'){
 
@@ -650,7 +654,8 @@ $transferDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 //回退按钮
 let transferApplicationId = $("#transferApplicationId").val();
 $('#iconTransferDetail').on('click',function () {
-    location.href = '/m/transfer/'+transferApplicationId;
+    //location.href = '/m/transfer/'+transferApplicationId;
+    history.go(-1);
 
 })
 //协议

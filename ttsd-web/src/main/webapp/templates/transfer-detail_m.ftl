@@ -1,8 +1,8 @@
 <#import "macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="项目详情－转让详情">
-
-<div class="my-account-content experience-amount" id="transferingDetail">
+<input id="whichPage" type="hidden" data-page="transfer">
+<div class="my-account-content experience-amount" id="transferingDetail" style="display: none">
 
     <div class="account-summary">
         <em id="iconTransferM" class="icon-left"><i class="iconRight"></i></em>
