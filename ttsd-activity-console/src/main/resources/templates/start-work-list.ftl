@@ -56,7 +56,7 @@
                     <td>${item.mobile}</td>
                     <td>${item.userName}</td>
                     <td>${item.prize}</td>
-                    <td>${item.exchangeTime?string("yyyy-MM-dd HH:mm")}</td>
+                    <td>${item.exchangeTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                     <td>${item.count}</td>
                 </tr>
                 </#list>

@@ -2,13 +2,16 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
@@ -30,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -63,6 +67,9 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     @Mock
     private RedisWrapperClient redisWrapperClient;
 
+    @Mock
+    private MQWrapperClient mqWrapperClient;
+
     @Before
     public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -72,6 +79,15 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         modifiersField.setAccessible(true);
         modifiersField.setInt(redisWrapperClientField, redisWrapperClientField.getModifiers() & ~Modifier.FINAL);
         redisWrapperClientField.set(this.loanOutSuccessStartWorkMessageConsumer, this.redisWrapperClient);
+
+        Field startTimeClientField = this.loanOutSuccessStartWorkMessageConsumer.getClass().getDeclaredField("activityStartTime");
+        startTimeClientField.setAccessible(true);
+        startTimeClientField.set(this.loanOutSuccessStartWorkMessageConsumer, DateTime.parse("2018-03-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+
+        Field endTimeClientField = this.loanOutSuccessStartWorkMessageConsumer.getClass().getDeclaredField("activityEndTime");
+        endTimeClientField.setAccessible(true);
+        endTimeClientField.set(this.loanOutSuccessStartWorkMessageConsumer, DateTime.parse("2018-03-31 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+
     }
 
     @Test
@@ -98,6 +114,8 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
                 .setex(redisKeyCaptor.capture(),  anyInt(), valueCaptor.capture());
         verify(this.payWrapperClient, times(2)).transferCash(requestModelCaptor.capture());
 
+        verify(this.mqWrapperClient, times(0)).sendMessage(any(MessageQueue.class), any());
+
         assertThat(redisKeyCaptor.getAllValues().get(0), is("START_WORK_CASH_KEY:loginName1:1234"));
         assertThat(valueCaptor.getAllValues().get(0), is("success"));
         assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_CASH_KEY:loginName2:1234"));
@@ -111,11 +129,11 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     @Test
     public void consumerOneUserIsSuccess() throws JsonProcessingException {
         List<InvestModel> investModels = Lists.newArrayList(
-                mockInvestModel(1,"2018-03-09 11:00:00", 1000, "loginName1"),
-                mockInvestModel(2,"2018-03-03 11:00:00", 1000, "loginName1"),
-                mockInvestModel(3,"2018-03-09 11:00:00", 1234, "loginName1"),
-                mockInvestModel(4,"2018-03-09 11:00:00", 2000, "loginName2"),
-                mockInvestModel(5,"2018-03-09 11:00:00", 3000, "loginName2")
+                mockInvestModel(1,"2018-03-09 11:00:00", 1000000, "loginName1"),
+                mockInvestModel(2,"2018-02-28 11:00:00", 1000, "loginName1"),
+                mockInvestModel(3,"2018-02-28 11:00:00", 123400000, "loginName2"),
+                mockInvestModel(4,"2018-03-09 11:00:00", 999999, "loginName2"),
+                mockInvestModel(5,"2018-03-09 11:00:00", 5000000, "loginName2")
         );
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
@@ -124,19 +142,28 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
         ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> valueCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<TransferCashDto> requestModelCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+        ArgumentCaptor<ExperienceAssigningMessage> messageCaptor = ArgumentCaptor.forClass(ExperienceAssigningMessage.class);
         when(this.redisWrapperClient.exists("START_WORK_CASH_KEY:loginName2:1234")).thenReturn(true);
         when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(true)));
 
         loanOutSuccessStartWorkMessageConsumer.consume(JsonConverter.writeValueAsString(buildMockedLoanOutSuccessMessage()));
 
-        verify(this.redisWrapperClient, times(1))
+        verify(this.redisWrapperClient, times(3))
                 .setex(redisKeyCaptor.capture(),  anyInt(), valueCaptor.capture());
         verify(this.payWrapperClient, times(1)).transferCash(requestModelCaptor.capture());
 
-        assertThat(redisKeyCaptor.getValue(), is("START_WORK_CASH_KEY:loginName1:1234"));
-        assertThat(valueCaptor.getValue(), is("success"));
+        verify(this.mqWrapperClient, times(2)).sendMessage(any(MessageQueue.class), messageCaptor.capture());
+
+        assertThat(redisKeyCaptor.getAllValues().get(0), is("START_WORK_CASH_KEY:loginName1:1234"));
+        assertThat(redisKeyCaptor.getAllValues().get(1), is("START_WORK_EXPERIENCE_KEY:1"));
+        assertThat(redisKeyCaptor.getAllValues().get(2), is("START_WORK_EXPERIENCE_KEY:5"));
+        assertThat(valueCaptor.getAllValues().get(0), is("success"));
         assertThat(requestModelCaptor.getValue().getLoginName(), is("loginName1"));
-        assertThat(requestModelCaptor.getValue().getAmount(), is("11"));
+        assertThat(requestModelCaptor.getValue().getAmount(), is("5000"));
+        assertThat(messageCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
+        assertThat(messageCaptor.getAllValues().get(0).getExperienceAmount(), is(600000L));
+        assertThat(messageCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
+        assertThat(messageCaptor.getAllValues().get(1).getExperienceAmount(), is(3800000L));
     }
 
     @Test

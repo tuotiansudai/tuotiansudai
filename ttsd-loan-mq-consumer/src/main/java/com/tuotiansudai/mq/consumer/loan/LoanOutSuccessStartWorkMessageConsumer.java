@@ -2,14 +2,18 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.ExperienceBillBusinessType;
+import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -25,6 +29,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +50,12 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.start.work.startTime}\")}")
+    private Date activityStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.start.work.endTime}\")}")
+    private Date activityEndTime;
+
     @Autowired
     private InvestMapper investMapper;
 
@@ -57,7 +68,12 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     public static final String START_WORK_CASH_KEY = "START_WORK_CASH_KEY:{0}:{1}";
+
+    public static final String START_WORK_EXPERIENCE_KEY = "START_WORK_EXPERIENCE_KEY:{0}";
 
 //    private final static List<String> FRIDAY_TIME = Lists.newArrayList("2018-03-02", "2018-03-09", "2018-03-16", "2018-03-23", "2018-03-30");
     private final static List<String> FRIDAY_TIME = Lists.newArrayList("2018-02-05", "2018-03-09", "2018-03-16", "2018-03-23", "2018-03-30");
@@ -93,8 +109,8 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
 
         List<InvestModel> list = investMapper.findSuccessInvestsByLoanId(loanOutInfo.getLoanId());
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
-        Map<String, Long> map = list.stream().filter(i->FRIDAY_TIME.contains(new DateTime(i.getTradingTime()).toString("yyyy-MM-dd"))).collect(groupingBy(InvestModel::getLoginName, summingLong(InvestModel::getAmount)));
 
+        Map<String, Long> map = list.stream().filter(i->FRIDAY_TIME.contains(new DateTime(i.getTradingTime()).toString("yyyy-MM-dd"))).collect(groupingBy(InvestModel::getLoginName, summingLong(InvestModel::getAmount)));
         for(Map.Entry<String, Long>  entry: map.entrySet()){
             String key = MessageFormat.format(START_WORK_CASH_KEY, entry.getKey(), String.valueOf(loanModel.getId()));
             if (!redisWrapperClient.exists(key)){
@@ -105,6 +121,24 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
                     logger.error("[LoanOutSuccess_StartWorkActivity] user:{}, loanId:{}, sendCash:{} is send fail.",
                             entry.getKey(), loanModel.getId(), sendCash);
                 }
+            }
+        }
+
+        List<InvestModel> experienceModels = list.stream().filter(i -> i.getTradingTime().after(activityStartTime) && i.getTradingTime().before(activityEndTime) && i.getAmount() >= 1000000).collect(Collectors.toList());
+        for (InvestModel investModel : experienceModels){
+            String key = MessageFormat.format(START_WORK_EXPERIENCE_KEY, String.valueOf(investModel.getId()));
+            long experienceAmount = getExperience(investModel.getAmount());
+            try {
+                if (experienceAmount > 0 && !redisWrapperClient.exists(key) ){
+                    logger.info("send start work activity experience begin, loginName:{}, investId:{}, experienceAmount:{}", investModel.getLoginName(), investModel.getId(), experienceAmount);
+                    redisWrapperClient.setex(key, lifeSecond, "success");
+                    mqWrapperClient.sendMessage(MessageQueue.ExperienceAssigning,
+                            new ExperienceAssigningMessage(investModel.getLoginName(), experienceAmount, ExperienceBillOperationType.IN, ExperienceBillBusinessType.START_WORK_ACTIVITY));
+                    logger.info("send start work activity experience end, loginName:{}, investId:{}, experienceAmount:{}", investModel.getLoginName(), investModel.getId(), experienceAmount);
+                }
+            } catch (Exception e) {
+                logger.error("[LoanOutSuccess_StartWorkActivity] user:{}, investId:{}, experienceAmount:{} is send fail.",
+                        investModel.getLoginName(), investModel.getId(), experienceAmount);
             }
         }
     }
@@ -127,6 +161,20 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
         redisWrapperClient.setex(key,  lifeSecond, "fail");
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【惊喜不重样加息不打烊活动放款】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(sendCash))));
         logger.info("send start work activity prize end, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, sendCash);
+    }
+
+    private long getExperience(long amount) {
+        long experienceAmount = 0;
+        if (amount >= 1000000 && amount < 5000000) {
+            experienceAmount = 600000;
+        }
+        if (amount >= 5000000 && amount < 10000000) {
+            experienceAmount = 3800000;
+        }
+        if (amount >= 10000000){
+            experienceAmount = 10000000;
+        }
+        return experienceAmount;
     }
 
 }
