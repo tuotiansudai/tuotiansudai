@@ -42,11 +42,11 @@ public class UserMembershipEvaluatorTest {
     }
 
     @Test
-    public void shouldEvaluateWhenUserMembershipIsOnlyOne() throws Exception {
+    public void shouldEvaluateWhenUserMembershipIsOnlyOne() {
         UserModel fakeUser = this.getFakeUser("level0User");
 
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
-
+        userMembershipModel.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel);
 
         assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(0));

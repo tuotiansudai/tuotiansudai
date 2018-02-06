@@ -60,17 +60,6 @@ public class UserMembershipServiceTest {
     }
 
     @Test
-    public void shouldEvaluateWhenUserMembershipIsOnlyOne() throws Exception {
-        UserModel fakeUser = this.getFakeUser("level0User");
-
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
-
-        userMembershipMapper.create(userMembershipModel);
-
-        assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(0));
-    }
-
-    @Test
     public void shouldGetMembershipByLevel() {
         MembershipModel membershipModel = userMembershipService.getMembershipByLevel(createMembership(1).getLevel());
 
@@ -154,7 +143,7 @@ public class UserMembershipServiceTest {
     private UserMembershipModel createUserMembershipModel(String loginName, UserMembershipType userMembershipType, int level) {
         UserMembershipModel userMembershipModel = new UserMembershipModel();
         userMembershipModel.setLoginName(loginName);
-        userMembershipModel.setCreatedTime(new Date());
+        userMembershipModel.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipModel.setExpiredTime(DateTime.parse("2040-06-30T12:30").toDate());
         userMembershipModel.setType(userMembershipType);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(level).getId());
@@ -196,7 +185,7 @@ public class UserMembershipServiceTest {
     }
 
     @Test
-    public void testGetUserMembershipItems() throws Exception {
+    public void testGetUserMembershipItems() {
         List<UserMembershipItemDto> originUserMembershipItemList = prepareUserMembershipData();
 
         List<UserMembershipItemDto> userMembershipItemDtos;
