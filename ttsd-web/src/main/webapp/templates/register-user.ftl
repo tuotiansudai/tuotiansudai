@@ -40,7 +40,7 @@
                 <li class="referrer-open"> <i class="icon-arrow-bottom"></i>请输入推荐人（此项选填）</li>
                 <li class="">
                     <i class="icon-referrer"></i>
-                    <input validate type="text" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <input validate type="text" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
