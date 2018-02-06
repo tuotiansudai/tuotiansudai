@@ -80,8 +80,8 @@
                         <span style="white-space: nowrap">${bankName!} ${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1 **** $2","r")}</span>
                     </li>
                     <li>
-                        <label>充值金额${(amount/100)!}</label>
-                        <span><em class="money">${(amount/100)!}</em>元</span>
+                        <label>充值金额</label>
+                        <span><em>${(amount/100)!}</em>元</span>
                     </li>
                     <li>
                         <label>订单号</label>
