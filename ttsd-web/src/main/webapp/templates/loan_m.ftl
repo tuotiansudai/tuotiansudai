@@ -1,7 +1,8 @@
 <#import "macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="直投借款详情">
-<div class="my-account-content experience-amount show-page" id="loanDetail">
+<input id="whichPage" type="hidden" data-page="invest">
+<div class="my-account-content experience-amount show-page" id="loanDetail" style="display: none">
 
     <div class="account-summary">
         <em id="iconDetail" class="icon-left"><i></i></em>
