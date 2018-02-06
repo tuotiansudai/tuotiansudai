@@ -17,7 +17,7 @@ $cashMoney.autoNumeric('init');
 $serviceCharge.autoNumeric('init');
 
 function getAmount(name) {
-    var amount = parseInt(name.autoNumeric("get"));
+    var amount = parseFloat(name.autoNumeric("get"));
     return amount;
 }
 $amount.on('keyup', function (event) {
@@ -28,29 +28,28 @@ $amount.on('keyup', function (event) {
     var cashMoney = getAmount($cashMoney);
     var serviceCharge = getAmount($serviceCharge);
 
-    if(!isNaN(amount)&&amount != ''){
+    if (!isNaN(amount) && amount != '') {
 
-        if(amount > cashMoney){
+        if (amount > cashMoney) {
             $toCashBtn.prop('disabled', true).text('可提现余额不足');
-        }else if(amount < serviceCharge){
+        } else if (amount < serviceCharge) {
             $toCashBtn.prop('disabled', true).text('提现金额需大于手续费');
-        }else {
+        } else {
             $toCashBtn.prop('disabled', false).text('确认提交');
         }
 
-    }else {
+    } else {
         $toCashBtn.prop('disabled', true).text('确认提交');
     }
 
 
-
 });
 
-$('#iconBack').on('click',function () {
+$('#iconBack').on('click', function () {
     location.href = '/m/account'
 })
 
-$toCashBtn.on('click',function (e) {
+$toCashBtn.on('click', function (e) {
     e.preventDefault();
     var amount = getAmount($amount);
     $amount.val(amount);

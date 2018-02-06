@@ -39,6 +39,13 @@
                 <b>温馨提示：<br/>投资体验项目的收益，用户需投资直投项目累计满1000元即可提现（投资债权转让项目除外）。</b>
             </dd>
         </dl>
+        <#elseif invest.loanStatus == 'RAISING' || invest.loanStatus == 'RECHECK' >
+        <dl class="payment-plan experience">
+            <dt>回款计划</dt>
+            <dd>
+                <b>温馨提示：<br/>募集完成后才会生成回款计划。</b>
+            </dd>
+        </dl>
         <#else>
         <dl class="payment-plan">
             <dt>回款计划</dt>
