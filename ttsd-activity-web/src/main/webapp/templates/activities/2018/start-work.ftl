@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.start_work_2018}" pageJavascript="${js.start_work_2018}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description='拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.'>
+<@global.main pageCss="${css.start_work_2018}" pageJavascript="${js.start_work_2018}" activeNav="" activeLeftNav="" title="加息不打烊_活动中心_拓天速贷" keywords="拓天速贷,加息券,开工红包，iPone，返现奖励,实物奖励" description='拓天速贷惊喜不重样加息不打烊活动,活动期间微信关注"拓天速贷服务号"即可领取520元开工红包。活动期间，用户累计年化投资额每满5万元即可获赠“小金人”，兑换实物奖励.活动期间每逢周五投资额外享受年化投资额的0.5%返现奖励，活动期间单笔投资满1万元以上，即可获得体验金奖励，最高可享10万元体验金福利。'>
 <div class="start-work-banner"></div>
 <div class="activity-wrap-main">
     <div class="activity-page">
