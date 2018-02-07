@@ -33,7 +33,7 @@ validator.add(registerAccountForm.identityNumber, [{
 let reInputs=$(registerAccountForm).find('input:text'),
     $errorBox = $('.error-box',$(registerAccountForm));
 for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i],"keyup", function() {
+    globalFun.addEventHandler(reInputs[i],"input", function(e) {
         let errorMsg = validator.start(this);
         if(errorMsg) {
             $errorBox.text(errorMsg);
@@ -43,6 +43,35 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         isDisabledButton();
     })
 }
+$('#perNum').on('keyup',(e) => {
+    if (e.keyCode != 8) {
+        if ($('#perNum').val().length === 6 || $('#perNum').val().length === 15) {
+            let text = $('#perNum').val() + ' ';
+            $('#perNum').val(text);
+        }
+    }
+    else {
+        if ($('#perNum').val().length === 7) {
+            let text = $('#perNum').val().substring(0,6);
+            $('#perNum').val(text);
+        }
+        else if ($('#perNum').val().length === 16) {
+            let text = $('#perNum').val().substring(0,15);
+            $('#perNum').val(text);
+        }
+    }
+});
+$('#perNum').on("paste",(e) => {
+    var pastedText = undefined;
+    if (window.clipboardData && window.clipboardData.getData) { // IE
+        pastedText = window.clipboardData.getData('Text');
+    } else {
+        pastedText = e.originalEvent.clipboardData.getData('Text');//e.clipboardData.getData('text/plain');
+    }
+    let inputVal = pastedText.replace(/\s+/g, "");
+    let text = inputVal.substring(0,6) + ' ' +  inputVal.substring(6,14) + ' ' + inputVal.substring(14);
+    $('#perNum').val(text);
+});
 //用来判断获取验证码和立即注册按钮 是否可点击
 function isDisabledButton() {
     let userName = registerAccountForm.userName,

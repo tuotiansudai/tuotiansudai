@@ -185,7 +185,7 @@ var strategies = {
     },
     identityValid:function(errorMsg,showErrorAfter) {
         //验证身份证号
-        var cardValid=commonFun.IdentityCodeValid(this.value);
+        var cardValid=commonFun.IdentityCodeValid(this.value.replace(/\s+/g, ""));
         if(!cardValid) {
             isHaveError.yes.apply(this,arguments);
             return errorMsg;

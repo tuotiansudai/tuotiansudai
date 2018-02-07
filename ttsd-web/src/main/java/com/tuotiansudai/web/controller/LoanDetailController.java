@@ -10,6 +10,8 @@ import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -45,6 +47,9 @@ public class LoanDetailController {
     @Autowired
     private InvestService investService;
 
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -63,6 +68,9 @@ public class LoanDetailController {
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
         modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId, LoginUserInfo.getLoginName(), 1000000, new Date()));
+        BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        modelAndView.addObject("hasBankCard", passedBankCard != null);
+
         int membershipLevel = 0;
         if (null != membershipModel) {
             membershipLevel = membershipModel.getLevel();

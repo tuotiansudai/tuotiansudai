@@ -461,12 +461,16 @@ $amountInputElement
     })
 //立即投资提交表单
 let noPasswordInvest = $amountInputElement.data('no-password-invest');//是否开通免密支付
+let hasBankCard = 'true' === $buyDetail.data('has-bank-card');
 let isInvestor = 'INVESTOR' === $buyDetail.data('user-role');
 let isAuthentication = 'USER' === $buyDetail.data('authentication');
 let $investForm = $('#investForm');//立即投资表单
 
 $('#investSubmit').on('click', function(event) {
     event.preventDefault();
+    if(!hasBankCard){
+        location.href = '/m/bind-card';//去绑卡
+    }
     let investAmount = getInvestAmount()/100;
     $amountInputElement.val($amountInputElement.autoNumeric("get"))//格式化还原金额
     $.when(commonFun.isUserLogin())
@@ -480,8 +484,8 @@ $('#investSubmit').on('click', function(event) {
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
                         location.href = '/m/recharge';//去充值
-                    })
-                     return false;
+                    });
+                    return false;
                 }
                 if (isAuthenticationRequired) {
                     $buyDetail.hide();
