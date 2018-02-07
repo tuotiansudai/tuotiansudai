@@ -66,7 +66,7 @@
 
             <li>
                 <label>项目期限</label>
-                <em>${invest.duration}天</em>
+                <em>最长${invest.duration}天</em>
             </li>
             <#if !invest.experience>
             <li>
