@@ -291,6 +291,8 @@ def deploy_all():
 
 def all(skip_package):
     pre_deploy(skip_package)
+    if skip_package == 'False':
+        mk_signin_zip()
     mk_war()
     mk_worker_zip()
     mk_mq_consumer()
