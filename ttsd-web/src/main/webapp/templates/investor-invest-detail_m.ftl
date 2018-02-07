@@ -8,20 +8,20 @@
         <ul class="input-list">
             <li>
                 <label>投资金额</label>
-                <em>${invest.investAmount/100}元<#if invest.experience>(体验金)</#if></em>
+                <em>${(invest.investAmount/100)?string[",##0.00"]}元<#if invest.experience>(体验金)</#if></em>
             </li>
 
             <li>
                 <label>预期总收益</label>
-                <em>${invest.expectedInterest/100}元</em>
+                <em>${(invest.expectedInterest/100)?string[",##0.00"]}元</em>
             </li>
             <li>
                 <label>已收回款</label>
-                <em>${invest.actualInterest/100}元</em>
+                <em>${(invest.actualInterest/100)?string[",##0.00"]}元</em>
             </li>
             <li>
                 <label>待收回款</label>
-                <em>${invest.unPaidRepay/100}元</em>
+                <em>${(invest.unPaidRepay/100)?string[",##0.00"]}元</em>
             </li>
             <li>
                 <label>起息日</label>
@@ -52,7 +52,7 @@
             <#list invest.investRepays as repay>
             <dd>
                 <span>${repay.repayDate?string("yyyy/MM/dd")}</span>
-                <span>${repay.amount/100}元</span>
+                <span>${(repay.amount/100)?string[",##0.00"]}元</span>
                 <em class="status">${repay.statusDesc}</em>
             </dd>
             </#list>
