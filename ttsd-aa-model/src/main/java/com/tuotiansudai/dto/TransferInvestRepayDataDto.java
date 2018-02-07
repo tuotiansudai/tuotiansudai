@@ -12,6 +12,8 @@ public class TransferInvestRepayDataDto implements Serializable {
 
     private RepayStatus status;
 
+    private String statusDesc;
+
     public TransferInvestRepayDataDto() {
     }
 
@@ -19,6 +21,7 @@ public class TransferInvestRepayDataDto implements Serializable {
         this.repayDate = repayDate;
         this.expectedInterest = expectedInterest;
         this.status = status;
+        this.statusDesc = status.getViewText();
     }
 
     public Date getRepayDate() {
@@ -31,5 +34,9 @@ public class TransferInvestRepayDataDto implements Serializable {
 
     public RepayStatus getStatus() {
         return status;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
     }
 }
