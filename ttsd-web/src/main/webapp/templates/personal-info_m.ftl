@@ -29,8 +29,9 @@
         </li>
 
     </ul>
-
+    <#if bankCard??>
     <span class="manage-note">换卡操作请前往APP或者PC端进行操作</span>
+    </#if>
 </div>
 
 </@global.main>
