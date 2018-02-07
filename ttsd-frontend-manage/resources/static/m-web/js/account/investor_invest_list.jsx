@@ -37,7 +37,6 @@ function isPassive() {
 }
 var myScroll;
 var flagScroll=true;
-console.log(flagScroll)
 $(window).load(function () {
     let myScroll = new IScroll('#wrapperOut', { mouseWheel: true ,click:true});
 

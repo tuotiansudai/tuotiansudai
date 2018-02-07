@@ -291,10 +291,11 @@ body {
     margin-bottom: 0;
     span{
       display:inline-block;
-      width:200px;
-      height:200px;
       background:url('../../images/account/scan-code.png') no-repeat center;
       background-size:100%;
+      canvas {
+        width: 100%;
+      }
     }
   }
 }

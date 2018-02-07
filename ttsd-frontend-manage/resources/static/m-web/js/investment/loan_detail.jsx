@@ -164,8 +164,9 @@ $('#btn-detail-toggle').click(function () {
     let $scroll = $boxContent.find('#scroll');
     let $content = $boxContent.find('#content');
     let pageNum = 1;
-    let $pullUpDOM = $('#pullUp');
+let flagScroll=true;
     $('#transaction_record').on('click',function () {
+        $('#noData').hide();
         getMoreRecords();
         //交易记录滚动加载更多
         setTimeout(function () {
@@ -174,14 +175,16 @@ $('#btn-detail-toggle').click(function () {
                 mouseWheel: true
             });
             myScroll.on('scrollEnd', function () {
-                //如果滑动到底部，则加载更多数据（距离最底部10px高度）
-                $pullUpDOM.show();
-                if ((this.y - this.maxScrollY) <= 10) {
-                    pageNum++;
+                if(flagScroll){
+                    //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+                    if ((this.y - this.maxScrollY) <= 10) {
+                        pageNum++;
 
-                    getMoreRecords();
-                    myScroll.refresh();
+                        getMoreRecords();
+                        myScroll.refresh();
+                    }
                 }
+
 
             });
         },1000)
@@ -197,23 +200,21 @@ $('#btn-detail-toggle').click(function () {
                 }
             },
             function (res) {
-                $pullUpDOM.hide();
-                if(pageNum == 1){
+                if(res.success == true){
                     if(res.data.records.length > 0){
                         var html = tpl('recordsTpl', res.data);
                         $content.prepend(html)
                     }else {
-                        $content.html('<div class="no-records"><div class="icon"></div><p>暂无交易记录</p></div>')
-                    }
-                }else {
-                    if(res.data.records.length > 0){
-                        var html = tpl('recordsTpl', res.data);
-                        $content.prepend(html)
-                    }else {
-                        $('#pullUp').find('.pullUpLabel').html('没有更多数据了');
+                        flagScroll = false;
+                        if(pageNum == 1){
+                            $content.html('<div class="no-records"><div class="icon"></div><p>暂无交易记录</p></div>');
+                            $boxContent.css('backgroundColor','#f2f2f2');
+                        }else {
+                            $('#noData').show();
+                        }
+
                     }
                 }
-
 
             }
         )

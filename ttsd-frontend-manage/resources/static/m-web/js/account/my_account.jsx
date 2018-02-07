@@ -18,3 +18,5 @@ if($myMenu.length){
     })
 }
 
+commonFun.calculationFun(window,document);
+
