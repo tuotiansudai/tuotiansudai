@@ -13,7 +13,6 @@
             <span class="title">
                 ${loan.name}
                     <div style="height: 27px;">
-                         <i class="icon-sign icon-detail">APP专享</i>
                     <#if loan.activity?string("true","false") == "true">
                         <i class="icon-sign icon-detail">${loan.activityDesc!}</i>
                     </#if>
