@@ -54,7 +54,7 @@
                     <li><span class="title left-title">投资金额</span><span class="title">投资奖励</span></li>
 
                     <#list extraLoanRates.items as extraLoanRate>
-                        <li><span class="left-title">投资金额><em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
+                        <li><span class="left-title">投资金额≥<em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
                         </li>
                     </#list>
                 </ul>
@@ -66,15 +66,15 @@
     <span>
 
 
-        <b><em class="money">${loan.minInvestAmount}</em>元</b>
+        <b><em class="money">${loan.minInvestAmount}</em>元</b><br/>
         <i>起投金额</i>
     </span>
         <span>
-        <b>最长${loan.duration}天</b>
+        <b>最长${loan.duration}天</b><br/>
         <i>项目期限</i>
     </span>
         <span>
-        <b><em class="money"><@amount>${interestPerTenThousands?string.computer}</@amount></em>元</b>
+        <b><em class="money"><@amount>${interestPerTenThousands?string.computer}</@amount></em>元</b><br/>
 
         <i>最大万元收益</i>
     </span>
