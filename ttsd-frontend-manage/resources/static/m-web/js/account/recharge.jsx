@@ -16,9 +16,9 @@ $cashMoney.autoNumeric("init");
 $cashMoney.keyup(function () {
     var amount = parseFloat($cashMoney.autoNumeric("get"));
     if (isNaN(amount) || amount < 1) {
-        $('#toCash').prop('disabled',true);
+        $('#toCash').prop('disabled',true).text('充值金额最少为1元');
     } else {
         $('form input[name="amount"]').val(amount);
-        $('#toCash').prop('disabled',false);
+        $('#toCash').prop('disabled',false).text('确定提交');
     }
 });
