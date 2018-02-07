@@ -103,6 +103,7 @@ em {
             background: rgba(246,170,22,0.6);
             border-radius: .7rem;
             position: relative;
+            overflow: hidden;
             em {
               position: absolute;
               left: 0;
@@ -110,8 +111,11 @@ em {
               width: 1.3rem;
               height: .44rem;
               background: $colorYellow;
-              border-radius: .7rem;
+              border-radius: .7rem 0 0 .7rem;
               z-index: 2;
+              &.percent {
+                border-radius: .7rem;
+              }
 
             }
             i {

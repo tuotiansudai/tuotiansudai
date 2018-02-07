@@ -462,7 +462,7 @@ $amountInputElement
     })
 //立即投资提交表单
 let noPasswordInvest = $amountInputElement.data('no-password-invest');//是否开通免密支付
-let hasBankCard = 'true' === $buyDetail.data('has-bank-card');
+let hasBankCard = $buyDetail.data('has-bank-card');
 let isInvestor = 'INVESTOR' === $buyDetail.data('user-role');
 let isAuthentication = 'USER' === $buyDetail.data('authentication');
 let $investForm = $('#investForm');//立即投资表单

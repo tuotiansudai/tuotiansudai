@@ -156,7 +156,7 @@
             <#list loan.loanTitleDto as loanTitle>
                 <#if loanTitle.id == loanTitleRelation.titleId>
                 <dl class="material-box">
-                    <dt>${loanTitle.title}</dt>
+                    <dt>${loanTitle.title}：</dt>
                     <dd>
                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
                         <a href="${commonStaticServer}${title}" class="js-img-viwer" data-group="0">
