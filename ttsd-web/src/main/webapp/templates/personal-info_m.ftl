@@ -21,8 +21,8 @@
             <span>
                 <#if bankCard??>
                     <input type="text" id="perCard" value="${bankName}(尾号${bankCard[(bankCard?length - 4)..]})" readonly>
-                <#else >
-                    <input type="text" id="perCardUnboundCard" value="未绑卡" readonly><i class="fa fa-angle-right"></i>
+                <#else>
+                    <input type="text" id="perCardUnboundCard" <#if userName??>data-has-name="true"</#if> value="未绑卡" readonly><i class="fa fa-angle-right"></i>
                 </#if>
             </span>
 
