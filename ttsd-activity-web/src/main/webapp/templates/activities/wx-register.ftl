@@ -60,7 +60,7 @@
                                                 <label for="" class="reg-title">推荐人:</label>
                                                 <input validate type="text" id="referrer" name="referrer"
                                                        placeholder="推荐人手机号（此项选填）"
-                                                       maxlength="25" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                                       maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
                                             </li>
                                             <li class="agree-last">
                                                 <input type="hidden" name="agreement" id="agreementInput"
