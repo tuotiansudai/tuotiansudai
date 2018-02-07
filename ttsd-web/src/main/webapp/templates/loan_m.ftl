@@ -13,14 +13,15 @@
             <span class="title">
                 ${loan.name}
                     <div style="height: 27px;">
+                         <i class="icon-sign icon-detail">APP专享</i>
                     <#if loan.activity?string("true","false") == "true">
-                        <i class="icon-sign">${loan.activityDesc!}</i>
+                        <i class="icon-sign icon-detail">${loan.activityDesc!}</i>
                     </#if>
                     <#if loan.productType != 'EXPERIENCE' && loan.activityType == 'NEWBIE'>
-                        <i class="icon-sign">新手专享</i>
+                        <i class="icon-sign icon-detail">新手专享</i>
                     </#if>
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
-                        <i class="icon-sign">APP专享</i>
+                        <i class="icon-sign icon-detail">APP专享</i>
                     </#if>
                 </div>
 
@@ -134,7 +135,7 @@
         </li>
         <li id="to_project_detail" style="margin-top: 10px;">
             <label>项目详情</label>
-            <span><em class="pdf"><i class="iconRgihtt"></i></em></span>
+            <span><em class="pdf"><i class="iconRight"></i></em></span>
         </li>
     </ul>
 
