@@ -29,23 +29,7 @@ public class InvestorInvestRepayDto implements Serializable {
         this.amount = expectedInterest + investRepayModel.getCorpus();
         this.status = investRepayModel.getStatus();
         this.isTransferred = investRepayModel.isTransferred();
-        this.statusDesc = convertStatusDesc(investRepayModel.getStatus());
-    }
-
-    private String convertStatusDesc(RepayStatus status) {
-        if (RepayStatus.REPAYING.equals(status)) {
-            return "待还款";
-        }
-        if (RepayStatus.WAIT_PAY.equals(status)) {
-            return "待支付";
-        }
-        if (RepayStatus.COMPLETE.equals(status)) {
-            return "已还款";
-        }
-        if (RepayStatus.OVERDUE.equals(status)) {
-            return "已逾期";
-        }
-        return "";
+        this.statusDesc = investRepayModel.getStatus().getViewText();
     }
 
     public Date getRepayDate() {

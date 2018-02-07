@@ -96,7 +96,7 @@
                 <dd class="font-left">${repay.repayDate?string("yyyy-MM-dd")}</dd>
                 <dd class="font-center"><@amount>${repay.expectedInterest?string.computer}</@amount></dd>
 
-                <dd class="status font-right">${repay.status.getDescription()}</dd>
+                <dd class="status font-right">${repay.statusDesc}</dd>
             </dl>
         </#list>
         </dl>
