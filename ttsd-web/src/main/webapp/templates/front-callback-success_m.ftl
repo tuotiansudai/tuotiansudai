@@ -81,7 +81,7 @@
                     </li>
                     <li>
                         <label>充值金额</label>
-                        <span><em>${(amount/100)!}</em>元</span>
+                        <span><em class="money">${(amount/100)?string.computer!}</em>元</span>
                     </li>
                     <li>
                         <label>订单号</label>
@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="button-note">
-                    <a data-url="/m/transfer-list" href="javascript:;" class="count-btn btn-wap-normal next-step">确定</a>
+                    <a data-url="/m/investor/invest-list" href="javascript:;" class="count-btn btn-wap-normal next-step">确定</a>
                 </div>
             </div>
         </#if>

@@ -148,3 +148,16 @@ $('.inviting-friend').click(function () {
 })
 //
 commonFun.calculationFun(document,window);
+let $myMenu = $('.menu-my');
+if($myMenu.length){
+    $myMenu.on('click',function (e) {
+        e.preventDefault();
+        $.when(commonFun.isUserLogin())
+            .done(function () {
+                location.href = '/m/account'
+            }).fail(function () {
+            location.href = '/m/account-anonymous'
+        })
+
+    })
+}

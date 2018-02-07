@@ -129,4 +129,5 @@ public class AccountController {
         modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
     }
+
 }

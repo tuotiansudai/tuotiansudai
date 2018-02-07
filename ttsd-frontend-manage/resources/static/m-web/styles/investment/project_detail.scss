@@ -123,13 +123,14 @@
 }
 
 .transaction-record {
-  margin-top: 20px;
+  &.category-detail2 {
+    margin-top: -20px;
+  }
   .record-top {
     height:95px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: -20px;
     span {
       display: flex;
       flex-direction: column;
