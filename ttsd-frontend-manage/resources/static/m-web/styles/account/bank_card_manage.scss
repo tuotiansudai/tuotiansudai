@@ -29,12 +29,14 @@
 }
 
 .input-list {
+  input#perName {
+    flex: 4;
+  }
   &.align-flex-start {
     span.bank-info {
       text-align: left;
       width: auto;
-      flex: 3;
-
+      flex: 4;
       &.key {
         color: #FF635A;
         font-size: 16px;
