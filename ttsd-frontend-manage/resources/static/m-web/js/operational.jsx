@@ -2,6 +2,7 @@ require('mWebStyle/operational.scss');
 import Swiper from 'swiper';
 let echarts = require('echarts');
 let commonFun = require('publicJs/commonFun');
+let ifReflow = false;
 
 (function (doc, win) {
     let docEl = doc.documentElement,
@@ -23,6 +24,11 @@ let mySwiper = new Swiper('.swiper-container', {
     direction: 'vertical',
     width: window.screen.width,
     height: document.body.clientHeight - 48,
+    onTouchMove: function () {
+        if (!ifReflow) {
+            reflow();
+        }
+    }
 });
 
 document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 48 + 'PX';
@@ -32,6 +38,9 @@ $('#goBack_experienceAmount').on('click', () => {
 });
 
 $('.side_to_page').click(function (e) {
+    if (!ifReflow) {
+        reflow();
+    }
     let index = Number(e.currentTarget.dataset.index);
     index = index == 5 ? index - 2 : index;
     mySwiper.slideTo(index, 500, false);//切换到第一个slide，速度为1秒
@@ -339,3 +348,13 @@ let getPartFourPage = (data) => {
     myChart5.setOption(drawBarTransverse(cityName_count, cityData_count, ['#c2eef2', '#81e9f2', '#00def2']));
     myChart6.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ffecac', '#ffd74f', '#ffc601']));
 };
+
+function reflow() {
+    document.getElementById('main_part1').style.visibility = "visible";
+    document.getElementById('main_part2').style.visibility = "visible";
+    document.getElementById('main_part3').style.visibility = "visible";
+    document.getElementById('main_part4').style.visibility = "visible";
+    document.getElementById('main_part5').style.visibility = "visible";
+    document.getElementById('main_part6').style.visibility = "visible";
+    ifReflow = true;
+}
