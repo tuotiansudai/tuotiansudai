@@ -78,12 +78,16 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         return execute(jedis -> jedis.lpush(key, values));
     }
 
+    public Long rpush(final String key, final String... values) {
+        return execute(jedis -> jedis.rpush(key, values));
+    }
+
     public String lpop(final String key) {
         return execute(jedis -> jedis.lpop(key));
     }
 
-    public Long rpush(final String key, final String... values) {
-        return execute(jedis -> jedis.rpush(key, values));
+    public String rpop(final String key) {
+        return execute(jedis -> jedis.rpop(key));
     }
 
     public List<String> lrange(final String key, final int start, final int end) {
