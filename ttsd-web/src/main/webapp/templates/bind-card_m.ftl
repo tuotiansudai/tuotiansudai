@@ -58,4 +58,5 @@
         更多银行努力接入中…
     </div>
 </div>
+<div class="shade_mine" style="display: none"></div>
 </@global.main>
