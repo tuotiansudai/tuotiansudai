@@ -90,10 +90,12 @@ function isDisabledButton() {
 registerAccountForm.onsubmit = function(event) {
     event.preventDefault();
     $btnSubmit.prop('disabled', true).val('认证中');
+    $('#perNum').val($('#perNum').val().replace(/\s+/g, ""));
+    console.log($(registerAccountForm).serialize())
     commonFun.useAjax({
         url:"/register/account",
         type:'POST',
-        data:$(registerAccountForm).serialize()
+        data:$(registerAccountForm).serialize().replace(/\s+/g, "")
     },function(response) {
         if(response.data.status) {
             $btnSubmit.prop('disabled', true).val('认证成功');
@@ -102,6 +104,9 @@ registerAccountForm.onsubmit = function(event) {
             let errorMsg = (response.data.code === '1002') ? '实名认证超时，请重试' : '认证失败，请检查您的信息';
             $errorBox.text(errorMsg);
             $btnSubmit.prop('disabled', false).val('认证');
+            let inputVal = $('#perNum').val();
+            let text = inputVal.substring(0,6) + ' ' +  inputVal.substring(6,14) + ' ' + inputVal.substring(14);
+            $('#perNum').val(text);
         }
     });
 };
