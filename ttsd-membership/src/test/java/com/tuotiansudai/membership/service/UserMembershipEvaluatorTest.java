@@ -70,6 +70,21 @@ public class UserMembershipEvaluatorTest {
         assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(3));
     }
 
+    @Test
+    public void shouldEvaluateLevel0WhenNoMembershipNotFound() {
+        UserModel fakeUser = this.getFakeUser("fakeUser");
+
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 2, new DateTime().plusDays(20).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel1.setCreatedTime(new DateTime().plusDays(2).toDate());
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel2.setCreatedTime(new DateTime().plusDays(1).toDate());
+
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        assertThat(userMembershipEvaluator.evaluateSpecifiedDate(fakeUser.getLoginName(), new Date()).getLevel(), is(0));
+    }
+
     private UserModel getFakeUser(String loginName) {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName(loginName);
