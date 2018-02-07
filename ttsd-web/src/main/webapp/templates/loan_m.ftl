@@ -13,14 +13,15 @@
             <span class="title">
                 ${loan.name}
                     <div style="height: 27px;">
+                         <i class="icon-sign icon-detail">APP专享</i>
                     <#if loan.activity?string("true","false") == "true">
-                        <i class="icon-sign">${loan.activityDesc!}</i>
+                        <i class="icon-sign icon-detail">${loan.activityDesc!}</i>
                     </#if>
                     <#if loan.productType != 'EXPERIENCE' && loan.activityType == 'NEWBIE'>
-                        <i class="icon-sign">新手专享</i>
+                        <i class="icon-sign icon-detail">新手专享</i>
                     </#if>
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
-                        <i class="icon-sign">APP专享</i>
+                        <i class="icon-sign icon-detail">APP专享</i>
                     </#if>
                 </div>
 
@@ -54,7 +55,7 @@
                     <li><span class="title left-title">投资金额</span><span class="title">投资奖励</span></li>
 
                     <#list extraLoanRates.items as extraLoanRate>
-                        <li><span class="left-title">投资金额><em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
+                        <li><span class="left-title">投资金额≥<em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
                         </li>
                     </#list>
                 </ul>
@@ -66,15 +67,15 @@
     <span>
 
 
-        <b><em class="money">${loan.minInvestAmount}</em>元</b>
+        <b><em class="money">${loan.minInvestAmount}</em>元</b><br/>
         <i>起投金额</i>
     </span>
         <span>
-        <b>最长${loan.duration}天</b>
+        <b>最长${loan.duration}天</b><br/>
         <i>项目期限</i>
     </span>
         <span>
-        <b><em class="money"><@amount>${interestPerTenThousands?string.computer}</@amount></em>元</b>
+        <b><em class="money"><@amount>${interestPerTenThousands?string.computer}</@amount></em>元</b><br/>
 
         <i>最大万元收益</i>
     </span>
@@ -134,7 +135,7 @@
         </li>
         <li id="to_project_detail" style="margin-top: 10px;">
             <label>项目详情</label>
-            <span><em class="pdf"><i class="iconRgihtt"></i></em></span>
+            <span><em class="pdf"><i class="iconRight"></i></em></span>
         </li>
     </ul>
 

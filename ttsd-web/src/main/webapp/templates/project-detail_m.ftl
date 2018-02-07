@@ -69,7 +69,7 @@
     </div>
 
 </div>
-    <div id="pullUp" style="display: none"><span class="pullUpLabel">上拉加载更多</span></div>
+
 </div>
 
 
