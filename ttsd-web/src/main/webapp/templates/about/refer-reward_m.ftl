@@ -178,8 +178,9 @@
     <div class="m-header"><em id="iconScanCode" class="icon-left"><i></i></em>我的二维码 </div>
     <div class="main-content">
         <div class="code-item">
+            <input type="hidden" class="input-invite" id="clipboard_text" readonly data-mobile="<@global.security.authentication property='principal.mobile'/>">
             <p>
-                <span></span>
+                <span class="img-code"></span>
             </p>
             <p>扫描二维码，一起赚钱吧</p>
         </div>

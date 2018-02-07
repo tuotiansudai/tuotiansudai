@@ -22,7 +22,12 @@
                                 <dd>预期收益</dd>
                             </dl>
                             <dl class="dl-r clearfix">
+                                {{if value.repayProgress<18&&value.repayProgress>0}}
+                                <dt><em style="width: 18%"></em> <i>{{value.lastRepayDate}}到期</i></dt>
+                                {{else}}
                                 <dt><em style="width: {{value.repayProgress}}%"></em> <i>{{value.lastRepayDate}}到期</i></dt>
+                                {{/if}}
+
                                 <dd>投资金额 <em>{{value.investAmount}}</em>元
                                 </dd>
                             </dl>

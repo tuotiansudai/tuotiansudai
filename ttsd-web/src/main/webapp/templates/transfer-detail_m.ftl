@@ -53,14 +53,14 @@
         <#if (transferApplication.transferStatus.name() == "TRANSFERRING")>
         <li class="repay-plan" id="look_repay_plan">
             <label>回款计划</label>
-            <span><i class="fa fa-angle-right"></i> </span>
+            <span><i class="iconRight"></i> </span>
         </li>
         </#if>
 
         <#if (transferApplication.transferStatus.name() == "SUCCESS")>
         <li class="repay-plan" id="look_continue_record">
             <label>债权承接记录</label>
-            <span><i class="fa fa-angle-right"></i> </span>
+            <span><i class="iconRight"></i> </span>
         </li>
         </#if>
     </ul>

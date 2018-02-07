@@ -8,7 +8,8 @@
         <ul class="input-list align-flex-start">
             <li>
                 <label for="perName">持卡人</label>
-                <input type="text" name="userName" id="perName" value="${userName}" disabled="disabled">
+                <#--<input type="text" name="userName" id="perName" value="${userName}" disabled="disabled">-->
+                <input type="text" name="userName" id="perName" value="111" disabled="disabled">
                 <i class="icon-notice"></i>
             </li>
             <li class="bank-column">
@@ -20,7 +21,7 @@
             </li>
             <li>
                 <label for="cardNumber">银行卡号</label>
-                <input type="number" name="cardNumber" id="cardNumber" placeholder="请输入银行卡号">
+                <input type="text" name="cardNumber" id="cardNumber" placeholder="请输入银行卡号" maxlength="25" autocomplete="off">
                 <i></i>
             </li>
         </ul>

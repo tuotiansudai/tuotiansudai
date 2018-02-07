@@ -21,15 +21,15 @@
 
     <div class="experience-total">
         <span>
-            <b><em><@amount>${loan.minInvestAmount?string.computer}</@amount></em>元</b>
+            <b><em><@amount>${loan.minInvestAmount?string.computer}</@amount></em>元</b><br/>
             <i>起投金额</i>
         </span>
         <span>
-            <b>${loan.duration}天</b>
+            <b>${loan.duration}天</b><br/>
             <i>项目期限</i>
         </span>
         <span>
-            <b>0.00元</b>
+            <b>0.00元</b><br/>
             <i>万元收益</i>
         </span>
     </div>
