@@ -429,7 +429,7 @@ couponSelect();
 function couponSelect() {
     let value = getInvestAmount();
     $('.to-use_coupon').each(function (index,item) {
-        $(item).addClass('disabled');
+        $(item).addClass('disabled').removeClass('selected');
         if($(item).data('min-invest-amount') <= value/100 && parseInt($(item).data('min-product-type'))  <= duration){
             $(item).removeClass('disabled');
         }
