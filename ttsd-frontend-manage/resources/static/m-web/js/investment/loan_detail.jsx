@@ -302,26 +302,25 @@ $('.to-use_coupon').each(function (index,item) {
 })
 $('.to-use_coupon').click(function () {
     let _self = $(this);
-    if(_self.hasClass('disabled')){
-        return;
-    }else if(_self.hasClass('selected')){
-        _self.removeClass('selected');//如果已经选择，则取消选择
-        $('#couponId').val('');
-        $('#couponText').text('请选择优惠券');
-        return;
-    }
+   let couponId = _self.data('coupon-id');
+
     $('.to-use_coupon').each(function (index,item) {
         $(item).removeClass('selected');
 
     })
-
-
     _self.addClass('selected');
     $('#couponId').val(_self.data('user-coupon-id'));
     $('#couponText').text(_self.data('coupon-desc'));
 
-    location.hash='buyDetail';
+        commonFun.useAjax({
+            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+            data: 'couponIds='+couponId,
+            type: 'GET'
+        },function(amount) {console.log(amount)
+            $couponExpectedInterest.text("+" + amount);
+        });
 
+    location.hash='buyDetail';
 
 
 })
@@ -329,16 +328,7 @@ $('.to-use_coupon').click(function () {
 $('#iconCoupon').click(function () {
     location.hash='buyDetail';
 })
-//不使用优惠券
-$('#noUse').click(function () {
-    $('.to-use_coupon').each(function (index,item) {
-        $(item).removeClass('selected');
-        $('#couponText').text('请选择优惠券');
-        $('#couponId').val('');
 
-    })
-    location.hash='buyDetail';
-})
 let $couponExpectedInterest = $(".experience-income");
 //计算加息券或者投资红包的预期收益
 let calExpectedCouponInterest = function() {
@@ -431,6 +421,7 @@ function couponSelect() {
     $('.to-use_coupon').each(function (index,item) {
         $(item).addClass('disabled').removeClass('selected');
         if($(item).data('min-invest-amount') <= value/100 && parseInt($(item).data('min-product-type'))  <= duration){
+
             $(item).removeClass('disabled');
         }
 

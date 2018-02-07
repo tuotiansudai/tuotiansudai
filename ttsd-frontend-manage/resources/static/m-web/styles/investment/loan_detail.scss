@@ -287,6 +287,9 @@
   background: #fff;
   line-height: 35px;
   .newer-title{
+    &.buy-title {
+      color: #808080;
+    }
     border-left:2px solid #FF473C;
     padding-left: 10px;
     line-height: 16px!important;

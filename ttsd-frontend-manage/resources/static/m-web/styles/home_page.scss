@@ -213,9 +213,15 @@
 }
 
 .exper{
-  padding: 2px;
-  padding-left: 2px;
-  padding-right: 2px;
+  width: 66px;
+  height: 16px;
+  padding: 0;
+  text-align: center;
+  line-height: 16px;
+  //padding: 2px;
+  //padding-left: 2px;
+  //padding-right: 4px;
+  //transform:scale(1)
 }
 .percent-number i {
   font-size: 28px!important;

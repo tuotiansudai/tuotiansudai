@@ -1,5 +1,5 @@
 <div class="my-account-content amount-overview show-page" id="couponList" style="display: none;">
-    <div class="m-header"><em id="iconCoupon" class="icon-left"><i></i></em>优惠券 <em id="noUse">不使用</em></div>
+    <div class="m-header"><em id="iconCoupon" class="icon-left"><i></i></em>优惠券 </div>
     <div class="select-btn">
         <p class="to-coupon">
             <a href="javascript:;" id="exchangeCoupon">

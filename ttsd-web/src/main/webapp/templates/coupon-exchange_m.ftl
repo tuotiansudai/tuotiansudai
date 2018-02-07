@@ -17,7 +17,7 @@
 <div class="my-account-content amount-overview" id="couponSuccess" style="display: none;">
 
     <script type="text/html" id="exchangeSuccessData">
-        <div class="m-header"><em id="iconExchangeSuccess" class="icon-left"><i class="fa fa-angle-left"></i></em>兑换码兑换</div>
+        <div class="m-header"><em id="iconExchangeSuccess" class="icon-left"><i></i></em>兑换码兑换</div>
         <div class="tip-item">
             <p>
                 恭喜您：
