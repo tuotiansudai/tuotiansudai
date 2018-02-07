@@ -45,7 +45,7 @@ if ($bankCardManage.length) {
     //按钮是否点亮
     function isDisabledButton() {
         let bankName = $bankCardManage.find('.bank-show').html().trim() !== '请选择银行',
-            bankNumber = bankForm.cardNumber.value;
+            bankNumber = bankForm.cardNumber.value.replace(/\s+/g, "");
         let isDisableBtn = bankName && /^(\d{15,})$/.test(bankNumber);
 
         $submitBtn.prop('disabled', !isDisableBtn);
