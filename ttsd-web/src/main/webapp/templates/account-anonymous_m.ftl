@@ -4,10 +4,17 @@
 
 <div class="anonymous-page">
     <div class="anomymous-wrap">
-        <div class="login-container">
-            <a class="tip-btn" href="/m/login">注册领取6888体验金</a>
-            <a class="to-login" href="/m/login">登录去赚钱></a>
+        <div class="anomous-tip">
+            较低门槛，稳健收益<br/>
+            六道风控，审核严谨
         </div>
+        <div class="img">
+            <div class="login-container">
+                <a class="tip-btn" href="/m/login">注册领取6888体验金</a>
+                <a class="to-login" href="/m/login">登录去赚钱></a>
+            </div>
+        </div>
+
 
     </div>
 </div>
