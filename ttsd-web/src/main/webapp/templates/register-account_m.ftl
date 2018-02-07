@@ -11,11 +11,11 @@
             <li>
                 <label for="perName">真实姓名</label>
                 <input type="text" name="userName" id="perName"
-                       placeholder="请输入您的真实姓名">
+                       placeholder="请输入您的真实姓名" maxlength="25">
             </li>
             <li>
                 <label for="perNum">身份证号</label>
-                <input type="text" name="identityNumber" id="perNum"
+                <input type="text" name="identityNumber" id="perNum" autocomplete="off"
                        placeholder="请输入您的身份证号" maxlength="20">
             </li>
         </ul>

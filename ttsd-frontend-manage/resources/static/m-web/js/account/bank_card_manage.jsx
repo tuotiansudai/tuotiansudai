@@ -64,5 +64,60 @@ if ($bankCardSelect.length) {
     })
 }
 
+$('#cardNumber').on('keyup',(e) => {
+
+    $('#cardNumber').attr('maxLength',29);
+
+    if (e.keyCode != 8) {
+        if ($('#cardNumber').val().length === 4 || $('#cardNumber').val().length === 9 || $('#cardNumber').val().length === 14 || $('#cardNumber').val().length === 19 || $('#cardNumber').val().length === 24) {
+            let text = $('#cardNumber').val() + ' ';
+            $('#cardNumber').val(text);
+        }
+    }
+    else {
+        if ($('#cardNumber').val().length === 5) {
+            let text = $('#cardNumber').val().substring(0,4);
+            $('#cardNumber').val(text);
+        }
+        else if ($('#cardNumber').val().length === 10) {
+            let text = $('#cardNumber').val().substring(0,9);
+            $('#cardNumber').val(text);
+        }
+        else if ($('#cardNumber').val().length === 15) {
+            let text = $('#cardNumber').val().substring(0,14);
+            $('#cardNumber').val(text);
+        }
+        else if ($('#cardNumber').val().length === 20) {
+            let text = $('#cardNumber').val().substring(0,19);
+            $('#cardNumber').val(text);
+        }
+        else if ($('#cardNumber').val().length === 25) {
+            let text = $('#cardNumber').val().substring(0,24);
+            $('#cardNumber').val(text);
+        }
+    }
+});
+$('#cardNumber').on("paste",(e) => {
+    let pastedText = undefined;
+    if (window.clipboardData && window.clipboardData.getData) { // IE
+        pastedText = window.clipboardData.getData('Text');
+    } else {
+        pastedText = e.originalEvent.clipboardData.getData('Text'); //e.clipboardData.getData('text/plain');
+    }
+    let inputVal = pastedText.replace(/\s+/g, "");
+    //let text = inputVal.substring(0,4) + ' ' +  inputVal.substring(4,8) + ' ' + inputVal.substring(8,12) + ' ' + inputVal.substring(12,16) + ' ' + inputVal.substring(16,18);
+    let spaceNum = parseInt(inputVal.length / 4);
+    let remainder = inputVal.length % 4;
+    let maxLength = spaceNum + inputVal.length;
+    $('#cardNumber').attr('maxLength',maxLength);
+    let text = '';
+    for (var i = 0;i < spaceNum;i++) {
+        text += inputVal.substring(i * 4,(i + 1) * 4) + ' ';
+    }
+    if (remainder) {
+        text += inputVal.substring(i * 4,i * 4 + remainder);
+    }
+    $('#cardNumber').val(text);
+});
 
 

@@ -90,6 +90,7 @@ function isDisabledButton() {
 registerAccountForm.onsubmit = function(event) {
     event.preventDefault();
     $btnSubmit.prop('disabled', true).val('认证中');
+    location.href = '/m/register/account/success';
     commonFun.useAjax({
         url:"/register/account",
         type:'POST',
