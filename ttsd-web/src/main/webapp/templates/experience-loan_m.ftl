@@ -69,20 +69,20 @@
                 <span>${loan.name}</span>
             </div>
             <ul class="loan-info clearfix">
-                <li class="experience-total">
+                <li class="experience-total1">
                     <span>
                          <b>${loan.duration}天</b>
                          <i>项目期限</i>
                     </span>
                 </li>
-                <li class="experience-total">
+                <li class="experience-total1">
                     <span>
                         <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                             %</b>
                          <i>预期年化收益</i>
                     </span>
                 </li>
-                <li class="experience-total">
+                <li class="experience-total1">
                     <span>
                         <b>0.00元</b>
                         <i>万元收益</i>

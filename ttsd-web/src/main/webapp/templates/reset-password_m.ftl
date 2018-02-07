@@ -13,9 +13,9 @@
     <form id="resetPassword">
         <div class="input-box">
             <input type="text" name='num1' maxlength="1" class="num num1" id="num1" onKeyUp="value=value.replace(/[＼W]/g,'')">
-            <input type="text" name='num2' maxlength="1" class="num num2 input_border" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
-            <input type="text" name='num3' maxlength="1" class="num num3 input_border" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
-            <input type="text" name='num4' maxlength="1" class="num num4 input_border" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
+            <input type="text" name='num2' maxlength="1" class="num num2 input_border" onKeyUp="value=value.replace(/[＼W]/g,'')">
+            <input type="text" name='num3' maxlength="1" class="num num3 input_border" onKeyUp="value=value.replace(/[＼W]/g,'')">
+            <input type="text" name='num4' maxlength="1" class="num num4 input_border" onKeyUp="value=value.replace(/[＼W]/g,'')">
         </div>
         <a class="btn-wap-normal next-step" id="sendShortMsg">发送短信修改密码</a>
     </form>

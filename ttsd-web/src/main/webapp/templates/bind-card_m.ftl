@@ -8,8 +8,7 @@
         <ul class="input-list align-flex-start">
             <li>
                 <label for="perName">持卡人</label>
-                <#--<input type="text" name="userName" id="perName" value="${userName}" disabled="disabled">-->
-                <input type="text" name="userName" id="perName" value="111" disabled="disabled">
+                <input type="text" name="userName" id="perName" value="${userName}" disabled="disabled">
                 <i class="icon-notice"></i>
             </li>
             <li class="bank-column">
@@ -58,4 +57,5 @@
         更多银行努力接入中…
     </div>
 </div>
+<div class="shade_mine" style="display: none"></div>
 </@global.main>
