@@ -29,13 +29,15 @@
         <#if hasAccount>
             <#if hasBankCard>
         <a href="/m/recharge">充值</a>
+        <a href="/m/withdraw">提现</a>
             <#else>
         <a href="/m/bind-card">充值</a>
+        <a href="/m/bind-card">提现</a>
             </#if>
         <#else>
         <a href="/m/register/account">充值</a>
+        <a href="/m/register/account">提现</a>
         </#if>
-        <a href="/m/withdraw">提现</a>
     </div>
 
     <ul class="menu-list">
