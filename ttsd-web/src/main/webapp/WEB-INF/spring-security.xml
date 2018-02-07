@@ -138,6 +138,7 @@
         <intercept-url pattern="/m/anxinSign" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/m/settings/**" access="hasAnyAuthority('USER')"/>
 
+        <intercept-url pattern="/m/account-anonymous" access="permitAll()"/>
         <intercept-url pattern="/**" access="permitAll()"/>
 
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>

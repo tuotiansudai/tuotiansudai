@@ -11,7 +11,7 @@ em {
 .icon-sign {
   font-size: .18rem;
   padding: .02rem .04rem;
-  line-height:10px;
+  line-height:.09rem;
 }
 #noData {
   text-align: center;
@@ -44,9 +44,6 @@ em {
     border-radius: .5rem;
     font-size: .4rem;
   }
-}
-.menu-category span a{
-  line-height: 33px;
 }
 .invest-list-wrap {
   font-size: .24rem;
@@ -152,7 +149,16 @@ em {
     }
   }
 }
-
+.menu-category{
+  height: .78rem!important;
+  span {
+    line-height: .84rem;
+    a {
+      width: 65%;
+      line-height: .64rem;
+    }
+  }
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;
@@ -226,13 +232,5 @@ em {
     font-size: 32px;
   }
 }
-.menu-category{
-  height: 41px;
-  span {
-    line-height: 44px;
-    a {
-      width: 65%;
-    }
-  }
-}
+
 

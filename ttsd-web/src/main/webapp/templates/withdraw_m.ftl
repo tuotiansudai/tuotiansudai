@@ -16,7 +16,7 @@
     <form action="/withdraw" id="cashForm" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">提现金额</label>
-            <input type="text" name="amount" class="money-item" id="amount" value=""/>
+            <input type="text" name="amount" class="money-item" id="amount" value="" autocomplete="off"/>
             <input name="source" type="hidden" value="M"/>
         </div>
 

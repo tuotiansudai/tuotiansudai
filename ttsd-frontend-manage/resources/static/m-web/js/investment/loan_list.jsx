@@ -18,11 +18,10 @@ let myScroll = new IScroll('#wrapperOut', {
     mouseWheel: true,
     click: true
 });
-//点击btn跳转到购买
-$('.goToDetail').on('click',function (e) {
+//点击btn跳转到购买loanList
+$loanList.on('click','.goToDetail',function (e) {
     e.preventDefault();
     e.stopPropagation();
-
     var url = $(this).data('url')
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -35,7 +34,7 @@ $('.goToDetail').on('click',function (e) {
     })
 
 })
-$('[data-url]',$categoryBoxMain).on('click',function(event) {
+$loanList.on('click','[data-url]',function(event) {
     event.preventDefault();
     event.stopPropagation();
     if(!$(this).hasClass('btn-invest')&&!$(this).hasClass('btn-normal')||$(this).hasClass('preheat-btn')){
@@ -93,7 +92,7 @@ $('.goToExDetail').on('click',function (e) {
 
 })
 
-$('.goToTranDetail').on('click',function (e) {
+$loanList.on('click','.goToTranDetail',function (e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -138,4 +137,16 @@ $('.goToTranDetail').on('click',function (e) {
         });
     };
     countDownLoan($preheat);
+let $myMenu = $('.menu-my');
+if($myMenu.length){
+    $myMenu.on('click',function (e) {
+        e.preventDefault();
+        $.when(commonFun.isUserLogin())
+            .done(function () {
+                location.href = '/m/account'
+            }).fail(function () {
+            location.href = '/m/account-anonymous'
+        })
 
+    })
+}

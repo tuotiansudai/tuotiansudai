@@ -20,7 +20,7 @@ function getAmount(name) {
     var amount = parseFloat(name.autoNumeric("get"));
     return amount;
 }
-$amount.on('keyup', function (event) {
+function testAmount() {
     event.preventDefault();
     $amount.autoNumeric('init');
     let $self = $(this);
@@ -41,9 +41,11 @@ $amount.on('keyup', function (event) {
     } else {
         $toCashBtn.prop('disabled', true).text('确认提交');
     }
-
-
+}
+$amount.on('keyup', function (event) {
+    testAmount();
 });
+
 
 $('#iconBack').on('click', function () {
     location.href = '/m/account'

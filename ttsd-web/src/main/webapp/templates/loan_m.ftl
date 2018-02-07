@@ -11,7 +11,8 @@
         </#if>
         <div class="collection">
             <span class="title">
-                ${loan.name}<br/>
+                ${loan.name}
+                    <div style="height: 27px;">
                     <#if loan.activity?string("true","false") == "true">
                         <i class="icon-sign">${loan.activityDesc!}</i>
                     </#if>
@@ -21,6 +22,8 @@
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <i class="icon-sign">APP专享</i>
                     </#if>
+                </div>
+
             </span>
             <span class="summary-box">
                 <b>
