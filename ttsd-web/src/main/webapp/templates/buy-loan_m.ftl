@@ -29,7 +29,7 @@
         <input type="hidden" class="bind-data" data-is-anxin-user="${loan.investor.anxinUser?c}">
         <input type="hidden" data-is-authentication-required="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired" data-page="buy">
         <div class="target-category-box" data-url="loan-transfer-detail.ftl">
-            <div class="newer-title">
+            <div class="newer-title buy-title">
                 <span>${loan.name}</span>
                 <span class="tip-text">剩余可投 : <@amount>${loan.amountNeedRaised?string.computer}</@amount>元</span>
             </div>

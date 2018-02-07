@@ -110,8 +110,7 @@ function minValue(arr) {
 
 //确定按钮回到优惠券兑换页面
 $couponSuccess.on('click','#exchangeSuccessConfirm',function () {
-    $couponSuccess.hide();
-    $couponExchange.show();
+    location.href = '/m/my-treasure';
 })
 $couponSuccess.on('click','#iconExchangeSuccess',function () {
     $couponSuccess.hide();
