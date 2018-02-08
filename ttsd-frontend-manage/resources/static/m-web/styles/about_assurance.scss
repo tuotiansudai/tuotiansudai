@@ -160,6 +160,9 @@ body {
       border: 1px solid #ef7069;
       border-radius: .15rem;
       padding-right: .45rem;
+      @media screen and (max-width: 320px) {
+        padding-right: .2rem;
+      }
       padding-left: .9rem;
       color: #5c5f66;
       font-size: .24rem;

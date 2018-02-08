@@ -460,9 +460,6 @@ let $investForm = $('#investForm');//立即投资表单
 
 $('#investSubmit').on('click', function(event) {
     event.preventDefault();
-    if(!hasBankCard){
-        location.href = '/m/bind-card';//去绑卡
-    }
     let investAmount = getInvestAmount()/100;
     $amountInputElement.val($amountInputElement.autoNumeric("get"))//格式化还原金额
     $.when(commonFun.isUserLogin())
@@ -478,6 +475,9 @@ $('#investSubmit').on('click', function(event) {
                         location.href = '/m/recharge';//去充值
                     });
                     return false;
+                }
+                if(!hasBankCard){
+                    location.href = '/m/bind-card';//去绑卡
                 }
                 if (isAuthenticationRequired) {
                     $buyDetail.hide();

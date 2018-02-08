@@ -12,6 +12,15 @@
   }
 }
 #toPerName {
-  width: 72%;
+  width: 75%;
+}
+
+.iconRight {
+  display: inline-block;
+  position: relative;
+  width: 9px;
+  height: 14px;
+  background: url("../../images/icon_goRight.png") no-repeat;
+  background-size: contain;
 }
 

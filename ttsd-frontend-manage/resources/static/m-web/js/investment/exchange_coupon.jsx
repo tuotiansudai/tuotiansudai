@@ -70,13 +70,14 @@ $('#submitCode').on('click', function() {
 
     }
 });
-$('#couponByCode').on('keyup',function () {
+$('#couponByCode').on('input',function () {
     var exchangeCode = $('#couponByCode').val();
 
     if ($.trim(exchangeCode).length == 14) {
         $("#submitCode").removeAttr("disabled");
     }else {
-
+        console.log('bufuhe')
+        $("#submitCode").attr("disabled",'true');
     }
 })
 //后退
