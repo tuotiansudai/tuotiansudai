@@ -32,7 +32,7 @@ function testAmount() {
 
         if (amount > cashMoney) {
             $toCashBtn.prop('disabled', true).text('可提现余额不足');
-        } else if (amount < serviceCharge) {
+        } else if (amount <= serviceCharge) {
             $toCashBtn.prop('disabled', true).text('提现金额需大于手续费');
         } else {
             $toCashBtn.prop('disabled', false).text('确认提交');
@@ -48,7 +48,7 @@ $amount.on('keyup', function (event) {
 
 
 $('#iconBack').on('click', function () {
-    location.href = '/m/account'
+    location.href = '/m/personal-info'
 })
 
 $toCashBtn.on('click', function (e) {

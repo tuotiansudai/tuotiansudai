@@ -30,7 +30,7 @@
             <div class="m-header">提现成功</div>
             <div class="info">
                 <i class="icon-success"></i>
-                <em class="success-tips">提现成功</em>
+                <em class="success-tips">申请提现成功</em>
                 <ul class="input-list">
                     <li>
                         <label>到账卡号</label>
