@@ -2,9 +2,9 @@
 <@global.main pageCss="${m_css.experience_loan}" pageJavascript="${m_js.experience_loan}" activeNav="我要投资" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" >
 <div class="my-account-content experience-amount" id="experienceAmount" style="display: none">
     <div class="account-summary">
-        <div class="go-back-container" id="goBack_experienceAmount">
+        <a class="go-back-container" id="goBack_experienceAmount" href="javascript:history.go(-1)">
             <span class="go-back"></span>
-        </div>
+        </a>
         <div class="collection">
             <span class="title">${loan.name}</span>
             <span class="summary-box">
@@ -58,9 +58,9 @@
 <div class="my-account-content apply-transfer" id="applyTransfer" style="display: none">
     <div class="goBack_applyTransfer">
         购买详情
-        <div class="go-back-container" id="goBack_applyTransfer">
+        <a class="go-back-container" id="goBack_applyTransfer" href="javascript:history.go(-1)">
             <span class="go-back"></span>
-        </div>
+        </a>
     </div>
     <div class="benefit-box">
         <div class="target-category-box" data-url="">

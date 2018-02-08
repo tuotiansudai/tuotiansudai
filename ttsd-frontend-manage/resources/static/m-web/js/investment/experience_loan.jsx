@@ -87,13 +87,9 @@ switch (hash_key) {
         break;
 }
 
-$('#goBack_experienceAmount').on('click',() => {
-    history.go(-1);
-});
-
-$('#goBack_applyTransfer').on('click',() => {
-    history.go(-1);
-});
+// $('.go-back-container').on('click',() => {
+//     history.go(-1);
+// });
 
 $('#investment_btn').on('click',() => {
     pushHistory('#applyTransfer');
@@ -147,33 +143,39 @@ function getAmount() {
 }
 
 $('#submitBtn').on('click',(event) => {
-    event.preventDefault();
-    let getInvestAmount = getAmount();
-    if (getInvestAmount >  String(experience_balance).replace(/,/g, "") * 100) {
-        $('.shade_mine').show(); // hack ios shade
-        let $freeSuccess=$('#freeSuccess');
-        commonFun.CommonLayerTip({
-            btn: ['确定'],
-            area:['280px', '160px'],
-            shade: false,
-            content: $freeSuccess,
-        },() => {
-            $('.shade_mine').hide(); // hack ios shade
-            layer.closeAll();
-        });
-        return;
-    }
-    commonFun.useAjax({
-        type:'POST',
-        url: '/experience-invest',
-        data:"loanId=1&amount="+getInvestAmount
-    },function(response) {
-        let data = response.data;
-        if (data.status) {
-            pushHistory('#investmentSuc');
-            localStorage.setItem('getInvestAmount',$experience_balance.val());
-        }
-    });
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            let getInvestAmount = getAmount();
+            if (getInvestAmount >  String(experience_balance).replace(/,/g, "") * 100) {
+                $('.shade_mine').show(); // hack ios shade
+                let $freeSuccess=$('#freeSuccess');
+                commonFun.CommonLayerTip({
+                    btn: ['确定'],
+                    area:['280px', '160px'],
+                    shade: false,
+                    content: $freeSuccess,
+                },() => {
+                    $('.shade_mine').hide(); // hack ios shade
+                    layer.closeAll();
+                });
+                return;
+            }
+            commonFun.useAjax({
+                type:'POST',
+                url: '/experience-invest',
+                data:"loanId=1&amount="+getInvestAmount
+            },function(response) {
+                let data = response.data;
+                if (data.status) {
+                    pushHistory('#investmentSuc');
+                    localStorage.setItem('getInvestAmount',$experience_balance.val());
+                }
+            });
+        })
+        .fail(function () {
+            location.href = '/m/login'
+        })
+
 });
 
 
