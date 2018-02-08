@@ -1124,6 +1124,11 @@ layui-layer .layui-layer-page .layui-layer-content {
   background: url("../../images/icon_goRight.png") no-repeat;
   background-size: contain;
 }
+.pdf {
+  .iconRight {
+    top: 3px;
+  }
+}
 .sectionNone {
   height: 60px;
 }

@@ -112,5 +112,5 @@ registerAccountForm.onsubmit = function(event) {
 };
 
 $('#iconRegister').on('click',function () {
-    location.href = '/m/personal-info';
+    history.go(-1);
 })
