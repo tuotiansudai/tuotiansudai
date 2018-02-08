@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import com.google.common.base.Strings;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,17 +25,17 @@ public class MobileLocationUtils {
     };
 
     public static String[] locateMobileNumber(String phoneNumber) {
-        for (Provider p: PROVIDER_PRIORITY){
-            try{
-                String[] location = locateMobileNumber(phoneNumber,p);
-                if (StringUtils.isNotEmpty(location[0])){
+        for (Provider p : PROVIDER_PRIORITY) {
+            try {
+                String[] location = locateMobileNumber(phoneNumber, p);
+                if (StringUtils.isNotEmpty(location[0])) {
                     return location;
                 }
-            }catch (Exception e){
-                log.debug("通过"+p+"获取手机位置失败",e);
+            } catch (Exception e) {
+                log.debug("通过" + p + "获取手机位置失败", e);
             }
         }
-        return new String[]{"",""};
+        return new String[]{"", ""};
     }
 
     private static String[] locateMobileNumber(String phoneNumber, Provider provider) {
@@ -46,12 +47,12 @@ public class MobileLocationUtils {
             case Shouji360:
                 return locateMobileNumber360(phoneNumber);
         }
-        return new String[]{"",""};
+        return new String[]{"", ""};
     }
 
     private static String[] locateMobileNumberPaiPai(String phoneNumber) {
         // http://virtual.paipai.com/extinfo/GetMobileProductInfo?mobile=15850781443&amount=10000&callname=getPhoneNumInfoExtCallback
-        String[] provinceAndCity = {"",""};
+        String[] provinceAndCity = {"", ""};
         String httpUrl = "http://virtual.paipai.com/extinfo/GetMobileProductInfo";
         Map<String, String> queryParam = new HashMap<>(3);
         queryParam.put("mobile", phoneNumber);
@@ -66,17 +67,17 @@ public class MobileLocationUtils {
         JSONObject json = JSONObject.fromObject(jsonResult);
         String province = json.getString("province");
         String city = json.getString("cityname");
-        if("未知".equals(province)){
+        if ("未知".equals(province)) {
             province = "";
         }
         provinceAndCity[0] = unifyProvince(province);
-        provinceAndCity[1] = city;
+        provinceAndCity[1] = Strings.isNullOrEmpty(city) ? provinceAndCity[0] : city;
         return provinceAndCity;
     }
 
     private static String[] locateMobileNumber360(String phoneNumber) {
         // http://cx.shouji.360.cn/phonearea.php?number=13674847382
-        String[] provinceAndCity = {"",""};
+        String[] provinceAndCity = {"", ""};
         String httpUrl = "http://cx.shouji.360.cn/phonearea.php";
         Map<String, String> queryParam = new HashMap<>(1);
         queryParam.put("number", phoneNumber);
@@ -89,20 +90,20 @@ public class MobileLocationUtils {
         String province = data.getString("province");
         String city = data.getString("city");
         provinceAndCity[0] = unifyProvince(province);
-        if(StringUtils.isEmpty(city)){
+        if (StringUtils.isEmpty(city)) {
             city = provinceAndCity[0];
         }
         provinceAndCity[1] = city;
         return provinceAndCity;
     }
 
-    private static String[] locateMobileNumberJuHe(String phoneNumber){
+    private static String[] locateMobileNumberJuHe(String phoneNumber) {
         //http://apis.juhe.cn/mobile/get?phone=13674847382&key=ae009facc22347bc29af361b2592bdfd
-        String[] provinceAndCity = {"",""};
+        String[] provinceAndCity = {"", ""};
         String httpUrl = "http://apis.juhe.cn/mobile/get";
         Map<String, String> queryParam = new HashMap<>(1);
         queryParam.put("phone", phoneNumber);
-        queryParam.put("key","ae009facc22347bc29af361b2592bdfd");
+        queryParam.put("key", "ae009facc22347bc29af361b2592bdfd");
         String jsonResult = httpGet(httpUrl, queryParam);
         if (StringUtils.isBlank(jsonResult)) {
             return provinceAndCity;
@@ -112,12 +113,12 @@ public class MobileLocationUtils {
         String province = "";
         String city = "";
 
-        if (data.size() > 0){
+        if (data.size() > 0) {
             province = data.getString("province");
             city = data.getString("city");
         }
         provinceAndCity[0] = unifyProvince(province);
-        provinceAndCity[1] = city;
+        provinceAndCity[1] = Strings.isNullOrEmpty(city) ? provinceAndCity[0] : city;
 
         return provinceAndCity;
     }
@@ -195,33 +196,34 @@ public class MobileLocationUtils {
         return result;
     }
 
-    private static String unifyProvince(String province){
+    private static String unifyProvince(String province) {
         if (province == null) province = "";
 
-        if(province.indexOf("省") > -1 ){
-            province = province.substring(0,province.indexOf("省"));
-        }else if(province.indexOf("市") > -1){
-            province = province.substring(0,province.indexOf("市"));
-        }else if(province.indexOf("内蒙古") > -1){
+        if (province.indexOf("省") > -1) {
+            province = province.substring(0, province.indexOf("省"));
+        } else if (province.indexOf("市") > -1) {
+            province = province.substring(0, province.indexOf("市"));
+        } else if (province.indexOf("内蒙古") > -1) {
             province = "内蒙古";
-        }else if(province.indexOf("广西") > -1){
+        } else if (province.indexOf("广西") > -1) {
             province = "广西";
-        }else if(province.indexOf("西藏") > -1){
+        } else if (province.indexOf("西藏") > -1) {
             province = "西藏";
-        }else if(province.indexOf("宁夏") > -1){
+        } else if (province.indexOf("宁夏") > -1) {
             province = "宁夏";
-        }else if(province.indexOf("新疆") > -1){
+        } else if (province.indexOf("新疆") > -1) {
             province = "新疆";
-        }else if(province.indexOf("香港") > -1){
+        } else if (province.indexOf("香港") > -1) {
             province = "香港";
-        }else if(province.indexOf("澳门") > -1){
+        } else if (province.indexOf("澳门") > -1) {
             province = "澳门";
         }
         return province;
     }
-   public static void main(String[] args){
+
+    public static void main(String[] args) {
         unifyProvince("北京市");
-   }
+    }
 
 }
 
