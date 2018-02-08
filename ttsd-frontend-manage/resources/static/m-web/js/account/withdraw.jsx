@@ -48,7 +48,7 @@ $amount.on('keyup', function (event) {
 
 
 $('#iconBack').on('click', function () {
-    location.href = '/m/personal-info'
+    location.href = '/m/account'
 })
 
 $toCashBtn.on('click', function (e) {
