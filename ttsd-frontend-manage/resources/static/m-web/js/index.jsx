@@ -88,11 +88,12 @@ $('.close-app').click(function (e) {
     $appContainer.hide();
 })
 $('.open-app').on('click',function () {
-    if(commonFun.phoneModal() == 'android'){
-        location.href = 'http://tuotiansudai.com/app/tuotiansudai.apk';
-    }else if(commonFun.phoneModal() == 'ios'){
-       location.href = 'https://itunes.apple.com/cn/app/id1039233966';
-    }
+    // if(commonFun.phoneModal() == 'android'){
+    //     location.href = 'http://tuotiansudai.com/app/tuotiansudai.apk';
+    // }else if(commonFun.phoneModal() == 'ios'){
+    //    location.href = 'https://itunes.apple.com/cn/app/id1039233966';
+    // }
+    toExperienceNow();
 })
 let $amontDom = $('.money');
 $amontDom.autoNumeric('init');
@@ -153,11 +154,27 @@ if($myMenu.length){
     $myMenu.on('click',function (e) {
         e.preventDefault();
         $.when(commonFun.isUserLogin())
+
             .done(function () {
                 location.href = '/m/account'
             }).fail(function () {
-            location.href = '/m/account-anonymous'
+            location.href = '/m/account-anonymous';
         })
 
     })
 }
+
+function toExperienceNow() {
+
+    globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
+    let equipment=globalFun.equipment();
+    if(equipment.wechat && equipment.kind=='android') {
+        // 微信,并且是安卓，跳到页面
+        window.location.href = "/app/download?app=htracking";
+        return;
+    } else {
+        window.location.href =globalFun.categoryCodeUrl[equipment.kind];
+    }
+
+}
+
