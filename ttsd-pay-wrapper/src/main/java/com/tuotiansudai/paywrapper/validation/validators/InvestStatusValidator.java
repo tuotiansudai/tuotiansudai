@@ -46,8 +46,13 @@ public class InvestStatusValidator {
 
         InvestModel investModel = investMapper.findById(investId);
 
-        if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
-            dto.getData().setExtraValues(Maps.newHashMap());
+        if (investModel == null) {
+            dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", "投资不存在").build()));
+            return dto;
+        }
+
+        if (investModel.getStatus() != InvestStatus.WAIT_PAY) {
+            dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", investModel.getStatus().getDescription()).build()));
             return dto;
         }
 
@@ -55,19 +60,20 @@ public class InvestStatusValidator {
             TransferSearchResponseModel transferStatus = umPayRealTimeStatusService.getTransferStatus(String.valueOf(investId), DATE_FORMAT.format(investModel.getCreatedTime()), "03");
 
             if (transferStatus.isSuccess()) {
+                String statusMessage = transferStatus.generateHumanReadableInfo().get("交易状态");
                 String tranStatus = transferStatus.getTranState();
 
                 // 交易状态 0:初始 4:不明 6:其他
                 if (Lists.newArrayList("0", "4", "6").contains(tranStatus)) {
                     dto.getData().setStatus(false);
-                    dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", tranStatus).build()));
+                    dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", statusMessage).build()));
                     return dto;
                 }
 
                 // 交易状态 2:成功
                 if (tranStatus.equals("2")) {
                     mqWrapperClient.sendMessage(MessageQueue.InvestCallback, String.valueOf(investId));
-                    dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", tranStatus).build()));
+                    dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", statusMessage).build()));
                     return dto;
                 }
 
@@ -75,20 +81,22 @@ public class InvestStatusValidator {
                 if (Lists.newArrayList("3", "5").contains(tranStatus)) {
                     investModel.setStatus(InvestStatus.FAIL);
                     investMapper.update(investModel);
-                    dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", tranStatus).build()));
+                    dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", statusMessage).build()));
                     return dto;
                 }
             } else {
                 logger.warn(MessageFormat.format("invest ({0}) status is ({1}), message ({2})", String.valueOf(investId), transferStatus.getRetCode(), transferStatus.getRetMsg()));
 
-                dto.getData().setExtraValues(Maps.newHashMap());
+                dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", transferStatus.getRetMsg()).build()));
 
                 return dto;
             }
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
+            dto.getData().setStatus(false);
+            dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", "查询异常").build()));
 
         }
-        return new BaseDto<>(new PayDataDto());
+        return dto;
     }
 }

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller(value = "/transaction-status")
+@Controller
+@RequestMapping(path = "/transaction-status")
 public class TransactionStatusController {
 
     private final InvestStatusValidator investStatusValidator;
@@ -20,7 +21,7 @@ public class TransactionStatusController {
         this.investStatusValidator = investStatusValidator;
     }
 
-    @RequestMapping(value = "/invest/{investId:^\\d+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/invest/{investId:^\\d+$}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> checkInvestStatus(@PathVariable(value = "investId") long orderId) {
         return investStatusValidator.validate(orderId);

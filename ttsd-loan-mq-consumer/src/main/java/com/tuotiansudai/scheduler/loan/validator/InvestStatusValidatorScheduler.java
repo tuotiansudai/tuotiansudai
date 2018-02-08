@@ -1,10 +1,10 @@
 package com.tuotiansudai.scheduler.loan.validator;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,32 +33,37 @@ public class InvestStatusValidatorScheduler {
     public void run() {
         logger.info("[Invest Status Validator Scheduler] starting...");
 
-        List<String> unsureOrderIds = Lists.newArrayList();
+        Long size = client.llen(INVEST_CHECK_QUEUE_KEY);
 
-        String orderId;
+        if (size == null || size == 0) {
+            logger.info("[Invest Status Validator Scheduler] size is 0, done");
+            return;
+        }
 
-        do {
-            orderId = client.rpop(INVEST_CHECK_QUEUE_KEY);
+        for (long index = 0; index < size; index++) {
+            List<String> investOrderIds = client.lrange(INVEST_CHECK_QUEUE_KEY, -1, -1);
+            String orderId = investOrderIds.get(0);
+            try {
+                BaseDto<PayDataDto> dto = payWrapperClient.investStatusValidate(MessageFormat.format("/transaction-status/invest/{0}", orderId));
 
-            if (orderId != null) {
-                try {
-                    BaseDto<PayDataDto> dto = payWrapperClient.investStatusValidate(MessageFormat.format("/transaction-status/invest/{0}", orderId));
+                if (dto.isSuccess()) {
                     logger.info(MessageFormat.format("[Invest Status Validator Scheduler] invest {0} status is {1}",
                             orderId,
                             dto.getData().getExtraValues().getOrDefault("transferStatus", "")));
 
-                    if (!dto.getData().getStatus()) {
-                        unsureOrderIds.add(orderId);
+                    if (dto.getData().getStatus()) {
+                        client.rpop(INVEST_CHECK_QUEUE_KEY);
+                    } else {
+                        client.lpush(INVEST_CHECK_QUEUE_KEY, client.rpop(INVEST_CHECK_QUEUE_KEY));
                     }
-                } catch (Exception e) {
-                    unsureOrderIds.add(orderId);
-                    logger.warn(e.getLocalizedMessage(), e);
+                } else {
+                    logger.warn("[Invest Status Validator Scheduler] connection error");
                 }
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage(), e);
             }
-        } while (orderId != null);
-
-        for (String unsureOrderId : unsureOrderIds) {
-            client.lpush(INVEST_CHECK_QUEUE_KEY, unsureOrderId);
         }
+
+        logger.info(MessageFormat.format("[Invest Status Validator Scheduler] size is {0} done", String.valueOf(size)));
     }
 }
