@@ -60,6 +60,7 @@ $('#submitCode').on('click', function() {
                         content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <p>${message}</p></div> `,
                     },function() {
                         layer.closeAll();
+                        testCode();
                     })
                     $('#couponByCode').val('');
                 }
@@ -70,15 +71,17 @@ $('#submitCode').on('click', function() {
 
     }
 });
-$('#couponByCode').on('input',function () {
+function testCode() {
     var exchangeCode = $('#couponByCode').val();
 
     if ($.trim(exchangeCode).length == 14) {
         $("#submitCode").removeAttr("disabled");
     }else {
-        console.log('bufuhe')
         $("#submitCode").attr("disabled",'true');
     }
+}
+$('#couponByCode').on('input',function () {
+    testCode();
 })
 //后退
 $('#iconExchangeCoupon').on('click',function () {

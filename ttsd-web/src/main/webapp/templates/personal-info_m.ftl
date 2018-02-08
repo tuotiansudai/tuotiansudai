@@ -9,11 +9,13 @@
             <label for="perMobile">手机号码</label> <input type="text" id="perMobile" value="${mobile}" readonly>
         </li>
         <li>
+
             <#if userName??>
                 <label for="perName">实名认证</label> <input type="text" id="perName" value="${userName}(${identityNumber?replace("^(\\d{6}).*(\\d{3}.)$","$1***$2","r")})" readonly>
             <#else>
-                <label for="perName">实名认证</label> <input type="text" id="toPerName" value="未认证" readonly><i class="iconRight"></i>
+                <label for="perName">实名认证</label> <span><input type="text" id="toPerName" value="未认证" readonly><i class="iconRight"></i></span>
             </#if>
+
 
         </li>
         <li>

@@ -11,7 +11,8 @@ em {
 .icon-sign {
   font-size: .18rem;
   padding: .02rem .04rem;
-  line-height:.09rem;
+  padding-top: .04rem;
+  line-height:.2rem;
 }
 #noData {
   text-align: center;
@@ -60,6 +61,7 @@ em {
     width: 100%;
     z-index: 1;
     overflow: hidden;
+    padding-bottom: 0.4rem;
     .invest-item {
       padding-left: .17rem;
       padding-right: .17rem;
@@ -163,6 +165,7 @@ em {
     }
   }
 }
+
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;
