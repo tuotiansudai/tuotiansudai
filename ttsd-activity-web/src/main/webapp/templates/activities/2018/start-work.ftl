@@ -161,7 +161,7 @@
     </div>
 </div>
 
-    <#include "../../module/login-tip.ftl" />
+    <#--<#include "../../module/login-tip.ftl" />-->
 </div>
 
 </@global.main>

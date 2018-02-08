@@ -818,10 +818,10 @@ h2,h4 {
 }
 
 
-.product-list-wap {
+.product-list {
   display: none;
-}
 
+}
 .product-list-wap {
   display: block;
   position: relative;
@@ -830,50 +830,51 @@ h2,h4 {
     height: 1.8rem;
     position: absolute;
     top: 50%;
-    margin-top: -0.9rem;
+    margin-top: -0.35rem;
     background: #ec192c;
-    border-radius: 50%;
     z-index: 3000;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 30%;
     cursor: pointer;
+    border-radius: 50%;
     &.prevBtn {
-      left: -0.08rem;
+      left: 1rem;
       background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
     }
     &.nextBtn {
-      right:-0.08rem;
+      right: 1rem;
       background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
     }
   }
 
   .swiper-container {
-    height: 10.02rem;
+    width: 17.5rem;
+    height: 12.525rem;
     overflow: visible!important;
     .swiper-wrapper {
       .swiper-slide{
-        width: 10.88rem;
+        width: 13.6rem;
         img{
           width: 100%;
         }
       }
       .swiper-slide-prev {
-        margin-top: 0.6rem;
-        height: 5rem!important;
+        margin-top: 0.75rem;
+        height: 10.875rem!important;
         img{
-          height: 5rem!important;
+          height: 10.875rem!important;
         }
       }
       .swiper-slide-next{
-        margin-top: 0.6rem;
-        height: 5rem!important;
+        margin-top: 0.75rem;
+        height: 10.875rem!important;
         img{
-          height: 5rem!important;
+          height: 10.875rem!important;
         }
       }
       .swiper-slide-active{
-        width: 10.88rem;
+        width: 13.6rem;
       }
 
     }

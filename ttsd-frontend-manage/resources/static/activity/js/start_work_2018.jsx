@@ -7,6 +7,8 @@ let sourceKind = globalFun.parseURL(location.href);
 let switchLock = false;
 let $productListWap = $('#productListWap');
 
+
+
 if ($(document).width() < 790) {
     (function (doc, win) {
         var docEl = doc.documentElement,
@@ -27,11 +29,56 @@ if ($(document).width() < 790) {
 }
 
 
-$.when(commonFun.isUserLogin())
-    .done(function () {
-        recordList();
-        $('.title_wrapper').show();
-    });
+// 移动端滑动效果
+let descObj = {
+    0:'蒙顶山春茶云雾茶礼盒装125g',
+    1:'江小白45度清香型白酒125ml*12瓶',
+    2:'小米 红米5A 全网通版 2GB+16GB',
+    3:'周生生黄金羽毛吊坠计价2.31克',
+    4:'AOSHIMSIT 按摩椅家用太空舱',
+    5:'立久佳家用静音折叠跑步机',
+    6:'海尔模卡55英寸 4K曲面液晶电视',
+    7:'Apple iPhone8（64GB'
+};
+
+//移动端
+$productListWap.find('.swiper-slide').each(function (index,item) {
+    let  _self = $(this);
+    let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
+    let img = new Image();
+    img.src = imgUrl;
+    img.alt=descObj[index];
+    img.title = descObj[index];
+    _self.append(img);
+})
+
+
+let mySwiper = new Swiper ('.swiper-container', {
+    direction: 'horizontal',
+    loop: true,
+    // autoplay:3000,
+    autoplayDisableOnInteraction:false,
+    slidesPerView: '1.4',
+    centeredSlides:true,
+    spaceBetween: 20,
+    loopAdditionalSlides:1
+})
+
+let $prevBtn = $('.prevBtn'),
+    $nextBtn = $('.nextBtn');
+
+$prevBtn.on('click',function () {
+    mySwiper.slidePrev();
+})
+$nextBtn.on('click',function () {
+    mySwiper.slideNext();
+})
+
+// $.when(commonFun.isUserLogin())
+//     .done(function () {
+//         recordList();
+//         $('.title_wrapper').show();
+// });
 
 $('.close_btn1').on('click',() => {
     $('#flex_content').hide();
@@ -115,45 +162,4 @@ function recordList() {
 }
 
 
-// 移动端滑动效果
-let descObj = {
-    0:'蒙顶山春茶云雾茶礼盒装125g',
-    1:'江小白45度清香型白酒125ml*12瓶',
-    2:'小米 红米5A 全网通版 2GB+16GB',
-    3:'周生生黄金羽毛吊坠计价2.31克',
-    4:'AOSHIMSIT 按摩椅家用太空舱',
-    5:'立久佳家用静音折叠跑步机',
-    6:'海尔模卡55英寸 4K曲面液晶电视',
-    7:'Apple iPhone8（64GB'
-};
 
-$productListWap.find('.swiper-slide').each(function (index,item) {
-    let  _self = $(this);
-    let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
-    let img = new Image();
-    img.src = imgUrl;
-    img.alt=descObj[index];
-    img.title = descObj[index];
-    _self.append(img);
-});
-
-let mySwiper = new Swiper ('.swiper-container', {
-    direction: 'horizontal',
-    loop: true,
-    // autoplay:3000,
-    autoplayDisableOnInteraction:false,
-    slidesPerView: '1.8',
-    centeredSlides:true,
-    spaceBetween: 20,
-    loopAdditionalSlides:1
-})
-
-let $prevBtn = $('.prevBtn'),
-    $nextBtn = $('.nextBtn');
-
-$prevBtn.on('click',function () {
-    mySwiper.slidePrev();
-})
-$nextBtn.on('click',function () {
-    mySwiper.slideNext();
-})
