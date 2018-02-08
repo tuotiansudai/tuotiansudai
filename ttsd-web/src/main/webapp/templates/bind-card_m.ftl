@@ -30,11 +30,13 @@
         <button type="submit" class="btn-wap-normal next-step" disabled>确认提交</button>
     </form>
 
-    <div class="tip-user-info" style="display: none">
+
+    <div class="tip-user-info" style="display: block">
         <em>温馨提示</em>
         为了您的账户资金安全
         只能绑定持卡人的银行储蓄卡
     </div>
+    <div class="service bind-card">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
 </div>
 
 

@@ -13,11 +13,35 @@ let $loanList = $('#loanList'),
     $targetCategoryBox = $('.target-category-box', $loanList),
     $categoryBoxMain = $('.category-box-main',$loanList);
 
-let myScroll = new IScroll('#wrapperOut', {
-    probeType: 2,
-    mouseWheel: true,
-    click: true
-});
+
+    let myScroll = new IScroll('#wrapperOut', {
+        probeType: 2,
+        mouseWheel: true,
+        click: true
+    });
+    myScroll.on('scrollEnd', function () {
+        //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+        if ((this.y - this.maxScrollY) <= 10) {
+            getMore();
+        }
+    });
+
+function isPassive() {
+    var supportsPassiveOption = false;
+    try {
+        addEventListener("test", null, Object.defineProperty({}, 'passive', {
+            get: function () {
+                supportsPassiveOption = true;
+            }
+        }));
+    } catch(e) {}
+    return supportsPassiveOption;
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+    capture: false,
+    passive: false
+} : false);
+
 //点击btn跳转到购买loanList
 $loanList.on('click','.goToDetail',function (e) {
     e.preventDefault();
@@ -45,12 +69,7 @@ $loanList.on('click','[data-url]',function(event) {
 
 });
 
-myScroll.on('scrollEnd', function () {
-    //如果滑动到底部，则加载更多数据（距离最底部10px高度）
-    if ((this.y - this.maxScrollY) <= 10) {
-            getMore();
-    }
-});
+
 
 let pagenum = 1;//当前页数
 //获取更多数据
