@@ -4,9 +4,9 @@
 <div class="sign-container sign-login" id="weChatLogin">
     <div class="goBack_wrapper">
         登录
-        <div class="go-back-container" id="goBack_applyTransfer">
+        <a class="go-back-container" id="goBack_applyTransfer" href="javascript:history.go(-1)">
             <span class="go-back"></span>
-        </div>
+        </a>
     </div>
     <div class="show-mobile show-mobile-login"></div>
     <form id="formLogin" class="form-login">

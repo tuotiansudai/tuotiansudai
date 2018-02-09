@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="next_step_container" style="display: none">
-            <input validate name="password" type="password" placeholder="6到20位数字和字母组合" maxlength="20" class="short-message-captcha1"/>
+            <input validate name="password" type="password" placeholder="6到20位数字和字母组合" maxlength="20" class="short-message-captcha1 set-password"/>
             <div class="close_btn"></div>
             <div class="see_password"></div>
             <span class="invite-mobile closed">邀请人手机号码(可不填写)<i></i></span>

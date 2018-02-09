@@ -403,7 +403,7 @@ validator.newStrategy(formRegister.referrer,'isReferrerExist',function(errorMsg,
 });
 // 密码明文
 $('.see_password').on('click',() => {
-    let input = $('.see_password').siblings('input');
+    let input = $('.set-password');
     if (input.attr('type') == 'text') {
         input.attr('type','password');
         $('.see_password').removeClass('open_eye');

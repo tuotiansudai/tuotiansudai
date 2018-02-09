@@ -722,6 +722,13 @@ public class InvestServiceImpl implements InvestService {
         List<InvestorInvestRepayDto> investRepayList = new ArrayList<>();
 
         investorInvestDetailDto.setInterestBeginDate(getInterestBeginDate(investModel, loanModel, investRepayModels));
+        if (loanModel.getProductType() == ProductType.EXPERIENCE) {
+            investorInvestDetailDto.setLastRepayDate(investRepayModels.get(investRepayModels.size() - 1).getRepayDate());
+        } else if (loanModel.getStatus() == LoanStatus.COMPLETE) {
+            investorInvestDetailDto.setLastRepayDate(investRepayModels.get(investRepayModels.size() - 1).getActualRepayDate());
+        } else {
+            investorInvestDetailDto.setLastRepayDate(loanModel.getDeadline());
+        }
         investorInvestDetailDto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModels.get(investRepayModels.size() - 1).getActualRepayDate() : loanModel.getDeadline()).toDate());
         List<TransferApplicationModel> transferApplicationModels;
         for (InvestRepayModel investRepayModel : investRepayModels) {
