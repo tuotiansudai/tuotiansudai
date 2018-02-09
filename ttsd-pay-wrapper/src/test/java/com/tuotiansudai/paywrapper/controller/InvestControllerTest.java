@@ -342,22 +342,18 @@ public class InvestControllerTest {
     public void investSuccessAfterOverInvest() throws Exception {
         long mockLoanId = 55555555L;
         long mockInitAmount = 1000000;
-        long mockLoanAmount = 3000000;
+        long mockLoanAmount = 3;
 
         String mockLoanerLoginName = "mock_loaner1";
 
-        long mockInvestAmount1 = 1000000;
-        long mockInvestAmount2 = 1000000;
-        long mockInvestAmount3 = 900000;
-        long mockInvestAmount4 = 900000;
-        long mockInvestAmount5 = 100000;
+        long mockInvestAmount1 = 2;
+        long mockInvestAmount2 = 3;
+        long mockInvestAmount3 = 1;
         String mockInvestLoginName1 = "mock_invest1";
         String mockInvestLoginName2 = "mock_invest2";
         String mockInvestLoginName3 = "mock_invest3";
-        String mockInvestLoginName4 = "mock_invest4";
-        String mockInvestLoginName5 = "mock_invest5";
 
-        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3, mockInvestLoginName4, mockInvestLoginName5};
+        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3};
 
         mockUsers(mockUserNames);
         mockAccounts(mockUserNames, mockInitAmount);
@@ -366,21 +362,15 @@ public class InvestControllerTest {
         mockUserMembership(mockInvestLoginName1);
         mockUserMembership(mockInvestLoginName2);
         mockUserMembership(mockInvestLoginName3);
-        mockUserMembership(mockInvestLoginName4);
-        mockUserMembership(mockInvestLoginName5);
 
         long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
-        long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
-        long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
 
         this.generateMockResponse_success(1); // 返款成功
-        this.jobAsyncInvestNotify(5);
+        this.jobAsyncInvestNotify(3);
 
-        verifyInvestSuccessAmountTransferMessage(mockInvestAmount5, mockInvestLoginName5);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
-        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
 
         // check loan status
@@ -388,19 +378,19 @@ public class InvestControllerTest {
         assertThat(lm.getStatus(), is(LoanStatus.RECHECK));
 
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount5);
+        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount3);
 
-        // 第4笔投资超投，返款回调
-        this.overInvestPaybackNotify(orderId4, "0000");
+        // 第2笔投资超投，返款回调
+        this.overInvestPaybackNotify(orderId2, "0000");
 
-        List<InvestModel> investModelList4 = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE);
-        assert investModelList4.size() > 0;
-        InvestModel investModel4 = investModelList4.get(0);
+        List<InvestModel> investModelList2 = investMapper.findPaginationByLoginName(mockInvestLoginName2, 0, Integer.MAX_VALUE);
+        assert investModelList2.size() > 0;
+        InvestModel investModel4 = investModelList2.get(0);
         assertThat(investModel4.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
 
-        List<InvestModel> investModelList5 = investMapper.findPaginationByLoginName(mockInvestLoginName5, 0, Integer.MAX_VALUE);
-        assert investModelList5.size() > 0;
-        InvestModel investModel5 = investModelList5.get(0);
+        List<InvestModel> investModelList3 = investMapper.findPaginationByLoginName(mockInvestLoginName3, 0, Integer.MAX_VALUE);
+        assert investModelList3.size() > 0;
+        InvestModel investModel5 = investModelList3.get(0);
         assertThat(investModel5.getStatus(), is(InvestStatus.SUCCESS));
     }
 
