@@ -59,12 +59,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})@WebAppConfiguration
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
+@WebAppConfiguration
 @Transactional
 public class InvestControllerTest {
-    private MockMvc mockMvc;
 
-    private MockWebServer mockPayServer;
+    private MockMvc mockMvc;
 
     @Autowired
     PayCallbackController payCallbackController;
@@ -84,9 +84,6 @@ public class InvestControllerTest {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private PayAsyncClient payAsyncClient;
-
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
@@ -105,18 +102,12 @@ public class InvestControllerTest {
         this.objectMapper = new ObjectMapper();
         this.mockServer = mockUmPayService();
 
-        MockPayGateWrapper.injectInto(payAsyncClient);
-        this.mockPayServer = new MockWebServer();
-        this.mockPayServer.start();
-
-        MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
         MockitoAnnotations.initMocks(this);
     }
 
     @After
     public void clean() throws Exception {
         this.mockServer.shutdown();
-        this.mockPayServer.shutdown();
     }
 
     private MockWebServer mockUmPayService() throws IOException {
@@ -247,7 +238,6 @@ public class InvestControllerTest {
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
 
-        this.generateMockResponse_success(10); // 返款成功
         this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3, orderId4));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
@@ -309,7 +299,6 @@ public class InvestControllerTest {
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
         long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
 
-        this.generateMockResponse_success(10); // 返款成功
         this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3, orderId4, orderId5));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
@@ -368,7 +357,6 @@ public class InvestControllerTest {
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
 
-        this.generateMockResponse_success(10); // 返款成功
         this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
@@ -394,78 +382,6 @@ public class InvestControllerTest {
         InvestModel investModel5 = investModelList3.get(0);
         assertThat(investModel5.getStatus(), is(InvestStatus.SUCCESS));
     }
-
-    // case6: 超投，返款失败，当投资成功处理
-    @Test
-    @Ignore
-    public void overInvestPaybackFail() throws Exception {
-        long mockLoanId = 66666666L;
-        long mockInitAmount = 1000000;
-        long mockLoanAmount = 3000000;
-
-        String mockLoanerLoginName = "mock_loaner1";
-
-        long mockInvestAmount1 = 1000000;
-        long mockInvestAmount2 = 1000000;
-        long mockInvestAmount3 = 900000;
-        long mockInvestAmount4 = 900000;
-        String mockInvestLoginName1 = "mock_invest1";
-        String mockInvestLoginName2 = "mock_invest2";
-        String mockInvestLoginName3 = "mock_invest3";
-        String mockInvestLoginName4 = "mock_invest4";
-
-        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3, mockInvestLoginName4};
-
-        mockUsers(mockUserNames);
-        mockAccounts(mockUserNames, mockInitAmount);
-        mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
-
-        mockUserMembership(mockInvestLoginName1);
-        mockUserMembership(mockInvestLoginName2);
-        mockUserMembership(mockInvestLoginName3);
-        mockUserMembership(mockInvestLoginName4);
-
-        mockUserMembership(mockInvestLoginName1);
-        mockUserMembership(mockInvestLoginName2);
-        mockUserMembership(mockInvestLoginName3);
-        mockUserMembership(mockInvestLoginName4);
-
-        long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
-        long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
-        long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
-        long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
-
-        this.generateMockResponse_fail(1);
-        this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3, orderId4));
-
-        InvestModel investModel4_b = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
-        assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
-
-        verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
-        verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
-        verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
-
-        // check loan status
-        LoanModel lm = loanMapper.findById(mockLoanId);
-        assertThat(lm.getStatus(), is(LoanStatus.RAISING));
-
-        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
-
-        // 超投返款回调－失败，order4当作投资成功处理
-        this.overInvestPaybackNotify(orderId4, "0001");
-
-        InvestModel investModel4_a = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
-        assertThat(investModel4_a.getStatus(), is(InvestStatus.SUCCESS));
-
-        // check loan status
-        LoanModel lm_after = loanMapper.findById(mockLoanId);
-        assertThat(lm_after.getStatus(), is(LoanStatus.RAISING));
-
-        long sumSuccessInvestAmount_after = investMapper.sumSuccessInvestAmount(mockLoanId);
-        assertEquals(sumSuccessInvestAmount_after, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount4);
-    }
-
 
     private void jobAsyncInvestNotify(List<Long> investIds) throws Exception {
         for (Long investId : investIds) {
@@ -585,38 +501,5 @@ public class InvestControllerTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
-    }
-
-    private void generateMockResponse_success(int times) {
-        for (int index = 0; index < times; index++) {
-            MockResponse mockResponse = new MockResponse();
-            mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
-                    "<html>\n" +
-                    "  <head>\n" +
-                    "    <META NAME=\"MobilePayPlatform\" CONTENT=\"mer_id=7099088&ret_code=0000&ret_msg=成功&sign_type=RSA&version=1.0&sign=rqxyL+LrtzdGba4k4rFd1cs232Kcc4aQaUHTQlfZ0y9ayowzpxMwnbrbKyVHPGRxVz/UzLdo6uhNjPmGHND8F/yT0TDXkF1K8KW5AEjCzOwq39dWhEpLon62a1K4fchubLrpdeAx45X1YqpqL0s6uug/jb4SeWAYPi0ktnlHFVE=\">\n" +
-                    "  </head>\n" +
-                    "  <body>\n" +
-                    "  </body>\n" +
-                    "</html>");
-            mockResponse.setResponseCode(200);
-            this.mockPayServer.enqueue(mockResponse);
-        }
-    }
-
-
-    private void generateMockResponse_fail(int times) {
-        for (int index = 0; index < times; index++) {
-            MockResponse mockResponse = new MockResponse();
-            mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
-                    "<html>\n" +
-                    "  <head>\n" +
-                    "    <META NAME=\"MobilePayPlatform\" CONTENT=\"mer_id=7099088&ret_code=0001&ret_msg=成功&sign_type=RSA&version=1.0&sign=rqxyL+LrtzdGba4k4rFd1cs232Kcc4aQaUHTQlfZ0y9ayowzpxMwnbrbKyVHPGRxVz/UzLdo6uhNjPmGHND8F/yT0TDXkF1K8KW5AEjCzOwq39dWhEpLon62a1K4fchubLrpdeAx45X1YqpqL0s6uug/jb4SeWAYPi0ktnlHFVE=\">\n" +
-                    "  </head>\n" +
-                    "  <body>\n" +
-                    "  </body>\n" +
-                    "</html>");
-            mockResponse.setResponseCode(200);
-            this.mockPayServer.enqueue(mockResponse);
-        }
     }
 }
