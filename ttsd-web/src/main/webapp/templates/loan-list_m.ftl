@@ -85,9 +85,10 @@
                                 <#if loanItem.status == 'PREHEAT'>
                                 <div class="progress-bar">
                                     <#if loanItem.preheatSeconds lte 1800>
-                                    <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
+                                    <span class="preheat" data-time="${loan.preheatSeconds?string.computer}" style="color: #FF473C">
                                         <i class="minute_show"></i>分
                                         <i class="second_show"></i>秒后开标
+                                        </span>
                                     <#else>
                                         <span class="time">${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}
                                             开标</span>
@@ -101,7 +102,7 @@
                                     <span class="p-title">剩余金额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                                 </#if>
                             <#else>
-                                <span class="p-title allReady"><i>${loanItem.alert}</i></span>
+                                <span class="p-title allReady"><i>剩余金额：0元</i></span>
                             </#if>
                         </div>
                     </#if>
@@ -141,7 +142,7 @@
             <i></i>
             <span>投资</span>
         </a>
-        <a class="menu-my">
+        <a class="menu-my" >
             <i></i>
             <span>我的</span>
         </a>

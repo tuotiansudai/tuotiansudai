@@ -46,9 +46,8 @@ $amount.on('keyup', function (event) {
     testAmount();
 });
 
-
 $('#iconBack').on('click', function () {
-    location.href = '/m/personal-info'
+    history.go(-1);
 })
 
 $toCashBtn.on('click', function (e) {

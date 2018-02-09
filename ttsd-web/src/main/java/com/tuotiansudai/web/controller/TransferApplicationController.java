@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
@@ -37,6 +38,9 @@ public class TransferApplicationController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
 
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
@@ -70,6 +74,8 @@ public class TransferApplicationController {
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
+        BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        modelAndView.addObject("hasBankCard", passedBankCard != null);
         return modelAndView;
     }
 

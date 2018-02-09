@@ -734,10 +734,6 @@
   -webkit-overflow-scrolling: touch;
   height: calc( 100% - 160px);
 }
-#scroll {
-  min-height: calc( 100% - 40px);
-}
-
 
 .input-list #couponText{
   font-size: 16px;
@@ -1121,11 +1117,17 @@ layui-layer .layui-layer-page .layui-layer-content {
 .iconRight {
   display: inline-block;
   position: relative;
-  top: 3px;
+  top: 6px;
   width: 9px;
   height: 14px;
+
   background: url("../../images/icon_goRight.png") no-repeat;
   background-size: contain;
+}
+.pdf {
+  .iconRight {
+    top: 3px;
+  }
 }
 .sectionNone {
   height: 60px;
@@ -1135,6 +1137,9 @@ layui-layer .layui-layer-page .layui-layer-content {
 }
 .category-detail {
   padding-top: 20px;
+}
+#scroll {
+  padding-bottom: 3.3rem;
 }
 
 

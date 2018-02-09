@@ -8,13 +8,11 @@ import com.tuotiansudai.api.dto.v3_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppInvestListsV3Service;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserInvestRecordDataDto;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +43,4 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
 
         return dto;
     }
-
-
 }

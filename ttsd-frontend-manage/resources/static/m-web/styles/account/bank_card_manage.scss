@@ -202,3 +202,16 @@
   height: 100%;
   background: rgba(0,0,0,0.70);
 }
+.service{
+  color: #a2a2a2;
+  width: 100%;
+  margin-top: 12rem;
+  font-size: 12px;
+  text-align: center;
+  @media screen and(max-width: 360px){
+    margin-top: 7rem;
+  }
+  @media screen and(max-width: 320px){
+    margin-top: 2rem;
+  }
+}

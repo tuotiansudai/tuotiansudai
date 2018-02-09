@@ -308,7 +308,12 @@ $('.to-use_coupon').click(function () {
         $(item).removeClass('selected');
 
     })
-    _self.addClass('selected');
+    if(_self.hasClass('disabled')){
+       return false;
+    }else {
+        _self.addClass('selected');
+    }
+
     $('#couponId').val(_self.data('user-coupon-id'));
     $('#couponText').text(_self.data('coupon-desc'));
 
@@ -420,7 +425,18 @@ function couponSelect() {
     let value = getInvestAmount();
     $('.to-use_coupon').each(function (index,item) {
         $(item).addClass('disabled').removeClass('selected');
-        if($(item).data('min-invest-amount') <= value/100 && parseInt($(item).data('min-product-type'))  <= duration){
+        let minType = parseInt($(item).data('min-product-type'));
+        if(minType == 30){
+            minType = 0;
+        }else if(minType == 90){
+            minType = 60;
+        }else if(minType == 180){
+            minType = 120;
+        }else if( minType == 360){
+            minType = 200;
+        }
+
+        if($(item).data('min-invest-amount') <= value/100 && minType  <= duration){
 
             $(item).removeClass('disabled');
         }
@@ -460,9 +476,6 @@ let $investForm = $('#investForm');//立即投资表单
 
 $('#investSubmit').on('click', function(event) {
     event.preventDefault();
-    if(!hasBankCard){
-        location.href = '/m/bind-card';//去绑卡
-    }
     let investAmount = getInvestAmount()/100;
     $amountInputElement.val($amountInputElement.autoNumeric("get"))//格式化还原金额
     $.when(commonFun.isUserLogin())
@@ -475,10 +488,16 @@ $('#investSubmit').on('click', function(event) {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
-                        location.href = '/m/recharge';//去充值
+                        if(!hasBankCard){
+                            location.href = '/m/bind-card';//去绑卡
+                        }else {
+                            location.href = '/m/recharge';//去充值
+                        }
+
                     });
                     return false;
                 }
+
                 if (isAuthenticationRequired) {
                     $buyDetail.hide();
                     $authorization_message.show();
@@ -550,13 +569,13 @@ $('#exchangeCoupon').on('click',function () {
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
 $toBuyTransfer.on('click',function () {
-    location.hash='transferDetail'
     $.when(commonFun.isUserLogin())
         .fail(function() {
             //判断是否需要弹框登陆
             location.href = '/m/login'
         })
         .done(function() {
+            location.hash='transferDetail'
             $transferDetail.show().siblings().hide();
         });
 
@@ -627,6 +646,12 @@ function submitData() {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
+                        if (isAuthentication) {
+                            location.href = '/m/register/account';//去实名认证
+                        }
+                        if(!hasBankCard){
+                            location.href = '/m/bind-card';//去绑卡
+                        }
                         location.href = '/m/recharge';//去充值
                     })
                     return false;

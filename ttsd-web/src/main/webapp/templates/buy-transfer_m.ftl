@@ -1,6 +1,7 @@
 <#--<@global.main pageCss="${css.buy_transfer}" pageJavascript="${js.buy_transfer}" title="转让项目购买详情">-->
 
-<div class="my-account-content apply-transfer buy-transfer" id="transfer_details" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" style="display: none">
+<div class="my-account-content apply-transfer buy-transfer" id="transfer_details"
+     data-has-bank-card="${hasBankCard?c}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" style="display: none">
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinUser?c}">
     <input type="hidden" data-is-authentication-required="${anxinAuthenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
     <div class="m-header"><em id="iconTransferDetail" class="icon-left"><i></i></em>立即投资 </div>

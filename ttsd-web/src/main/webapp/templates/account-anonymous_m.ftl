@@ -1,7 +1,6 @@
 <#import "macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.my_account}" pageJavascript="${m_js.my_account}" title="我的账户">
-
 <div class="anonymous-page">
     <div class="anomymous-wrap">
         <div class="anomous-tip">

@@ -9,7 +9,7 @@ let $cashMoneyConatiner = $('#cashMoneyConatiner'),
 
 
 $goBackIcon.on('click', function (event) {
-    location.href="/m/account";
+    history.go(-1);
 });
 
 $cashMoney.autoNumeric("init");

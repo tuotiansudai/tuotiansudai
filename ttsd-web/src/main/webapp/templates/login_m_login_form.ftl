@@ -11,12 +11,12 @@
     <div class="show-mobile show-mobile-login"></div>
     <form id="formLogin" class="form-login">
         <div class="captcha_container">
-            <input validate class="captcha" type="text" name="captcha" placeholder="请输入图形验证码" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+            <input validate class="captcha" type="text" name="captcha" autocomplete="off" placeholder="请输入图形验证码" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
             <div class="close_btn"></div>
             <img src="" class="image-captcha" id="imageCaptcha"/>
         </div>
         <div class="password_container">
-            <input validate class="password next_input" type="password" name="password" placeholder="请输入登录密码" maxlength="20"/>
+            <input validate class="password next_input" autocomplete="off" type="password" name="password" placeholder="请输入登录密码" maxlength="20"/>
             <div class="see_password"></div>
             <div class="close_btn" style="top: 1.7rem;"></div>
         </div>
