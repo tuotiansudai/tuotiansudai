@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CouponService {
 
-    long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount, Date investTime);
+    long estimateCouponExpectedInterest(String loginName, double investFeeRate, long loanId, List<Long> couponIds, long amount, Date investTime);
 
     long findExperienceInvestAmount(List<InvestModel> investModelList);
 

@@ -87,7 +87,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         when(investMapper.findCountTransferableApplicationPaginationByLoginName(anyString())).thenReturn(1L);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong(), any(Date.class))).thenReturn(1000l);
+        when(investService.estimateInvestIncome(anyLong(), anyDouble(), anyString(), anyLong(), any(Date.class))).thenReturn(1000l);
         when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(investRepayModel);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         BaseResponseDto<UserInvestListResponseDataDto> baseResponseDto = mobileAppTransferApplicationV2Service.generateTransferableInvest(transferableInvestRequestDto);

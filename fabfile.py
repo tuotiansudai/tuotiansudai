@@ -39,6 +39,7 @@ def migrate():
 def mk_war(targets=None):
     if not targets:
         local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
+        return
 
     for target in targets:
         local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
@@ -290,7 +291,11 @@ def deploy_all():
 
 def all(skip_package):
     pre_deploy(skip_package)
+    if skip_package == 'False':
+        mk_signin_zip()
     mk_war()
+    mk_worker_zip()
+    mk_mq_consumer()
     deploy_all()
 
 

@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserMembershipEvaluator {
@@ -56,10 +57,10 @@ public class UserMembershipEvaluator {
             return null;
         }
 
-        Optional<UserMembershipModel> max = userMembershipModels.stream().filter(input -> input.getExpiredTime().after(date)).
+        Optional<UserMembershipModel> max = userMembershipModels.stream().filter(input -> input.getCreatedTime().before(date) && input.getExpiredTime().after(date)).
                 max((left, right) -> left.getMembershipId() == right.getMembershipId() ?
                         Long.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Long.compare(left.getMembershipId(), right.getMembershipId()));
 
-        return max.orElse(null);
+        return max.orElse(userMembershipModels.stream().sorted(Comparator.comparing(UserMembershipModel::getCreatedTime)).collect(Collectors.toList()).get(0));
     }
 }

@@ -289,12 +289,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, String loginName, long amount, Date investTime) {
+    public long estimateInvestIncome(long loanId, double investFeeRate, String loginName, long amount, Date investTime) {
         LoanModel loanModel = loanMapper.findById(loanId);
 
         //根据loginName查询出会员的相关信息
         List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount, investTime);
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         long expectedInterest = 0L;
         for (Long expectedInterestOfPerPeriod : expectedInterestList) {
@@ -623,8 +622,8 @@ public class InvestServiceImpl implements InvestService {
             dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
             if (Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK).contains(loanModel.getStatus())) {
                 List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
-                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
-                long investIncome = estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
+                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), investModel.getInvestFeeRate(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
+                long investIncome = estimateInvestIncome(loanModel.getId(), investModel.getInvestFeeRate(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
                 dto.setExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investIncome));
             }
 
@@ -708,8 +707,8 @@ public class InvestServiceImpl implements InvestService {
         //未放款时按照预计利息计算(拓天体验项目没有本金，所以不需要计算)
         if (loanModel.getRecheckTime() == null && loanModel.getProductType() != ProductType.EXPERIENCE) {
             List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
-            long estimateInvestIncome = estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
-            long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
+            long estimateInvestIncome = estimateInvestIncome(loanModel.getId(), investModel.getInvestFeeRate(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
+            long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), investModel.getInvestFeeRate(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
             totalExpectedInterest = estimateInvestIncome + couponExpectedInterest;
         }
         long userInvestAmountTotal = investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName(), false);

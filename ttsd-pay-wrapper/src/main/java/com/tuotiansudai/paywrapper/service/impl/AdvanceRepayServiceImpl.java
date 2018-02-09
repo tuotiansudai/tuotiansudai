@@ -203,7 +203,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
+            logger.warn(MessageFormat.format("[Advance Repay {0}] loan repay callback status is {1}", String.valueOf(loanRepayId), currentLoanRepay.getStatus()));
             return callbackRequest.getResponseData();
         }
 
@@ -450,9 +450,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         }
 
         if (currentInvestRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Advance Repay {0}] invest payback({1}) status({2}) is not WAIT_PAY",
+            logger.warn(MessageFormat.format("[Advance Repay {0}] invest payback({1}) status({2}) is not WAIT_PAY",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
-            return false;
+            return true;
         }
 
         try {

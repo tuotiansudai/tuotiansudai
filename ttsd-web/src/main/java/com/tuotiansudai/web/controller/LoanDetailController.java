@@ -67,7 +67,10 @@ public class LoanDetailController {
                 this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
-        modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId, LoginUserInfo.getLoginName(), 1000000, new Date()));
+
+        modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId,
+                membershipModel == null ? defaultFee : membershipModel.getFee(),
+                LoginUserInfo.getLoginName(), 1000000, new Date()));
         BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         modelAndView.addObject("hasBankCard", passedBankCard != null);
 

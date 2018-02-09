@@ -8,6 +8,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.RepayStatus;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,8 @@ public class ExperienceRepayScheduler {
         try {
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(1);
             investRepayModels.stream()
-                    .filter(investRepayModel -> new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().plusDays(1).withTimeAtStartOfDay()))
+                    .filter(investRepayModel -> new DateTime(investRepayModel.getRepayDate()).isBefore(new DateTime().plusDays(1).withTimeAtStartOfDay())
+                            && investRepayModel.getStatus() == RepayStatus.REPAYING)
                     .collect(Collectors.toList())
                     .forEach(investRepayModel -> {
                         InvestInfo investInfo = new InvestInfo();
@@ -43,11 +45,13 @@ public class ExperienceRepayScheduler {
                         mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_ExperienceRepay, new InvestSuccessMessage(investInfo, null, null));
                         logger.info("[ExperienceRepayScheduler] {} experience invest repay", investRepayModel.getInvestId());
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("[ExperienceRepayScheduler:] job execution is failed.", e);
         }
 
 
         logger.info("[ExperienceRepayScheduler] done");
     }
+
+
 }
