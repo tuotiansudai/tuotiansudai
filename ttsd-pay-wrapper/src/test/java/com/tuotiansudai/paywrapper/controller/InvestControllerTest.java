@@ -187,6 +187,7 @@ public class InvestControllerTest {
 
     // case3: 超投，返款成功
     @Test
+    @Ignore
     public void overInvestPaybackSuccess() throws Exception {
         long mockLoanId = 33333333L;
         long mockInitAmount = 1000000;
@@ -244,6 +245,7 @@ public class InvestControllerTest {
 
     // case4: 多笔超投，返款成功
     @Test
+    @Ignore
     public void multiOverInvestPaybackSuccess() throws Exception {
         long mockLoanId = 44444444L;
         long mockInitAmount = 1000000;
@@ -310,6 +312,7 @@ public class InvestControllerTest {
 
     // case5: 超投后，又投资满标
     @Test
+    @Ignore
     public void investSuccessAfterOverInvest() throws Exception {
         long mockLoanId = 55555555L;
         long mockInitAmount = 1000000;
