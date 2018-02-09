@@ -93,33 +93,14 @@ public class InvestControllerTest {
     private UserMembershipMapper userMembershipMapper;
 
     private ObjectMapper objectMapper;
-    private MockWebServer mockServer;
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         this.objectMapper = new ObjectMapper();
-        this.mockServer = mockUmPayService();
 
         MockitoAnnotations.initMocks(this);
-    }
-
-    @After
-    public void clean() throws Exception {
-        this.mockServer.shutdown();
-    }
-
-    private MockWebServer mockUmPayService() throws IOException {
-        MockWebServer mockWebServer = new MockWebServer();
-        mockWebServer.start(InetAddress.getLoopbackAddress(), 8091);
-
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody("OK");
-        mockResponse.setResponseCode(200);
-        mockWebServer.enqueue(mockResponse);
-
-        return mockWebServer;
     }
 
     // case1: 正常投资
