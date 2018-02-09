@@ -171,11 +171,11 @@ $('#submitBtn').on('click',(event) => {
                     localStorage.setItem('getInvestAmount',$experience_balance.val());
                 }
             });
+
         })
         .fail(function () {
             location.href = '/m/login'
         })
-
 });
 
 
