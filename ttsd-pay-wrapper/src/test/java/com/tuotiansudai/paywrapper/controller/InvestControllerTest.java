@@ -486,7 +486,7 @@ public class InvestControllerTest {
 
             // job 触发投资 notify 处理
             this.mockMvc.perform(post("/job/async_invest_notify")
-                    .content(String.valueOf(notifyRequestModel.getId()))
+                    .content(String.valueOf(notifyRequestModel.getOrderId()))
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json; charset=UTF-8"))
