@@ -98,6 +98,7 @@ if(NODE_ENV=='production') {
 
 }
 else if(NODE_ENV=='dev') {
+
 	plugins.push(new ExtractTextPlugin("[name].css"));
 
 	//打包之前先删除打包文件里的图片文件方便重新打包
@@ -115,6 +116,7 @@ else if(NODE_ENV=='dev') {
 	webpackdevServer={
 		contentBase: packageRoute.basePath,
 		historyApiFallback: true,
+        disableHostCheck: true,
 		hot: true,
 		devtool: 'eval',
 		host: '0.0.0.0',
