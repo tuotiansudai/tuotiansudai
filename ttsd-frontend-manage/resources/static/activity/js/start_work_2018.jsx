@@ -57,8 +57,7 @@ let mySwiper = new Swiper ('.swiper-container', {
     direction: 'horizontal',
     loop: true,
     // autoplay:3000,
-    autoplayDisableOnInteraction:false,
-    slidesPerView: '1.8',
+    slidesPerView: 'auto',
     centeredSlides:true,
     spaceBetween: 20,
     loopAdditionalSlides:1

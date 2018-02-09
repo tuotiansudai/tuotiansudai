@@ -185,7 +185,7 @@ h2,h4 {
           }
           .prize_wash_face {
             margin: 18px auto 38px auto;
-            width: 200px;
+            width: 177px;
             height: 156px;
             background: url("../images/2018/start-work/prize_wash_face.png") no-repeat;
             background-size: contain;
@@ -261,6 +261,12 @@ h2,h4 {
       margin-top: 183px;
       font-size: 16px;
       color: #333;
+      &.desc_pc {
+        display: block;
+      }
+      &.desc_mobile {
+        display: none;
+      }
       .text_strong {
         font-size: 18px;
         color: #ec192c;
@@ -440,9 +446,13 @@ h2,h4 {
         width: 6.8rem;
         left: .275rem;
         font-size: .24rem;
-        line-height: 0.3rem;
+        line-height: 0.33rem;
         color: #333;
         text-align: center;
+        @media screen and (max-width: 320px) {
+          width: 7.1rem;
+          left: .1rem;
+        }
         &.text_wrapper_pc {
           display: none;
         }
@@ -465,217 +475,218 @@ h2,h4 {
         background-size: contain;
       }
     }
-    .gold-person-container {
-      width: 1008px;
-      margin: 30px auto auto auto;
+    .gold-person-container_m {
+      width: 7.35rem;
+      margin: .3rem auto auto auto;
       .header {
         width: 100%;
-        height: 193px;
-        background: url("../images/2018/start-work/gold_person_header.png") no-repeat;
+        height: 1.67rem;
+        background: url("../images/2018/start-work/gold_person_header_m.png") no-repeat;
         background-size: contain;
+        overflow: hidden;
       }
       .main {
         position: relative;
+        margin: -1px auto auto auto;
         width: 100%;
         font-size: 0;
-        background: url("../images/2018/start-work/gold_person_bgLine.png") repeat-y center center;
+        background: url("../images/2018/start-work/gold_person_bgLine_m.png") repeat-y center center;
+        background-size: contain;
+        overflow: hidden;
         .text_wrapper  {
+          margin-top: .2rem;
           width: 100%;
-          font-size: 16px;
-          line-height: 32px;
+          font-size: .24rem;
+          line-height: .33rem;
           color: #333;
           text-align: center;
           .text_strong {
-            font-size: 18px;
+            font-size: .26rem;
             color: #ec192c;
             font-weight: bold;
           }
         }
         .title_wrapper {
-          margin: 20px auto auto auto;
-          width: 353px;
-          height: 93px;
-          line-height: 93px;
+          box-sizing: border-box;
+          padding-left: .3rem;
+          margin: 0 auto;
+          width: 2.91rem;
+          height: .91rem;
+          line-height: .91rem;
           text-align: center;
-          font-size: 18px;
-          background: url("../images/2018/start-work/gold_person_title.png") no-repeat;
+          font-size: .26rem;
+          background: url("../images/2018/start-work/gold_person_title_m.png") no-repeat;
           background-size: contain;
-          .record_text {
-            margin-left: 15px;
-            color: #c4050d;
-            text-decoration: underline;
-            cursor: pointer;
-            &:hover +.hover_icon {
-              display: block;
-            }
+          .text_strong {
+            font-size: .26rem;
+            color: #ec192c;
+            font-weight: bold;
           }
         }
-        .hover_icon {
-          display: none;
-          position: relative;
-          top: -20px;
-          left: 20px;
-          z-index: 999;
-          width: 469px;
-          background: #e94144;
-          &:hover {
-            display: block;
-          }
-          .triangle_icon {
-            position: absolute;
-            top: -13px;
-            left: 205px;
-            width: 48px;
-            height: 13px;
-            background: url("../images/2018/start-work/triangle_icon.png") no-repeat;
-            background-size: contain;
-          }
-          .hover_table_container {
-            width: 100%;
-            height: 235px;
-            overflow: scroll;
-            .hover_table {
-              font-size: 14px;
-              color: #f7fecd;
-              tr {
-                th {
-                  color: #f7fecd;
-                  background: #e94144;
-                  border-bottom: 1px solid #f2877c;
-                }
-                td {
-                  font-size: 14px;
-                  color: #f7fecd;
-                }
+        .my_record_title {
+          width: 100%;
+          text-align: center;
+          font-size: .26rem;
+          color: #c4050d;
+        }
+        .hover_table_container {
+          margin: 0 auto;
+          width: 5rem;
+          height: 1.65rem;
+          overflow: scroll;
+          .hover_table {
+            font-size: .14rem;
+            color: #f7fecd;
+            tr {
+              background: #e94144;
+              th {
+                padding: 0;
+                color: #f7fecd;
+                background: #e94144!important;
+                border-bottom: 1px solid #f2877c;
+
+              }
+              td {
+                padding: 0;
+                font-size: .14rem;
+                color: #f7fecd;
+                border: none;
               }
             }
           }
         }
-        .prize_list_container {
-          position: relative;
-          display: inline-block;
-          margin: 0 auto 20px 21px;
-          width: 207px;
-          height: 316px;
-          background: #fff0d1;
-          border: 2px solid #d52122;
-          border-radius: 7px;
-          &:first-child, &:nth-child(5) {
-            margin-left: 51px;
-          }
-          &:nth-child(5), &:nth-child(6), &:nth-child(7), &:nth-child(8) {
-            height: 331px;
-          }
-          .prize_item {
-            width: 207px;
-            height: 316px;
-            text-align: center;
-            font-size: 15.5px;
-            line-height: 15.5px;
-            color: #333;
-            cursor: pointer;
-            overflow: hidden;
-            .prize_jd_card {
-              margin: 42px auto 55px auto;
-              width: 181px;
-              height: 115px;
-              background: url("../images/2018/start-work/prize_jd_card.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_toothbrush {
-              margin: 13px auto 32px auto;
-              width: 191px;
-              height: 167px;
-              background: url("../images/2018/start-work/prize_toothbrush.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_wash_face {
-              margin: 18px auto 38px auto;
-              width: 200px;
-              height: 156px;
-              background: url("../images/2018/start-work/prize_wash_face.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_note {
-              margin: 12px auto 31px auto;
-              width: 133px;
-              height: 169px;
-              background: url("../images/2018/start-work/prize_note.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_kitchen_ware {
-              margin: 14px auto 44px auto;
-              width: 185px;
-              height: 141px;
-              background: url("../images/2018/start-work/prize_kitchen_ware.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_TV {
-              margin: 28px auto 55px auto;
-              width: 182px;
-              height: 115px;
-              background: url("../images/2018/start-work/prize_TV.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_apple_air {
-              margin: 37px auto 62px auto;
-              width: 189px;
-              height: 98px;
-              background: url("../images/2018/start-work/prize_apple_air.png") no-repeat;
-              background-size: contain;
-            }
-            .prize_iphoneX {
-              margin: 14px auto 40px auto;
-              width: 134px;
-              height: 156px;
-              background: url("../images/2018/start-work/prize_iphoneX.png") no-repeat;
-              background-size: contain;
-            }
-            .get_prize_btn {
-              margin: 29px auto auto auto;
-              width: 152px;
-              height: 42px;
-              line-height: 42px;
-              text-align: center;
-              font-size: 16px;
-              color: #fcf488;
-              background: #eb312d;
-              border-radius: 5px;
-            }
-          }
-        }
+        //.prize_list_container {
+        //  position: relative;
+        //  display: inline-block;
+        //  margin: 0 auto 20px 21px;
+        //  width: 207px;
+        //  height: 316px;
+        //  background: #fff0d1;
+        //  border: 2px solid #d52122;
+        //  border-radius: 7px;
+        //  &:first-child, &:nth-child(5) {
+        //    margin-left: 51px;
+        //  }
+        //  &:nth-child(5), &:nth-child(6), &:nth-child(7), &:nth-child(8) {
+        //    height: 331px;
+        //  }
+        //  .prize_item {
+        //    width: 207px;
+        //    height: 316px;
+        //    text-align: center;
+        //    font-size: 15.5px;
+        //    line-height: 15.5px;
+        //    color: #333;
+        //    cursor: pointer;
+        //    overflow: hidden;
+        //    .prize_jd_card {
+        //      margin: 42px auto 55px auto;
+        //      width: 181px;
+        //      height: 115px;
+        //      background: url("../images/2018/start-work/prize_jd_card.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_toothbrush {
+        //      margin: 13px auto 32px auto;
+        //      width: 191px;
+        //      height: 167px;
+        //      background: url("../images/2018/start-work/prize_toothbrush.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_wash_face {
+        //      margin: 18px auto 38px auto;
+        //      width: 177px;
+        //      height: 156px;
+        //      background: url("../images/2018/start-work/prize_wash_face.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_note {
+        //      margin: 12px auto 31px auto;
+        //      width: 133px;
+        //      height: 169px;
+        //      background: url("../images/2018/start-work/prize_note.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_kitchen_ware {
+        //      margin: 14px auto 44px auto;
+        //      width: 185px;
+        //      height: 141px;
+        //      background: url("../images/2018/start-work/prize_kitchen_ware.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_TV {
+        //      margin: 28px auto 55px auto;
+        //      width: 182px;
+        //      height: 115px;
+        //      background: url("../images/2018/start-work/prize_TV.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_apple_air {
+        //      margin: 37px auto 62px auto;
+        //      width: 189px;
+        //      height: 98px;
+        //      background: url("../images/2018/start-work/prize_apple_air.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .prize_iphoneX {
+        //      margin: 14px auto 40px auto;
+        //      width: 134px;
+        //      height: 156px;
+        //      background: url("../images/2018/start-work/prize_iphoneX.png") no-repeat;
+        //      background-size: contain;
+        //    }
+        //    .get_prize_btn {
+        //      margin: 29px auto auto auto;
+        //      width: 152px;
+        //      height: 42px;
+        //      line-height: 42px;
+        //      text-align: center;
+        //      font-size: 16px;
+        //      color: #fcf488;
+        //      background: #eb312d;
+        //      border-radius: 5px;
+        //    }
+        //  }
+        //}
       }
       .footer {
         position: relative;
-        right: 1px;
+        top: -1px;
         width: 100%;
-        height: 97px;
-        background: url("../images/2018/start-work/gold_person_footer.png") no-repeat;
+        height: .7rem;
+        background: url("../images/2018/start-work/gold_person_footer_m.png") no-repeat;
         background-size: contain;
       }
     }
     .cash_back_container {
       position: relative;
-      margin-top: 33px;
       text-align: center;
-      width: 1008px;
-      height: 554px;
-      background:  url("../images/2018/start-work/cash_back_container.png") no-repeat;
+      width: 7.35rem;
+      height: 7.21rem;
+      background:  url("../images/2018/start-work/cash_back_container_m.png") no-repeat;
       background-size: contain;
       overflow: hidden;
       .desc {
-        margin-top: 183px;
-        font-size: 16px;
+        margin-top: 1.9rem;
+        font-size: .24rem;
         color: #333;
+        @media screen and (max-width: 320px) {
+          font-size: .15rem;
+        }
+        &.desc_pc {
+          display: none;
+        }
+        &.desc_mobile {
+          display: block;
+        }
         .text_strong {
-          font-size: 18px;
+          font-size: .26rem;
           color: #ec192c;
           font-weight: bold;
         }
       }
       .example {
-        margin-top: 183px;
-        font-size: 16px;
+        font-size: .24rem;
         color: #333;
         .example_text {
           display: inline-block;
@@ -821,6 +832,7 @@ h2,h4 {
   .product-list-wap {
     display: block;
     position: relative;
+    margin: .25rem auto;
     .controlsBtn {
       width: 0.72rem;
       height: 0.72rem;
@@ -845,37 +857,30 @@ h2,h4 {
     }
 
     .swiper-container {
+      margin: 0!important;
+      float: none;
       width: 7rem;
-      height: 5.01rem;
+      height: 4.78rem;
       overflow: visible!important;
       .swiper-wrapper {
         .swiper-slide{
-          width: 2.15rem;
+          box-sizing: border-box;
+          width: 2.8rem!important;
+          height: 3.78rem!important;
           border: 2px solid #d52122;
-          img{
-            width: 100%;
-          }
+          border-radius: 0.2rem;
         }
         .swiper-slide-prev, .swiper-slide-next{
           margin-top: 0.3rem;
-          height: 4.35rem!important;
-          img{
-            height: 4.35rem!important;
-          }
         }
         .swiper-slide-active{
-          width: 3.15rem;
-
+          width: 3.15rem!important;
+          height: 4.78rem!important;
         }
       }
     }
   }
 }
-
-
-
-
-
 
 @media screen and (max-width: 768px) {
   html {
