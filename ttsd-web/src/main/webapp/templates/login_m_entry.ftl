@@ -2,9 +2,9 @@
 <div class="sign-container" id="weChatStartContainer">
     <div class="goBack_wrapper">
         登录/注册
-        <div class="go-back-container" id="goBack_applyTransfer">
+        <a class="go-back-container" id="goBack_applyTransfer" href="javascript:history.go(-1)">
             <span class="go-back"></span>
-        </div>
+        </a>
     </div>
     <div class="logo-note" id="logoNote">
         <i class="logo"></i>

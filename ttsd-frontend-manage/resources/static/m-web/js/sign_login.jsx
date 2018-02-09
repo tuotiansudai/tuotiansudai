@@ -176,9 +176,9 @@ contentInput('.password_container','.show-mobile-login');
 clearInputTwoVal('.captcha_container');
 clearInputTwoVal('.password_container');
 
-$('.go-back-container').on('click',() => {
-    history.go(-1);
-});
+// $('.go-back-container').on('click',() => {
+//     history.go(-1);
+// });
 
 seePassword();
 
