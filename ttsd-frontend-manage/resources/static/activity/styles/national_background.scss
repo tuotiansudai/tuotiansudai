@@ -216,47 +216,7 @@ body {
     }
   }
 }
-//响应式
-//@media screen and(max-width: 1024px) {
-//  .my-page {
-//    width: 10rem;
-//  }
-//  .wap1024 {
-//    display: block;
-//  }
-//  .management-imgs {
-//    dl {
-//      dd {
-//        &.invest {
-//          margin-left: .2rem;
-//        }
-//        &.enterprise {
-//          margin-right: .2rem;
-//        }
-//      }
-//    }
-//  }
-//  .security-upgrade {
-//    .management-imgs {
-//      margin-left: .12rem;
-//      dl {
-//        margin-left: .6rem;
-//      }
-//    }
-//  }
-//  .media-coverage {
-//    ul {
-//      margin-left: .1rem;
-//      li {
-//        width: 3rem;
-//        height: 2rem;
-//        margin-left: .2rem;
-//      }
-//    }
-//  }
-//
-//
-//}
+
 @media screen and(max-width: 1024px) {
   .national-banner {
     height: 3.65rem;
@@ -388,12 +348,12 @@ body {
             padding-top: .47rem;
             padding-bottom: .3rem;
             dt {
-              width: 2.2rem;
-              height: 1.39rem;
+              width: 2.5rem;
+              height: 1.58rem;
               float: left;
               .title {
-                padding-left: .17rem;
-                padding-right: .17rem;
+                padding-left: .14rem;
+                padding-right: .14rem;
                display: inline-block;
                 height: .3rem;
                 border-radius: .15rem;
@@ -402,10 +362,11 @@ body {
                 margin-left: .2rem;
                 font-size: .18rem;
                 @media screen and(max-width: 320px){
-                  width: .9rem;
-                  height: .4rem;
-                  border-radius: .2rem;
-                  line-height: .4rem;
+                  height: .35rem;
+                  border-radius: .17rem;
+                  line-height: .35rem;
+                  font-size: 12px;
+                  margin-left: .15rem;
                 }
               }
               h4 {
@@ -415,7 +376,7 @@ body {
             }
             dd {
               display: block;
-              width: 4.7rem;
+              width: 4.4rem;
               float: right;
               h3 {
                 font-size: .28rem;
