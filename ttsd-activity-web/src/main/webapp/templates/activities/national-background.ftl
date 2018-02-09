@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.national_background}" pageJavascript="${js.national_background}" activeNav="" activeLeftNav="" title="" keywords="" description=''>
+<@global.main pageCss="${css.national_background}" pageJavascript="${js.national_background}" activeNav="" activeLeftNav="" title="国资背景安全保障拓天速贷" keywords="拓天速贷,国资背景,安全保障,安全升级" description='拓天速贷升级为国资背景平台,安全保障、综合实力更加雄厚,进一步加强平台合规发展,完善在互联网金融业务上的拓展与创新,全面保障投资者的资金与交易安全,打造一个运营规范、高效透明、运营稳健的平台.'>
 <div class="national-banner">
 </div>
 
@@ -76,43 +76,43 @@
         </div>
         <ul class="clearfix">
             <li>
-                <a href="">
+                <a href="http://www.chinatradenews.com.cn/content/201802/08/c11612.html">
                     <dl class="clearfix">
                         <dt class="sec1">
-                            <div class="title">新浪</div>
-                            <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+                            <div class="title">中国贸易新闻网</div>
+                            <h4>拓天速贷升格国资持股平台，致力于普惠金融</h4>
                         </dt>
                         <dd>
-                            <h3>国资入股拓天&nbsp;共创美好蓝图</h3>
-                            <p>升级为国资背景平台，拓天速贷多了一份国资系保障之外，风控能力也将再上一个台阶，综合实力更雄厚。</p>
+                            <h3>拓天速贷升格国资持股平台，致力于普惠金融</h3>
+                            <p>2017年是互联网金融行业全面规范、全面革新的一年。众多实力不强、运营孱弱的互联网金融公司遭遇滑铁卢。而对于一向运营规范稳健、风险管理突出的拓天速贷来说，却是公司业绩突飞猛进的一年。平台借贷双方客户数量增长喜人，累计交易数额呈指数增长。</p>
                         </dd>
                     </dl>
 
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="http://news.dichan.sina.com.cn/2018/02/08/1208143.html?qq-pf-to=pcqq.c2c">
                     <dl class="clearfix">
                         <dt class="sec2">
-                            <div class="title">新浪</div>
-                            <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+                            <div class="title">新浪地产</div>
+                            <h4>重大利好！拓天速贷喜获国资战略入股</h4>
                         </dt>
                         <dd>
-                            <h3>国资入股拓天&nbsp;共创美好蓝图</h3>
+                            <h3>重大利好！拓天速贷喜获国资战略入股</h3>
                             <p>升级为国资背景平台，拓天速贷多了一份国资系保障之外，风控能力也将再上一个台阶，综合实力更雄厚。</p>
                         </dd>
                     </dl>
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="http://www.prcfe.com/finance/2018/0208/227304.html">
                     <dl class="clearfix">
                         <dt class="sec3">
-                            <div class="title">新浪</div>
-                            <h4>国资入股拓天&nbsp;共创美好蓝图</h4>
+                            <div class="title">中国财经新闻网</div>
+                            <h4>实力升级“国资背景”，拓天速贷全新起航!</h4>
                         </dt>
                         <dd>
-                            <h3>国资入股拓天&nbsp;共创美好蓝图</h3>
+                            <h3>实力升级“国资背景”，拓天速贷全新起航!</h3>
                             <p>升级为国资背景平台，拓天速贷多了一份国资系保障之外，风控能力也将再上一个台阶，综合实力更雄厚。</p>
                         </dd>
                     </dl>
