@@ -117,6 +117,7 @@ public class CouponAssignmentServiceTest {
         UserModel fakeUser = getFakeUser("fakeUser");
         this.createMockUser("fakeUser");
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 6, new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel);
 
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.MEMBERSHIP_V5, false);

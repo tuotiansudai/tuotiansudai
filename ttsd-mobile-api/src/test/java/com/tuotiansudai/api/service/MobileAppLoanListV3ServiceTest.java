@@ -222,7 +222,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertTrue(CollectionUtils.isNotEmpty(loanList));
         LoanResponseDataDto loanResponseDataDto = loanList.get(0);
 
-        long expectedInterest = investService.estimateInvestIncome(Long.parseLong(loanResponseDataDto.getLoanId()), loginName, 1000000, new Date());
+        long expectedInterest = investService.estimateInvestIncome(Long.parseLong(loanResponseDataDto.getLoanId()), model.getInvestFeeRate(), loginName, 1000000, new Date());
         assertTrue(String.valueOf(expectedInterest).equals(loanResponseDataDto.getInterestPerTenThousands()));
     }
 

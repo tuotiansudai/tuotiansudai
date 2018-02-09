@@ -110,7 +110,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount(), new Date());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getInvestFeeRate(), invest.getLoginName(), invest.getAmount(), new Date());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

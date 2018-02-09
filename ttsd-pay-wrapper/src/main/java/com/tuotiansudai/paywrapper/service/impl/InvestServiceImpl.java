@@ -25,7 +25,6 @@ import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
@@ -38,11 +37,13 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -114,12 +115,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Value("#{'${loan.raising.complete.notify.mobiles}'.split('\\|')}")
     private List<String> loanRaisingCompleteNotifyMobileList;
-
-    @Value("${loan.raising.complete.notify.start.hour}")
-    private int loanRaisingCompleteNotifyStartHour;
-
-    @Value("${loan.raising.complete.notify.end.hour}")
-    private int loanRaisingCompleteNotifyEndHour;
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
@@ -628,23 +623,7 @@ public class InvestServiceImpl implements InvestService {
                 loanDuration, loanerName, agentUserName, loanRaisingCompleteTime);
         logger.info("will send loan raising complete notify, loanId:" + loanId);
 
-        sendLoanRaisingCompleteNotification(dto);
-    }
-
-    private void sendLoanRaisingCompleteNotification(LoanRaisingCompleteNotifyDto dto) {
-        try {
-            DateTime beginSendTime = new DateTime().withTimeAtStartOfDay().withHourOfDay(loanRaisingCompleteNotifyStartHour);
-            DateTime endSendTime = new DateTime().withTimeAtStartOfDay().withHourOfDay(loanRaisingCompleteNotifyEndHour);
-            if (beginSendTime.isBeforeNow() && endSendTime.isAfterNow()) {
-                smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
-            } else {
-                DateTime nextSendTime = beginSendTime.isAfterNow() ? beginSendTime : beginSendTime.plusDays(1);
-                DelayMessageDeliveryJobCreator.createLoanRaisingCompleteNotifyDelayJob(jobManager,
-                        nextSendTime.toDate(), JsonConverter.writeValueAsString(dto));
-            }
-        } catch (JsonProcessingException e) {
-            logger.info("can not send loan raising complete notify", e);
-        }
+        smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
     }
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
