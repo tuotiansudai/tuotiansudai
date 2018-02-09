@@ -48,7 +48,7 @@ public class InvestServiceMockTest {
 
         investService.investCallback(null, null);
 
-        verify(mqWrapperClient, times(1)).sendMessage(MessageQueue.InvestCallback, "0");
+        verify(mqWrapperClient, never()).sendMessage(any(MessageQueue.class), anyString());
     }
 
     @Test
