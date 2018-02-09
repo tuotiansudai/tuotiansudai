@@ -97,6 +97,10 @@
       text-align: center;
       line-height: 33px;
       padding-top: 1.5rem;
+      @media screen and(max-width: 320px){
+        padding-top: 0.5rem;
+        height: 4rem;
+      }
     }
     .img {
       height: 19.55rem;
@@ -117,6 +121,10 @@
     width: 300px;
     left: 50%;
     margin-left: -150px;
+    overflow: hidden;
+    @media screen and(max-width: 320px){
+      bottom: 2.6rem;
+    }
     .tip-btn {
       display: inline-block;
       width: 300px;
@@ -133,6 +141,10 @@
       color: #FF473C;
       font-size: 14px;
       margin-top: .5rem;
+      @media screen and(max-width: 320px){
+        margin-top: .1rem;
+      }
+
     }
   }
 }
