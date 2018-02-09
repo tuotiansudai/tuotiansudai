@@ -187,7 +187,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount(), new Date());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getInvestFeeRate(), invest.getLoginName(), invest.getAmount(), new Date());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

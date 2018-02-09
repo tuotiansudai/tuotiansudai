@@ -55,11 +55,6 @@ public class DelayMessageDeliveryJobCreator {
         create(jobManager, sendingTime, MessageQueue.CreditLoanBalanceAlert, "", "CreditLoanBalanceAlert_" + sdf.format(sendingTime), true);
     }
 
-    public static void createLoanRaisingCompleteNotifyDelayJob(JobManager jobManager, Date sendingTime, String message) {
-        create(jobManager, sendingTime, MessageQueue.LoanRaisingCompleteNotify, message);
-    }
-
-
     public static void create(JobManager jobManager, int delaySeconds, MessageQueue messageQueue, String messageBody) {
         create(jobManager, delaySeconds, messageQueue, messageBody, String.valueOf(System.currentTimeMillis()), true);
     }

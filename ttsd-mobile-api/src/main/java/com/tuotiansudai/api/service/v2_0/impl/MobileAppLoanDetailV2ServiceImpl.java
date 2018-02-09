@@ -158,7 +158,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
 
-        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT, new Date());
+        double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), investFeeRate, loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT, new Date());
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
 
         String interestPointName = loanModel.getType().getInterestPointName();
@@ -262,10 +263,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             }
         }
 
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
-        if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
-            investFeeRate = this.defaultFee;
-        }
         dataDto.setInvestFeeRate(String.valueOf(investFeeRate));
         List<EvidenceResponseDataDto> evidence = getEvidenceByLoanId(loanModel.getId());
         dataDto.setEvidence(evidence);
