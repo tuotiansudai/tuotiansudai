@@ -3,7 +3,7 @@ let commonFun = require('publicJs/commonFun');
 let $bankCardManage = $('#bankCardManage'),
     $bankCardSelect = $('#bankCardSelect');
 $('#iconBindcard').on('click',function () {
-    location.href = '/m/personal-info'
+    history.go(-1);
 })
 if ($bankCardManage.length) {
     let $bankColumn = $('.bank-column', $bankCardManage),
