@@ -29,13 +29,13 @@ public class UserAgentFilter implements Filter {
 
 
         if (isMobile(userAgent) && isWebUrl(requestUri)) {
-            ((HttpServletResponse) response).sendRedirect(String.format("/m%s?%s", requestUri, Strings.isNullOrEmpty(queryString) ? "" : queryString));
+            ((HttpServletResponse) response).sendRedirect(String.format("/m%s%s", requestUri, Strings.isNullOrEmpty(queryString) ? "" : "?" + queryString));
             return;
         }
 
         if (!isMobile(userAgent) && isMSiteUrl(requestUri)) {
-            ((HttpServletResponse) response).sendRedirect(String.format("%s?%s", requestUri.substring(requestUri.indexOf("/m") + 2),
-                    Strings.isNullOrEmpty(queryString) ? "" : queryString));
+            ((HttpServletResponse) response).sendRedirect(String.format("%s%s", requestUri.substring(requestUri.indexOf("/m") + 2),
+                    Strings.isNullOrEmpty(queryString) ? "" : "?" + queryString));
             return;
         }
 
