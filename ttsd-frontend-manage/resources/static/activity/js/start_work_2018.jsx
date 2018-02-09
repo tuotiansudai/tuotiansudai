@@ -9,24 +9,24 @@ let $productListWap = $('#productListWap');
 
 
 
-if ($(document).width() < 790) {
-    (function (doc, win) {
-        var docEl = doc.documentElement,
-            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-            recalc = function () {
-                var clientWidth = docEl.clientWidth;
-                if (!clientWidth) return;
-                var fSize = 20 * (clientWidth /375);
-                fSize > 40 && (fSize = 39.36);
-                docEl.style.fontSize = fSize + 'px';
-            };
-
-        if (!doc.addEventListener) return;
-        win.addEventListener(resizeEvt, recalc, false);
-        doc.addEventListener('DOMContentLoaded', recalc, false);
-        $('body').css('visibility', 'visible');
-    })(document, window);
-}
+// if ($(document).width() < 790) {
+//     (function (doc, win) {
+//         var docEl = doc.documentElement,
+//             resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+//             recalc = function () {
+//                 var clientWidth = docEl.clientWidth;
+//                 if (!clientWidth) return;
+//                 var fSize = 20 * (clientWidth /375);
+//                 fSize > 40 && (fSize = 39.36);
+//                 docEl.style.fontSize = fSize + 'px';
+//             };
+//
+//         if (!doc.addEventListener) return;
+//         win.addEventListener(resizeEvt, recalc, false);
+//         doc.addEventListener('DOMContentLoaded', recalc, false);
+//         $('body').css('visibility', 'visible');
+//     })(document, window);
+// }
 
 
 // 移动端滑动效果
@@ -42,15 +42,15 @@ let descObj = {
 };
 
 //移动端
-$productListWap.find('.swiper-slide').each(function (index,item) {
-    let  _self = $(this);
-    let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
-    let img = new Image();
-    img.src = imgUrl;
-    img.alt=descObj[index];
-    img.title = descObj[index];
-    _self.append(img);
-})
+// $productListWap.find('.swiper-slide').each(function (index,item) {
+//     let  _self = $(this);
+//     let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
+//     let img = new Image();
+//     img.src = imgUrl;
+//     img.alt=descObj[index];
+//     img.title = descObj[index];
+//     _self.append(img);
+// })
 
 
 let mySwiper = new Swiper ('.swiper-container', {
@@ -58,7 +58,7 @@ let mySwiper = new Swiper ('.swiper-container', {
     loop: true,
     // autoplay:3000,
     autoplayDisableOnInteraction:false,
-    slidesPerView: '1.4',
+    slidesPerView: '1.8',
     centeredSlides:true,
     spaceBetween: 20,
     loopAdditionalSlides:1
