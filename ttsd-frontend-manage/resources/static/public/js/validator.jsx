@@ -196,7 +196,7 @@ var strategies = {
     },
     ageValid:function(errorMsg,showErrorAfter) {
         //验证年龄是否满18
-        var cardValid=commonFun.IdentityCodeValid(this.value);
+        var cardValid=commonFun.IdentityCodeValid(this.value.replace(/\s+/g, ""));
         if(cardValid) {
             var ageValid=commonFun.checkedAge(this.value);
             if(!ageValid) {
@@ -219,7 +219,7 @@ var strategies = {
         commonFun.useAjax({
             type:'GET',
             async: false,
-            url: '/register/account/identity-number/'+this.value+'/is-exist'
+            url: '/register/account/identity-number/'+this.value.replace(/\s+/g, "")+'/is-exist'
         },function(response) {
             if(response.data.status) {
                 //身份证号已存在
