@@ -358,6 +358,7 @@ public class ExtraRateServiceTest {
         accountMapper.create(accountModel);
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUserModel.getLoginName(), membershipModel.getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel);
         return fakeUserModel;
     }

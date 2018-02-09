@@ -266,12 +266,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, String loginName, long amount, Date investTime) {
+    public long estimateInvestIncome(long loanId, double investFeeRate, String loginName, long amount, Date investTime) {
         LoanModel loanModel = loanMapper.findById(loanId);
 
         //根据loginName查询出会员的相关信息
         List<Long> expectedInterestList = InterestCalculator.estimateExpectedInterest(loanModel, amount, investTime);
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         long expectedInterest = 0L;
         for (Long expectedInterestOfPerPeriod : expectedInterestList) {

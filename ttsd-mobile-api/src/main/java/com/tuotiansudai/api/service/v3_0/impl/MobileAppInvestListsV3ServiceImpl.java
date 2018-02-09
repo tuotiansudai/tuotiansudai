@@ -141,8 +141,8 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
             dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
             if (Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK).contains(loanModel.getStatus())) {
                 List<Long> couponIds = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId()).stream().filter(userCouponModel -> couponMapper.findById(userCouponModel.getCouponId()).getCouponType() == CouponType.INTEREST_COUPON).map(UserCouponModel::getCouponId).collect(Collectors.toList());
-                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
-                long investIncome = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
+                long couponExpectedInterest = couponService.estimateCouponExpectedInterest(investModel.getLoginName(), investModel.getInvestFeeRate(), loanModel.getId(), couponIds, investModel.getAmount(), investModel.getCreatedTime());
+                long investIncome = investService.estimateInvestIncome(loanModel.getId(), investModel.getInvestFeeRate(), investModel.getLoginName(), investModel.getAmount(), investModel.getCreatedTime());
                 dto.setExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investIncome));
             }
 

@@ -211,7 +211,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         LoanModel loanModel = createLoanModel();
         InvestModel investModel= getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
         investModel.setInvestFeeRate(0.1);
-        InvestModel transferInvestModel= getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
+        InvestModel transferInvestModel = getFakeInvestModel(loanModel.getId(), "loginuserInvestName");
         transferInvestModel.setInvestFeeRate(0.1);
         transferInvestModel.setTransferInvestId(investModel.getId());
 

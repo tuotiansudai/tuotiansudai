@@ -173,14 +173,14 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto( String loginName, List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if(CollectionUtils.isEmpty(loanList)){
             return loanDtoList;
         }
 
-
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
@@ -223,18 +223,17 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
 
             loanResponseDataDto.setExtraRates(convertExtraRateList(loan.getId()));
-            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
-            if (ProductType.EXPERIENCE == loan.getProductType()) {
-                investFeeRate = this.defaultFee;
-            }
-            loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
+            loanResponseDataDto.setInvestFeeRate(String.valueOf(ProductType.EXPERIENCE == loan.getProductType() ? this.defaultFee : investFeeRate));
 
             if (ProductType.EXPERIENCE != loan.getProductType()) {
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
                 loanResponseDataDto.setExtraSource((loanDetailsModel != null && loanDetailsModel.getExtraSource() != null) ? ((loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : "") : "");
             }
 
-            long expectedInterest = investService.estimateInvestIncome(loan.getId(), loginName, DEFAULT_INVEST_AMOUNT, new Date());
+            long expectedInterest = investService.estimateInvestIncome(loan.getId(),
+                    ProductType.EXPERIENCE == loan.getProductType() ? this.defaultFee : investFeeRate,
+                    loginName, DEFAULT_INVEST_AMOUNT, new Date());
+
             loanResponseDataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));
             loanDtoList.add(loanResponseDataDto);
         }

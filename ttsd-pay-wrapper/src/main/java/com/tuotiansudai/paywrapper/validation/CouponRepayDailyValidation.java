@@ -52,7 +52,7 @@ public class CouponRepayDailyValidation extends BaseDailyValidation implements D
         long businessId = Long.parseLong(orderId.split("X")[0]);
         CouponRepayModel couponRepayModel = couponRepayMapper.findById(businessId);
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(couponRepayModel.getInvestId());
-        long count = couponRepayModels.stream().filter(item -> item.getStatus() == RepayStatus.COMPLETE).count();
+        long count = couponRepayModels.stream().filter(item -> item.getStatus() == RepayStatus.COMPLETE && item.getRepayAmount() > 0).count();
         List<UserBillModel> couponRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(couponRepayModel.getUserCouponId(), UserBillBusinessType.INTEREST_COUPON);
         List<UserBillModel> investFeeRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(couponRepayModel.getUserCouponId(), UserBillBusinessType.INVEST_FEE);
 
