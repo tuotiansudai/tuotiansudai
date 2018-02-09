@@ -108,7 +108,7 @@ public class InvestControllerTest {
         this.mockPayServer = new MockWebServer();
         this.mockPayServer.start();
 
-        MockPayGateWrapper.setUrl("mockURL");
+        MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
         MockitoAnnotations.initMocks(this);
     }
 
