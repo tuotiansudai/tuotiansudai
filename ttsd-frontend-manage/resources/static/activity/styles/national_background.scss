@@ -392,13 +392,15 @@ body {
               height: 1.39rem;
               float: left;
               .title {
-                width: .65rem;
+                padding-left: .17rem;
+                padding-right: .17rem;
+               display: inline-block;
                 height: .3rem;
                 border-radius: .15rem;
                 line-height: .3rem;
                 margin-top: .2rem;
                 margin-left: .2rem;
-                font-size: .16rem;
+                font-size: .18rem;
                 @media screen and(max-width: 320px){
                   width: .9rem;
                   height: .4rem;
@@ -416,9 +418,9 @@ body {
               width: 4.7rem;
               float: right;
               h3 {
-                font-size: .32rem;
+                font-size: .28rem;
                 color: $color2;
-                line-height: .48rem;
+                line-height: .4rem;
               }
               p {
                 font-size: .22rem;
