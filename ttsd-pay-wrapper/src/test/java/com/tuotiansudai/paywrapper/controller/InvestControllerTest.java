@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
@@ -147,9 +148,9 @@ public class InvestControllerTest {
 
         mockUserMembership(mockInvestLoginName);
 
-        investOneDeal(mockLoanId, mockInvestAmount, mockInvestLoginName);
+        long investId = investOneDeal(mockLoanId, mockInvestAmount, mockInvestLoginName);
 
-        this.jobAsyncInvestNotify(1);
+        this.jobAsyncInvestNotify(Lists.newArrayList(investId));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount, mockInvestLoginName);
 
@@ -198,7 +199,7 @@ public class InvestControllerTest {
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
 
-        this.jobAsyncInvestNotify(3);
+        this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
@@ -247,7 +248,7 @@ public class InvestControllerTest {
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
 
         this.generateMockResponse_success(1); // 返款成功
-        this.jobAsyncInvestNotify(4);
+        this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3, orderId4));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
@@ -309,7 +310,7 @@ public class InvestControllerTest {
         long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
 
         this.generateMockResponse_success(2); // 返款成功
-        this.jobAsyncInvestNotify(5);
+        this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3, orderId4, orderId5));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount2, mockInvestLoginName2);
@@ -368,7 +369,7 @@ public class InvestControllerTest {
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
 
         this.generateMockResponse_success(1); // 返款成功
-        this.jobAsyncInvestNotify(3);
+        this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3));
 
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount3, mockInvestLoginName3);
         verifyInvestSuccessAmountTransferMessage(mockInvestAmount1, mockInvestLoginName1);
@@ -435,7 +436,7 @@ public class InvestControllerTest {
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
 
         this.generateMockResponse_fail(1);
-        this.jobAsyncInvestNotify(4);
+        this.jobAsyncInvestNotify(Lists.newArrayList(orderId1, orderId2, orderId3, orderId4));
 
         InvestModel investModel4_b = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
         assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
@@ -466,17 +467,10 @@ public class InvestControllerTest {
     }
 
 
-    private void jobAsyncInvestNotify(int count) throws Exception {
-
-        List<InvestNotifyRequestModel> investNotifyTodoList = investNotifyRequestMapper.getTodoList(count);
-        assert investNotifyTodoList.size() > 0;
-
-        for (int i = investNotifyTodoList.size() - 1; i >= 0; i--) {
-            InvestNotifyRequestModel notifyRequestModel = investNotifyTodoList.get(i);
-
-            // job 触发投资 notify 处理
+    private void jobAsyncInvestNotify(List<Long> investIds) throws Exception {
+        for (Long investId : investIds) {
             this.mockMvc.perform(post("/job/async_invest_notify")
-                    .content(String.valueOf(notifyRequestModel.getOrderId()))
+                    .content(String.valueOf(investId))
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json; charset=UTF-8"))
