@@ -122,5 +122,9 @@ $('#cardNumber').on("paste",(e) => {
     }
     $('#cardNumber').val(text);
 });
-
+$('.btn-wap-normal').on('click',(e) => {
+    e.preventDefault();
+    $('#cardNumber').val($('#cardNumber').val().replace(/\s+/g, ""));
+    $('#bankForm').submit();
+});
 

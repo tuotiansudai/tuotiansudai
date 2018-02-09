@@ -84,10 +84,13 @@ function getMore() {
             type: 'get',
         },
         function (data) {
+
             if($(data).find("#wrapperOut .loan-list-content .category-box-main").html().trim().length > 0){
                 $content.append($(data).find("#wrapperOut .loan-list-content .category-box-main").html());
+                $('.money').autoNumeric('init');
 
                 myScroll.refresh();
+
             }else {
                 $('#pullUp').find('.pullUpLabel').html('没有更多数据了')
             }

@@ -83,12 +83,6 @@ function testCode() {
 $('#couponByCode').on('input',function () {
     testCode();
 })
-//后退
-$('#iconExchangeCoupon').on('click',function () {
-    history.go(-1);
-})
-
-
 
 function minValue(arr) {
     let newArr = [];
