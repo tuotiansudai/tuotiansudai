@@ -60,6 +60,7 @@ h2,h4 {
     }
   }
   .gold-person-container {
+    display: block;
     width: 1008px;
     margin: 30px auto auto auto;
     .header {
@@ -249,83 +250,7 @@ h2,h4 {
     }
   }
   .gold-person-container_m {
-      width: 7.5rem;
-      margin: 30px auto auto auto;
-      .header {
-        width: 100%;
-        height: 1.67rem;
-        background: url("../images/2018/start-work/gold_person_header_m.png") no-repeat;
-        background-size: contain;
-      }
-      .main {
-        position: relative;
-        width: 100%;
-        font-size: 0;
-        background: url("../images/2018/start-work/gold_person_bgLine_m.png") repeat-y center center;
-        .text_wrapper {
-          width: 100%;
-          font-size: .24rem;
-          line-height: .32rem;
-          color: #333;
-          text-align: center;
-          .text_strong {
-            font-size: .26rem;
-            color: #ec192c;
-            font-weight: bold;
-          }
-        }
-        .title_wrapper {
-          box-sizing: border-box;
-          padding-left: .3rem;
-          margin: 0 auto;
-          width: 2.91rem;
-          height: .91rem;
-          line-height: .91rem;
-          text-align: center;
-          font-size: .26rem;
-          background: url("../images/2018/start-work/gold_person_title_m.png") no-repeat;
-          background-size: contain;
-        }
-        .my_record_title {
-          width: 100%;
-          text-align: center;
-          font-size: .26rem;
-          color: #c4050d;
-        }
-        .hover_table_container {
-          margin: 0 auto;
-          width: 5rem;
-          height: 1.65rem;
-          overflow: scroll;
-          .hover_table {
-            font-size: .14rem;
-            color: #f7fecd;
-            tr {
-              background: #e94144;
-              th {
-                padding: 0;
-                color: #f7fecd;
-                background: #e94144 !important;
-                border-bottom: 1px solid #f2877c;
-              }
-              td {
-                padding: 0;
-                font-size: .14rem;
-                color: #f7fecd;
-                border: none;
-              }
-            }
-          }
-        }
-      }
-      .footer {
-        position: relative;
-        top: -1px;
-        width: 100%;
-        height: .7rem;
-        background: url("../images/2018/start-work/gold_person_footer_m.png") no-repeat;
-        background-size: contain;
-      }
+      display: none;
   }
   .cash_back_container {
     position: relative;
@@ -436,7 +361,7 @@ h2,h4 {
       line-height: 29px;
       font-size: 16px;
       color: #ffefc4;
-      &.last_p {
+      &.last_paragraph {
         margin-bottom: 120px;
       }
     }
@@ -462,7 +387,7 @@ h2,h4 {
   height: 195px;
   text-align: center;
   overflow: hidden;
-  z-index: 998;
+  z-index: 3998;
 }
 .pop_modal_bg {
   position: relative;
@@ -498,11 +423,18 @@ h2,h4 {
   &.get_it {
     .text {
       margin-top: 50px;
+      .text_title {
+        font-weight: bold;
+        font-size: 18px
+      }
+      .text_desc {
+        font-size: 14px
+      }
     }
   }
 }
 .flex_content {
-  background: transparent;
+  background: rgba(0,0,0,0.2);
   position: fixed;
   top: 0;
   left: 0;
@@ -510,7 +442,7 @@ h2,h4 {
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 997;
+  z-index: 3997;
 }
 
 
@@ -572,7 +504,11 @@ h2,h4 {
         background-size: contain;
       }
     }
+    .gold-person-container {
+      display: none;
+    }
     .gold-person-container_m {
+      display: block;
       width: 7.35rem;
       margin: .3rem auto auto auto;
       .header {
@@ -628,7 +564,7 @@ h2,h4 {
         }
         .hover_table_container {
           margin: 0 auto;
-          width: 5rem;
+          width: 6rem;
           height: 1.65rem;
           overflow: scroll;
           .hover_table {
@@ -641,6 +577,15 @@ h2,h4 {
                 color: #f7fecd;
                 background: #e94144!important;
                 border-bottom: 1px solid #f2877c;
+                &.goods_th {
+                  width: 45%;
+                }
+                &.time_th {
+                  width: 20%;
+                }
+                &.count_th {
+                  width: 35%;
+                }
 
               }
               td {
@@ -652,99 +597,180 @@ h2,h4 {
             }
           }
         }
-        //.prize_list_container {
-        //  position: relative;
-        //  display: inline-block;
-        //  margin: 0 auto 20px 21px;
-        //  width: 207px;
-        //  height: 316px;
-        //  background: #fff0d1;
-        //  border: 2px solid #d52122;
-        //  border-radius: 7px;
-        //  &:first-child, &:nth-child(5) {
-        //    margin-left: 51px;
-        //  }
-        //  &:nth-child(5), &:nth-child(6), &:nth-child(7), &:nth-child(8) {
-        //    height: 331px;
-        //  }
-        //  .prize_item {
-        //    width: 207px;
-        //    height: 316px;
-        //    text-align: center;
-        //    font-size: 15.5px;
-        //    line-height: 15.5px;
-        //    color: #333;
-        //    cursor: pointer;
-        //    overflow: hidden;
-        //    .prize_jd_card {
-        //      margin: 42px auto 55px auto;
-        //      width: 181px;
-        //      height: 115px;
-        //      background: url("../images/2018/start-work/prize_jd_card.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_toothbrush {
-        //      margin: 13px auto 32px auto;
-        //      width: 191px;
-        //      height: 167px;
-        //      background: url("../images/2018/start-work/prize_toothbrush.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_wash_face {
-        //      margin: 18px auto 38px auto;
-        //      width: 177px;
-        //      height: 156px;
-        //      background: url("../images/2018/start-work/prize_wash_face.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_note {
-        //      margin: 12px auto 31px auto;
-        //      width: 133px;
-        //      height: 169px;
-        //      background: url("../images/2018/start-work/prize_note.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_kitchen_ware {
-        //      margin: 14px auto 44px auto;
-        //      width: 185px;
-        //      height: 141px;
-        //      background: url("../images/2018/start-work/prize_kitchen_ware.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_TV {
-        //      margin: 28px auto 55px auto;
-        //      width: 182px;
-        //      height: 115px;
-        //      background: url("../images/2018/start-work/prize_TV.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_apple_air {
-        //      margin: 37px auto 62px auto;
-        //      width: 189px;
-        //      height: 98px;
-        //      background: url("../images/2018/start-work/prize_apple_air.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .prize_iphoneX {
-        //      margin: 14px auto 40px auto;
-        //      width: 134px;
-        //      height: 156px;
-        //      background: url("../images/2018/start-work/prize_iphoneX.png") no-repeat;
-        //      background-size: contain;
-        //    }
-        //    .get_prize_btn {
-        //      margin: 29px auto auto auto;
-        //      width: 152px;
-        //      height: 42px;
-        //      line-height: 42px;
-        //      text-align: center;
-        //      font-size: 16px;
-        //      color: #fcf488;
-        //      background: #eb312d;
-        //      border-radius: 5px;
-        //    }
-        //  }
-        //}
+        .swiper-container {
+          margin: 0!important;
+          float: none;
+          width: 7rem;
+          height: 4.78rem;
+          overflow: visible!important;
+          .swiper-wrapper {
+            .swiper-slide{
+              box-sizing: border-box;
+              width: 2.8rem!important;
+              height: 3.78rem!important;
+              border: 2px solid #d52122;
+              border-radius: 0.2rem;
+              background: #fff0d1;
+              opacity: 0.8;
+              overflow: hidden;
+              .prize_list_container {
+                position: relative;
+                display: inline-block;
+                margin: 0;
+                width: 2.8rem;
+                height: 3.78rem;
+                background: #fff0d1;
+                border: none;
+                border-radius: .1rem;
+                .prize_item {
+                  width: 2.8rem;
+                  height: 3.78rem;
+                  text-align: center;
+                  font-size: .21rem;
+                  color: #333;
+                  overflow: hidden;
+                  .prize_desc {
+                    white-space: nowrap;
+                    text-overflow:ellipsis;
+                    overflow:hidden;
+                  }
+                  .prize_item_m {
+                    margin: .15rem auto .19rem auto;
+                    width: 2.21rem;
+                    height: 1.9rem;
+                  }
+                  .prize_jd_card {
+                    background: url("../images/2018/start-work/prize_jd_card_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_toothbrush {
+                    background: url("../images/2018/start-work/prize_toothbrush_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_wash_face {
+                    background: url("../images/2018/start-work/prize_wash_face_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_note {
+                    background: url("../images/2018/start-work/prize_note_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_kitchen_ware {
+                    background: url("../images/2018/start-work/prize_kitchen_ware_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_TV {
+                    background: url("../images/2018/start-work/prize_TV_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_apple_air {
+                    background: url("../images/2018/start-work/prize_apple_air_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_iphoneX {
+                    background: url("../images/2018/start-work/prize_iphoneX_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .get_prize_btn {
+                    margin: 0.2rem auto auto auto;
+                    width: 1.8rem;
+                    height: 0.45rem;
+                    line-height: 0.45rem;;
+                    text-align: center;
+                    font-size: 0.19rem;
+                    color: #fcf488;
+                    background: #eb312d;
+                    border-radius: 0.05rem;
+                  }
+                }
+              }
+            }
+            .swiper-slide-prev, .swiper-slide-next{
+              margin-top: 0.3rem;
+            }
+            .swiper-slide-active{
+              width: 3.15rem!important;
+              height: 4.78rem!important;
+              background: #fff0d1;
+              overflow: hidden;
+              opacity: 1;
+              .prize_list_container {
+                position: relative;
+                display: inline-block;
+                margin: 0;
+                width: 3rem;
+                height: 4.78rem;
+                border: none;
+                border-radius: .1rem;
+                .prize_item {
+                  width: 3.1rem;
+                  height: 4.78rem;
+                  text-align: center;
+                  font-size: .21rem;
+                  color: #333;
+                  overflow: hidden;
+                  .prize_item_m {
+                    margin: .325rem auto .19rem auto;
+                    width: 2.74rem;
+                    height: 2.35rem;
+                  }
+                  .prize_desc {
+                    white-space: normal;
+                    width: 100%;
+                    height: .64rem;
+                    line-height: .32rem;
+                  }
+                  .prize_jd_card {
+                    background: url("../images/2018/start-work/prize_jd_card_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_toothbrush {
+                    background: url("../images/2018/start-work/prize_toothbrush_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_wash_face {
+                    background: url("../images/2018/start-work/prize_wash_face_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_note {
+                    background: url("../images/2018/start-work/prize_note_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_kitchen_ware {
+                    background: url("../images/2018/start-work/prize_kitchen_ware_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_TV {
+                    margin: .325rem auto .19rem auto;
+                    width: 2.74rem;
+                    height: 2.35rem;
+                    background: url("../images/2018/start-work/prize_TV_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_apple_air {
+                    background: url("../images/2018/start-work/prize_apple_air_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_iphoneX {
+                    background: url("../images/2018/start-work/prize_iphoneX_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .get_prize_btn {
+                    margin: 0.2rem auto auto auto;
+                    width: 2.3rem;
+                    height: 0.65rem;
+                    line-height: 0.65rem;
+                    text-align: center;
+                    font-size: .24rem;
+                    color: #fcf488;
+                    background: #eb312d;
+                    border-radius: 5px;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
       .footer {
         position: relative;
@@ -874,7 +900,7 @@ h2,h4 {
         line-height: .4rem;
         font-size: .21rem;
         color: #ffefc4;
-        &.last_p {
+        &.last_paragraph {
           margin-bottom: .85rem;
         }
       }
@@ -889,67 +915,6 @@ h2,h4 {
       }
     }
   }
-  .pop_modal_container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    width: 395px;
-    height: 195px;
-    text-align: center;
-    overflow: hidden;
-    z-index: 998;
-  }
-  .pop_modal_bg {
-    position: relative;
-    padding-top: 37px;
-    width: 395px;
-    height: 158px;
-    .pop_modal {
-      width: 351px;
-      height: 160px;
-      color: #e13841;
-      background: url("../images/2018/start-work/modal_pop_bg.png") no-repeat;
-      background-size: contain;
-      position: relative;
-      overflow: hidden;
-    }
-    .close_btn {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 37px;
-      height: 37px;
-      border-radius: 50%;
-      background: url("../images/2018/start-work/close_btn.png") no-repeat;
-      background-size: contain;
-    }
-    &.not_enough {
-      font-size: 18px;
-      font-weight: bold;
-      .text {
-        margin-top: 65px;
-      }
-    }
-    &.get_it {
-      .text {
-        margin-top: 50px;
-      }
-    }
-  }
-  .flex_content {
-    background: transparent;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 997;
-  }
   .product-list {
     display: none;
   }
@@ -961,8 +926,7 @@ h2,h4 {
       width: 0.72rem;
       height: 0.72rem;
       position: absolute;
-      top: 50%;
-      margin-top: -0.35rem;
+      top: 1.68rem;
       background: #ec192c;
       border-radius: 50%;
       z-index: 3000;
@@ -971,38 +935,85 @@ h2,h4 {
       background-size: 30%;
       cursor: pointer;
       &.prevBtn {
-        left: -0.08rem;
+        left: 0.75rem;
         background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
       }
       &.nextBtn {
-        right:-0.08rem;
+        right: 0.75rem;
         background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
       }
     }
-
-    .swiper-container {
-      margin: 0!important;
-      float: none;
-      width: 7rem;
-      height: 4.78rem;
-      overflow: visible!important;
-      .swiper-wrapper {
-        .swiper-slide{
-          box-sizing: border-box;
-          width: 2.8rem!important;
-          height: 3.78rem!important;
-          border: 2px solid #d52122;
-          border-radius: 0.2rem;
+  }
+  .pop_modal_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 7.2rem;
+    height: 3.5rem;
+    text-align: center;
+    overflow: hidden;
+    z-index: 3998;
+  }
+  .pop_modal_bg {
+    position: relative;
+    margin: 0 auto;
+    padding-top: .68rem;
+    width: 7.2rem;
+    height: 3.5rem;
+    .pop_modal {
+      width: 6.3rem;
+      height: 2.9rem;
+      color: #e13841;
+      background: url("../images/2018/start-work/modal_pop_bg.png") no-repeat;
+      background-size: contain;
+      position: relative;
+      left: .25rem;
+      overflow: hidden;
+    }
+    .close_btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0.68rem;
+      height: 0.68rem;
+      border-radius: 50%;
+      background: url("../images/2018/start-work/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+    &.not_enough {
+      font-size: .43rem;
+      font-weight: bold;
+      .text {
+        margin-top: 1rem;
+      }
+    }
+    &.get_it {
+      .text {
+        margin-top: 0.7rem;
+        .text_title {
+          font-weight: bold;
+          font-size: .43rem;
         }
-        .swiper-slide-prev, .swiper-slide-next{
-          margin-top: 0.3rem;
-        }
-        .swiper-slide-active{
-          width: 3.15rem!important;
-          height: 4.78rem!important;
+        .text_desc {
+          margin-top: 1.5rem;
+          font-size: 14px
         }
       }
     }
+  }
+  .flex_content {
+    background: rgba(0,0,0,0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3997;
   }
 }
 

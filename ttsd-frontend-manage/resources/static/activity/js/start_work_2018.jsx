@@ -7,52 +7,6 @@ let sourceKind = globalFun.parseURL(location.href);
 let switchLock = false;
 let $productListWap = $('#productListWap');
 
-
-
-// if ($(document).width() < 790) {
-//     (function (doc, win) {
-//         var docEl = doc.documentElement,
-//             resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-//             recalc = function () {
-//                 var clientWidth = docEl.clientWidth;
-//                 if (!clientWidth) return;
-//                 var fSize = 20 * (clientWidth /375);
-//                 fSize > 40 && (fSize = 39.36);
-//                 docEl.style.fontSize = fSize + 'px';
-//             };
-//
-//         if (!doc.addEventListener) return;
-//         win.addEventListener(resizeEvt, recalc, false);
-//         doc.addEventListener('DOMContentLoaded', recalc, false);
-//         $('body').css('visibility', 'visible');
-//     })(document, window);
-// }
-
-
-// 移动端滑动效果
-let descObj = {
-    0:'蒙顶山春茶云雾茶礼盒装125g',
-    1:'江小白45度清香型白酒125ml*12瓶',
-    2:'小米 红米5A 全网通版 2GB+16GB',
-    3:'周生生黄金羽毛吊坠计价2.31克',
-    4:'AOSHIMSIT 按摩椅家用太空舱',
-    5:'立久佳家用静音折叠跑步机',
-    6:'海尔模卡55英寸 4K曲面液晶电视',
-    7:'Apple iPhone8（64GB'
-};
-
-//移动端
-// $productListWap.find('.swiper-slide').each(function (index,item) {
-//     let  _self = $(this);
-//     let imgUrl = require('../images/2018/new-year-increase-interest/product'+(index+1)+'.png');
-//     let img = new Image();
-//     img.src = imgUrl;
-//     img.alt=descObj[index];
-//     img.title = descObj[index];
-//     _self.append(img);
-// })
-
-
 let mySwiper = new Swiper ('.swiper-container', {
     direction: 'horizontal',
     loop: true,
@@ -61,23 +15,36 @@ let mySwiper = new Swiper ('.swiper-container', {
     centeredSlides:true,
     spaceBetween: 20,
     loopAdditionalSlides:1
-})
+});
 
 let $prevBtn = $('.prevBtn'),
     $nextBtn = $('.nextBtn');
 
 $prevBtn.on('click',function () {
     mySwiper.slidePrev();
-})
+});
 $nextBtn.on('click',function () {
     mySwiper.slideNext();
-})
+});
 
-// $.when(commonFun.isUserLogin())
-//     .done(function () {
-//         recordList();
-//         $('.title_wrapper').show();
-// });
+$.when(commonFun.isUserLogin())
+    .done(function () {
+        recordList();
+        if (isMobile()) {
+            $('.title_wrapper_m').show();
+        }
+        else {
+            $('.title_wrapper').show();
+        }
+
+}).fail(function () {
+    if (isMobile()) {
+        $('.title_wrapper_m').show();
+    }
+    else {
+        $('.title_wrapper').show();
+    }
+});
 
 $('.close_btn1').on('click',() => {
     $('#flex_content').hide();
@@ -94,11 +61,16 @@ $('.invest_btn').on('click',() => {
 });
 
 $('.get_prize_btn').on('click',(e) => {
+    let targetDom = e.currentTarget;
+    let exchangePrize = targetDom.dataset.index;
+    let currentSwiper = $(targetDom).parents('.swiper-slide');
+    if ($(targetDom).hasClass('get_prize_btn_m') && !currentSwiper.hasClass('swiper-slide-active')) {
+        return;
+    }
     if (!switchLock) {
         switchLock = true;
         $.when(commonFun.isUserLogin())
             .done(function () {
-                let exchangePrize = e.currentTarget.dataset.index;
                 commonFun.useAjax({
                     type: 'POST',
                     dataType: 'json',
@@ -158,6 +130,10 @@ function recordList() {
         });
         $('.hover_table').html(domStr);
     });
+}
+
+function isMobile() {
+    return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
 }
 
 

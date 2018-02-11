@@ -8,7 +8,7 @@
             <div class="text_wrapper text_wrapper_mobile">活动期间，微信扫描下方二维码或搜索 “<span class="text_strong">拓天速贷服务号</span>”<br/>关注公众号，回复口令 “<span class="text_strong">开工大吉</span>” ，即可拆开你的开工红包。每人限领一次。</div>
             <div class="wechat_wrapper"></div>
         </div>
-        <div class="gold-person-container" style="display: none">
+        <div class="gold-person-container">
             <div class="header"></div>
             <div class="main">
                 <div class="text_wrapper">活动期间，用户累计年化投资额每满<span class="text_strong">5万元</span>即可获赠<span class="text_strong">1个“小金人”</span>，<br/>用户使用“小金人”，可在活动页面兑换相应奖励。</div>
@@ -16,9 +16,7 @@
                     <div class="hover_icon">
                         <div class="triangle_icon"></div>
                         <div class="hover_table_container">
-                            <table class="hover_table">
-
-                            </table>
+                            <table class="hover_table"></table>
                         </div>
                     </div>
                 </div>
@@ -92,38 +90,104 @@
                     <div class="controlsBtn prevBtn"></div>
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
-                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_jd_card prize_item_m"></div>
+                                        <div class="prize_desc">200元京东E卡</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="JD_E_CARD">1个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_toothbrush prize_item_m"></div>
+                                        <div class="prize_desc">拜尔智能电动牙刷 情侣双人</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="ELECTRIC_TOOTHBRUSH">2个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_wash_face prize_item_m"></div>
+                                        <div class="prize_desc">Foreo露娜 mini2</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="FOREO_MINI2">4个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_note prize_item_m"></div>
+                                        <div class="prize_desc">小米Note3美颜双摄拍照手机</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="XIAOMI_NOTE3">6个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_kitchen_ware prize_item_m"></div>
+                                        <div class="prize_desc">WMF 福腾宝德国原装进口六件套组合</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="WMF_FUTENG">8个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_TV prize_item_m"></div>
+                                        <div class="prize_desc">小米（MI）电视4A标准版55英寸</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="XIAOMI_TV">10个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_apple_air prize_item_m"></div>
+                                        <div class="prize_desc">Apple MacBook Air 11.6英寸笔记本电脑 </div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="APPLE_MACBOOK">15个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="prize_list_container">
+                                    <div class="prize_item">
+                                        <div class="prize_iphoneX prize_item_m"></div>
+                                        <div class="prize_desc">Apple iPhone X 64GB</div>
+                                        <div class="get_prize_btn get_prize_btn_m" data-index="APPLE_IPONEX">20个小金人兑换</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="controlsBtn nextBtn"></div>
                 </div>
-                <div class="title_wrapper">我的小金人<span class="text_strong">10</span>个</div>
-                <div class="my_record_title">我的兑换记录</div>
-                <div class="hover_table_container">
-                    <table class="hover_table">
-                        <tr>
-                            <th>物品</th>
-                            <th>时间</th>
-                            <th>消耗小金人个数</th>
-                        </tr>
-                        <tr>
-                            <td>200元京东E卡</td>
-                            <td>2018-3-6 00:48:49</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Apple MacBook Air11.6英寸笔记本电脑</td>
-                            <td>2018-3-6 00:48:49</td>
-                            <td>1</td>
-                        </tr>
-                    </table>
+                <div class="title_wrapper_m" style="display: none">
+                    <div class="title_wrapper">我的小金人<span class="text_strong">10</span>个</div>
+                    <div class="my_record_title">我的兑换记录</div>
+                    <div class="hover_table_container">
+                        <table class="hover_table">
+                            <tr>
+                                <th class="goods_th">物品</th>
+                                <th class="time_th">时间</th>
+                                <th class="count_th">消耗小金人个数</th>
+                            </tr>
+                            <tr>
+                                <td>200元京东E卡</td>
+                                <td>2018-3-6 00:48:49</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Apple MacBook Air11.6英寸笔记本电脑</td>
+                                <td>2018-3-6 00:48:49</td>
+                                <td>1</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="footer"></div>
@@ -167,7 +231,7 @@
             <p>7、单笔投资所获体验金奖励将于用户所投项目放款当日发放，您可在PC端“我的账户”或App端“我的”中进行查看；</p>
             <p>8、活动中所获红包、加息券即时发放，用户可在PC端“我的账户”或App端“我的-优惠券”中进行查看。为方便您分散投资，“520元开工红包”将以红包组的形式发放；</p>
             <p>9、活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
-            <p style="margin-bottom: 120px">10、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</p>
+            <p class="last_paragraph">10、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</p>
         </div>
     </div>
     <div class="flex_content" style="display: none"></div>
@@ -182,14 +246,14 @@
     <div class="pop_modal_container" id="pop_modal_container1" style="display: none">
         <div class="pop_modal_bg get_it">
             <div class="pop_modal">
-                <div class="text"><span style="font-weight: bold;font-size: 18px">兑换成功</span><br/><span class="font-size: 14px">客服将于7个工作日内联系您发放奖励</span></div>
+                <div class="text"><span class="text_title">兑换成功</span><br/><span class="text_desc">客服将于7个工作日内联系您发放奖励</span></div>
             </div>
             <div class="close_btn close_btn1"></div>
         </div>
     </div>
 </div>
 
-    <#--<#include "../../module/login-tip.ftl" />-->
+    <#include "../../module/login-tip.ftl" />
 </div>
 
 </@global.main>
