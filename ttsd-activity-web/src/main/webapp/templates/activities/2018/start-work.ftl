@@ -84,29 +84,57 @@
             <div class="footer"></div>
         </div>
 
-        <div id="productListWap" class="clearfix product-list-wap">
-            <div class="controlsBtn prevBtn"></div>
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
-                    <div class="swiper-slide"></div>
+        <div class="gold-person-container_m">
+            <div class="header"></div>
+            <div class="main">
+                <div class="text_wrapper">活动期间，用户累计年化投资额每满<span class="text_strong">5万元<br/></span>即可获赠<span class="text_strong">1个“小金人”</span>，用户使用“小金人”，可在活动<br/>页面兑换相应奖励。</div>
+                <div id="productListWap" class="clearfix product-list-wap">
+                    <div class="controlsBtn prevBtn"></div>
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                            <div class="swiper-slide"></div>
+                        </div>
+                    </div>
+                    <div class="controlsBtn nextBtn"></div>
+                </div>
+                <div class="title_wrapper">我的小金人<span class="text_strong">10</span>个</div>
+                <div class="my_record_title">我的兑换记录</div>
+                <div class="hover_table_container">
+                    <table class="hover_table">
+                        <tr>
+                            <th>物品</th>
+                            <th>时间</th>
+                            <th>消耗小金人个数</th>
+                        </tr>
+                        <tr>
+                            <td>200元京东E卡</td>
+                            <td>2018-3-6 00:48:49</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Apple MacBook Air11.6英寸笔记本电脑</td>
+                            <td>2018-3-6 00:48:49</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="controlsBtn nextBtn"></div>
+            <div class="footer"></div>
         </div>
 
-
-
-
         <div class="cash_back_container">
-            <div class="desc">活动期间，<span class="text_strong">每逢周五</span>（即3月2日、9日、16日、23日、30日）00:00-24:00，<br/>投资额外享受年化投资额的<span class="text_strong">0.5%返现奖励</span>，返现奖励项目放款后1个工作日内发放至用户账户。</div>
-            <div class="example"><span class="example_text">举个栗子:</span>拓小天3月2日（周五）成功投资360天项目10万元，180天项目8万元，则拓小<br/>天在该两个项目放款后，共计可获得返现奖励10万*0.5%+8万*180/360*0.5%=700元。</div>
+            <div class="desc desc_pc">活动期间，<span class="text_strong">每逢周五</span>（即3月2日、9日、16日、23日、30日）00:00-24:00，<br/>投资额外享受年化投资额的<span class="text_strong">0.5%返现奖励</span>，返现奖励项目放款后1个工作日内发放至用户账户。</div>
+            <div class="desc desc_mobile">活动期间，<span class="text_strong">每逢周五</span>（即3月2日、9日、16日、23日、30日）<br/>00:00-24:00，投资额外享受年化投资额的<span class="text_strong">0.5%返现奖励</span>，<br/>返现奖励项目放款后1个工作日内发放至用户账户。</div>
+            <div class="cashBack_ticket"></div>
+            <div class="example example_pc"><span class="example_text">举个栗子:</span>拓小天3月2日（周五）成功投资360天项目10万元，180天项目8万元，则拓小<br/>天在该两个项目放款后，共计可获得返现奖励10万*0.5%+8万*180/360*0.5%=700元。</div>
+            <div class="example example_mobile"><span class="example_text">举个栗子:</span>拓小天3月2日（周五）成功投资360天项目10万元，<br/>180天项目8万元，则拓小天在该两个项目放款后，共计可获得<br/>返现奖励10万*0.5%+8万*180/360*0.5%=700元。</div>
         </div>
         <div class="experience_cash_container">
             <div class="desc">活动期间单笔投资满1万元以上，即可获得体验金奖励，最高单笔投资可享 <span class="text_strong">10万元体验金</span>福利。</div>

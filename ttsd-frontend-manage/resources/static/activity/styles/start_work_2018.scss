@@ -248,6 +248,85 @@ h2,h4 {
       background-size: contain;
     }
   }
+  .gold-person-container_m {
+      width: 7.5rem;
+      margin: 30px auto auto auto;
+      .header {
+        width: 100%;
+        height: 1.67rem;
+        background: url("../images/2018/start-work/gold_person_header_m.png") no-repeat;
+        background-size: contain;
+      }
+      .main {
+        position: relative;
+        width: 100%;
+        font-size: 0;
+        background: url("../images/2018/start-work/gold_person_bgLine_m.png") repeat-y center center;
+        .text_wrapper {
+          width: 100%;
+          font-size: .24rem;
+          line-height: .32rem;
+          color: #333;
+          text-align: center;
+          .text_strong {
+            font-size: .26rem;
+            color: #ec192c;
+            font-weight: bold;
+          }
+        }
+        .title_wrapper {
+          box-sizing: border-box;
+          padding-left: .3rem;
+          margin: 0 auto;
+          width: 2.91rem;
+          height: .91rem;
+          line-height: .91rem;
+          text-align: center;
+          font-size: .26rem;
+          background: url("../images/2018/start-work/gold_person_title_m.png") no-repeat;
+          background-size: contain;
+        }
+        .my_record_title {
+          width: 100%;
+          text-align: center;
+          font-size: .26rem;
+          color: #c4050d;
+        }
+        .hover_table_container {
+          margin: 0 auto;
+          width: 5rem;
+          height: 1.65rem;
+          overflow: scroll;
+          .hover_table {
+            font-size: .14rem;
+            color: #f7fecd;
+            tr {
+              background: #e94144;
+              th {
+                padding: 0;
+                color: #f7fecd;
+                background: #e94144 !important;
+                border-bottom: 1px solid #f2877c;
+              }
+              td {
+                padding: 0;
+                font-size: .14rem;
+                color: #f7fecd;
+                border: none;
+              }
+            }
+          }
+        }
+      }
+      .footer {
+        position: relative;
+        top: -1px;
+        width: 100%;
+        height: .7rem;
+        background: url("../images/2018/start-work/gold_person_footer_m.png") no-repeat;
+        background-size: contain;
+      }
+  }
   .cash_back_container {
     position: relative;
     margin-top: 33px;
