@@ -159,7 +159,7 @@ $loanList.on('click','.goToTranDetail',function (e) {
 
         });
     };
-    countDownLoan($preheat);
+    countDownLoan('.preheat');
 let $myMenu = $('.menu-my');
 if($myMenu.length){
     $myMenu.on('click',function (e) {
