@@ -273,10 +273,19 @@ h2,h4 {
         font-weight: bold;
       }
     }
+    .cashBack_ticket {
+      display: none;
+    }
     .example {
       margin-top: 183px;
       font-size: 16px;
       color: #333;
+      &.example_pc {
+        display: block;
+      }
+      &.example_mobile {
+        display: none;
+      }
       .example_text {
         display: inline-block;
         margin-right: 3px;
@@ -298,6 +307,12 @@ h2,h4 {
     background-size: contain;
     text-align: center;
     overflow: hidden;
+    &.desc_pc {
+      display: block;
+    }
+    &.desc_mobile {
+      display: none;
+    }
     .desc {
       margin-top: 190px;
       font-size: 16px;
@@ -342,6 +357,9 @@ h2,h4 {
       line-height: 29px;
       font-size: 16px;
       color: #ffefc4;
+      &.last_p {
+        margin-bottom: 120px;
+      }
     }
     table {
       margin: auto auto 13px 25px;
@@ -660,6 +678,7 @@ h2,h4 {
     }
     .cash_back_container {
       position: relative;
+      margin-top: .3rem;
       text-align: center;
       width: 7.35rem;
       height: 7.21rem;
@@ -678,6 +697,7 @@ h2,h4 {
         }
         &.desc_mobile {
           display: block;
+          line-height: .32rem;
         }
         .text_strong {
           font-size: .26rem;
@@ -685,15 +705,30 @@ h2,h4 {
           font-weight: bold;
         }
       }
+      .cashBack_ticket {
+        display: block;
+        width: 4.99rem;
+        height: 2.37rem;
+        margin: 0.2rem auto;
+        background: url("../images/2018/start-work/cashBack_ticket.png") no-repeat;
+        background-size: contain;
+      }
       .example {
+        margin-top: 0;
+        line-height: .32rem;
         font-size: .24rem;
         color: #333;
+        &.example_pc {
+          display: none;
+        }
+        &.example_mobile {
+          display: block;
+        }
         .example_text {
           display: inline-block;
-          margin-right: 3px;
-          width: 85px;
-          height: 20px;
-          line-height: 20px;
+          width: 1.25rem;
+          height: 0.32rem;
+          line-height: 0.32rem;
           text-align: center;
           color: #fcee77;
           background: #ec192c;
@@ -702,63 +737,73 @@ h2,h4 {
     }
     .experience_cash_container {
       position: relative;
-      margin-top: 33px;
-      width: 1008px;
-      height: 602px;
-      background: url("../images/2018/start-work/experience_cash_container.png") no-repeat;
+      margin-top: .3rem;
+      width: 7.35rem;
+      height: 7.21rem;
+      background: url("../images/2018/start-work/experience_cash_container_m.png") no-repeat;
       background-size: contain;
       text-align: center;
       overflow: hidden;
       .desc {
-        margin-top: 190px;
-        font-size: 16px;
+        margin-top: 1.9rem;
+        font-size: .24rem;
         color: #333;
+        line-height: .32rem;
+        &.desc_pc {
+          display: none;
+        }
+        &.desc_mobile {
+          display: block;
+        }
         .text_strong {
-          font-size: 18px;
+          font-size: .26rem;
           color: #ec192c;
           font-weight: bold;
         }
       }
       .title_text {
         display: inline-block;
-        width: 273px;
-        margin-top: 10px;
-        font-size: 18px;
-        line-height: 18px;
+        width: 3.26rem;
+        margin-top: .2rem;
+        font-size: .22rem;
+        line-height: .32rem;
         color: #333;
         text-align: center;
       }
       .invest_btn {
-        margin: 242px auto auto auto;
-        width: 226px;
-        height: 61px;
-        line-height: 61px;
+        margin: 2.85rem auto auto auto;
+        width: 2.73rem;
+        height: .75rem;
+        line-height: .75rem;
         text-align: center;
         background: #eb312d;
-        border-radius: 8px;
-        font-size: 23.6px;
+        border-radius: .1rem;
+        font-size: .29rem;
         color: #fcf488;
-        cursor: pointer;
       }
     }
     .tip_text_container {
-      margin-top: 33px;
+      width: 7.15rem;
+      margin: .4rem auto auto auto;
       overflow: hidden;
       color: #ffefc4;
       .title_tip {
-        font-size: 20px;
+        font-size: .27rem;
       }
       p {
         margin-bottom: 0;
-        line-height: 29px;
-        font-size: 16px;
+        line-height: .4rem;
+        font-size: .21rem;
         color: #ffefc4;
+        &.last_p {
+          margin-bottom: .85rem;
+        }
       }
       table {
-        margin: auto auto 13px 25px;
-        width: 486px;
+        margin: auto auto .23rem .3rem;
+        width: 6.45rem;
         td {
-          font-size: 16px;
+          font-size: .21rem;
           border: 1px solid #f28c7b;
           color: #ffefc4;
         }
@@ -952,3 +997,5 @@ h2,h4 {
     font-size: 32px;
   }
 }
+
+
