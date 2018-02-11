@@ -230,10 +230,7 @@ function isPassive() {
     } catch(e) {}
     return supportsPassiveOption;
 }
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
-    capture: false,
-    passive: false
-} : false);
+
 
 //转让购买详情
 //承接记录
@@ -274,6 +271,10 @@ function validateHash() {
     }else if(location.hash == '#projectDetail'){
 
         $projectDetail.show().siblings('.show-page').hide();
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+            capture: false,
+            passive: false
+        } : false);
 
     }else if(location.hash == '#buyDetail'){
         $buyDetail.show().siblings('.show-page').hide();

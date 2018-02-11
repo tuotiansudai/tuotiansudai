@@ -27,8 +27,13 @@ function isIphoneX(){
 }
 
 if(isIphoneX()){
-$('.anomous-tip').css('height','10rem');
+$('.anomous-tip').css({
+    'height':'6rem',
+    'paddingTop':'1.5rem'
+
+});
 }
+
 
 
 

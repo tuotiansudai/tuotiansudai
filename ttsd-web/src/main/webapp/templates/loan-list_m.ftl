@@ -85,7 +85,7 @@
                                 <#if loanItem.status == 'PREHEAT'>
                                 <div class="progress-bar">
                                     <#if loanItem.preheatSeconds lte 1800>
-                                    <span class="preheat" data-time="${loan.preheatSeconds?string.computer}" style="color: #FF473C">
+                                    <span class="preheat" data-time="${loanItem.preheatSeconds?string.computer}" style="color: #FF473C">
                                         <i class="minute_show"></i>分
                                         <i class="second_show"></i>秒后开标
                                         </span>
