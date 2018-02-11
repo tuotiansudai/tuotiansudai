@@ -564,7 +564,7 @@ h2,h4 {
         }
         .hover_table_container {
           margin: 0 auto;
-          width: 6rem;
+          width: 6.5rem;
           height: 1.65rem;
           overflow: scroll;
           .hover_table {
@@ -794,9 +794,6 @@ h2,h4 {
         margin-top: 1.9rem;
         font-size: .24rem;
         color: #333;
-        @media screen and (max-width: 320px) {
-          font-size: .15rem;
-        }
         &.desc_pc {
           display: none;
         }

@@ -5,12 +5,11 @@ require('swiper/dist/css/swiper.css');
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let sourceKind = globalFun.parseURL(location.href);
 let switchLock = false;
-let $productListWap = $('#productListWap');
 
 let mySwiper = new Swiper ('.swiper-container', {
     direction: 'horizontal',
     loop: true,
-    // autoplay:3000,
+    autoplay:3000,
     slidesPerView: 'auto',
     centeredSlides:true,
     spaceBetween: 20,
@@ -36,14 +35,6 @@ $.when(commonFun.isUserLogin())
         else {
             $('.title_wrapper').show();
         }
-
-}).fail(function () {
-    if (isMobile()) {
-        $('.title_wrapper_m').show();
-    }
-    else {
-        $('.title_wrapper').show();
-    }
 });
 
 $('.close_btn1').on('click',() => {
@@ -119,7 +110,7 @@ function recordList() {
         dataType: 'json',
         url:'/activity/start-work/prize',
     },function(data) {
-        let domStr = '<tr><th>物品</th><th>时间</th><th>消耗小金人个数</th></tr>';
+        let domStr = '<tr><th class="goods_th">物品</th><th class="time_th">时间</th><th class="count_th">消耗小金人个数</th></tr>';
         let list = data.prize;
         list.forEach((item) => {
             domStr += `<tr>

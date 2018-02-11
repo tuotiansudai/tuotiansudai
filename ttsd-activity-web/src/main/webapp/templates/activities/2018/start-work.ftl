@@ -170,23 +170,7 @@
                     <div class="title_wrapper">我的小金人<span class="text_strong">10</span>个</div>
                     <div class="my_record_title">我的兑换记录</div>
                     <div class="hover_table_container">
-                        <table class="hover_table">
-                            <tr>
-                                <th class="goods_th">物品</th>
-                                <th class="time_th">时间</th>
-                                <th class="count_th">消耗小金人个数</th>
-                            </tr>
-                            <tr>
-                                <td>200元京东E卡</td>
-                                <td>2018-3-6 00:48:49</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Apple MacBook Air11.6英寸笔记本电脑</td>
-                                <td>2018-3-6 00:48:49</td>
-                                <td>1</td>
-                            </tr>
-                        </table>
+                        <table class="hover_table"></table>
                     </div>
                 </div>
             </div>
