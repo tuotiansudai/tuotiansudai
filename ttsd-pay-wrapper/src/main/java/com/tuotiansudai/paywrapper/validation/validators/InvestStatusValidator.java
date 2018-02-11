@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,8 @@ import java.text.SimpleDateFormat;
 public class InvestStatusValidator {
 
     private final static Logger logger = Logger.getLogger(ValidationScheduler.class);
+
+    private final static String NOT_FOUND_ORDER_ID = "00240005"; //无原记录
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
@@ -58,6 +61,12 @@ public class InvestStatusValidator {
 
         try {
             TransferSearchResponseModel transferStatus = umPayRealTimeStatusService.getTransferStatus(String.valueOf(investId), DATE_FORMAT.format(investModel.getCreatedTime()), "03");
+
+            if (transferStatus.getRetCode().equalsIgnoreCase(NOT_FOUND_ORDER_ID)) {
+                dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", transferStatus.getRetMsg()).build()));
+                dto.getData().setStatus(new DateTime().isAfter(new DateTime(investModel.getCreatedTime()).plusMinutes(1)));
+                return dto;
+            }
 
             if (transferStatus.isSuccess()) {
                 String statusMessage = transferStatus.generateHumanReadableInfo().get("交易状态");
