@@ -198,7 +198,7 @@ var strategies = {
         //验证年龄是否满18
         var cardValid=commonFun.IdentityCodeValid(this.value.replace(/\s+/g, ""));
         if(cardValid) {
-            var ageValid=commonFun.checkedAge(this.value);
+            var ageValid=commonFun.checkedAge(this.value.replace(/\s+/g, ""));
             if(!ageValid) {
                 isHaveError.yes.apply(this,arguments);
                 return errorMsg;
@@ -213,7 +213,7 @@ var strategies = {
         var getResult='',
             that=this,
             _arguments=arguments;
-        if(this.value.length!=18) {
+        if(this.value.replace(/\s+/g, "").length!=18) {
             return;
         }
         commonFun.useAjax({
