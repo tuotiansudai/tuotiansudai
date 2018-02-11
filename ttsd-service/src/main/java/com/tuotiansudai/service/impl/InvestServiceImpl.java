@@ -729,7 +729,6 @@ public class InvestServiceImpl implements InvestService {
         } else {
             investorInvestDetailDto.setLastRepayDate(loanModel.getDeadline());
         }
-        investorInvestDetailDto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? investRepayModels.get(investRepayModels.size() - 1).getActualRepayDate() : loanModel.getDeadline()).toDate());
         List<TransferApplicationModel> transferApplicationModels;
         for (InvestRepayModel investRepayModel : investRepayModels) {
             if (investRepayModel.isTransferred()) {
