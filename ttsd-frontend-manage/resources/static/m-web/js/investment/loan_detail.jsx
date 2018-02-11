@@ -165,8 +165,15 @@ $('#btn-detail-toggle').click(function () {
     let $content = $boxContent.find('#content');
     let pageNum = 1;
 let flagScroll=true;
+
+
     $('#transaction_record').on('click',function () {
         $('#noData').hide();
+        document.getElementById('box_content').addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+            capture: false,
+            passive: false
+        } : false);
+
         getMoreRecords();
         //交易记录滚动加载更多
         setTimeout(function () {
@@ -271,10 +278,7 @@ function validateHash() {
     }else if(location.hash == '#projectDetail'){
 
         $projectDetail.show().siblings('.show-page').hide();
-        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
-            capture: false,
-            passive: false
-        } : false);
+
 
     }else if(location.hash == '#buyDetail'){
         $buyDetail.show().siblings('.show-page').hide();
@@ -613,9 +617,10 @@ function submitData() {
         userBalance = $("#userBalance").val();
     let isAuthentication = 'USER' === $transferDetail.data('authentication');
     let hasBankCard = $transferDetail.data('has-bank-card');
-    if (isAuthentication) {
+    if (!isAuthentication) {
         location.href = '/m/register/account';//去实名认证
     }
+
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'

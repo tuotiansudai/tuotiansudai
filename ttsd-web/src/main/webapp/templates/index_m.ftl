@@ -80,6 +80,8 @@
                     <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail">立即投资</a>
                 <#elseif newbieLoan.status == 'PREHEAT'>
                     <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>
+                    <#else>
+                    <i class="loan-status icon-sellout"></i>
                 </#if>
             </li>
         </ul>
@@ -87,7 +89,7 @@
             <div class="table-row progress-column">
                 <div class="progress-bar">
                     <div class="process-percent ">
-                        <div class="percent" style="width:${newbieLoan.progress}%">
+                        <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>colorChange</#if>" style="width:${newbieLoan.progress}%">
                         </div>
                     </div>
                 </div>
