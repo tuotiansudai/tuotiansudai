@@ -319,7 +319,7 @@ def activity(skip_package):
 
 def ask(skip_package):
     pre_deploy(skip_package, ('ttsd-ask-web', 'ttsd-ask-rest'))
-    mk_war('ttsd-ask-web')
+    mk_war(('ttsd-ask-web',))
     mk_rest_service()
     execute(deploy_static)
     execute(deploy_ask_rest)
