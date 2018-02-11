@@ -16,8 +16,12 @@ import org.springframework.util.StringUtils;
 public class InvestCallbackMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(InvestCallbackMessageConsumer.class);
 
+    private final PayWrapperClient payWrapperClient;
+
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    public InvestCallbackMessageConsumer(PayWrapperClient payWrapperClient) {
+        this.payWrapperClient = payWrapperClient;
+    }
 
     @Override
     public MessageQueue queue() {
@@ -28,13 +32,17 @@ public class InvestCallbackMessageConsumer implements MessageConsumer {
     @Override
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+
         if (!StringUtils.isEmpty(message)) {
             logger.info("[MQ] ready to consume message: invest callback.");
+
             BaseDto<PayDataDto> result = payWrapperClient.investCallback(message);
+
             if (!result.isSuccess()) {
-                logger.error("invest callback consume fail. notifyRequestId: " + message);
-                throw new RuntimeException("invest callback consume fail. notifyRequestId: " + message);
+                logger.error("invest callback consume fail. investId: " + message);
+                throw new RuntimeException("invest callback consume fail. investId: " + message);
             }
+
             logger.info("[MQ] consume message success.");
         }
     }
