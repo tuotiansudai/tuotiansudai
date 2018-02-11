@@ -51,7 +51,7 @@ em {
   position: absolute;
   z-index: 1;
   width: 100%;
-  top: 1.8rem;
+  top: 1.85rem;
   overflow: hidden;
   bottom: 0;
   font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
@@ -66,7 +66,7 @@ em {
       padding-left: .17rem;
       padding-right: .17rem;
       padding-top: .44rem;
-      margin-top: .2rem;
+      margin-bottom: .2rem;
       background: #fff;
       .top {
         padding-bottom: .2rem;
@@ -157,6 +157,7 @@ em {
 }
 .menu-category{
   height: .78rem!important;
+  margin-bottom: .2rem;
   span {
     line-height: .84rem;
     a {
