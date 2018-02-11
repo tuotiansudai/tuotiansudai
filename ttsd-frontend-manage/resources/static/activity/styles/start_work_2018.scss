@@ -29,6 +29,7 @@ h2,h4 {
     background:  url("../images/2018/start-work/get_red_pocket.png") no-repeat;
     background-size: contain;
     .text_wrapper {
+      display: none;
       position: absolute;
       top: 190px;
       width: 100%;
@@ -36,6 +37,12 @@ h2,h4 {
       line-height: 32px;
       color: #333;
       text-align: center;
+      &.text_wrapper_pc {
+        display: block;
+      }
+      &.text_wrapper_mobile {
+        display: none;
+      }
       .text_strong {
         font-size: 18px;
         color: #ec192c;
@@ -53,6 +60,7 @@ h2,h4 {
     }
   }
   .gold-person-container {
+    display: block;
     width: 1008px;
     margin: 30px auto auto auto;
     .header {
@@ -178,7 +186,7 @@ h2,h4 {
           }
           .prize_wash_face {
             margin: 18px auto 38px auto;
-            width: 200px;
+            width: 177px;
             height: 156px;
             background: url("../images/2018/start-work/prize_wash_face.png") no-repeat;
             background-size: contain;
@@ -241,6 +249,9 @@ h2,h4 {
       background-size: contain;
     }
   }
+  .gold-person-container_m {
+      display: none;
+  }
   .cash_back_container {
     position: relative;
     margin-top: 33px;
@@ -254,16 +265,31 @@ h2,h4 {
       margin-top: 183px;
       font-size: 16px;
       color: #333;
+      &.desc_pc {
+        display: block;
+      }
+      &.desc_mobile {
+        display: none;
+      }
       .text_strong {
         font-size: 18px;
         color: #ec192c;
         font-weight: bold;
       }
     }
+    .cashBack_ticket {
+      display: none;
+    }
     .example {
       margin-top: 183px;
       font-size: 16px;
       color: #333;
+      &.example_pc {
+        display: block;
+      }
+      &.example_mobile {
+        display: none;
+      }
       .example_text {
         display: inline-block;
         margin-right: 3px;
@@ -285,6 +311,12 @@ h2,h4 {
     background-size: contain;
     text-align: center;
     overflow: hidden;
+    &.desc_pc {
+      display: block;
+    }
+    &.desc_mobile {
+      display: none;
+    }
     .desc {
       margin-top: 190px;
       font-size: 16px;
@@ -329,6 +361,9 @@ h2,h4 {
       line-height: 29px;
       font-size: 16px;
       color: #ffefc4;
+      &.last_paragraph {
+        margin-bottom: 120px;
+      }
     }
     table {
       margin: auto auto 13px 25px;
@@ -352,7 +387,7 @@ h2,h4 {
   height: 195px;
   text-align: center;
   overflow: hidden;
-  z-index: 998;
+  z-index: 3998;
 }
 .pop_modal_bg {
   position: relative;
@@ -388,11 +423,18 @@ h2,h4 {
   &.get_it {
     .text {
       margin-top: 50px;
+      .text_title {
+        font-weight: bold;
+        font-size: 18px
+      }
+      .text_desc {
+        font-size: 14px
+      }
     }
   }
 }
 .flex_content {
-  background: transparent;
+  background: rgba(0,0,0,0.2);
   position: fixed;
   top: 0;
   left: 0;
@@ -400,5 +442,647 @@ h2,h4 {
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 997;
+  z-index: 3997;
 }
+
+
+@media screen and (max-width:768px) {
+  .start-work-banner {
+    width: 100%;
+    height: 3.5rem;
+    background: url("../images/2018/start-work/wap_banner.png") no-repeat;
+    background-size: contain;
+  }
+  .activity-wrap-main {
+    margin-top: .32rem;
+    background: #e94144;
+    overflow: hidden;
+  }
+  .activity-page {
+    width: 7.35rem;
+    margin: 0 auto;
+    overflow: hidden;
+    .red_pocket_container {
+      position: relative;
+      width: 100%;
+      height: 6.82rem;
+      background:  url("../images/2018/start-work/get_red_pocket_m.png") no-repeat;
+      background-size: contain;
+      .text_wrapper {
+        display: none;
+        position: absolute;
+        top: 1.84rem;
+        width: 6.8rem;
+        left: .275rem;
+        font-size: .24rem;
+        line-height: 0.33rem;
+        color: #333;
+        text-align: center;
+        @media screen and (max-width: 320px) {
+          width: 7.1rem;
+          left: .1rem;
+        }
+        &.text_wrapper_pc {
+          display: none;
+        }
+        &.text_wrapper_mobile {
+          display: block;
+        }
+        .text_strong {
+          font-size: .26rem;
+          color: #ec192c;
+          font-weight: bold;
+        }
+      }
+      .wechat_wrapper {
+        position: absolute;
+        top: 2.9rem;
+        left: 2.08rem;
+        width: 3.26rem;
+        height: 3.36rem;
+        background: url("../images/2018/start-work/tuotian_wechat.png") no-repeat;
+        background-size: contain;
+      }
+    }
+    .gold-person-container {
+      display: none;
+    }
+    .gold-person-container_m {
+      display: block;
+      width: 7.35rem;
+      margin: .3rem auto auto auto;
+      .header {
+        width: 100%;
+        height: 1.67rem;
+        background: url("../images/2018/start-work/gold_person_header_m.png") no-repeat;
+        background-size: contain;
+        overflow: hidden;
+      }
+      .main {
+        position: relative;
+        margin: -1px auto auto auto;
+        width: 100%;
+        font-size: 0;
+        background: url("../images/2018/start-work/gold_person_bgLine_m.png") repeat-y center center;
+        background-size: contain;
+        overflow: hidden;
+        .text_wrapper  {
+          margin-top: .2rem;
+          width: 100%;
+          font-size: .24rem;
+          line-height: .33rem;
+          color: #333;
+          text-align: center;
+          .text_strong {
+            font-size: .26rem;
+            color: #ec192c;
+            font-weight: bold;
+          }
+        }
+        .title_wrapper {
+          box-sizing: border-box;
+          padding-left: .3rem;
+          margin: 0 auto;
+          width: 2.91rem;
+          height: .91rem;
+          line-height: .91rem;
+          text-align: center;
+          font-size: .26rem;
+          background: url("../images/2018/start-work/gold_person_title_m.png") no-repeat;
+          background-size: contain;
+          .text_strong {
+            font-size: .26rem;
+            color: #ec192c;
+            font-weight: bold;
+          }
+        }
+        .my_record_title {
+          width: 100%;
+          text-align: center;
+          font-size: .26rem;
+          color: #c4050d;
+        }
+        .hover_table_container {
+          margin: 0 auto;
+          width: 6.5rem;
+          height: 1.65rem;
+          overflow: scroll;
+          .hover_table {
+            font-size: .14rem;
+            color: #f7fecd;
+            tr {
+              background: #e94144;
+              th {
+                padding: 0;
+                color: #f7fecd;
+                background: #e94144!important;
+                border-bottom: 1px solid #f2877c;
+                &.goods_th {
+                  width: 45%;
+                }
+                &.time_th {
+                  width: 20%;
+                }
+                &.count_th {
+                  width: 35%;
+                }
+
+              }
+              td {
+                padding: 0;
+                font-size: .14rem;
+                color: #f7fecd;
+                border: none;
+              }
+            }
+          }
+        }
+        .swiper-container {
+          margin: 0!important;
+          float: none;
+          width: 7rem;
+          height: 4.78rem;
+          overflow: visible!important;
+          .swiper-wrapper {
+            .swiper-slide{
+              box-sizing: border-box;
+              width: 2.8rem!important;
+              height: 3.78rem!important;
+              border: 2px solid #d52122;
+              border-radius: 0.2rem;
+              background: #fff0d1;
+              opacity: 0.8;
+              overflow: hidden;
+              .prize_list_container {
+                position: relative;
+                display: inline-block;
+                margin: 0;
+                width: 2.8rem;
+                height: 3.78rem;
+                background: #fff0d1;
+                border: none;
+                border-radius: .1rem;
+                .prize_item {
+                  width: 2.8rem;
+                  height: 3.78rem;
+                  text-align: center;
+                  font-size: .21rem;
+                  color: #333;
+                  overflow: hidden;
+                  .prize_desc {
+                    white-space: nowrap;
+                    text-overflow:ellipsis;
+                    overflow:hidden;
+                  }
+                  .prize_item_m {
+                    margin: .15rem auto .19rem auto;
+                    width: 2.21rem;
+                    height: 1.9rem;
+                  }
+                  .prize_jd_card {
+                    background: url("../images/2018/start-work/prize_jd_card_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_toothbrush {
+                    background: url("../images/2018/start-work/prize_toothbrush_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_wash_face {
+                    background: url("../images/2018/start-work/prize_wash_face_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_note {
+                    background: url("../images/2018/start-work/prize_note_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_kitchen_ware {
+                    background: url("../images/2018/start-work/prize_kitchen_ware_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_TV {
+                    background: url("../images/2018/start-work/prize_TV_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_apple_air {
+                    background: url("../images/2018/start-work/prize_apple_air_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_iphoneX {
+                    background: url("../images/2018/start-work/prize_iphoneX_m.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .get_prize_btn {
+                    margin: 0.2rem auto auto auto;
+                    width: 1.8rem;
+                    height: 0.45rem;
+                    line-height: 0.45rem;;
+                    text-align: center;
+                    font-size: 0.19rem;
+                    color: #fcf488;
+                    background: #eb312d;
+                    border-radius: 0.05rem;
+                  }
+                }
+              }
+            }
+            .swiper-slide-prev, .swiper-slide-next{
+              margin-top: 0.3rem;
+            }
+            .swiper-slide-active{
+              width: 3.15rem!important;
+              height: 4.78rem!important;
+              background: #fff0d1;
+              overflow: hidden;
+              opacity: 1;
+              .prize_list_container {
+                position: relative;
+                display: inline-block;
+                margin: 0;
+                width: 3rem;
+                height: 4.78rem;
+                border: none;
+                border-radius: .1rem;
+                .prize_item {
+                  width: 3.1rem;
+                  height: 4.78rem;
+                  text-align: center;
+                  font-size: .21rem;
+                  color: #333;
+                  overflow: hidden;
+                  .prize_item_m {
+                    margin: .325rem auto .19rem auto;
+                    width: 2.74rem;
+                    height: 2.35rem;
+                  }
+                  .prize_desc {
+                    white-space: normal;
+                    width: 100%;
+                    height: .64rem;
+                    line-height: .32rem;
+                  }
+                  .prize_jd_card {
+                    background: url("../images/2018/start-work/prize_jd_card_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_toothbrush {
+                    background: url("../images/2018/start-work/prize_toothbrush_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_wash_face {
+                    background: url("../images/2018/start-work/prize_wash_face_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_note {
+                    background: url("../images/2018/start-work/prize_note_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_kitchen_ware {
+                    background: url("../images/2018/start-work/prize_kitchen_ware_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_TV {
+                    margin: .325rem auto .19rem auto;
+                    width: 2.74rem;
+                    height: 2.35rem;
+                    background: url("../images/2018/start-work/prize_TV_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_apple_air {
+                    background: url("../images/2018/start-work/prize_apple_air_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .prize_iphoneX {
+                    background: url("../images/2018/start-work/prize_iphoneX_m_activity.png") no-repeat;
+                    background-size: contain;
+                  }
+                  .get_prize_btn {
+                    margin: 0.2rem auto auto auto;
+                    width: 2.3rem;
+                    height: 0.65rem;
+                    line-height: 0.65rem;
+                    text-align: center;
+                    font-size: .24rem;
+                    color: #fcf488;
+                    background: #eb312d;
+                    border-radius: 5px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .footer {
+        position: relative;
+        top: -1px;
+        width: 100%;
+        height: .7rem;
+        background: url("../images/2018/start-work/gold_person_footer_m.png") no-repeat;
+        background-size: contain;
+      }
+    }
+    .cash_back_container {
+      position: relative;
+      margin-top: .3rem;
+      text-align: center;
+      width: 7.35rem;
+      height: 7.21rem;
+      background:  url("../images/2018/start-work/cash_back_container_m.png") no-repeat;
+      background-size: contain;
+      overflow: hidden;
+      .desc {
+        margin-top: 1.9rem;
+        font-size: .24rem;
+        color: #333;
+        &.desc_pc {
+          display: none;
+        }
+        &.desc_mobile {
+          display: block;
+          line-height: .32rem;
+        }
+        .text_strong {
+          font-size: .26rem;
+          color: #ec192c;
+          font-weight: bold;
+        }
+      }
+      .cashBack_ticket {
+        display: block;
+        width: 4.99rem;
+        height: 2.37rem;
+        margin: 0.2rem auto;
+        background: url("../images/2018/start-work/cashBack_ticket.png") no-repeat;
+        background-size: contain;
+      }
+      .example {
+        margin-top: 0;
+        line-height: .32rem;
+        font-size: .24rem;
+        color: #333;
+        &.example_pc {
+          display: none;
+        }
+        &.example_mobile {
+          display: block;
+        }
+        .example_text {
+          display: inline-block;
+          width: 1.25rem;
+          height: 0.32rem;
+          line-height: 0.32rem;
+          text-align: center;
+          color: #fcee77;
+          background: #ec192c;
+        }
+      }
+    }
+    .experience_cash_container {
+      position: relative;
+      margin-top: .3rem;
+      width: 7.35rem;
+      height: 7.21rem;
+      background: url("../images/2018/start-work/experience_cash_container_m.png") no-repeat;
+      background-size: contain;
+      text-align: center;
+      overflow: hidden;
+      .desc {
+        margin-top: 1.9rem;
+        font-size: .24rem;
+        color: #333;
+        line-height: .32rem;
+        &.desc_pc {
+          display: none;
+        }
+        &.desc_mobile {
+          display: block;
+        }
+        .text_strong {
+          font-size: .26rem;
+          color: #ec192c;
+          font-weight: bold;
+        }
+      }
+      .title_text {
+        display: inline-block;
+        width: 3.26rem;
+        margin-top: .2rem;
+        font-size: .22rem;
+        line-height: .32rem;
+        color: #333;
+        text-align: center;
+      }
+      .invest_btn {
+        margin: 2.85rem auto auto auto;
+        width: 2.73rem;
+        height: .75rem;
+        line-height: .75rem;
+        text-align: center;
+        background: #eb312d;
+        border-radius: .1rem;
+        font-size: .29rem;
+        color: #fcf488;
+      }
+    }
+    .tip_text_container {
+      width: 7.15rem;
+      margin: .4rem auto auto auto;
+      overflow: hidden;
+      color: #ffefc4;
+      .title_tip {
+        font-size: .27rem;
+      }
+      p {
+        margin-bottom: 0;
+        line-height: .4rem;
+        font-size: .21rem;
+        color: #ffefc4;
+        &.last_paragraph {
+          margin-bottom: .85rem;
+        }
+      }
+      table {
+        margin: auto auto .23rem .3rem;
+        width: 6.45rem;
+        td {
+          font-size: .21rem;
+          border: 1px solid #f28c7b;
+          color: #ffefc4;
+        }
+      }
+    }
+  }
+  .product-list {
+    display: none;
+  }
+  .product-list-wap {
+    display: block;
+    position: relative;
+    margin: .25rem auto;
+    .controlsBtn {
+      width: 0.72rem;
+      height: 0.72rem;
+      position: absolute;
+      top: 1.68rem;
+      background: #ec192c;
+      border-radius: 50%;
+      z-index: 3000;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 30%;
+      cursor: pointer;
+      &.prevBtn {
+        left: 0.75rem;
+        background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
+      }
+      &.nextBtn {
+        right: 0.75rem;
+        background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
+      }
+    }
+  }
+  .pop_modal_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 7.2rem;
+    height: 3.5rem;
+    text-align: center;
+    overflow: hidden;
+    z-index: 3998;
+  }
+  .pop_modal_bg {
+    position: relative;
+    margin: 0 auto;
+    padding-top: .68rem;
+    width: 7.2rem;
+    height: 3.5rem;
+    .pop_modal {
+      width: 6.3rem;
+      height: 2.9rem;
+      color: #e13841;
+      background: url("../images/2018/start-work/modal_pop_bg.png") no-repeat;
+      background-size: contain;
+      position: relative;
+      left: .25rem;
+      overflow: hidden;
+    }
+    .close_btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0.68rem;
+      height: 0.68rem;
+      border-radius: 50%;
+      background: url("../images/2018/start-work/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+    &.not_enough {
+      font-size: .43rem;
+      font-weight: bold;
+      .text {
+        margin-top: 1rem;
+      }
+    }
+    &.get_it {
+      .text {
+        margin-top: 0.7rem;
+        .text_title {
+          font-weight: bold;
+          font-size: .43rem;
+        }
+        .text_desc {
+          margin-top: 1.5rem;
+          font-size: 14px
+        }
+      }
+    }
+  }
+  .flex_content {
+    background: rgba(0,0,0,0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3997;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
+
+

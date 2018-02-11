@@ -6,8 +6,34 @@ let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let sourceKind = globalFun.parseURL(location.href);
 let switchLock = false;
 
+let mySwiper = new Swiper ('.swiper-container', {
+    direction: 'horizontal',
+    loop: true,
+    autoplay:3000,
+    slidesPerView: 'auto',
+    centeredSlides:true,
+    spaceBetween: 20,
+    loopAdditionalSlides:1
+});
+
+let $prevBtn = $('.prevBtn'),
+    $nextBtn = $('.nextBtn');
+
+$prevBtn.on('click',function () {
+    mySwiper.slidePrev();
+});
+$nextBtn.on('click',function () {
+    mySwiper.slideNext();
+});
 
 recordList();
+
+if (isMobile()) {
+    $('.title_wrapper_m').show();
+}
+else {
+    $('.title_wrapper').show();
+}
 
 $('.close_btn1').on('click',() => {
     $('#flex_content').hide();
@@ -24,11 +50,16 @@ $('.invest_btn').on('click',() => {
 });
 
 $('.get_prize_btn').on('click',(e) => {
+    let targetDom = e.currentTarget;
+    let exchangePrize = targetDom.dataset.index;
+    let currentSwiper = $(targetDom).parents('.swiper-slide');
+    if ($(targetDom).hasClass('get_prize_btn_m') && !currentSwiper.hasClass('swiper-slide-active')) {
+        return;
+    }
     if (!switchLock) {
         switchLock = true;
         $.when(commonFun.isUserLogin())
             .done(function () {
-                let exchangePrize = e.currentTarget.dataset.index;
                 commonFun.useAjax({
                     type: 'POST',
                     dataType: 'json',
@@ -77,7 +108,7 @@ function recordList() {
         dataType: 'json',
         url:'/activity/start-work/prize',
     },function(data) {
-        let domStr = '<tr><th>物品</th><th>时间</th><th>消耗小金人个数</th></tr>';
+        let domStr = '<tr><th class="goods_th">物品</th><th class="time_th">时间</th><th class="count_th">消耗小金人个数</th></tr>';
         let list = data.prize;
         list.forEach((item) => {
             domStr += `<tr>
@@ -89,3 +120,10 @@ function recordList() {
         $('.hover_table').html(domStr);
     });
 }
+
+function isMobile() {
+    return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+}
+
+
+
