@@ -27,6 +27,14 @@ button, input {
     left: 0px;
     top: 7px;
     letter-spacing: 0;
+    .iconBack {
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
     i{
       display: block;
       margin: 8px 0 0 10px;

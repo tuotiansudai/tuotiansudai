@@ -92,7 +92,14 @@ switch (hash_key) {
 // });
 
 $('#investment_btn').on('click',() => {
-    pushHistory('#applyTransfer');
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            pushHistory('#applyTransfer');
+        })
+        .fail(function () {
+            location.href = '/m/login'
+        })
+
 });
 
 function _partOneShow() {

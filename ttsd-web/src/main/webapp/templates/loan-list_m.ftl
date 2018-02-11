@@ -102,7 +102,7 @@
                                     <span class="p-title">剩余金额：<span class="money"><@amount>${loanItem.alertAmount?c}</@amount></span>元</span>
                                 </#if>
                             <#else>
-                                <span class="p-title allReady"><i>剩余金额：0元</i></span>
+                                <span class="p-title allReady"><i>剩余金额：<em class="money"><@amount>${loanItem.alertAmount?c}</@amount></em>元</i></span>
                             </#if>
                         </div>
                     </#if>

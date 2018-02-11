@@ -30,6 +30,58 @@
     height:30px;
     background: url('../../images/bank/bankdefault.png') left top no-repeat;
     background-size: 100%;
+    &.ICBC {
+      background: url('../../images/bank/ICBC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CCB {
+      background: url('../../images/bank/CCB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.ABC {
+      background: url('../../images/bank/ABC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.BOC {
+      background: url('../../images/bank/BOC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CMBC {
+      background: url('../../images/bank/CMBC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CEB {
+      background: url('../../images/bank/CEB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.COMM {
+      background: url('../../images/bank/COMM.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CIB {
+      background: url('../../images/bank/CIB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CITIC {
+      background: url('../../images/bank/CITIC.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.SPDB {
+      background: url('../../images/bank/SPDB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.SPAB {
+      background: url('../../images/bank/SPAB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.GDB {
+      background: url('../../images/bank/GDB.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.CMB {
+      background: url('../../images/bank/CMB.png') left top no-repeat;
+      background-size: 100%;
+    }
   }
 
   li {

@@ -3,7 +3,7 @@
 
 
 <div class="my-account-content amount-overview" id="couponExchange">
-    <div class="m-header"><em id="iconExchangeCoupon" class="icon-left"><i></i></em>兑换码兑换</div>
+    <div class="m-header"><em id="iconExchangeCoupon" class="icon-left"><a href="javascript:history.go(-1)" class="iconBack"></a></em>兑换码兑换</div>
     <form  method="post" id="exchangeForm">
     <ul class="input-list align-flex-start">
         <li>

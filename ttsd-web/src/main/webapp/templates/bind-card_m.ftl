@@ -31,7 +31,7 @@
     </form>
 
 
-    <div class="tip-user-info" style="display: block">
+    <div class="tip-user-info" style="display: none">
         <em>温馨提示</em>
         为了您的账户资金安全
         只能绑定持卡人的银行储蓄卡

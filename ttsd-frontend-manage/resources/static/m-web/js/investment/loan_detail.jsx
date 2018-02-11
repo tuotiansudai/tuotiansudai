@@ -219,6 +219,21 @@ let flagScroll=true;
             }
         )
     }
+function isPassive() {
+    var supportsPassiveOption = false;
+    try {
+        addEventListener("test", null, Object.defineProperty({}, 'passive', {
+            get: function () {
+                supportsPassiveOption = true;
+            }
+        }));
+    } catch(e) {}
+    return supportsPassiveOption;
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+    capture: false,
+    passive: false
+} : false);
 
 //转让购买详情
 //承接记录
@@ -595,6 +610,9 @@ function submitData() {
     var transferApplicationId = parseInt($("#transferApplicationId").val()),
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val();
+    if (isAuthentication) {
+        location.href = '/m/register/account';//去实名认证
+    }
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'
@@ -646,13 +664,13 @@ function submitData() {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
-                        if (isAuthentication) {
-                            location.href = '/m/register/account';//去实名认证
-                        }
                         if(!hasBankCard){
                             location.href = '/m/bind-card';//去绑卡
+                        }else {
+                            location.href = '/m/recharge';//去充值
                         }
-                        location.href = '/m/recharge';//去充值
+
+
                     })
                     return false;
                 }

@@ -821,31 +821,6 @@
   margin-top: 50px;
 }
 
-.layui-layer-title {
-  background: #FF473C!important;
-  color: #fff!important;
-  text-align: center;
-}
-.layui-layer-setwin {
-  left: 15px;
-  right: 300px;
-}
-.layui-layer-title {
-  padding: 0!important;
-  font-size: 16px!important;
-}
-.layui-layer-setwin {
-  top: 8px!important;
-}
-.layui-layer-setwin a {
-  width: 15px!important;
-  height: 24px!important;
-  margin-left: -4px!important;
-}
-.layui-layer-ico {
-  background: url("../../images/share/goback.png") no-repeat!important;
-  background-size: contain!important;
-}
 .init-checkbox-style {
   width: 24px!important;
   position: relative;
@@ -858,15 +833,11 @@
     font-weight: normal;
   }
 }
-layui-layer .layui-layer-page .layui-layer-content {
-  overflow-y: scroll!important;
-}
+
 .box-item .amount {
   color: #525252;
 }
-.layui-layer-page .layui-layer-content {
-  overflow: visible!important;
-}
+
 
 .anxin-electro-sign {
   display: flex;
