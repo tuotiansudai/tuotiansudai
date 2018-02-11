@@ -610,6 +610,8 @@ function submitData() {
     var transferApplicationId = parseInt($("#transferApplicationId").val()),
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val();
+    let isAuthentication = 'USER' === $transferDetail.data('authentication');
+    let hasBankCard = $transferDetail.data('has-bank-card');
     if (isAuthentication) {
         location.href = '/m/register/account';//去实名认证
     }
@@ -693,7 +695,6 @@ $transferDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 //回退按钮
 let transferApplicationId = $("#transferApplicationId").val();
 $('#iconTransferDetail').on('click',function () {
-    //location.href = '/m/transfer/'+transferApplicationId;
     history.go(-1);
 
 })

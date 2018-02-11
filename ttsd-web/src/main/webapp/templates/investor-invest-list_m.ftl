@@ -50,6 +50,10 @@
                                 {{/if}}
                                 {{/each}}
                                 {{/if}}
+                                {{if value.productNewType == 'EXPERIENCE'}}
+                                <i class="icon-sign">体验金投资</i>
+                                {{/if}}
+
                             </dd>
                         </dl>
 

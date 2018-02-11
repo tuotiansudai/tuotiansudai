@@ -32,13 +32,13 @@
 
                         <b class="newer-title">${loanItem.name}
                         <#if loanItem.productType == 'EXPERIENCE'>
-                            <i class="icon-sign">体验金投资</i>
+                            <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>sold</#if>">体验金投资</i>
                         </#if>
                         <#if loanItem.productType != 'EXPERIENCE' && loanItem.activityType == 'NEWBIE'>
-                            <i class="icon-sign">新手专享</i>
+                            <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>sold</#if>">新手专享</i>
                         </#if>
                         <#if loanItem.activity?string("true","false") == "true">
-                            <i class="icon-sign">${loanItem.activityDesc!}</i>
+                            <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>sold</#if>">${loanItem.activityDesc!}</i>
                         </#if>
                         </b>
                         <ul class="loan-info clearfix">
