@@ -152,7 +152,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .put("first", String.format("您投资的”%s”回款已到账", loanModel.getName()))
                 .put("keyword1", loanModel.getName())
                 .put("keyword2", investRepayModel.getActualRepayDate() != null ? new DateTime(investRepayModel.getActualRepayDate()).toString("yyyy-MM-dd HH:mm") : "")
-                .put("keyword3", String.format("%s元", AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getActualInterest())))
+                .put("keyword3", String.format("%s元", AmountConverter.convertCentToString(investRepayModel.getRepayAmount())))
                 .put("remark", commonRemark)
                 .build()));
     };
