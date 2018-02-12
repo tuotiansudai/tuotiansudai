@@ -4,9 +4,11 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.StartWorkPrizeDto;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.service.StartWorkActivityService;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +31,10 @@ public class StartWorkActivityController {
 
     @Autowired
     private WeChatService weChatService;
+
+    private String startTime = ETCDConfigReader.getReader().getValue("activity.start.work.startTime");
+
+    private String endTime = ETCDConfigReader.getReader().getValue("activity.start.work.endTime");
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView newYearActivity() {
@@ -58,6 +64,8 @@ public class StartWorkActivityController {
             return new ModelAndView("redirect:/activity/start-work");
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
         return modelAndView;
     }
 
@@ -84,6 +92,8 @@ public class StartWorkActivityController {
         boolean drewCoupon = startWorkActivityService.drewCoupon(loginName);
         modelAndView.addObject("activityStatus", duringActivities);
         modelAndView.addObject("drewCoupon", drewCoupon);
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
         if (!drewCoupon) {
             startWorkActivityService.sendDrawCouponMessage(loginName);
             modelAndView.addObject("drawSuccess", true);
