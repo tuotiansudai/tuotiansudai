@@ -42,29 +42,47 @@ public class UserMembershipEvaluatorTest {
     }
 
     @Test
-    public void shouldEvaluateWhenUserMembershipIsOnlyOne() throws Exception {
+    public void shouldEvaluateWhenUserMembershipIsOnlyOne() {
         UserModel fakeUser = this.getFakeUser("level0User");
 
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
-
+        userMembershipModel.setCreatedTime(new DateTime().minusDays(1).toDate());
         userMembershipMapper.create(userMembershipModel);
 
         assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(0));
     }
 
     @Test
-    public void shouldEvaluateWhenUserMembershipIsMoreThanOne() throws Exception {
+    public void shouldEvaluateWhenUserMembershipIsMoreThanOne() {
         UserModel fakeUser = this.getFakeUser("fakeUser");
 
         UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 5, new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel1.setCreatedTime(new DateTime().minusDays(11).toDate());
         UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel2.setCreatedTime(new DateTime().minusDays(11).toDate());
         UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), 4, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel3.setCreatedTime(new DateTime().minusDays(11).toDate());
 
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
         userMembershipMapper.create(userMembershipModel3);
 
         assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(3));
+    }
+
+    @Test
+    public void shouldEvaluateLevel0WhenNoMembershipNotFound() {
+        UserModel fakeUser = this.getFakeUser("fakeUser");
+
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 2, new DateTime().plusDays(20).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel1.setCreatedTime(new DateTime().plusDays(2).toDate());
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel2.setCreatedTime(new DateTime().plusDays(1).toDate());
+
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        assertThat(userMembershipEvaluator.evaluateSpecifiedDate(fakeUser.getLoginName(), new Date()).getLevel(), is(0));
     }
 
     private UserModel getFakeUser(String loginName) {

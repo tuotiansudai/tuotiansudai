@@ -26,6 +26,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanDetailServiceImpl implements LoanDetailService {
@@ -123,32 +124,29 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         List<LoanDetailInvestPaginationItemDto> records = Lists.newArrayList();
 
         if (CollectionUtils.isNotEmpty(investModels)) {
-            records = Lists.transform(investModels, new Function<InvestModel, LoanDetailInvestPaginationItemDto>() {
-                @Override
-                public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
-                    LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
-                    item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
-                    item.setSource(input.getSource());
-                    item.setAutoInvest(input.isAutoInvest());
-                    item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId()));
+            records = investModels.stream().map(input -> {
+                LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
+                item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
+                item.setSource(input.getSource());
+                item.setAutoInvest(input.isAutoInvest());
+                item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId()));
 
 
-                    long amount = 0;
-                    List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
-
-                    if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount(), input.getCreatedTime());
-                    }
-
-                    item.setExpectedInterest(AmountConverter.convertCentToString(amount));
-                    item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
-                    item.setAchievements(input.getAchievements());
-                    return item;
+                long amount = 0;
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
                 }
-            });
+
+                if (CollectionUtils.isEmpty(investRepayModels)) {
+                    amount = investService.estimateInvestIncome(input.getLoanId(), input.getInvestFeeRate(), loginName, input.getAmount(), input.getCreatedTime());
+                }
+
+                item.setExpectedInterest(AmountConverter.convertCentToString(amount));
+                item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
+                item.setAchievements(input.getAchievements());
+                return item;
+            }).collect(Collectors.toList());
         }
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);

@@ -91,7 +91,7 @@ public class InvestServicePaybackExceptionTest {
         investModel.setLoginName(loginName);
         investModel.setStatus(InvestStatus.WAIT_PAY);
 
-        when(this.investMapper.findById(Long.parseLong(orderId))).thenReturn(investModel);
+        when(this.investMapper.findById(investId)).thenReturn(investModel);
         when(this.investMapper.sumSuccessInvestAmount(loanId)).thenReturn(sumAmount);
 
         LoanModel loanModel = new LoanModel();
@@ -105,7 +105,7 @@ public class InvestServicePaybackExceptionTest {
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
         when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(null);
-        investService.processOneCallback(model);
+        investService.asyncInvestCallback(investId);
 
         ArgumentCaptor<InvestModel> investModelArgumentCaptor = ArgumentCaptor.forClass(InvestModel.class);
         verify(investMapper, times(1)).update(investModelArgumentCaptor.capture());

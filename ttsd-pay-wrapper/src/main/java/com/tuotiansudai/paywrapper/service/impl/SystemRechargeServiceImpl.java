@@ -106,7 +106,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
             }
 
             if (systemRechargeModel.getStatus() != RechargeStatus.WAIT_PAY) {
-                logger.error(MessageFormat.format("System has dealt with the system recharge (orderId = {0})", callbackRequestModel.getOrderId()));
+                logger.warn(MessageFormat.format("System has dealt with the system recharge (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
             String loginName = systemRechargeModel.getLoginName();

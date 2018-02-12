@@ -116,7 +116,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
             if (withdrawModel == null || withdrawModel.getStatus() != WithdrawStatus.WAIT_PAY) {
-                logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+                logger.warn(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
             String loginName = withdrawModel.getLoginName();
@@ -167,7 +167,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
             if (withdrawModel == null || !Lists.newArrayList(WithdrawStatus.APPLY_SUCCESS, WithdrawStatus.APPLY_FAIL).contains(withdrawModel.getStatus())) {
-                logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+                logger.warn(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
             String loginName = withdrawModel.getLoginName();

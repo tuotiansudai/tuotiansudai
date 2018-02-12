@@ -149,7 +149,7 @@ public class RechargeServiceImpl implements RechargeService {
             }
 
             if (rechargeModel.getStatus() != RechargeStatus.WAIT_PAY) {
-                logger.error(MessageFormat.format("System has dealt with the recharge (orderId = {0})", callbackRequestModel.getOrderId()));
+                logger.warn(MessageFormat.format("System has dealt with the recharge (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
 
