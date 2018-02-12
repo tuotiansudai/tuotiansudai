@@ -47,7 +47,7 @@ $amount.on('keyup', function (event) {
 });
 
 $('#iconBack').on('click', function () {
-    location.href=document.referrer;
+    history.back();
 })
 
 $toCashBtn.on('click', function (e) {

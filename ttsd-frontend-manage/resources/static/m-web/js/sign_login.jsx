@@ -263,7 +263,7 @@ $('.step_two').on('click', function (event) {
 });
 
 $('#goBack_login').click(function () {
-    location.href=document.referrer;
+    history.back();
 })
 
 

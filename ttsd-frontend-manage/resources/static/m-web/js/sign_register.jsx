@@ -415,6 +415,6 @@ $('.see_password').on('click',() => {
 });
 
 $('.go-back-container').on('click',() => {
-    location.href=document.referrer;
+    history.go(-1);
 });
 

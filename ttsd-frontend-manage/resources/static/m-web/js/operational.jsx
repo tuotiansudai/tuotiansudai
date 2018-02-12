@@ -34,7 +34,7 @@ let mySwiper = new Swiper('.swiper-container', {
 document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 48 + 'PX';
 
 $('#goBack_experienceAmount').on('click', () => {
-    location.href=document.referrer;
+    location.href='/m';
 });
 
 $('.side_to_page').click(function (e) {
