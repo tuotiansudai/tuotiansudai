@@ -150,6 +150,7 @@ function getAmount() {
 }
 
 $('#submitBtn').on('click',(event) => {
+    event.preventDefault();
     $.when(commonFun.isUserLogin())
         .done(function () {
             let getInvestAmount = getAmount();
