@@ -244,14 +244,9 @@ public class CreditLoanActivateAccountService {
     }
 
     private boolean checkActivateAccountStatus(String mobile) {
-        try {
-            String status = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile));
-            if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
-                return true;
-            }
-            logger.error(MessageFormat.format("[credit loan activate account {0}] status is {1}, do not try again", mobile, status));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[credit loan activate account {0}] status check error", mobile), e);
+        String status = redisWrapperClient.get(MessageFormat.format(CREDIT_LOAN_ACTIVATE_ACCOUNT_REDIS_KEY, mobile));
+        if (Strings.isNullOrEmpty(status) || SyncRequestStatus.valueOf(status) == SyncRequestStatus.FAILURE) {
+            return true;
         }
         return false;
     }

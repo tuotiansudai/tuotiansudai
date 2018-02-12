@@ -56,6 +56,7 @@ public class TransferSearchResponseModel extends BaseSyncResponseModel {
                     .put("2", "成功")
                     .put("3", "失败")
                     .put("4", "不明")
+                    .put("5", "交易关闭")
                     .put("6", "其他")
                     .build())
             .build());
@@ -112,5 +113,9 @@ public class TransferSearchResponseModel extends BaseSyncResponseModel {
                 .put("交易状态", Strings.isNullOrEmpty(this.tranState) ? "" : HUMAN_READABLE_TRANSACTION_STATE.get(this.busiType).get(this.tranState))
                 .put("短信个数", Strings.isNullOrEmpty(this.smsNum) ? "" : this.smsNum)
         .build());
+    }
+
+    public String getTranState() {
+        return tranState;
     }
 }

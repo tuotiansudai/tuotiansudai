@@ -30,7 +30,7 @@ public class PayGateWrapperFakeImpl extends PayGateWrapper {
     }
 
     @Override
-    public Map<String, String> getResData(String responseBodyString) throws RetDataException {
+    public Map<String, String> getResData(String responseBodyString) {
         String content = HttpMerParserUtil.getMeta(responseBodyString);
         return PlainUtil.getResPlain(content);
     }
