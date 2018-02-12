@@ -25,7 +25,6 @@ import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
@@ -41,6 +40,7 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -84,9 +84,6 @@ public class InvestServiceImpl implements InvestService {
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
-    private InvestNotifyRequestMapper investNotifyRequestMapper;
-
-    @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
@@ -122,6 +119,8 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -149,6 +148,9 @@ public class InvestServiceImpl implements InvestService {
                     String.valueOf(investModel.getAmount()), dto.getSource());
             BaseDto<PayFormDataDto> generateFormData = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
             couponInvestService.invest(investModel.getId(), dto.getUserCouponIds());
+
+            redisWrapperClient.lpush(InvestService.INVEST_CHECK_QUEUE_KEY, String.valueOf(investModel.getId()));
+
             return generateFormData;
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -198,6 +200,8 @@ public class InvestServiceImpl implements InvestService {
                     accountModel.getPayUserId(),
                     String.valueOf(amount));
 
+            redisWrapperClient.lpush(InvestService.INVEST_CHECK_QUEUE_KEY, String.valueOf(investModel.getId()));
+
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     ProjectTransferNopwdMapper.class,
                     requestModel,
@@ -236,86 +240,55 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest == null) {
             return null;
         }
-        mqWrapperClient.sendMessage(MessageQueue.InvestCallback, String.valueOf(callbackRequest.getId()));
+
+        if (callbackRequest.isSuccess()) {
+            mqWrapperClient.sendMessage(MessageQueue.InvestCallback, String.valueOf(callbackRequest.getOrderId()));
+        }
+
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncInvestCallback(long notifyRequestId) {
-        InvestNotifyRequestModel model = investNotifyRequestMapper.findById(notifyRequestId);
-
-        if (updateInvestNotifyRequestStatus(model)) {
-            try {
-                ((InvestService) AopContext.currentProxy()).processOneCallback(model);
-            } catch (Exception e) {
-                fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
-                e.printStackTrace();
-            }
-        }
-
-        BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
-        asyncInvestNotifyDto.setData(baseDataDto);
-
-        return asyncInvestNotifyDto;
-    }
-
-
-    private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
-        try {
-            investNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
-        } catch (Exception e) {
-            fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
-            return false;
-        }
-        return true;
-    }
-
     @Transactional
-    @Override
-    public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
-        String orderIdStr = callbackRequestModel.getOrderId();
-        long orderId = Long.parseLong(orderIdStr);
+    public BaseDto<PayDataDto> asyncInvestCallback(long orderId) {
         InvestModel investModel = investMapper.findById(orderId);
+        BaseDto<PayDataDto> dto = new BaseDto<>(new PayDataDto(true));
+
         if (investModel == null) {
-            logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
-            return;
+            logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", String.valueOf(orderId)));
+            return dto;
         }
         if (investModel.getStatus() == InvestStatus.SUCCESS) {
-            logger.warn(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
-            return;
+            logger.warn(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0})", String.valueOf(orderId)));
+            return dto;
         }
 
         String loginName = investModel.getLoginName();
-        if (callbackRequestModel.isSuccess()) {
-            long loanId = investModel.getLoanId();
-            long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
-            LoanModel loanModel = loanMapper.findById(loanId);
 
-            boolean isOverInvest = successInvestAmountTotal + investModel.getAmount() > loanModel.getLoanAmount();
-            if (isOverInvest) {
-                // 超投
-                infoLog("over_invest", orderIdStr, investModel.getAmount(), loginName, loanId);
-                // 超投返款处理
-                overInvestPaybackProcess(orderId, investModel, loginName, loanId);
-            } else {
-                // 投资成功
-                infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
+        long loanId = investModel.getLoanId();
+        long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
+        LoanModel loanModel = loanMapper.findById(loanId);
 
-                // 投资成功，冻结用户资金，更新投资状态为success
-                ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
-
-                if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
-                    // 满标，改标的状态 RECHECK
-                    checkLoanRaisingComplete(loanId);
-                }
-            }
+        boolean isOverInvest = successInvestAmountTotal + investModel.getAmount() > loanModel.getLoanAmount();
+        if (isOverInvest) {
+            // 超投
+            infoLog("over_invest", String.valueOf(orderId), investModel.getAmount(), loginName, loanId);
+            // 超投返款处理
+            overInvestPaybackProcess(orderId, investModel, loginName, loanId);
         } else {
-            // 失败的话：改invest本身状态
-            investModel.setStatus(InvestStatus.FAIL);
-            investMapper.update(investModel);
+            // 投资成功
+            infoLog("invest_success", String.valueOf(orderId), investModel.getAmount(), loginName, loanId);
+
+            // 投资成功，冻结用户资金，更新投资状态为success
+            ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
+
+            if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
+                // 满标，改标的状态 RECHECK
+                checkLoanRaisingComplete(loanId);
+            }
         }
+
+        return dto;
     }
 
     /**
