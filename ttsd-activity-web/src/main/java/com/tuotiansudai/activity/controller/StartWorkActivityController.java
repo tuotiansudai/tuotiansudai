@@ -90,7 +90,6 @@ public class StartWorkActivityController {
 
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
         boolean drewCoupon = startWorkActivityService.drewCoupon(loginName);
-        modelAndView.addObject("activityStatus", duringActivities);
         modelAndView.addObject("drewCoupon", drewCoupon);
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);

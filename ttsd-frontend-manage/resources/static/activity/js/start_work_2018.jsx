@@ -69,7 +69,7 @@ $('.get_prize_btn').on('click',(e) => {
                     if (data.success) {
                         $('#flex_content').show();
                         $('#pop_modal_container1').show();
-                        $('#gold_count').html(data.count);
+                        $('.gold_count').html(data.count);
                         recordList();
                         switchLock = false;
                     }
