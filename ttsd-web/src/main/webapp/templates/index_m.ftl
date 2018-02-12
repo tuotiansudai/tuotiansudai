@@ -77,9 +77,9 @@
             <li>最长<em class="duration-day">${newbieLoan.duration}</em> 天 <em class="note">项目期限</em></li>
             <li>
                 <#if newbieLoan.status== 'RAISING'>
-                    <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail">立即投资</a>
+                    <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail" data-url="/m/loan/${newbieLoan.id?c}">立即投资</a>
                 <#elseif newbieLoan.status == 'PREHEAT'>
-                    <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>
+                    <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6" data-url="/m/loan/${newbieLoan.id?c}">预热中</a>
                     <#else>
                     <i class="loan-status icon-sellout"></i>
                 </#if>

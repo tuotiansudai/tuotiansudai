@@ -2,7 +2,7 @@
 <div class="sign-container" id="weChatStartContainer">
     <div class="goBack_wrapper">
         登录/注册
-        <a class="go-back-container" id="goBack_applyTransfer" href="javascript:history.go(-1)">
+        <a class="go-back-container" id="goBack_login" >
             <span class="go-back"></span>
         </a>
     </div>

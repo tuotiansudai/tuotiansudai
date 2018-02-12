@@ -53,7 +53,7 @@ $('#openSafetySigned').on('click', function () {
 
 // 点击返回btn
 $('.go-back-container').on('click', () => {
-    history.go(-1);
+    location.href=document.referrer;
 });
 
 $('.init-checkbox-style').initCheckbox(function (element) {

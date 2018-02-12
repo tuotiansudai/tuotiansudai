@@ -130,7 +130,7 @@
             1、好友所投项目放款后，奖励即发放至您的账户；<br/>
             2、推荐奖励=<em class="key">好友投资金额×0.5%× <i class="period">项目期限</i> </em> ；<br/>
             3、好友投资以及好友邀请的好友投资，您均可获得奖励；好友的好友再邀请人投资，您不再获得奖励；<br/>
-            4、好友注册可得6888元体验金，体验完成再得668元投资红包。<br/>
+            4、好友注册可得6888体验金和668元投资红包。<br/>
 
         </div>
 
@@ -175,12 +175,19 @@
 </div>
 
 <div class="my-account-content bonus-rule recommend-rule" id="scanCode" style="display: none">
-    <div class="m-header"><em id="iconScanCode" class="icon-left"><i></i></em>我的二维码 </div>
+    <div class="m-header"><em id="iconScanCode" class="icon-left" onclick=""><i></i></em>我的二维码 </div>
     <div class="main-content">
         <div class="code-item">
             <input type="hidden" class="input-invite" id="clipboard_text" readonly data-mobile="<@global.security.authentication property='principal.mobile'/>">
             <p>
-                <span class="img-code"></span>
+                <span class="img-code">
+                      <!--[if gte IE 8]>
+                    请使用更高版本浏览器查看
+                    <![endif]-->
+                    <em id="qrCodeIco"></em>
+
+                </span>
+
             </p>
             <p>扫描二维码，一起赚钱吧</p>
         </div>

@@ -185,4 +185,6 @@ $('#submitBtn').on('click',(event) => {
         })
 });
 
-
+$('#goBack_per').click(function () {
+    history.go(-1)
+})

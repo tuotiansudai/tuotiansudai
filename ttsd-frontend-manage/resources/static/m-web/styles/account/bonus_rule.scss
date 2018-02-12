@@ -315,3 +315,18 @@ body {
 .my-account-content {
   min-height: 100%;
 }
+.img-code {
+  position: relative;
+}
+#qrCodeIco {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: url("../../images/share/logo_sudai.png") no-repeat;
+  background-size: contain;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}

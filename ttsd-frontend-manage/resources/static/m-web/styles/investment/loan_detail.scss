@@ -1,6 +1,7 @@
 .account-summary {
   height:200px;
   position: relative;
+  top: -2px;
   .icon-left {
     position: absolute;
     left: 10px;
@@ -111,7 +112,7 @@
   }
 }
 .account-summary {
-  height:150px;
+  height:130px;
 
   .transfer-hack {
     color: rgba(255, 255, 255, 1);
@@ -433,6 +434,9 @@
 .input-amount-box {
   margin-top:15px;
   color: #525252;
+}
+.input-amount {
+  line-height:1.5rem;
 }
 
 .input-list {

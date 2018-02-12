@@ -616,9 +616,11 @@ function submitData() {
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val();
     let isAuthentication = 'USER' === $transferDetail.data('authentication');
+    let isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
     let hasBankCard = $transferDetail.data('has-bank-card');
-    if (!isAuthentication) {
+    if (!isInvestor) {
         location.href = '/m/register/account';//去实名认证
+        return;
     }
 
     commonFun.useAjax({

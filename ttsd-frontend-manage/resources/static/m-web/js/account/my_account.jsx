@@ -33,6 +33,9 @@ $('.anomous-tip').css({
 
 });
 }
+if($('.anonymous-page').length){
+    $('body').css('backgroundColor','#fff8aa')
+}
 
 
 
