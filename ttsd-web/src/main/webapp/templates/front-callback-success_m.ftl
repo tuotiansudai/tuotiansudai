@@ -68,6 +68,7 @@
             <div class="button-note">
                 <a data-url="/m/personal-info" class="count-btn btn-wap-normal next-step">确定</a>
             </div>
+            <div class="service">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
         </#if>
         <#if "MER_RECHARGE_PERSON" == service>
             <div class="m-header">充值成功</div>

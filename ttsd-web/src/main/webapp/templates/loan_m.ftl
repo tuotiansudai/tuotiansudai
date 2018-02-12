@@ -3,16 +3,14 @@
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="直投借款详情">
 <input id="whichPage" type="hidden" data-page="invest">
 <div class="my-account-content experience-amount show-page" id="loanDetail" style="display: none">
-
+    <div class="m-header"><em id="iconDetail" class="icon-left"><i></i></em>${loan.name} </div>
     <div class="account-summary">
-        <em id="iconDetail" class="icon-left"><i></i></em>
         <#if extraLoanRates?? >
             <a href="javascript:void(0);"><i class="icon-help"></i></a>
         </#if>
         <div class="collection">
             <span class="title">
-                ${loan.name}
-                    <div style="height: 27px;">
+
                     <#if loan.activity?string("true","false") == "true">
                         <i class="icon-sign icon-detail">${loan.activityDesc!}</i>
                     </#if>
@@ -22,7 +20,7 @@
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <i class="icon-sign icon-detail">APP专享</i>
                     </#if>
-                </div>
+
 
             </span>
             <span class="summary-box">

@@ -13,9 +13,7 @@
       background-size: contain;
     }
   }
-  .collection {
-    padding-top: 5px;
-  }
+
   .transfer-hack {
     color: rgba(255, 255, 255, 1);
     flex: 1.5;
@@ -113,10 +111,8 @@
   }
 }
 .account-summary {
-  height:200px;
-  .collection {
-    padding-top: 5px;
-  }
+  height:150px;
+
   .transfer-hack {
     color: rgba(255, 255, 255, 1);
     flex: 1.5;

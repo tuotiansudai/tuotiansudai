@@ -84,6 +84,7 @@ function getMore() {
             type: 'get',
         },
         function (data) {
+            console.log(window.location)
 
             if($(data).find("#wrapperOut .loan-list-content .category-box-main").html().trim().length > 0){
                 $content.append($(data).find("#wrapperOut .loan-list-content .category-box-main").html());
@@ -158,7 +159,7 @@ $loanList.on('click','.goToTranDetail',function (e) {
 
         });
     };
-    countDownLoan($preheat);
+    countDownLoan('.preheat');
 let $myMenu = $('.menu-my');
 if($myMenu.length){
     $myMenu.on('click',function (e) {

@@ -24,7 +24,7 @@ validator.add(registerAccountForm.identityNumber, [{
     errorMsg: '您的身份证号码不正确'
 },{
     strategy: 'ageValid',
-    errorMsg: '年龄未满18周岁'
+    errorMsg: '未满18周岁不能投资，无法实名'
 },{
     strategy: 'isCardExist',
     errorMsg: '身份证已存在'

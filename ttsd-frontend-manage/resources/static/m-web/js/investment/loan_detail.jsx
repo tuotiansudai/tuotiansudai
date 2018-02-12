@@ -165,8 +165,15 @@ $('#btn-detail-toggle').click(function () {
     let $content = $boxContent.find('#content');
     let pageNum = 1;
 let flagScroll=true;
+
+
     $('#transaction_record').on('click',function () {
         $('#noData').hide();
+        document.getElementById('box_content').addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+            capture: false,
+            passive: false
+        } : false);
+
         getMoreRecords();
         //交易记录滚动加载更多
         setTimeout(function () {
@@ -230,10 +237,7 @@ function isPassive() {
     } catch(e) {}
     return supportsPassiveOption;
 }
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
-    capture: false,
-    passive: false
-} : false);
+
 
 //转让购买详情
 //承接记录
@@ -274,6 +278,7 @@ function validateHash() {
     }else if(location.hash == '#projectDetail'){
 
         $projectDetail.show().siblings('.show-page').hide();
+
 
     }else if(location.hash == '#buyDetail'){
         $buyDetail.show().siblings('.show-page').hide();
@@ -610,9 +615,12 @@ function submitData() {
     var transferApplicationId = parseInt($("#transferApplicationId").val()),
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val();
-    if (isAuthentication) {
+    let isAuthentication = 'USER' === $transferDetail.data('authentication');
+    let hasBankCard = $transferDetail.data('has-bank-card');
+    if (!isAuthentication) {
         location.href = '/m/register/account';//去实名认证
     }
+
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'
@@ -693,7 +701,6 @@ $transferDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 //回退按钮
 let transferApplicationId = $("#transferApplicationId").val();
 $('#iconTransferDetail').on('click',function () {
-    //location.href = '/m/transfer/'+transferApplicationId;
     history.go(-1);
 
 })

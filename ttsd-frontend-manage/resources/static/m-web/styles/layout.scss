@@ -406,6 +406,10 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   line-height: 13px;
   color: #FF473C;
   transform: scale(0.8);
+  &.sold {
+    color: #A2A2A2;
+    border: 1px solid #A2A2A2;
+  }
 }
 
 .target-category-box {

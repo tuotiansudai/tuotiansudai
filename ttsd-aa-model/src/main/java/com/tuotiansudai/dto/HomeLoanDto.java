@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -65,14 +66,14 @@ public class HomeLoanDto {
         this.periods = loan.getPeriods();
         this.duration = loan.getDuration();
         this.amount = new DecimalFormat("#.00").format(loan.getLoanAmount());
-        this.progress = new BigDecimal(investAmount).divide(new BigDecimal(loan.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
+        this.progress = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(loan.getStatus()) ? 100 : new BigDecimal(investAmount).divide(new BigDecimal(loan.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
         this.status = loan.getStatus().name();
         this.fundraisingStartTime = loan.getFundraisingStartTime();
         this.preheatSeconds = (loan.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000;
         if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(loan.getProductType())) {
             this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         }
-        this.availableInvestAmountCent = loan.getLoanAmount() - investAmount;
+        this.availableInvestAmountCent = Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(loan.getStatus()) ? 0 : loan.getLoanAmount() - investAmount;
         this.availableInvestAmount = AmountConverter.convertCentToString(loan.getLoanAmount() - investAmount);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {

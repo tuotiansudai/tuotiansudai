@@ -100,6 +100,15 @@
       @media screen and(max-width: 414px){
         height: 3.5rem;
       }
+      @media screen and(max-width: 384px){
+        height: 3rem;
+        padding-top: .2rem;
+      }
+
+      @media screen and(max-width: 360px){
+        height: 3.3rem;
+        padding-top: 1.5rem;
+      }
       @media screen and(max-width: 320px){
         padding-top: 0.5rem;
         height: 4rem;

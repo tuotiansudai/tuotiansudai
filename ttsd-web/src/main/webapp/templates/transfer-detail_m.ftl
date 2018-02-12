@@ -3,13 +3,11 @@
 <@global.main pageCss="${m_css.loan_detail}" pageJavascript="${m_js.loan_detail}" title="项目详情－转让详情">
 <input id="whichPage" type="hidden" data-page="transfer">
 <div class="my-account-content experience-amount" id="transferingDetail" style="display: none">
-
+    <div class="m-header"><em id="iconTransferM" class="icon-left"><i></i></em>${transferApplication.name!}
+        </span> </div>
     <div class="account-summary">
-        <em id="iconTransferM" class="icon-left"><i class="iconRight"></i></em>
         <div class="collection">
-            <span class="title">
-                ${transferApplication.name!}
-            </span>
+
             <span class="summary-box">
                  <b>
                     <@percentInteger>${transferApplication.baseRate+transferApplication.activityRate}</@percentInteger><@percentFraction>${transferApplication.baseRate+transferApplication.activityRate}</@percentFraction>

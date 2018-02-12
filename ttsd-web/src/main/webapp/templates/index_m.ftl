@@ -49,7 +49,7 @@
     </div>
 
     <div class="target-category-box newer-experience" data-url="/m/loan/1">
-        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign exper">体验金投资</i></b>
+        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i class="icon-sign exper <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(experienceLoan.status)>sold</#if>">体验金投资</i></b>
             <ul class="loan-info clearfix">
                 <li>
                     <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
@@ -62,10 +62,10 @@
     <#--新手专享-->
     <#if newbieLoan??>
     <div class="target-category-box you" data-url="/m/loan/${newbieLoan.id?c}">
-        <b class="newer-title"> <span class="exper-title">${newbieLoan.name} </span><i class="icon-sign">新手专享</i></b>
+        <b class="newer-title"> <span class="exper-title">${newbieLoan.name} </span><i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>sold</#if>">新手专享</i></b>
         <ul class="loan-info clearfix">
             <li>
-                    <span class="percent-number">
+                    <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>colorChange</#if>">
                         <#if newbieLoan.extraRate != 0>
                             <i>${newbieLoan.baseRate + newbieLoan.activityRate}</i>% ~ <i>${newbieLoan.baseRate + newbieLoan.activityRate + newbieLoan.extraRate * 100}</i>%
                         <#else>
@@ -80,6 +80,8 @@
                     <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail">立即投资</a>
                 <#elseif newbieLoan.status == 'PREHEAT'>
                     <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>
+                    <#else>
+                    <i class="loan-status icon-sellout"></i>
                 </#if>
             </li>
         </ul>
@@ -87,7 +89,7 @@
             <div class="table-row progress-column">
                 <div class="progress-bar">
                     <div class="process-percent ">
-                        <div class="percent" style="width:${newbieLoan.progress}%">
+                        <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>colorChange</#if>" style="width:${newbieLoan.progress}%">
                         </div>
                     </div>
                 </div>
@@ -119,7 +121,11 @@
 <div>
     <#list normalLoans as loan>
         <div class="target-category-box you" data-url="/m/loan/${loan.id?c}">
-            <b class="newer-title">${loan.name}</b>
+            <b class="newer-title">${loan.name}
+                <#if loan.activity?string("true","false") == "true">
+                    <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>sold</#if>">${loan.activityDesc!}</i>
+                </#if>
+            </b>
             <ul class="loan-info clearfix">
                 <li>
                     <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>colorChange</#if>">
