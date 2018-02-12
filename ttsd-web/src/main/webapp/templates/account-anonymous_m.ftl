@@ -3,11 +3,13 @@
 <@global.main pageCss="${m_css.my_account}" pageJavascript="${m_js.my_account}" title="我的账户">
 <div class="anonymous-page">
     <div class="anomymous-wrap">
-        <div class="anomous-tip">
-            较低门槛，稳健收益<br/>
-            六道风控，审核严谨
-        </div>
-        <div class="img" id="imgContainer">
+        <div class="top">
+            <div class="anomous-tip">
+                较低门槛，稳健收益<br/>
+                六道风控，审核严谨
+            </div>
+            <div class="img" id="imgContainer">
+            </div>
         </div>
 
 

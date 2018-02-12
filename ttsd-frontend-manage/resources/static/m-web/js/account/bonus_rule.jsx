@@ -38,9 +38,31 @@ if($scanCode.length){
 if($recommendRule.length) {
     let $sweepFace = $('#sweep_face',$(recommendRule));
     $sweepFace.on('click',function () {
-        $scanCode.show();
-        $rewardRules.hide();
-        $recommendRule.hide();
+        let isInvestor = $recommendRule.data('user-role');
+        if(!isInvestor){
+            commonFun.CommonLayerTip(
+                {
+                btn:['确定', '取消'],
+                content:`<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您还未实名认证，不能获得推荐<br/>奖励。是否确认分享？</span></div> `,
+                area:['280px', '180px'],
+            },function () {
+                    layer.closeAll();
+                    $scanCode.show();
+                    $rewardRules.hide();
+                    $recommendRule.hide();
+                },
+                function () {
+                    layer.closeAll();
+                    return false;
+                }
+            )
+        }else {
+            $scanCode.show();
+            $rewardRules.hide();
+            $recommendRule.hide();
+        }
+
+
 
     })
     $('body').on('click','#toRewardRules',function () {
@@ -59,7 +81,7 @@ if($recommendRule.length) {
     $rewardRules.hide();
     $recommendRule.show();
 })
-    $('body').on('click','#iconRewardRules',function (e) {
+    $('#iconRewardRules').on('click',function (e) {
         e.preventDefault();
         location.href='/m/about/refer-reward'
 

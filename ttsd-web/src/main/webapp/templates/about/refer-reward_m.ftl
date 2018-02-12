@@ -1,7 +1,9 @@
 <#import "../macro/global_m.ftl" as global>
 
 <@global.main pageCss="${m_css.bonus_rule}" pageJavascript="${m_js.bonus_rule}" title="推荐送奖金">
-<div class="my-account-content bonus-rule recommend-rule" id="recommendRule">
+<div class="my-account-content bonus-rule recommend-rule" id="recommendRule"
+     data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
     <div class="m-header"><em id="iconRecomend" class="icon-left"><i></i></em>推荐送奖金 </div>
     <div class="main-content">
         <div class="box-column">
