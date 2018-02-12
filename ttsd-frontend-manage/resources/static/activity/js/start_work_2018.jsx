@@ -26,16 +26,14 @@ $nextBtn.on('click',function () {
     mySwiper.slideNext();
 });
 
-$.when(commonFun.isUserLogin())
-    .done(function () {
-        recordList();
-        if (isMobile()) {
-            $('.title_wrapper_m').show();
-        }
-        else {
-            $('.title_wrapper').show();
-        }
-});
+recordList();
+
+if (isMobile()) {
+    $('.title_wrapper_m').show();
+}
+else {
+    $('.title_wrapper').show();
+}
 
 $('.close_btn1').on('click',() => {
     $('#flex_content').hide();
@@ -71,7 +69,7 @@ $('.get_prize_btn').on('click',(e) => {
                     if (data.success) {
                         $('#flex_content').show();
                         $('#pop_modal_container1').show();
-                        $('#gold_count').html(data.count);
+                        $('.gold_count').html(data.count);
                         recordList();
                         switchLock = false;
                     }
