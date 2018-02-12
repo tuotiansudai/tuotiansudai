@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${css.start_work}" pageJavascript="${js.start_work}"  title="新年更有钱">
 
-<div class="container" data-get="false">
+<div class="container" data-get="false" data-start-time="2018-02-01 15:25:00" data-over-time="2018-02-14 15:25:00">
     <div class="get_it_btn"></div>
     <div class="got_it_btn"></div>
     <div class="plus_ticket"></div>
