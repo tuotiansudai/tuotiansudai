@@ -173,8 +173,8 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(null, MessageFormat.format("/loan/{0}", String.valueOf(loanId)));
     }
 
-    public BaseDto<PayDataDto> investCallback(String notifyRequestId) {
-        return syncExecute(notifyRequestId, "/job/async_invest_notify");
+    public BaseDto<PayDataDto> investCallback(String orderId) {
+        return syncExecute(orderId, "/job/async_invest_notify");
     }
 
     public BaseDto<PayDataDto> investTransferCallback(String notifyRequestId) {
@@ -427,6 +427,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> validateFrontCallback(Map<String, String> params) {
         return syncExecute(params, "/validate-front-callback");
+    }
+
+    public BaseDto<PayDataDto> investStatusValidate(String uri) {
+        return syncExecute(null, uri);
     }
 
     public BaseDto<BaseDataDto> payroll(long payrollId) {
