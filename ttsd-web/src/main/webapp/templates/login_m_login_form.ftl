@@ -24,7 +24,7 @@
         <input type="hidden" name="source" value="WEB"/>
         <div class="error-box"></div>
         <button type="submit" class="btn-wap-normal next-step step_two" disabled>登录</button>
-        <span class="get-password"> <a href="/m/mobile-retrieve-password">忘记密码</a></span>
+        <span class="get-password"> <a href="/m/mobile-retrieve-password">忘记密码?</a></span>
     </form>
 
 </div>
