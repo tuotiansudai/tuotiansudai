@@ -8,7 +8,6 @@ import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,6 +65,8 @@ public class StartWorkActivityController {
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
+        modelAndView.addObject("drewCoupon", startWorkActivityService.drewCoupon("chenzhonghui"));
+
         return modelAndView;
     }
 
@@ -89,12 +90,12 @@ public class StartWorkActivityController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
-        boolean drewCoupon = startWorkActivityService.drewCoupon(loginName);
+        boolean drewCoupon = startWorkActivityService.drewCoupon("chenzhonghui");
         modelAndView.addObject("drewCoupon", drewCoupon);
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
         if (!drewCoupon) {
-            startWorkActivityService.sendDrawCouponMessage(loginName);
+            startWorkActivityService.sendDrawCouponMessage("chenzhonghui");
             modelAndView.addObject("drawSuccess", true);
         }
         return modelAndView;

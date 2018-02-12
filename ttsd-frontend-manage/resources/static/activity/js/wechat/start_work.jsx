@@ -20,6 +20,7 @@ let sourceKind = globalFun.parseURL(location.href);
 })(document, window);
 
 let isGet = $('.container').data('get');
+let isSuc = $('.container').data('success');
 let startTime = $('.container').data('startTime');
 let overTime = $('.container').data('overTime');
 let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
@@ -30,6 +31,13 @@ if (!isGet) {
 }
 else {
     $('.got_it_btn').show();
+}
+
+if (isSuc) {
+    $('.pop_modal_container').show();
+}
+else if (isSuc === false) {
+    $('.pop_modal_container_again').show();
 }
 
 $('.get_it_btn').on('click',function () {
@@ -43,38 +51,18 @@ $('.get_it_btn').on('click',function () {
             layer.msg('活动已结束');
         }
         else {
-            $.when(commonFun.isUserLogin())
-                .done(function () {
-                    commonFun.useAjax({
-                        type:'GET',
-                        async: false,
-                        url:`/register/user/mobile/1/captcha/1/verify`  //todo
-                    },function(response) {
-                        if(response.data) {
-                            $('.pop_modal_container').show();
-                            $('.get_it_btn').hide();
-                            $('.got_it_btn').show();
-                        }
-                        else {
-                            ifClickBtn = false;
-                        }
-                    },function () {
-                        ifClickBtn = false;
-                    });
-                })
-                .fail(function () {
-                    location.href = '/login';
-                });
+            location.href = '/activity/start-work/draw';
         }
     }
 
 });
 
 $('.closeBtn').on('click',function () {
-    $('.pop_modal_container').hide();
+    $('.modal_container').hide();
 });
 
 $('.see_my_redPocket').on('click',function () {
-   location.href = '/m/my-treasure';
+   location.href = '/my-treasure';
 });
+
 

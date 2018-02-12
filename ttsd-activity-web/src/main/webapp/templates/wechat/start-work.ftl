@@ -15,10 +15,20 @@
     <div class="red_ticket50"></div>
     <div class="red_ticket30"></div>
 </div>
-<div class="pop_modal_container">
+<div class="pop_modal_container modal_container">
     <div class="pop_modal_bg">
         <div class="pop_modal">
             <div class="tip_text">开工红包已发放</div>
+            <div class="see_my_redPocket"></div>
+            <div class="closeBtn"></div>
+        </div>
+    </div>
+</div>
+<div class="pop_modal_container_again modal_container">
+    <div class="pop_modal_bg">
+        <div class="pop_modal">
+            <div class="tip_text">开工红包未发放</div>
+            <div class="tip_desc">小伙伴领取开工红包激情太高<br/>我们正在为您准备中...</div>
             <div class="see_my_redPocket"></div>
             <div class="closeBtn"></div>
         </div>
@@ -30,7 +40,7 @@
             title: '拓天HR给你一个开工红包', // 分享标题
             desc: '无红包，不开工！', // 分享描述
             link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
+            imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
             },
             cancel: function () {
@@ -40,7 +50,7 @@
         wx.onMenuShareTimeline({
             title: '拓天HR给你一个开工红包', // 分享标题
             link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
+            imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
             },
