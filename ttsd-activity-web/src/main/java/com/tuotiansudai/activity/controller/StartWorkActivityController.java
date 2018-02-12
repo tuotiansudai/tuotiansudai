@@ -59,13 +59,14 @@ public class StartWorkActivityController {
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)
     public ModelAndView startWorkActivityWechat(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)) {
+        String loginName = LoginUserInfo.getLoginName();
+        if (Strings.isNullOrEmpty(openId) || Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("redirect:/activity/start-work");
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
-        modelAndView.addObject("drewCoupon", startWorkActivityService.drewCoupon("chenzhonghui"));
+        modelAndView.addObject("drewCoupon", startWorkActivityService.drewCoupon(loginName));
 
         return modelAndView;
     }
@@ -90,12 +91,12 @@ public class StartWorkActivityController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
-        boolean drewCoupon = startWorkActivityService.drewCoupon("chenzhonghui");
+        boolean drewCoupon = startWorkActivityService.drewCoupon(loginName);
         modelAndView.addObject("drewCoupon", drewCoupon);
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
         if (!drewCoupon) {
-            startWorkActivityService.sendDrawCouponMessage("chenzhonghui");
+            startWorkActivityService.sendDrawCouponMessage(loginName);
             modelAndView.addObject("drawSuccess", true);
         }
         return modelAndView;
