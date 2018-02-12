@@ -2,8 +2,131 @@ body {
   background: #dc0000;
 }
 .container {
+  position: relative;
   width: 100%;
   height: 26.2rem;
   background: url("../../images/2018/start-work/container_bg.png") no-repeat;
   background-size: contain;
+  .get_it_btn  {
+    display: none;
+    position: absolute;
+    top: 6.05rem;
+    left: 6.85rem;
+    width: 7.55rem;
+    height: 5.3rem;
+    background: url("../../images/2018/start-work/get_it_now.png") no-repeat;
+    background-size: contain;
+  }
+  .got_it_btn {
+    display: none;
+    position: absolute;
+    top: 6.05rem;
+    left: 6.85rem;
+    width: 7.55rem;
+    height: 5.3rem;
+    background: url("../../images/2018/start-work/got_it.png") no-repeat;
+    background-size: contain;
+  }
+  .plus_ticket {
+    position: absolute;
+    top: 14rem;
+    left: 2.1rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/plus_ticket.png");
+    background-size: contain;
+  }
+  .red_ticket200 {
+    position: absolute;
+    top: 14rem;
+    right: 2.4rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket200.png");
+    background-size: contain;
+  }
+  .red_ticket100 {
+    position: absolute;
+    top: 17.05rem;
+    left: 2.1rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket100.png");
+    background-size: contain;
+  }
+  .red_ticket50 {
+    position: absolute;
+    top: 17.05rem;
+    right: 2.4rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket50.png");
+    background-size: contain;
+  }
+  .red_ticket30 {
+    position: absolute;
+    top: 20.15rem;
+    left: 2.1rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket30.png");
+    background-size: contain;
+  }
 }
+.pop_modal_container {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.2);
+  .pop_modal_bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 17.55rem;
+    height: 8.5rem;
+    background: url("../../images/2018/start-work/pop_modal.png");
+    background-size: contain;
+    .pop_modal {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      .tip_text {
+        margin: 2.35rem auto 1.7rem auto;
+        width: 11rem;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        text-align: center;
+        background: #ffd6a5;
+        color: #670002;
+        border-radius: .25rem;
+        font-size: 1.05rem;
+      }
+      .see_my_redPocket {
+        margin: 0 auto;
+        width: 10.275rem;
+        height: 1.7rem;
+        background: url("../../images/2018/start-work/see_my_redPocket.png");
+        background-size: contain;
+      }
+      .closeBtn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+

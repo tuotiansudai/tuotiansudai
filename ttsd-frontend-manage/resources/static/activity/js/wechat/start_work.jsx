@@ -18,3 +18,26 @@ let commonFun = require('publicJs/commonFun');
     $('body').css('visibility', 'visible');
 })(document, window);
 
+let isGet = $('.container').data('get');
+if (!isGet) {
+    $('.get_it_btn').show();
+}
+else {
+    $('.got_it_btn').show();
+}
+
+$('.get_it_btn').on('click',function () {
+    $('.pop_modal_container').show();
+    // layer.msg('活动未开始');
+    // layer.msg('活动已结束');
+});
+
+$('.closeBtn').on('click',function () {
+    $('.pop_modal_container').hide();
+});
+
+$('.see_my_redPocket').on('click',function () {
+   location.href = '/m/my-treasure';
+});
+
+

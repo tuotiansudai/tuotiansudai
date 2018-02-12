@@ -2,8 +2,23 @@
 
 <@global.main pageCss="${css.start_work}" pageJavascript="${js.start_work}"  title="新年更有钱">
 
-<div class="container">
-    <div></div>
+<div class="container" data-get="false">
+    <div class="get_it_btn"></div>
+    <div class="got_it_btn"></div>
+    <div class="plus_ticket"></div>
+    <div class="red_ticket200"></div>
+    <div class="red_ticket100"></div>
+    <div class="red_ticket50"></div>
+    <div class="red_ticket30"></div>
+</div>
+<div class="pop_modal_container">
+    <div class="pop_modal_bg">
+        <div class="pop_modal">
+            <div class="tip_text">开工红包已发放</div>
+            <div class="see_my_redPocket"></div>
+            <div class="closeBtn"></div>
+        </div>
+    </div>
 </div>
 <script>
     wx.ready(function () {
