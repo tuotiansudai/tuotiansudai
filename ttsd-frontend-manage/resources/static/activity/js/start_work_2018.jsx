@@ -13,7 +13,8 @@ let mySwiper = new Swiper ('.swiper-container', {
     slidesPerView: 'auto',
     centeredSlides:true,
     spaceBetween: 20,
-    loopAdditionalSlides:1
+    loopAdditionalSlides:1,
+    autoplayDisableOnInteraction : false,
 });
 
 let $prevBtn = $('.prevBtn'),
