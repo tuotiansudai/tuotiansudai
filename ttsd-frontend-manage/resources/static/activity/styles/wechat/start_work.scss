@@ -192,4 +192,145 @@ body {
   }
 }
 
+.login-tip {
+  float:left;
+  width:750px;
+  height:410px;
+  display: none;
+  background:#fff;
+  position: relative;
+  @media (max-width:700px) {
+    width:320px;
+    height:auto;
+  }
+  .login-box {
+    float:left;
+    width: 290px;
+    font-size: 13px;
+    text-align: left;
+    margin:0 70px;
+    @media (max-width:700px) {
+      margin:0 15px;
+    }
+    h3 {
+      font-size: 20px;
+      color: #4c4c4c;
+      font-weight: normal;
+      line-height: 24px;
+      margin: 30px 0 10px 0;
+    }
+    label {
+      float:left;
+      width:100%;
+      margin-top: 20px;
+      border: #dadada 1px solid;
+      box-sizing:border-box;
+      position: relative;
+      padding-left:30px;
+      &.error{
+        position: absolute;
+        bottom:-23px;
+        left:0;
+        margin-bottom:0;
+        border:none;
+        width:100%;
+      }
+      input {
+        float:left;
+        width: 100%;
+        border:none;
+        height:40px;
+        line-height:30px;
+        box-sizing:border-box;
+        &.captcha {
+          width: 120px;
+        }
+      }
+      .image-captcha {
+        width: 138px;
+        overflow: hidden;
+        height: 40px;
+        cursor: pointer;
+      }
+      .name {
+        position: absolute;
+        top:0;
+        left:0;
+        width: 30px;
+        height:30px;
+        text-align:left;
+        margin:5px 0 0 5px;
+        background:url("../../images/2018/start-work/logintip/result_20160901.png") no-repeat;
+        &.user{
+          background-position: 2px 1px;
+        }
+        &.pass{
+          background-position: 5px -36px;
+        }
+        &.capt{
+          background-position: 3px -70px;
+        }
+      }
+    }
+    .forgot-password {
+      float:left;
+      width:100%;
+      font-size: 12px;
+      margin-top:10px;
+      .btn-normal{
+        width:100%;
+        font-size:20px;
+        margin-bottom:10px;
+        line-height: 27px;
+      }
+      .fl{
+        a{
+          color:#e64d0a;
+        }
+      }
+      a {
+        font-size:14px;
+        color: #545353;
+        &.register {
+          color: #e64d0a;
+        }
+      }
+    }
+  }
+  .code-item{
+    float:left;
+    width:310px;
+    height:305px;
+    margin-top:75px;
+    background:url('../../images/2018/start-work/logintip/code-line.png') no-repeat;
+    background-position:0 0;
+    @media (max-width:700px) {
+      display:none;
+    }
+    p{
+      font-size:14px;
+      color:#4c4c4c;
+      text-align:center;
+      margin-bottom:0;
+      &.code-img{
+        margin:15px 0 30px;
+        background:url('../../images/2018/start-work/logintip/app-img.jpg') no-repeat center center;
+        height: 180px;
+      }
+    }
+  }
+  .close-btn{
+    position: absolute;
+    top:10px;
+    right:0;
+    width:30px;
+    height:30px;
+    cursor:pointer;
+    background:url("../../images/2018/start-work/logintip/result_20160901.png") no-repeat;
+    background-position:0 -108px;
+  }
+}
+
+
+
 

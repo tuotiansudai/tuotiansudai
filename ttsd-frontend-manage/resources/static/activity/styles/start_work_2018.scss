@@ -96,6 +96,7 @@ h2,h4 {
         background: url("../images/2018/start-work/gold_person_title.png") no-repeat;
         background-size: contain;
         .record_text {
+          display: inline-block;
           margin-left: 15px;
           color: #c4050d;
           text-decoration: underline;
@@ -127,8 +128,8 @@ h2,h4 {
         }
         .hover_table_container {
           width: 100%;
-          height: 235px;
-          overflow: scroll;
+          height: 435px;
+          overflow-y: auto;
           .hover_table {
             font-size: 14px;
             color: #f7fecd;
@@ -566,7 +567,7 @@ h2,h4 {
           margin: 0 auto;
           width: 6.5rem;
           height: 1.65rem;
-          overflow: scroll;
+          overflow: auto;
           .hover_table {
             font-size: .14rem;
             color: #f7fecd;
