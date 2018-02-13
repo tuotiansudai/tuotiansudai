@@ -2,11 +2,13 @@
 <@global.main pageCss="${m_css.experience_loan}" pageJavascript="${m_js.experience_loan}" activeNav="我要投资" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" >
 <div class="my-account-content experience-amount" id="experienceAmount" style="display: none">
     <div class="account-summary">
-        <a class="go-back-container" id="goBack_experienceAmount" href="javascript:history.go(-1)">
-            <span class="go-back"></span>
-        </a>
-        <div class="collection">
+        <div style="height: 44px;line-height: 44px;font-size: 17px; width: 100%;text-align: center;">
+            <a class="go-back-container" id="goBack_experienceAmount" href="javascript:history.go(-1)" style="top: 6px;">
+                <span class="go-back"></span>
+            </a>
             <span class="title">${loan.name}</span>
+        </div>
+        <div class="collection">
             <span class="summary-box">
                 <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                     <i>%</i></b>

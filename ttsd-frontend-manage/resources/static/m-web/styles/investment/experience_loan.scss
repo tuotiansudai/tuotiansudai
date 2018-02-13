@@ -54,7 +54,7 @@
         text-align: center;
         line-height: 25px;
         position: relative;
-        top: -5px;
+        top: -13px;
       }
       &.summary-box {
         b {
@@ -81,7 +81,7 @@
   .amount-balance {
     font-family: "PingFangSC-Light","PingFangSC-Regular","sans-serif","Microsoft YaHei","STHeitiSC-Light","微软雅黑";
     background: transparent;
-    font-size: 13px;
+    font-size: 13px!important;
     color: rgba(255,255,255,0.6);
   }
 }
@@ -257,7 +257,7 @@
   background: #fff;
 }
 .account-summary {
-  height:200px;
+  height:156px!important;
   .collection {
     padding-top: 5px;
   }
@@ -266,7 +266,7 @@
     flex: 1.5;
   }
   .icon-help {
-    top: 61px;
+    top: 23px!important;
     right: 25%;
   }
 }

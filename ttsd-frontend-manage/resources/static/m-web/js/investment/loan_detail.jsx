@@ -717,7 +717,7 @@ $('.init-checkbox-style').initCheckbox(function(event) {
 });
 //转让详情页回退按钮
 $('#iconTransferM').on('click',function () {
-    history.go(-1);
+    location.href = '/m/transfer-list';
 })
 //回款计划回退按钮
 $('#iconReplay').on('click',function () {
