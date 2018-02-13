@@ -67,7 +67,7 @@
             <li>
                     <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>colorChange</#if>">
                         <#if newbieLoan.extraRate != 0>
-                            <i>${newbieLoan.baseRate + newbieLoan.activityRate}</i>% ~ <i>${newbieLoan.baseRate + newbieLoan.activityRate + newbieLoan.extraRate * 100}</i>%
+                            <i>${newbieLoan.baseRate + newbieLoan.activityRate}</i> ~ <i>${newbieLoan.baseRate + newbieLoan.activityRate + newbieLoan.extraRate * 100}</i>%
                         <#else>
                             <i><@percentInteger>${newbieLoan.baseRate + newbieLoan.activityRate}</@percentInteger></i>%
                         </#if>
