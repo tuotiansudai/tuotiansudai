@@ -30,6 +30,7 @@
         </div>
     </div>
 </div>
+    <#include "../module/login-tip.ftl" />
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({

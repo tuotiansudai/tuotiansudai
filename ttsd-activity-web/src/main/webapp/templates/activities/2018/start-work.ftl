@@ -16,63 +16,7 @@
                     <div class="hover_icon">
                         <div class="triangle_icon"></div>
                         <div class="hover_table_container">
-                            <table class="hover_table">
-                                <tr>
-                                    <th class="goods_th">物品</th>
-                                    <th class="time_th">时间</th>
-                                    <th class="count_th">消耗小金人个数</th>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>京东兑换券</td>
-                                    <td>2018-01-02 08:00:00</td>
-                                    <td>1</td>
-                                </tr>
-                            </table>
+                            <table class="hover_table"></table>
                         </div>
                     </div>
                 </div>
