@@ -98,20 +98,14 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
             TransferApplicationModel transferApplicationModel = null;
             List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
             if (investModel.getTransferInvestId() != null) {
-                // 承接方
+                // 有转让已承接
                 transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
             } else if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
-                // 转让方
+                // 有转让未承接
                 transferApplicationModel = transferApplicationModels.get(0);
             }
-            if (transferApplicationModel == null) {
-                // 无承接或转让情况
-                dto.setLoanName(loanModel.getName());
-                dto.setTransferApplicationId("");
-                dto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
-                dto.setTransferInvest(false);
-            } else {
-                // 有承接或转让情况
+            if (transferApplicationModel != null) {
+                // 有转让情况
                 dto.setLoanName(transferApplicationModel.getName());
                 dto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
                 dto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
