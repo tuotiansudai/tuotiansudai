@@ -65,7 +65,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String REDIS_OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
     private static final String REDIS_USER_SUM_INTEREST = "userSumInterest";
 
-    private static final int timeout = 60 * 60 * 24;
+    private static final int timeout = 60;
     private static final Date startOperationDate = new DateTime().withDate(2015, 7, 1).withTimeAtStartOfDay().toDate();
 
     private List<String> convertRedisListStringIntoList(String listString) {
