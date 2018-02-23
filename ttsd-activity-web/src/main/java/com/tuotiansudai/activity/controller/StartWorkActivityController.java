@@ -65,6 +65,10 @@ public class StartWorkActivityController {
         ModelAndView modelAndView = new ModelAndView("/wechat/start-work");
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
+        String loginName = LoginUserInfo.getLoginName();
+        if (loginName != null) {
+            modelAndView.addObject("drewCoupon", startWorkActivityService.drewCoupon(loginName));
+        }
         return modelAndView;
     }
 
