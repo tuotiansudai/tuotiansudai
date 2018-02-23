@@ -8,11 +8,17 @@ import com.tuotiansudai.api.dto.v3_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppInvestListsV3Service;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserInvestRecordDataDto;
+import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
