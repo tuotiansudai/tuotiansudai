@@ -63,10 +63,10 @@ $('[data-url]').on('click',function(event) {
                         $secondShow=$this.find('.second_show'),
                         minute=Math.floor(countdown/60),
                         second=countdown%60;
-                    if (countdown == 0) {
+                    if (countdown <= 0) {
                         //结束倒计时
                         clearInterval(timer);
-                        $('.preheat-status').removeClass('preheat-btn').text('立即投资');
+                        $this.parents('.target-category-box').find('.preheat-status').removeClass('preheat-btn').text('立即投资').addClass('goToDetail');
                         $this.remove();
                     }
                     minute=(minute <= 9)?('0' + minute):minute;
@@ -75,6 +75,10 @@ $('[data-url]').on('click',function(event) {
                     $secondShow.text(second);
                     countdown--;
                 },1000);
+            }else {
+
+                $this.parents('.target-category-box').find('.preheat-status').removeClass('preheat-btn').text('立即投资').addClass('goToDetail');
+                $this.remove();
             }
 
         });
