@@ -13,7 +13,7 @@
             <div class="main">
                 <div class="text_wrapper">活动期间，用户累计年化投资额每满<span class="text_strong">5万元</span>即可获赠<span class="text_strong">1个“小金人”</span>，<br/>用户使用“小金人”，可在活动页面兑换相应奖励。</div>
                 <@global.isNotAnonymous>
-                <div class="title_wrapper"><span style="margin-left: 10px">我的小金人<span style="color: #c4050d;font-size: 20px" id="gold_count">${count!}</span>个</span><span class="record_text">我的兑换记录</span>
+                <div class="title_wrapper"><span style="margin-left: 10px">我的小金人<span style="color: #c4050d;font-size: 20px" id="gold_count" class="gold_count">${count!}</span>个</span><span class="record_text">我的兑换记录</span>
                     <div class="hover_icon">
                         <div class="triangle_icon"></div>
                         <div class="hover_table_container">
@@ -170,7 +170,7 @@
                 </div>
                 <@global.isNotAnonymous>
                 <div class="title_wrapper_m" style="display: none">
-                    <div class="title_wrapper">我的小金人<span class="text_strong">${count!}</span>个</div>
+                    <div class="title_wrapper">我的小金人<span class="text_strong gold_count">${count!}</span>个</div>
                     <div class="my_record_title">我的兑换记录</div>
                     <div class="hover_table_container">
                         <table class="hover_table"></table>
@@ -189,7 +189,8 @@
             <div class="example example_mobile"><span class="example_text">举个栗子:</span>拓小天3月2日（周五）成功投资360天项目10万元，<br/>180天项目8万元，则拓小天在该两个项目放款后，共计可获得<br/>返现奖励10万*0.5%+8万*180/360*0.5%=700元。</div>
         </div>
         <div class="experience_cash_container">
-            <div class="desc">活动期间单笔投资满1万元以上，即可获得体验金奖励，最高单笔投资可享 <span class="text_strong">10万元体验金</span>福利。</div>
+            <div class="desc desc_pc">活动期间单笔投资满1万元以上，即可获得体验金奖励，最高单笔投资可享 <span class="text_strong">10万元体验金</span>福利。</div>
+            <div class="desc desc_mobile">活动期间单笔投资满1万元以上，即可获得体验金奖励，<br/>最高单笔投资可享 <span class="text_strong">10万元体验金</span>福利。</div>
             <div class="title_text">单笔投资金额（元）</div>
             <div class="title_text">赠送体验金</div>
             <div class="invest_btn">去投资</div>
