@@ -39,6 +39,8 @@ public class StartWorkActivityController {
     public ModelAndView newYearActivity() {
         ModelAndView modelAndView = new ModelAndView("/activities/2018/start-work");
         modelAndView.addObject("count", LoginUserInfo.getMobile() == null ? null : startWorkActivityService.getCount(LoginUserInfo.getMobile()));
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
         return modelAndView;
     }
 
