@@ -97,7 +97,6 @@ function getList(index,status) {
         console.log(res.data.records.length)
             if(res.success == true){
                 if(res.data.records.length){
-                   // alert(9)
                     res.data.records.forEach(function (item,index) {
                         if(item.achievements.indexOf("MAX_AMOUNT")!=-1){
                             item.achievements = ["MAX_AMOUNT"];
@@ -128,7 +127,6 @@ function getList(index,status) {
 }
 let index = 1;
 getList(1,'REPAYING');
-
 
 
 $(document).on('click','.noList',function () {
