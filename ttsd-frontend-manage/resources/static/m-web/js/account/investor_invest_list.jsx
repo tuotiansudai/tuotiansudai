@@ -95,6 +95,13 @@ function getList(index,status) {
         function (res) {
             if(res.success == true){
                 if(res.data.records.length){
+                    res.data.records.forEach(function (item,index) {
+                        if(item.achievements.indexOf("MAX_AMOUNT")!=-1){
+                            item.achievements = ["MAX_AMOUNT"];
+                        }else if(item.achievements.indexOf("FIRST_INVEST")!=-1){
+                            item.achievements = ["FIRST_INVEST"];
+                        }
+                    })
                     $main.append(tpl('investListTpl', res.data));
                     $('.money').autoNumeric('init');
                 }else {

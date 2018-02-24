@@ -48,51 +48,7 @@
                                     <em class="amount">{{$value.amount}}元</em>
                                 </div>
                                 {{/each}}
-                                {{ each records}}
-                                <div class="box-item">
-                                    <dl>
-                                        <dt><a href="#">{{$value.mobile}}</a> </dt>
-                                        <dd>{{$value.createdTime}}</dd>
-                                    </dl>
-                                    <em class="amount">{{$value.amount}}元</em>
-                                </div>
-                                {{/each}}
-                                {{ each records}}
-                                <div class="box-item">
-                                    <dl>
-                                        <dt><a href="#">{{$value.mobile}}</a> </dt>
-                                        <dd>{{$value.createdTime}}</dd>
-                                    </dl>
-                                    <em class="amount">{{$value.amount}}元</em>
-                                </div>
-                                {{/each}}
-                                {{ each records}}
-                                <div class="box-item">
-                                    <dl>
-                                        <dt><a href="#">{{$value.mobile}}</a> </dt>
-                                        <dd>{{$value.createdTime}}</dd>
-                                    </dl>
-                                    <em class="amount">{{$value.amount}}元</em>
-                                </div>
-                                {{/each}}
-                                {{ each records}}
-                                <div class="box-item">
-                                    <dl>
-                                        <dt><a href="#">{{$value.mobile}}</a> </dt>
-                                        <dd>{{$value.createdTime}}</dd>
-                                    </dl>
-                                    <em class="amount">{{$value.amount}}元</em>
-                                </div>
-                                {{/each}}
-                                {{ each records}}
-                                <div class="box-item">
-                                    <dl>
-                                        <dt><a href="#">{{$value.mobile}}</a> </dt>
-                                        <dd>{{$value.createdTime}}</dd>
-                                    </dl>
-                                    <em class="amount">{{$value.amount}}元</em>
-                                </div>
-                                {{/each}}
+
                         </script>
 
                     </div>

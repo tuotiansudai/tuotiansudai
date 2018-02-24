@@ -42,7 +42,7 @@
     </form>
     <input id="errorMassageTransfer" type="hidden" value="<#if errorMessage?has_content>${errorMessage!}</#if>">
 
-<#if anxinUser != true>
+<#--<#if anxinUser != true>-->
     <div class="transfer-notice">
         <div class="agreement-box">
             <span class="init-checkbox-style on">
@@ -54,7 +54,7 @@
                     href="javascript:void(0)" class="link-agree-number-authorize">《CFCA数字证书授权协议》</a> </lable>
         </div>
     </div>
-</#if>
+<#--</#if>-->
 
 <#include "component/anxin-agreement.ftl" />
 

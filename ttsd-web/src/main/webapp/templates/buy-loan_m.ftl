@@ -71,6 +71,7 @@
                 <label>投资金额</label>
                 <input type="text"
                        data-duration="${loan.duration}"
+                       data-product-type="${loan.productType}"
                        data-min-invest-amount="${loan.minInvestAmount}"
                        data-max-invest-amount="${loan.maxInvestAmount}"
                        data-no-password-remind="${loan.investor.remindNoPassword?c}"
