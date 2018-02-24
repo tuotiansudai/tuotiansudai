@@ -676,7 +676,8 @@ public class InvestServiceImpl implements InvestService {
         long corpus = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(investModel.getLoginName(), investModel.getId());
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            totalExpectedInterest += investRepayModel.getExpectedInterest();
+            long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
+            totalExpectedInterest += expectedInterest;
             totalActualInterest += investRepayModel.getRepayAmount();
             corpus += investRepayModel.getCorpus();
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
