@@ -116,7 +116,7 @@ public class TransferApplicationController {
                 }
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服！");
+                redirectAttributes.addFlashAttribute("errorMessage", e.getType().getDescription());
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
@@ -135,7 +135,7 @@ public class TransferApplicationController {
 
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服！");
+                redirectAttributes.addFlashAttribute("errorMessage", e.getType().getDescription());
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());

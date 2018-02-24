@@ -93,8 +93,11 @@ function getList(index,status) {
             }
         },
         function (res) {
+            console.log(res.data)
+        console.log(res.data.records.length)
             if(res.success == true){
                 if(res.data.records.length){
+                   // alert(9)
                     res.data.records.forEach(function (item,index) {
                         if(item.achievements.indexOf("MAX_AMOUNT")!=-1){
                             item.achievements = ["MAX_AMOUNT"];
@@ -102,6 +105,8 @@ function getList(index,status) {
                             item.achievements = ["FIRST_INVEST"];
                         }
                     })
+
+
                     $main.append(tpl('investListTpl', res.data));
                     $('.money').autoNumeric('init');
                 }else {
