@@ -398,20 +398,22 @@ if($buyDetail.length !==0){
             area:['280px', '160px'],
             content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${$('#errorMassage').val()}</span></div> `,
         },function() {
-            location.href = '/m/loan-list';//去充值
+            location.href = '/m/loan-list';
         })
     }
+
+}
+if($transferDetail.length){
     if($('#errorMassageTransfer').length!==0&&$('#errorMassageTransfer').val()!==''){
         commonFun.CommonLayerTip({
             btn: ['我知道了'],
             area:['280px', '160px'],
             content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${$('#errorMassageTransfer').val()}</span></div> `,
         },function() {
-            location.href = '/m/transfer-list';//去充值
+            location.href = '/m/transfer-list';
         })
     }
 }
-
 function maxBenifitUserCoupon() {
     commonFun.useAjax({
         url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
@@ -698,8 +700,6 @@ function submitData() {
             }
 
         }
-    },function () {
-        location.href = '/m/transfer/'+transferApplicationId+'#transferDetail';
     });
 }
 $transferDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
