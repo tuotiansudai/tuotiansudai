@@ -599,9 +599,9 @@ h2,h4 {
           }
         }
         .swiper-container {
-          margin: 0!important;
+          margin: 0 auto!important;
           float: none;
-          width: 7rem;
+          width: 7.1rem;
           height: 4.78rem;
           overflow: visible!important;
           .swiper-wrapper {
@@ -690,7 +690,7 @@ h2,h4 {
               margin-top: 0.3rem;
             }
             .swiper-slide-active{
-              width: 3.15rem!important;
+              width: 2.8rem!important;
               height: 4.78rem!important;
               background: #fff0d1;
               overflow: hidden;
@@ -699,12 +699,12 @@ h2,h4 {
                 position: relative;
                 display: inline-block;
                 margin: 0;
-                width: 3rem;
+                width: 2.74rem;
                 height: 4.78rem;
                 border: none;
                 border-radius: .1rem;
                 .prize_item {
-                  width: 3.1rem;
+                  width: 2.74rem;
                   height: 4.78rem;
                   text-align: center;
                   font-size: .21rem;
@@ -716,8 +716,10 @@ h2,h4 {
                     height: 2.35rem;
                   }
                   .prize_desc {
+                    margin: 0 auto;
                     white-space: normal;
-                    width: 100%;
+                    text-overflow: clip;
+                    width: 95%;
                     height: .64rem;
                     line-height: .32rem;
                   }
