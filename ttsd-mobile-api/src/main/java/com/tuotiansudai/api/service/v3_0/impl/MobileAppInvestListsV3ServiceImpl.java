@@ -9,13 +9,9 @@ import com.tuotiansudai.api.dto.v3_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppInvestListsV3Service;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -27,7 +23,6 @@ import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,8 +95,17 @@ public class MobileAppInvestListsV3ServiceImpl implements MobileAppInvestListsV3
             LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
             UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
 
-            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            TransferApplicationModel transferApplicationModel = null;
+            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
             if (investModel.getTransferInvestId() != null) {
+                // 有转让已承接
+                transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            } else if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
+                // 有转让未承接
+                transferApplicationModel = transferApplicationModels.get(0);
+            }
+            if (transferApplicationModel != null) {
+                // 有转让情况
                 dto.setLoanName(transferApplicationModel.getName());
                 dto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
                 dto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));

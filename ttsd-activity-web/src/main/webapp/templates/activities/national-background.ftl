@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.national_background}" pageJavascript="${js.national_background}" activeNav="" activeLeftNav="" title="国资背景安全保障拓天速贷" keywords="拓天速贷,国资背景,安全保障,安全升级" description='拓天速贷升级为国资背景平台,安全保障、综合实力更加雄厚,进一步加强平台合规发展,完善在互联网金融业务上的拓展与创新,全面保障投资者的资金与交易安全,打造一个运营规范、高效透明、运营稳健的平台.'>
+<@global.main pageCss="${css.national_background}" pageJavascript="${js.national_background}" activeNav="" activeLeftNav="" title="国资背景_安全保障_拓天速贷" keywords="拓天速贷,国资背景,安全保障,安全升级" description='拓天速贷升级为国资背景平台,安全保障、综合实力更加雄厚,进一步加强平台合规发展,完善在互联网金融业务上的拓展与创新,全面保障投资者的资金与交易安全,打造一个运营规范、高效透明、运营稳健的平台.'>
 <div class="national-banner">
 </div>
 
