@@ -21,10 +21,11 @@ public class AgreementOperateRequestDto extends BaseParamDto {
 
     public AgreementDto convertToAgreementDto() {
         AgreementDto agreementDto = new AgreementDto();
-        agreementDto.setNoPasswordInvest(type != null && type == AgreementBusinessType.NO_PASSWORD_INVEST);
+        agreementDto.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST.equals(type));
         agreementDto.setLoginName(this.getBaseParam().getUserId());
         agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         agreementDto.setDeviceId(this.getBaseParam().getDeviceId());
+        agreementDto.setHuizuAutoRepay(AgreementBusinessType.HUIZU_AUTO_REPAY.equals(type));
         return agreementDto;
     }
 

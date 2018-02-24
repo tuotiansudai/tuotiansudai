@@ -79,8 +79,16 @@ public class CreditLoanController {
     public BaseDto<PayDataDto> creditLoanRepayNoPwd(@PathVariable long orderId,
                                                     @PathVariable String mobile,
                                                     @PathVariable long amount) {
+        return creditLoanRepayService.noPasswordRepay(orderId, mobile, amount, false);
+    }
 
-        return creditLoanRepayService.noPasswordRepay(orderId, mobile, amount);
+    @RequestMapping(value = "/no-password-repay/{orderId}/mobile/{mobile}/amount/{amount}/auto-repay/{autoRepay}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> creditLoanRepayNoPwd(@PathVariable long orderId,
+                                                    @PathVariable String mobile,
+                                                    @PathVariable long amount,
+                                                    @PathVariable boolean autoRepay) {
+        return creditLoanRepayService.noPasswordRepay(orderId, mobile, amount, autoRepay);
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
