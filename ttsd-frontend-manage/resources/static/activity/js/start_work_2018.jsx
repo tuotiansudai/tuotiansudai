@@ -6,6 +6,11 @@ let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let sourceKind = globalFun.parseURL(location.href);
 let switchLock = false;
 
+let startTime = $('.container_time').data('startTime');
+let overTime = $('.container_time').data('overTime');
+let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
+let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
+
 let mySwiper = new Swiper ('.swiper-container', {
     direction: 'horizontal',
     loop: true,
@@ -59,31 +64,42 @@ $('.get_prize_btn').on('click',(e) => {
     }
     if (!switchLock) {
         switchLock = true;
-        $.when(commonFun.isUserLogin())
-            .done(function () {
-                commonFun.useAjax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url:'/activity/start-work/exchange',
-                    data: {exchangePrize}
-                },function(data) {
-                    if (data.success) {
-                        $('#flex_content').show();
-                        $('#pop_modal_container1').show();
-                        $('.gold_count').html(data.count);
-                        recordList();
-                        switchLock = false;
-                    }
-                    else {
-                        $('#flex_content').show();
-                        $('#pop_modal_container2').show();
-                        switchLock = false;
-                    }
-                });
-            }).fail(function () {
-            toLogin();
+        let currentTime = new Date().getTime();
+        if (currentTime < activityTime) {
+            layer.msg('活动未开始');
             switchLock = false;
-        });
+        }
+        else if (currentTime > activityOverTime) {
+            layer.msg('活动已结束');
+            switchLock = false;
+        }
+        else {
+            $.when(commonFun.isUserLogin())
+                .done(function () {
+                    commonFun.useAjax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url:'/activity/start-work/exchange',
+                        data: {exchangePrize}
+                    },function(data) {
+                        if (data.success) {
+                            $('#flex_content').show();
+                            $('#pop_modal_container1').show();
+                            $('.gold_count').html(data.count);
+                            recordList();
+                            switchLock = false;
+                        }
+                        else {
+                            $('#flex_content').show();
+                            $('#pop_modal_container2').show();
+                            switchLock = false;
+                        }
+                    });
+                }).fail(function () {
+                toLogin();
+                switchLock = false;
+            });
+        }
     }
 });
 
