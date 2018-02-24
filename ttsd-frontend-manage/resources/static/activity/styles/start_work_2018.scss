@@ -110,9 +110,9 @@ h2,h4 {
         display: none;
         position: relative;
         top: -20px;
-        left: 20px;
+        left: -32px;
         z-index: 999;
-        width: 469px;
+        width: 550px;
         background: #e94144;
         &:hover {
           display: block;
@@ -120,7 +120,7 @@ h2,h4 {
         .triangle_icon {
           position: absolute;
           top: -13px;
-          left: 205px;
+          left: 251px;
           width: 48px;
           height: 13px;
           background: url("../images/2018/start-work/triangle_icon.png") no-repeat;
@@ -128,7 +128,7 @@ h2,h4 {
         }
         .hover_table_container {
           width: 100%;
-          height: 435px;
+          max-height: 435px;
           overflow-y: auto;
           .hover_table {
             font-size: 14px;
@@ -312,16 +312,16 @@ h2,h4 {
     background-size: contain;
     text-align: center;
     overflow: hidden;
-    &.desc_pc {
-      display: block;
-    }
-    &.desc_mobile {
-      display: none;
-    }
     .desc {
       margin-top: 190px;
       font-size: 16px;
       color: #333;
+      &.desc_pc {
+        display: block;
+      }
+      &.desc_mobile {
+        display: none;
+      }
       .text_strong {
         font-size: 18px;
         color: #ec192c;
@@ -367,7 +367,7 @@ h2,h4 {
       }
     }
     table {
-      margin: auto auto 13px 25px;
+      margin: auto auto 13px 23px;
       width: 486px;
       td {
         font-size: 16px;
@@ -565,8 +565,8 @@ h2,h4 {
         }
         .hover_table_container {
           margin: 0 auto;
-          width: 6.5rem;
-          height: 1.65rem;
+          width: 6.8rem;
+          max-height: 2.45rem;
           overflow: auto;
           .hover_table {
             font-size: .14rem;
@@ -599,9 +599,9 @@ h2,h4 {
           }
         }
         .swiper-container {
-          margin: 0!important;
+          margin: 0 auto!important;
           float: none;
-          width: 7rem;
+          width: 7.1rem;
           height: 4.78rem;
           overflow: visible!important;
           .swiper-wrapper {
@@ -690,7 +690,7 @@ h2,h4 {
               margin-top: 0.3rem;
             }
             .swiper-slide-active{
-              width: 3.15rem!important;
+              width: 2.8rem!important;
               height: 4.78rem!important;
               background: #fff0d1;
               overflow: hidden;
@@ -699,12 +699,12 @@ h2,h4 {
                 position: relative;
                 display: inline-block;
                 margin: 0;
-                width: 3rem;
+                width: 2.74rem;
                 height: 4.78rem;
                 border: none;
                 border-radius: .1rem;
                 .prize_item {
-                  width: 3.1rem;
+                  width: 2.74rem;
                   height: 4.78rem;
                   text-align: center;
                   font-size: .21rem;
@@ -716,8 +716,10 @@ h2,h4 {
                     height: 2.35rem;
                   }
                   .prize_desc {
+                    margin: 0 auto;
                     white-space: normal;
-                    width: 100%;
+                    text-overflow: clip;
+                    width: 95%;
                     height: .64rem;
                     line-height: .32rem;
                   }
@@ -857,6 +859,7 @@ h2,h4 {
         }
         &.desc_mobile {
           display: block;
+          line-height: .32rem;
         }
         .text_strong {
           font-size: .26rem;
