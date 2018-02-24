@@ -125,8 +125,12 @@ $recordTop.find('span').on('click',function() {
 let $btnWapNormal = $('.btn-wap-normal',$buyDetail),
     $amountInputElement = $('.input-amount',$buyDetail),
     minAmount = parseInt($amountInputElement.data('min-invest-amount')),//起投金额
-    leftInvest = parseInt($amountInputElement.data('amount-need-raised')),//剩余可投
-    duration = parseInt($amountInputElement.data('duration')) ;//项目最长期限
+    leftInvest = parseInt($amountInputElement.data('amount-need-raised'));//剩余可投
+let duration;
+if($('#couponList').length){
+    duration = parseInt($amountInputElement.data('product-type').substr(1));//标的时间
+}
+
 
 $buyDetail.find('.bg-square-box').append(commonFun.repeatBgSquare(33));
 
@@ -456,9 +460,8 @@ function couponSelect() {
             minType = 200;
         }
 
-        if($(item).data('min-invest-amount') <= value/100 && minType  <= duration){
-
-            $(item).removeClass('disabled');
+        if($(this).data('min-invest-amount') <= value/100 && minType  <= duration){
+            $(this).removeClass('disabled');
         }
 
     })
