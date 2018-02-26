@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
@@ -617,9 +616,9 @@ public class ExportService {
             row.add(userMicroModelView.isInvested() ? "是" : "否");
             row.add(String.valueOf(((double) userMicroModelView.getTotalInvestAmount()) / 100));
             row.add(String.valueOf(userMicroModelView.getInvestCount()));
-            row.add(userMicroModelView.getAverageInvestAmount() != null ? String.valueOf(userMicroModelView.getAverageInvestAmount()) : "-");
+            row.add(userMicroModelView.getAverageInvestAmount() != null ? String.format("%.2f", userMicroModelView.getAverageInvestAmount() / 100) : "-");
             row.add(String.valueOf(userMicroModelView.getLoanCount()));
-            row.add(userMicroModelView.getAverageLoanInvestAmount() != null ? String.valueOf(userMicroModelView.getAverageLoanInvestAmount()) : "-");
+            row.add(userMicroModelView.getAverageLoanInvestAmount() != null ? String.format("%.2f", userMicroModelView.getAverageLoanInvestAmount() / 100) : "-");
             row.add(userMicroModelView.getTransformPeriod() != null ? String.valueOf(userMicroModelView.getTransformPeriod()) : "-");
             row.add(userMicroModelView.getInvest1st2ndTiming() != null ? String.valueOf(userMicroModelView.getInvest1st2ndTiming()) : "-");
             row.add(userMicroModelView.getInvest1st3rdTiming() != null ? String.valueOf(userMicroModelView.getInvest1st3rdTiming()) : "-");
