@@ -1,4 +1,3 @@
-require('mWebStyle/investment/experience_loan.scss');
 require('mWebStyle/investment/loan_detail.scss');
 require('mWebStyle/investment/project_detail.scss');
 require('mWebStyle/investment/buy_loan.scss');
@@ -392,7 +391,7 @@ if($buyDetail.length !==0){
     //页面加载判断
     testAmount();
     maxBenifitUserCoupon();
-    if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''){
+    if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''&&$('#errorMassage').val()!==null){
         commonFun.CommonLayerTip({
             btn: ['我知道了'],
             area:['280px', '160px'],
@@ -412,6 +411,7 @@ if($transferDetail.length){
         },function() {
             location.href = '/m/transfer-list';
         })
+
     }
 }
 function maxBenifitUserCoupon() {
@@ -642,6 +642,7 @@ function submitData() {
                 layer.closeAll();
                 location.href = "/m/transfer-list";
             })
+            $('.layui-layer-content').css('height','109px')
 
         } else if (data.message == "CANCEL") {
             commonFun.CommonLayerTip({
@@ -652,6 +653,7 @@ function submitData() {
                 layer.closeAll();
                 location.href = "/m/transfer-list";
             })
+            $('.layui-layer-content').css('height','109px')
 
         } else if (data.message == "MULTITERM") {
             commonFun.CommonLayerTip({
@@ -662,6 +664,7 @@ function submitData() {
                 layer.closeAll();
                 location.href = "/m/transfer-list";
             })
+            $('.layui-layer-content').css('height','109px')
 
         } else {
             var $transferForm = $('#transferForm');
@@ -687,6 +690,7 @@ function submitData() {
 
 
                     })
+                    $('.layui-layer-content').css('height','109px')
                     return false;
                 }
             }

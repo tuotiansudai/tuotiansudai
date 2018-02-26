@@ -1115,6 +1115,50 @@
   padding-bottom: 3.3rem;
 }
 
+.pop_title {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #525252;
+}
+.success-info-tip {
+  padding: 0;
+}
 
 
+.detail-list {
+  font-size: 14px;
+  color: #A2A2A2;
+  margin-top:10px;
+  li {
+    display: flex;
+    justify-content: space-between;
+    line-height: 45px;
+    background: #fff;
+    margin-bottom: 1px;
+    padding:0 10px;
+  }
+}
 
+.to-invest-project {
+  background: #FF635A;
+  color: #fff;
+  height:55px;
+  font-size: 20px;
+  text-align: center;
+  position: fixed;
+  bottom:0;
+  width:100%;
+  border:0;
+  &:disabled {
+    background: #C9C9C9;
+  }
+}
