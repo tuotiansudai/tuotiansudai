@@ -392,7 +392,7 @@ if($buyDetail.length !==0){
     //页面加载判断
     testAmount();
     maxBenifitUserCoupon();
-    if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''){
+    if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''&&$('#errorMassage').val()!==null){
         commonFun.CommonLayerTip({
             btn: ['我知道了'],
             area:['280px', '160px'],
