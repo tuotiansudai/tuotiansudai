@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/register")
@@ -110,30 +112,49 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess;
-        if (request.getSession().getAttribute("channel") != null) {
-            registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
-        }
-        logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
-        isRegisterSuccess = this.userService.registerUser(registerUserDto);
-        logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
-
+        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
             redirectAttributes.addFlashAttribute("success", false);
         }
 
+        String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
+        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
+        logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));
+        return new ModelAndView(url);
+    }
+
+    @RequestMapping(path = "/user/m", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
+        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", isRegisterSuccess);
+        return result;
+    }
+
+    @RequestMapping(path = "/success", method = RequestMethod.GET)
+    public ModelAndView registerUserSuccess(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("/register-success");
+        return modelAndView;
+    }
+
+    private boolean registerUser(RegisterUserDto registerUserDto, Object channel) {
+        boolean isRegisterSuccess;
+        if (channel != null) {
+            registerUserDto.setChannel(String.valueOf(channel));
+        }
+        logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
+        isRegisterSuccess = this.userService.registerUser(registerUserDto);
+        logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
+
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
             myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
-
-        String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
-        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
-        logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));
-        return new ModelAndView(url);
+        return isRegisterSuccess;
     }
 
     @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)

@@ -136,7 +136,7 @@ public enum AsyncUmPayService {
     /**
      * 个人账户充值
      */
-    MER_RECHARGE_PERSON("mer_recharge_person", "account", "callback/mer_recharge_person", "recharge_notify", "tuotian://recharge/{0}"),
+    MER_RECHARGE_PERSON("mer_recharge_person", "callback/mer_recharge_person", "callback/mer_recharge_person", "recharge_notify", "tuotian://recharge/{0}"),
 
 
     /**
@@ -148,7 +148,7 @@ public enum AsyncUmPayService {
     /**
      * 个人账户提现
      */
-    CUST_WITHDRAWALS("cust_withdrawals", "account", "callback/cust_withdrawals", "withdraw_notify", "tuotian://withdraw/{0}"),
+    CUST_WITHDRAWALS("cust_withdrawals", "callback/cust_withdrawals", "callback/cust_withdrawals", "withdraw_notify", "tuotian://withdraw/{0}"),
 
 
     /**

@@ -253,6 +253,36 @@ let GetDateStr = function(date,AddDayCount) {
 
     return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
 }
+function CommonLayerTip(option,firstCallback,secondCallback) {
+    layer.closeAll();
+    let defaultOption = {
+        btn:['确定', '取消'],
+        content:$('#turnOnSendCaptcha'),
+        area:['280px', '230px'],
+    };
+
+    let optionOk = $.extend({},defaultOption,option);
+    layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        area: optionOk.area,
+        shadeClose: false,
+        skin: 'tip-square-box',
+        btn: optionOk.btn,
+        shade: optionOk.shade,
+        content: optionOk.content,
+        btn1: function () {
+            firstCallback && firstCallback();
+        },
+        btn2: function () {
+            secondCallback && secondCallback();
+        }
+    });
+}
+
+//为了添加重复的圆圈背景
+var repeatBgSquare=(number=20) => '<i></i>'.repeat(number);
 //中奖纪录滚动
 function scrollList(domName, length,time) {
     var thisFun = this,
@@ -312,10 +342,37 @@ function activityStatus(dom) {
         //活动中
         return 'activity-ing';
     }
+};
 
+// rem
+function calculationFun(doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 20 * (clientWidth /375);
+            fSize > 40 && (fSize = 39.36);
+            docEl.style.fontSize = fSize + 'px';
+        };
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+};
 
-
+function phoneModal() {
+    var u = navigator.userAgent, app = navigator.appVersion;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (isAndroid) {
+        return 'android';
+    }
+    if (isIOS) {
+        //这个是ios操作系统
+        return 'ios';
+    }
 }
+
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -329,4 +386,9 @@ exports.decrypt = decrypt;
 exports.GetDateStr = GetDateStr;
 exports.scrollList = scrollList;
 exports.activityStatus = activityStatus;
+exports.CommonLayerTip = CommonLayerTip;
+exports.repeatBgSquare = repeatBgSquare;
+exports.calculationFun = calculationFun;
+exports.phoneModal = phoneModal;
+
 

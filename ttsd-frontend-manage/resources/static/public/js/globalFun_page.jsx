@@ -5,6 +5,7 @@ window.layer.config({
 });
 window._ = window.jquery_library(3);
 window.$.fn=window.$.prototype;
+window.IScroll = window.jquery_library(4);
 
 require("publicStyle/reset.scss");
 require("publicStyle/btn.scss");
@@ -351,6 +352,24 @@ $.fn.initCheckbox = function (callback) {
 
 window.globalFun =new Proxy_GlobalFun();
 window.globalFun.init();
+
+
+//模拟真实的checkbox
+$.fn.initCheckbox=function(callback) {
+    return $(this).each(function() {
+        $(this).bind('click',function() {
+            var $this=$(this);
+            var checked=$this.find('input:checkbox').prop('checked');
+            if(checked) {
+                $this.addClass("on");
+            }
+            else {
+                $this.removeClass("on");
+            }
+            callback && callback(this);
+        })
+    });
+};
 
 
 

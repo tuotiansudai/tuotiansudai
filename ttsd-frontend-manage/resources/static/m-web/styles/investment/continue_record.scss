@@ -1,0 +1,15 @@
+.amount-detail {
+  position: absolute;
+  top: 52px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  .amount-detail-list{
+    .box-item{
+      .amount{
+        color:#525252;
+      }
+    }
+  }
+}
+

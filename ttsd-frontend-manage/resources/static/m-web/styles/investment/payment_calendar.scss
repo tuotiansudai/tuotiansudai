@@ -1,0 +1,55 @@
+body {
+  background: #fff;
+}
+.payment-calendar {
+  color: #808080;
+}
+
+.payment-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #E5E5E5;
+  span {
+    flex:1;
+    text-align: center;
+    font-size: 12px;
+    color: #808080;
+    em {
+      font-size: 14px;
+      color: #FF635A;
+      display: block;
+
+    }
+  }
+}
+
+.payment-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #808080;
+  height:40px;
+  background: #F2F2F2;
+  padding:0 10px;
+
+}
+.payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px;
+  font-size: 12px;
+  border-bottom:1px solid #E5E5E5;
+}
+.no-result {
+  height:100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #808080;
+}

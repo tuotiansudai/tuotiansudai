@@ -1,0 +1,253 @@
+.footer-wap-container {
+  display: flex;
+}
+.btn-look {
+  background: #ffea42;
+  border-radius: 16px;
+  border-bottom: 2px solid #fcaf2b;
+  width: 100px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+}
+
+.footer-wap-container {
+  position: relative;
+}
+.home-page-container {
+  .banner-box-inner {
+    height:8.5rem;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    .banner-img-list {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      margin:0;
+      li{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 1;
+        &:nth-child(1) {
+          z-index: 2;
+        }
+        a {
+          width:100%;
+          height:100%;
+          display: block;
+          img {
+            width:100%;
+          }
+        }
+        &.active {
+          z-index:10;
+        }
+      }
+
+    }
+    .countNum{
+      position:absolute;
+      bottom: 14px;
+      z-index: 20;
+      li{
+        width: 6px;
+        height: 6px;
+        float:left;
+        color:#fff;
+        border-radius:50%;
+        background:#fff;
+        text-align:center;
+        margin-right:8px;
+        cursor:pointer;
+        &.current{
+          background:#ff7a2a;
+          font-weight:bold;
+        }
+      }
+    }
+
+  }
+  .gift-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    text-align: center;
+    background: #fff;
+    dl {
+      flex: 1;
+      text-align: center;
+      dt {
+        width: 100%;
+        text-align: center;
+        a {
+          margin: 0 auto;
+          display: block;
+          width: 40px;
+          height: 40px;
+          &.operational-data {
+             background: url("../images/share/operational_data.png") no-repeat;
+             background-size: contain;
+           }
+          &.inviting-friend {
+            background: url("../images/share/inviting_friends.png") no-repeat;
+            background-size: contain;
+          }
+          &.assurance {
+            background: url("../images/share/icon_assurance.png") no-repeat;
+            background-size: contain;
+          }
+        }
+      }
+      dd {
+        color: #a2a2a2;
+      }
+    }
+
+  }
+
+  .company-info {
+    font-size: 12px;
+    color: #A2A2A2;
+    line-height: 20px;
+    text-align: center;
+    background: #f5f5f5;
+    padding:20px;
+  }
+}
+.btn-normal{
+  &.preheat-btn {
+    background: rgba(255,108,98,0.50)!important;
+    border: none;
+    padding: 8px 26px;
+  }
+}
+
+.newer-title {
+  span {
+    font-size: 9px;
+  }
+
+
+}
+
+  .target-category-box.you{
+    margin-top: 10px;
+    &:first-child {
+      margin-top: 0px;
+      color: red!important;
+    }
+  }
+.target-category-box.trans{
+  margin-top: 10px;
+  &:first-child {
+    margin-top: 0px;
+    color: red!important;
+  }
+}
+
+
+
+
+
+.target-category-box .loan-info {
+  padding-left: 0;
+  padding-right: 0;
+}
+.app-container {
+  height: 70px;
+  background: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  .logo {
+    width: 50px;
+    height: 50px;
+    float: left;
+    background: url("../images/share/logo.png") no-repeat;
+    background-size: contain;
+    margin-left: 16px;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  .app-detail {
+    float: left;
+    color: #fff;
+    line-height: 20px;
+    font-size: 13px;
+    margin-top: 15px;
+  }
+  .open-app {
+    float: right;
+    width: 87px;
+    height: 30px;
+    background: #FF473C;
+    color: #fff;
+    font-size: 15px;
+    margin-right: 30px;
+    margin-top: 20px;
+    text-align: center;
+    line-height: 30px;
+  }
+  .close-app {
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: url("../images/share/icon_close.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  }
+}
+
+.exper-title {
+  font-size: 13px!important;
+}
+.progress-bar .process-percent .percent.colorChange{
+  background: #a2a2a2;
+}
+
+.exper{
+  width: 66px;
+  height: 16px;
+  padding: 0;
+  text-align: center;
+  line-height: 16px;
+  //padding: 2px;
+  //padding-left: 2px;
+  //padding-right: 4px;
+  //transform:scale(1)
+}
+.percent-number i {
+  font-size: 28px!important;
+}
+.percent-number em {
+  font-size: 16px!important;
+  position: relative;
+  left: -6px;
+}
+.target-category-box .loan-info li {
+
+  &:nth-child(1){
+    flex: 3.2;
+    @media screen and (max-width:320px) {
+      flex: 3.5;
+    }
+  }
+  &:nth-child(2){
+    flex: 2.4;
+
+  }
+  &:nth-child(3){
+    flex: 2.6;
+  }
+
+}

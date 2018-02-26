@@ -55,6 +55,8 @@ public class InvestController {
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
             investDto.setSource(Source.WE_CHAT);
+        } else if (Source.M.equals(investDto.getSource())) {
+            investDto.setSource(Source.M);
         } else {
             investDto.setSource(Source.WEB);
         }
@@ -77,6 +79,9 @@ public class InvestController {
         redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         redirectAttributes.addFlashAttribute("errorType", errorType);
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
+        if (Source.M.equals(investDto.getSource())) {
+            return new ModelAndView(MessageFormat.format("redirect:/m/loan/{0}#buyDetail", investDto.getLoanId()));
+        }
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 

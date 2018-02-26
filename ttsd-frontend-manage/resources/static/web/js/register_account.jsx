@@ -1,7 +1,7 @@
 require('webStyle/register.scss');
 let ValidatorObj= require('publicJs/validator');
 let commonFun= require('publicJs/commonFun');
-var registerAccountForm = globalFun.$('#registerAccountForm'),
+let registerAccountForm = globalFun.$('#registerAccountForm'),
     $buttonLayer = $(registerAccountForm).find('.button-layer'),
     $btnSubmit = $(registerAccountForm).find('input[type="submit"]');
 
@@ -50,7 +50,6 @@ function isDisabledButton() {
         $btnSubmit.prop('disabled',true);
     }
 }
-
 
 
 //点击立即注册按钮

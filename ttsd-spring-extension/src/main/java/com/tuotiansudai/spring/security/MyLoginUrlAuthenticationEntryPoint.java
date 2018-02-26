@@ -48,7 +48,9 @@ public class MyLoginUrlAuthenticationEntryPoint extends LoginUrlAuthenticationEn
     protected String determineUrlToUseForThisRequest(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
         String requestURI = request.getRequestURL().toString();
         String loginFormUrl = super.determineUrlToUseForThisRequest(request, response, exception);
-        return MessageFormat.format("{0}?redirect={1}", loginFormUrl, requestURI);
+        return MessageFormat.format("{0}?redirect={1}",
+                this.isMobileAccess(request) ? "/m" + loginFormUrl : loginFormUrl,
+                requestURI);
     }
 
     private void generateAjaxAccessDeniedResponse(HttpServletRequest request, HttpServletResponse response) {
@@ -73,6 +75,11 @@ public class MyLoginUrlAuthenticationEntryPoint extends LoginUrlAuthenticationEn
                 writer.close();
             }
         }
+    }
+
+    private boolean isMobileAccess(HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        return requestURI.equals("/m") || requestURI.startsWith("/m/");
     }
 
     private boolean isAjaxRequest(HttpServletRequest request) {

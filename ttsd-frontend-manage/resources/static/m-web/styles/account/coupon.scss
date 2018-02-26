@@ -1,0 +1,191 @@
+
+.select-btn {
+  display: flex;
+  padding: 0 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  p {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 0;
+    &.to-coupon {
+      justify-content: center;
+      background: #FFFFFF;
+      border: 0 solid #E5E5E5;
+      border-radius: 4px;
+      a {
+        font-size: 14px;
+        text-indent: 20px;
+        color: #A2A2A2;
+        letter-spacing: -0.15px;
+        background: url("../../images/investment/icon_exchange_coupon.png") no-repeat left center;
+        background-size: 16px 16px;
+      }
+    }
+  }
+}
+
+.coupon-list-container {
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .coupon-item {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    //background: #FF635A;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    .left-item {
+      flex: 0.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: #fff;
+      padding: 5px 10px 5px 20px;
+      box-sizing: border-box;
+      position: relative;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      .circle-line {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 8px;
+        height: 100%;
+        li {
+          float: left;
+          width: 8px;
+          height: 8px;
+          margin: 2px 0;
+          border-radius: 50%;
+          background: #f7f7f7;
+        }
+      }
+      dl {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        color: #808080;
+        dt {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          font-size: 14px;
+        }
+        dd {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          font-size: 12px;
+          line-height: 1.7;
+          padding-left: 10px;
+          box-sizing: border-box;
+          position: relative;
+          &:before {
+            content: '';
+            display: block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            margin-top: -3px;
+            left: 0;
+            border: 1px solid #ff635a;
+          }
+          &.coupon-line {
+            color: #a2a2a2;
+            border-top: 1px dashed #cccccc;
+            padding-left: 0;
+            padding-top: 5px;
+            margin-top: 1px;
+            &:before {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+    .right-item {
+      flex: 0.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ff635a;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      p {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        color: #fff;
+        margin-bottom: 0;
+        span {
+          font-size: 15px;
+          &.price-text {
+            font-size: 30px;
+          }
+          &.price-unit {
+            position: relative;
+            top: 5px;
+          }
+        }
+        a {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 80%;
+          color: #fff;
+          font-size: 13px;
+          border: 1px solid #fff;
+        }
+      }
+    }
+  }
+
+  .no-coupon {
+    margin-top: 140px;
+    .icon {
+      display:block;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      background: url("../../images/investment/no_coupon.png") no-repeat top center;
+      background-size: 100%;
+    }
+    p{
+      color: #A2A2A2;
+    }
+  }
+}
+
+
+
+
+
