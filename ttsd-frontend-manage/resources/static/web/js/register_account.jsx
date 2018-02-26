@@ -58,11 +58,15 @@ registerAccountForm.onsubmit = function(event) {
     $buttonLayer.find('.status').removeClass('error').html('请耐心等待');
     $btnSubmit.prop('disabled', true).val('认证中');
     $('.loading-effect',$buttonLayer).show();
+    let params = $(registerAccountForm).serialize();
+    if(location.hash=='#loan'){
+        params += '&referer=loan';
+    }
 
     commonFun.useAjax({
         url:"/register/account",
         type:'POST',
-        data:$(registerAccountForm).serialize()
+        data:params
     },function(response) {
         if(response.data.status) {
             $buttonLayer.find('.status').removeClass('error').html('认证成功');
@@ -78,5 +82,15 @@ registerAccountForm.onsubmit = function(event) {
 };
 
 
+let referParam = globalFun.parseURL(location.href);
+let referrer = referParam.params.referrer;
+
+$('.see_other_project').click(function () {
+    if(referrer == 'invest'){
+        location.href = '/recharge';
+    }else if (referrer == 'loan'){
+        location.href = '/loan-application';
+    }
+})
 
 
