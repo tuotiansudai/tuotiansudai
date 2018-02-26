@@ -81,7 +81,7 @@
 
     <#if investDetailList??>
         <#list investDetailList as investDetailItem>
-            <div style="display: none" id="investItem${investDetailItem_index}" data-day="${investDetailItem.productName!}" data-amount="${investDetailItem.totalInvestAmount!}" data-count="${investDetailItem.countInvest!}"></div>
+            <div style="display: none" id="investItem${investDetailItem_index}" data-day="${investDetailItem.productName!}" data-amount="${investDetailItem.totalInvestAmount!}" data-count="${(investDetailItem.countInvest?string.computer)!}"></div>
         </#list>
     </#if>
 </div>
