@@ -172,9 +172,11 @@
                 <@global.isNotAnonymous>
                 <div class="title_wrapper_m" style="display: none">
                     <div class="title_wrapper">我的小金人<span class="text_strong gold_count">${count!}</span>个</div>
-                    <div class="my_record_title">我的兑换记录</div>
-                    <div class="hover_table_container">
-                        <table class="hover_table"></table>
+                    <div class="show_record_container">
+                        <div class="my_record_title">我的兑换记录</div>
+                        <div class="hover_table_container">
+                            <table class="hover_table"></table>
+                        </div>
                     </div>
                 </div>
                 </@global.isNotAnonymous>

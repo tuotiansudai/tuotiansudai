@@ -569,11 +569,11 @@ h2,h4 {
         }
         .hover_table_container {
           margin: 0 auto;
-          width: 6.8rem;
+          width: 6.9rem;
           max-height: 2.45rem;
           overflow: auto;
           .hover_table {
-            font-size: .14rem;
+            font-size: .13rem;
             color: #f7fecd;
             tr {
               background: #e94144;
@@ -582,16 +582,6 @@ h2,h4 {
                 color: #f7fecd;
                 background: #e94144!important;
                 border-bottom: 1px solid #f2877c;
-                &.goods_th {
-                  width: 45%;
-                }
-                &.time_th {
-                  width: 20%;
-                }
-                &.count_th {
-                  width: 35%;
-                }
-
               }
               td {
                 padding: 0;

@@ -56,8 +56,9 @@ $('.invest_btn').on('click',() => {
 });
 
 $('.get_prize_btn').on('click',(e) => {
-    let targetDom = e.currentTarget;
-    let exchangePrize = targetDom.dataset.index;
+    e = e || window.event;
+    let targetDom = e.currentTarget || e.srcElement;
+    let exchangePrize = $(targetDom).data('index');
     let currentSwiper = $(targetDom).parents('.swiper-slide');
     if ($(targetDom).hasClass('get_prize_btn_m') && !currentSwiper.hasClass('swiper-slide-active')) {
         return;
