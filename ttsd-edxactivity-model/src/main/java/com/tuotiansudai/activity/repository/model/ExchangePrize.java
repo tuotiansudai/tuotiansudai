@@ -23,7 +23,7 @@ public enum ExchangePrize {
     FOREO_MINI2("Foreo露娜 mini2", ActivityCategory.START_WORK_ACTIVITY, 20000000),
     XIAOMI_NOTE3("小米note3美颜双摄拍照手机", ActivityCategory.START_WORK_ACTIVITY, 30000000),
     WMF_FUTENG("WMF 福腾宝德国原装进口六件套组合", ActivityCategory.START_WORK_ACTIVITY, 40000000),
-    XIAOMI_TV("小米(MI)电视4Ab标准版55英寸", ActivityCategory.START_WORK_ACTIVITY, 50000000),
+    XIAOMI_TV("小米(MI)电视4A标准版55英寸", ActivityCategory.START_WORK_ACTIVITY, 50000000),
     APPLE_MACBOOK("Apple MacBook Air 11.6英寸笔记本电脑", ActivityCategory.START_WORK_ACTIVITY, 75000000),
     APPLE_IPONEX("Apple IPhoneX 64GB", ActivityCategory.START_WORK_ACTIVITY, 100000000),
     ;
