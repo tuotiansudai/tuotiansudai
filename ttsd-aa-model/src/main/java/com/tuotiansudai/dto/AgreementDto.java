@@ -14,6 +14,8 @@ public class AgreementDto implements Serializable {
 
     private boolean noPasswordInvest;
 
+    private boolean huizuAutoRepay;
+
     private Source source = Source.WEB;
 
     private String ip;
@@ -74,5 +76,13 @@ public class AgreementDto implements Serializable {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public boolean isHuizuAutoRepay() {
+        return huizuAutoRepay;
+    }
+
+    public void setHuizuAutoRepay(boolean huizuAutoRepay) {
+        this.huizuAutoRepay = huizuAutoRepay;
     }
 }

@@ -64,6 +64,7 @@ public enum MessageQueue {
     WeChatBoundNotify("WeChatBoundNotify"),
     WeChatMessageNotify("WeChatMessageNotify"),
     HuiZuRentRepayNotifyQueue("HuiZuRentRepayNotifyQueue"),
+    HuiZuOpenAutoRepayQueue("HuiZuOpenAutoRepayQueue"), //慧租开通自动还款
     ExperienceAssigning("ExperienceAssigning"),
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),

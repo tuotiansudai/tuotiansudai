@@ -10,7 +10,8 @@ public enum UserOpType {
     FAST_PAY_AGREEMENT("开通快捷支付协议"),
     NO_PASSWORD_AGREEMENT("开通免密支付协议"),
     AUTO_INVEST("自动投标"),
-    INVEST_NO_PASSWORD("免密投资");
+    INVEST_NO_PASSWORD("免密投资"),
+    HUIZU_AUTO_REPAY("慧租自动还款");
 
     private String desc;
 

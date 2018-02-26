@@ -6,7 +6,7 @@ public enum RepayStatus {
 
     WAIT_PAY("等待支付", "待支付"),
 
-    COMPLETE("完成", "已还款"),
+    COMPLETE("完成", "完成"),
 
     OVERDUE("逾期", "已逾期"),
 
