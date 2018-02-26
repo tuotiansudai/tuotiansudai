@@ -41,20 +41,15 @@ else if (isSuc === false) {
 }
 
 $('.get_it_btn').on('click',function () {
-    if (!ifClickBtn) {
-        ifClickBtn = true;
-        let currentTime = new Date().getTime();
-        if (currentTime < activityTime) {
-            layer.msg('活动未开始');
-            ifClickBtn = false;
-        }
-        else if (currentTime > activityOverTime) {
-            layer.msg('活动已结束');
-            ifClickBtn = false;
-        }
-        else {
-            location.href = '/activity/start-work/draw';
-        }
+    let currentTime = new Date().getTime();
+    if (currentTime < activityTime) {
+        layer.msg('活动未开始');
+    }
+    else if (currentTime > activityOverTime) {
+        layer.msg('活动已结束');
+    }
+    else {
+        location.href = '/activity/start-work/draw';
     }
 
 });

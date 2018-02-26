@@ -7,7 +7,7 @@
         <div class="red_pocket_container">
             <div class="text_wrapper text_wrapper_pc">活动期间，微信扫描下方二维码或搜索“<span class="text_strong">拓天速贷服务号</span>”关注公众号，<br/>回复口令“<span class="text_strong">开工大吉</span>”， 即可拆开你的开工红包。每人限领一次。</div>
             <div class="text_wrapper text_wrapper_mobile">活动期间，微信扫描下方二维码或搜索 “<span class="text_strong">拓天速贷服务号</span>”<br/>关注公众号，回复口令 “<span class="text_strong">开工大吉</span>” ，即可拆开你的开工红包。每人限领一次。</div>
-            <div class="wechat_wrapper"></div>
+            <img class="wechat_wrapper" src="/activity/images/red_pocket_wechat.png"/>
         </div>
         <div class="gold-person-container">
             <div class="header"></div>
@@ -17,6 +17,7 @@
                 <div class="title_wrapper"><span style="margin-left: 10px">我的小金人<span style="color: #c4050d;font-size: 20px" id="gold_count" class="gold_count">${count!}</span>个</span><span class="record_text">我的兑换记录</span>
                     <div class="hover_icon">
                         <div class="triangle_icon"></div>
+                        <div class="no_record_pc" style="display: none;color: #fff;text-align: center">暂无兑换记录</div>
                         <div class="hover_table_container">
                             <table class="hover_table"></table>
                         </div>
@@ -172,9 +173,11 @@
                 <@global.isNotAnonymous>
                 <div class="title_wrapper_m" style="display: none">
                     <div class="title_wrapper">我的小金人<span class="text_strong gold_count">${count!}</span>个</div>
-                    <div class="my_record_title">我的兑换记录</div>
-                    <div class="hover_table_container">
-                        <table class="hover_table"></table>
+                    <div class="show_record_container">
+                        <div class="my_record_title">我的兑换记录</div>
+                        <div class="hover_table_container">
+                            <table class="hover_table"></table>
+                        </div>
                     </div>
                 </div>
                 </@global.isNotAnonymous>
