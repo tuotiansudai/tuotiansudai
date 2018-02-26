@@ -17,10 +17,10 @@
                 <div class="title_wrapper"><span style="margin-left: 10px">我的小金人<span style="color: #c4050d;font-size: 20px" id="gold_count" class="gold_count">${count!}</span>个</span><span class="record_text">我的兑换记录</span>
                     <div class="hover_icon">
                         <div class="triangle_icon"></div>
-                        <div class="no_record_pc" style="display: none;color: #fff;text-align: center">暂无兑换记录</div>
                         <div class="hover_table_container">
                             <table class="hover_table"></table>
                         </div>
+                        <div class="no_record_pc" style="display: none;color: #fff;text-align: center">暂无兑换记录</div>
                     </div>
                 </div>
                 </@global.isNotAnonymous>
