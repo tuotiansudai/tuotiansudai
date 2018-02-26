@@ -54,8 +54,8 @@ public class ExerciseVSWorkActivityService {
     }
 
     public ExchangePrize getPrizeByMobile(String mobile) {
-        return userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile, ActivityCategory.EXERCISE_WORK_ACTIVITY) == null ? null :
-                userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile, ActivityCategory.EXERCISE_WORK_ACTIVITY) == null ? null : userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile, ActivityCategory.EXERCISE_WORK_ACTIVITY).getPrize();
+        List<UserExchangePrizeModel> models = userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile, ActivityCategory.EXERCISE_WORK_ACTIVITY);
+        return models.size() > 0 ? models.get(0).getPrize() : null;
     }
 
     @Transactional
@@ -72,7 +72,8 @@ public class ExerciseVSWorkActivityService {
         UserModel userModel = userMapper.findByMobile(mobile);
         userMapper.lockByLoginName(userModel.getLoginName());
 
-        UserExchangePrizeModel userExchangePrizeModel = userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile, activityCategory);
+        List<UserExchangePrizeModel> userExchangePrizeModels = userexchangePrizeMapper.findUserExchangePrizeByMobile(mobile, activityCategory);
+        UserExchangePrizeModel userExchangePrizeModel = userExchangePrizeModels.size() > 0 ? userExchangePrizeModels.get(0) : null;
 
         if (userExchangePrizeModel != null && userExchangePrizeModel.getPrize().getExchangeMoney() == exchangePrize.getExchangeMoney()) {
             return new ExchangePrizeDto(5);//已选择同档奖品，不可更改

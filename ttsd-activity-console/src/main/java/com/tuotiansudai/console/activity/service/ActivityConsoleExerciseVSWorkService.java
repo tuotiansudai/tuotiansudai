@@ -34,7 +34,7 @@ public class ActivityConsoleExerciseVSWorkService {
 
     public BasePaginationDataDto<UserExchangePrizeModel> exchangePrizeList(int index, int pageSize){
 
-        List<UserExchangePrizeModel> userExchangePrizeModels=userExchangePrizeMapper.findUserExchangePrizeViews(null,null,ActivityCategory.EXERCISE_WORK_ACTIVITY,startTime,endTime,null,null);
+        List<UserExchangePrizeModel> userExchangePrizeModels = userExchangePrizeMapper.findUserExchangePrizeViews(null,null, ActivityCategory.EXERCISE_WORK_ACTIVITY, startTime, endTime);
 
         List<UserExchangePrizeView> list=new ArrayList<>();
         for (UserExchangePrizeModel userExchangePrizeModel:userExchangePrizeModels) {
