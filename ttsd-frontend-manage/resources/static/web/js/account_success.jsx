@@ -10,3 +10,18 @@ commonFun.countDownLoan({
     window.location.href = '/personal-info';
 });
 
+$('.see_my_account').on('click',() => {
+    location.href = '/account';
+});
+
+$('.see_other_project').on('click',() => {
+    location.href = '/loan-list';
+});
+
+$('.go_to_recharge').on('click',() => {
+    location.href = '/recharge';
+});
+
+$('.go_to_invest').on('click',() => {
+    location.href = '/loan-list';
+});
