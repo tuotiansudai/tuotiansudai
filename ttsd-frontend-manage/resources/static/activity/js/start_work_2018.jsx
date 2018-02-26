@@ -128,7 +128,7 @@ function recordList() {
     },function(data) {
         let domStr = '<tr><th class="goods_th">物品</th><th class="time_th">时间</th><th class="count_th">消耗小金人个数</th></tr>';
         let list = data.prize;
-        if (!list) {
+        if (!list || !list.length) {
             $('.show_record_container').hide();
             $('.no_record_pc').show();
             return;
