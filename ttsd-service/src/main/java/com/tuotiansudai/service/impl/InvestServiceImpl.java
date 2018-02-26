@@ -581,8 +581,17 @@ public class InvestServiceImpl implements InvestService {
             LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
             UserInvestRecordDataDto dto = new UserInvestRecordDataDto(investModel, loanModel);
 
-            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            TransferApplicationModel transferApplicationModel = null;
+            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
             if (investModel.getTransferInvestId() != null) {
+                // 有转让已承接
+                transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+            } else if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
+                // 有转让未承接
+                transferApplicationModel = transferApplicationModels.get(0);
+            }
+            if (transferApplicationModel != null) {
+                // 有转让情况
                 dto.setLoanName(transferApplicationModel.getName());
                 dto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
                 dto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
