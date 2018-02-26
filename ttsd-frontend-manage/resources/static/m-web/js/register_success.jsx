@@ -13,3 +13,11 @@
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
+
+$('.go_index').on('click',() => {
+    location.href = '/m/';
+});
+
+$('.authentication').on('click',() => {
+    location.href = '/m/register/account';
+});

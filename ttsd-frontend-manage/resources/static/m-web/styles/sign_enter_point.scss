@@ -193,6 +193,9 @@ body {
     }
     .success-button {
       flex: 2.5;
+      .btn-wap-normal:hover {
+        color: #FF6C63;
+      }
       .note2 {
         font-size: .6rem;
         padding-top: .5rem;

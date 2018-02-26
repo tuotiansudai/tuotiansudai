@@ -15,8 +15,8 @@
 
     </div>
     <div class="success-button">
-        <a class="btn-wap-normal" href="/m/">返回首页</a>
-        <a class="btn-wap-normal only-border" href="/m//register/account/">实名认证</a>
+        <div class="btn-wap-normal go_index">返回首页</div>
+        <div class="btn-wap-normal only-border authentication">实名认证</div>
 
         <span class="note2">在平台进行投资时，需要您进行实名认证完善信息</span>
     </div>
