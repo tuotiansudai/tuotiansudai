@@ -7,7 +7,7 @@
         <div class="red_pocket_container">
             <div class="text_wrapper text_wrapper_pc">活动期间，微信扫描下方二维码或搜索“<span class="text_strong">拓天速贷服务号</span>”关注公众号，<br/>回复口令“<span class="text_strong">开工大吉</span>”， 即可拆开你的开工红包。每人限领一次。</div>
             <div class="text_wrapper text_wrapper_mobile">活动期间，微信扫描下方二维码或搜索 “<span class="text_strong">拓天速贷服务号</span>”<br/>关注公众号，回复口令 “<span class="text_strong">开工大吉</span>” ，即可拆开你的开工红包。每人限领一次。</div>
-            <div class="wechat_wrapper"></div>
+            <img class="wechat_wrapper" src="/activity/images/red_pocket_wechat.png"/>
         </div>
         <div class="gold-person-container">
             <div class="header"></div>
