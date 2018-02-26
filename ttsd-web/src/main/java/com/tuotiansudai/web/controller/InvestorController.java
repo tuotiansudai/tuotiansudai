@@ -7,7 +7,6 @@ import com.tuotiansudai.dto.InvestorInvestDetailDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferInvestDetailView;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -45,11 +44,14 @@ public class InvestorController {
     public BaseDto<BasePaginationDataDto> investListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                          @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                          @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                                         @RequestParam(name = "status", required = false, defaultValue = "REPAYING") LoanStatus status) {
+                                                         @RequestParam(name = "status", required = false) LoanStatus status) {
 
         String loginName = LoginUserInfo.getLoginName();
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         if (MobileAccessDecision.isMobileAccess()) {
+            if (status == null) {
+                status = LoanStatus.REPAYING;
+            }
             dto.setData(investService.generateUserInvestList(loginName, index, 10, status));
         } else {
             dto.setData(investService.getInvestPagination(loginName, index, 10, startTime, endTime, status));
