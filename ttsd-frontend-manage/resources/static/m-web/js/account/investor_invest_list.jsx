@@ -37,14 +37,17 @@ function isPassive() {
 }
 var myScroll;
 var flagScroll=true;
+let index = 1;
+getList(1,'REPAYING');
 $(window).load(function () {
     let myScroll = new IScroll('#wrapperOut', { mouseWheel: true ,click:true});
 
         myScroll.on('scrollEnd', function () {
             if(flagScroll){
-            index++;
+
             //如果滑动到底部，则加载更多数据（距离最底部10px高度）
             if ((this.y - this.maxScrollY) <= 10) {
+                index++;
                 if($repayingBtn.hasClass('current')){
                     getList(index,'REPAYING');
                     myScroll.refresh();
@@ -59,22 +62,21 @@ $(window).load(function () {
 
 
     $repayingBtn.on('click',function () {
+         index = 1;
         flagScroll = true;
         $('#noData').hide();
-        index = 1;
-        myScroll.refresh();
         $main.html('');
         getList(1,'REPAYING');
+        myScroll.refresh();
 
     })
     $raisingBtn.on('click',function () {
+         index = 1;
         flagScroll = true;
         $('#noData').hide();
-        index = 1;
         $main.html('');
-        myScroll.refresh();
         getList(1,'RAISING');
-
+        myScroll.refresh();
     })
 })
 
@@ -129,8 +131,7 @@ function getList(index,status) {
         }
     )
 }
-let index = 1;
-getList(1,'REPAYING');
+
 
 
 $(document).on('click','.noList',function () {
