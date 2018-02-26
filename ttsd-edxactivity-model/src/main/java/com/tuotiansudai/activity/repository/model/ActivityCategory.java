@@ -42,7 +42,9 @@ public enum ActivityCategory {
     SCHOOL_SEASON_ACTIVITY("开学季活动奖励",ConsumeCategory.TASK_COUNT),
     IPHONEX_ACTIVITY("iphoneX活动奖励",ConsumeCategory.TASK_COUNT),
     DOUBLE_ELEVEN_ACTIVITY("双十一剁手活动",ConsumeCategory.TASK_COUNT),
-    YEAR_END_AWARDS_ACTIVITY("年终奖活动",ConsumeCategory.TASK_COUNT);
+    YEAR_END_AWARDS_ACTIVITY("年终奖活动",ConsumeCategory.TASK_COUNT),
+    START_WORK_ACTIVITY("惊喜不重样加息不打烊活动",ConsumeCategory.TASK_COUNT),
+    ;
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;
