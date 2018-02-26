@@ -75,8 +75,7 @@ public class LoanOutSuccessStartWorkMessageConsumer implements MessageConsumer {
 
     public static final String START_WORK_EXPERIENCE_KEY = "START_WORK_EXPERIENCE_KEY:{0}";
 
-//    private final static List<String> FRIDAY_TIME = Lists.newArrayList("2018-03-02", "2018-03-09", "2018-03-16", "2018-03-23", "2018-03-30");
-    private final static List<String> FRIDAY_TIME = Lists.newArrayList("2018-02-24", "2018-03-09", "2018-03-16", "2018-03-23", "2018-03-30");
+    private final static List<String> FRIDAY_TIME = Lists.newArrayList("2018-03-02", "2018-03-09", "2018-03-16", "2018-03-23", "2018-03-30");
 
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
