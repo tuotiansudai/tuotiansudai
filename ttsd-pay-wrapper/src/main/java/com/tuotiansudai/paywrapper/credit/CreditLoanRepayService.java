@@ -137,7 +137,7 @@ public class CreditLoanRepayService {
     }
 
     @Transactional
-    public BaseDto<PayDataDto> noPasswordRepay(long orderId, String mobile, long amount) {
+    public BaseDto<PayDataDto> noPasswordRepay(long orderId, String mobile, long amount, boolean autoRepay) {
         logger.info(MessageFormat.format("[credit loan no password repay {0}] starting, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
 
         PayDataDto payDataDto = new PayDataDto(false, "", "0000");
@@ -156,7 +156,13 @@ public class CreditLoanRepayService {
             return dto;
         }
 
-        if (!account.isNoPasswordInvest()) {
+        if (autoRepay && !account.isAutoInvest()) {
+            payDataDto.setMessage("用户未签署免密协议");
+            payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
+            return dto;
+        }
+
+        if (!autoRepay && !account.isNoPasswordInvest()) {
             payDataDto.setMessage("用户未开通免密支付功能");
             payDataDto.setCode(String.valueOf(HttpStatus.PRECONDITION_REQUIRED));
             return dto;
@@ -191,7 +197,14 @@ public class CreditLoanRepayService {
             payDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("callbackUrl", requestModel.getRetUrl())
                     .build()));
-            logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+
+            if (responseModel.isSuccess()) {
+                logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
+            } else {
+                logger.error(MessageFormat.format("[credit loan no password repay {0} is auto:{1}] call umpay fail , mobile{2}, amount:{3}, code:{4}, message:{5}",
+                        String.valueOf(orderId), autoRepay, mobile, String.valueOf(amount), responseModel.getRetCode(), responseModel.getRetMsg()));
+            }
+
         } catch (Exception e) {
             logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay exception, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)), e);
             this.sendFatalNotify(MessageFormat.format("慧租信用贷无密还款异常，orderId:{0}, mobile:{1}, amount:{2}", String.valueOf(orderId), mobile, String.valueOf(amount)));
