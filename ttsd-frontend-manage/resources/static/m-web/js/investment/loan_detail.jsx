@@ -411,6 +411,7 @@ if($transferDetail.length){
         },function() {
             location.href = '/m/transfer-list';
         })
+        $('.layui-layer-content').css('height','109px')
 
     }
 }
