@@ -93,16 +93,20 @@ function getList(index,status) {
             }
         },
         function (res) {
-            console.log(res.data)
-        console.log(res.data.records.length)
             if(res.success == true){
                 if(res.data.records.length){
+                    console.log(res.data.records)
                     res.data.records.forEach(function (item,index) {
-                        if(item.achievements.indexOf("MAX_AMOUNT")!=-1){
-                            item.achievements = ["MAX_AMOUNT"];
-                        }else if(item.achievements.indexOf("FIRST_INVEST")!=-1){
-                            item.achievements = ["FIRST_INVEST"];
+                        if(status == 'RAISING'){
+                            item.achievements = [];
+                        }else {
+                            if(item.achievements.indexOf("MAX_AMOUNT")!=-1){
+                                item.achievements = ["MAX_AMOUNT"];
+                            }else if(item.achievements.indexOf("FIRST_INVEST")!=-1){
+                                item.achievements = ["FIRST_INVEST"];
+                            }
                         }
+
                     })
 
 

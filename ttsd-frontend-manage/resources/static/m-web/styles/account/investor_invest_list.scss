@@ -77,7 +77,7 @@ em {
         padding-right: .3rem;
         box-sizing: border-box;
         &.dl-l {
-          width: 50%;
+          width: 40%;
           float: left;
           dt {
             font-weight: normal;
@@ -95,10 +95,12 @@ em {
         &.dl-r {
           width: 50%;
           float: right;
-          text-align: right;
+          text-align: center;
+          padding-right: 0;
           dt {
             display: inline-block;
-            padding-left: .34rem;
+            width: 2.0rem;
+            padding-left: .15rem;
             padding-right: .34rem;
             font-size: .24rem;
             color: #fff;
@@ -127,6 +129,7 @@ em {
           }
           dd {
             color: $color8080;
+            min-width: 2rem;
             line-height: 0.6rem;
             em {
               color: $colorYellow;
@@ -146,8 +149,10 @@ em {
           }
           dd {
             width: 50%;
+            box-sizing: border-box;
             float: right;
             text-align: right;
+            padding-right: 10px;
           }
         }
 
