@@ -1,0 +1,63 @@
+.anxin-electro-sign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 10px 20px 10px;
+
+  .cfca-logo {
+    width:120px;
+    height:100px;
+    background: url('../../images/anxin/cfca.png') center center no-repeat;
+    background-size: 100%;
+    margin: 10px auto 10px auto;
+  }
+
+  .cfca-info {
+    font-size: 14px;
+    color: #525252;
+    line-height: 26px;
+    align-self: flex-start;
+  }
+  .cfca-advantage {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width:100%;
+    height:90px;
+    margin-top: 10px;
+    margin-bottom:10px;
+    span {
+      flex: 1;
+      height: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      i {
+        height: 60px;
+        background-size: contain;
+      }
+      &:nth-child(1) {
+        i {
+          background: url('../../images/anxin/good-01.png') center top no-repeat;
+          background-size: contain;
+        }
+      }
+      &:nth-child(2) {
+        i {
+          background: url('../../images/anxin/good-02.png') center top no-repeat;
+          background-size: contain;
+        }
+      }
+      &:nth-child(3) {
+        i {
+          background: url('../../images/anxin/good-03.png') center top no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
+}

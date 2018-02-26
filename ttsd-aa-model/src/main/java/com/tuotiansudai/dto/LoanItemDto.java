@@ -31,6 +31,8 @@ public class LoanItemDto {
 
     private String alert;
 
+    private long alertAmount;
+
     private double progress;
 
     private ActivityType activityType;
@@ -137,6 +139,14 @@ public class LoanItemDto {
 
     public void setAlert(String alert) {
         this.alert = alert;
+    }
+
+    public long getAlertAmount() {
+        return alertAmount;
+    }
+
+    public void setAlertAmount(long alertAmount) {
+        this.alertAmount = alertAmount;
     }
 
     public double getProgress() {

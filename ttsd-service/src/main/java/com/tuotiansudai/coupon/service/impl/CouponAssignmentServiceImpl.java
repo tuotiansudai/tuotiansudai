@@ -100,7 +100,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     private InvestAchievementUserCollector investAchievementCollector;
 
     @Override
-    public boolean assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
+    public UserCouponModel assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         long couponId = exchangeCodeService.getValueBase31(exchangeCode);
@@ -108,27 +108,26 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         if (couponModel == null) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) is not correct", exchangeCode));
-            return false;
+            return null;
         }
 
         if (!couponModel.isActive() || couponModel.getEndTime().before(new Date())) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) exchange coupon({1}) is inactive", exchangeCode, String.valueOf(couponId)));
-            return false;
+            return null;
         }
 
         if (couponModel.getUserGroup() != UserGroup.EXCHANGER_CODE) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) coupon({1}) user group({2}) is not EXCHANGER_CODE", exchangeCode, String.valueOf(couponId), couponModel.getUserGroup()));
-            return false;
+            return null;
         }
 
         UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
-        if (userCouponModel == null) {
-            return false;
+        if (userCouponModel != null) {
+            logger.info(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
         }
 
-        logger.info(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
-        return true;
+        return userCouponModel;
     }
 
     @Override
@@ -221,7 +220,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 */
     }
 
-    private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName){
+    private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName) {
         mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponModel.getId());
         return couponModel;
     }
@@ -272,7 +271,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
 
-        if(Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
+        if (Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
             mqWrapperClient.sendMessage(MessageQueue.CouponSmsAssignNotify, new CouponAssignSmsNotifyMessage(couponId, loginName));
         }
 

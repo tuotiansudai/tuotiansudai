@@ -1,0 +1,1583 @@
+.goBack_applyTransfer {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-size: 17px;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: 2px;
+    top: 7px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
+.account-summary {
+  position: relative;
+  .go-back-container {
+    position: absolute;
+    left: 2px;
+    top: 15px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    .go-back {
+      display: block;
+      margin: 8px 0 0 10px;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .collection {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 4;
+    span {
+      &.title {
+        font-size: 17px;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: 25px;
+        position: relative;
+        top: -13px;
+      }
+      &.summary-box {
+        b {
+          font-size: 48px;
+          color: #FFFFFF;
+          font-weight: 500;
+          letter-spacing: -1px;
+          i {
+            font-size: 24px;
+            color: #fff;
+            margin-left: 6px;
+            position: relative;
+            left: -0.5rem!important;
+          }
+        }
+        em {
+          font-size: 14px;
+          color: #FFFFFF;
+        }
+
+      }
+    }
+  }
+  .amount-balance {
+    font-family: "PingFangSC-Light","PingFangSC-Regular","sans-serif","Microsoft YaHei","STHeitiSC-Light","微软雅黑";
+    background: transparent;
+    font-size: 13px!important;
+    color: rgba(255,255,255,0.6);
+  }
+}
+
+.experience-total {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height:80px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  span {
+    flex: 1;
+    text-align: center;
+    line-height: 25px;
+    &:first-child {
+      text-align: left;
+    }
+    &:last-child {
+      text-align: right;
+    }
+    b {
+      font-size: 18px;
+      color: #525252;
+      font-weight: normal;
+    }
+    i {
+      font-size: 12px;
+      color: #A2A2A2;
+    }
+  }
+}
+
+.experience-total1 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height:80px;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  span {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 25px;
+    b {
+      font-size: 18px;
+      color: #525252;
+      font-weight: normal;
+    }
+    i {
+      font-size: 12px;
+      color: #A2A2A2;
+    }
+  }
+}
+
+.detail-list {
+  font-size: 14px;
+  color: #A2A2A2;
+  margin-top:10px;
+  li {
+    display: flex;
+    justify-content: space-between;
+    line-height: 45px;
+    background: #fff;
+    margin-bottom: 1px;
+    padding:0 10px;
+  }
+}
+
+.to-invest-project {
+  background: #FF635A;
+  color: #fff;
+  height:55px;
+  font-size: 20px;
+  text-align: center;
+  position: fixed;
+  bottom:0;
+  width:100%;
+  border:0;
+  &:disabled {
+    background: #C9C9C9;
+  }
+}
+.detail-list {
+  span i {
+    font-size:20px;
+  }
+}
+.icon-sign {
+  font-size: 9px;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+}
+
+.invest-refer-box {
+  position: absolute;
+  top: 100px;
+  right: 19%;
+  i.fa {
+    position: absolute;
+    top: -13px;
+    right: 27px;
+    font-size: 25px;
+    color: #fff!important;
+  }
+  ul {
+    border-radius:10px;
+    background: #fff;
+    font-size: 10px;
+    color: #A2A2A2;
+    li {
+      display: flex;
+      justify-content: space-between;
+      line-height: 20px;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 0 6px;
+    }
+    .title {
+      font-size: 11px;
+      color: #525252;
+    }
+  }
+
+}
+
+.leave-time {
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  color: #808080;
+  text-align: center;
+}
+.repay-plan {
+  margin-top:5px;
+  label {
+    font-size: 14px;
+    color: #525252;
+  }
+}
+.history-record {
+  font-size: 14px;
+
+  padding: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    color: #A2A2A2;
+  }
+}
+//項目詳情
+.project-detail {
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  height: 100%;
+  background: #fff;
+}
+.menu-category {
+  margin-bottom: 10px;
+}
+.loan-list-content {
+  background: #fff;
+}
+.account-summary {
+  height:156px!important;
+  .collection {
+    padding-top: 5px;
+  }
+  .transfer-hack {
+    color: rgba(255, 255, 255, 1);
+    flex: 1.5;
+  }
+  .icon-help {
+    top: 23px!important;
+    right: 25%;
+  }
+}
+
+.experience-amount {
+  padding-bottom: 70px;
+}
+
+.invest-progress-box {
+  padding: 0 10px;
+  background: #fff;
+  height: 50px;
+  .project-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A2A2A2;
+    align-items: center;
+    height:100%;
+    i {
+      color: #222;
+    }
+  }
+}
+.input-list li {
+  color: #525252;
+}
+.input-list li input {
+  width: 55%;
+  font-size: 18px;
+  color: #525252;
+  text-align: left;
+}
+.input-list li span {
+  width: 75%;
+  font-size: 16px;
+  text-align: left;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+  　color: #C9C9C9;
+}
+:-moz-placeholder {
+  color: #C9C9C9;
+}
+
+::-moz-placeholder {
+  color: #C9C9C9;
+}
+
+:-ms-input-placeholder {
+  　color: #C9C9C9;
+}
+
+.input-list {
+  .investmentAmount {
+    margin-bottom: 9px;
+    font-size: 18px;
+  }
+}
+.number-text {
+  strong {
+    color: #FF473C
+  }
+}
+.btn-wap-normal {
+  margin-top: 105px;
+  border: 1px solid #FF635A;
+  background: #FF635A;
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 12px 10px 12px;
+  b {
+    display: block;
+    font-weight: lighter;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+.target-category-box .loan-info {
+  padding: 0 10px;
+}
+
+.bg-square-box {
+  height: 9px;
+}
+.input-list li .close_btn {
+  display: none;
+  width: 12px;
+  height: 12px;
+  background: url("../../images/close_btn.png") no-repeat;
+  background-size: contain;
+}
+
+.pop_title {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #525252;
+}
+.icon-success-wrapper {
+  position: relative;
+  margin: 10px auto 1px auto;
+  width: 100%;
+  height: 135px;
+  background: #fff;
+  overflow: hidden;
+  .icon-success {
+    display: block;
+    margin: 30px auto 15px auto;
+    background: url("../../images/investment/suc_icon.png");
+    background-size: contain;
+  }
+  .investment-success-text {
+    width: 100%;
+    font-size: 15px;
+    color: #808080;
+    text-align: center;
+  }
+}
+.input-list .item {
+  font-family: PingFangSC-Light;
+  margin-bottom: 0;
+  height: 45px;
+  line-height: 45px;
+  font-size: 13px;
+  color: #808080;
+}
+.input-list .item em {
+  font-family: "PingFangSC-Regular","sans-serif","Microsoft YaHei","STHeitiSC-Light","微软雅黑";
+  color: #525252;
+}
+.line_icon {
+  position: relative;
+  top: 6px;
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: #FF473C;
+  vertical-align: top;
+}
+.benefit-box {
+  width: 100%;
+  height: 124px;
+  background: url("../../images/investment/item_wave_bg.png") no-repeat;
+  background-size: contain;
+  margin-bottom: 10px;
+}
+
+.success-info-tip {
+  padding: 0;
+}
+
+.shade_mine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.70);
+}
+
+#experience_balance {
+  line-height: 1.5rem;
+}
+
+.account-summary {
+  height:200px;
+  position: relative;
+  top: -2px;
+  .icon-left {
+    position: absolute;
+    left: 10px;
+    top: .8rem;
+    i{
+      display: block;
+      width: 9px;
+      height: 14px;
+      background: url("../../images/go_back.png");
+      background-size: contain;
+    }
+  }
+
+  .transfer-hack {
+    color: rgba(255, 255, 255, 1);
+    flex: 1.5;
+  }
+  .icon-help {
+    top: 61px;
+    right: 20%;
+  }
+}
+.account-summary .amount-balance {
+  font-size: 14px;
+  text-align: center;
+  position: relative;
+  top: -10px;
+}
+.experience-amount {
+  padding-bottom: 70px;
+}
+
+.invest-progress-box {
+  padding: 0 10px;
+  background: #fff;
+  height: 50px;
+  .project-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A2A2A2;
+    align-items: center;
+    height:100%;
+    i {
+      color: #222;
+    }
+  }
+}
+
+.detail-list {
+  span i {
+    font-size:20px;
+  }
+}
+
+.leave-time {
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  color: #808080;
+  text-align: center;
+  background: #fff;
+}
+.repay-plan {
+  margin-top:5px;
+  label {
+    font-size: 14px;
+    color: #525252;
+  }
+}
+.history-record {
+  font-size: 14px;
+
+  padding: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    color: #A2A2A2;
+  }
+}
+//項目詳情
+.project-detail {
+  position: static;
+  width: 100%;
+  height: 100%;
+  background: #f2f2f2;
+}
+.menu-category {
+  margin-bottom: 10px;
+}
+.loan-list-content {
+  background: #fff;
+}
+.loan-list-frame2{
+  background: #fff;
+  min-height: 28.6rem;
+}
+.menu-category{
+  height: 2.1rem;
+  line-height: 2rem;
+  span {
+    line-height: 2rem;
+    a {
+      line-height: 2rem;
+    }
+  }
+}
+.account-summary {
+  height:130px;
+
+  .transfer-hack {
+    color: rgba(255, 255, 255, 1);
+    flex: 1.5;
+  }
+  .icon-help {
+    top: 61px;
+    right: 20%;
+  }
+}
+
+.experience-amount {
+  padding-bottom: 70px;
+}
+
+.invest-progress-box {
+  padding: 0 10px;
+  background: #fff;
+  height: 50px;
+  .project-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #A2A2A2;
+    align-items: center;
+    height:100%;
+    i {
+      color: #222;
+    }
+  }
+}
+
+.detail-list {
+  margin-top: 5px;
+  span i {
+    font-size:20px;
+  }
+}
+.icon-sign {
+  font-size: 9px;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: .5rem;
+  border-bottom-left-radius: 0;
+  &.icon-detail {
+    padding: .2rem .3rem;
+    padding-bottom: 0;
+    line-height: .6rem;
+  }
+}
+
+.invest-refer-box {
+  width: 200px;
+  position: absolute;
+  top: 100px;
+  right: 5%;
+  i.fa {
+    position: absolute;
+    top: -13px;
+    right: 60px;
+    font-size: 25px;
+    color: #fff!important;
+  }
+  ul {
+    border-radius:10px;
+    background: #fff;
+    font-size: 10px;
+    color: #A2A2A2;
+    li {
+      display: flex;
+      justify-content: space-between;
+      line-height: 20px;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 0;
+      span {
+        text-align: center;
+        width: 30%;
+      }
+      .left-title {
+        border-right: 1px solid #f2f2f2;
+        padding-right: 5px;
+        width: 70%;
+      }
+    }
+    .title {
+      font-size: 11px;
+      color: #525252;
+
+    }
+  }
+
+}
+
+.leave-time {
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  color: #808080;
+  text-align: center;
+}
+.repay-plan {
+  margin-top:5px;
+  label {
+    font-size: 14px;
+    color: #525252;
+  }
+}
+.history-record {
+  font-size: 14px;
+
+  padding: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    color: #A2A2A2;
+  }
+}
+.wind-control {
+  dd {
+    span {
+      &.span-l {
+        padding-right: 20px;
+      }
+      &.span-r {
+        padding-left: 20px;
+      }
+
+    }
+  }
+}
+//直投项目购买详情
+.benefit-box {
+  position: relative;
+  height: 152px;
+  margin-top: 10px;
+
+  .bg-square-box {
+    position: absolute;
+    bottom:-6px;
+    left:0;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+.no-records {
+  text-align: center;
+  padding-top: 100px;
+  .icon {
+    display: inline-block;
+    width: 100px;
+    height: 90px;
+    background: url("../../images/investment/icon_noRecord.png") no-repeat;
+    background-size: 100%;
+  }
+}
+
+.target-category-box {
+  padding:15px 15px 25px 15px;
+  &.transfer {
+    padding-bottom: 22px;
+  }
+  font-size: 16px!important;
+  color: #808080!important;
+  background: #fff;
+  line-height: 35px;
+  .newer-title{
+    &.buy-title {
+      color: #808080;
+    }
+    border-left:2px solid #FF473C;
+    padding-left: 10px;
+    line-height: 16px!important;
+    display: flex;
+    justify-content: space-between;
+    span{
+      vertical-align: middle;
+      &.tip-text{
+        font-size: 12px;
+        color: #525252!important;
+        letter-spacing: -0.29px;
+        background: #F2F2F2;
+        border-radius: 4px;
+        padding: 2px 10px;
+      }
+    }
+  }
+  .loan-info{
+    padding-top: 20px;
+    li{
+      text-align:center;
+      span{
+        font-size:16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        i {
+          color: #525252;
+        }
+      }
+      em{
+        font-size:12px;
+        color:#a2a2a2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.input-amount-box {
+  margin-top:15px;
+  color: #525252;
+}
+
+
+.input-list li.mt-10{
+  margin-top: 10px;
+}
+.input-list li input {
+  text-align: left;
+  font-size: 18px;
+  color: #525252;
+
+}
+.input-list li span.number-text{
+  text-align: left;
+  font-size: 16px;
+  color: #525252;
+  strong{
+    font-weight: normal;
+    color: #FF473C;
+  }
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 40px 10px 40px;
+  b {
+    display: block;
+    font-weight: normal;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+
+.apply-transfer-success {
+  background: #fff;
+  padding-top:50px;
+  text-align: center;
+  box-sizing: border-box;
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}
+
+//转让项目购买详情
+.benefit-box {
+  position: relative;
+
+  .bg-square-box {
+    position: absolute;
+    bottom:-6px;
+    left:0;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.target-category-box {
+  padding:24px 15px 40px 15px;
+  font-size: 14px;
+  color: #525252;
+  background: #fff;
+  line-height: 35px;
+  .newer-title{
+    border-left:2px solid #FF473C;
+    padding-left: 10px;
+    line-height: 18px;
+    display: flex;
+    justify-content: space-between;
+    span{
+      &.tip-text{
+        font-size: 12px;
+        color: #525252;
+        letter-spacing: -0.29px;
+        background: #F2F2F2;
+        border-radius: 4px;
+        padding: 2px 10px;
+      }
+    }
+  }
+  .benefit-list{
+    margin-top: 10px;
+    li{
+      font-size: 14px;
+      color: #525252;
+      letter-spacing: -0.34px;
+      span{
+        color: #FF635A;
+      }
+    }
+  }
+}
+
+.input-amount-box {
+  margin-top:15px;
+  color: #525252;
+}
+.input-amount {
+  line-height:1.5rem;
+}
+
+.input-list {
+  margin-bottom: 50px!important;
+}
+.input-list li.mt-10{
+  margin-top: 10px;
+}
+.input-list li input {
+  width: 55%!important;
+  text-align: left;
+  font-size: 18px;
+  color: #525252;
+}
+.input-list li span.number-text{
+  text-align: left;
+  font-size: 16px;
+  color: #525252;
+  strong{
+    font-weight: normal;
+    color: #FF473C;
+  }
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 40px 10px 40px;
+  b {
+    display: block;
+    font-weight: normal;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+
+.apply-transfer-success {
+  background: #fff;
+  padding-top:50px;
+  text-align: center;
+  box-sizing: border-box;
+  em {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}
+
+//回款计划
+.amount-detail {
+  top: 51px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 51px - 55px);
+  .amount-detail-inner{
+    margin-top: 10px;
+    .payment-plan {
+      background: #fff;
+      padding: 10px 10px 0px 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      color: #525252;
+      height:40px;
+      border-top:1px solid #F7F7F7;
+      dd {
+        flex: 1;
+        font-size: 14px;
+        color: #808080;
+        line-height: 40px;
+          &.status {
+            color: #FF635A;
+          }
+        &.font-left {
+          text-align: left;
+        }
+        &.font-center {
+          text-align: center;
+        }
+        &.font-right {
+          text-align: right;
+        }
+
+      }
+      &.title {
+        dd {
+          color: #525252;
+        }
+      }
+    }
+  }
+}
+//优惠券
+.select-btn{
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  p{
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    &.to-coupon{
+      justify-content: center;
+      background: #FFFFFF;
+      border: 0 solid #E5E5E5;
+      border-radius: 4px;
+      a{
+        font-size: 14px;
+        text-indent: 20px;
+        color: #A2A2A2;
+        letter-spacing: -0.15px;
+        background: url("../../images/investment/icon_exchange_coupon.png") no-repeat left center;
+        background-size: 16px 16px;
+      }
+    }
+    &.info-list{
+      margin-bottom: 0;
+      a{
+        font-size: 15px;
+        color: #FF635A;
+        letter-spacing: 0;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.coupon-list-container{
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .coupon-item{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: #FF635A;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    position: relative;
+    &.disabled {
+      opacity: 0.7;
+    }
+    &.selected {
+      .selected-status {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        background: url("../../images/investment/icon_trangle.png") no-repeat;
+        background-size: contain;
+      }
+    }
+    .left-item{
+      flex:0.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: #fff;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      position: relative;
+      border-top-left-radius:5px;
+      border-bottom-left-radius:5px;
+      .circle-line{
+        position: absolute;
+        top:-5px;
+        right:-5px;
+        width:10px;
+        height:100%;
+        li{
+          float:left;
+          width:10px;
+          height:10px;
+          margin:3px 0;
+          border-radius:50%;
+          background:#f7f7f7;
+        }
+      }
+      dl{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width:100%;
+        color:#808080;
+        dt{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          font-size:14px;
+        }
+        dd{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          font-size:12px;
+          padding-left:10px;
+          box-sizing:border-box;
+          position: relative;
+          &:before{
+            content:'';
+            display:block;
+            width:5px;
+            height:5px;
+            border-radius:50%;
+            box-sizing:border-box;
+            position: absolute;
+            top:50%;
+            margin-top: -3px;
+            left:0;
+            border:1px solid #ff635a;
+          }
+          &.coupon-line{
+            color:#a2a2a2;
+            border-top:1px dashed #a2a2a2;
+            padding-left: 0;
+            &:before{
+              display:none;
+            }
+          }
+        }
+      }
+    }
+    .right-item{
+      flex:0.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ff635a;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      p{
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        color:#fff;
+        margin-bottom: 0;
+        span{
+          font-size:15px;
+          &.price-text{
+            font-size:30px;
+          }
+        }
+        a{
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 80%;
+          color:#fff;
+          font-size:13px;
+          border:1px solid #fff;
+        }
+      }
+    }
+  }
+}
+#pullUp {
+  width: 100%;
+  height: 40px;
+  line-height: 34px;
+  background: #F7F7F7;
+  text-align: center;
+  z-index: 2000;
+  margin-top:-300px;
+}
+
+#box_content {
+  overflow: hidden;
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  height: calc( 100% - 160px);
+}
+
+.input-list #couponText{
+  font-size: 16px;
+  color: #FF473C;
+}
+.to-coupon {
+  margin-bottom: 0;
+}
+.select-btn {
+  padding-bottom: 0;
+}
+
+.button-note {
+  a {
+    &.count-downing {
+      background: #C9C9C9;
+      border: 1px solid #C9C9C9;
+    }
+  }
+}
+.clear-font i {
+  font-weight: normal!important;
+  font-size: 16px!important;
+}
+.smartphoto {
+  background-color:rgba(0,0,0,0.7)!important;
+}
+.summary-box b {
+  font-size: 50px!important;
+  font-weight: normal!important;
+}
+.summary-box i {
+  font-size: 22px!important;
+  font-weight: normal!important;
+  position: relative;
+  left: -0.7rem!important;
+  margin-left: 0!important;
+}
+#couponText {
+  width: 60%;
+}
+.noCoupon {
+  margin-top: 180px;
+  .noCouponIcon{
+    width: 100px;
+    height: 90px;
+    background: url("../../images/investment/no_coupon.png") no-repeat;
+    background-size: 100%;
+  }
+}
+#pullUp {
+  position: absolute;
+  bottom: 0;
+}
+.icon-close {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  background: url("../../images/close_btn.png") no-repeat;
+  background-size: contain;
+}
+.immediate-investment {
+  margin-top: 0.5rem!important;
+}
+.transfer-title {
+  font-size: 14px;
+  font-weight: normal!important;
+}
+.benefit-list span {
+  font-weight: normal!important;
+}
+.input-list li input.transfer-price {
+  font-weight: normal!important;
+}
+#transfer_details {
+  font-weight: normal!important;
+}
+.transfer-lable {
+  font-weight: normal!important;
+}
+.benefit-box.transfer-box .bg-square-box {
+  bottom: 8px;
+}
+#transferSubmit {
+  margin-top: 50px;
+}
+
+.init-checkbox-style {
+  width: 24px!important;
+  position: relative;
+  top: -3px;
+}
+.box-item {
+  margin-top: 10px;
+  border-bottom: 1px solid #f2f2f2;
+  dl {
+    font-weight: normal;
+  }
+}
+
+.box-item .amount {
+  color: #525252;
+}
+
+
+.anxin-electro-sign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem .5rem;
+  &.anxin-electro-sign1 {
+    padding: .6rem;
+  }
+
+  .cfca-logo {
+    width: 6rem;
+    height: 5rem;
+    background: url('../../images/anxin/cfca.png') center center no-repeat;
+    background-size: 100%;
+    margin: .7rem auto .5rem auto;
+  }
+
+  .cfca-info {
+    font-size: .7rem;
+    color: #525252;
+    line-height: 1.3rem;
+    align-self: flex-start;
+  }
+  .cfca-advantage {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width:100%;
+    height: 4.5rem;
+    margin-top: .6rem;
+    margin-bottom: 2rem;
+    span {
+      flex: 1;
+      height: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      i {
+        height: 3rem;
+        background-size: contain;
+      }
+      &:nth-child(1) {
+        i {
+          background: url('../../images/anxin/good-01.png') center top no-repeat;
+          background-size: contain;
+        }
+      }
+      &:nth-child(2) {
+        i {
+          background: url('../../images/anxin/good-02.png') center top no-repeat;
+          background-size: contain;
+        }
+      }
+      &:nth-child(3) {
+        i {
+          background: url('../../images/anxin/good-03.png') center top no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
+}
+.anxin-electro-success {
+  color: #525252;
+  padding: 0 .5rem 1rem .5rem;
+  text-align: center;
+
+  .success-section {
+    height: 11.5rem;
+    h2 {
+      font-size: 1rem;
+    }
+    .electro-logo {
+      width: 6rem;
+      height: 5rem;
+      background: url('../../images/anxin/electro-sign.png') center center no-repeat;
+      background-size: 100%;
+      margin: 1.7rem auto .5rem auto;
+    }
+  }
+  .open-SMS-free {
+    font-size: .7rem;
+    .btn-wap-normal {
+      margin-top: .7rem;
+    }
+  }
+}
+.identifying-code {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #f2f2f2;
+  width: 100%;
+  height: 1.8rem;
+  .close_btn {
+    display: none;
+    position: absolute;
+    top: .65rem;
+    left: 7.5rem;
+    width: .6rem;
+    height: .6rem;
+    background: url("../../images/close_btn.png") no-repeat;
+    background-size: contain;
+  }
+  input {
+    flex: 1;
+    width:auto;
+    border:0;
+    padding-left: .75rem;
+    font-size:14px;
+  }
+  & > span {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    button {
+      background: #fff;
+      border:0;
+      font-size: .7rem;
+      color: #FF635A;
+      height: 100%;
+      &:before {
+        display: inline-block;
+        border-right: 1px solid #f2f2f2;
+        content: '';
+        height: 1rem;
+        vertical-align: bottom;
+        margin-top: .2rem;
+        margin-right: .65rem;
+      }
+    }
+    .get-skip-code {
+      width:70%;
+      &.count-downing {
+        color: #ddd;
+      }
+
+    }
+    .microphone {
+      width:30%;
+      background: url('../../images/anxin/voice.png') center center no-repeat;
+      background-size: 40%;
+
+      &:before {
+        display: inline-block;
+        border-right: 1px solid #f2f2f2;
+        content: '';
+        height: 1rem;
+        vertical-align: bottom;
+        margin-top: .2rem;
+      }
+    }
+  }
+}
+#authorization_message {
+  .init-checkbox-style {
+    top: .2rem;
+    width: .75rem!important;
+    height: .75rem;
+    overflow: auto;
+    margin: 0;
+    margin-right: .25rem;
+    vertical-align: top;
+  }
+}
+
+.goBack_wrapper {
+  position: relative;
+  width: 100%;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  font-size: .85rem;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: .1rem;
+    top: .35rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: .4rem 0 0 .5rem;
+      width: .45rem;
+      height: .7rem;
+      background: url("../../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
+.btn-wap-normal {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  width: 15rem;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #fff;
+  border-radius: 5rem;
+  background: #FF635A;
+}
+.agreement-box {
+  width: 100%;
+  text-align: left;
+  font-size: .6rem;
+  color: #A2A2A2;
+  display: flex;
+  flex-direction: row;
+  margin-top: .75rem;
+  line-height: 1rem;
+}
+.init-checkbox-style.on {
+  background-size: contain;
+}
+.error {
+  margin: .3rem auto 1rem auto;
+  width: 100%;
+  text-align: left;
+}
+.countDownTime {
+  flex: 1;
+  display: inline-block;
+  text-align: center;
+  color: #999;
+  height: 1.3rem;
+  line-height: 1.3rem;
+  border-left: 1px solid #f2f2f2;
+  margin-top: .2rem;
+}
+#toOpenSMS {
+  margin-top: 2.5rem;
+}
+#authorization_message {
+  height: 100%;
+  background: #fff;
+}
+#agrement {
+  color: #808080;
+}
+
+.iconRight {
+  display: inline-block;
+  position: relative;
+  top: 6px;
+  width: 9px;
+  height: 14px;
+
+  background: url("../../images/icon_goRight.png") no-repeat;
+  background-size: contain;
+}
+.pdf {
+  .iconRight {
+    top: 3px;
+  }
+}
+.sectionNone {
+  height: 60px;
+}
+#noData {
+  text-align: center;
+}
+.category-detail {
+  padding-top: 20px;
+}
+#scroll {
+  padding-bottom: 3.3rem;
+}
+
+.pop_title {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #525252;
+}
+.success-info-tip {
+  padding: 0;
+}
+

@@ -7,26 +7,11 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.dto.TransferApplicationRecodesDto;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferApplicationRecordView;
-import com.tuotiansudai.repository.model.TransferRuleModel;
-import com.tuotiansudai.repository.model.TransferableInvestPaginationItemDataView;
 import com.tuotiansudai.transfer.service.TransferService;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.CalculateLeftDays;
-import com.tuotiansudai.util.InterestCalculator;
-import com.tuotiansudai.util.PaginationUtil;
-import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransferServiceImpl implements TransferService {
@@ -150,6 +136,18 @@ public class TransferServiceImpl implements TransferService {
         return transferApplicationDetailDto;
     }
 
+
+    public List<TransferInvestRepayDataDto> getUserTransferInvestRepay(long investId) {
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
+
+        return investRepayModels.stream()
+                .map(investRepayModel -> new TransferInvestRepayDataDto(
+                        investRepayModel.getRepayDate(),
+                        investRepayModel.getExpectedInterest() + investRepayModel.getCorpus(),
+                        investRepayModel.getStatus()
+                )).collect(Collectors.toList());
+    }
+
     @Override
     public TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(TransferApplicationId);
@@ -203,7 +201,7 @@ public class TransferServiceImpl implements TransferService {
         });
         UnmodifiableIterator<TransferableInvestPaginationItemDataView> filter = Iterators.filter(records.iterator(), input -> {
             TransferRuleModel transferRuleModel = transferRuleMapper.find();
-            return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null) ;
+            return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null);
         });
         BasePaginationDataDto<TransferableInvestPaginationItemDataView> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
         baseDto.setStatus(true);

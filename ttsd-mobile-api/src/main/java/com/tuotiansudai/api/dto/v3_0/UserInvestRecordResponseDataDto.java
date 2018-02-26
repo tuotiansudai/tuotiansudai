@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto.v3_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestStatus;
+import com.tuotiansudai.dto.UserInvestRecordDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -226,16 +227,25 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     }
 
-    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loanModel) {
-        InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
-        this.loanId = String.valueOf(invest.getLoanId());
-        this.loanName = loanModel.getName();
-        this.investId = String.valueOf(invest.getId());
-        this.investAmount = AmountConverter.convertCentToString(invest.getAmount());
-        this.investTime = new DateTime(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()).toString("yyyy-MM-dd");
+    public UserInvestRecordResponseDataDto(UserInvestRecordDataDto userInvestRecordDataDto) {
+        InvestStatus investStatus = InvestStatus.convertInvestStatus(userInvestRecordDataDto.getInvestStatus());
+        this.loanId = String.valueOf(userInvestRecordDataDto.getLoanId());
+        this.loanName = userInvestRecordDataDto.getLoanName();
+        this.investId = userInvestRecordDataDto.getInvestId();
+        this.investAmount = userInvestRecordDataDto.getInvestAmount();
+        this.investTime = userInvestRecordDataDto.getInvestTime();
         this.investStatus = investStatus;
-        this.achievements = invest.getAchievements();
-        this.pledgeType = loanModel.getPledgeType();
-        this.transferStatus = invest.getTransferStatus().name();
+        this.expectedInterest = userInvestRecordDataDto.getExpectedInterest();
+        this.actualInterest = userInvestRecordDataDto.getActualInterest();
+        this.lastRepayDate = userInvestRecordDataDto.getLastRepayDate();
+        this.transferStatus = userInvestRecordDataDto.getTransferStatus();
+        this.achievements = userInvestRecordDataDto.getAchievements();
+        this.usedCoupon = userInvestRecordDataDto.isUsedCoupon();
+        this.usedRedEnvelope = userInvestRecordDataDto.isUsedRedEnvelope();
+        this.productNewType = userInvestRecordDataDto.getProductNewType();
+        this.extraRate = userInvestRecordDataDto.getExtraRate();
+        this.pledgeType = userInvestRecordDataDto.getPledgeType();
+        this.isTransferInvest = userInvestRecordDataDto.isTransferInvest();
+        this.repayProgress = userInvestRecordDataDto.getRepayProgress();
     }
 }

@@ -4,7 +4,7 @@ var packageRoute = require('./package.route.js');
 
 module.exports = {
     entry: {
-        'jquery': ['jquery','layer','underscore']
+        'jquery': ['jquery','layer','underscore','iscroll']
     },
     output: {
         path: path.join(packageRoute.publicPath, 'js/dllplugins'),

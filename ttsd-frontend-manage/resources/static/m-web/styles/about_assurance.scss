@@ -1,0 +1,365 @@
+body {
+font-family: "Heiti SC";
+}
+html {
+  font-size: 100px;
+}
+body {
+  font-size: 12px;
+}
+.one-step {
+  background: #eafafd;
+  overflow: hidden;
+  .assurance-title {
+    margin: 0 auto;
+    margin-top: 1.1rem;
+    width: 4.5rem;
+    height: 1.3rem;
+    background: url("../images/sign/assure/assure_title.png") no-repeat center center;
+    background-size: contain;
+  }
+  .assure-img {
+    margin-top: 2.1rem;
+    height: 4rem;
+    background: url("../images/sign/assure/cash_assure.png") no-repeat center center;
+    background-size: contain;
+  }
+  .down-arrow {
+    margin: 0 auto;
+    margin-top: 3.2rem;
+    width: 5.7rem;
+    height: .5rem;
+    background: url("../images/sign/assure/down_arrow.png") no-repeat center center;
+    background-size: contain;
+  }
+}
+
+.cash-title {
+  margin-top: 1.2rem;
+  font-size: .4rem;
+  color: #0f3d70;
+  text-align: center;
+}
+  .cash-fonts {
+    color: #08376c;
+    font-size: .3rem;
+    text-align: center;
+    line-height: .38rem;
+    margin-top: .3rem;
+    padding: 0.5rem 0rem;
+    background: url("../images/sign/assure/font_bg.png") no-repeat center center;
+    background-size: 100%;
+    background-clip: padding-box;
+  }
+
+
+.two-step {
+  background: #fff;
+  overflow: hidden;
+  padding-bottom: 1.15rem;
+  .safe-info-list {
+    font-size:.24rem;
+    color: #4c4c4c;
+    dl {
+      width:6.4rem;
+      margin: 0 auto;
+      margin-top: .6rem;
+      dt {
+        height: 1.6rem;
+        text-align: center;
+        width: 1.76rem;
+        margin: 0 auto;
+        display: table-cell;
+        vertical-align: middle;
+        font-size:18px;
+        text-indent: -9999px;
+        float: left;
+        &.list01 {
+          background:url('../images/sign/assure/safe-01.png') no-repeat center top;
+          background-size: contain;
+          color: #db6558;
+        }
+        &.list02 {
+          background:url('../images/sign/assure/safe-02.png') no-repeat center top;
+          background-size: contain;
+          color: #3776cb;
+        }
+        &.list03 {
+          background:url('../images/sign/assure/safe-03.png') no-repeat center top;
+          background-size: contain;
+          color: #6dbb7c;
+        }
+      }
+      dd {
+        width: 4.3rem;
+        float: right;
+
+
+      }
+
+    }
+  }
+
+}
+.three-step {
+  padding-top: .75rem;
+  padding-bottom: 1.3rem;
+  background: #eafafd;
+  .privacy {
+    background-size: 70%;
+  }
+  dl {
+    text-align: center;
+    margin-top: .8rem;
+    dt {
+      width: 1.5rem;
+      height: 1.51rem;
+      display: inline-block;
+      &.operator {
+        background: url("../images/sign/assure/operator.png") no-repeat;
+        background-size: contain;
+      }
+      &.laws {
+        background: url("../images/sign/assure/laws.png") no-repeat;
+        background-size: contain;
+      }
+    }
+    dd {
+      text-align: left;
+      display: inline-block;
+      font-size: .26rem;
+      color: #0f3d70;
+      margin-top: .2rem;
+    }
+  }
+}
+.four-step {
+  padding-top: .65rem;
+  padding-bottom: .8rem;
+  background: #fff;
+  .record {
+    background-size: 70%;
+  }
+  .record-desc {
+    width: 6.8rem;
+    height: 1.6rem;
+    position: relative;
+    margin: 0 auto;
+    margin-top: .4rem;
+    @media screen and (max-width: 320px) {
+      width: 7rem;
+    }
+    .desc {
+      position: absolute;
+      right: 0;
+      width: 6rem;
+      @media screen and (max-width: 320px) {
+        width: 6.3rem;
+      }
+      height: 1.6rem;
+      border: 1px solid #ef7069;
+      border-radius: .15rem;
+      padding-right: .45rem;
+      @media screen and (max-width: 360px) {
+        padding-right: .2rem;
+      }
+      padding-left: .9rem;
+      color: #5c5f66;
+      font-size: .24rem;
+      line-height: .44rem;
+      box-sizing: border-box;
+      padding-top: .16rem;
+      @media screen and (max-width: 320px) {
+        font-size: 11px;
+        padding-right: .05rem;
+        padding-left: .8rem;
+      }
+    }
+    .img {
+      width: 1.53rem;
+      height: 1.4rem;
+      position: absolute;
+      top: .1rem;
+      &.img-1 {
+        background: #fff url("../images/sign/assure/assessment.png") no-repeat center center;
+        background-size: contain;
+      }
+      &.img-2 {
+        background: #fff url("../images/sign/assure/assessment2.png") no-repeat center center;
+        background-size: contain;
+      }
+      &.img-3 {
+        background: #fff url("../images/sign/assure/assessment3.png") no-repeat center center;
+        background-size: contain;
+      }
+      &.img-4 {
+        background: #fff url("../images/sign/assure/assessment4.png") no-repeat center center;
+        background-size: contain;
+      }
+    }
+  }
+}
+.five-step {
+  padding-top: .7rem;
+  padding-bottom: 1.1rem;
+  background: #eafafd;
+  .data_assurance {
+    background-size: 70%;
+  }
+  .info-assurance {
+    width: 7.1rem;
+    height: 7.24rem;
+    position: relative;
+    margin: 0 auto;
+    margin-top: .5rem;
+    .circles {
+      position: absolute;
+      width: .83rem;
+      height: 6.64rem;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      background: url("../images/sign/assure/circles.png") no-repeat center center;
+      background-size: 100%;
+    }
+    .desc-info {
+      position: absolute;
+      width: 3rem;
+      border: 1px dashed #5a8aed;
+      border-radius: .2rem;
+      padding-left: .1rem;
+      box-sizing: border-box;
+      background: #fff;
+      .trangle {
+        position: absolute;
+        top: .5rem;
+        width: .14rem;
+        height: .21rem;
+
+        &.trangle-r {
+          left: -0.11rem;
+          background: url("../images/sign/assure/trangle_r.png") no-repeat center center;
+          background-size: contain;
+        }
+        &.trangle-l {
+          right: -0.12rem;
+          background: url("../images/sign/assure/trangle.png") no-repeat center center;
+          background-size: contain;
+        }
+      }
+      &.desc-info-network {
+         left: 0;
+         top: .14rem;
+       }
+      &.desc-info-encryption {
+       right: 0;
+        top: 2.2rem;
+      }
+      &.desc-info-disaster-recovery {
+        left: 0;
+        top: 4.1rem;
+      }
+      &.desc-info-internal-control {
+        right: 0;
+        bottom: -0.1rem;
+      }
+      dl {
+        padding-bottom: .1rem;
+        dt {
+          font-size: .28rem;
+          color: #0f3d70;
+        }
+        dd {
+          font-size: .22rem;
+          color: #4c4c4c;
+          line-height: .3rem;
+          padding-right: .05rem;
+          @media screen and (max-width: 320px) {
+            font-size: 11px;
+            line-height: .4rem;
+          }
+          .wap-style {
+
+            @media screen and (min-width: 414px) {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
