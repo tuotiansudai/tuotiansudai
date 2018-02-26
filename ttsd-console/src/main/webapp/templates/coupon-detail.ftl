@@ -55,14 +55,14 @@
 
             <input type="hidden" value="${couponId?string('0')}" class="coupon-id">
             <label for="control-label">投资金额汇总: ${investAmount /100}</label>
-            <label for="control-label" style="margin-left: 20px;">投资年化金额汇总: ${interest /100}</label>
+            <label for="control-label" style="margin-left: 20px;">年化投资收益汇总: ${interest /100}</label>
             <table class="table table-bordered table-hover " style="width:80%;" >
                 <thead>
                     <tr>
                         <th>用户名</th>
                         <th>使用时间</th>
                         <th>投资金额</th>
-                        <th>投资年化金额</th>
+                        <th>年化投资收益</th>
                         <th>项目期限</th>
                         <th>项目编号</th>
                         <th>项目名称</th>
