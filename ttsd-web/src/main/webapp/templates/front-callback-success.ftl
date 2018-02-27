@@ -8,7 +8,7 @@
                 <div class="success_tip_icon"></div>
                 <p class="my_pay_tip">银行卡绑定成功</p>
                 <div class="handle_btn_container">
-                    <div class="see_my_account">查看我的账户</div>
+                    <div class="my_personal-info">查看我的账户</div>
                     <div class="go_to_recharge">去充值</div>
                 </div>
             </div>

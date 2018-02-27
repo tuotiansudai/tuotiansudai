@@ -13,7 +13,7 @@ if ($successBox.length) {
     });
 }
 
-$('.see_my_account').on('click',() => {
+$('.see_my_account').on('click',function() {
     location.href = '/account';
 });
 
@@ -27,4 +27,8 @@ $('.go_to_recharge').on('click',() => {
 
 $('.go_to_invest').on('click',() => {
     location.href = '/loan-list';
+});
+
+$('.my_personal-info').on('click',() => {
+    location.href = '/personal-info';
 });
