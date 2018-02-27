@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
-from paver.tasks import task, needs, cmdopts
+from paver.tasks import task, needs
 
 
 @task
@@ -65,8 +65,8 @@ def qa(options):
     Deploy Staging/QA environment
     """
     from scripts.deployment import Deployment
-
-    deployment = Deployment(env=options.env, pay_fake=options.get('pay', {}).get('fake'))
+    skip_steps = [s.strip() for s in options.get('skip_steps', '').split(',')]
+    deployment = Deployment(env=options.env, pay_fake=options.get('pay', {}).get('fake'), skip_steps=skip_steps)
     deployment.deploy()
 
 
