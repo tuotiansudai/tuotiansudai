@@ -20,6 +20,10 @@
     window.commonStaticServer='${commonStaticServer}';
 </script>
 
+<#if (js.jquerydll)??>
+<script src="${js.jquerydll}" type="text/javascript" ></script>
+</#if>
+
 <#if (js.index)??>
 <script src="${js.index!}"></script>
 </#if>
