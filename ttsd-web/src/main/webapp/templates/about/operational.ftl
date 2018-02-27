@@ -24,9 +24,9 @@
         <div class="data-model cheat-model">
             <h3>平台累计投资</h3>
             <div class="model-container chart-dom" id="dataRecord">
-                <!--[if gte IE 8]> 
+                <!--[if gte IE 8]>
                 请使用更高版本浏览器查看
-                <![endif]--> 
+                <![endif]-->
             </div>
         </div>
         <div class="data-model">

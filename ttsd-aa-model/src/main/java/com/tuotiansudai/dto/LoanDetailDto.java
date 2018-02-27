@@ -83,7 +83,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String activityDesc;
 
-    public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
+    private boolean nonTransferable;
+
+    private Date deadline;
+
+    private double maxExtraLoanRate;
+
+    public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto, double maxExtraLoanRate) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
         this.progress = new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
@@ -109,9 +115,12 @@ public class LoanDetailDto extends BaseDataDto {
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
         this.extraSource = loanDetails == null ? null : (loanDetails.getExtraSource() != null && loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
-        this.activity = loanDetails == null ? false : loanDetails.isActivity();
+        this.activity = loanDetails != null && loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
+        this.nonTransferable = loanDetails != null && loanDetails.getNonTransferable();
         this.pledgeType = loanModel.getPledgeType();
+        this.deadline = loanModel.getDeadline();
+        this.maxExtraLoanRate = new BigDecimal(maxExtraLoanRate).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public long getId() {
@@ -193,6 +202,7 @@ public class LoanDetailDto extends BaseDataDto {
     public String getRaisingDays() {
         return raisingDays;
     }
+
     public List<LoanTitleModel> getLoanTitleDto() {
         return loanTitleDto;
     }
@@ -307,5 +317,17 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public boolean isNonTransferable() {
+        return nonTransferable;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public double getMaxExtraLoanRate() {
+        return maxExtraLoanRate;
     }
 }

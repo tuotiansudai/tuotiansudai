@@ -5,6 +5,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.InvestRepayDataDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -52,6 +55,9 @@ public class RepayServiceTest {
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
     @Test
     public void shouldInvestRepayFindInvestorInvestRepayIsOk() {
@@ -215,6 +221,7 @@ public class RepayServiceTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
+        userMembershipMapper.create(new UserMembershipModel(loginName, 1, new DateTime().minusDays(1).toDate(), UserMembershipType.UPGRADE));
         return userModelTest;
     }
 }

@@ -1,0 +1,249 @@
+$color333:#333;
+$color8080:#808080;
+$colora2a2:#A2A2A2;
+$colorYellow:#F6AA16;
+body {
+  background: #f2f2f2;
+}
+em {
+  font-weight: normal;
+}
+.icon-sign {
+  font-size: .18rem;
+  padding: .02rem .04rem;
+  padding-top: .04rem;
+  line-height:.18rem;
+}
+#noData {
+  text-align: center;
+  width: 100%;
+  background: #f2f2f2;
+  clear: both;
+}
+.noList {
+  margin-top: 1.48rem;
+  margin-bottom: .7rem;
+  width: 4.2rem;
+  margin: 0 auto;
+  text-align: center;
+  .img {
+    margin-top: 1.5rem;
+    width: 4.2rem;
+    height: 4.2rem;
+    background: url("../../images/account/noInvestList.png") no-repeat;
+    background-size: contain;
+  }
+  button {
+    width: 3rem;
+    height: .9rem;
+    margin-top: .7rem;
+    color:#fff;
+    background: #FF635A;
+    line-height: .9rem;
+    text-align: center;
+    border: none;
+    border-radius: .5rem;
+    font-size: .4rem;
+  }
+}
+.invest-list-wrap {
+  font-size: .24rem;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  top: 1.85rem;
+  overflow: hidden;
+  bottom: 0;
+  font-family: 'PingFang SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', Arial, Verdana, sans-serif;
+  .invest-list-box {
+    background: #f2f2f2;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+    padding-bottom: 0.4rem;
+    .invest-item {
+      padding-left: .17rem;
+      padding-right: .17rem;
+      padding-top: .44rem;
+      margin-bottom: .2rem;
+      background: #fff;
+      .top {
+        padding-bottom: .2rem;
+      }
+      dl {
+        line-height: .44rem;
+        padding-left: .3rem;
+        padding-right: .3rem;
+        box-sizing: border-box;
+        &.dl-l {
+          width: 50%;
+          float: left;
+          dt {
+            font-weight: normal;
+            em {
+              font-size: .5rem;
+            }
+            color: $color333;
+          }
+          dd {
+            font-size: .24rem;
+            color: $color8080;
+            padding-left: .2rem;
+          }
+        }
+        &.dl-r {
+          width: 50%;
+          float: right;
+          text-align: center;
+          padding-right: 0;
+          dt {
+            display: inline-block;
+            width: 2.0rem;
+            padding-left: .15rem;
+            padding-right: .34rem;
+            font-size: .24rem;
+            color: #fff;
+            background: rgba(246,170,22,0.6);
+            border-radius: .7rem;
+            position: relative;
+            overflow: hidden;
+            em {
+              position: absolute;
+              left: 0;
+              display: inline-block;
+              width: 1.3rem;
+              height: .44rem;
+              background: $colorYellow;
+              border-radius: .7rem 0 0 .7rem;
+              z-index: 2;
+              &.percent {
+                border-radius: .7rem;
+              }
+
+            }
+            i {
+              position: relative;
+              z-index: 200;
+            }
+          }
+          dd {
+            color: $color8080;
+            min-width: 2rem;
+            line-height: 0.6rem;
+            em {
+              color: $colorYellow;
+              font-size: .24rem;
+            }
+          }
+        }
+        &.bottom {
+          border-top: 1px solid #E5E5E5;
+          height: .6rem;
+          line-height: .6rem;
+          padding-right: 0;
+          dt {
+            width: 50%;
+            float: left;
+            color: #a2a2a2;
+          }
+          dd {
+            width: 50%;
+            box-sizing: border-box;
+            float: right;
+            text-align: right;
+            padding-right: 10px;
+          }
+        }
+
+      }
+    }
+  }
+}
+.menu-category{
+  height: .78rem!important;
+  margin-bottom: .2rem;
+  span {
+    line-height: .84rem;
+    a {
+      width: 65%;
+      line-height: .64rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+  .invest-list-wrap {
+    top: 2rem;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
+
+

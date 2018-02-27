@@ -1,7 +1,8 @@
 package com.tuotiansudai.coupon.service;
 
+import com.tuotiansudai.dto.BaseWrapperDataDto;
+import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.dto.BaseDataDto;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface ExchangeCodeService {
 
     boolean generateExchangeCode(long couponId, int count);
 
-    BaseDataDto exchange(String loginName, String exchangeCode);
+    BaseWrapperDataDto<UserCouponDto> exchange(String loginName, String exchangeCode);
 
     List<String> getExchangeCodes(long couponId);
 

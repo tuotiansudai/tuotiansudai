@@ -23,6 +23,10 @@
         <filter-name>XssSqlFilter</filter-name>
         <filter-class>com.tuotiansudai.web.config.interceptors.XssFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>UserAgentFilter</filter-name>
+        <filter-class>com.tuotiansudai.web.config.interceptors.UserAgentFilter</filter-class>
+    </filter>
 
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
@@ -60,6 +64,11 @@
 
     <filter-mapping>
         <filter-name>XssSqlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserAgentFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
@@ -110,6 +119,7 @@
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/m/*</url-pattern>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 

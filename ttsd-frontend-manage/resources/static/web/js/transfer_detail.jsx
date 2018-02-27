@@ -122,7 +122,7 @@ function submitData() {
                     if($isAnxinAuthenticationRequired.val()=='false'){
                         $transferForm.submit();
                     }else{
-                        anxinModule.getSkipPhoneTip();
+                        //安心签
                         return false;
                     }
 

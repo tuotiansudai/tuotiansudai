@@ -15,19 +15,19 @@ import java.util.Map;
 
 public interface InvestService {
 
+    String INVEST_CHECK_QUEUE_KEY = "invest:check:queue";
+
     BaseDto<PayFormDataDto> invest(InvestDto dto);
 
     String investCallback(Map<String, String> paramsMap, String queryString);
 
-    BaseDto<PayDataDto> asyncInvestCallback(long notifyRequestId);
+    BaseDto<PayDataDto> asyncInvestCallback(long orderId);
 
     String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString);
 
     void autoInvest(long loanId);
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
-
-    void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
     void investSuccess(InvestModel investModel);
 

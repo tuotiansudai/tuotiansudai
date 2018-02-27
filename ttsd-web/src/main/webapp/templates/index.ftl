@@ -159,7 +159,7 @@
             <#include "component/loan-title.ftl">
             <#list normalLoans as loan>
             <#include "component/loan-row.ftl">
-        </#list>
+            </#list>
         </div>
 
 

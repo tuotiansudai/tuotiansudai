@@ -1,0 +1,40 @@
+.experience-amount {
+  .account-summary {
+
+    .summary-box {
+      padding-top:25px;
+    }
+    .collection {
+      flex: 3;
+    }
+
+    .amount-balance {
+      background: #FF473C;
+    }
+  }
+
+  .amount-detail-list {
+    position: absolute;
+    top: 270px;
+    bottom: 0px;
+    width: 100%;
+    overflow: hidden;
+    height: calc( 100% - 270px - 55px );
+  }
+}
+
+.to-invest-project {
+  background: #FF635A;
+  color: #fff;
+  height:55px;
+  font-size: 20px;
+  text-align: center;
+  position: absolute;
+  bottom:0;
+  width:100%;
+  border:0;
+  &:disabled {
+    background: #C9C9C9;
+  }
+}
+

@@ -37,9 +37,9 @@ def migrate():
 
 
 def mk_war(targets=None):
-    mk_static_zip()
     if not targets:
         local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
+        return
 
     for target in targets:
         local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
@@ -100,6 +100,7 @@ def clear_worker_status():
 
 @roles('static')
 def deploy_static():
+    mk_static_zip()
     upload_project(local_dir='./ttsd-frontend-manage/resources/prod/static_all.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
@@ -290,7 +291,11 @@ def deploy_all():
 
 def all(skip_package):
     pre_deploy(skip_package)
+    if skip_package == 'False':
+        mk_signin_zip()
     mk_war()
+    mk_worker_zip()
+    mk_mq_consumer()
     deploy_all()
 
 
@@ -301,24 +306,24 @@ def package(skip_package):
 def web(skip_package):
     pre_deploy(skip_package, ('ttsd-web',))
     mk_war(('ttsd-web',))
-    execute(deploy_web)
     execute(deploy_static)
+    execute(deploy_web)
 
 
 def activity(skip_package):
     pre_deploy(skip_package, ('ttsd-activity-web',))
     mk_war(('ttsd-activity-web',))
-    execute(deploy_activity)
     execute(deploy_static)
+    execute(deploy_activity)
 
 
 def ask(skip_package):
     pre_deploy(skip_package, ('ttsd-ask-web', 'ttsd-ask-rest'))
-    mk_war('ttsd-ask-web')
+    mk_war(('ttsd-ask-web',))
     mk_rest_service()
+    execute(deploy_static)
     execute(deploy_ask_rest)
     execute(deploy_ask)
-    execute(deploy_static)
 
 
 def console(skip_package):
@@ -364,8 +369,8 @@ def pay(skip_package):
 def point(skip_package):
     pre_deploy(skip_package, ('ttsd-piont-web',))
     mk_war(('ttsd-piont-web',))
-    execute(deploy_point)
     execute(deploy_static)
+    execute(deploy_point)
 
 
 def signin(skip_package):

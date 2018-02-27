@@ -32,6 +32,7 @@ public class UserCouponDto implements Serializable {
     private long investLowerLimit;
     private Date createdTime;
     private List<ProductType> productTypeList;
+    public String couponSource;
 
     public UserCouponDto() {
     }
@@ -58,6 +59,7 @@ public class UserCouponDto implements Serializable {
         this.investLowerLimit = coupon.getInvestLowerLimit();
         this.createdTime = userCoupon.getCreatedTime();
         this.productTypeList = coupon.getProductTypes();
+        this.couponSource = coupon.getCouponSource();
     }
 
     public long getId() {
@@ -140,4 +142,7 @@ public class UserCouponDto implements Serializable {
         return productTypeList;
     }
 
+    public String getCouponSource() {
+        return couponSource;
+    }
 }

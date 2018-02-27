@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Doubles;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -26,6 +27,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanDetailServiceImpl implements LoanDetailService {
@@ -123,32 +125,29 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         List<LoanDetailInvestPaginationItemDto> records = Lists.newArrayList();
 
         if (CollectionUtils.isNotEmpty(investModels)) {
-            records = Lists.transform(investModels, new Function<InvestModel, LoanDetailInvestPaginationItemDto>() {
-                @Override
-                public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
-                    LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
-                    item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
-                    item.setSource(input.getSource());
-                    item.setAutoInvest(input.isAutoInvest());
-                    item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId()));
+            records = investModels.stream().map(input -> {
+                LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
+                item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
+                item.setSource(input.getSource());
+                item.setAutoInvest(input.isAutoInvest());
+                item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId()));
 
 
-                    long amount = 0;
-                    List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
-
-                    if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount(), input.getCreatedTime());
-                    }
-
-                    item.setExpectedInterest(AmountConverter.convertCentToString(amount));
-                    item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
-                    item.setAchievements(input.getAchievements());
-                    return item;
+                long amount = 0;
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
                 }
-            });
+
+                if (CollectionUtils.isEmpty(investRepayModels)) {
+                    amount = investService.estimateInvestIncome(input.getLoanId(), input.getInvestFeeRate(), loginName, input.getAmount(), input.getCreatedTime());
+                }
+
+                item.setExpectedInterest(AmountConverter.convertCentToString(amount));
+                item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
+                item.setAchievements(input.getAchievements());
+                return item;
+            }).collect(Collectors.toList());
         }
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
@@ -156,6 +155,14 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
+    }
+
+    private double getMaxExtraLoanRate(long loanId) {
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
+        return extraLoanRateModels.stream()
+                .max((left, right) -> Doubles.compare(left.getRate(), right.getRate()))
+                .map(ExtraLoanRateModel::getRate)
+                .orElse(0D);
     }
 
     private boolean isRemindNoPassword(String loginName) {
@@ -184,7 +191,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 investedAmount,
                 loanTitleMapper.findAll(),
                 loanTitleRelationMapper.findByLoanId(loanModel.getId()),
-                investorDto);
+                investorDto,
+                getMaxExtraLoanRate(loanModel.getId()));
 
         LoanerDetailsModel loanerDetail = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetail != null) {

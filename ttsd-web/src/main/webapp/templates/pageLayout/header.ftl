@@ -1,4 +1,13 @@
 <div class="header-container">
+    <div class="app-container clearfix" style="display: none">
+        <div class="logo"></div>
+        <div class="app-detail">
+            打开拓天速贷APP<br/>
+            超低门槛  稳健收益
+        </div>
+        <div class="open-app">打开APP</div>
+        <div class="close-app"></div>
+    </div>
     <div class="header-download">
         <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
         <div class="img-logo-tip sprite-global-logo-tip" ></div>
