@@ -11,7 +11,7 @@
 
     <div class="refer-reward-box tc">
         <img src="${commonStaticServer}/images/sign/aboutus/bar-share-top.jpg" alt="推荐奖励">
-        <a href="/activity/share-reward" class="detail-button">查看详细规则>></a>
+        <a href="/activity/invite-friend" class="detail-button">查看详细规则>></a>
     </div>
 
 </div>
