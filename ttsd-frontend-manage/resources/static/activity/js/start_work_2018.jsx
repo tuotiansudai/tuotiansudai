@@ -52,15 +52,7 @@ $('.close_btn2').on('click',() => {
 });
 
 $('.invest_btn').on('click',() => {
-    //window.location.href = '/loan-list';
-    layer.open({
-        type: 1,
-        title: false,
-        closeBtn: 0,
-        area: ['auto', 'auto'],
-        content: $('#loginTip')
-    });
-    //location.href='/login'
+    window.location.href = '/loan-list';
 });
 
 $('.get_prize_btn').on('click',(e) => {
@@ -123,7 +115,15 @@ function toLogin() {
             title: false,
             closeBtn: 0,
             area: ['auto', 'auto'],
-            content: $('#loginTip')
+            content: $('#loginTip'),
+            success:function () {
+                $('input').on('focus',function () {
+                    let height = -$(window).scrollTop();
+                    $('body').scrollTop(height);
+                })
+
+            }
+
         });
     }
 }
