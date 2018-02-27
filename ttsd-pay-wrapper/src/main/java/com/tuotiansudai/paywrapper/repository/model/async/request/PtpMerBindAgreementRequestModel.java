@@ -30,6 +30,8 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
             this.userBindAgreementList = AgreementType.ZKJP0700;
         } else if (dto.isAutoRepay()) {
             this.userBindAgreementList = AgreementType.ZHKB0H01;
+        }else if (dto.isHuizuAutoRepay()) {
+            this.userBindAgreementList = AgreementType.ZTBB0G00;
         }
     }
 
@@ -52,6 +54,9 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         }
         if (dto.isFastPay()) {
             return AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT;
+        }
+        if (dto.isHuizuAutoRepay()) {
+            return AsyncUmPayService.HUIZU_AUTO_REPAY_PTP_MER_BIND_AGREEMENT;
         }
 
         return AsyncUmPayService.FAST_PAY_MER_BIND_AGREEMENT;

@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
@@ -78,6 +80,8 @@ public class AgreementServiceImpl implements AgreementService {
             return UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
         } else if (dto.isFastPay()) {
             return UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
+        }else if(dto.isHuizuAutoRepay()){
+            return UserOpType.HUIZU_AUTO_REPAY;  //开通慧租自动还款
         }
         return null;
     }
@@ -106,7 +110,7 @@ public class AgreementServiceImpl implements AgreementService {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
 
         accountModel.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType || accountModel.isNoPasswordInvest());
-        accountModel.setAutoInvest(Lists.newArrayList(AgreementBusinessType.NO_PASSWORD_INVEST, AgreementBusinessType.AUTO_INVEST).contains(agreementBusinessType) || accountModel.isAutoInvest());
+        accountModel.setAutoInvest(Lists.newArrayList(AgreementBusinessType.NO_PASSWORD_INVEST, AgreementBusinessType.AUTO_INVEST, AgreementBusinessType.HUIZU_AUTO_REPAY).contains(agreementBusinessType) || accountModel.isAutoInvest());
         accountModel.setAutoRepay(AgreementBusinessType.AUTO_REPAY == agreementBusinessType || accountModel.isAutoRepay());
         accountMapper.update(accountModel);
 
@@ -118,6 +122,12 @@ public class AgreementServiceImpl implements AgreementService {
 
         if (AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType) {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
+        }
+
+        if (AgreementBusinessType.HUIZU_AUTO_REPAY == agreementBusinessType) {
+            mqWrapperClient.sendMessage(MessageQueue.HuiZuOpenAutoRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                    .put("login_name", loginName)
+                    .build()));
         }
     }
 }

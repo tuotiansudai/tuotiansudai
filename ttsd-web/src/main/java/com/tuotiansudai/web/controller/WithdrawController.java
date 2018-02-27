@@ -10,6 +10,8 @@ import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -43,6 +45,9 @@ public class WithdrawController {
     public ModelAndView withdraw() {
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         if (bankCard == null) {
+            if(MobileAccessDecision.isMobileAccess()){
+                return new ModelAndView("redirect:/m/bind-card");
+            }
             return new ModelAndView("redirect:/bind-card");
         }
         long balance = accountService.getBalance(LoginUserInfo.getLoginName());
@@ -51,6 +56,8 @@ public class WithdrawController {
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
         modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         modelAndView.addObject("hasAccess", String.valueOf(hasAccess));
+        modelAndView.addObject("bankCard", bankCard);
+        modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCard.getBankCode()));
         return modelAndView;
     }
 

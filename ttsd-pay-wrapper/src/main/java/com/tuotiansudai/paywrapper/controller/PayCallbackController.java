@@ -117,6 +117,13 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/huizu_auto_repay_notify", method = RequestMethod.GET)
+    public ModelAndView huizuAutoRepayAgreementNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.HUIZU_AUTO_REPAY);
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/auto_invest_notify", method = RequestMethod.GET)
     public ModelAndView autoInvestAgreementNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

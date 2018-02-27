@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
@@ -67,19 +68,22 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
     private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
     private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}%加息券";
 
     private final static String BIRTHDAY_COUPON_MESSAGE = "您已享受生日福利";
 
-    private final static Map<String, String> membershipMessage = Maps.newHashMap(ImmutableMap.<String, String>builder()
-            .put("0", "平台收取收益和奖励的10%作为服务费")
-            .put("1", "平台收取收益和奖励的10%作为服务费")
-            .put("2", "平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠")
-            .put("3", "平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠")
-            .put("4", "平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠")
-            .put("5", "平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠")
+    private final static Map<Integer, String> membershipMessage = Maps.newHashMap(ImmutableMap.<Integer, String>builder()
+            .put(0, "平台收取收益和奖励的10%作为服务费")
+            .put(1, "平台收取收益和奖励的10%作为服务费")
+            .put(2, "平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠")
+            .put(3, "平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠")
+            .put(4, "平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠")
+            .put(5, "平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠")
             .build());
 
     @Override
@@ -258,9 +262,8 @@ public class RepayServiceImpl implements RepayService {
             }
         }
 
-        List<MembershipModel> membershipModels = membershipMapper.findAllMembership();
-        Optional<MembershipModel> Optional = membershipModels.stream().filter(item -> item.getFee() == investModel.getInvestFeeRate()).findAny();
-        dataDto.setLevelMessage(Optional.map(membershipModel -> membershipMessage.get(String.valueOf(membershipModel.getLevel()))).orElseGet(() -> membershipMessage.get(String.valueOf(0))));
+        MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getCreatedTime());
+        dataDto.setLevelMessage(membershipMessage.get(membershipModel.getLevel()));
         return baseDto;
     }
 

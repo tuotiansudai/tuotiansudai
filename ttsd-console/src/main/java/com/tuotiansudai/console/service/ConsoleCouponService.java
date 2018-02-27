@@ -211,11 +211,12 @@ public class ConsoleCouponService {
         List<CouponDetailsDto> couponDetailsDtoList = Lists.newArrayList();
         for (UserCouponModel userCouponModel : userCouponModels) {
             LoanModel loanModel = userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()) : null;
-            userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
+            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
+            userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investModel.getAmount() : null);
             long interest = 0;
 
             if (userCouponModel.getStatus() == InvestStatus.SUCCESS && loanModel != null) {
-                interest = investService.estimateInvestIncome(loanModel.getId(), loginName, userCouponModel.getInvestAmount(), new Date());
+                interest = investService.estimateInvestIncome(loanModel.getId(), investModel.getInvestFeeRate(), loginName, userCouponModel.getInvestAmount(), investModel.getInvestTime());
                 couponDetailsDtoList.add(new CouponDetailsDto(userCouponModel.getLoginName(), userCouponModel.getUsedTime(), userCouponModel.getInvestAmount(),
                         userCouponModel.getLoanId(), loanModel.getName(), loanModel.getProductType(), interest, userCouponModel.getEndTime()));
                 continue;

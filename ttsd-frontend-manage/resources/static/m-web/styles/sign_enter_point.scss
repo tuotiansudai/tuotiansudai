@@ -1,0 +1,428 @@
+.layui-layer-msg {
+  width:70%;
+}
+body {
+  background: #fff;
+  font-weight: normal!important;
+}
+.sign-container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: #fff;
+  box-sizing: border-box;
+  #EntryPointForm {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      right: .65rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  input {
+    font-size: .7rem!important;
+    width:17.5rem;
+    height: 2rem;
+    line-height: 1rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: .5rem .3rem;
+    border-width: 0;
+    border-bottom: 1px solid #F2F2F2;
+    color: #525252;
+    &.next_input {
+      margin-top: 1rem;
+    }
+  }
+  .error {
+    color: #525252;
+  }
+  .logo-note {
+    color: #FF473C;
+    font-size: .65rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    .logo {
+      width:7.35rem;
+      height:1.8rem;
+      margin: 3.25rem auto .8rem auto;
+      display: block;
+      background: url('../images/logo-re.png') center center no-repeat;
+      background-size: 100%;
+
+    }
+  }
+  .show-mobile {
+    margin: 0 auto;
+    width: 17.55rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    background: #F2F2F2;
+    color: #FF473B;
+    font-weight: normal;
+    &.show-mobile-entry {
+      display: none;
+    }
+  }
+  .next-step {
+    margin-top:1.5rem;
+  }
+
+  &.sign-login {
+    text-align: center;
+    .show-mobile {
+      margin: 2.5rem auto .5rem auto;
+      background: transparent;
+    }
+    .captcha {
+      width: 12.55rem;
+      margin-right: .3rem;
+    }
+    .image-captcha {
+      width: 4.5rem;
+      height: 1.8rem;
+    }
+    .get-password {
+      display: inline-block;
+      width:80%;
+      text-align: right;
+
+      margin: .25rem auto;
+      a {
+        color: #808080;
+      }
+    }
+
+    .form-register {
+      font-size: .7rem;
+      .invite-mobile {
+        display: block;
+        text-align: left;
+        color: #FF473C;
+        line-height: 1rem;
+        margin-top: 1.5rem;
+        padding-left: .9rem;
+        position: relative;
+        cursor: pointer;
+        i {
+          width: .75rem;
+          height: .75rem;
+          background: url('../images/icon-up.png') right center no-repeat;
+          background-size: 100%;
+          position: absolute;
+          right: .75rem;
+          top:0;
+        }
+
+        &.closed {
+          i {
+            background: url('../images/icon-down.png') right center no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+
+      .referrer {
+        margin-top: .6rem;
+        &.closed {
+          height: 1px;
+          padding: 0;
+          margin-top: 0;
+        }
+      }
+      .show-agreement {
+        color: #808080;
+        font-size: .6rem;
+        text-align: center;
+        width:100%;
+        display: block;
+        margin-top: .2rem;
+      }
+
+    }
+
+    .btn-ok-update {
+      margin-top:.75rem;
+    }
+  }
+
+  &.register-success {
+    font-size: .75rem;
+    color: #808080;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    .success-tip {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+      margin-top: 2rem;
+      .success-text {
+        font-size: 1rem;
+        color: #525252;
+      }
+    }
+    .success-img {
+      flex: 2.1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .experience-gold {
+        background: url('../images/sign-reward.png') center center no-repeat;
+        background-size: contain;
+        flex: 5;
+        width: 12.5rem;
+        height: 7.5rem;
+      }
+      .note {
+        font-size: .5rem;
+        padding-bottom: 1.5rem;
+        flex: 1;
+      }
+    }
+    .success-button {
+      flex: 2.5;
+      .btn-wap-normal.authentication:hover {
+        color: #FF6C63;
+      }
+      .note2 {
+        font-size: .6rem;
+        padding-top: .5rem;
+        display: block;
+      }
+      .only-border {
+        margin-top:1rem;
+      }
+    }
+  }
+}
+
+.goBack_wrapper {
+  position: relative;
+  width: 100%;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  font-size: .85rem;
+  color: #fff;
+  background: #FF473C;
+  .go-back-container {
+    position: absolute;
+    left: .1rem;
+    top: .35rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+    .go-back{
+      display: block;
+      margin: .4rem 0 0 .5rem;
+      width: .45rem;
+      height: .7rem;
+      background: url("../images/go_back.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
+
+.login_container {
+  display: none;
+}
+
+.register_container {
+  display: none;
+}
+
+#formLogin, #formCaptcha,#formRegister,#retrieveForm,#inputPasswordForm{
+  .captcha_container {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: .7rem;
+      left: 11.8rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+      &.close_btn1 {
+        left: 9.8rem;
+        top: 1.7rem;
+      }
+    }
+  }
+  .password_container {
+    position: relative;
+    .close_btn {
+      display: none;
+      position: absolute;
+      top: 0.7rem;
+      left: 14.9rem;
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close_btn.png") no-repeat;
+      background-size: contain;
+    }
+    .see_password {
+      position: absolute;
+      top: 1.7rem;
+      left: 17rem;
+      width: 1.1rem;
+      height: .6rem;
+      background: url("../images/close_password.png") no-repeat;
+      background-size: contain;
+      &.see_password1 {
+        top: .7rem;
+      }
+      &.open_eye {
+        background: url("../images/open_password.png") no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+}
+#formRegister .captcha_container, #retrieveForm .captcha_container {
+  position: relative;
+}
+#formRegister .captcha_container .get-captcha, #retrieveForm .captcha_container .get-captcha{
+  position: absolute;
+  right: 0;
+  top: 1.5rem;
+  width: 7.5rem;
+  height: 1rem;
+  line-height: 1rem;
+  font-size: .7rem;
+  color: #525252;
+  border: none;
+  border-left: 1px solid #E5E5E5;
+  background: #fff;
+  outline: none;
+}
+#formRegister .captcha_container .get-captcha.count-downing, #retrieveForm .captcha_container .get-captcha.count-downing{
+  color: #C9C9C9;
+}
+
+.show-mobile-register {
+  margin: 2.5rem auto .5rem auto;
+  background: transparent;
+}
+
+.bottom_button_text {
+  margin-top: .3rem;
+  width: 100%;
+  height: .85rem;
+  line-height: .85rem;
+  font-size: .6rem;
+  color: #808080;
+  text-align: center;
+}
+.bottom_button_text .bottom_icon {
+  position: relative;
+  top: -.1rem;
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  background: url("../images/safe_promise.png") no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+.next_step_container {
+  margin-top: 3rem;
+  position: relative;
+  .close_btn {
+    display: none;
+    position: absolute;
+    top: .7rem;
+    left: 14.9rem;
+    width: .6rem;
+    height: .6rem;
+    background: url("../images/close_btn.png") no-repeat;
+    background-size: contain;
+  }
+  .see_password {
+    position: absolute;
+    top: .7rem;
+    left: 17rem;
+    width: 1.1rem;
+    height: .6rem;
+    background: url("../images/close_password.png") no-repeat;
+    background-size: contain;
+    &.open_eye {
+      background: url("../images/open_password.png") no-repeat;
+      background-size: contain;
+    }
+  }
+}
+
+.reset_two {
+  display: none;
+}
+
+#inputPasswordForm {
+  margin-top: 4rem;
+}
+
+.get-captcha-icon {
+  position: relative;
+  top: -.05rem;
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: url("../images/message_get.png") no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+}
+.get-captcha-icon.message_send {
+  background: url("../images/message_send.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-icon.voice_get {
+  background: url("../images/voice_get.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-icon.voice_send {
+  background: url("../images/voice_send.png") no-repeat;
+  background-size: contain;
+}
+.get-captcha-text {
+  display: inline-block;
+}
+.get-captcha-text.count-downing {
+  color: #C9C9C9;
+}
+.success-info-tip {
+  padding: 0;
+}
+.pop_title {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #A2A2A2;
+}
+.pop_content {
+  width: 100%;
+  margin-top: 7px;
+  text-align: center;
+  font-size: 16px;
+  color: #525252;
+}
+.shade_mine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.70);
+}

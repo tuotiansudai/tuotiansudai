@@ -1,0 +1,38 @@
+.amount-detail {
+  position: absolute;
+  top: 51px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  height: calc( 100% - 51px - 55px);
+  .amount-detail-inner{
+    .payment-plan {
+      background: #fff;
+      padding: 10px 10px 0px 10px;
+      margin-top: 5px;
+      margin-bottom:5px;
+      dt {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        color: #525252;
+        height:40px;
+      }
+      dd {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #808080;
+        border-top:1px solid #F7F7F7;
+        line-height: 40px;
+        em{
+          color:#808080;
+          &.status {
+            color: #FF635A;
+          }
+        }
+      }
+    }
+  }
+}
+

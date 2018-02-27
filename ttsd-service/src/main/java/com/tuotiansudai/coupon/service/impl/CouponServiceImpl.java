@@ -38,21 +38,14 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private LoanMapper loanMapper;
 
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
-    @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
-
     @Override
-    public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount, Date investTime) {
+    public long estimateCouponExpectedInterest(String loginName, double investFeeRate, long loanId, List<Long> couponIds, long amount, Date investTime) {
         long totalInterest = 0;
 
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
         LoanModel loanModel = loanMapper.findById(loanId);
         if(loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()){
             investFeeRate = 0;

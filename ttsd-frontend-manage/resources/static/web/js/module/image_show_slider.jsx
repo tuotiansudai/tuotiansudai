@@ -219,7 +219,7 @@ function cloneObj(oldObj) { //复制对象方法
 
                 } else if (releasedAt - minRange > touchX) {
                     if (this.index <= 0) {
-                        this.index = imgs_count + 1
+                        this.index = imgs_count
                     }
                     this.index--;
                     this.imgshow(this.index);

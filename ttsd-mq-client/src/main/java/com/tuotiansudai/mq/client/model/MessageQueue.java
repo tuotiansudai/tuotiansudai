@@ -25,8 +25,10 @@ public enum MessageQueue {
     InvestSuccess_YearEndAwards("InvestSuccess-YearEndAwards"),
     InvestSuccess_CashSnowball("InvestSuccess-CashSnowball"),
     InvestSuccess_ActivityAnnualized("InvestSuccess-ActivityAnnualized"),
+    InvestSuccess_StartWork("InvestSuccess-StartWork"),
     Celebration_Coupon("Celebration-Coupon"),
     NewYearActivity_Coupon("NewYearActivity-Coupon"),
+    StartWorkActivity_Coupon("StartWorkActivity-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
@@ -38,6 +40,7 @@ public enum MessageQueue {
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     LoanOutSuccess_CashSnowball("LoanOutSuccess-CashSnowball"),
+    LoanOutSuccess_StartWorkActivity("LoanOutSuccess-StartWorkActivity"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
@@ -64,6 +67,7 @@ public enum MessageQueue {
     WeChatBoundNotify("WeChatBoundNotify"),
     WeChatMessageNotify("WeChatMessageNotify"),
     HuiZuRentRepayNotifyQueue("HuiZuRentRepayNotifyQueue"),
+    HuiZuOpenAutoRepayQueue("HuiZuOpenAutoRepayQueue"), //慧租开通自动还款
     ExperienceAssigning("ExperienceAssigning"),
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),
@@ -73,7 +77,6 @@ public enum MessageQueue {
     CreditLoanBill("CreditLoanBill"),
     Payroll("Payroll"),
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
-    LoanRaisingCompleteNotify("LoanRaisingCompleteNotify"), // 满标提醒短信
     ;
 
     private final String queueName;

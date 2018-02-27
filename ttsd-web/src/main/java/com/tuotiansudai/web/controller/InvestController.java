@@ -55,6 +55,8 @@ public class InvestController {
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
             investDto.setSource(Source.WE_CHAT);
+        } else if (Source.M.equals(investDto.getSource())) {
+            investDto.setSource(Source.M);
         } else {
             investDto.setSource(Source.WEB);
         }
@@ -77,6 +79,9 @@ public class InvestController {
         redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         redirectAttributes.addFlashAttribute("errorType", errorType);
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
+        if (Source.M.equals(investDto.getSource())) {
+            return new ModelAndView(MessageFormat.format("redirect:/m/loan/{0}#buyDetail", investDto.getLoanId()));
+        }
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 
@@ -172,7 +177,8 @@ public class InvestController {
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = investService.estimateInvestIncome(loanId, loginName, amount, new Date());
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        long expectedInterest = investService.estimateInvestIncome(loanId, investFeeRate, loginName, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
@@ -182,7 +188,9 @@ public class InvestController {
                                                   @PathVariable long amount,
                                                   @RequestParam List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount, new Date());
+        //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
+        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, investFeeRate, loanId, couponIds, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
 

@@ -25,14 +25,28 @@
             <#if ["INVEST_PROJECT_TRANSFER", 'INVEST_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
                 <p class="pay-tip">支付成功，您已成功投资 ${amount} 元</p>
                 <p class="pay-text">
-                    <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续投资</a>
+                    <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a
+                        href="/loan-list">继续投资</a>
                 </p>
             </#if>
 
             <#if ['INVEST_TRANSFER_PROJECT_TRANSFER', 'INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
                 <p class="pay-tip">支付成功，您已成功购买该债权。</p>
                 <p class="pay-text">
-                    <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续购买</a>
+                    <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a
+                        href="/loan-list">继续购买</a>
+                </p>
+            </#if>
+            <#if "CUST_WITHDRAWALS" == service>
+                <p class="pay-tip">申请提现成功,申请提现金额${amount!} 元</p>
+                <p class="pay-text">
+                    <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/account">点击这里</a>
+                </p>
+            </#if>
+            <#if "MER_RECHARGE_PERSON" == service>
+                <p class="pay-tip">充值成功,充值金额${amount!} 元</p>
+                <p class="pay-text">
+                    <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/account">点击这里</a>
                 </p>
             </#if>
         </#if>
@@ -65,14 +79,16 @@
         <#if ["INVEST_PROJECT_TRANSFER", 'INVEST_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
             <p class="pay-tip">支付成功，您已成功投资 ${amount} 元</p>
             <p class="pay-text">
-                <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续投资</a>
+                <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a
+                    href="/loan-list">继续投资</a>
             </p>
         </#if>
 
         <#if ['INVEST_TRANSFER_PROJECT_TRANSFER', 'INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
             <p class="pay-tip">支付成功，您已成功购买该债权。</p>
             <p class="pay-text">
-                <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a href="/loan-list">继续投资</a>
+                <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a
+                    href="/loan-list">继续投资</a>
             </p>
         </#if>
     </#if>

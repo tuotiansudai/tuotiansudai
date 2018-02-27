@@ -41,7 +41,7 @@ public class PayGateWrapper implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (isFakePay) {
             payGateWrapperImpl = new PayGateWrapperFakeImpl(payFakeUrl);
         } else {

@@ -7,6 +7,8 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserFundView;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -51,6 +53,12 @@ public class AccountController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
@@ -60,6 +68,9 @@ public class AccountController {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        AccountModel accountModel = accountService.findByLoginName(loginName);
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
 
@@ -82,6 +93,8 @@ public class AccountController {
         modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
         modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
         modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
+        modelAndView.addObject("hasAccount", accountModel != null);
+        modelAndView.addObject("hasBankCard", bankCard != null);
 
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()
@@ -116,4 +129,5 @@ public class AccountController {
         modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
     }
+
 }
