@@ -52,7 +52,15 @@ $('.close_btn2').on('click',() => {
 });
 
 $('.invest_btn').on('click',() => {
-    window.location.href = '/loan-list';
+    //window.location.href = '/loan-list';
+    layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        area: ['auto', 'auto'],
+        content: $('#loginTip')
+    });
+    //location.href='/login'
 });
 
 $('.get_prize_btn').on('click',(e) => {
@@ -148,6 +156,5 @@ function recordList() {
 function isMobile() {
     return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
 }
-
 
 
