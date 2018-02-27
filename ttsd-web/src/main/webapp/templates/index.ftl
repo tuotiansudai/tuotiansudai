@@ -127,7 +127,7 @@
                         </#if>
                         <#if newbieLoan.status== 'PREHEAT'>
                         <#--预热中-->
-                            <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">
+                            <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn btn-normal-zdy">
                                 <#if newbieLoan.preheatSeconds lte 1800>
 
                                     <span class="preheat" data-time="${newbieLoan.preheatSeconds?string.computer}">

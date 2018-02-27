@@ -95,6 +95,9 @@ $pointColor: #ff5400;
     font-size: 18px;
     padding: 8px 0px;
     width: 150px;
+    &.btn-normal-zdy {
+      width: 180px;
+    }
     &.preheat-btn {
       background: transparent;
       border: 1px solid #ff752a;
