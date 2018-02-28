@@ -72,7 +72,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         unusedCoupons = unusedCoupons
                 .stream()
-                .filter(unusedCoupon -> unusedCoupon.getUsedTime() == null || new DateTime(unusedCoupon.getUsedTime()).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
+                .filter(unusedCoupon -> unusedCoupon.getUsedTime() == null || new DateTime(unusedCoupon.getUsedTime()).plusSeconds(couponLockSeconds).isBefore(new DateTime()))
                 .collect(Collectors.toList());
 
 
