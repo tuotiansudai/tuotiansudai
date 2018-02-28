@@ -73,8 +73,10 @@ public class InvestDiagnosis extends UserBillBusinessDiagnosis {
     }
 
     private boolean overInvestPayBackTraceCheck(InvestModel investModel) {
-        List<UserBillModel> userBillModelList = userBillExtMapper.findByOrderIdAndBusinessType(investModel.getId(), UserBillBusinessType.OVER_INVEST_PAYBACK);
-        return userBillModelList.size() == 1 && userBillModelList.get(0).getAmount() == investModel.getAmount();
+        List<UserBillModel> successUserBillModelList = userBillExtMapper.findByOrderIdAndBusinessType(investModel.getId(), UserBillBusinessType.INVEST_SUCCESS);
+        List<UserBillModel> payBackUserBillModelList = userBillExtMapper.findByOrderIdAndBusinessType(investModel.getId(), UserBillBusinessType.OVER_INVEST_PAYBACK);
+        return successUserBillModelList.size() == 1 && successUserBillModelList.get(0).getAmount() == investModel.getAmount() &&
+                payBackUserBillModelList.size() == 1 && payBackUserBillModelList.get(0).getAmount() == investModel.getAmount();
     }
 
     private String buildTracedObjectId(InvestModel investModel) {

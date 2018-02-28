@@ -80,8 +80,8 @@ public class LoanDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdLoan(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdLoan(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == m.getLoanAmount(),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), m.getLoanAmount()))
+                .check(m -> userBillModel.getAmount() <= m.getLoanAmount(),
+                        m -> String.format("wrong amount [expect grate than or equal with %d, actual: %d]", userBillModel.getAmount(), m.getLoanAmount()))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectIdLoan(tracedObject)));

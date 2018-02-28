@@ -251,7 +251,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public BaseDto<PayDataDto> asyncInvestCallback(long orderId) {
-        InvestModel investModel = investMapper.findById(orderId);
+        InvestModel investModel = investMapper.lockById(orderId);
         BaseDto<PayDataDto> dto = new BaseDto<>(new PayDataDto(true));
 
         if (investModel == null) {
