@@ -50,7 +50,7 @@ function getBoard(type,date){
         url:'/activity/newman-tyrant/'+type+'/'+date
     },function(data) {
         if(data.status) {
-			$('#rankTable').html(tpl('rankTableTpl',data));
+			$('#rankTable').append(tpl('rankTableTpl',data));
 		}
     });
 }

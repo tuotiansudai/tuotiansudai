@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.UserBillMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="userBillResultMap" type="UserBillModel">
         <id column="id" property="id"></id>
@@ -99,7 +99,8 @@
         select ub.*,
         u.user_name,
         u.mobile,
-        IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role in ('SD_STAFF', 'ZC_STAFF')),0) as is_staff
+        IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role in ('SD_STAFF',
+        'ZC_STAFF')),0) as is_staff
         from user_bill ub
         JOIN `user` u on ub.login_name = u.login_name
         <if test="mobile != null and mobile != ''">
@@ -148,7 +149,7 @@
     </select>
 
     <select id="findUserSumInterest" resultType="long">
-      select sum(amount) from user_bill
+      select ifnull(sum(amount),0) from user_bill
       where business_type in('ACTIVITY_REWARD', 'REFERRER_REWARD', 'INVEST_COUPON', 'INTEREST_COUPON', 'RED_ENVELOPE', 'LOTTERY_CASH', 'EXTRA_RATE');
     </select>
 

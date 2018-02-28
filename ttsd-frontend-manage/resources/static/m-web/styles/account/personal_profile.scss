@@ -1,0 +1,26 @@
+
+.personal-profile {
+  .input-list{
+    margin-top:10px;
+  }
+  .manage-note {
+    display: block;
+    text-align: center;
+    margin-top:30px;
+    font-size: 14px;
+    color: #A2A2A2;
+  }
+}
+#toPerName {
+  width: 72%;
+}
+
+.iconRight {
+  display: inline-block;
+  position: relative;
+  width: 9px;
+  height: 14px;
+  background: url("../../images/icon_goRight.png") no-repeat;
+  background-size: contain;
+}
+

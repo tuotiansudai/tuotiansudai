@@ -1,0 +1,43 @@
+.tip-square-box {
+  border-radius: 5px!important;
+  font-size: 16px;
+  color: #525252;
+  line-height: 24px;
+  .pad {
+    padding:20px;
+  }
+
+  .pop-title {
+    display: block;
+    text-align: center;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    font-size: 18px;
+    color: #A2A2A2;
+  }
+
+  .layui-layer-btn {
+    border-top:1px solid #E5E5E5;
+    text-align: center;
+    display: flex;
+    flex-direction: row-reverse;
+
+    a {
+      flex: 1;
+      background: transparent;
+      border:0;
+      font-size: 16px;
+      color: #FF473C;
+      &+a {
+        border-right:1px solid #E5E5E5;
+      }
+      &.layui-layer-btn0 {
+        color: #FF473C;
+      }
+      &.layui-layer-btn1 {
+        color: #525252;
+      }
+    }
+
+  }
+}

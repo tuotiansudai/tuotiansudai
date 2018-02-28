@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
@@ -37,6 +38,9 @@ public class TransferApplicationController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
 
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
@@ -69,6 +73,9 @@ public class TransferApplicationController {
         modelAndView.addObject("anxinAuthenticationRequired", anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus());
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
+        modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
+        BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        modelAndView.addObject("hasBankCard", passedBankCard != null);
         return modelAndView;
     }
 
@@ -101,15 +108,23 @@ public class TransferApplicationController {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
-                    return new ModelAndView(MessageFormat.format("redirect:/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    if (Source.M.equals(investDto.getSource())) {
+                        return new ModelAndView(MessageFormat.format("redirect:/m/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    } else {
+                        return new ModelAndView(MessageFormat.format("redirect:/callback/invest_transfer_project_transfer_nopwd?order_id={0}", baseDto.getData().getExtraValues().get("order_id")));
+                    }
                 }
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服！");
+                redirectAttributes.addFlashAttribute("errorMessage", e.getType().getDescription());
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            if (Source.M.equals(investDto.getSource())) {
+                modelAndView.setViewName(MessageFormat.format("redirect:/m/transfer/{0}#transferDetail", investDto.getTransferApplicationId()));
+            } else {
+                modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            }
         } else {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
@@ -120,11 +135,15 @@ public class TransferApplicationController {
 
                 redirectAttributes.addFlashAttribute("errorMessage", baseDto.getData().getMessage());
             } catch (InvestException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服！");
+                redirectAttributes.addFlashAttribute("errorMessage", e.getType().getDescription());
             }
 
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            if (Source.M.equals(investDto.getSource())) {
+                modelAndView.setViewName(MessageFormat.format("redirect:/m/transfer/{0}#transferDetail", investDto.getTransferApplicationId()));
+            } else {
+                modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferApplicationId()));
+            }
 
         }
         return modelAndView;

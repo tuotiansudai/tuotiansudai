@@ -1,0 +1,149 @@
+.benefit-box {
+  position: relative;
+
+  .bg-square-box {
+    position: absolute;
+    bottom:-6px;
+    left:0;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.target-category-box {
+  padding:15px 15px 25px 15px;
+  font-size: 14px;
+  color: #525252;
+  background: #fff;
+  line-height: 35px;
+  .newer-title{
+    border-left:2px solid #FF473C;
+    padding-left: 10px;
+  }
+  .loan-info{
+    li{
+      text-align:center;
+      span{
+        font-size:16px;
+        color:#222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      em{
+        font-size:12px;
+        color:#a2a2a2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.input-amount-box {
+  margin-top:15px;
+  color: #525252;
+}
+
+.input-list {
+  margin-top:20px;
+  margin-bottom:50px;
+  border-top: 1px solid #f2f2f2;
+
+  li{
+    height: 45px;
+    line-height: 45px;
+    font-size: 13px;
+    label {
+      color: #808080!important;
+    }
+    span {
+      color: #525252!important;
+    }
+  }
+
+}
+
+.input-list li.mt-10{
+  margin-top: 10px;
+}
+.input-list li input {
+  text-align: left;
+  font-size: 18px;
+  color: #808080;
+}
+.input-list li span.number-text{
+  text-align: left;
+  font-size: 16px;
+  color: #525252;
+  strong{
+    font-weight: normal;
+    color: #FF473C;
+  }
+}
+
+.transfer-notice {
+  font-size: 12px;
+  color: #A2A2A2;
+  padding: 0px 40px 10px 40px;
+  b {
+    display: block;
+    font-size: 13px;
+    color: #525252;
+    margin-top:20px;
+  }
+}
+
+
+.info{
+  margin-top: 10px;
+  padding-top:50px;
+  background: #fff;
+}
+.footer{
+  position:absolute;
+  bottom:10px;
+  width:100%;
+  text-align:center;
+  font-size: 12px;
+}
+
+.apply-transfer-success {
+  overflow: hidden;
+  text-align: center;
+  box-sizing: border-box;
+  .success-tips {
+    display: block;
+    padding-top:20px;
+    font-size: 15px;
+    color: #808080;
+  }
+}
+.count-btn {
+  &.count-downing {
+    background: #ccc;
+    border: 1px solid #ccc;
+  }
+}
+.button-note {
+
+  &.cash {
+    margin-top: 0;
+  }
+}
+.service{
+  color: #a2a2a2;
+  width: 100%;
+  margin-top: 8rem;
+  &.recharge {
+    margin-top: 7.5rem;
+  }
+
+}
+
+
+

@@ -1,0 +1,105 @@
+
+.amount-detail-inner {
+  margin-top: 10px;
+}
+
+.membership-level {
+  width: 28px;
+  height: 22px;
+  display: inline-block;
+  margin-right: 5px;
+
+  &.v0 {
+    background: url('../../images/membership/v0.png') center top no-repeat;
+    background-size: 100%;
+  }
+
+  &.v1 {
+    background: url('../../images/membership/v1.png') center top no-repeat;
+    background-size: 100%;
+  }
+  &.v2 {
+    background: url('../../images/membership/v2.png') center top no-repeat;
+    background-size: 100%;
+  }
+  &.v3 {
+    background: url('../../images/membership/v3.png') center top no-repeat;
+    background-size: 100%;
+  }
+  &.v4 {
+    background: url('../../images/membership/v4.png') center top no-repeat;
+    background-size: 100%;
+  }
+  &.v5 {
+    background: url('../../images/membership/v5.png') center top no-repeat;
+    background-size: 100%;
+  }
+}
+
+.payment-plan {
+  background: #fff;
+  padding: 10px 15px 0px 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  dt {
+    font-size: 16px;
+    color: #525252;
+    height: 40px;
+  }
+  dd {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #808080;
+    border-top: 1px solid #F7F7F7;
+    line-height: 40px;
+    .status {
+      color: #FF473C;
+    }
+  }
+
+  &.experience {
+    padding: 10px 0px 0px 0px;
+    dt {
+      padding-left: 10px;
+    }
+
+    dd {
+      display: block;
+      font-size: 12px;
+      color: #A2A2A2;
+      line-height: 20px;
+      background: #F7F7F7;
+      padding: 10px 15px;
+      b {
+        font-size: 13px;
+        color: #999999;
+        font-weight: lighter;
+      }
+    }
+  }
+}
+
+.apply-transfer {
+  background: #FF635A;
+  height: 55px;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  a {
+    line-height: 55px;
+    display: block;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+  }
+}
+
+.close-transfer {
+  padding: 20px;
+
+  font-size: 16px;
+  color: #525252;
+
+}

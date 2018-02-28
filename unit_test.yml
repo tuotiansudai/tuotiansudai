@@ -1,6 +1,8 @@
 test-db-server:
   image: "ywatase/test-docker-mysql"
   container_name: test-db-server
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "40021:3306"
   volumes:
@@ -10,5 +12,7 @@ test-db-server:
 test-redis-server:
   image: "grokzen/redis-cluster"
   container_name: test-redis-server
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "40017:7006"

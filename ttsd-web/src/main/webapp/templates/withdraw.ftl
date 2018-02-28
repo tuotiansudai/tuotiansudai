@@ -16,7 +16,7 @@
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
             <div class="clear-blank"></div>
-            <form action="/withdraw" method="post"
+            <form action="/withdraw" method="post" id="withdraw"
                   <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                 <input name="amount" type="hidden" value=""/>
                 <input name="source" type="hidden" value="WEB"/>

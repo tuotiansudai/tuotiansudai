@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.dto.OperationDataInvestCityDataDto;
 import io.swagger.annotations.ApiModelProperty;
 
 public class OperationDataInvestCityResponseDataDto extends BaseResponseDataDto {
@@ -8,6 +9,14 @@ public class OperationDataInvestCityResponseDataDto extends BaseResponseDataDto 
     private String city;
     @ApiModelProperty(value = "所占比例", example = "60%")
     private String scale;
+
+    public OperationDataInvestCityResponseDataDto() {
+    }
+
+    public OperationDataInvestCityResponseDataDto(OperationDataInvestCityDataDto operationDataInvestCityDataDto) {
+        this.city = operationDataInvestCityDataDto.getCity();
+        this.scale = operationDataInvestCityDataDto.getScale();
+    }
 
     public String getCity() {
         return city;

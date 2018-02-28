@@ -160,12 +160,14 @@ public class LoanServiceImpl implements LoanService {
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
                 if (LoanStatus.PREHEAT == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
+                    loanItemDto.setAlertAmount(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()));
                     loanItemDto.setProgress(0.0);
                     loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
                     loanItemDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
                 }
                 if (LoanStatus.RAISING == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
+                    loanItemDto.setAlertAmount(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()));
                     if(loanModel.getProductType() != ProductType.EXPERIENCE){
                         loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
                     }

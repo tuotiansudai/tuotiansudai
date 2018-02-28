@@ -22,6 +22,10 @@ public enum AsyncUmPayService {
      */
     AUTO_REPAY_PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/auto_repay_ptp_mer_bind_agreement", "auto_repay_notify", "tuotian://sign/{0}"),
     /**
+     * 慧租签约自动还款协议
+     */
+    HUIZU_AUTO_REPAY_PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/no_password_invest_ptp_mer_bind_agreement", "huizu_auto_repay_notify", "tuotian://sign/{0}"),
+    /**
      * 签约借记卡快捷协议
      */
     FAST_PAY_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/fast_pay_mer_bind_agreement", "fast_pay_notify", "tuotian://sign/{0}"),
@@ -136,7 +140,7 @@ public enum AsyncUmPayService {
     /**
      * 个人账户充值
      */
-    MER_RECHARGE_PERSON("mer_recharge_person", "account", "callback/mer_recharge_person", "recharge_notify", "tuotian://recharge/{0}"),
+    MER_RECHARGE_PERSON("mer_recharge_person", "callback/mer_recharge_person", "callback/mer_recharge_person", "recharge_notify", "tuotian://recharge/{0}"),
 
 
     /**
@@ -148,7 +152,7 @@ public enum AsyncUmPayService {
     /**
      * 个人账户提现
      */
-    CUST_WITHDRAWALS("cust_withdrawals", "account", "callback/cust_withdrawals", "withdraw_notify", "tuotian://withdraw/{0}"),
+    CUST_WITHDRAWALS("cust_withdrawals", "callback/cust_withdrawals", "callback/cust_withdrawals", "withdraw_notify", "tuotian://withdraw/{0}"),
 
 
     /**

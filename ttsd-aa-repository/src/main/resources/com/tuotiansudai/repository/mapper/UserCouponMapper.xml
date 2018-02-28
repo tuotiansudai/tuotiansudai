@@ -175,6 +175,7 @@
             uc.created_time as created_time,
             c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
+            uc.used_time as used_time,
             uc.status as status,
             c.user_group,
             c.coupon_source as coupon_source

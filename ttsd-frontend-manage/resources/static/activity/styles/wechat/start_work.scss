@@ -1,0 +1,336 @@
+body {
+  background: #dc0000;
+}
+.container {
+  position: relative;
+  width: 100%;
+  height: 26.2rem;
+  background: url("../../images/2018/start-work/container_bg.png") no-repeat;
+  background-size: contain;
+  .get_it_btn  {
+    display: none;
+    position: absolute;
+    top: 6.05rem;
+    left: 6.85rem;
+    width: 7.55rem;
+    height: 5.3rem;
+    background: url("../../images/2018/start-work/get_it_now.png") no-repeat;
+    background-size: contain;
+  }
+  .got_it_btn {
+    display: none;
+    position: absolute;
+    top: 6.05rem;
+    left: 6.85rem;
+    width: 7.55rem;
+    height: 5.3rem;
+    background: url("../../images/2018/start-work/got_it.png") no-repeat;
+    background-size: contain;
+  }
+  .plus_ticket {
+    position: absolute;
+    top: 14rem;
+    left: 2.1rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/plus_ticket.png");
+    background-size: contain;
+  }
+  .red_ticket200 {
+    position: absolute;
+    top: 14rem;
+    left: 9.5rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket200.png");
+    background-size: contain;
+  }
+  .red_ticket100 {
+    position: absolute;
+    top: 17.05rem;
+    left: 2.1rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket100.png");
+    background-size: contain;
+  }
+  .red_ticket50 {
+    position: absolute;
+    top: 17.05rem;
+    left: 9.5rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket50.png");
+    background-size: contain;
+  }
+  .red_ticket30 {
+    position: absolute;
+    top: 20.15rem;
+    left: 2.1rem;
+    width: 6.825rem;
+    height: 2.575rem;
+    background: url("../../images/2018/start-work/red_ticket30.png");
+    background-size: contain;
+  }
+}
+.pop_modal_container_again {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.2);
+  .pop_modal_bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 17.55rem;
+    height: 8.5rem;
+    background: url("../../images/2018/start-work/pop_modal.png");
+    background-size: contain;
+    .pop_modal {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      .tip_text {
+        margin: 1.45rem auto .5rem auto;
+        width: 11rem;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        text-align: center;
+        background: #ffd6a5;
+        color: #670002;
+        border-radius: .25rem;
+        font-size: 1.05rem;
+      }
+      .tip_desc {
+        margin-bottom: .6rem;
+        width: 100%;
+        font-size: .7rem;
+        color: #f26b6b;
+        line-height: .9rem;
+        text-align: center;
+      }
+      .see_my_redPocket {
+        margin: 0 auto;
+        width: 10.275rem;
+        height: 1.7rem;
+        background: url("../../images/2018/start-work/get_again_btn.png");
+        background-size: contain;
+      }
+      .closeBtn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+.pop_modal_container {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.2);
+  .pop_modal_bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 17.55rem;
+    height: 8.5rem;
+    background: url("../../images/2018/start-work/pop_modal.png");
+    background-size: contain;
+    .pop_modal {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      .tip_text {
+        margin: 2.35rem auto 1.7rem auto;
+        width: 11rem;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        text-align: center;
+        background: #ffd6a5;
+        color: #670002;
+        border-radius: .25rem;
+        font-size: 1.05rem;
+      }
+      .see_my_redPocket {
+        margin: 0 auto;
+        width: 10.275rem;
+        height: 1.7rem;
+        background: url("../../images/2018/start-work/see_my_redPocket.png");
+        background-size: contain;
+      }
+      .closeBtn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.login-tip {
+  float:left;
+  width:750px;
+  height:410px;
+  display: none;
+  background:#fff;
+  position: relative;
+  @media (max-width:700px) {
+    width:320px;
+    height:auto;
+  }
+  .login-box {
+    float:left;
+    width: 290px;
+    font-size: 13px;
+    text-align: left;
+    margin:0 70px;
+    @media (max-width:700px) {
+      margin:0 15px;
+    }
+    h3 {
+      font-size: 20px;
+      color: #4c4c4c;
+      font-weight: normal;
+      line-height: 24px;
+      margin: 30px 0 10px 0;
+    }
+    label {
+      float:left;
+      width:100%;
+      margin-top: 20px;
+      border: #dadada 1px solid;
+      box-sizing:border-box;
+      position: relative;
+      padding-left:30px;
+      &.error{
+        position: absolute;
+        bottom:-23px;
+        left:0;
+        margin-bottom:0;
+        border:none;
+        width:100%;
+      }
+      input {
+        float:left;
+        width: 100%;
+        border:none;
+        height:40px;
+        line-height:30px;
+        box-sizing:border-box;
+        &.captcha {
+          width: 120px;
+        }
+      }
+      .image-captcha {
+        width: 138px;
+        overflow: hidden;
+        height: 40px;
+        cursor: pointer;
+      }
+      .name {
+        position: absolute;
+        top:0;
+        left:0;
+        width: 30px;
+        height:30px;
+        text-align:left;
+        margin:5px 0 0 5px;
+        background:url("../../images/2018/start-work/logintip/result_20160901.png") no-repeat;
+        &.user{
+          background-position: 2px 1px;
+        }
+        &.pass{
+          background-position: 5px -36px;
+        }
+        &.capt{
+          background-position: 3px -70px;
+        }
+      }
+    }
+    .forgot-password {
+      float:left;
+      width:100%;
+      font-size: 12px;
+      margin-top:10px;
+      .btn-normal{
+        width:100%;
+        font-size:20px;
+        margin-bottom:10px;
+        line-height: 27px;
+      }
+      .fl{
+        a{
+          color:#e64d0a;
+        }
+      }
+      a {
+        font-size:14px;
+        color: #545353;
+        &.register {
+          color: #e64d0a;
+        }
+      }
+    }
+  }
+  .code-item{
+    float:left;
+    width:310px;
+    height:305px;
+    margin-top:75px;
+    background:url('../../images/2018/start-work/logintip/code-line.png') no-repeat;
+    background-position:0 0;
+    @media (max-width:700px) {
+      display:none;
+    }
+    p{
+      font-size:14px;
+      color:#4c4c4c;
+      text-align:center;
+      margin-bottom:0;
+      &.code-img{
+        margin:15px 0 30px;
+        background:url('../../images/2018/start-work/logintip/app-img.jpg') no-repeat center center;
+        height: 180px;
+      }
+    }
+  }
+  .close-btn{
+    position: absolute;
+    top:10px;
+    right:0;
+    width:30px;
+    height:30px;
+    cursor:pointer;
+    background:url("../../images/2018/start-work/logintip/result_20160901.png") no-repeat;
+    background-position:0 -108px;
+  }
+}
+
+
+
+

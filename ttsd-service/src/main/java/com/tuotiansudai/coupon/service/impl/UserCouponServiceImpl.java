@@ -1,6 +1,5 @@
 package com.tuotiansudai.coupon.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -8,20 +7,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-import com.tuotiansudai.dto.UserCouponDto;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserCouponView;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -31,10 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserCouponServiceImpl implements UserCouponService {
@@ -77,6 +69,13 @@ public class UserCouponServiceImpl implements UserCouponService {
                 unusedCoupons.remove(i);
             }
         }
+
+        unusedCoupons = unusedCoupons
+                .stream()
+                .filter(unusedCoupon -> unusedCoupon.getUsedTime() == null || new DateTime(unusedCoupon.getUsedTime()).plusSeconds(couponLockSeconds).isBefore(new DateTime()))
+                .collect(Collectors.toList());
+
+
         Collections.sort(unusedCoupons);
         return unusedCoupons;
     }
@@ -101,25 +100,18 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDto> getInvestUserCoupons(String loginName, long loanId) {
-        if (loanDetailsMapper.getByLoanId(loanId).getDisableCoupon()){
-            return new ArrayList<UserCouponDto>();
+        if (loanDetailsMapper.getByLoanId(loanId).getDisableCoupon()) {
+            return Lists.newArrayList();
         }
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
 
-        List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
-            @Override
-            public UserCouponDto apply(UserCouponModel userCouponModel) {
-                return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel, couponLockSeconds);
-            }
-        });
+        List<UserCouponDto> dtoList = userCouponModels
+                .stream()
+                .map(userCouponModel -> new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel, couponLockSeconds))
+                .collect(Collectors.toList());
 
-        return Lists.newArrayList(Iterators.filter(dtoList.iterator(), new Predicate<UserCouponDto>() {
-            @Override
-            public boolean apply(UserCouponDto dto) {
-                return dto.isUnused();
-            }
-        }));
+        return dtoList.stream().filter(UserCouponDto::isUnused).collect(Collectors.toList());
     }
 
     @Override
@@ -153,6 +145,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         final LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null || amount < loanModel.getMinInvestAmount() || amount > loanModel.getMaxInvestAmount()) {
+            return null;
+        }
+        if (loanDetailsMapper.getByLoanId(loanId).getDisableCoupon()) {
             return null;
         }
 

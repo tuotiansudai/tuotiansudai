@@ -252,8 +252,8 @@ public class UserMembershipMapperTest {
         List<String> level4 = userMembershipMapper.findLoginNameMembershipByLevel(5);
         UserModel fakeUser = this.createFakeUser("expiredMembership", RandomStringUtils.randomNumeric(11), new Date());
         UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.GIVEN);
         UserMembershipModel userMembershipModel5 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(3).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
@@ -262,11 +262,11 @@ public class UserMembershipMapperTest {
 
 
         List<String> loginNames = userMembershipMapper.findLoginNameMembershipByLevel(1);
-        assertTrue(level0.size() == loginNames.size());
+        assertThat(loginNames.size(), is(level0.size()));
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(2);
-        assertTrue(level1.size() == loginNames.size());
+        assertThat(loginNames.size(), is(level1.size()));
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(3);
-        assertTrue(level3.size() == loginNames.size());
+        assertThat(loginNames.size(), is(level3.size()));
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(5);
         assertTrue(loginNames.size() > level4.size());
     }
