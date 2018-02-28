@@ -1,5 +1,8 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -59,6 +62,9 @@ public class RegisterAccountController {
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
             registerAccountDto.setMobile(LoginUserInfo.getMobile());
             BaseDto<PayDataDto> baseDto = accountService.registerAccount(registerAccountDto);
+            baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("referrer", registerAccountDto.getReferrer())
+                    .build()));
             myAuthenticationUtil.createAuthentication(LoginUserInfo.getLoginName(), Source.WEB);
             return baseDto;
         }
@@ -66,6 +72,9 @@ public class RegisterAccountController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
+        baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("referrer", registerAccountDto.getReferrer())
+                .build()));
         return baseDto;
     }
 
