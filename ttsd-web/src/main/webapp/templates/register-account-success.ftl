@@ -4,7 +4,7 @@
     <div class="success_tip_icon"></div>
     <p class="my_pay_tip">实名认证成功</p>
     <div class="handle_btn_container">
-        <div class="see_other_project">去充值</div>
+        <div class="see_other_project toLocationBtn">去充值</div>
     </div>
 </div>
 </@global.main>

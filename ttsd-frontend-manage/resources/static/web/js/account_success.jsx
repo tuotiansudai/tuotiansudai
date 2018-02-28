@@ -17,14 +17,31 @@ $('.see_my_account').on('click',() => {
     location.href = '/account';
 });
 
-$('.see_other_project').on('click',() => {
+$('#toProject').on('click',() => {
     location.href = '/loan-list';
 });
 
-$('.go_to_recharge').on('click',() => {
+$('#toRecharge').on('click',() => {
     location.href = '/recharge';
 });
 
-$('.go_to_invest').on('click',() => {
+$('toInvest').on('click',() => {
     location.href = '/loan-list';
 });
+
+if($('#registerSuccess').length){
+    let referParam = globalFun.parseURL(location.href);
+    let referrer = referParam.params.referrer;
+    if(referrer &&referrer == 'loan'){
+        $('.toLocationBtn').text('去借款');
+    }
+    alert(referrer);
+    $('.toLocationBtn').click(function () {
+        if(referrer &&referrer == 'loan'){
+            location.href = '/loan-application';
+        }else {
+            location.href = '/recharge';
+        }
+
+    })
+}

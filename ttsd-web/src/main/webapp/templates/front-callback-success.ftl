@@ -9,7 +9,7 @@
                 <p class="my_pay_tip">银行卡绑定成功</p>
                 <div class="handle_btn_container">
                     <div class="see_my_account">查看我的账户</div>
-                    <div class="go_to_recharge">去充值</div>
+                    <div class="go_to_recharge" id="toRecharge">去充值</div>
                 </div>
             </div>
         </#if>
@@ -30,7 +30,7 @@
                     身份证、银行卡证件信息清晰可见。<br/>
                     如需帮助请致电客服  400-169-1188 （服务时间： 9:00-20:00）<br/>
                 </div>
-                <div class="go_to_invest">去投资</div>
+                <div class="go_to_invest investBtn" >去投资</div>
             </div>
         </#if>
 
@@ -40,7 +40,7 @@
             <p class="my_pay_tip">充值成功，充值金额 ${amount!} 元</p>
             <div class="handle_btn_container">
                 <div class="see_my_account">查看我的账户</div>
-                <div class="go_to_invest">去投资</div>
+                <div class="go_to_invest investBtn">去投资</div>
             </div>
         </div>
         </#if>
@@ -51,7 +51,7 @@
                 <p class="my_pay_tip">支付成功，您已成功投资 ${amount} 元</p>
                 <div class="handle_btn_container">
                     <div class="see_my_account">查看我的账户</div>
-                    <div class="see_other_project">看看其他项目</div>
+                    <div class="see_other_project" id="toProject">看看其他项目</div>
                 </div>
             </div>
         </#if>

@@ -85,22 +85,7 @@ registerAccountForm.onsubmit = function (event) {
     });
 };
 
-if($('#registerSuccess').length){
-    let referParam = globalFun.parseURL(location.href);
-    let referrer = referParam.params.referrer;
-    if(referrer &&referrer == 'loan'){
-        $('.see_other_project').text('去借款');
-    }
-alert(referrer);
-    $('.see_other_project').click(function () {
-        if(referrer &&referrer == 'loan'){
-            location.href = '/loan-application';
-        }else {
-            location.href = '/recharge';
-        }
 
-    })
-}
 
 
 
