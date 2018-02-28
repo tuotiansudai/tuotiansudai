@@ -108,7 +108,7 @@ class Deployment(object):
                                                                                                self._dockerCompose))
 
     def _start_new_container(self, sudoer):
-        sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml up -d'.format(sudoer, self.env, self._dockerCompose))
+        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml up -d"'.format(sudoer, self.env, self._dockerCompose))
 
     def jcversion(self):
         print "Starting jcmin..."

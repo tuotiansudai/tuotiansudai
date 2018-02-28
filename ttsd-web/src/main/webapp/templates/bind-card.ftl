@@ -5,7 +5,7 @@
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
     <div class="recharge-bind-card pad-s">
         <div class="recharge-wrapper bind-card-frame" >
-            <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+            <form id="bind-card" action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                 <div class="bank-card-limit">
                     <#if userName??>
                     <div class="user-name">

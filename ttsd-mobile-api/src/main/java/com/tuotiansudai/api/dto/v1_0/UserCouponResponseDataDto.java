@@ -20,7 +20,7 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
 
     private String loanProductType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date usedTime;
 
     private String expectedInterest;
