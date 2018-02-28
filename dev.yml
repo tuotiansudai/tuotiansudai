@@ -380,7 +380,7 @@ ask-rest-service:
     - ./ttsd-ask-rest/build/distributions:/opt/worker
     - /var/log/tuotian/ttsd-ask-rest:/var/log/tuotian
   ports:
-      - "20022:8080"
+      - "20022:8100"
 
   command: bash -c "/opt/worker/ttsd-ask-rest/bin/ttsd-ask-rest"
   links:
