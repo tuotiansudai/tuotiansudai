@@ -13,7 +13,7 @@ if ($successBox.length) {
     });
 }
 
-$('.see_my_account').on('click',function() {
+$('.see_my_account').on('click',() => {
     location.href = '/account';
 });
 
