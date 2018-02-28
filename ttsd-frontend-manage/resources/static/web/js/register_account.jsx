@@ -85,16 +85,19 @@ registerAccountForm.onsubmit = function (event) {
     });
 };
 
+if($('#registerSuccess').length){
+    let referParam = globalFun.parseURL(location.href);
+    let referrer = referParam.params.referrer;
+alert(referrer);
+    $('.see_other_project').click(function () {
+        if(referrer &&referrer == 'loan'){
+            location.href = '/loan-application';
+        }else {
+            location.href = '/recharge';
+        }
 
-let referParam = globalFun.parseURL(location.href);
-let referrer = referParam.params.referrer;
+    })
+}
 
-$('.see_other_project').click(function () {
-    if (referrer == 'invest') {
-        location.href = '/recharge';
-    } else if (referrer == 'loan') {
-        location.href = '/loan-application';
-    }
-})
 
 
