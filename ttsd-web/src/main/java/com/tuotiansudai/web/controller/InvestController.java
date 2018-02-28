@@ -19,6 +19,7 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -52,7 +53,8 @@ public class InvestController {
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
-    public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
         if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
             investDto.setSource(Source.WE_CHAT);
         } else if (Source.M.equals(investDto.getSource())) {
@@ -62,6 +64,9 @@ public class InvestController {
         }
         String errorMessage = "投资失败，请联系客服！";
         String errorType = "";
+        if (bindingResult.hasErrors()) {
+            errorMessage = bindingResult.getFieldError().getDefaultMessage();
+        }
         try {
             investDto.setLoginName(LoginUserInfo.getLoginName());
             BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
@@ -87,8 +92,17 @@ public class InvestController {
 
     @RequestMapping(path = "/no-password-invest", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto, HttpServletRequest request) {
+    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request) {
         try {
+            if (bindingResult.hasErrors()) {
+                String message = bindingResult.getFieldError().getDefaultMessage();
+                BaseDto<PayDataDto> dto = new BaseDto<>();
+                PayDataDto payDataDto = new PayDataDto();
+                dto.setData(payDataDto);
+                payDataDto.setMessage(message);
+                return dto;
+            }
+
             if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
                 investDto.setSource(Source.WE_CHAT);
             } else {
