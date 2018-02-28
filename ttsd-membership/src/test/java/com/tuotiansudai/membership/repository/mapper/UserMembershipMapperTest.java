@@ -262,13 +262,13 @@ public class UserMembershipMapperTest {
 
 
         List<String> loginNames = userMembershipMapper.findLoginNameMembershipByLevel(1);
-        assertTrue(level0.size() == loginNames.size());
+        assertTrue(loginNames.containsAll(level0));
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(2);
-        assertTrue(level1.size() == loginNames.size());
+        assertTrue(loginNames.containsAll(level1));
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(3);
-        assertTrue(level3.size() == loginNames.size());
+        assertTrue(loginNames.containsAll(level3));
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(5);
-        assertTrue(loginNames.size() > level4.size());
+        assertTrue(loginNames.containsAll(level4));
     }
 
     @Test
