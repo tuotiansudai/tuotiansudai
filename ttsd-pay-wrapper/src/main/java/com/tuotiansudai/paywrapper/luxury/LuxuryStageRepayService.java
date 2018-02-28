@@ -163,7 +163,7 @@ public class LuxuryStageRepayService {
                                 UserBillBusinessType.LUXURY_STAGE_REPAY, null, null));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
-                        new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_REPAY, mobile));
+                        new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.LUXURY_STAGE_REPAY, mobile));
             }
 
             redisWrapperClient.set(key, SyncRequestStatus.SUCCESS.name());

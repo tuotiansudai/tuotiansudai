@@ -10,7 +10,8 @@ public enum CreditLoanBillBusinessType {
     CREDIT_LOAN_REPAY("信用贷用户还款"),
     CREDIT_LOAN_RECHARGE("信用贷代理人账户充值"),
     CREDIT_LOAN_ACTIVATE_ACCOUNT("信用贷一分钱激活账户"),
-    YOOCAR_LOAN_REPAY("优车贷用户还款");
+    YOOCAR_LOAN_REPAY("优车贷用户还款"),
+    LUXURY_STAGE_REPAY("奢侈品分期");
 
     private final String description;
 
