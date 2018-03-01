@@ -16,6 +16,7 @@
         </div>
         <ul class="banner-img-list">
             <#list bannerList as banner>
+
                 <li style="opacity: 0;" class="">
                     <a href="${banner.url}" target="_blank"
                        <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
