@@ -118,7 +118,7 @@ public class FrontCallbackController {
             if (AsyncUmPayService.MER_RECHARGE_PERSON == asyncUmPayService) {
                 RechargeModel rechargeModel = rechargeService.findRechargeById(Long.valueOf(params.get("order_id")));
                 BankCardModel bankCard = bindBankCardService.getPassedBankCard(rechargeModel.getLoginName());
-                modelAndView.addObject("amount", rechargeModel.getAmount());
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(rechargeModel.getAmount()));
                 modelAndView.addObject("cardNumber", bankCard != null ? bankCard.getCardNumber() : "");
                 modelAndView.addObject("bankName", bankCard != null ? BankCardUtil.getBankName(bankCard.getBankCode()) : "");
                 modelAndView.addObject("orderId", params.get("order_id"));
