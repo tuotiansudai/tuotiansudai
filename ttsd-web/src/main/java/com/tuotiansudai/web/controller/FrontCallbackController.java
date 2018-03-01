@@ -120,7 +120,7 @@ public class FrontCallbackController {
                 BankCardModel bankCard = bindBankCardService.getPassedBankCard(rechargeModel.getLoginName());
                 modelAndView.addObject("amount", rechargeModel.getAmount());
                 modelAndView.addObject("cardNumber", bankCard != null ? bankCard.getCardNumber() : "");
-                modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCard.getBankCode()));
+                modelAndView.addObject("bankName", bankCard != null ? BankCardUtil.getBankName(bankCard.getBankCode()) : "");
                 modelAndView.addObject("orderId", params.get("order_id"));
                 modelAndView.addObject("serviceName", "充值成功");
             }
