@@ -1,5 +1,12 @@
 require('webStyle/account/bind_card.scss');
 require('webJs/plugins/autoNumeric');
+var u = navigator.userAgent;
+var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
+var isIos = /(iPhone|iPad|iPod|iOS)/i.test(u);
+if (isInWeChat && isIos) {
+    $('#form1').removeAttr('target');
+    $('#form2').removeAttr('target');
+}
 var $rechargeCon = $(".recharge-bind-card"),
     $rechargeForm = $('.recharge-form', $rechargeCon),
     $fastRechargeForm = $(".fast-recharge-form", $rechargeCon),

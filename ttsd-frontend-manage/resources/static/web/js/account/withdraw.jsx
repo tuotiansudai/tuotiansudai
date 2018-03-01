@@ -11,6 +11,13 @@ let $withdraw = $('.withdraw'),
 
 amountInputElement.autoNumeric("init");
 
+var u = navigator.userAgent;
+var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
+var isIos = /(iPhone|iPad|iPod|iOS)/i.test(u);
+if (isInWeChat && isIos) {
+    $('#withdraw').removeAttr('target');
+}
+
 amountInputElement.keyup(function () {
     let amount = parseFloat(amountInputElement.autoNumeric("get")),
         withdrawFee = parseFloat(withdrawFeeElement.html());

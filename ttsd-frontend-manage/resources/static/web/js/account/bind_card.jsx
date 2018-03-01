@@ -9,6 +9,15 @@ var $bindCardBox = $('#bindCardBox'),
     $btnOpenFastPay = $('.open-fast-pay', $FormOpenFastPay),
     $bankList=$('#bankList');
 
+
+var u = navigator.userAgent;
+var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
+var isIos = /(iPhone|iPad|iPod|iOS)/i.test(u);
+if (isInWeChat && isIos) {
+    $('#bind-card').removeAttr('target');
+}
+
+
 $inputBankcard.keyup(function () {
     if (/^\d+$/.test($(this).val())) {
         $btnBindCard.prop('disabled', false);
