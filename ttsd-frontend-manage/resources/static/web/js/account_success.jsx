@@ -45,3 +45,8 @@ if($('#registerSuccess').length){
 
     })
 }
+
+$('.my_personal-info').on('click',() => {
+    location.href = '/personal-info';
+});
+
