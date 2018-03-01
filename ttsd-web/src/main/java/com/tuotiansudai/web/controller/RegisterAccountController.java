@@ -63,7 +63,7 @@ public class RegisterAccountController {
             registerAccountDto.setMobile(LoginUserInfo.getMobile());
             BaseDto<PayDataDto> baseDto = accountService.registerAccount(registerAccountDto);
             baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("referrer", registerAccountDto.getReferrer())
+                    .put("referrer", Strings.isNullOrEmpty(registerAccountDto.getReferrer()) ? "" : registerAccountDto.getReferrer())
                     .build()));
             myAuthenticationUtil.createAuthentication(LoginUserInfo.getLoginName(), Source.WEB);
             return baseDto;
@@ -73,7 +73,7 @@ public class RegisterAccountController {
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
         baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("referrer", registerAccountDto.getReferrer())
+                .put("referrer", Strings.isNullOrEmpty(registerAccountDto.getReferrer()) ? "" : registerAccountDto.getReferrer())
                 .build()));
         return baseDto;
     }
