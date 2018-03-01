@@ -9,7 +9,7 @@
                 <p class="my_pay_tip">银行卡绑定成功</p>
                 <div class="handle_btn_container">
                     <div class="my_personal-info">查看我的账户</div>
-                    <div class="go_to_recharge">去充值</div>
+                    <div class="go_to_recharge toRecharge">去充值</div>
                 </div>
             </div>
         </#if>

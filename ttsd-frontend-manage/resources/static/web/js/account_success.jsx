@@ -21,7 +21,7 @@ $('#toProject').on('click',() => {
     location.href = '/loan-list';
 });
 
-$('#toRecharge').on('click',() => {
+$('.toRecharge').on('click',() => {
     location.href = '/recharge';
 });
 
