@@ -35,7 +35,7 @@ if($('#registerSuccess').length){
     if(referrer &&referrer == 'loan'){
         $('.toLocationBtn').text('去借款');
     }
-    alert(referrer);
+    
     $('.toLocationBtn').click(function () {
         if(referrer &&referrer == 'loan'){
             location.href = '/loan-application';
