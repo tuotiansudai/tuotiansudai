@@ -59,7 +59,7 @@ $('.closeBtn').on('click',function () {
 });
 
 $('.see_my_redPocket').on('click',function () {
-   location.href = '/my-treasure';
+   location.href = '/m/my-treasure';
 });
 
 
