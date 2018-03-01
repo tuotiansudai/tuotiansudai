@@ -98,7 +98,7 @@ public class FrontCallbackController {
             if (Lists.newArrayList(
                     AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD,
                     AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD
-                    ).contains(asyncUmPayService)) {
+            ).contains(asyncUmPayService)) {
                 InvestModel investModel = investService.findById(Long.valueOf(params.get("order_id")));
                 LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
@@ -118,9 +118,9 @@ public class FrontCallbackController {
             if (AsyncUmPayService.MER_RECHARGE_PERSON == asyncUmPayService) {
                 RechargeModel rechargeModel = rechargeService.findRechargeById(Long.valueOf(params.get("order_id")));
                 BankCardModel bankCard = bindBankCardService.getPassedBankCard(rechargeModel.getLoginName());
-                modelAndView.addObject("amount", rechargeModel.getAmount());
-                modelAndView.addObject("cardNumber", bankCard.getCardNumber());
-                modelAndView.addObject("bankName", BankCardUtil.getBankName(bankCard.getBankCode()));
+                modelAndView.addObject("amount", AmountConverter.convertCentToString(rechargeModel.getAmount()));
+                modelAndView.addObject("cardNumber", bankCard != null ? bankCard.getCardNumber() : "");
+                modelAndView.addObject("bankName", bankCard != null ? BankCardUtil.getBankName(bankCard.getBankCode()) : "");
                 modelAndView.addObject("orderId", params.get("order_id"));
                 modelAndView.addObject("serviceName", "充值成功");
             }
