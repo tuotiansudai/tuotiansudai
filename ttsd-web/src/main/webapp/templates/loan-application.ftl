@@ -180,7 +180,7 @@
     </div>
     <div class="is-user" id="isUser">
         <p class="tip-text">亲，实名认证后才能借款哦~</p>
-        <p><a href="/register/account">实名认证</a></p>
+        <p><a href="/register/account#loan">实名认证</a></p>
     </div>
     <div class="success-tip" id="successTip">
         <p class="tip-text">提交成功！</p>

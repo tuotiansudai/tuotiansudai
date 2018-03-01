@@ -1,6 +1,5 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.year_award_2017}" pageJavascript="${js.year_award_2017}" activeNav="" activeLeftNav="" title="年终奖活动_活动中心_拓天速贷" keywords="拓天速贷,年终奖,抽奖,岁末专享,实物奖励" description='拓天速贷年终奖活动,活动期间用户每日登录即可获得一次抽奖,投资"岁末专享"项目累计年化投资额可按对应比率获得返现奖励,每日24点计算当日新增投资排名,上榜者可获丰厚实物奖励.'>
-
 <div class="banner"></div>
 <div id="doubleElevenContainer">
     <div class="show_middle_box">
@@ -52,17 +51,17 @@
                     </h3>
                     <div class="record-group record-list">
                         <ul class="record-item user-record my-gift" id="recordList">
-                            <#--<li class="myReward_item"><div class="myReward_item_head">恭喜182****5693</div><div class="myReward_item_foot">抽中了100元红包</div></li>-->
+                        <#--<li class="myReward_item"><div class="myReward_item_head">恭喜182****5693</div><div class="myReward_item_foot">抽中了100元红包</div></li>-->
                         </ul>
                         <div class="myRecordWrapper record-item" style="display: none">
                             <ul class="own-record" id="myRecord">
-                                <#--<li class="myRecord_right_item"><div class="mineReward_name">200元红包</div><div class="mineReward_year">2017-11-13</div><div class="mineReward_year_hour"> 21:15:24</div></li>-->
+                            <#--<li class="myRecord_right_item"><div class="mineReward_name">200元红包</div><div class="mineReward_year">2017-11-13</div><div class="mineReward_year_hour"> 21:15:24</div></li>-->
                             </ul>
                         </div>
-                        <#--<div class="pageNo_container" id="pageNo_container" style="display: none">-->
-                            <#--<span class="prePage page-number" id="prePage">上一页</span>-->
-                            <#--<span class="nextPage page-number" id="nextPage">下一页</span>-->
-                        <#--</div>-->
+                    <#--<div class="pageNo_container" id="pageNo_container" style="display: none">-->
+                    <#--<span class="prePage page-number" id="prePage">上一页</span>-->
+                    <#--<span class="nextPage page-number" id="nextPage">下一页</span>-->
+                    <#--</div>-->
 
                     </div>
                 </div>
@@ -110,7 +109,7 @@
         <div class="title_ammount">
             <div class="current_ammount">当前年化投资额：${sumAnnualizedAmount!}万元</div>
             <div class="my_ammount">我的奖励：<@global.isNotAnonymous>${rewards!}元</@global.isNotAnonymous><@global.isAnonymous><a class="myRank_info_No1 login_pop" style="color:#fff600">登录</a></@global.isAnonymous>
-        </div>
+            </div>
         </div>
         <div class="conversion_chart">
             <div class="head_title">
@@ -204,16 +203,16 @@
         <div class="rank_list_survey" id="rank_list_survey">
             <span class="date_info">日期：<span class="date_info_No" data-starttime="${activityStartTime!}" data-endtime="${activityEndTime!}">${currentTime?string('yyyy-MM-dd')}</span></span>
             <@global.isNotAnonymous>
-            <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking!}</span></span>
+                <span class="myRank_info">我的排名：<span class="myRank_info_No">${investRanking!}</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="myRank_info">我的排名：<a class="myRank_info_No1 login_pop">登录</a></span>
+                <span class="myRank_info">我的排名：<a class="myRank_info_No1 login_pop">登录</a></span>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
-            <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${(investAmount/100)?string('0.00')}元</span></span>
+                <span class="today_totalAccount"><span class="is-today">当日</span>累计投资：<span class="today_totalAccountNo">${(investAmount/100)?string('0.00')}元</span></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-            <span class="today_totalAccount">当日累计投资：<a class="myRank_info_No2 login_pop" style="color: #fff600">登录</a></span>
+                <span class="today_totalAccount">当日累计投资：<a class="myRank_info_No2 login_pop" style="color: #fff600">登录</a></span>
             </@global.isAnonymous>
         </div>
         <div class="nodata-invest tc" style="display: none;"></div>
