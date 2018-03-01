@@ -11,8 +11,12 @@ var $InfoBox = $('#personInfoBox'),
     $voiceCaptcha = $('#voice_captcha');
 
 
-
-
+var u = navigator.userAgent;
+var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
+var isIos = /(iPhone|iPad|iPod|iOS)/i.test(u);
+if (isInWeChat && isIos) {
+    $('#get_authorization').removeAttr('target');
+}
 
 //判断是否显示评估弹框
 commonFun.useAjax({

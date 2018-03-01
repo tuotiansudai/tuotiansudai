@@ -251,7 +251,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public BaseDto<PayDataDto> asyncInvestCallback(long orderId) {
-        InvestModel investModel = investMapper.findById(orderId);
+        InvestModel investModel = investMapper.lockById(orderId);
         BaseDto<PayDataDto> dto = new BaseDto<>(new PayDataDto(true));
 
         if (investModel == null) {
@@ -505,6 +505,8 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         } else {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
