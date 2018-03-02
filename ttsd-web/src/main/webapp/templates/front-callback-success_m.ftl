@@ -82,7 +82,7 @@
                     </li>
                     <li>
                         <label>充值金额</label>
-                        <span><em class="money">${(amount/100)?string.computer!}</em>元</span>
+                        <span><em class="money">${amount!}</em>元</span>
                     </li>
                     <li>
                         <label>订单号</label>
