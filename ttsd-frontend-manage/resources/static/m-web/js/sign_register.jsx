@@ -290,7 +290,10 @@ for(let i=0,len=reInputs.length; i<len;i++) {
     globalFun.addEventHandler(reInputs[i],"keyup",function () {
         let errorMsg = validator.start(this);
 
-        referrerValidBool = !(this.name == 'referrer' && errorMsg);
+        if (this.name != 'referrer') {
+            referrerValidBool = !errorMsg;
+        }
+
         isDisabledButton();
     })
 }
