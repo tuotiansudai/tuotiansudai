@@ -57,9 +57,13 @@
     width: 504px;
     height:294px;
     margin: 0 auto;
-    margin-top: 60px;
-    padding-bottom: 60px;
-    background: url('../images/sign/aboutus/aptitude_new.png') left top no-repeat;
+    margin-top: 40px;
+    padding-bottom: 30px;
+   ul {
+     li {
+       float: left;
+     }
+   }
   }
   .notice-list {
     li {
@@ -578,7 +582,7 @@
 
 }
 .organizational-structure {
-  width: 746px;
+  width: 765px;
   margin: 0 auto;
   @media screen and (max-width:700px) {
     width: 100%;
@@ -587,6 +591,6 @@
    width: 100%;
  }
   margin-bottom: 20px;
-  padding-top: 15px;
+  padding-top: 10px;
 
 }

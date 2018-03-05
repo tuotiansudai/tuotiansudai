@@ -40,7 +40,16 @@
     <h2 class="column-title"><em>拓天资质</em></h2>
     <div class="clear-blank-m">
     </div>
-    <div class="aptitude-new"></div>
+    <div class="aptitude-new">
+        <ul id="organizationalImg" class="clearfix">
+            <li>
+                <a title="营业执照" rel="groupImg"></a>
+            </li>
+            <li>
+                <a title="许可证" rel="groupImg"></a>
+            </li>
+        </ul>
+    </div>
     <h2 class="column-title"><em>合作伙伴</em></h2>
     <ul class="partner-list">
         <li>

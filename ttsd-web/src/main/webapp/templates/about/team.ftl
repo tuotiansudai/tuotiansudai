@@ -2,7 +2,7 @@
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="团队介绍" title="拓天团队_金融精英_拓天速贷" keywords="拓天速贷,精英团队,安全保障,拓天安全" description="拓天速贷金融精英为您提供规范、安全、专业的互联网金融信息服务.">
     <div class="about-us-container">
         <h2 class="column-title"><em>公司管理</em></h2>
-        <div class="team-box com-list clearfix">
+        <div class="team-box com-list clearfix" style="padding-top: 10px;">
             <i class="sign-profile user-one"></i>
             <dl class="company-user">
                 <dt>李显玉先生 <span>董事长</span></dt>
@@ -36,7 +36,7 @@
             <dl class="company-user">
                 <dt>张东杰先生<span>副总经理兼运营总监</span></dt>
                 <dd>世界会向那些有目标和远见的人让路。</dd>
-                <dd>曾在君安信（北京）科技有限公司负责运营与市场相关管理工作，其本身过硬的计算机技术以及扎实的运营理论知识，强调以用户体验、转化率为基础的运营策划思想以及多元化的操作手法在业内广泛流传。在互联网金融行业有着丰富的实践经验与管理创新能力。</dd>
+                <dd>曾在某互联网金融公司负责运营与市场相关管理工作，其本身过硬的计算机技术以及扎实的运营理论知识，强调以用户体验、转化率为基础的运营策划思想以及多元化的操作手法在业内广泛流传。在互联网金融行业有着丰富的实践经验与管理创新能力。</dd>
             </dl>
         </div>
         <h2 class="column-title"><em>组织架构</em></h2>
