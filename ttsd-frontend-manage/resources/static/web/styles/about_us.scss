@@ -1,4 +1,10 @@
 /*about us*/
+$orange:#ff6c00;
+$gray: #fafafa;
+$gray2:#525252;
+$gray3:#e7eaee;
+$gray4:#999;
+$gray5:#333333;
 .about-us-container {
   background: #fff;
   padding: 10px 30px 30px 40px;
@@ -351,9 +357,23 @@
     float: left;
     width: 100%;
     h3 {
-      float: left;
       width: 100%;
-      margin-bottom: 20px;
+      margin-top: 25px;
+      margin-bottom: 12px;
+      .font-right {
+        float: right;
+        color: $gray4;
+        font-size: 12px;
+      }
+    }
+    .font16 {
+      font-size: 16px;
+      color: $gray5;
+      margin-bottom: 0;
+    }
+    .font14 {
+      font-size: 14px;
+      color: $gray2;
     }
     .model-container {
       float: left;
@@ -566,4 +586,77 @@
     }
   }
 
+}
+.section-wrap {
+  box-sizing: border-box;
+  background: #fafafa;
+  border: 1px solid $gray3;
+}
+.operater-days-wrap {
+  height: 100px;
+  text-align: center;
+  padding-top: 30px;
+  .operater-day {
+    display: inline-block;
+    margin: 0 auto;
+    >span {
+      float: left;
+      height: 35px;
+      line-height: 35px;
+      font-size: 26px;
+      text-align: center;
+      color: #ff6c00;
+      margin-left: 10px;
+      &.assurance {
+        font-size: 18px;
+        color: #525252;
+      }
+      &.data-bg {
+        color: #fff;
+        background: $orange;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+    }
+  }
+}
+.data-wrap {
+  ul {
+    background: $gray;
+    li {
+      width: 50%;
+      height: 112px;
+      float: left;
+      border: 1px solid $gray3;
+      box-sizing: border-box;
+      padding-top: 20px;
+      &.bl {
+        margin-left: -1px;
+      }
+      &.pt {
+        margin-top: -1px;
+      }
+      p {
+        line-height: 36px;
+        color: $gray2;
+        font-size: 18px;
+        text-align: center;
+        margin: 0;
+        em {
+          color: $orange;
+          font-size: 26px;
+        }
+      }
+    }
+  }
+}
+
+.invest-wrap {
+  .data-model {
+    float: left;
+    width: 50%!important;
+    .model-container {
+      height: 250px;
+    }
+  }
 }

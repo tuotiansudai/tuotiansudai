@@ -107,6 +107,58 @@ var MyChartsObject={
             var PieOpt = $.extend({},initOption,option);
             return PieOpt;
         },
+        //环形图
+        AnnularOption:function(data,option) {
+            var report_data = MyChartsObject.ChartDataFormate(data);
+            var option = option || {};
+            var thisOption = {
+                legend:{
+                    orient: 'vertical',
+                    x: 'left',
+                    y:'center',
+                    // left: 'left',
+                    data:report_data.category
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b} : {c} ({d}%)',
+                    show: true
+                },
+                series: [
+                    {
+                        name: option.name || "",
+                        type: 'pie',
+                        radius : ['50%', '80%'],
+                        center: ['70%', '48%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
+                                },
+                                labelLine : {
+                                    show : false
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : false,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '11',
+                                        fontWeight : 'normal'
+                                    }
+                                }
+                            }
+                        },
+                        data: report_data.data
+                    }
+                ],
+                color: ['rgb(255,117,42)','rgb(119,205,249)','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
+            };
+            var initOption=$.extend({}, this.CommonOption, thisOption);
+            var PieOpt = $.extend({},initOption,option);
+            return PieOpt;
+        },
         // 柱状图选项
         BarOption:function(data) {
             var thisOption = {

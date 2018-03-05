@@ -173,15 +173,18 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     if (!$("#dataRecord").length) {
         return;
     }
+    var dataOptions = {startTime:'2015-03-04',endTime:'2018-02-01'}
     commonFun.useAjax({
         url: '/about/operation-data/chart',
-        type: 'GET'
+        type: 'GET',
+        data:dataOptions
     },function(data) {
-        $('#operationDays').text(data.operationDays+'天');
-        $('#usersCount').text(data.usersCount+'人');
-        $('#tradeAmount').text(data.tradeAmount+'元');
+        console.log(data);
+        $('#operationDays').text(data.operationDays);
+        $('#usersCount').text(data.usersCount);
+        $('#tradeAmount').text(data.tradeAmount);
         var dataJson = {
-                title:'拓天速贷',
+
                 sub:'金额',
                 name:'运营数据',
                 month:data.month,
@@ -190,6 +193,15 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
+        //投资人基本信息 环形图
+         var optionUser = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,'投资用户(人)');
+        var  optUser = loadEcharts.ChartConfig('investRecord', optionUser);
+        loadEcharts.RenderChart(optUser);
+        //投资人男女比例 饼状图
+        var sexOptions = [data.femaleScale,data.maleScale];
+        var optionSex = loadEcharts.ChartOptionTemplates.PieOption(sexOptions,'投资人基本信息');
+        var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
+        loadEcharts.RenderChart(optSex);
     });
 
 },'operationEcharts');

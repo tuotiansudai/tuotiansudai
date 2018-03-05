@@ -2,59 +2,63 @@
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计投资金额及平台数据总览,为您提供安全投资的平台运营数据.">
     <div class="about-us-container">
         <h2 class="column-title"><em>运营数据</em></h2>
+        <div class="operater-days-wrap section-wrap">
+            <div class="operater-day clearfix">
+                <span class="assurance">安全运营</span><span class="data-bg">4</span><span>年</span><span class="data-bg">3</span><span class="data-bg">3</span><span class="data-bg">3</span><span>天</span>
+            </div>
+        </div>
         <div class="data-model">
-            <h3>平台数据总览</h3>
-            <div class="model-container">
-                <ul class="model-title">
-                    <li class="model-one">
-                        <p id="operationDays"></p>
-                        <p>安全运营时间</p>
-                    </li>
-                    <li class="model-two">
-                        <p id="usersCount"></p>
-                        <p>注册投资用户</p>
-                    </li>
-                    <li class="model-three">
-                        <p id="tradeAmount"></p>
+            <h3>平台数据总览 <span class="font-right">（数据截止到2018年02月28日）</span> </h3>
+            <div class="data-wrap">
+                <ul class="clearfix">
+                    <li>
+                        <p><em id="tradeAmount"></em>元</p>
                         <p>累计交易金额</p>
+                    </li>
+                    <li class="bl">
+                        <p><em>28,652</em>笔</p>
+                        <p>累计交易笔数</p>
+                    </li>
+                    <li class="pt">
+                        <p><em id="usersCount"></em>人</p>
+                        <p>注册投资用户数</p>
+                    </li>
+                    <li class="bl pt">
+                        <p><em>11,081,967.03</em>元</p>
+                        <p>累计为用户赚取</p>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="data-model cheat-model">
-            <h3>平台累计投资</h3>
+            <h3 class="font16">平台投资明细</h3>
+            <h4 class="font14">月度交易金额（近半年）</h4>
             <div class="model-container chart-dom" id="dataRecord">
                 <!--[if gte IE 8]>
                 请使用更高版本浏览器查看
                 <![endif]-->
             </div>
         </div>
-        <div class="data-model">
-            <h3>平台投资明细</h3>
-            <div class="model-container">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>类型</th>
-                            <th>交易总额(元)</th>
-                            <th>投资数(笔)</th>
-                            <th>平均单笔交易额(元)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <#if investDetailList??>
-                        <#list investDetailList as investDetailItem>
-                            <tr>
-                                <td>${investDetailItem.productName!}天标的</td>
-                                <td>${investDetailItem.totalInvestAmount!}</td>
-                                <td>${investDetailItem.countInvest!}</td>
-                                <td>${investDetailItem.avgInvestAmount!}</td>
-                            </tr>
-                        </#list>
-                    </#if>
-                    </tbody>
-                </table>
+        <div class="invest-wrap clearfix">
+            <div class="data-model cheat-model">
+                <h3 class="font16">平台用户统计</h3>
+                <h4 class="font14">投资人基本信息</h4>
+                <div class="model-container" id="investRecord">
+                    <!--[if gte IE 8]>
+                    请使用更高版本浏览器查看
+                    <![endif]-->
+                </div>
+            </div>
+            <div class="data-model cheat-model">
+               
+                <div class="model-container" id="investSexRecord">
+                    <!--[if gte IE 8]>
+                    请使用更高版本浏览器查看
+                    <![endif]-->
+                </div>
             </div>
         </div>
+
+
     </div>
 </@global.main>
