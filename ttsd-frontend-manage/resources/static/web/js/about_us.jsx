@@ -136,7 +136,7 @@ let organizationalImg={
         big:require('../images/sign/aboutus/aptitude_one_big.png')
     },
     '2':{
-        small:require('../images/sign/aboutus/aptitude_two_small.jpg'),
+        small:require('../images/sign/aboutus/aptitude_two_small.png'),
         big:require('../images/sign/aboutus/aptitude_two_big.png')
     }
 };
