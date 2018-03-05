@@ -126,10 +126,40 @@ $companyPhoto.find('li').each(function(key,option) {
     $(option).find('a').attr('href',photoGroup[num].big);
     $(option).find('a').append(`<img src="${photoGroup[num].small}">`);
 });
+
+//营业执照
+let $organizationalImg = $('#organizationalImg');
+
+let organizationalImg={
+    '1': {
+        small:require('../images/sign/aboutus/aptitude_one_small.png'),
+        big:require('../images/sign/aboutus/aptitude_one_big.png')
+    },
+    '2':{
+        small:require('../images/sign/aboutus/aptitude_two_small.png'),
+        big:require('../images/sign/aboutus/aptitude_two_big.png')
+    }
+};
+$organizationalImg.find('li').each(function(key,option) {
+    let num = key+1;
+    $(option).find('a').attr('href',organizationalImg[num].big);
+    $(option).find('a').append(`<img src="${organizationalImg[num].small}">`);
+});
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
     $("#companyPhoto li a").fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+        }
+    });
+});
+fancybox(function() {
+    $("#organizationalImg li a").fancybox({
         'titlePosition' : 'over',
         'cyclic'        : false,
         'showCloseButton':true,
@@ -205,3 +235,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     });
 
 },'operationEcharts');
+
+var img = new Image;
+var imgUr = require('../images/sign/aboutus/organizational_structure.png');
+   img.src= imgUr
+$('.organizational-structure').append(img);
