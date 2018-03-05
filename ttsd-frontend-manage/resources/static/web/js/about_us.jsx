@@ -193,3 +193,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     });
 
 },'operationEcharts');
+
+var img = new Image;
+var imgUr = require('../images/sign/aboutus/organizational_structure.png');
+   img.src= imgUr
+$('.organizational-structure').append(img);

@@ -578,13 +578,15 @@
 
 }
 .organizational-structure {
-  width: 516px;
-  height: 711px;
+  width: 746px;
   margin: 0 auto;
-  margin-left: 80px;
-  background: url('../images/sign/aboutus/organizational_structure.png');
-  background-size: 100%;
-  margin-left: 80px;
-  margin-bottom: 40px;
-  margin-top: 30px;
+  @media screen and (max-width:700px) {
+    width: 100%;
+  }
+ img {
+   width: 100%;
+ }
+  margin-bottom: 20px;
+  padding-top: 15px;
+
 }
