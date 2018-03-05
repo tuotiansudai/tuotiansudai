@@ -41,6 +41,33 @@
         </div>
         <div class="invest-wrap clearfix">
             <div class="data-model cheat-model">
+                <h4 class="font14">借款人基本信息</h4>
+                <div class="model-container" id="loanBaseRecord">
+                    <!--[if gte IE 8]>
+                    请使用更高版本浏览器查看
+                    <![endif]-->
+                </div>
+            </div>
+            <div class="data-model cheat-model" style="margin-top: 85px;">
+               
+                <div class="model-container" id="loanBaseSexRecord">
+                    <!--[if gte IE 8]>
+                    请使用更高版本浏览器查看
+                    <![endif]-->
+                </div>
+            </div>
+        </div>
+        <div class="data-model region-wrap">
+            <h3 class="font14">投资人地域分布</h3>
+            <div class="model-container chart-dom" id="investRegionRecord">
+                <!--[if gte IE 8]>
+                请使用更高版本浏览器查看
+                <![endif]-->
+            </div>
+
+        </div>
+        <div class="invest-wrap clearfix">
+            <div class="data-model cheat-model">
                 <h3 class="font16">平台用户统计</h3>
                 <h4 class="font14">投资人基本信息</h4>
                 <div class="model-container" id="investRecord">
@@ -49,14 +76,23 @@
                     <![endif]-->
                 </div>
             </div>
-            <div class="data-model cheat-model">
-               
+            <div class="data-model cheat-model" style="margin-top: 85px;">
+
                 <div class="model-container" id="investSexRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
                 </div>
             </div>
+        </div>
+        <div class="data-model region-wrap">
+            <h3 class="font14">借款人地域分布</h3>
+            <div class="model-container chart-dom" id="loanRegionRecord">
+                <!--[if gte IE 8]>
+                请使用更高版本浏览器查看
+                <![endif]-->
+            </div>
+
         </div>
 
 

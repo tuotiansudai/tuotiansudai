@@ -1,6 +1,7 @@
 require('webStyle/about_us.scss');
 require('publicJs/pagination');
 require('webJsModule/touch_menu');
+let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
@@ -195,7 +196,42 @@ require.ensure([],function() {
     });
 
 },'qaList');
-
+let drawBarTransverse = (cityName, cityData, colorArr) => { // 横向柱状图
+    return {
+        xAxis: {type: 'value', show: false},
+        yAxis: {
+            type: 'category',
+            data: cityName,
+            axisLine: {show: false},
+            axisTick: {show: false},
+            axisLabel: {show: false}
+        },
+        series: [{
+            type: 'bar',
+            barWidth: '80%',
+            data: cityData,
+            silent: true,
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        let colorList = colorArr;
+                        return colorList[params.dataIndex];
+                    }
+                },
+            }
+        }],
+        label: {
+            normal: {
+                show: true,
+                position: 'right',
+                color: '#333',
+                formatter: '{b}\n{c}%'
+            }
+        }
+    }
+};
+let investRegion = echarts.init(document.getElementById('investRegionRecord'));
+let loanRegion = echarts.init(document.getElementById('loanRegionRecord'));
 //运营数据
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     let loadEcharts = require('publicJs/load_echarts');
@@ -232,6 +268,38 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var optionSex = loadEcharts.ChartOptionTemplates.PieOption(sexOptions,'投资人基本信息');
         var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
         loadEcharts.RenderChart(optSex);
+        //投资人地域分布
+        // var optionRegion = loadEcharts.ChartOptionTemplates.BarOptionXAxis(data.investCityScaleTop3,'投资人基本信息');
+        // var  optRegion = loadEcharts.ChartConfig('investRegionRecord', optionRegion);
+        // loadEcharts.RenderChart(optRegion);
+
+        let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
+        let investAmountScaleTop3 = data.investAmountScaleTop3; // 投资金额top3
+        let cityName_count = [];
+        let cityData_count = [];
+        let cityName_amount = [];
+        let cityData_amount = [];
+        investCityScaleTop3.forEach((item, index) => {
+            cityName_count[index] = item.city;
+            cityData_count[index] = item.scale;
+        });
+        investAmountScaleTop3.forEach((item, index) => {
+            cityName_amount[index] = item.city;
+            cityData_amount[index] = item.scale;
+        });
+
+        investRegion.setOption(drawBarTransverse(cityName_count, cityData_count, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
+        //借款人基本信息环形图
+        var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,'投资用户(人)');
+        var  optLoan = loadEcharts.ChartConfig('investRecord', optionLoan);
+        loadEcharts.RenderChart(optLoan);
+        //投资人男女比例 饼状图
+        var sexLoanOptions = [data.femaleScale,data.maleScale];
+        var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOption(sexLoanOptions,'投资人基本信息');
+        var  optSexLoan = loadEcharts.ChartConfig('investSexRecord', optionSexLoan);
+        loadEcharts.RenderChart(optSexLoan);
+        //借款人地域分布
+        loanRegion.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
     });
 
 },'operationEcharts');
@@ -240,3 +308,21 @@ var img = new Image;
 var imgUr = require('../images/sign/aboutus/organizational_structure.png');
    img.src= imgUr
 $('.organizational-structure').append(img);
+let getPartFourPage = (data) => {
+    let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
+    let investAmountScaleTop3 = data.investAmountScaleTop3; // 投资金额top3
+    let cityName_count = [];
+    let cityData_count = [];
+    let cityName_amount = [];
+    let cityData_amount = [];
+    investCityScaleTop3.forEach((item, index) => {
+        cityName_count[index] = item.city;
+        cityData_count[index] = item.scale;
+    });
+    investAmountScaleTop3.forEach((item, index) => {
+        cityName_amount[index] = item.city;
+        cityData_amount[index] = item.scale;
+    });
+    myChart5.setOption(drawBarTransverse(cityName_count, cityData_count, ['#c2eef2', '#81e9f2', '#00def2']));
+    myChart6.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ffecac', '#ffd74f', '#ffc601']));
+};

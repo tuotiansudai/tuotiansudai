@@ -208,6 +208,45 @@ var MyChartsObject={
 
             var BarOpt=$.extend({}, this.CommonOption, thisOption);
             return BarOpt;
+        },
+        // 横向柱状图选项
+        BarOptionXAxis:function(data) {
+            var thisOption = {
+                backgroundColor:'#f7f7f7',
+                color:['#ff9c1b'],
+                tooltip : {
+                    trigger: 'axis'
+                },
+                calculable : false,
+                xAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'category',
+                        data : data.city,
+                        axisLine: {show: false},
+                        axisTick: {show: false},
+                        axisLabel: {show: false}
+                    }
+                ],
+                series : [
+                    {
+                        name:'交易额',
+                        type:'bar',
+                        data:data.scale,
+                        tooltip : {
+                            formatter: "时间:{b}<br/>交易额:{c}"
+                        }
+                    }
+
+                ]
+            };
+
+            var BarOpt=$.extend({}, this.CommonOption, thisOption);
+            return BarOpt;
         }
     },
     ChartDataFormate:function(data) {
