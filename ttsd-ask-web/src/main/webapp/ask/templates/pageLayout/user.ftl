@@ -1,4 +1,3 @@
-<#import "macro/global.ftl" as global>
 <div class="profile-box">
     <i class="profile"></i>
     <ul class="welcome-info">
@@ -18,8 +17,8 @@
     </ul>
     <div class="button-layer">
     <@global.isNotAnonymous>
-        <a href="${applicationContext}/question/my-questions" class="btn">我的提问<em>(<@myQuestions><@global.security.authentication property="principal.username"/></@myQuestions>)</em></a>
-        <a href="${applicationContext}/answer/my-answers" class="btn">我的回答<em>(<@myAnswers><@global.security.authentication property="principal.username"/></@myAnswers>)</em></a>
+        <a href="${global.applicationContext}/question/my-questions" class="btn">我的提问<em>(<@myQuestions><@global.security.authentication property="principal.username"/></@myQuestions>)</em></a>
+        <a href="${global.applicationContext}/answer/my-answers" class="btn">我的回答<em>(<@myAnswers><@global.security.authentication property="principal.username"/></@myAnswers>)</em></a>
     </@global.isNotAnonymous>
     <@global.isAnonymous>
         <a href="${webServer}/login" class="btn">登录</a>

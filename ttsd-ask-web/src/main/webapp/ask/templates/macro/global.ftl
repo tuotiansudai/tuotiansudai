@@ -133,8 +133,8 @@
         <#if !errorPage??>
     <#--left content-->
         <div class="aside-frame fr" >
-            <#include "../user.ftl"/>
-            <#include "../tags.ftl"/>
+            <#include "../pageLayout/user.ftl"/>
+            <#include "../pageLayout/tags.ftl"/>
 
             <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>

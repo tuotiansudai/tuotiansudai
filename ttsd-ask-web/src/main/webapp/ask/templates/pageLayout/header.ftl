@@ -1,4 +1,3 @@
-<#import "../macro/global.ftl" as global>
 <div class="header-container">
     <div class="header-download">
         <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>

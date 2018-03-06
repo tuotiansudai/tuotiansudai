@@ -1,4 +1,3 @@
-<#import "../macro/global.ftl" as global>
 <div class="border-ask-box tc">
     <div class="pc-search-box clearfix" id="searchBoxTool">
         <form method="get" action="${global.applicationContext}/question/search" class="clearfix">

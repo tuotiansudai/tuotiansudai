@@ -1,4 +1,3 @@
-<#import "macro/global.ftl" as global>
 <div class="hot-questions margin-top-10 clearfix">
     <div class="qa-title">热门问题分类</div>
     <ul class="qa-list clearfix">
