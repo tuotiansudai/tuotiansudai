@@ -107,9 +107,9 @@ var MyChartsObject={
             var PieOpt = $.extend({},initOption,option);
             return PieOpt;
         },
-        //环形图
-        AnnularOption:function(data,option) {
-            var report_data = MyChartsObject.ChartDataFormate(data);
+        // 饼状图选项
+        PieOptionBaseInfo:function(data,option) {
+            var report_data = MyChartsObject.myChartDataFormate(data,'name','scale');
             var option = option || {};
             var thisOption = {
                 legend:{
@@ -128,8 +128,61 @@ var MyChartsObject={
                     {
                         name: option.name || "",
                         type: 'pie',
+                        // radius : ['50%', '80%'],
+                        // center: ['70%', '48%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
+                                },
+                                labelLine : {
+                                    show : false
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : false,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '11',
+                                        fontWeight : 'normal'
+                                    }
+                                }
+                            }
+                        },
+                        data: report_data.data
+                    }
+                ],
+                color: ['rgb(255,117,42)','rgb(119,205,249)','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
+            };
+            var initOption=$.extend({}, this.CommonOption, thisOption);
+            var PieOpt = $.extend({},initOption,option);
+            return PieOpt;
+        },
+        //环形图
+        AnnularOption:function(data,option) {
+            var report_data = MyChartsObject.myChartDataFormate(data,'name','scale');
+            console.log(report_data)
+            var option = option || {};
+            var thisOption = {
+                legend:{
+                    orient: 'vertical',
+                    x: '10%',
+                    y:'center',
+                    // left: 'left',
+                    data:report_data.category
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b} : {c} ({d}%)',
+                    show: true
+                },
+                series: [
+                    {
+                        name: option.name || "",
+                        type: 'pie',
                         radius : ['50%', '80%'],
-                        center: ['70%', '48%'],
+                        center: ['60%', '48%'],
                         itemStyle : {
                             normal : {
                                 label : {
@@ -257,6 +310,17 @@ var MyChartsObject={
         for (var i = 0; i < dataLen; i++) {
             categories.push(data[i].name || "");
             datas.push({ name: data[i].name, value: data[i].value || 0 });
+        }
+        return { category: categories, data: datas };
+    },
+    myChartDataFormate:function(data,name,value) {
+        var categories = [];
+        var datas = [],
+            dataLen=data.length;
+
+        for (var i = 0; i < dataLen; i++) {
+            categories.push(data[i].name || "");
+            datas.push({ name: data[i][name], value: data[i][value] || 0 });
         }
         return { category: categories, data: datas };
     }

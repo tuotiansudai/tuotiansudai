@@ -42,16 +42,15 @@ $('.side_to_page').click(function (e) {
         reflow();
     }
     let index = Number(e.currentTarget.dataset.index);
-    index = index == 5 ? index - 2 : index;
+    index = index == 8 ? index - 2 : index;
     mySwiper.slideTo(index, 500, false);//切换到第一个slide，速度为1秒
 });
 
-let myChart1 = echarts.init(document.getElementById('main_part1'));
 let myChart2 = echarts.init(document.getElementById('main_part2'));
 let myChart3 = echarts.init(document.getElementById('main_part3'));
 let myChart4 = echarts.init(document.getElementById('main_part4'));
-let myChart5 = echarts.init(document.getElementById('main_part5'));
 let myChart6 = echarts.init(document.getElementById('main_part6'));
+let myChart7 = echarts.init(document.getElementById('main_part7'));
 
 let drawBarChart = (data) => {  // 柱状图
     return {
@@ -244,11 +243,13 @@ commonFun.useAjax({  // 拉取页面数据
     url: '/about/operation-data/chart',
     type: 'GET'
 }, (data) => {
+    console.log(data);
     let dataStr = data.operationDays.toString();
     getPartOnePage(data, dataStr);
     getPartTwoPage(data);
     getPartThreePage(data);
     getPartFourPage(data);
+    getPartFivePage(data);
 
 }, () => {
 });
@@ -291,17 +292,7 @@ let getPartOnePage = (data, dataStr) => {
 };
 
 let getPartTwoPage = (data) => {
-    let barChartArr = [];
-    let num = 0;
-    for (let i = 0; i < 4; i++) {
-        let $item = $('#investItem' + i);
-        let amount = parseInt(Math.ceil($item.data('amount') / 10000));
-        barChartArr.push(amount);
-        let count = Number($item.data('count')) || 0;
-        num += count;
-    }
-    $('#total_trade_count').html(toThousands(num));
-    myChart1.setOption(drawBarChart(barChartArr));
+
     let monthArr = data.month.slice(-6).map(item => {
         return item.split('.')[1] + '月';
     });
@@ -332,33 +323,34 @@ let getPartThreePage = (data) => {
 
 
     myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#a47cf3', '#fdb560', '#fcee74', '#87e376', '#69e2ab']));
+    myChart6.setOption(circularChart([
+        {value: `${femaleScale}`, name: `女性 ${femaleScale }%`},
+        {value: `${maleScale}`, name: `男性 ${maleScale }%`},
+    ], [`男性 ${maleScale }%`, `女性 ${femaleScale }%`], ['#fdb560', '#74bbf3']));
+
+
+    myChart7.setOption(circularChart(ageArr, ageLegendArr, ['#a47cf3', '#fdb560', '#fcee74', '#87e376', '#69e2ab']));
 };
 
 let getPartFourPage = (data) => {
-    let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
-    let investAmountScaleTop3 = data.investAmountScaleTop3; // 投资金额top3
-    let cityName_count = [];
-    let cityData_count = [];
-    let cityName_amount = [];
-    let cityData_amount = [];
+     let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
     investCityScaleTop3.forEach((item, index) => {
-        cityName_count[index] = item.city;
-        cityData_count[index] = item.scale;
+        $('#geographicalWrap').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}</div><div class="percent"><span style="width: 30%;"></span></div></li>`);
     });
-    investAmountScaleTop3.forEach((item, index) => {
-        cityName_amount[index] = item.city;
-        cityData_amount[index] = item.scale;
+};
+let getPartFivePage = (data) => {
+    let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
+    investCityScaleTop3.forEach((item, index) => {
+        $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}</div><div class="percent"><span style="width: 30%;"></span></div></li>`);
     });
-    myChart5.setOption(drawBarTransverse(cityName_count, cityData_count, ['#c2eef2', '#81e9f2', '#00def2']));
-    myChart6.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ffecac', '#ffd74f', '#ffc601']));
 };
 
 function reflow() {
-    document.getElementById('main_part1').style.visibility = "visible";
     document.getElementById('main_part2').style.visibility = "visible";
     document.getElementById('main_part3').style.visibility = "visible";
     document.getElementById('main_part4').style.visibility = "visible";
     document.getElementById('main_part5').style.visibility = "visible";
     document.getElementById('main_part6').style.visibility = "visible";
+    document.getElementById('main_part7').style.visibility = "visible";
     ifReflow = true;
 }

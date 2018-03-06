@@ -48,7 +48,7 @@
                     <![endif]-->
                 </div>
             </div>
-            <div class="data-model cheat-model" style="margin-top: 85px;">
+            <div class="data-model cheat-model" style="margin-top: 25px;">
                
                 <div class="model-container" id="loanBaseSexRecord">
                     <!--[if gte IE 8]>

@@ -239,11 +239,9 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     if (!$("#dataRecord").length) {
         return;
     }
-    var dataOptions = {startTime:'2015-03-04',endTime:'2018-02-01'}
     commonFun.useAjax({
         url: '/about/operation-data/chart',
-        type: 'GET',
-        data:dataOptions
+        type: 'GET'
     },function(data) {
         console.log(data);
         $('#operationDays').text(data.operationDays);
@@ -264,8 +262,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var  optUser = loadEcharts.ChartConfig('investRecord', optionUser);
         loadEcharts.RenderChart(optUser);
         //投资人男女比例 饼状图
-        var sexOptions = [data.femaleScale,data.maleScale];
-        var optionSex = loadEcharts.ChartOptionTemplates.PieOption(sexOptions,'投资人基本信息');
+        var sexOptions = [{name:'男性投资人',scale:data.femaleScale},{name:'女性投资人',scale:data.maleScale}];
+        var optionSex = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexOptions,'投资人基本信息');
         var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
         loadEcharts.RenderChart(optSex);
         //投资人地域分布
@@ -291,12 +289,12 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         investRegion.setOption(drawBarTransverse(cityName_count, cityData_count, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
         //借款人基本信息环形图
         var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,'投资用户(人)');
-        var  optLoan = loadEcharts.ChartConfig('investRecord', optionLoan);
+        var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);
         loadEcharts.RenderChart(optLoan);
         //投资人男女比例 饼状图
-        var sexLoanOptions = [data.femaleScale,data.maleScale];
-        var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOption(sexLoanOptions,'投资人基本信息');
-        var  optSexLoan = loadEcharts.ChartConfig('investSexRecord', optionSexLoan);
+        var sexLoanOptions = [{name:'男性投资人',scale:data.femaleScale},{name:'女性投资人',scale:data.maleScale}];
+        var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexLoanOptions,'投资人基本信息');
+        var  optSexLoan = loadEcharts.ChartConfig('loanBaseSexRecord', optionSexLoan);
         loadEcharts.RenderChart(optSexLoan);
         //借款人地域分布
         loanRegion.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
