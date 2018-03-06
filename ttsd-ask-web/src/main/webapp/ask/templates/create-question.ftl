@@ -53,7 +53,7 @@
                         <@global.isNotAnonymous>
                             <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha" maxlength="5">
                         </@global.isNotAnonymous>
-                        <img src="${applicationContext}/captcha" class="captchaImg" alt="" id="imageCaptcha">
+                        <img src="${global.applicationContext}/captcha" class="captchaImg" alt="" id="imageCaptcha">
                         <span class="error " style="display: none">请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">

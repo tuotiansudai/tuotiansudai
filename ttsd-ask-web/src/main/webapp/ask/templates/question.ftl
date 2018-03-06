@@ -48,13 +48,13 @@
                 <dd>
                     <@global.isAnonymous>
                         <span class="isAnonymous captcha">请输入验证码</span>
-                        <img src="${applicationContext}/captcha" alt="">
+                        <img src="${global.applicationContext}/captcha" alt="">
                         <span class="is-nologn-btn btn fr">提交答案</span>
                     </@global.isAnonymous>
 
                     <@global.isNotAnonymous>
                         <input type="text" placeholder="请输入验证码" class="captcha" name="captcha" maxlength="5">
-                        <img src="${applicationContext}/captcha" alt="" class="captchaImg" id="imageCaptcha">
+                        <img src="${global.applicationContext}/captcha" alt="" class="captchaImg" id="imageCaptcha">
                         <button type="button" class="btn fr formSubmit" name="btnSubmitAnswer" disabled>提交答案</button>
                         <i class="error" style="display: none">验证码不正确</i>
                     </@global.isNotAnonymous>
@@ -117,10 +117,10 @@
         </div>
         <div class="pagination">
             <#if answers.data.hasPreviousPage>
-                <a href="${applicationContext}/question/${questionId?string.computer}">首页</a>
+                <a href="${global.applicationContext}/question/${questionId?string.computer}">首页</a>
             </#if>
             <#if answers.data.index &gt; 3>
-                <a href="${applicationContext}/question/${questionId?string.computer}?index=${answers.data.index-1}"> < </a>
+                <a href="${global.applicationContext}/question/${questionId?string.computer}?index=${answers.data.index-1}"> < </a>
             </#if>
 
             <#assign lower = 1>
@@ -145,15 +145,15 @@
             </#if>
 
             <#list lower..upper as page>
-                <a href="${applicationContext}/question/${questionId?string.computer}?index=${page}"
+                <a href="${global.applicationContext}/question/${questionId?string.computer}?index=${page}"
                    <#if page == answers.data.index>class="active"</#if>> ${page} </a>
             </#list>
 
             <#if answers.data.maxPage - answers.data.index &gt; 2>
-                <a href="${applicationContext}/question/${questionId?string.computer}?index=${answers.data.index+1}"> > </a>
+                <a href="${global.applicationContext}/question/${questionId?string.computer}?index=${answers.data.index+1}"> > </a>
             </#if>
             <#if answers.data.hasNextPage>
-                <a href="${applicationContext}/question/${questionId?string.computer}?index=${answers.data.maxPage}">末页</a>
+                <a href="${global.applicationContext}/question/${questionId?string.computer}?index=${answers.data.maxPage}">末页</a>
             </#if>
         </div>
     </#if>
