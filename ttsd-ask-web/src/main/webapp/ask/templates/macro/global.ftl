@@ -122,7 +122,7 @@
         <ul class="qa-list clearfix" style="display: none">
             <#list tags as tagItem>
                 <li>
-                    <a href="/question/category/${tagItem.name()?lower_case}"
+                    <a href="${applicationContext}/question/category/${tagItem.name()?lower_case}"
                        <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
                 </li>
             </#list>
@@ -133,8 +133,8 @@
         <#if !errorPage??>
     <#--left content-->
         <div class="aside-frame fr" >
-            <#include "../user.ftl"/>
-            <#include "../tags.ftl"/>
+            <#include "../pageLayout/user.ftl"/>
+            <#include "../pageLayout/tags.ftl"/>
 
             <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
@@ -158,6 +158,7 @@
 
 <script>
     window.commonStaticServer='${commonStaticServer}';
+    window.applicationContext='${applicationContext}';
 </script>
 <#if (js.jquerydll)??>
 <script src="${js.jquerydll}" type="text/javascript" ></script>

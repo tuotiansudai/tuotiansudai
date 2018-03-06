@@ -31,15 +31,15 @@
         <div class="answers-box">
             <#list questions.data.records as question>
                 <dl class="answers-list">
-                    <dt><a href="/question/${question.id?string.computer}" target="_blank">${question.question}</a></dt>
-                    <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</a></dd>
+                    <dt><a href="${global.applicationContext}/question/${question.id?string.computer}" target="_blank">${question.question}</a></dt>
+                    <dd class="detail"><a href="${global.applicationContext}/question/${question.id?string.computer}" target="_blank">${question.addition?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</a></dd>
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
                         <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span><span style="width:100%;height:1px"></span>
 
                         <#list question.tags as tag>
                                 <em class="fr tag">
-                                    <a href="/question/category/${tag.name()}">${tag.description}</a>
+                                    <a href="${global.applicationContext}/question/category/${tag.name()}">${tag.description}</a>
                                 </em>
                             </#list>
                     </dd>
@@ -50,10 +50,10 @@
 
     <div class="pagination">
         <#if questions.data.hasPreviousPage>
-            <a href="/question/category/${tag.name()}">首页</a>
+            <a href="${global.applicationContext}/question/category/${tag.name()}">首页</a>
         </#if>
         <#if questions.data.index &gt; 3>
-            <a href="/question/category/${tag.name()}?index=${questions.data.index-1}"> < </a>
+            <a href="${global.applicationContext}/question/category/${tag.name()}?index=${questions.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
@@ -78,14 +78,14 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/question/category/${tag.name()}?index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
+            <a href="${global.applicationContext}/question/category/${tag.name()}?index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if questions.data.maxPage - questions.data.index &gt; 2>
-            <a href="/question/category/${tag.name()}?index=${questions.data.index+1}"> > </a>
+            <a href="${global.applicationContext}/question/category/${tag.name()}?index=${questions.data.index+1}"> > </a>
         </#if>
         <#if questions.data.hasNextPage>
-            <a href="/question/category/${tag.name()}?index=${questions.data.maxPage}">末页</a>
+            <a href="${global.applicationContext}/question/category/${tag.name()}?index=${questions.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>

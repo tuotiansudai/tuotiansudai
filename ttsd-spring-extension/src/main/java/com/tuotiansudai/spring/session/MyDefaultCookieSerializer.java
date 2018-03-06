@@ -88,7 +88,7 @@ public class MyDefaultCookieSerializer implements CookieSerializer {
 
     private String getCookiePath(HttpServletRequest request) {
         if (this.cookiePath == null) {
-            return request.getContextPath() + "/";
+            return "/";
         }
         return this.cookiePath;
     }
