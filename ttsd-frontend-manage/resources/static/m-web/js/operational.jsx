@@ -277,11 +277,15 @@ function toThousands(num) {
 }
 
 let getPartOnePage = (data, dataStr) => {
+
+    var days = parseInt(dataStr/365);
+    dataStr = (dataStr-days*365).toString();
     let dom = '';
     for (let i = 0; i < dataStr.length; i++) {
         dom += `<div class="safe_day">${dataStr.charAt(i)}</div>`
     }
     $('.safe_day_wrapper').prepend(dom);
+    $('.safe_day_wrapper').prepend(`<div class="safe_day">${days}</div><div class="safe_day_unit">年</div>>`);
     $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));
 };
