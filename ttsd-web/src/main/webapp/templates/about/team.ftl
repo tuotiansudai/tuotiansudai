@@ -2,7 +2,7 @@
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="团队介绍" title="拓天团队_金融精英_拓天速贷" keywords="拓天速贷,精英团队,安全保障,拓天安全" description="拓天速贷金融精英为您提供规范、安全、专业的互联网金融信息服务.">
     <div class="about-us-container">
         <h2 class="column-title"><em>公司管理</em></h2>
-        <div class="team-box com-list clearfix">
+        <div class="team-box com-list clearfix" style="padding-top: 10px;">
             <i class="sign-profile user-one"></i>
             <dl class="company-user">
                 <dt>李显玉先生 <span>董事长</span></dt>
@@ -10,7 +10,7 @@
                 <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
                 <dd>平静时，我们宁静平和；</dd>
                 <dd>澎湃时，我们大浪滔天，风云变色。</dd>
-                <dd>20岁进入金融行业，2013年创办北京拓天伟业担保有限公司，后转型从事财富管理行业，2014年创办拓天伟业（北京）资产管理有限公司，2015年创办拓天伟业（北京）金融信息服务有限公司，经过艰苦奋战，拓天资产已成为客户认可度高、行业领先、业务规模名列前茅的财富管理公司。</dd>
+                <dd>深谙中国中小企业的发展方向与事业瓶颈，在高净值客户的资产配置管理方向见解独到，经过对金融知识与行业经验的长期积累，不仅明确了事业的未来发展规划，还拥有了对资本市场发展的敏锐嗅觉。经过多年艰苦奋战，赢得了金融行业内机构以及财智客户的深度认可，也被誉为中国企业财富管理行业探路者和实践者、八零后创业者领军人物。</dd>
             </dl>
         </div>
         <div class="team-box com-list clearfix">
@@ -36,48 +36,12 @@
             <dl class="company-user">
                 <dt>张东杰先生<span>副总经理兼运营总监</span></dt>
                 <dd>世界会向那些有目标和远见的人让路。</dd>
-                <dd>曾在君安信（北京）科技有限公司负责运营与市场相关管理工作，其本身过硬的计算机技术以及扎实的运营理论知识，强调以用户体验、转化率为基础的运营策划思想以及多元化的操作手法在业内广泛流传。在互联网金融行业有着丰富的实践经验与管理创新能力。</dd>
+                <dd>曾在某互联网金融公司负责运营与市场相关管理工作，其本身过硬的计算机技术以及扎实的运营理论知识，强调以用户体验、转化率为基础的运营策划思想以及多元化的操作手法在业内广泛流传。在互联网金融行业有着丰富的实践经验与管理创新能力。</dd>
             </dl>
         </div>
-        <h2 class="column-title"><em>团队介绍</em></h2>
-        <div class="team-box clearfix">
-            <i class="sign-profile user-team1"></i>
-            <dl>
-                <dt>行政团队</dt>
-                <dd>行政团队运用最先进、最科学的管理模式，引领拓天速贷平台更完美的服务大众。</dd>
-            </dl>
-        </div>
+        <h2 class="column-title"><em>组织架构</em></h2>
+        <div class="organizational-structure">
 
-        <div class="team-box clearfix">
-            <i class="sign-profile user-team2"></i>
-            <dl>
-                <dt>技术团队</dt>
-                <dd>技术团队是一批有创意、有激情的年轻人，具备丰富的开发经验、非凡的创造力和奉献精神。</dd>
-            </dl>
-        </div>
-
-        <div class="team-box clearfix">
-            <i class="sign-profile user-team3"></i>
-            <dl>
-                <dt>信审团队</dt>
-                <dd>信审团队是一群专业严谨的金融精英，严格把控信审流程，维护投资人利益。</dd>
-            </dl>
-        </div>
-
-        <div class="team-box clearfix">
-            <i class="sign-profile user-team4"></i>
-            <dl>
-                <dt>风控团队</dt>
-                <dd>风控团队有丰富金融风险把控经验，为平台用户提供完善的安全保障。</dd>
-            </dl>
-        </div>
-
-        <div class="team-box last clearfix">
-            <i class="sign-profile user-team5"></i>
-            <dl>
-                <dt>客服团队</dt>
-                <dd>客服团队通过电话(400-169-1188)、QQ、微信和微博等信息化手段，一对一服务用户。</dd>
-            </dl>
         </div>
         <h2 class="column-title"><em>工作环境</em></h2>
         <ul class="com-place" id="companyPhoto">

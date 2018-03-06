@@ -31,6 +31,9 @@
   }
   .company-info {
     width: 48%;
+    .text-padding {
+      padding-left: 2em;
+    }
 
     b.text-m {
       padding-bottom: 10px;
@@ -46,13 +49,23 @@
   }
   .company-img {
     width:343px;
-    height:229px;
-    background: url('../images/sign/aboutus/company.jpg') left top no-repeat;
+    height:431px;
+    background: url('../images/sign/aboutus/company.png') left top no-repeat;
     float: right;
   }
   .aptitude-new {
-    height:556px;
-    background: url('../images/sign/aboutus/aptitude_new.jpg') left top no-repeat;
+    width: 504px;
+    height:294px;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding-bottom: 30px;
+   ul {
+     margin-left: -60px;
+     li {
+       float: left;
+       margin-left: 60px;
+     }
+   }
   }
   .notice-list {
     li {
@@ -104,118 +117,118 @@
     }
   }
   .team-box {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 15px;
-    padding-top: 15px;
-    color: #4c4c4c;
-    &.com-list {
-      border-bottom: none;
-    }
-    .sign-profile {
-      width:180px;
-      height:220px;
-      display: inline-block;
-      float: left;
-      margin-right: 20px;
-      &.user-one {
-        background: url('../images/sign/aboutus/user-one.jpg') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-two {
-        background: url('../images/sign/aboutus/user-two.jpg') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-three {
-        background: url('../images/sign/aboutus/user-three.jpg') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-four {
-        background: url('../images/sign/aboutus/user-four.jpg') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-team1 {
-        width:340px;
-        height:226px;
-        margin-right: 50px;
-        background: url('../images/sign/aboutus/team1.png') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-team2 {
-        width:340px;
-        height:226px;
-        margin-left: 50px;
-        float: right;
-        background: url('../images/sign/aboutus/team2.png') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-team3 {
-        width:340px;
-        height:226px;
-        margin-right: 50px;
-        background: url('../images/sign/aboutus/team3.png') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-team4 {
-        width:340px;
-        height:226px;
-        margin-left: 50px;
-        float: right;
-        background: url('../images/sign/aboutus/team4.png') left top no-repeat;
-        background-size: cover;
-      }
-      &.user-team5 {
-        width:340px;
-        height:226px;
-        margin-right: 50px;
-        background: url('../images/sign/aboutus/team5.jpg') left top no-repeat;
-        background-size: cover;
-      }
-      &.photo-big01 {
-        background: url('../images/sign/aboutus/photo_01.jpg') left top no-repeat;
-        background-size: contain;
-      }
-      &.photo-big02 {
-        background: url('../images/sign/aboutus/photo_02.jpg') left top no-repeat;
-        background-size: contain;
-      }
-      &.photo-big03 {
-        background: url('../images/sign/aboutus/photo_03.jpg') left top no-repeat;
-        background-size: contain;
-      }
-      &.photo-big04 {
-        background: url('../images/sign/aboutus/photo_04.jpg') left top no-repeat;
-        background-size: cover;
-      }
-      &.photo-big05 {
-        background: url('../images/sign/aboutus/photo_05.jpg') left top no-repeat;
-        background-size: contain;
-      }
-    }
-    dl {
-      overflow: hidden;
-      &.company-user{
-        margin-top:0;
-        dt{
-          padding-bottom:0;
-          span{
-            font-size:12px;
-            color:#ff7200;
-            margin-left: 10px;
-          }
-        }
-        dd {
-          font-size: 12px;
-        }
-      }
-      dt {
-        font-size: 16px;
-        font-weight: bold;
-      }
-    }
-    &.last {
-      border-bottom-width: 0;
-    }
-  }
+     border-bottom: 1px solid #ccc;
+     padding-bottom: 15px;
+     padding-top: 15px;
+     color: #4c4c4c;
+     &.com-list {
+       border-bottom: none;
+     }
+     .sign-profile {
+       width:180px;
+       height:220px;
+       display: inline-block;
+       float: left;
+       margin-right: 20px;
+       &.user-one {
+         background: url('../images/sign/aboutus/user-one.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-two {
+         background: url('../images/sign/aboutus/user-two.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-three {
+         background: url('../images/sign/aboutus/user-three.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-four {
+         background: url('../images/sign/aboutus/user-four.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-team1 {
+         width:340px;
+         height:226px;
+         margin-right: 50px;
+         background: url('../images/sign/aboutus/team1.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-team2 {
+         width:340px;
+         height:226px;
+         margin-left: 50px;
+         float: right;
+         background: url('../images/sign/aboutus/team2.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-team3 {
+         width:340px;
+         height:226px;
+         margin-right: 50px;
+         background: url('../images/sign/aboutus/team3.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-team4 {
+         width:340px;
+         height:226px;
+         margin-left: 50px;
+         float: right;
+         background: url('../images/sign/aboutus/team4.png') left top no-repeat;
+         background-size: cover;
+       }
+       &.user-team5 {
+         width:340px;
+         height:226px;
+         margin-right: 50px;
+         background: url('../images/sign/aboutus/team5.jpg') left top no-repeat;
+         background-size: cover;
+       }
+       &.photo-big01 {
+         background: url('../images/sign/aboutus/photo_01.jpg') left top no-repeat;
+         background-size: contain;
+       }
+       &.photo-big02 {
+         background: url('../images/sign/aboutus/photo_02.jpg') left top no-repeat;
+         background-size: contain;
+       }
+       &.photo-big03 {
+         background: url('../images/sign/aboutus/photo_03.jpg') left top no-repeat;
+         background-size: contain;
+       }
+       &.photo-big04 {
+         background: url('../images/sign/aboutus/photo_04.jpg') left top no-repeat;
+         background-size: cover;
+       }
+       &.photo-big05 {
+         background: url('../images/sign/aboutus/photo_05.jpg') left top no-repeat;
+         background-size: contain;
+       }
+     }
+     dl {
+       overflow: hidden;
+       &.company-user{
+         margin-top:0;
+         dt{
+           padding-bottom:0;
+           span{
+             font-size:12px;
+             color:#ff7200;
+             margin-left: 10px;
+           }
+         }
+         dd {
+           font-size: 12px;
+         }
+       }
+       dt {
+         font-size: 16px;
+         font-weight: bold;
+       }
+     }
+     &.last {
+       border-bottom-width: 0;
+     }
+   }
   .common-problem {
     border-bottom: 1px solid #ccc;
     color: #4c4c4c;
@@ -429,6 +442,9 @@
     }
     .aptitude-new {
       height:300px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 0;
     }
     .refer-reward-box {
       .detail-button {
@@ -565,5 +581,18 @@
       height:250px;
     }
   }
+
+}
+.organizational-structure {
+  width: 765px;
+  margin: 0 auto;
+  @media screen and (max-width:700px) {
+    width: 100%;
+  }
+ img {
+   width: 100%;
+ }
+  margin-bottom: 20px;
+  padding-top: 10px;
 
 }
