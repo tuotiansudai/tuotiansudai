@@ -1,3 +1,4 @@
+<#import "../macro/global.ftl" as global>
 <div class="nav-container">
     <div class="img-top page-width clearfix">
         <div class="logo">

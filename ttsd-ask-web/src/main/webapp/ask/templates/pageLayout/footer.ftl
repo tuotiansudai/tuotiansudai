@@ -1,3 +1,4 @@
+<#import "../macro/global.ftl" as global>
 <div class="footer-container">
     <div class="footer page-width">
         <ul>
