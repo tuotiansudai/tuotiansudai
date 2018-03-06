@@ -96,7 +96,8 @@
         WHERE
         1 = 1
         and temp.status not in ('WAITING_VERIFY','CANCEL')
-        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type = 'EXPERIENCE')
+        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type =
+        'EXPERIENCE')
         <if test="name !=null and name!=''">
             and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -138,7 +139,8 @@
         select count(*) from (
         select t.* from loan t left join loan_details on t.id = loan_details.loan_id
         where 1=1
-        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or t.product_type = 'EXPERIENCE')
+        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or t.product_type =
+        'EXPERIENCE')
         <if test="name !=null and name != ''">
             and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
         </if>
@@ -173,7 +175,8 @@
         loan temp left JOIN loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
-        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type = 'EXPERIENCE')
+        and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type =
+        'EXPERIENCE')
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="productType !=null">
             and temp.product_type = #{productType}
@@ -356,10 +359,10 @@
             <if test="productType != null">
                 product_type = #{productType},
             </if>
-            <if test="activityRate !=null and activityRate != ''">
+            <if test="activityRate !=null">
                 activity_rate = #{activityRate},
             </if>
-            <if test="baseRate != null and baseRate != ''">
+            <if test="baseRate != null">
                 base_rate = #{baseRate},
             </if>
             <if test="contractId !=null and contractId!=''">
@@ -668,7 +671,8 @@
     <select id="findByProductType" resultMap="loanResultMap">
         select loan.* from loan left join loan_details on loan.id = loan_details.loan_id
         where
-        (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or loan.product_type = 'EXPERIENCE')
+        (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or loan.product_type =
+        'EXPERIENCE')
         <if test="productTypeList != null ">
             and loan.product_type IN
             <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
