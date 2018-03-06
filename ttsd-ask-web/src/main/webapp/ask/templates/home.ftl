@@ -2,8 +2,8 @@
 <@global.main pageCss="${(css.mainSite)!}" pageJavascript="${(js.mainSite)!}" title="拓天问答_投资问答_拓天速贷" keywords="投资问答,网贷问答,投资知识,金融问答" description="拓天速贷投资问答系统,为您解答金融行业最新最快的投资知识,让您放心投资、安全投资,拓天速贷为投资人答疑解惑.">
 <div class="article-content fl" id="homeTagContainer">
     <ul class="switch-menu clearfix">
-        <li><a href="${applicationContext}/?group=ALL">全部问题</a></li>
-        <li><a href="${applicationContext}/?group=UNRESOLVED">待解决问题</a></li>
+        <li><a href="${applicationContext}?group=ALL">全部问题</a></li>
+        <li><a href="${applicationContext}?group=UNRESOLVED">待解决问题</a></li>
         <li><a href="${applicationContext}">热门问题</a></li>
     </ul>
     <div class="border-ask-box clearfix">
@@ -28,10 +28,10 @@
 
     <div class="pagination">
         <#if questions.data.hasPreviousPage>
-            <a href="${applicationContext}/?group=${group}">首页</a>
+            <a href="${applicationContext}?group=${group}">首页</a>
         </#if>
         <#if questions.data.index &gt; 3>
-            <a href="${applicationContext}/?group=${group}&index=${questions.data.index-1}"> < </a>
+            <a href="${applicationContext}?group=${group}&index=${questions.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
@@ -56,14 +56,14 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="${applicationContext}/?group=${group}&index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
+            <a href="${applicationContext}?group=${group}&index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if questions.data.maxPage - questions.data.index &gt; 2>
-            <a href="${applicationContext}/?group=${group}&index=${questions.data.index+1}"> > </a>
+            <a href="${applicationContext}?group=${group}&index=${questions.data.index+1}"> > </a>
         </#if>
         <#if questions.data.hasNextPage>
-            <a href="${applicationContext}/?group=${group}&index=${questions.data.maxPage}">末页</a>
+            <a href="${applicationContext}?group=${group}&index=${questions.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>
