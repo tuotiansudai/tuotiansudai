@@ -3,7 +3,7 @@
     <ul class="qa-list clearfix">
     <#list tags as tagItem>
         <li>
-            <a href="/question/category/${tagItem.name()}"
+            <a href="${applicationContext}/question/category/${tagItem.name()}"
                <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
         </li>
     </#list>

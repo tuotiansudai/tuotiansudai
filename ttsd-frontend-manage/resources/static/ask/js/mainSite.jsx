@@ -2,7 +2,7 @@ let commonFun= require('publicJs/commonFun');
 require("askStyle/questions.scss");
 //刷新验证码
 $('#imageCaptcha').on('click',function() {
-    commonFun.refreshCaptcha(this,'/captcha');
+    commonFun.refreshCaptcha(this, applicationContext + '/captcha');
     this.parentElement.children[0].value='';
 
 });

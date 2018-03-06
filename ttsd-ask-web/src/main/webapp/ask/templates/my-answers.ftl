@@ -2,22 +2,22 @@
 <@global.main pageCss="${(css.mainSite)!}" pageJavascript="${(js.mainSite)!}" title="拓天问答_投资问答_拓天速贷" keywords="投资问答,网贷问答,投资知识,金融问答" description="拓天速贷投资问答系统,为您解答金融行业最新最快的投资知识,让您放心投资、安全投资,拓天速贷为投资人答疑解惑.">
 <div class="article-content fl" id="myQAnswer">
     <ul class="switch-menu clearfix" id="my-questions-tab">
-        <li><a href="/question/my-questions">我的提问</a></li>
-        <li class="active"><a href="/answer/my-answers">我的回答</a></li>
+        <li><a href="${applicationContext}/question/my-questions">我的提问</a></li>
+        <li class="active"><a href="${applicationContext}/answer/my-answers">我的回答</a></li>
     </ul>
     <div class="border-ask-box clearfix">
         <div class="answers-box">
             <#list answers.data.records as answer>
                 <dl class="answers-list">
-                    <dt><a href="/question/${answer.question.id?string.computer}" target="_blank">${answer.question.question}</a></dt>
-                    <dd><a href="/question/${answer.question.id?string.computer}" target="_blank">${answer.question.addition!}</a></dd>
+                    <dt><a href="${applicationContext}/question/${answer.question.id?string.computer}" target="_blank">${answer.question.question}</a></dt>
+                    <dd><a href="${applicationContext}/question/${answer.question.id?string.computer}" target="_blank">${answer.question.addition!}</a></dd>
                     <dd><span>${answer.question.mobile}</span>
                         <span>回答：${answer.question.answers}</span>
                         <span class="datetime">${answer.question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
 
                                 <#list answer.question.tags as tag>
                                 <span class="fr tag">
-                                    <a class="/question/category/${tag.name()}" href="">${tag.description}</a>
+                                    <a class="${applicationContext}/question/category/${tag.name()}" href="">${tag.description}</a>
                                </span>
                                 </#list>
 
@@ -41,10 +41,10 @@
 
     <div class="pagination">
         <#if answers.data.hasPreviousPage>
-            <a href="/answer/my-answers">首页</a>
+            <a href="${applicationContext}/answer/my-answers">首页</a>
         </#if>
         <#if answers.data.index &gt; 3>
-            <a href="/answer/my-answers?index=${answers.data.index-1}"> < </a>
+            <a href="${applicationContext}/answer/my-answers?index=${answers.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
@@ -69,14 +69,14 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/answer/my-answers?index=${page}" <#if page == answers.data.index>class="active"</#if>> ${page} </a>
+            <a href="${applicationContext}/answer/my-answers?index=${page}" <#if page == answers.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if answers.data.maxPage - answers.data.index &gt; 2>
-            <a href="/answer/my-answers?index=${answers.data.index+1}"> > </a>
+            <a href="${applicationContext}/answer/my-answers?index=${answers.data.index+1}"> > </a>
         </#if>
         <#if answers.data.hasNextPage>
-            <a href="/answer/my-answers?index=${answers.data.maxPage}">末页</a>
+            <a href="${applicationContext}/answer/my-answers?index=${answers.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>

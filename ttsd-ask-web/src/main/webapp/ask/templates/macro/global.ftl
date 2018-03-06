@@ -122,7 +122,7 @@
         <ul class="qa-list clearfix" style="display: none">
             <#list tags as tagItem>
                 <li>
-                    <a href="/question/category/${tagItem.name()?lower_case}"
+                    <a href="${applicationContext}/question/category/${tagItem.name()?lower_case}"
                        <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
                 </li>
             </#list>
@@ -158,6 +158,7 @@
 
 <script>
     window.commonStaticServer='${commonStaticServer}';
+    window.applicationContext='${applicationContext}';
 </script>
 <#if (js.jquerydll)??>
 <script src="${js.jquerydll}" type="text/javascript" ></script>
