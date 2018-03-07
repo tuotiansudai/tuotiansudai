@@ -1,9 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.OperationDataAgeDataDto;
-import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.dto.OperationDataInvestAmountDataDto;
-import com.tuotiansudai.dto.OperationDataInvestCityDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.InvestDataView;
 
 import java.util.Date;
@@ -30,5 +27,7 @@ public interface OperationDataService {
     List<OperationDataInvestCityDataDto> convertMapToOperationDataInvestCityDataDto();
 
     List<OperationDataInvestAmountDataDto> convertMapToOperationDataInvestAmountDataDto();
+
+    List<OperationDataLoanerCityDataDto> convertMapToOperationDataLoanerCityDataDto();
 
 }

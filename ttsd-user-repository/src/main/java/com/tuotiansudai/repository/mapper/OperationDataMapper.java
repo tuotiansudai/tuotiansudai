@@ -13,7 +13,11 @@ public interface OperationDataMapper {
 
     long findCountInvestCityScale(Date endDate);
 
+    long findCountLoanerCityScale(Date endDate);
+
     List<Map<String, String>> findCountInvestCityScaleTop5(Date endDate);
+
+    List<Map<String, String>> findCountLoanerCityScaleTop5(Date endDate);
 
     List<Map<String, String>> findAgeDistributionByAge(Date endDate);
 }

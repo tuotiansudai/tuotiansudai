@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.OperationDataAgeDataDto;
-import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.dto.OperationDataInvestAmountDataDto;
-import com.tuotiansudai.dto.OperationDataInvestCityDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -58,6 +55,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:age:Distribution:{0}";
     private static final String COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:invest:city:scale:{0}";
     private static final String AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:amount:invest:city:scale:{0}";
+    private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
 
     private static final String REDIS_USERS_COUNT = "userCount";
     private static final String REDIS_TRADE_AMOUNT = "tradeAmount";
@@ -113,6 +111,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
+        operationDataDto.setLoanerCityScaleTop5(convertMapToOperationDataLoanerCityDataDto());
         final int monthSize = getInvestMonthCount(endDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(endDate);
@@ -143,6 +142,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
         operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
+        operationDataDto.setLoanerCityScaleTop5(convertMapToOperationDataLoanerCityDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         List<Integer> sexList = findScaleByGender(new Date());
         if (sexList.size() > 1) {
@@ -246,6 +246,28 @@ public class OperationDataServiceImpl implements OperationDataService {
         return resultMap;
     }
 
+    public Map<String, String> findCountLoanerCityScaleTop5(Date endDate) {
+        Map<String, String> resultMap = new LinkedHashMap<>();
+        if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
+            Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate));
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                resultMap.put(entry.getKey(), entry.getValue());
+            }
+        } else {
+            long totalScaleCount = operationDataMapper.findCountLoanerCityScale(endDate);
+            List<Map<String, String>> loanerCityList = operationDataMapper.findCountLoanerCityScaleTop5(endDate);
+            for (Map<String, String> loanerCityMap : loanerCityList) {
+                if (StringUtils.isNotEmpty(loanerCityMap.get("city"))) {
+                    redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                            loanerCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(loanerCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
+                    resultMap.put(loanerCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(loanerCityMap.get("totalCount"))), totalScaleCount, 1)));
+                }
+
+            }
+        }
+        return resultMap;
+    }
+
     public Map<String, String> findInvestAmountScaleTop3(Date endDate) {
         Map<String, String> resultMap = new LinkedHashMap<>();
         if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
@@ -309,6 +331,21 @@ public class OperationDataServiceImpl implements OperationDataService {
     }
 
     @Override
+    public List<OperationDataLoanerCityDataDto> convertMapToOperationDataLoanerCityDataDto() {
+        Map<String, String> loanerCityListMap = findCountLoanerCityScaleTop5(new Date());
+        Set<Map.Entry<String, String>> loanerCityEntries = loanerCityListMap.entrySet();
+        List<OperationDataLoanerCityDataDto> operationDataLoanerCityDataDtoList = Lists.newArrayList();
+        for (Map.Entry<String, String> loanerCityEntry : loanerCityEntries) {
+            OperationDataLoanerCityDataDto operationDataLoanerCityDataDto = new OperationDataLoanerCityDataDto();
+            operationDataLoanerCityDataDto.setCity(loanerCityEntry.getKey());
+            operationDataLoanerCityDataDto.setScale(loanerCityEntry.getValue());
+            operationDataLoanerCityDataDtoList.add(operationDataLoanerCityDataDto);
+        }
+        Collections.sort(operationDataLoanerCityDataDtoList, (o1, o2) -> Double.compare(Double.parseDouble(o2.getScale()), Double.parseDouble(o1.getScale())));
+        return operationDataLoanerCityDataDtoList;
+    }
+
+    @Override
     public List<OperationDataInvestAmountDataDto> convertMapToOperationDataInvestAmountDataDto() {
         Map<String, String> investAmountMap = findInvestAmountScaleTop3(new Date());
         Set<Map.Entry<String, String>> investAmountEntries = investAmountMap.entrySet();
@@ -322,6 +359,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         Collections.sort(operationDataInvestAmountDataDtoList, (o1, o2) -> Double.compare(Double.parseDouble(o2.getScale()), Double.parseDouble(o1.getScale())));
         return operationDataInvestAmountDataDtoList;
     }
+
 
     public Map<String, String> findAgeDistributionByAge(Date endDate) {
         Map<String, String> resultGroupMap = new LinkedHashMap<>();

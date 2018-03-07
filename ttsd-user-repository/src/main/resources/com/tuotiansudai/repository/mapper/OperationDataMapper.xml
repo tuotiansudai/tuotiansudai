@@ -51,6 +51,14 @@
         limit 5
     </select>
 
+    <select id="findCountLoanerCityScaleTop5" resultType="java.util.HashMap">
+        select region as city,count(DISTINCT(`identity_number`)) as totalCount
+        from `loaner_details`
+        group BY region
+        order by totalCount desc
+        limit 5
+    </select>
+
     <select id="findCountInvestCityScale" parameterType="map" resultType="long">
         select count(distinct user.login_name)
         from invest
@@ -60,5 +68,15 @@
         and loan.product_type != 'EXPERIENCE'
         and user.register_time &lt;= #{endDate}
     </select>
+
+    <select id="findCountLoanerCityScale" resultType="long">
+        select sum(totalCount) from(
+            select region as city, count(DISTINCT(`identity_number`)) as totalCount
+            from `loaner_details`
+            group BY region
+            order by totalCount desc
+        ) a;
+    </select>
+
 
 </mapper>

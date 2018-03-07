@@ -2,8 +2,8 @@ package com.tuotiansudai.enums;
 
 public enum AgeDistributionType {
     UNDER_20("20岁以下", 1),
-    BETWEEN_20_AND_35("20~30岁", 2),
-    BETWEEN_35_AND_50("30~40岁", 3),
+    BETWEEN_20_AND_35("20~35岁", 2),
+    BETWEEN_35_AND_50("35~40岁", 3),
     MORE_THAN_50("50岁以上", 4);
 
     private String description;

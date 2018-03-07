@@ -32,6 +32,9 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资金额top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3;
 
+    @ApiModelProperty(value = "借款人数top5", example = "北京:60,上海:30,济南:10")
+    private List<OperationDataLoanerCityResponseDataDto> loanerCityScaleTop5;
+
     public OperationDataResponseDataDto() {
 
     }
@@ -138,5 +141,13 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestAmountScaleTop3(List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3) {
         this.investAmountScaleTop3 = investAmountScaleTop3;
+    }
+
+    public List<OperationDataLoanerCityResponseDataDto> getLoanerCityScaleTop5() {
+        return loanerCityScaleTop5;
+    }
+
+    public void setLoanerCityScaleTop5(List<OperationDataLoanerCityResponseDataDto> loanerCityScaleTop5) {
+        this.loanerCityScaleTop5 = loanerCityScaleTop5;
     }
 }
