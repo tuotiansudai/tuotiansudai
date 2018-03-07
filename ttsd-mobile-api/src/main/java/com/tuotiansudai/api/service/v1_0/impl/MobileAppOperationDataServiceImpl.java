@@ -60,7 +60,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         //各用户年龄段分布
         dataDto.setAgeDistribution(convertMapToOperationDataAgeResponseDataDto());
         //投资人数top3
-        dataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityResponseDataDto());
+        dataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityResponseDataDto());
         //投资金额top3
         dataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountResponseDataDto());
         BaseResponseDto<OperationDataResponseDataDto> dto = new BaseResponseDto<>();

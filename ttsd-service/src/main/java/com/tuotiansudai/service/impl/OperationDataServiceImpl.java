@@ -112,7 +112,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(new Date())));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
-        operationDataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityDataDto());
+        operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
         final int monthSize = getInvestMonthCount(endDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(endDate);
@@ -142,7 +142,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                 REDIS_OPERATION_DATA_MONTH_AMOUNT)));
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
-        operationDataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityDataDto());
+        operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         List<Integer> sexList = findScaleByGender(new Date());
         if (sexList.size() > 1) {
@@ -224,7 +224,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         return scaleByGenderList;
     }
 
-    public Map<String, String> findCountInvestCityScaleTop3(Date endDate) {
+    public Map<String, String> findCountInvestCityScaleTop5(Date endDate) {
         Map<String, String> resultMap = new LinkedHashMap<>();
         if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
             Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate));
@@ -233,7 +233,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             }
         } else {
             long totalScaleCount = operationDataMapper.findCountInvestCityScale(endDate);
-            List<Map<String, String>> investCityList = operationDataMapper.findCountInvestCityScaleTop3(endDate);
+            List<Map<String, String>> investCityList = operationDataMapper.findCountInvestCityScaleTop5(endDate);
             for (Map<String, String> investCityMap : investCityList) {
                 if (StringUtils.isNotEmpty(investCityMap.get("city"))) {
                     redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
@@ -295,7 +295,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Override
     public List<OperationDataInvestCityDataDto> convertMapToOperationDataInvestCityDataDto() {
-        Map<String, String> investCityListMap = findCountInvestCityScaleTop3(new Date());
+        Map<String, String> investCityListMap = findCountInvestCityScaleTop5(new Date());
         Set<Map.Entry<String, String>> investCityEntries = investCityListMap.entrySet();
         List<OperationDataInvestCityDataDto> operationDataInvestCityDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> investCityEntry : investCityEntries) {
@@ -346,50 +346,36 @@ public class OperationDataServiceImpl implements OperationDataService {
             //先计算总数
             long totalUserCount = 0;
             long totalUnder20UserCount = 0;
-            long totalBETWEEN_20_AND_30UserCount = 0;
-            long totalBETWEEN_30_AND_40UserCount = 0;
-            long totalBETWEEN_40_AND_50UserCount = 0;
+            long totalBETWEEN_20_AND_35UserCount = 0;
+            long totalBETWEEN_35_AND_50UserCount = 0;
             long totalMORE_THAN_50UserCount = 0;
             for (Map.Entry<String, String> ageGroupDistributionEntry : ageGroupDistributionEntries) {
                 totalUserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
             }
             //分别计算5个区间的人数
             for (Map.Entry<String, String> ageGroupDistributionEntry : ageGroupDistributionEntries) {
-                int ageStage = Integer.parseInt(ageGroupDistributionEntry.getKey()) / 10;
-                switch (ageStage) {
-                    case 1:
-                        totalUnder20UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                        break;
-                    case 2:
-                        totalBETWEEN_20_AND_30UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                        break;
-                    case 3:
-                        totalBETWEEN_30_AND_40UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                        break;
-                    case 4:
-                        totalBETWEEN_40_AND_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                        break;
-                    case 5:
-                        totalMORE_THAN_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                        break;
-                    default:
-                        totalMORE_THAN_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                if (Integer.parseInt(ageGroupDistributionEntry.getKey()) < 20) {
+                    totalUnder20UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                } else if (Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 20 && Integer.parseInt(ageGroupDistributionEntry.getKey()) < 35) {
+                    totalBETWEEN_20_AND_35UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                } else if (Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 35 && Integer.parseInt(ageGroupDistributionEntry.getKey()) < 50) {
+                    totalBETWEEN_35_AND_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                } else if (Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 50) {
+                    totalMORE_THAN_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
                 }
+
             }
             resultGroupMap.put(String.valueOf(AgeDistributionType.UNDER_20.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalUnder20UserCount, totalUserCount, 1)));
-            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_20_AND_30.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_20_AND_30UserCount, totalUserCount, 1)));
-            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_30_AND_40.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_30_AND_40UserCount, totalUserCount, 1)));
-            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_40_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_40_AND_50UserCount, totalUserCount, 1)));
+            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_20_AND_35.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_20_AND_35UserCount, totalUserCount, 1)));
+            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_35_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_35_AND_50UserCount, totalUserCount, 1)));
             resultGroupMap.put(String.valueOf(AgeDistributionType.MORE_THAN_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalMORE_THAN_50UserCount, totalUserCount, 1)));
 
             redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                     String.valueOf(AgeDistributionType.UNDER_20.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalUnder20UserCount, totalUserCount, 1)), timeout);
             redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                    String.valueOf(AgeDistributionType.BETWEEN_20_AND_30.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_20_AND_30UserCount, totalUserCount, 1)), timeout);
+                    String.valueOf(AgeDistributionType.BETWEEN_20_AND_35.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_20_AND_35UserCount, totalUserCount, 1)), timeout);
             redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                    String.valueOf(AgeDistributionType.BETWEEN_30_AND_40.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_30_AND_40UserCount, totalUserCount, 1)), timeout);
-            redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                    String.valueOf(AgeDistributionType.BETWEEN_40_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_40_AND_50UserCount, totalUserCount, 1)), timeout);
+                    String.valueOf(AgeDistributionType.BETWEEN_35_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_35_AND_50UserCount, totalUserCount, 1)), timeout);
             redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                     String.valueOf(AgeDistributionType.MORE_THAN_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalMORE_THAN_50UserCount, totalUserCount, 1)), timeout);
 

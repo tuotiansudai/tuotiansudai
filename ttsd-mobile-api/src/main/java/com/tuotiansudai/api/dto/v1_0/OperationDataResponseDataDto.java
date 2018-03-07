@@ -28,7 +28,7 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
     private List<OperationDataAgeResponseDataDto> ageDistribution;
     @ApiModelProperty(value = "投资人数top3", example = "北京:60,上海:30,济南:10")
-    private List<OperationDataInvestCityResponseDataDto> investCityScaleTop3;
+    private List<OperationDataInvestCityResponseDataDto> investCityScaleTop5;
     @ApiModelProperty(value = "投资金额top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3;
 
@@ -124,12 +124,12 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.ageDistribution = ageDistribution;
     }
 
-    public List<OperationDataInvestCityResponseDataDto> getInvestCityScaleTop3() {
-        return investCityScaleTop3;
+    public List<OperationDataInvestCityResponseDataDto> getInvestCityScaleTop5() {
+        return investCityScaleTop5;
     }
 
-    public void setInvestCityScaleTop3(List<OperationDataInvestCityResponseDataDto> investCityScaleTop3) {
-        this.investCityScaleTop3 = investCityScaleTop3;
+    public void setInvestCityScaleTop5(List<OperationDataInvestCityResponseDataDto> investCityScaleTop5) {
+        this.investCityScaleTop5 = investCityScaleTop5;
     }
 
     public List<OperationDataInvestAmountResponseDataDto> getInvestAmountScaleTop3() {

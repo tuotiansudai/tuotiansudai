@@ -14,7 +14,7 @@ public class OperationDataDto implements Serializable {
     private List<String> month = new ArrayList<>();
     private List<String> money = new ArrayList<>();
     private List<OperationDataAgeDataDto> ageDistribution;
-    private List<OperationDataInvestCityDataDto> investCityScaleTop3;
+    private List<OperationDataInvestCityDataDto> investCityScaleTop5;
     private List<OperationDataInvestAmountDataDto> investAmountScaleTop3;
 
     public int getOperationDays() {
@@ -89,12 +89,12 @@ public class OperationDataDto implements Serializable {
         this.ageDistribution = ageDistribution;
     }
 
-    public List<OperationDataInvestCityDataDto> getInvestCityScaleTop3() {
-        return investCityScaleTop3;
+    public List<OperationDataInvestCityDataDto> getInvestCityScaleTop5() {
+        return investCityScaleTop5;
     }
 
-    public void setInvestCityScaleTop3(List<OperationDataInvestCityDataDto> investCityScaleTop3) {
-        this.investCityScaleTop3 = investCityScaleTop3;
+    public void setInvestCityScaleTop5(List<OperationDataInvestCityDataDto> investCityScaleTop5) {
+        this.investCityScaleTop5 = investCityScaleTop5;
     }
 
     public List<OperationDataInvestAmountDataDto> getInvestAmountScaleTop3() {

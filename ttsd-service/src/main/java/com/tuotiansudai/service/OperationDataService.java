@@ -19,7 +19,7 @@ public interface OperationDataService {
 
     Map<String, String> findAgeDistributionByAge(Date endDate);
 
-    Map<String, String> findCountInvestCityScaleTop3(Date endDate);
+    Map<String, String> findCountInvestCityScaleTop5(Date endDate);
 
     Map<String, String> findInvestAmountScaleTop3(Date endDate);
 

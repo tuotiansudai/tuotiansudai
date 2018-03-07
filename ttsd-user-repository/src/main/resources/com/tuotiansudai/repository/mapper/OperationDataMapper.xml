@@ -35,7 +35,7 @@
         order by totalCount asc
     </select>
 
-    <select id="findCountInvestCityScaleTop3" parameterType="map" resultType="java.util.HashMap">
+    <select id="findCountInvestCityScaleTop5" parameterType="map" resultType="java.util.HashMap">
         select u.city, count(*) as totalCount
         from (
         select user.city, user.login_name
@@ -48,7 +48,7 @@
         group by user.login_name , user.city) u
         group by u.city
         order by totalCount desc
-        limit 3
+        limit 5
     </select>
 
     <select id="findCountInvestCityScale" parameterType="map" resultType="long">
