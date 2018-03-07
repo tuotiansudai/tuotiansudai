@@ -34,7 +34,7 @@
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="360-site-verification" content="a3066008a453e5dfcd9f3e288862c9ef"/>
     <meta name="sogou_site_verification" content="lXIPItRbXy"/>
-    <meta name="baidu-site-verification" content="XVFtcOmhlc"/>
+    <meta name="baidu-site-verification" content="xE3BgFFio5" />
     <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${(css.globalFun_page)!}" charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="${m_css.wap_global}" charset="utf-8"/>

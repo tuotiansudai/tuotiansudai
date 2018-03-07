@@ -72,7 +72,6 @@
     <meta charset="UTF-8" />
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="baidu-site-verification" content="aDcUsMsL5R"/>
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
     <meta name="description" content="${description}">
@@ -84,7 +83,7 @@
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="360-site-verification" content="a3066008a453e5dfcd9f3e288862c9ef" />
     <meta name="sogou_site_verification" content="lXIPItRbXy"/>
-    <meta name="baidu-site-verification" content="XVFtcOmhlc" />
+    <meta name="baidu-site-verification" content="xE3BgFFio5" />
     <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
