@@ -25,7 +25,6 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="renderer" content="webkit">
-    <meta name="baidu-site-verification" content="XVFtcOmhlc" />
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
     <meta name="description" content="${description}">

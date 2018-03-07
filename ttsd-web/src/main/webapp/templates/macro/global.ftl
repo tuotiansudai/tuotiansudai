@@ -72,7 +72,7 @@
     <meta charset="UTF-8" />
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="baidu-site-verification" content="XVFtcOmhlc" />
+    <meta name="baidu-site-verification" content="aDcUsMsL5R"/>
     <title>${title}</title>
     <meta name="keywords" content="${keywords}">
     <meta name="description" content="${description}">
