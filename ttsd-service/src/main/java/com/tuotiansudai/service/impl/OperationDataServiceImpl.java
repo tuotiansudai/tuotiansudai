@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class OperationDataServiceImpl implements OperationDataService {
@@ -52,7 +53,9 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String CHART_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:chart:{0}";
     private static final String TABLE_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:table:{0}";
     private static final String SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:scale:gender:{0}";
+    private static final String LOANER_SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:loaner:scale:gender:{0}";
     private static final String AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:age:Distribution:{0}";
+    private static final String LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:loaner:age:Distribution:{0}";
     private static final String COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:invest:city:scale:{0}";
     private static final String AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:amount:invest:city:scale:{0}";
     private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
@@ -107,8 +110,15 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         }
 
+        List<Integer> loanerSexList = findScaleByGender(new Date());
+        if (loanerSexList.size() > 1) {
+            operationDataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
+            operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
+        }
+
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(new Date())));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
+        operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
         operationDataDto.setLoanerCityScaleTop5(convertMapToOperationDataLoanerCityDataDto());
@@ -141,6 +151,8 @@ public class OperationDataServiceImpl implements OperationDataService {
                 REDIS_OPERATION_DATA_MONTH_AMOUNT)));
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
+
+        operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
         operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
         operationDataDto.setLoanerCityScaleTop5(convertMapToOperationDataLoanerCityDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
@@ -148,6 +160,11 @@ public class OperationDataServiceImpl implements OperationDataService {
         if (sexList.size() > 1) {
             operationDataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
             operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        }
+        List<Integer> loanerSexList = findScaleByGender(new Date());
+        if (loanerSexList.size() > 1) {
+            operationDataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
+            operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
         }
 
     }
@@ -171,6 +188,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             loadOperationDataDtoFromDatabase(operationDataDto, endDate);
             updateRedis(operationDataDto, endDate);
         }
+        operationDataDto.setNow(new Date());
         return operationDataDto;
     }
 
@@ -224,6 +242,23 @@ public class OperationDataServiceImpl implements OperationDataService {
         return scaleByGenderList;
     }
 
+    public List<Integer> findLoanerScaleByGender(Date endDate) {
+        List<Integer> loanerScaleByGenderList = Lists.newArrayList();
+        if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(LOANER_SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
+            Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(LOANER_SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE, endDate));
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                loanerScaleByGenderList.add(Integer.parseInt(entry.getValue()));
+            }
+        } else {
+            loanerScaleByGenderList = operationDataMapper.findLoanerScaleByGender();
+            for (Integer value : loanerScaleByGenderList) {
+                redisWrapperClient.hset(getRedisKeyFromTemplateByDate(LOANER_SCALE_GENDER_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                        String.valueOf(value), String.valueOf(value), timeout);
+            }
+        }
+        return loanerScaleByGenderList;
+    }
+
     public Map<String, String> findCountInvestCityScaleTop5(Date endDate) {
         Map<String, String> resultMap = new LinkedHashMap<>();
         if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
@@ -254,8 +289,8 @@ public class OperationDataServiceImpl implements OperationDataService {
                 resultMap.put(entry.getKey(), entry.getValue());
             }
         } else {
-            long totalScaleCount = operationDataMapper.findCountLoanerCityScale(endDate);
-            List<Map<String, String>> loanerCityList = operationDataMapper.findCountLoanerCityScaleTop5(endDate);
+            long totalScaleCount = operationDataMapper.findCountLoanerCityScale();
+            List<Map<String, String>> loanerCityList = operationDataMapper.findCountLoanerCityScaleTop5();
             for (Map<String, String> loanerCityMap : loanerCityList) {
                 if (StringUtils.isNotEmpty(loanerCityMap.get("city"))) {
                     redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
@@ -304,6 +339,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     @Override
     public List<OperationDataAgeDataDto> convertMapToOperationDataAgeDataDto() {
         Map<String, String> ageDistributionMap = findAgeDistributionByAge(new Date());
+        ageDistributionMap = ageDistributionMap.entrySet().stream().sorted(Map.Entry.<String, String>comparingByValue().reversed()).collect(Collectors.toMap(c -> c.getKey(), c -> c.getValue()));
         Set<Map.Entry<String, String>> ageDistributionEntries = ageDistributionMap.entrySet();
         List<OperationDataAgeDataDto> operationDataAgeDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> ageDistributionEntry : ageDistributionEntries) {
@@ -313,6 +349,21 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataAgeDataDtoList.add(operationDataAgeResponseDataDto);
         }
         return operationDataAgeDataDtoList;
+    }
+
+    @Override
+    public List<OperationDataLoanerAgeDataDto> convertMapToOperationDataLoanerAgeDataDto() {
+        Map<String, String> loanerAgeDistributionMap = findLoanerAgeDistributionByAge(new Date());
+        loanerAgeDistributionMap = loanerAgeDistributionMap.entrySet().stream().sorted(Map.Entry.<String, String>comparingByValue().reversed()).collect(Collectors.toMap(c -> c.getKey(), c -> c.getValue()));
+        Set<Map.Entry<String, String>> loanerAgeDistributionEntries = loanerAgeDistributionMap.entrySet();
+        List<OperationDataLoanerAgeDataDto> operationDataLoanerAgeDataDtoList = Lists.newArrayList();
+        for (Map.Entry<String, String> loanerAgeDistributionEntry : loanerAgeDistributionEntries) {
+            OperationDataLoanerAgeDataDto operationDataLoanerAgeResponseDataDto = new OperationDataLoanerAgeDataDto();
+            operationDataLoanerAgeResponseDataDto.setName(AgeDistributionType.getNameByAgeStage(Integer.parseInt(loanerAgeDistributionEntry.getKey())));
+            operationDataLoanerAgeResponseDataDto.setScale(loanerAgeDistributionEntry.getValue());
+            operationDataLoanerAgeDataDtoList.add(operationDataLoanerAgeResponseDataDto);
+        }
+        return operationDataLoanerAgeDataDtoList;
     }
 
     @Override
@@ -415,6 +466,66 @@ public class OperationDataServiceImpl implements OperationDataService {
             redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                     String.valueOf(AgeDistributionType.BETWEEN_35_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_35_AND_50UserCount, totalUserCount, 1)), timeout);
             redisWrapperClient.hset(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                    String.valueOf(AgeDistributionType.MORE_THAN_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalMORE_THAN_50UserCount, totalUserCount, 1)), timeout);
+
+        }
+        return resultGroupMap;
+    }
+
+    public Map<String, String> findLoanerAgeDistributionByAge(Date endDate) {
+        Map<String, String> resultGroupMap = new LinkedHashMap<>();
+        if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
+            Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate));
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                resultGroupMap.put(entry.getKey(), entry.getValue());
+            }
+        } else {
+            List<Map<String, String>> loanerAgeDistributionList = operationDataMapper.findLoanerAgeDistributionByAge();
+            Map<String, String> resultMap = new LinkedHashMap<>();
+
+            for (Map<String, String> loanerAgeDistributionMap : loanerAgeDistributionList) {
+                String age = String.valueOf(loanerAgeDistributionMap.get("age"));
+                if (StringUtils.isNotEmpty(age) && !"null".equals(age)) {
+                    resultMap.put(String.valueOf(Integer.parseInt(String.valueOf(loanerAgeDistributionMap.get("age")).replace(".0", ""))), String.valueOf(loanerAgeDistributionMap.get("totalCount")));
+                }
+            }
+
+            Set<Map.Entry<String, String>> loanerAgeGroupDistributionEntries = resultMap.entrySet();
+
+            //先计算总数
+            long totalUserCount = 0;
+            long totalUnder20UserCount = 0;
+            long totalBETWEEN_20_AND_35UserCount = 0;
+            long totalBETWEEN_35_AND_50UserCount = 0;
+            long totalMORE_THAN_50UserCount = 0;
+            for (Map.Entry<String, String> loanerAgeGroupDistributionEntry : loanerAgeGroupDistributionEntries) {
+                totalUserCount += Long.parseLong(loanerAgeGroupDistributionEntry.getValue());
+            }
+            //分别计算5个区间的人数
+            for (Map.Entry<String, String> loanerAgeGroupDistributionEntry : loanerAgeGroupDistributionEntries) {
+                if (Integer.parseInt(loanerAgeGroupDistributionEntry.getKey()) < 20) {
+                    totalUnder20UserCount += Long.parseLong(loanerAgeGroupDistributionEntry.getValue());
+                } else if (Integer.parseInt(loanerAgeGroupDistributionEntry.getKey()) >= 20 && Integer.parseInt(loanerAgeGroupDistributionEntry.getKey()) < 35) {
+                    totalBETWEEN_20_AND_35UserCount += Long.parseLong(loanerAgeGroupDistributionEntry.getValue());
+                } else if (Integer.parseInt(loanerAgeGroupDistributionEntry.getKey()) >= 35 && Integer.parseInt(loanerAgeGroupDistributionEntry.getKey()) < 50) {
+                    totalBETWEEN_35_AND_50UserCount += Long.parseLong(loanerAgeGroupDistributionEntry.getValue());
+                } else if (Integer.parseInt(loanerAgeGroupDistributionEntry.getKey()) >= 50) {
+                    totalMORE_THAN_50UserCount += Long.parseLong(loanerAgeGroupDistributionEntry.getValue());
+                }
+
+            }
+            resultGroupMap.put(String.valueOf(AgeDistributionType.UNDER_20.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalUnder20UserCount, totalUserCount, 1)));
+            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_20_AND_35.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_20_AND_35UserCount, totalUserCount, 1)));
+            resultGroupMap.put(String.valueOf(AgeDistributionType.BETWEEN_35_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_35_AND_50UserCount, totalUserCount, 1)));
+            resultGroupMap.put(String.valueOf(AgeDistributionType.MORE_THAN_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalMORE_THAN_50UserCount, totalUserCount, 1)));
+
+            redisWrapperClient.hset(getRedisKeyFromTemplateByDate(LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                    String.valueOf(AgeDistributionType.UNDER_20.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalUnder20UserCount, totalUserCount, 1)), timeout);
+            redisWrapperClient.hset(getRedisKeyFromTemplateByDate(LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                    String.valueOf(AgeDistributionType.BETWEEN_20_AND_35.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_20_AND_35UserCount, totalUserCount, 1)), timeout);
+            redisWrapperClient.hset(getRedisKeyFromTemplateByDate(LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
+                    String.valueOf(AgeDistributionType.BETWEEN_35_AND_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalBETWEEN_35_AND_50UserCount, totalUserCount, 1)), timeout);
+            redisWrapperClient.hset(getRedisKeyFromTemplateByDate(LOANER_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                     String.valueOf(AgeDistributionType.MORE_THAN_50.getAgeStage()), String.valueOf(CalculateUtil.calculatePercentage(totalMORE_THAN_50UserCount, totalUserCount, 1)), timeout);
 
         }
