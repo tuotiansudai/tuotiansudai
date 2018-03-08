@@ -14,7 +14,11 @@ public interface OperationDataService {
 
     List<Integer> findScaleByGender(Date endDate);
 
+    List<Integer> findLoanerScaleByGender(Date endDate);
+
     Map<String, String> findAgeDistributionByAge(Date endDate);
+
+    Map<String, String> findLoanerAgeDistributionByAge(Date endDate);
 
     Map<String, String> findCountInvestCityScaleTop5(Date endDate);
 
@@ -23,6 +27,8 @@ public interface OperationDataService {
     long findUserSumInterest(Date endDate);
 
     List<OperationDataAgeDataDto> convertMapToOperationDataAgeDataDto();
+
+    List<OperationDataLoanerAgeDataDto>  convertMapToOperationDataLoanerAgeDataDto();
 
     List<OperationDataInvestCityDataDto> convertMapToOperationDataInvestCityDataDto();
 

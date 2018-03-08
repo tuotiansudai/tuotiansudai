@@ -52,10 +52,15 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         List<Integer> sexList = operationDataService.findScaleByGender(currentDate);
         dataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         dataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        List<Integer> loanerSexList = operationDataService.findLoanerScaleByGender(currentDate);
+        dataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
+        dataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
         //近半年的交易金额
         dataDto.setLatestSixMonthDetail(convertMapToOperationDataLatestSixMonthResponseDataDto(operationDataDto));
         //各用户年龄段分布
         dataDto.setAgeDistribution(convertMapToOperationDataAgeResponseDataDto());
+        //各用借款人户年龄段分布
+        dataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeResponseDataDto());
         //投资人数top3
         dataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityResponseDataDto());
         //投资金额top3
@@ -72,6 +77,11 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto() {
         List<OperationDataAgeDataDto> operationDataAgeDataDtos = operationDataService.convertMapToOperationDataAgeDataDto();
         return operationDataAgeDataDtos.stream().map(operationDataAgeDataDto -> new OperationDataAgeResponseDataDto(operationDataAgeDataDto)).collect(Collectors.toList());
+    }
+
+    private List<OperationDataAgeResponseDataDto> convertMapToOperationDataLoanerAgeResponseDataDto() {
+        List<OperationDataLoanerAgeDataDto> operationDataLoanerAgeDataDtos = operationDataService.convertMapToOperationDataLoanerAgeDataDto();
+        return operationDataLoanerAgeDataDtos.stream().map(operationDataLoanerAgeDataDto -> new OperationDataLoanerAgeResponseDataDto(operationDataLoanerAgeDataDto)).collect(Collectors.toList());
     }
 
     private List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto) {
