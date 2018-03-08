@@ -127,6 +127,7 @@ var MyChartsObject={
                     {
                         name: option.name || "",
                         type: 'pie',
+                        center: ['50%', '45%'],
                         itemStyle : {
                             normal : {
                                 label : {
@@ -159,7 +160,6 @@ var MyChartsObject={
         //环形图
         AnnularOption:function(data,option) {
             var report_data = MyChartsObject.myChartDataFormate(data,'name','scale');
-            console.log(report_data)
             var option = option || {};
             var thisOption = {
                 legend:{
@@ -179,8 +179,8 @@ var MyChartsObject={
                     {
                         name: option.name || "",
                         type: 'pie',
-                        radius : ['50%', '80%'],
-                        center: ['50%', '50%'],
+                        radius : ['45%', '75%'],
+                        center: ['50%', '45%'],
                         itemStyle : {
                             normal : {
                                 label : {

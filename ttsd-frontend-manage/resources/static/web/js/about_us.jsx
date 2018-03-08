@@ -246,6 +246,7 @@ let getPartOnePage = (data, dataStr) => {
     // $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
      $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
 };
+
 function toThousands(num) {
     var num = (num || 0).toString(), result = '';
     while (num.length > 3) {
@@ -267,6 +268,13 @@ function formatNumber(s, n) {  // 金额格式化
     }
     return t.split("").reverse().join("") + "." + r;
 };
+function dateFomater(datetime) {
+    var dateArr = datetime.substr(0,10).split('-');
+    var dom = '';
+    dom += dateArr[0]+'年'+dateArr[1]+'月'+dateArr[2]+'日';
+    return dom;
+}
+
 //运营数据
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     let loadEcharts = require('publicJs/load_echarts');
@@ -279,11 +287,15 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         type: 'GET'
     },function(data) {
         console.log(data);
+        var datetime = data.now;
+        var dateTimeDOM = '（数据截止到'+dateFomater(datetime)+'）';
+        $('#dateTime').text(dateTimeDOM);
+
         var month = data.month.slice(-6);
         var money = data.money.slice(-6);
         getPartOnePage(data,data.operationDays);
 
-         $('#usersCount').text(formatNumber(data.usersCount,2));
+         $('#usersCount').text(toThousands(data.usersCount));
          $('#tradeAmount').text(formatNumber(data.tradeAmount,2));
         let barChartArr = [];
         let num = 0;
@@ -303,6 +315,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
                 money:money
             },
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
+        option.series[0].barWidth = 50;
+        console.log(option)
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
         //投资人基本信息 环形图
@@ -310,7 +324,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var  optUser = loadEcharts.ChartConfig('investRecord', optionUser);
         loadEcharts.RenderChart(optUser);
         //投资人男女比例 饼状图
-        var sexOptions = [{name:'男性投资人',scale:data.femaleScale},{name:'女性投资人',scale:data.maleScale}];
+        var sexOptions = [{name:'男性投资人',scale:data.maleScale},{name:'女性投资人',scale:data.femaleScale}];
         var optionSex = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexOptions,'投资人基本信息');
         var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
         loadEcharts.RenderChart(optSex);
@@ -327,16 +341,14 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
         });
         //借款人基本信息环形图
-        var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,'投资用户(人)');
+        var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,'投资用户(人)');
         var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);
         loadEcharts.RenderChart(optLoan);
-        //投资人男女比例 饼状图
-        var sexLoanOptions = [{name:'男性投资人',scale:data.femaleScale},{name:'女性投资人',scale:data.maleScale}];
-        var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexLoanOptions,'投资人基本信息');
+        //借款人男女比例 饼状图
+        var sexLoanOptions = [{name:'男性借款人',scale:data.loanerMaleScale},{name:'女性借款人',scale:data.loanerFemaleScale}];
+        var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexLoanOptions,'借款人基本信息');
         var  optSexLoan = loadEcharts.ChartConfig('loanBaseSexRecord', optionSexLoan);
         loadEcharts.RenderChart(optSexLoan);
-        // //借款人地域分布
-        // loanRegion.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
     });
 
 },'operationEcharts');

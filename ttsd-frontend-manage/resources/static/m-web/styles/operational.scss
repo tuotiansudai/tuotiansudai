@@ -88,8 +88,12 @@
       margin-left: 1.5rem;
       width: 17.3rem;
       height: 5.625rem;
-      background: url("../images/grand_total_icon.png") no-repeat;
+      background: url("../images/icon_trade_money.png") no-repeat;
       background-size: contain;
+      &.trade-count {
+        background: url("../images/grand_total_icon.png") no-repeat;
+        background-size: contain;
+      }
     }
     .grand_total_text {
       width: 100%;
@@ -118,7 +122,7 @@
   }
   .earn_total {
     position: absolute;
-    top: 14.2rem;
+    top: 15.5rem;
     width: 100%;
     text-align: center;
     .earn_total_icon {
@@ -127,6 +131,10 @@
       height: 4.675rem;
       background: url("../images/earn_total_icon.png") no-repeat;
       background-size: contain;
+      &.register-user {
+        background: url("../images/icon_register_user.png") no-repeat;
+        background-size: contain;
+      }
     }
     .earn_total_text {
       width: 100%;

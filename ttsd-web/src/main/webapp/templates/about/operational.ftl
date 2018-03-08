@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="data-model">
-            <h3>平台数据总览 <span class="font-right">（数据截止到2018年02月28日）</span> </h3>
+            <h3>平台数据总览 <span class="font-right" id="dateTime"></span> </h3>
             <div class="data-wrap">
                 <ul class="clearfix">
                     <li class="bl">
@@ -42,7 +42,7 @@
             <h3 class="font16">平台用户统计</h3>
             <h4 class="font14">投资人基本信息</h4>
             <div class="data-model cheat-model">
-                <div class="model-container" id="loanBaseRecord">
+                <div class="model-container" id="investRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
@@ -50,7 +50,7 @@
             </div>
             <div class="data-model cheat-model">
                
-                <div class="model-container" id="loanBaseSexRecord">
+                <div class="model-container" id="investSexRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
@@ -68,7 +68,7 @@
         <div class="invest-wrap clearfix">
             <h4 class="font14">借款人基本信息</h4>
             <div class="data-model cheat-model">
-                <div class="model-container" id="investRecord">
+                <div class="model-container" id="loanBaseRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
@@ -76,7 +76,7 @@
             </div>
             <div class="data-model cheat-model">
 
-                <div class="model-container" id="investSexRecord">
+                <div class="model-container" id="loanBaseSexRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
