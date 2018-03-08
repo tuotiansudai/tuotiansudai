@@ -169,7 +169,7 @@ let drawLineChart = (data, monthArr) => {  // 折线图
     }
 };
 
-let circularChart = (data, legendData, color) => { // 环形图
+let circularChart = (data,legendData, color) => { // 环形图
     return {
         legend: {
             orient: 'vertical',
@@ -203,7 +203,39 @@ let circularChart = (data, legendData, color) => { // 环形图
         ]
     }
 };
-
+let pieChart = (data,legendData, color) => { // 环形图
+    return {
+        legend: {
+            orient: 'vertical',
+            selectedMode: false,
+            left: '10%',
+            y: 'middle',
+            data: legendData
+        },
+        series: [
+            {
+                type: 'pie',
+                silent: true,
+                center: ['70%', '50%'],
+                legendHoverLink: false,
+                hoverAnimation: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    }
+                },
+                color: color,
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data: data
+            }
+        ]
+    }
+};
 let drawBarTransverse = (cityName, cityData, colorArr) => { // 横向柱状图
     return {
         xAxis: {type: 'value', show: false},
@@ -292,6 +324,16 @@ let getPartOnePage = (data, dataStr) => {
 };
 
 let getPartTwoPage = (data) => {
+    let barChartArr = [];
+    let num = 0;
+    for (let i = 0; i < 4; i++) {
+        let $item = $('#investItem' + i);
+        let amount = parseInt(Math.ceil($item.data('amount') / 10000));
+        barChartArr.push(amount);
+        let count = Number($item.data('count')) || 0;
+        num += count;
+    }
+    $('#total_trade_count').html(toThousands(num));
 
     let monthArr = data.month.slice(-6).map(item => {
         return item.split('.')[1] + '月';
@@ -316,32 +358,32 @@ let getPartThreePage = (data) => {
         ageArr[i].name = item.name + ' ' + item.scale + '%';
         ageLegendArr[i] = item.name + ' ' + item.scale + '%';
     }
-    myChart3.setOption(circularChart([
-        {value: `${femaleScale}`, name: `女性 ${femaleScale }%`},
-        {value: `${maleScale}`, name: `男性 ${maleScale }%`},
-    ], [`男性 ${maleScale }%`, `女性 ${femaleScale }%`], ['#fdb560', '#74bbf3']));
+    myChart3.setOption(pieChart([
+        {value: `${femaleScale}`, name: `女性投资人 ${femaleScale }%`},
+        {value: `${maleScale}`, name: `男性投资人 ${maleScale }%`},
+    ], [`男性投资人 ${maleScale }%`, `女性投资人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 
-    myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#a47cf3', '#fdb560', '#fcee74', '#87e376', '#69e2ab']));
-    myChart6.setOption(circularChart([
-        {value: `${femaleScale}`, name: `女性 ${femaleScale }%`},
-        {value: `${maleScale}`, name: `男性 ${maleScale }%`},
-    ], [`男性 ${maleScale }%`, `女性 ${femaleScale }%`], ['#fdb560', '#74bbf3']));
+    myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));
+    myChart6.setOption(pieChart([
+        {value: `${femaleScale}`, name: `女性借款人 ${femaleScale }%`},
+        {value: `${maleScale}`, name: `男性借款人 ${maleScale }%`},
+    ], [`男性借款人 ${maleScale }%`, `女性借款人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 
-    myChart7.setOption(circularChart(ageArr, ageLegendArr, ['#a47cf3', '#fdb560', '#fcee74', '#87e376', '#69e2ab']));
+    myChart7.setOption(circularChart(ageArr, ageLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));
 };
 
 let getPartFourPage = (data) => {
-     let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
-    investCityScaleTop3.forEach((item, index) => {
-        $('#geographicalWrap').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}</div><div class="percent"><span style="width: 30%;"></span></div></li>`);
+     let investCityScaleTop5 = data.investCityScaleTop5; // 投资人数top5
+    investCityScaleTop5.forEach((item, index) => {
+        $('#geographicalWrap').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
     });
 };
 let getPartFivePage = (data) => {
-    let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
-    investCityScaleTop3.forEach((item, index) => {
-        $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}</div><div class="percent"><span style="width: 30%;"></span></div></li>`);
+    let loanerCityScaleTop5 = data.loanerCityScaleTop5; // 投资人数top5
+    loanerCityScaleTop5.forEach((item, index) => {
+        $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
     });
 };
 

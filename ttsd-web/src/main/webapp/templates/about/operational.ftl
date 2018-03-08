@@ -3,28 +3,27 @@
     <div class="about-us-container">
         <h2 class="column-title"><em>运营数据</em></h2>
         <div class="operater-days-wrap section-wrap">
-            <div class="operater-day clearfix">
-                <span class="assurance">安全运营</span><span class="data-bg">4</span><span>年</span><span class="data-bg">3</span><span class="data-bg">3</span><span class="data-bg">3</span><span>天</span>
+            <div class="operater-day clearfix" id="operationDays">
             </div>
         </div>
         <div class="data-model">
             <h3>平台数据总览 <span class="font-right">（数据截止到2018年02月28日）</span> </h3>
             <div class="data-wrap">
                 <ul class="clearfix">
-                    <li>
+                    <li class="bl">
                         <p><em id="tradeAmount"></em>元</p>
                         <p>累计交易金额</p>
                     </li>
-                    <li class="bl">
-                        <p><em>28,652</em>笔</p>
+                    <li>
+                        <p><em id="total_trade_count"></em>笔</p>
                         <p>累计交易笔数</p>
                     </li>
-                    <li class="pt">
+                    <li class="bl pl">
                         <p><em id="usersCount"></em>人</p>
                         <p>注册投资用户数</p>
                     </li>
-                    <li class="bl pt">
-                        <p><em>11,081,967.03</em>元</p>
+                    <li class="pl">
+                        <p><em id="earn_total_amount"></em>元</p>
                         <p>累计为用户赚取</p>
                     </li>
                 </ul>
@@ -40,15 +39,16 @@
             </div>
         </div>
         <div class="invest-wrap clearfix">
+            <h3 class="font16">平台用户统计</h3>
+            <h4 class="font14">投资人基本信息</h4>
             <div class="data-model cheat-model">
-                <h4 class="font14">借款人基本信息</h4>
                 <div class="model-container" id="loanBaseRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
                 </div>
             </div>
-            <div class="data-model cheat-model" style="margin-top: 25px;">
+            <div class="data-model cheat-model">
                
                 <div class="model-container" id="loanBaseSexRecord">
                     <!--[if gte IE 8]>
@@ -59,24 +59,22 @@
         </div>
         <div class="data-model region-wrap">
             <h3 class="font14">投资人地域分布</h3>
-            <div class="model-container chart-dom" id="investRegionRecord">
-                <!--[if gte IE 8]>
-                请使用更高版本浏览器查看
-                <![endif]-->
+            <div class="model-container geographical-item" id="investRegionRecord">
+                <ul id="geographicalWrap">
+                </ul>
             </div>
 
         </div>
         <div class="invest-wrap clearfix">
+            <h4 class="font14">借款人基本信息</h4>
             <div class="data-model cheat-model">
-                <h3 class="font16">平台用户统计</h3>
-                <h4 class="font14">投资人基本信息</h4>
                 <div class="model-container" id="investRecord">
                     <!--[if gte IE 8]>
                     请使用更高版本浏览器查看
                     <![endif]-->
                 </div>
             </div>
-            <div class="data-model cheat-model" style="margin-top: 85px;">
+            <div class="data-model cheat-model">
 
                 <div class="model-container" id="investSexRecord">
                     <!--[if gte IE 8]>
@@ -87,14 +85,17 @@
         </div>
         <div class="data-model region-wrap">
             <h3 class="font14">借款人地域分布</h3>
-            <div class="model-container chart-dom" id="loanRegionRecord">
-                <!--[if gte IE 8]>
-                请使用更高版本浏览器查看
-                <![endif]-->
+            <div class="model-container geographical-item" id="loanRegionRecord">
+                <ul id="geographicalWrapLoan">
+                </ul>
             </div>
 
         </div>
 
-
+        <#if investDetailList??>
+            <#list investDetailList as investDetailItem>
+                <div style="display: none" id="investItem${investDetailItem_index}" data-day="${investDetailItem.productName!}" data-amount="${investDetailItem.totalInvestAmount!}" data-count="${(investDetailItem.countInvest?string.computer)!}"></div>
+            </#list>
+        </#if>
     </div>
 </@global.main>

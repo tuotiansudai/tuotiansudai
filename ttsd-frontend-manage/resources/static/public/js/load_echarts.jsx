@@ -113,10 +113,9 @@ var MyChartsObject={
             var option = option || {};
             var thisOption = {
                 legend:{
-                    orient: 'vertical',
-                    x: 'left',
-                    y:'center',
-                    // left: 'left',
+                    orient: 'horizontal',
+                    x: 'center',
+                    y:'bottom',
                     data:report_data.category
                 },
                 tooltip: {
@@ -128,8 +127,6 @@ var MyChartsObject={
                     {
                         name: option.name || "",
                         type: 'pie',
-                        // radius : ['50%', '80%'],
-                        // center: ['70%', '48%'],
                         itemStyle : {
                             normal : {
                                 label : {
@@ -153,7 +150,7 @@ var MyChartsObject={
                         data: report_data.data
                     }
                 ],
-                color: ['rgb(255,117,42)','rgb(119,205,249)','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
+                color: ['#84a2ff','#ff6ecb','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
             };
             var initOption=$.extend({}, this.CommonOption, thisOption);
             var PieOpt = $.extend({},initOption,option);
@@ -166,23 +163,24 @@ var MyChartsObject={
             var option = option || {};
             var thisOption = {
                 legend:{
-                    orient: 'vertical',
-                    x: '10%',
-                    y:'center',
+                    orient: 'horizontal',
+                    x: 'center',
+                    y:'bottom',
                     // left: 'left',
                     data:report_data.category
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{b} : {c} ({d}%)',
-                    show: true
+                    formatter: '投资用户(人)<br/>{b} : {d}%',
+                    show: true,
+                    enterable:true
                 },
                 series: [
                     {
                         name: option.name || "",
                         type: 'pie',
                         radius : ['50%', '80%'],
-                        center: ['60%', '48%'],
+                        center: ['50%', '50%'],
                         itemStyle : {
                             normal : {
                                 label : {
@@ -206,7 +204,7 @@ var MyChartsObject={
                         data: report_data.data
                     }
                 ],
-                color: ['rgb(255,117,42)','rgb(119,205,249)','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
+                color: ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']
             };
             var initOption=$.extend({}, this.CommonOption, thisOption);
             var PieOpt = $.extend({},initOption,option);

@@ -607,7 +607,6 @@ $gray5:#333333;
 .section-wrap {
   box-sizing: border-box;
   background: #fafafa;
-  border: 1px solid $gray3;
 }
 .operater-days-wrap {
   height: 100px;
@@ -644,15 +643,17 @@ $gray5:#333333;
       width: 50%;
       height: 112px;
       float: left;
-      border: 1px solid $gray3;
+      border-left: 1px solid $gray3;
+      border-bottom: 1px solid $gray3;
       box-sizing: border-box;
       padding-top: 20px;
       &.bl {
-        margin-left: -1px;
+        border-left: none;
       }
-      &.pt {
-        margin-top: -1px;
+      &.pl {
+        border-bottom:none;
       }
+
       p {
         line-height: 36px;
         color: $gray2;
@@ -673,7 +674,7 @@ $gray5:#333333;
     float: left;
     width: 50% !important;
     .model-container {
-      height: 250px;
+      height: 300px;
     }
   }
 }
@@ -690,4 +691,38 @@ $gray5:#333333;
   padding-top: 10px;
 
 
+}
+.geographical-item {
+  ul {
+    width: 610px;
+    height: 100%;
+    li {
+      width: 100%;
+      height: 20px;
+      margin-top: 25px;
+      >div {
+        height: 100%;
+        font-size: 16px;
+        color: #333;
+        line-height: 20px;
+        &.fl {
+          float: left;
+        }
+        &.fr {
+          float: right;
+        }
+        &.percent {
+          width: 500px;
+          margin: 0 auto;
+          background: #f0f0f0;
+          >span {
+            display: inline-block;
+            height: 100%;
+            background: #ff9b1b;
+          }
+        }
+
+      }
+    }
+  }
 }

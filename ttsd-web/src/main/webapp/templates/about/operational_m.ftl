@@ -57,8 +57,9 @@
             <div class="swiper-item swiper-slide3 swiper-slide">
                 <div class="part-3-topBar"><div class="user-statistics">平台用户统计</div></div>
                 <div class="title-wrap"><h4 class="title-top">投资人基本信息</h4></div>
-                <div id="main_part3"></div>
                 <div id="main_part4"></div>
+                <div id="main_part3"></div>
+
                 <div class="button_under_arrow side_to_page" data-index="4"></div>
             </div>
 
@@ -78,16 +79,15 @@
                 <div class="button_under_arrow side_to_page" data-index="5"></div>
             </div>
             <div class="swiper-item swiper-slide3 swiper-slide">
-                <div class="part-3-topBar"><div class="user-statistics">平台用户统计</div></div>
+                <div class="part-6-topBar"><div class="user-statistics">平台用户统计</div></div>
                 <div class="title-wrap"><h4 class="title-top">借款人基本信息</h4></div>
-
-                <div id="main_part6"></div>
                 <div id="main_part7"></div>
+                <div id="main_part6"></div>
                 <div class="button_under_arrow side_to_page" data-index="6"></div>
             </div>
 
             <div class="swiper-item swiper-slide4 swiper-slide">
-                <div class="part-4-topBar"><div class="user-area">平台地区统计</div></div>
+                <div class="part-7-topBar"><div class="user-area">平台地区统计</div></div>
                 <div class="title-wrap"><h4 class="title-top">借款人地域分布</h4></div>
                 <div class="count_proportion">
                     <div class="symbol_line"></div>

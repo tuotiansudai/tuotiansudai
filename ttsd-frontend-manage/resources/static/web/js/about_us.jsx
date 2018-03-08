@@ -230,8 +230,43 @@ let drawBarTransverse = (cityName, cityData, colorArr) => { // 横向柱状图
         }
     }
 };
-let investRegion = echarts.init(document.getElementById('investRegionRecord'));
-let loanRegion = echarts.init(document.getElementById('loanRegionRecord'));
+
+let getPartOnePage = (data, dataStr) => {
+
+    var days = parseInt(dataStr/365);
+    dataStr = (dataStr-days*365).toString();
+    let dom = '';
+    for (let i = 0; i < dataStr.length; i++) {
+        dom += `<span class="data-bg">${dataStr.charAt(i)}</span>`
+    }
+    $('#operationDays').prepend(`<span class="assurance">安全运营</span>`);
+    $('#operationDays').append(`<span class="data-bg">${days}</span><span>年</span>`);
+    $('#operationDays').append(dom);
+    $('#operationDays').append(`<span>天</span>`);
+    // $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
+     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
+};
+function toThousands(num) {
+    var num = (num || 0).toString(), result = '';
+    while (num.length > 3) {
+        result = ',' + num.slice(-3) + result;
+        num = num.slice(0, num.length - 3);
+    }
+    if (num) {
+        result = num + result;
+    }
+    return result;
+}
+function formatNumber(s, n) {  // 金额格式化
+    n = n > 0 && n <= 20 ? n : 2;
+    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+    let t = "";
+    for (let i = 0; i < l.length; i++) {
+        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+    }
+    return t.split("").reverse().join("") + "." + r;
+};
 //运营数据
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     let loadEcharts = require('publicJs/load_echarts');
@@ -244,15 +279,28 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         type: 'GET'
     },function(data) {
         console.log(data);
-        $('#operationDays').text(data.operationDays);
-        $('#usersCount').text(data.usersCount);
-        $('#tradeAmount').text(data.tradeAmount);
+        var month = data.month.slice(-6);
+        var money = data.money.slice(-6);
+        getPartOnePage(data,data.operationDays);
+
+         $('#usersCount').text(formatNumber(data.usersCount,2));
+         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));
+        let barChartArr = [];
+        let num = 0;
+        for (let i = 0; i < 4; i++) {
+            let $item = $('#investItem' + i);
+            let amount = parseInt(Math.ceil($item.data('amount') / 10000));
+            barChartArr.push(amount);
+            let count = Number($item.data('count')) || 0;
+            num += count;
+        }
+        $('#total_trade_count').html(toThousands(num));//累计投资笔数
         var dataJson = {
 
-                sub:'金额',
+                sub:'金额（元）',
                 name:'运营数据',
-                month:data.month,
-                money:data.money
+                month:month,
+                money:money
             },
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
@@ -266,27 +314,18 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var optionSex = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexOptions,'投资人基本信息');
         var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
         loadEcharts.RenderChart(optSex);
+
+
+        let investCityScaleTop5 = data.investCityScaleTop5; // 投资人地域分布top5
+        let loanerCityScaleTop5 = data.loanerCityScaleTop5; // 借款人地域分布top5
         //投资人地域分布
-        // var optionRegion = loadEcharts.ChartOptionTemplates.BarOptionXAxis(data.investCityScaleTop3,'投资人基本信息');
-        // var  optRegion = loadEcharts.ChartConfig('investRegionRecord', optionRegion);
-        // loadEcharts.RenderChart(optRegion);
-
-        let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
-        let investAmountScaleTop3 = data.investAmountScaleTop3; // 投资金额top3
-        let cityName_count = [];
-        let cityData_count = [];
-        let cityName_amount = [];
-        let cityData_amount = [];
-        investCityScaleTop3.forEach((item, index) => {
-            cityName_count[index] = item.city;
-            cityData_count[index] = item.scale;
+        investCityScaleTop5.forEach((item, index) => {
+            $('#geographicalWrap').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
         });
-        investAmountScaleTop3.forEach((item, index) => {
-            cityName_amount[index] = item.city;
-            cityData_amount[index] = item.scale;
+        //借款人地域分布top5
+        loanerCityScaleTop5.forEach((item, index) => {
+            $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
         });
-
-        investRegion.setOption(drawBarTransverse(cityName_count, cityData_count, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
         //借款人基本信息环形图
         var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,'投资用户(人)');
         var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);
@@ -296,8 +335,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexLoanOptions,'投资人基本信息');
         var  optSexLoan = loadEcharts.ChartConfig('loanBaseSexRecord', optionSexLoan);
         loadEcharts.RenderChart(optSexLoan);
-        //借款人地域分布
-        loanRegion.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
+        // //借款人地域分布
+        // loanRegion.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ff9b1b', '#ff9b1b', '#ff9b1b']));
     });
 
 },'operationEcharts');

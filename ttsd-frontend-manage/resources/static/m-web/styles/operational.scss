@@ -274,7 +274,7 @@
   }
   #main_part2 {
     position: absolute;
-    top: 16rem;
+    top: 10rem;
     width: 100%;
     height: 5rem;
     margin-top: 1rem;
@@ -289,6 +289,22 @@
     width: 100%;
     height: 4rem;
     background: url("../images/part-3-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .user-statistics {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .part-6-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-5-topBar.png") no-repeat;
     background-size: cover;
     overflow: hidden;
     .user-statistics {
@@ -339,8 +355,8 @@
     visibility: hidden;
   }
   #main_part4,#main_part7{
-    position: absolute;
-    top: 15rem;
+    //position: absolute;
+    //top: 15rem;
     width: 100%;
     height: 11rem;
     visibility: hidden;
@@ -354,6 +370,22 @@
     width: 100%;
     height: 4rem;
     background: url("../images/part-4-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .user-area {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .part-7-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-6-topBar.png") no-repeat;
     background-size: cover;
     overflow: hidden;
     .user-area {
@@ -427,11 +459,11 @@
   }
 }
 .chart1_title.chart1_title_m {
-  top: 21.5rem;
+  top: 15.5rem;
 }
 
 .unit_symbol.unit_symbol_m {
-  top: 16rem;
+  top: 10rem;
 }
 #main_part8 {
   position: absolute;
