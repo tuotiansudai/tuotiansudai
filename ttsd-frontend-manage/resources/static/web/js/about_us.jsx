@@ -320,7 +320,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
         //投资人基本信息 环形图
-         var optionUser = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,'投资用户(人)');
+         var optionUser = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,{},'投资用户(人)');
         var  optUser = loadEcharts.ChartConfig('investRecord', optionUser);
         loadEcharts.RenderChart(optUser);
         //投资人男女比例 饼状图
@@ -341,7 +341,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
         });
         //借款人基本信息环形图
-        var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,'投资用户(人)');
+        var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,{},'借款用户(人)');
         var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);
         loadEcharts.RenderChart(optLoan);
         //借款人男女比例 饼状图

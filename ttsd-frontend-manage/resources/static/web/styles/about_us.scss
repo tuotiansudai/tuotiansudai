@@ -371,8 +371,6 @@ $gray5:#333333;
     width: 100%;
     h3 {
       width: 100%;
-      margin-top: 25px;
-      margin-bottom: 12px;
       .font-right {
         float: right;
         color: $gray4;
@@ -623,6 +621,9 @@ $gray5:#333333;
       text-align: center;
       color: #ff6c00;
       margin-left: 10px;
+      @media screen and(max-width: 768px){
+        margin-left: 5px;
+      }
       &.assurance {
         font-size: 18px;
         color: #525252;
@@ -658,11 +659,17 @@ $gray5:#333333;
         line-height: 36px;
         color: $gray2;
         font-size: 18px;
+        @media screen and (max-width: 768px){
+          font-size: 11px;
+        }
         text-align: center;
         margin: 0;
         em {
           color: $orange;
           font-size: 26px;
+          @media screen and (max-width: 768px){
+            font-size: 14px;
+          }
         }
       }
     }
@@ -693,6 +700,8 @@ $gray5:#333333;
 
 }
 .geographical-item {
+  width: 100%;
+  overflow-x: scroll;
   ul {
     width: 610px;
     height: 100%;
@@ -729,4 +738,10 @@ $gray5:#333333;
 .font14 {
   font-size: 14px;
   color: $gray2;
+}
+.region-wrap {
+  margin-bottom: 70px;
+}
+.marginTop20 {
+  margin-top: 20px;
 }

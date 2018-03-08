@@ -158,7 +158,7 @@ var MyChartsObject={
             return PieOpt;
         },
         //环形图
-        AnnularOption:function(data,option) {
+        AnnularOption:function(data,option,tip) {
             var report_data = MyChartsObject.myChartDataFormate(data,'name','scale');
             var option = option || {};
             var thisOption = {
@@ -171,7 +171,7 @@ var MyChartsObject={
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '投资用户(人)<br/>{b} : {d}%',
+                    formatter: tip+'<br/>{b} : {d}%',
                     show: true,
                     enterable:true
                 },
