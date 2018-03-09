@@ -25,7 +25,7 @@
                                                 <label for="" class="reg-title">手机号:</label>
                                                 <input validate type="text" id="mobile" name="mobile"
                                                        class="mobile long" placeholder="手机号"
-                                                       maxlength="11" value="">
+                                                       maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
                                             </li>
                                             <li>
                                                 <label for="" class="reg-title">密码:</label>
@@ -42,7 +42,7 @@
                                                 <span class="img-change">换一张</span>
                                                 <input validate type="text" id="appCaptcha" name="appCaptcha"
                                                        placeholder="验证码" maxlength="5"
-                                                       class="appCaptcha" value="">
+                                                       class="appCaptcha" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
                                             </li>
                                             <li id="appCaptchaErr" class="height appCaptchaErr"></li>
                                             <li>
@@ -53,7 +53,7 @@
 						                                <input validate type="text" class="captcha" autocomplete="off"
                                                                name="captcha" id="captcha"
                                                                autocorrect="off" autocapitalize="off"
-                                                               placeholder="手机验证码" maxlength="6">
+                                                               placeholder="手机验证码" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')">
 						                            </span>
                                             </li>
                                             <li>
@@ -72,8 +72,8 @@
                                             <li class="tc">
                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                        value="${_csrf.token}"/>
-                                                <input type="submit" class="register-user btn-normal-invest"
-                                                       value="立即注册">
+                                                <button type="submit" class="register-user btn-normal-invest"
+                                                        value="立即注册" disabled></button>
                                             </li>
                                             <li class="tc mobile-agreement">
                                                 <label>点击领取红包即同意拓天速贷<a href="javascript:void(0);"

@@ -2,9 +2,9 @@ require("activityStyle/wx_register.scss");
 let commonFun = require('publicJs/commonFun');
 require('publicJs/placeholder');
 let ValidatorObj = require('publicJs/validator');
-
+let referrerValidBool=true;
 let registerForm = globalFun.$('#registerUserForm');
-let $registerSubmit = $('input[type="submit"]', $(registerForm));
+let $registerSubmit = $('.register-user.btn-normal-invest');
 var $registerFrame = $('#registerCommonFrame');
 var $registerForm = $('.register-user-form', $registerFrame),
     $phoneDom = $('#mobile', $registerFrame),
@@ -78,9 +78,13 @@ $fetchCaptcha.on('touchstart', function (event) {
     if ($this.prop('disabled')) {
         return;
     }
-    $fetchCaptcha.prop('disabled', true);
     var captchaVal = $appCaptcha.val(),
         mobile = $phoneDom.val();
+    if (captchaVal.length < 5) {
+        layer.msg('请输入5位验证码');
+        return;
+    };
+    $fetchCaptcha.prop('disabled', true);
 
     commonFun.useAjax({
         url: '/register/user/send-register-captcha',
@@ -155,6 +159,7 @@ validator.newStrategy(registerForm.referrer, 'isReferrerExist', function (errorM
         _arguments = arguments;
     //只验证推荐人是否存在，不验证是否为空
     if (this.value == '') {
+        referrerValidBool=true;
         getResult = '';
         ValidatorObj.isHaveError.no.apply(that, _arguments);
         return '';
@@ -166,10 +171,12 @@ validator.newStrategy(registerForm.referrer, 'isReferrerExist', function (errorM
     }, function (response) {
         if (response.data.status) {
             // 如果为true说明推荐人存在
+            referrerValidBool=true;
             getResult = '';
             ValidatorObj.isHaveError.no.apply(that, _arguments);
         }
         else {
+            referrerValidBool=false;
             getResult = errorMsg;
             ValidatorObj.isHaveError.yes.apply(that, _arguments);
         }
@@ -244,7 +251,7 @@ function isDisabledButton() {
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
 
-    let isDisabledSubmit = isDisabledCaptcha && captchaValid && $('#agreementInput').val() == 'true';
+    let isDisabledSubmit = captchaValid && referrerValidBool && $('#agreementInput').val() == 'true';
     $registerSubmit.prop('disabled', !isDisabledSubmit);
 
 }
