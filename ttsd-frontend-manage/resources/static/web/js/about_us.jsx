@@ -316,6 +316,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             },
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
         option.series[0].barWidth = 50;
+
         console.log(option)
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
@@ -325,7 +326,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         loadEcharts.RenderChart(optUser);
         //投资人男女比例 饼状图
         var sexOptions = [{name:'男性投资人',scale:data.maleScale},{name:'女性投资人',scale:data.femaleScale}];
-        var optionSex = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexOptions,'投资人基本信息');
+        var optionSex = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexOptions);
         var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
         loadEcharts.RenderChart(optSex);
 

@@ -11,7 +11,7 @@
                 <div class="safe_operational_text">拓天速贷已安全运营</div>
                 <div class="safe_day_wrapper_center">
                     <div class="safe_day_wrapper">
-                        <span class="safe_day_unit">天</span>
+
                     </div>
                 </div>
                 <div class="grand_total">
@@ -64,7 +64,7 @@
             </div>
 
             <div class="swiper-item swiper-slide4 swiper-slide">
-                <div class="part-4-topBar"><div class="user-area">平台地区统计</div></div>
+                <div class="part-4-topBar"><div class="user-area">平台用户统计</div></div>
                 <div class="title-wrap"><h4 class="title-top">投资人地域分布</h4></div>
 
                 <div class="count_proportion">
@@ -87,7 +87,7 @@
             </div>
 
             <div class="swiper-item swiper-slide4 swiper-slide">
-                <div class="part-7-topBar"><div class="user-area">平台地区统计</div></div>
+                <div class="part-7-topBar"><div class="user-area">平台用户统计</div></div>
                 <div class="title-wrap"><h4 class="title-top">借款人地域分布</h4></div>
                 <div class="count_proportion">
                     <div class="symbol_line"></div>
@@ -102,7 +102,7 @@
 
             <div class="swiper-item swiper-slide5 swiper-slide">
                 <div class="tuotian_logo"></div>
-                <div class="button_up_arrow side_to_page" data-index="6"></div>
+                <div class="button_up_arrow side_to_page" data-index="8"></div>
                 <div class="company_desc_text">
                     <div style="margin-bottom: .25rem">拓天速贷</div>
                     <div>互联网金融信息服务平台</div>

@@ -22,8 +22,9 @@ let ifReflow = false;
 
 let mySwiper = new Swiper('.swiper-container', {
     direction: 'vertical',
+    nextButton: '.button_under_arrow',
     width: window.screen.width,
-    height: document.body.clientHeight - 48,
+    height: document.body.clientHeight - 44,
     onTouchMove: function () {
         if (!ifReflow) {
             reflow();
@@ -31,7 +32,7 @@ let mySwiper = new Swiper('.swiper-container', {
     }
 });
 
-document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 48 + 'PX';
+document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 44 + 'PX';
 
 $('#goBack_experienceAmount').on('click', () => {
     location.href='/m';
@@ -42,7 +43,7 @@ $('.side_to_page').click(function (e) {
         reflow();
     }
     let index = Number(e.currentTarget.dataset.index);
-    index = index == 8 ? index - 2 : index;
+    index = index == 8 ? index-2 : index;
     mySwiper.slideTo(index, 500, false);//切换到第一个slide，速度为1秒
 });
 
@@ -313,13 +314,20 @@ function toThousands(num) {
 let getPartOnePage = (data, dataStr) => {
 
     var days = parseInt(dataStr/365);
+    var daysStr = days.toString();
+    let domDays = '';
+    for (let i = 0; i < daysStr.length; i++) {
+        domDays += `<div class="safe_day">${daysStr.charAt(i)}</div>`
+    }
+    domDays+=`<div class="safe_day_unit">年</div>>`;
+    $('.safe_day_wrapper').append(domDays);
     dataStr = (dataStr-days*365).toString();
     let dom = '';
     for (let i = 0; i < dataStr.length; i++) {
         dom += `<div class="safe_day">${dataStr.charAt(i)}</div>`
     }
-    $('.safe_day_wrapper').prepend(dom);
-    $('.safe_day_wrapper').prepend(`<div class="safe_day">${days}</div><div class="safe_day_unit">年</div>>`);
+    dom+=`<span class="safe_day_unit">天</span>`;
+    $('.safe_day_wrapper').append(dom);
     $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));
 };
@@ -372,15 +380,15 @@ let getPartThreePage = (data) => {
         ageLoanLegendArr[i] = item.name + ' ' + item.scale + '%';
     }
     myChart3.setOption(pieChart([
-        {value: `${femaleScale}`, name: `女性投资人 ${femaleScale }%`},
         {value: `${maleScale}`, name: `男性投资人 ${maleScale }%`},
+        {value: `${femaleScale}`, name: `女性投资人 ${femaleScale }%`}
     ], [`男性投资人 ${maleScale }%`, `女性投资人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 
     myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));
     myChart6.setOption(pieChart([
-        {value: `${loanerFemaleScale}`, name: `女性借款人 ${loanerFemaleScale }%`},
         {value: `${loanerMaleScale}`, name: `男性借款人 ${loanerMaleScale }%`},
+        {value: `${loanerFemaleScale}`, name: `女性借款人 ${loanerFemaleScale }%`}
     ], [`男性借款人 ${loanerMaleScale }%`, `女性借款人 ${loanerFemaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 

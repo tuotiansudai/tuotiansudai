@@ -701,7 +701,10 @@ $gray5:#333333;
 }
 .geographical-item {
   width: 100%;
-  overflow-x: scroll;
+  @media screen and (max-width: 768px){
+    overflow-x: scroll;
+    overflow-y:hidden;
+  }
   ul {
     width: 610px;
     height: 100%;
@@ -740,8 +743,15 @@ $gray5:#333333;
   color: $gray2;
 }
 .region-wrap {
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 }
 .marginTop20 {
   margin-top: 20px;
+}
+.total-view {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.marginBottom10 {
+  margin-bottom: 10px;
 }

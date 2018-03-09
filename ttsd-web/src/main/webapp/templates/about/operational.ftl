@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="data-model">
-            <h3>平台数据总览 <span class="font-right" id="dateTime"></span> </h3>
+            <h3 class="total-view">平台数据总览 <span class="font-right" id="dateTime"></span> </h3>
             <div class="data-wrap">
                 <ul class="clearfix">
                     <li class="bl">
@@ -31,7 +31,7 @@
         </div>
         <div class="data-model cheat-model marginTop20">
             <h3 class="font16">平台投资明细</h3>
-            <h4 class="font14">月度交易金额（近半年）</h4>
+            <h4 class="font14 marginBottom10">月度交易金额（近半年）</h4>
             <div class="model-container chart-dom" id="dataRecord">
                 <!--[if gte IE 8]>
                 请使用更高版本浏览器查看
