@@ -335,12 +335,15 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         let loanerCityScaleTop5 = data.loanerCityScaleTop5; // 借款人地域分布top5
         //投资人地域分布
         investCityScaleTop5.forEach((item, index) => {
-            $('#geographicalWrap').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
+            $('#geographicalWrap').append(`<li class="clearfix"><div class="fl city-name marginLeft10">${item.city}</div> <div class="percent fl marginLeft10"><span style="width: ${item.scale}%;"></span></div><div class="fl marginLeft10">${item.scale}%</div></li>`);
         });
         //借款人地域分布top5
         loanerCityScaleTop5.forEach((item, index) => {
-            $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
+            $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl city-name marginLeft10">${item.city}</div> <div class="percent fl marginLeft10"><span style="width: ${item.scale}%;"></span></div><div class="fl marginLeft10">${item.scale}%</div></li>`);
         });
+        calculateWidth($('#geographicalWrap'),'.city-name');
+        calculateWidth($('#geographicalWrapLoan'),'.city-name');
+        
         //借款人基本信息环形图
         var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,{},'借款用户(人)');
         var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);
@@ -376,3 +379,15 @@ let getPartFourPage = (data) => {
     myChart5.setOption(drawBarTransverse(cityName_count, cityData_count, ['#c2eef2', '#81e9f2', '#00def2']));
     myChart6.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ffecac', '#ffd74f', '#ffc601']));
 };
+
+function calculateWidth(dom,className) {
+    let widthArr = [];
+    dom.find(className).each(function (index,item) {
+        widthArr.push($(item).width());
+        widthArr.sort(function (a,b) {
+            return a-b;
+        })
+
+    })
+    $(dom).find(className).width(widthArr[widthArr.length-1]).css('marginRight','10px');
+}

@@ -417,3 +417,14 @@ function reflow() {
     document.getElementById('main_part7').style.visibility = "visible";
     ifReflow = true;
 }
+function calculateWidth(dom,className) {
+    let widthArr = [];
+    dom.find(className).each(function (index,item) {
+        widthArr.push($(item).width());
+        widthArr.sort(function (a,b) {
+            return a-b;
+        })
+
+    })
+    $(dom).find(className).width(widthArr[widthArr.length-1]).css('marginRight','10px');
+}

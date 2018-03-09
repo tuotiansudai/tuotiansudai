@@ -706,10 +706,10 @@ $gray5:#333333;
     overflow-y:hidden;
   }
   ul {
-    width: 610px;
+    min-width: 610px;
     height: 100%;
     li {
-      width: 100%;
+      display: inline-block;
       height: 20px;
       margin-top: 25px;
       >div {
@@ -754,4 +754,7 @@ $gray5:#333333;
 }
 .marginBottom10 {
   margin-bottom: 10px;
+}
+.marginLeft10 {
+  margin-left: 10px;
 }
