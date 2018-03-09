@@ -9,7 +9,7 @@
                         恭喜您获得
                     </p>
                     <p class="intro-text">
-                        <span>50</span>元微信红包
+                        <span>50</span>元投资红包
                     </p>
                 </div>
                 <div class="reg-tag-current">
