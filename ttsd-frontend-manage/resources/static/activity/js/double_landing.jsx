@@ -268,7 +268,7 @@ $(function(){
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?055a331f2f9db735b541a52d7ef097b4";
+        hm.src = "https://hm.baidu.com/hm.js?058eb2e1517e1c4d99bc6ffe0b056cc1";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
