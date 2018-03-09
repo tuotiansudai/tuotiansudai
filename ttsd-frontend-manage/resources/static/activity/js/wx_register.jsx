@@ -22,9 +22,7 @@ require.ensure(['publicJs/placeholder'], function (require) {
     require('publicJs/placeholder');
     $('input[type="text"],input[type="password"]', $(registerForm)).placeholder();
 }, 'placeholder');
-setTimeout(() => {
-    $(':input','.register-user-form').not(':button,:submit,:reset,:hidden').val('');
-},0);
+
 $getBag.on('click', function (event) {
     event.preventDefault();
     $getbagContainer.hide();
@@ -62,7 +60,7 @@ $('.show-agreement').on('touchstart', function (event) {
 
 $('#agreementBox').find('.close-tip').on('touchstart', function () {
     layer.closeAll();
-})
+});
 
 //图形验证码输入后高亮显示获取验证码
 $appCaptcha.on('keyup', function (event) {
