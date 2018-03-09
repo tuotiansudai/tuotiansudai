@@ -30,13 +30,13 @@
             </div>
             <div class="swiper-item swiper-slide1 swiper-slide">
 
-                <div class="grand_total">
+                <div class="grand_total threePart">
                     <div class="grand_total_icon trade-count"></div>
                     <div class="grand_total_text">累计交易笔数</div>
                     <div class="text_underLine"></div>
                     <div class="grand_total_amount"><span id="total_trade_count"></span>笔</div>
                 </div>
-                <div class="earn_total">
+                <div class="earn_total fourPart">
                     <div class="earn_total_icon register-user"></div>
                     <div class="earn_total_text">注册投资用户数</div>
                     <div class="text_underLine"></div>

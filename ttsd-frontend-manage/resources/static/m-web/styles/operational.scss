@@ -84,6 +84,9 @@
     position: absolute;
     top: 4.9rem;
     width: 100%;
+    &.threePart {
+      top: 2.5rem;
+    }
     .grand_total_icon {
       margin-left: 1.5rem;
       width: 17.3rem;
@@ -123,6 +126,9 @@
   .earn_total {
     position: absolute;
     top: 15.5rem;
+    &.fourPart {
+      top: 13.5rem;
+    }
     width: 100%;
     text-align: center;
     .earn_total_icon {
