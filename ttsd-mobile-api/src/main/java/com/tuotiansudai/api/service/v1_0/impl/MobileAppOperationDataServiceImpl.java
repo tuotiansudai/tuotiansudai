@@ -79,9 +79,11 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         return operationDataAgeDataDtos.stream().map(operationDataAgeDataDto -> new OperationDataAgeResponseDataDto(operationDataAgeDataDto)).collect(Collectors.toList());
     }
 
-    private List<OperationDataAgeResponseDataDto> convertMapToOperationDataLoanerAgeResponseDataDto() {
+    private List<OperationDataLoanerAgeResponseDataDto> convertMapToOperationDataLoanerAgeResponseDataDto() {
         List<OperationDataLoanerAgeDataDto> operationDataLoanerAgeDataDtos = operationDataService.convertMapToOperationDataLoanerAgeDataDto();
         return operationDataLoanerAgeDataDtos.stream().map(operationDataLoanerAgeDataDto -> new OperationDataLoanerAgeResponseDataDto(operationDataLoanerAgeDataDto)).collect(Collectors.toList());
+
+
     }
 
     private List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto) {

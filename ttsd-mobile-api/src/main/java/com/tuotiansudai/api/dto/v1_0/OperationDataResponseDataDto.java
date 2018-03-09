@@ -33,7 +33,7 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
     private List<OperationDataAgeResponseDataDto> ageDistribution;
     @ApiModelProperty(value = "借款人各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
-    private List<OperationDataAgeResponseDataDto> loanerAgeDistribution;
+    private List<OperationDataLoanerAgeResponseDataDto> loanerAgeDistribution;
     @ApiModelProperty(value = "投资人数top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestCityResponseDataDto> investCityScaleTop5;
     @ApiModelProperty(value = "投资金额top3", example = "北京:60,上海:30,济南:10")
@@ -174,11 +174,11 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.loanerFemaleScale = loanerFemaleScale;
     }
 
-    public List<OperationDataAgeResponseDataDto> getLoanerAgeDistribution() {
+    public List<OperationDataLoanerAgeResponseDataDto> getLoanerAgeDistribution() {
         return loanerAgeDistribution;
     }
 
-    public void setLoanerAgeDistribution(List<OperationDataAgeResponseDataDto> loanerAgeDistribution) {
+    public void setLoanerAgeDistribution(List<OperationDataLoanerAgeResponseDataDto> loanerAgeDistribution) {
         this.loanerAgeDistribution = loanerAgeDistribution;
     }
 }
