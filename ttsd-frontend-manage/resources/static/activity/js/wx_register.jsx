@@ -22,7 +22,7 @@ require.ensure(['publicJs/placeholder'], function (require) {
     require('publicJs/placeholder');
     $('input[type="text"],input[type="password"]', $(registerForm)).placeholder();
 }, 'placeholder');
-
+$('#pcCaptcha').find('.captcha').val('');
 $getBag.on('click', function (event) {
     event.preventDefault();
     $getbagContainer.hide();
