@@ -201,7 +201,7 @@ public class CreditLoanRepayService {
             if (responseModel.isSuccess()) {
                 logger.info(MessageFormat.format("[credit loan no password repay {0}] call umpay success, mobile({1}) amount({2})", String.valueOf(orderId), mobile, String.valueOf(amount)));
             } else {
-                logger.error(MessageFormat.format("[credit loan no password repay {0} is auto:{1}] call umpay fail , mobile{2}, amount:{3}, code:{4}, message:{5}",
+                logger.info(MessageFormat.format("[credit loan no password repay {0} is auto:{1}] call umpay fail , mobile{2}, amount:{3}, code:{4}, message:{5}",
                         String.valueOf(orderId), autoRepay, mobile, String.valueOf(amount), responseModel.getRetCode(), responseModel.getRetMsg()));
             }
 
