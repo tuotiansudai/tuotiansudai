@@ -22,9 +22,9 @@ require.ensure(['publicJs/placeholder'], function (require) {
     require('publicJs/placeholder');
     $('input[type="text"],input[type="password"]', $(registerForm)).placeholder();
 }, 'placeholder');
-
-$(':input','.register-user-form').not(':button,:submit,:reset,:hidden').val('');
-
+setTimeout(() => {
+    $(':input','.register-user-form').not(':button,:submit,:reset,:hidden').val('');
+},0);
 $getBag.on('click', function (event) {
     event.preventDefault();
     $getbagContainer.hide();
