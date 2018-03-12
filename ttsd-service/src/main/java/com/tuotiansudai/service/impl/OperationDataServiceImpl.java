@@ -274,8 +274,9 @@ public class OperationDataServiceImpl implements OperationDataService {
             for (Map<String, String> investCityMap : investCityList) {
                 if (StringUtils.isNotEmpty(investCityMap.get("province"))) {
                     redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                            investCityMap.get("province"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
-                    resultMap.put(investCityMap.get("province"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                            Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")),
+                            String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
+                    resultMap.put(Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")) , String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
                 }
 
             }
@@ -432,7 +433,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     public Map<String, String> findNewAgeDistributionByAge(Date endDate) {
         Map<String, String> resultGroupMap = new LinkedHashMap<>();
         if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(NEW_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
-            Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate));
+            Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(NEW_AGE_DISTRIBUTION_INFO_PUBLISH_KEY_TEMPLATE, endDate));
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 resultGroupMap.put(entry.getKey(), entry.getValue());
             }
