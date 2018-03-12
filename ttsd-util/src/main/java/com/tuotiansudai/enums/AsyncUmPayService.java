@@ -83,7 +83,7 @@ public enum AsyncUmPayService {
     /**
      * 奢侈品分期
      */
-    LUXURY_STAGE_REPAY_PROJECT_TRANSFER("project_transfer", "", "{0}/luxury/{1}/period/{2}/stage-purchase-success", "luxury_stage_repay_notify", "tuotian://luxury-stage-repay/{0}"),
+    LUXURY_STAGE_REPAY_PROJECT_TRANSFER("project_transfer", "", "{0}/luxury/{1}/period/{2}/stage-purchase-success", "luxury_stage_repay_notify", ""),
 
     /**
      * 慧租有密还款
