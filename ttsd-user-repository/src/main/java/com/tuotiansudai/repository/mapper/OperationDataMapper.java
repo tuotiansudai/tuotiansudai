@@ -23,5 +23,7 @@ public interface OperationDataMapper {
 
     List<Map<String, String>> findAgeDistributionByAge(Date endDate);
 
+    List<Map<String, String>> findNewAgeDistributionByAge(Date endDate);
+
     List<Map<String, String>> findLoanerAgeDistributionByAge();
 }
