@@ -119,7 +119,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         }
 
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(new Date())));
-        operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
+        operationDataDto.setAgeDistribution(convertMapToOperationDataNewAgeDataDto());
         operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
         operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
@@ -152,7 +152,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setMoney(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
                 REDIS_OPERATION_DATA_MONTH_AMOUNT)));
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
-        operationDataDto.setAgeDistribution(convertMapToOperationDataAgeDataDto());
+        operationDataDto.setAgeDistribution(convertMapToOperationDataNewAgeDataDto());
 
         operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
         operationDataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityDataDto());
