@@ -4,10 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppOperationDataService;
-import com.tuotiansudai.dto.OperationDataAgeDataDto;
-import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.dto.OperationDataInvestAmountDataDto;
-import com.tuotiansudai.dto.OperationDataInvestCityDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.service.OperationDataService;
@@ -42,7 +39,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         List<InvestDataView> investDataViewList = operationDataService.getInvestDetail(currentDate);
         List<OperationDataInvestByProductTypeResponseDataDto> operationDataInvestByProductTypeResponseDataDtoList = Lists.newArrayList();
         int totalTradeCount = 0;
-        for(InvestDataView investDataView: investDataViewList){
+        for (InvestDataView investDataView : investDataViewList) {
             OperationDataInvestByProductTypeResponseDataDto operationDataInvestByProductTypeResponseDataDto = new OperationDataInvestByProductTypeResponseDataDto();
             operationDataInvestByProductTypeResponseDataDto.setName(investDataView.getProductName().concat("天"));
             operationDataInvestByProductTypeResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDataView.getTotalInvestAmount())));
@@ -55,14 +52,21 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         List<Integer> sexList = operationDataService.findScaleByGender(currentDate);
         dataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         dataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
+        List<Integer> loanerSexList = operationDataService.findLoanerScaleByGender(currentDate);
+        dataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
+        dataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
         //近半年的交易金额
         dataDto.setLatestSixMonthDetail(convertMapToOperationDataLatestSixMonthResponseDataDto(operationDataDto));
         //各用户年龄段分布
         dataDto.setAgeDistribution(convertMapToOperationDataAgeResponseDataDto());
+        //各用借款人户年龄段分布
+        dataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeResponseDataDto());
         //投资人数top3
         dataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityResponseDataDto());
         //投资金额top3
         dataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountResponseDataDto());
+
+        dataDto.setLoanerCityScaleTop5(convertMapToOperationDataLoanerCityResponseDataDto());
         BaseResponseDto<OperationDataResponseDataDto> dto = new BaseResponseDto<>();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -70,16 +74,23 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         return dto;
     }
 
-    private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto(){
+    private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto() {
         List<OperationDataAgeDataDto> operationDataAgeDataDtos = operationDataService.convertMapToOperationDataAgeDataDto();
         return operationDataAgeDataDtos.stream().map(operationDataAgeDataDto -> new OperationDataAgeResponseDataDto(operationDataAgeDataDto)).collect(Collectors.toList());
     }
 
-    private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto){
+    private List<OperationDataLoanerAgeResponseDataDto> convertMapToOperationDataLoanerAgeResponseDataDto() {
+        List<OperationDataLoanerAgeDataDto> operationDataLoanerAgeDataDtos = operationDataService.convertMapToOperationDataLoanerAgeDataDto();
+        return operationDataLoanerAgeDataDtos.stream().map(operationDataLoanerAgeDataDto -> new OperationDataLoanerAgeResponseDataDto(operationDataLoanerAgeDataDto)).collect(Collectors.toList());
+
+
+    }
+
+    private List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto) {
         List<OperationDataLatestSixMonthResponseDataDto> operationDataLatestSixMonthResponseDataDtoList = Lists.newArrayList();
         //取最后6个月的数据,正序排列
         int startSeq = operationDataDto.getMonth().size() >= 6 ? operationDataDto.getMonth().size() - 6 : 0;
-        for(int i = startSeq; i < operationDataDto.getMonth().size(); i++){
+        for (int i = startSeq; i < operationDataDto.getMonth().size(); i++) {
             OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
             operationDataLatestSixMonthResponseDataDto.setName(operationDataDto.getMonth().get(i).substring(operationDataDto.getMonth().get(i).indexOf(".") + 1).concat("月"));
             operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getMoney().get(i))));
@@ -88,15 +99,24 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         return operationDataLatestSixMonthResponseDataDtoList;
     }
 
-    private List<OperationDataInvestCityResponseDataDto> convertMapToOperationDataInvestCityResponseDataDto(){
+    private List<OperationDataInvestCityResponseDataDto> convertMapToOperationDataInvestCityResponseDataDto() {
         List<OperationDataInvestCityDataDto> operationDataInvestCityDataDtos = operationDataService.convertMapToOperationDataInvestCityDataDto();
         return operationDataInvestCityDataDtos.
                 stream()
                 .map(operationDataInvestCityDataDto -> new OperationDataInvestCityResponseDataDto(operationDataInvestCityDataDto))
+                .collect(Collectors.toList()).subList(0, 3);
+    }
+
+    private List<OperationDataLoanerCityResponseDataDto> convertMapToOperationDataLoanerCityResponseDataDto() {
+        List<OperationDataLoanerCityDataDto> operationDataLoanerCityDataDtos = operationDataService.convertMapToOperationDataLoanerCityDataDto();
+        return operationDataLoanerCityDataDtos.
+                stream()
+                .map(operationDataLoanerCityDataDto -> new OperationDataLoanerCityResponseDataDto(operationDataLoanerCityDataDto))
                 .collect(Collectors.toList());
     }
 
-    private List<OperationDataInvestAmountResponseDataDto> convertMapToOperationDataInvestAmountResponseDataDto(){
+
+    private List<OperationDataInvestAmountResponseDataDto> convertMapToOperationDataInvestAmountResponseDataDto() {
         List<OperationDataInvestAmountDataDto> operationDataInvestAmountDataDtos = operationDataService.convertMapToOperationDataInvestAmountDataDto();
 
         return operationDataInvestAmountDataDtos

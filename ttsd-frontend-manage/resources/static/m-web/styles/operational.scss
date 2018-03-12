@@ -38,6 +38,9 @@
   .safe_operational_text {
     position: absolute;
     top: 1.1rem;
+    @media screen and (max-width: 384px){
+      top: 0.6rem;
+    }
     left: 4.55rem;
     width: 9.1rem;
     font-size: 1rem;
@@ -49,6 +52,9 @@
   .safe_day_wrapper_center {
     position: absolute;
     top: 2.65rem;
+    @media screen and(max-width: 384px){
+      top: 2rem;
+    }
     width: 100%;
     text-align: center;
     font-size: 0;
@@ -72,6 +78,7 @@
         height: 1.9rem;
         line-height: 1.9rem;
         margin-left: .2rem;
+        margin-right: .6rem;
         font-size: 1.5rem;
         color: #fff;
         font-weight: normal;
@@ -82,18 +89,31 @@
   .grand_total {
     position: absolute;
     top: 4.9rem;
+    @media screen and(max-width: 384px){
+      top: 4.4rem;
+    }
     width: 100%;
+    &.threePart {
+      top: 2.5rem;
+      @media screen and(max-width: 384px){
+        top: 2rem;
+      }
+    }
     .grand_total_icon {
       margin-left: 1.5rem;
       width: 17.3rem;
       height: 5.625rem;
-      background: url("../images/grand_total_icon.png") no-repeat;
+      background: url("../images/icon_trade_money.png") no-repeat;
       background-size: contain;
+      &.trade-count {
+        background: url("../images/grand_total_icon.png") no-repeat;
+        background-size: contain;
+      }
     }
     .grand_total_text {
       width: 100%;
       text-align: center;
-      margin-top: .575rem;
+      //margin-top: .575rem;
       font-size: .875rem;
       color: #fff;
       font-weight: normal;
@@ -117,7 +137,16 @@
   }
   .earn_total {
     position: absolute;
-    top: 14.2rem;
+    top: 14rem;
+    @media screen and (max-width: 384px){
+      top: 13rem;
+    }
+    &.fourPart {
+      top: 13.5rem;
+      @media screen and (max-width: 384px){
+        top: 12.5rem;
+      }
+    }
     width: 100%;
     text-align: center;
     .earn_total_icon {
@@ -126,6 +155,10 @@
       height: 4.675rem;
       background: url("../images/earn_total_icon.png") no-repeat;
       background-size: contain;
+      &.register-user {
+        background: url("../images/icon_register_user.png") no-repeat;
+        background-size: contain;
+      }
     }
     .earn_total_text {
       width: 100%;
@@ -273,7 +306,7 @@
   }
   #main_part2 {
     position: absolute;
-    top: 16rem;
+    top: 10rem;
     width: 100%;
     height: 5rem;
     margin-top: 1rem;
@@ -288,6 +321,22 @@
     width: 100%;
     height: 4rem;
     background: url("../images/part-3-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .user-statistics {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
+  .part-6-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-5-topBar.png") no-repeat;
     background-size: cover;
     overflow: hidden;
     .user-statistics {
@@ -332,16 +381,18 @@
     color: #41b4e3;
     font-weight: normal;
   }
-  #main_part3 {
+  #main_part3,#main_part6 {
     width: 100%;
-    height: 11rem;
+    height: 8rem;
     visibility: hidden;
-  }
-  #main_part4 {
     position: absolute;
-    top: 15rem;
+    top: 14rem;
+  }
+  #main_part4,#main_part7{
+    //position: absolute;
+    //top: 15rem;
     width: 100%;
-    height: 11rem;
+    height: 8rem;
     visibility: hidden;
   }
 }
@@ -365,10 +416,26 @@
       font-weight: normal;
     }
   }
+  .part-7-topBar {
+    width: 100%;
+    height: 4rem;
+    background: url("../images/part-6-topBar.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .user-area {
+      margin-top: 1.5rem;
+      width: 100%;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      text-align: center;
+      color: #fff;
+      font-weight: normal;
+    }
+  }
   .count_proportion, .amount_proportion {
     position: absolute;
     left: 10%;
-    top: 7rem;
+    top: 8rem;
     font-size: 0;
     font-weight: normal;
     .symbol_line {
@@ -413,10 +480,9 @@
   }
   #main_part5 {
     position: absolute;
-    top: 6.3rem;
+    top: 8.8rem;
     width: 100%;
     height: 13rem;
-    visibility: hidden;
   }
   #main_part6 {
     position: absolute;
@@ -427,10 +493,64 @@
   }
 }
 .chart1_title.chart1_title_m {
-  top: 21.5rem;
+  top: 15.5rem;
 }
 
 .unit_symbol.unit_symbol_m {
-  top: 16rem;
+  top: 10rem;
 }
+#main_part8 {
+  position: absolute;
+  top: 9rem;
+  width: 100%;
+  height: 5rem;
+}
+.geographical-item {
+  ul {
+    width: 15rem;
+    height: 100%;
+    margin: 0 auto;
+    li {
+      width: 100%;
+      height: 0.7rem;
+      margin-top: 1rem;
+      >div {
+        height: 100%;
+        font-size: .65rem;
+        color: #333;
+        line-height: .7rem;
+        &.fl {
+          float: left;
+        }
+        &.fr {
+          float: right;
+        }
+        &.percent {
+          width: 9.7rem;
+          margin: 0 auto;
+          background: #f0f0f0;
+          >span {
+            display: inline-block;
+            height: 100%;
+            background: #ff9b1b;
+          }
+        }
 
+      }
+    }
+  }
+}
+.title-wrap {
+  text-align: center;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  .title-top {
+    padding: 0 .2rem;
+    display: inline-block;
+    margin: 0 auto;
+    font-size: .75rem;
+    color: #019bd9;
+    background: url("../images/sign/assure/data_title_bg.png") no-repeat bottom center;
+    background-size: contain;
+  }
+}

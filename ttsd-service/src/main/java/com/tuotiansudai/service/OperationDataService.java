@@ -1,9 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.OperationDataAgeDataDto;
-import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.dto.OperationDataInvestAmountDataDto;
-import com.tuotiansudai.dto.OperationDataInvestCityDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.InvestDataView;
 
 import java.util.Date;
@@ -17,9 +14,13 @@ public interface OperationDataService {
 
     List<Integer> findScaleByGender(Date endDate);
 
+    List<Integer> findLoanerScaleByGender(Date endDate);
+
     Map<String, String> findAgeDistributionByAge(Date endDate);
 
-    Map<String, String> findCountInvestCityScaleTop3(Date endDate);
+    Map<String, String> findLoanerAgeDistributionByAge(Date endDate);
+
+    Map<String, String> findCountInvestCityScaleTop5(Date endDate);
 
     Map<String, String> findInvestAmountScaleTop3(Date endDate);
 
@@ -27,8 +28,14 @@ public interface OperationDataService {
 
     List<OperationDataAgeDataDto> convertMapToOperationDataAgeDataDto();
 
+    List<OperationDataLoanerAgeDataDto>  convertMapToOperationDataLoanerAgeDataDto();
+
     List<OperationDataInvestCityDataDto> convertMapToOperationDataInvestCityDataDto();
 
     List<OperationDataInvestAmountDataDto> convertMapToOperationDataInvestAmountDataDto();
+
+    List<OperationDataLoanerCityDataDto> convertMapToOperationDataLoanerCityDataDto();
+
+    List<OperationDataAgeDataDto> convertMapToOperationDataNewAgeDataDto() ;
 
 }

@@ -107,6 +107,109 @@ var MyChartsObject={
             var PieOpt = $.extend({},initOption,option);
             return PieOpt;
         },
+        // 饼状图选项
+        PieOptionBaseInfo:function(data,option) {
+            var report_data = MyChartsObject.myChartDataFormate(data,'name','scale');
+            var option = option || {};
+            var thisOption = {
+                legend:{
+                    orient: 'horizontal',
+                    x: 'center',
+                    y:'bottom',
+                    data:report_data.category
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b} : {d}%',
+                    show: true
+                },
+                series: [
+                    {
+                        name: option.name || "",
+                        type: 'pie',
+                        center: ['50%', '45%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
+                                },
+                                labelLine : {
+                                    show : false
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : false,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '11',
+                                        fontWeight : 'normal'
+                                    }
+                                }
+                            }
+                        },
+                        data: report_data.data
+                    }
+                ],
+                color: ['#84a2ff','#ff6ecb','rgb(227,109,213)','rgb(200,200,169)','rgb(131,175,155)']
+            };
+            var initOption=$.extend({}, this.CommonOption, thisOption);
+            var PieOpt = $.extend({},initOption,option);
+            return PieOpt;
+        },
+        //环形图
+        AnnularOption:function(data,option,tip) {
+            var report_data = MyChartsObject.myChartDataFormate(data,'name','scale');
+            var option = option || {};
+            var thisOption = {
+                legend:{
+                    orient: 'horizontal',
+                    x: 'center',
+                    y:'bottom',
+                    // left: 'left',
+                    data:report_data.category
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: tip+'<br/>{b} : {d}%',
+                    show: true,
+                    enterable:true
+                },
+                series: [
+                    {
+                        name: option.name || "",
+                        type: 'pie',
+                        radius : ['45%', '75%'],
+                        center: ['50%', '45%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
+                                },
+                                labelLine : {
+                                    show : false
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : false,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '11',
+                                        fontWeight : 'normal'
+                                    }
+                                }
+                            }
+                        },
+                        data: report_data.data
+                    }
+                ],
+                color: ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']
+            };
+            var initOption=$.extend({}, this.CommonOption, thisOption);
+            var PieOpt = $.extend({},initOption,option);
+            return PieOpt;
+        },
         // 柱状图选项
         BarOption:function(data) {
             var thisOption = {
@@ -156,6 +259,45 @@ var MyChartsObject={
 
             var BarOpt=$.extend({}, this.CommonOption, thisOption);
             return BarOpt;
+        },
+        // 横向柱状图选项
+        BarOptionXAxis:function(data) {
+            var thisOption = {
+                backgroundColor:'#f7f7f7',
+                color:['#ff9c1b'],
+                tooltip : {
+                    trigger: 'axis'
+                },
+                calculable : false,
+                xAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'category',
+                        data : data.city,
+                        axisLine: {show: false},
+                        axisTick: {show: false},
+                        axisLabel: {show: false}
+                    }
+                ],
+                series : [
+                    {
+                        name:'交易额',
+                        type:'bar',
+                        data:data.scale,
+                        tooltip : {
+                            formatter: "时间:{b}<br/>交易额:{c}"
+                        }
+                    }
+
+                ]
+            };
+
+            var BarOpt=$.extend({}, this.CommonOption, thisOption);
+            return BarOpt;
         }
     },
     ChartDataFormate:function(data) {
@@ -166,6 +308,17 @@ var MyChartsObject={
         for (var i = 0; i < dataLen; i++) {
             categories.push(data[i].name || "");
             datas.push({ name: data[i].name, value: data[i].value || 0 });
+        }
+        return { category: categories, data: datas };
+    },
+    myChartDataFormate:function(data,name,value) {
+        var categories = [];
+        var datas = [],
+            dataLen=data.length;
+
+        for (var i = 0; i < dataLen; i++) {
+            categories.push(data[i].name || "");
+            datas.push({ name: data[i][name], value: data[i][value] || 0 });
         }
         return { category: categories, data: datas };
     }

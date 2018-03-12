@@ -1,6 +1,7 @@
 require('webStyle/about_us.scss');
 require('publicJs/pagination');
 require('webJsModule/touch_menu');
+let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
@@ -195,6 +196,84 @@ require.ensure([],function() {
     });
 
 },'qaList');
+let drawBarTransverse = (cityName, cityData, colorArr) => { // 横向柱状图
+    return {
+        xAxis: {type: 'value', show: false},
+        yAxis: {
+            type: 'category',
+            data: cityName,
+            axisLine: {show: false},
+            axisTick: {show: false},
+            axisLabel: {show: false}
+        },
+        series: [{
+            type: 'bar',
+            barWidth: '80%',
+            data: cityData,
+            silent: true,
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        let colorList = colorArr;
+                        return colorList[params.dataIndex];
+                    }
+                },
+            }
+        }],
+        label: {
+            normal: {
+                show: true,
+                position: 'right',
+                color: '#333',
+                formatter: '{b}\n{c}%'
+            }
+        }
+    }
+};
+
+let getPartOnePage = (data, dataStr) => {
+
+    var days = parseInt(dataStr/365);
+    dataStr = (dataStr-days*365).toString();
+    let dom = '';
+    for (let i = 0; i < dataStr.length; i++) {
+        dom += `<span class="data-bg">${dataStr.charAt(i)}</span>`
+    }
+    $('#operationDays').prepend(`<span class="assurance">安全运营</span>`);
+    $('#operationDays').append(`<span class="data-bg">${days}</span><span>年</span>`);
+    $('#operationDays').append(dom);
+    $('#operationDays').append(`<span>天</span>`);
+    // $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
+     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
+};
+
+function toThousands(num) {
+    var num = (num || 0).toString(), result = '';
+    while (num.length > 3) {
+        result = ',' + num.slice(-3) + result;
+        num = num.slice(0, num.length - 3);
+    }
+    if (num) {
+        result = num + result;
+    }
+    return result;
+}
+function formatNumber(s, n) {  // 金额格式化
+    n = n > 0 && n <= 20 ? n : 2;
+    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+    let t = "";
+    for (let i = 0; i < l.length; i++) {
+        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+    }
+    return t.split("").reverse().join("") + "." + r;
+};
+function dateFomater(datetime) {
+    var dateArr = datetime.substr(0,10).split('-');
+    var dom = '';
+    dom += dateArr[0]+'年'+dateArr[1]+'月'+dateArr[2]+'日';
+    return dom;
+}
 
 //运营数据
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
@@ -207,19 +286,73 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         url: '/about/operation-data/chart',
         type: 'GET'
     },function(data) {
-        $('#operationDays').text(data.operationDays+'天');
-        $('#usersCount').text(data.usersCount+'人');
-        $('#tradeAmount').text(data.tradeAmount+'元');
+        console.log(data);
+        var datetime = data.now;
+        var dateTimeDOM = '（数据截止到'+dateFomater(datetime)+'）';
+        $('#dateTime').text(dateTimeDOM);
+
+        var month = data.month.slice(-6);
+        var money = data.money.slice(-6);
+        getPartOnePage(data,data.operationDays);
+
+         $('#usersCount').text(toThousands(data.usersCount));
+         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));
+        let barChartArr = [];
+        let num = 0;
+        for (let i = 0; i < 4; i++) {
+            let $item = $('#investItem' + i);
+            let amount = parseInt(Math.ceil($item.data('amount') / 10000));
+            barChartArr.push(amount);
+            let count = Number($item.data('count')) || 0;
+            num += count;
+        }
+        $('#total_trade_count').html(toThousands(num));//累计投资笔数
         var dataJson = {
-                title:'拓天速贷',
-                sub:'金额',
+
+                sub:'金额（元）',
                 name:'运营数据',
-                month:data.month,
-                money:data.money
+                month:month,
+                money:money
             },
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
+        option.series[0].barWidth = 50;
+
+        console.log(option)
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
+        //投资人基本信息 环形图
+         var optionUser = loadEcharts.ChartOptionTemplates.AnnularOption(data.ageDistribution,{},'投资用户(人)');
+        var  optUser = loadEcharts.ChartConfig('investRecord', optionUser);
+        loadEcharts.RenderChart(optUser);
+        //投资人男女比例 饼状图
+        var sexOptions = [{name:'男性投资人',scale:data.maleScale},{name:'女性投资人',scale:data.femaleScale}];
+        var optionSex = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexOptions);
+        var  optSex = loadEcharts.ChartConfig('investSexRecord', optionSex);
+        loadEcharts.RenderChart(optSex);
+
+
+        let investCityScaleTop5 = data.investCityScaleTop5; // 投资人地域分布top5
+        let loanerCityScaleTop5 = data.loanerCityScaleTop5; // 借款人地域分布top5
+        //投资人地域分布
+        investCityScaleTop5.forEach((item, index) => {
+            $('#geographicalWrap').append(`<li class="clearfix"><div class="fl city-name marginLeft10">${item.city}</div> <div class="percent fl marginLeft10"><span style="width: ${item.scale}%;"></span></div><div class="fl marginLeft10">${item.scale}%</div></li>`);
+        });
+        //借款人地域分布top5
+        loanerCityScaleTop5.forEach((item, index) => {
+            $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl city-name marginLeft10">${item.city}</div> <div class="percent fl marginLeft10"><span style="width: ${item.scale}%;"></span></div><div class="fl marginLeft10">${item.scale}%</div></li>`);
+        });
+        calculateWidth($('#geographicalWrap'),'.city-name');
+        calculateWidth($('#geographicalWrapLoan'),'.city-name');
+        
+        //借款人基本信息环形图
+        var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,{},'借款用户(人)');
+        var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);
+        loadEcharts.RenderChart(optLoan);
+        //借款人男女比例 饼状图
+        var sexLoanOptions = [{name:'男性借款人',scale:data.loanerMaleScale},{name:'女性借款人',scale:data.loanerFemaleScale}];
+        var optionSexLoan = loadEcharts.ChartOptionTemplates.PieOptionBaseInfo(sexLoanOptions,'借款人基本信息');
+        var  optSexLoan = loadEcharts.ChartConfig('loanBaseSexRecord', optionSexLoan);
+        loadEcharts.RenderChart(optSexLoan);
     });
 
 },'operationEcharts');
@@ -228,3 +361,33 @@ var img = new Image;
 var imgUr = require('../images/sign/aboutus/organizational_structure.png');
    img.src= imgUr
 $('.organizational-structure').append(img);
+let getPartFourPage = (data) => {
+    let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
+    let investAmountScaleTop3 = data.investAmountScaleTop3; // 投资金额top3
+    let cityName_count = [];
+    let cityData_count = [];
+    let cityName_amount = [];
+    let cityData_amount = [];
+    investCityScaleTop3.forEach((item, index) => {
+        cityName_count[index] = item.city;
+        cityData_count[index] = item.scale;
+    });
+    investAmountScaleTop3.forEach((item, index) => {
+        cityName_amount[index] = item.city;
+        cityData_amount[index] = item.scale;
+    });
+    myChart5.setOption(drawBarTransverse(cityName_count, cityData_count, ['#c2eef2', '#81e9f2', '#00def2']));
+    myChart6.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ffecac', '#ffd74f', '#ffc601']));
+};
+
+function calculateWidth(dom,className) {
+    let widthArr = [];
+    dom.find(className).each(function (index,item) {
+        widthArr.push($(item).width());
+        widthArr.sort(function (a,b) {
+            return a-b;
+        })
+
+    })
+    $(dom).find(className).width(widthArr[widthArr.length-1]).css('marginRight','10px');
+}
