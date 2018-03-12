@@ -178,7 +178,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
-        model.retUrl = String.format(AsyncUmPayService.LUXURY_STAGE_REPAY_PROJECT_TRANSFER.getMobileRetCallbackPath(),
+        model.retUrl = MessageFormat.format(AsyncUmPayService.LUXURY_STAGE_REPAY_PROJECT_TRANSFER.getMobileRetCallbackPath(),
                 HUIZU_API_HOST,
                 luxuryOrderId,
                 period);
