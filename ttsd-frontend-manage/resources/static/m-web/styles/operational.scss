@@ -38,6 +38,9 @@
   .safe_operational_text {
     position: absolute;
     top: 1.1rem;
+    @media screen and (max-width: 384px){
+      top: 0.6rem;
+    }
     left: 4.55rem;
     width: 9.1rem;
     font-size: 1rem;
@@ -49,6 +52,9 @@
   .safe_day_wrapper_center {
     position: absolute;
     top: 2.65rem;
+    @media screen and(max-width: 384px){
+      top: 2rem;
+    }
     width: 100%;
     text-align: center;
     font-size: 0;
@@ -83,9 +89,15 @@
   .grand_total {
     position: absolute;
     top: 4.9rem;
+    @media screen and(max-width: 384px){
+      top: 4.4rem;
+    }
     width: 100%;
     &.threePart {
       top: 2.5rem;
+      @media screen and(max-width: 384px){
+        top: 2rem;
+      }
     }
     .grand_total_icon {
       margin-left: 1.5rem;
@@ -126,8 +138,14 @@
   .earn_total {
     position: absolute;
     top: 14rem;
+    @media screen and (max-width: 384px){
+      top: 13rem;
+    }
     &.fourPart {
       top: 13.5rem;
+      @media screen and (max-width: 384px){
+        top: 12.5rem;
+      }
     }
     width: 100%;
     text-align: center;
@@ -365,10 +383,10 @@
   }
   #main_part3,#main_part6 {
     width: 100%;
-    height: 9rem;
+    height: 8rem;
     visibility: hidden;
     position: absolute;
-    top: 16rem;
+    top: 14rem;
   }
   #main_part4,#main_part7{
     //position: absolute;
