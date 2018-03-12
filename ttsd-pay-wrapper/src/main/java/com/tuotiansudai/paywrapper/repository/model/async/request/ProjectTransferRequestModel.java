@@ -173,11 +173,16 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newLuxuryStageRepayRequest(String orderId, String userId, String amount) {
+    public static ProjectTransferRequestModel newLuxuryStageRepayRequest(String orderId, String luxuryOrderId, String period, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(CREDIT_LOAN_ID, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, Source.MOBILE, AsyncUmPayService.LUXURY_STAGE_REPAY_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
+        model.retUrl = String.format(AsyncUmPayService.LUXURY_STAGE_REPAY_PROJECT_TRANSFER.getMobileRetCallbackPath(),
+                HUIZU_API_HOST,
+                luxuryOrderId,
+                period);
+
         return model;
     }
 

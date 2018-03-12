@@ -103,6 +103,8 @@ public class LuxuryStageRepayService {
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLuxuryStageRepayRequest(
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(luxuryOrderId), String.valueOf(new Date().getTime())),
+                    String.valueOf(luxuryOrderId),
+                    String.valueOf(period),
                     account.getPayUserId(),
                     String.valueOf(amount));
             BaseDto<PayFormDataDto> payFormDataDtoBaseDto = payAsyncClient.generateFormData(LuxuryStageRepayProjectTransferMapper.class, requestModel);
