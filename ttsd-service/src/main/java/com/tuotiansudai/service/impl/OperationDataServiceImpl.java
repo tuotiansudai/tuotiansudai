@@ -270,10 +270,10 @@ public class OperationDataServiceImpl implements OperationDataService {
             long totalScaleCount = operationDataMapper.findCountInvestCityScale(endDate);
             List<Map<String, String>> investCityList = operationDataMapper.findCountInvestCityScaleTop5(endDate);
             for (Map<String, String> investCityMap : investCityList) {
-                if (StringUtils.isNotEmpty(investCityMap.get("city"))) {
+                if (StringUtils.isNotEmpty(investCityMap.get("province"))) {
                     redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
-                            investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
-                    resultMap.put(investCityMap.get("city"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                            investCityMap.get("province"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
+                    resultMap.put(investCityMap.get("province"), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
                 }
 
             }

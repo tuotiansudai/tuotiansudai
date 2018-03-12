@@ -62,7 +62,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         //各用借款人户年龄段分布
         dataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeResponseDataDto());
         //投资人数top3
-        dataDto.setInvestCityScaleTop5(convertMapToOperationDataInvestCityResponseDataDto());
+        dataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityResponseDataDto());
         //投资金额top3
         dataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountResponseDataDto());
 
@@ -104,7 +104,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         return operationDataInvestCityDataDtos.
                 stream()
                 .map(operationDataInvestCityDataDto -> new OperationDataInvestCityResponseDataDto(operationDataInvestCityDataDto))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()).subList(0,3);
     }
 
     private List<OperationDataLoanerCityResponseDataDto> convertMapToOperationDataLoanerCityResponseDataDto() {
