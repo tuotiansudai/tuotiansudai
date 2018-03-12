@@ -1,17 +1,16 @@
 package com.tuotiansudai.enums;
 
-public enum AgeDistributionType {
+public enum AgeNewDistributionType {
     UNDER_20("20岁以下", 1),
-    BETWEEN_20_AND_30("20~30岁", 2),
-    BETWEEN_30_AND_40("30~40岁", 3),
-    BETWEEN_40_AND_50("40~50岁", 4),
-    MORE_THAN_50("50岁以上", 5);
+    BETWEEN_20_AND_35("20~35岁", 2),
+    BETWEEN_35_AND_50("35~50岁", 3),
+    MORE_THAN_50("50岁以上", 4);
 
     private String description;
 
     private int ageStage;
 
-    AgeDistributionType(String description, int ageStage) {
+    AgeNewDistributionType(String description, int ageStage) {
         this.description = description;
         this.ageStage = ageStage;
     }
@@ -33,7 +32,7 @@ public enum AgeDistributionType {
     }
 
     public static String getNameByAgeStage(int ageStage) {
-        for (AgeDistributionType ageDistributionType : AgeDistributionType.values()) {
+        for (AgeNewDistributionType ageDistributionType : AgeNewDistributionType.values()) {
             if (ageDistributionType.ageStage == ageStage) {
                 return ageDistributionType.getDescription();
             }

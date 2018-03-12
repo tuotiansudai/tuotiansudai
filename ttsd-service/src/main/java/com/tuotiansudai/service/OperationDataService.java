@@ -36,4 +36,6 @@ public interface OperationDataService {
 
     List<OperationDataLoanerCityDataDto> convertMapToOperationDataLoanerCityDataDto();
 
+    List<OperationDataAgeDataDto> convertMapToOperationDataNewAgeDataDto() ;
+
 }

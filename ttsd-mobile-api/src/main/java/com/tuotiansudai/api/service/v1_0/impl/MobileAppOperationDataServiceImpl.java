@@ -75,7 +75,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto() {
-        List<OperationDataAgeDataDto> operationDataAgeDataDtos = operationDataService.convertMapToOperationDataAgeDataDto();
+        List<OperationDataAgeDataDto> operationDataAgeDataDtos = operationDataService.convertMapToOperationDataNewAgeDataDto();
         return operationDataAgeDataDtos.stream().map(operationDataAgeDataDto -> new OperationDataAgeResponseDataDto(operationDataAgeDataDto)).collect(Collectors.toList());
     }
 
@@ -104,7 +104,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         return operationDataInvestCityDataDtos.
                 stream()
                 .map(operationDataInvestCityDataDto -> new OperationDataInvestCityResponseDataDto(operationDataInvestCityDataDto))
-                .collect(Collectors.toList()).subList(0,3);
+                .collect(Collectors.toList()).subList(0, 3);
     }
 
     private List<OperationDataLoanerCityResponseDataDto> convertMapToOperationDataLoanerCityResponseDataDto() {
