@@ -361,7 +361,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<OperationDataAgeDataDto> operationDataAgeDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> ageDistributionEntry : ageDistributionEntries) {
             OperationDataAgeDataDto operationDataAgeResponseDataDto = new OperationDataAgeDataDto();
-            operationDataAgeResponseDataDto.setName(AgeDistributionType.getNameByAgeStage(Integer.parseInt(ageDistributionEntry.getKey())));
+            operationDataAgeResponseDataDto.setName(AgeNewDistributionType.getNameByAgeStage(Integer.parseInt(ageDistributionEntry.getKey())));
             operationDataAgeResponseDataDto.setScale(ageDistributionEntry.getValue());
             operationDataAgeDataDtoList.add(operationDataAgeResponseDataDto);
         }
