@@ -1,0 +1,204 @@
+$gray:#333;
+$red:#ec192c;
+$red2:#fa5678;
+$yellow:#f6f2da;
+$yellow2:#fcee77;
+strong {
+  font-weight: normal;
+}
+.main-frame,.activity-wrap-main {
+  width: 100%;
+}
+
+.spring-banner {
+  height: 403px;
+  background: url("../images/2018/peach-blossom-festival/peach_banner.png") no-repeat center center;
+}
+.part-wrap {
+  &.part-one-wrap {
+    background: $yellow;
+    padding-bottom: 44px;
+  }
+
+  &.part-two-wrap {
+    background: none;
+    padding-bottom: 0;
+    position: relative;
+    top: -32px;
+  }
+  .part-bg {
+    width: 1001px;
+    height: 525px;
+    background: url("../images/2018/peach-blossom-festival/spring_bg.png") no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    padding-top: 36px;
+    box-sizing: border-box;
+    padding-bottom: 60px;
+    position: relative;
+    &.part-one-bg {
+      .left-leaf {
+        position: absolute;
+        width: 200px;
+        height: 191px;
+        background: url("../images/2018/peach-blossom-festival/left_top_leaf.png") no-repeat;
+        background-size: contain;
+        left: -180px;
+        top: 100px;
+      }
+      .right-leaf {
+        position: absolute;
+        right: -44px;
+        top: 400px;
+        width: 227px;
+        height: 373px;
+        background: url("../images/2018/peach-blossom-festival/right_top_leaf.png") no-repeat;
+        background-size: contain;
+        z-index: 2;
+      }
+    }
+    &.part-two-bg {
+      height:622px;
+      background: url("../images/2018/peach-blossom-festival/part_two_bg.png") no-repeat;
+      background-size: 100%;
+      padding-bottom: 0;
+      position: relative;
+      .left-leaf {
+        position: absolute;
+        width: 227px;
+        height: 372px;
+        background: url("../images/2018/peach-blossom-festival/left_bot_leaf.png") no-repeat;
+        background-size: contain;
+        left: -50px;
+        top: 460px;
+        z-index: 5;
+      }
+      .right-leaf {
+        position: absolute;
+        right: -210px;
+        top: 170px;
+        width: 200px;
+        height: 191px;
+        background: url("../images/2018/peach-blossom-festival/right_bot_leaf.png") no-repeat;
+        background-size: contain;
+        z-index: 8;
+      }
+      .branch {
+        width: 43px;
+        height: 107px;
+        position: absolute;
+
+        &.left-top-branch {
+          background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left top;
+          left: 160px;
+          top: -94px;
+        }
+        &.right-top-branch {
+          background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left top;
+          right: 160px;
+          top: -102px;
+        }
+        &.left-bot-branch {
+          background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left bottom;
+          left: 160px;
+          bottom: -104px;
+        }
+        &.right-bot-branch {
+          background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left bottom;
+          right: 160px;
+          bottom: -97px;
+        }
+
+      }
+    }
+    &.part-three-bg {
+      height: 1184px;
+      margin-top: 44px;
+      background: url("../images/2018/peach-blossom-festival/part_three_bg.png") no-repeat;
+      background-size: 100%;
+    }
+    .part-title {
+      width: 545px;
+      height: 88px;
+      background: url("../images/2018/peach-blossom-festival/spring_title.png") no-repeat;
+      &.part-two-title {
+        background: url("../images/2018/peach-blossom-festival/part_two_title.png") no-repeat;
+      }
+      &.part-three-title {
+        background: url("../images/2018/peach-blossom-festival/peach_title.png") no-repeat;
+      }
+      background-size: 100%;
+      text-indent: -9999px;
+      margin: 0 auto;
+      margin-bottom: 32px;
+    }
+    .part-desc,.example {
+      p {
+        font-size: 16px;
+        line-height: 30px;
+        color: $gray;
+        text-align: center;
+        .mobile-style {
+          display: block;
+        }
+        strong {
+          font-size: 18px;
+          color: $red;
+          font-weight: bold;
+        }
+        .exam-title {
+          font-size: 16px;
+          color: $yellow2;
+          background: $red2;
+          padding:  4px  0 4px 8px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .part-img {
+      &.qr-code {
+        width: 210px;
+        height: 210px;
+        margin: 0 auto;
+        margin-top: 50px;
+        background: url("../images/2018/peach-blossom-festival/qr_code.png") no-repeat;
+      }
+      &.calendar {
+        width: 359px;
+        height: 252px;
+        margin: 0 auto;
+        margin-top: 16px;
+        margin-bottom: 14px;
+        background: url("../images/2018/peach-blossom-festival/invest_calendar.png") no-repeat;
+      }
+      &.heroes-list {
+        margin-top: 30px;
+        width: 969px;
+        margin: 0 auto;
+        .top {
+          width: 971px;
+          height: 108px;
+          background: url("../images/2018/peach-blossom-festival/heros_title.png") no-repeat;
+          background-size: 100%;
+        }
+        .heroes-content {
+          width: 963px;
+          height: 200px;
+          background: url("../images/2018/peach-blossom-festival/hero_bg.png") repeat-y;
+          background-size: 100%;
+        }
+        .bot {
+          width: 963px;
+          height: 57px;
+          background: url("../images/2018/peach-blossom-festival/heros_bot_bg.png") no-repeat;
+          background-size: contain;
+        }
+      }
+      background-size: 100%;
+    }
+  }
+}
+.part-one-bot {
+  height: 79px;
+  background: url("../images/2018/peach-blossom-festival/spring_bot_bg.png") no-repeat center center;
+}
