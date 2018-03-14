@@ -82,6 +82,15 @@
     <meta name="sogou_site_verification" content="VU3DEpC4Pk"/>
     <meta name="baidu-site-verification" content="xE3BgFFio5" />
     <meta name="360-site-verification" content="1ac0e9c5a7659c9cce73ecac8f630a0e" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115616275-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-115616275-1');
+    </script>
     <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
