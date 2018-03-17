@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.peach_blossom_festival_2018}" pageJavascript="${js.peach_blossom_festival_2018}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description='拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.'>
+<@global.main pageCss="${css.peach_blossom_festival_2018}" pageJavascript="${js.peach_blossom_festival_2018}" activeNav="" activeLeftNav="" title="假日投资_夺魁英雄榜_拓天速贷" keywords="拓天速贷,投资大礼包,返现奖励,实物大奖" description='拓天速贷4月活动,活动期间关注"拓天速贷服务号",380元投资大礼包带回家,每逢国家法定假日,投资"0.6%返现"标签项目可获得返现奖励,累计投资即可夺魁英雄榜赢取实物大奖.'>
 <div class="spring-banner">
 </div>
 <div class="activity-wrap-main" id="peach_blossom">
@@ -11,11 +11,11 @@
              </div>
              <div class="part-desc part-one-desc">
                  <p>
-                     活动期间，微信扫描下方二维码关注<strong>“拓天速贷服务号”</strong>关注公众号，
-                     <span class="mobile-style">回复口令<strong>“扔掉枸杞有惊喜”</strong>， 即可领取280元<strong>“春风投资大礼包”</strong>，每人限领1次。</span>
+                     <span class="data-space"></span>活动期间，微信扫描下方二维码关注<strong>“拓天速贷服务号”</strong> <span class="data-space"></span>关注公众号，
+                     <span class="mobile-style">回复口令<strong>“扔掉枸杞有惊喜”</strong>， 即可领取380元<strong>“春风投资大礼包”</strong>，每人限领1次。</span>
                  </p>
              </div>
-             <div class="part-img qr-code">
+             <div class="part-img qr-code" id="qrCode">
 
              </div>
              <span class="left-leaf">
@@ -32,6 +32,11 @@
         </div>
 
         <div class="part-wrap part-two-wrap">
+            <div class="part-two-wrap-bg">
+                <div class="top-bg"></div>
+                <div class="con-bg"></div>
+                <div class="bot-bg"></div>
+            </div>
         <div class="part-bg part-two-bg">
             <div class="part-title part-two-title">
                 <h2>和远方有个约会，假日投资有礼</h2>
@@ -69,7 +74,11 @@
 
 
         <div class="part-wrap part-three-wrap">
-            <div class="wrap-bg"></div>
+            <div class="wrap-bg">
+                <div class="prize-top-bg"></div>
+                <div class="prize-con-bg"></div>
+                <div class="prize-bot-bg"></div>
+            </div>
             <div class="part-bg part-three-bg">
                 <div class="left-leaf"></div>
                 <div class="part-title part-three-title">
@@ -115,11 +124,46 @@
 
                             </div>
                         </div>
+                        <div class="wap-prize-wrap">
+                            <div class="big-prize">
+                                <div id="wapBigPrize" class="prize"></div>
+                                <div class="prize-desc">
+                                    第一名<br/>
+                                    实物大奖 XXXXX
+
+                                </div>
+
+                            </div>
+                            <div class="seconed-third clearfix">
+                                <div class="ranking-seconed">
+                                    <div class="prize">
+
+                                    </div>
+                                    <div class="prize-desc">
+                                        2~4名<br/>
+                                        1%加息券
+                                    </div>
+                                </div>
+
+                                <div class="ranking-third">
+                                    <div class="prize">
+
+                                    </div>
+                                    <div class="prize-desc">
+                                        5~10名<br/>
+                                        0.5%加息券
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
                         <div class="ranking-list">
                             <div class="ranking-title">
-                                    <div class="date-time">日期：<strong id="dateTime" data-starttime="2018-02-04" data-endtime="2018-03-01">2018-03-02</strong></div>
-                                    <div class="total-invest">当日累计投资：<strong>999元</strong></div>
+                                <div class="date-time">日期：<strong id="dateTime" data-starttime="2018-02-04" data-endtime="2018-03-01">2018-02-06</strong></div>
                                 <div class="my-rank">我的排名：<strong>100</strong></div>
+                                <div class="total-invest"><span id="isToday">当日</span>累计投资：<strong>999元</strong></div>
                             </div>
                             <div class="ranking-con">
                                 <div class="ranking-list-item">
@@ -153,7 +197,7 @@
                                 <div class="ranking-btns clearfix" id="investRanking-button">
                                     <div class="pre-btn look-btn" id="rankingPre">查看前一天</div>
                                     <div class="next-btn look-btn" id="rankingNext">查看后一天</div>
-                                    <div class="invest-btn">立即投资抢占排行榜</div>
+                                    <div class="invest-btn" id="toInvest">立即投资抢占排行榜</div>
                                 </div>
 
                             </div>
@@ -169,11 +213,18 @@
         </div>
 
     <#--温馨提示 begin-->
+        <div class="kindly-wrap">
+            <div class="kindly-wrap-bg">
+                <div class="top-bg"></div>
+                <div class="con-bg"></div>
+                <div class="bot-bg"></div>
+            </div>
         <div class="kindly-tips activity-page">
+
             <dl>
-                <dt class="title">温馨提示</dt>
+                <dt class="title"><div class="mobile-style"><span class="dot"></span> &nbsp;&nbsp;<span class="dot"></span> &nbsp;&nbsp;<span class="dot"></span> &nbsp;&nbsp;</div>温馨提示<div class="mobile-style">&nbsp;&nbsp; <span class="dot"></span> &nbsp;&nbsp;<span class="dot"></span> &nbsp;&nbsp;<span class="dot"></span></div></dt>
                 <dd>1. 本活动仅限直投项目，债权转让及新手专享项目不参与累计；</dd>
-                <dd>2. 用户扫码所获280元“春风投资大礼包”系投资红包，为方便您分散投资，将即时以红包组的形式发放到您的账户，可在PC端“我的账户”或App端“我的”中进行查看；</dd>
+                <dd>2. 用户扫码所获380元“春风投资大礼包”系投资红包，为方便您分散投资，将即时以红包组的形式发放到您的账户，可在PC端“我的账户”或App端“我的”中进行查看；</dd>
                 <dd>3. 用户参加“假日投资0.6%返现”活动时，请看准“0.6%返现”标签，假日期间凡没有“0.6%返现”标签的项目，均不参与投资返现;</dd>
                 <dd>4. 假日投资0.6%返现奖励将于用户所投项目成功放款后1个工作日内发放至用户账户，返现奖励可直接提现或再次投资；</dd>
                 <dd>5. 每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</dd>
@@ -183,6 +234,7 @@
                 <dd>9. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</dd>
                 <dd>10. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</dd>
             </dl>
+        </div>
         </div>
     <#--温馨提示 end-->
 

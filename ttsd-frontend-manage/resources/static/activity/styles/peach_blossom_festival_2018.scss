@@ -8,6 +8,13 @@ $yellowTable:#ffffcc;
 $green:#7cba59;
 $greenInvest:#36ab60;
 $brown:#9f6d5a;
+html {
+  font-size: 100px;
+}
+body {
+  font-size: 12px;
+  background: #fff;
+}
 strong {
   font-weight: normal;
 }
@@ -30,6 +37,9 @@ strong {
     padding-bottom: 0;
     position: relative;
     top: -32px;
+    .part-two-wrap-bg {
+      display: none;
+    }
   }
   &.part-three-wrap {
     position: relative;
@@ -37,9 +47,19 @@ strong {
       width: 100%;
       position: absolute;
       top: 160px;
-      height: 1211px;
-      background: url("../images/2018/peach-blossom-festival/prize_bg.png") no-repeat;
       z-index: -22;
+      .prize-top-bg {
+        height: 292px;
+        background: url("../images/2018/peach-blossom-festival/prize_bg_top.png") no-repeat;
+      }
+      .prize-con-bg {
+        height: 770px;
+        background: #f6f2da;
+      }
+      .prize-bot-bg {
+        height: 292px;
+        background: url("../images/2018/peach-blossom-festival/prize_bg_bot.png") no-repeat;
+      }
     }
   }
   .part-bg {
@@ -147,13 +167,16 @@ strong {
       width: 545px;
       height: 88px;
       background: url("../images/2018/peach-blossom-festival/spring_title.png") no-repeat;
+      background-size: 100%;
       &.part-two-title {
         background: url("../images/2018/peach-blossom-festival/part_two_title.png") no-repeat;
+        background-size: 100%;
       }
       &.part-three-title {
         background: url("../images/2018/peach-blossom-festival/peach_title.png") no-repeat;
+        background-size: 100%;
       }
-      background-size: 100%;
+
       text-indent: -9999px;
       margin: 0 auto;
       margin-bottom: 32px;
@@ -187,7 +210,9 @@ strong {
         height: 210px;
         margin: 0 auto;
         margin-top: 50px;
-        background: url("../images/2018/peach-blossom-festival/qr_code.png") no-repeat;
+        img {
+          width: 100%;
+        }
       }
       &.calendar {
         width: 359px;
@@ -196,11 +221,13 @@ strong {
         margin-top: 16px;
         margin-bottom: 14px;
         background: url("../images/2018/peach-blossom-festival/invest_calendar.png") no-repeat;
+        background-size: 100%;
       }
       &.heroes-list {
         margin-top: 30px;
         width: 969px;
         margin: 0 auto;
+        margin-left: 20px;
         .top {
           width: 971px;
           height: 108px;
@@ -212,6 +239,7 @@ strong {
           background: url("../images/2018/peach-blossom-festival/hero_bg.png") repeat-y;
           background-size: 100%;
             .prize-wrap {
+              display: block;
               width: 870px;
               margin: 0 auto;
               .prize {
@@ -273,6 +301,9 @@ strong {
                 }
               }
             }
+          .wap-prize-wrap {
+            display: none;
+          }
           .ranking-list {
             width: 870px;
             margin: 0 auto;
@@ -293,15 +324,17 @@ strong {
               }
               .date-time {
                 float: left;
+                width: 30%;
                 padding-left: 30px;
               }
               .my-rank {
-                width: 150px;
+                float: left;
+                width: 30%;
                 text-align: center;
-                margin: 0 auto;
               }
               .total-invest {
                 float: right;
+                width: 20%;
                 padding-right: 30px;
               }
             }
@@ -341,8 +374,8 @@ strong {
               }
 
               .read-more {
-                margin-top: 15px;
-                margin-bottom: 24px;
+                margin-top: 10px;
+                margin-bottom: 16px;
                 text-align: center;
                 a {
                   font-size: 20px;
@@ -408,16 +441,544 @@ strong {
 .kindly-tips {
   position: relative;
   top: -40px;
-  width: 1024px;
+  width: 1001px;
   margin-top: 56px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding-left: 60px;
   padding-bottom: 100px;
   color: #682d1a;
   font-size: 16px;
   line-height: 30px;
   .title {
     font-size: 20px;
+    .mobile-style {
+      display: none;
+    }
+    .kindly-wrap-bg {
+      display: none;
+    }
+  }
+}
+
+//wap
+
+@media screen and (max-width: 1024px){
+p {
+  margin-bottom: 0;
+}
+  .spring-banner {
+    width: 100%;
+    height: 4.09rem;
+    background: url("../images/2018/peach-blossom-festival/wap_banner.png") no-repeat center top;
+    background-size: 100%;
+  }
+  .part-wrap {
+    &.part-one-wrap {
+      padding-top: .15rem;
+      padding-bottom: .2rem;
+    }
+
+    &.part-two-wrap {
+      position: relative;
+      top: 0.32rem;
+      .part-two-wrap-bg {
+        display: block;
+        position: absolute;
+        width: 7.5rem;
+        top: 4.5rem;
+        .top-bg {
+          height: 1.18rem;
+          background: url("../images/2018/peach-blossom-festival/wap_wrap_bg_two_top.png") no-repeat;
+          background-size: 100%;
+        }
+        .con-bg {
+          height: 7rem;
+          background: #f6f2da;
+        }
+        .bot-bg {
+          height: 0.61rem;
+          background: url("../images/2018/peach-blossom-festival/wap_wrap_bg_two_bot.png") no-repeat;
+          background-size: 100%;
+        }
+
+      }
+    }
+    &.part-three-wrap {
+      margin-top: .7rem;
+      .wrap-bg {
+        top: 7rem;
+        .prize-top-bg {
+          height: 1.18rem;
+          background: url("../images/2018/peach-blossom-festival/wap_wrap_bg_three_top.png") no-repeat;
+        }
+        .prize-con-bg {
+          height: 8rem;
+        }
+        .prize-bot-bg {
+          height: .61rem;
+          background: url("../images/2018/peach-blossom-festival/wap_wrap_bg_three_bot.png") no-repeat;
+        }
+      }
+    }
+    .part-bg {
+      width: 7.04rem;
+      height: 6.38rem;
+      background: url("../images/2018/peach-blossom-festival/wap_part_one_bg.png") no-repeat;
+      background-size: 100%;
+      padding-top: .25rem;
+      padding-bottom:.35rem;
+      &.part-one-bg {
+        .left-leaf {
+          width: 3.22rem;
+          height: 3.08rem;
+          left: -0.1rem;
+          top: 4rem;
+        }
+        .right-leaf {
+         display: none;
+        }
+      }
+      &.part-two-bg {
+        width: 7.12rem;
+        height:9.08rem;
+        background: url("../images/2018/peach-blossom-festival/wap_part_two_bg.png") no-repeat;
+        background-size: 100%;
+        padding-top: .4rem;
+        .part-desc {
+          p {
+            text-align: left;
+          }
+        }
+        .left-leaf {
+         display: none;
+        }
+        .right-leaf {
+          right: 0rem;
+          top: 6.8rem;
+          width: 3.22rem;
+          height: 3.08rem;
+          z-index: 8;
+        }
+        .branch {
+          width: .37rem;
+          height: 0.75rem;
+          position: absolute;
+
+          &.left-top-branch {
+            background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left top;
+            background-size: 100%;
+            left: 0.6rem;
+            top: -0.57rem;
+          }
+          &.right-top-branch {
+            height: 0.6rem;
+            background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left top;
+            background-size: 100%;
+            right: 0.6rem;
+            top: -0.35rem;
+            z-index: -4;
+          }
+          &.left-bot-branch {
+            background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left bottom;
+            background-size: 100%;
+            left: 0.6rem;
+            bottom: -0.66rem;
+          }
+          &.right-bot-branch {
+            background: url("../images/2018/peach-blossom-festival/branch.png") no-repeat left bottom;
+            background-size: 100%;
+            right: 0.6rem;
+            bottom: -0.6rem;
+          }
+
+        }
+      }
+      &.part-three-bg {
+        position: relative;
+        height: 19.56rem;
+        margin-top: 0.44rem;
+        background: url("../images/2018/peach-blossom-festival/wap_part_three_bg.png") no-repeat;
+        background-size: 100%;
+        padding-top: .45rem;
+        .left-leaf {
+          display: none;
+        }
+        .part-desc {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+      }
+      .part-title {
+        width: 5.45rem;
+        height: 0.88rem;
+        margin-bottom: 0.32rem;
+      }
+      .part-desc,.example {
+        padding-left: 0.4rem;
+        padding-right: 0.3rem;
+        &.example {
+          padding-left: .9rem;
+          padding-right: .9rem;
+        }
+        p {
+          font-size: 0.24rem;
+          line-height: 0.34rem;
+          .mobile-style {
+            display: inline;
+          }
+      .data-space {
+        display: inline-block;
+        width: 0.42rem;
+        height: 0.3rem;
+      }
+          strong {
+            font-size: 0.26rem;
+          }
+          .exam-title {
+            font-size: 0.16rem;
+            color: $yellow2;
+            background: $red2;
+            padding:  0.04rem  0 0.04rem 0.08rem;
+            margin-right: 0.1rem;
+          }
+        }
+      }
+
+      .part-img {
+        &.qr-code {
+          width: 3.3rem;
+          height: 3.32rem;
+          margin-top: 0.24rem;
+        }
+        &.calendar {
+          width: 5.6rem;
+          height: 4rem;
+          margin-top: 0.2rem;
+          margin-bottom: 0.2rem;
+          background: url("../images/2018/peach-blossom-festival/wap_calendar.png") no-repeat;
+          background-size: 100%;
+        }
+        &.heroes-list {
+          width:6.7rem;
+          margin-left: 0.2rem;
+          margin-top: 0.3rem;
+          .top {
+            width: 6.7rem;
+            height: 0.7rem;
+          }
+          .heroes-content {
+            width: 6.64rem;
+            .prize-wrap {
+              display: none;
+            }
+            .wap-prize-wrap {
+              display: block;
+              width: 6.64rem;
+              .prize {
+                width: 1.87rem;
+                height: 0.94rem;
+                margin: 0 auto;
+              }
+              .prize-desc {
+                color: #fff;
+                font-size: 0.19rem;
+                padding-left: 0.2rem;
+                box-sizing: border-box;
+                line-height: 0.26rem;
+                background: rgba(50,122,9,0.5);
+                border-radius: 0 0 0.08rem 0.08rem;
+                margin-top: 0.2rem;
+                padding-top: 0.1rem;
+                padding-bottom: 0.1rem;
+              }
+              .big-prize {
+                width: 6.2rem;
+                margin: 0 auto;
+                overflow: hidden;
+                .prize {
+                  width: 2.48rem;
+                  height: 2.65rem;
+                  line-height: 0.2rem;
+                  margin-top: .5rem;
+                  img {
+                    width: 100%;
+                  }
+                }
+                .prize-desc {
+                  width: 6.18rem;
+                  height: 1rem;
+                  padding-left: .4rem;
+                  font-size: 0.32rem;
+                  line-height: 0.4rem;
+                  border-radius: 0 0 0.1rem 0.1rem;
+                  margin-bottom: .5rem;
+                }
+              }
+              .seconed-third {
+                width: 6.18rem;
+                margin: 0 auto;
+                .ranking-seconed {
+                  width: 2.5rem;
+                   float: left;
+                  .prize {
+                    background: url("../images/2018/peach-blossom-festival/coupon1.png") no-repeat;
+                    background-size: 100%;
+                  }
+                }
+                .ranking-third {
+                  float: right;
+                  width: 2.5rem;
+                  .prize {
+                    background: url("../images/2018/peach-blossom-festival/coupon05.png") no-repeat;
+                    background-size: 100%;
+                  }
+
+                }
+              }
+
+
+            }
+            .ranking-list {
+              width: 6.18rem;
+              margin: 0 auto;
+              li {
+                float: left;
+              }
+              .ranking-title {
+                height: auto;
+                padding-top: .1rem;
+                padding-bottom: .1rem;
+                border-radius: 0.1rem;
+                line-height: 0.46rem;
+                font-size: 0.26rem;
+                margin-top: 0.22rem;
+                margin-bottom: 0.28rem;
+                .date-time {
+                  width: 100%;
+                  float: none;
+                  padding-left: 0;
+                  text-align: center;
+                }
+                .my-rank {
+                  width: 100%;
+                }
+                .total-invest {
+                  width: 100%;
+                  float: none;
+                  padding-right: 0;
+                  text-align: center;
+                }
+              }
+              .ranking-con {
+                .ranking-list-item {
+                  border-radius: 0.1rem;
+                  overflow: hidden;
+                  table {
+                    thead {
+                      th {
+                        font-size: 0.27rem;
+                        line-height: 0.8rem;
+
+                      }
+                    }
+                    tbody {
+                      tr {
+                        height: 0.5rem;
+                        line-height: 0.5rem;
+                        td {
+                          font-size: 0.24rem;
+
+                        }
+                      }
+                    }
+                  }
+                }
+
+                .read-more {
+                  margin-top: 0.1rem;
+                  margin-bottom: 0.16rem;
+                  a {
+                    font-size: 0.26rem;
+                  }
+
+                }
+                .ranking-btns {
+                  width: 6.18rem;
+                  height: auto;
+                  .look-btn {
+                    width: 2.4rem;
+                    height: .6rem;
+                    border-radius: 0.3rem;
+                    font-size: 0.24rem;
+                    line-height: 0.6rem;
+                    margin-top: 0;
+                  }
+                  .pre-btn {
+                    margin-left: 0;
+                  }
+                  .next-btn {
+                    margin-right: 0;
+                  }
+                  .invest-btn{
+                    margin-top: 1.2rem;
+                    width: 6.18rem;
+                    height: 0.8rem;
+                    font-size: 0.3rem;
+                    line-height: 0.8rem;
+                    border-radius: 0.4rem;
+                  }
+                }
+              }
+            }
+
+          }
+          .bot {
+            width: 6.64rem;
+            height: 0.57rem;
+            background: url("../images/2018/peach-blossom-festival/heros_bot_bg.png") no-repeat;
+            background-size: contain;
+          }
+        }
+        background-size: 100%;
+      }
+    }
+  }
+  .part-one-bot {
+    height: 0.35rem;
+    background: url("../images/2018/peach-blossom-festival/wap_part_one_bot_bg.png") no-repeat top center;
+    background-size: 100%;
+  }
+  .noData {
+    height: 1.78rem;
+  }
+  .kindly-wrap {
+    padding-bottom: 1.7rem;
+    overflow: hidden;
+    position: relative;
+    .kindly-wrap-bg {
+      position: absolute;
+      width: 100%;
+      top: 1.4rem;
+      left: 0rem;
+      z-index: -7;
+      .top-bg {
+        height: 1.29rem;
+        background: url("../images/2018/peach-blossom-festival/wap_kindly_top.png") no-repeat top center;
+        background-size: 100%;
+      }
+      .con-bg {
+        height: 7rem;
+        background: #f6f2da;
+      }
+      .bot-bg {
+        height: 3.5rem;
+        background: url("../images/2018/peach-blossom-festival/wap_kindly_bot.png") no-repeat top center;
+        background-size: 100%;
+
+      }
+    }
+  }
+  .kindly-tips {
+    position: static;
+    width: 7.27rem;
+    height: 8.58rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-bottom: .6rem;
+    margin-top: .7rem;
+    font-size: 0.24rem;
+    line-height: 0.34rem;
+    background: url("../images/2018/peach-blossom-festival/wap_kindly_bg.png") no-repeat top center;
+    background-size: 100%;
+    padding-top: .4rem;
+    padding-left: .22rem;
+    padding-right: .22rem;
+    .title {
+      font-size: 0.4rem;
+      text-align: center;
+      padding-bottom: .3rem;
+      .mobile-style {
+        display: inline-block;
+      }
+      .dot {
+        display: inline-block;
+        width: .16rem;
+        height: .16rem;
+        background: #682d1a;
+      }
+    }
+  }
+
+
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
   }
 }
