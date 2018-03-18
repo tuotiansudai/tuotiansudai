@@ -24,7 +24,7 @@
         </ul>
         <#break>
     <#case 'ptp_mer_replace_card'>
-        <p>换卡申请最快两小时处理完成</p>
+        <p>换卡申请最快1个工作日内完成</p>
         <#break>
     <#case 'mer_recharge_person'>
         <ul class="info-item">

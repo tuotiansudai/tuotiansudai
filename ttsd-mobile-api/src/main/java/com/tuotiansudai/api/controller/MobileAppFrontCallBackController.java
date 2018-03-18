@@ -91,6 +91,9 @@ public class MobileAppFrontCallBackController {
                 mobileLink = mobileLink.replace("recharge", "huizu_active_recharge");
             }
         }
+        if (AsyncUmPayService.PTP_MER_REPLACE_CARD.equals(asyncUmPayService)) {
+
+        }
 
         modelAndView.addObject("href", MessageFormat.format(mobileLink, "success"));
         return modelAndView;
