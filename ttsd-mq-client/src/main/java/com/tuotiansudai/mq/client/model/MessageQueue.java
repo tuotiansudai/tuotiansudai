@@ -26,6 +26,8 @@ public enum MessageQueue {
     InvestSuccess_CashSnowball("InvestSuccess-CashSnowball"),
     InvestSuccess_ActivityAnnualized("InvestSuccess-ActivityAnnualized"),
     InvestSuccess_StartWork("InvestSuccess-StartWork"),
+    InvestSuccess_Ranking("InvestSuccess-Ranking"),
+    ActivityWeChatCoupon("ActivityWeChatCoupon"),
     Celebration_Coupon("Celebration-Coupon"),
     NewYearActivity_Coupon("NewYearActivity-Coupon"),
     StartWorkActivity_Coupon("StartWorkActivity-Coupon"),
@@ -77,7 +79,6 @@ public enum MessageQueue {
     CreditLoanBill("CreditLoanBill"),
     Payroll("Payroll"),
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
-    ActivityWeChatCoupon("ActivityWeChatCoupon"),
     ;
 
     private final String queueName;

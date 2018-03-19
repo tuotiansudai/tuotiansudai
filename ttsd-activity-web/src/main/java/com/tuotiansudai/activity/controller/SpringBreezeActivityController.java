@@ -1,19 +1,14 @@
 package com.tuotiansudai.activity.controller;
 
-import com.google.common.collect.Iterators;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.ActivityInvestView;
-import com.tuotiansudai.activity.repository.model.MyHeroRanking;
-import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
+import com.google.common.base.Strings;
+import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.activity.service.ActivityRankingService;
-import com.tuotiansudai.activity.service.ActivityWeChatService;
-import com.tuotiansudai.activity.service.SpringBreezeActivityService;
+import com.tuotiansudai.activity.service.ActivityWeChatDrawCouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.etcd.ETCDConfigReader;
+import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import org.apache.commons.collections4.CollectionUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,41 +17,89 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value="/activity/spring-breeze")
 public class SpringBreezeActivityController {
 
     @Autowired
-    private ActivityWeChatService activityWeChatService;
+    private ActivityWeChatDrawCouponService activityWeChatService;
 
     @Autowired
     private ActivityRankingService activityRankingService;
 
-    @Value(value = "${activity.spring.breeze.startTime}")
-    private String activityStartTime;
+    @Autowired
+    private WeChatService weChatService;
 
-    @Value(value = "${activity.spring.breeze.endTime}")
-    private String activityEndTime;
+    private String startTime = ETCDConfigReader.getReader().getValue("activity.spring.breeze.startTime");
+
+    private String endTime = ETCDConfigReader.getReader().getValue("activity.spring.breeze.endTime");
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView schoolSeason(){
         ModelAndView modelAndView = new ModelAndView("/activities/2018/spring-breeze","responsive", true);
-        modelAndView.addAllObjects(activityRankingService.activityHome(LoginUserInfo.getLoginName(), ActivityCategory.SPRING_BREEZE_ACTIVITY));
+        modelAndView.addAllObjects(activityRankingService.activityHome(LoginUserInfo.getLoginName(), ActivityInvestRanking.SPRING_BREEZE_ACTIVITY_RANKING));
         return modelAndView;
     }
 
     @RequestMapping(value = "/ranking/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
     public BasePaginationDataDto<NewmanTyrantView> obtainRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
-        return activityRankingService.obtainRanking(tradingTime, LoginUserInfo.getLoginName(), ActivityCategory.SPRING_BREEZE_ACTIVITY);
+        return activityRankingService.obtainRanking(tradingTime, LoginUserInfo.getLoginName(), ActivityInvestRanking.SPRING_BREEZE_ACTIVITY_RANKING);
     }
 
     @RequestMapping(value = "/my-ranking/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
     public MyHeroRanking obtainMyRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
-        return activityRankingService.obtainMyRanking(tradingTime, LoginUserInfo.getLoginName(), ActivityCategory.SPRING_BREEZE_ACTIVITY);
+        return activityRankingService.obtainMyRanking(tradingTime, LoginUserInfo.getLoginName(), ActivityInvestRanking.SPRING_BREEZE_ACTIVITY_RANKING);
+    }
+
+    @RequestMapping(path = "/wechat", method = RequestMethod.GET)
+    public ModelAndView startWorkActivityWechat(HttpServletRequest request) {
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)) {
+            return new ModelAndView("redirect:/activity/spring-breeze");
+        }
+        ModelAndView modelAndView = new ModelAndView("/wechat/spring-breeze");
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
+        String loginName = LoginUserInfo.getLoginName();
+        if (loginName != null) {
+            modelAndView.addObject("drewCoupon", activityWeChatService.drewCoupon(loginName, ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT));
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/draw", method = RequestMethod.GET)
+    public ModelAndView newYearActivityDrawCoupon(HttpServletRequest request) {
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)) {
+            return new ModelAndView("redirect:/activity/spring-breeze");
+        }
+        boolean duringActivities = activityWeChatService.duringActivities(ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
+        if (!duringActivities) {
+            return new ModelAndView("redirect:/activity/spring-breeze/wechat");
+        }
+
+        String loginName = LoginUserInfo.getLoginName();
+        if (Strings.isNullOrEmpty(loginName)) {
+            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/spring-breeze/draw");
+        }
+        if (!weChatService.isBound(loginName)) {
+            return new ModelAndView("/error/404");
+        }
+
+        ModelAndView modelAndView = new ModelAndView("/wechat/spring-breeze");
+        boolean drewCoupon = activityWeChatService.drewCoupon(loginName, ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
+        if (!drewCoupon) {
+            activityWeChatService.sendDrawCouponMessage(loginName, ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
+            modelAndView.addObject("drawSuccess", true);
+        }
+        modelAndView.addObject("drewCoupon", true);
+        return modelAndView;
     }
 }
