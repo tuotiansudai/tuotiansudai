@@ -59,11 +59,10 @@ public class ActivityRankingService {
                 Iterators.indexOf(rankingViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         List<String> activityTime = getActivityTime(activityInvestRanking);
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("prizeDto", obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")))
                 .put("investRanking", investRanking > 10 ? 0 : investRanking)
                 .put("investAmount", investRanking > 0 ? rankingViews.get(investRanking - 1).getSumAmount() : 0)
                 .put("activityStartTime", activityTime.get(0))
-                .put("activityEndTime", activityTime.get(0))
+                .put("activityEndTime", activityTime.get(1))
                 .build());
     }
 

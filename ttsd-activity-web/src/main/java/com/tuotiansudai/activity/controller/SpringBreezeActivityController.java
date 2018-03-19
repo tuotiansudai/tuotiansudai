@@ -1,13 +1,17 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.activity.repository.model.ActivityInvestRanking;
+import com.tuotiansudai.activity.repository.model.MyHeroRanking;
+import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.activity.service.ActivityRankingService;
 import com.tuotiansudai.activity.service.ActivityWeChatDrawCouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.WeChatDrawCoupon;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -41,6 +45,7 @@ public class SpringBreezeActivityController {
     public ModelAndView schoolSeason(){
         ModelAndView modelAndView = new ModelAndView("/activities/2018/spring-breeze","responsive", true);
         modelAndView.addAllObjects(activityRankingService.activityHome(LoginUserInfo.getLoginName(), ActivityInvestRanking.SPRING_BREEZE_ACTIVITY_RANKING));
+        modelAndView.addObject("prizeDto", activityRankingService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
     }
 
@@ -67,7 +72,7 @@ public class SpringBreezeActivityController {
         modelAndView.addObject("activityEndTime", endTime);
         String loginName = LoginUserInfo.getLoginName();
         if (loginName != null) {
-            modelAndView.addObject("drewCoupon", activityWeChatService.drewCoupon(loginName, ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT));
+            modelAndView.addObject("drewCoupon", activityWeChatService.drewCoupon(loginName, WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT));
         }
         return modelAndView;
     }
@@ -78,7 +83,7 @@ public class SpringBreezeActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/spring-breeze");
         }
-        boolean duringActivities = activityWeChatService.duringActivities(ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
+        boolean duringActivities = activityWeChatService.duringActivities(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
         if (!duringActivities) {
             return new ModelAndView("redirect:/activity/spring-breeze/wechat");
         }
@@ -92,11 +97,11 @@ public class SpringBreezeActivityController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/spring-breeze");
-        boolean drewCoupon = activityWeChatService.drewCoupon(loginName, ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
+        boolean drewCoupon = activityWeChatService.drewCoupon(loginName, WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
         if (!drewCoupon) {
-            activityWeChatService.sendDrawCouponMessage(loginName, ActivityWeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
+            activityWeChatService.sendDrawCouponMessage(loginName, WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
             modelAndView.addObject("drawSuccess", true);
         }
         modelAndView.addObject("drewCoupon", true);
