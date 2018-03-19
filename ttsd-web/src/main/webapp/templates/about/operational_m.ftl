@@ -6,6 +6,10 @@
             <span class="go-back"></span>
             运营数据
         </div>
+    <#else >
+        <div class="go-back-container" >
+
+        </div>
     </#if>
     <div class="swiper-container">
         <div class="swiper-wrapper">
