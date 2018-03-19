@@ -91,7 +91,7 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
             }
 
         } catch (Exception e) {
-            logger.error("[MQ] 程序內部异常: {}: {}.{}", this.queue(), message, e.getMessage());
+            logger.error("[MQ] 程序内部异常: {}: {}.{}", this.queue(), message, e.getMessage());
         }
     }
 

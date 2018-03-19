@@ -77,7 +77,7 @@ public class InvestSuccessRankingMessageConsumer implements MessageConsumer {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.error("[MQ] 程序内部异常: {}: {}.{}", this.queue(), message, e.getMessage());
         }
     }
 }
