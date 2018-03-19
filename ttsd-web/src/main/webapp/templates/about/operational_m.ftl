@@ -8,6 +8,7 @@
         </div>
     <#else >
         <div class="go-back-container" >
+            <span class="go-back"></span>
 
         </div>
     </#if>

@@ -31,7 +31,7 @@
         <#break>
     <#case 'ptp_mer_replace_card'>
         <#if values??&& values.manual?? && values.manual=='true'>
-            <p style="text-align: left;padding-left: 20px;">您的账户有余额或有投资中的项目，需要您提交如下审核资料至kefu@tuotiansudai.com人工审核</p>
+            <p style="text-align: left;padding-left: 20px;">您的账户有余额或有投资中的项目，需要您提交如下审核资料至kefu@tuotiansudai.com人工审核。否则无法更换成功。</p>
             <p style="text-align: left;padding-left: 20px;">需提交资料：</p>
             <p style="text-align: left;padding-left: 20px;">1、手持身份证正反面照片。</p>
             <p style="text-align: left;padding-left: 20px;">2、手持原绑定银行卡正反面照片。</p>
