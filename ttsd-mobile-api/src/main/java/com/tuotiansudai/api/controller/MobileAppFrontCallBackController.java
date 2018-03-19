@@ -67,10 +67,6 @@ public class MobileAppFrontCallBackController {
 
         PayDataDto data = new PayDataDto();
         data.setStatus(true);
-        //test
-//        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
-//            data = payWrapperClient.validateFrontCallback(params).getData();
-//        }
 
 
         ModelAndView modelAndView = new ModelAndView("/front-callback", "message", data.getMessage());
