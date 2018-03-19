@@ -14,7 +14,7 @@
 
     <select id="lockByLoginName" parameterType="string" resultType="long" useCache="false">
         select ifnull(sum(experience_balance), 0) AS experience_balance
-        from experience_balance
+        from experience_account
         where login_name = #{loginName} for update
     </select>
 
