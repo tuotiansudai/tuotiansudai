@@ -1,10 +1,12 @@
 <#import "../macro/global_m.ftl" as global>
 <@global.main pageCss="${m_css.operational}" pageJavascript="${m_js.operational}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计投资金额及平台数据总览,为您提供安全投资的平台运营数据.">
 <div class="about-us-container">
-    <div class="go-back-container" id="goBack_experienceAmount">
-        <span class="go-back"></span>
-        运营数据
-    </div>
+    <#if !isAppSource>
+        <div class="go-back-container" id="goBack_experienceAmount">
+            <span class="go-back"></span>
+            运营数据
+        </div>
+    </#if>
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-item swiper-slide1 swiper-slide">
@@ -46,7 +48,9 @@
             </div>
 
             <div class="swiper-item swiper-slide2 swiper-slide">
-                <div class="part-2-topBar"><div class="trade-detail">平台交易明细</div></div>
+                <div class="part-2-topBar">
+                    <div class="trade-detail">平台交易明细</div>
+                </div>
 
                 <div class="unit_symbol unit_symbol_m">[单位:万元]</div>
                 <div id="main_part2"></div>
@@ -55,7 +59,9 @@
             </div>
 
             <div class="swiper-item swiper-slide3 swiper-slide">
-                <div class="part-3-topBar"><div class="user-statistics">平台用户统计</div></div>
+                <div class="part-3-topBar">
+                    <div class="user-statistics">平台用户统计</div>
+                </div>
                 <div class="title-wrap"><h4 class="title-top">投资人基本信息</h4></div>
                 <div id="main_part4"></div>
                 <div id="main_part3"></div>
@@ -64,7 +70,9 @@
             </div>
 
             <div class="swiper-item swiper-slide4 swiper-slide">
-                <div class="part-4-topBar"><div class="user-area">平台用户统计</div></div>
+                <div class="part-4-topBar">
+                    <div class="user-area">平台用户统计</div>
+                </div>
                 <div class="title-wrap"><h4 class="title-top">投资人地域分布</h4></div>
 
                 <div class="count_proportion">
@@ -79,7 +87,9 @@
                 <div class="button_under_arrow side_to_page" data-index="5"></div>
             </div>
             <div class="swiper-item swiper-slide3 swiper-slide">
-                <div class="part-6-topBar"><div class="user-statistics">平台用户统计</div></div>
+                <div class="part-6-topBar">
+                    <div class="user-statistics">平台用户统计</div>
+                </div>
                 <div class="title-wrap"><h4 class="title-top">借款人基本信息</h4></div>
                 <div id="main_part7"></div>
                 <div id="main_part6"></div>
@@ -87,7 +97,9 @@
             </div>
 
             <div class="swiper-item swiper-slide4 swiper-slide">
-                <div class="part-7-topBar"><div class="user-area">平台用户统计</div></div>
+                <div class="part-7-topBar">
+                    <div class="user-area">平台用户统计</div>
+                </div>
                 <div class="title-wrap"><h4 class="title-top">借款人地域分布</h4></div>
                 <div class="count_proportion">
                     <div class="symbol_line"></div>
@@ -113,7 +125,9 @@
 
     <#if investDetailList??>
         <#list investDetailList as investDetailItem>
-            <div style="display: none" id="investItem${investDetailItem_index}" data-day="${investDetailItem.productName!}" data-amount="${investDetailItem.totalInvestAmount!}" data-count="${(investDetailItem.countInvest?string.computer)!}"></div>
+            <div style="display: none" id="investItem${investDetailItem_index}"
+                 data-day="${investDetailItem.productName!}" data-amount="${investDetailItem.totalInvestAmount!}"
+                 data-count="${(investDetailItem.countInvest?string.computer)!}"></div>
         </#list>
     </#if>
 </div>

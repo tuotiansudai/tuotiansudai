@@ -10,10 +10,12 @@
 
 <body class="success-body">
 <div class="success-info-container">
+<#if service != 'ptp_mer_replace_card'>
     <p>
         <i class="success-icon"></i>
     </p>
     <p>${(values.message)!}</p>
+</#if>
 <#switch service>
     <#case 'ptp_mer_bind_card'>
         <ul class="info-item">
@@ -24,7 +26,20 @@
         </ul>
         <#break>
     <#case 'ptp_mer_replace_card'>
-        <p>换卡申请最快1个工作日内完成</p>
+        <#if values.manual?? && values.manual=='true'>
+            <p style="text-align: left;padding-left: 20px;">您的账户有余额或有投资中的项目，需要您提交如下审核资料至kefu@tuotiansudai.com人工审核</p>
+            <p style="text-align: left;padding-left: 20px;">需提交资料：</p>
+            <p style="text-align: left;padding-left: 20px;">1、手持身份证正反面照片。</p>
+            <p style="text-align: left;padding-left: 20px;">2、手持原绑定银行卡正反面照片。</p>
+            <p style="text-align: left;padding-left: 20px;">3、手持新绑定的银行卡正反面照片。</p>
+            <p style="text-align: left;padding-left: 20px;">照片要求：</p>
+            <p style="text-align: left;padding-left: 20px;">需露出脸和手臂的上半身照。</p>
+            <p style="text-align: left;padding-left: 20px;">身份证、银行卡证件信息清晰可见。</p>
+            <p style="text-align: left;padding-left: 20px;">如需帮助请致电客服</p>
+
+        <#else >
+            <p>换卡申请最快1个工作日内完成</p>
+        </#if>
         <#break>
     <#case 'mer_recharge_person'>
         <ul class="info-item">
