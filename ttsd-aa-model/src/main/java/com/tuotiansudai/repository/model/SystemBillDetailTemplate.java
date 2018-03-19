@@ -37,6 +37,8 @@ public enum SystemBillDetailTemplate {
     PAYROLL_DETAIL_TEMPLATE("为用户({0})代发工资"),
 
     CASH_START_WORK_DETAIL_TEMPLATE("用户({0})在惊喜不重样加息不打烊活动中,获取现金奖励{1}分"),
+
+    LOAN_OUT_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在标的放款中,获取现金奖励{1}分"),
     ;
 
     private final String template;

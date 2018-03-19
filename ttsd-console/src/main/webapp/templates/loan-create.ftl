@@ -250,6 +250,22 @@
                     </div>
 
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否享有返现奖励: </label>
+
+                    <div class="col-sm-1 checkbox">
+                        <label for="disableCoupon">
+                            <input type="checkbox" name="disableReward" value="true">
+                        </label>
+                    </div>
+
+                    <label class="col-sm-2 control-label">返现奖励（%）: </label>
+                    <div class="col-sm-2">
+                        <input name="rewardRate" type="text" class="form-control rate" disabled="disabled" datatype="/^\d+(\.\d{1,2})?$/"
+                               errormsg="返现奖励需要正确填写">
+                    </div>
+                </div>
             </div>
         </section>
 
