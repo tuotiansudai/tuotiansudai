@@ -1,6 +1,6 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.peach_blossom_festival}" pageJavascript="${js.peach_blossom_festival}"  title="520元开工红包">
+<@global.main pageCss="${css.peach_blossom_festival}" pageJavascript="${js.peach_blossom_festival}"  title="恭喜你！领到380元红包">
 
 <div class="container"
      data-get="true"
