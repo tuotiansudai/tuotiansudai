@@ -28,8 +28,8 @@ diagnosis:
   report:
     notify-mail-from: no-reply@tuotiansudai.com
     notify-mail-address: dev@tuotiansudai.com
-    notify-mail-address-qa: wangjia@tuotiansudai.com
-    notify-mail-address-manager: zhangzhigang@tuotiansudai.com
+    notify-mail-address-qa: zhujiajun@tuotiansudai.com
+    notify-mail-address-manager: gaoxiduan@tuotiansudai.com
   known-bad-bills:
     - 397391
     - 477563
