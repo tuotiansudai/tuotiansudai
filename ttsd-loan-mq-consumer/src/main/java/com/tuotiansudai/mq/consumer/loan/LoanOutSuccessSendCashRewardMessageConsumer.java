@@ -1,30 +1,27 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.enums.ExperienceBillBusinessType;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.message.ExperienceAssigningMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestAchievementView;
+import com.tuotiansudai.repository.model.LoanDetailsModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingLong;
 
 @Component
 public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsumer {
@@ -112,7 +104,7 @@ public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsu
         }
     }
 
-    public void sendCashPrize(String loginName, long cashAmount, long loanId){
+    private void sendCashPrize(String loginName, long cashAmount, long loanId){
         logger.info("loan out send cash reward begin, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, cashAmount);
 
         String hkey = MessageFormat.format(HKEY, String.valueOf(loanId), loginName);
@@ -128,7 +120,7 @@ public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsu
         } catch (Exception e) {
             logger.error("loan out send cash reward fail, loginName:{}, loanId:{}, sendCash{}", loginName, loanId, cashAmount);
         }
-        redisWrapperClient.hset(LOAN_OUT_SUCCESS_SEND_REWARD_KEY, hkey, "success", lifeSecond);
+        redisWrapperClient.hset(LOAN_OUT_SUCCESS_SEND_REWARD_KEY, hkey, "fail", lifeSecond);
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【标的放款发放返现奖励】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(cashAmount))));
         logger.info("loan out send cash reward end, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, cashAmount);
     }

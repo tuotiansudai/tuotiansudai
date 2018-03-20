@@ -33,7 +33,7 @@ public enum ActivityInvestRanking {
 
     public static ActivityInvestRanking getActivityDateByCurrentDate(){
         List<ActivityInvestRanking> list = Arrays.asList(ActivityInvestRanking.values());
-        Optional<ActivityInvestRanking> activityInvestRanking = list.stream().filter(i -> !i.getStartTime().after(new Date()) && !new Date().after(i.getEndTime())).findAny();
+        Optional<ActivityInvestRanking> activityInvestRanking = list.stream().filter(i -> i.getStartTime().before(new Date()) && i.getEndTime().after(new Date())).findAny();
         return activityInvestRanking.orElse(null);
     }
 }
