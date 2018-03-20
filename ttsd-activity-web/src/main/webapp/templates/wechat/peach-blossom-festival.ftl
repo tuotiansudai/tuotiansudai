@@ -3,10 +3,10 @@
 <@global.main pageCss="${css.peach_blossom_festival}" pageJavascript="${js.peach_blossom_festival}"  title="恭喜你！领到380元红包">
 
 <div class="container"
-     data-get="true"
-     data-success="true"
-     data-start-time="2018-02-01"
-     data-over-time="2018-04-31">
+     data-get="<#if drewCoupon??>${drewCoupon?c}</#if>"
+     data-success="<#if drawSuccess??>${drawSuccess?c}</#if>"
+     data-start-time="${activityStartTime}"
+     data-over-time="${activityEndTime}">
     <div class="get-button">
     </div>
 

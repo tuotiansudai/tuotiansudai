@@ -88,24 +88,28 @@ public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsu
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanOutInfo.getLoanId());
 
-        if (!loanDetailsModel.getGrantReward()){
-            return;
-        }
-        List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), null, null, null);
-        for (InvestAchievementView investAchievementView : invests){
-            long cashAmount = (long) (investAchievementView.getAmount() * loanModel.getProductType().getDuration() / 360 * loanDetailsModel.getRewardRate());
-            if (!redisWrapperClient.hexists(LOAN_OUT_SUCCESS_SEND_REWARD_KEY, MessageFormat.format(HKEY, String.valueOf(loanOutInfo.getLoanId()), investAchievementView.getLoginName()))) {
-                try {
-                    sendCashPrize(investAchievementView.getLoginName(), cashAmount, loanOutInfo.getLoanId());
-                } catch (Exception e) {
-                    logger.error("[loan out send cash reward MQ] LoanOutSuccess_SendCashReward user:{}, loan:{}, cash:{} is send fail.", investAchievementView.getLoginName(), loanOutInfo.getLoanId(), cashAmount);
+        if (loanDetailsModel.getGrantReward() && loanDetailsModel.getRewardRate() > 0) {
+            List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), null, null, null);
+            for (InvestAchievementView investAchievementView : invests) {
+                long cashAmount = (long) (investAchievementView.getAmount() * loanModel.getProductType().getDuration() / 360 * loanDetailsModel.getRewardRate());
+                if (!redisWrapperClient.hexists(LOAN_OUT_SUCCESS_SEND_REWARD_KEY, MessageFormat.format(HKEY, String.valueOf(loanOutInfo.getLoanId()), investAchievementView.getLoginName()))) {
+                    try {
+                        sendCashPrize(investAchievementView.getLoginName(), cashAmount, loanOutInfo.getLoanId());
+                    } catch (Exception e) {
+                        logger.error("[loan out send cash reward MQ] LoanOutSuccess_SendCashReward user:{}, loan:{}, cash:{} is send fail.", investAchievementView.getLoginName(), loanOutInfo.getLoanId(), cashAmount);
+                    }
                 }
             }
         }
     }
 
-    private void sendCashPrize(String loginName, long cashAmount, long loanId){
+    private void sendCashPrize(String loginName, long cashAmount, long loanId) {
         logger.info("loan out send cash reward begin, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, cashAmount);
+
+        if (cashAmount <= 0) {
+            logger.error("[loan out send cash reward fail] user:{}, loan:{}, cash:{}.", loginName, loanId, cashAmount);
+            return;
+        }
 
         String hkey = MessageFormat.format(HKEY, String.valueOf(loanId), loginName);
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(IdGenerator.generate()), String.valueOf(cashAmount),
