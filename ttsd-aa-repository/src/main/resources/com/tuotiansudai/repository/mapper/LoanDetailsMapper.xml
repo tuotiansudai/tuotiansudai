@@ -47,8 +47,8 @@
             <if test="activityDesc !=null">activity_desc = #{activityDesc},</if>
             <if test="nonTransferable !=null">non_transferable = #{nonTransferable},</if>
             <if test="disableCoupon !=null">disable_coupon = #{disableCoupon},</if>
-            <if test="pushMessage !=null and pushMessage != ''">push_message = #{pushMessage}</if>
-            <if test="disableReward !=null">disable_reward = #{disableReward}</if>
+            <if test="pushMessage !=null and pushMessage != ''">push_message = #{pushMessage},</if>
+            <if test="disableReward !=null">disable_reward = #{disableReward},</if>
             <if test="rewardRate !=null">reward_rate = #{rewardRate}</if>
         </trim>
         WHERE
