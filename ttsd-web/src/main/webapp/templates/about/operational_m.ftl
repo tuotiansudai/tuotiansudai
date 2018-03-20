@@ -3,11 +3,11 @@
 <div class="about-us-container">
     <#if !isAppSource>
         <div class="go-back-container" id="goBack_experienceAmount">
+            <span class="go-back"></span>
             运营数据
         </div>
     <#else >
         <div class="go-back-container" >
-            <span class="go-back"></span>
 
         </div>
     </#if>

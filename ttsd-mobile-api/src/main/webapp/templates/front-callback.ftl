@@ -14,10 +14,12 @@
 
 <body class="success-body">
 <div class="success-info-container">
+<#if (values??&& values.manual?? && values.manual=='false') || service == 'ptp_mer_replace_card' >
     <p>
         <i class="success-icon"></i>
     </p>
     <p>${(values.message)!}</p>
+</#if>
 <#switch service>
     <#case 'ptp_mer_bind_card'>
         <ul class="info-item">
