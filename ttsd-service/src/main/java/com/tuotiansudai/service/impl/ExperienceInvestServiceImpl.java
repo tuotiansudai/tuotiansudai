@@ -123,6 +123,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     }
 
     private boolean isEnoughExperienceBalance(InvestDto investDto) {
+        experienceAccountMapper.lockByLoginName(investDto.getLoginName());
         long experienceBalance = experienceAccountMapper.getExperienceBalance(investDto.getLoginName());
         long amount = Long.parseLong(investDto.getAmount());
         if (experienceBalance < amount) {

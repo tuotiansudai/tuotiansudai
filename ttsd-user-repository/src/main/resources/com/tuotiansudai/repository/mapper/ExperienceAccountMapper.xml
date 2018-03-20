@@ -12,6 +12,12 @@
         WHERE login_name = #{loginName}
     </update>
 
+    <select id="lockByLoginName" parameterType="string" resultType="long" useCache="false">
+        select ifnull(sum(experience_balance), 0) AS experience_balance
+        from experience_account
+        where login_name = #{loginName} for update
+    </select>
+
     <select id="getExperienceBalance" parameterType="string" resultType="long">
         SELECT ifnull(sum(experience_balance), 0) AS experience_balance
         FROM experience_account
