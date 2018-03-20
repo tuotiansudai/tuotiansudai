@@ -1,7 +1,7 @@
 BEGIN;
 
 INSERT INTO `aa`.`coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `coupon_source`)
-VALUES ('488', '0', '0.005', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:59', '31', '0', '99999999', '0', '1', '0',
+VALUES ('488', '0', '0.005', '0', '1', '2018-04-01 00:00:00', '2018-05-01 23:59:59', '31', '0', '99999999', '0', '1', '0',
                                                                                                                'sidneygao',
                                                                                                                '2018-03-20 00:00:00',
                                                                                                                '5000',
@@ -12,7 +12,7 @@ VALUES ('488', '0', '0.005', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:
                                                                                                                '微信公众号回复扔掉枸杞有惊喜');
 
 INSERT INTO `aa`.`coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `coupon_source`)
-VALUES ('489', '1000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:59', '31', '0', '99999999', '0', '1', '0',
+VALUES ('489', '1000', '0', '0', '1', '2018-04-01 00:00:00', '2018-05-01 23:59:59', '31', '0', '99999999', '0', '1', '0',
                                                                                                                'sidneygao',
                                                                                                                '2018-03-20 00:00:00',
                                                                                                                '800000',
@@ -23,7 +23,7 @@ VALUES ('489', '1000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:5
                                                                                                                '微信公众号回复扔掉枸杞有惊喜');
 
 INSERT INTO `aa`.`coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `coupon_source`)
-VALUES ('490', '2000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:59', '31', '0', '99999999', '0', '1', '0',
+VALUES ('490', '2000', '0', '0', '1', '2018-04-01 00:00:00', '2018-05-01 23:59:59', '31', '0', '99999999', '0', '1', '0',
                                                                                                                'sidneygao',
                                                                                                                '2018-03-20 00:00:00',
                                                                                                                '1500000',
@@ -34,7 +34,7 @@ VALUES ('490', '2000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:5
                                                                                                                '微信公众号回复扔掉枸杞有惊喜');
 
 INSERT INTO `aa`.`coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `coupon_source`)
-VALUES ('491', '5000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:59', '31', '0', '99999999', '0', '1', '0',
+VALUES ('491', '5000', '0', '0', '1', '2018-04-01 00:00:00', '2018-05-01 23:59:59', '31', '0', '99999999', '0', '1', '0',
                                                                                                                'sidneygao',
                                                                                                                '2018-03-20 00:00:00',
                                                                                                                '3500000',
@@ -45,7 +45,7 @@ VALUES ('491', '5000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:5
                                                                                                                '微信公众号回复扔掉枸杞有惊喜');
 
 INSERT INTO `aa`.`coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `coupon_source`)
-VALUES ('492', '10000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:59', '31', '0', '99999999', '0', '1', '0',
+VALUES ('492', '10000', '0', '0', '1', '2018-04-01 00:00:00', '2018-05-01 23:59:59', '31', '0', '99999999', '0', '1', '0',
                                                                                                                'sidneygao',
                                                                                                                '2018-03-20 00:00:00',
                                                                                                                '7000000',
@@ -56,7 +56,7 @@ VALUES ('492', '10000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:
                                                                                                                '微信公众号回复扔掉枸杞有惊喜');
 
 INSERT INTO `aa`.`coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `coupon_source`)
-VALUES ('493', '10000', '0', '0', '1', '2018-04-01 00:00:00', '2018-04-30 23:59:59', '31', '0', '99999999', '0', '1', '0',
+VALUES ('493', '10000', '0', '0', '1', '2018-04-01 00:00:00', '2018-05-01 23:59:59', '31', '0', '99999999', '0', '1', '0',
                                                                                                                'sidneygao',
                                                                                                                '2018-03-20 00:00:00',
                                                                                                                '3500000',

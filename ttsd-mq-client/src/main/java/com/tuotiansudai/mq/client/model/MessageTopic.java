@@ -21,7 +21,8 @@ public enum MessageTopic {
             MessageQueue.LoanOutSuccess_AssignAchievement,
             MessageQueue.LoanOutSuccess_GenerateAnXinContract,
             MessageQueue.LoanOutSuccess_CashSnowball,
-            MessageQueue.LoanOutSuccess_StartWorkActivity),
+            MessageQueue.LoanOutSuccess_StartWorkActivity,
+            MessageQueue.LoanOutSuccess_SendCashReward),
 
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,
