@@ -1,8 +1,6 @@
 require("activityStyle/peach_blossom_festival_2018.scss");
+require('publicJs/login_tip');
 let commonFun = require('publicJs/commonFun');
-
-
-
 
 let $activityPageFrame = $('#activityPageFrame');
 //投资按钮，前一天后一天按钮
@@ -11,7 +9,15 @@ let $investRankingButton = $('#investRanking-button'),
     $heroPre = $('#rankingPre'),
     sourceKind = globalFun.parseURL(location.href),
     $contentRanking = $('#investRanking-tbody'),
-    $toInvestBtn = $('#toInvest');
+    $toInvestBtn = $('#toInvest'),
+    $rankingTable = $('#rankingTable'),
+    $rankingList = $('#rankingList');
+
+let $myRank = $('#myRank'),
+    $totalAmount = $('#totalAmount'),
+    $lookMore = $('#lookMore'),
+    $lookLess = $('#lookLess'),
+    $lookBtn = $('.look-btn');
 /*
 activityStatus 参数说明
 startTime 活动开始时间,字符串
@@ -45,7 +51,136 @@ $investRankingButton.find('.look-btn').on('click', function (event) {
     loadData($date.text())
 
 });
+$('#loginTipBtn').on('click',function () {
+    loginTip();
+});
+$('#loginTipBtnInvest').on('click',function () {
+    loginTip();
+});
+heroRank($('#dateTime').text());
 
+// let tdHeight = $rankingTable.find('tr td').height()*5;
+// $contentRanking.height(tdHeight).css('overflow','hidden')
+let bigBgUrl = require('../images/2018/peach-blossom-festival/big_part_three_bg.png');
+let smallBgUrl = require('../images/2018/peach-blossom-festival/part_three_bg.png');
+
+let smallBgUrlWap = require('../images/2018/peach-blossom-festival/wap_part_three_bg.png');
+let bigBgUrlWap = require('../images/2018/peach-blossom-festival/wap_big_part_three.png');
+function showMoreData(num) {
+     $lookLess.hide();
+    if (num == 0) {
+        $lookMore.hide();
+    }
+    let $seenArea = $('#rankingList').find('thead').height();
+    let $height = $contentRanking.find('tr').height();
+    if (num < 6) {
+        $rankingList.css('height',$seenArea + num * $height);
+    } else {
+        $rankingList.css('height',$seenArea + 5 * $height);
+        $lookMore.show();
+    }
+
+    let wrapTop = (num - 5)*$height+$('#rankBg')[0].offsetTop;
+    $rankingList.css('overflow','hidden');
+    $lookMore.on('click',() => {
+        $rankingList.css('height',$seenArea + num * $height);
+        $rankingList.css('overflow','visible');
+        if($(document).width()>1024){
+            $('.part-three-bg').css({
+                'backgroundImage':'url('+bigBgUrl+')'
+            })
+            $('#rankBg').css({
+                'top':wrapTop
+            })
+        }else {
+            $('.part-three-bg').css({
+                'backgroundImage':'url('+bigBgUrlWap+')'
+            })
+            $('#rankBg').css({
+                'top':wrapTop
+            })
+        }
+
+        $lookMore.hide();
+        $lookLess.show();
+    });
+    $lookLess.on('click', () => {
+        $rankingList.css('height',$seenArea + 5 * $height);
+        $rankingList.css('overflow','hidden');
+        if($(document).width()>1024){
+            $('.part-three-bg').css({
+                'backgroundImage':'url('+smallBgUrl+')'
+            });
+        }else {
+            $('.part-three-bg').css({
+                'backgroundImage':'url('+smallBgUrlWap+')'
+            });
+        }
+
+        $lookLess.hide();
+        $lookMore.show();
+    })
+}
+// 排行榜数据列表
+function heroRank(date) {
+    commonFun.useAjax({
+        type: 'GET',
+        url: '/activity/spring-breeze/ranking/' + '2018-03-20'
+    }, function (data) {
+        console.log(data)
+
+        if (data.status) {
+            if (_.isNull(data.records) || data.records.length == 0) {
+
+                $contentRanking.html('');
+                return;
+            }
+            //获取模版内容
+            let ListTpl = $('#tplTable').html();
+            // 解析模板, 返回解析后的内容
+            let render = _.template(ListTpl);
+            let html = render(data);
+            $contentRanking.html(html);
+            showMoreData(data.records.length)
+        }
+    });
+
+    commonFun.useAjax({
+        type: 'GET',
+        url: '/activity/spring-breeze/my-ranking/' + '2018-03-20'
+    }, function (data) {
+        console.log(data)
+        //今日投资总额 和 排名
+        let investRanking = data.investRanking;
+        $totalAmount.text(data.investAmount / 100+'元');
+        if(investRanking==0) {
+            $myRank.text('未上榜');
+        } else {
+            $myRank.text(data.investRanking);
+        }
+
+    })
+}
+
+//登录按钮
+function loginTip() {
+        if (sourceKind.params.source == 'app') {
+            location.href = "/login";
+        }else {
+            $.when(commonFun.isUserLogin())
+                .fail(function () {
+                    //判断是否需要弹框登陆
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
+                });
+        }
+
+}
 function loadData(nowDay) {
     let activityStatusStr = activityStatus(startTime,endTime,todayDay,nowDay);
     if(activityStatusStr.status == 'noStart'){
@@ -81,13 +216,13 @@ function loadData(nowDay) {
             $heroNext.css({'visibility':'hidden'});
 
         }
-        $('#isToday').text(function () {
+        $('.isToday').text(function () {
             return activityStatusStr.isToday ? '今日' : '当日'
         })
 
 
     }
-    
+
 }
 
 

@@ -63,16 +63,17 @@ strong {
     }
   }
   .part-bg {
-    width: 1001px;
-    height: 525px;
-    background: url("../images/2018/peach-blossom-festival/spring_bg.png") no-repeat;
-    background-size: 100%;
+    width: 1025px;
+
     margin: 0 auto;
     padding-top: 36px;
     box-sizing: border-box;
     padding-bottom: 60px;
     position: relative;
     &.part-one-bg {
+      height: 525px;
+      background: url("../images/2018/peach-blossom-festival/spring_bg.png") no-repeat;
+      background-size: 100%;
       .left-leaf {
         position: absolute;
         width: 200px;
@@ -149,9 +150,10 @@ strong {
     }
     &.part-three-bg {
       position: relative;
-      height: 1184px;
+     min-height: 1184px;
       margin-top: 44px;
-      background: url("../images/2018/peach-blossom-festival/part_three_bg.png") no-repeat;
+      background-image: url("../images/2018/peach-blossom-festival/part_three_bg.png");
+      background-repeat: no-repeat;
       background-size: 100%;
       .left-leaf {
         position: absolute;
@@ -168,6 +170,9 @@ strong {
       height: 88px;
       background: url("../images/2018/peach-blossom-festival/spring_title.png") no-repeat;
       background-size: 100%;
+      text-indent: -9999px;
+      margin: 0 auto;
+      margin-bottom: 32px;
       &.part-two-title {
         background: url("../images/2018/peach-blossom-festival/part_two_title.png") no-repeat;
         background-size: 100%;
@@ -175,11 +180,10 @@ strong {
       &.part-three-title {
         background: url("../images/2018/peach-blossom-festival/peach_title.png") no-repeat;
         background-size: 100%;
+        margin-bottom: 45px;
       }
 
-      text-indent: -9999px;
-      margin: 0 auto;
-      margin-bottom: 32px;
+
     }
     .part-desc,.example {
       p {
@@ -227,7 +231,7 @@ strong {
         margin-top: 30px;
         width: 969px;
         margin: 0 auto;
-        margin-left: 20px;
+        margin-left: 32px;
         .top {
           width: 971px;
           height: 108px;
@@ -357,6 +361,8 @@ strong {
                     }
                   }
                   tbody {
+                    height: 30px;
+                    overflow: hidden;
                     tr {
                       height: 40px;
                       line-height: 40px;
@@ -378,6 +384,9 @@ strong {
                 margin-bottom: 16px;
                 text-align: center;
                 a {
+                  display: block;
+                  height: 30px;
+                  width: 100%;
                   font-size: 20px;
                   color: $brown;
                 }
@@ -414,6 +423,9 @@ strong {
                   border-radius: 30px;
                   margin: 0 auto;
                   background: $greenInvest;
+                  a {
+                    color: #fff;
+                  }
                 }
               }
             }
@@ -522,12 +534,10 @@ p {
     }
     .part-bg {
       width: 7.04rem;
-      height: 6.38rem;
-      background: url("../images/2018/peach-blossom-festival/wap_part_one_bg.png") no-repeat;
-      background-size: 100%;
       padding-top: .25rem;
       padding-bottom:.35rem;
       &.part-one-bg {
+        height: 6.38rem;
         .left-leaf {
           width: 3.22rem;
           height: 3.08rem;
@@ -595,7 +605,7 @@ p {
       }
       &.part-three-bg {
         position: relative;
-        height: 19.56rem;
+        min-height: 19.56rem;
         margin-top: 0.44rem;
         background: url("../images/2018/peach-blossom-festival/wap_part_three_bg.png") no-repeat;
         background-size: 100%;
@@ -612,6 +622,9 @@ p {
         width: 5.45rem;
         height: 0.88rem;
         margin-bottom: 0.32rem;
+        &.part-three-title {
+          margin-bottom: 0.4rem;
+        }
       }
       .part-desc,.example {
         padding-left: 0.4rem;
@@ -798,6 +811,7 @@ p {
                   margin-top: 0.1rem;
                   margin-bottom: 0.16rem;
                   a {
+                    height: .3rem;
                     font-size: 0.26rem;
                   }
 
