@@ -16,7 +16,7 @@ public class LoanDetailsModel implements Serializable {
     private boolean nonTransferable;
     private boolean disableCoupon;
     private String pushMessage;
-    private boolean disableReward;
+    private boolean grantReward;
     private double rewardRate;
 
     public LoanDetailsModel() {
@@ -39,7 +39,7 @@ public class LoanDetailsModel implements Serializable {
         this.nonTransferable = loanDetails.getNonTransferable();
         this.disableCoupon = loanDetails.getDisableCoupon();
         this.pushMessage = loanDetails.getPushMessage();
-        this.disableReward = loanDetails.getDisableReward();
+        this.grantReward = loanDetails.getGrantReward();
         this.rewardRate = Double.parseDouble(rateStrDivideOneHundred(loanDetails.getRewardRate()));
     }
 
@@ -115,12 +115,12 @@ public class LoanDetailsModel implements Serializable {
         this.disableCoupon = disableCoupon;
     }
 
-    public boolean getDisableReward() {
-        return disableReward;
+    public boolean getGrantReward() {
+        return grantReward;
     }
 
-    public void setDisableReward(boolean disableReward) {
-        this.disableReward = disableReward;
+    public void setGrantReward(boolean grantReward) {
+        this.grantReward = grantReward;
     }
 
     public double getRewardRate() {

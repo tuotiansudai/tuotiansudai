@@ -88,7 +88,7 @@ public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsu
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanOutInfo.getLoanId());
 
-        if (!loanDetailsModel.getDisableReward()){
+        if (!loanDetailsModel.getGrantReward()){
             return;
         }
         List<InvestAchievementView> invests = investMapper.findAmountOrderByLoanId(loanOutInfo.getLoanId(), null, null, null);

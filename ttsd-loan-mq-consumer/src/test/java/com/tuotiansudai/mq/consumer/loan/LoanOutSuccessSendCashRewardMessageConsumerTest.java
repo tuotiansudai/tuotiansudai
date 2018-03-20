@@ -153,7 +153,7 @@ public class LoanOutSuccessSendCashRewardMessageConsumerTest {
         loanDetailsModel.setNonTransferable(false);
         loanDetailsModel.setDeclaration("declaration");
         loanDetailsModel.setLoanId(loanId);
-        loanDetailsModel.setDisableReward(true);
+        loanDetailsModel.setGrantReward(true);
         loanDetailsModel.setRewardRate(0.1D);
         return loanDetailsModel;
     }

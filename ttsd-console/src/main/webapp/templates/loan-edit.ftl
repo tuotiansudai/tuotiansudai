@@ -291,16 +291,16 @@
                 <label class="col-sm-2 control-label">是否享有返现奖励: </label>
 
                 <div class="col-sm-1 checkbox">
-                    <label for="disableCoupon">
-                        <input type="checkbox" name="disableReward"
+                    <label for="grantReward">
+                        <input type="checkbox" name="grantReward"
                                <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
-                               <#if loan.loanDetails?? && loan.loanDetails.disableReward>checked="checked"</#if> value="true" />
+                               <#if loan.loanDetails?? && loan.loanDetails.grantReward>checked="checked"</#if> value="true" />
                     </label>
                 </div>
 
                 <label class="col-sm-2 control-label">返现奖励（%）: </label>
                 <div class="col-sm-2">
-                    <input name="rewardRate" type="text" class="form-control rate" <#if !loan.loanDetails.disableReward>disabled="disabled"</#if> datatype="/^\d+(\.\d{1,2})?$/"
+                    <input name="rewardRate" type="text" class="form-control rate" <#if !loan.loanDetails.grantReward>disabled="disabled"</#if> datatype="/^\d+(\.\d{1,2})?$/"
                            value="${((loan.loanDetails.rewardRate?number)*100)?string('0.00')}"
                            errormsg="返现奖励需要正确填写">
                 </div>

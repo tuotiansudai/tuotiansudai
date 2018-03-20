@@ -63,6 +63,7 @@ public class ActivityRankingService {
                 .put("investAmount", investRanking > 0 ? rankingViews.get(investRanking - 1).getSumAmount() : 0)
                 .put("activityStartTime", activityTime.get(0))
                 .put("activityEndTime", activityTime.get(1))
+                .put("currentTime", new DateTime().withTimeAtStartOfDay().toDate())
                 .build());
     }
 

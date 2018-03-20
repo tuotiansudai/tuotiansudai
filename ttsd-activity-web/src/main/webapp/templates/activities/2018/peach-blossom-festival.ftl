@@ -116,23 +116,19 @@
 
                             <div class="big-prize">
                                 <div id="bigPrize" class="prize"></div>
-                                <div class="prize-desc">
+                                <div class="prize-desc" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>">
                                     第一名<br/>
-                                    实物大奖 XXXXX
-
+                                    <#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if>
                                 </div>
-
                             </div>
                         </div>
                         <div class="wap-prize-wrap">
                             <div class="big-prize">
                                 <div id="wapBigPrize" class="prize"></div>
-                                <div class="prize-desc">
+                                <div class="prize-desc" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>">
                                     第一名<br/>
-                                    实物大奖 XXXXX
-
+                                    <#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if>
                                 </div>
-
                             </div>
                             <div class="seconed-third clearfix">
                                 <div class="ranking-seconed">
@@ -161,7 +157,7 @@
                         </div>
                         <div class="ranking-list">
                             <div class="ranking-title">
-                                <div class="date-time">日期：<strong id="dateTime" data-starttime="2018-02-04" data-endtime="2018-03-01">2018-02-06</strong></div>
+                                <div class="date-time">日期：<strong id="dateTime" data-starttime="${activityStartTime}" data-endtime="${activityEndTime}">${currentTime}</strong></div>
                                 <div class="my-rank">我的排名：<strong>100</strong></div>
                                 <div class="total-invest"><span id="isToday">当日</span>累计投资：<strong>999元</strong></div>
                             </div>

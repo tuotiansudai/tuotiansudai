@@ -255,8 +255,8 @@
                     <label class="col-sm-2 control-label">是否享有返现奖励: </label>
 
                     <div class="col-sm-1 checkbox">
-                        <label for="disableCoupon">
-                            <input type="checkbox" name="disableReward" value="true">
+                        <label for="grantReward">
+                            <input type="checkbox" name="grantReward" value="true">
                         </label>
                     </div>
 
