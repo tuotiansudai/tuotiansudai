@@ -67,7 +67,7 @@ public class SpringBreezeActivityController {
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/spring-breeze");
         }
-        ModelAndView modelAndView = new ModelAndView("/wechat/spring-breeze");
+        ModelAndView modelAndView = new ModelAndView("/wechat/peach-blossom-festival");
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
         String loginName = LoginUserInfo.getLoginName();
@@ -96,7 +96,7 @@ public class SpringBreezeActivityController {
             return new ModelAndView("/error/404");
         }
 
-        ModelAndView modelAndView = new ModelAndView("/wechat/spring-breeze");
+        ModelAndView modelAndView = new ModelAndView("/wechat/peach-blossom-festival");
         boolean drewCoupon = activityWeChatService.drewCoupon(loginName, WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT);
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
