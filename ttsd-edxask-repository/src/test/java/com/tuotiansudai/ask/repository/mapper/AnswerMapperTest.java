@@ -57,4 +57,28 @@ public class AnswerMapperTest extends BaseMapperTest {
         assertThat(updatedAnswer.getApprovedBy(), is("answerer"));
         assertNotNull(updatedAnswer.getApprovedTime());
     }
+
+    @Test
+    public void aspectCreateAnswer() throws Exception {
+        QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        questionMapper.create(questionModel);
+        AnswerModel answerModel = new AnswerModel("answerer", "mobile", "fakeMobile", questionModel.getId(), "answer😆");
+        answerMapper.create(answerModel);
+        List<AnswerModel> savedAnswers = answerMapper.findByLoginName("answerer", 0, 1);
+        assertThat(savedAnswers.size(), is(1));
+        assertThat(savedAnswers.get(0).getId(), is(answerModel.getId()));
+    }
+
+    @Test
+    public void aspectUpdateAnswer() throws Exception {
+        QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        questionMapper.create(questionModel);
+        AnswerModel answerModel = new AnswerModel("answerer", "mobile", "fakeMobile", questionModel.getId(), "answer");
+        answerMapper.create(answerModel);
+        answerModel.setAnswer("answer😆");
+        answerMapper.update(answerModel);
+        List<AnswerModel> savedAnswers = answerMapper.findByLoginName("answerer", 0, 1);
+        assertThat(savedAnswers.size(), is(1));
+        assertThat(savedAnswers.get(0).getId(), is(answerModel.getId()));
+    }
 }
