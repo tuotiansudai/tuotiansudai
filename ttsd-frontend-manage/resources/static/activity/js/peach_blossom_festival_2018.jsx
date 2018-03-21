@@ -49,6 +49,7 @@ $investRankingButton.find('.look-btn').on('click', function (event) {
     }
     $date.text(currDate);
     loadData($date.text())
+    heroRank($date.text())
 
 });
 $('#loginTipBtn').on('click',function () {
