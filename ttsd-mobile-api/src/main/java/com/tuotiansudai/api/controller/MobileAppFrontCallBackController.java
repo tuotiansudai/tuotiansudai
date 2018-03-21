@@ -68,10 +68,6 @@ public class MobileAppFrontCallBackController {
         PayDataDto data = new PayDataDto();
         data.setStatus(true);
 
-        if (!Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)) {
-            data = payWrapperClient.validateFrontCallback(params).getData();
-        }
-
 
         ModelAndView modelAndView = new ModelAndView("/front-callback", "message", data.getMessage());
 
@@ -116,9 +112,14 @@ public class MobileAppFrontCallBackController {
                     .build());
         };
 
-        Function<Long, Map<String, String>> replaceCardValuesGenerator = (Long replaceCardOrderId) -> Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("message", "换卡申请成功")
-                .build());
+        Function<Long, Map<String, String>> replaceCardValuesGenerator = (Long replaceCardOrderId) -> {
+            BankCardModel bankCardModel = replaceCardOrderId != null ? bindBankCardService.getBankCardById(replaceCardOrderId) : null;
+            return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("message", "换卡申请成功")
+                    .put("manual", bankCardModel != null ? String.valueOf(bindBankCardService.isManual(bankCardModel.getLoginName())) : "false")
+                    .build());
+        };
+
 
         Function<Long, Map<String, String>> rechargeValuesGenerator = (Long rechargeOrderId) -> {
             RechargeModel rechargeModel = rechargeOrderId != null ? rechargeService.findRechargeById(rechargeOrderId) : null;
