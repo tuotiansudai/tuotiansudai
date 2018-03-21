@@ -14,7 +14,7 @@
 
 <body class="success-body">
 <div class="success-info-container">
-<#if (values??&& values.manual?? && values.manual=='false') || service == 'ptp_mer_replace_card' >
+<#if service != 'ptp_mer_replace_card' || (values??&& values.manual?? && values.manual=='false') >
     <p>
         <i class="success-icon"></i>
     </p>
