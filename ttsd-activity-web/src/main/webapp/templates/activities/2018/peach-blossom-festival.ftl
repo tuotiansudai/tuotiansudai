@@ -165,13 +165,11 @@
                                     <div class="my-rank">我的排名：<a href="javascript:;" class="to-login" id="loginTipBtn">登录</a></div>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <div class="total-invest"><span class="isToday">当日</span>累计投资：<strong id="totalAmount">999元</strong></div>
+                                    <div class="total-invest"><span class="isToday">当日</span>累计投资：<strong id="totalAmount">${(investAmount/100)?string('0.00')}元</strong></div>
                                 </@global.isNotAnonymous>
                                 <@global.isAnonymous>
                                     <div class="total-invest"><span class="isToday">当日</span>累计投资：<a href="javascript:;" class="to-login" id="loginTipBtnInvest">登录</a></div>
                                 </@global.isAnonymous>
-
-
                             </div>
                             <div class="ranking-con">
                                 <div class="ranking-list-item" id="rankingList">
