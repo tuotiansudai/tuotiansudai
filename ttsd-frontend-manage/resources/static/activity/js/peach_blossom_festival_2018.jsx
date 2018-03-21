@@ -135,6 +135,8 @@ function heroRank(date) {
                 $contentRanking.html(`<tr> <td colspan="4" class="noData">暂时没有记录哦~</td> </tr>`);
                 $lookLess.hide();
                     $lookMore.hide();
+                $heroNext.hide();
+                $heroPre.hide();
                 return;
             }
             //获取模版内容
@@ -187,8 +189,9 @@ function loadData(nowDay) {
     let activityStatusStr = activityStatus(startTime,endTime,todayDay,nowDay);
     if(activityStatusStr.status == 'noStart'){
         //活动未开始
-        $heroPre.css({'visibility':'hidden'});
-        $heroNext.css({'visibility':'hidden'});
+        $heroPre.hide()
+        $heroNext.hide()
+        $toInvestBtn.css('marginTop','0')
         $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
         addStaticImg();
     }else if (activityStatusStr.status == 'end'){
@@ -211,7 +214,7 @@ function loadData(nowDay) {
             //活动第一天
             $heroPre.hide()
             $heroNext.hide()
-            $toInvestBtn.css('marginTOp','0')
+            $toInvestBtn.css('marginTop','0')
 
         }else if(activityStatusStr.isLastDay == true){
             //活动最后一天
