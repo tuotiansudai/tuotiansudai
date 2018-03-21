@@ -75,6 +75,7 @@ function showMoreData(num) {
     let $height = $contentRanking.find('tr').height();
     if (num < 6) {
         $rankingList.css('height',$seenArea + num * $height);
+        $lookMore.hide();
     } else {
         $rankingList.css('height',$seenArea + 5 * $height);
         $lookMore.show();
