@@ -19,8 +19,8 @@
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({
-            title: '恭喜你！领到380元红包', // 分享标题
-            desc: '恭喜你！领到380元红包', // 分享描述
+            title: '春风十里，送你380元投资礼包', // 分享标题
+            desc: '春眠不觉晓，红包要收好', // 分享描述
             link: '${webServer}/activity/spring-breeze/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
@@ -31,6 +31,7 @@
 
         wx.onMenuShareTimeline({
             title: '恭喜你！领到380元红包', // 分享标题
+            desc: '春眠不觉晓，红包要收好', // 分享描述
             link: '${webServer}/activity/spring-breeze/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {

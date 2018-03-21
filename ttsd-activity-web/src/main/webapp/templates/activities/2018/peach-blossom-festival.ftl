@@ -242,7 +242,7 @@
             if(i==0) {
             reward='实物大奖';
             }
-            else if(i>0 && i<3) {
+            else if(i>0 && i<4) {
             reward='1%加息券';
             }
             else {
