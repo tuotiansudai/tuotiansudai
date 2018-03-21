@@ -1,5 +1,4 @@
 require('activityStyle/wechat/peach_blossom_festival.scss');
-//var commonFun = require('publicJs/commonFun');
 
 function calculationFun(doc, win) {
     let docEl = doc.documentElement,
@@ -8,7 +7,6 @@ function calculationFun(doc, win) {
             let clientWidth = docEl.clientWidth;
             if (!clientWidth) return;
              let fSize = 100 * (clientWidth /750);
-           // let fSize = 20 * (clientWidth /375);
              fSize > 100 && (fSize = 98.4);
             docEl.style.fontSize = fSize + 'px';
         };
@@ -26,17 +24,17 @@ let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动�
 let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
 
 if (!isGet) {
-    $('.get_it_btn').show();
+    $('.get-button').show();
 }
 else {
-    $('.got_it_btn').show();
+    $('.got-button').show();
 }
 
 if (isSuc) {
-    $('.pop_modal_container').show();
+    layer.msg('领取成功！');
 }
 else if (isSuc === false) {
-    $('.pop_modal_container_again').show();
+    layer.msg('领取失败！');
 }
 
 $('.get-button').on('click',function () {
@@ -48,7 +46,7 @@ $('.get-button').on('click',function () {
         layer.msg('活动已结束');
     }
     else {
-        // location.href = '/activity/start-work/draw';
+         location.href = '/activity/spring-breeze/draw';
     }
 
 });
