@@ -293,7 +293,7 @@ strong {
                   text-align: center;
                   line-height: 160px;
                   img {
-                    width: 60%;
+                    width: 100%;
                   }
                 }
                 .prize-desc {
@@ -542,6 +542,8 @@ p {
       padding-bottom:.35rem;
       &.part-one-bg {
         height: 6.38rem;
+        background: url("../images/2018/peach-blossom-festival/wap_part_one_bg.png") no-repeat;
+        background-size: 100%;
         .left-leaf {
           width: 3.22rem;
           height: 3.08rem;

@@ -133,7 +133,7 @@ function heroRank(date) {
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
 
-                $contentRanking.html(`<tr> <td colspan="4" class="noData">暂时没有记录哦~</td> </tr>`);
+                $contentRanking.html(`<tr> <td colspan="4" class="noData">暂无投资记录</td> </tr>`);
                 $lookLess.hide();
                     $lookMore.hide();
                 return;

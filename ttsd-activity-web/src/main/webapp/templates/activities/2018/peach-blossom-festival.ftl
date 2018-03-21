@@ -11,7 +11,7 @@
              </div>
              <div class="part-desc part-one-desc">
                  <p>
-                     <span class="data-space"></span>活动期间，微信扫描下方二维码关注<strong>“拓天速贷服务号”</strong> <span class="data-space"></span>关注公众号，
+                     <span class="data-space"></span>活动期间，微信扫描下方二维码关注<strong>“拓天速贷服务号”</strong> <span class="data-space"></span>
                      <span class="mobile-style">回复口令<strong>“扔掉枸杞有惊喜”</strong>， 即可领取380元<strong>“春风投资大礼包”</strong>，每人限领1次。</span>
                  </p>
              </div>
