@@ -23,6 +23,7 @@ public class UserMessageMapperTest extends BaseMapperTest {
     public void shouldCreateUserMessage() {
         MessageModel messageModel = new MessageModel("title",
                 "template",
+                "messageText",
                 MessageUserGroup.ALL_USER,
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),

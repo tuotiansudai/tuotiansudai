@@ -96,7 +96,9 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
 
-        MessageModel messageModel = new MessageModel("title", "template",
+        MessageModel messageModel = new MessageModel("title",
+                "template",
+                "messageText",
                 MessageUserGroup.ALL_USER,
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
