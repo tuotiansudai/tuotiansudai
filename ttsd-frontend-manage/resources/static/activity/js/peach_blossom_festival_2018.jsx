@@ -135,8 +135,6 @@ function heroRank(date) {
                 $contentRanking.html(`<tr> <td colspan="4" class="noData">暂时没有记录哦~</td> </tr>`);
                 $lookLess.hide();
                     $lookMore.hide();
-                $heroNext.hide();
-                $heroPre.hide();
                 return;
             }
             //获取模版内容
