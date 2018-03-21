@@ -24,6 +24,10 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
+    <select id="initCharset">
+        SET NAMES utf8mb4
+    </select>
+
     <insert id="create" parameterType="AnswerModel" useGeneratedKeys="true" keyProperty="id">
         insert into answer (login_name, mobile, fake_mobile, question_id, answer, best_answer, adopted_time, favored_by, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
         value(#{loginName}, #{mobile}, #{fakeMobile}, #{questionId}, #{answer}, #{bestAnswer}, #{adoptedTime}, #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
