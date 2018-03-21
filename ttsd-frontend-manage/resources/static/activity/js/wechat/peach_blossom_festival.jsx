@@ -34,7 +34,6 @@ if (isSuc) {
 }
 else if (isSuc === false) {
     layer.msg('领取失败！');
-    return;
 }
 $('.get_it_btn').on('click',function () {
     let currentTime = new Date().getTime();
