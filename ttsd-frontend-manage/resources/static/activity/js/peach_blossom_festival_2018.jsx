@@ -59,8 +59,7 @@ $('#loginTipBtnInvest').on('click',function () {
 });
 heroRank($('#dateTime').text());
 
-// let tdHeight = $rankingTable.find('tr td').height()*5;
-// $contentRanking.height(tdHeight).css('overflow','hidden')
+
 let bigBgUrl = require('../images/2018/peach-blossom-festival/big_part_three_bg.png');
 let smallBgUrl = require('../images/2018/peach-blossom-festival/part_three_bg.png');
 
@@ -125,14 +124,16 @@ function showMoreData(num) {
 function heroRank(date) {
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/spring-breeze/ranking/' + '2018-03-20'
+        url: '/activity/spring-breeze/ranking/' + date
     }, function (data) {
         console.log(data)
 
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
 
-                $contentRanking.html('');
+                $contentRanking.html(`<div class="noData">暂时没有记录哦~</div>`);
+                $lookLess.hide();
+                    $lookMore.hide();
                 return;
             }
             //获取模版内容
@@ -147,7 +148,7 @@ function heroRank(date) {
 
     commonFun.useAjax({
         type: 'GET',
-        url: '/activity/spring-breeze/my-ranking/' + '2018-03-20'
+        url: '/activity/spring-breeze/my-ranking/' + date
     }, function (data) {
         console.log(data)
         //今日投资总额 和 排名
@@ -235,8 +236,14 @@ function addStaticImg() {
     let wapBigPrizeUrl = require('../images/2018/peach-blossom-festival/gift.png');
     let  wapBigPrize = $(`<img src="${wapBigPrizeUrl}"/>`);
     let $wapBigPrize = $('#wapBigPrize');
-    $bigPrize.html(prizeImg);
-    $wapBigPrize.html(wapBigPrize);
+    if($('.heroes-list').data('awardsrc')){
+        $bigPrize.html($('.heroes-list').data('awardsrc'))
+        $wapBigPrize.html($('.heroes-list').data('awardsrc'))
+    }else {
+        $bigPrize.html(prizeImg);
+        $wapBigPrize.html(wapBigPrize);
+    }
+
 }
 
 function activityStatus(startTime,endTime,todayDay,nowDay) {

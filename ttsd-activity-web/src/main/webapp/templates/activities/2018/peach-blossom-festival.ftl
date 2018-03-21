@@ -74,7 +74,7 @@
 
 
         <div class="part-wrap part-three-wrap">
-            <div class="wrap-bg">
+            <div class="wrap-bg" id="rankBg">
                 <div class="prize-top-bg"></div>
                 <div class="prize-con-bg"></div>
                 <div class="prize-bot-bg"></div>
@@ -90,7 +90,7 @@
                         24点之前进行的多次投资，金额可<strong>累计计算</strong>。</span>
                     </p>
                 </div>
-                <div class="part-img heroes-list">
+                <div class="part-img heroes-list" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>">
                     <div class="top"></div>
                     <div class="heroes-content">
                         <div class="prize-wrap clearfix">
@@ -116,7 +116,7 @@
 
                             <div class="big-prize">
                                 <div id="bigPrize" class="prize"></div>
-                                <div class="prize-desc" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>">
+                                <div class="prize-desc">
                                     第一名<br/>
                                     <#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if>
                                 </div>
@@ -125,7 +125,7 @@
                         <div class="wap-prize-wrap">
                             <div class="big-prize">
                                 <div id="wapBigPrize" class="prize"></div>
-                                <div class="prize-desc" data-awardsrc="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>>
+                                <div class="prize-desc">
                                     第一名<br/>
                                     <#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if>
                                 </div>
@@ -151,46 +151,48 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                         </div>
                         <div class="ranking-list">
                             <div class="ranking-title">
                                 <div class="date-time">日期：<strong id="dateTime" data-starttime="${activityStartTime}" data-endtime="${activityEndTime}">${currentTime?string('yyyy-MM-dd')}</strong></div>
-                                <div class="my-rank">我的排名：<strong>100</strong></div>
-                                <div class="total-invest"><span id="isToday">当日</span>累计投资：<strong>999元</strong></div>
+                                <@global.isNotAnonymous>
+                                    <div class="my-rank">我的排名：<strong id="myRank">${investRanking!}</strong></div>
+                                </@global.isNotAnonymous>
+                                <@global.isAnonymous>
+                                    <div class="my-rank">我的排名：<a href="javascript:;" class="to-login" id="loginTipBtn">登录</a></div>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <div class="total-invest"><span class="isToday">当日</span>累计投资：<strong id="totalAmount">999元</strong></div>
+                                </@global.isNotAnonymous>
+                                <@global.isAnonymous>
+                                    <div class="total-invest"><span class="isToday">当日</span>累计投资：<a href="javascript:;" class="to-login" id="loginTipBtnInvest">登录</a></div>
+                                </@global.isAnonymous>
+
+
                             </div>
                             <div class="ranking-con">
-                                <div class="ranking-list-item">
-                                <table>
+                                <div class="ranking-list-item" id="rankingList">
+                                <table id="rankingTable">
                                     <thead>
                                         <th>排名</th> <th>用户</th> <th>投资额（元）</th> <th>奖励</th>
                                     </thead>
                                     <tbody id="investRanking-tbody">
-                                        <tr>
-                                            <td>1</td> <td>xxxxx</td> <td>1,000.00</td> <td>实物大奖</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td> <td>xxxxx</td> <td>1,000.00</td> <td>实物大奖</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td> <td>xxxxx</td> <td>1,000.00</td> <td>实物大奖</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td> <td>xxxxx</td> <td>1,000.00</td> <td>实物大奖</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td> <td>xxxxx</td> <td>1,000.00</td> <td>实物大奖</td>
-                                        </tr>
+
                                     </tbody>
 
                                 </table>
                                 </div>
                                 <div class="read-more">
-                                    <a href="javascript:;">显示更多></a>
+                                    <a href="javascript:;" id="lookMore" class="look-btn">显示更多></a>
+                                    <a href="javascript:;" id="lookLess"  class="look-btn">收起<</a>
                                 </div>
                                 <div class="ranking-btns clearfix" id="investRanking-button">
                                     <div class="pre-btn look-btn" id="rankingPre">查看前一天</div>
                                     <div class="next-btn look-btn" id="rankingNext">查看后一天</div>
-                                    <div class="invest-btn" id="toInvest">立即投资抢占排行榜</div>
+                                    <div class="invest-btn" id="toInvest"><a href="/loan-list">立即投资抢占排行榜</a></div>
                                 </div>
 
                             </div>
@@ -235,7 +237,7 @@
     <#include "../../module/login-tip.ftl" />
     <script type="text/template" id="tplTable">
 
-            <tbody >
+
             <% for(var i = 0; i < records.length; i++) {
             var item = records[i];
             var reward;
@@ -243,10 +245,10 @@
             reward='实物大奖';
             }
             else if(i>0 && i<3) {
-            reward='300元红包（组）';
+            reward='1%加息券';
             }
             else {
-            reward='168元红包（组）';
+            reward='0.5%加息券';
             }
             %>
             <tr>
@@ -257,7 +259,7 @@
             </tr>
             <% } %>
 
-            </tbody>
+
 
     </script>
 
