@@ -13,7 +13,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserFundView;
 import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.InvestRepayService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +41,24 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         if (accountModel == null) {
-            BaseDto<PayFormDataDto> baseDto = new BaseDto();
-            PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setMessage("您尚未进行实名认证");
             payFormDataDto.setStatus(false);
-            baseDto.setData(payFormDataDto);
             return baseDto;
         }
 
-        BaseDto<PayFormDataDto> baseDto = payWrapperClient.bindBankCard(dto);
+        BankCardModel passedBankCard = bankCardMapper.findPassedBankCardByLoginName(dto.getLoginName());
+
+        if (passedBankCard != null) {
+            payFormDataDto.setMessage("已绑定银行卡，请勿重复绑定");
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        baseDto = payWrapperClient.bindBankCard(dto);
 
         // 发送用户行为日志 MQ消息
         userOpLogService.sendUserOpLogMQ(dto.getLoginName(), dto.getIp(), dto.getSource().name(), dto.getDeviceId(),
