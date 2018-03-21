@@ -59,7 +59,7 @@ public class AnswerMapperTest extends BaseMapperTest {
     }
 
     @Test
-    public void aspectCreateAnswer() throws Exception {
+    public void characterCreateAnswer() throws Exception {
         QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
         AnswerModel answerModel = new AnswerModel("answerer", "mobile", "fakeMobile", questionModel.getId(), "answer😆");
@@ -70,7 +70,7 @@ public class AnswerMapperTest extends BaseMapperTest {
     }
 
     @Test
-    public void aspectUpdateAnswer() throws Exception {
+    public void characterUpdateAnswer() throws Exception {
         QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
         AnswerModel answerModel = new AnswerModel("answerer", "mobile", "fakeMobile", questionModel.getId(), "answer");
