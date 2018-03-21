@@ -37,6 +37,7 @@ public class UserMessageServiceTest {
     public void shouldFindMessageDetail() throws Exception {
         MessageModel webSiteMessageModel = new MessageModel("title",
                 "message",
+                "messageText",
                 MessageUserGroup.ALL_USER,
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
@@ -69,6 +70,7 @@ public class UserMessageServiceTest {
     public void shouldGetUnreadMessageCount() {
         MessageModel webSiteMessageModel = new MessageModel("title",
                 "message",
+                "messageText",
                 MessageUserGroup.ALL_USER,
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
@@ -83,6 +85,7 @@ public class UserMessageServiceTest {
 
         MessageModel appMessageModel = new MessageModel("app title",
                 "message",
+                "messageText",
                 MessageUserGroup.ALL_USER,
                 MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.APP_MESSAGE),
