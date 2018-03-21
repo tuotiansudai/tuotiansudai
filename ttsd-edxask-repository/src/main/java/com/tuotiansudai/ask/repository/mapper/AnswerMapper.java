@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface AnswerMapper {
 
-    void initCharset();
-
     long create(AnswerModel answerModel);
 
     long update(AnswerModel answerModel);
