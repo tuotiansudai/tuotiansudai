@@ -7,7 +7,9 @@
      data-success="<#if drawSuccess??>${drawSuccess?c}</#if>"
      data-start-time="${activityStartTime}"
      data-over-time="${activityEndTime}">
-    <div class="get-button">
+    <div class="get-button get_it_btn">
+    </div>
+    <div class="get-button got_it_btn">
     </div>
 
 </div>

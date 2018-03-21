@@ -17,5 +17,9 @@ body {
     margin-top: 2.63rem;
     background:url("../../images/2018/peach-blossom-festival/to_get.png") no-repeat;
     background-size: 100%;
+    &.got_it_btn {
+      background:url("../../images/2018/peach-blossom-festival/has_get.png") no-repeat;
+      background-size: 100%;
+    }
   }
 }

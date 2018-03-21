@@ -132,7 +132,7 @@ function heroRank(date) {
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
 
-                $contentRanking.html(`<div class="noData">暂时没有记录哦~</div>`);
+                $contentRanking.html(`<tr> <td colspan="4" class="noData">暂时没有记录哦~</td> </tr>`);
                 $lookLess.hide();
                     $lookMore.hide();
                 return;
@@ -189,7 +189,7 @@ function loadData(nowDay) {
         //活动未开始
         $heroPre.css({'visibility':'hidden'});
         $heroNext.css({'visibility':'hidden'});
-        $contentRanking.html(`<div class="noData">不在活动时间范围内</div>`);
+        $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
         addStaticImg();
     }else if (activityStatusStr.status == 'end'){
         //活动已结束
@@ -238,8 +238,8 @@ function addStaticImg() {
     let  wapBigPrize = $(`<img src="${wapBigPrizeUrl}"/>`);
     let $wapBigPrize = $('#wapBigPrize');
     if($('.heroes-list').data('awardsrc')){
-        $bigPrize.html($('.heroes-list').data('awardsrc'))
-        $wapBigPrize.html($('.heroes-list').data('awardsrc'))
+        $bigPrize.html(`<img src=${$('.heroes-list').data('awardsrc')}/>`)
+        $wapBigPrize.html(`<img src=${$('.heroes-list').data('awardsrc')}/>`)
     }else {
         $bigPrize.html(prizeImg);
         $wapBigPrize.html(wapBigPrize);

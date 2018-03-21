@@ -24,20 +24,19 @@ let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动�
 let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
 
 if (!isGet) {
-    $('.get-button').show();
+    $('.get_it_btn').show();
 }
 else {
-    $('.got-button').show();
+    $('.got_it_btn').show();
 }
-
 if (isSuc) {
     layer.msg('领取成功！');
 }
 else if (isSuc === false) {
     layer.msg('领取失败！');
+    return;
 }
-
-$('.get-button').on('click',function () {
+$('.get_it_btn').on('click',function () {
     let currentTime = new Date().getTime();
     if (currentTime < activityTime) {
         layer.msg('活动未开始');
