@@ -25,12 +25,22 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     private String maleScale;
     @ApiModelProperty(value = "女性比例", example = "39.5")
     private String femaleScale;
+    @ApiModelProperty(value = "借款人男性比例", example = "60.5")
+    private String loanerMaleScale;
+    @ApiModelProperty(value = "借款人女性比例", example = "39.5")
+    private String loanerFemaleScale;
+
     @ApiModelProperty(value = "各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
     private List<OperationDataAgeResponseDataDto> ageDistribution;
+    @ApiModelProperty(value = "借款人各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
+    private List<OperationDataLoanerAgeResponseDataDto> loanerAgeDistribution;
     @ApiModelProperty(value = "投资人数top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestCityResponseDataDto> investCityScaleTop3;
     @ApiModelProperty(value = "投资金额top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3;
+
+    @ApiModelProperty(value = "借款人数top5", example = "北京:60,上海:30,济南:10")
+    private List<OperationDataLoanerCityResponseDataDto> loanerCityScaleTop5;
 
     public OperationDataResponseDataDto() {
 
@@ -138,5 +148,37 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestAmountScaleTop3(List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3) {
         this.investAmountScaleTop3 = investAmountScaleTop3;
+    }
+
+    public List<OperationDataLoanerCityResponseDataDto> getLoanerCityScaleTop5() {
+        return loanerCityScaleTop5;
+    }
+
+    public void setLoanerCityScaleTop5(List<OperationDataLoanerCityResponseDataDto> loanerCityScaleTop5) {
+        this.loanerCityScaleTop5 = loanerCityScaleTop5;
+    }
+
+    public String getLoanerMaleScale() {
+        return loanerMaleScale;
+    }
+
+    public void setLoanerMaleScale(String loanerMaleScale) {
+        this.loanerMaleScale = loanerMaleScale;
+    }
+
+    public String getLoanerFemaleScale() {
+        return loanerFemaleScale;
+    }
+
+    public void setLoanerFemaleScale(String loanerFemaleScale) {
+        this.loanerFemaleScale = loanerFemaleScale;
+    }
+
+    public List<OperationDataLoanerAgeResponseDataDto> getLoanerAgeDistribution() {
+        return loanerAgeDistribution;
+    }
+
+    public void setLoanerAgeDistribution(List<OperationDataLoanerAgeResponseDataDto> loanerAgeDistribution) {
+        this.loanerAgeDistribution = loanerAgeDistribution;
     }
 }

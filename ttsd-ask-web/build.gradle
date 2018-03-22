@@ -20,6 +20,6 @@ war {
 
 task renameWar {
     doLast {
-        file("${project.projectDir.getPath()}/war/ttsd-ask-web.war").renameTo(file("${project.projectDir.getPath()}/war/ROOT.war"))
+        file("${project.projectDir.getPath()}/war/ttsd-ask-web.war").renameTo(file("${project.projectDir.getPath()}/war/ask.war"))
     }
 }

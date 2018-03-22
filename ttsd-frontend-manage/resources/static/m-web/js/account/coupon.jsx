@@ -12,5 +12,5 @@ $.when(commonFun.isUserLogin())
     })
 
 $goBackIcon.on('click', function (e) {
-    history.go(-1);
+    location.href = '/m/account';
 });

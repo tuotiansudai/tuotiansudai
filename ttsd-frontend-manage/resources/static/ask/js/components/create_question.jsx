@@ -231,7 +231,7 @@ if($questionDetailTag.length) {
         $formAnswer.find('textarea').val(temp);
 
         commonFun.useAjax({
-            url: "/answer",
+            url: applicationContext + "/answer",
             data: $formAnswer.serialize(),
             beforeSend:function() {
                 $formAnswerSubmit.prop('disabled',true);
@@ -265,7 +265,7 @@ if($questionDetailTag.length) {
         var $this=$(this);
         var answerId=$this.next('.answerId').data('id');
         commonFun.useAjax({
-            url:'/answer/'+answerId+'/best'
+            url: applicationContext + '/answer/' + answerId + '/best'
         },function(responseData) {
             var response=responseData.data;
             if(response.status) {
@@ -284,7 +284,7 @@ if($questionDetailTag.length) {
         var answerId=$this.parent().find('.answerId').data('id');
 
         commonFun.useAjax({
-            url:'/answer/'+answerId+'/favor'
+            url: applicationContext + '/answer/' + answerId + '/favor'
         },function(data) {
             if(data.data.status) {
                 $this.addClass('active');
@@ -341,7 +341,7 @@ if($createQuestion.length) {
 
         $formQuestion.find('textarea').val(question);
         commonFun.useAjax({
-            url: "/question",
+            url: applicationContext + "/question",
             data: $formQuestion.serialize(),
             beforeSend:function(xhr) {
                 $formSubmit.prop('disabled',true);

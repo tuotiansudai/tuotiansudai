@@ -74,6 +74,13 @@
 
                     <p class="single-answer">答：开启免密投资后，投资时不再需要繁琐的过程即可成功，抢标快人一步。开启免密投资是免费的，且您的资金不会有任何安全隐患。</p>
                 </li>
+                <li class="problem-single-item">
+                    <i class="fa fa-angle-down"></i>
+
+                    <p class="single-title">8、更换绑定的银行卡一般需要多久？</p>
+
+                    <p class="single-answer">答：更换绑定银行卡时间：自动审核一般1个工作日内更换完成，人工审核一般在2-3工作日内完成。</p>
+                </li>
             </ul>
             <ul class="list-group">
                 <li class="problem-single-item">
@@ -176,7 +183,7 @@
 
                     <p class="single-title">6、更换绑定的银行卡，一般需要多久？</p>
 
-                    <p class="single-answer">答：更换绑定银行卡时间：自动审核一般30分钟以内更换完成，人工审核一般在2个工作日以内完成。</p>
+                    <p class="single-answer">答：更换绑定银行卡时间：自动审核一般1个工作日内更换完成，人工审核一般在2-3个工作日内完成。</p>
                 </li>
             </ul>
         </div>

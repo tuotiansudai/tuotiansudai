@@ -205,8 +205,8 @@ def deploy_activity():
 @parallel
 def deploy_ask():
     sudo('service tomcat stop')
-    sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-ask-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('rm -rf /opt/tomcat/webapps/ask')
+    upload_project(local_dir='./ttsd-ask-web/war/ask.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
     sudo('service nginx restart')
 

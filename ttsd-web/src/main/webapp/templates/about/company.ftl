@@ -4,10 +4,20 @@
     <h2 class="column-title"><em>拓天速贷</em></h2>
     <div class="fl company-info">
         <p class="text-indent">
-            拓天速贷是基于互联网的金融信息服务平台，由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。
+            拓天速贷，全称拓天伟业（北京）金融信息服务有限公司，国企控股企业，2015年7月正式上线运营，实缴资本5000万元，位于北京市丰台区。
         </p>
         <p class="text-indent">
-            拓天速贷以透明、公平、高效为原则，为有资金需求的小微企业及有出借需求的个人提供规范、安全、专业的信息服务。
+            拓天速贷以用户体验为服务核心，专注于大数据处理和金融科技研发，以健全的风险管控体系为基础，致力于为有资金需求的中小微企业、个人以及有出借需求的个人、家庭提供规范、安全、专业的综合性金融资产交易信息及咨询等服务。
+        </p>
+        <p class="text-padding">
+            工商信息<br/>
+            公司名称：拓天伟业（北京）金融信息服务有限公司<br/>
+            法定代表人：李显玉<br/>
+            成立时间：2015年03月24日<br/>
+            注册资本：5000万人民币<br/>
+            实缴资本：5000万人民币<br/>
+            注册地址：北京市平谷区林荫北街13号信息大厦802室<br/>
+            经营地址：北京市丰台区洋桥12号天路蓝图大厦5层
         </p>
     </div>
     <div class="company-img"></div>
@@ -15,22 +25,31 @@
     </div>
     <h2 class="column-title"><em>拓天理念</em></h2>
     <p>
-        拓天速贷秉承用心服务，诚信经营的经营理念。 <br/>
-        拓天速贷坚持以人为本，日事日毕，正道经营，共存共赢的管理理念。
+        让金融更简单。 <br/>
+        成为每个人的金融伙伴。
     </p>
     <div class="clear-blank">
     </div>
     <h2 class="column-title"><em>拓天的价值观</em></h2>
     <p>
-        以安全、诚信、专业、创新、长远为核心价值观<br/>
-        坚持兴企安国的公司使命。
+        诚信、拼搏、创新、协作是拓天始终不渝的原则。<br/>
+        诚信是立业之本，拼搏是成功之源，创新是活力之源，协作是生态之美。
     </p>
     <div class="clear-blank">
     </div>
     <h2 class="column-title"><em>拓天资质</em></h2>
     <div class="clear-blank-m">
     </div>
-    <div class="aptitude-new"></div>
+    <div class="aptitude-new">
+        <ul id="organizationalImg" class="clearfix">
+            <li>
+                <a title="营业执照" rel="groupImg"></a>
+            </li>
+            <li>
+                <a title="许可证" rel="groupImg"></a>
+            </li>
+        </ul>
+    </div>
     <h2 class="column-title"><em>合作伙伴</em></h2>
     <ul class="partner-list">
         <li>

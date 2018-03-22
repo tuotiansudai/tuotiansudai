@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OperationDataDto implements Serializable {
@@ -11,11 +12,16 @@ public class OperationDataDto implements Serializable {
     private String totalInterest;
     private String maleScale;
     private String femaleScale;
+    private String loanerMaleScale;
+    private String loanerFemaleScale;
     private List<String> month = new ArrayList<>();
     private List<String> money = new ArrayList<>();
     private List<OperationDataAgeDataDto> ageDistribution;
-    private List<OperationDataInvestCityDataDto> investCityScaleTop3;
+    private List<OperationDataLoanerAgeDataDto> loanerAgeDistribution;
+    private List<OperationDataInvestCityDataDto> investCityScaleTop5;
+    private List<OperationDataLoanerCityDataDto> loanerCityScaleTop5;
     private List<OperationDataInvestAmountDataDto> investAmountScaleTop3;
+    private Date now;
 
     public int getOperationDays() {
         return operationDays;
@@ -89,12 +95,12 @@ public class OperationDataDto implements Serializable {
         this.ageDistribution = ageDistribution;
     }
 
-    public List<OperationDataInvestCityDataDto> getInvestCityScaleTop3() {
-        return investCityScaleTop3;
+    public List<OperationDataInvestCityDataDto> getInvestCityScaleTop5() {
+        return investCityScaleTop5;
     }
 
-    public void setInvestCityScaleTop3(List<OperationDataInvestCityDataDto> investCityScaleTop3) {
-        this.investCityScaleTop3 = investCityScaleTop3;
+    public void setInvestCityScaleTop5(List<OperationDataInvestCityDataDto> investCityScaleTop5) {
+        this.investCityScaleTop5 = investCityScaleTop5;
     }
 
     public List<OperationDataInvestAmountDataDto> getInvestAmountScaleTop3() {
@@ -103,5 +109,45 @@ public class OperationDataDto implements Serializable {
 
     public void setInvestAmountScaleTop3(List<OperationDataInvestAmountDataDto> investAmountScaleTop3) {
         this.investAmountScaleTop3 = investAmountScaleTop3;
+    }
+
+    public List<OperationDataLoanerCityDataDto> getLoanerCityScaleTop5() {
+        return loanerCityScaleTop5;
+    }
+
+    public void setLoanerCityScaleTop5(List<OperationDataLoanerCityDataDto> loanerCityScaleTop5) {
+        this.loanerCityScaleTop5 = loanerCityScaleTop5;
+    }
+
+    public String getLoanerMaleScale() {
+        return loanerMaleScale;
+    }
+
+    public void setLoanerMaleScale(String loanerMaleScale) {
+        this.loanerMaleScale = loanerMaleScale;
+    }
+
+    public String getLoanerFemaleScale() {
+        return loanerFemaleScale;
+    }
+
+    public void setLoanerFemaleScale(String loanerFemaleScale) {
+        this.loanerFemaleScale = loanerFemaleScale;
+    }
+
+    public List<OperationDataLoanerAgeDataDto> getLoanerAgeDistribution() {
+        return loanerAgeDistribution;
+    }
+
+    public void setLoanerAgeDistribution(List<OperationDataLoanerAgeDataDto> loanerAgeDistribution) {
+        this.loanerAgeDistribution = loanerAgeDistribution;
+    }
+
+    public Date getNow() {
+        return now;
+    }
+
+    public void setNow(Date now) {
+        this.now = now;
     }
 }

@@ -11,9 +11,19 @@ public interface OperationDataMapper {
 
     List<Integer> findScaleByGender(Date endDate);
 
+    List<Integer> findLoanerScaleByGender();
+
     long findCountInvestCityScale(Date endDate);
 
-    List<Map<String, String>> findCountInvestCityScaleTop3(Date endDate);
+    long findCountLoanerCityScale();
+
+    List<Map<String, String>> findCountInvestCityScaleTop5(Date endDate);
+
+    List<Map<String, String>> findCountLoanerCityScaleTop5();
 
     List<Map<String, String>> findAgeDistributionByAge(Date endDate);
+
+    List<Map<String, String>> findNewAgeDistributionByAge(Date endDate);
+
+    List<Map<String, String>> findLoanerAgeDistributionByAge();
 }

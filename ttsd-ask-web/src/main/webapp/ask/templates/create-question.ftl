@@ -1,4 +1,5 @@
 <#import "macro/global.ftl" as global>
+
 <@global.main pageCss="${(css.mainSite)!}" pageJavascript="${(js.mainSite)!}" title="拓天问答_投资问答_拓天速贷" keywords="投资问答,网贷问答,投资知识,金融问答" description="拓天速贷投资问答系统,为您解答金融行业最新最快的投资知识,让您放心投资、安全投资,拓天速贷为投资人答疑解惑.">
 <div class="article-content fl" id="createQuestion">
     <div class="ask-question-box clearfix">
@@ -53,7 +54,7 @@
                         <@global.isNotAnonymous>
                             <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha" maxlength="5">
                         </@global.isNotAnonymous>
-                        <img src="/captcha" class="captchaImg" alt="" id="imageCaptcha">
+                        <img src="${global.applicationContext}/captcha" class="captchaImg" alt="" id="imageCaptcha">
                         <span class="error " style="display: none">请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">

@@ -115,7 +115,15 @@ function toLogin() {
             title: false,
             closeBtn: 0,
             area: ['auto', 'auto'],
-            content: $('#loginTip')
+            content: $('#loginTip'),
+            success:function () {
+                $('input').on('focus',function () {
+                    let height = -$(window).scrollTop();
+                    $('body').scrollTop(height);
+                })
+
+            }
+
         });
     }
 }
@@ -148,6 +156,5 @@ function recordList() {
 function isMobile() {
     return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
 }
-
 
 

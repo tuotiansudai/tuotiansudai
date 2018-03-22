@@ -91,7 +91,7 @@ public class InvestServicePaybackExceptionTest {
         investModel.setLoginName(loginName);
         investModel.setStatus(InvestStatus.WAIT_PAY);
 
-        when(this.investMapper.findById(investId)).thenReturn(investModel);
+        when(this.investMapper.lockById(investId)).thenReturn(investModel);
         when(this.investMapper.sumSuccessInvestAmount(loanId)).thenReturn(sumAmount);
 
         LoanModel loanModel = new LoanModel();

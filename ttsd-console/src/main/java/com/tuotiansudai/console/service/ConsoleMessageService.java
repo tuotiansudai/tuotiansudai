@@ -158,6 +158,7 @@ public class ConsoleMessageService {
             return null;
         }
         MessageModel messageModel = new MessageModel(messageCreateDto.getTitle(),
+                messageCreateDto.getTemplate(),
                 messageCreateDto.getTemplateTxt(),
                 messageCreateDto.getUserGroup(),
                 messageCreateDto.getMessageCategory(),

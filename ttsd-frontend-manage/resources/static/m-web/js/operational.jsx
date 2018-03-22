@@ -22,8 +22,9 @@ let ifReflow = false;
 
 let mySwiper = new Swiper('.swiper-container', {
     direction: 'vertical',
+    nextButton: '.button_under_arrow',
     width: window.screen.width,
-    height: document.body.clientHeight - 48,
+    height: document.body.clientHeight - 44,
     onTouchMove: function () {
         if (!ifReflow) {
             reflow();
@@ -31,7 +32,7 @@ let mySwiper = new Swiper('.swiper-container', {
     }
 });
 
-document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 48 + 'PX';
+document.getElementsByClassName('swiper-container')[0].style.height = document.body.clientHeight - 44 + 'PX';
 
 $('#goBack_experienceAmount').on('click', () => {
     location.href='/m';
@@ -42,16 +43,15 @@ $('.side_to_page').click(function (e) {
         reflow();
     }
     let index = Number(e.currentTarget.dataset.index);
-    index = index == 5 ? index - 2 : index;
+    index = index == 8 ? index-2 : index;
     mySwiper.slideTo(index, 500, false);//切换到第一个slide，速度为1秒
 });
 
-let myChart1 = echarts.init(document.getElementById('main_part1'));
 let myChart2 = echarts.init(document.getElementById('main_part2'));
 let myChart3 = echarts.init(document.getElementById('main_part3'));
 let myChart4 = echarts.init(document.getElementById('main_part4'));
-let myChart5 = echarts.init(document.getElementById('main_part5'));
 let myChart6 = echarts.init(document.getElementById('main_part6'));
+let myChart7 = echarts.init(document.getElementById('main_part7'));
 
 let drawBarChart = (data) => {  // 柱状图
     return {
@@ -170,7 +170,7 @@ let drawLineChart = (data, monthArr) => {  // 折线图
     }
 };
 
-let circularChart = (data, legendData, color) => { // 环形图
+let circularChart = (data,legendData, color) => { // 环形图
     return {
         legend: {
             orient: 'vertical',
@@ -204,7 +204,40 @@ let circularChart = (data, legendData, color) => { // 环形图
         ]
     }
 };
-
+let pieChart = (data,legendData, color) => { // 饼形图
+    return {
+        legend: {
+            orient: 'vertical',
+            selectedMode: false,
+            left: '10%',
+            y: 'middle',
+            data: legendData
+        },
+        series: [
+            {
+                type: 'pie',
+                silent: true,
+                radius : '65%',
+                center: ['70%', '50%'],
+                legendHoverLink: false,
+                hoverAnimation: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    }
+                },
+                color: color,
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data: data
+            }
+        ]
+    }
+};
 let drawBarTransverse = (cityName, cityData, colorArr) => { // 横向柱状图
     return {
         xAxis: {type: 'value', show: false},
@@ -244,11 +277,13 @@ commonFun.useAjax({  // 拉取页面数据
     url: '/about/operation-data/chart',
     type: 'GET'
 }, (data) => {
+    console.log(data);
     let dataStr = data.operationDays.toString();
     getPartOnePage(data, dataStr);
     getPartTwoPage(data);
     getPartThreePage(data);
     getPartFourPage(data);
+    getPartFivePage(data);
 
 }, () => {
 });
@@ -277,11 +312,22 @@ function toThousands(num) {
 }
 
 let getPartOnePage = (data, dataStr) => {
+
+    var days = parseInt(dataStr/365);
+    var daysStr = days.toString();
+    let domDays = '';
+    for (let i = 0; i < daysStr.length; i++) {
+        domDays += `<div class="safe_day">${daysStr.charAt(i)}</div>`
+    }
+    domDays+=`<div class="safe_day_unit">年</div>>`;
+    $('.safe_day_wrapper').append(domDays);
+    dataStr = (dataStr-days*365).toString();
     let dom = '';
     for (let i = 0; i < dataStr.length; i++) {
         dom += `<div class="safe_day">${dataStr.charAt(i)}</div>`
     }
-    $('.safe_day_wrapper').prepend(dom);
+    dom+=`<span class="safe_day_unit">天</span>`;
+    $('.safe_day_wrapper').append(dom);
     $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));
 };
@@ -297,7 +343,7 @@ let getPartTwoPage = (data) => {
         num += count;
     }
     $('#total_trade_count').html(toThousands(num));
-    myChart1.setOption(drawBarChart(barChartArr));
+
     let monthArr = data.month.slice(-6).map(item => {
         return item.split('.')[1] + '月';
     });
@@ -310,9 +356,14 @@ let getPartTwoPage = (data) => {
 let getPartThreePage = (data) => {
     let ageArr = [];
     let ageLegendArr = [];
-    let maleScale = data.maleScale;
-    let femaleScale = data.femaleScale;
+    let ageLoanArr = [];
+    let ageLoanLegendArr = [];
+    let maleScale = data.maleScale;//投资人男性
+    let femaleScale = data.femaleScale;//投资人女性
+    let loanerMaleScale = data.loanerMaleScale;//借款人男性
+    let loanerFemaleScale = data.loanerFemaleScale;//借款人女性
     let ageDistribution = data.ageDistribution;
+    var loanerAgeDistribution = data.loanerAgeDistribution;
     $('#total_trade_person').html(toThousands(data.usersCount));
     for (let i = 0; i < ageDistribution.length; i++) {
         let item = ageDistribution[i];
@@ -321,40 +372,59 @@ let getPartThreePage = (data) => {
         ageArr[i].name = item.name + ' ' + item.scale + '%';
         ageLegendArr[i] = item.name + ' ' + item.scale + '%';
     }
-    myChart3.setOption(circularChart([
-        {value: `${femaleScale}`, name: `女性 ${femaleScale }%`},
-        {value: `${maleScale}`, name: `男性 ${maleScale }%`},
-    ], [`男性 ${maleScale }%`, `女性 ${femaleScale }%`], ['#fdb560', '#74bbf3']));
+    for (let i = 0; i < loanerAgeDistribution.length; i++) {
+        let item = loanerAgeDistribution[i];
+        ageLoanArr[i] = {};
+        ageLoanArr[i].value = item.scale;
+        ageLoanArr[i].name = item.name + ' ' + item.scale + '%';
+        ageLoanLegendArr[i] = item.name + ' ' + item.scale + '%';
+    }
+    myChart3.setOption(pieChart([
+        {value: `${maleScale}`, name: `男性投资人 ${maleScale }%`},
+        {value: `${femaleScale}`, name: `女性投资人 ${femaleScale }%`}
+    ], [`男性投资人 ${maleScale }%`, `女性投资人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 
-    myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#a47cf3', '#fdb560', '#fcee74', '#87e376', '#69e2ab']));
+    myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));
+    myChart6.setOption(pieChart([
+        {value: `${loanerMaleScale}`, name: `男性借款人 ${loanerMaleScale }%`},
+        {value: `${loanerFemaleScale}`, name: `女性借款人 ${loanerFemaleScale }%`}
+    ], [`男性借款人 ${loanerMaleScale }%`, `女性借款人 ${loanerFemaleScale }%`], ['#84a2ff', '#ff6ecb']));
+
+
+    myChart7.setOption(circularChart(ageLoanArr, ageLoanLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));
 };
 
 let getPartFourPage = (data) => {
-    let investCityScaleTop3 = data.investCityScaleTop3; // 投资人数top3
-    let investAmountScaleTop3 = data.investAmountScaleTop3; // 投资金额top3
-    let cityName_count = [];
-    let cityData_count = [];
-    let cityName_amount = [];
-    let cityData_amount = [];
-    investCityScaleTop3.forEach((item, index) => {
-        cityName_count[index] = item.city;
-        cityData_count[index] = item.scale;
+     let investCityScaleTop5 = data.investCityScaleTop5; // 投资人数top5
+    investCityScaleTop5.forEach((item, index) => {
+        $('#geographicalWrap').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
     });
-    investAmountScaleTop3.forEach((item, index) => {
-        cityName_amount[index] = item.city;
-        cityData_amount[index] = item.scale;
+};
+let getPartFivePage = (data) => {
+    let loanerCityScaleTop5 = data.loanerCityScaleTop5; // 投资人数top5
+    loanerCityScaleTop5.forEach((item, index) => {
+        $('#geographicalWrapLoan').append(`<li class="clearfix"><div class="fl">${item.city}</div> <div class="fr">${item.scale}%</div><div class="percent"><span style="width: ${item.scale}%;"></span></div></li>`);
     });
-    myChart5.setOption(drawBarTransverse(cityName_count, cityData_count, ['#c2eef2', '#81e9f2', '#00def2']));
-    myChart6.setOption(drawBarTransverse(cityName_amount, cityData_amount, ['#ffecac', '#ffd74f', '#ffc601']));
 };
 
 function reflow() {
-    document.getElementById('main_part1').style.visibility = "visible";
     document.getElementById('main_part2').style.visibility = "visible";
     document.getElementById('main_part3').style.visibility = "visible";
     document.getElementById('main_part4').style.visibility = "visible";
     document.getElementById('main_part5').style.visibility = "visible";
     document.getElementById('main_part6').style.visibility = "visible";
+    document.getElementById('main_part7').style.visibility = "visible";
     ifReflow = true;
+}
+function calculateWidth(dom,className) {
+    let widthArr = [];
+    dom.find(className).each(function (index,item) {
+        widthArr.push($(item).width());
+        widthArr.sort(function (a,b) {
+            return a-b;
+        })
+
+    })
+    $(dom).find(className).width(widthArr[widthArr.length-1]).css('marginRight','10px');
 }

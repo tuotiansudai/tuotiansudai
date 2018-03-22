@@ -21,6 +21,24 @@
         end
     </select>
 
+    <select id="findLoanerScaleByGender" parameterType="map" resultType="int">
+        select count(distinct identity_number)
+        from loaner_details
+        group by case if(length(identity_number)= 18, cast(substring(identity_number, 17, 1) as UNSIGNED) %2, if(length(identity_number)= 15, cast(substring(identity_number, 15, 1) as UNSIGNED) %2, 3)) when 1 then '男' else '女' end;
+    </select>
+
+    <select id="findNewAgeDistributionByAge" parameterType="map" resultType="java.util.HashMap">
+        SELECT CEIL(year(now()) -
+        if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null)))
+        as age, count(1) as totalCount
+        from(
+        select identity_number
+        from user
+        where identity_number is not null and user.register_time &lt;= #{endDate}) u
+        group by age
+        order by totalCount asc
+    </select>
+
     <select id="findAgeDistributionByAge" parameterType="map" resultType="java.util.HashMap">
         SELECT CEIL(year(now()) - if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null))) as age, count(1) as totalCount
         from(
@@ -34,21 +52,38 @@
         group by age
         order by totalCount asc
     </select>
+    <select id="findLoanerAgeDistributionByAge" resultType="java.util.HashMap">
+        SELECT CEIL(year(now()) - if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null))) as age, count(1) as totalCount
+        from(
+        select distinct identity_number
+        from loaner_details) u
+        group by age
+        order by totalCount asc
+    </select>
 
-    <select id="findCountInvestCityScaleTop3" parameterType="map" resultType="java.util.HashMap">
-        select u.city, count(*) as totalCount
+
+    <select id="findCountInvestCityScaleTop5" parameterType="map" resultType="java.util.HashMap">
+        select u.province as province, count(*) as totalCount
         from (
-        select user.city, user.login_name
+        select user.province, user.login_name
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user on user.login_name = invest.login_name
         where invest.status = 'SUCCESS'
         and loan.product_type != 'EXPERIENCE'
         and user.register_time &lt;= #{endDate}
-        group by user.login_name , user.city) u
-        group by u.city
+        group by user.login_name , user.province) u
+        group by u.province
         order by totalCount desc
-        limit 3
+        limit 5
+    </select>
+
+    <select id="findCountLoanerCityScaleTop5" resultType="java.util.HashMap">
+        select region as city,count(DISTINCT(`identity_number`)) as totalCount
+        from `loaner_details`
+        group BY region
+        order by totalCount desc
+        limit 5
     </select>
 
     <select id="findCountInvestCityScale" parameterType="map" resultType="long">
@@ -60,5 +95,15 @@
         and loan.product_type != 'EXPERIENCE'
         and user.register_time &lt;= #{endDate}
     </select>
+
+    <select id="findCountLoanerCityScale" resultType="long">
+        select sum(totalCount) from(
+            select region as city, count(DISTINCT(`identity_number`)) as totalCount
+            from `loaner_details`
+            group BY region
+            order by totalCount desc
+        ) a;
+    </select>
+
 
 </mapper>

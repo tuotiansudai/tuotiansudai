@@ -80,8 +80,17 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <meta name="sogou_site_verification" content="VU3DEpC4Pk"/>
-    <meta name="baidu-site-verification" content="BjgM87K8xU" />
+    <meta name="baidu-site-verification" content="xE3BgFFio5" />
     <meta name="360-site-verification" content="1ac0e9c5a7659c9cce73ecac8f630a0e" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115616275-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-115616275-1');
+    </script>
     <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
@@ -122,7 +131,7 @@
         <ul class="qa-list clearfix" style="display: none">
             <#list tags as tagItem>
                 <li>
-                    <a href="/question/category/${tagItem.name()?lower_case}"
+                    <a href="${applicationContext}/question/category/${tagItem.name()?lower_case}"
                        <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
                 </li>
             </#list>
@@ -133,8 +142,8 @@
         <#if !errorPage??>
     <#--left content-->
         <div class="aside-frame fr" >
-            <#include "../user.ftl"/>
-            <#include "../tags.ftl"/>
+            <#include "../pageLayout/user.ftl"/>
+            <#include "../pageLayout/tags.ftl"/>
 
             <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
@@ -150,7 +159,7 @@
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?d181b58b93d8babf116049c3dc826443";
+        hm.src = "https://hm.baidu.com/hm.js?058eb2e1517e1c4d99bc6ffe0b056cc1";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
@@ -158,6 +167,7 @@
 
 <script>
     window.commonStaticServer='${commonStaticServer}';
+    window.applicationContext='${applicationContext}';
 </script>
 <#if (js.jquerydll)??>
 <script src="${js.jquerydll}" type="text/javascript" ></script>
