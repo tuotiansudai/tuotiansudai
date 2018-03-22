@@ -116,11 +116,14 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
         registerDataDto.setPhoneNum(dto.getMobile());
 
+
         UserModel userModel = userService.findByMobile(dto.getMobile());
         if (userModel == null) {
             userService.registerUserFromHuizu(dto);
         } else {
             dto.setLoginName(userModel.getLoginName());
+            registerDataDto.setUserName(userModel.getUserName());
+            registerDataDto.setIdentityNumber(userModel.getUserName());
         }
 
         registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));

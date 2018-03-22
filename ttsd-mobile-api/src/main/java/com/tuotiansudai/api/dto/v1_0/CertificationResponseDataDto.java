@@ -15,11 +15,6 @@ public class CertificationResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "用户实名认证使用的身份证号", example = "365431111122331122")
     private String userIdCardNumber;
 
-    private String payAccountId;
-
-    private String payUserId;
-
-
 
     /**
      * 用户实名认证使用的姓名
@@ -53,19 +48,4 @@ public class CertificationResponseDataDto extends BaseResponseDataDto{
         this.userIdCardNumber = userIdCardNumber;
     }
 
-    public String getPayAccountId() {
-        return payAccountId;
-    }
-
-    public void setPayAccountId(String payAccountId) {
-        this.payAccountId = payAccountId;
-    }
-
-    public String getPayUserId() {
-        return payUserId;
-    }
-
-    public void setPayUserId(String payUserId) {
-        this.payUserId = payUserId;
-    }
 }

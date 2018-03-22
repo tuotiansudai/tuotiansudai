@@ -63,8 +63,6 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
             certificationResponseDataDto.setUserIdCardNumber(certificationRequestDto.getUserIdCardNumber());
             certificationResponseDataDto.setUserRealName(certificationRequestDto.getUserRealName());
-            certificationResponseDataDto.setPayUserId(dto.getData().getExtraValues().get("payUserId"));
-            certificationResponseDataDto.setPayAccountId(dto.getData().getExtraValues().get("payAccountId"));
             BaseResponseDto<CertificationResponseDataDto> baseResponseDto = new BaseResponseDto<>();
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(dto.getData().getMessage());

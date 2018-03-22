@@ -75,10 +75,6 @@ public class RegisterServiceImpl implements RegisterService {
                     AccountModel accountModel = new AccountModel(dto.getLoginName(), responseModel.getUserId(), responseModel.getAccountId(), new Date());
                     accountMapper.create(accountModel);
                     userMapper.updateUserNameAndIdentityNumber(dto.getLoginName(), dto.getUserName(), dto.getIdentityNumber());
-                    dataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                            .put("payUserId", responseModel.getUserId())
-                            .put("payAccountId", responseModel.getAccountId())
-                            .build()));
                 }
 
                 List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(dto.getLoginName());
