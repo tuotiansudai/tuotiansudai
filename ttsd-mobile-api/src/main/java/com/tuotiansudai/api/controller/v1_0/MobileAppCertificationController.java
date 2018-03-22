@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
-import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -42,5 +39,20 @@ public class MobileAppCertificationController extends MobileAppBaseController {
             return baseResponseDto;
         }
     }
+
+    @RequestMapping(value = "/common-certificate", method = RequestMethod.POST)
+    @ApiOperation("公用实名认证")
+    public BaseResponseDto<CertificationResponseDataDto> commonCertification(@Valid @RequestBody CommonCertificationRequestDto commonCertificationRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorCode = bindingResult.getFieldError().getDefaultMessage();
+            String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
+            return new BaseResponseDto(errorCode, errorMessage);
+        } else {
+            CertificationRequestDto certificationRequestDto = new CertificationRequestDto(commonCertificationRequestDto);
+            BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
+            return baseResponseDto;
+        }
+    }
+
 
 }

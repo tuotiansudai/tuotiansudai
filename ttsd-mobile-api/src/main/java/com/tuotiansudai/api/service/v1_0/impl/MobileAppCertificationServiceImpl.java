@@ -35,6 +35,9 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
     @Override
     public BaseResponseDto<CertificationResponseDataDto> validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
         UserModel userModel = userMapper.findByLoginName(certificationRequestDto.getBaseParam().getUserId());
+        if (userModel == null) {
+            userModel = userMapper.findByLoginNameOrMobile(certificationRequestDto.getBaseParam().getPhoneNum());
+        }
         RegisterAccountDto registerAccountDto = certificationRequestDto.convertToRegisterAccountDto(userModel);
         if (accountMapper.findByLoginName(registerAccountDto.getLoginName()) != null) {
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
@@ -60,6 +63,8 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
             certificationResponseDataDto.setUserIdCardNumber(certificationRequestDto.getUserIdCardNumber());
             certificationResponseDataDto.setUserRealName(certificationRequestDto.getUserRealName());
+            certificationResponseDataDto.setPayUserId(dto.getData().getExtraValues().get("payUserId"));
+            certificationResponseDataDto.setPayAccountId(dto.getData().getExtraValues().get("payAccountId"));
             BaseResponseDto<CertificationResponseDataDto> baseResponseDto = new BaseResponseDto<>();
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(dto.getData().getMessage());
