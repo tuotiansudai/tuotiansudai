@@ -38,7 +38,7 @@ def send_mail():
     from email.mime.application import MIMEApplication
 
     strFrom = 'no-reply@tuotiansudai.com'
-    RECIPIENT = ["lei@tuotiansudai.com", "chenshuai@tuotiansudai.com"]
+    RECIPIENT = ["lei@tuotiansudai.com", "zhoujinmeng@tuotiansudai.com"]
 
     msg = MIMEMultipart()
     msg["From"] = strFrom
