@@ -38,27 +38,40 @@ console.log(startTime,endTime,todayDay);
 
 console.log(activityStatus(startTime,endTime,todayDay,todayDay))
 loadData(todayDay);
-$investRankingButton.find('.look-btn').on('click', function (event) {
-    var dateSpilt = $.trim($date.text()),
-        currDate;
-    if (/rankingPre/.test(event.target.id)) {
-        currDate = commonFun.GetDateStr(dateSpilt, -1); //前一天
-    }
-    else if (/rankingNext/.test(event.target.id)) {
-        currDate = commonFun.GetDateStr(dateSpilt, 1); //后一天
-    }
-    $date.text(currDate);
-    loadData($date.text())
-    heroRank($date.text())
 
-});
+    $investRankingButton.find('.look-btn').on('click', function (event) {
+        var dateSpilt = $.trim($date.text()),
+            currDate;
+        if (/rankingPre/.test(event.target.id)) {
+            currDate = commonFun.GetDateStr(dateSpilt, -1); //前一天
+        }
+        else if (/rankingNext/.test(event.target.id)) {
+            currDate = commonFun.GetDateStr(dateSpilt, 1); //后一天
+        }
+        $date.text(currDate);
+        console.log(activityStatus(startTime,endTime,todayDay,$date.text()))
+        loadData($date.text());
+       if(activityStatus(startTime,endTime,todayDay,$date.text()).status == 'activiting'){
+
+           heroRank($date.text());
+
+
+       }
+
+    });
+if(activityStatus(startTime,endTime,todayDay,$date.text()).status == 'activiting'){
+    heroRank($('#dateTime').text());
+}
+
+
+
 $('#loginTipBtn').on('click',function () {
     loginTip();
 });
 $('#loginTipBtnInvest').on('click',function () {
     loginTip();
 });
-heroRank($('#dateTime').text());
+
 
 
 let bigBgUrl = require('../images/2018/peach-blossom-festival/big_part_three_bg.png');
@@ -68,13 +81,20 @@ let smallBgUrlWap = require('../images/2018/peach-blossom-festival/wap_part_thre
 let bigBgUrlWap = require('../images/2018/peach-blossom-festival/wap_big_part_three.png');
 function showMoreData(num) {
      $lookLess.hide();
-    if (num == 0) {
-        $lookMore.hide();
-    }
+
     let $seenArea = $('#rankingList').find('thead').height();
     let $height = $contentRanking.find('tr').height();
     if (num < 6) {
         $rankingList.css('height',$seenArea + num * $height);
+        if($(document).width()>1024){
+            $('.part-three-bg').css({
+                'backgroundImage':'url('+smallBgUrl+')'
+            });
+        }else {
+            $('.part-three-bg').css({
+                'backgroundImage':'url('+smallBgUrlWap+')'
+            });
+        }
         $lookMore.hide();
     } else {
         $rankingList.css('height',$seenArea + 5 * $height);
@@ -122,20 +142,36 @@ function showMoreData(num) {
         $lookMore.show();
     })
 }
+let rankListbgHeight = $('#rankBg')[0].offsetTop;
 // 排行榜数据列表
 function heroRank(date) {
     commonFun.useAjax({
         type: 'GET',
         url: '/activity/spring-breeze/ranking/' + date
     }, function (data) {
-        console.log(data)
 
         if (data.status) {
             if (_.isNull(data.records) || data.records.length == 0) {
-
                 $contentRanking.html(`<tr> <td colspan="4" class="noData">暂无投资记录</td> </tr>`);
+                $lookMore.hide();
                 $lookLess.hide();
-                    $lookMore.hide();
+                let $seenArea = $('#rankingList').find('thead').height();
+                let $height = $contentRanking.find('tr').height();
+
+
+                if($(document).width()>1024){
+                    $('.part-three-bg').css({
+                        'backgroundImage':'url('+smallBgUrl+')'
+                    });
+                }else {
+                    $('.part-three-bg').css({
+                        'backgroundImage':'url('+smallBgUrlWap+')'
+                    });
+                }
+                $rankingList.css('height',$seenArea + $height);
+                $('#rankBg').css({
+                    top:rankListbgHeight
+                })
                 return;
             }
             //获取模版内容
@@ -188,11 +224,16 @@ function loadData(nowDay) {
     let activityStatusStr = activityStatus(startTime,endTime,todayDay,nowDay);
     if(activityStatusStr.status == 'noStart'){
         //活动未开始
-        $heroPre.hide()
-        $heroNext.hide()
-        $toInvestBtn.css('marginTop','0')
+        if(activityStatusStr.isToday == true){
+            $heroPre.hide()
+            $heroNext.hide()
+            $toInvestBtn.css('marginTop','0')
+        }
+
         $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
         addStaticImg();
+        $lookLess.hide();
+        $lookMore.hide();
     }else if (activityStatusStr.status == 'end'){
         //活动已结束
         $heroNext.css({'visibility':'hidden'});
@@ -200,6 +241,8 @@ function loadData(nowDay) {
         $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
         //礼物图片静态
         addStaticImg();
+        $lookLess.hide();
+        $lookMore.hide();
     }else if(activityStatusStr.status == 'activiting'){
         addStaticImg();
         $heroNext.css({'visibility':'visible'});
@@ -209,20 +252,17 @@ function loadData(nowDay) {
             $heroNext.css({'visibility':'hidden'});
         }
 
-        if(activityStatusStr.isFirstDay == true){
+        if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == true){
             //活动第一天
-            $heroPre.hide()
+            $heroPre.hide();
             $heroNext.hide()
             $toInvestBtn.css('marginTop','0')
-
-        }else if(activityStatusStr.isLastDay == true){
-            //活动最后一天
-            $heroNext.css({'visibility':'hidden'});
 
         }
         $('.isToday').text(function () {
             return activityStatusStr.isToday ? '今日' : '当日'
         })
+
 
 
     }
@@ -233,7 +273,7 @@ function loadData(nowDay) {
 
 function addStaticImg() {
     let prizeUrl = require('../images/2018/peach-blossom-festival/gift.png');
-    let  prizeImg = $(`<img src="${prizeUrl}"/>`);
+    let  prizeImg = $(`<img src="${prizeUrl}" style="width: 60%"/>`);
 //默认静态图片
     let $bigPrize = $('#bigPrize');
     let wapBigPrizeUrl = require('../images/2018/peach-blossom-festival/gift.png');
