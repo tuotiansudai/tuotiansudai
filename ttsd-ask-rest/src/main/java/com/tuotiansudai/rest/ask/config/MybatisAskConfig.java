@@ -32,6 +32,7 @@ public class MybatisAskConfig {
         config.setDriverClassName("com.mysql.jdbc.Driver");
         config.setMinimumIdle(1);
         config.setMaximumPoolSize(5);
+        config.setConnectionInitSql("set names utf8mb4");
         return config;
     }
 

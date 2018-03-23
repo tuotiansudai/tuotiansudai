@@ -87,6 +87,7 @@
                 <property name="minimumIdle" value="${console.ask.minimumIdle}"/>
                 <property name="maximumPoolSize" value="${console.ask.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="connectionInitSql" value="set names utf8mb4;"/>
                 <property name="dataSourceProperties">
                     <props>
                         <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>

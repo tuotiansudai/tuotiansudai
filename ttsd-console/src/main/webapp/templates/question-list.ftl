@@ -25,7 +25,7 @@
             </select>
         </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
-        <button type="reset" class="btn btn-sm btn-default">重置</button>
+        <button type="reset" class="btn btn-sm btn-default" id="questionsReset">重置</button>
         <button type="button" class="btn btn-sm btn-default approve">审核</button>
     </form>
     <div class="table-responsive">
