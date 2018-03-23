@@ -280,8 +280,8 @@ function addStaticImg() {
     let  wapBigPrize = $(`<img src="${wapBigPrizeUrl}"/>`);
     let $wapBigPrize = $('#wapBigPrize');
     if($('.heroes-list').data('awardsrc')){
-        $bigPrize.html(`<img src=${$('.heroes-list').data('awardsrc')}/>`)
-        $wapBigPrize.html(`<img src=${$('.heroes-list').data('awardsrc')}/>`)
+        $bigPrize.html(`<img src=${$('.heroes-list').data('awardsrc')}>`)
+        $wapBigPrize.html(`<img src=${$('.heroes-list').data('awardsrc')}>`)
     }else {
         $bigPrize.html(prizeImg);
         $wapBigPrize.html(wapBigPrize);
