@@ -3,10 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
@@ -57,11 +54,11 @@ public class RegisterAccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
+    public BaseDto<HuiZuDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
         if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
             registerAccountDto.setMobile(LoginUserInfo.getMobile());
-            BaseDto<PayDataDto> baseDto = accountService.registerAccount(registerAccountDto);
+            BaseDto<HuiZuDataDto> baseDto = accountService.registerAccountFromHuiZu(registerAccountDto);
             baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("referrer", Strings.isNullOrEmpty(registerAccountDto.getReferrer()) ? "" : registerAccountDto.getReferrer())
                     .build()));
@@ -69,8 +66,8 @@ public class RegisterAccountController {
             return baseDto;
         }
 
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
+        BaseDto<HuiZuDataDto> baseDto = new BaseDto<>();
+        HuiZuDataDto dataDto = new HuiZuDataDto();
         baseDto.setData(dataDto);
         baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("referrer", Strings.isNullOrEmpty(registerAccountDto.getReferrer()) ? "" : registerAccountDto.getReferrer())

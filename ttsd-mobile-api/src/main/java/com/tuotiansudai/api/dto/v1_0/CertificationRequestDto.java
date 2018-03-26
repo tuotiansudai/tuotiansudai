@@ -62,7 +62,7 @@ public class CertificationRequestDto extends BaseParamDto {
         RegisterAccountDto registerAccountDto = new RegisterAccountDto();
         registerAccountDto.setIdentityNumber(this.getUserIdCardNumber());
         registerAccountDto.setUserName(this.getUserRealName());
-        registerAccountDto.setLoginName(this.getBaseParam().getUserId());
+        registerAccountDto.setLoginName(userModel.getLoginName());
         registerAccountDto.setMobile(userModel.getMobile());
         return registerAccountDto;
 
@@ -72,9 +72,11 @@ public class CertificationRequestDto extends BaseParamDto {
     }
 
     public CertificationRequestDto(CommonCertificationRequestDto commonCertificationRequestDto) {
+        BaseParam baseParam = new BaseParam();
+        baseParam.setPhoneNum(commonCertificationRequestDto.getMobile());
         this.userRealName = commonCertificationRequestDto.getUserRealName();
         this.userIdCardNumber = commonCertificationRequestDto.getUserIdCardNumber();
-        this.getBaseParam().setPhoneNum(commonCertificationRequestDto.getMobile());
+        this.setBaseParam(baseParam);
     }
 
 }
