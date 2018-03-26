@@ -11,7 +11,7 @@
              </div>
              <div class="part-desc part-one-desc">
                  <p>
-                     <span class="data-space"></span>活动期间，微信扫描下方二维码关注<strong>“拓天速贷服务号”</strong>， <span class="data-space"></span>
+                     <span class="data-space"></span>活动期间，微信扫描下方二维码关注<strong>“拓天速贷服务号”</strong>，
                      <span class="mobile-style">回复口令<strong>“扔掉枸杞有惊喜”</strong>， 即可领取380元<strong>“春风投资大礼包”</strong>，每人限领1次。</span>
                  </p>
              </div>
@@ -184,8 +184,8 @@
                                 </table>
                                 </div>
                                 <div class="read-more">
-                                    <a href="javascript:;" id="lookMore" class="look-btn" style="display: none">显示更多></a>
-                                    <a href="javascript:;" id="lookLess"  class="look-btn" style="display: none">收起<</a>
+                                    <span href="javascript:;" id="lookMore" class="look-btn" style="display: none">显示更多></span>
+                                    <span href="javascript:;" id="lookLess"  class="look-btn" style="display: none">收起<</span>
                                 </div>
                                 <div class="ranking-btns clearfix" id="investRanking-button">
                                     <div class="pre-btn look-btn" id="rankingPre">查看前一天</div>

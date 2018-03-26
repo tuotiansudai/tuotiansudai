@@ -34,9 +34,8 @@ let startTime = $date.data('starttime'),//开始时间
 let qrCodeUrl = require('../images/2018/peach-blossom-festival/qr_code.png');
 let  qrCodeImg = $(`<img src="${qrCodeUrl}"/>`);
 $('#qrCode').append(qrCodeImg);
-console.log(startTime,endTime,todayDay);
 
-console.log(activityStatus(startTime,endTime,todayDay,todayDay))
+activityStatus(startTime,endTime,todayDay,todayDay)
 loadData(todayDay);
 
     $investRankingButton.find('.look-btn').on('click', function (event) {
@@ -49,7 +48,7 @@ loadData(todayDay);
             currDate = commonFun.GetDateStr(dateSpilt, 1); //后一天
         }
         $date.text(currDate);
-        console.log(activityStatus(startTime,endTime,todayDay,$date.text()))
+       activityStatus(startTime,endTime,todayDay,$date.text())
         loadData($date.text());
        if(activityStatus(startTime,endTime,todayDay,$date.text()).status == 'activiting'){
 
@@ -188,7 +187,7 @@ function heroRank(date) {
         type: 'GET',
         url: '/activity/spring-breeze/my-ranking/' + date
     }, function (data) {
-        console.log(data)
+
         //今日投资总额 和 排名
         let investRanking = data.investRanking;
         $totalAmount.text(data.investAmount / 100+'元');
@@ -228,6 +227,8 @@ function loadData(nowDay) {
             $heroPre.hide()
             $heroNext.hide()
             $toInvestBtn.css('marginTop','0')
+        }else if(!activityStatusStr.isToday == true){
+            $heroPre.css({'visibility':'hidden'});
         }
 
         $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);

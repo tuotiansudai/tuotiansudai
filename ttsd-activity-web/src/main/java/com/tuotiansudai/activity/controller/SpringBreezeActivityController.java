@@ -42,7 +42,7 @@ public class SpringBreezeActivityController {
     private String endTime = ETCDConfigReader.getReader().getValue("activity.spring.breeze.endTime");
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView schoolSeason(){
+    public ModelAndView springBreeze(){
         ModelAndView modelAndView = new ModelAndView("/activities/2018/peach-blossom-festival","responsive", true);
         modelAndView.addAllObjects(activityRankingService.activityHome(LoginUserInfo.getLoginName(), ActivityInvestRanking.SPRING_BREEZE_ACTIVITY_RANKING));
         modelAndView.addObject("prizeDto", activityRankingService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
