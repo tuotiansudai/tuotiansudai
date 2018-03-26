@@ -385,12 +385,13 @@ strong {
                 margin-top: 10px;
                 margin-bottom: 16px;
                 text-align: center;
-                a {
+                span {
                   display: block;
                   height: 30px;
                   width: 100%;
                   font-size: 20px;
                   color: $brown;
+                  cursor: pointer;
                 }
 
               }
