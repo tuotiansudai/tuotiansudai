@@ -48,7 +48,7 @@ loadData(todayDay);
             currDate = commonFun.GetDateStr(dateSpilt, 1); //后一天
         }
         $date.text(currDate);
-       activityStatus(startTime,endTime,todayDay,$date.text())
+       console.log(activityStatus(startTime,endTime,todayDay,$date.text()))
         loadData($date.text());
        if(activityStatus(startTime,endTime,todayDay,$date.text()).status == 'activiting'){
 
@@ -259,6 +259,9 @@ function loadData(nowDay) {
             $heroNext.hide()
             $toInvestBtn.css('marginTop','0')
 
+        }
+        if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == false){
+            $heroPre.css({'visibility':'hidden'});
         }
         $('.isToday').text(function () {
             return activityStatusStr.isToday ? '今日' : '当日'
