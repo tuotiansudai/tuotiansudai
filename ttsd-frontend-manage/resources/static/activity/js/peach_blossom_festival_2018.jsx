@@ -277,7 +277,7 @@ function loadData(nowDay) {
 
 function addStaticImg() {
     let prizeUrl = require('../images/2018/peach-blossom-festival/gift.png');
-    let  prizeImg = $(`<img src="${prizeUrl}" style="width: 60%"/>`);
+    let  prizeImg = $(`<img src="${prizeUrl}"/>`);
 //默认静态图片
     let $bigPrize = $('#bigPrize');
     let wapBigPrizeUrl = require('../images/2018/peach-blossom-festival/gift.png');

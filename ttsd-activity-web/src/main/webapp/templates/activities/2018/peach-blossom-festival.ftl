@@ -184,8 +184,8 @@
                                 </table>
                                 </div>
                                 <div class="read-more">
-                                    <span href="javascript:;" id="lookMore" class="look-btn" style="display: none">显示更多></span>
-                                    <span href="javascript:;" id="lookLess"  class="look-btn" style="display: none">收起<</span>
+                                    <div href="javascript:;" id="lookMore" class="look-btn" style="display: none">显示更多></div>
+                                    <div href="javascript:;" id="lookLess"  class="look-btn" style="display: none">收起<</div>
                                 </div>
                                 <div class="ranking-btns clearfix" id="investRanking-button">
                                     <div class="pre-btn look-btn" id="rankingPre">查看前一天</div>
