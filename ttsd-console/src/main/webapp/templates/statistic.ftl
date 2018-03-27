@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="statistic.js" headLab="statistic" sideLab="userAge" title="系统首页">
+<@global.main pageCss="" pageJavascript="statistic.js" headLab="statistic" sideLab="userDate" title="系统首页">
 <div class="col-md-10 home-report">
 
     <div class="row">
