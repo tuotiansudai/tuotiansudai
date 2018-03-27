@@ -123,7 +123,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         } else {
             dto.setLoginName(userModel.getLoginName());
             registerDataDto.setUserName(userModel.getUserName());
-            registerDataDto.setIdentityNumber(userModel.getUserName());
+            registerDataDto.setIdentityNumber(userModel.getIdentityNumber());
         }
 
         registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), dto.getSource()));
