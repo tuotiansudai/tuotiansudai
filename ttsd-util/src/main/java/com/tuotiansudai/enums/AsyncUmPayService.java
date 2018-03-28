@@ -80,6 +80,10 @@ public enum AsyncUmPayService {
      * 慧租信用贷验密还款
      */
     CREDIT_LOAN_REPAY_PROJECT_TRANSFER("project_transfer", "", "huizu/callback/credit_loan_repay_project_transfer", "credit_loan_repay_notify", "tuotian://credit-loan-repay/{0}"),
+    /**
+     * 奢侈品分期
+     */
+    LUXURY_STAGE_REPAY_PROJECT_TRANSFER("project_transfer", "", "{0}/luxury/{1}/period/{2}/stage-purchase-success", "luxury_stage_repay_notify", ""),
 
     /**
      * 慧租有密还款

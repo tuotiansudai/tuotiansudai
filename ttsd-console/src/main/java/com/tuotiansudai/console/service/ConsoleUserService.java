@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.service;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -38,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -278,6 +280,26 @@ public class ConsoleUserService {
 
         if (editUserDto.getRoles().contains(Role.SD_STAFF) && editUserDto.getRoles().contains(Role.ZC_STAFF)) {
             throw new EditUserException("不能同时设置速贷业务员和资产业务员");
+        }
+
+
+        String afterChangeUser = MessageFormat.format("{0}:{1}:{2}:{3}:{4}",
+                editUserDto.getMobile(),
+                Strings.isNullOrEmpty(editUserDto.getEmail()) ? "" : editUserDto.getEmail(),
+                Strings.isNullOrEmpty(editUserDto.getReferrer()) ? "" : editUserDto.getReferrer(),
+                editUserDto.getStatus(),
+                Joiner.on("").join(editUserDto.getRoles().stream().sorted().collect(Collectors.toList())));
+
+        String beforeChangeUser = MessageFormat.format("{0}:{1}:{2}:{3}:{4}",
+                editUserModel.getMobile(),
+                Strings.isNullOrEmpty(editUserModel.getEmail()) ? "" : editUserModel.getEmail(),
+                Strings.isNullOrEmpty(editUserModel.getReferrer()) ? "" : editUserModel.getReferrer(),
+                editUserModel.getStatus(),
+                Joiner.on("").join(userRoleMapper.findByLoginName(editUserModel.getLoginName()).stream().map(UserRoleModel::getRole).sorted().collect(Collectors.toList())));
+
+
+        if (afterChangeUser.equals(beforeChangeUser)) {
+            throw new EditUserException("用户未做任何修改");
         }
     }
 

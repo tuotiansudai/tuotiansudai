@@ -17,6 +17,8 @@ public abstract class BaseSyncRequestModel {
 
     private static Logger logger = Logger.getLogger(BaseSyncRequestModel.class);
 
+    public final static String HUIZU_API_HOST = ETCDConfigReader.getReader().getValue("huizu.api.host");
+
     public final static String CREDIT_LOAN_ID = ETCDConfigReader.getReader().getValue("credit.loan");
 
     public final static String PAY_CALLBACK_WEB_HOST = ETCDConfigReader.getReader().getValue("pay.callback.web.host");

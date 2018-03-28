@@ -32,6 +32,7 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
     });
 
     $('#confirm-modal').find('.btn-submit').click(function () {
+        $('#confirm-modal').modal('hide');
         $("form").submit();
     });
 
