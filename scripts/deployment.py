@@ -56,6 +56,7 @@ class Deployment(object):
         self.clean()
         self.config_file()
         self.clean_initMQ()
+        self.compile(('ttsd-web',))
         self.mk_war(('ttsd-activity-web',))
         self.migrate()
         self.mk_static_package()
