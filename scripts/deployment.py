@@ -35,7 +35,8 @@ class Deployment(object):
     def only_web(self):
         self.clean()
         self.config_file()
-        self.compile(('ttsd-web',))
+        self.clean_initMQ()
+        self.mk_war(('ttsd-web',))
         self.migrate()
         self.mk_static_package()
         self.init_docker(('static-server', 'web',))
@@ -43,28 +44,39 @@ class Deployment(object):
     def only_console(self):
         self.clean()
         self.config_file()
+        self.clean_initMQ()
         self.mk_war(('ttsd-console', 'ttsd-activity-console'))
         self.migrate()
-        self.init_docker(('ttsd-console', 'ttsd-activity-console'))
+        self.init_docker(('console', 'activity-console'))
 
     def only_activity(self):
         self.clean()
         self.config_file()
+        self.clean_initMQ()
         self.mk_war(('ttsd-activity-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('static-server', 'ttsd-activity-web'))
+        self.init_docker(('static-server', 'activity'))
 
     def only_point(self):
         self.clean()
         self.config_file()
-        self.mk_war(('ttsd-piont-web',))
+        self.clean_initMQ()
+        self.mk_war(('ttsd-point-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('static-server', 'ttsd-piont-web'))
+        self.init_docker(('static-server', 'point'))
 
     def only_ask(self):
-        pass
+        self.clean()
+        self.config_file()
+        self.clean_initMQ()
+        self.compile(('ttsd-ask-web', 'ttsd-ask-rest'))
+        self.mk_war(('ttsd-ask-web'))
+        self.build_rest_service()
+        self.migrate()
+        self.mk_static_package()
+        self.init_docker(('static-server', 'ask', 'ask-rest-service'))
 
     def clean(self):
         print "Cleaning..."
@@ -79,9 +91,19 @@ class Deployment(object):
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd, sh)
 
+    def clean_initMQ(self):
+        sh('TTSD_ETCD_ENV={0} {1} clean initMQ '.format(self.env, self._gradle))
+
+    def compile(self, targets=None):
+        print "compile..."
+        if not targets:
+            sh('TTSD_ETCD_ENV={0} {1} compileJava'.format(self.env, self._gradle))
+            return
+        for target in targets:
+            sh('TTSD_ETCD_ENV={0} {1} {2}:compileJava'.format(self.env, self._gradle, target))
+
     def mk_war(self, targets=None):
         print "mk_war..."
-        sh('TTSD_ETCD_ENV={0} {1} clean initMQ '.format(self.env, self._gradle))
         if not targets:
             sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
             return
