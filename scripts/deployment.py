@@ -189,6 +189,7 @@ class Deployment(object):
                 sudoer,
                 self.env,
                 self._dockerCompose))
+            return 
         for target in targets:
             sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml up -d {3}"'
                .format(sudoer, self.env, self._dockerCompose, target))
