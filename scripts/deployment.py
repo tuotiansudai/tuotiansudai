@@ -19,18 +19,20 @@ class Deployment(object):
         print type
         getattr(self, type)()
 
-        # self.clean()
-        # self.config_file()
-        # self.jcversion()
-        # self.migrate()
-        # self.compile()
-        # self.build_and_unzip_worker()
-        # self.build_mq_consumer()
-        # self.build_rest_service()
-        # self.build_diagnosis()
-        # self.build_worker_monitor()
-        # self.mk_static_package()
-        # self.init_docker()
+    def all(self):
+
+        self.clean()
+        self.config_file()
+        self.migrate()
+        self.compile()
+        self.mk_war()
+        self.build_and_unzip_worker()
+        self.build_mq_consumer()
+        self.build_rest_service()
+        self.build_diagnosis()
+        self.build_worker_monitor()
+        self.mk_static_package()
+        self.init_docker()
 
     def only_web(self):
         self.clean()
