@@ -42,7 +42,7 @@ class Deployment(object):
         self.mk_war(('ttsd-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('web',))
+        self.init_docker(('static-server', 'web',))
 
     def only_console(self):
         self.clean()
@@ -60,7 +60,7 @@ class Deployment(object):
         self.mk_war(('ttsd-activity-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('activity'))
+        self.init_docker(('static-server', 'activity'))
 
     def only_point(self):
         self.clean()
@@ -69,7 +69,7 @@ class Deployment(object):
         self.mk_war(('ttsd-point-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('point'))
+        self.init_docker(('static-server', 'point'))
 
     def only_ask(self):
         self.clean()
@@ -80,7 +80,7 @@ class Deployment(object):
         self.build_rest_service()
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('ask', 'ask-rest-service'))
+        self.init_docker(('static-server', 'ask', 'ask-rest-service'))
 
     def clean(self):
         print "Cleaning..."
@@ -157,14 +157,13 @@ class Deployment(object):
     def mk_static_package(self):
         print "Making static package..."
         self.jcversion()
-        sh('cd ./ttsd-frontend-manage/dev-build && rm -rf *.*')
         sh('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
-        sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-frontend-manage/dev-build/')
-        sh('cd ./ttsd-frontend-manage/dev-build && unzip static.zip -d static')
+        sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-frontend-manage/build && unzip static.zip -d static')
 
         sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
-        sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-frontend-manage/dev-build/')
-        sh('cd ./ttsd-frontend-manage/dev-build && unzip static_all.zip -d static')
+        sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
     def init_docker(self, targets=None):
         print "Initialing docker..."
