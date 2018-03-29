@@ -129,16 +129,16 @@ class Deployment(object):
         self._start_new_container(sudoer, target)
 
     def _remove_old_container(self, suoder, target):
-        sh('{0} {1} -f {2} stop'.format(suoder, self._dockerCompose, _dev_yml.format(target)))
+        sh('{0} {1} -f {2} stop'.format(suoder, self._dockerCompose, self._dev_yml.format(target)))
         sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f {2} rm -f"'.format(suoder,
                                                                                            self._dockerCompose,
-                                                                                           _dev_yml.format(target)))
+                                                                                           self._dev_yml.format(target)))
 
     def _start_new_container(self, sudoer, target):
         sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f {3} up -d"'.format(sudoer,
                                                                                                              self.env,
                                                                                                              self._dockerCompose,
-                                                                                                             _dev_yml.format(
+                                                                                                             self._dev_yml.format(
                                                                                                                  target)))
 
     def jcversion(self):
