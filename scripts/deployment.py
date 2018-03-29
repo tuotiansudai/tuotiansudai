@@ -158,12 +158,12 @@ class Deployment(object):
         print "Making static package..."
         self.jcversion()
         sh('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
-        sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static.zip -d static')
+        sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-frontend-manage/build/')
+        sh('cd ./ttsd-frontend-manage/build && unzip static.zip -d static')
 
         sh('cd ./ttsd-frontend-manage/resources/prod && zip -r static_all.zip *')
-        sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
-        sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
+        sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-frontend-manage/build/')
+        sh('cd ./ttsd-frontend-manage/build && unzip static_all.zip -d static')
 
     def init_docker(self, targets=None):
         print "Initialing docker..."
