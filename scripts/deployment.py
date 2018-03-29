@@ -135,9 +135,10 @@ class Deployment(object):
             return
 
         for target in targets:
-            sh('{0} {1} -f dev.yml stop -d {2}'.format(suoder, self._dockerCompose, target))
-            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml  rm -f"'.format(suoder,
-                                                                                                    self._dockerCompose))
+            sh('{0} {1} -f dev.yml stop {2}'.format(suoder, self._dockerCompose, target))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml  rm -f {2}"'.format(suoder,
+                                                                                                        self._dockerCompose,
+                                                                                                        target))
 
     def _start_new_container(self, sudoer, targets):
         if not targets:
