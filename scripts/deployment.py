@@ -33,19 +33,38 @@ class Deployment(object):
         # self.init_docker()
 
     def only_web(self):
-        print '--------------------clean begin'
         self.clean()
-        print '--------------------clean end'
         self.config_file()
-        print '--------------------config_file end'
         self.compile(('ttsd-web',))
-        print '--------------------compile end'
         self.migrate()
-        print '--------------------migrate end'
         self.mk_static_package()
-        print '--------------------mk static end'
-        self.init_docker(('static-server','web',))
-        print '--------------------docker end'
+        self.init_docker(('static-server', 'web',))
+
+    def only_console(self):
+        self.clean()
+        self.config_file()
+        self.mk_war(('ttsd-console', 'ttsd-activity-console'))
+        self.migrate()
+        self.init_docker(('ttsd-console', 'ttsd-activity-console'))
+
+    def only_activity(self):
+        self.clean()
+        self.config_file()
+        self.mk_war(('ttsd-activity-web',))
+        self.migrate()
+        self.mk_static_package()
+        self.init_docker(('static-server', 'ttsd-activity-web'))
+
+    def only_point(self):
+        self.clean()
+        self.config_file()
+        self.mk_war(('ttsd-piont-web',))
+        self.migrate()
+        self.mk_static_package()
+        self.init_docker(('static-server', 'ttsd-piont-web'))
+
+    def only_ask(self):
+        pass
 
     def clean(self):
         print "Cleaning..."
@@ -60,8 +79,8 @@ class Deployment(object):
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd, sh)
 
-    def compile(self, targets=None):
-        print "Compiling..."
+    def mk_war(self, targets=None):
+        print "mk_war..."
         sh('TTSD_ETCD_ENV={0} {1} clean initMQ '.format(self.env, self._gradle))
         if not targets:
             sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
