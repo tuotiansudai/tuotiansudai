@@ -9,7 +9,6 @@ class Deployment(object):
     _gradle = '/opt/gradle/latest/bin/gradle'
     _dockerCompose = '/usr/local/bin/docker-compose'
     _paver = '/usr/bin/paver'
-    _dev_yml = 'scripts/dev_yml/{}.yml'
 
     def __init__(self, env='DEV', pay_fake=None):
         self.env = env
@@ -121,25 +120,34 @@ class Deployment(object):
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
-    def init_docker(self, target='dev'):
+    def init_docker(self, targets=None):
         print "Initialing docker..."
         import platform
         sudoer = 'sudo' if 'centos' in platform.platform() else ''
-        self._remove_old_container(sudoer, target)
-        self._start_new_container(sudoer, target)
+        self._remove_old_container(sudoer, targets)
+        self._start_new_container(sudoer, targets)
 
-    def _remove_old_container(self, suoder, target):
-        sh('{0} {1} -f {2} stop'.format(suoder, self._dockerCompose, self._dev_yml.format(target)))
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f {2} rm -f"'.format(suoder,
-                                                                                           self._dockerCompose,
-                                                                                           self._dev_yml.format(target)))
+    def _remove_old_container(self, suoder, targets):
+        if not targets:
+            sh('{0} {1} -f dev.yml stop '.format(suoder, self._dockerCompose))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
+                                                                                                   self._dockerCompose))
+            return
 
-    def _start_new_container(self, sudoer, target):
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f {3} up -d"'.format(sudoer,
-                                                                                                             self.env,
-                                                                                                             self._dockerCompose,
-                                                                                                             self._dev_yml.format(
-                                                                                                                 target)))
+        for target in targets:
+            sh('{0} {1} -f dev.yml stop -d {2}'.format(suoder, self._dockerCompose, target))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml  rm -f"'.format(suoder,
+                                                                                                    self._dockerCompose))
+
+    def _start_new_container(self, sudoer, targets):
+        if not targets:
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml up -d"'.format(
+                sudoer,
+                self.env,
+                self._dockerCompose))
+        for target in targets:
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml up -d {3}"'
+               .format(sudoer, self.env, self._dockerCompose, target))
 
     def jcversion(self):
         print "Starting jcmin..."
