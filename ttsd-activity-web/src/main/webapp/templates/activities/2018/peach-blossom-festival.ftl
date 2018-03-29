@@ -49,8 +49,8 @@
                 </p>
             </div>
             <div class="part-img calendar">
-
             </div>
+            <div class="invest-btn-small"><a href="/loan-list">立即投资</a></div>
             <div class="example">
                 <p>
                     <span class="exam-title">举个栗子：</span>拓小天成功投资带有“0.6%返现”标签的项目，其中360天项目10万元，180天项目6万元，<span class="mobile-style">
