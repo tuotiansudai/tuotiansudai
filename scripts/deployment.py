@@ -44,7 +44,7 @@ class Deployment(object):
         print '--------------------migrate end'
         self.mk_static_package()
         print '--------------------mk static end'
-        self.init_docker(('web',))
+        self.init_docker(('static-server','web',))
         print '--------------------docker end'
 
     def clean(self):
