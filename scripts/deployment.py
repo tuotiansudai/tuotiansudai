@@ -129,7 +129,7 @@ class Deployment(object):
 
     def _remove_old_container(self, suoder, target):
         dev_yml = './scripts/dev_yml/{}.yml'.format(target)
-        sh('{0} {1} -f {2} stop'.format(suoder, self._dockerCompose, target))
+        sh('{0} {1} -f {2} stop'.format(suoder, self._dockerCompose, dev_yml))
         sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f {2} rm -f"'.format(suoder,
                                                                                            self._dockerCompose,
                                                                                            dev_yml))
