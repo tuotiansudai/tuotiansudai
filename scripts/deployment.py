@@ -67,7 +67,7 @@ class Deployment(object):
             sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
             return
         for target in targets:
-            sh('TTSD_ETCD_ENV={0} {1} {2} war renameWar'.format(self.env, self._gradle, target))
+            sh('TTSD_ETCD_ENV={0} {1} {2}:war renameWar'.format(self.env, self._gradle, target))
             if target == 'sign_in':
                 sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
