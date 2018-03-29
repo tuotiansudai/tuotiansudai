@@ -15,19 +15,37 @@ class Deployment(object):
         self.pay_fake = pay_fake
         self.etcd = etcd_client.client(env)
 
-    def deploy(self):
+    def deploy(self, type):
+        print type
+        getattr(self, type)()
+
+        # self.clean()
+        # self.config_file()
+        # self.jcversion()
+        # self.migrate()
+        # self.compile()
+        # self.build_and_unzip_worker()
+        # self.build_mq_consumer()
+        # self.build_rest_service()
+        # self.build_diagnosis()
+        # self.build_worker_monitor()
+        # self.mk_static_package()
+        # self.init_docker()
+
+    def only_web(self):
+        print '--------------------clean begin'
         self.clean()
+        print '--------------------clean end'
         self.config_file()
-        self.jcversion()
+        print '--------------------config_file end'
+        self.compile(('ttsd-web',))
+        print '--------------------compile end'
         self.migrate()
-        self.compile()
-        self.build_and_unzip_worker()
-        self.build_mq_consumer()
-        self.build_rest_service()
-        self.build_diagnosis()
-        self.build_worker_monitor()
+        print '--------------------migrate end'
         self.mk_static_package()
-        self.init_docker()
+        print '--------------------mk static end'
+        self.init_docker('web')
+        print '--------------------docker end'
 
     def clean(self):
         print "Cleaning..."
@@ -42,10 +60,16 @@ class Deployment(object):
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd, sh)
 
-    def compile(self):
+    def compile(self, targets=None):
         print "Compiling..."
-        sh('TTSD_ETCD_ENV={0} {1} clean initMQ war renameWar'.format(self.env, self._gradle))
-        sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
+        sh('TTSD_ETCD_ENV={0} {1} clean initMQ '.format(self.env, self._gradle))
+        if not targets:
+            sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
+            return
+        for target in targets:
+            sh('TTSD_ETCD_ENV={0} {1} {2} war renameWar'.format(self.env, self._gradle, target))
+            if target == 'sign_in':
+                sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
@@ -87,6 +111,7 @@ class Deployment(object):
 
     def mk_static_package(self):
         print "Making static package..."
+        self.jcversion()
         sh('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
         sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static.zip -d static')
@@ -95,20 +120,26 @@ class Deployment(object):
         sh('mv ./ttsd-frontend-manage/resources/prod/static_all.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_all.zip -d static')
 
-    def init_docker(self):
+    def init_docker(self, target='dev'):
         print "Initialing docker..."
         import platform
         sudoer = 'sudo' if 'centos' in platform.platform() else ''
-        self._remove_old_container(sudoer)
-        self._start_new_container(sudoer)
+        self._remove_old_container(sudoer, target)
+        self._start_new_container(sudoer, target)
 
-    def _remove_old_container(self, suoder):
-        sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
-                                                                                               self._dockerCompose))
+    def _remove_old_container(self, suoder, target):
+        dev_yml = './scripts/dev_yml/{}.yml'.format(target)
+        sh('{0} {1} -f {2} stop'.format(suoder, self._dockerCompose, target))
+        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f {2} rm -f"'.format(suoder,
+                                                                                           self._dockerCompose,
+                                                                                           dev_yml))
 
-    def _start_new_container(self, sudoer):
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml up -d"'.format(sudoer, self.env, self._dockerCompose))
+    def _start_new_container(self, sudoer, target):
+        dev_yml = './scripts/dev_yml/{}.yml'.format(target)
+        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f {3} up -d"'.format(sudoer,
+                                                                                                             self.env,
+                                                                                                             self._dockerCompose,
+                                                                                                             dev_yml))
 
     def jcversion(self):
         print "Starting jcmin..."

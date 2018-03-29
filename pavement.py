@@ -67,7 +67,7 @@ def qa(options):
     from scripts.deployment import Deployment
 
     deployment = Deployment(env=options.env, pay_fake=options.get('pay', {}).get('fake'))
-    deployment.deploy()
+    deployment.deploy(options.get('type', 'all'))
 
 
 @task
@@ -75,7 +75,7 @@ def dev():
     from scripts.deployment import Deployment
 
     deployment = Deployment(env='DEV')
-    deployment.deploy()
+    deployment.deploy(type='all')
 
 
 @task
