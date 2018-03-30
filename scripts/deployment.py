@@ -42,7 +42,7 @@ class Deployment(object):
         self.mk_war(('ttsd-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('static-server', 'web',))
+        self.init_docker(('static-server', 'web','nginx-server_web'))
 
     def only_console(self):
         self.clean()
@@ -50,7 +50,7 @@ class Deployment(object):
         self.clean_initMQ()
         self.mk_war(('ttsd-console', 'ttsd-activity-console'))
         self.migrate()
-        self.init_docker(('console', 'activity-console'))
+        self.init_docker(('console', 'activity-console', 'nginx-server_console'))
 
     def only_activity(self):
         self.clean()
