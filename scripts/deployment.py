@@ -84,8 +84,8 @@ class Deployment(object):
     def only_api(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-mobile-api'))
-        self.mk_war(('ttsd-mobile-api'))
+        self.clean_initMQ(('ttsd-mobile-api',))
+        self.mk_war(('ttsd-mobile-api',))
         self.migrate()
         self.mk_static_package()
         self.init_docker(('static-server', 'mobile-api'))
@@ -93,8 +93,45 @@ class Deployment(object):
     def only_pay(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-pay-wrapper'))
+        self.clean_initMQ(('ttsd-pay-wrapper',))
+        self.mk_war(('ttsd-pay-wrapper',))
+        self.migrate()
+        self.init_docker(('pay-wrapper',))
 
+    def only_sms(self):
+        self.clean()
+        self.config_file()
+        self.clean_initMQ(('ttsd-sms-wrapper',))
+        self.mk_war(('ttsd-sms-wrapper',))
+        self.migrate()
+        self.init_docker(('sms-wrapper',))
+
+    def only_worker(self):
+        self.clean()
+        self.config_file()
+        self.clean_initMQ(('ttsd-job-worker',
+                           'ttsd-loan-mq-consumer',
+                           'ttsd-message-mq-consumer',
+                           'ttsd-point-mq-consumer',
+                           'ttsd-activity-mq-consumer',
+                           'ttsd-user-mq-consumer',
+                           'ttsd-auditLog-mq-consumer',
+                           'ttsd-email-mq-consumer',
+                           'ttsd-amount-mq-consumer',
+                           'ttsd-diagnosis'))
+        self.mk_worker_zip()
+        self.init_docker(('worker-all', 'auditLog-mq-consumer',
+                          'loan-mq-consumer',
+                          'message-mq-consumer',
+                          'email-mq-consumer',
+                          'point-mq-consumer',
+                          'activity-mq-consumer',
+                          'user-mq-consumer',
+                          'amount-mq-consumer',))
+
+    def only_sign_in(self):
+        self.mk_war(('sign_in',))
+        self.init_docker(('user-rest-service',))
 
     def clean(self):
         print "Cleaning..."
@@ -133,9 +170,16 @@ class Deployment(object):
             sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
             return
         for target in targets:
-            sh('TTSD_ETCD_ENV={0} {1} {2}:war renameWar'.format(self.env, self._gradle, target))
             if target == 'sign_in':
                 sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
+            else:
+                sh('TTSD_ETCD_ENV={0} {1} {2}:war renameWar'.format(self.env, self._gradle, target))
+
+    def mk_worker_zip(self):
+        self.build_and_unzip_worker()
+        self.build_diagnosis()
+        self.build_worker_monitor()
+        self.build_mq_consumer()
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
