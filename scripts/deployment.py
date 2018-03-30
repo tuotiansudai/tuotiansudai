@@ -56,7 +56,6 @@ class Deployment(object):
         self.clean()
         self.config_file()
         self.clean_initMQ()
-        self.compile(('ttsd-web',))
         self.mk_war(('ttsd-activity-web',))
         self.migrate()
         self.mk_static_package()
@@ -65,7 +64,7 @@ class Deployment(object):
     def only_point(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ()
+        self.clean_initMQ(('ttsd-point-web',))
         self.mk_war(('ttsd-point-web',))
         self.migrate()
         self.mk_static_package()
@@ -74,7 +73,7 @@ class Deployment(object):
     def only_ask(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ()
+        self.clean_initMQ(('ttsd-ask-web', 'ttsd-ask-rest'))
         self.compile(('ttsd-ask-web', 'ttsd-ask-rest'))
         self.mk_war(('ttsd-ask-web'))
         self.build_rest_service()
