@@ -74,12 +74,27 @@ class Deployment(object):
         self.clean()
         self.config_file()
         self.clean_initMQ(('ttsd-ask-web', 'ttsd-ask-rest'))
-        self.compile(('ttsd-ask-rest'))
-        self.mk_war(('ttsd-ask-web'))
+        self.compile(('ttsd-ask-rest',))
+        self.mk_war(('ttsd-ask-web',))
         self.build_rest_service()
         self.migrate()
         self.mk_static_package()
         self.init_docker(('static-server', 'ask', 'ask-rest-service'))
+
+    def only_api(self):
+        self.clean()
+        self.config_file()
+        self.clean_initMQ(('ttsd-mobile-api'))
+        self.mk_war(('ttsd-mobile-api'))
+        self.migrate()
+        self.mk_static_package()
+        self.init_docker(('static-server', 'mobile-api'))
+
+    def only_pay(self):
+        self.clean()
+        self.config_file()
+        self.clean_initMQ(('ttsd-pay-wrapper'))
+
 
     def clean(self):
         print "Cleaning..."
