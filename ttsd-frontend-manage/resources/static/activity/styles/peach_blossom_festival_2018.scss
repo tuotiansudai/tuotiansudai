@@ -21,7 +21,20 @@ strong {
 .main-frame,.activity-wrap-main {
   width: 100%;
 }
-
+.invest-btn-small {
+  width: 150px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 30px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  background: $greenInvest;
+  a {
+    color: #fff;
+  }
+}
 .spring-banner {
   height: 403px;
   background: url("../images/2018/peach-blossom-festival/peach_banner.png") no-repeat center center;
@@ -100,6 +113,7 @@ strong {
       background-size: 100%;
       padding-bottom: 0;
       position: relative;
+      padding-top: 30px;
       .left-leaf {
         position: absolute;
         width: 227px;
@@ -172,7 +186,7 @@ strong {
       background-size: 100%;
       text-indent: -9999px;
       margin: 0 auto;
-      margin-bottom: 32px;
+      margin-bottom: 20px;
       &.part-two-title {
         background: url("../images/2018/peach-blossom-festival/part_two_title.png") no-repeat;
         background-size: 100%;
@@ -219,8 +233,8 @@ strong {
         }
       }
       &.calendar {
-        width: 359px;
-        height: 252px;
+        width: 322px;
+        height: 226px;
         margin: 0 auto;
         margin-top: 16px;
         margin-bottom: 14px;
@@ -482,6 +496,18 @@ strong {
 //wap
 
 @media screen and (max-width: 1024px){
+  .invest-btn-small {
+    width: 2.5rem;
+    height: 0.6rem;
+    font-size: 0.3rem;
+    line-height: 0.62rem;
+    border-radius: 0.4rem;
+    margin-bottom: 0.1rem;
+    background: $greenInvest;
+    a {
+      color: #fff;
+    }
+  }
 p {
   margin-bottom: 0;
 }
@@ -630,7 +656,7 @@ p {
       .part-title {
         width: 5.45rem;
         height: 0.88rem;
-        margin-bottom: 0.32rem;
+        margin-bottom: 0.2rem;
         &.part-three-title {
           margin-bottom: 0.4rem;
         }
@@ -639,8 +665,8 @@ p {
         padding-left: 0.4rem;
         padding-right: 0.3rem;
         &.example {
-          padding-left: .9rem;
-          padding-right: .9rem;
+          padding-left: .6rem;
+          padding-right: .6rem;
         }
         p {
           font-size: 0.24rem;
@@ -660,7 +686,9 @@ p {
             font-size: 0.16rem;
             color: $yellow2;
             background: $red2;
-            padding:  0.04rem  0 0.04rem 0.08rem;
+            position: relative;
+            top: -0.02rem;
+            padding:  0.05rem  0 0.06rem 0.09rem;
             margin-right: 0.1rem;
           }
         }
@@ -674,9 +702,9 @@ p {
         }
         &.calendar {
           width: 5.6rem;
-          height: 4rem;
-          margin-top: 0.2rem;
-          margin-bottom: 0.2rem;
+          height: 3.8rem;
+          margin-top: 0;
+          margin-bottom: 0;
           background: url("../images/2018/peach-blossom-festival/wap_calendar.png") no-repeat;
           background-size: 100%;
         }
