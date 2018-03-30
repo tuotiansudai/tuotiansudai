@@ -42,12 +42,12 @@ class Deployment(object):
         self.mk_war(('ttsd-web',))
         self.migrate()
         self.mk_static_package()
-        self.init_docker(('static-server', 'web','nginx-server_web'))
+        self.init_docker(('static-server', 'web', 'nginx-server_web'))
 
     def only_console(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ()
+        self.clean_initMQ(('ttsd-console', 'ttsd-activity-console'))
         self.mk_war(('ttsd-console', 'ttsd-activity-console'))
         self.migrate()
         self.init_docker(('console', 'activity-console', 'nginx-server_console'))
@@ -95,8 +95,14 @@ class Deployment(object):
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd, sh)
 
-    def clean_initMQ(self):
-        sh('TTSD_ETCD_ENV={0} {1} clean initMQ '.format(self.env, self._gradle))
+    def clean_initMQ(self, targets=None):
+        print "clean_initMQ..."
+        sh('TTSD_ETCD_ENV={0} {1} initMQ '.format(self.env, self._gradle))
+        if not targets:
+            sh('TTSD_ETCD_ENV={0} {1} clean'.format(self.env, self._gradle))
+            return
+        for target in targets:
+            sh('TTSD_ETCD_ENV={0} {1} {2}:clean'.format(self.env, self._gradle, target))
 
     def compile(self, targets=None):
         print "compile..."
@@ -110,6 +116,7 @@ class Deployment(object):
         print "mk_war..."
         if not targets:
             sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
+            sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
             return
         for target in targets:
             sh('TTSD_ETCD_ENV={0} {1} {2}:war renameWar'.format(self.env, self._gradle, target))
