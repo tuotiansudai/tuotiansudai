@@ -500,9 +500,9 @@ strong {
     width: 2.5rem;
     height: 0.6rem;
     font-size: 0.3rem;
-    line-height: 0.6rem;
+    line-height: 0.62rem;
     border-radius: 0.4rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.1rem;
     background: $greenInvest;
     a {
       color: #fff;
@@ -701,8 +701,8 @@ p {
         &.calendar {
           width: 5.6rem;
           height: 3.8rem;
-          margin-top: 0.1rem;
-          margin-bottom: 0.1rem;
+          margin-top: 0;
+          margin-bottom: 0;
           background: url("../images/2018/peach-blossom-festival/wap_calendar.png") no-repeat;
           background-size: 100%;
         }
