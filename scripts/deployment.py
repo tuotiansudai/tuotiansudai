@@ -74,7 +74,7 @@ class Deployment(object):
         self.clean()
         self.config_file()
         self.clean_initMQ(('ttsd-ask-web', 'ttsd-ask-rest'))
-        self.compile(('ttsd-ask-web', 'ttsd-ask-rest'))
+        self.compile(('ttsd-ask-rest'))
         self.mk_war(('ttsd-ask-web'))
         self.build_rest_service()
         self.migrate()
