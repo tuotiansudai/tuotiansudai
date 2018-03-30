@@ -686,7 +686,9 @@ p {
             font-size: 0.16rem;
             color: $yellow2;
             background: $red2;
-            padding:  0.04rem  0 0.04rem 0.08rem;
+            position: relative;
+            top: -0.02rem;
+            padding:  0.05rem  0 0.06rem 0.09rem;
             margin-right: 0.1rem;
           }
         }
