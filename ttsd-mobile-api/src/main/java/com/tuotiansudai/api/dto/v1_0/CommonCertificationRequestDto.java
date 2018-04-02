@@ -12,12 +12,11 @@ public class CommonCertificationRequestDto {
     private String userRealName;
 
     @NotEmpty(message = "0013")
-    @Pattern(regexp = "^\\d{18}$", message = "0002")
     @ApiModelProperty(value = "用户身份证号码", example = "370412333221123431")
     private String userIdCardNumber;
 
-    @NotEmpty(message = "0013")
-    @Pattern(regexp = "^1\\d{10}$", message = "0300")
+    @NotEmpty(message = "0001")
+    @Pattern(regexp = "^1\\d{10}$", message = "0002")
     @ApiModelProperty(value = "手机号", example = "13900000000")
     private String mobile;
 

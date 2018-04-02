@@ -49,9 +49,8 @@ public class MobileAppCertificationController extends MobileAppBaseController {
             if (IdentityNumberValidator.validateIdentity(certificationRequestDto.getUserIdCardNumber())) {
 
                 certificationRequestDto.getBaseParam().setUserId(getLoginName());
-                RegisterAccountDto registerAccountDto = new RegisterAccountDto(getLoginName(),
+                RegisterAccountDto registerAccountDto = new RegisterAccountDto(certificationRequestDto.getUserRealName(),getLoginName(),
                         certificationRequestDto.getBaseParam().getPhoneNum(),
-                        certificationRequestDto.getUserRealName(),
                         certificationRequestDto.getUserIdCardNumber());
                 BaseDto<HuiZuDataDto> baseDto = accountService.registerAccountFromHuiZu(registerAccountDto);
                 if (baseDto.getData().getStatus()) {
