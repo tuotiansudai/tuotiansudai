@@ -23,7 +23,7 @@ class Deployment(object):
 
         self.clean()
         self.config_file()
-        self.clean_initMQ()
+        self.clean_class()
         self.migrate()
         self.compile()
         self.mk_war()
@@ -38,7 +38,7 @@ class Deployment(object):
     def only_web(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ()
+        self.clean_class()
         self.mk_war(('ttsd-web',))
         self.migrate()
         self.mk_static_package()
@@ -47,7 +47,7 @@ class Deployment(object):
     def only_console(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-console', 'ttsd-activity-console'))
+        self.clean_class(('ttsd-console', 'ttsd-activity-console'))
         self.mk_war(('ttsd-console', 'ttsd-activity-console'))
         self.migrate()
         self.init_docker(('console', 'activity-console', 'nginx-server_console'))
@@ -55,7 +55,7 @@ class Deployment(object):
     def only_activity(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ()
+        self.clean_class()
         self.mk_war(('ttsd-activity-web',))
         self.migrate()
         self.mk_static_package()
@@ -64,7 +64,7 @@ class Deployment(object):
     def only_point(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-point-web',))
+        self.clean_class(('ttsd-point-web',))
         self.mk_war(('ttsd-point-web',))
         self.migrate()
         self.mk_static_package()
@@ -73,7 +73,7 @@ class Deployment(object):
     def only_ask(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-ask-web', 'ttsd-ask-rest'))
+        self.clean_class(('ttsd-ask-web', 'ttsd-ask-rest'))
         self.compile(('ttsd-ask-rest',))
         self.mk_war(('ttsd-ask-web',))
         self.build_rest_service()
@@ -84,7 +84,7 @@ class Deployment(object):
     def only_api(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-mobile-api',))
+        self.clean_class(('ttsd-mobile-api',))
         self.mk_war(('ttsd-mobile-api',))
         self.migrate()
         self.mk_static_package()
@@ -93,7 +93,7 @@ class Deployment(object):
     def only_pay(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-pay-wrapper',))
+        self.clean_class(('ttsd-pay-wrapper',))
         self.mk_war(('ttsd-pay-wrapper',))
         self.migrate()
         self.init_docker(('pay-wrapper',))
@@ -101,7 +101,7 @@ class Deployment(object):
     def only_sms(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-sms-wrapper',))
+        self.clean_class(('ttsd-sms-wrapper',))
         self.mk_war(('ttsd-sms-wrapper',))
         self.migrate()
         self.init_docker(('sms-wrapper',))
@@ -109,7 +109,7 @@ class Deployment(object):
     def only_worker(self):
         self.clean()
         self.config_file()
-        self.clean_initMQ(('ttsd-job-worker',
+        self.clean_class(('ttsd-job-worker',
                            'ttsd-loan-mq-consumer',
                            'ttsd-message-mq-consumer',
                            'ttsd-point-mq-consumer',
@@ -146,9 +146,8 @@ class Deployment(object):
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd, sh)
 
-    def clean_initMQ(self, targets=None):
-        print "clean_initMQ..."
-        sh('TTSD_ETCD_ENV={0} {1} initMQ '.format(self.env, self._gradle))
+    def clean_class(self, targets=None):
+        print "clean_class..."
         if not targets:
             sh('TTSD_ETCD_ENV={0} {1} clean'.format(self.env, self._gradle))
             return
@@ -188,6 +187,7 @@ class Deployment(object):
 
     def build_mq_consumer(self):
         print "Making MQ consumer build..."
+        sh('TTSD_ETCD_ENV={0} {1} initMQ '.format(self.env, self._gradle))
         sh('cd ./ttsd-loan-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-loan-mq-consumer/build/distributions && unzip \*.zip')
         sh('cd ./ttsd-message-mq-consumer && {0} distZip'.format(self._gradle))
