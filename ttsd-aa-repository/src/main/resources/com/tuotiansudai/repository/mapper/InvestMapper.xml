@@ -1113,7 +1113,12 @@
                 invest i JOIN loan on i.loan_id = loan.id
             WHERE
                 i.loan_id = #{loanId} and i.loan_id != 1 and loan.activity_type != 'NEWBIE'
-                    AND loan.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
+                    <if test="activityStartTime !=null">
+                        AND loan.fundraising_start_time &gt;= #{activityStartTime}
+                    </if>
+                    <if test="activityEndTime !=null">
+                        AND loan.fundraising_start_time &lt;= #{activityEndTime}
+                    </if>
                     AND i.status = 'SUCCESS'
                     AND i.transfer_status != 'SUCCESS'
             GROUP BY i.login_name) temp join user on temp.login_name = user.login_name

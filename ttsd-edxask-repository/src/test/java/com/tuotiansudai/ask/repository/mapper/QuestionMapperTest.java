@@ -119,4 +119,18 @@ public class QuestionMapperTest extends BaseMapperTest {
     private QuestionModel getQuestionModel(String loginName, String mobile, String question){
         return new QuestionModel(loginName, mobile, "fakeMobile", question, "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
     }
+
+    @Test
+    public void characterCreateQuestion(){
+        QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question😆", "addition😆", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        questionMapper.create(questionModel);
+    }
+
+    @Test
+    public void characterUpdateQuestion(){
+        QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        questionModel.setQuestion("question😆");
+        questionModel.setAddition("addition😆");
+        questionMapper.update(questionModel);
+    }
 }

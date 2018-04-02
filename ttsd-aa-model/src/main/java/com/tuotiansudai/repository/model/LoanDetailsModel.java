@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanCreateDetailsRequestDto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class LoanDetailsModel implements Serializable {
@@ -15,6 +16,8 @@ public class LoanDetailsModel implements Serializable {
     private boolean nonTransferable;
     private boolean disableCoupon;
     private String pushMessage;
+    private boolean grantReward;
+    private double rewardRate;
 
     public LoanDetailsModel() {
     }
@@ -36,6 +39,8 @@ public class LoanDetailsModel implements Serializable {
         this.nonTransferable = loanDetails.getNonTransferable();
         this.disableCoupon = loanDetails.getDisableCoupon();
         this.pushMessage = loanDetails.getPushMessage();
+        this.grantReward = loanDetails.getGrantReward();
+        this.rewardRate = Double.parseDouble(rateStrDivideOneHundred(loanDetails.getRewardRate()));
     }
 
     public long getId() {
@@ -108,5 +113,26 @@ public class LoanDetailsModel implements Serializable {
 
     public void setDisableCoupon(boolean disableCoupon) {
         this.disableCoupon = disableCoupon;
+    }
+
+    public boolean getGrantReward() {
+        return grantReward;
+    }
+
+    public void setGrantReward(boolean grantReward) {
+        this.grantReward = grantReward;
+    }
+
+    public double getRewardRate() {
+        return rewardRate;
+    }
+
+    public void setRewardRate(double rewardRate) {
+        this.rewardRate = rewardRate;
+    }
+
+    private String rateStrDivideOneHundred(String rate) {
+        BigDecimal rateBigDecimal = new BigDecimal(rate);
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100), 4, BigDecimal.ROUND_DOWN).doubleValue());
     }
 }

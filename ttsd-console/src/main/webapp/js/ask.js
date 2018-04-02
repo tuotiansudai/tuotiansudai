@@ -8,8 +8,12 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'c
 
         $('form select.selectpicker').selectpicker();
 
-        $('form button[type="reset"]').click(function () {
+        $('#questionsReset').click(function () {
             location.href = "/ask-manage/questions";
+        });
+
+        $('#answersReset').click(function () {
+            location.href = "/ask-manage/answers";
         });
 
         //自动完成提示

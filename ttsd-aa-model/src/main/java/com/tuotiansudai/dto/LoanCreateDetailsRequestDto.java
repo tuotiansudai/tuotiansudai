@@ -26,6 +26,10 @@ public class LoanCreateDetailsRequestDto {
 
     private String pushMessage;
 
+    private boolean grantReward;
+
+    private String rewardRate;
+
     public LoanCreateDetailsRequestDto() {
     }
 
@@ -37,6 +41,8 @@ public class LoanCreateDetailsRequestDto {
         this.nonTransferable = loanDetailsModel.getNonTransferable();
         this.pushMessage = loanDetailsModel.getPushMessage();
         this.disableCoupon = loanDetailsModel.getDisableCoupon();
+        this.grantReward = loanDetailsModel.getGrantReward();
+        this.rewardRate = String.valueOf(loanDetailsModel.getRewardRate());
     }
 
     public boolean getNonTransferable() {
@@ -101,5 +107,21 @@ public class LoanCreateDetailsRequestDto {
 
     public void setDisableCoupon(boolean disableCoupon) {
         this.disableCoupon = disableCoupon;
+    }
+
+    public boolean getGrantReward() {
+        return grantReward;
+    }
+
+    public void setGrantReward(boolean grantReward) {
+        this.grantReward = grantReward;
+    }
+
+    public String getRewardRate() {
+        return rewardRate;
+    }
+
+    public void setRewardRate(String rewardRate) {
+        this.rewardRate = rewardRate;
     }
 }

@@ -53,6 +53,12 @@ public class ActivityConsoleNewmanTyrantService {
     @Value(value = "${activity.year.end.awards.rankTime}")
     private String activityYearEndAwardsRankTime;
 
+    @Value(value = "${activity.spring.breeze.startTime}")
+    private String activitySpringBreezeStartTime;
+
+    @Value(value = "${activity.spring.breeze.endTime}")
+    private String activitySpringBreezeEndTime;
+
     private int lifeSecond = 5184000;
 
     private static final String NEWMAN_TYRANT_PRIZE_KEY = "console:Newman_Tyrant_Prize";
@@ -182,6 +188,10 @@ public class ActivityConsoleNewmanTyrantService {
         if (!stringToDate(activityYearEndAwardsStartTime).after(tradingTime) && !tradingTime.after(stringToDate(activityYearEndAwardsRankTime))){
             list.add(activityYearEndAwardsStartTime);
             list.add(activityYearEndAwardsRankTime);
+        }
+        if (!stringToDate(activitySpringBreezeStartTime).after(tradingTime) && !tradingTime.after(stringToDate(activitySpringBreezeEndTime))){
+            list.add(activitySpringBreezeStartTime);
+            list.add(activitySpringBreezeEndTime);
         }
         return list;
     }
