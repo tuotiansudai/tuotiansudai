@@ -34,7 +34,7 @@ public class MobileAppCertificationControllerTest extends ControllerTestBase {
     @Test
     public void shouldUserMobileCertificationIsOk() throws Exception {
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
-        certificationRequestDto.setUserIdCardNumber("123456789012345678");
+        certificationRequestDto.setUserIdCardNumber("45070219830728891X");
         certificationRequestDto.setUserRealName("拓天");
         when(service.validateUserCertificationInfo(any(CertificationRequestDto.class))).thenReturn(successResponseDto);
         when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn("token");
