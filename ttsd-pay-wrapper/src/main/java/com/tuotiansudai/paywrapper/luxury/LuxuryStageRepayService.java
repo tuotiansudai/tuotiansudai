@@ -144,7 +144,7 @@ public class LuxuryStageRepayService {
 
         String luxuryRepayInfo = redisWrapperClient.get(MessageFormat.format(LUXURY_STAGE_REPAY_INFO_REDIS_KEY, orderId));
         String mobile = luxuryRepayInfo.split("\\|")[0];
-        int period = Integer.parseInt(luxuryRepayInfo.split("\\|")[2]) ;
+        int period = Integer.parseInt(luxuryRepayInfo.split("\\|")[2]);
         long amount = Long.parseLong(luxuryRepayInfo.split("\\|")[3]);
 
 
@@ -167,7 +167,11 @@ public class LuxuryStageRepayService {
                                 null));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
-                        new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.LUXURY_STAGE_REPAY, mobile));
+                        new CreditLoanBillModel(Long.parseLong(orderId) * 100 + period,
+                                amount,
+                                CreditLoanBillOperationType.IN,
+                                CreditLoanBillBusinessType.LUXURY_STAGE_REPAY,
+                                mobile));
             }
 
             redisWrapperClient.set(key, SyncRequestStatus.SUCCESS.name());
