@@ -188,7 +188,7 @@ public enum ReturnMessage {
 
     BANK_CARD_RECHARGE_DAILY_LIMIT("0205", "超银行卡单日充值限额"),
 
-    IDENTITY_NUMBER_NO_ENOUGH_LENGTH("0300", "身份证长度应为18位");
+    IDENTITY_NUMBER_INVALID("0300", "身份证不符合规范!");
 
 
     private String code;
