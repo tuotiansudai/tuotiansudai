@@ -3,11 +3,16 @@ package com.tuotiansudai.api.controller;
 import com.tuotiansudai.api.controller.v1_0.MobileAppCertificationController;
 import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.HuiZuDataDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -24,6 +29,9 @@ public class MobileAppCertificationControllerTest extends ControllerTestBase {
     private MobileAppCertificationService service;
 
     @Mock
+    private AccountService accountService;
+
+    @Mock
     private MyAuthenticationUtil myAuthenticationUtil;
 
     @Override
@@ -34,9 +42,10 @@ public class MobileAppCertificationControllerTest extends ControllerTestBase {
     @Test
     public void shouldUserMobileCertificationIsOk() throws Exception {
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
-        certificationRequestDto.setUserIdCardNumber("123456789012345678");
+        certificationRequestDto.setUserIdCardNumber("45070219830728891X");
         certificationRequestDto.setUserRealName("拓天");
-        when(service.validateUserCertificationInfo(any(CertificationRequestDto.class))).thenReturn(successResponseDto);
+        BaseDto<HuiZuDataDto> baseDto = new BaseDto<>(true,new HuiZuDataDto(true));
+        when(accountService.registerAccountFromHuiZu(any(RegisterAccountDto.class))).thenReturn(baseDto);
         when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn("token");
         doRequestWithServiceMockedTest("/certificate", certificationRequestDto);
     }

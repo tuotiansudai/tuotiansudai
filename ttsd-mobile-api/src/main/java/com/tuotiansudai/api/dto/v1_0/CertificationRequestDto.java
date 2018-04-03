@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.model.UserModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -63,10 +62,21 @@ public class CertificationRequestDto extends BaseParamDto {
         RegisterAccountDto registerAccountDto = new RegisterAccountDto();
         registerAccountDto.setIdentityNumber(this.getUserIdCardNumber());
         registerAccountDto.setUserName(this.getUserRealName());
-        registerAccountDto.setLoginName(this.getBaseParam().getUserId());
+        registerAccountDto.setLoginName(userModel.getLoginName());
         registerAccountDto.setMobile(userModel.getMobile());
         return registerAccountDto;
 
+    }
+
+    public CertificationRequestDto() {
+    }
+
+    public CertificationRequestDto(CommonCertificationRequestDto commonCertificationRequestDto) {
+        BaseParam baseParam = new BaseParam();
+        baseParam.setPhoneNum(commonCertificationRequestDto.getMobile());
+        this.userRealName = commonCertificationRequestDto.getUserRealName();
+        this.userIdCardNumber = commonCertificationRequestDto.getUserIdCardNumber();
+        this.setBaseParam(baseParam);
     }
 
 }
