@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="weChatUserInfoModel" type="com.tuotiansudai.activity.repository.model.WeChatUserInfoModel">
+        <result column="id" property="id"/>
+        <result column="openId" property="openId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="head_img_url" property="headImgUrl"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <select id="initCharset">
+        SET NAMES utf8mb4
+    </select>
+
+    <insert id="create" parameterType="weChatUserInfoModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO we_chat_user_info(openId, nick_name, head_img_url, created_time, updated_time)
+        VALUES (#{openId}, #{nickName}, #{headImgUrl}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="weChatUserInfoModel">
+        UPDATE we_chat_user_info SET
+        openId = #{openId},
+        nick_name = #{nickName},
+        head_img_url = #{headImgUrl},
+        updated_time = #{updatedTime}
+        where id = #{id}
+    </update>
+
+    <select id="findByOpenId" parameterType="map" resultMap="weChatUserInfoModel">
+        SELECT * from we_chat_user_info where openId = #{openId}
+    </select>
+
+</mapper>

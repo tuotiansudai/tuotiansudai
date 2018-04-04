@@ -34,6 +34,8 @@ public class WeChatClient {
 
     private final static String MESSAGE_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}";
 
+    private final static String WE_CHAT_USER_INFO_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN";
+
     private final OkHttpClient client = new OkHttpClient();
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -78,9 +80,9 @@ public class WeChatClient {
 
         logger.info(MessageFormat.format("originalState {0}, state {1}", originalState, state));
 
-        if (Strings.isNullOrEmpty(state) || !state.equals(originalState)) {
-            return null;
-        }
+//        if (Strings.isNullOrEmpty(state) || !state.equals(originalState)) {
+//            return null;
+//        }
 
         try {
             Request request = new Request.Builder()
@@ -231,5 +233,36 @@ public class WeChatClient {
         }
 
         return token;
+    }
+
+    public Map<String, Object> fetchWeChatUserInfo(String openId){
+        String token = this.fetchToken();
+
+        if (Strings.isNullOrEmpty(token)) {
+            return null;
+        }
+
+        try {
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(WE_CHAT_USER_INFO_URL_TEMPLATE, token, openId))
+                    .get().build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 200) {
+                return null;
+            }
+            String responseString = response.body().string();
+            Map<String, Object> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, Object>>() {
+            });
+
+            if (result.containsKey("errcode")) {
+                logger.error(MessageFormat.format("fetch we chat user info failed, openId: {0} response: {1}", openId, responseString));
+                return null;
+            }
+            return result;
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 }

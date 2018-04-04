@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="weChatHelpModel" type="com.tuotiansudai.activity.repository.model.WeChatHelpModel">
+        <result column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="invest_id" property="investId"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="annualized_Amount" property="annualizedAmount"/>
+        <result column="login_name" property="loginName"/>
+        <result column="openId" property="openId"/>
+        <result column="help_type" property="type"/>
+        <result column="help_user_count" property="helpUserCount"/>
+        <result column="reward" property="reward"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="is_send" property="isSend"/>
+    </resultMap>
+
+    <insert id="create" parameterType="weChatHelpModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO we_chat_help(loan_id, invest_id, invest_amount,annualized_Amount, login_name, openId, help_type, start_time, end_time)
+        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{openId}, #{type}, #{startTime}, #{endTime})
+    </insert>
+
+    <update id="update" parameterType="weChatHelpModel">
+        UPDATE we_chat_help SET
+        help_user_count = #{helpUserCount},
+        reward = #{reward},
+        is_send = #{isSend}
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="map" resultMap="weChatHelpModel">
+        SELECT * from we_chat_help where id = #{id}}
+    </select>
+
+    <select id="findAllByType" parameterType="map" resultMap="weChatHelpModel">
+        SELECT * from we_chat_help where help_type = #{helpType}
+    </select>
+
+    <select id="findByOpenId" parameterType="map" resultMap="weChatHelpModel">
+        SELECT * FROM we_chat_help where openId = #{openId}
+    </select>
+
+</mapper>

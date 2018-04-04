@@ -12,7 +12,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_ActivityAnnualized,
             MessageQueue.InvestSuccess_CashSnowball,
             MessageQueue.InvestSuccess_StartWork,
-            MessageQueue.InvestSuccess_Ranking),
+            MessageQueue.InvestSuccess_Ranking,
+            MessageQueue.InvestSuccess_WeChatHelp),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="weChatHelpInfoModel" type="com.tuotiansudai.activity.repository.model.WeChatHelpInfoModel">
+        <result column="id" property="id"/>
+        <result column="we_chat_user_info_id" property="weChatUserInfoId"/>
+        <result column="we_chat_help_id" property="weChatHelpId"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="weChatHelpInfoModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO we_chat_help_info(we_chat_user_info_id, we_chat_help_id, created_time)
+        VALUES (#{weChatUserInfoId}, #{weChatHelpId}, #{createdTime})
+    </insert>
+
+    <select id="findByWeChatUserId" parameterType="map" resultMap="weChatHelpInfoModel">
+        SELECT * from we_chat_help_info where we_chat_user_info_id = #{weChatUserId} and we_chat_help_id = #{helpId}
+    </select>
+
+    <select id="findInfoByHelpId" parameterType="map" resultMap="weChatUserInfoModel">
+        select u.* from we_chat_help_info h join we_chat_user_info u on h.we_chat_user_info_id = u.id
+        where h.we_chat_help_id = #{helpId}
+    </select>
+
+</mapper>
