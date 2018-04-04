@@ -1,45 +1,35 @@
 package com.tuotiansudai.client;
 
-import com.google.common.base.Strings;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import com.google.common.collect.Lists;
+import com.squareup.okhttp.ResponseBody;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import java.util.List;
 
 @Component
-public class BaiDuWebMasterWrapperClient extends BaseClient{
+public class BaiDuWebMasterWrapperClient extends BaseClient {
     static Logger logger = Logger.getLogger(BaiDuWebMasterWrapperClient.class);
 
-    protected String executeForBaiDu(String requestStr) {
-        RequestBody requestBody = RequestBody.create(text, !Strings.isNullOrEmpty(requestStr) ? requestStr : "");
-        Request request = new Request.Builder()
-                .url(baiDuWebMasterUrl)
-                .method("POST", requestBody)
-                .addHeader("User-Agent", "curl/7.12.1")
-                .addHeader("Host", "data.zz.baidu.com")
-                .addHeader("Content-Type", "text/plain; charset=UTF-8")
-                .addHeader("Content-Length", "83")
-                .build();
-
+    public String executeForBaiDu(List<String> stringList) {
+        String requestStr = StringUtils.join(stringList, "\n");
+        ResponseBody responseBody = this.newCallForBaiDu(requestStr);
         try {
-            Response response = this.okHttpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                return response.body().string();
-            }
-        } catch (IOException e) {
+            return responseBody != null ? responseBody.string() : null;
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
+            return null;
         }
 
-        return null;
     }
 
+    public static void main(String args[]) {
 
-
+        BaiDuWebMasterWrapperClient baiDuWebMasterWrapperClient = new BaiDuWebMasterWrapperClient();
+        String returnString = baiDuWebMasterWrapperClient.executeForBaiDu(Lists.newArrayList("https://tuotiansudai.com/ask/question/111493", "https://tuotiansudai.com/ask/question/111494"));
+        System.out.println(returnString);
+    }
 
 
 }
