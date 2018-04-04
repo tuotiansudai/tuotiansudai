@@ -18,11 +18,15 @@ public abstract class BaseClient {
 
     private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+    private final static MediaType text = MediaType.parse("text/plain; charset=utf-8");
+
     private final static String REQUEST_ID = "requestId";
 
     private final static String ANONYMOUS = "anonymous";
 
     private final static String USER_ID = "userId";
+
+    private final static String baiDuWebMasterUrl = " http://data.zz.baidu.com/urls?site=https://tuotiansudai.com&token=TRCKe3BVZH8842bI";
 
     protected String host;
 
@@ -62,6 +66,29 @@ public abstract class BaseClient {
             logger.error(e.getLocalizedMessage(), e);
             return null;
         }
+    }
+
+    protected ResponseBody newCallForBaiDu(String requestStr) {
+        RequestBody requestBody = RequestBody.create(text, !Strings.isNullOrEmpty(requestStr) ? requestStr : "");
+        Request request = new Request.Builder()
+                .url(baiDuWebMasterUrl)
+                .method("POST", requestBody)
+                .addHeader("User-Agent", "curl/7.12.1")
+                .addHeader("Host", "data.zz.baidu.com")
+                .addHeader("Content-Type", "text/plain; charset=UTF-8")
+                .addHeader("Content-Length", "83")
+                .build();
+
+        try {
+            Response response = this.okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return null;
     }
 
     protected ResponseBody newCall(String path, String requestJson, String method) {
