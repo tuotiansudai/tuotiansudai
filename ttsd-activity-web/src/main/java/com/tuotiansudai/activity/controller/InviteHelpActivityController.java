@@ -46,14 +46,15 @@ public class InviteHelpActivityController {
     @RequestMapping(value = "/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView inviteHelpDetail(@PathVariable long id){
         ModelAndView modelAndView = new ModelAndView("/activities/2017/invite-help-detail", "responsive", false);
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName = "chenzhonghui";
         if (loginName !=null){
-            modelAndView.addAllObjects(inviteHelpActivityService.investHelp(loginName));
+            modelAndView.addAllObjects(inviteHelpActivityService.investHelpDetail(id, loginName));
+            modelAndView.addObject("userMobile", LoginUserInfo.getMobile());
         }
         return modelAndView;
     }
 
-    @RequestMapping(path = "/{id:^\\d+$}/right-away/help", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id:^\\d+$}/everyone/help", method = RequestMethod.GET)
     public ModelAndView rightAwayHelp(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {

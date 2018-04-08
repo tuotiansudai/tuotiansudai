@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.WeChatHelpInfoModel;
-import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.activity.repository.model.WeChatUserInfoModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,5 +15,4 @@ public interface WeChatHelpInfoMapper {
     WeChatHelpInfoModel findByWeChatUserId(@Param(value = "weChatUserId") long weChatUserId,
                                            @Param(value = "helpId") long helpId);
 
-    List<WeChatUserInfoModel> findInfoByHelpId(@Param(value = "helpId") long helpId);
 }

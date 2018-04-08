@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
@@ -20,11 +20,6 @@
 
     <select id="findByWeChatUserId" parameterType="map" resultMap="weChatHelpInfoModel">
         SELECT * from we_chat_help_info where we_chat_user_info_id = #{weChatUserId} and we_chat_help_id = #{helpId}
-    </select>
-
-    <select id="findInfoByHelpId" parameterType="map" resultMap="weChatUserInfoModel">
-        select u.* from we_chat_help_info h join we_chat_user_info u on h.we_chat_user_info_id = u.id
-        where h.we_chat_help_id = #{helpId}
     </select>
 
 </mapper>

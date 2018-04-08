@@ -15,10 +15,7 @@ import com.tuotiansudai.util.WeChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,16 +35,14 @@ public class InviteHelpActivityService {
 
     private final WeChatClient weChatClient = WeChatClient.getClient();
 
-    private final List<Double> rates = Lists.newArrayList(0.002D, 0.005D, 0.006D, 0.007D, 0.008D, 0.01D);
-    private final List<Integer> number = Lists.newArrayList(2, 8, 18, 58, 88, 108);
-
-//    private final List<RewardRate> rewardRates = Lists.newArrayList(
-//            new RewardRate(2, 8, 0.002),
-//            new RewardRate(8, 18, 0.005),
-//            new RewardRate(18, 58, 0.006),
-//            new RewardRate(58, 88, 0.007),
-//            new RewardRate(88, 108, 0.008),
-//            new RewardRate(108, Integer.MAX_VALUE, 0.01));
+    private final Map<Integer, Double> rates = Maps.newHashMap(ImmutableMap.<Integer, Double>builder()
+            .put(2, 0.002D)
+            .put(8, 0.005D)
+            .put(18, 0.006D)
+            .put(58, 0.007D)
+            .put(88, 0.008D)
+            .put(108, 0.01D)
+            .build());
 
     public Map<String, Object> investHelp(String loginName){
         List<WeChatHelpModel> list = weChatHelpMapper.findAllByType(WeChatHelpType.INVEST_HELP);
@@ -62,20 +57,21 @@ public class InviteHelpActivityService {
     public Map<String, Object> investHelpDetail(long id, String loginName){
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         if (weChatHelpModel != null && weChatHelpModel.getLoginName().equals(loginName)) {
-            List<WeChatUserInfoModel> list = weChatHelpInfoMapper.findInfoByHelpId(weChatHelpModel.getId());
+            Map<String, Object> map = new HashMap<>();
             List<Long> myCashChain = new ArrayList<>();
-            rates.forEach(rate -> myCashChain.add((long) (weChatHelpModel.getAnnualizedAmount() * rate)));
-
-
-
+            rates.values().forEach(rate -> myCashChain.add((long) (weChatHelpModel.getAnnualizedAmount() * rate)));
+            map.put("myCashChain", myCashChain);
+            Optional<Integer> optional = rates.keySet().stream().filter(i -> i > weChatHelpModel.getHelpUserCount()).findFirst();
+            if (optional.isPresent()){
+                map.put("nextNode", optional.get() - weChatHelpModel.getHelpUserCount());
+                map.put("nextAmount", (long) (weChatHelpModel.getAnnualizedAmount() * rates.get(optional.get())));
+            }
+            map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()));
+            map.put("helpModel", weChatHelpModel);
+            return map;
         }
         return null;
     }
-
-    public int getNextChainNode(int userCount){
-        
-    }
-
 
     public void createWeChatUserInfo(String openId){
         Map<String, Object> map = weChatClient.fetchWeChatUserInfo(openId);
@@ -92,34 +88,6 @@ public class InviteHelpActivityService {
             weChatUserInfoModel.setHeadImgUrl((String) map.get("headimgurl"));
             weChatUserInfoModel.setUpdatedTime(new Date());
             weChatUserInfoMapper.update(weChatUserInfoModel);
-        }
-    }
-
-
-    class RewardRate{
-        private int minNum;
-        private int maxNum;
-        private double rate;
-
-        public RewardRate() {
-        }
-
-        public RewardRate(int minNum, int maxNum, double rate) {
-            this.minNum = minNum;
-            this.maxNum = maxNum;
-            this.rate = rate;
-        }
-
-        public int getMinNum() {
-            return minNum;
-        }
-
-        public int getMaxNum() {
-            return maxNum;
-        }
-
-        public double getRate() {
-            return rate;
         }
     }
 }
