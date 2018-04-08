@@ -26,7 +26,7 @@ public class BaiDuMaWebMasterService {
             String requestStr = StringUtils.join(urlList, "\n");
             String returnString = baiDuWebMasterWrapperClient.executeForBaiDu(urlList);
             logger.info(String.format("[baiDu:] json:%s", returnString));
-            siteMapRedisWrapperClient.set(siteMapKey,String.format("%s%s",siteMapRedisWrapperClient.get(siteMapKey), requestStr));
+            siteMapRedisWrapperClient.set(siteMapKey,String.format("%s\n%s",siteMapRedisWrapperClient.get(siteMapKey), requestStr));
 
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
