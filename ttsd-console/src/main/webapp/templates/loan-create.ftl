@@ -273,15 +273,15 @@
 
                     <div class="col-sm-3 checkbox" id="estimate">
                         <label>
-                            <input name="estimates" type="checkbox"
+                            <input name="estimates" type="radio"
                                    value="CONSERVATIVE">保守型
                         </label>
                         <label>
-                            <input name="estimates" type="checkbox"
+                            <input name="estimates" type="radio"
                                    value="STEADY">稳健型
                         </label>
                         <label>
-                            <input name="estimates" type="checkbox"
+                            <input name="estimates" type="radio"
                                    value="POSITIVE">积极型
                         </label>
                     </div>
