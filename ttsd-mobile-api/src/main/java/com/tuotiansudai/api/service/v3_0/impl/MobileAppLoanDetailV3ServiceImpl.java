@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v3_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
@@ -136,7 +137,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
         if (loanDetailsModelActivity != null && CollectionUtils.isNotEmpty(loanDetailsModelActivity.getEstimates())) {
-            dataDto.setEstimates(loanDetailsModelActivity.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList()));
+            dataDto.setEstimates(Joiner.on("/").join(loanDetailsModelActivity.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList())));
         }
 
         double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);

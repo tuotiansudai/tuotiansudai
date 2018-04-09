@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -295,7 +296,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplicationDetailResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
         if (loanDetailsModel != null && CollectionUtils.isNotEmpty(loanDetailsModel.getEstimates())) {
-            transferApplicationDetailResponseDataDto.setEstimates(loanDetailsModel.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList()));
+            transferApplicationDetailResponseDataDto.setEstimates(Joiner.on("/").join(loanDetailsModel.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList())));
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
