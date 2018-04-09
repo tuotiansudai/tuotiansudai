@@ -35,6 +35,7 @@ let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
 var viewport = globalFun.browserRedirect();
+let isEstimate = $loanDetailContent.data('estimate');
 
 function showInputErrorTips(message) {
     layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
@@ -71,8 +72,23 @@ function validateInvestAmount() {
     var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;//可投金额
     return amount > 0 && amountNeedRaised >= amount;
 };
+
+
 //投资表单请求以及校验
 function investSubmit(){
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
+
+        });
+        return false;
+    }
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
@@ -135,6 +151,8 @@ function investSubmit(){
         anxinModule.getSkipPhoneTip();
         return false;
     }
+
+
 }
 //发送投资提交请求
 function sendSubmitRequest(){
@@ -156,10 +174,11 @@ function sendSubmitRequest(){
         } else {
             showInputErrorTips(data.message);
         }
+
     });
 }
 //is tip B1 or tip B2?
-function markNoPasswordRemind(){debugger
+function markNoPasswordRemind(){
     if (!noPasswordRemind) {
         commonFun.useAjax({
             url: '/no-password-invest/mark-remind',
@@ -489,6 +508,7 @@ function showAuthorizeAgreementOptions(){
                     if (isAuthentication) {
                         location.href = '/register/account';
                     }
+
                 })
                 .fail(function() {
                     //判断是否需要弹框登陆
@@ -870,23 +890,21 @@ $('.skip-group').hide();
 });
 
 
-//风险测评
-layer.open({
-    type: 1,
-    title:false,
-    closeBtn: 0,
-    area: ['400px', '250px'],
-    shadeClose: true,
-    content: $('#riskAssessment')
 
-});
 var $cancelAssessment = $('#cancelAssessment'),
     $confirmAssessment = $('#confirmAssessment'),
     $riskTips = $('#riskTips');
 
 $cancelAssessment.on('click', function(event) {
     event.preventDefault();
-    layer.closeAll();
+    commonFun.useAjax({
+        url: '/risk-estimate',
+        data: {answers: ['-1']},
+        type: 'POST'
+    },function(data) {
+        layer.closeAll();
+    });
+
 });
 $confirmAssessment.on('click', function(event) {
     event.preventDefault();
