@@ -49,7 +49,22 @@ $('#transferSubmit').on('click', function(event) {
             });
         })
         .done(function() {
-            submitData();
+            if(!isEstimate){
+                //风险测评
+                layer.open({
+                    type: 1,
+                    title:false,
+                    closeBtn: 0,
+                    area: ['400px', '250px'],
+                    shadeClose: true,
+                    content: $('#riskAssessment')
+
+                });
+                return false;
+            }else {
+                submitData();
+            }
+
         });
 });
 
@@ -58,19 +73,6 @@ function submitData() {
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val(),
         $transferDetail = $('.transfer-detail-content');
-    if(!isEstimate){
-        //风险测评
-        layer.open({
-            type: 1,
-            title:false,
-            closeBtn: 0,
-            area: ['400px', '250px'],
-            shadeClose: true,
-            content: $('#riskAssessment')
-
-        });
-        return false;
-    }
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'
@@ -193,5 +195,23 @@ $riskTips.on('mouseout', function(event) {
     $('.risk-tip-content').hide();
 });
 
+var $cancelAssessment = $('#cancelAssessment'),
+    $confirmAssessment = $('#confirmAssessment'),
+    $riskTips = $('#riskTips');
+$cancelAssessment.on('click', function(event) {
+    event.preventDefault();
+    commonFun.useAjax({
+        url: '/risk-estimate',
+        data: {answers: ['-1']},
+        type: 'POST'
+    },function(data) {
+        layer.closeAll();
+        submitData();
+    });
 
-
+});
+$confirmAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+    location.href = '/risk-estimate'
+});
