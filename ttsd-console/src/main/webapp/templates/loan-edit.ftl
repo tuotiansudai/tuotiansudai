@@ -312,18 +312,18 @@
 
                 <div class="col-sm-3 checkbox" id="estimates">
                     <label>
-                        <input name="estimates" type="radio"
-                               <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('CONSERVATIVE')>checked="checked"</#if>
+                        <input name="estimate" type="radio"
+                               <#if (loan.loanDetails.estimate)?? && loan.loanDetails.estimate == 'CONSERVATIVE'>checked="checked"</#if>
                                value="CONSERVATIVE">保守型
                     </label>
                     <label>
-                        <input name="estimates" type="radio"
-                               <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('STEADY')>checked="checked"</#if>
+                        <input name="estimate" type="radio"
+                               <#if (loan.loanDetails.estimate)?? && loan.loanDetails.estimate == 'STEADY'>checked="checked"</#if>
                                value="STEADY">稳健型
                     </label>
                     <label>
-                        <input name="estimates" type="radio"
-                               <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('POSITIVE')>checked="checked"</#if>
+                        <input name="estimate" type="radio"
+                               <#if (loan.loanDetails.estimate)?? && loan.loanDetails.estimate == 'POSITIVE'>checked="checked"</#if>
                                value="POSITIVE">积极型
                     </label>
                 </div>
