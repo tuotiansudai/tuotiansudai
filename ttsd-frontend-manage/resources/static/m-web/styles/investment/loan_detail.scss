@@ -63,6 +63,9 @@
         background: rgba(255,176,0,0.9);
         text-align: center;
         position: relative;
+        .risk-type {
+          color: red;
+        }
         em {
           width: 16px;
           height: 16px;
