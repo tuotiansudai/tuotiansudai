@@ -295,8 +295,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
         transferApplicationDetailResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-        if (loanDetailsModel != null && CollectionUtils.isNotEmpty(loanDetailsModel.getEstimates())) {
-            transferApplicationDetailResponseDataDto.setEstimates(Joiner.on("/").join(loanDetailsModel.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList())));
+        if (loanDetailsModel != null && loanDetailsModel.getEstimate() != null) {
+            transferApplicationDetailResponseDataDto.setEstimate(loanDetailsModel.getEstimate().getType());
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

@@ -65,7 +65,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     private String countdown;
 
     @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
-    private String estimates;
+    private String estimate;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -213,12 +213,12 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.countdown = countdown;
     }
 
-    public String getEstimates() {
-        return estimates;
+    public String getEstimate() {
+        return estimate;
     }
 
-    public void setEstimates(String estimates) {
-        this.estimates = estimates;
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
     }
 
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {

@@ -19,7 +19,7 @@ public class LoanDetailsModel implements Serializable {
     private String pushMessage;
     private boolean grantReward;
     private double rewardRate;
-    private List<Estimate> estimates;
+    private Estimate estimate;
 
     public LoanDetailsModel() {
     }
@@ -43,7 +43,7 @@ public class LoanDetailsModel implements Serializable {
         this.pushMessage = loanDetails.getPushMessage();
         this.grantReward = loanDetails.getGrantReward();
         this.rewardRate = Double.parseDouble(rateStrDivideOneHundred(loanDetails.getRewardRate()));
-        this.estimates = loanDetails.getEstimates();
+        this.estimate = loanDetails.getEstimate();
     }
 
     public long getId() {
@@ -134,12 +134,12 @@ public class LoanDetailsModel implements Serializable {
         this.rewardRate = rewardRate;
     }
 
-    public List<Estimate> getEstimates() {
-        return estimates;
+    public Estimate getEstimate() {
+        return estimate;
     }
 
-    public void setEstimates(List<Estimate> estimates) {
-        this.estimates = estimates;
+    public void setEstimate(Estimate estimate) {
+        this.estimate = estimate;
     }
 
     private String rateStrDivideOneHundred(String rate) {

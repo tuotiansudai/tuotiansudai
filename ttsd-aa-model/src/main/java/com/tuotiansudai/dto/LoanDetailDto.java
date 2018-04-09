@@ -89,6 +89,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private double maxExtraLoanRate;
 
+    private String estimate;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto, double maxExtraLoanRate) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
@@ -121,6 +123,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.pledgeType = loanModel.getPledgeType();
         this.deadline = loanModel.getDeadline();
         this.maxExtraLoanRate = new BigDecimal(maxExtraLoanRate).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.estimate = loanDetails != null && loanDetails.getEstimate() != null ? loanDetails.getEstimate().getType() : null;
     }
 
     public long getId() {
@@ -329,5 +332,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public double getMaxExtraLoanRate() {
         return maxExtraLoanRate;
+    }
+
+    public String getEstimate() {
+        return estimate;
+    }
+
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
     }
 }

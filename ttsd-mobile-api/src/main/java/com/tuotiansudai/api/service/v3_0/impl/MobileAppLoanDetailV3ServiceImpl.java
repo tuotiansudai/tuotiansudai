@@ -136,10 +136,9 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
-        if (loanDetailsModelActivity != null && CollectionUtils.isNotEmpty(loanDetailsModelActivity.getEstimates())) {
-            dataDto.setEstimates(Joiner.on("/").join(loanDetailsModelActivity.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList())));
+        if (loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() != null) {
+            dataDto.setEstimates(loanDetailsModelActivity.getEstimate().getType());
         }
-
         double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
         long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), investFeeRate, loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT, new Date());

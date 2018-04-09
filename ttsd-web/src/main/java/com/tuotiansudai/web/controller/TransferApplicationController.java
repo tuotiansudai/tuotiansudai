@@ -6,10 +6,12 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
@@ -48,6 +50,12 @@ public class TransferApplicationController {
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
 
+    @Autowired
+    private RiskEstimateService riskEstimateService;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
 
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
@@ -57,12 +65,15 @@ public class TransferApplicationController {
             return new ModelAndView("/error/404");
         }
         LoanModel loanModel = loanService.findLoanById(dto.getLoanId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+
         LoanDto loanDto = new LoanDto();
         loanDto.setBasicRate(String.valueOf(loanModel.getBaseRate()));
         loanDto.setActivityRate(String.valueOf(loanModel.getActivityRate()));
         loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         loanDto.setType(loanModel.getType());
         loanDto.setPeriods(loanModel.getPeriods());
+        loanDto.setEstimate(loanDetailsModel != null && loanDetailsModel.getEstimate() != null ? loanDetailsModel.getEstimate().getType() : null);
 
         String loginName = LoginUserInfo.getLoginName();
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
@@ -76,6 +87,9 @@ public class TransferApplicationController {
         modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
         BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         modelAndView.addObject("hasBankCard", passedBankCard != null);
+
+        modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
+
         return modelAndView;
     }
 

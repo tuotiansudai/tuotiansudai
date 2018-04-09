@@ -42,7 +42,7 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
 
     @Override
     public Estimate estimate(String loginName, List<Integer> answers) {
-        if (CollectionUtils.isEmpty(answers)) {
+        if (answers.size() == 1 && answers.get(0) == -1) {
             RiskEstimateModel estimateModel = new RiskEstimateModel();
             estimateModel.setEstimate(Estimate.CONSERVATIVE);
             riskEstimateMapper.create(estimateModel);
