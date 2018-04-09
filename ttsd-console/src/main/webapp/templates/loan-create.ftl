@@ -271,7 +271,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">项目适合的用户: </label>
 
-                    <div class="col-sm-2 checkbox" id="estimate">
+                    <div class="col-sm-3 checkbox" id="estimate">
                         <label>
                             <input name="estimates" type="checkbox"
                                    value="CONSERVATIVE">保守型

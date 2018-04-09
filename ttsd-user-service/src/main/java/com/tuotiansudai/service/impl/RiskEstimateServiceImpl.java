@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.RiskEstimateMapper;
 import com.tuotiansudai.repository.model.RiskEstimateModel;
 import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.util.RedisWrapperClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
 
     @Override
     public Estimate estimate(String loginName, List<Integer> answers) {
-        if (answers == null) {
+        if (CollectionUtils.isEmpty(answers)) {
             RiskEstimateModel estimateModel = new RiskEstimateModel();
             estimateModel.setEstimate(Estimate.CONSERVATIVE);
             riskEstimateMapper.create(estimateModel);

@@ -310,7 +310,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">项目适合的用户: </label>
 
-                <div class="col-sm-2 checkbox" id="estimates">
+                <div class="col-sm-3 checkbox" id="estimates">
                     <label>
                         <input name="estimates" type="checkbox"
                                <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('CONSERVATIVE')>checked="checked"</#if>
