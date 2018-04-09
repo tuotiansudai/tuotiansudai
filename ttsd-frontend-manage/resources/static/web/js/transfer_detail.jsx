@@ -13,6 +13,7 @@ var $transferDetailCon = $('#transferDetailCon'),
     $questionList = $('.question-list', $transferDetailCon),
     $detailRecord = $('.detail-record', $transferDetailCon),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
+var isEstimate = $transferDetailCon.data('estimate');
 
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
@@ -57,6 +58,19 @@ function submitData() {
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val(),
         $transferDetail = $('.transfer-detail-content');
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
+
+        });
+        return false;
+    }
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'
