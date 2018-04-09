@@ -9,6 +9,7 @@
             <a href="javascript:void(0);"><i class="icon-help"></i></a>
         </#if>
         <div class="collection">
+            <span class="risk-tip">该项目适合投资偏好类型为保守型的用户<em id="closeRisk"></em></span>
             <span class="title">
 
                     <#if loan.activity?string("true","false") == "true">

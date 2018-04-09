@@ -844,3 +844,11 @@ function countDownTime() {
 }
 
 commonFun.calculationFun(document,window)
+
+if($('#closeRisk').length){
+    $('#closeRisk').on('click',function () {
+        $(this).parent().hide();
+        $('.account-summary').css("cssText", "height:156px !important;");
+    })
+
+}

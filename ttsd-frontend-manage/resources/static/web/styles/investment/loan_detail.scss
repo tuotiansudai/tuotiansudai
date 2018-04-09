@@ -190,6 +190,38 @@ $red: #eb4a3e;
         border-bottom: 1px solid #ccc;
         font-size: 12px;
         text-align: right;
+        position: relative;
+        //风险测评提示框
+        .risk-tips {
+          position: absolute;
+          width: 100px;
+          text-align: left;
+          text-indent: 10px;
+          height: 50px;
+          left: 0;
+          top: 0;
+          line-height: 50px;
+          color: #ff752a;
+         em {
+           display: inline-block;
+           width: 18px;
+           height: 20px;
+           margin-left: 5px;
+           background: url("../../images/icons/riskTip.png") no-repeat;
+           background-size: 100%;
+           vertical-align: middle;
+           cursor: pointer;
+         }
+          .risk-tip-content {
+            display: none;
+            width: 248px;
+            height: 30px;
+            line-height: 30px;
+            top: 44px;
+            left: -100px;
+            color: #333;
+          }
+        }
       }
       .account-list {
         padding: 18px;
@@ -942,13 +974,20 @@ $red: #eb4a3e;
         padding-bottom: 20px;
       }
       .account-info {
+        position: relative;
+        background: red;
         width: 100%;
         border-left-width: 0;
         border-right-width: 0;
         margin-bottom: 10px;
         padding-bottom:15px;
+
+
+
+
         .l-title {
           display: none;
+
         }
         .account-list {
           margin-left: 0 !important;

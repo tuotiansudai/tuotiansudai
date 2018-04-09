@@ -117,7 +117,8 @@
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
-                <h5 class="l-title">拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+
+                <h5 class="l-title"><span id="riskTips" class="risk-tips">保守型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为保守型的用户</i></span>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
                         <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">

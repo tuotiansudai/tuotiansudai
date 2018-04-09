@@ -881,7 +881,8 @@ layer.open({
 
 });
 var $cancelAssessment = $('#cancelAssessment'),
-    $confirmAssessment = $('#confirmAssessment');
+    $confirmAssessment = $('#confirmAssessment'),
+    $riskTips = $('#riskTips');
 
 $cancelAssessment.on('click', function(event) {
     event.preventDefault();
@@ -892,5 +893,14 @@ $confirmAssessment.on('click', function(event) {
     layer.closeAll();
     location.href = '/risk-estimate'
 });
+$riskTips.on('mouseover', function(event) {
+    event.preventDefault();
+   $('.risk-tip-content').show();
+});
+$riskTips.on('mouseout', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').hide();
+});
+
 
 
