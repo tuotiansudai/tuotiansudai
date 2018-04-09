@@ -57,7 +57,7 @@
 </#if>
 
 <#include "component/anxin-agreement.ftl" />
-
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2;margin-top: 40px">市场有风险，投资需谨慎！</div>
 </div>
 
 <div id="authorization_message" style="display: none">

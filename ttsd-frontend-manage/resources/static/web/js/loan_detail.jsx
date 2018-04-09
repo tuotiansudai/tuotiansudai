@@ -870,6 +870,27 @@ $('.skip-group').hide();
 });
 
 
+//风险测评
+layer.open({
+    type: 1,
+    title:false,
+    closeBtn: 0,
+    area: ['400px', '250px'],
+    shadeClose: true,
+    content: $('#riskAssessment')
 
+});
+var $cancelAssessment = $('#cancelAssessment'),
+    $confirmAssessment = $('#confirmAssessment');
+
+$cancelAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+});
+$confirmAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+    location.href = '/risk-estimate'
+});
 
 

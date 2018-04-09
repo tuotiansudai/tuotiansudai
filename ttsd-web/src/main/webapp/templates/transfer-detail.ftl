@@ -10,7 +10,7 @@
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
             <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
-            <span class="product-tip">拓天速贷提醒您：投资非存款，投资需谨慎！</span>
+            <span class="product-tip">拓天速贷提醒您：市场有风险，投资需谨慎！</span>
         </div>
         <div class="transfer-info">
             <div class="transfer-info-dl">
