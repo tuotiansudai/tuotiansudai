@@ -31,7 +31,7 @@ public class LoanCreateDetailsRequestDto {
 
     private String rewardRate;
 
-    private List<Estimate> estimates = Lists.newArrayList();
+    private Estimate estimate;
 
     public LoanCreateDetailsRequestDto() {
     }
@@ -46,7 +46,7 @@ public class LoanCreateDetailsRequestDto {
         this.disableCoupon = loanDetailsModel.getDisableCoupon();
         this.grantReward = loanDetailsModel.getGrantReward();
         this.rewardRate = String.valueOf(loanDetailsModel.getRewardRate());
-        this.estimates = loanDetailsModel.getEstimates();
+        this.estimate = loanDetailsModel.getEstimate();
     }
 
     public boolean getNonTransferable() {
@@ -129,11 +129,11 @@ public class LoanCreateDetailsRequestDto {
         this.rewardRate = rewardRate;
     }
 
-    public List<Estimate> getEstimates() {
-        return estimates;
+    public Estimate getEstimate() {
+        return estimate;
     }
 
-    public void setEstimates(List<Estimate> estimates) {
-        this.estimates = estimates;
+    public void setEstimate(Estimate estimate) {
+        this.estimate = estimate;
     }
 }
