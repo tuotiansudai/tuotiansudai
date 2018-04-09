@@ -1,8 +1,6 @@
 package com.tuotiansudai.client;
 
-import com.google.common.collect.Lists;
 import com.squareup.okhttp.ResponseBody;
-import com.tuotiansudai.dto.Environment;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
