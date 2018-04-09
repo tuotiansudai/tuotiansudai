@@ -162,7 +162,7 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     private String interestPerTenThousands;
 
     @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
-    private List<Estimate> estimates;
+    private String estimates;
 
     public Long getLoanId() {
         return loanId;
@@ -548,11 +548,11 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
         this.interestPerTenThousands = interestPerTenThousands;
     }
 
-    public List<Estimate> getEstimates() {
+    public String getEstimates() {
         return estimates;
     }
 
-    public void setEstimates(List<Estimate> estimates) {
+    public void setEstimates(String estimates) {
         this.estimates = estimates;
     }
 

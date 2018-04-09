@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v3_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
@@ -14,6 +15,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanDetailV3ResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanDetailV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -133,7 +135,10 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
-        dataDto.setEstimates(loanDetailsModelActivity != null ? loanDetailsModelActivity.getEstimates() : null);
+        if (loanDetailsModelActivity != null && CollectionUtils.isNotEmpty(loanDetailsModelActivity.getEstimates())) {
+            dataDto.setEstimates(MessageFormat.format("该项目适合投资偏好类型为{0}的用户",
+                    Joiner.on("/").join(loanDetailsModelActivity.getEstimates())));
+        }
 
         double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
