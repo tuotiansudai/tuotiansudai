@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service.v3_0.impl;
 
 
 import com.google.common.base.Function;
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
@@ -38,6 +37,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Service {
@@ -136,8 +136,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
         if (loanDetailsModelActivity != null && CollectionUtils.isNotEmpty(loanDetailsModelActivity.getEstimates())) {
-            dataDto.setEstimates(MessageFormat.format("该项目适合投资偏好类型为{0}的用户",
-                    Joiner.on("/").join(loanDetailsModelActivity.getEstimates())));
+            dataDto.setEstimates(loanDetailsModelActivity.getEstimates().stream().map(Estimate::getType).collect(Collectors.toList()));
         }
 
         double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
