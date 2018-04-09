@@ -41,7 +41,14 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
 
     @Override
     public Estimate estimate(String loginName, List<Integer> answers) {
-        if (answers == null || answers.size() != 8) {
+        if (answers == null) {
+            RiskEstimateModel estimateModel = new RiskEstimateModel();
+            estimateModel.setEstimate(Estimate.CONSERVATIVE);
+            riskEstimateMapper.create(estimateModel);
+            return Estimate.CONSERVATIVE;
+        }
+
+        if (answers.size() != 8) {
             return null;
         }
 

@@ -18,6 +18,7 @@
         <result column="push_message" property="pushMessage"/>
         <result column="grant_reward" property="grantReward"/>
         <result column="reward_rate" property="rewardRate"/>
+        <result column="estimates" property="estimates" typeHandler="com.tuotiansudai.util.mybatis.EstimateListTypeHandler"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanDetailsModel">
@@ -25,7 +26,8 @@
         (id, loan_id, declaration, extra_source, activity, activity_desc, non_transferable, push_message, disable_coupon, grant_reward, reward_rate)
         VALUES
         (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc},
-        #{nonTransferable}, #{pushMessage}, #{disableCoupon}, #{grantReward}, #{rewardRate})
+        #{nonTransferable}, #{pushMessage}, #{disableCoupon}, #{grantReward}, #{rewardRate},
+        #{estimates,typeHandler=com.tuotiansudai.util.mybatis.EstimateListTypeHandler})
     </insert>
 
     <select id="getByLoanId" resultMap="LoanDetailsResultMap">
@@ -50,6 +52,7 @@
             <if test="pushMessage !=null and pushMessage != ''">push_message = #{pushMessage},</if>
             <if test="grantReward !=null">grant_reward = #{grantReward},</if>
             <if test="rewardRate !=null">reward_rate = #{rewardRate}</if>
+            <if test="estimates !=null"> estimates = #{estimates,typeHandler=com.tuotiansudai.util.mybatis.EstimateListTypeHandler},</if>
         </trim>
         WHERE
           loan_id = #{loanId}

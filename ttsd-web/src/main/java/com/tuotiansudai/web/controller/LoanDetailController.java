@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
+import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,9 @@ public class LoanDetailController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private RiskEstimateService riskEstimateService;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -82,6 +86,9 @@ public class LoanDetailController {
 
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
         modelAndView.addObject("zeroShoppingPrize", map == null ? null : map.containsKey("zeroShoppingPrize") ? map.get("zeroShoppingPrize") : null);
+
+        modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
+
         return modelAndView;
     }
 
