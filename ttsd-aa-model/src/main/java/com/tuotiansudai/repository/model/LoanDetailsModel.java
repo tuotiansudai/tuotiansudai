@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanCreateDetailsRequestDto;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ public class LoanDetailsModel implements Serializable {
     private String pushMessage;
     private boolean grantReward;
     private double rewardRate;
+    private List<Estimate> estimates;
 
     public LoanDetailsModel() {
     }
@@ -41,6 +43,7 @@ public class LoanDetailsModel implements Serializable {
         this.pushMessage = loanDetails.getPushMessage();
         this.grantReward = loanDetails.getGrantReward();
         this.rewardRate = Double.parseDouble(rateStrDivideOneHundred(loanDetails.getRewardRate()));
+        this.estimates = loanDetails.getEstimates();
     }
 
     public long getId() {
@@ -129,6 +132,14 @@ public class LoanDetailsModel implements Serializable {
 
     public void setRewardRate(double rewardRate) {
         this.rewardRate = rewardRate;
+    }
+
+    public List<Estimate> getEstimates() {
+        return estimates;
+    }
+
+    public void setEstimates(List<Estimate> estimates) {
+        this.estimates = estimates;
     }
 
     private String rateStrDivideOneHundred(String rate) {

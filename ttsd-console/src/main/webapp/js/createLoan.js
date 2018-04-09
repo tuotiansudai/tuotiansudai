@@ -4,7 +4,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
-        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate'];
+        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate', 'estimates'];
 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
@@ -12,7 +12,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
 
-        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc']
+        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc'];
 
         var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'propertyRightCertificateId', 'estateRegisterId', 'authenticAct'];
 
@@ -613,7 +613,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         var generateRequestParams = function (requestParams) {
             var requestData = {};
             var arrPledgeInfo = [];
-            var inputElements = $('form input[type="text"],input[type="hidden"],input[type="checkbox"]:checked,select,textarea');
+            var inputElements = $('form input[type="text"],input[type="hidden"],input[type="checkbox"]:checked,input[type="radio"]:checked,select,textarea');
             $.each(requestParams, function (attr, param) {
                 requestData[attr] = {};
                 inputElements.each(function (index, element) {

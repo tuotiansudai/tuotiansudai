@@ -267,6 +267,26 @@
                                errormsg="返现奖励需要正确填写">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">项目适合的用户: </label>
+
+                    <div class="col-sm-3 checkbox" id="estimate">
+                        <label>
+                            <input name="estimates" type="radio"
+                                   value="CONSERVATIVE">保守型
+                        </label>
+                        <label>
+                            <input name="estimates" type="radio"
+                                   value="STEADY">稳健型
+                        </label>
+                        <label>
+                            <input name="estimates" type="radio"
+                                   value="POSITIVE">积极型
+                        </label>
+                    </div>
+                </div>
+
             </div>
         </section>
 

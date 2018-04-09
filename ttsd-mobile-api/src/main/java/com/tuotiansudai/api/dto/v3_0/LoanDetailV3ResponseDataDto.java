@@ -4,6 +4,7 @@ package com.tuotiansudai.api.dto.v3_0;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.PledgeType;
 import io.swagger.annotations.ApiModelProperty;
@@ -159,6 +160,9 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "万元收益", example = "1000")
     private String interestPerTenThousands;
+
+    @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
+    private String estimates;
 
     public Long getLoanId() {
         return loanId;
@@ -542,6 +546,14 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     public void setInterestPerTenThousands(String interestPerTenThousands) {
         this.interestPerTenThousands = interestPerTenThousands;
+    }
+
+    public String getEstimates() {
+        return estimates;
+    }
+
+    public void setEstimates(String estimates) {
+        this.estimates = estimates;
     }
 
     public boolean isNonTransferable() {

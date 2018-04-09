@@ -306,6 +306,29 @@
                 </div>
             </div>
 
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">项目适合的用户: </label>
+
+                <div class="col-sm-3 checkbox" id="estimates">
+                    <label>
+                        <input name="estimates" type="radio"
+                               <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('CONSERVATIVE')>checked="checked"</#if>
+                               value="CONSERVATIVE">保守型
+                    </label>
+                    <label>
+                        <input name="estimates" type="radio"
+                               <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('STEADY')>checked="checked"</#if>
+                               value="STEADY">稳健型
+                    </label>
+                    <label>
+                        <input name="estimates" type="radio"
+                               <#if (loan.loanDetails.estimates)?? && loan.loanDetails.estimates?seq_contains('POSITIVE')>checked="checked"</#if>
+                               value="POSITIVE">积极型
+                    </label>
+                </div>
+            </div>
+
         </section>
 
         <section id="section-two">
