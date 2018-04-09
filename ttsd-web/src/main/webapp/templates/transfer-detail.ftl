@@ -10,7 +10,12 @@
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
             <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
+            <div class="tips-wrap">
+    <#if loanDto.estimate??>
+            <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loanDto.estimate}的用户</i></span>
+       </#if>
             <span class="product-tip">拓天速贷提醒您：市场有风险，投资需谨慎！</span>
+            </div>
         </div>
         <div class="transfer-info">
             <div class="transfer-info-dl">

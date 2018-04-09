@@ -76,19 +76,6 @@ function validateInvestAmount() {
 
 //投资表单请求以及校验
 function investSubmit(){
-    if(!isEstimate){
-        //风险测评
-        layer.open({
-            type: 1,
-            title:false,
-            closeBtn: 0,
-            area: ['400px', '250px'],
-            shadeClose: true,
-            content: $('#riskAssessment')
-
-        });
-        return false;
-    }
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
@@ -502,7 +489,27 @@ function showAuthorizeAgreementOptions(){
             $.when(commonFun.isUserLogin())
                 .done(function() {
                     if (isInvestor) {
-                        noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                        //noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                        if(noPasswordRemind || noPasswordInvest){
+
+                            if(!isEstimate){
+                                //风险测评
+                                layer.open({
+                                    type: 1,
+                                    title:false,
+                                    closeBtn: 0,
+                                    area: ['400px', '250px'],
+                                    shadeClose: true,
+                                    content: $('#riskAssessment')
+
+                                });
+                                return false;
+                            }else {
+                                $investForm.submit();
+                            }
+                        }else {
+                            markNoPasswordRemind();
+                        }
                         return;
                     }
                     if (isAuthentication) {
@@ -903,6 +910,7 @@ $cancelAssessment.on('click', function(event) {
         type: 'POST'
     },function(data) {
         layer.closeAll();
+        investSubmit()
     });
 
 });

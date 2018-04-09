@@ -21,7 +21,46 @@ $CK1:#ffac2a #ff7a2a;
     border-radius: 4px;
   }
 }
-
+.extra-rate-popup {
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  border: 1px solid #ffd4b2;
+  width: 290px;
+  text-align: center;
+  > div {
+    border-top: 1px solid #ffd4b2;
+    &:first-child {
+      border-top: none;
+      border-right: none;
+    }
+  }
+  .header {
+    color: #ff9d1a;
+  }
+  .td {
+    border-left: 1px solid #ffd4b2;
+    line-height: 28px;
+    text-align: center;
+    width: 60px;
+    &:first-child {
+      border-left: none;
+      width: 220px;
+    }
+  }
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 80px;
+    color: #ffd4b2;
+    background: #fff;
+    width: 12px;
+    height: 7px;
+    background: url("../../images/sign/chevron-up.png") no-repeat;
+  }
+}
 /* loan detail */
 .transfer-detail-content {
 
@@ -35,6 +74,7 @@ $CK1:#ffac2a #ff7a2a;
       float:left;
       width:100%;
       border-bottom:1px solid #e6e6e6;
+      position: relative;
       span{
         line-height:50px;
         &.product-name{
@@ -54,6 +94,42 @@ $CK1:#ffac2a #ff7a2a;
           font-size:12px;
           color:#4c4c4c;
           margin-right:30px;
+        }
+      }
+      .tips-wrap {
+        position: relative;
+        float: right;
+        width: 380px;
+        height: 50px;
+        .risk-tips {
+          position: absolute;
+          width: 100px;
+          text-align: left;
+          text-indent: 10px;
+          height: 50px;
+          left: 0;
+          top: 0;
+          line-height: 50px;
+          color: #ff752a;
+          em {
+            display: inline-block;
+            width: 18px;
+            height: 20px;
+            margin-left: 5px;
+            background: url("../../images/icons/riskTip.png") no-repeat;
+            background-size: 100%;
+            vertical-align: middle;
+            cursor: pointer;
+          }
+          .risk-tip-content {
+            display: none;
+            width: 248px;
+            height: 30px;
+            line-height: 30px;
+            top: 44px;
+            left: -100px;
+            color: #333;
+          }
         }
       }
     }

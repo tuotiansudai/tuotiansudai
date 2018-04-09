@@ -183,7 +183,15 @@ anxinModule.toAuthorForAnxin(function(data) {
 
 });
 
-
+var $riskTips = $('#riskTips')
+$riskTips.on('mouseover', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').show();
+});
+$riskTips.on('mouseout', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').hide();
+});
 
 
 
