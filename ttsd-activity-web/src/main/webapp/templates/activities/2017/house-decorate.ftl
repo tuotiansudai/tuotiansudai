@@ -2,7 +2,9 @@
 
 <@global.main pageCss="${css.house_decorate_2017}" pageJavascript="${js.house_decorate_2017}" activeNav="" activeLeftNav="" title="818居家理财节_活动中心_拓天速贷" keywords="拓天速贷,818理财节,投资红包,体验金,实物奖励" description="拓天速贷818居家理财节活动,每日登录抢夺投资红包及加息劵,天降红包雨,全家抢不停,当日累计投资可获得该日投资额的2.18倍体验金奖励,以及相应的居家实物奖励.">
 <div class="house-decorate-container" id="houseDecorateContainer">
-    <div class="top-img"></div>
+    <div class="top-img compliance-banner">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+    </div>
         <div class="content-item page-width">
             <i class="bg-top"></i>
             <i class="bg-bottom"></i>

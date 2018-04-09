@@ -1,7 +1,8 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.point_update}" pageJavascript="" activeNav="" activeLeftNav="" title="积分体系_积分商城_拓天速贷" keywords="会员积分,投资积分,签到积分,邀好友积分,拓天速贷" description="拓天速贷积分体系豪华升级,投资得积分,邀好友送积分,签到攒积分,做任务赢积分,会员积分兑好礼,五大秘籍玩转积分商城.">
 <div class="point-update-container">
-	<div class="top-item">
+	<div class="top-item compliance-banner">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item">

@@ -4,7 +4,10 @@
 <div class="landingContainerBox">
     <div class="landing-container">
 
-        <div class="landing-top-banner">
+        <div class="landing-top-banner compliance-banner">
+            <div class="invest-tip tip-width">
+                市场有风险，投资需谨慎！
+            </div>
         </div>
 
         <div class="newbie-step-one page-width">

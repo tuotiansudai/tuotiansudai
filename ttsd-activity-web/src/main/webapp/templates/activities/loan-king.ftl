@@ -2,9 +2,10 @@
 
 <@global.main pageCss="${css.loan_king}" pageJavascript="${js.loan_king}" activeNav="" activeLeftNav="" title="标王争霸场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,京东E卡,红包奖励" description="拓天周年庆-标王争霸场活动,活动期间,每个债权针对用户在的累计投资额进行排名,前三名相应可获得100元京东E卡和红包奖励.">
 <div class="loan-king-container" id="loanKingContainer">
-    <div class="top-item">
+    <div class="top-item compliance-banner">
         <img src="" width="100%" class="media-pc">
         <img src="" width="100%" class="media-phone">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
     </div>
     <div class="wp clearfix">
         <div class="reg-tag-current" style="display: none">

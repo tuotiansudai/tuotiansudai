@@ -3,6 +3,14 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.compliance-banner {
+  .invest-tip {
+    color: #666;
+    line-height: 40px;
+    width: 92%;
+    text-align: left;
+  }
+}
 .media-item{
   display:block;
   @media (max-width:700px) {

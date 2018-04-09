@@ -13,7 +13,7 @@ let topimg=require('../images/2017/house-decorate/top-img.png'),
 let mediaPCHtml = '<img src="' + topimg + '" width="100%" class="media-pc">';
 let mediaPhoneHtml = '<img src="' + topimgPhone + '" width="100%" class="media-phone">';
 
-$houseDecorateContainer.find('.top-img').html(mediaPCHtml + mediaPhoneHtml);
+$houseDecorateContainer.find('.top-img').append(mediaPCHtml + mediaPhoneHtml);
 
 
 

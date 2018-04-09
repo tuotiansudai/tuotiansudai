@@ -62,7 +62,12 @@ form label.error {
   vertical-align: middle;
   text-indent: 20px;
 }
-
+.compliance-banner {
+  .invest-tip {
+    color: #666;
+    //line-height: 50px;
+  }
+}
 .landing-container {
   position: relative;
   min-height: 500px;
