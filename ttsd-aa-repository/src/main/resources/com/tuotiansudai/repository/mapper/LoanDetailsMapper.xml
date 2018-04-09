@@ -23,7 +23,7 @@
 
     <insert id="create" parameterType="LoanDetailsModel">
         INSERT INTO `aa`.`loan_details`
-        (id, loan_id, declaration, extra_source, activity, activity_desc, non_transferable, push_message, disable_coupon, grant_reward, reward_rate)
+        (id, loan_id, declaration, extra_source, activity, activity_desc, non_transferable, push_message, disable_coupon, grant_reward, reward_rate, estimates)
         VALUES
         (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc},
         #{nonTransferable}, #{pushMessage}, #{disableCoupon}, #{grantReward}, #{rewardRate},
