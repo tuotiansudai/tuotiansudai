@@ -15,6 +15,7 @@ public class LoanerDetailsModel implements Serializable {
     private String identityNumber;
     private Marriage marriage;
     private String region;
+    private String source;
     private String income;
     private String employmentStatus;
     private String purpose;
@@ -22,7 +23,7 @@ public class LoanerDetailsModel implements Serializable {
     public LoanerDetailsModel() {
     }
 
-    public LoanerDetailsModel(long loanId, String loginName, String userName, Gender gender, int age, String identityNumber, Marriage marriage, String region, String income, String employmentStatus, String purpose) {
+    public LoanerDetailsModel(long loanId, String loginName, String userName, Gender gender, int age, String identityNumber, Marriage marriage, String region, String source, String income, String employmentStatus, String purpose) {
         this.loanId = loanId;
         this.loginName = loginName;
         this.userName = userName;
@@ -31,6 +32,7 @@ public class LoanerDetailsModel implements Serializable {
         this.identityNumber = identityNumber;
         this.marriage = marriage;
         this.region = region;
+        this.source = source;
         this.income = income;
         this.employmentStatus = employmentStatus;
         this.purpose = purpose;
@@ -45,6 +47,7 @@ public class LoanerDetailsModel implements Serializable {
         this.identityNumber = loanerDetails.getIdentityNumber();
         this.marriage = loanerDetails.getMarriage();
         this.region = loanerDetails.getRegion();
+        this.source = loanerDetails.getSource();
         this.income = loanerDetails.getIncome();
         this.employmentStatus = loanerDetails.getEmploymentStatus();
         this.purpose = loanerDetails.getPurpose();

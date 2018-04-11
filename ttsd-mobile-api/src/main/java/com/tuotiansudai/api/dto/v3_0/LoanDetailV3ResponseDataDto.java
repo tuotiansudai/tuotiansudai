@@ -162,7 +162,7 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     private String interestPerTenThousands;
 
     @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
-    private String estimates;
+    private String estimate;
 
     public Long getLoanId() {
         return loanId;
@@ -548,12 +548,12 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
         this.interestPerTenThousands = interestPerTenThousands;
     }
 
-    public String getEstimates() {
-        return estimates;
+    public String getEstimate() {
+        return estimate;
     }
 
-    public void setEstimates(String estimates) {
-        this.estimates = estimates;
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
     }
 
     public boolean isNonTransferable() {
