@@ -17,6 +17,7 @@ public enum Role {
     EDITOR("编辑"),
     DATA("数据专员"),
     ASK_ADMIN("问答管理员"),
+    PAYROLL_ADMIN("工资代发管理员"),
     COMPANY_STAFF("企业员工"), // 代发工资的企业员工用户
     FINANCE_ADMIN("财务审核"); // 代发工资一级审核
 
