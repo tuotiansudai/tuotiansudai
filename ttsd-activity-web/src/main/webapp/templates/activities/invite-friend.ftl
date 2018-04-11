@@ -242,7 +242,7 @@
                     <dt>房产抵押借款<span>新手专享</span></dt>
                     <dd>
                         <span class="bite-text"><strong>11</strong>%</span>
-                        <span>预期年化收益</span>
+                        <span>约定年化利率</span>
                     </dd>
                     <dd>
                         <span class="bite-text"><strong>30</strong>天</span>

@@ -33,7 +33,7 @@
                     </h3>
                     <ul class="loan-info">
                         <li class="tl">
-                            <span>预期年化收益</span>
+                            <span>约定年化利率</span>
                             <span class="info-text">
                                 <em><strong><@percentInteger>${loan.baseRate}</@percentInteger></strong></em>
                                         <i><@percentFraction>${loan.baseRate}</@percentFraction>

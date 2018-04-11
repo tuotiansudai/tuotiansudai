@@ -19,7 +19,7 @@
         <div class="page-width">
             <@global.isAnonymous>
                 <div class="register-ad-box fr tc">
-                    <b class="h-title">预期年化收益率</b>
+                    <b class="h-title">约定年化利率</b>
                     <p class="num-text clearfix">
                         <span class="percent">8%~11%</span>
                     </p>
@@ -67,7 +67,7 @@
                     <i class="guide sprite-homepage-icon-guide"></i>
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>预期年化收益8%~11%，<br>投资门槛50元起投</span>
+                        <span>约定年化利率8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd>
@@ -98,7 +98,7 @@
                 <div class="con-inner">
                     <b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>
                     <ul class="loan-info clearfix">
-                        <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>预期年化收益</li>
+                        <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>约定年化利率</li>
                         <li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>
                     </ul>
                     <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
@@ -118,7 +118,7 @@
                                     <s class="sign-plus">+</s>
                                     <i><@percentInteger>${newbieLoan.newbieInterestCouponRate}</@percentInteger></i>
                                     <@percentFraction>${newbieLoan.newbieInterestCouponRate}</@percentFraction>%
-                                </#if></span>预期年化收益
+                                </#if></span>约定年化利率
                             </li>
                             <li>最长<em class="duration-day">${newbieLoan.duration}</em>天<br>项目期限</li>
                         </ul>
@@ -184,7 +184,7 @@
         <div class="target-category-box clearfix bg-screen">
             <div class="transfer-title">
                 <span>项目名称</span>
-                <span>预期年化收益</span>
+                <span>约定年化利率</span>
                 <span>转让价格</span>
                 <span>项目本金</span>
                 <span>剩余天数</span>
@@ -250,7 +250,7 @@
                         <tr>
                             <th></th>
                             <th>预约项目</th>
-                            <th>预期年化收益</th>
+                            <th>约定年化利率</th>
                         </tr>
                         <tr>
                             <td class="tc">
