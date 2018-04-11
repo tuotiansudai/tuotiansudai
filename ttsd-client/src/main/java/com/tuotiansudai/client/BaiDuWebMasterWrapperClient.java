@@ -15,10 +15,12 @@ public class BaiDuWebMasterWrapperClient extends BaseClient {
     @Value("baidu.web.master.url")
     private String baiDuWebMasterUrl;
 
+    private static final String BAI_DU_WEB_MASTER_URL = "http://data.zz.baidu.com/urls?site=https://tuotiansudai.com&token=TRCKe3BVZH8842bI";
+
 
     public String executeForBaiDu(List<String> stringList) {
         String requestStr = StringUtils.join(stringList, "\n");
-        ResponseBody responseBody = this.newCallForBaiDu(baiDuWebMasterUrl, requestStr);
+        ResponseBody responseBody = this.newCallForBaiDu(BAI_DU_WEB_MASTER_URL, requestStr);
         try {
             return responseBody != null ? responseBody.string() : null;
         } catch (Exception e) {
