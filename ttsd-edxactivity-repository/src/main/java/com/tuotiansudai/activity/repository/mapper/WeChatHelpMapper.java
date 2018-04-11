@@ -17,7 +17,9 @@ public interface WeChatHelpMapper {
 
     WeChatHelpModel findById(@Param(value = "id") long id);
 
-    List<WeChatHelpModel> findAllByType(@Param(value = "helpType") WeChatHelpType helpType);
+    WeChatHelpModel lockById(@Param(value = "id") long id);
 
-    List<WeChatHelpModel> findByOpenId(@Param(value = "openId") long openId);
+    List<WeChatHelpModel> findByUserAndHelpType(@Param(value = "loginName") String loginName,
+                                                @Param(value = "openId") String openId,
+                                                @Param(value = "helpType") WeChatHelpType helpType);
 }

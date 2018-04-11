@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="weChatHelpModel" type="com.tuotiansudai.activity.repository.model.WeChatHelpModel">
         <result column="id" property="id"/>
@@ -13,6 +13,7 @@
         <result column="invest_amount" property="investAmount"/>
         <result column="annualized_Amount" property="annualizedAmount"/>
         <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
         <result column="openId" property="openId"/>
         <result column="help_type" property="type"/>
         <result column="help_user_count" property="helpUserCount"/>
@@ -23,8 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="weChatHelpModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO we_chat_help(loan_id, invest_id, invest_amount,annualized_Amount, login_name, openId, help_type, start_time, end_time)
-        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{openId}, #{type}, #{startTime}, #{endTime})
+        INSERT INTO we_chat_help(loan_id, invest_id, invest_amount,annualized_Amount, login_name, mobile, openId, help_type, start_time, end_time)
+        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{mobile}, #{openId}, #{type}, #{startTime}, #{endTime})
     </insert>
 
     <update id="update" parameterType="weChatHelpModel">
@@ -36,15 +37,27 @@
     </update>
 
     <select id="findById" parameterType="map" resultMap="weChatHelpModel">
-        SELECT * from we_chat_help where id = #{id}}
+        SELECT * from we_chat_help where id = #{id}
     </select>
 
-    <select id="findAllByType" parameterType="map" resultMap="weChatHelpModel">
-        SELECT * from we_chat_help where help_type = #{helpType}
+    <select id="lockById" resultType="map" resultMap="weChatHelpModel">
+        SELECT * from we_chat_help where id = #{id} FOR UPDATE
     </select>
 
     <select id="findByOpenId" parameterType="map" resultMap="weChatHelpModel">
         SELECT * FROM we_chat_help where openId = #{openId}
+    </select>
+
+    <select id="findByUserAndHelpType" parameterType="map" resultMap="weChatHelpModel">
+        SELECT * FROM we_chat_help
+        where help_type = #{helpType}
+        <if test="loginName !=null and loginName !=''">
+            and login_name = #{loginName}
+        </if>
+        <if test="openId !=null and openId !=''">
+            and openId = #{openId}
+        </if>
+        ORDER by start_time desc
     </select>
 
 </mapper>

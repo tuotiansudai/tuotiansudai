@@ -38,8 +38,8 @@
     </select>
 
     <select id="findInfoByHelpId" parameterType="map" resultMap="weChatUserInfoModel">
-      select u.* from we_chat_help_info h join we_chat_user_info u on h.we_chat_user_info_id = u.id
-      where h.we_chat_help_id = #{helpId}
+      select u.* from we_chat_help_info h join we_chat_user_info u on h.openId = u.openId
+      where h.we_chat_help_id = #{helpId} ORDER by h.created_time desc
     </select>
 
 </mapper>

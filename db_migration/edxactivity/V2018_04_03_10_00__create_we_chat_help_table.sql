@@ -17,6 +17,7 @@ CREATE TABLE `we_chat_help` (
   `invest_amount`     BIGINT(20)  DEFAULT 0,
   `annualized_amount` BIGINT(20)  DEFAULT 0,
   `login_name`        VARCHAR(25),
+  `mobile`            VARCHAR(25),
   `openId`            VARCHAR(100),
   `help_type`         VARCHAR(25) NOT NULL,
   `help_user_count`   int(10)     DEFAULT 0,
@@ -29,11 +30,10 @@ CREATE TABLE `we_chat_help` (
 
 CREATE TABLE `we_chat_help_info` (
   `id`                    BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  `we_chat_user_info_id`  BIGINT UNSIGNED  NOT NULL,
+  `openId`                VARCHAR(100)     NOT NULL,
   `we_chat_help_id`       BIGINT UNSIGNED  NOT NULL,
   `created_time`          datetime NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_WE_CHAT_USER_INFO_ID FOREIGN KEY (`we_chat_user_info_id`) REFERENCES `we_chat_user_info` (`id`),
   CONSTRAINT FK_WE_CHAT_HELP_ID FOREIGN KEY (`we_chat_help_id`) REFERENCES `we_chat_help` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

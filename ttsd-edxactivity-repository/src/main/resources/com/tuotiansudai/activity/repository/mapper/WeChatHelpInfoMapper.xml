@@ -8,18 +8,24 @@
 
     <resultMap id="weChatHelpInfoModel" type="com.tuotiansudai.activity.repository.model.WeChatHelpInfoModel">
         <result column="id" property="id"/>
-        <result column="we_chat_user_info_id" property="weChatUserInfoId"/>
+        <result column="openId" property="openId"/>
         <result column="we_chat_help_id" property="weChatHelpId"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="weChatHelpInfoModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO we_chat_help_info(we_chat_user_info_id, we_chat_help_id, created_time)
-        VALUES (#{weChatUserInfoId}, #{weChatHelpId}, #{createdTime})
+        INSERT INTO we_chat_help_info(openId, we_chat_help_id, created_time)
+        VALUES (#{openId}, #{weChatHelpId}, #{createdTime})
     </insert>
 
-    <select id="findByWeChatUserId" parameterType="map" resultMap="weChatHelpInfoModel">
-        SELECT * from we_chat_help_info where we_chat_user_info_id = #{weChatUserId} and we_chat_help_id = #{helpId}
+    <select id="findByOpenId" parameterType="map" resultMap="weChatHelpInfoModel">
+        SELECT * from we_chat_help_info where openId = #{openId} and we_chat_help_id = #{helpId}
+    </select>
+
+    <select id="findHelpCountByOpenIdAndTime" parameterType="map" resultType="int">
+        SELECT count(distinct help.login_name, if(help.login_name is not null,true,null)) + count(if(help.login_name is null,true,null))
+        FROM we_chat_help_info info join we_chat_help help on info.we_chat_help_id = help.id
+        where info.openId = #{openId} and info.created_time BETWEEN #{startTime} and #{endTime}
     </select>
 
 </mapper>
