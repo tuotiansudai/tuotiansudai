@@ -8,6 +8,7 @@ import com.tuotiansudai.enums.WeChatDrawCoupon;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -127,6 +128,21 @@ public class InviteHelpActivityController {
     public boolean clickHelp(@PathVariable long id, HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         return !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && !Strings.isNullOrEmpty(openId) && inviteHelpActivityService.clickHelp(id, openId);
+    }
+
+    @RequestMapping(path = "/wechat/withdraw", method = RequestMethod.GET)
+    public ModelAndView wechatWithDraw(HttpServletRequest request){
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)) {
+            return new ModelAndView("redirect:/activity/invite-help/everyone/help/detail");
+        }
+
+        String loginName = LoginUserInfo.getLoginName();
+        if (Strings.isNullOrEmpty(loginName)) {
+            request.getSession().setAttribute("channel", "MayActivity");
+            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/withdraw");
+        }
+        return new ModelAndView("redirect:/account");
     }
 
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)

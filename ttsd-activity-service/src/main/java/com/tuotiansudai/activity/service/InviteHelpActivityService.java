@@ -16,12 +16,14 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.MobileEncryptor;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.WeChatClient;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,10 @@ public class InviteHelpActivityService {
     private UserMapper userMapper;
 
     private final WeChatClient weChatClient = WeChatClient.getClient();
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    public static final String EVERYONE_HELP_WAIT_SEND_CASH = "EVERYONE_HELP_WAIT_SEND_CASH";
 
     private final List<Rates> rates = Lists.newArrayList(
             new Rates(2, 8, 0.002D),
@@ -86,6 +92,7 @@ public class InviteHelpActivityService {
         return null;
     }
 
+    @Transactional
     public long createEveryoneHelp(String loginName, String mobile, String openId){
         WeChatHelpModel weChatHelpModel = new WeChatHelpModel(WeChatHelpType.EVERYONE_HELP, new Date(), DateTime.now().plusDays(1).toDate());
         if (loginName != null) {
@@ -102,6 +109,7 @@ public class InviteHelpActivityService {
             }
         }
         weChatHelpMapper.create(weChatHelpModel);
+        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
         return weChatHelpModel.getId();
     }
 
@@ -153,8 +161,18 @@ public class InviteHelpActivityService {
         if (weChatHelpModel == null){
             return null;
         }
+
+        String name;
+        if (weChatHelpModel.getLoginName() != null){
+            UserModel userModel = userMapper.findByLoginName(weChatHelpModel.getLoginName());
+            name = userModel.getUserName() != null ? userModel.getUserName() : userModel.getMobile();
+        }else{
+            name = weChatUserInfoMapper.findByOpenId(openId).getNickName();
+        }
+
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("model", weChatHelpModel)
+                .put("name", name)
                 .put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()))
                 .put("isHelp", weChatHelpInfoMapper.findByOpenId(openId, weChatHelpModel.getId()) != null)
                 .build());
@@ -214,17 +232,17 @@ public class InviteHelpActivityService {
         public Rates() {
         }
 
-        public Rates(int minNum, int maxNum, double rate) {
+        Rates(int minNum, int maxNum, double rate) {
             this.minNum = minNum;
             this.maxNum = maxNum;
             this.rate = rate;
         }
 
-        public int getMinNum() {
+        int getMinNum() {
             return minNum;
         }
 
-        public int getMaxNum() {
+        int getMaxNum() {
             return maxNum;
         }
 
