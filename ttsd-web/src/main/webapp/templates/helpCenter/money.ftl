@@ -50,9 +50,9 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">1、什么是预期收益？</p>
+                    <p class="single-title">1、什么是约定年化利率益？</p>
 
-                    <p class="single-answer">答：“预期收益”是指平台通过算法预计可能会产生的收益，不包括可能产生的服务费用和由于大小月产生的收益差别。</p>
+                    <p class="single-answer">答：“约定年化利率”是指平台与出借用户之间约定在一定期限内按照披露的年化利率进行收益结算，不包括服务费用和由于大小月产生的收益差别。还款方式的差异会产生不同的收益。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>

@@ -11,6 +11,7 @@ table th {
   width: 100%;
   margin: 0 auto;
 }
+
 .toggleHidden {
   visibility: hidden;
 }
@@ -597,5 +598,13 @@ strong,em {
 @media screen and (max-width: 240px) {
   html {
     font-size: 32px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .compliance-banner {
+    .invest-tip {
+      width: 7rem;
+      text-align: left!important;
+    }
   }
 }

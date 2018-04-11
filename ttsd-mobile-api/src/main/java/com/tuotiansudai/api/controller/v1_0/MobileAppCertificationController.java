@@ -85,10 +85,12 @@ public class MobileAppCertificationController extends MobileAppBaseController {
             CertificationRequestDto certificationRequestDto = new CertificationRequestDto(commonCertificationRequestDto);
             BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
             HuiZuDataDto huiZuDataDto = new HuiZuDataDto(baseResponseDto.isSuccess(), baseResponseDto.getMessage(), baseResponseDto.getCode());
-            huiZuDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("userName", baseResponseDto.getData().getUserRealName())
-                    .put("identityNumber", baseResponseDto.getData().getUserIdCardNumber())
-                    .build()));
+            if(baseResponseDto.isSuccess()){
+                huiZuDataDto.setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                        .put("userName", baseResponseDto.getData().getUserRealName())
+                        .put("identityNumber", baseResponseDto.getData().getUserIdCardNumber())
+                        .build()));
+            }
 
             return new BaseDto<>(true, huiZuDataDto);
         }

@@ -57,7 +57,7 @@
         <ul class="loan-info clearfix">
             <li>
                 <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
-                <em class="note">预期年化收益</em>
+                <em class="note">约定年化利率</em>
             </li>
             <li><em class="duration-day">${experienceLoan.duration}</em> 天 <em class="note">项目期限</em></li>
             <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
@@ -77,7 +77,7 @@
                             <i><@percentInteger>${newbieLoan.baseRate + newbieLoan.activityRate}</@percentInteger></i>%
                         </#if>
                     </span>
-                    <em class="note">预期年化收益</em>
+                    <em class="note">约定年化利率</em>
                 </li>
                 <li>最长<em class="duration-day">${newbieLoan.duration}</em> 天 <em class="note">项目期限</em></li>
                 <li>
@@ -150,7 +150,7 @@
                     </i><em>%</em>
 
                     </span>
-                        <em class="note">预期年化收益</em>
+                        <em class="note">约定年化利率</em>
                     </li>
 
                     <li>最长<em class="duration-day">${loan.duration}</em> 天 <em class="note">项目期限</em></li>
@@ -215,7 +215,7 @@
                     <span class="percent-number <#if (loan.transferStatus == "SUCCESS")>colorChange</#if>">
                         <i><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction></i>%
                     </span>
-                        <em class="note">预期年化收益</em>
+                        <em class="note">约定年化利率</em>
                     </li>
                     <li><em class="duration-day">${loan.leftDays}</em> 天 <em class="note">剩余天数</em></li>
                     <li>

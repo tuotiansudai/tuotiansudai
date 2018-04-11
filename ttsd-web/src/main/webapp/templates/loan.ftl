@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
+<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
@@ -63,7 +63,7 @@
                     <div class="content">
                         <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
-                                <div class="title">预期年化收益</div>
+                                <div class="title">约定年化利率</div>
                                 <div class="number red"><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                                     <#if loan.activityRate != 0>
                                         <i class="data-extra-rate">
@@ -117,7 +117,9 @@
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
-                <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
+
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span> </#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
                         <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">
@@ -723,6 +725,15 @@
 </div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
+<#--风险测评-->
+<div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+    </div>
+</div>
 
 <script type="text/template" id="LendTemplate">
     <table class="invest-list table-striped">

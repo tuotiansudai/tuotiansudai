@@ -385,8 +385,63 @@
   }
 
 }
+.compliance-banner
+{
+  position: relative;
+  .tip-width {
+    width: 800px;
+    margin: 0 auto;
+  }
+  .invest-tip {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    margin-right: -400px;
+    height: 40px;
+    line-height: 40px;
+    color: rgba(255,255,255,0.7);
+    text-align: left;
+    font-size: 12px;
+  }
 
+}
+.compliance-center {
+  position: relative;
+  .invest-tips {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    width: 170px;
+    height: 20px;
+    line-height: 20px;
+   text-align: center;
+    background: rgba(0,0,0,0.25);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+}
+.compliance-index {
+  .invest-tip-wrap {
+    position: absolute;
+    width: 1000px;
+    height: 20px;
+    bottom: 20px;
+    left: 50%;
+    margin-left: -246px;
 
+    .invest-tip {
+      width: 170px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      background: rgba(0,0,0,0.25);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+  }
+}
 @media screen and (min-width: 700px) and(max-width:999px){
 
   .page-width {
@@ -395,3 +450,21 @@
 
 }
 
+
+@media screen and(max-width:1024px){
+.compliance-banner{
+  .tip-width {
+    width: auto;
+  }
+  .invest-tip {
+    right: 10px;
+    margin-right: 0;
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+    font-size: 12px;
+  }
+}
+
+
+}

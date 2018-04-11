@@ -12,7 +12,7 @@
             <span class="summary-box">
                 <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                     <i>%</i></b>
-                <em>预期年化收益</em>
+                <em>约定年化利率</em>
             </span>
         </div>
 
@@ -81,7 +81,7 @@
                     <span>
                         <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                             %</b>
-                         <i>预期年化收益</i>
+                         <i>约定年化利率</i>
                     </span>
                 </li>
                 <li class="experience-total1">

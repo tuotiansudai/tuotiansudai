@@ -44,6 +44,7 @@ public class RiskEstimateServiceImpl implements RiskEstimateService {
     public Estimate estimate(String loginName, List<Integer> answers) {
         if (answers.size() == 1 && answers.get(0) == -1) {
             RiskEstimateModel estimateModel = new RiskEstimateModel();
+            estimateModel.setLoginName(loginName);
             estimateModel.setEstimate(Estimate.CONSERVATIVE);
             riskEstimateMapper.create(estimateModel);
             return Estimate.CONSERVATIVE;

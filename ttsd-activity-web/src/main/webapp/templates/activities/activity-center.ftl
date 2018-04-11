@@ -15,8 +15,9 @@
                 <#if activityItem.longTerm=='longTerm' || (activityItem.expiredTime?? && activityItem.expiredTime?date gte .now?date)>
                     <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
-                            <div class="img-inner">
+                            <div class="img-inner compliance-center">
                                 <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
+                                <div class="invest-tips">市场有风险，投资需谨慎！</div>
                             </div>
                         </div>
                         <i class="icon-going"><span class="hide">进行中</span></i>
@@ -42,8 +43,9 @@
                 <#if activityItem.longTerm == 'notLongTerm' && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
                     <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
-                            <div class="img-inner">
+                            <div class="img-inner compliance-center">
                                 <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
+                                <div class="invest-tips">市场有风险，投资需谨慎！</div>
                             </div>
                         </div>
                         <i class="icon-finished"><span class="hide">已结束</span></i>

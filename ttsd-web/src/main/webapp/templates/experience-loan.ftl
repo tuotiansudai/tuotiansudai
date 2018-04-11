@@ -13,7 +13,7 @@
                     <div class="content">
                         <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
-                                <div class="title">预期年化收益</div>
+                                <div class="title">约定年化利率</div>
                                 <div class="number red">
                                     <@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                                     <span>%</span>

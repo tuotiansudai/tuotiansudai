@@ -4,14 +4,17 @@
 <div class="landingContainerBox">
     <div class="landing-container">
 
-        <div class="landing-top-banner">
+        <div class="landing-top-banner compliance-banner">
+            <div class="invest-tip tip-width">
+                市场有风险，投资需谨慎！
+            </div>
         </div>
 
         <div class="newbie-step-one page-width">
             <div class="image-title"></div>
             <dl class="new-user-list clearfix">
                 <dt class="clearfix tc">新手体验项目</dt>
-                <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>13</i>% <br/><em>约定年化利率</em></dd>
                 <dd><i>3</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
@@ -41,7 +44,7 @@
 
             <dl class="new-user-list clearfix">
                 <dt class="clearfix tc">新手专享标</dt>
-                <dd><i>11</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>11</i>% <br/><em>约定年化利率</em></dd>
                 <dd><i>30</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
@@ -86,7 +89,7 @@
                 <span class="newbie-step5 icon-three"></span>
                 <br><i>稳健安全</i>
                     <br/>
-                    <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
+                    <p>约定年化利率8%～11%<br>房/车抵押债权安全系数高</p></dd>
             </dl>
 
         </div>

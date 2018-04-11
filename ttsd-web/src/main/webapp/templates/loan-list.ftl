@@ -29,6 +29,10 @@
                        <#elseif !(name??) && key=="">class="active"</#if>
                        href=${nametUrl?replace("{name}",key)}>${nameMap[key]}</a>
                 </#list>
+                <div class="safety-notification">出借人适当性管理告知<i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i></div>
+                <div class="notice-tips extra-rate-popup" style="display: none">
+                    参与网络借贷的出借人，应当具备投资风险意识、风险识别能力，拥有非保本类金融产品投资的经历并熟悉互联网。请您在出借前，确保了解融资项目信贷风险，确认具有相应的风险认知和承受能力，并自行承担借贷产生的本息损失。
+                </div>
                 <em class="show-more">更多 <i class="fa fa-angle-down"></i> </em>
             </li>
             <li>
@@ -58,7 +62,7 @@
                 </#list>
             </li>
             <li>
-                <span>预期年化收益: </span>
+                <span>约定年化利率: </span>
                 <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
                 <#assign rateMap = {"":"全部","rateStart=0&rateEnd=0.08":"8%以下","rateStart=0.08&rateEnd=0.1":"8-10%","rateStart=0.1&rateEnd=0":"10%以上"}>
                 <#assign rateKeys = rateMap?keys>
@@ -105,7 +109,7 @@
                         </div>
                         <div class="loan-info-dl">
                             <dl>
-                                <dt>预期年化收益</dt>
+                                <dt>约定年化利率</dt>
                                 <dd>
                                     <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
                                         <em><@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger></em>

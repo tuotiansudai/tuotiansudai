@@ -2,7 +2,9 @@
 
 <@global.main pageCss="${css.coupon_special_2017}" pageJavascript="${js.coupon_special_2017}" activeNav="" activeLeftNav="" title="领券专场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,红包奖励,加息券" description="拓天周年庆-领券专场活动,微信扫描二维码关注拓天速贷服务号,回复我要领券即可领取1000红包奖励+0.8%加息券.">
 
-<div class="activity-slide" id="topHeader"></div>
+<div class="activity-slide compliance-banner" id="topHeader">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 
 <div class="activity-frame-box page-width" id="pcCouponSpecial">
     <div class="red-box">

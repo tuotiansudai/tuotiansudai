@@ -2,7 +2,9 @@
 
 <@global.main pageCss="${css.sport_play_2017}" pageJavascript="${js.sport_play_2017}" activeNav="" activeLeftNav="" title="运动达人VS职场骄子_活动中心_拓天速贷" keywords="运动达人,职场骄子,活动中心,抽奖,拓天速贷" description="拓天速贷活动期间用户每日登陆即有一次免费抽签机会,累计投资还可兑换不同实物奖品,运动奖VS职场奖,总有一款适合你.">
 <div class="sport-play-container" id="sportPlayContainer">
-    <div class="top-img"></div>
+    <div class="top-img compliance-banner">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+    </div>
     <div class="shaking-item">
         <div class="wp clearfix">
             <h3 class="title-one"></h3>
