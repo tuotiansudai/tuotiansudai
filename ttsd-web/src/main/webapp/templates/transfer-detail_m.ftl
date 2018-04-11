@@ -11,7 +11,7 @@
     <div class="account-summary">
         <div class="collection">
     <#if loanDto.estimate??>
-            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">保守型${loanDto.estimate}</i>的用户<em id="closeRisk"></em></span>
+            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">${loanDto.estimate}</i>的用户<em id="closeRisk"></em></span>
     </#if>
             <span class="summary-box">
                  <b>

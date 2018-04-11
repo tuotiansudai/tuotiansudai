@@ -244,3 +244,7 @@ $('#anxinSign').on('click',() => {
 $('.go-back').on('click',function () {
     location.href = '/m/account'
 })
+$('#riskEstimate').on('click',() => {
+    location.href = '/m/risk-estimate?retry=true';
+});
+$()

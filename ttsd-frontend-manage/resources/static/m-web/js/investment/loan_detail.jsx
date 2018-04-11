@@ -19,6 +19,9 @@ let $isAuthenticationRequired=$('#isAuthenticationRequired');
 let isAuthenticationRequired = $isAuthenticationRequired.data('is-authentication-required');
 let dataPage = $isAuthenticationRequired.data('page');
 let commonFun = require('publicJs/commonFun');
+
+let isEstimate = $buyDetail.data('estimate');
+let isEstimateTransfer  = $transferDetail.data('estimate');
 //领优惠券
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -530,7 +533,37 @@ $('#investSubmit').on('click', function(event) {
                     anxinService();
 
                 } else {
-                    noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                   // noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                    if(noPasswordInvest){
+
+                        if(!isEstimate){
+                            //风险测评
+                            commonFun.CommonLayerTip({
+                                btn: ['确定','取消'],
+                                area:['280px', '230px'],
+                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            },function() {
+                                layer.closeAll();
+                                location.href = '/m/risk-estimate'
+
+                            },function () {
+                                commonFun.useAjax({
+                                    url: '/risk-estimate',
+                                    data: {answers: ['-1']},
+                                    type: 'POST'
+                                },function(data) {
+                                    layer.closeAll();
+                                    $investForm.submit();
+                                });
+                            })
+                            $('.layui-layer-content').css('height','180px')
+                            return false;
+                        }else {
+                            sendSubmitRequest()
+                        }
+                    }else {
+                        $investForm.submit();
+                    }
                 }
                 return;
             }
@@ -613,7 +646,7 @@ $transferSubmit.on('click',function (e) {
             //判断是否需要弹框登陆
             location.href = '/m/login'
         })
-        .done(function() {
+        .done(function() {alert(isEstimateTransfer)
             submitData();
         });
 })
@@ -695,14 +728,46 @@ function submitData() {
                     return false;
                 }
             }
-            if($isAnxinAuthenticationRequired.val()=='false'){
-                $transferForm.submit();
-            }else{
-                $transferDetail.hide();
-                $authorization_message.show();
-                anxinService();
+            if(!isEstimateTransfer){
+                //风险测评
+                commonFun.CommonLayerTip({
+                    btn: ['确定','取消'],
+                    area:['280px', '230px'],
+                    content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                },function() {
+                    layer.closeAll();
+                    location.href = '/m/risk-estimate'
+
+                },function () {
+                    commonFun.useAjax({
+                        url: '/risk-estimate',
+                        data: {answers: ['-1']},
+                        type: 'POST'
+                    },function(data) {
+                        layer.closeAll();
+                        if($isAnxinAuthenticationRequired.val()=='false'){
+                            $transferForm.submit();
+                        }else{
+                            $transferDetail.hide();
+                            $authorization_message.show();
+                            anxinService();
+                            return false;
+                        }
+                    });
+                })
+                $('.layui-layer-content').css('height','180px')
                 return false;
+            }else {
+                if($isAnxinAuthenticationRequired.val()=='false'){
+                    $transferForm.submit();
+                }else{
+                    $transferDetail.hide();
+                    $authorization_message.show();
+                    anxinService();
+                    return false;
+                }
             }
+
 
         }
     });
@@ -852,3 +917,5 @@ if($('#closeRisk').length){
     })
 
 }
+
+
