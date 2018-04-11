@@ -42,9 +42,13 @@
     </select>
 
     <select id="findCarouselArticle" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
-        content, created_time, updated_time, deleted,timing_time
-        FROM `licaiquan_article` WHERE carousel = true and deleted = false
+        SELECT id, title, creator_login_name, checker_login_name, author, `section`, source, carousel, thumb, show_picture,
+        content, created_time, updated_time, deleted, timing_time
+        FROM `licaiquan_article`
+        WHERE carousel = true
+        AND show_picture != NULL
+        AND show_picture != ''
+        AND deleted = false
         ORDER BY created_time DESC
     </select>
 

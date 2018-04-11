@@ -26,6 +26,9 @@ public class LoanCreateLoanerDetailsRequestDto {
     private String region;
 
     @NotEmpty
+    private String source;
+
+    @NotEmpty
     private String income;
 
     @NotEmpty
@@ -95,6 +98,14 @@ public class LoanCreateLoanerDetailsRequestDto {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getIncome() {

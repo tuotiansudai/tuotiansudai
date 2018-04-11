@@ -233,7 +233,7 @@ public class ContractServiceTest {
     private LoanerDetailsModel getLoanerDetailsModel(LoanModel loanModel) {
         return new LoanerDetailsModel(loanModel.getId(), loanModel.getLoanerLoginName(),
                 loanModel.getLoanerUserName(), Gender.FEMALE, 12, loanModel.getLoanerIdentityNumber(), Marriage.MARRIED,
-                "", "", "", "purpose");
+                "", "", "", "", "purpose");
     }
 
     private InvestModel getInvest(long loanId, String loginName) throws ParseException {

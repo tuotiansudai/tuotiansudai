@@ -57,16 +57,18 @@ class Article extends React.Component {
 	}
 	render() {
 		return (
-		    <div ref="scrollWrap" className='article-frame' >
+		    <div ref="scrollWrap" className='article-frame'>
 				<article>
 					<h1>{this.state.data.title}</h1>
 					<section className="meta">
 						<span>来源: </span><span>{this.state.data.source}</span>
 						<time>{this.state.data.createTime}</time>
 					</section>
-					<section className="show-picture">
-						<img src={this.state.data.showPicture} />
-					</section>
+					{this.state.data.showPicture != null && this.state.data.showPicture.length > 0 &&
+                        <section className="show-picture">
+                            <img src={this.state.data.showPicture} />
+                        </section>
+					}
 					<section className="content" dangerouslySetInnerHTML={{ __html: this.state.data.content }}>
 					</section>
 					<section className="info clearfix">
