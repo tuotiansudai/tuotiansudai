@@ -6,6 +6,7 @@
     <div class="menu-category">
         <span class="current"><a id="aaa">直投项目</a></span>
         <span><a href="/m/transfer-list">转让项目</a></span>
+        <em class="notice-tip-btn"></em>
     </div>
 
     <div id="wrapperOut"  class="loan-list-frame">
