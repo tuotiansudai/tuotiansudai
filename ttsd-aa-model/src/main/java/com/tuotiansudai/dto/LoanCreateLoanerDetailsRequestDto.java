@@ -50,6 +50,7 @@ public class LoanCreateLoanerDetailsRequestDto {
         this.income = loanerDetailsModel.getIncome();
         this.employmentStatus = loanerDetailsModel.getEmploymentStatus();
         this.purpose = loanerDetailsModel.getPurpose();
+        this.source = loanerDetailsModel.getSource();
     }
 
     public String getUserName() {

@@ -207,6 +207,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("就业情况", loanerDetail.getEmploymentStatus())
                     .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
                     .put("逾期率", MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()))
+                    .put("还款来源", Strings.isNullOrEmpty(loanerDetail.getSource()) ? "" : loanerDetail.getSource())
                     .build());
         }
 

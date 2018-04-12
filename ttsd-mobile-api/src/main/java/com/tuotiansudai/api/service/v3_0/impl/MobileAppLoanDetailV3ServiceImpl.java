@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service.v3_0.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
@@ -128,6 +129,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loanModel.getId());
         dataDto.setLoanName(loanModel.getName());
         dataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
+        dataDto.setLoanIntroduce(loanDetailsModelActivity != null ? loanDetailsModelActivity.getIntroduce() : "");
         dataDto.setPledgeType(loanModel.getPledgeType());
         dataDto.setRepayTypeCode("");
         dataDto.setDuration(loanModel.getDuration());
@@ -368,44 +370,20 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     private DisclosureDto convertLoanerInfoFromLoan(LoanerDetailsModel model, String overdueRate) {
         DisclosureDto loanerDisclosureDto = new DisclosureDto();
         loanerDisclosureDto.setTitle("借款人基本信息");
-        List<ItemDto> itemDtoList = Lists.newArrayList();
 
-        ItemDto genderItemDto = new ItemDto();
-        genderItemDto.setLabel("性别");
-        genderItemDto.setValue(model.getGender().getDescription());
-        itemDtoList.add(genderItemDto);
+        ItemDto genderItemDto = new ItemDto("性别", model.getGender().getDescription());
+        ItemDto ageItemDto = new ItemDto("年龄", String.valueOf(model.getAge()));
+        ItemDto marriageItemDto = new ItemDto("婚姻状况", model.getMarriage().getDescription());
+        ItemDto employmentStatusItemDto = new ItemDto("从业情况", model.getEmploymentStatus());
+        ItemDto incomeItemDto = new ItemDto("年收入", model.getIncome());
+        ItemDto purposeItemDto = new ItemDto("借款用途", model.getPurpose());
+        ItemDto overdueRateItemDto = new ItemDto("逾期率", overdueRate);
+        ItemDto sourceItemDto = new ItemDto("还款来源", model.getSource());
+        List<ItemDto> itemDtoList = Lists.newArrayList(genderItemDto, ageItemDto, marriageItemDto, employmentStatusItemDto,
+                incomeItemDto, purposeItemDto, overdueRateItemDto, sourceItemDto);
 
-        ItemDto ageItemDto = new ItemDto();
-        ageItemDto.setLabel("年龄");
-        ageItemDto.setValue(String.valueOf(model.getAge()));
-        itemDtoList.add(ageItemDto);
 
-        ItemDto marriageItemDto = new ItemDto();
-        marriageItemDto.setLabel("婚姻状况");
-        marriageItemDto.setValue(model.getMarriage().getDescription());
-        itemDtoList.add(marriageItemDto);
-
-        ItemDto employmentStatusItemDto = new ItemDto();
-        employmentStatusItemDto.setLabel("从业情况");
-        employmentStatusItemDto.setValue(model.getEmploymentStatus());
-        itemDtoList.add(employmentStatusItemDto);
-
-        ItemDto incomeItemDto = new ItemDto();
-        incomeItemDto.setLabel("年收入");
-        incomeItemDto.setValue(model.getIncome());
-        itemDtoList.add(incomeItemDto);
-
-        ItemDto purposeItemDto = new ItemDto();
-        purposeItemDto.setLabel("借款用途");
-        purposeItemDto.setValue(model.getPurpose());
-        itemDtoList.add(purposeItemDto);
-
-        ItemDto overdueRateItemDto = new ItemDto();
-        overdueRateItemDto.setLabel("逾期率");
-        overdueRateItemDto.setValue(overdueRate);
-        itemDtoList.add(overdueRateItemDto);
-
-        loanerDisclosureDto.setItems(itemDtoList);
+        loanerDisclosureDto.setItems(itemDtoList.stream().filter(itemDto -> !Strings.isNullOrEmpty(itemDto.getValue())).collect(Collectors.toList()));
         return loanerDisclosureDto;
     }
 

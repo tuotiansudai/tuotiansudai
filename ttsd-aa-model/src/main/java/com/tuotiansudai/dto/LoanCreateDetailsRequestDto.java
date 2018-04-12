@@ -33,6 +33,8 @@ public class LoanCreateDetailsRequestDto {
 
     private Estimate estimate;
 
+    private String introduce;
+
     public LoanCreateDetailsRequestDto() {
     }
 
@@ -47,6 +49,7 @@ public class LoanCreateDetailsRequestDto {
         this.grantReward = loanDetailsModel.getGrantReward();
         this.rewardRate = String.valueOf(loanDetailsModel.getRewardRate());
         this.estimate = loanDetailsModel.getEstimate();
+        this.introduce = loanDetailsModel.getIntroduce();
     }
 
     public boolean getNonTransferable() {
@@ -135,5 +138,13 @@ public class LoanCreateDetailsRequestDto {
 
     public void setEstimate(Estimate estimate) {
         this.estimate = estimate;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 }

@@ -4,9 +4,9 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
-        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate', 'estimate'];
+        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate', 'estimate', 'introduce'];
 
-        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
+        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose', 'source'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
 
@@ -440,6 +440,10 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                         showErrorMessage("投资奖励渠道必须选择", $('input[name="extraSource"]'));
                         return false;
                     }
+                }
+
+                if($('input[name="estimate"]:checked').length == 0) {
+                    showErrorMessage('项目适合用户未选择', $('input[name="estimate"]'));
                 }
             },
             callback: function (data) {
