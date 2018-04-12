@@ -79,11 +79,12 @@
             and (h.user_name = #{keyWord} or h.mobile = #{keyWord} or u.nick_name = #{keyWord})
         </if>
         <if test="minInvest !=null">
-            and h.invest_amount >= #{minAmount}
+            and h.invest_amount >= #{minInvest}
         </if>
         <if test="maxInvest !=null">
             <![CDATA[ and h.invest_amount <= #{maxInvest} ]]>
         </if>
+        ORDER BY h.start_time DESC
     </select>
 
 </mapper>

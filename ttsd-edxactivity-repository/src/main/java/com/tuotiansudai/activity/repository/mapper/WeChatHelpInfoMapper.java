@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.WeChatHelpInfoModel;
+import com.tuotiansudai.activity.repository.model.WeChatHelpInfoView;
+import com.tuotiansudai.activity.repository.model.WeChatHelpUserStatus;
 import com.tuotiansudai.activity.repository.model.WeChatUserInfoModel;
 import org.apache.ibatis.annotations.Param;
 import org.joda.time.DateTime;
@@ -20,5 +22,9 @@ public interface WeChatHelpInfoMapper {
     int findHelpCountByOpenIdAndTime(@Param(value = "openId") String openId,
                                      @Param(value = "startTime") Date startTime,
                                      @Param(value = "endTime") Date endTime);
+
+    List<WeChatHelpInfoView> findByNickName(@Param(value = "id") long id,
+                                            @Param(value = "nickName") String nickName,
+                                            @Param(value = "status") WeChatHelpUserStatus status);
 
 }

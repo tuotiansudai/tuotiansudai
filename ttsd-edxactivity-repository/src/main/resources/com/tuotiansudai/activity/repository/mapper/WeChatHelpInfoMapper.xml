@@ -16,6 +16,13 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
+    <resultMap id="weChatHelpInfoView" type="com.tuotiansudai.activity.repository.model.WeChatHelpInfoView">
+        <result column="openId" property="openId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
     <insert id="create" parameterType="weChatHelpInfoModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO we_chat_help_info(openId, we_chat_help_id, status, created_time)
         VALUES (#{openId}, #{weChatHelpId}, #{status}, #{createdTime})
@@ -29,6 +36,18 @@
         SELECT count(distinct help.login_name, if(help.login_name is not null,true,null)) + count(if(help.login_name is null,true,null))
         FROM we_chat_help_info info join we_chat_help help on info.we_chat_help_id = help.id
         where info.openId = #{openId} and info.created_time BETWEEN #{startTime} and #{endTime}
+    </select>
+
+    <select id="findByNickName" parameterType="map" resultMap="weChatHelpInfoView">
+        SELECT h.openId, u.nick_name, h.status, h.created_time from we_chat_help_info h LEFT join we_chat_user_info u on h.openId = u.openId
+        where h.we_chat_help_id = #{id}
+        <if test="nickName !=null and nickName !=''">
+            <![CDATA[and u.nick_name like '%${nickName}%']]>
+        </if>
+        <if test="status !=null">
+            AND h.status = #{status}
+        </if>
+        ORDER BY h.created_time DESC
     </select>
 
 </mapper>
