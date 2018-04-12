@@ -218,10 +218,7 @@
                     <label class="col-sm-2 control-label">项目介绍: </label>
 
                     <div class="col-sm-3">
-                        <textarea name="introduce" class="form-control" datatype="*"
-                                  placeholder="请输入200个以内的字符" errormsg="项目介绍不能为空">
-                            <#if (loan.loanDetails.introduce)??>${loan.loanDetails.introduce}</#if>
-                        </textarea>
+                        <textarea name="introduce" class="form-control" maxlength="200" datatype="*" placeholder="请输入200个以内的字符" errormsg="项目介绍不能为空"><#if (loan.loanDetails.introduce)??>${loan.loanDetails.introduce}</#if></textarea>
                     </div>
                 </div>
 
@@ -230,7 +227,7 @@
 
                     <div class="col-sm-3">
                         <label for="extra">
-                            <input name="source" type="text" class="form-control" datatype="*" placeholder="请输入20个以内的字符" errormsg="还款来源不能为空"
+                            <input name="source" type="text" class="form-control" maxlength="20" datatype="*" placeholder="请输入20个以内的字符" errormsg="还款来源不能为空"
                             <#if (loan.loanerDetails.source)??>value="${loan.loanerDetails.source}"</#if>>
                         </label>
                     </div>

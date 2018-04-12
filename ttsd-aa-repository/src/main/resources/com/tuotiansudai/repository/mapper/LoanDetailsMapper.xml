@@ -9,6 +9,7 @@
     <resultMap id="LoanDetailsResultMap" type="LoanDetailsModel">
         <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>
+        <result column="introduce" property="introduce"/>
         <result column="declaration" property="declaration"/>
         <result column="extra_source" property="extraSource" typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
         <result column="activity" property="activity"/>
@@ -23,9 +24,9 @@
 
     <insert id="create" parameterType="LoanDetailsModel">
         INSERT INTO `aa`.`loan_details`
-        (id, loan_id, declaration, extra_source, activity, activity_desc, non_transferable, push_message, disable_coupon, grant_reward, reward_rate, estimate)
+        (id, loan_id, introduce, declaration, extra_source, activity, activity_desc, non_transferable, push_message, disable_coupon, grant_reward, reward_rate, estimate)
         VALUES
-        (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc},
+        (#{id}, #{loanId}, #{introduce}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc},
         #{nonTransferable}, #{pushMessage}, #{disableCoupon}, #{grantReward}, #{rewardRate}, #{estimate})
     </insert>
 
@@ -42,6 +43,7 @@
         UPDATE
           `aa`.`loan_details`
         <trim prefix="set" suffixOverrides=",">
+            <if test="introduce !=null"> introduce = #{introduce},</if>
             <if test="declaration !=null"> declaration = #{declaration},</if>
             <if test="extraSource !=null"> extra_source = #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},</if>
             <if test="activity !=null">activity = #{activity},</if>

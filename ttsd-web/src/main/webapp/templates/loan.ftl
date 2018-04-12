@@ -340,13 +340,21 @@
             <div class="loan-list pad-s invest-list-content">
                 <div class="loan-list-con">
                     <div class="content detail">
+                        <#if loan.introduce??>
+                            <div class="subtitle">
+                                <h3>项目介绍</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                ${loan.introduce}
+                            </div>
+                        </#if>
                         <#if loan.loanerDetail??>
                             <div class="subtitle">
                                 <h3>借款人基本信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
-                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率'] as key>
+                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率', '还款来源'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
                                             <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
                                         </#if>
