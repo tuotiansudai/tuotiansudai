@@ -74,7 +74,7 @@ public class InvestSuccessCreateWeChatHelpMessageConsumer implements MessageCons
 
                 long annualizedAmount = AnnualizedInvestUtil.annualizedInvestAmount(investInfo.getAmount(), loanDetailInfo.getDuration());
                 weChatHelpMapper.create(new WeChatHelpModel(loanDetailInfo.getLoanId(), investInfo.getInvestId(), investInfo.getAmount(),
-                        annualizedAmount, userInfo.getLoginName(), userInfo.getMobile(), null, WeChatHelpType.INVEST_HELP, new Date(), DateTime.now().plusDays(1).toDate()));
+                        annualizedAmount, userInfo.getLoginName(), userInfo.getUserName(), userInfo.getMobile(), null, WeChatHelpType.INVEST_HELP, new Date(), DateTime.now().plusDays(1).toDate()));
 
             }
         } catch (IOException e) {

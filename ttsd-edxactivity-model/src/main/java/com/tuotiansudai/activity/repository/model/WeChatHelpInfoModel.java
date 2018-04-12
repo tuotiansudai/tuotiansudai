@@ -8,14 +8,18 @@ public class WeChatHelpInfoModel implements Serializable {
     private long id;
     private String openId;
     private long weChatHelpId;
+    private WeChatHelpUserStatus status;
+    private String remark;
+    private Date cashBackTime;
     private Date createdTime;
 
     public WeChatHelpInfoModel() {
     }
 
-    public WeChatHelpInfoModel(String openId, long weChatHelpId) {
+    public WeChatHelpInfoModel(String openId, long weChatHelpId, WeChatHelpUserStatus status) {
         this.openId = openId;
         this.weChatHelpId = weChatHelpId;
+        this.status = status;
         this.createdTime = new Date();
     }
 
@@ -49,5 +53,29 @@ public class WeChatHelpInfoModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public WeChatHelpUserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(WeChatHelpUserStatus status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getCashBackTime() {
+        return cashBackTime;
+    }
+
+    public void setCashBackTime(Date cashBackTime) {
+        this.cashBackTime = cashBackTime;
     }
 }

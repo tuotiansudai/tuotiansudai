@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.api.Http;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -16,9 +17,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.paywrapper.service.TransferCashService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,20 +46,25 @@ public class TransferCashServiceImpl implements TransferCashService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
         try {
             AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
-            TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
-            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-            if (responseModel.isSuccess()) {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
-                        transferCashDto.getUserBillBusinessType(), null, null);
-                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
-                String detail = MessageFormat.format(transferCashDto.getSystemBillDetailTemplate().getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
+            if (accountModel == null){
+                payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+                payDataDto.setMessage("用户未实名认证");
+            }else {
+                TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
+                TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                if (responseModel.isSuccess()) {
+                    AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
+                            transferCashDto.getUserBillBusinessType(), null, null);
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+                    String detail = MessageFormat.format(transferCashDto.getSystemBillDetailTemplate().getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
 
-                SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), transferCashDto.getSystemBillBusinessType(), detail);
-                mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+                    SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), transferCashDto.getSystemBillBusinessType(), detail);
+                    mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+                }
+                payDataDto.setStatus(responseModel.isSuccess());
+                payDataDto.setCode(responseModel.getRetCode());
+                payDataDto.setMessage(responseModel.getRetMsg());
             }
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setMessage(responseModel.getRetMsg());
         } catch (Exception e) {
             payDataDto.setMessage(e.getMessage());
             logger.error(e.getLocalizedMessage(), e);

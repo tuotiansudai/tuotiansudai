@@ -130,8 +130,8 @@ public class InviteHelpActivityController {
         return !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && !Strings.isNullOrEmpty(openId) && inviteHelpActivityService.clickHelp(id, openId);
     }
 
-    @RequestMapping(path = "/wechat/withdraw", method = RequestMethod.GET)
-    public ModelAndView wechatWithDraw(HttpServletRequest request){
+    @RequestMapping(path = "/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
+    public ModelAndView wechatWithDraw(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
             return new ModelAndView("redirect:/activity/invite-help/everyone/help/detail");
@@ -142,6 +142,7 @@ public class InviteHelpActivityController {
             request.getSession().setAttribute("channel", "MayActivity");
             return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/withdraw");
         }
+        inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());
         return new ModelAndView("redirect:/account");
     }
 

@@ -13,6 +13,7 @@
         <result column="invest_amount" property="investAmount"/>
         <result column="annualized_Amount" property="annualizedAmount"/>
         <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
         <result column="mobile" property="mobile"/>
         <result column="openId" property="openId"/>
         <result column="help_type" property="type"/>
@@ -20,19 +21,26 @@
         <result column="reward" property="reward"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
-        <result column="is_send" property="isSend"/>
+        <result column="is_cashback" property="isCashBack"/>
+    </resultMap>
+
+    <resultMap id="weChatHelpView" extends="weChatHelpModel" type="com.tuotiansudai.activity.repository.model.WeChatHelpView">
+        <result column="nick_name" property="nickName"/>
     </resultMap>
 
     <insert id="create" parameterType="weChatHelpModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO we_chat_help(loan_id, invest_id, invest_amount,annualized_Amount, login_name, mobile, openId, help_type, start_time, end_time)
-        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{mobile}, #{openId}, #{type}, #{startTime}, #{endTime})
+        INSERT INTO we_chat_help(loan_id, invest_id, invest_amount,annualized_Amount, login_name, user_name, mobile, openId, help_type, start_time, end_time)
+        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{userName} #{mobile}, #{openId}, #{type}, #{startTime}, #{endTime})
     </insert>
 
     <update id="update" parameterType="weChatHelpModel">
         UPDATE we_chat_help SET
+        login_name = #{loginName},
+        user_name = #{userName},
+        mobile = #{mobile},
         help_user_count = #{helpUserCount},
         reward = #{reward},
-        is_send = #{isSend}
+        is_cashback = #{isCashBack}
         where id = #{id}
     </update>
 
@@ -58,6 +66,24 @@
             and openId = #{openId}
         </if>
         ORDER by start_time desc
+    </select>
+
+    <select id="findByLoanId" parameterType="map" resultMap="weChatHelpModel">
+        SELECT * FROM we_chat_help where loanId = #{loanId}
+    </select>
+
+    <select id="findByKeyWord" parameterType="map" resultMap="weChatHelpView">
+        SELECT * FROM we_chat_help h left join we_chat_user_info u on h.openId = u.openId
+        WHERE help_type = #{helpType}
+        <if test="keyWord !=null and keyWord !=''">
+            and (h.user_name = #{keyWord} or h.mobile = #{keyWord} or u.nick_name = #{keyWord})
+        </if>
+        <if test="minInvest !=null">
+            and h.invest_amount >= #{minAmount}
+        </if>
+        <if test="maxInvest !=null">
+            <![CDATA[ and h.invest_amount <= #{maxInvest} ]]>
+        </if>
     </select>
 
 </mapper>

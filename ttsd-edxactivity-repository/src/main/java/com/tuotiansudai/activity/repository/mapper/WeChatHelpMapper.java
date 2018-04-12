@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.activity.repository.model.WeChatHelpType;
+import com.tuotiansudai.activity.repository.model.WeChatHelpView;
 import com.tuotiansudai.activity.repository.model.WeChatUserInfoModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,11 @@ public interface WeChatHelpMapper {
     List<WeChatHelpModel> findByUserAndHelpType(@Param(value = "loginName") String loginName,
                                                 @Param(value = "openId") String openId,
                                                 @Param(value = "helpType") WeChatHelpType helpType);
+
+    List<WeChatHelpModel> findByLoanId(@Param(value = "loanId") long loanId);
+
+    List<WeChatHelpView> findByKeyWord(@Param(value = "keyWord") String keyWord,
+                                       @Param(value = "minInvest") Long minInvest,
+                                       @Param(value = "maxInvest") Long maxInvest,
+                                       @Param(value = "helpType") WeChatHelpType helpType);
 }
