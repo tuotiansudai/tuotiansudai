@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerService {
@@ -100,6 +101,7 @@ public class AnswerService {
             questionModel.setLastAnsweredTime(new Date());
             questionMapper.update(questionModel);
         }
+
     }
 
     public void reject(String loginName, List<Long> questionIds) {
