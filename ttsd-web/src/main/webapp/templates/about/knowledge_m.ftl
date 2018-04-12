@@ -7,46 +7,9 @@
     <div id="wrapperOut"  class="knowledge-list-frame">
         <div class="knowledge-content">
             <div id="knowledgeList" class="knowledges-list">
-                <#--<% for(var i=0,len=records.length; i < len; i++) {-->
-                <#--var item = records[i];-->
-                <#--%>-->
-                <a href="/announce/<%=item.id%>">
-                <dl class="knowledge-item clearfix">
-                    <dt></dt>
-                    <dd>1银行理财能力排名：股份制银行收益高 城商行风险低</dd>
-                    <dd class="date-time">2018-03-28 12:00</dd>
-                </dl>
-                </a>
-
-                <#--<% } %>-->
-                <dl class="knowledge-item clearfix">
-                    <dt></dt>
-                    <dd>12银行理财能力排名：股份制银行收益高 城商行风险低</dd>
-                    <dd class="date-time">2018-03-28 12:00</dd>
-                </dl>
-                <dl class="knowledge-item clearfix">
-                    <dt></dt>
-                    <dd>13银行理财能力排名：股份制银行收益高 城商行风险低</dd>
-                    <dd class="date-time">2018-03-28 12:00</dd>
-                </dl>
-                <dl class="knowledge-item clearfix">
-                    <dt></dt>
-                    <dd>14银行理财能力排名：股份制银行收益高 城商行风险低</dd>
-                    <dd class="date-time">2018-03-28 12:00</dd>
-                </dl>
-                <dl class="knowledge-item clearfix">
-                    <dt></dt>
-                    <dd>15银行理财能力排名：股份制银行收益高 城商行风险低</dd>
-                    <dd class="date-time">2018-03-28 12:00</dd>
-                </dl>
-                <dl class="knowledge-item clearfix">
-                    <dt></dt>
-                    <dd>16银行理财能力排名：股份制银行收益高 城商行风险低</dd>
-                    <dd class="date-time">2018-03-28 12:00</dd>
-                </dl>
 
             </div>
-            <div id="pullUp">
+            <div id="pullUp" style="display: none">
                 <span class="pullUpLabel">上拉加载更多</span>
             </div>
             <div id="noData" style="display: none">
@@ -55,15 +18,22 @@
         </div>
     </div>
 
-    <#--<script type="text/template" id="noticeListTemplate">-->
-        <#--<ul class="notice-list">-->
-            <#--&lt;#&ndash;<% for(var i=0,len=records.length; i < len; i++) {&ndash;&gt;-->
-            <#--&lt;#&ndash;var item = records[i];&ndash;&gt;-->
-            <#--&lt;#&ndash;%>&ndash;&gt;-->
-            <#--<li><i>●</i><a href="/announce/<%=item.id%>"><%=item.title%></a> <span><%=item.updateTime%></span></li>-->
-            <#--&lt;#&ndash;<% } %>&ndash;&gt;-->
-        <#--</ul>-->
-    <#--</script>-->
+    <script type="text/template" id="knowledgeListTemplate">
+
+            <% for(var i=0,len=records.length; i < len; i++) {
+            var item = records[i];
+            %>
+            <a href="/m/knowledge/<%=item.id%>">
+                <dl class="knowledge-item clearfix">
+                    <dt><img src="<%=item.thumb%>" alt=""></dt>
+                    <dd><%=item.title%></dd>
+                    <dd class="date-time"><%=item.updatedTime%> </dd>
+                </dl>
+            </a>
+
+            <% } %>
+
+    </script>
 
 
     <div class="knowledge-list">

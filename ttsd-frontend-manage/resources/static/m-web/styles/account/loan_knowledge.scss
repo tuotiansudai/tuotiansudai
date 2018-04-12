@@ -29,11 +29,10 @@ body {
       width: 1.5rem;
       height: 1.5rem;
       img {
-
+        width: 100%;
         display: block;
       }
-      background: url("../../images/account/fang.png") no-repeat;
-      background-size: 100%;
+
     }
     dd {
       float: right;
@@ -42,7 +41,7 @@ body {
       font-size: .3rem;
       color: #333;
       &.date-time {
-        margin-top: .2rem;
+        margin-top: .4rem;
         font-size: .24rem;
         color: #A2A2A2;
         text-align: right;
@@ -63,7 +62,40 @@ body {
   height: .7rem;
   line-height: .7rem;
 }
-
+.knowledge-detail-container {
+  padding:  .24rem .24rem .5rem .24rem;
+  h4 {
+    font-size: .4rem;
+    color: #000;
+    text-align: left;
+    line-height: .6rem;
+  }
+  .article-origin {
+    margin-top: .36rem;
+    color: #999;
+    .origin {
+      float: left;
+    }
+    .time {
+      float: right;
+    }
+  }
+  .detail-content-m {
+    margin-top: .4rem;
+    padding-bottom: .3rem;
+    p {
+      font-size: .26rem;
+      line-height: .52rem;
+      color: #666;
+      margin-bottom: .1rem;
+    }
+  }
+}
+#noData {
+  text-align: center;
+  height: .6rem;
+  line-height: .6rem;
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;

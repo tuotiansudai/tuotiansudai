@@ -21,33 +21,52 @@ myScroll.on('scrollEnd', function () {
     //如果滑动到底部，则加载更多数据（距离最底部10px高度）
     if ((this.y - this.maxScrollY) <= 10) {
         getMore();
-        console.log(9)
+
     }
 });
 
-    let pagenum = 1;//当前页数
+let requestData={"index":1,"pageSize":10};
+let isLastPage = false;
+getMore()
 //获取更多数据
     function getMore() {
 
-        pagenum++;
+if(isLastPage){
+        $('#pullUp').hide();
+    $('#noData').show();
+    return false;
 
+}
         commonFun.useAjax(
             {
-                url: window.location + "?index=" + pagenum,
-                dataType: 'html',
+                url: '/knowledge/list',
                 type: 'get',
+                data:requestData
             },
             function (data) {
-                if($(data).find("#wrapperOut #knowledgeList").html().trim().length > 0){
-                    $knowledgeList.append($(data).find("#wrapperOut #knowledgeList").html());
-                    myScroll.refresh();
+                if(data.success){
+                    if(!data.data.hasNextPage){
+                        isLastPage = true;
+                    }
+                   if(data.data.records.length){
+                       if(requestData.index!==1){
+                           $('#pullUp').show();
+                       }
+                        let knowledgeTpl=$('#knowledgeListTemplate').html();
+                        let ListRender = _.template(knowledgeTpl);
+                        let html = ListRender(data.data);
+                        $knowledgeList.append(html);
+                        myScroll.refresh();
 
-                }else {
-                    $('#noData').show();
+                    }else {
+                        $('#noData').show();
+                    }
                 }
+
 
             }
         )
+        requestData.index++;
     }
 
 

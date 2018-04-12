@@ -2,21 +2,15 @@
     <@global.main pageCss="${m_css.loan_knowledge}" pageJavascript="${m_js.loan_knowledge}" activeNav="信息披露" activeLeftNav="网贷知识" title="网贷知识详情">
     <div class="knowledge-detail-container" id="knowledgeDetail">
 
-        <h2 class="column-title article">
-           央行发布修订后的《应收账款质登记办法》
-
-        </h2>
-        <p>
-            <span>来源&nbsp;中新网</span>
-            <span class="tr">发表时间：2018.09.08 </span>
-        </p>
-        <div class="detail-content">
-            这世间所有的美好，都抵不过初见时的纯真年少。这世间最刻骨的爱恋，也抵不过这跨越时空的冥冥缘分。一本尘封已久的日记，一张泛黄已久的黑白照片，一堆被世间遗忘的信件，一段模糊又清晰的记忆。田间淡淡草香，初秋泛黄的落叶，潺潺流过的溪水，黑夜掌心的萤火虫，……在那个白衣飘飘的纯真年代，俗套的故事也可以如此动人。16岁那年看这部电影，我哭了，哭得稀里哗啦，至今未见更好的韩国电影。夕阳下缓缓牵手，月光下静静散步，一封情书，一曲小提琴，就能让喜欢的姑娘花容失色。电影中的那个时代，权贵和金钱是被蔑视的，才华和艺术是被尊崇的。爱情的最低标准不是房和车，而是我的雨伞分你一半。当年不懂爱情，看不懂这部电影，不明白为什么相爱的人不能在一起。今天第8次看这部电影，内心却是出奇的平静。曾有一个女孩对我说：未来的事谁知道呢，我只相信现在。如今的我。已经习惯了一个人看书、一个人写点东西、一个人吃饭、一个人散步、一个人听歌……一个人去做所有我能做的事情。但我依然坚信着缘分，坚信每一个出现在你生命中的人，都值得你去珍惜！缘起，在人群中，我看见你。缘灭，我看见你，在人群中。缘聚，缘散，缘起，缘灭，都属于我们。正因此缘，我们的人生才会完整。
-
-            作者：枫冷慕诗
-            链接：https://www.zhihu.com/question/30785415/answer/264254587
-            来源：知乎
-            著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+        <h4 class="title">
+        ${knowledge.title}
+        </h4>
+        <div class="article-origin clearfix">
+            <span class="origin">来源&nbsp;中新网</span>
+            <span class="time">发表时间：${(knowledge.updatedTime?string("yyyy-MM-dd"))!} </span>
+        </div>
+        <div class="detail-content-m">
+        ${knowledge.content}
         </div>
 
 
