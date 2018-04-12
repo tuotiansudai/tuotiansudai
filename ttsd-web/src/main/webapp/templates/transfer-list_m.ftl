@@ -49,6 +49,10 @@
                     <i></i>
                     <span>投资</span>
                 </a>
+                <a class="menu-knowledge" href="/m/about/knowledge">
+                    <i></i>
+                    <span>发现</span>
+                </a>
                 <a class="menu-my" href="/m/account">
                     <i></i>
                     <span>我的</span>
