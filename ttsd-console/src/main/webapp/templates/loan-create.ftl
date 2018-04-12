@@ -206,6 +206,24 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">项目介绍: </label>
+
+                    <div class="col-sm-3">
+                        <textarea name="introduce" class="form-control" datatype="*" placeholder="请输入200个以内的字符" errormsg="项目介绍不能为空"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">还款来源: </label>
+
+                    <div class="col-sm-3">
+                        <label for="extra">
+                            <input name="source" type="text" class="form-control" datatype="*" placeholder="请输入20个以内的字符" errormsg="还款来源不能为空">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label">投资奖励: </label>
 
                     <div class="col-sm-3 checkbox">
@@ -224,7 +242,7 @@
                         <#list extraSources as source>
                             <label>
                                 <input name="extraSource" type="checkbox"
-                                       value="${source.name()}">${source.name()}</input>
+                                       value="${source.name()}">${source.name()}
                             </label>
                         </#list>
                     </div>
