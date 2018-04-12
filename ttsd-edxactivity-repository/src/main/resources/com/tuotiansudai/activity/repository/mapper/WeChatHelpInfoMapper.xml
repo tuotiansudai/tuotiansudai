@@ -12,7 +12,7 @@
         <result column="we_chat_help_id" property="weChatHelpId"/>
         <result column="status" property="status"/>
         <result column="remark" property="remark"/>
-        <result column="cashBackTime" property="cashBackTime"/>
+        <result column="cashback_time" property="cashBackTime"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
@@ -28,6 +28,14 @@
         VALUES (#{openId}, #{weChatHelpId}, #{status}, #{createdTime})
     </insert>
 
+    <update id="update" parameterType="weChatHelpInfoModel">
+        UPDATE we_chat_help_info set
+        status = #{status},
+        remark = #{remark},
+        cashback_time = #{cashBackTime}
+        where id = #{id}
+    </update>
+
     <select id="findByOpenId" parameterType="map" resultMap="weChatHelpInfoModel">
         SELECT * from we_chat_help_info where openId = #{openId} and we_chat_help_id = #{helpId}
     </select>
@@ -40,7 +48,7 @@
 
     <select id="findByNickName" parameterType="map" resultMap="weChatHelpInfoView">
         SELECT h.openId, u.nick_name, h.status, h.created_time from we_chat_help_info h LEFT join we_chat_user_info u on h.openId = u.openId
-        where h.we_chat_help_id = #{id}
+        where h.we_chat_help_id = #{helpId}
         <if test="nickName !=null and nickName !=''">
             <![CDATA[and u.nick_name like '%${nickName}%']]>
         </if>
@@ -48,6 +56,10 @@
             AND h.status = #{status}
         </if>
         ORDER BY h.created_time DESC
+    </select>
+
+    <select id="findByHelpId" parameterType="map" resultMap="weChatHelpInfoModel">
+        SELECT * FROM we_chat_help_info where we_chat_help_id = #{helpId}
     </select>
 
 </mapper>

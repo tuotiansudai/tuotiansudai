@@ -16,6 +16,8 @@ public interface WeChatHelpInfoMapper {
 
     void create(WeChatHelpInfoModel weChatHelpInfoModel);
 
+    void update(WeChatHelpInfoModel weChatHelpInfoModel);
+
     WeChatHelpInfoModel findByOpenId(@Param(value = "openId") String openId,
                                      @Param(value = "helpId") long helpId);
 
@@ -23,8 +25,10 @@ public interface WeChatHelpInfoMapper {
                                      @Param(value = "startTime") Date startTime,
                                      @Param(value = "endTime") Date endTime);
 
-    List<WeChatHelpInfoView> findByNickName(@Param(value = "id") long id,
+    List<WeChatHelpInfoView> findByNickName(@Param(value = "helpId") long helpId,
                                             @Param(value = "nickName") String nickName,
                                             @Param(value = "status") WeChatHelpUserStatus status);
+
+    List<WeChatHelpInfoModel> findByHelpId(@Param(value = "helpId") long helpId);
 
 }

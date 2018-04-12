@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.api.Http;
+import com.tuotiansudai.activity.repository.dto.InviteHelpActivityPayCashDto;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -16,7 +16,9 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.TransferReques
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.TransferCashService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.WeChatUserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,9 @@ public class TransferCashServiceImpl implements TransferCashService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private WeChatUserMapper weChatUserMapper;
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
@@ -46,10 +51,10 @@ public class TransferCashServiceImpl implements TransferCashService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
         try {
             AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
-            if (accountModel == null){
+            if (accountModel == null) {
                 payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
                 payDataDto.setMessage("用户未实名认证");
-            }else {
+            } else {
                 TransferRequestModel requestModel = TransferRequestModel.newLotteryReward(transferCashDto.getOrderId(), accountModel.getPayUserId(), accountModel.getPayAccountId(), transferCashDto.getAmount());
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 if (responseModel.isSuccess()) {
@@ -71,5 +76,20 @@ public class TransferCashServiceImpl implements TransferCashService {
         }
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+
+    @Override
+    public BaseDto<PayDataDto> transferCashInviteHelpActivity(InviteHelpActivityPayCashDto dto) {
+        PayDataDto payDataDto = new PayDataDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
+        WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(dto.getOpenid());
+        if (weChatUserModel == null || !weChatUserModel.isBound()) {
+            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            payDataDto.setMessage("用户未注册");
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        TransferCashDto transferCashDto = new TransferCashDto(weChatUserModel.getLoginName(), dto.getOrderId(), dto.getAmount(), dto.getUserBillBusinessType(), dto.getSystemBillBusinessType(), dto.getSystemBillDetailTemplate());
+        return transferCash(transferCashDto);
     }
 }
