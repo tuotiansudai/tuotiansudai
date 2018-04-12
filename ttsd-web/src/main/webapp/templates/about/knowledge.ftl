@@ -9,11 +9,11 @@
             <% for(var i=0,len=records.length; i < len; i++) {
             var item = records[i];
             %>
-            <li><i>●</i><a href="/announce/<%=item.id%>"><%=item.title%></a> <span><%=item.updateTime%></span></li>
+            <li><i>●</i><a href="/knowledge/<%=item.id%>"><%=item.title%></a> <span><%=item.updatedTime%></span></li>
             <% } %>
         </ul>
     </script>
 
-    <div class="pagination" data-url="/announce/list"></div>
+    <div class="pagination" data-url="/knowledge/list"></div>
 </div>
 </@global.main>
