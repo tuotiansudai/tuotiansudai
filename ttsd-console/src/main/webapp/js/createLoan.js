@@ -441,6 +441,10 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                         return false;
                     }
                 }
+
+                if($('input[name="estimate"]:checked').length == 0) {
+                    showErrorMessage('项目适合用户未选择', $('input[name="estimate"]'));
+                }
             },
             callback: function (data) {
                 return false;

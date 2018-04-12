@@ -23,6 +23,9 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;//标的名称
 
+    @ApiModelProperty(value = "标的介绍", example = "标的介绍")
+    private String loanIntroduce;//标的介绍
+
     @ApiModelProperty(value = "还款方式代码", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String repayTypeCode;//还款方式代码
 
@@ -186,6 +189,14 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     public void setLoanName(String loanName) {
         this.loanName = loanName;
+    }
+
+    public String getLoanIntroduce() {
+        return loanIntroduce;
+    }
+
+    public void setLoanIntroduce(String loanIntroduce) {
+        this.loanIntroduce = loanIntroduce;
     }
 
     public String getRepayTypeCode() {
