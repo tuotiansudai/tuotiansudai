@@ -80,9 +80,9 @@ public class WeChatClient {
 
         logger.info(MessageFormat.format("originalState {0}, state {1}", originalState, state));
 
-//        if (Strings.isNullOrEmpty(state) || !state.equals(originalState)) {
-//            return null;
-//        }
+        if (Strings.isNullOrEmpty(state) || !state.equals(originalState)) {
+            return null;
+        }
 
         try {
             Request request = new Request.Builder()
