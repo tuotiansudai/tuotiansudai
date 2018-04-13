@@ -3,6 +3,8 @@ package com.tuotiansudai.paywrapper.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.activity.repository.dto.InviteHelpActivityPayCashDto;
+import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -17,9 +19,11 @@ import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
+import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -30,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,6 +45,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -61,6 +67,9 @@ public class TransferCashServiceTest {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private WeChatUserMapper weChatUserMapper;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -145,6 +154,42 @@ public class TransferCashServiceTest {
         assertThat(feeMessage.getOrderId(), is(orderId));
         assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_CASH_BACK));
         assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
+    }
+
+    @Test
+    public void transferCashInviteHelpActivityFail(){
+        long orderId = IdGenerator.generate();
+        InviteHelpActivityPayCashDto dto = new InviteHelpActivityPayCashDto("openId", null, String.valueOf(orderId), "1", UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE);
+        BaseDto<PayDataDto> baseDto = transferCashService.transferCashInviteHelpActivity(dto);
+
+        assertFalse(baseDto.getData().getStatus());
+        assertThat(baseDto.getData().getCode(), is(String.valueOf(HttpStatus.BAD_REQUEST)));
+        assertThat(baseDto.getData().getMessage(), is("用户未注册"));
+
+        WeChatUserModel weChatUserModel = new WeChatUserModel("loginName", "openid");
+        weChatUserMapper.create(weChatUserModel);
+        weChatUserModel.setBound(true);
+        weChatUserMapper.update(weChatUserModel);
+        BaseDto<PayDataDto> baseDto1 = transferCashService.transferCashInviteHelpActivity(dto);
+
+        assertFalse(baseDto1.getData().getStatus());
+        assertThat(baseDto1.getData().getCode(), is(String.valueOf(HttpStatus.BAD_REQUEST)));
+        assertThat(baseDto1.getData().getMessage(), is("用户未实名认证"));
+    }
+
+    @Test
+    public void transferCashInviteHelpActivitySuccess(){
+        WeChatUserModel weChatUserModel = new WeChatUserModel("loginName", "openid");
+        weChatUserMapper.create(weChatUserModel);
+        weChatUserModel.setBound(true);
+        weChatUserMapper.update(weChatUserModel);
+        this.createAccountByUserId("loginName");
+        long orderId = IdGenerator.generate();
+        InviteHelpActivityPayCashDto dto = new InviteHelpActivityPayCashDto("openId", null, String.valueOf(orderId), "1", UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE);
+
+        BaseDto<PayDataDto> baseDto = transferCashService.transferCashInviteHelpActivity(dto);
+
+        assertTrue(baseDto.getData().getStatus());
     }
 
 }

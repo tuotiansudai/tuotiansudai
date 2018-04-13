@@ -72,8 +72,7 @@ public class InviteHelpActivityService {
     }
 
     public List<WeChatHelpModel> myInvestHelp(String loginName){
-        List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(null, null, WeChatHelpType.INVEST_HELP);
-        return list.stream().filter(i->i.getLoginName().equals(loginName)).collect(Collectors.toList());
+        return weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.INVEST_HELP);
     }
 
     public Map<String, Object> investHelpDetail(long id, String loginName){
