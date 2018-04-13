@@ -23,6 +23,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Autowired
     private UserOpLogService userOpLogService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     @Transactional
@@ -126,7 +130,7 @@ public class AgreementServiceImpl implements AgreementService {
 
         if (AgreementBusinessType.HUIZU_AUTO_REPAY == agreementBusinessType) {
             mqWrapperClient.sendMessage(MessageQueue.HuiZuOpenAutoRepayQueue, Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                    .put("login_name", loginName)
+                    .put("login_name", userMapper.findByLoginName(loginName).getMobile())
                     .build()));
         }
     }
