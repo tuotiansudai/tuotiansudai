@@ -35,6 +35,9 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
     @Override
     public BaseResponseDto<CertificationResponseDataDto> validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
         UserModel userModel = userMapper.findByLoginName(certificationRequestDto.getBaseParam().getUserId());
+        if (userModel == null) {
+            userModel = userMapper.findByLoginNameOrMobile(certificationRequestDto.getBaseParam().getPhoneNum());
+        }
         RegisterAccountDto registerAccountDto = certificationRequestDto.convertToRegisterAccountDto(userModel);
         if (accountMapper.findByLoginName(registerAccountDto.getLoginName()) != null) {
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();

@@ -99,6 +99,7 @@
 
     <!-- growing io -->
     <#include "../growing-io.ftl"/>
+    <#include "../baidu-webmaster.ftl"/>
 </head>
 <body>
     <#include "../pageLayout/header.ftl"/>

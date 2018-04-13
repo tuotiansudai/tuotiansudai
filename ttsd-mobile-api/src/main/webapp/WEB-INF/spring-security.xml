@@ -10,14 +10,16 @@
         <authentication-provider ref="myAuthenticationProvider"/>
     </authentication-manager>
 
-    <http auto-config="true" use-expressions="true" disable-url-rewriting="true" entry-point-ref="mobileAppAuthenticationEntryPoint">
+    <http auto-config="true" use-expressions="true" disable-url-rewriting="true"
+          entry-point-ref="mobileAppAuthenticationEntryPoint">
         <csrf disabled="true"/>
 
         <access-denied-handler ref="mobileAppAccessDeniedHandler"/>
 
         <custom-filter ref="mobileAppAuthenticationTokenProcessingFilter" position="PRE_AUTH_FILTER"/>
 
-        <form-login login-page="/404" login-processing-url="/login" authentication-details-source-ref="myWebAuthenticationDetailsSource"
+        <form-login login-page="/404" login-processing-url="/login"
+                    authentication-details-source-ref="myWebAuthenticationDetailsSource"
                     authentication-success-handler-ref="myMobileSimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="myMobileSimpleUrlAuthenticationFailureHandler"/>
 
@@ -74,6 +76,7 @@
         <intercept-url pattern="/v1.0/get/help-center-search" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/activity/school-season-status" access="permitAll()"/>
         <intercept-url pattern="/huizu/register" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/common-certificate" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

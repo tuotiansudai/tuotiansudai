@@ -16,7 +16,6 @@ public class CertificationResponseDataDto extends BaseResponseDataDto{
     private String userIdCardNumber;
 
 
-
     /**
      * 用户实名认证使用的姓名
      * @return
@@ -48,4 +47,5 @@ public class CertificationResponseDataDto extends BaseResponseDataDto{
     public void setUserIdCardNumber(String userIdCardNumber) {
         this.userIdCardNumber = userIdCardNumber;
     }
+
 }

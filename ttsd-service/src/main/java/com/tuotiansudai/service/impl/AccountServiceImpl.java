@@ -1,13 +1,11 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.HuiZuWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.constants.PayReturnCode;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.dto.ResetUmpayPasswordDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
@@ -48,6 +46,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private HuiZuWrapperClient huiZuWrapperClient;
+
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
         BaseDto<PayDataDto> baseDto = registerAccountRetryOnTimeout(dto, 0);
@@ -71,6 +72,7 @@ public class AccountServiceImpl implements AccountService {
         return baseDto;
     }
 
+
     public AccountModel findByLoginName(String loginName) {
         return accountMapper.findByLoginName(loginName);
     }
@@ -84,6 +86,11 @@ public class AccountServiceImpl implements AccountService {
     public long getFreeze(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         return accountModel != null ? accountModel.getFreeze() : 0;
+    }
+
+    @Override
+    public BaseDto<HuiZuDataDto> registerAccountFromHuiZu(RegisterAccountDto dto) {
+        return huiZuWrapperClient.commonCertification(dto);
     }
 
     @Override

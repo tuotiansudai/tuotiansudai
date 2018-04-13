@@ -18,6 +18,7 @@ public enum RoleStage {
     SD_STAFF_RECOMMENDATION("速贷业务员的一级推荐"),
     ZC_STAFF_RECOMMENDATION("资产业务员的一级推荐"),
     ADMIN("管理员"),
+    PAYROLL_ADMIN("工资代发管理员"),
     COMPANY_STAFF("企业员工"), // 代发工资的企业员工用户
     FINANCE_ADMIN("财务管理员"), // 代发工资一级审核
     EDITOR("编辑"),

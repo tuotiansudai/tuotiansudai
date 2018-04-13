@@ -24,7 +24,6 @@ import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -51,6 +50,7 @@ public class QuestionService {
     private final AnswerMapper answerMapper;
 
     private static final int PAGE_SIZE = 10;
+
 
     @Autowired
     public QuestionService(QuestionMapper questionMapper, UserMapper userMapper, AnswerMapper answerMapper) {
@@ -79,6 +79,7 @@ public class QuestionService {
             questionModel.setStatus(QuestionStatus.UNRESOLVED);
             questionMapper.update(questionModel);
         }
+
     }
 
     public void reject(String loginName, List<Long> questionIds) {
