@@ -146,7 +146,7 @@
             <if test="endTime != null">
                 <![CDATA[ and user_bill.created_time <= #{endTime} ]]>
             </if>
-            AND ub.business_type != 'PAYROLL'
+            AND user_bill.business_type != 'PAYROLL'
         </where>
     </select>
 
