@@ -119,6 +119,7 @@
             <if test="endTime != null">
                 <![CDATA[ and ub.created_time <= #{endTime} ]]>
             </if>
+            AND ub.business_type != 'PAYROLL'
         </where>
         order by ub.created_time desc, id desc
         <if test="startLimit !=null and endLimit !=null ">
@@ -145,6 +146,7 @@
             <if test="endTime != null">
                 <![CDATA[ and user_bill.created_time <= #{endTime} ]]>
             </if>
+            AND ub.business_type != 'PAYROLL'
         </where>
     </select>
 
