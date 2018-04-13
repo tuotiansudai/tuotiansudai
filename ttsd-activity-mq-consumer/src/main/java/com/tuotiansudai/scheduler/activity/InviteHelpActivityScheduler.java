@@ -60,11 +60,9 @@ public class InviteHelpActivityScheduler {
 
     public static final String SEND_CASH_TO_MINISTRANT = "SEND_CASH_TO_MINISTRANT:{0}:{1}";
 
-
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
-
-    @Scheduled(cron = "0 * * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Shanghai")
     public void sendCash() {
         sendInvestHelpCash();
         sendEveryoneHelpCash();
@@ -83,6 +81,8 @@ public class InviteHelpActivityScheduler {
                     if (weChatHelpModel.getReward() > 0 && !redisWrapperClient.exists(MessageFormat.format(INVEST_HELP_SEND_CASH_TO_CREATOR, loanId, weChatHelpModel.getLoginName()))) {
                         try {
                             sendInvestHelpCashToCreator(loanId, weChatHelpModel.getLoginName(), weChatHelpModel.getReward());
+                            weChatHelpModel.setCashBack(true);
+                            weChatHelpMapper.update(weChatHelpModel);
                         } catch (Exception e) {
                             logger.error("[Invite_Help_Activity] loan {} out exceed 24 hour send creator cash, user:{}, cash:{} fail", loanId, weChatHelpModel.getLoginName(), weChatHelpModel.getReward());
                         }
@@ -107,10 +107,11 @@ public class InviteHelpActivityScheduler {
                 if (!redisWrapperClient.exists(MessageFormat.format(EVERYONE_HELP_SEND_CASH_TO_CREATOR, weChatHelpModel.getId()))) {
                     try {
                         sendEveryoneHelpCashToCreator(weChatHelpModel);
+                        weChatHelpModel.setCashBack(true);
+                        weChatHelpMapper.update(weChatHelpModel);
                     } catch (Exception e) {
                         logger.info("[Invite_Help_Activity] send everyone help {} creator cash fail, error:{}", weChatHelpModel.getId(), e.getMessage());
                     }
-                    sendCashMinistrantByHelpModel(weChatHelpModel);
                 }
             }
         }
@@ -149,6 +150,7 @@ public class InviteHelpActivityScheduler {
                 return;
             }
             if (response.getData().getCode().equals(String.valueOf(HttpStatus.BAD_REQUEST))){
+                redisWrapperClient.setex(key, lifeSecond, "fail");
                 logger.info("[Invite_Help_Activity] everyone help {} send creator cash fail, user:{}, cash:{}, message:{}", weChatHelpModel.getId(), weChatHelpModel.getLoginName(), weChatHelpModel.getReward(), response.getData().getMessage());
                 return;
             }
@@ -167,7 +169,7 @@ public class InviteHelpActivityScheduler {
         }
         List<WeChatHelpInfoModel> list = weChatHelpInfoMapper.findByHelpId(weChatHelpModel.getId());
         for (WeChatHelpInfoModel weChatHelpInfoModel : list) {
-            if (!redisWrapperClient.exists(MessageFormat.format(SEND_CASH_TO_MINISTRANT, weChatHelpModel.getId(), weChatHelpInfoModel.getOpenId()))) {
+            if (!redisWrapperClient.exists(MessageFormat.format(SEND_CASH_TO_MINISTRANT, weChatHelpInfoModel.getId(), weChatHelpInfoModel.getOpenId()))) {
                 try {
                     sendCashToMinistrant(weChatHelpModel.getId(), weChatHelpInfoModel, cash);
                 } catch (Exception e) {
@@ -179,7 +181,7 @@ public class InviteHelpActivityScheduler {
 
     private void sendCashToMinistrant(long id, WeChatHelpInfoModel weChatHelpInfoModel, long cash) {
         logger.info("[Invite_Help_Activity] send ministrant cash start, helpId:{}, openId:{}, cash:{}", id, weChatHelpInfoModel.getOpenId(), cash);
-        String key = MessageFormat.format(SEND_CASH_TO_MINISTRANT, weChatHelpInfoModel.getOpenId(), cash);
+        String key = MessageFormat.format(SEND_CASH_TO_MINISTRANT, weChatHelpInfoModel.getId(), weChatHelpInfoModel.getOpenId());
 
         InviteHelpActivityPayCashDto inviteHelpActivityPayCashDto = new InviteHelpActivityPayCashDto(weChatHelpInfoModel.getOpenId(), null, String.valueOf(IdGenerator.generate()), String.valueOf(cash),
                 UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE);
@@ -195,6 +197,7 @@ public class InviteHelpActivityScheduler {
                 return;
             }
             if (response.getData().getCode().equals(String.valueOf(HttpStatus.BAD_REQUEST))){
+                redisWrapperClient.setex(key, lifeSecond, "fail");
                 weChatHelpInfoModel.setRemark(response.getData().getMessage());
                 weChatHelpInfoModel.setStatus(WeChatHelpUserStatus.FAIL);
                 weChatHelpInfoMapper.update(weChatHelpInfoModel);

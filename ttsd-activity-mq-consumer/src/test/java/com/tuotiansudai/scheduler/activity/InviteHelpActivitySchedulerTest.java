@@ -6,13 +6,14 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.InviteHelpActivityPayCashDto;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
-import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.activity.repository.model.WeChatHelpInfoModel;
+import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
+import com.tuotiansudai.activity.repository.model.WeChatHelpType;
+import com.tuotiansudai.activity.repository.model.WeChatHelpUserStatus;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -22,7 +23,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +40,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -55,9 +52,6 @@ public class InviteHelpActivitySchedulerTest {
 
     @Mock
     private PayWrapperClient payWrapperClient;
-
-    @Mock
-    private SmsWrapperClient smsWrapperClient;
 
     @Mock
     private WeChatHelpMapper weChatHelpMapper;
@@ -84,6 +78,7 @@ public class InviteHelpActivitySchedulerTest {
         ArgumentCaptor<String> redisDelKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> redisDelHKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+        ArgumentCaptor<WeChatHelpModel> weChatHelpModelCaptor = ArgumentCaptor.forClass(WeChatHelpModel.class);
         ArgumentCaptor<InviteHelpActivityPayCashDto> inviteHelpActivityPayCashDtoCaptor = ArgumentCaptor.forClass(InviteHelpActivityPayCashDto.class);
         ArgumentCaptor<WeChatHelpInfoModel> weChatHelpInfoModelCaptor = ArgumentCaptor.forClass(WeChatHelpInfoModel.class);
 
@@ -100,6 +95,7 @@ public class InviteHelpActivitySchedulerTest {
 
         verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
         verify(this.payWrapperClient, times(2)).transferCash(transferCashDtoCaptor.capture());
+        verify(this.weChatHelpMapper, times(2)).update(weChatHelpModelCaptor.capture());
         verify(this.payWrapperClient, times(4)).InviteHelpActivityTransferCash(inviteHelpActivityPayCashDtoCaptor.capture());
         verify(this.weChatHelpInfoMapper, times(4)).update(weChatHelpInfoModelCaptor.capture());
 
@@ -107,6 +103,8 @@ public class InviteHelpActivitySchedulerTest {
         assertThat(redisDelHKeyCaptor.getValue(), is("20181"));
         assertThat(transferCashDtoCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
         assertThat(transferCashDtoCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
+        assertTrue(weChatHelpModelCaptor.getAllValues().get(0).isCashBack());
+        assertTrue(weChatHelpModelCaptor.getAllValues().get(1).isCashBack());
         assertThat(inviteHelpActivityPayCashDtoCaptor.getAllValues().get(0).getOpenid(), is("openId1"));
         assertThat(inviteHelpActivityPayCashDtoCaptor.getAllValues().get(1).getOpenid(), is("openId2"));
         assertThat(weChatHelpInfoModelCaptor.getAllValues().get(0).getStatus(), is(WeChatHelpUserStatus.SUCCESS));
@@ -118,6 +116,7 @@ public class InviteHelpActivitySchedulerTest {
         ArgumentCaptor<String> redisDelKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> redisDelHKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+        ArgumentCaptor<WeChatHelpModel> weChatHelpModelCaptor = ArgumentCaptor.forClass(WeChatHelpModel.class);
         ArgumentCaptor<InviteHelpActivityPayCashDto> inviteHelpActivityPayCashDtoCaptor = ArgumentCaptor.forClass(InviteHelpActivityPayCashDto.class);
         ArgumentCaptor<WeChatHelpInfoModel> weChatHelpInfoModelCaptor = ArgumentCaptor.forClass(WeChatHelpInfoModel.class);
 
@@ -137,14 +136,16 @@ public class InviteHelpActivitySchedulerTest {
 
         verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
         verify(this.payWrapperClient, times(2)).transferCash(transferCashDtoCaptor.capture());
+        verify(this.weChatHelpMapper, times(2)).update(weChatHelpModelCaptor.capture());
         verify(this.payWrapperClient, times(4)).InviteHelpActivityTransferCash(inviteHelpActivityPayCashDtoCaptor.capture());
         verify(this.weChatHelpInfoMapper, times(4)).update(weChatHelpInfoModelCaptor.capture());
-        verify(this.smsWrapperClient, times(4)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         assertThat(redisDelKeyCaptor.getValue(), is("INVEST_HELP_WAIT_SEND_CASH"));
         assertThat(redisDelHKeyCaptor.getValue(), is("20181"));
         assertThat(transferCashDtoCaptor.getAllValues().get(0).getLoginName(), is("loginName1"));
         assertThat(transferCashDtoCaptor.getAllValues().get(1).getLoginName(), is("loginName2"));
+        assertTrue(weChatHelpModelCaptor.getAllValues().get(0).isCashBack());
+        assertTrue(weChatHelpModelCaptor.getAllValues().get(1).isCashBack());
         assertThat(inviteHelpActivityPayCashDtoCaptor.getAllValues().get(0).getOpenid(), is("openId1"));
         assertThat(inviteHelpActivityPayCashDtoCaptor.getAllValues().get(1).getOpenid(), is("openId2"));
         assertThat(weChatHelpInfoModelCaptor.getAllValues().get(0).getStatus(), is(WeChatHelpUserStatus.FAIL));
@@ -152,6 +153,60 @@ public class InviteHelpActivitySchedulerTest {
         assertThat(weChatHelpInfoModelCaptor.getAllValues().get(0).getRemark(), is("用户未注册"));
         assertThat(weChatHelpInfoModelCaptor.getAllValues().get(1).getRemark(), is("用户未注册"));
     }
+
+    @Test
+    public void sendEveryoneSuccess(){
+
+        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisHKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+        ArgumentCaptor<WeChatHelpModel> weChatHelpModelCaptor = ArgumentCaptor.forClass(WeChatHelpModel.class);
+
+        when(redisWrapperClient.hgetAll("EVERYONE_HELP_WAIT_SEND_CASH")).thenReturn(fakeWaitEveryoneHelp());
+        when(weChatHelpMapper.findById(anyLong())).thenReturn(fakeWeChatHelpModelByEveryone("loginName1"));
+        when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(true)));
+        when(weChatHelpInfoMapper.findByHelpId(anyLong())).thenReturn(fakeWeChatHelpInfoModelList());
+
+        inviteHelpActivityScheduler.sendCash();
+
+        verify(this.redisWrapperClient, times(1)).hdel(redisKeyCaptor.capture(), redisHKeyCaptor.capture());
+        verify(this.weChatHelpMapper,times(1)).update(weChatHelpModelCaptor.capture());
+        verify(this.payWrapperClient, times(1)).transferCash(transferCashDtoCaptor.capture());
+
+        assertThat(redisKeyCaptor.getValue(), is("EVERYONE_HELP_WAIT_SEND_CASH"));
+        assertThat(redisHKeyCaptor.getValue(), is("1"));
+        assertThat(transferCashDtoCaptor.getValue().getLoginName(), is("loginName1"));
+        assertTrue(weChatHelpModelCaptor.getValue().isCashBack());
+    }
+
+    @Test
+    public void sendEveryoneFail(){
+
+        ArgumentCaptor<String> redisKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisHKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+        ArgumentCaptor<WeChatHelpModel> weChatHelpModelCaptor = ArgumentCaptor.forClass(WeChatHelpModel.class);
+
+        when(redisWrapperClient.hgetAll("EVERYONE_HELP_WAIT_SEND_CASH")).thenReturn(fakeWaitEveryoneHelp());
+        when(weChatHelpMapper.findById(anyLong())).thenReturn(fakeWeChatHelpModelByEveryone("loginName1"));
+        PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
+        payDataDto.setMessage("用户未注册");
+        when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(payDataDto));
+        when(weChatHelpInfoMapper.findByHelpId(anyLong())).thenReturn(fakeWeChatHelpInfoModelList());
+
+        inviteHelpActivityScheduler.sendCash();
+
+        verify(this.redisWrapperClient, times(1)).hdel(redisKeyCaptor.capture(), redisHKeyCaptor.capture());
+        verify(this.weChatHelpMapper,times(1)).update(weChatHelpModelCaptor.capture());
+        verify(this.payWrapperClient, times(1)).transferCash(transferCashDtoCaptor.capture());
+
+        assertThat(redisKeyCaptor.getValue(), is("EVERYONE_HELP_WAIT_SEND_CASH"));
+        assertThat(redisHKeyCaptor.getValue(), is("1"));
+        assertThat(transferCashDtoCaptor.getValue().getLoginName(), is("loginName1"));
+        assertTrue(weChatHelpModelCaptor.getValue().isCashBack());
+    }
+
 
     public Map<String, String> fakeWaitInvestHelp(){
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
@@ -169,13 +224,13 @@ public class InviteHelpActivitySchedulerTest {
     public List<WeChatHelpInfoModel> fakeWeChatHelpInfoModelList(){
         return Lists.newArrayList(
                 fakeWeChatHelpInfoModel(1, "openId1"),
-                fakeWeChatHelpInfoModel(2, "openId2")
+                fakeWeChatHelpInfoModel(1, "openId2")
         );
     }
 
     public Map<String, String> fakeWaitEveryoneHelp(){
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("1", DateTime.now().minusDays(2).toString("yyyy-MM-dd HH:mm:SS"))
+                .put("1", DateTime.now().minusDays(2).toString("yyyy-MM-dd HH:mm:ss"))
                 .build());
     }
 
@@ -184,6 +239,14 @@ public class InviteHelpActivitySchedulerTest {
                 WeChatHelpType.INVEST_HELP, DateTime.now().minusDays(3).toDate(), DateTime.now().minusDays(2).toDate());
         weChatHelpModel.setHelpUserCount(2);
         weChatHelpModel.setReward(200);
+        return weChatHelpModel;
+    }
+
+    public WeChatHelpModel fakeWeChatHelpModelByEveryone(String loginName){
+        WeChatHelpModel weChatHelpModel = new WeChatHelpModel(0, 0, 0, 0, loginName, "userName1", "mobile", "openId",
+                WeChatHelpType.EVERYONE_HELP, DateTime.now().minusDays(3).toDate(), DateTime.now().minusDays(2).toDate());
+        weChatHelpModel.setHelpUserCount(2);
+        weChatHelpModel.setReward(40);
         return weChatHelpModel;
     }
 

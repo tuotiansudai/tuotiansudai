@@ -71,7 +71,7 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/create/everyone/help", method = RequestMethod.GET)
     @ResponseBody
-    public Long createEveryoneHelp(HttpServletRequest request) {
+    public String createEveryoneHelp(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (loginName != null || openId != null) {

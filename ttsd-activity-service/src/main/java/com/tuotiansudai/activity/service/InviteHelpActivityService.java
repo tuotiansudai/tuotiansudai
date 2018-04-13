@@ -17,6 +17,7 @@ import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.WeChatClient;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,12 @@ public class InviteHelpActivityService {
     private final WeChatClient weChatClient = WeChatClient.getClient();
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.invite.help.startTime}\")}")
+    private Date activityInviteHelpStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.invite.help.endTime}\")}")
+    private Date activityInviteHelpEndTime;
 
     public static final String EVERYONE_HELP_WAIT_SEND_CASH = "EVERYONE_HELP_WAIT_SEND_CASH";
 
@@ -89,7 +96,11 @@ public class InviteHelpActivityService {
     }
 
     @Transactional
-    public long createEveryoneHelp(String loginName, String mobile, String openId){
+    public String createEveryoneHelp(String loginName, String mobile, String openId){
+        if (activityInviteHelpStartTime.after(new Date()) || activityInviteHelpEndTime.before(new Date())){
+            return null;
+        }
+
         WeChatHelpModel weChatHelpModel = new WeChatHelpModel(WeChatHelpType.EVERYONE_HELP, new Date(), DateTime.now().plusDays(1).toDate());
         if (loginName != null) {
             weChatHelpModel.setLoginName(loginName);
@@ -108,7 +119,7 @@ public class InviteHelpActivityService {
         }
         weChatHelpMapper.create(weChatHelpModel);
         redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
-        return weChatHelpModel.getId();
+        return String.valueOf(weChatHelpModel.getId());
     }
 
     public WeChatHelpModel everyoneHelp(String loginName) {
