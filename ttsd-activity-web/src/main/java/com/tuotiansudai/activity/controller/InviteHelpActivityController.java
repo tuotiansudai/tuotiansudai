@@ -52,10 +52,7 @@ public class InviteHelpActivityController {
     @ResponseBody
     public List<WeChatHelpModel> myInvestHelpList() {
         String loginName = LoginUserInfo.getLoginName();
-        if (loginName != null) {
-            return inviteHelpActivityService.myInvestHelp(loginName);
-        }
-        return null;
+        return loginName != null ? inviteHelpActivityService.myInvestHelp(loginName) : null;
     }
 
     @RequestMapping(value = "/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
@@ -139,8 +136,8 @@ public class InviteHelpActivityController {
 
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
-            request.getSession().setAttribute("channel", "MayActivity");
-            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/withdraw");
+            request.getSession().setAttribute("channel", "weixin_rebateCheer");
+            return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/%s/withdraw", id));
         }
         inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());
         return new ModelAndView("redirect:/account");
