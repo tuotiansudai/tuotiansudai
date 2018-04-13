@@ -283,7 +283,7 @@ function validateHash() {
 
     }else if(location.hash == '#projectDetail'){
 
-        $projectDetail.show().siblings('.show-page').hide();
+        $projectDetail.show().siblings().hide();
 
 
     }else if(location.hash == '#buyDetail'){

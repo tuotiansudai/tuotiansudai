@@ -146,6 +146,37 @@ $organizationalImg.find('li').each(function(key,option) {
     $(option).find('a').attr('href',organizationalImg[num].big);
     $(option).find('a').append(`<img src="${organizationalImg[num].small}">`);
 });
+//审计报告
+let $reportImg = $('.reportImg');
+let $report2017 = $('.photo2017'),
+    $report2016 = $('.photo2016'),
+    $report2015 = $('.photo2015');
+
+let reportImg={
+    '1': {
+        small:require('../images/sign/aboutus/report_2017_1_small.png'),
+        big:require('../images/sign/aboutus/report_2017_1_big.png')
+    },
+    '2':{
+        small:require('../images/sign/aboutus/report_2017_2_small.png'),
+        big:require('../images/sign/aboutus/report_2017_2_big.png')
+    },
+    '3': {
+        small:require('../images/sign/aboutus/report_2016_1_small.png'),
+        big:require('../images/sign/aboutus/report_2016_1_big.png')
+    },
+    '4':{
+        small:require('../images/sign/aboutus/report_2015_1_small.png'),
+        big:require('../images/sign/aboutus/report_2015_1_big.png')
+    }
+};
+
+$reportImg.find('li').each(function(key,option) {
+    console.log(option)
+    let num = key+1;
+    $(option).find('a').attr('href',reportImg[num].big);
+    $(option).find('a').append(`<img src="${reportImg[num].small}">`);
+});
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
@@ -170,7 +201,19 @@ fancybox(function() {
         }
     });
 });
+//审计报告放大图
 
+fancybox(function() {
+    $(".audit-report-item li a").fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+        }
+    });
+});
 //问题列表
 require.ensure([],function() {
     let $problemListFrame=$('#problemListFrame');

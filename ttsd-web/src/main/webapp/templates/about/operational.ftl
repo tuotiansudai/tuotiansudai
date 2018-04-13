@@ -10,7 +10,7 @@
             <h3 class="total-view">平台数据总览 <span class="font-right" id="dateTime"></span> </h3>
             <div class="data-wrap">
                 <ul class="clearfix">
-                    <li class="bl">
+                    <li>
                         <p><em id="tradeAmount"></em>元</p>
                         <p>累计交易金额</p>
                     </li>
@@ -18,13 +18,17 @@
                         <p><em id="total_trade_count"></em>笔</p>
                         <p>累计交易笔数</p>
                     </li>
-                    <li class="bl pl">
+                    <li>
                         <p><em id="usersCount"></em>人</p>
                         <p>注册投资用户数</p>
                     </li>
-                    <li class="pl">
+                    <li>
                         <p><em id="earn_total_amount"></em>元</p>
                         <p>累计为用户赚取</p>
+                    </li>
+                    <li>
+                        <p><em id="earn_total_amount"></em>元</p>
+                        <p>累计投资用户数</p>
                     </li>
                 </ul>
             </div>
@@ -38,33 +42,55 @@
                 <![endif]-->
             </div>
         </div>
-        <div class="invest-wrap clearfix">
-            <h3 class="font16">平台用户统计</h3>
-            <h4 class="font14">投资人基本信息</h4>
-            <div class="data-model cheat-model">
-                <div class="model-container" id="investRecord">
-                    <!--[if gte IE 8]>
-                    请使用更高版本浏览器查看
-                    <![endif]-->
+        <h3 class="font16">平台用户统计</h3>
+        <div class="invest-section">
+            <div class="invest-wrap clearfix">
+                <h4 class="font14 paddingLeft">投资人基本信息</h4>
+                <div class="data-model cheat-model">
+                    <div class="model-container" id="investRecord">
+                        <!--[if gte IE 8]>
+                        请使用更高版本浏览器查看
+                        <![endif]-->
+                    </div>
+                </div>
+                <div class="data-model cheat-model">
+
+                    <div class="model-container" id="investSexRecord">
+                        <!--[if gte IE 8]>
+                        请使用更高版本浏览器查看
+                        <![endif]-->
+                    </div>
                 </div>
             </div>
-            <div class="data-model cheat-model">
-               
-                <div class="model-container" id="investSexRecord">
-                    <!--[if gte IE 8]>
-                    请使用更高版本浏览器查看
-                    <![endif]-->
+            <div class="data-model region-wrap">
+                <h3 class="font14 paddingLeft">投资人地域分布</h3>
+                <div class="model-container geographical-item" id="investRegionRecord">
+                    <ul id="geographicalWrap">
+                    </ul>
                 </div>
+
             </div>
         </div>
-        <div class="data-model region-wrap">
-            <h3 class="font14">投资人地域分布</h3>
-            <div class="model-container geographical-item" id="investRegionRecord">
-                <ul id="geographicalWrap">
+        <div class="data-model">
+            <h3 class="font16" >借款标的情况</h3>
+            <div class="data-wrap">
+                <span class="line"></span>
+                <ul class="clearfix">
+                    <li class="loan">
+                        <p><em>3333，3333</em>元</p>
+                        <p>累计借贷金额</p>
+                    </li>
+                    <li class="loan">
+                        <p><em>3333，3333</em>笔</p>
+                        <p>累计借贷笔数</p>
+                    </li>
                 </ul>
             </div>
 
         </div>
+
+        <h3 class="font16 loan-title marginTop20">平台借款用户统计</h3>
+        <div class="loan-section">
         <div class="invest-wrap clearfix">
             <h4 class="font14">借款人基本信息</h4>
             <div class="data-model cheat-model">
@@ -87,6 +113,26 @@
             <h3 class="font14">借款人地域分布</h3>
             <div class="model-container geographical-item" id="loanRegionRecord">
                 <ul id="geographicalWrapLoan">
+                </ul>
+            </div>
+
+        </div>
+        </div>
+
+
+        <div class="data-model">
+            <h3 class="font16">逾期情况</h3>
+            <div class="data-wrap">
+                <span class="line"></span>
+                <ul class="clearfix">
+                    <li class="loan">
+                        <p><em>3333，3333</em>元</p>
+                        <p>借款人平台逾期次数</p>
+                    </li>
+                    <li class="loan">
+                        <p><em>3333，3333</em>笔</p>
+                        <p>平台逾期总金额</p>
+                    </li>
                 </ul>
             </div>
 
