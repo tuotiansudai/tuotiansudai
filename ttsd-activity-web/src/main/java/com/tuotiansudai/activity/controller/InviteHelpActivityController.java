@@ -71,14 +71,14 @@ public class InviteHelpActivityController {
     public String createEveryoneHelp(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (loginName != null || openId != null) {
+        if ((loginName != null || openId != null) && !inviteHelpActivityService.isCreateEveryoneHelp(loginName, openId)) {
             return inviteHelpActivityService.createEveryoneHelp(loginName, LoginUserInfo.getMobile(), openId);
         }
         return null;
     }
 
     @RequestMapping(path = "/everyone/help/detail", method = RequestMethod.GET)
-    public ModelAndView everyoneHelpDetail(@PathVariable long id, HttpServletRequest request) {
+    public ModelAndView everyoneHelpDetail(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/activities/2018/everyone-help-detail", "responsive", false);
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         String loginName = LoginUserInfo.getLoginName();

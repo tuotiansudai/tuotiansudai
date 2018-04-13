@@ -174,7 +174,6 @@ public class InviteHelpActivityService {
 
     @Transactional
     public boolean clickHelp(long id, String openId){
-        this.weChatUserInfo(openId);
         if (weChatHelpInfoMapper.findByOpenId(openId, id) != null) {
             return false;
         }
@@ -185,6 +184,7 @@ public class InviteHelpActivityService {
         if (new Date().after(weChatHelpModel.getEndTime())){
             return false;
         }
+        this.weChatUserInfo(openId);
         weChatHelpInfoMapper.create(new WeChatHelpInfoModel(openId, id, WeChatHelpUserStatus.WAITING));
         weChatHelpModel.setHelpUserCount(weChatHelpModel.getHelpUserCount() + 1);
         if (weChatHelpModel.getType() == WeChatHelpType.INVEST_HELP){
@@ -258,6 +258,11 @@ public class InviteHelpActivityService {
     public boolean isOwnHelp(String loginName, String openId, long id){
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         return openId.equals(weChatHelpModel.getOpenId()) || (!Strings.isNullOrEmpty(loginName) && loginName.equals(weChatHelpModel.getLoginName()));
+    }
+
+    public boolean isCreateEveryoneHelp(String loginName, String openId) {
+        return weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP).size() +
+                weChatHelpMapper.findByUserAndHelpType(null, openId, WeChatHelpType.EVERYONE_HELP).size() > 0;
     }
 
 }

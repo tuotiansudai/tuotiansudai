@@ -30,7 +30,7 @@
 
     <insert id="create" parameterType="weChatHelpModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO we_chat_help(loan_id, invest_id, invest_amount,annualized_Amount, login_name, user_name, mobile, openId, help_type, start_time, end_time)
-        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{userName} #{mobile}, #{openId}, #{type}, #{startTime}, #{endTime})
+        VALUES (#{loanId},#{investId}, #{investAmount},#{annualizedAmount}, #{loginName}, #{userName}, #{mobile}, #{openId}, #{type}, #{startTime}, #{endTime})
     </insert>
 
     <update id="update" parameterType="weChatHelpModel">
