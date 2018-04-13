@@ -14,15 +14,17 @@
                 <label for="control-label">时间</label>
 
                 <div class='input-group date' id="investDateBegin">
-                    <input type='text' class="form-control jq-startTime" name="startTime" value="${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
-					                <span class="input-group-addon">
+                    <input type='text' class="form-control jq-startTime" name="startTime"
+                           value="${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                    <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                 </div>
                 -
                 <div class='input-group date' id="investDateEnd">
-                    <input type='text' class="form-control jq-endTime" name="endTime" value="${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
-					                <span class="input-group-addon">
+                    <input type='text' class="form-control jq-endTime" name="endTime"
+                           value="${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                    <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                 </div>
@@ -42,8 +44,10 @@
                 <select class="selectpicker businessType" data-style="btn-default">
                     <option value="">全部</option>
                     <#list businessTypeList as businessType>
-                        <option value="${businessType}"
+                        <#if businessType != 'PAYROLL'>
+                            <option value="${businessType}"
                                 <#if userBillBusinessType?has_content && businessType == userBillBusinessType>selected</#if>>${businessType.description}</option>
+                        </#if>
                     </#list>
                 </select>
             </div>
