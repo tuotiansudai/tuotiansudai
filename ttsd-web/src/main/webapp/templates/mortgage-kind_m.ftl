@@ -3,7 +3,7 @@
 <#if loan.introduce??>
     <div class="section">
         <div class="title">项目介绍</div>
-        <div>
+        <div class="project-desc">
             ${loan.introduce}
         </div>
     </div>

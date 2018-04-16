@@ -66,6 +66,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private InvestRepayMapper investRepayMapper;
     @Mock
     private PageValidUtils pageValidUtils;
+    @Mock
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
@@ -391,6 +393,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(loanMapper.findById(anyLong())).thenReturn(new LoanModel());
         when(transferApplicationMapper.findById(anyLong())).thenReturn(new TransferApplicationModel());
         when(investRepayMapper.findByInvestIdAndPeriod(anyLong(),anyInt())).thenReturn(investRepayModel);
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
 
         BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationDetailResponseDataDto = mobileAppTransferApplicationService.transferApplicationById(transferApplicationDetailRequestDto);
 

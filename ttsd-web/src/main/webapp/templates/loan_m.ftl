@@ -115,6 +115,10 @@
             <label>还款方式</label>
             <span>${loan.type.repayType}</span>
         </li>
+        <li class="related-expenses" data-expenses="${investFeeRate*100}">
+            <label>相关费用</label>
+            <span>${investFeeRate*100}%技术服务费<em class="icon-mark" id="relatedTip"></em></span>
+        </li>
         <li>
             <label>发布日期</label>
             <span>${(loan.fundraisingStartTime?string("yyyy-MM-dd HH:mm:ss"))!}</span>

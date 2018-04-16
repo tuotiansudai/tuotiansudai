@@ -4,7 +4,7 @@ let $myAccount = $('#myAccount'),
     $summaryBox = $('.summary-box',$myAccount);
 commonFun.calculationFun(document,window);
 
-$('.footer-wap-container').find('a').removeClass('current').eq(2).addClass('current');
+$('.footer-wap-container').find('a').removeClass('current').eq(3).addClass('current');
 let $myMenu = $('.menu-my');
 if($myMenu.length){
     $myMenu.on('click',function (e) {

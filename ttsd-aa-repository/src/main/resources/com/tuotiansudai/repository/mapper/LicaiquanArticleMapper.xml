@@ -46,7 +46,7 @@
         content, created_time, updated_time, deleted, timing_time
         FROM `licaiquan_article`
         WHERE carousel = true
-        AND show_picture != NULL
+        AND show_picture is not NULL
         AND show_picture != ''
         AND deleted = false
         ORDER BY created_time DESC
