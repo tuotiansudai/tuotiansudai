@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/activity/invite-help")
@@ -48,14 +50,13 @@ public class InviteHelpActivityController {
     }
 
     @RequestMapping(value = "/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
-    public ModelAndView inviteHelpDetail(@PathVariable long id) {
-        ModelAndView modelAndView = new ModelAndView("/activities/2018/invite-help-detail", "responsive", false);
+    @ResponseBody
+    public Map<String, Object> inviteHelpDetail(@PathVariable long id) {
         String loginName = LoginUserInfo.getLoginName();
         if (loginName != null) {
-            modelAndView.addAllObjects(inviteHelpActivityService.investHelpDetail(id, loginName));
-            modelAndView.addObject("userMobile", LoginUserInfo.getMobile());
+            return inviteHelpActivityService.investHelpDetail(id, loginName);
         }
-        return modelAndView;
+        return null;
     }
 
     @RequestMapping(path = "/create/everyone/help", method = RequestMethod.GET)
@@ -70,14 +71,14 @@ public class InviteHelpActivityController {
     }
 
     @RequestMapping(path = "/everyone/help/detail", method = RequestMethod.GET)
-    public ModelAndView everyoneHelpDetail(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("/activities/2018/everyone-help-detail", "responsive", false);
+    @ResponseBody
+    public Map<String, Object> everyoneHelpDetail(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         String loginName = LoginUserInfo.getLoginName();
         if (loginName != null || openId != null) {
-            modelAndView.addAllObjects(inviteHelpActivityService.everyoneHelpDetail(loginName, openId));
+            return inviteHelpActivityService.everyoneHelpDetail(loginName, openId);
         }
-        return modelAndView;
+        return null;
     }
 
     @RequestMapping(path = "/wechat/{id:^\\d+$}/invest/help/", method = RequestMethod.GET)
@@ -88,7 +89,7 @@ public class InviteHelpActivityController {
         }
 
         if (inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id)){
-            return new ModelAndView(String.format("redirect:/activity/invite-help/%s/invest/help", id));
+            return new ModelAndView(String.format("redirect:/activity/wechat/invite-help/%s/invest/help", id));
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/invite-help-detail");
@@ -104,7 +105,7 @@ public class InviteHelpActivityController {
         }
 
         if (inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id)){
-            return new ModelAndView("redirect:/activity/invite-help/everyone/help/detail");
+            return new ModelAndView("redirect:/activity/invite-help/wechat/everyone/help/detail");
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/everyone-help-detail");
