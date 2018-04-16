@@ -191,10 +191,22 @@
                                             </tr>
                                             </thead>
                                         </table>
-                                        <div class="tipText">
+                                        <div class="tipText tipText_pc">
                                             投资成功后，即可邀请好友助力获取高额返现
                                         </div>
                                     </table>
+                                    <table class="cashBack_list_m">
+                                        <thead>
+                                        <tr class="table_header">
+                                            <th>投资金额</th>
+                                            <th>好友助力倒计时</th>
+                                            <th>邀请好友助力</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="tipText tipText_mobile">
+                                        投资成功后，即可邀请好友助力获取高额返现
+                                    </div>
                                 </div>
                                 <div class="help_list">
                                     <div class="title">
@@ -261,9 +273,17 @@
                         <div class="part2_mobile">
                             <div class="title">
                                 <p>活动期间，用户登录后分享活动链接至微信群/朋友圈/任意好友，<span class="strong">邀请好友</span>为您助力，每<span class="strong">多邀请1</span>
-                                <span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span class="strong">10元现金</span>奖励。</p>
+                                    <span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span class="strong">10元现金</span>奖励。</p>
+                            </div>
+                            <div class="already_login">
                                 <div class="news">您已成功邀请<span class="strong">21人</span>，获得返现<span class="strong">21元</span>，</div>
                                 <div class="strong everyone_detail" style="cursor: pointer">查看邀请详情></div>
+                                <div class="invite_friends_help"></div>
+                            </div>
+                            <div class="no_login">
+                                <div class="login_btn"></div>
+                                <div class="login_text">登录后可查看分享链接</div>
+                                <div class="duration_time">活动有效期：05.02-05.31</div>
                             </div>
                         </div>
                     </div>
@@ -390,12 +410,30 @@
             <div class="line">
                 <div class="light_line"></div>
             </div>
-            <div class="circle circle1">100</div>
-            <div class="circle circle2">200</div>
-            <div class="circle circle3">300</div>
-            <div class="circle circle4">400</div>
-            <div class="circle circle5">500</div>
-            <div class="circle circle6">1000</div>
+            <div class="circle_wrapper circle1_wrapper">
+                <div class="circle circle1">100</div>
+                <div class="person_num">2人</div>
+            </div>
+            <div class="circle_wrapper circle2_wrapper">
+                <div class="circle circle2">200</div>
+                <div class="person_num">5人</div>
+            </div>
+            <div class="circle_wrapper circle3_wrapper">
+                <div class="circle circle3">300</div>
+                <div class="person_num">18人</div>
+            </div>
+            <div class="circle_wrapper circle4_wrapper">
+                <div class="circle circle4">400</div>
+                <div class="person_num">58人</div>
+            </div>
+            <div class="circle_wrapper circle5_wrapper">
+                <div class="circle circle5">500</div>
+                <div class="person_num">88人</div>
+            </div>
+            <div class="circle_wrapper circle6_wrapper">
+                <div class="circle circle6">1000</div>
+                <div class="person_num">108人</div>
+            </div>
         </div>
         <div class="mid_content">
             <div class="invite_weachat">

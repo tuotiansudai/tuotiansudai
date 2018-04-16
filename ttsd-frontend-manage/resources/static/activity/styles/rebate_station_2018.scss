@@ -1,5 +1,4 @@
 $percentWidth:500;
-$rates:40;
 
 body {
   font-size: 12px;
@@ -458,6 +457,12 @@ h2,h4 {
       text-align: center;
       color: #a7988d;
       background: #fff;
+      &.tipText_pc {
+        display: block;
+      }
+      &.tipText_mobile {
+        display: none;
+      }
     }
   }
   .no_login2 {
@@ -621,7 +626,7 @@ h2,h4 {
       width: 500px;
       margin: 0 auto;
       .line {
-        margin: 45px auto auto auto;
+        margin: 40px auto auto auto;
         width: 500px;
         height: 16px;
         background: #ccbea6;
@@ -630,48 +635,59 @@ h2,h4 {
           background: #f0081e;
         }
       }
-      .circle {
+      .circle_wrapper {
         position: absolute;
+        top: 100px;
+        left: 0;
         width: 50px;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        border-radius: 50%;
-        background: #ccbea6;
-        color: #fff;
-        font-size: 18px;
-        font-weight: normal;
-        &.light {
-          background: #f0081e;
+        height: 75px;
+        .person_num {
+          font-size: 18px;
+          text-align: center;
+          color: #c88f61;
         }
-        &.circle1 {
+        &.circle1_wrapper {
           top: -17px;
           left: -25px;
         }
-        &.circle2 {
+        &.circle2_wrapper {
           top: -17px;
           left: $percentWidth * 0.2 - 25px;
         }
-        &.circle3 {
+        &.circle3_wrapper {
           top: -17px;
           left: $percentWidth * 0.4 - 25px;
         }
-        &.circle4 {
+        &.circle4_wrapper {
           top: -17px;
           left: $percentWidth * 0.6 - 25px;
         }
-        &.circle5 {
+        &.circle5_wrapper {
           top: -17px;
           left: $percentWidth * 0.8 - 25px;
         }
-        &.circle6 {
+        &.circle6_wrapper {
           top: -17px;
           left: $percentWidth - 25px;
+        }
+        .circle {
+          width: 50px;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          border-radius: 50%;
+          background: #ccbea6;
+          color: #fff;
+          font-size: 18px;
+          font-weight: normal;
+          &.light {
+            background: #f0081e;
+          }
         }
       }
     }
     .mid_content {
-      margin: 45px auto auto 75px;
+      margin: 55px auto auto 75px;
       overflow: hidden;
       .invite_weachat {
         position: relative;
@@ -753,7 +769,7 @@ h2,h4 {
       }
     }
     .friends {
-      margin: 40px auto auto 30px;
+      margin: 35px auto auto 30px;
       font-size: 14px;
       top: 350px;
       left: 30px;
@@ -979,8 +995,8 @@ h2,h4 {
                       position: relative;
                       .cash_icon {
                         position: absolute;
-                        top: -27px;
-                        left: 10px;
+                        top: -.35rem;
+                        left: .7rem;
                         width: 2.65rem;
                         height: 2.325rem;
                         background: url("../images/2018/rebate-station/cash_icon.png") no-repeat;
@@ -1124,8 +1140,9 @@ h2,h4 {
                 }
                 .news {
                   font-size: .6rem;
-                  margin: 1.6rem auto .5rem auto;
+                  margin: 1.6rem auto auto auto;
                   width: 100%;
+                  text-align: center;
                   .strong {
                     font-size: .65rem;
                     color: #ec192c;
@@ -1133,11 +1150,20 @@ h2,h4 {
                 }
                 .everyone_detail {
                   &.strong {
+                    margin: 0 auto;
+                    width: 5.5rem;
                     font-size: .75rem;
                     color: #ec192c;
                     text-decoration: underline;
                     font-weight: normal;
                   }
+                }
+                .invite_friends_help {
+                  margin: .2rem auto auto auto;
+                  width: 7.35rem;
+                  height: 2.425rem;
+                  background: url("../images/2018/rebate-station/invite_friends_help.png") no-repeat;
+                  background-size: contain;
                 }
               }
               &.part3 {
@@ -1239,37 +1265,44 @@ h2,h4 {
 
   .part1 {
     .no_login1 {
-      margin-bottom: 85px;
+      margin-bottom: 1.6rem;
       .tipText {
-        height: 92px;
-        line-height: 92px;
-        font-size: 26px;
+        height: 4.5rem;
+        line-height: 4.5rem;
+        font-size: .65rem;
         text-align: center;
         color: #a7988d;
         background: #fff;
+        &.tipText_pc {
+          display: none;
+        }
+        &.tipText_mobile {
+          display: block;
+        }
       }
     }
     .no_login2 {
-      margin-top: 50px;
-      font-size: 26px;
+      margin-top: .7rem;
+      font-size: .65rem;
       color: #a7988d;
+      text-align: center;
     }
   }
   .part2 {
     .no_login {
-      font-size: 20px;
+      font-size: .65rem;
       color: #582e28;
       text-align: center;
       .login_btn {
-        margin: 40px auto 10px auto;
-        width: 294px;
-        height: 97px;
+        margin: 1rem auto .25rem auto;
+        width: 7.35rem;
+        height: 2.4rem;
         background: url("../images/2018/rebate-station/login_btn_icon.png") no-repeat;
         background-size: contain;
         cursor: pointer;
       }
       .login_text {
-        margin-bottom: 30px;
+        margin-bottom: .75rem;
       }
     }
   }

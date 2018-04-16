@@ -85,9 +85,9 @@ $('.login_btn').on('click', () => {
 });
 
 $('.see_more').on('click',() => {
-   $('.table_container').addClass('table_auto');
+    $('.table_container').addClass('table_auto');
     $('.see_more').hide();
-   $('.see_less').show();
+    $('.see_less').show();
 });
 
 $('.see_less').on('click',() => {
@@ -100,12 +100,23 @@ $('.see_less').on('click',() => {
 $('.handle_btn').on('click',(e) => {
     let overTime = e.currentTarget.dataset.overtime;
     countTimePop(overTime);
-    $('.cashBack_popModal').show();
+    if (!isMobile()) {
+        $('.cashBack_popModal').show();
+    }
+    else {
+        alert(1)
+    }
+
 });
 
 // 活动二 人人可领10元现金
 $('.everyone_detail').on('click',() => {
-    $('.help_popModal').show();
+    if (!isMobile()) {
+        $('.help_popModal').show();
+    }
+    else {
+        alert(2)
+    }
 });
 
 $('.close_btn').on('click',function () {
