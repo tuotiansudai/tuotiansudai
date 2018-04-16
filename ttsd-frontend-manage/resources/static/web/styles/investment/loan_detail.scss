@@ -384,7 +384,7 @@ $red: #eb4a3e;
           &.expected-interest-dd {
             padding: 2px;
             line-height: 30px;
-
+            margin-top: 20px;
             .principal-income {
               font-size: 25px;
               color: #ff7200;
@@ -995,6 +995,17 @@ $red: #eb4a3e;
       }
     }
 
+  }
+}
+.related-expenses {
+  clear: both;
+  padding: 12px 40px 8px 40px;
+  .title {
+    float: left;
+  }
+  .related-desc {
+    width: 465px;
+    float: left;
   }
 }
 

@@ -111,9 +111,17 @@
                                 <span class="title">还款方式：</span>
                             ${loan.type.getRepayType()},${loan.type.getInterestType()}
                             </div>
+
                         </div>
+
                     </div> <#-- .content end tag -->
+
                 </div> <#-- .container-block end tag -->
+                <div class="row related-expenses clearfix">
+                    <span class="title">相关费用：</span>
+                    <span class="related-desc">根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会
+                    收取X%技术服务费。</span>
+                </div>
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
