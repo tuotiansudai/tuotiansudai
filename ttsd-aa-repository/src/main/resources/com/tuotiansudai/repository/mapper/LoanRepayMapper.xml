@@ -321,4 +321,5 @@
     <select id="findSumActualInterest" resultType="long">
         select ifnull(SUM(actual_interest),0) from loan_repay where status='COMPLETE'
     </select>
+
 </mapper>
