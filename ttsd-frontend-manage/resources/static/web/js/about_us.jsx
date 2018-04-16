@@ -287,7 +287,7 @@ let getPartOnePage = (data, dataStr) => {
     $('#operationDays').append(`<span class="data-bg">${days}</span><span>年</span>`);
     $('#operationDays').append(dom);
     $('#operationDays').append(`<span>天</span>`);
-    // $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
+
      $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
 };
 
@@ -339,8 +339,21 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var money = data.money.slice(-6);
         getPartOnePage(data,data.operationDays);
 
-         $('#usersCount').text(toThousands(data.usersCount));
-         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));
+         $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
+         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));//累计交易金额
+       // $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
+       //  $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
+       //  $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
+
+       //  $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
+        //  $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
+        //  $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
+        //  $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate,2));//项目逾期率
+        //  $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate，2));//金额逾期率
+
+       //  $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
+       //  $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
+
         let barChartArr = [];
         let num = 0;
         for (let i = 0; i < 4; i++) {
@@ -361,7 +374,6 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
         option.series[0].barWidth = 50;
 
-        console.log(option)
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
         //投资人基本信息 环形图
@@ -458,4 +470,3 @@ $('#userAgreement').click(function () {
         content: $('.service-box')
     });
 });
-
