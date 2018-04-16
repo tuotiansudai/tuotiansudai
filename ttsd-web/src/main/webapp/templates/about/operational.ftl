@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计投资金额及平台数据总览,为您提供安全投资的平台运营数据.">
-    <div class="about-us-container">
+    <div class="about-us-container operational-wrap">
         <h2 class="column-title"><em>运营数据</em></h2>
         <div class="operater-days-wrap section-wrap">
             <div class="operater-day clearfix" id="operationDays">
@@ -27,7 +27,7 @@
                         <p>累计为用户赚取</p>
                     </li>
                     <li>
-                        <p><em id="earn_total_amount"></em>元</p>
+                        <p><em id="investUsersCount"></em>元</p>
                         <p>累计投资用户数</p>
                     </li>
                 </ul>
@@ -77,11 +77,11 @@
                 <span class="line"></span>
                 <ul class="clearfix">
                     <li class="loan">
-                        <p><em>3333，3333</em>元</p>
+                        <p><em id="sumLoanAmount">3333，3333</em>元</p>
                         <p>累计借贷金额</p>
                     </li>
                     <li class="loan">
-                        <p><em>3333，3333</em>笔</p>
+                        <p><em id="sumLoanCount">3333，3333</em>笔</p>
                         <p>累计借贷笔数</p>
                     </li>
                 </ul>
@@ -93,6 +93,30 @@
         <div class="loan-section">
         <div class="invest-wrap clearfix">
             <h4 class="font14">借款人基本信息</h4>
+            <div class="data-wrap">
+                <ul class="clearfix">
+                    <li>
+                        <p><em id="sumLoanerCount"></em>元</p>
+                        <p>借款人数</p>
+                    </li>
+                    <li>
+                        <p><em id="sumExpectedAmount"></em>笔</p>
+                        <p>待偿金额</p>
+                    </li>
+                    <li>
+                        <p><em id="sumOverDueAmount"></em>人</p>
+                        <p>逾期金额</p>
+                    </li>
+                    <li>
+                        <p><em id="loanOverDueRate"></em>元</p>
+                        <p>项目逾期率</p>
+                    </li>
+                    <li>
+                        <p><em id="amountOverDueRate"></em>元</p>
+                        <p>金额逾期率</p>
+                    </li>
+                </ul>
+            </div>
             <div class="data-model cheat-model">
                 <div class="model-container" id="loanBaseRecord">
                     <!--[if gte IE 8]>
@@ -126,11 +150,11 @@
                 <span class="line"></span>
                 <ul class="clearfix">
                     <li class="loan">
-                        <p><em>3333，3333</em>元</p>
+                        <p><em id="loanerOverDueCount">3333，3333</em>元</p>
                         <p>借款人平台逾期次数</p>
                     </li>
                     <li class="loan">
-                        <p><em>3333，3333</em>笔</p>
+                        <p><em id="loanerOverDueAmount">3333，3333</em>笔</p>
                         <p>平台逾期总金额</p>
                     </li>
                 </ul>

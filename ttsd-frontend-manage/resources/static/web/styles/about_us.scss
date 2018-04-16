@@ -9,7 +9,7 @@ $gray5:#333333;
   margin-top: 20px;
 }
 .about-us-container {
-  background: none!important;
+  background: #fff!important;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
   @media (min-width: 701px) and (max-width: 999px) {
@@ -39,7 +39,6 @@ $gray5:#333333;
     }
   }
   .company-info {
-    width: 48%;
     .text-padding {
       padding-left: 2em;
     }
@@ -454,7 +453,9 @@ $gray5:#333333;
     }
   }
 }
-
+.operational-wrap {
+  background: none!important;
+}
 @media screen and (max-width: 700px) {
 
   .about-us-container {
@@ -795,6 +796,83 @@ $gray5:#333333;
 .marginLeft10 {
   margin-left: 10px;
 }
+
+
+//工商信息
+.business-circles {
+  tr {
+    td {
+      padding: 9px 0 8px 0!important;
+    }
+    &:nth-child(even) {
+      background: #fafafa;
+    }
+    &.scope-operation {
+      .desc {
+        padding-left: 70px!important;
+        padding-right: 70px!important;
+        text-align: left!important;
+        padding-bottom: 14px!important;
+      }
+    }
+  }
+
+  margin-bottom: 30px;
+}
+//控股名单
+
+.holding-list {
+  background: #fafafa;
+  padding-top: 24px;
+  padding-bottom: 30px;
+  clear: both;
+  .line {
+    float: left;
+    width: 1px;
+    height: 70px;
+    background: #e7eaee;
+    margin-top: 30px;
+  }
+  dl {
+    float: left;
+    width: 48%;
+    text-align: center;
+    cursor: pointer;
+    dt {
+      width: 66px;
+      height: 66px;
+      display: inline-block;
+      &.one {
+        background: url("../images/sign/aboutus/icon_ren .png");
+      }
+      &.two {
+        background: url("../images/sign/aboutus/ico_muban .png");
+      }
+    }
+    dd {
+
+    }
+  }
+}
+
+.layui-layer-title {
+  text-align: center!important;
+}
+.name-content {
+  color: #808080;
+  font-size: 14px;
+  text-align: left;
+  strong {
+    color: #333;
+  }
+  table {
+    background: #fafafa;
+    margin-top: 15px;
+    td {
+      border:1px solid #e7eaee;
+    }
+  }
+}
 //审计报告
 .report-container {
   background: #fff!important;
@@ -812,5 +890,6 @@ $gray5:#333333;
         width: 100%;
       }
     }
+
   }
 }
