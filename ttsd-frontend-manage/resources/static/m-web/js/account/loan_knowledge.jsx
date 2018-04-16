@@ -7,7 +7,7 @@ $(function () {
 
     let $knowledgeList = $('#knowledgeList');
     let bannerHeight = $('.knowledge-banner').height();
-    let footerHeight = $('.knowledge-list').height();
+    let footerHeight = $('.knowledge-list').length?$('.knowledge-list').height():0;
     let contentHeight = $('body').height() - bannerHeight - footerHeight;
 
 $('.knowledge-list-frame').height(contentHeight);
@@ -70,19 +70,7 @@ if(isLastPage){
     }
 
 
-    $knowledgeList.on('click','.goToTranDetail',function (e) {
-        e.preventDefault();
-        e.stopPropagation();
 
-        var url = $(this).data('url')
-        $.when(commonFun.isUserLogin())
-            .done(function () {
-                location.href = url+'#transferDetail';
-            }).fail(function () {
-            location.href = '/m/login'
-        })
-
-    })
 function isPassive() {
     var supportsPassiveOption = false;
     try {
