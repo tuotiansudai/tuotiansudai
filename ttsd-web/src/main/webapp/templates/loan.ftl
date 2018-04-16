@@ -120,7 +120,7 @@
                 <div class="row related-expenses clearfix">
                     <span class="title">相关费用：</span>
                     <span class="related-desc">根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会
-                    收取X%技术服务费。</span>
+                    收取${investFeeRate*100}%技术服务费。</span>
                 </div>
             </div>
             <div class="blank-middle"></div>

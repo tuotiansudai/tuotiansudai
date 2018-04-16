@@ -917,5 +917,15 @@ if($('#closeRisk').length){
     })
 
 }
-
+//相关技术服务费提示信息
+$('#relatedTip').on('click',function () {
+    let data = $('.related-expenses').data('expenses');
+    commonFun.CommonLayerTip({
+        btn: ['我知道了'],
+        area:['280px', '210px'],
+        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会收取${data}%技术服务费。</span></div> `,
+    },function() {
+        layer.closeAll();
+    })
+})
 
