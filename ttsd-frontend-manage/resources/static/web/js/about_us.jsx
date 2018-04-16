@@ -1,6 +1,7 @@
 require('webStyle/about_us.scss');
 require('publicJs/pagination');
 require('webJsModule/touch_menu');
+require('webJsModule/touch_menu');
 let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
@@ -391,3 +392,27 @@ function calculateWidth(dom,className) {
     })
     $(dom).find(className).width(widthArr[widthArr.length-1]).css('marginRight','10px');
 }
+//控股名单
+$('#nameList').click(function () {
+    layer.open({
+        type: 1,
+        title:'实际控制人与持股5%以上的股东名单',
+        closeBtn: 1,
+        area: ['600px', '280px'],
+        shadeClose: true,
+        content: $('#nameListPop')
+    });
+});
+//用户注册协议
+$('#userAgreement').click(function () {
+    layer.open({
+        type:1,
+        title:'速贷用户注册协议样本',
+        area:$(window).width()>700?['800px','520px']:['320px','100%'],
+        shadeClose: false,
+        scrollbar: true,
+        skin:'register-skin',
+        content: $('.service-box')
+    });
+});
+
