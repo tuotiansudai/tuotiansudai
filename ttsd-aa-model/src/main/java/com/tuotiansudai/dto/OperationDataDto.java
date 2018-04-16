@@ -8,6 +8,7 @@ import java.util.List;
 public class OperationDataDto implements Serializable {
     private int operationDays;
     private long usersCount;
+    private long investUsersCount;
     private String TradeAmount;
     private String totalInterest;
     private String maleScale;
@@ -22,6 +23,7 @@ public class OperationDataDto implements Serializable {
     private List<OperationDataLoanerCityDataDto> loanerCityScaleTop5;
     private List<OperationDataInvestAmountDataDto> investAmountScaleTop3;
     private Date now;
+
 
     public int getOperationDays() {
         return operationDays;
@@ -150,4 +152,12 @@ public class OperationDataDto implements Serializable {
     public void setNow(Date now) {
         this.now = now;
     }
+    public long getInvestUsersCount() {
+        return investUsersCount;
+    }
+
+    public void setInvestUsersCount(long investUsersCount) {
+        this.investUsersCount = investUsersCount;
+    }
+
 }

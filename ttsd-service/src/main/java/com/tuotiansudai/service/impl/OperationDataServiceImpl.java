@@ -63,6 +63,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
 
     private static final String REDIS_USERS_COUNT = "userCount";
+    private static final String REDIS_INVEST_USERS_COUNT = "investUserCount";
     private static final String REDIS_TRADE_AMOUNT = "tradeAmount";
     private static final String REDIS_OPERATION_DATA_MONTH = "operationDataMonth";
     private static final String REDIS_OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
@@ -105,6 +106,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                 InvestStatus.SUCCESS, null)));
 
         operationDataDto.setUsersCount(userMapper.findUsersCount());
+        operationDataDto.setInvestUsersCount(investMapper.findInvestorCount());
 
         List<Integer> sexList = findScaleByGender(new Date());
         if (sexList.size() > 1) {
@@ -146,6 +148,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endDate);
         operationDataDto.setOperationDays(calOperationTime(endDate));
         operationDataDto.setUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_USERS_COUNT)));
+        operationDataDto.setInvestUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT)));
         operationDataDto.setTradeAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_TRADE_AMOUNT));
         operationDataDto.setMonth(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
                 REDIS_OPERATION_DATA_MONTH)));
@@ -173,7 +176,9 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     private void updateRedis(OperationDataDto operationDataDto, Date endTime) {
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endTime);
+
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_USERS_COUNT, Long.toString(operationDataDto.getUsersCount()), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT, String.valueOf(operationDataDto.getInvestUsersCount()), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_TRADE_AMOUNT, operationDataDto.getTradeAmount(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_OPERATION_DATA_MONTH, convertListIntoRedisListString(
                 operationDataDto.getMonth()), timeout);
@@ -276,7 +281,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                     redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                             Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")),
                             String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
-                    resultMap.put(Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")) , String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                    resultMap.put(Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
                 }
 
             }
