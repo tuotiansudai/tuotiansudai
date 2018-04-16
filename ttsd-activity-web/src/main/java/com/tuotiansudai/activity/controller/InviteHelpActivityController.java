@@ -39,20 +39,12 @@ public class InviteHelpActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inviteHelp() {
-        ModelAndView modelAndView = new ModelAndView("/activities/2018/invite-help", "responsive", false);
+        ModelAndView modelAndView = new ModelAndView("/activities/2018/rebate-station", "responsive", false);
         String loginName = LoginUserInfo.getLoginName();
-        if (loginName != null) {
-            modelAndView.addObject("rewardRecords", inviteHelpActivityService.sendRewardRecord());
-            modelAndView.addObject("everyoneHelp", inviteHelpActivityService.everyoneHelp(loginName));
-        }
+        modelAndView.addObject("investHelp", inviteHelpActivityService.myInvestHelp(loginName));
+        modelAndView.addObject("everyoneHelp", inviteHelpActivityService.everyoneHelp(loginName));
+        modelAndView.addObject("rewardRecords", inviteHelpActivityService.sendRewardRecord());
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/my-invest/help", method = RequestMethod.GET)
-    @ResponseBody
-    public List<WeChatHelpModel> myInvestHelpList() {
-        String loginName = LoginUserInfo.getLoginName();
-        return loginName != null ? inviteHelpActivityService.myInvestHelp(loginName) : null;
     }
 
     @RequestMapping(value = "/{id:^\\d+$}/invest/help", method = RequestMethod.GET)

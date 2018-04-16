@@ -72,6 +72,9 @@ public class InviteHelpActivityService {
     }
 
     public List<WeChatHelpModel> myInvestHelp(String loginName){
+        if (loginName == null){
+            return null;
+        }
         return weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.INVEST_HELP);
     }
 
@@ -123,6 +126,9 @@ public class InviteHelpActivityService {
     }
 
     public WeChatHelpModel everyoneHelp(String loginName) {
+        if (loginName == null){
+            return null;
+        }
         List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP);
         return list.size() > 0 ? list.get(0) : null;
     }

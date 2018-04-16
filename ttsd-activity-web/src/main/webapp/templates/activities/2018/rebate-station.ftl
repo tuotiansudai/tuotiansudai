@@ -21,58 +21,58 @@
                             <p>2、根据累计助力好友人数，该投资用户可享受该笔投资额的0.2%-1%（年化）返现奖励。（注：无论好友是否为拓天速贷注册用户，均可参加助力）</p>
                             <table class="table">
                                 <thead>
-                                    <tr>
-                                        <th>最少助力人数</th>
-                                        <th>2</th>
-                                        <th>8</th>
-                                        <th>18</th>
-                                        <th>58</th>
-                                        <th>88</th>
-                                        <th>108</th>
-                                    </tr>
-                                    <tr>
-                                        <th>返现利率（年化）</th>
-                                        <th>0.2%</th>
-                                        <th>0.5%</th>
-                                        <th>0.6%</th>
-                                        <th>0.7%</th>
-                                        <th>0.8%</th>
-                                        <th>1%</th>
-                                    </tr>
+                                <tr>
+                                    <th>最少助力人数</th>
+                                    <th>2</th>
+                                    <th>8</th>
+                                    <th>18</th>
+                                    <th>58</th>
+                                    <th>88</th>
+                                    <th>108</th>
+                                </tr>
+                                <tr>
+                                    <th>返现利率（年化）</th>
+                                    <th>0.2%</th>
+                                    <th>0.5%</th>
+                                    <th>0.6%</th>
+                                    <th>0.7%</th>
+                                    <th>0.8%</th>
+                                    <th>1%</th>
+                                </tr>
                                 </thead>
                             </table>
                             <table class="table_m">
                                 <thead>
-                                    <tr>
-                                        <th>最少助力人数</th>
-                                        <th>返现利率（年化）</th>
-                                    </tr>
+                                <tr>
+                                    <th>最少助力人数</th>
+                                    <th>返现利率（年化）</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>0.2%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>0.5%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>18</td>
-                                        <td>0.6%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>58</td>
-                                        <td>0.7%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>88</td>
-                                        <td>0.8%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>108</td>
-                                        <td>1%</td>
-                                    </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>0.2%</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>0.5%</td>
+                                </tr>
+                                <tr>
+                                    <td>18</td>
+                                    <td>0.6%</td>
+                                </tr>
+                                <tr>
+                                    <td>58</td>
+                                    <td>0.7%</td>
+                                </tr>
+                                <tr>
+                                    <td>88</td>
+                                    <td>0.8%</td>
+                                </tr>
+                                <tr>
+                                    <td>108</td>
+                                    <td>1%</td>
+                                </tr>
                                 </tbody>
                             </table>
                             <p>3、活动期间，为投资用户直接助力的好友，可平分与投资用户等额的现金奖励。</p>
@@ -96,57 +96,30 @@
                                                 <th>邀请好友助力</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td>10000</td>
-                                                <td>18</td>
-                                                <td>1000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:21:30'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:27:00'>去邀请</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td>10000</td>
-                                                <td>18</td>
-                                                <td>1000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:27:00'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:29:00'>查看详情</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td>10000</td>
-                                                <td>18</td>
-                                                <td>1000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:21:30'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:27:00'>去邀请</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td>10000</td>
-                                                <td>18</td>
-                                                <td>1000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:27:00'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:29:00'>查看详情</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td>10000</td>
-                                                <td>18</td>
-                                                <td>1000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:21:30'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:27:00'>去邀请</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td>10000</td>
-                                                <td>18</td>
-                                                <td>1000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:27:00'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:29:00'>查看详情</td>
-                                            </tr>
-                                            </tbody>
+                                            <#if investHelp!?size!=0>
+                                                <tbody>
+                                                    <#list investHelp as invest>
+                                                    <tr>
+                                                        <td>${(invest.investAmount/100)?string('0.00')}</td>
+                                                        <td>${(invest.annualizedAmount/100)?string('0.00')}</td>
+                                                        <td>${invest.helpUserCount}</td>
+                                                        <td>${(invest.reward/100)?string('0.00')}</td>
+                                                        <td class="overTime"
+                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
+                                                        <td class="handle_btn"
+                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}>
+                                                            去邀请
+                                                        </td>
+                                                    </tr>
+                                                    </#list>
+                                                </tbody>
+                                            </#if>
                                         </table>
+                                        <#if investHelp!?size ==0>
+                                            <div class="tipText tipText_pc">
+                                                投资成功后，即可邀请好友助力获取高额返现
+                                            </div>
+                                        </#if>
                                         <table class="cashBack_list_m">
                                             <thead>
                                             <tr class="table_header">
@@ -155,24 +128,28 @@
                                                 <th>邀请好友助力</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:21:30'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:27:00'>去邀请</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:21:30'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:27:00'>去邀请</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10000</td>
-                                                <td class="overTime" data-overtime='2018-4-13 12:21:30'></td>
-                                                <td class="handle_btn" data-overtime='2018-4-13 12:27:00'>去邀请</td>
-                                            </tr>
-                                            </tbody>
+                                            <#if investHelp!?size!=0>
+                                                <tbody>
+                                                    <#list investHelp as invest>
+                                                    <tr>
+                                                        <td>${(invest.investAmount/100)?string('0.00')}</td>
+                                                        <td>${(invest.reward/100)?string('0.00')}</td>
+                                                        <td class="overTime"
+                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
+                                                        <td class="handle_btn"
+                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}>
+                                                            去邀请
+                                                        </td>
+                                                    </tr>
+                                                    </#list>
+                                                </tbody>
+                                            </#if>
                                         </table>
+                                        <#if investHelp!?size ==0>
+                                            <div class="tipText tipText_mobile">
+                                                投资成功后，即可邀请好友助力获取高额返现
+                                            </div>
+                                        </#if>
                                     </div>
                                     <div class="see_more">查看更多></div>
                                     <div class="see_less" style="display: none">收起></div>
@@ -214,14 +191,17 @@
                                         <div class="rightPic"></div>
                                     </div>
                                     <div class="content">
-                                        <div class="already_login">
-                                            <p>用户157XXXX2510，获取3000元现金</p>
-                                            <p>用户157XXXX2510，获取5000.01元现金</p>
-                                            <p>用户157XXXX2510，获取1111元现金</p>
-                                        </div>
-                                        <div class="no_login no_login2">
-                                            还没有用户获得投资好友助力返现
-                                        </div>
+                                        <#if rewardRecords?if_exists?size!=0>
+                                            <div>
+                                                <#list rewardRecords as record>
+                                                    <p>用户${record.mobile}，获取${(record.reward/100)?string('0.00')}元现金</p>
+                                                </#list>
+                                            </div>
+                                        <#else>
+                                            <div class="no_login2">
+                                                还没有用户获得投资好友助力返现
+                                            </div>
+                                        </#if>
                                     </div>
                                     <div class="invest_cash_btn"></div>
                                 </div>
@@ -244,8 +224,10 @@
                     <div class="box part2">
                         <div class="part2_pc">
                             <div class="title">
-                                <p>活动期间，用户登录后分享活动链接至微信群/朋友圈/任意好友，<span class="strong">邀请好友</span>为您助力，每<span class="strong">多邀请1</span></p>
-                                <p><span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span class="strong">10元现金</span>奖励。</p>
+                                <p>活动期间，用户登录后分享活动链接至微信群/朋友圈/任意好友，<span class="strong">邀请好友</span>为您助力，每<span
+                                        class="strong">多邀请1</span></p>
+                                <p><span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span
+                                        class="strong">10元现金</span>奖励。</p>
                             </div>
                             <div class="already_login">
                                 <div class="content">
@@ -260,7 +242,8 @@
                                         </div>
                                         <div>邀请好友助力得现金奖励</div>
                                     </div>
-                                    <div class="news">您已成功邀请<span class="strong">21人</span>，获得返现<span class="strong">4.02元</span>，<span class="strong everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
+                                    <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，<span
+                                            class="strong everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
                                     <div class="end_time">活动有效期：05.02-05.31</div>
                                 </div>
                             </div>
@@ -272,11 +255,15 @@
                         </div>
                         <div class="part2_mobile">
                             <div class="title">
-                                <p>活动期间，用户登录后分享活动链接至微信群/朋友圈/任意好友，<span class="strong">邀请好友</span>为您助力，每<span class="strong">多邀请1</span>
-                                    <span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span class="strong">10元现金</span>奖励。</p>
+                                <p>活动期间，用户登录后分享活动链接至微信群/朋友圈/任意好友，<span class="strong">邀请好友</span>为您助力，每<span
+                                        class="strong">多邀请1</span>
+                                    <span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span
+                                            class="strong">10元现金</span>奖励。</p>
                             </div>
                             <div class="already_login">
-                                <div class="news">您已成功邀请<span class="strong">21人</span>，获得返现<span class="strong">21元</span>，</div>
+                                <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span
+                                        class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，
+                                </div>
                                 <div class="strong everyone_detail" style="cursor: pointer">查看邀请详情></div>
                                 <div class="invite_friends_help"></div>
                             </div>
@@ -302,7 +289,8 @@
                 <div class="innerBox">
                     <div class="box part3">
                         <div class="title">
-                            <p>活动期间，微信扫描下方二维码或搜索<span class="strong">“拓天速贷服务号”</span>关注公众号，<span class="strong">回复口令“向钱冲”</span>，</p>
+                            <p>活动期间，微信扫描下方二维码或搜索<span class="strong">“拓天速贷服务号”</span>关注公众号，<span class="strong">回复口令“向钱冲”</span>，
+                            </p>
                             <p>即可<span class="strong">获得0.5%加息券2张</span>，每人限领一次。</p>
                         </div>
                         <div class="content"></div>
@@ -342,12 +330,12 @@
                 <th>年化投资额 = 实际投资额*90/360</th>
             </tr>
             <tr>
-                <th>120天 - 180天项目	</th>
+                <th>120天 - 180天项目</th>
                 <th>年化投资额 = 实际投资额*180/360</th>
             </tr>
             <tr>
                 <th>330天 - 360天项目</th>
-                <th>年化投资额 = 实际投资金额 </th>
+                <th>年化投资额 = 实际投资金额</th>
             </tr>
         </table>
         <p>11. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
