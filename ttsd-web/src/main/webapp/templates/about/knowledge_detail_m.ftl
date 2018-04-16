@@ -2,6 +2,9 @@
     <@global.main pageCss="${m_css.loan_knowledge}" pageJavascript="${m_js.loan_knowledge}" activeNav="信息披露" activeLeftNav="网贷知识" title="网贷知识详情">
     <div class="knowledge-detail-container" id="knowledgeDetail">
 
+            <a className="back-link" href="/knowledge/list"></a>
+
+
         <h4 class="title">
         ${knowledge.title}
         </h4>

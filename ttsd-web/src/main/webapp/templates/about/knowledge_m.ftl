@@ -35,26 +35,28 @@
 
     </script>
 
-
-    <div class="knowledge-list">
-        <div class="footer-wap-container">
-            <a class="menu-home" href="/m">
-                <i></i>
-                <span>首页</span>
-            </a>
-            <a class="menu-invest" href="/m/loan-list">
-                <i></i>
-                <span>投资</span>
-            </a>
-            <a class="menu-knowledge current" href="/m/about/knowledge">
-                <i></i>
-                <span>发现</span>
-            </a>
-            <a class="menu-my" href="/m/account">
-                <i></i>
-                <span>我的</span>
-            </a>
+    <#if !isAppSource>
+        <div class="knowledge-list">
+            <div class="footer-wap-container">
+                <a class="menu-home" href="/m">
+                    <i></i>
+                    <span>首页</span>
+                </a>
+                <a class="menu-invest" href="/m/loan-list">
+                    <i></i>
+                    <span>投资</span>
+                </a>
+                <a class="menu-knowledge current" href="/m/about/knowledge">
+                    <i></i>
+                    <span>发现</span>
+                </a>
+                <a class="menu-my" href="/m/account">
+                    <i></i>
+                    <span>我的</span>
+                </a>
+            </div>
         </div>
-    </div>
+    </#if>
+
 </div>
 </@global.main>
