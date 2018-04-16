@@ -156,6 +156,7 @@ body {
   }
 }
 .flex_rules {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -171,6 +172,8 @@ body {
   overflow: hidden;
   .close_rules {
     position: absolute;
+    top: .4rem;
+    right: .4rem;
     width: 1.2rem;
     height: 1rem;
     background: url("../../images/2018/rebate-station/close_rules_btn.png") no-repeat;
@@ -182,5 +185,55 @@ body {
     &.first_desc {
       margin-top: 4rem;
     }
+  }
+}
+.countDown_time_wrapper {
+  margin-top: 2.5rem;
+  text-align: center;
+  .text {
+    font-size: 1.25rem;
+    color: #fff;
+    font-weight: bold;
+  }
+  .pic_wrapper {
+    display: inline-block;
+    width: 10.175rem;
+    height: 2.775rem;
+    background: url("../../images/2018/rebate-station/countDown_wrapper_m.png") no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    .time_num_wrapper {
+      width: 10.175rem;
+      height: 2.775rem;
+      text-align: center;
+      .time_num {
+        display: inline-block;
+        margin-top: .65rem;
+        width: .8rem;
+        height: 1.2rem;
+        line-height: 1.2rem;
+        text-align: center;
+        font-size: .75rem;
+        color: #fff;
+        background: #373737;
+        border-radius: .1rem;
+      }
+      .icon {
+        font-size: .75rem;
+        color: #373737;
+      }
+    }
+  }
+  .time_over {
+    display: inline-block;
+    width: 10.175rem;
+    height: 2.775rem;
+    line-height: 2.55rem;
+    text-align: center;
+    font-size: .75rem;
+    font-weight: bold;
+    color: #565353;
+    background: url("../../images/2018/rebate-station/countDown_over.png") no-repeat;
+    background-size: contain;
   }
 }

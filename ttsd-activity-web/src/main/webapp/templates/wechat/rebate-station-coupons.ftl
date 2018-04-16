@@ -28,6 +28,26 @@
         <div class="text text5">88人</div>
         <div class="text text6">108人</div>
     </div>
+    <div class="countDown_time_wrapper">
+        <span class="text">倒计时：</span>
+        <div class="pic_wrapper">
+            <div class="time_num_wrapper">
+                <div class="time_num hour1"></div>
+                <div class="time_num hour2"></div>
+                <span class="icon">:</span>
+                <div class="time_num minutes1"></div>
+                <div class="time_num minutes2"></div>
+                <span class="icon">:</span>
+                <div class="time_num seconds1"></div>
+                <div class="time_num seconds2"></div>
+            </div>
+        </div>
+        <div class="time_over">已结束</div>
+    </div>
+    <div class="invited_friends_container">
+        <div class="title"></div>
+        <div class="content"></div>
+    </div>
 </div>
 <div class="flex_rules">
     <div class="close_rules"></div>
