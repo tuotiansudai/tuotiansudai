@@ -1,0 +1,1647 @@
+$percentWidth:500;
+
+body {
+  font-size: 12px;
+}
+h2,h4 {
+  font-weight: normal;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.rebate-station-banner {
+  position: relative;
+  height: 653px;
+  background: url("../images/2018/rebate-station/pc_banner.png") no-repeat center center;
+  .invest_btn {
+    display: block;
+    position: absolute;
+    bottom: 165px;
+    left: 50%;
+    margin-left: -372px;
+    width: 744px;
+    height: 78px;
+    background: url("../images/2018/rebate-station/invest_btn.png") no-repeat;
+    background-size: contain;
+  }
+}
+.invest_btn_m_container {
+  display: none;
+}
+.activity-wrap-main {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  background: #fee580;
+  .circle {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 143px;
+    height: 146px;
+    background: url("../images/2018/rebate-station/circle.png") no-repeat;
+    background-size: contain;
+  }
+  .glasses {
+    position: absolute;
+    top: 360px;
+    right: 0;
+    width: 216px;
+    height: 357px;
+    background: url("../images/2018/rebate-station/glasses.png") no-repeat;
+    background-size: contain;
+  }
+  .star {
+    position: absolute;
+    top: 1200px;
+    left: -120px;
+    width: 110px;
+    height: 64px;
+    background: url("../images/2018/rebate-station/star.png") no-repeat;
+    background-size: contain;
+  }
+  .ship {
+    position: absolute;
+    top: 1620px;
+    left: 0;
+    width: 113px;
+    height: 275px;
+    background: url("../images/2018/rebate-station/ship_pic.png") no-repeat;
+    background-size: contain;
+  }
+  .container {
+    position: relative;
+    width: 1000px;
+    margin: 0 auto;
+    &.container1 {
+      top: -120px;
+    }
+    .wood {
+      position: absolute;
+      width: 107px;
+      height: 100px;
+      &.topLeft {
+        top: -27px;
+        left: 0;
+        background: url("../images/2018/rebate-station/topLeftBg.png") no-repeat;
+        background-size: contain;
+      }
+      &.topRight {
+        top: -27px;
+        right: 0;
+        background: url("../images/2018/rebate-station/topRightBg.png") no-repeat;
+        background-size: contain;
+      }
+      &.bottomLeft {
+        bottom: -27px;
+        left: 0;
+        background: url("../images/2018/rebate-station/bottomLeftBg.png") no-repeat;
+        background-size: contain;
+      }
+      &.bottomRight {
+        bottom: -27px;
+        right: 0;
+        background: url("../images/2018/rebate-station/bottomRightBg.png") no-repeat;
+        background-size: contain;
+      }
+    }
+    .outBox {
+      position: relative;
+      box-sizing: border-box;
+      margin: 0 auto;
+      padding: 7px;
+      width: 935px;
+      background: #dac06b;
+      border-radius: 5px;
+      overflow: hidden;
+      .middleBox {
+        width: 921px;
+        box-sizing: border-box;
+        padding: 10px;
+        background: #fbe6c0;
+        border-radius: 5px;
+        overflow: hidden;
+        .innerBox {
+          width: 901px;
+          box-sizing: border-box;
+          padding: 13px;
+          background: #fdf5e2;
+          border-radius: 5px;
+          overflow: hidden;
+          .box {
+            box-sizing: border-box;
+            width: 875px;
+            padding: 50px 15px 20px 15px;
+            background: #fef8eb;
+            border-radius: 15px;
+            overflow: hidden;
+            &.part1 {
+              .desc {
+                font-size: 16px;
+                line-height: 30px;
+                color: #460c07;
+                .table {
+                  display: table;
+                  margin-bottom: 20px;
+                  border: 1px solid #460c07;
+                  font-size: 16px;
+                  th {
+                    font-weight: normal;
+                    border: 1px solid #460c07;
+                    background: #fef8eb;
+                  }
+                }
+                .table_m {
+                  display: none;
+                }
+                .example_pic {
+                  margin: 0 auto;
+                  width: 817px;
+                  height: 368px;
+                  background: url("../images/2018/rebate-station/example_pic.png") no-repeat;
+                  background-size: contain;
+                  vertical-align: middle;
+                }
+                .cashBack {
+                  .title {
+                    font-size: 36px;
+                    height: 100px;
+                    line-height: 100px;
+                    text-align: center;
+                    position: relative;
+                    .cash_icon {
+                      position: absolute;
+                      top: -27px;
+                      left: 10px;
+                      width: 169px;
+                      height: 148px;
+                      background: url("../images/2018/rebate-station/cash_icon.png") no-repeat;
+                      background-size: contain;
+                    }
+                  }
+                  .table_container {
+                    height: 153px;
+                    overflow: hidden;
+                    &.table_auto {
+                      height: auto;
+                    }
+                  }
+                  .cashBack_list {
+                    display: table;
+                    font-size: 16px;
+                    tr {
+                      border-bottom: 1px solid #e3dbda;
+                      &:last-child {
+                        border: none;
+                      }
+                    }
+                    th {
+                      height: 40px;
+                      line-height: 40px;
+                      font-weight: normal;
+                      background: #ff5237;
+                      color: #fff;
+                      &:first-child {
+                        border-radius: 10px 0 0 0;
+                      }
+                      &:last-child {
+                        border-radius: 0 10px 0 0;
+                      }
+                    }
+                    td {
+                      height: 30px;
+                      line-height: 30px;
+                      background: #fff;
+                    }
+                    .handle_btn {
+                      cursor: pointer;
+                      color: #c93221;
+                      text-decoration: underline;
+                    }
+                  }
+                  .cashBack_list_m {
+                    display: none;
+                  }
+                  .see_more, .see_less {
+                    width: 100px;
+                    margin: 25px auto 40px auto;
+                    color: #460c07;
+                    cursor: pointer;
+                  }
+                  .help_list {
+                    position: relative;
+                    .title {
+                      position: relative;
+                      margin: 0 auto;
+                      width: 625px;
+                      height: 93px;
+                      background: url("../images/2018/rebate-station/list_title.png") no-repeat;
+                      background-size: contain;
+                      .leftPic {
+                        position: absolute;
+                        top: -40px;
+                        left: 0;
+                        width: 119px;
+                        height: 93px;
+                        background: url("../images/2018/rebate-station/gold_ingot.png") no-repeat;
+                        background-size: contain;
+                      }
+                      .rightPic {
+                        position: absolute;
+                        top: -72px;
+                        right: 30px;
+                        width: 125px;
+                        height: 142px;
+                        background: url("../images/2018/rebate-station/gold_person.png") no-repeat;
+                        background-size: contain;
+                      }
+                    }
+                    .content {
+                      box-sizing: border-box;
+                      position: relative;
+                      top: -2px;
+                      width: 560px;
+                      height: 190px;
+                      margin: 0 auto;
+                      padding: 20px 20px 20px 50px;
+                      line-height: 50px;
+                      font-size: 20px;
+                      color: #582e28;
+                      background: #fff;
+                      overflow: hidden;
+                      border-radius: 0 0 25px 25px;
+                      p {
+                        height: 50px;
+                        margin-bottom: 0;
+                      }
+                    }
+                    .invest_cash_btn {
+                      margin: 27px auto auto auto;
+                      width: 294px;
+                      height: 97px;
+                      background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
+                      background-size: contain;
+                      cursor: pointer;
+                    }
+                  }
+                }
+              }
+            }
+            &.part2 {
+              font-size: 16px;
+              color: #582e28;
+              overflow: hidden;
+              .part2_pc {
+                display: block;
+              }
+              .part2_mobile {
+                display: none;
+              }
+              .title {
+                margin: 0 auto;
+                width: 715px;
+                line-height: 25px;
+                text-align: center;
+                p {
+                  margin-bottom: 0;
+                }
+                .strong {
+                  font-weight: bold;
+                  font-size: 18px;
+                  color: #ec192c;
+                }
+              }
+              .content {
+                position: relative;
+                font-size: 20px;
+                color: #582e28;
+                text-align: center;
+                .person_pic {
+                  position: absolute;
+                  top: 120px;
+                  left: 20px;
+                  width: 203px;
+                  height: 160px;
+                  background: url("../images/2018/rebate-station/go_ahead_person.png") no-repeat;
+                  background-size: contain;
+                }
+                .weachat_wrapper {
+                  position: relative;
+                  margin: 10px auto;
+                  width: 437px;
+                  height: 405px;
+                  background: url("../images/2018/rebate-station/go_ahead_wechat.png") no-repeat;
+                  background-size: contain;
+                  .active_one {
+                    position: absolute;
+                    top: 140px;
+                    left: 101px;
+                  }
+                }
+                .desc {
+                  margin: 0 auto 15px auto;
+                  width: 230px;
+                  line-height: 30px;
+                  .scan_icon {
+                    position: relative;
+                    top: -2px;
+                    display: inline-block;
+                    width: 21px;
+                    height: 22px;
+                    background: url("../images/2018/rebate-station/scan_icon.png") no-repeat;
+                    background-size: contain;
+                    vertical-align: middle;
+                  }
+                }
+                .news {
+                  margin-bottom: 10px;
+                  width: 100%;
+                  .strong {
+                    font-size: 20px;
+                    color: #ec192c;
+                    text-decoration: underline;
+                  }
+                }
+              }
+            }
+            &.part3 {
+              font-size: 16px;
+              color: #582e28;
+              overflow: hidden;
+              .title {
+                margin: 0 auto;
+                width: 715px;
+                line-height: 25px;
+                text-align: center;
+                p {
+                  margin-bottom: 0;
+                }
+                .strong {
+                  font-weight: bold;
+                  font-size: 18px;
+                  color: #ec192c;
+                }
+              }
+              .content {
+                position: relative;
+                top: -30px;
+                margin: 0 auto;
+                width: 779px;
+                height: 348px;
+                background: url("../images/2018/rebate-station/add_rates_wechat.png") no-repeat;
+                background-size: contain;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .go_ahead {
+    margin: -70px auto 40px auto;
+    width: 805px;
+    height: 78px;
+    background: url("../images/2018/rebate-station/go_ahead.png") no-repeat;
+    background-size: contain;
+  }
+  .add_rates {
+    margin: 50px auto 40px auto;
+    width: 805px;
+    height: 78px;
+    background: url("../images/2018/rebate-station/add_rates.png") no-repeat;
+    background-size: contain;
+  }
+  .tips_container {
+    margin: 50px auto auto auto;
+    padding-bottom: 100px;
+    width: 1000px;
+    line-height: 30px;
+    font-size: 16px;
+    color: #582e28;
+    p {
+      margin-bottom: 0;
+      line-height: 30px;
+      color: #582e28;
+    }
+    .tips_title_pc {
+      display: block;
+      font-size: 16px;
+      color: #582e28;
+    }
+    .tips_title_mobile {
+      display: none;
+    }
+    table {
+      margin-bottom: 20px;
+      font-size: 16px;
+      th {
+        font-weight: normal;
+        border: 1px solid #460c07;
+        background: #fee580;
+      }
+    }
+  }
+}
+.no_login ,.already_login {
+  display: none;
+}
+
+.part1 {
+  .no_login1 {
+    margin-bottom: 85px;
+    .tipText {
+      height: 92px;
+      line-height: 92px;
+      font-size: 26px;
+      text-align: center;
+      color: #a7988d;
+      background: #fff;
+      &.tipText_pc {
+        display: block;
+      }
+      &.tipText_mobile {
+        display: none;
+      }
+    }
+  }
+  .no_login2 {
+    margin-top: 50px;
+    font-size: 26px;
+    color: #a7988d;
+  }
+}
+.part2 {
+  .no_login {
+    font-size: 20px;
+    color: #582e28;
+    text-align: center;
+    .login_btn {
+      margin: 40px auto 10px auto;
+      width: 294px;
+      height: 97px;
+      background: url("../images/2018/rebate-station/login_btn_icon.png") no-repeat;
+      background-size: contain;
+      cursor: pointer;
+    }
+    .login_text {
+      margin-bottom: 30px;
+    }
+  }
+}
+.help_popModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+  z-index: 999;
+  .content {
+    position: fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 700px;
+    height: 532px;
+    font-size: 25px;
+    color: #b46a33;
+    background: url("../images/2018/rebate-station/help_popModal.png") no-repeat;
+    background-size: contain;
+    .strong {
+      color: #ea1331;
+    }
+    .join_num {
+      position: absolute;
+      top: 190px;
+      left: 100px;
+    }
+    .get_cash {
+      position: absolute;
+      top: 230px;
+      left: 100px;
+    }
+    .duration_time {
+      font-size: 20px;
+      position: absolute;
+      top: 273px;
+      left: 100px;
+    }
+    .invite_weachat {
+      width: 160px;
+      height: 199px;
+      position: absolute;
+      top: 145px;
+      right: 100px;
+      background: url("../images/2018/rebate-station/invite_weachat.png") no-repeat;
+      background-size: contain;
+      .desc_text {
+        position: absolute;
+        bottom: 5px;
+        width: 160px;
+        color: #fff;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+      }
+    }
+    .active_one_pop {
+      position: absolute;
+      top: 153px;
+      right: 110px
+    }
+    .friends {
+      position: absolute;
+      font-size: 14px;
+      top: 350px;
+      left: 30px;
+    }
+  }
+}
+.cashBack_popModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+  z-index: 999;
+  .content {
+    position: fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 700px;
+    height: 664px;
+    font-size: 25px;
+    color: #ae5f24;
+    background: url("../images/2018/rebate-station/backCash_popModal.png") no-repeat;
+    background-size: contain;
+    .strong {
+      font-size: 20px;
+      color: #ea1331;
+    }
+    .userName {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 25px auto 10px 50px;
+    }
+    .title {
+      padding: 0 30px;
+      font-size: 14px;
+      text-align: center;
+      .left_topIcon {
+        display: inline-block;
+        width: 110px;
+        height: 27px;
+        background: url("../images/2018/rebate-station/left_topIcon.png") no-repeat;
+        background-size: contain;
+        vertical-align: middle;
+      }
+      .text {
+        position: relative;
+        top: -2px;
+        display: inline-block;
+        line-height: 20px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .right_topIcon {
+        display: inline-block;
+        width: 110px;
+        height: 27px;
+        background: url("../images/2018/rebate-station/right_topIcon.png") no-repeat;
+        background-size: contain;
+        vertical-align: middle;
+      }
+    }
+    .percent_wrapper {
+      position: relative;
+      width: 500px;
+      margin: 0 auto;
+      .line {
+        margin: 40px auto auto auto;
+        width: 500px;
+        height: 16px;
+        background: #ccbea6;
+        .light_line {
+          height: 16px;
+          background: #f0081e;
+        }
+      }
+      .circle_wrapper {
+        position: absolute;
+        top: 100px;
+        left: 0;
+        width: 50px;
+        height: 75px;
+        .person_num {
+          font-size: 18px;
+          text-align: center;
+          color: #c88f61;
+        }
+        &.circle1_wrapper {
+          top: -17px;
+          left: -25px;
+        }
+        &.circle2_wrapper {
+          top: -17px;
+          left: $percentWidth * 0.2 - 25px;
+        }
+        &.circle3_wrapper {
+          top: -17px;
+          left: $percentWidth * 0.4 - 25px;
+        }
+        &.circle4_wrapper {
+          top: -17px;
+          left: $percentWidth * 0.6 - 25px;
+        }
+        &.circle5_wrapper {
+          top: -17px;
+          left: $percentWidth * 0.8 - 25px;
+        }
+        &.circle6_wrapper {
+          top: -17px;
+          left: $percentWidth - 25px;
+        }
+        .circle {
+          width: 50px;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          border-radius: 50%;
+          background: #ccbea6;
+          color: #fff;
+          font-size: 18px;
+          font-weight: normal;
+          &.light {
+            background: #f0081e;
+          }
+        }
+      }
+    }
+    .mid_content {
+      margin: 55px auto auto 75px;
+      overflow: hidden;
+      .invite_weachat {
+        position: relative;
+        display: inline-block;
+        width: 160px;
+        height: 199px;
+        background: url("../images/2018/rebate-station/invite_weachat.png") no-repeat;
+        background-size: contain;
+        font-size: 12px;
+        .desc_text {
+          position: absolute;
+          bottom: 5px;
+          width: 160px;
+          color: #fff;
+          font-size: 12px;
+          line-height: 15px;
+          text-align: center;
+        }
+        .active_two {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+        }
+      }
+      .countDownTime {
+        display: inline-block;
+        margin: 10px auto auto 90px;
+        vertical-align: top;
+        .title {
+          font-size: 40px;
+          color: #d70921;
+        }
+        .countDown_wrapper {
+          display: none;
+          width: 300px;
+          height: 82px;
+          font-size: 0;
+          background: url("../images/2018/rebate-station/countDown_wrapper.png") no-repeat;
+          background-size: contain;
+          overflow: hidden;
+          .time_num_wrapper {
+            width: 300px;
+            height: 36px;
+            text-align: center;
+            .time_num {
+              display: inline-block;
+              margin-top: 20px;
+              width: 25px;
+              height: 36px;
+              line-height: 36px;
+              text-align: center;
+              font-size: 30px;
+              color: #fff;
+              background: #373737;
+              border-radius: 3px;
+              &.hour1,  &.minutes1,  &.seconds1{
+                margin-right: 1px;
+              }
+            }
+            .icon {
+              margin: 0 3px;
+              font-size: 30px;
+              color: #373737;
+            }
+          }
+        }
+        .time_over {
+          display: none;
+          width: 300px;
+          height: 82px;
+          line-height: 82px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold;
+          color: #565353;
+          background: url("../images/2018/rebate-station/countDown_over.png") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+    .friends {
+      margin: 35px auto auto 30px;
+      font-size: 14px;
+      top: 350px;
+      left: 30px;
+    }
+  }
+}
+.close_btn {
+  position: absolute;
+  top: -33px;
+  right: -33px;
+  width: 50px;
+  height: 50px;
+  background: url("../images/2018/rebate-station/close_btn.png") no-repeat;
+  background-size: contain;
+}
+
+.list_tip_text {
+  position: absolute;
+  bottom: 70px;
+  color: #a7988d;
+  font-size: 18px;
+  font-weight: bold;
+  width: 700px;
+  text-align: center;
+}
+.friend_list {
+  position: absolute;
+  left: 23px;
+  bottom: 23px;
+  width: 654px;
+  height: 128px;
+  font-size: 14px;
+  color: #ae5f24;
+  overflow-y: scroll;
+  .list_item {
+    height: 42px;
+    line-height: 42px;
+    .portrait {
+      position: relative;
+      top: -2px;
+      display: inline-block;
+      margin: 0 15px 0 100px;
+      width: 36px;
+      height: 36px;
+      background: url("../images/2018/rebate-station/default_portrait.png") no-repeat;
+      background-size: contain;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    .nickName {
+      width: 250px;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .finish_time {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+@media screen and (max-width:768px) {
+  body {
+    margin: 0;
+  }
+  h2,h4 {
+    font-weight: normal;
+  }
+  .main-frame {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .rebate-station-banner {
+    position: relative;
+    width: 100%;
+    height: 8.75rem;
+    background: url("../images/2018/rebate-station/banner_mobile.png") no-repeat;
+    background-size: contain;
+    .invest_btn {
+      display: none;
+    }
+  }
+  .invest_btn_m_container {
+    display: block;
+    padding-bottom: .75rem;
+    width: 100%;
+    overflow: hidden;
+    background: #fee580;
+    .invest_btn_m {
+      margin: 0 auto;
+      width: 17.05rem;
+      height: 1.8rem;
+      background: url("../images/2018/rebate-station/invest_btn_m.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .activity-wrap-main {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    background: #fee580;
+    .circle {
+      display: none;
+    }
+    .glasses {
+      display: none;
+    }
+    .star {
+      display: none;
+    }
+    .ship {
+      display: none;
+    }
+    .container {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+      &.container1 {
+        top: 0;
+      }
+      .wood {
+        position: absolute;
+        width: 2.675rem;
+        height: 2.5rem;
+        &.topLeft {
+          top: -0.625rem;
+          left: .35rem;
+          background: url("../images/2018/rebate-station/topLeftBg_m.png") no-repeat;
+          background-size: contain;
+        }
+        &.topRight {
+          top: -0.625rem;
+          right: .35rem;
+          background: url("../images/2018/rebate-station/topRightBg_m.png") no-repeat;
+          background-size: contain;
+        }
+        &.bottomLeft {
+          bottom: -0.625rem;
+          left: .35rem;
+          background: url("../images/2018/rebate-station/bottomLeftBg_m.png") no-repeat;
+          background-size: contain;
+        }
+        &.bottomRight {
+          bottom: -0.625rem;
+          right: .35rem;
+          background: url("../images/2018/rebate-station/bottomRightBg_m.png") no-repeat;
+          background-size: contain;
+        }
+      }
+      p {
+        margin-bottom: 0;
+      }
+      .outBox {
+        position: relative;
+        box-sizing: border-box;
+        margin: 0 auto;
+        padding: .15rem;
+        width: 16.75rem;
+        background: #dac06b;
+        border-radius: .2rem;
+        overflow: hidden;
+        .middleBox {
+          width: 16.45rem;
+          box-sizing: border-box;
+          padding: .2rem;
+          background: #fbe6c0;
+          border-radius: .2rem;
+          overflow: hidden;
+          .innerBox {
+            width: 15.85rem;
+            box-sizing: border-box;
+            padding: .25rem;
+            background: #fdf5e2;
+            border-radius: .2rem;
+            overflow: hidden;
+            .box {
+              box-sizing: border-box;
+              width: 15.15rem;
+              padding: .5rem .2rem .5rem .2rem;
+              background: #fef8eb;
+              border-radius: .4rem;
+              overflow: hidden;
+              &.part1 {
+                .desc {
+                  font-size: .6rem;
+                  line-height: 1rem;
+                  color: #460c07;
+                  .table {
+                    display: none;
+                  }
+                  .table_m {
+                    display: table;
+                    width: 100%;
+                    margin: .6rem 0;
+                    border: none;
+                    font-size: .6rem;
+                    th {
+                      border: 1px solid #460c07;
+                      background: #fef8eb;
+                    }
+                    td {
+                      border: 1px solid #460c07;
+                      background: #fef8eb;
+                    }
+                  }
+                  .example_pic {
+                    margin: 0 auto;
+                    width: 14.75rem;
+                    height: 15.85rem;
+                    background: url("../images/2018/rebate-station/example_pic_m.png") no-repeat;
+                    background-size: contain;
+                    vertical-align: middle;
+                  }
+                  .cashBack {
+                    .title {
+                      font-size: .6rem;
+                      height: 1.6rem;
+                      line-height: 1.6rem;
+                      text-align: center;
+                      position: relative;
+                      .cash_icon {
+                        position: absolute;
+                        top: -.35rem;
+                        left: .7rem;
+                        width: 2.65rem;
+                        height: 2.325rem;
+                        background: url("../images/2018/rebate-station/cash_icon.png") no-repeat;
+                        background-size: contain;
+                      }
+                    }
+                    .table_container {
+                      height: 6.9rem;
+                      overflow: hidden;
+                      &.table_auto {
+                        height: auto;
+                      }
+                    }
+                    .cashBack_list {
+                      display: none;
+                    }
+                    .cashBack_list_m {
+                      display: table;
+                      font-size: .6rem;
+                      tr {
+                        border-bottom: 1px solid #e3dbda;
+                        &:last-child {
+                          border: none;
+                        }
+                      }
+                      th {
+                        height: 1.5rem;
+                        line-height: 1.5rem;
+                        font-weight: normal;
+                        background: #ff5237;
+                        color: #fff;
+                        border: none;
+                        &:first-child {
+                          border-radius: .5rem 0 0 0;
+                        }
+                        &:last-child {
+                          border-radius: 0 .5rem 0 0;
+                        }
+                      }
+                      td {
+                        padding: .5rem;
+                        height: 1.2rem;
+                        line-height: 1.2rem;
+                        background: #fff;
+                      }
+                      .handle_btn {
+                        cursor: pointer;
+                        color: #c93221;
+                        text-decoration: underline;
+                      }
+                    }
+                    .see_more, .see_less {
+                      width: 5rem;
+                      margin: .5rem auto 1.2rem auto;
+                      color: #460c07;
+                      cursor: pointer;
+                      text-align: center;
+                    }
+                    .help_list {
+                      position: relative;
+                      .title {
+                        position: relative;
+                        margin: 0 auto;
+                        width: 14.625rem;
+                        height: 2.2rem;
+                        background: url("../images/2018/rebate-station/list_title.png") no-repeat;
+                        background-size: contain;
+                        .leftPic {
+                          position: absolute;
+                          top: -1rem;
+                          left: 0;
+                          width: 2.8rem;
+                          height: 2.2rem;
+                          background: url("../images/2018/rebate-station/gold_ingot.png") no-repeat;
+                          background-size: contain;
+                        }
+                        .rightPic {
+                          position: absolute;
+                          top: -1.8rem;
+                          right: .75rem;
+                          width: 2.9rem;
+                          height: 3.3rem;
+                          background: url("../images/2018/rebate-station/gold_person.png") no-repeat;
+                          background-size: contain;
+                        }
+                      }
+                      .content {
+                        box-sizing: border-box;
+                        position: relative;
+                        top: -2px;
+                        width: 13.15rem;
+                        height: 4.45rem;
+                        margin: 0 auto;
+                        padding: .5rem .7rem .7rem .9rem;
+                        line-height: 1.2rem;
+                        font-size: .45rem;
+                        color: #582e28;
+                        background: #fff;
+                        overflow: hidden;
+                        border-radius: 0 0 .5rem .5rem;
+                        p {
+                          height: 1.2rem;
+                          margin-bottom: 0;
+                        }
+                      }
+                      .invest_cash_btn {
+                        margin: .6rem auto auto auto;
+                        width: 7.35rem;
+                        height: 2.45rem;
+                        background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
+                        background-size: contain;
+                        cursor: pointer;
+                      }
+                    }
+                  }
+                }
+              }
+              &.part2 {
+                font-size: .6rem;
+                color: #582e28;
+                overflow: hidden;
+                .part2_pc {
+                  display: none;
+                }
+                .part2_mobile {
+                  display: block;
+                }
+                .title {
+                  margin: 0 auto;
+                  width: 15rem;
+                  line-height: 1rem;
+                  text-align: center;
+                  p {
+                    margin-bottom: 0;
+                  }
+                  .strong {
+                    font-weight: bold;
+                    font-size: .7rem;
+                    color: #ec192c;
+                  }
+                }
+                .news {
+                  font-size: .6rem;
+                  margin: 1.6rem auto auto auto;
+                  width: 100%;
+                  text-align: center;
+                  .strong {
+                    font-size: .65rem;
+                    color: #ec192c;
+                  }
+                }
+                .everyone_detail {
+                  &.strong {
+                    margin: 0 auto;
+                    width: 5.5rem;
+                    font-size: .75rem;
+                    color: #ec192c;
+                    text-decoration: underline;
+                    font-weight: normal;
+                  }
+                }
+                .invite_friends_help {
+                  margin: .2rem auto auto auto;
+                  width: 7.35rem;
+                  height: 2.425rem;
+                  background: url("../images/2018/rebate-station/invite_friends_help.png") no-repeat;
+                  background-size: contain;
+                }
+              }
+              &.part3 {
+                font-size: .65rem;
+                color: #582e28;
+                overflow: hidden;
+                .title {
+                  margin: 0 auto;
+                  width: 15rem;
+                  line-height: 1rem;
+                  text-align: center;
+                  p {
+                    margin-bottom: 0;
+                  }
+                  .strong {
+                    font-weight: bold;
+                    font-size: .65rem;
+                    color: #ec192c;
+                  }
+                }
+                .content {
+                  position: relative;
+                  top: -30px;
+                  margin: 0 auto;
+                  width: 15rem;
+                  height: 11.15rem;
+                  background: url("../images/2018/rebate-station/add_rates_wechat_m.png") no-repeat;
+                  background-size: contain;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .go_ahead {
+      margin: 1.25rem auto 1rem auto;
+      width: 17.05rem;
+      height: 1.8rem;
+      background: url("../images/2018/rebate-station/go_ahead.png") no-repeat;
+      background-size: contain;
+    }
+    .add_rates {
+      margin: 1.25rem auto 1rem auto;
+      width: 17.05rem;
+      height: 1.8rem;
+      background: url("../images/2018/rebate-station/add_rates.png") no-repeat;
+      background-size: contain;
+    }
+    .tips_container {
+      margin:  1.5rem auto auto auto;
+      padding-bottom: 4rem;
+      width: 16.25rem;
+      line-height: 1rem;
+      font-size: .6rem;
+      color: #582e28;
+      p {
+        margin-bottom: 0;
+        line-height: 1rem;
+        color: #582e28;
+      }
+      .tips_title_mobile {
+        display: block;
+        margin-bottom: .5rem;
+        font-size: 1rem;
+        color: #582e28;
+        text-align: center;
+        vertical-align: middle;
+        .square_icon {
+          position: relative;
+          top: .1rem;
+          display: inline-block;
+          margin-right: .4rem;
+          width: .8rem;
+          height: .9rem;
+          background: #642b18;
+          &.left_spacing {
+            margin-left: .35rem;
+          }
+        }
+      }
+      .tips_title_pc {
+        display: none;
+      }
+      table {
+        margin-bottom: .35rem;
+        font-size: .6rem;
+        th {
+          font-weight: normal;
+          border: 1px solid #460c07;
+          background: #fee580;
+        }
+      }
+    }
+  }
+  .no_login ,.already_login {
+    display: none;
+  }
+
+  .part1 {
+    .no_login1 {
+      margin-bottom: 1.6rem;
+      .tipText {
+        height: 4.5rem;
+        line-height: 4.5rem;
+        font-size: .65rem;
+        text-align: center;
+        color: #a7988d;
+        background: #fff;
+        &.tipText_pc {
+          display: none;
+        }
+        &.tipText_mobile {
+          display: block;
+        }
+      }
+    }
+    .no_login2 {
+      margin-top: .7rem;
+      font-size: .65rem;
+      color: #a7988d;
+      text-align: center;
+    }
+  }
+  .part2 {
+    .no_login {
+      font-size: .65rem;
+      color: #582e28;
+      text-align: center;
+      .login_btn {
+        margin: 1rem auto .25rem auto;
+        width: 7.35rem;
+        height: 2.4rem;
+        background: url("../images/2018/rebate-station/login_btn_icon.png") no-repeat;
+        background-size: contain;
+        cursor: pointer;
+      }
+      .login_text {
+        margin-bottom: .75rem;
+      }
+    }
+  }
+  .help_popModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    z-index: 999;
+    .content {
+      position: fixed;
+      top:0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      width: 700px;
+      height: 532px;
+      font-size: 25px;
+      color: #b46a33;
+      background: url("../images/2018/rebate-station/help_popModal.png") no-repeat;
+      background-size: contain;
+      .strong {
+        color: #ea1331;
+      }
+      .join_num {
+        position: absolute;
+        top: 190px;
+        left: 100px;
+      }
+      .get_cash {
+        position: absolute;
+        top: 230px;
+        left: 100px;
+      }
+      .duration_time {
+        font-size: 20px;
+        position: absolute;
+        top: 273px;
+        left: 100px;
+      }
+      .invite_weachat {
+        width: 160px;
+        height: 199px;
+        position: absolute;
+        top: 145px;
+        right: 100px;
+        background: url("../images/2018/rebate-station/invite_weachat.png") no-repeat;
+        background-size: contain;
+        .desc_text {
+          position: absolute;
+          bottom: 5px;
+          width: 160px;
+          color: #fff;
+          font-size: 12px;
+          line-height: 15px;
+          text-align: center;
+        }
+      }
+      .active_one_pop {
+        position: absolute;
+        top: 153px;
+        right: 110px
+      }
+      .friends {
+        position: absolute;
+        font-size: 14px;
+        top: 350px;
+        left: 30px;
+      }
+    }
+  }
+  .cashBack_popModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    z-index: 999;
+    .content {
+      position: fixed;
+      top:0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      width: 700px;
+      height: 664px;
+      font-size: 25px;
+      color: #ae5f24;
+      background: url("../images/2018/rebate-station/backCash_popModal.png") no-repeat;
+      background-size: contain;
+      .strong {
+        font-size: 20px;
+        color: #ea1331;
+      }
+      .userName {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 25px auto 10px 50px;
+      }
+      .title {
+        padding: 0 30px;
+        font-size: 14px;
+        text-align: center;
+        .left_topIcon {
+          display: inline-block;
+          width: 110px;
+          height: 27px;
+          background: url("../images/2018/rebate-station/left_topIcon.png") no-repeat;
+          background-size: contain;
+          vertical-align: middle;
+        }
+        .text {
+          position: relative;
+          top: -2px;
+          display: inline-block;
+          line-height: 20px;
+          text-align: center;
+          vertical-align: middle;
+        }
+        .right_topIcon {
+          display: inline-block;
+          width: 110px;
+          height: 27px;
+          background: url("../images/2018/rebate-station/right_topIcon.png") no-repeat;
+          background-size: contain;
+          vertical-align: middle;
+        }
+      }
+      .percent_wrapper {
+        position: relative;
+        width: 500px;
+        margin: 0 auto;
+        .line {
+          margin: 45px auto auto auto;
+          width: 500px;
+          height: 16px;
+          background: #ccbea6;
+          .light_line {
+            height: 16px;
+            background: #f0081e;
+          }
+        }
+        .circle {
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          border-radius: 50%;
+          background: #ccbea6;
+          color: #fff;
+          font-size: 18px;
+          font-weight: normal;
+          &.light {
+            background: #f0081e;
+          }
+          &.circle1 {
+            top: -17px;
+            left: -25px;
+          }
+          &.circle2 {
+            top: -17px;
+            left: $percentWidth * 0.2 - 25px;
+          }
+          &.circle3 {
+            top: -17px;
+            left: $percentWidth * 0.4 - 25px;
+          }
+          &.circle4 {
+            top: -17px;
+            left: $percentWidth * 0.6 - 25px;
+          }
+          &.circle5 {
+            top: -17px;
+            left: $percentWidth * 0.8 - 25px;
+          }
+          &.circle6 {
+            top: -17px;
+            left: $percentWidth - 25px;
+          }
+        }
+      }
+      .mid_content {
+        margin: 45px auto auto 75px;
+        overflow: hidden;
+        .invite_weachat {
+          position: relative;
+          display: inline-block;
+          width: 160px;
+          height: 199px;
+          background: url("../images/2018/rebate-station/invite_weachat.png") no-repeat;
+          background-size: contain;
+          font-size: 12px;
+          .desc_text {
+            position: absolute;
+            bottom: 5px;
+            width: 160px;
+            color: #fff;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: center;
+          }
+          .active_two {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+          }
+        }
+        .countDownTime {
+          display: inline-block;
+          margin: 10px auto auto 90px;
+          vertical-align: top;
+          .title {
+            font-size: 40px;
+            color: #d70921;
+          }
+          .countDown_wrapper {
+            display: none;
+            width: 300px;
+            height: 82px;
+            font-size: 0;
+            background: url("../images/2018/rebate-station/countDown_wrapper.png") no-repeat;
+            background-size: contain;
+            overflow: hidden;
+            .time_num_wrapper {
+              width: 300px;
+              height: 36px;
+              text-align: center;
+              .time_num {
+                display: inline-block;
+                margin-top: 20px;
+                width: 25px;
+                height: 36px;
+                line-height: 36px;
+                text-align: center;
+                font-size: 30px;
+                color: #fff;
+                background: #373737;
+                border-radius: 3px;
+                &.hour1,  &.minutes1,  &.seconds1{
+                  margin-right: 1px;
+                }
+              }
+              .icon {
+                margin: 0 3px;
+                font-size: 30px;
+                color: #373737;
+              }
+            }
+          }
+          .time_over {
+            display: none;
+            width: 300px;
+            height: 82px;
+            line-height: 82px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #565353;
+            background: url("../images/2018/rebate-station/countDown_over.png") no-repeat;
+            background-size: contain;
+          }
+        }
+      }
+      .friends {
+        margin: 40px auto auto 30px;
+        font-size: 14px;
+        top: 350px;
+        left: 30px;
+      }
+    }
+  }
+  .close_btn {
+    position: absolute;
+    top: -33px;
+    right: -33px;
+    width: 50px;
+    height: 50px;
+    background: url("../images/2018/rebate-station/close_btn.png") no-repeat;
+    background-size: contain;
+  }
+
+  .list_tip_text {
+    position: absolute;
+    bottom: 70px;
+    color: #a7988d;
+    font-size: 18px;
+    font-weight: bold;
+    width: 700px;
+    text-align: center;
+  }
+  .friend_list {
+    position: absolute;
+    left: 23px;
+    bottom: 23px;
+    width: 654px;
+    height: 128px;
+    font-size: 14px;
+    color: #ae5f24;
+    overflow-y: scroll;
+    .list_item {
+      height: 42px;
+      line-height: 42px;
+      .portrait {
+        position: relative;
+        top: -2px;
+        display: inline-block;
+        margin: 0 15px 0 100px;
+        width: 36px;
+        height: 36px;
+        background: url("../images/2018/rebate-station/default_portrait.png") no-repeat;
+        background-size: contain;
+        border-radius: 50%;
+        vertical-align: middle;
+      }
+      .nickName {
+        width: 250px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+      .finish_time {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+
+
+
+
