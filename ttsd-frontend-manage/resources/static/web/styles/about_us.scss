@@ -5,8 +5,11 @@ $gray2:#525252;
 $gray3:#e7eaee;
 $gray4:#999;
 $gray5:#333333;
+.marginTop20 {
+  margin-top: 20px;
+}
 .about-us-container {
-  background: #fff;
+  background: #fff!important;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
   @media (min-width: 701px) and (max-width: 999px) {
@@ -389,9 +392,12 @@ $gray5:#333333;
       float: left;
       width: 100%;
       margin-bottom: 20px;
+      margin-top: 10px;
+      background: #fff!important;
       &.chart-dom {
         width: 765px;
         height: 250px;
+        padding-left: 20px;
       }
       .model-title {
         float: left;
@@ -447,7 +453,9 @@ $gray5:#333333;
     }
   }
 }
-
+.operational-wrap {
+  background: none!important;
+}
 @media screen and (max-width: 700px) {
 
   .about-us-container {
@@ -603,12 +611,17 @@ $gray5:#333333;
 
 .section-wrap {
   box-sizing: border-box;
-  background: #fafafa;
+
+}
+.paddingLeft {
+  padding-left: 30px;
+  padding-top: 30px;
 }
 .operater-days-wrap {
   height: 100px;
   text-align: center;
   padding-top: 30px;
+  background: #fff;
   .operater-day {
     display: inline-block;
     margin: 0 auto;
@@ -636,23 +649,34 @@ $gray5:#333333;
     }
   }
 }
+.invest-section {
+  background: #fff;
+  margin-top: 8px;
+}
 .data-wrap {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  .line {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    width: 1px;
+    height: 50px;
+    background: #e7eaee;
+  }
   ul {
-    background: $gray;
+    background: #fff;
+    margin-bottom: 20px;
     li {
-      width: 50%;
+      width: 33.33%;
+      &.loan {
+        width: 49%;
+      }
       height: 112px;
       float: left;
-      border-left: 1px solid $gray3;
-      border-bottom: 1px solid $gray3;
       box-sizing: border-box;
       padding-top: 20px;
-      &.bl {
-        border-left: none;
-      }
-      &.pl {
-        border-bottom:none;
-      }
 
       p {
         line-height: 36px;
@@ -684,6 +708,18 @@ $gray5:#333333;
     }
   }
 }
+
+.loan-title {
+  padding-top: 20px;
+}
+.loan-section {
+  background: #fff;
+  margin-top: 10px;
+  h4,h3 {
+    padding-left: 30px;
+    padding-top: 30px;
+  }
+}
 .organizational-structure {
   width: 765px;
   margin: 0 auto;
@@ -700,6 +736,8 @@ $gray5:#333333;
 }
 .geographical-item {
   width: 100%;
+  padding-left: 24px;
+  padding-bottom: 10px;
   @media screen and (max-width: 768px){
     overflow-x: scroll;
     overflow-y:hidden;
@@ -742,7 +780,8 @@ $gray5:#333333;
   color: $gray2;
 }
 .region-wrap {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
+  background: #fff;
 }
 .marginTop20 {
   margin-top: 20px;
@@ -757,6 +796,7 @@ $gray5:#333333;
 .marginLeft10 {
   margin-left: 10px;
 }
+
 
 //工商信息
 .business-circles {
@@ -831,5 +871,25 @@ $gray5:#333333;
     td {
       border:1px solid #e7eaee;
     }
+  }
+}
+//审计报告
+.report-container {
+  background: #fff!important;
+  h2 {
+    height: 50px;
+    line-height: 50px;
+    margin-top: 20px;
+  }
+  ul {
+    li {
+      width: 373px;
+      height: 515px;
+      float: left;
+      img {
+        width: 100%;
+      }
+    }
+
   }
 }

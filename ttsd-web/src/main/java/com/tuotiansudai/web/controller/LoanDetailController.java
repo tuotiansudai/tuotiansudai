@@ -9,8 +9,10 @@ import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
@@ -54,6 +56,9 @@ public class LoanDetailController {
     @Autowired
     private RiskEstimateService riskEstimateService;
 
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -77,12 +82,13 @@ public class LoanDetailController {
                 LoginUserInfo.getLoginName(), 1000000, new Date()));
         BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         modelAndView.addObject("hasBankCard", passedBankCard != null);
-
+        double investFeeRate = ProductType.EXPERIENCE == loanDetail.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName());
         int membershipLevel = 0;
         if (null != membershipModel) {
             membershipLevel = membershipModel.getLevel();
         }
         modelAndView.addObject("membershipLevel", membershipLevel);
+        modelAndView.addObject("investFeeRate", investFeeRate);
 
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
         modelAndView.addObject("zeroShoppingPrize", map == null ? null : map.containsKey("zeroShoppingPrize") ? map.get("zeroShoppingPrize") : null);

@@ -1601,3 +1601,23 @@
     top: 9px;
   }
 }
+
+//技术服务费
+.related-expenses {
+
+  span {
+    position: relative;
+    padding-right: 22px;
+    .icon-mark {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      background: url("../../images/icon_tip.png") no-repeat;
+      background-size: 100%;
+      right: 0px;
+      top: 14px;
+      cursor: pointer;
+    }
+  }
+
+}
