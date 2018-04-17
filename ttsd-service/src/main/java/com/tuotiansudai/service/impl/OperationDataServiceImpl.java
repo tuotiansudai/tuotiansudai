@@ -6,12 +6,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.enums.AgeNewDistributionType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.mapper.OperationDataMapper;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
@@ -25,6 +24,7 @@ import org.joda.time.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -50,6 +50,10 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private LoanMapper loanMapper;
+    @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
 
     private static final String CHART_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:chart:{0}";
     private static final String TABLE_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:table:{0}";
@@ -63,6 +67,16 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
 
     private static final String REDIS_USERS_COUNT = "userCount";
+    private static final String REDIS_SUM_LOAN_AMOUNT = "sumLoanAmount";
+    private static final String REDIS_SUM_LOAN_COUNT = "sumLoanCount";
+    private static final String REDIS_SUM_LOANER_COUNT = "sumLoanerCount";
+    private static final String REDIS_SUM_OVER_DUE_AMOUNT = "sumOverDueAmount";
+    private static final String REDIS_SUM_EXPECTED_AMOUNT = "sumExpectedAmount";
+    private static final String REDIS_LOAN_OVER_DUE_RATE = "loanOverDueRate";
+    private static final String REDIS_AMOUNT_OVER_DUE_RATE = "amountOverDueRate";
+    private static final String REDIS_LOANER_OVER_DUE_COUNT = "loanerOverDueCount";
+    private static final String REDIS_LOANER_OVER_DUE_AMOUNT = "loanerOverDueAmount";
+    private static final String REDIS_INVEST_USERS_COUNT = "investUserCount";
     private static final String REDIS_TRADE_AMOUNT = "tradeAmount";
     private static final String REDIS_OPERATION_DATA_MONTH = "operationDataMonth";
     private static final String REDIS_OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
@@ -104,7 +118,36 @@ public class OperationDataServiceImpl implements OperationDataService {
                 null, null, startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate(),
                 InvestStatus.SUCCESS, null)));
 
+
         operationDataDto.setUsersCount(userMapper.findUsersCount());
+        operationDataDto.setInvestUsersCount(investMapper.findInvestorCount());
+        List<LoanModel> loanModels = loanMapper.findSuccessLoanOutLoan();
+        operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum()));
+        operationDataDto.setSumLoanCount(String.valueOf(loanModels.size()));
+        operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCount()));
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
+        long sumExpectedAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getCorpus).sum();
+        long sumOverDueAmount = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate)).mapToLong(LoanRepayModel::getCorpus).sum();
+        operationDataDto.setSumExpectedAmount(AmountConverter.convertCentToString(sumExpectedAmount));
+        operationDataDto.setSumOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
+
+
+        long sumRepayingLoanCount = loanRepayModels.stream().map(LoanRepayModel::getLoanId).distinct().count();
+        long sumOverDueLoanCount = loanRepayModels.stream()
+                .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
+                        && loanRepayModel.getRepayDate().before(endDate))
+                .map(LoanRepayModel::getLoanId).distinct().count();
+        operationDataDto.setLoanOverDueRate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(sumOverDueLoanCount).divide(new BigDecimal(sumRepayingLoanCount), 2, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDueRate(String.valueOf(sumOverDueAmount == 0 ? 0 : new BigDecimal(sumOverDueAmount).divide(new BigDecimal(sumExpectedAmount), 2, BigDecimal.ROUND_DOWN)));
+
+        operationDataDto.setLoanerOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
+        operationDataDto.setLoanerOverDueCount(String.valueOf(loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate))
+                .map(LoanRepayModel::getLoanId)
+                .distinct()
+                .map(s -> loanerDetailsMapper.getByLoanId(s).getLoginName())
+                .distinct()
+                .count()));
+
 
         List<Integer> sexList = findScaleByGender(new Date());
         if (sexList.size() > 1) {
@@ -145,8 +188,17 @@ public class OperationDataServiceImpl implements OperationDataService {
     private void loadOperationDataDtoFromRedis(OperationDataDto operationDataDto, Date endDate) {
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endDate);
         operationDataDto.setOperationDays(calOperationTime(endDate));
+        operationDataDto.setSumLoanerCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOANER_COUNT));
         operationDataDto.setUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_USERS_COUNT)));
+        operationDataDto.setSumLoanCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOAN_COUNT));
+        operationDataDto.setSumLoanAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOAN_AMOUNT));
+        operationDataDto.setSumOverDueAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_OVER_DUE_AMOUNT));
+        operationDataDto.setAmountOverDueRate(redisWrapperClient.hget(redisInfoPublishKey,REDIS_AMOUNT_OVER_DUE_RATE));
+        operationDataDto.setLoanOverDueRate(redisWrapperClient.hget(redisInfoPublishKey,REDIS_LOAN_OVER_DUE_RATE));
+        operationDataDto.setInvestUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT)));
         operationDataDto.setTradeAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_TRADE_AMOUNT));
+        operationDataDto.setLoanerOverDueAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_AMOUNT));
+        operationDataDto.setLoanerOverDueCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_COUNT));
         operationDataDto.setMonth(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
                 REDIS_OPERATION_DATA_MONTH)));
         operationDataDto.setMoney(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
@@ -173,7 +225,17 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     private void updateRedis(OperationDataDto operationDataDto, Date endTime) {
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endTime);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOAN_AMOUNT, operationDataDto.getSumLoanAmount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOAN_COUNT, operationDataDto.getSumLoanCount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOANER_COUNT, operationDataDto.getSumLoanerCount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_EXPECTED_AMOUNT, operationDataDto.getSumExpectedAmount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey,REDIS_AMOUNT_OVER_DUE_RATE,operationDataDto.getAmountOverDueRate(),timeout);
+        redisWrapperClient.hset(redisInfoPublishKey,REDIS_LOAN_OVER_DUE_RATE,operationDataDto.getLoanOverDueRate(),timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_OVER_DUE_AMOUNT, operationDataDto.getSumOverDueAmount(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_USERS_COUNT, Long.toString(operationDataDto.getUsersCount()), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_COUNT, operationDataDto.getLoanerOverDueCount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_AMOUNT, operationDataDto.getLoanerOverDueAmount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT, String.valueOf(operationDataDto.getInvestUsersCount()), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_TRADE_AMOUNT, operationDataDto.getTradeAmount(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_OPERATION_DATA_MONTH, convertListIntoRedisListString(
                 operationDataDto.getMonth()), timeout);
@@ -276,7 +338,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                     redisWrapperClient.hset(getRedisKeyFromTemplateByDate(COUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                             Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")),
                             String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)), timeout);
-                    resultMap.put(Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")) , String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
+                    resultMap.put(Lists.newArrayList("北京", "天津", "重庆", "上海").contains(investCityMap.get("province")) ? String.format("%s市", investCityMap.get("province")) : String.format("%s省", investCityMap.get("province")), String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityMap.get("totalCount"))), totalScaleCount, 1)));
                 }
 
             }
