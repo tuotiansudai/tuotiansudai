@@ -74,6 +74,13 @@ public class AnswerService {
         if (SensitiveWordsFilter.match(answerRequestDto.getAnswer())) {
             return answerResultDataDto;
         }
+
+        String answerSensitive = SensitiveWordsFilter.matchSensitiveWords(answerRequestDto.getAnswer());
+        if (answerSensitive != null){
+            answerResultDataDto.setSensitiveWord(answerSensitive);
+            return answerResultDataDto;
+        }
+
         answerResultDataDto.setAnswerSensitiveValid(true);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
