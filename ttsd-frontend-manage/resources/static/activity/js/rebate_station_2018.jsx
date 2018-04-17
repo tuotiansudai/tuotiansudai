@@ -66,8 +66,8 @@ $.when(commonFun.isUserLogin())
         alreadyLogged();
     })
     .fail(function(){
-        noLogged();
-        // alreadyLogged();
+        // noLogged();
+        alreadyLogged();
     });
 
 $('.invest_cash_btn').on('click', () => {
@@ -85,6 +85,7 @@ $('.login_btn').on('click', () => {
 });
 
 $('.see_more').on('click',() => {
+    if (!$('.see_more').html()) return;
     $('.table_container').addClass('table_auto');
     $('.see_more').hide();
     $('.see_less').show();
@@ -104,7 +105,7 @@ $('.handle_btn').on('click',(e) => {
         $('.cashBack_popModal').show();
     }
     else {
-        alert(1)
+        location.href = '/activity/invite-help/wechat/sharing';
     }
 
 });
@@ -115,7 +116,7 @@ $('.everyone_detail').on('click',() => {
         $('.help_popModal').show();
     }
     else {
-        alert(2)
+        location.href = '/activity/invite-help/wechat/sharing1';
     }
 });
 
@@ -250,6 +251,7 @@ function countDownList(domElement) {
                 if (leftTime <= 1) {
                     clearInterval(timer);
                     $this.html('助力结束');
+                    $this.siblings('.handle_btn').html('查看详情');
                     return;
                 }
                 h = Math.floor(leftTime/60/60%24);
@@ -262,6 +264,7 @@ function countDownList(domElement) {
                 leftTime--;
             }else {
                 $this.html('助力结束');
+                $this.siblings('.handle_btn').html('查看详情');
             }
         }
     });
