@@ -11,4 +11,6 @@ public interface LoanerDetailsMapper {
     LoanerDetailsModel getByLoanId(@Param(value = "loanId") long loanId);
 
     void deleteByLoanId(@Param(value = "loanId") long loanId);
+
+    long getSumLoanerCount();
 }
