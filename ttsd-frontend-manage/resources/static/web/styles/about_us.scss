@@ -893,3 +893,63 @@ $gray5:#333333;
 
   }
 }
+//团队介绍新增从业背景
+.employment-bg {
+  width: 644px;
+  margin: 0 auto;
+  position: relative;
+  margin-bottom: 25px;
+  margin-top: 30px;
+  .arrow-btn {
+    width: 20px;
+    height: 36px;
+    position: absolute;
+    top: 194px;
+    cursor: pointer;
+    &.prevBtn {
+      left: -40px;
+      background: url("../images/sign/aboutus/left_btn.png") no-repeat;
+    }
+    &.nextBtn {
+      right: -40px;
+      background: url("../images/sign/aboutus/right_btn.png") no-repeat;
+    }
+  }
+  .container-wrap {
+    width: 644px;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    ul {
+      width: 1320px;
+      position: absolute;
+      li {
+        width: 310px;
+        height: 450px;
+        background: #fafafa;
+        float: left;
+        margin-left: 20px;
+        padding: 0 20px;
+        box-sizing: border-box;
+        &:nth-child(1){
+          margin-left: 0;
+        }
+        .data-wrap {
+          height: 280px;
+        }
+        h2 {
+          font-size: 14px;
+          color: #333;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+        }
+        .desc {
+          color: #333;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+}
