@@ -25,8 +25,6 @@ setTimeout(function () {
             if (currentPer < item) {
                 let index = percentArr.indexOf(item) - 1;
                 opts2.percent = 100 / 6 * index;
-                console.log( opts2.percent)
-                // $('.light_line').css('width',16.6 * index + '%');
                 for(let j = 1; j < index + 2;j++) {
                     let lightCircle = 'percent' + j;
                     $('.' + lightCircle).addClass('light');
@@ -36,7 +34,6 @@ setTimeout(function () {
             else {
                 if (currentPer >= percentArr[percentArr.length - 1]) {
                     opts2.percent = '100';
-                    // $('.light_line').css('width','100%');
                     for(let j = 1; j < 7;j++) {
                         let lightCircle = 'percent' + j;
                         $('.' + lightCircle).addClass('light');
@@ -54,15 +51,17 @@ setTimeout(function () {
 
     $('.invite_friends_btn').on('click',() => {
         alert('请点击右上角分享按钮');
-    })
+    });
 },0);
 
 $('.rules').on('click',() => {
     $('.flex_rules').show();
+    $('body').css('overflow','hidden');
 });
 
 $('.close_rules').on('click',() => {
     $('.flex_rules').hide();
+    $('body').css('overflow','auto');
 });
 
 function countTimePop(str) {
@@ -108,6 +107,8 @@ function countTimePop(str) {
 }
 
 countTimePop('2018-4-16 12:21:30');
+
+
 
 
 

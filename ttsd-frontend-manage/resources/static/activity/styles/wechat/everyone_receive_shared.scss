@@ -1,10 +1,8 @@
 
 body {
   width: 100%;
-  height: 41rem;
-  background: url("../../images/2018/rebate-station/activity_one_bg.png") no-repeat;
-  background-size: cover;
-
+  background: #f8364e url("../../images/2018/rebate-station/wechat_share_bg.png") no-repeat;
+  background-size: contain;
 }
 .top_container {
   width: 100%;
@@ -188,24 +186,31 @@ body {
   .content {
     position: relative;
     box-sizing: border-box;
-    padding: 1rem 0;
+    padding: .4rem 0;
     margin: 0 auto;
     top: -1.5rem;
     z-index: 20;
     width: 17.4rem;
-    height: 6.5rem;
-    background: url("../../images/2018/rebate-station/invited_content.png") no-repeat;
-    background-size: contain;
+    background: #f13939;
+    border-radius: .25rem;
     .list {
-      width: 100%;
-      height: 4.5rem;
+      margin: 0 auto;
+      width: 16.6rem;
+      max-height: 15rem;
+      padding: 1rem 0 0 0;
+      background: #ffebc2;
+      border-radius: .25rem;
       overflow-y: scroll;
+      -webkit-overflow-scrolling : touch;
       .list_item {
         height: 1.5rem;
         line-height: 1.5rem;
+        color: #ae5f24;
+        //&:last-child {
+        //  margin-bottom: .5rem;
+        //}
         .portrait {
           position: relative;
-          top: -2px;
           display: inline-block;
           margin: 0 .5rem 0 2.5rem;
           width: 1.25rem;
@@ -230,11 +235,16 @@ body {
       }
     }
     .no_help {
+      margin: 0 auto;
+      width: 16.6rem;
+      height: 4.5rem;
       line-height: 4.5rem;
       font-size: .85rem;
-      font-weight: bold;
       color: #7c736d;
+      font-weight: bold;
       text-align: center;
+      background: #ffebc2;
+      border-radius: .25rem;
     }
   }
 }

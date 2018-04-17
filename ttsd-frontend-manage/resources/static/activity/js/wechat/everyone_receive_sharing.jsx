@@ -10,10 +10,12 @@ $('.invite_friends_btn').on('click',() => {
 
 $('.rules').on('click',() => {
     $('.flex_rules').show();
+    $('body').css('overflow','hidden');
 });
 
 $('.close_rules').on('click',() => {
     $('.flex_rules').hide();
+    $('body').css('overflow','auto');
 });
 
 function countTimePop(str) {

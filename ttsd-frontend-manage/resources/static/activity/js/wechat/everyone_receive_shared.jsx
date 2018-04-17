@@ -13,15 +13,17 @@ $('.help_too').on('click',() => {
 });
 
 $('.withdraw_cash').on('click',() => {
-    location.href = '/m/register/account';
+    location.href = '/m/account';
 });
 
 $('.rules').on('click',() => {
     $('.flex_rules').show();
+    $('body').css('overflow','hidden');
 });
 
 $('.close_rules').on('click',() => {
     $('.flex_rules').hide();
+    $('body').css('overflow','auto');
 });
 
 function countTimePop(str) {

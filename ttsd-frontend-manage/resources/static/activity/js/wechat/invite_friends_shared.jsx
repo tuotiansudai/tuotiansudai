@@ -3,25 +3,29 @@ let commonFun = require('publicJs/commonFun');
 let sourceKind = globalFun.parseURL(location.href);
 commonFun.calculationFun(document,window);
 let timer;
-
-$('.help_rightNow').on('click',() => {
+$('.help_rightNow').on('click',function () {
+    if ($(this).hasClass('no_click')) {
+        layer.msg('助力已结束');
+        return;
+    }
     alert(1)
 });
-
 $('.help_too').on('click',() => {
     alert(2)
 });
 
 $('.withdraw_cash').on('click',() => {
-    location.href = '/m/register/account';
+    location.href = '/m/account';
 });
 
 $('.rules').on('click',() => {
     $('.flex_rules').show();
+    $('body').css('overflow','hidden');
 });
 
 $('.close_rules').on('click',() => {
     $('.flex_rules').hide();
+    $('body').css('overflow','auto');
 });
 
 function countTimePop(str) {
@@ -60,13 +64,14 @@ function countTimePop(str) {
         }
         else {
             clearInterval(timer);
+            $('.help_rightNow').removeClass('help_rightNow').addClass('no_click');
             $('.pic_wrapper').hide();
             $('.time_over').show();
         }
     }
 }
 
-countTimePop('2018-4-16 12:21:30');
+countTimePop('2018-4-17 12:21:30');
 
 
 
