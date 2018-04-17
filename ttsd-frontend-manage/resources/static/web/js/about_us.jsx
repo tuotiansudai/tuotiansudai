@@ -427,18 +427,18 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
 
          $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
          $('#tradeAmount').text(formatNumber(data.tradeAmount,2));//累计交易金额
-       // $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
-       //  $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
-       //  $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
+       $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
+        $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
+        $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
 
-       //  $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
-        //  $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
-        //  $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
-        //  $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate,2));//项目逾期率
-        //  $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate，2));//金额逾期率
+        $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
+         $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
+         $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
+         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate,2));//项目逾期率
+         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate,2));//金额逾期率
 
-       //  $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
-       //  $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
+        $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
+        $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
 
         let barChartArr = [];
         let num = 0;
