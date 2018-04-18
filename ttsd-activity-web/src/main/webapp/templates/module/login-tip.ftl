@@ -3,7 +3,7 @@
     <div class="login-box">
         <h3>欢迎登录拓天速贷</h3>
 
-        <form class="form-login" action="/login" method="post" id="loginInForm" name="loginInForm">
+        <form class="form-login" action="/login" method="post" id="loginInForm" name="loginInForm" autocomplete="off">
             <div class="clearfix">
                 <label>
                     <em class="name user"></em>
