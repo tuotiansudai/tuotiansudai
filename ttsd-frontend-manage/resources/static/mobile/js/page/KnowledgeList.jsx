@@ -13,7 +13,7 @@ import Carousel from 'mobileJsModule/Carousel';
 const pageSize = 10;
 import bannerUrl from '../../images/knowledge_banner.png';
 
-class MediaList extends React.Component {
+class KnowledgeList extends React.Component {
 	state = {
 		isShowLoading: false,
 		listData: Immutable([])
@@ -149,4 +149,4 @@ class MediaList extends React.Component {
 		);
 	}
 }
-export default MediaList;
+export default KnowledgeList;
