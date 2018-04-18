@@ -434,8 +434,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
          $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
          $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
-         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate,2));//项目逾期率
-         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate,2));//金额逾期率
+         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
+         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
 
         $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
         $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
